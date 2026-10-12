@@ -29,8 +29,8 @@ const METHOD_LABELS: Record<string, string> = {
 };
 
 // BRO-4623: the old ">= 200% → '~Nx returned to investors'" regime is gone.
-// The model's percentage is of capitalization net of SVOG grants plus a
-// reserve, not what investors put in, so it is not an investor return
+// The model's percentage is of capitalization plus a reserve (SVOG grants
+// are no longer netted off since BRO-5073), not what investors put in, so it is not an investor return
 // (Hamilton read "~159x"). Above 100% we say "100%+" and stop there; labels
 // come from getModelRecoupmentLabels (unit-tested in
 // tests/unit/recoupment-progress-label.test.mjs).

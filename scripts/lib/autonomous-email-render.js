@@ -342,6 +342,8 @@ const AUTOFIX_STATE_LABEL = {
   'card-filed': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
   'card-failed': ['\u26a0\ufe0f', 'tracker filing FAILED \u2014 nothing is working on this yet; retries tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
+  // BRO-5099: router notice for a condition that already has a Linear card.
+  'tracked': ['\u2139\ufe0f', 'already has a tracking card \u2014 no new card needed'],
   // BRO-4487: first seen under 3 days ago. Most of these clear on their own
   // (88 of 154 resolved alert conditions did within 3 days), so no card yet.
   'watching': ['\u{1f440}', 'being watched \u2014 a fix card is filed if it is still here after 3 days'],
@@ -560,6 +562,7 @@ const OWNER_FIX_STATUS = {
   'queued': 'queued for an automatic fix, not started yet',
   'card-filed': 'queued for an automatic fix, not started yet',
   'acknowledged': 'already tracked, with a known fix date',
+  'tracked': 'already has a tracking card',
   'card-failed': 'not being fixed automatically yet',
   'parked': 'automatic fixes kept failing; not being fixed automatically',
   'no-live-session': 'fix attempt not confirmed (no live session found)',

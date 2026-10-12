@@ -146,6 +146,10 @@ jobs:
                 description: 'The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.',
                 severity: 'error',
                 disposition: 'human',
+                // BRO-5099: only the owner can renew the token, so this is a decision
+                // row ("Needs your attention"), never an auto-fix dispatch.
+                decision: true,
+                decisionPrompt: 'Mezzanine Scraper Failed — Session Token Expired: renew MEZZANINE_SESSION_TOKEN (mitmproxy on the Mac, open the Mezzanine iPhone app, copy the X-Parse-Session-Token header into the GitHub secret).',
                 fields: [
                   { name: 'Action Required', value: 'Re-intercept Mezzanine iOS app via mitmproxy' },
                   { name: 'Run', value: `[View logs](${runUrl})` }
@@ -315,6 +319,10 @@ jobs:
               description: 'The nightly self-heal resolver failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
               severity: 'error',
               disposition: 'human',
+              // BRO-5099: only the owner can renew the token, so this is a decision
+              // row ("Needs your attention"), never an auto-fix dispatch.
+              decision: true,
+              decisionPrompt: 'Unmatched Imports Resolver Failed — Mezzanine Session Token Expired: renew MEZZANINE_SESSION_TOKEN (mitmproxy on the Mac, open the Mezzanine iPhone app, copy the X-Parse-Session-Token header into the GitHub secret).',
               fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));
@@ -462,6 +470,10 @@ jobs:
               description: 'The weekly diary-shows.json delta refresh failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
               severity: 'error',
               disposition: 'human',
+              // BRO-5099: only the owner can renew the token, so this is a decision
+              // row ("Needs your attention"), never an auto-fix dispatch.
+              decision: true,
+              decisionPrompt: 'Mezzanine Catalog Refresh Failed — Session Token Expired: renew MEZZANINE_SESSION_TOKEN (mitmproxy on the Mac, open the Mezzanine iPhone app, copy the X-Parse-Session-Token header into the GitHub secret).',
               fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));

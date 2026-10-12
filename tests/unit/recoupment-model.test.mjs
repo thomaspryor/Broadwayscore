@@ -6,7 +6,7 @@
 //      COVID reopenings) + qualified-cost formula
 //   4. Solo shows classify as 'special', not 'playStar'
 //   5. Star-play classification requires a >=850-seat house
-//   6. Closed shows measure recoupment % against cap net of SVOG (reserve
+//   6. Closed shows measure recoupment % against full cap, SVOG not netted (reserve
 //      gates the recoup-week timing only)
 //   7. BRO-4623: no SVOG for Disney shows or Wicked; notes saying the NY tax
 //      credit was NOT received zero it out (All Out); the notes parser never
@@ -183,7 +183,7 @@ describe('calculateRecoupment data quality', () => {
 });
 
 describe('closed-show recoupment percentage denominator', () => {
-  it('measures closed shows against cap net of SVOG, without reserve', () => {
+  it('measures closed shows against full cap, without reserve', () => {
     const show = {
       slug: 'closed-show', title: 'Closed Show', type: 'play',
       venue: 'Ethel Barrymore Theatre',

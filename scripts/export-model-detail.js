@@ -18,7 +18,7 @@ const {
   calculateRecoupment, calculateLifetimeRecoupment,
   classifyShow, getBaseVariableRate, estimateWeeklyNut,
   calcWeeklyProfit, calcTheaterOverage,
-  SCENARIO_MULTIPLIERS, PREVIEW_DEFAULTS, RESERVE_FUND_WEEKS,
+  SCENARIO_MULTIPLIERS, PREVIEW_DEFAULTS, RESERVE_FUND_WEEKS, KNOWN_STAR_DEALS,
 } = require('./lib/recoupment-model');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -181,11 +181,7 @@ function exportShow(slug) {
   const authorRate = show.type === 'play' ? 0.055 : 0.045;
 
   // Star deal
-  const KNOWN_STAR_DEALS = {
-    'the-music-man-2022': { weeklyPremium: 350000, grossPct: 0.08, grossThreshold: 1200000 },
-    'hells-kitchen': { weeklyPremium: 75000, grossPct: 0.03, grossThreshold: 1000000 },
-    'gypsy-2024': { weeklyPremium: 100000, grossPct: 0.02, grossThreshold: 1200000 },
-  };
+  // One list, the model's (BRO-5029): a copy here would drift when it is sourced.
   const starDeal = KNOWN_STAR_DEALS[slug] || null;
 
   const effectiveCap = result.effectiveCapitalization;

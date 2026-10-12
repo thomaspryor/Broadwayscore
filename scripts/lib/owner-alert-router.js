@@ -672,7 +672,7 @@ function headStandsAlone(description, subject) {
 // auto-dispatch attempt (e.g. test.yml's streak escalation, which wants
 // opus immediately since it's already the SECOND machine attempt at the
 // underlying failure — the first, disposition:'auto', card already failed).
-function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields }) {
+function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields, tracked }) {
   // Non-throwing (card #1078): an alert must still reach the owner even if
   // its own head would clip badly — this is a loud warning, not a gate.
   // description renders as "<b>title</b> — description" (autonomous-email-
@@ -699,6 +699,7 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
   queue.push({
     conditionKey, title, description, severity, url: url || null,
     decision: !!decision, decisionPrompt: decisionPrompt || null, model: model || null,
+    tracked: tracked || null,
     // routeAlert's caller-supplied fields ([{name,value}]) — dispatchCard and
     // sendAlert both carry these through (e.g. the 'Shows' list on overdue/
     // checklist/drift alerts); the digest path was silently dropping them.
@@ -708,6 +709,26 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
   assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
+}
+
+// Every field of a queued digest row that its consumers read
+// (send-morning-digest.js / digest-autofix.js) — everything queueDigestLine
+// writes except queuedAt. health-check.js copies queued rows into
+// health-digest-snapshot.json through toSnapshotQueuedRow, and that copy has
+// dropped a field three times (url, then fields, then conditionKey + decision:
+// BRO-5099, which hid every decision row from "Needs your attention").
+const DIGEST_ROW_FIELDS = Object.freeze([
+  'conditionKey', 'title', 'description', 'severity', 'url',
+  'decision', 'decisionPrompt', 'model', 'tracked', 'fields',
+]);
+
+function toSnapshotQueuedRow(q) {
+  const row = {};
+  for (const k of DIGEST_ROW_FIELDS) row[k] = q[k] === undefined ? null : q[k];
+  row.url = q.url ?? null;
+  row.fields = Array.isArray(q.fields) ? q.fields : [];
+  row.decision = !!q.decision;
+  return row;
 }
 
 // Reads the digest queue WITHOUT clearing it. Prefer peek + clearDigestQueue()
@@ -915,7 +936,10 @@ async function routeAlert(opts) {
         queueDigestLine({
           title: `${title} — already tracked at ${linearDup.identifier}`,
           description: `This condition already has an open tracker (${linearDup.identifier}); not filing a duplicate. It will go quiet in the digest from here.\n\n${description}`,
-          severity, conditionKey, url, decision: true, fields,
+          // BRO-5099: a notice about an already-tracked condition, not an owner
+          // decision; `tracked` keeps it off the auto-fix path and out of
+          // "Needs your attention". The caller's own decision flag still wins.
+          severity, conditionKey, url, decision, decisionPrompt, fields, tracked: linearDup.identifier,
         });
       }
       ledger.conditions[conditionKey] = {
@@ -990,7 +1014,7 @@ async function routeAlert(opts) {
           description: ageEscalation
             ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${Math.round(fileAfterHours / 24)}+ days without clearing.\n\n${description}`
             : `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
-          severity, conditionKey, url, decision: true, fields,
+          severity, conditionKey, url, decision, decisionPrompt, fields, tracked: dispatch.linearIdentifier,
         });
         result.lastSurfacedAt = now;
       } else {
@@ -1020,7 +1044,7 @@ async function routeAlert(opts) {
           `Still firing after ${digestNotifyCount} notifications since it was filed. Tracked at ${existing.linearIdentifier}.`,
           description,
         ].filter(Boolean).join('\n\n'),
-        severity, conditionKey, url, decision: true, decisionPrompt, model, fields,
+        severity, conditionKey, url, decision, decisionPrompt, model, fields, tracked: existing.linearIdentifier,
       });
       result.lastSurfacedAt = now;
     }
@@ -1163,6 +1187,8 @@ function readDispatchAttempts({ days = 7 } = {}) {
 module.exports = {
   routeAlert,
   alertIdempotencyKey,
+  DIGEST_ROW_FIELDS,
+  toSnapshotQueuedRow,
   // BRO-3881: exported so the test asserts the REAL card body every filed
   // issue gets, rather than a copy of the template (CLAUDE.md rule 15). The
   // bug it guards — prose-only acceptance criteria that no dispatch will
@@ -1183,6 +1209,7 @@ module.exports = {
   isNeverQuietCondition,
   NEVER_QUIET_CONDITION_RE,
   ESCALATION_NOTIFY_THRESHOLD,
+  queueDigestLine,
   drainDigestQueue,
   peekDigestQueue,
   clearDigestQueue,

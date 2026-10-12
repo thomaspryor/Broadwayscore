@@ -22,6 +22,7 @@ const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
 const { splitCosts, fixedNutFromBasis } = require('./cost-split');
+const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -205,18 +206,13 @@ const KNOWN_SVOG = {
   'tina-2019': 10000000,
 };
 
-/** Known star deals — weekly premium + % of gross above threshold */
+/** Known star deals — weekly premium + % of gross above threshold.
+ *  Unsourced. opts.sourcedStarDeals (shadow, BRO-5029) ignores this list and
+ *  reads commercial.json grossParticipation instead. */
 const KNOWN_STAR_DEALS = {
   'the-music-man-2022': { weeklyPremium: 350000, grossPct: 0.08, grossThreshold: 1200000 }, // Jackman ($150K+/wk + 10% of gross) + Foster + elaborate production
   'hells-kitchen': { weeklyPremium: 75000, grossPct: 0.03, grossThreshold: 1000000 }, // Alicia Keys creator deal
   'gypsy-2024': { weeklyPremium: 100000, grossPct: 0.02, grossThreshold: 1200000 }, // Audra McDonald
-};
-
-/** Default star premium for star-driven shows without specific deal data */
-const DEFAULT_STAR_PREMIUM = {
-  weeklyPremium: 75000,    // Additional fixed weekly cost
-  grossPct: 0.02,          // Additional % of gross
-  grossThreshold: 1000000, // Only on gross above this
 };
 
 /** Closing costs: strike, crew buyout, contract termination.
@@ -503,6 +499,13 @@ function getPreviewGrossMultiplier(previewWeek) {
  *   rows from outside this production's previews..closing window, which an
  *   earlier production sharing the grosses key leaves behind (Cabaret 2024
  *   ran on 239 weeks back to 2001). Off (live behavior) by default.
+ * @param {boolean} [opts.sourcedStarDeals] - shadow only (BRO-5029): star
+ *   deals come only from sourced commercial.grossParticipation entries; a
+ *   star-driven show with none returns starDealUnknown (held), never a guessed
+ *   premium. Off (live behavior) by default. Before a live switch the
+ *   checker must rule whether a reported weeklyRunningCost already holds the
+ *   star's guarantee (and the playStar rate its share): the charge here is
+ *   on top of both.
  * @returns {object} RecoupmentModelResult
  */
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
@@ -564,7 +567,14 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // Star deals: only apply for KNOWN deals, not as a default.
   // Most plays don't have above-scale star compensation — applying a default
   // causes false negatives for shows that actually recouped.
-  const starDeal = KNOWN_STAR_DEALS[slug] || null;
+  const sourcedDeals = opts.sourcedStarDeals ? sourcedGrossParticipation(commercial) : null;
+  const starDeal = sourcedDeals ? null : KNOWN_STAR_DEALS[slug] || null;
+  const dealUnknown = !!sourcedDeals && starDealUnknown({ starDriven: category === 'playStar' || !!KNOWN_STAR_DEALS[slug], entries: sourcedDeals.entries });
+  if (sourcedDeals) {
+    for (const { reason } of sourcedDeals.ignored) warnings.push(`grossParticipation entry ignored: ${reason}`);
+    if (sourcedDeals.entries.length) warnings.push(`Star deal: ${sourcedDeals.entries.length} sourced grossParticipation entr${sourcedDeals.entries.length === 1 ? 'y' : 'ies'}`);
+    if (dealUnknown) warnings.push('Star deal unknown: star-driven with no sourced grossParticipation (held)');
+  }
   if (starDeal) {
     warnings.push(`Star deal: +$${(starDeal.weeklyPremium/1000).toFixed(0)}K/wk + ${(starDeal.grossPct*100).toFixed(0)}% above $${(starDeal.grossThreshold/1e6).toFixed(1)}M`);
   }
@@ -697,6 +707,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
         const grossAboveThreshold = Math.max(0, weekResult.adjGross - starDeal.grossThreshold);
         weekProfit -= grossAboveThreshold * starDeal.grossPct;
       }
+      if (sourcedDeals && sourcedDeals.entries.length) weekProfit -= weeklyParticipationCost(sourcedDeals.entries, weekResult.adjGross);
 
       cumProfit += weekProfit;
       totalGross += weekResult.adjGross;
@@ -793,6 +804,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     // Confidence
     dataQuality,
     grossDataSource,
+    ...(sourcedDeals ? { starDealUnknown: dealUnknown } : {}),
     warnings,
   };
 }
@@ -1080,6 +1092,11 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
   const slug = show.slug || show.id;
   const category = classifyShow(show);
+  // opts.sourcedStarDeals (shadow, BRO-5029): the lifetime tier never charged
+  // star deals; it only carries the held flag, and says when a sourced deal
+  // goes uncharged.
+  const lifetimeDeals = opts.sourcedStarDeals ? sourcedGrossParticipation(commercial) : null;
+  if (lifetimeDeals && lifetimeDeals.entries.length) warnings.push('Star deal: sourced grossParticipation not charged on the lifetime tier');
   const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL) : null; // shadow, BRO-5093
   const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
   const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
@@ -1213,6 +1230,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     weeksToRecoupEstimate: scenarios.central.recoupWeek,
     dataQuality: commercial.weeklyRunningCost ? 'medium' : 'low',
     grossDataSource: 'alltime-lifetime',
+    ...(lifetimeDeals ? { starDealUnknown: starDealUnknown({ starDriven: category === 'playStar' || !!KNOWN_STAR_DEALS[slug], entries: lifetimeDeals.entries }) } : {}),
     warnings,
   };
 }

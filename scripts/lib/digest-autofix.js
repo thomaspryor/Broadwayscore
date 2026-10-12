@@ -303,6 +303,7 @@ function normalizeQueuedRows(queued) {
     decisionPrompt: q.decisionPrompt || null,
     model: q.model && VALID_MODELS.has(q.model) ? q.model : null,
     conditionKey: q.conditionKey || null,
+    tracked: q.tracked || null,
   }));
 }
 
@@ -337,6 +338,12 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
   // them in sections.health.queued by matching on conditionKey).
   if (r.decision) {
     return { name: r.name, message, title, state: 'decision', taskId: null, conditionKey, model: null, decisionPrompt: r.decisionPrompt || null };
+  }
+  // BRO-5099: owner-alert-router's notice about a condition that already has a
+  // Linear tracker (escalated / still open). Nothing to file or dispatch.
+  if (r.tracked) {
+    const taskId = String(r.tracked).startsWith('linear:') ? String(r.tracked) : `linear:${r.tracked}`;
+    return { name: r.name, message, title, state: 'tracked', taskId, conditionKey, model: null, wasNew: false };
   }
 
   const existing = matchOpenTask(tasks, titleOverride ? titleOverride.slice(BSC_DAILY_TITLE_PREFIX.length) : r.name);
@@ -407,7 +414,7 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
  * the verify semantics, can be solved generically here (SAFE_CHECK_FORMS'
  * check-health-row-absent.js form takes exactly one row).
  * @returns {Array<{name, message, title, state, taskId, conditionKey, model, affected}>}
- *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'parked'
+ *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'tracked' | 'parked'
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
  */
 function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {}) {
@@ -431,7 +438,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
   const openAnchor = new Map(); // condition key -> {row, batch}
   const planRows = [];
   for (const r of rows) {
-    const split = r.decision ? null : splitOnShowSuffix(r.name);
+    const split = (r.decision || r.tracked) ? null : splitOnShowSuffix(r.name);
     if (!split) {
       planRows.push(buildPlanRow(r, { tasks, today }));
       continue;
@@ -1218,7 +1225,7 @@ function runAutofix({
   // budget starting at 1, the first dispatch would sleep 90s instead of 45s.
   const startBudget = budget;
   for (const row of plan) {
-    if (row.state === 'in-progress' || row.state === 'card-failed' || row.state === 'acknowledged' || row.state === 'decision') continue;
+    if (row.state === 'in-progress' || row.state === 'card-failed' || row.state === 'acknowledged' || row.state === 'decision' || row.state === 'tracked') continue;
     if (!row.taskId) {
       const t = matchOpenTask(tasks, row.name);
       if (t) row.taskId = t.id;
@@ -1290,7 +1297,17 @@ function runAutofix({
   return plan;
 }
 
+// The queued digest rows that stay in "Needs your attention": those whose plan
+// row came back state 'decision'. Every other queued row is shown through its
+// autofix row instead. Matched on conditionKey, so a queued row must carry it
+// (BRO-5099: the health snapshot used to drop it, emptying this list daily).
+function keepDecisionQueued(queued, autofixRows) {
+  const keys = new Set((autofixRows || []).filter(r => r && r.state === 'decision' && r.conditionKey).map(r => r.conditionKey));
+  return (Array.isArray(queued) ? queued : []).filter(q => q && keys.has(q.conditionKey));
+}
+
 module.exports = {
+  keepDecisionQueued,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,

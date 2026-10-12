@@ -1209,7 +1209,7 @@ async function main() {
   // Fail-soft: any error here degrades to un-annotated rows, never blocks the send.
   let autofixRows = null;
   try {
-    const { planAutofix, runAutofix } = require('./lib/digest-autofix.js');
+    const { planAutofix, runAutofix, keepDecisionQueued } = require('./lib/digest-autofix.js');
     const extraIssues = [];
     if (sections.freshness?.count > 0) {
       extraIssues.push({ name: 'Data freshness: shows missing poster/synopsis/tickets',
@@ -1278,9 +1278,7 @@ async function main() {
       console.error(`[digest] WARN liveness gate failed (in-progress claims unverified this run): ${String(err.message).slice(0, 120)}`);
     }
     if (sections.health && Array.isArray(sections.health.queued)) {
-      const decisionConditionKeys = new Set(
-        autofixRows.filter(r => r.state === 'decision' && r.conditionKey).map(r => r.conditionKey));
-      sections.health.queued = sections.health.queued.filter(q => q && decisionConditionKeys.has(q.conditionKey));
+      sections.health.queued = keepDecisionQueued(sections.health.queued, autofixRows);
     }
     const d = autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length;
     const decisions = autofixRows.filter(r => r.state === 'decision').length;

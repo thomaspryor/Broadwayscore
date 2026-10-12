@@ -65,7 +65,14 @@ function recoupedModelDisagreements(records) {
 }
 
 const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
-const NOTE_RECOUP_MONTH = /\brecoup(?:ed|s|ment)?\b[^.;()]{0,25}?\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(?:\d{1,2},?\s+)?((?:19|20)\d\d)\b/gi;
+const MONTH_WORD = '(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+// Past-tense recoup word, then up to 60 chars (no sentence break; "$1.5M" decimals allowed), then
+// "Month [day,] year", "Month, year" or "Month day". "(May 2023)" parentheticals are allowed.
+// A date followed by "opening"/"premiere" dates the opening, not the recoupment, so it is skipped.
+const NOTE_RECOUP_MONTH = new RegExp(
+  '\\brecoup(?:ed|ment)\\b(?:[^.;]|\\.(?=\\d)){0,60}?\\b' + MONTH_WORD + '\\.?,?\\s+' +
+  '(?:(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+((?:19|20)\\d\\d))?|((?:19|20)\\d\\d))\\b(?!\\s+(?:opening|premiere|debut|first preview))',
+  'gi');
 
 /** Records whose notes date the recoupment to a different month than recoupedDate. */
 function recoupedDateNoteConflicts(records) {
@@ -73,8 +80,11 @@ function recoupedDateNoteConflicts(records) {
   for (const [slug, r] of Object.entries(records || {})) {
     if (!r || typeof r.recoupedDate !== 'string' || typeof r.notes !== 'string') continue;
     const [year, month] = r.recoupedDate.split('-').map(Number);
-    const hits = [...r.notes.matchAll(NOTE_RECOUP_MONTH)].map((m) => ({ year: Number(m[2]), month: MONTHS[m[1].toLowerCase()], text: m[0] }));
-    if (!hits.length || hits.some((h) => h.year === year && (!month || h.month === month))) continue;
+    const hits = [...r.notes.matchAll(NOTE_RECOUP_MONTH)]
+      .map((m) => ({ year: m[3] || m[4] ? Number(m[3] || m[4]) : null, month: MONTHS[m[1].slice(0, 3).toLowerCase()], text: m[0] }));
+    // "Dec 28" with no year can only be checked on the month.
+    const agrees = (h) => (h.year === null || h.year === year) && (!month || h.month === month);
+    if (!hits.length || hits.some(agrees)) continue;
     out.push({ slug, recoupedDate: r.recoupedDate, note: hits.map((h) => h.text).join(' | ') });
   }
   return out;

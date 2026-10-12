@@ -3317,10 +3317,15 @@ showDirs.forEach(showId => {
               isUkUrl,
               outletIsDualOrUk,
               outletIsLondonRegion,
+              outletIsInternationalTrade: !!(internationalTradeOutlets
+                && (internationalTradeOutlets.has(earlyCanonicalOutlet) || internationalTradeOutlets.has(earlyRawOutlet))),
               isDateMismatch,
               isShowListingUrl,
               cvBlocksClear,
             })) {
+              const clearedTradeFlag = (data.wrongProductionNote || '').startsWith('Cross-market: US outlet')
+                && !!(internationalTradeOutlets
+                  && (internationalTradeOutlets.has(earlyCanonicalOutlet) || internationalTradeOutlets.has(earlyRawOutlet)));
               delete data.wrongProduction;
               delete data.wrongProductionNote;
               // Name the region actually matched. Hardcoding 'london' here stamped a
@@ -3331,7 +3336,9 @@ showDirs.forEach(showId => {
                 || outletRegionMap[earlyRawOutlet] || 'unknown';
               data.wrongProductionAutoCleared = isUkUrl
                 ? `rebuild: UK URL on London show (${hostname})`
-                : `rebuild: registry region '${clearedRegion}' outlet on London show (${earlyCanonicalOutlet})`;
+                : clearedTradeFlag
+                  ? `rebuild: international trade outlet on London show (${earlyCanonicalOutlet})`
+                  : `rebuild: registry region '${clearedRegion}' outlet on London show (${earlyCanonicalOutlet})`;
               // At-stamp required: the push-time restore only honors FRESH
               // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
               data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
