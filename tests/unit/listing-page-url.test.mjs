@@ -184,4 +184,15 @@ test('Cititour /NYC_Events/ and THR /lists/ are listings; their review paths are
   assert.equal(listingPageUrlReason('https://cititour.com/NYC_News/Review-Yellow-Face-is-a-Golden-Opportunity-for-Daniel-Dae-Kim/8740'), null);
   assert.equal(listingPageUrlReason('https://www.hollywoodreporter.com/lifestyle/arts/the-story-review-1236123456/'), null);
   assert.equal(explainExclusion({ url: 'https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944', fullText: 'x'.repeat(800) }), 'listingPageUrl');
+  assert.equal(listingPageUrlReason('https://www.hollywoodreporter.com/tv/tv-news/watch-american-horror-story-season-13-free-streaming-2026-1236709672/'), 'watch-guide-page');
+  assert.equal(listingPageUrlReason('https://example.com/entertainment/how-to-watch-the-tonys-online'), 'watch-guide-page');
+  assert.equal(listingPageUrlReason('https://example.com/tv/where-to-watch-wicked-for-good/'), 'watch-guide-page');
+  assert.equal(listingPageUrlReason('https://www.hollywoodreporter.com/tv/tv-news/kathie-lee-giffords-scandalous-review-393527/'), null);
+  assert.equal(listingPageUrlReason('https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming-series-takes-the-broadway-stage-b1ec7e77'), null);
+  assert.equal(listingPageUrlReason('https://www.nytimes.com/2026/10/01/theater/watch-review.html'), null);
+  assert.equal(listingPageUrlReason('https://example.com/reviews/watch-the-play-online-review/'), null);
+  assert.equal(listingPageUrlReason('https://example.com/a/watch-x-live-stream-review/'), null);
+  assert.equal(listingPageUrlReason('https://example.com/a/somewhere-to-watch-the-sunset-review'), null);
+  assert.equal(listingPageUrlReason('https://example.com/a/somewhere-to-watch-the-sunset'), null);
+  assert.equal(listingPageUrlReason('https://example.com/tv/how-to-watch-the-tonys-online.html'), 'watch-guide-page');
 });

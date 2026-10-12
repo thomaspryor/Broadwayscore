@@ -45,6 +45,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
+const { applyExplicitCriticToUnknown } = require('./lib/explicit-critic-rename');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { isolateMultiShowSection, normSectionText, isolatedSectionWriteFields } = require('./lib/multi-show-section-extract');
@@ -614,6 +615,21 @@ if (!show) {
     } catch (e) {
       console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
       process.exit(1);
+    }
+    // BRO-5166: the merge never writes criticName, so an explicit --critic onto
+    // an --unknown file always failed the check below. Name it through the
+    // writer's guarded rename; a refusal still fails the check as before.
+    if (criticArg) {
+      const named = applyExplicitCriticToUnknown(result.filepath, landed, { showId, criticName: critic, url, pageText: text });
+      if (named.applied) {
+        console.log(`  ↑ Byline (--critic): ${path.basename(result.filepath)} → ${path.basename(named.newPath)}`);
+        result.renamedFrom = result.filepath;
+        result.filepath = named.newPath;
+        result.action = 'updated';
+        landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+      } else if (!['not-unknown-file', 'already-named', 'url-not-landed'].includes(named.reason)) {
+        console.warn(`  ⚠ --critic not applied to ${path.basename(result.filepath)}: ${named.reason}`);
+      }
     }
     if (criticArg) {
       intended.criticName = normalizeCritic(criticArg);

@@ -498,6 +498,17 @@ const LISTING_PAGE_URL_PATTERNS = [
   // ("everything we know" guides), never a critic review (0 scored rows on
   // 2026-10-12). An "American Horror Story" guide was ingested for The Story.
   { host: /(^|\.)hollywoodreporter\.com$/, path: /^\/lists\//i, reason: 'listicle-page' },
+  // Any host (BRO-5166): "watch <title> free/online/streaming" and "where to
+  // watch" guides are TV/film consumer pages, never a theater review. RSS
+  // discovery attached THR's /tv/tv-news/watch-american-horror-story-...-free-
+  // streaming-.../ to The Story (London). Not a THR /tv/ path rule: a real 2012
+  // Scandalous review lives under /tv/tv-news/. Corpus 2026-10-12: 0 of 56k
+  // scored rows match (the WSJ "...-review-a-streaming-series-..." slug does not:
+  // its last segment does not start with watch-).
+  // A last segment containing "review" never matches: reviews of streamed
+  // theater ("watch-the-play-online-review") are real.
+  { host: /./, path: /\/(?![^/]*review)(?:how-to-)?watch-[^/]*-(?:stream|streaming|online)(?:[-.][^/]*)?\/?$/i, reason: 'watch-guide-page' },
+  { host: /./, path: /\/(?![^/]*review)(?:[^/]*-)?where-to-(?:watch|stream)(?:[-.][^/]*)?\/?$/i, reason: 'watch-guide-page' },
   // Blogger label search (theaterinthenow.com/search/label/Review).
   { host: /./, path: /\/search\/label\//i, reason: 'blog-label-index' },
 ];
