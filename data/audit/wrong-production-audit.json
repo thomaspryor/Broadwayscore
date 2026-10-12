@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T01:19:32.978Z",
+  "timestamp": "2026-10-12T01:59:09.912Z",
   "stats": {
-    "totalReviews": 55955,
-    "alreadyFlagged": 20908,
-    "dateGuardCatches": 253,
-    "directorMismatch": 1739,
-    "tvFilmSignals": 1609,
-    "londonSignals": 2197,
-    "offBroadwaySignals": 508,
+    "totalReviews": 56008,
+    "alreadyFlagged": 20914,
+    "dateGuardCatches": 255,
+    "directorMismatch": 1752,
+    "tvFilmSignals": 1610,
+    "londonSignals": 2198,
+    "offBroadwaySignals": 507,
     "yearMismatch": 136,
-    "noPublishDate": 5239
+    "noPublishDate": 5236
   },
   "findings": [
     {
@@ -998,7 +998,7 @@
     {
       "showId": "a-touch-of-the-poet-2005",
       "file": "variety--david-rooney.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2005-12-09",
       "url": "https://variety.com/2005/legit/reviews/a-touch-of-the-poet-2-1200519765/",
       "findings": [
@@ -2347,7 +2347,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-02-01",
       "url": "https://www.broadwayworld.com/westend/article/Review-AMERICAN-PSYCHO-Almeida-Theatre-20260201",
       "findings": [
@@ -2361,7 +2361,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2026-02-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/american-psycho-musical-almeida-theatre-review-b2912010.html",
       "findings": [
@@ -2375,7 +2375,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-02-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/american-psycho-almeida-review",
       "findings": [
@@ -2394,7 +2394,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-02-01",
       "url": "https://www.timeout.com/london/theatre/american-psycho-review",
       "findings": [
@@ -3786,7 +3786,22 @@
     },
     {
       "showId": "beauty-and-the-beast-tour-2025",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "score": 90,
+      "publishDate": "2023-01-01",
+      "url": "https://aroundthetownchicago.com/theatre-reviews/disneys-beauty-and-the-beast-4/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 906d before show (2023-01-01 vs 2025-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
       "file": "broadwayworld--jared-fessler.json",
+      "score": 79,
       "publishDate": "2025-08-07",
       "url": "https://www.broadwayworld.com/minneapolis/article/Review-DISNEYS-BEAUTY-AND-THE-BEAST-THE-MUSICAL-at-Orpheum-Theatre-Minneapolis-20250807",
       "findings": [
@@ -3800,6 +3815,7 @@
     {
       "showId": "beauty-and-the-beast-tour-2025",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 89,
       "publishDate": "2025-07-15",
       "url": "https://chicago.suntimes.com/theater/2025/07/15/review-beauty-and-the-beast-chicago-cadillacc-palace-disney-touring-production",
       "findings": [
@@ -8310,6 +8326,7 @@
     {
       "showId": "clue-tour-2025",
       "file": "syracuse-herald-journal--len-fonte.json",
+      "score": 76,
       "publishDate": "2025-10-30",
       "url": "https://www.syracuse.com/entertainment/2025/10/silly-and-fast-landmark-theatres-clue-leads-a-merry-chase-to-whodunnit-review.html",
       "findings": [
@@ -9057,7 +9074,7 @@
     {
       "showId": "cruise-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 100,
+      "score": 99,
       "publishDate": "2022-08-18",
       "url": "https://www.allthatdazzles.co.uk/post/review-cruise-apollo-theatre",
       "findings": [
@@ -20448,20 +20465,6 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "lsbo--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.lsbo.co.uk/musical/into-the-woods",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "manic-mumdays--cassie.json",
       "score": 95,
       "publishDate": "2026-10-03",
@@ -24231,7 +24234,7 @@
     {
       "showId": "lungs-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 81,
+      "score": 75,
       "publishDate": "2019-10-25",
       "url": "https://www.ft.com/content/d999fc08-f650-11e9-a79c-bc9acae3b654",
       "findings": [
@@ -24250,7 +24253,7 @@
     {
       "showId": "lungs-west-end-2019",
       "file": "guardian--arifa-akbar.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2019-10-20",
       "url": "https://www.theguardian.com/stage/2019/oct/20/lungs-review-old-vic-london-claire-foy-and-matt-smith-shine-in-climate-crisis-drama",
       "findings": [
@@ -24957,6 +24960,24 @@
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
+      "file": "broadwayworld--david-friscic.json",
+      "publishDate": "2026-10-09",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-MAYBE-HAPPY-ENDING-at-National-Theatre-20261009",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
       "file": "broadwayworld--elizabeth-cortes.json",
       "score": 89,
       "publishDate": "2026-10-01",
@@ -24966,6 +24987,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "dc-theater-arts--gina-jun.json",
+      "publishDate": "2026-10-08",
+      "url": "https://dctheaterarts.org/2026/10/07/high-tech-maybe-happy-ending-touches-hearts-on-tour-at-the-national/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -28785,19 +28824,6 @@
       ]
     },
     {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "fairypoweredproductions--rachel-clark.json",
-      "publishDate": "2026-09-29",
-      "url": "https://fairypoweredproductions.com/operation-mincemeat-review-11/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (3x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
-        }
-      ]
-    },
-    {
       "showId": "orlando-off-broadway-2026",
       "file": "theater-life--alix-cohen.json",
       "score": 96,
@@ -31588,7 +31614,7 @@
     {
       "showId": "race-2009",
       "file": "sfgate--lily-janiak.json",
-      "score": null,
+      "score": 48,
       "publishDate": "2009-12-09",
       "url": "https://www.sfgate.com/performance/article/Mamet-s-Race-stumbles-peters-out-3206973.php",
       "findings": [
@@ -33109,6 +33135,19 @@
     },
     {
       "showId": "six-tour-2022",
+      "file": "broadwayworld--jonathan-netek.json",
+      "publishDate": "2026-04-08",
+      "url": "https://www.broadwayworld.com/houston/article/Review-SIX-at-Broadway-At-The-Hobby-Center-20260408",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie armitage\" from six-2021"
+        }
+      ]
+    },
+    {
+      "showId": "six-tour-2022",
       "file": "hotchka--chuck-duncan.json",
       "score": 93,
       "publishDate": "2023-05-10",
@@ -33981,6 +34020,24 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-10-10",
+      "url": "https://www.broadwayworld.com/boston/article/Review-MONTY-PYTHONS-SPAMALOT-Returns-to-Boston-in-Grand-Style-20261010",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "chicagotribune--chris-jones.json",
       "score": 77,
       "publishDate": "2026-05-21",
@@ -34028,6 +34085,19 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "houston-chronicle--joey-guerra.json",
+      "publishDate": "2026-04-14",
+      "url": "https://www.houstonchronicle.com/entertainment/theater/article/spamalot-tuts-houston-major-attaway-one-piece-22195849.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "ladue-news--mark-bretz.json",
       "score": 87,
       "publishDate": "2026-05-11",
@@ -34042,6 +34112,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "media-mikes--ben-ryland.json",
+      "publishDate": "2026-10-06",
+      "url": "https://mediamikes.com/2026/10/theater-review-spamalot/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         }
       ]
     },
@@ -35944,7 +36027,7 @@
     {
       "showId": "sweet-charity-2005",
       "file": "variety--david-rooney.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2005-05-05",
       "url": "https://variety.com/2005/legit/reviews/sweet-charity-5-1200526101/",
       "findings": [
@@ -36761,6 +36844,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "mirror--alun-palmer.json",
+      "score": 88,
       "publishDate": "2013-03-21",
       "url": "http://www.mirror.co.uk/lifestyle/going-out/film/review-book-mormon-prince-wales-1777243",
       "findings": [
@@ -39454,6 +39538,19 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": "2026-04-23",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-THE-GREAT-GATSBY-National-Tour-Presented-by-Broadway-In-Chicago-20260423",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "chicago-reader--kerry-reid.json",
       "score": 59,
       "publishDate": "2026-04-29",
@@ -39610,8 +39707,35 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "ourtheatrevoice--dave-rabjohn.json",
+      "score": 87,
       "publishDate": "2026-08-10",
       "url": "https://ourtheatrevoice.com/a-dazzling-great-gatsby/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-04-24",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/4/24/picksinsix-review-the-great-gatsby-a-new-musical",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "publishDate": "2026-04-23",
+      "url": "https://rachelweinbergreviews.com/2026/04/23/review-the-great-gatsby-national-tour-presented-by-broadway-in-chicago/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39664,8 +39788,22 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2026-04-23",
+      "url": "https://thefourthwalsh.com/2026/04/review-the-great-gatsby-broadway-in-chicago-pure-posh-perfection/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "toronto-star--glenn-sumi.json",
-      "publishDate": null,
+      "score": 45,
+      "publishDate": "2026-08-08",
       "url": "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
       "findings": [
         {
@@ -41574,6 +41712,24 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "dailyactor--lance-carter.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.dailyactor.com/reviews/the-notebook-musical-broadway-san-diego/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "latimes--charles-mcnulty.json",
       "score": 68,
       "publishDate": "2025-04-04",
@@ -41668,6 +41824,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "san-diego-union-tribune--tribune-news-service.json",
+      "publishDate": "2026-04-08",
+      "url": "https://www.sandiegouniontribune.com/2026/04/08/the-notebook-musical-makes-first-tour-visit-to-san-diego-next-week/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
         }
       ]
     },
@@ -44258,6 +44432,7 @@
     {
       "showId": "the-sound-of-music-tour-2025",
       "file": "broadwayworld--michael-quintos.json",
+      "score": 78,
       "publishDate": "2026-06-08",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-OCs-Segerstrom-Center-Welcomes-New-Tour-of-THE-SOUND-OF-MUSIC-20260608",
       "findings": [
@@ -48609,7 +48784,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "nbcny--robert-kahn.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2012-10-18",
       "url": "https://www.nbcnewyork.com/broadway/virginia-woolf-review/1964926/",
       "findings": [
@@ -48940,6 +49115,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "qulturvultur--robert.json",
+      "publishDate": "2026-09-28",
+      "url": "https://qulturvultur.com/review-wicked/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
         }
       ]
     },
@@ -49314,7 +49502,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "london-theatre--holly-omahony.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "June 19th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/4-48-psychosis-review-royal-court",
       "findings": [
@@ -49704,7 +49892,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 64,
       "publishDate": "2025-01-19",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/good-house-royal-court-review-provocative-imperfect",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -58773,7 +58961,7 @@
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
       "file": "guardian--anya-ryan.json",
-      "score": 59,
+      "score": 63,
       "publishDate": "2026-09-10",
       "url": "https://www.theguardian.com/stage/2026/sep/10/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-yard-theatre-london",
       "findings": [
@@ -66197,6 +66385,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "theupcoming--thomas-messner.json",
+      "score": 78,
       "publishDate": "2026-09-17",
       "url": "https://www.theupcoming.co.uk/2026/09/17/man-to-man-at-the-royal-court-theatre-theatre-review/",
       "findings": [
@@ -66296,7 +66485,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 44,
       "publishDate": "2021-11-25",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/manor-national-theatre-review-ambitious-unconvincing",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68960,6 +69149,7 @@
     {
       "showId": "oh-mary-west-end-2025",
       "file": "west-end-wilma--unknown.json",
+      "score": 80,
       "publishDate": "2025-12-23",
       "url": "https://westendwilma.com/review-oh-mary-trafalgar-theatre-london-december-2025/",
       "findings": [
@@ -69756,7 +69946,7 @@
       "file": "artsdesk--helen-hawkins.json",
       "score": 63,
       "publishDate": "2022-12-10",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/othello-national-theatre-review-ambitious-emotionally-underpowered",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76373,20 +76563,6 @@
       ]
     },
     {
-      "showId": "the-drowsy-chaperone-2006",
-      "file": "dctheatrescene--joel-markowitz.json",
-      "score": null,
-      "publishDate": "2006-07-11",
-      "url": "https://dctheatrescene.com/2006/07/11/dcs-own-drowsy-at-the-chaperone-mega-jacques/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
       "showId": "the-effect-west-end-2023",
       "file": "independent--alice-saville.json",
       "score": 79,
@@ -79036,6 +79212,20 @@
       ]
     },
     {
+      "showId": "the-outsiders-tour-2025",
+      "file": "daily-bruin--unknown.json",
+      "score": 76,
+      "publishDate": "2024-10-06",
+      "url": "https://dailybruin.com/2026/10/06/theater-review-the-outsiders-musical-stays-gold-but-the-cast-comes-up-short",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 346d before show (2024-10-06 vs 2025-09-17)"
+        }
+      ]
+    },
+    {
       "showId": "the-parisian-woman-2017",
       "file": "bobs-theater-blog--robert-sholiton.json",
       "score": 66,
@@ -79593,7 +79783,7 @@
     {
       "showId": "the-prisoner-west-end-2018",
       "file": "a-younger-theatre--unknown.json",
-      "score": null,
+      "score": 30,
       "publishDate": "2018-09-20",
       "url": "https://www.ayoungertheatre.com/review-the-prisoner-the-national-theatre/",
       "findings": [
@@ -80434,19 +80624,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"olivier theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "file": "theupcoming--benedetta-mancusi.json",
-      "publishDate": "2026-10-04",
-      "url": "https://www.theupcoming.co.uk/2026/10/04/a-super-happy-story-about-feeling-super-sad-at-the-young-vic-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },

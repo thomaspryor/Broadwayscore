@@ -100,7 +100,7 @@ const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
 const {
-  DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow,
+  DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow, classifyComparison,
   orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults, buildPriorTierMap,
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
@@ -644,6 +644,19 @@ async function findPlaybillUrl(show, log) {
   return { url: null, ...missingUrlOutcome({ anyQueryCompleted }) };
 }
 
+// Market labels Playbill prints first inside the <title> parentheses.
+// BRO-3903: 'London' and 'Regional' were missing, so EVERY West End page
+// ("Sylvia (London, Old Vic Theatre, 2023) | Playbill") and every regional
+// page parsed to venue: null — and compareShow() skipped the venue check, so
+// those shows read as a clean 'match' without the venue ever being compared
+// (mystic-pizza-regional-2025 "matched" a page for a different tour leg).
+const PLAYBILL_TITLE_MARKETS = 'Broadway|Off-Broadway|Off-Off-Broadway|West End|London|Regional|Tour';
+const PLAYBILL_TITLE_RE = new RegExp(
+  // Venue is `.+?` (not `[^,]+?`) so a venue that itself contains a comma
+  // still parses; the `, YYYY)` tail anchors where it ends.
+  `^(.*?)\\s*\\(\\s*(${PLAYBILL_TITLE_MARKETS})\\s*,\\s*(.+?)\\s*,\\s*(\\d{4})\\s*\\)`, 'i',
+);
+
 function parseTitleVenueYear(html) {
   // Page title pattern: "Title (Off-Broadway, Venue, YYYY) | Playbill"
   const tm = html.match(/<title>([^<]+)<\/title>/);
@@ -652,7 +665,7 @@ function parseTitleVenueYear(html) {
   // Warehouse") — decode before parsing/comparing or venuesMatch() never
   // matches an apostrophe-bearing venue against shows.json's plain text.
   const t = decodeEntities(tm[1]).trim();
-  const m = t.match(/^(.*?)\s*\(\s*(Broadway|Off-Broadway|Off-Off-Broadway|West End|Tour)\s*,\s*([^,]+?)\s*,\s*(\d{4})\s*\)/i);
+  const m = t.match(PLAYBILL_TITLE_RE);
   if (!m) return { rawTitle: t, market: null, venue: null, year: null };
   return { rawTitle: m[1].trim(), market: m[2], venue: m[3].trim(), year: parseInt(m[4], 10) };
 }
@@ -739,23 +752,34 @@ async function validateOne(show, log) {
   const parsed = { titleParse, dates, tagLine };
   log(`  parsed venue: ${titleParse?.venue || '(none)'} | year ${titleParse?.year || '(none)'} | opening ${dates.openingDate || '(none)'} | revival ${tagLine.revivalStatus}`);
 
-  const { mismatches, explainedByPriorRun } = compareShow(show, parsed, urlResult.url);
+  const { mismatches, explainedByPriorRun, venueCheck } = compareShow(show, parsed, urlResult.url);
+  const verdict = classifyComparison({ mismatches, venueCheck });
   if (explainedByPriorRun.length) {
     log(`  ℹ ${explainedByPriorRun.length} field(s) explained by priorRuns (Playbill page describes an earlier run):`);
     explainedByPriorRun.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
+  }
+  if (verdict === 'venue-unverified') {
+    // BRO-3903: everything comparable agreed, but the page's venue could not
+    // be read, so shows.json's venue was NEVER checked. Distinct from 'match'
+    // so it cannot pass as one; advisory, never a mismatch.
+    log(`  ⚠ venue-unverified: Playbill page venue could not be parsed — shows.json venue "${show.venue}" NOT checked (other fields agree)`);
+    return {
+      id: show.id, title: show.title, venue: show.venue,
+      result: 'venue-unverified', venueCheck, playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches: [], explainedByPriorRun,
+    };
   }
   if (mismatches.length === 0) {
     log(`  ✓ match`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'match', playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches: [], explainedByPriorRun,
+      result: 'match', venueCheck, playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches: [], explainedByPriorRun,
     };
   }
   log(`  ✗ ${mismatches.length} mismatch(es):`);
   mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
   return {
     id: show.id, title: show.title, venue: show.venue,
-    result: 'mismatch', playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches, explainedByPriorRun,
+    result: 'mismatch', venueCheck, playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches, explainedByPriorRun,
   };
 }
 
@@ -905,10 +929,16 @@ async function main() {
   const infraUnavailable = results.filter(r => r.result === 'infra-unavailable');
   const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'serp-error'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
+  // BRO-3903: checked, nothing disagreed, but the venue itself was never
+  // compared (unparseable Playbill venue). Advisory: warned, never gating.
+  const venueUnverified = results.filter(r => r.result === 'venue-unverified');
   const explainedCount = results.reduce((n, r) => n + (r.explainedByPriorRun?.length || 0), 0);
 
   console.log('');
-  console.log(`Summary: ${matches.length} match / ${mismatches.length} mismatch / ${errors.length} unresolved / ${infraUnavailable.length} infra-unavailable${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  console.log(`Summary: ${matches.length} match / ${venueUnverified.length} venue-unverified / ${mismatches.length} mismatch / ${errors.length} unresolved / ${infraUnavailable.length} infra-unavailable${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  if (venueUnverified.length) {
+    console.log(`::warning::validate-show-venue: ${venueUnverified.length} show(s) are venue-unverified — the Playbill page's venue could not be parsed, so the shows.json venue was NOT compared (dates/year/revival agree; not a mismatch, not a clean venue pass): ${venueUnverified.map(r => `${r.id} (shows.json venue "${r.venue}", ${r.playbillUrl})`).join(', ')}`);
+  }
   if (infraUnavailable.length) {
     // A distinct, non-failing category: these shows were NOT checked at all,
     // so their absence from `mismatches` is not a clean bill of health — it
@@ -946,7 +976,9 @@ async function main() {
   // — and since tiers 2-4 no longer block on deferral, this warning is the only
   // signal a genuinely degraded run leaves behind, so a permanent false
   // positive on it would be worse than not having it.
-  const definitive = matches.length + mismatches.length;
+  // venue-unverified rows DID produce a verdict on the dates/year/revival
+  // fields, so they count as coverage here (BRO-3903).
+  const definitive = matches.length + mismatches.length + venueUnverified.length;
   // 'no-playbill-url' shows are genuinely unanswerable, so they are the only
   // ones excluded from the denominator.
   const noPage = results.filter(r => r.result === 'no-playbill-url').length;
@@ -997,7 +1029,7 @@ async function main() {
       // `counts` describes what THIS run checked; `total` in the output
       // file (outputResults.length) can exceed it when prior rows were
       // carried forward — see carriedForward above.
-      counts: { total: results.length, match: matches.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length, deferred, carriedForward: carriedForwardCount },
+      counts: { total: results.length, match: matches.length, venueUnverified: venueUnverified.length, mismatch: mismatches.length, unresolved: errors.length, infraUnavailable: infraUnavailable.length, deferred, carriedForward: carriedForwardCount },
       results: outputResults,
     };
     // Atomic: CI and several local sessions rewrite this tracked ledger, and a

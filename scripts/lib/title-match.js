@@ -138,6 +138,12 @@ function jaccard(a, b) {
 // ─────────────────────────────────────────────────────────────────────────
 
 const VENUE_ALIASES = [
+  // London's Royal Court: Playbill names the stage ("Royal Court Jerwood
+  // Theatre Downstairs"), shows.json often carries the bare building name.
+  {
+    canonical: 'royal court',
+    matches: [/^royal\s*court(\s*theatre)?$/i, /^royal\s*court\s.*(jerwood|upstairs|downstairs)/i],
+  },
   // The Signature Center on 42nd St — multiple stages, multiple companies rent
   {
     canonical: 'signature center',

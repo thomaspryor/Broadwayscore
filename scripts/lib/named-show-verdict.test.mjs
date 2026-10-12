@@ -131,8 +131,26 @@ test('exit codes are distinct and stable', () => {
   assert.notEqual(EXIT_NOT_VALIDATED, 2, '2 is reserved for main()\'s fatal catch');
 });
 
-test('the definitive set is exactly match+mismatch — widening it silently re-opens a hole', () => {
-  assert.deepEqual([...DEFINITIVE_RESULTS].sort(), ['match', 'mismatch']);
+test('the definitive set is exactly match+mismatch+venue-unverified — widening it silently re-opens a hole', () => {
+  // venue-unverified was added deliberately (BRO-3903): it is advisory per
+  // CLAUDE.md rule 19 and validate-show-venue.js warns about it. Any further
+  // widening must be just as deliberate.
+  assert.deepEqual([...DEFINITIVE_RESULTS].sort(), ['match', 'mismatch', 'venue-unverified']);
+});
+
+test('BRO-3903: a named venue-unverified run is advisory (exit 0), not a new hard failure', () => {
+  const v = classifyNamedShowRun({ showFilter: 'x', results: [{ id: 'x', result: 'venue-unverified' }], targetCount: 1 });
+  assert.equal(v.validated, true);
+  assert.equal(v.exitCode, 0);
+});
+
+test('BRO-3903: mismatch still outranks venue-unverified in a named run', () => {
+  const v = classifyNamedShowRun({
+    showFilter: 'x',
+    results: [{ id: 'x', result: 'venue-unverified' }, { id: 'y', result: 'mismatch' }],
+    targetCount: 2,
+  });
+  assert.equal(v.exitCode, EXIT_MISMATCH);
 });
 
 test('every reason carries a what/why/retryable triple, so no class can be added with an empty explanation', () => {

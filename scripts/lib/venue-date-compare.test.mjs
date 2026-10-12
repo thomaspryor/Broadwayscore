@@ -18,8 +18,9 @@ const {
   orderProvisionalTargets, deferredHighPriorityShows, mergeCarriedForwardResults, buildPriorTierMap,
   missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier,
   resolveLastDefinitive, blocksOnDeferral,
-  buildAuditResults, showFingerprint,
+  buildAuditResults, showFingerprint, classifyComparison,
 } = require('./venue-date-compare.js');
+const { parseTitleVenueYear } = require('../validate-show-venue.js');
 
 const DEAD_1904_SHOW = {
   id: 'the-dead-1904-off-broadway-2026',
@@ -828,4 +829,101 @@ test('showFingerprint covers title and priorRuns, which both change the verdict 
   );
   assert.notEqual(showFingerprint({ ...base, category: 'off-broadway' }), showFingerprint({ ...base, category: 'west-end' }),
     'scorePlaybillUrl hard-rejects on category, so it selects a different page');
+});
+
+// ---------------------------------------------------------------------------
+// BRO-3903 — a null Playbill venue used to skip the venue check silently, so
+// the row read as a clean 'match' (mystic-pizza-regional-2025 vs a page for a
+// different tour leg; 15% of checked shows, all London/Regional pages).
+// ---------------------------------------------------------------------------
+
+const title = (t) => `<html><head><title>${t}</title></head></html>`;
+
+test('BRO-3903 root cause: parseTitleVenueYear reads London (West End) page titles', () => {
+  const tp = parseTitleVenueYear(title('Midnight at the Never Get (London, Menier Chocolate Factory, 2026) | Playbill'));
+  assert.equal(tp.venue, 'Menier Chocolate Factory');
+  assert.equal(tp.market, 'London');
+  assert.equal(tp.year, 2026);
+  assert.equal(tp.rawTitle, 'Midnight at the Never Get');
+});
+
+test('BRO-3903 root cause: parseTitleVenueYear reads Regional page titles', () => {
+  const tp = parseTitleVenueYear(title('Mystic Pizza (Regional, Riverside Theatre - Stark Stage, 2025) | Playbill'));
+  assert.equal(tp.venue, 'Riverside Theatre - Stark Stage');
+  assert.equal(tp.market, 'Regional');
+});
+
+test('BRO-3903: venues carrying parentheses or a comma still parse; existing markets unchanged', () => {
+  assert.equal(parseTitleVenueYear(title('Into the Woods (London, Noël Coward Theatre (formerly Albery), 2026) | Playbill')).venue,
+    'Noël Coward Theatre (formerly Albery)');
+  assert.equal(parseTitleVenueYear(title('Foo (Regional, Paper Mill Playhouse, Millburn, NJ, 2025) | Playbill')).venue,
+    'Paper Mill Playhouse, Millburn, NJ');
+  assert.equal(parseTitleVenueYear(title('Othello (Off-Broadway, The West End Theatre, 2026) | Playbill')).venue, 'The West End Theatre');
+  assert.equal(parseTitleVenueYear(title('St. Ann&#039;s Show (Off-Broadway, St. Ann&#039;s Warehouse, 2026) | Playbill')).venue, "St. Ann's Warehouse");
+  // An unrecognised market still yields a null venue (and so venue-unverified downstream).
+  assert.equal(parseTitleVenueYear(title('Thing (Somewhere, Some Hall, 2026) | Playbill')).venue, null);
+});
+
+test('BRO-3903: the mystic-pizza incident is now a venue mismatch, not a match', () => {
+  const show = { id: 'mystic-pizza-regional-2025', title: 'Mystic Pizza', venue: 'Paper Mill Playhouse, Millburn, NJ', category: 'regional' };
+  const parsed = { titleParse: parseTitleVenueYear(title('Mystic Pizza (Regional, Riverside Theatre - Stark Stage, 2025) | Playbill')), dates: {}, tagLine: null };
+  const res = compareShow(show, parsed, 'https://playbill.com/production/mystic-pizza-regional-2025');
+  assert.equal(res.venueCheck, 'different');
+  assert.ok(res.mismatches.some((m) => m.field === 'venue'));
+  assert.equal(classifyComparison(res), 'mismatch');
+});
+
+test('BRO-3903: shows.json venue + null Playbill venue is venue-unverified, never a silent match', () => {
+  const show = { id: 'x-west-end-2026', title: 'X', venue: 'Menier Chocolate Factory', category: 'west-end', openingDate: '2026-03-01' };
+  for (const titleParse of [null, { rawTitle: 'X', market: null, venue: null, year: null }]) {
+    const res = compareShow(show, { titleParse, dates: {}, tagLine: null }, 'https://playbill.com/production/x-london-menier-2026');
+    assert.equal(res.mismatches.length, 0, 'unverified is not a mismatch (advisory, rule 19)');
+    assert.equal(res.venueCheck, 'unverified');
+    assert.equal(classifyComparison(res), 'venue-unverified');
+  }
+});
+
+test('BRO-3903: a real non-venue mismatch still wins over venue-unverified', () => {
+  const show = { id: 'x-west-end-2026', title: 'X', venue: 'V', category: 'west-end', openingDate: '2026-03-01' };
+  const res = compareShow(show, { titleParse: null, dates: { openingDate: '2026-09-01' }, tagLine: null }, 'https://playbill.com/production/x-london-v-2026');
+  assert.equal(res.venueCheck, 'unverified');
+  assert.equal(classifyComparison(res), 'mismatch');
+});
+
+test('BRO-3903: venueCheck is match / not-applicable where the venue is compared or cannot apply', () => {
+  const parsed = { titleParse: { venue: 'Menier Chocolate Factory' }, dates: {}, tagLine: null };
+  const url = 'https://playbill.com/production/x-london-menier-2026';
+  assert.equal(compareShow({ id: 'x-2026', venue: 'Menier Chocolate Factory' }, parsed, url).venueCheck, 'match');
+  assert.equal(classifyComparison(compareShow({ id: 'x-2026', venue: 'Menier Chocolate Factory' }, parsed, url)), 'match');
+  // No shows.json venue, or a tour (no single house): nothing to verify, so not 'unverified'.
+  for (const show of [{ id: 'x-2026' }, { id: 'x-2026', venue: 'North American Tour', category: 'tour' }]) {
+    const res = compareShow(show, { titleParse: null, dates: {}, tagLine: null }, url);
+    assert.equal(res.venueCheck, 'not-applicable');
+    assert.equal(classifyComparison(res), 'match');
+  }
+});
+
+test('BRO-3903: venue-unverified never blocks on deferral and sorts with re-sweeps, not ahead of new shows', () => {
+  const prev = { a: { result: 'venue-unverified' } };
+  assert.equal(blocksOnDeferral('a', prev), false);
+  assert.equal(provisionalPriorityTier('a', prev), 3);
+  assert.equal(provisionalPriorityTier('new', prev), 0);
+});
+
+test('BRO-3903: venue-unverified cannot clear a recorded mismatch (venue half was never re-examined)', () => {
+  assert.equal(resolveLastDefinitive('venue-unverified', { lastDefinitiveResult: 'mismatch' }), 'mismatch');
+  assert.equal(resolveLastDefinitive('venue-unverified', { lastDefinitiveResult: 'match' }), 'venue-unverified');
+  assert.equal(resolveLastDefinitive('venue-unverified', undefined), 'venue-unverified');
+  // ...and so a deferred show whose last real verdict was mismatch still blocks.
+  assert.equal(blocksOnDeferral('a', { a: { result: 'venue-unverified', lastDefinitiveResult: 'mismatch' } }), true);
+});
+
+import { createRequire as __cr } from 'node:module';
+import { test as __t } from 'node:test';
+import __assert from 'node:assert/strict';
+__t('BRO-3903: Royal Court sub-stage names match the bare building name', () => {
+  const { venuesMatch } = __cr(import.meta.url)('./deduplication.js');
+  __assert.equal(venuesMatch('Royal Court', 'Royal Court Jerwood Theatre Downstairs'), true);
+  __assert.equal(venuesMatch('Royal Court Theatre', 'Royal Court Jerwood Theatre Upstairs'), true);
+  __assert.equal(venuesMatch('Paper Mill Playhouse, Millburn, NJ', 'Riverside Theatre - Stark Stage'), false);
 });
