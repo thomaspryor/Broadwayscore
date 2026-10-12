@@ -395,6 +395,7 @@ module.exports = {
   supersededPriorRunReviews,
   isReturnOfProduction,
   matchingPriorRunFor,
+  baseTitle,
   buildMultiProdDirectorGuard,
   findPriorRunSiblings,
   inheritPriorRunReviews,
