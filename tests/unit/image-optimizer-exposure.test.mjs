@@ -1,6 +1,8 @@
 /**
- * Guards the exposure argument behind the GHSA-2xp9-vwfh-vxw4 allowlist entry
- * in scripts/audit-dependencies.js (BRO-3202).
+ * Guards the exposure argument written for GHSA-2xp9-vwfh-vxw4 (BRO-3202).
+ * Its allowlist entry in scripts/audit-dependencies.js was removed when the
+ * Next 15 upgrade (BRO-3203) shipped the patched image optimizer; the guard
+ * stays so the exposure stays bounded if a later advisory lands here.
  *
  * That advisory is an unauthenticated RCE triggered when Next.js's image
  * optimizer DECODES an AVIF, and /_next/image is a public endpoint that is live
