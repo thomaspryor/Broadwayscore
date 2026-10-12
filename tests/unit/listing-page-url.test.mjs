@@ -175,3 +175,13 @@ test('BRO-4956: a path ending in a reviews/press hub segment is a hub on any hos
     'https://example.com/review',
   ]) assert.equal(listingPageUrlReason(u), null, u);
 });
+
+// BRO-5166: two listing shapes sat as T1/T2 silent gaps on 2026-10-12.
+test('Cititour /NYC_Events/ and THR /lists/ are listings; their review paths are not', () => {
+  assert.equal(listingPageUrlReason('https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944'), 'event-listing-page');
+  assert.equal(listingPageUrlReason('https://www.hollywoodreporter.com/lists/american-horror-story-season-13-everything-we-know-guide/'), 'listicle-page');
+  assert.equal(listingPageUrlReason('https://cititour.com/NYC_Broadway/West-Side-Story/985'), null);
+  assert.equal(listingPageUrlReason('https://cititour.com/NYC_News/Review-Yellow-Face-is-a-Golden-Opportunity-for-Daniel-Dae-Kim/8740'), null);
+  assert.equal(listingPageUrlReason('https://www.hollywoodreporter.com/lifestyle/arts/the-story-review-1236123456/'), null);
+  assert.equal(explainExclusion({ url: 'https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944', fullText: 'x'.repeat(800) }), 'listingPageUrl');
+});

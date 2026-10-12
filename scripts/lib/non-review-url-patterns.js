@@ -484,6 +484,15 @@ const LISTING_PAGE_URL_PATTERNS = [
   // At least one segment before the hub word: a bare host/review is too
   // ambiguous to call (and is every test fixture's placeholder review url).
   { host: /./, path: /\/[^/]+\/(?:reviews?|press|press-quotes|critics-say|what-the-critics-say)\/?$/i, reason: 'review-hub-page' },
+  // Cititour event listings (BRO-5166): /NYC_Events/<Title>/<id> is the
+  // calendar entry (press blurb, dates, prices). Its reviews live under
+  // /NYC_Broadway/ and /NYC_News/ (all 292 scored Cititour rows on 2026-10-12;
+  // none on /NYC_Events/). Truly, Howard Hughes sat a month as a T2 gap on one.
+  { host: /(^|\.)cititour\.com$/, path: /^\/NYC_Events\//i, reason: 'event-listing-page' },
+  // Hollywood Reporter /lists/ pages are ranked listicles and explainers
+  // ("everything we know" guides), never a critic review (0 scored rows on
+  // 2026-10-12). An "American Horror Story" guide was ingested for The Story.
+  { host: /(^|\.)hollywoodreporter\.com$/, path: /^\/lists\//i, reason: 'listicle-page' },
   // Blogger label search (theaterinthenow.com/search/label/Review).
   { host: /./, path: /\/search\/label\//i, reason: 'blog-label-index' },
 ];
