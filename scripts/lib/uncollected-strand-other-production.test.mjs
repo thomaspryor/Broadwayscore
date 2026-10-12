@@ -47,3 +47,15 @@ test('unflagged discovered URLs on a tour still count', () => {
   const r = assessShow(tour, files({ url: 'https://a.test', fullText: '' }, { url: 'https://b.test', fullText: '' }), { nowMs });
   assert.equal(r.totalBlackout, true);
 });
+
+test('staleBlackoutKeys: only open blackout keys for shows no longer in blackout', () => {
+  const { staleBlackoutKeys } = createRequire(import.meta.url)('./uncollected-strand.js');
+  const c = {
+    'uncollected-blackout:a': { status: 'open' },
+    'uncollected-blackout:b': { status: 'open' },
+    'uncollected-blackout:c': { status: 'resolved' },
+    'gap:x': { status: 'open' },
+  };
+  assert.deepEqual(staleBlackoutKeys(c, ['b']), ['uncollected-blackout:a']);
+  assert.deepEqual(staleBlackoutKeys(null, []), []);
+});

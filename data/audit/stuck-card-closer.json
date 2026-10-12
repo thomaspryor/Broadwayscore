@@ -1,25 +1,37 @@
 {
-  "generatedAt": "2026-10-11T13:48:02.937Z",
+  "generatedAt": "2026-10-12T03:29:33.764Z",
   "apply": true,
-  "auditGeneratedAt": "2026-10-11T13:38:35.915Z",
+  "auditGeneratedAt": "2026-10-12T03:20:01.941Z",
   "counts": {
-    "skip:command-shared-with-another-card": 2,
-    "skip:command-not-a-single-test-file": 4,
-    "state-changed-since-audit": 1,
-    "no-commit-naming-card-touched-test": 1
+    "skip:command-not-a-single-test-file": 5,
+    "skip:command-shared-with-another-card": 4,
+    "bounce:no-auto-worker": 1,
+    "recent-activity": 3
   },
   "rows": [
     {
-      "id": "BRO-3793",
-      "state": "In Progress",
+      "id": "BRO-5077",
+      "state": "In Review",
       "action": "leave",
-      "reason": "state-changed-since-audit"
+      "reason": "no-auto-worker"
     },
     {
-      "id": "BRO-3680",
+      "id": "BRO-5092",
       "state": "In Progress",
       "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5082",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5071",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
     }
   ]
 }
