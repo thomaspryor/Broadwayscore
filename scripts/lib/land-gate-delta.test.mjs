@@ -456,3 +456,12 @@ test('toplevel-regression advisory never downgrades a gate that did not run (fai
   const [d] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read: () => null });
   assert.equal(d.verdict, 'fail');
 });
+
+test('toplevel-regression advisory: base ran but parsed nothing (base tree predates the gate) does not block', () => {
+  delete process.env.LAND_TOPLEVEL_BLOCKING;
+  const line = '::error::toplevel-regression gate failed: scripts/test-opening-night-fixes.js (exit 1)';
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: line } : { exit: 1, text: '::error::land-gauntlet-toplevel-list.js derived ZERO' });
+  const [d] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read });
+  assert.equal(d.verdict, 'pass');
+  assert.equal(d.mode, 'advisory');
+});

@@ -269,8 +269,11 @@ function decideGateDelta({ gate, base, branch }) {
 function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) {
   const armed = process.env.LAND_TOPLEVEL_BLOCKING === '1';
   return gates.map((gate) => {
-    const d = decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: read(branch, gate) });
-    if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate) || d.mode === 'fail-safe') return d; // a gate that never ran stays blocking
+    const branchResult = read(branch, gate);
+    const d = decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: branchResult });
+    // Only a gate that never ran ON THE BRANCH stays blocking. A base tree that
+    // predates the gate (first land of it) also reaches fail-safe, and must not block.
+    if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate) || !branchResult) return d;
     return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (BRO-5117; not blocking until LAND_TOPLEVEL_BLOCKING=1): ${d.reason}` };
   });
 }
@@ -405,7 +408,7 @@ function main(argv = process.argv.slice(2)) {
 
   for (const d of decisions) {
     console.log(`${d.verdict === 'pass' ? 'PASS' : 'FAIL'}  ${d.gate.padEnd(18)} ${d.mode.padEnd(9)} ${d.reason}`);
-    for (const f of d.newFailures) console.log(`::error::${d.gate}: NEW failure on the branch (absent on origin/main): ${f.file}::${f.name}`);
+    for (const f of d.newFailures) console.log(`::${d.mode === 'advisory' ? 'warning' : 'error'}::${d.gate}: NEW failure on the branch (absent on origin/main): ${f.file}::${f.name}`);
     for (const f of d.preExisting) console.log(`  pre-existing (origin/main is red on this too, not blocking): ${f.file}::${f.name}`);
     for (const f of d.fixed) console.log(`  fixed by this branch: ${f.file}::${f.name}`);
   }
