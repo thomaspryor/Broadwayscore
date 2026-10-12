@@ -107,7 +107,7 @@ function failOpen(why, state) {
 
 function acquire() {
   if (env.LAND_MUTEX_DISABLED === 'true') failOpen('LAND_MUTEX_DISABLED=true');
-  const { isMainRedBranch } = require('./lib/land-admit');
+  const { isMainRedBranch } = require('./lib/land-main-red');
   const deadline = Date.now() + deadlineMin * 60000;
   const cache = new Map(); // ticket ref → {v, at}
   const liveness = (ref) => {

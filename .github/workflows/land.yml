@@ -485,33 +485,9 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
 
-  # BRO-5096: ordinary lanes wait here, OUTSIDE the `landing` group, while a
-  # main-red fix lane (land/**main-red**) is ahead, so they never take the one
-  # pending seat and evict it. Fail-open: the script exits 0 on any error or its
-  # own 20-min deadline, and Land runs even if this job fails or is skipped.
-  admit:
-    name: Admit
-    needs: checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          sparse-checkout: |
-            scripts
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '20'
-      - name: Wait behind a main-red fix lane
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          LAND_BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
-        run: node scripts/land-admit.js
-
   land:
     name: Land
-    needs: [checks, admit]
+    needs: checks
     if: ${{ !cancelled() && needs.checks.result == 'success' }}
     runs-on: ubuntu-latest
     # Per branch (BRO-5112): a newer run for the same land/** branch queues

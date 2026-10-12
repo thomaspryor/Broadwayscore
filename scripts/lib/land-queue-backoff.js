@@ -20,7 +20,7 @@
  */
 
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
-const { isMainRedBranch } = require('./land-admit');
+const { isMainRedBranch } = require('./land-main-red');
 
 const MAX_AGE_HOURS = 24;
 const MAX_INSPECT = 10;
