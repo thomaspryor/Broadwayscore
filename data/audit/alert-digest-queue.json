@@ -1745,19 +1745,6 @@
     "queuedAt": "2026-10-12T06:35:41.247Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38213495382",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T06:45:18.829Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 11 review(s) flagged for anchored re-score",
     "description": "{\"unanchored\":3,\"false-truncation\":8} across the whole corpus, by market {\"west-end\":7,\"broadway\":4}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] present-laughter-west-end-2019/independent--paul-taylor.json 4/5 stars band 71-90\n- [unanchored] hansard-west-end-2019/timeout-london--andrzej-lukowski.json 3/5 band 51-70\n- [unanchored] hansard-west-end-2019/telegraph--dominic-cavendish.json 3/5 stars band 51-70\n- [false-truncation] into-the-woods-2022/theater-pizzazz--samuel-l-leiter.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] miss-saigon-2017/theater-pizzazz--samuel-l-leiter.json score 73 scored with a truncation warning on a complete-tier text\n- [false-truncation] miss-saigon-2017/broadway-blog--matthew-wexler.json score 78 scored with a truncation warning on a complete-tier text\n- [false-truncation] accent-on-youth-2009/ew--jeff-labrecque.json score 45 scored with a truncation warning on a complete-tier text\n- [false-truncation] into-the-woods-west-end-2025/telegraph--dominic-cavendish.json score 82 scored with a truncation warning on a complete-tier text\n- [false-truncation] rent-west-end-2026/musical-theatre-review--unknown.json score 79 scored with a truncation warning on a complete-tier text\n- [false-truncation] rent-west-end-2026/londontheatre1--terry-eastham.json score 78 scored with a truncation warning on a complete-tier text",
@@ -1799,5 +1786,18 @@
       }
     ],
     "queuedAt": "2026-10-12T06:44:53.144Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38214546318",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T06:55:20.540Z"
   }
 ]
