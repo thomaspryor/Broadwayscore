@@ -107,6 +107,24 @@ test('ingest merge: without fillCritic a named critic is never overwritten', () 
   assert.equal(merged2.criticName, 'Someone Else');
 });
 
+test('ingest merge (BRO-5141): a clean re-extraction replaces text that bled into the next production', () => {
+  const own = 'Hudson\u2019s stunning design keeps surprising, but it is James McArdle\u2019s Peter that really holds the attention. '.repeat(3)
+    + 'For three-and-a-half hours he delivers a stunning performance with strong support from the company.';
+  const bled = own + '\nGREY\nGoto\nLONDON, OVALHOUSE\nPreviews / Opens 27 Jun 2019\nPress Night 01 Jul 2019\nAn unrelated synopsis.';
+  const existing = { criticName: 'Howard Loxton', url: null, fullText: bled, assignedScore: 77, source: 'theatre-record' };
+  const merged = mergeTheatreRecordIntoExisting(existing, { criticName: 'Howard Loxton', fullText: own, textWordCount: 60 });
+  assert.equal(merged.fullText, own);
+  assert.equal(merged.needsRescore, true);
+  assert.match(merged.needsRescoreReason, /BRO-5141/);
+  assert.equal(merged.assignedScore, 77, 'score stays until the rescore lands');
+
+  const other = mergeTheatreRecordIntoExisting(existing, { criticName: 'Howard Loxton', fullText: 'A different review entirely. '.repeat(20) });
+  assert.equal(other.fullText, bled, 'a different opening never replaces the stored text');
+  const clean = mergeTheatreRecordIntoExisting({ ...existing, fullText: own + ' Extra outlet sentence.' }, { fullText: own });
+  assert.equal(clean.fullText, own + ' Extra outlet sentence.', 'no bleed, no replace');
+  assert.equal(clean.needsRescore, undefined);
+});
+
 // ─── Rebuild fallback ───
 
 const dropped = (over = {}) => ({ url: URL, fullText: OUTLET_TEXT, data: { criticName: 'Unknown', url: URL }, urlOwnedByOutlet: true, urlAlreadyKept: false, ...over });

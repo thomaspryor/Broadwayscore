@@ -106,3 +106,15 @@ test('BRO-5141: text with no production header is left whole', () => {
   const lines = ['A plain review line.', 'Another line naming the PALLADIUM.'];
   assert.deepEqual(cutAtProductionHeader(lines), lines);
 });
+
+test('BRO-5141: 2019-format header ("TITLE" / "Goto" / "CITY, VENUE") is cut whole', () => {
+  const cut = cutAtProductionHeader([
+    'company and especially Ann Louise Ross and Oliver Ford Davies.',
+    'GREY',
+    'Goto',
+    'LONDON, OVALHOUSE',
+    'Previews / Opens 27 Jun 2019',
+    'Press Night 01 Jul 2019',
+  ]);
+  assert.deepEqual(cut, ['company and especially Ann Louise Ross and Oliver Ford Davies.']);
+});

@@ -34,6 +34,9 @@ const stripIndexSuffix = (line) => line.replace(INDEX_SUFFIX, '').trim();
 const PRODUCTION_INFO_LINE = /^Previews \/ Opens\b/;
 const isCapsTitleLine = (t) => t.length > 1 && /[A-Z]/.test(t) && t === t.toUpperCase() && !isDateLine(t);
 
+// 2019-20 issues print "TITLE" / "Goto" / "CITY, VENUE" above the info line.
+const isHeaderLine = (t) => isCapsTitleLine(t) || t === 'Goto';
+
 // First line of the production header block whose info line ("Previews /
 // Opens") sits at `infoIdx`: the ALL CAPS title line(s) just above it.
 function productionHeaderStart(lines, infoIdx, floor = 0) {
@@ -41,11 +44,13 @@ function productionHeaderStart(lines, infoIdx, floor = 0) {
     const t = stripIndexSuffix(lines[k].trim());
     if (!t || !isCapsTitleLine(t)) continue;
     let start = k;
-    while (start - 1 >= floor && isCapsTitleLine(stripIndexSuffix(lines[start - 1].trim()))) start--;
+    while (start - 1 >= floor && isHeaderLine(stripIndexSuffix(lines[start - 1].trim()))) start--;
     return start;
   }
   return infoIdx;
 }
+
+const hasProductionHeaderBleed = (text) => String(text || '').split('\n').some(l => PRODUCTION_INFO_LINE.test(l.trim()));
 
 // Review text never contains another production's info page; when a block
 // runs into one (no outlet+date line in between), cut it there.
@@ -376,6 +381,7 @@ module.exports = {
   isDateLine,
   parseShortDate,
   cutAtProductionHeader,
+  hasProductionHeaderBleed,
   parsePdfReviews,
   parseRawPdfReviews,
 };
