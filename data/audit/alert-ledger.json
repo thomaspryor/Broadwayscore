@@ -158,13 +158,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T06:06:11.352Z",
+      "lastSeen": "2026-10-12T06:28:27.345Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 26
+      "silentRefires": 27
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12601,25 +12601,28 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:80529a26": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-12T03:07:47.464Z",
-      "lastSeen": "2026-10-12T03:54:48.841Z",
-      "lastNotifiedAt": "2026-10-12T03:07:47.464Z",
+      "incidentOpenedAt": "2026-10-12T06:28:24.366Z",
+      "lastSeen": "2026-10-12T06:28:24.366Z",
+      "lastNotifiedAt": "2026-10-12T06:28:24.366Z",
       "lastSurfacedAt": null,
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-5116",
+      "linearIdentifier": "BRO-5139",
       "absentRunIds": [
         "38202295146",
         "38204195471",
         "38206200316"
       ],
-      "silentRefires": 2,
-      "resolvedAt": "2026-10-12T05:19:18.175Z",
-      "resolveReason": "stale-signature"
+      "dispatch": {
+        "requestedAt": "2026-10-12T06:28:24.366Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38211186359",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38211186359"
+      }
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14400,9 +14403,9 @@
       "absentRunIds": [
         "38205161549",
         "38206709029",
-        "38209701232"
+        "38210217647"
       ],
-      "resolvedAt": "2026-10-12T06:06:11.333Z",
+      "resolvedAt": "2026-10-12T06:26:42.511Z",
       "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:f6206569": {
@@ -14411,7 +14414,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"unchanged per-review ERROR warns, quarantines the row and permits the actual push gate\"",
       "firstSeen": "2026-10-12T05:04:21.728Z",
       "incidentOpenedAt": "2026-10-12T05:04:21.728Z",
-      "lastSeen": "2026-10-12T06:06:11.345Z",
+      "lastSeen": "2026-10-12T06:26:42.522Z",
       "lastNotifiedAt": "2026-10-12T05:04:21.728Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -14423,7 +14426,10 @@
         "runId": "38205161549",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38205161549"
       },
-      "silentRefires": 2
+      "silentRefires": 2,
+      "absentRunIds": [
+        "38211186359"
+      ]
     },
     "land:land/bro-3366-fold-url": {
       "status": "open",
