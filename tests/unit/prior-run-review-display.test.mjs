@@ -181,6 +181,16 @@ describe('excerptMentionsFormerCast', () => {
     };
     const actorCtx = { show: SHOW, reviewDate: '2022-04-01', reviewData: actorData };
     assert.strictEqual(excerptMentionsFormerCast('Spall is superb.', actorCtx).mentionsFormerCast, true);
+    for (const phrase of ["star-making revival", "own version", "solo adaptation", "previous production"]) {
+      const d = { publishDate: '2022-04-01', fullText: `Rafe Spall plays Atticus Finch. It is Rafe Spall's ${phrase}.` };
+      assert.strictEqual(
+        excerptMentionsFormerCast('Spall is superb.', { show: SHOW, reviewDate: '2022-04-01', reviewData: d }).mentionsFormerCast,
+        true, `"Rafe Spall's ${phrase}" must not safelist the actor`);
+    }
+    const caps = { publishDate: '2022-04-01', fullText: 'DIRECTED BY Emily Lim. Atticus Finch wants justice.' };
+    assert.strictEqual(
+      excerptMentionsFormerCast('Emily Lim stages this, close to Atticus Finch.', { show: { ...SHOW, creativeTeam: [] }, reviewDate: '2022-04-01', reviewData: caps }).mentionsFormerCast,
+      false, 'an all-caps "DIRECTED BY" credit still safelists the director');
   });
 
   it('flags a hyphenated former-cast surname (UK/West End casts commonly hyphenate)', () => {

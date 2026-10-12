@@ -158,8 +158,10 @@ test(
       const [showId, file] = key.split('::');
       return fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId, file));
     });
-    assert.ok(presentKnownGood.length > 0,
-      'every KNOWN_GOOD_FLAGS file is gone from the corpus: re-baseline KNOWN_GOOD_FLAGS against a show that still has a confirmed former-cast quote');
+    // 3 = the TKAM files still on disk after the 2026-10-09 rebuild; a lower
+    // count means another known-good file was renamed or dropped silently.
+    assert.ok(presentKnownGood.length >= 3,
+      `only ${presentKnownGood.length} KNOWN_GOOD_FLAGS file(s) remain in the corpus: re-baseline KNOWN_GOOD_FLAGS against a show that still has a confirmed former-cast quote`);
     for (const key of presentKnownGood) {
       assert.ok(actualFlags.has(key),
         `${key} was expected to be flagged as a former-cast mention but wasn't — a guard change regressed the original BRO-1397 fix.`);
