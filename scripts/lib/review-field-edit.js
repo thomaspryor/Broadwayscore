@@ -223,15 +223,8 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
 }
 
-/**
- * True when an approved fix (a human-approved data plan) set `field` to true on
- * this record. Heuristic clearers check this so they never undo a human verdict
- * (BRO-4599: flag-combined-reviews.js re-clearing a human wrongShow flag).
- */
-function hasApprovedFlag(record, field) {
-  return Array.isArray(record && record.approvedFixes)
-    && record.approvedFixes.some((f) => f && f.field === field && f.newValue === true);
-}
+// Moved to approved-fix-flag.js (write-free); re-exported below for callers.
+const { hasApprovedFlag } = require('./approved-fix-flag');
 
 /**
  * Resolve a plan's review path ("<showId>/<file>.json") inside the

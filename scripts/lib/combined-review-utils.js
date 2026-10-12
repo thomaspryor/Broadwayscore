@@ -101,7 +101,7 @@ const JOINT_REVIEW_MIN_TEXT = 500;
  */
 function shouldRecoverJointWrongShow(data, showTitle) {
   if (!data || data.wrongShow !== true || data.rejectionReason !== 'wrong_show') return false;
-  const { hasApprovedFlag } = require('./review-field-edit');
+  const { hasApprovedFlag } = require('./approved-fix-flag');
   if (hasApprovedFlag(data, 'wrongShow')) return false;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
   if (showTitle && text.length >= JOINT_REVIEW_MIN_TEXT) {

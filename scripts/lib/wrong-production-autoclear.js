@@ -591,7 +591,7 @@ function hasAdjudicatedNote(data) {
 function isWrongProductionHeld(data) {
   if (!data) return false;
   if (data.humanReviewedWrongProduction === true) return true;
-  if (require('./review-field-edit').hasApprovedFlag(data, 'wrongProduction')) return true;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'wrongProduction')) return true;
   return data.wrongProductionProvenance === 'manual';
 }
 
@@ -599,7 +599,7 @@ function isWrongProductionHeld(data) {
 // clearers below must not undo it (BRO-5166: a plan flagged a Times opera review
 // on Fire Fire wrongShow and the next rebuild's UK-URL clear removed it).
 function isWrongShowHeld(data) {
-  return !!data && require('./review-field-edit').hasApprovedFlag(data, 'wrongShow');
+  return !!data && require('./approved-fix-flag').hasApprovedFlag(data, 'wrongShow');
 }
 
 /**
