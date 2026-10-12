@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T00:01:26.521Z",
+      "lastSeen": "2026-10-12T00:10:33.733Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -11582,12 +11582,13 @@
       "title": "Mezzanine Scraper Failed — Session Token Expired",
       "firstSeen": "2026-10-07T13:48:53.393Z",
       "incidentOpenedAt": "2026-10-11T19:17:11.508Z",
-      "lastSeen": "2026-10-11T19:17:11.508Z",
+      "lastSeen": "2026-10-12T00:08:26.745Z",
       "lastNotifiedAt": "2026-10-11T19:17:11.508Z",
       "lastSurfacedAt": "2026-10-11T19:17:11.508Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json": {
       "status": "resolved",
@@ -12578,20 +12579,14 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-11T23:41:19.580Z",
-      "lastSeen": "2026-10-12T00:01:26.513Z",
-      "lastNotifiedAt": "2026-10-11T23:41:19.580Z",
+      "incidentOpenedAt": "2026-10-11T23:50:28.994Z",
+      "lastSeen": "2026-10-12T00:10:33.722Z",
+      "lastNotifiedAt": "2026-10-11T23:50:28.994Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5102",
       "absentRunIds": [],
-      "dispatch": {
-        "requestedAt": "2026-10-11T23:41:19.580Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38184281462",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38184281462"
-      },
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:2a5215c8": {
@@ -13980,8 +13975,8 @@
       "linearIdentifier": "BRO-5078",
       "silentRefires": 8,
       "absentRunIds": [
-        "38184281462",
-        "38185497104"
+        "38184825734",
+        "38185946151"
       ]
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
@@ -14128,12 +14123,13 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-3475-drift-order-test",
       "firstSeen": "2026-10-11T23:31:06.887Z",
       "incidentOpenedAt": "2026-10-11T23:31:06.887Z",
-      "lastSeen": "2026-10-11T23:31:06.887Z",
+      "lastSeen": "2026-10-12T00:08:06.514Z",
       "lastNotifiedAt": "2026-10-11T23:31:06.887Z",
       "lastSurfacedAt": "2026-10-11T23:31:06.887Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-4838-scorer-clear": {
       "status": "open",
@@ -14144,6 +14140,19 @@
       "lastSeen": "2026-10-11T23:57:09.372Z",
       "lastNotifiedAt": "2026-10-11T23:57:09.372Z",
       "lastSurfacedAt": "2026-10-11T23:57:09.372Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-3410-writer-blocklist": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3410-writer-blocklist",
+      "firstSeen": "2026-10-12T00:07:25.851Z",
+      "incidentOpenedAt": "2026-10-12T00:07:25.851Z",
+      "lastSeen": "2026-10-12T00:07:25.851Z",
+      "lastNotifiedAt": "2026-10-12T00:07:25.851Z",
+      "lastSurfacedAt": "2026-10-12T00:07:25.851Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
