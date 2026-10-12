@@ -1,5 +1,5 @@
 {
-  "_comment": "Advisory baseline for scripts/audit-run-budget-coverage.js (BRO-3447). Findings listed here are known; only findings NOT listed fail the colocated unit test. Regenerate with: node scripts/audit-run-budget-coverage.js --write-baseline",
+  "_comment": "Advisory baseline for scripts/audit-run-budget-coverage.js (BRO-3447). Findings listed here are known; only findings NOT listed fail the colocated unit test. Regenerate with: node scripts/write-run-budget-coverage-baseline.js",
   "findings": [
     "missing-run-budget|audit-aggregator-gap.yml|audit|audit-outlet-ground-truth.js|",
     "missing-run-budget|audit-aggregator-gap.yml|audit|audit-show-review-gap.js|",

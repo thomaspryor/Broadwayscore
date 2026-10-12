@@ -63,6 +63,7 @@
  * No external deps. Parsed with plain regex + brace-matching, consistent
  * with audit-workflow-hygiene.js / audit-workflow-concurrency.js.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 
@@ -831,7 +832,7 @@ const GITHUB_DEFAULT_TIMEOUT_MIN = 360;
 // recorded here; main() marks anything outside it as NEW, and the colocated
 // unit test fails only on a NEW finding (a regression), never on a baselined
 // one. Shrink it as workflows get budgets: `node
-// scripts/audit-run-budget-coverage.js --write-baseline`.
+// scripts/write-run-budget-coverage-baseline.js`.
 const BASELINE_PATH = path.join(__dirname, 'lib', 'run-budget-coverage-baseline.json');
 
 /** Stable identity for a finding (baseline key). */
@@ -959,19 +960,8 @@ function collectFindings({ workflowDir = WORKFLOW_DIR, scriptsDir = SCRIPTS_DIR 
 }
 
 function main() {
-  const argv = process.argv.slice(2);
   const { files, warnings, threadingWarnings, flagWarnings } = collectFindings();
   const all = [...warnings, ...threadingWarnings, ...flagWarnings];
-
-  if (argv.includes('--write-baseline')) {
-    const keys = [...new Set(all.map(findingKey))].sort();
-    fs.writeFileSync(BASELINE_PATH, `${JSON.stringify({
-      _comment: 'Advisory baseline for scripts/audit-run-budget-coverage.js (BRO-3447). Findings listed here are known; only findings NOT listed fail the colocated unit test. Regenerate with: node scripts/audit-run-budget-coverage.js --write-baseline',
-      findings: keys,
-    }, null, 2)}\n`);
-    console.log(`Wrote ${keys.length} baseline finding(s) to ${path.relative(process.cwd(), BASELINE_PATH)}`);
-    return;
-  }
 
   if (all.length === 0) {
     console.log(`✅ Run-budget coverage guard: no candidates flagged (${files.length} workflows checked).`);
