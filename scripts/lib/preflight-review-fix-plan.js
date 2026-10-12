@@ -14,6 +14,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { executeReviewFieldEditIn } = require('./review-field-edit');
+const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -26,6 +27,11 @@ function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review
       const planData = JSON.parse(fs.readFileSync(planPath, 'utf8'));
       const id = planData.issueNumber || path.basename(planPath, '.json');
       const actions = (planData.plan && planData.plan.actions) || [];
+      // execute-approved-fix refuses a plan over the cap; say so here, not at land (BRO-3414).
+      if (actions.length > MAX_PLAN_ACTIONS) {
+        failed++;
+        log(`  FAIL ${id}: ${actions.length} actions (max ${MAX_PLAN_ACTIONS}); split it into more plans`);
+      }
       let ok = 0;
       for (const a of actions) {
         if (a.type !== 'review-field-edit') { log(`  skip ${a.type} (not replayed)`); continue; }

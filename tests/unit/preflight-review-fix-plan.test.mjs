@@ -54,3 +54,16 @@ test('a stale oldValue and a write-guard side effect both fail (the iceboy url-c
     assert.ok(logs.some((l) => /stale\.json.*doesn't match expected/.test(l)), logs.join('\n'));
   } finally { c.cleanup(); }
 });
+
+// BRO-3414: a 277-action plan passed preflight and was refused at land by the
+// MAX_PLAN_ACTIONS cap; preflight now fails it up front.
+test('a plan over the action cap fails preflight', () => {
+  const { MAX_PLAN_ACTIONS } = require('../../scripts/lib/pending-fix-limits.js');
+  const actions = Array.from({ length: MAX_PLAN_ACTIONS + 1 }, (_, i) => edit('a.json', 'humanReviewScore', i === 0 ? null : 50 + i - 1, 50 + i));
+  const c = fixture({ 'a.json': { showId: 'fixture-show-2026', outletId: 'ew', criticName: 'A', url: 'https://ew.com/a' } }, actions);
+  try {
+    const logs = [];
+    assert.equal(preflight([c.plan], { reviewTextsDir: c.reviewTextsDir, log: (m) => logs.push(m) }).failed, 1, logs.join('\n'));
+    assert.ok(logs.some((l) => l.includes(`max ${MAX_PLAN_ACTIONS}`)), logs.join('\n'));
+  } finally { c.cleanup(); }
+});
