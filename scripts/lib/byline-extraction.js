@@ -42,7 +42,7 @@ function extractReviewerLine(html) {
 
 // BRO-4475: BroadwayWorld's meta/author markup can carry the author PAGE URL
 // (broadwayworld.com/author/...) as the value; a name is never an href.
-const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|dotdash meredith|vox media|penske media|gannett|hearst)\b/i;
+const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|plasa media|dotdash meredith|vox media|penske media|gannett|hearst)\b/i;
 const URL_LIKE_RE = /^(?:https?:)?\/\/|^www\.|^\/[a-z]|\.(?:com|co\.uk|org|net)\/|\/author\//i;
 
 const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
@@ -123,6 +123,9 @@ function extractByline(html) {
     // <a rel="author"> — before the nested-author-name fallback below because
     // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
+    // Lighting & Sound America signs off in bold: "<b>--David Barbour</b>";
+    // its meta author is the publisher, PLASA Media (BRO-3414).
+    /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/,
     // class="author-name" wrapping a nested <a> instead of raw text (e.g.
     // TheaterMania: <div class="author-name..."><a id="article-author-tag">Name</a></div>)
     // — the direct-text pattern above only captures immediate text content, so
