@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5166",
   "planId": "e2a6bbf1-4186-4286-8fca-82f789c2d655",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T13:49:37.000Z",
   "submitter": {
     "name": null,
@@ -70,5 +70,43 @@
         "description": "BRO-5166: reason for the isNonReview flag."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T15:43:03.315Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-west-end-2026/deadline--ted-johnson.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fire-fire-off-west-end-2026/times-uk--unknown.json wrongShow: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowAutoCleared, wrongShowAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json isNonReviewReason: null -> \"news: Olivier Award nominations story (BRO-5166)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json isNonReviewReason: null -> \"listing: Time Out event page with no rating or author (BRO-5166)\""
+    }
+  ]
 }
