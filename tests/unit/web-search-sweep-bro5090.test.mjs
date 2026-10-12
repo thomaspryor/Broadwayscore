@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { mergeRecheck, alreadyTriedByFetchPage, unreadVerdict, judgeDate } = require('../../scripts/review-factcheck/sweep-web-search-bylines.js');
-const { textTargets, FORCE_TEXT, planLedger } = require('../../scripts/review-factcheck/make-byline-fix-plans.js');
+const { textTargets, FORCE_TEXT, planLedger, pageNamesShow } = require('../../scripts/review-factcheck/make-byline-fix-plans.js');
 const { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement } = require('../../scripts/lib/review-filter.js');
 
 // Real rows from data/audit/review-factcheck/web-search-bylines.json (first pass).
@@ -115,4 +115,13 @@ test('a url the site answers 404/410 is a dead url, not an unreachable page (inv
   assert.equal(unreadVerdict(403), 'unreachable');
   assert.equal(unreadVerdict(0), 'unreachable', 'timeout / network');
   assert.equal(judgeDate('2006-10-06', null, '2006-10-05', 'dead-url'), 'n/a');
+});
+
+test('plans only use rows whose page title names the show (first-pass rows carried no title)', () => {
+  // Real first-pass row: Variety's legacy page metadata says Robert Koehler.
+  const mermaid = { showId: 'the-little-mermaid-2008', file: 'variety--david-rooney.json', verdict: 'different', bylines: ['Robert Koehler'], url: 'https://variety.com/2008/legit/reviews/the-little-mermaid-1200472087/' };
+  assert.equal(pageNamesShow(mermaid), false, 'no page title, no show title: cannot tell');
+  assert.equal(pageNamesShow({ ...mermaid, showTitle: 'The Little Mermaid', pageTitle: '' }), false);
+  assert.equal(pageNamesShow({ ...mermaid, showTitle: 'Cats', pageTitle: 'Review: Does ‘Cats’ Have Nine Lives on Broadway? Two, Certainly - The New York Times' }), true);
+  assert.equal(pageNamesShow({ ...mermaid, showTitle: 'American Buffalo', pageTitle: 'Met Gala 2022: best looks' }), false);
 });

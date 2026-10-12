@@ -38,6 +38,18 @@ const FORCE_TEXT = [
   'les-liaisons-dangereuses-2016/nytimes--ben-brantley.json',
 ];
 
+/**
+ * A plan may only use a row whose page TITLE names the show. Rows without a
+ * stored page or show title (the first curl pass kept neither) used to pass
+ * pageIsAboutShow vacuously (no title words to check), which let Variety's
+ * legacy CMS bylines through: Robert Koehler, a film critic, for David
+ * Rooney's 2008 Little Mermaid review (BRO-5090). Pure.
+ */
+function pageNamesShow(row) {
+  if (!row || !String(row.pageTitle || '').trim() || !String(row.showTitle || '').trim()) return false;
+  return pageIsAboutShow(row.pageTitle, '', row.showTitle);
+}
+
 const THIN_TIERS = new Set(['excerpt', 'truncated', 'invalid', 'stub', 'needs-rescrape']);
 
 /**
@@ -147,7 +159,7 @@ function main() {
     if (same.length) { skipped.push([rel, `page critic already has a live record at another url (${same[0].f})`]); return; }
     push(rel, from, to, why);
   };
-  for (const r of rows.filter(x => x.verdict === 'different' && pageIsAboutShow(x.pageTitle, '', x.showTitle))) {
+  for (const r of rows.filter(x => x.verdict === 'different' && pageNamesShow(x))) {
     const names = [...new Set(r.bylines.map(cleanByline).filter(Boolean))];
     if (names.length !== 1) { skipped.push([`${r.showId}/${r.file}`, `byline not one person: ${JSON.stringify(r.bylines)}`]); continue; }
     correct(r.showId, r.file, r.outletId, r.url, r.criticName, names[0], `Page byline at ${r.url} is ${names[0]}; ${r.criticName} came from the legacy web-search step and is not on the page.`);
@@ -155,7 +167,7 @@ function main() {
   // Dates: only where the page date sits near the show's opening (judgeDate).
   // The page TITLE must name the show (a url slug can outlive a swapped article:
   // The Crucible's stored url now serves a review of Familiar).
-  for (const r of rows.filter(x => x.dateVerdict === 'wrong' && x.verdict !== 'off-topic-page' && pageIsAboutShow(x.pageTitle, '', x.showTitle))) {
+  for (const r of rows.filter(x => x.dateVerdict === 'wrong' && x.verdict !== 'off-topic-page' && pageNamesShow(x))) {
     const d = String(r.pageDate).slice(0, 10);
     const rel = `${r.showId}/${r.file}`;
     const before = actions.length;
@@ -205,4 +217,4 @@ function main() {
   if (WRITE) for (const p of plans) fs.writeFileSync(path.join(ROOT, 'data/pending-fixes', p.id + '.json'), JSON.stringify(p.plan, null, 1) + '\n');
 }
 if (require.main === module) main();
-module.exports = { cleanByline, textTargets, FORCE_TEXT, planLedger };
+module.exports = { cleanByline, textTargets, FORCE_TEXT, planLedger, pageNamesShow };
