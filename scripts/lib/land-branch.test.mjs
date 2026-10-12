@@ -19,9 +19,10 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
-  isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks,
+  isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput,
   isPromisorFetchFailure,
 } = require('./land-branch.js');
+const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
 // The lib's landing-verify call would try `git fetch --unshallow` only on a
 // shallow repo; these repos are full clones, so no env juggling is needed.
@@ -648,7 +649,7 @@ test('makeVerifiedBaseChecks: reuses the verdict (and still prepares the worktre
     return '';
   };
   const prepared = [];
-  const inner = (o) => [{ name: 'inner-ran', pass: true, detail: o.baseSha }];
+  const inner = (o) => [{ name: 'inner-ran', pass: true, detail: o.baseSha, interveningTests: o.interveningTests }];
 
   // Same base → skip, prepare called, inner never runs.
   let checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('same', []), prepare: (cwd, repo) => { prepared.push([cwd, repo]); return ['node_modules']; } });
@@ -665,12 +666,45 @@ test('makeVerifiedBaseChecks: reuses the verdict (and still prepares the worktre
   // Substantive move → the real checks run against the new base.
   checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('subst', ['scripts/lib/land-branch.js']), prepare: () => [] });
   out = checks({ cwd: '/wt', baseSha: b, repoDir: '/repo' });
-  assert.deepEqual(out, [{ name: 'inner-ran', pass: true, detail: b }]);
+  assert.deepEqual(out, [{ name: 'inner-ran', pass: true, detail: b, interveningTests: [] }]);
 
   // Not an ancestor (force-moved main, wrong sha) → real checks, never a skip.
   checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('not-ancestor', ['memory/x.md']), prepare: () => [] });
   out = checks({ cwd: '/wt', baseSha: b, repoDir: '/repo' });
   assert.deepEqual(out.map(r => r.name), ['inner-ran']);
+});
+
+test('BRO-5180: a substantive move hands the test files main changed since the verified base to the merged-tree floor', () => {
+  const v = 'a'.repeat(40);
+  const b = 'b'.repeat(40);
+  const intervening = ['tests/unit/sibling-matchers-diacritics.test.mjs', 'src/x.ts', 'tests/unit/old.test.js', 'scripts/lib/foo.test.mjs', 'scripts/lib/foo.js'];
+  const git = (args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? intervening.join('\n') : '');
+  let seen = null;
+  const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen = o; return []; }, git, prepare: () => [] });
+  const logs = [];
+  checks({ cwd: '/wt', baseSha: b, repoDir: '/repo', changedFiles: ['scripts/diagnostics/x.js'], log: (l) => logs.push(l) });
+  assert.deepEqual(seen.interveningTests, ['tests/unit/sibling-matchers-diacritics.test.mjs', 'scripts/lib/foo.test.mjs']);
+  assert.deepEqual(seen.changedFiles, ['scripts/diagnostics/x.js'], 'the branch diff itself is untouched');
+  assert.match(logs.join('\n'), /\+2 test file\(s\) changed on main/);
+  assert.doesNotMatch(logs.join('\n'), /full gauntlet/, 'the re-check is not the full gauntlet and must not say so');
+
+  assert.deepEqual(mergedTreeGateInput(['a.js', 't/x.test.mjs'], ['t/x.test.mjs', 't/y.test.mjs']), ['a.js', 't/x.test.mjs', 't/y.test.mjs']);
+  assert.deepEqual(mergedTreeGateInput(['a.js'], undefined), ['a.js']);
+});
+
+test('BRO-5180: the floor actually selects an intervening guard the branch diff alone would never reach', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5180-'));
+  try {
+    fs.mkdirSync(path.join(root, 'tests', 'unit'), { recursive: true });
+    fs.mkdirSync(path.join(root, 'scripts', 'diagnostics'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'tests', 'unit', 'guard.test.mjs'), '');
+    fs.writeFileSync(path.join(root, 'scripts', 'diagnostics', 'new.js'), '');
+    const branch = ['scripts/diagnostics/new.js'];
+    assert.ok(!selectTestFiles(root, branch).includes('tests/unit/guard.test.mjs'), 'precondition: the branch diff alone misses the guard (the incident)');
+    assert.ok(selectTestFiles(root, mergedTreeGateInput(branch, ['tests/unit/guard.test.mjs'])).includes('tests/unit/guard.test.mjs'));
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test('expectSha: a branch whose tip moved since verification is refused before any worktree or push', () => {

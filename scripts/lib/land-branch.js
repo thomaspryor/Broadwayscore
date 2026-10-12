@@ -77,6 +77,7 @@ const { execFileSync } = require('child_process');
 
 const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
+const { isRunnableTestFile } = require('./merge-post-merge-test-gate.js');
 
 const MAX_ATTEMPTS = 3;
 // Inert-churn re-rebases allowed per attempt before a full re-check is forced.
@@ -279,8 +280,15 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
     const intervening = ancestor ? (run(['diff', '--name-only', `${verifiedBase}..${baseSha}`], cwd) || '').split('\n').filter(Boolean) : [];
     const decision = decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor, intervening });
     if (!decision.skip) {
-      log(`[land] verified-base: ${decision.reason} — running the full gauntlet`);
-      return checks(o);
+      // BRO-5180: the re-check selects tests from the BRANCH diff, so a test
+      // tightened on main after the upstream gauntlet ran (land run
+      // 38256667945: a guard widened to scripts/ subfolders) never met the
+      // branch's new file. Feed the test files main changed in that window to
+      // the merged-tree floor too. Only test files: a guard tightened through
+      // its helper or data file on main is still not selected.
+      const interveningTests = intervening.filter(isRunnableTestFile);
+      log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (+${interveningTests.length} test file(s) changed on main since the verified base)`);
+      return checks({ ...o, interveningTests });
     }
     if (prepare && repoDir) {
       // repoDir may be a node_modules-less git worktree (BRO-3907) — prepare
@@ -298,7 +306,17 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
 
 // ── Defaults for the seams ──────────────────────────────────────────────────
 
-function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) {
+/**
+ * The merged-tree floor's stdin: the branch's changed files plus any test
+ * files main changed since the verified base (BRO-5180), deduped. The floor
+ * runs a changed runnable test file directly, so an intervening guard meets
+ * the branch's code.
+ */
+function mergedTreeGateInput(changedFiles, interveningTests) {
+  return [...new Set([...(changedFiles || []), ...(interveningTests || [])].map(String))];
+}
+
+function defaultChecks({ cwd, changedFiles, interveningTests = [], baseSha, repoDir, log = () => {} }) {
   const files = (changedFiles || []).map(String);
   // Fill the worktree's gitignored gaps (node_modules link, core-data copies)
   // up front, unconditionally: runSafeChecks only prepares when its own plan
@@ -374,7 +392,7 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
     const gate = path.join(cwd, 'scripts', 'lib', 'merge-post-merge-test-gate.js');
     if (process.env.LAND_SKIP_MERGED_TREE_TESTS !== '1' && fs.existsSync(gate)) {
       run('merged-tree-tests', ['node', 'scripts/lib/merge-post-merge-test-gate.js'], {
-        input: `${files.join('\n')}\n`,
+        input: `${mergedTreeGateInput(files, interveningTests).join('\n')}\n`,
         timeoutMs: MERGED_TREE_TIMEOUT_MS,
         env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '' },
         detail: tapDetail,
@@ -723,6 +741,7 @@ module.exports = {
   defaultChecks,
   decideVerifiedBaseSkip,
   makeVerifiedBaseChecks,
+  mergedTreeGateInput,
   defaultPushMain,
   firstFailedCheck,
   classifyPushFailure,

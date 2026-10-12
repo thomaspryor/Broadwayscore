@@ -808,6 +808,7 @@ module.exports = {
   touchesLib,
   touchesWorkflows,
   touchesScripts,
+  isRunnableTestFile,
   correspondingUnitTestPath,
   correspondingTestPaths,
   listManifestTestFiles,
