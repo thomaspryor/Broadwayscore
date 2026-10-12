@@ -2010,7 +2010,9 @@ function classifyContentTier(review) {
   }
 
   // BRO-4429: a leading JSON blob must not count toward length/completeness.
-  const fullText = stripLeadingFetchDebris(review.fullText || '');
+  const rawFullText = stripLeadingJsonBlob(review.fullText || '');
+  const fullText = stripDowJonesReprintChrome(rawFullText);
+  const hadDowJonesChrome = fullText !== rawFullText;
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 
@@ -2136,7 +2138,12 @@ function classifyContentTier(review) {
   // Teachout) whose capsule style doesn't hit the listed vocabulary. Task #860: this
   // fallback was silently reclassifying real, correctly-recovered T1 review text as
   // truncated.
-  const isTrustedSubscriberCapture = /-subscriber-browser-session$/.test(review.fetchMethod || '');
+  // BRO-5198: a Dow Jones reprint header ahead of the text (cut above) marks a
+  // capture of the full WSJ article page — same kind of evidence. Cutting it
+  // took terse Teachout capsules (the-gin-game-2015, 303 -> 259 words) under
+  // Path 1's 300-word floor, where the header had been padding them over.
+  const isTrustedSubscriberCapture = /-subscriber-browser-session$/.test(review.fetchMethod || '')
+    || hadDowJonesChrome;
   const looseExcerptCheck = !hasExcerpt || charCount >= longestExcerptLen * 1.1;
   if (wordCount >= 150 && hasProperEnding &&
       truncation.severeCount === 0 && truncation.moderateCount === 0 &&
