@@ -16,6 +16,8 @@
  * gate knew, so a wrong title star bound the score as if outlet-verified.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 // Stars may be split by a stray space or tag ("War Paint * **1/2") and may end
 // in a fraction: half stars mostly, quarter stars sometimes ("Sets **** 1/4").
 const STARS = '([*★](?:\\s?[*★]){0,4})';
@@ -50,7 +52,7 @@ function decodeEntities(s) {
 }
 
 function normTitle(s) {
-  return String(s || '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  return foldDiacritics(String(s || '')).toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 /** Loose equality: "Gotta Dance!" vs "Gotta Dance", "The Music Man" vs "Music Man". */

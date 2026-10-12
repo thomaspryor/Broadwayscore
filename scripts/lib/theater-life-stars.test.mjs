@@ -75,3 +75,7 @@ test('entities decode; a combined column never lends another show its footer', (
   assert.notEqual(r.source, 'wp-api-footer');
   assert.equal(footerStars('like Cats * the original', ['Cats']), null);
 });
+
+test('accented show titles match their unaccented post title', () => {
+  assert.equal(resolveTheaterLifeStars({ title: 'Therese Raquin ***', text: 'x\nTherese Raquin ***Venue', showTitles: ['Thérèse Raquin'] }).source, 'wp-api-footer');
+});
