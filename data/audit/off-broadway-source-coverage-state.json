@@ -3,10 +3,10 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-11T14:42:30.283Z"
+    "at": "2026-10-12T17:12:05.221Z"
   },
   "venueReaders": {
-    "at": "2026-10-11T14:42:30.283Z",
+    "at": "2026-10-12T17:12:05.221Z",
     "readers": 54,
     "active": 165,
     "activeCovered": 101,
@@ -19,6 +19,10 @@
       "ensemble studio": {
         "firstSeen": "2026-09-30T17:53:29.256Z",
         "venue": "Ensemble Studio Theatre"
+      },
+      "gene frankel": {
+        "firstSeen": "2026-10-12T17:12:05.221Z",
+        "venue": "Gene Frankel Theatre"
       },
       "la mama experimental theatre club": {
         "firstSeen": "2026-10-03T12:53:57.507Z",
@@ -45,6 +49,11 @@
         "reason": "sells through Ludus behind a Cloudflare JS challenge; the Wix site lists shows as free text"
       },
       {
+        "venue": "the cell",
+        "recentShows": 3,
+        "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
+      },
+      {
         "venue": "The Culture Club",
         "recentShows": 3,
         "reason": "no public listing found"
@@ -65,11 +74,6 @@
         "reason": "site lists readings and a music festival, no production listing"
       },
       {
-        "venue": "the cell",
-        "recentShows": 2,
-        "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
-      },
-      {
         "venue": "Peter Jay Sharp Theater",
         "recentShows": 2,
         "reason": "name shared by Playwrights Horizons (read) and Symphony Space"
@@ -87,9 +91,9 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-11T14:42:30.283Z",
+    "at": "2026-10-12T17:12:05.221Z",
     "readers": 23,
-    "active": 92,
+    "active": 93,
     "activeCovered": 31,
     "activeDated": 26,
     "uncovered": {
@@ -144,14 +148,14 @@
         "reason": "Regent's Park Open Air Theatre site renders its listing in JavaScript"
       },
       {
+        "venue": "Barbican Theatre",
+        "recentShows": 4,
+        "reason": "Spektrix account (barbicancentre) is ~3,000 events / 4.9 MB with no usable performance counts, and its Theatre art form holds 3-day dance and circus visits: not read (BRO-4398 review)"
+      },
+      {
         "venue": "The Arts at Marble Arch",
         "recentShows": 3,
         "reason": "TodayTix-run venue (The Arts at Marble Arch); its shows are TodayTix listings"
-      },
-      {
-        "venue": "Barbican Theatre",
-        "recentShows": 3,
-        "reason": "Spektrix account (barbicancentre) is ~3,000 events / 4.9 MB with no usable performance counts, and its Theatre art form holds 3-day dance and circus visits: not read (BRO-4398 review)"
       },
       {
         "venue": "Jermyn Street Theatre",
