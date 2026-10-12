@@ -1371,6 +1371,36 @@
     "queuedAt": "2026-10-12T18:05:41.942Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-4980-mv5jkcno",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4980-mv5jkcno",
+    "description": "land.yml did not land land/job/linear-BRO-4980-mv5jkcno: the rebase gate went red at 85d22f8ff8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4980-mv5jkcno @ 85d22f8ff8 (origin/land/job/linear-BRO-4980-mv5jkcno) → origin/main @ a5a409be2c [land] attempt 1/3: rebased onto 17e9cbfff3, 1 file(s) changed — running checks [land] verified-base: main moved b117396a99 → 17e9cbfff3 across 613 file(s), substantive — re-checking on the merged tree (+25 test file(s) changed on main since the verified base) [land] linked 2 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38287147104",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4980-mv5jkcno"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "85d22f8ff8417eb3c99c452d0438fb5778f531ce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38287147104"
+      }
+    ],
+    "queuedAt": "2026-10-12T19:53:09.136Z"
+  },
+  {
     "conditionKey": "land:land/bro-4339-leak-plans",
     "title": "Landing blocked: rebase red on land/bro-4339-leak-plans",
     "description": "land.yml did not land land/bro-4339-leak-plans: the rebase gate went red at 4484564ac7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4339-leak-plans @ 4484564ac7 (origin/land/bro-4339-leak-plans) → origin/main @ a5a409be2c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 17e9cbfff3: Rebasing (1/1) error: could not apply 4484564ac7c... data(BRO-4339): plans to clear the 38 class-A cross-market review leaks hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <confl Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38287729212",
