@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-11T22:53:00.237Z",
+  "generatedAt": "2026-10-12T00:25:16.825Z",
   "windowDays": 45,
-  "showsScanned": 157,
+  "showsScanned": 158,
   "gaps": [
     {
       "showId": "good-time-charlie-off-broadway-2026",
@@ -15,15 +15,15 @@
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485\", waiting until \"networkidle\"\n\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485\", waiting until \"networkidle\"\n\n⚠️  Playwright failed: page.goto"
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroad"
       },
       "recoveryCount": 3,
-      "forumLinkRecoveryCount": 1,
+      "forumLinkRecoveryCount": 2,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=good-time-charlie-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-10T16:02:50.313Z",
-      "fileAgeHours": 30.809977222222223,
+      "fileAgeHours": 32.310230555555556,
       "gapSeenAt": "2026-10-11T02:31:35.490Z",
-      "nonTerminalAgeHours": 20.356874166666667
+      "nonTerminalAgeHours": 21.894815277777777
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -37,15 +37,15 @@
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389\", waiting until \"networkidle\"\n\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389\", waiting until \"networkidle\"\n\n⚠️  Playwright failed: page.goto"
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroad"
       },
       "recoveryCount": 3,
-      "forumLinkRecoveryCount": 1,
+      "forumLinkRecoveryCount": 2,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 77.1359375,
+      "fileAgeHours": 78.67391416666666,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 72.10439555555556
+      "nonTerminalAgeHours": 73.64233666666667
     },
     {
       "showId": "what-the-animals-say-off-west-end-2026",
@@ -62,9 +62,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=what-the-animals-say-off-west-end-2026",
       "firstSeen": "2026-10-01T16:51:40.508Z",
-      "fileAgeHours": 246.02145972222223,
+      "fileAgeHours": 247.5594313888889,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 13.227009722222222
+      "nonTerminalAgeHours": 14.764950833333334
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -81,9 +81,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 462.20758083333334,
+      "fileAgeHours": 463.7455325,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 13.227009722222222
+      "nonTerminalAgeHours": 14.764950833333334
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -99,9 +99,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=human-things-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 367.97515833333335,
+      "fileAgeHours": 369.51310166666667,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 365.15860166666664
+      "nonTerminalAgeHours": 366.6965427777778
     },
     {
       "showId": "burning-leaves-off-broadway-2026",
@@ -118,9 +118,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
       "firstSeen": "2026-09-30T14:32:12.902Z",
-      "fileAgeHours": 272.3463813888889,
+      "fileAgeHours": 273.8843141666667,
       "gapSeenAt": "2026-10-01T02:44:11.346Z",
-      "nonTerminalAgeHours": 260.14691416666665
+      "nonTerminalAgeHours": 261.6848552777778
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -136,9 +136,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 247.02406916666666,
+      "fileAgeHours": 248.5620011111111,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 245.71937666666668
+      "nonTerminalAgeHours": 247.25731777777779
     },
     {
       "showId": "the-visit-regional-2026",
@@ -154,9 +154,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-visit-regional-2026 --url=https://www.curtainup.com/visitwtf14.html --outlet=curtainup   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-02T06:13:33.238Z",
-      "fileAgeHours": 232.65746583333333,
+      "fileAgeHours": 234.19540083333334,
       "gapSeenAt": "2026-10-02T09:21:24.837Z",
-      "nonTerminalAgeHours": 229.5265
+      "nonTerminalAgeHours": 231.0644411111111
     },
     {
       "showId": "mystic-pizza-tour-2026",
@@ -172,9 +172,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=mystic-pizza-tour-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-10T21:41:34.767Z",
-      "fileAgeHours": 25.190408333333334,
+      "fileAgeHours": 26.7283425,
       "gapSeenAt": "2026-10-10T23:15:13.713Z",
-      "nonTerminalAgeHours": 23.62959
+      "nonTerminalAgeHours": 25.16753111111111
     }
   ],
   "contradictions": []
