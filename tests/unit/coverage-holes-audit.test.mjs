@@ -140,11 +140,12 @@ test('sweep counts each class once per file, joins published, and lists the show
     'd.json': base({ url: 'https://www.telecharge.com/shows/x', criticName: 'D', aggregatorStars: '4/5 stars' }),
     'ok.json': base({ fullText: longText, assignedScore: 80, criticName: 'OK', url: 'https://variety.com/ok' }),
     'failed-fetches.json': { not: 'a review' },
+    '_blocklist.json': { urls: ['https://example.com/deleted'] },
   }, [SHOW], [{ showId: SHOW.id, url: 'https://www.telecharge.com/shows/x' }]);
   try {
     const out = sweep({ root: c.root, now: Date.parse('2026-10-08T00:00:00Z') });
     assert.equal(out.shows, 1);
-    assert.equal(out.files, 5, 'failed-fetches.json is not a review');
+    assert.equal(out.files, 5, 'failed-fetches.json and _blocklist.json are not reviews');
     assert.equal(out.A.length, 1);
     assert.equal(out.A[0].bucket, 'url_content_mismatch');
     assert.equal(out.B.length, 1);

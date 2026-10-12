@@ -34,6 +34,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const fs = require('fs');
 const path = require('path');
 const holes = require('./lib/coverage-holes');
+const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 
 const ROOT = path.join(__dirname, '..');
 const LEDGER = path.join('data', 'audit', 'coverage-holes-decisions.json');
@@ -85,7 +86,7 @@ function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentD
     const dir = path.join(root, 'data', 'review-texts', show.id);
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+      if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === BLOCKLIST_FILENAME) continue; // sidecars, not reviews
       const filePath = path.join(dir, f);
       let d;
       try { d = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { out.unreadable++; continue; } // counted: corruption must not hide
