@@ -353,8 +353,10 @@ tests/unit/aggregator-gap-audit.test.mjs
 tests/unit/aggregator-score-strip-guard.test.mjs
 tests/unit/aggregator-thumb-check.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
+tests/unit/alert-condition-resolve-paths.test.mjs
 tests/unit/alert-dispatch-streak.test.mjs
 tests/unit/alert-email-policy.test.mjs
+tests/unit/alert-resolve-coverage.test.mjs
 tests/unit/alltime-attribution.test.mjs
 tests/unit/amaze-review-flags.test.mjs
 tests/unit/anchored-precedence.test.mjs
@@ -501,6 +503,7 @@ tests/unit/classify-wrong-show-locked.test.mjs
 tests/unit/claude-agent-models.test.mjs
 tests/unit/cleanup-phantom-outlets-locked.test.mjs
 tests/unit/clear-failure-flags.test.mjs
+tests/unit/cli-args.test.mjs
 tests/unit/cloud-secrets-tiers.test.mjs
 tests/unit/cluster-canonical.test.mjs
 tests/unit/cmux-launch-guard.test.mjs
@@ -1349,6 +1352,7 @@ tests/unit/vercel-deploy-concurrency.test.mjs
 tests/unit/verify-all-scored.test.mjs
 tests/unit/verify-fetched-url.test.mjs
 tests/unit/verify-gate-comment-correction.test.mjs
+tests/unit/verify-gate-rejection-reason.test.mjs
 tests/unit/video-discovery-merge.test.mjs
 tests/unit/video-pipeline-health.test.mjs
 tests/unit/video-production-context.test.mjs

@@ -2220,3 +2220,25 @@ test('routeAlert: when a deferred condition comes due, an OPEN issue with the ex
     restore();
   }
 });
+
+// ── BRO-2458: resolveQuietConditions resolves only conditions quiet past the incident gap ──
+test('resolveQuietConditions: resolves open conditions not seen for quietHours, leaves recent and closed ones', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:quiet-old', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:quiet-recent', title: 't', description: 'd', disposition: 'auto' });
+    const nowMs = Date.now();
+    // The default window is the router's own incident gap.
+    const later = nowMs + (router.INCIDENT_GAP_RESET_HOURS + 1) * HOUR;
+    assert.deepEqual(router.resolveQuietConditions(['test:quiet-recent'], { nowMs }), [], 'seen just now: stays open');
+    assert.equal(router.loadLedger().conditions['test:quiet-recent'].status, 'open');
+    const got = router.resolveQuietConditions(['test:quiet-old', 'test:never-seen'], { nowMs: later, reason: 'row passed' });
+    assert.deepEqual(got, ['test:quiet-old']);
+    const cond = router.loadLedger().conditions['test:quiet-old'];
+    assert.equal(cond.status, 'resolved');
+    assert.equal(cond.resolveReason, 'row passed');
+    assert.deepEqual(router.resolveQuietConditions(['test:quiet-old'], { nowMs: later }), [], 'already resolved: no-op');
+  } finally {
+    restore();
+  }
+});

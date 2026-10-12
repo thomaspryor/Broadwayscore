@@ -80,3 +80,30 @@ test('a working description command survives an unrelated, non-VERIFY comment', 
   assert.equal(r.armed, true);
   assert.equal(r.cmd, 'npx tsc --noEmit');
 });
+
+// BRO-2804: the result names WHICH document supplied the answer.
+test('source names the comment index that armed in a multi-comment correction chain', () => {
+  const description = '## Acceptance criteria\nVERIFY: test -f scripts/never-existed.sh';
+  const comments = [
+    'First try:\nVERIFY: node scripts/rebuild-all-reviews.js', // unsafe, does not arm
+    'Unrelated note.',
+    'Corrected:\nVERIFY: node --test tests/unit/data-health-check.test.mjs',
+    'Thanks.',
+  ];
+  const r = evaluateVerifiability(description, comments);
+  assert.equal(r.armed, true);
+  assert.equal(r.source, 'comment:2');
+});
+
+test('source is "description" when the description arms and no comment does', () => {
+  const r = evaluateVerifiability('VERIFY: node --test tests/unit/x.test.mjs', ['looks fine']);
+  assert.equal(r.armed, true);
+  assert.equal(r.source, 'description');
+});
+
+test('source is null when no document has an acceptance section or VERIFY line', () => {
+  const r = evaluateVerifiability('prose only', ['more prose']);
+  assert.equal(r.armed, false);
+  assert.equal(r.kind, 'no-section');
+  assert.equal(r.source, null);
+});

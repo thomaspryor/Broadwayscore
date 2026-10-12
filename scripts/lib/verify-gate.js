@@ -40,7 +40,7 @@ const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
  *   that fails safe-form validation does not win and falls through to
  *   whatever armed before it — same fail-closed contract as extractVerifyCmd
  *   itself, just applied per-document instead of per-candidate.
- * @returns {{armed: boolean, cmd: string|null, reason: string|null, ownerJudgment: boolean, kind: string|null}}
+ * @returns {{armed: boolean, cmd: string|null, reason: string|null, ownerJudgment: boolean, kind: string|null, source: string|null}}
  *   armed=true means bsc-next.js would dispatch this card without
  *   --allow-unverifiable. cmd is the extracted safe-form command, populated
  *   whenever one is present even alongside an ownerJudgment marker (ship-check
@@ -51,7 +51,21 @@ const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
  *   | 'shape' | 'path-prefix' | 'traversal' | 'mutating-script' | 'basename',
  *   also null whenever armed — see autonomous-triage-core.js's
  *   explainUnsafeCheckCommand for what each SAFE_CHECK_FORMS kind means.
+ *
+ *   source (BRO-2804) names the document the answer came from: 'description'
+ *   or `comment:<i>`, i = index into `comments` (oldest first). Armed: the
+ *   document that armed. Refused: the document the reason/kind describe, or
+ *   null when no document has an acceptance section or VERIFY line at all.
+ *
+ *   BRO-2822: a refusal used to be reported on the description alone, so a
+ *   card whose only VERIFY line sat in a comment and failed validation said
+ *   "card has no acceptance-criteria section or VERIFY line" — false, and it
+ *   sent people to add the section they had already added. The refusal now
+ *   comes from the NEWEST document that has scope, so it names the rejected
+ *   candidate and its kind ('shape', 'path-prefix', ...).
  */
+function sourceLabel(i) { return i === 0 ? 'description' : `comment:${i - 1}`; }
+
 function evaluateVerifiability(notes, comments) {
   const description = String(notes || '');
   const commentTexts = Array.isArray(comments) ? comments.map((c) => String(c || '')) : [];
@@ -64,15 +78,20 @@ function evaluateVerifiability(notes, comments) {
     const { cmd } = extractVerifyCmd(text, isSafeCheckCommand, explainUnsafeCheckCommand);
     const ownerJudgment = OWNER_JUDGMENT_RE.test(text);
     if (cmd || ownerJudgment) {
-      return { armed: true, cmd, reason: null, ownerJudgment, kind: null };
+      return { armed: true, cmd, reason: null, ownerJudgment, kind: null, source: sourceLabel(i) };
     }
   }
 
-  // Nothing armed anywhere — report on the description alone, matching this
-  // function's original (pre-comments) refusal shape exactly.
+  // Nothing armed anywhere. Report on the newest document that HAS scope;
+  // with none, on the description (the original single-document shape).
+  for (let i = documents.length - 1; i >= 0; i--) {
+    const r = extractVerifyCmd(documents[i], isSafeCheckCommand, explainUnsafeCheckCommand);
+    if (r.kind !== 'no-section') {
+      return { armed: false, cmd: r.cmd, reason: r.reason, ownerJudgment: false, kind: r.kind || null, source: sourceLabel(i) };
+    }
+  }
   const { cmd, reason, kind } = extractVerifyCmd(description, isSafeCheckCommand, explainUnsafeCheckCommand);
-  const ownerJudgment = OWNER_JUDGMENT_RE.test(description);
-  return { armed: false, cmd, reason, ownerJudgment, kind: kind || null };
+  return { armed: false, cmd, reason, ownerJudgment: false, kind: kind || null, source: null };
 }
 
 module.exports = { evaluateVerifiability, isSafeCheckCommand, explainUnsafeCheckCommand, extractVerifyCmd, candidatesFrom, OWNER_JUDGMENT_RE };

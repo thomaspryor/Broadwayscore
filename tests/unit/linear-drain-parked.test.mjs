@@ -159,6 +159,10 @@ describe('parseArgs (CLI)', () => {
     assert.deepStrictEqual(parseArgs(['--dry-run']), { _: [], 'dry-run': true });
     assert.deepStrictEqual(parseArgs(['--cap', '5']), { _: [], cap: '5' });
   });
+  test('BRO-2630: --cap=5 sets cap instead of a flag literally named "cap=5"', () => {
+    assert.deepStrictEqual(parseArgs(['--cap=5']), { _: [], cap: '5' });
+    assert.deepStrictEqual(parseArgs(['--dry-run=false', '--cap=2']), { _: [], 'dry-run': false, cap: '2' });
+  });
 });
 
 describe('recentlyAttempted', () => {

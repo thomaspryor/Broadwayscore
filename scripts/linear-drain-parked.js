@@ -101,6 +101,7 @@
 'use strict';
 
 const fs = require('fs');
+const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectDrainCandidates, isAutoFiledParked, isDrainEligible, isSessionParkedDrainable } = require('./lib/linear-drain-parked.js');
@@ -164,18 +165,10 @@ Kill switch: LINEAR_NEXT_DISABLED=1 refuses to dispatch anything this run
 (checked here AND inside linear-next.js itself).
 `;
 
+// Shared parser (BRO-2630): --cap=5 used to parse as a flag literally named
+// "cap=5", so the run silently used the default cap.
 function parseArgs(argv) {
-  const a = { _: [] };
-  for (let i = 0; i < argv.length; i++) {
-    const t = argv[i];
-    if (t.startsWith('--')) {
-      const k = t.slice(2);
-      const n = argv[i + 1];
-      if (n === undefined || n.startsWith('--')) a[k] = true;
-      else { a[k] = n; i++; }
-    } else a._.push(t);
-  }
-  return a;
+  return parseCliArgs(argv, { coerceBooleans: true, textFlags: ['cap'] });
 }
 
 // Exact-duplicate lines are dropped, and that is load-bearing rather than

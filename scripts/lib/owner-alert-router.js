@@ -1151,6 +1151,32 @@ function resolveCondition(conditionKey, { reason } = {}) {
   return true;
 }
 
+// BRO-2458: batch resolve for a check whose rows can flap (health-check).
+// Resolving on a single green run would reset the incident clock
+// (currentIncidentOpenedAt treats a resolved condition as a fresh incident),
+// so a row that fails every other day would never reach its deferred filing,
+// and sweep-resolved-alert-cards.js would cancel its card on one flaky pass.
+// Only conditions not seen for `quietHours` (default: the router's own
+// incident gap, so a resolve never splits what the router calls one incident)
+// are resolved. One ledger load/persist for the whole batch. Returns the keys
+// actually resolved.
+function resolveQuietConditions(conditionKeys, { quietHours = INCIDENT_GAP_RESET_HOURS, reason, nowMs = Date.now() } = {}) {
+  const ledger = loadLedger();
+  const resolved = [];
+  for (const key of conditionKeys || []) {
+    const existing = ledger.conditions[key];
+    if (!existing || existing.status !== 'open') continue;
+    const lastSeenMs = Date.parse(existing.lastSeen || '');
+    if (!Number.isFinite(lastSeenMs) || (nowMs - lastSeenMs) / 3600000 <= quietHours) continue;
+    existing.status = 'resolved';
+    existing.resolvedAt = new Date(nowMs).toISOString();
+    if (reason) existing.resolveReason = String(reason);
+    resolved.push(key);
+  }
+  if (resolved.length) persistLedger(ledger);
+  return resolved;
+}
+
 // Hard-removes a condition from the ledger — for synthetic/test conditions
 // only (e.g. the E2E canary's fixed conditionKeys). Real conditions should
 // use resolveCondition() so history (firstSeen/notifyCount) is preserved;
@@ -1197,6 +1223,7 @@ module.exports = {
   findLinearDuplicate,
   isPageWorthy, // re-exported for callers/tests that want to check gating without calling routeAlert
   resolveCondition,
+  resolveQuietConditions,
   patchCondition,
   deleteCondition,
   loadLedger,

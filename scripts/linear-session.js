@@ -44,6 +44,7 @@
 'use strict';
 
 const linear = require('./lib/linear-client');
+const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
@@ -74,29 +75,11 @@ const USAGE = `Usage:
   after that timestamp (BRO-3869) — pass it before a report that proposes a
   production-impacting action.`;
 
+// Shared parser (BRO-2628). No boolean coercion here on purpose: this CLI's
+// --force is a >=10-char bypass REASON string (length-gated in cmdReport),
+// never an on/off switch, and every other flag takes a value.
 function parseArgs(argv) {
-  const args = { _: [] };
-  for (let i = 0; i < argv.length; i++) {
-    const tok = argv[i];
-    if (tok.startsWith('--')) {
-      const raw = tok.slice(2);
-      const eq = raw.indexOf('=');
-      if (eq !== -1) {
-        args[raw.slice(0, eq)] = raw.slice(eq + 1);
-        continue;
-      }
-      const next = argv[i + 1];
-      if (next === undefined || next.startsWith('--')) {
-        args[raw] = true;
-      } else {
-        args[raw] = next;
-        i++;
-      }
-    } else {
-      args._.push(tok);
-    }
-  }
-  return args;
+  return parseCliArgs(argv, {});
 }
 
 async function resolveProjectId(name) {
@@ -412,7 +395,7 @@ async function cmdPing() {
 async function main(argv = process.argv.slice(2)) {
   const [cmd, ...rest] = argv;
   const args = parseArgs(rest);
-  if (!cmd || args.help || args.h) {
+  if (!cmd || cmd === '--help' || cmd === '-h' || args.help || args.h) {
     console.log(USAGE);
     return;
   }

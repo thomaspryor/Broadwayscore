@@ -114,6 +114,25 @@ function healthRowNameFromConditionKey(conditionKey) {
 
 
 /**
+ * BRO-2458: the `health-check:<row>` conditionKeys this run shows green.
+ * Only rows that ran and passed; a row reporting a skip ("Skipped (off-season)",
+ * "Skipped — review-texts not checked out") says nothing about the condition,
+ * so it never counts as cleared. The caller still debounces through
+ * owner-alert-router's resolveQuietConditions.
+ * @param {{name: string, status: string, message?: string}[]} results
+ * @returns {string[]}
+ */
+function clearedHealthCheckKeys(results) {
+  const rows = (results || []).filter(r => r && r.name);
+  // A name that also failed or warned in the same run is not cleared.
+  const notPassing = new Set(rows.filter(r => r.status !== 'pass').map(r => r.name));
+  const keys = rows
+    .filter(r => r.status === 'pass' && !notPassing.has(r.name) && !/^\s*skipped\b/i.test(String(r.message || '')))
+    .map(r => `${HEALTH_CHECK_PREFIX}${r.name}`);
+  return [...new Set(keys)];
+}
+
+/**
  * Row/condition text made safe to interpolate into an auto-filed card body.
  *
  * Shared by BOTH auto-filers (BRO-3881 ship-check finding): digest-autofix.js
@@ -134,4 +153,4 @@ function sanitizeRowText(s) {
     .replace(/VERIFY\s*:/gi, 'VERIFY -');
 }
 
-module.exports = { rowAbsentCheckCmd, alertAbsentCheckCmd, rowMatchKey, sanitizeRowText, healthRowNameFromConditionKey, HEALTH_CHECK_PREFIX, ROW_NAME_MATCH_LIMIT, SAFE_TOKEN_MAX_CHARS };
+module.exports = { rowAbsentCheckCmd, alertAbsentCheckCmd, rowMatchKey, sanitizeRowText, healthRowNameFromConditionKey, clearedHealthCheckKeys, HEALTH_CHECK_PREFIX, ROW_NAME_MATCH_LIMIT, SAFE_TOKEN_MAX_CHARS };

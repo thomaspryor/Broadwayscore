@@ -36,7 +36,8 @@ const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
-const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
+const { routeAlert, resolveQuietConditions, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
+const { clearedHealthCheckKeys } = require('./lib/health-row-check-cmd.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
@@ -4860,6 +4861,16 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
   const errors = results.filter(r => r.status === 'error');
   const warns = results.filter(r => r.status === 'warn');
   const passed = results.filter(r => r.status === 'pass');
+  // BRO-2458: close the loop on the `health-check:<row>` conditions filed
+  // below once their row has been green past the incident gap, so
+  // sweep-resolved-alert-cards.js can cancel the card. Debounced: a row that
+  // flaps fail/pass is still one incident and keeps its card.
+  try {
+    const cleared = resolveQuietConditions(clearedHealthCheckKeys(results), { reason: 'health-check row passing' });
+    if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared health-check condition(s): ${cleared.join(', ')}`);
+  } catch (err) {
+    console.error(`[Alert Router] resolving cleared health-check conditions failed: ${err.message}`);
+  }
 
   // Group by category
   const categories = {};

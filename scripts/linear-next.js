@@ -93,6 +93,7 @@ const linear = require('./lib/linear-client.js');
 const ld = require('./lib/linear-dispatch.js');
 const lsr = require('./lib/linear-session-reporting.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
@@ -200,42 +201,14 @@ still work). Machine-bound routing: an issue tagged 'mac-only' always forces
 a local cmux tab, overriding the headless default. No --decide / Cyrus routing yet.
 `;
 
-// Every downstream read of a boolean-switch flag (--force, --headless,
-// --dry-run, ...) is a truthiness check (`!args.force`, `args.force || ...`),
-// so a `--flag=<value>` form has to decide what "off" looks like BEFORE
-// splitting on `=` — otherwise `--force=0` parses as the truthy string "0"
-// and silently bypasses every guard --force gates (terminal-state, parked,
-// idempotency, started-state), the opposite of what typing `=0` means.
-// BRO-2543 shipped the naive `raw.slice(eq + 1)` split in passing and the
-// pre-ship review caught exactly this; reverted there, tracked here as
-// BRO-2576. `''`, `'0'`, `'false'` all mean "off" (case-insensitively — an
-// operator typing `--force=FALSE` means the same thing as `--force=false`,
-// and matching only the lowercase form would leave that variant as a truthy
-// string, reopening the exact BRO-2543 hazard under different casing);
-// anything else is passed through as the string value (so `--model=opus`
-// still resolves to 'opus').
-function coerceFlagValue(v) {
-  if (v === '' || v.toLowerCase() === '0' || v.toLowerCase() === 'false') return false;
-  return v;
-}
-
+// Every downstream read of a boolean-switch flag (--force, --tab,
+// --dry-run, ...) is a truthiness check, so `--force=0` must parse as false,
+// not the truthy string "0" (BRO-2543/BRO-2576). The shared parser does that
+// for every flag except the declared free-text ones below (BRO-2628): an
+// undeclared new flag is treated as a switch, the safe direction.
+const LINEAR_NEXT_TEXT_FLAGS = ['id', 'model', 'allow-reported-work'];
 function parseArgs(argv) {
-  const a = { _: [] };
-  for (let i = 0; i < argv.length; i++) {
-    const t = argv[i];
-    if (t.startsWith('--')) {
-      const raw = t.slice(2);
-      const eq = raw.indexOf('=');
-      if (eq !== -1) {
-        a[raw.slice(0, eq)] = coerceFlagValue(raw.slice(eq + 1));
-        continue;
-      }
-      const n = argv[i + 1];
-      if (n === undefined || n.startsWith('--')) a[raw] = true;
-      else { a[raw] = n; i++; }
-    } else a._.push(t);
-  }
-  return a;
+  return parseCliArgs(argv, { coerceBooleans: true, textFlags: LINEAR_NEXT_TEXT_FLAGS });
 }
 
 function ledgerTaskId(identifier) { return `linear:${identifier}`; }
@@ -1168,7 +1141,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try {
       appendLedgerEntryFn({
         event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
-        model, verifyCmd: gate.cmd, verifyReason: gate.reason,
+        model, verifyCmd: gate.cmd, verifyReason: gate.reason, verifySource: gate.source || null,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
         // BRO-2569: journals a phantom-path override the same way — the
         // guard's own refusal message promises this is "recorded in the
@@ -1280,7 +1253,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try {
       const failedEntries = dispatchLedger.failedLaunchEntries({
         taskId, subject: pseudoTask.subject, workspaceRef: res.workspaceRef, model,
-        verifyCmd: gate.cmd, verifyReason: gate.reason,
+        verifyCmd: gate.cmd, verifyReason: gate.reason, verifySource: gate.source || null,
         failureReason: res.reason, deadConfirmed: res.deadConfirmed !== false,
         marker: res.marker || null, // BRO-2575
       });
@@ -1303,7 +1276,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   try {
     appendLedgerEntryFn({
       event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
-      verifyCmd: gate.cmd, verifyReason: gate.reason,
+      verifyCmd: gate.cmd, verifyReason: gate.reason, verifySource: gate.source || null,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       // BRO-2569 — see the headless launch entry above for why this is journaled.
       allowPhantomPath: args['allow-phantom-path'] || null,

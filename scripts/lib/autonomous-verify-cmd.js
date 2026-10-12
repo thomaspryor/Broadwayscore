@@ -24,10 +24,13 @@
  *
  * BRO-2585: a `VERIFY: <cmd>` line's own remainder is a candidate even
  * without backticks — that's the form cards are actually written in. It
- * takes the WHOLE line as one candidate (no trailing "passes"/"# comment"
- * tolerance — fails closed, unarmed, same as before this existed), and goes
- * through the identical isSafeCheckCommand gate as every backticked
- * candidate, so it can never arm anything a backticked span couldn't. It
+ * goes through the identical isSafeCheckCommand gate as every backticked
+ * candidate, so it can never arm anything a backticked span couldn't.
+ * BRO-2621: a remainder carrying trailing prose ("npx tsc --noEmit passes",
+ * "... # required", "... (must pass)") also yields a de-decorated variant
+ * (stripDecoration below) — a fixed list of affirmative phrases only, and the
+ * variant still has to pass isSafeCheckCommand on its own, so this can only
+ * recover a command that would already arm when written cleanly. It
  * does not require the VERIFY: line to sit inside "## Acceptance criteria"
  * — that scope was already true for backticked VERIFY lines before this
  * change (see VERIFY_LINE_RE below, which scans the whole text).
@@ -49,6 +52,39 @@ const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^t
 // this repo's cards already follow (see the plan-tasks skill output format).
 const SECTION_RE = /##\s*Acceptance criteria\s*\n([\s\S]*?)(?=\n##|$)/i;
 const VERIFY_LINE_RE = /^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?:\s*(.+)$/gim;
+
+// BRO-2621: trailing prose people write after a VERIFY command. Fixed list
+// on purpose: anything not matched here stays attached and fails closed.
+// Comments and parentheticals are stripped ONLY when they hold one of these
+// affirmative phrases: free text there can invert the check ("test -f X #
+// must NOT exist"), and arming the bare command would then pass exactly when
+// the author's condition is false (ship-check finding).
+const AFFIRMATIVE = '(?:passes|passing|is clean|is green|succeeds|exits 0|returns 0|must pass|should pass|still passes|required)';
+const TRAILING_DECORATION_RES = [
+  new RegExp(`\\s+#\\s*${AFFIRMATIVE}$`, 'i'), // # required
+  new RegExp(`\\s+\\(\\s*${AFFIRMATIVE}\\s*\\)$`, 'i'), // (must pass)
+  /\s*[.;,]$/, // sentence punctuation
+  new RegExp(`\\s+${AFFIRMATIVE}$`, 'i'),
+];
+
+/**
+ * Strip trailing decoration until nothing changes, so "x passes." loses the
+ * period and then the phrase regardless of order. Returns the input
+ * unchanged when nothing matched. Exported for tests (CLAUDE.md §15).
+ * @param {string} cmd
+ * @returns {string}
+ */
+function stripDecoration(cmd) {
+  let out = String(cmd || '').trim();
+  for (let changed = true; changed;) {
+    changed = false;
+    for (const re of TRAILING_DECORATION_RES) {
+      const next = out.replace(re, '').trim();
+      if (next !== out && next) { out = next; changed = true; }
+    }
+  }
+  return out;
+}
 
 // Commands appear as backticked spans (`node --test x.test.mjs`) far more
 // often than bare, and a bare line is usually prose ABOUT a command.
@@ -92,9 +128,15 @@ function rawCandidates(text) {
     verifyLineRaw.push(m[1]);
   }
   if (!scoped.length) return [];
-  return [...scoped.flatMap(candidatesFrom), ...verifyLineRaw]
-    // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
-    .map(c => c.trim().replace(/^[$>]\s*/, ''))
+  // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
+  const clean = c => c.trim().replace(/^[$>]\s*/, '');
+  // The decorated raw line stays first (it names the refusal when nothing
+  // passes); its stripped variant follows it (BRO-2621).
+  const raw = verifyLineRaw.map(clean).flatMap(c => {
+    const stripped = stripDecoration(c);
+    return stripped !== c ? [c, stripped] : [c];
+  });
+  return [...scoped.flatMap(candidatesFrom).map(clean), ...raw]
     .filter(Boolean);
 }
 
@@ -148,4 +190,4 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   };
 }
 
-module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE, rank, rawCandidates };
+module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE, rank, rawCandidates, stripDecoration };

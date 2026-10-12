@@ -266,11 +266,31 @@ async function pruneFailureLedger() {
 const MIN_AGE_MS = 3 * 60 * 1000;
 const MAX_AGE_MS = 90 * 60 * 1000;
 
+function revertConditionKey(entry) {
+  return `push-ledger-revert:${entry.branch}:${entry.sha.slice(0, 12)}`;
+}
+
+// BRO-2458: an entry stays in the check window for MAX_AGE_MS and is
+// re-checked every run, so a commit an earlier run reported lost can come
+// back (re-pushed, or its content landed under another sha). That is the
+// condition clearing: resolve it so the sweep can close the card. A no-op
+// when nothing was ever filed for this entry.
+function resolveRevertAlert(entry) {
+  try {
+    const { resolveCondition } = require('./lib/owner-alert-router');
+    if (resolveCondition(revertConditionKey(entry), { reason: 'commit reachable again' })) {
+      console.log(`check-push-ledger: ${entry.sha.slice(0, 12)} recovered — resolved its revert alert`);
+    }
+  } catch (err) {
+    console.error(`check-push-ledger: resolving the revert alert for ${entry.sha} failed: ${err.message}`);
+  }
+}
+
 async function fileRevertAlert(repoInfo, entry, status) {
   try {
     const { routeAlert } = require('./lib/owner-alert-router');
     await routeAlert({
-      conditionKey: `push-ledger-revert:${entry.branch}:${entry.sha.slice(0, 12)}`,
+      conditionKey: revertConditionKey(entry),
       title: `origin/${entry.branch} lost a CI-pushed commit (${entry.workflow || 'unknown workflow'})`,
       disposition: 'auto',
       severity: 'error',
@@ -335,11 +355,13 @@ async function main() {
     checkedCount++;
     if (result.ok) {
       console.log(`check-push-ledger: ${entry.sha.slice(0, 12)} still reachable from origin/${entry.branch} (${result.status})`);
+      resolveRevertAlert(entry);
       continue;
     }
     console.error(`check-push-ledger: ${entry.sha.slice(0, 12)} NO LONGER reachable from origin/${entry.branch} (${result.status}) — checking content survival before alerting`);
     if (checkContentSurvived(cwd, entry)) {
       console.log(`check-push-ledger: ${entry.sha.slice(0, 12)} content confirmed still present on origin/${entry.branch} despite SHA divergence (superseded by an equivalent later commit, BRO-2304) — suppressing alert`);
+      resolveRevertAlert(entry);
       continue;
     }
     console.error(`check-push-ledger: ${entry.sha.slice(0, 12)} content NOT confirmed on origin/${entry.branch} — filing alert`);
@@ -399,7 +421,7 @@ async function main() {
   }
 }
 
-module.exports = { checkContentSurvived, fetchShaWithParent, fetchBranchTip };
+module.exports = { checkContentSurvived, fetchShaWithParent, fetchBranchTip, revertConditionKey, resolveRevertAlert };
 
 if (require.main === module) {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }

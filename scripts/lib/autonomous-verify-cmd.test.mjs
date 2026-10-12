@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
+const { extractVerifyCmd, stripDecoration } = require('./autonomous-verify-cmd.js');
 // The REAL validator, not a stub: the whole point is that a card's command
 // clears the same prompt-injection gate the triage queue uses.
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
@@ -113,4 +113,48 @@ test('empty/null notes never throw', () => {
   assert.equal(extract(null).cmd, null);
   assert.equal(extract('').cmd, null);
   assert.equal(extract(undefined).cmd, null);
+});
+
+// BRO-2621: trailing prose after a raw VERIFY command no longer disarms it,
+// and stripping never arms anything a clean command would not.
+test('VERIFY line with trailing decoration arms the de-decorated command', () => {
+  const cases = [
+    ['VERIFY: npx tsc --noEmit passes', 'npx tsc --noEmit'],
+    ['VERIFY: npx tsc --noEmit # required', 'npx tsc --noEmit'],
+    ['VERIFY: node --test tests/unit/x.test.mjs (must pass)', 'node --test tests/unit/x.test.mjs'],
+    ['VERIFY: node --test tests/unit/x.test.mjs passes.', 'node --test tests/unit/x.test.mjs'],
+    ['VERIFY: node --test tests/unit/x.test.mjs is clean', 'node --test tests/unit/x.test.mjs'],
+  ];
+  for (const [notes, want] of cases) {
+    assert.equal(extractVerifyCmd(notes, isSafeCheckCommand).cmd, want, notes);
+  }
+});
+
+test('stripping decoration cannot arm an unsafe command', () => {
+  for (const notes of [
+    'VERIFY: node scripts/rebuild-all-reviews.js passes',
+    'VERIFY: grep -q foo .github/workflows/y.yml # config line present',
+    'VERIFY: rm -rf data (must pass)',
+  ]) {
+    const r = extractVerifyCmd(notes, isSafeCheckCommand);
+    assert.equal(r.cmd, null, notes);
+    // The refusal still names the line as written.
+    assert.match(r.reason, /first candidate: /, notes);
+  }
+});
+
+test('free-text comments or parentheticals never arm (they can invert the check)', () => {
+  for (const notes of [
+    'VERIFY: test -f scripts/old-thing.js # must NOT exist after cleanup',
+    'VERIFY: test -f docs/x.md (should be deleted)',
+    'VERIFY: node --test tests/unit/x.test.mjs (currently fails; expected to keep failing until BRO-9)',
+  ]) {
+    assert.equal(extractVerifyCmd(notes, isSafeCheckCommand).cmd, null, notes);
+  }
+});
+
+test('stripDecoration leaves undecorated commands and unknown trailing words alone', () => {
+  assert.equal(stripDecoration('npx tsc --noEmit'), 'npx tsc --noEmit');
+  assert.equal(stripDecoration('node --test a.test.mjs and then some'), 'node --test a.test.mjs and then some');
+  assert.equal(stripDecoration('node --test a.test.mjs passes.'), 'node --test a.test.mjs');
 });
