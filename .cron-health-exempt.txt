@@ -237,7 +237,6 @@ outlet-registry-baseline-maintenance.yml
 # Digest-only, matches the other weekly audit-*.yml entries above.
 clear-stale-suspected-misattribution-flags.yml
 clear-wrong-show-blockers.yml  # weekly flag cleanup; a stale week leaves stale blockers one more week
-clear-stale-wrong-production-flags.yml  # flag cleanup; a missed run leaves stale flags until the next one
 clear-stale-wrong-show-flags.yml  # weekly flag cleanup; a stale week leaves stale flags one more week
 clear-stale-roundup-flags.yml  # weekly flag cleanup; a stale week leaves stale flags one more week
 
@@ -292,3 +291,9 @@ codex-runner.yml
 # Daily historical review backfill (BRO-4146): low-stakes, re-sends the same
 # slice the next day if a run fails (cursor advances only once its gather run starts).
 historical-backfill.yml
+# BRO-4282: cron re-dispatch sweep. Event-driven (every main Test Suite run) with a
+# */30 backstop; failures reach the digest via notify-failure.
+cron-redispatch.yml
+# BRO-4282: weekly CV-promoted re-verify, capped per run; a missed week leaves the
+# backlog one more week, nothing user-facing.
+reverify-cv-promoted-weekly.yml

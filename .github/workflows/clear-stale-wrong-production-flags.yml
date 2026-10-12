@@ -35,6 +35,7 @@ on:
     # Small candidate set (6 on 2026-09-27), same --llm verification and
     # surge guard as the weekly run.
     - cron: '43 13 * * *'
+    # redispatch-after-hours: 26  (BRO-4282: daily; cron-redispatch.js replaces a dropped tick after 26h, before check-cron-health's 36h page)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -44,6 +45,14 @@ on:
         type: string
       force_bulk:
         description: 'Override the >50 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
+      redispatched:
+        # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
+        # daily 13:43 run. Uses the daily run's 21-day scope; a plain manual
+        # dispatch keeps the full-corpus sweep.
+        description: 'Internal: re-dispatch of a dropped daily run (21-day scope)'
         required: false
         default: 'false'
         type: string
@@ -87,7 +96,7 @@ jobs:
         run: |
           set +e
           SCOPE=""
-          if [ "${{ github.event.schedule }}" = "43 13 * * *" ]; then SCOPE="--opened-within-days=21"; fi
+          if [ "${{ github.event.schedule }}" = "43 13 * * *" ] || [ "${{ inputs.redispatched }}" = "true" ]; then SCOPE="--opened-within-days=21"; fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm $SCOPE 2>&1)
           elif [ "${{ inputs.force_bulk }}" = "true" ]; then

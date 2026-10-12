@@ -195,6 +195,7 @@ jobs:
             # Hourly at :37; 3h. Detects aggregator-listed URLs missing from review-texts,
             # so a dead cron here means real published reviews stay invisible.
             "audit-aggregator-gap.yml|3|Audit Aggregator Review Gap"
+            "clear-stale-wrong-production-flags.yml|36|Clear Stale Wrong-Production Flags"
             # Rolling cadence: heavy passes 05:00/17:00 UTC plus light ticks at
             # 02,08,11,14,20,23 — a run every ~3h. 5h = 1 missed tick + cron-lag cushion.
             # The 13-hour blind window this schedule replaced is what let the Guardian and

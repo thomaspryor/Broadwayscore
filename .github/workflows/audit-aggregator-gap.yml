@@ -35,6 +35,13 @@ on:
         description: 'Targeted run: comma-separated show ids, audited in the order given with ingest + checkpoint (BRO-4592). Empty = normal back-catalogue grind.'
         required: false
         default: ''
+      redispatched:
+        # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
+        # hourly schedule. The run then uses the schedule's settings (3y window,
+        # 6h ground-truth interval), never the manual-dispatch defaults.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
 
 concurrency:
   # Targeted (show_ids) runs share this group on purpose (BRO-4592). This workflow
@@ -171,7 +178,7 @@ jobs:
           # whole back-catalogue, not just the last 21d. Checkpointing + the soft
           # time budget keep each 25-min run from timing out (every run was being
           # cancelled at the cap before, so the sweep never finished — 2026-06-06).
-          WINDOW="${{ github.event.inputs.window_days || '1095' }}"
+          WINDOW="${{ github.event.inputs.redispatched != 'true' && github.event.inputs.window_days || '1095' }}"
           DISPATCH="${{ github.event.inputs.dispatch_gather || 'false' }}"
           INGEST="${{ github.event.inputs.ingest_missing || 'true' }}"
           FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
@@ -304,7 +311,7 @@ jobs:
           # A manual dispatch's window_days widens the audit (backfill) and
           # skips the 6h throttle; the hourly cron uses 21 days / 6h.
           GT_DAYS: ${{ github.event.inputs.window_days || '21' }}
-          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && !github.event.inputs.show_ids && '0' || '6' }}
+          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.redispatched != 'true' && !github.event.inputs.show_ids && '0' || '6' }}
         run: timeout 720 node scripts/audit-outlet-ground-truth.js --days="$GT_DAYS" --ingest --ingest-cap=12 --alert --min-interval-hours="$GT_INTERVAL" --time-budget-min=8
 
       # Date-independent backstop for a live show sitting on a discovered
