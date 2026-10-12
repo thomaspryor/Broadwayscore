@@ -55,6 +55,8 @@ function buildFailureEntry({
   ts,
   stallPhase,
   stallService,
+  unpushedCount,
+  unpushedFiles,
   traceCensus,
   trace2Summary,
 }) {
@@ -84,6 +86,13 @@ function buildFailureEntry({
     // generate, so its stallPhase is not evidence about the push.
     stallService: stallService || 'unknown',
   };
+  // BRO-3148: the files this job committed that never reached the branch
+  // (first 20, approximate). Only present when the caller knew them, so rows
+  // from older callers keep their exact shape.
+  if (Number.isFinite(unpushedCount) && unpushedCount > 0) {
+    entry.unpushedCount = unpushedCount;
+    entry.unpushedFiles = Array.isArray(unpushedFiles) ? unpushedFiles.slice(0, 20) : [];
+  }
   // BRO-3465: one-line summaries of a timed-out attempt's whole curl trace
   // (receive-pack vs upload-pack request counts + request list) and, when
   // PUSH_TRACE2_DIAGNOSTICS=1, its trace2 child-process summary. Keyed in only

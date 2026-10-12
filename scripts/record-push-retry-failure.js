@@ -123,7 +123,7 @@ function jitterMs(attempt, base = 150, cap = 1800) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...] [--trace-census=...] [--trace2-summary=...]');
+    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...] [--unpushed-count=N] [--unpushed-files=a,b] [--trace-census=...] [--trace2-summary=...]');
     process.exit(0);
   }
 
@@ -154,6 +154,9 @@ async function main() {
     stallPhase: args['stall-phase'] || 'unknown',
     // BRO-2839 — see buildFailureEntry's field comment in scripts/lib/push-ledger.js.
     stallService: args['stall-service'] || 'unknown',
+    // BRO-3148 — files the failed push left behind (see buildFailureEntry).
+    unpushedCount: Number(args['unpushed-count']) || 0,
+    unpushedFiles: args['unpushed-files'] ? String(args['unpushed-files']).split(',').filter(Boolean) : [],
     // BRO-3465 — see buildFailureEntry in scripts/lib/push-ledger.js.
     traceCensus: args['trace-census'] || '',
     trace2Summary: args['trace2-summary'] || '',
