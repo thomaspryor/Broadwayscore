@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-10-12T05:23:05.041Z",
-  "scanned": 2700,
+  "updatedAt": "2026-10-12T09:30:24.018Z",
+  "scanned": 2699,
   "showsWithViolations": 434,
-  "totalViolations": 839,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "totalViolations": 840,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "a-day-in-the-death-of-joe-egg-west-end-2019::hollywood-reporter--demetrious-matheou.json",
+    "rosmersholm-west-end-2019::britishtheatrecom--mark-ludmon.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -818,6 +821,7 @@
     "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019::standard--unknown.json",
     "big-the-musical-west-end-2019::loureviews--louise-penn.json",
     "master-harold-and-the-boys-west-end-2019::times-uk--chris-bennion.json",
+    "a-day-in-the-death-of-joe-egg-west-end-2019::hollywood-reporter--demetrious-matheou.json",
     "a-day-in-the-death-of-joe-egg-west-end-2019::metro-uk--john-nathan.json",
     "a-day-in-the-death-of-joe-egg-west-end-2019::telegraph--claire-allfree.json",
     "a-day-in-the-death-of-joe-egg-west-end-2019::thestage--natasha-tripney.json",
@@ -837,7 +841,7 @@
     "only-fools-and-horses-west-end-2019::thestage--natasha-tripney.json",
     "only-fools-and-horses-west-end-2019::whatsonstage--alun-hood.json",
     "fiddler-on-the-roof-west-end-2019::london-box-office--phil-willmott.json",
-    "rosmersholm-west-end-2019::british-theatre--mark-ludmon.json",
+    "rosmersholm-west-end-2019::britishtheatrecom--mark-ludmon.json",
     "rosmersholm-west-end-2019::metro-uk--john-nathan.json",
     "rosmersholm-west-end-2019::thereviewshub--scott-matthewman.json",
     "the-starry-messenger-west-end-2019::telegraph--dominic-cavendish.json",
@@ -10074,7 +10078,7 @@
     {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "title": "The Grapes of Wrath",
-      "openingDate": "2024-07-25",
+      "openingDate": "2024-07-31",
       "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Grapes of Wrath' (3143 chars, textIssues flag set): https://www.thestage.co.uk/reviews/the-grapes-of-wrath-review-lyttelton-theatre-national-theatre-london-john-steinbeck-carrie-cracknell-harry-treadaway-cherry-jones",
       "violations": [
         {
@@ -10667,8 +10671,16 @@
       "showId": "a-day-in-the-death-of-joe-egg-west-end-2019",
       "title": "A Day in the Death of Joe Egg",
       "openingDate": "2019-10-02",
-      "message": "metro-uk/John Nathan (metro-uk--john-nathan.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (269 chars): https://www.metro.news/theatre-review-a-day-in-the-death-of-joe-egg/1741145/\ntelegraph/Claire Allfree (telegraph--claire-allfree.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (135 chars): https://www.telegraph.co.uk/theatre/what-to-see/day-death-joe-egg-trafalgar-studios-review-savage-compassionate1/\nthestage/Natasha Tripney (thestage--natasha-tripney.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (3288 chars): https://www.thestage.co.uk/reviews/a-day-in-the-death-of-joe-egg-review-at-trafalgar-studios--engaging-but-overly-polished-revival",
+      "message": "hollywood-reporter/Demetrious Matheou (hollywood-reporter--demetrious-matheou.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (430 chars): https://www.hollywoodreporter.com/review/a-day-death-of-joe-egg-theater-1245134\nmetro-uk/John Nathan (metro-uk--john-nathan.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (269 chars): https://www.metro.news/theatre-review-a-day-in-the-death-of-joe-egg/1741145/\ntelegraph/Claire Allfree (telegraph--claire-allfree.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (135 chars): https://www.telegraph.co.uk/theatre/what-to-see/day-death-joe-egg-trafalgar-studios-review-savage-compassionate1/\nthestage/Natasha Tripney (thestage--natasha-tripney.json) SHIPPED but fullText never mentions 'A Day in the Death of Joe Egg' (3288 chars): https://www.thestage.co.uk/reviews/a-day-in-the-death-of-joe-egg-review-at-trafalgar-studios--engaging-but-overly-polished-revival",
       "violations": [
+        {
+          "filename": "hollywood-reporter--demetrious-matheou.json",
+          "url": "https://www.hollywoodreporter.com/review/a-day-death-of-joe-egg-theater-1245134",
+          "outletId": "hollywood-reporter",
+          "criticName": "Demetrious Matheou",
+          "haystackLength": 430,
+          "textIssuesFlag": false
+        },
         {
           "filename": "metro-uk--john-nathan.json",
           "url": "https://www.metro.news/theatre-review-a-day-in-the-death-of-joe-egg/1741145/",
@@ -10931,12 +10943,12 @@
       "showId": "rosmersholm-west-end-2019",
       "title": "Rosmersholm",
       "openingDate": "2019-04-24",
-      "message": "british-theatre/Mark Ludmon (british-theatre--mark-ludmon.json) SHIPPED but fullText never mentions 'Rosmersholm' (463 chars): https://britishtheatre.com/review-rosmersholm-duke-of-yorks-theatre/\nmetro-uk/John Nathan (metro-uk--john-nathan.json) SHIPPED but fullText never mentions 'Rosmersholm' (457 chars): https://www.metro.news/theatre-review-rosmersholm/1542837/\nthereviewshub/Scott Matthewman (thereviewshub--scott-matthewman.json) SHIPPED but fullText never mentions 'Rosmersholm' (500 chars): https://www.thereviewshub.com/rosmersholm-duke-of-yorks-theatre-london/",
+      "message": "britishtheatrecom/Mark Ludmon (britishtheatrecom--mark-ludmon.json) SHIPPED but fullText never mentions 'Rosmersholm' (463 chars): https://britishtheatre.com/review-rosmersholm-duke-of-yorks-theatre/\nmetro-uk/John Nathan (metro-uk--john-nathan.json) SHIPPED but fullText never mentions 'Rosmersholm' (457 chars): https://www.metro.news/theatre-review-rosmersholm/1542837/\nthereviewshub/Scott Matthewman (thereviewshub--scott-matthewman.json) SHIPPED but fullText never mentions 'Rosmersholm' (500 chars): https://www.thereviewshub.com/rosmersholm-duke-of-yorks-theatre-london/",
       "violations": [
         {
-          "filename": "british-theatre--mark-ludmon.json",
+          "filename": "britishtheatrecom--mark-ludmon.json",
           "url": "https://britishtheatre.com/review-rosmersholm-duke-of-yorks-theatre/",
-          "outletId": "british-theatre",
+          "outletId": "britishtheatrecom",
           "criticName": "Mark Ludmon",
           "haystackLength": 463,
           "textIssuesFlag": false
