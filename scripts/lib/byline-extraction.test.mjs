@@ -17,7 +17,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractByline } from './byline-extraction.js';
+import { extractByline, extractJsonLdAuthor } from './byline-extraction.js';
 import { extractAuthorFromHtml } from './content-quality.js';
 
 test('extracts a byline nested inside an <a id="article-author-tag"> (TheaterMania live-page shape)', () => {
@@ -159,4 +159,20 @@ test('"By Name" closed by a tag or slash keeps the full name', () => {
 test('publisher meta author PLASA Media falls through to the bold sign-off', () => {
   const html = '<meta name="author" content="PLASA Media Inc - Lighting &amp; Sound America"><p>it seems shockingly apt. <b>--David Barbour</b></font></p>';
   assert.equal(extractByline(html), 'David Barbour');
+});
+
+// BRO-3414 ship-check: prose-shaped candidates must look like a name.
+test('inline By / sign-off reject nav and rating text', () => {
+  assert.equal(extractByline('<a href="/sort">By Date</a>'), null);
+  assert.equal(extractByline('<li>By The Numbers</li>'), null);
+  assert.equal(extractByline('<p><b>--Highly Recommended</b></p>'), null);
+  assert.equal(extractByline('<p>By Sunday</p>'), null);
+  assert.equal(extractByline('<p>By Ross</p>'), 'Ross');
+  assert.equal(extractByline('<p>By Holly O&rsquo;Mahony</p>'), "Holly O'Mahony");
+});
+
+test('publisher names are skipped in JSON-LD and with &eacute; entities', () => {
+  const ld = '<script type="application/ld+json">{"@type":"NewsArticle","author":{"@type":"Person","name":"Cond&eacute; Nast"}}</script>';
+  assert.equal(extractJsonLdAuthor(ld), null);
+  assert.equal(extractByline('<meta name="author" content="Cond&eacute; Nast"><p class="byline">By <a class="byline__name-link" href="/x">Helen Shaw</a></p>'), 'Helen Shaw');
 });
