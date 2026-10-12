@@ -155,7 +155,11 @@ jobs:
           [ -f data/audit/review-factcheck/web-search-text-targets.json ] && git add data/audit/review-factcheck/web-search-text-targets.json
           # data/pending-fixes/* is gitignored except issue-number plans: force-add
           # (and stage deletions of regenerated pending plans).
-          git add -f -A -- 'data/pending-fixes/bro-5090-*.json'
+          # Only when there is something to stage: a pathspec matching no file
+          # (no plans written, none tracked) is a fatal git error.
+          if compgen -G 'data/pending-fixes/bro-5090-*.json' >/dev/null || [ -n "$(git ls-files 'data/pending-fixes/bro-5090-*.json')" ]; then
+            git add -f -A -- 'data/pending-fixes/bro-5090-*.json'
+          fi
           if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
           git commit -m "data: web-search byline sweep (fetchPage, limit=${{ inputs.limit }}) [BRO-5090] [skip ci]"
           bash scripts/lib/push-with-retry.sh
