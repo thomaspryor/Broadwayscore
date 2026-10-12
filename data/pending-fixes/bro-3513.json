@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3513",
   "planId": "a323bfe4-ca59-452b-8132-a35eb4d752f9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T12:00:00.000Z",
   "submitter": {
     "name": null,
@@ -48,5 +48,28 @@
         "description": "Record why"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T13:55:42.529Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json wrongProductionReason: null -> \"BRO-3513: 2015 MTC off-Broadway premiere review, not the 2016 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prom-2018/vulture--jesse-green.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prom-2018/vulture--jesse-green.json wrongProductionReason: null -> \"BRO-3513: review of the 2020 Netflix film adaptation, not the Broadway production\""
+    }
+  ]
 }
