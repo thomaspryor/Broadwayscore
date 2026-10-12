@@ -217,7 +217,25 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
   };
 }
 
+/**
+ * Open `uncollected-blackout:<id>` ledger keys whose show is no longer in the
+ * current blackout set. Nothing else ever resolves these (BRO-5077: 14 sat
+ * open forever, so every card's "condition absent" acceptance check could
+ * never pass even after the data was fixed).
+ *
+ * @param {Object<string, {status?: string}>} conditions ledger.conditions
+ * @param {Iterable<string>} blackoutShowIds current blackouts
+ * @returns {string[]} conditionKeys to resolve
+ */
+function staleBlackoutKeys(conditions, blackoutShowIds) {
+  const live = new Set(blackoutShowIds || []);
+  const prefix = 'uncollected-blackout:';
+  return Object.keys(conditions || {}).filter(k =>
+    k.startsWith(prefix) && conditions[k] && conditions[k].status === 'open' && !live.has(k.slice(prefix.length)));
+}
+
 module.exports = {
+  staleBlackoutKeys,
   LIVE_STATUSES,
   DEFAULT_MAX_AGE_HOURS,
   isNeverAttempted,

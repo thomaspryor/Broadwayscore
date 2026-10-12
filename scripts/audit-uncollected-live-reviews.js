@@ -153,6 +153,19 @@ async function main() {
     }
   }
 
+  // Close the loop: a blackout that cleared must resolve its ledger entry, or
+  // the card's "condition absent" check can never pass. Guarded on a sane scan
+  // size so a missing review-texts checkout (empty scan) can't resolve everything.
+  if (doAlert && haveDirs.size > 100) {
+    const { loadLedger, resolveCondition } = require('./lib/owner-alert-router');
+    const { staleBlackoutKeys } = require('./lib/uncollected-strand');
+    for (const key of staleBlackoutKeys(loadLedger().conditions, blackouts.map(f => f.showId))) {
+      if (resolveCondition(key, { reason: 'audit-uncollected-live-reviews: no longer a total blackout' })) {
+        console.log(`[alert] resolved ${key}`);
+      }
+    }
+  }
+
   if (failOnStrand && (strandedFiles > 0 || blackouts.length > 0)) {
     console.error(
       `\n❌ ${strandedFiles} discovered review URL(s) across ${findings.length} live show(s) were never fetched` +
