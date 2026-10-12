@@ -1570,5 +1570,34 @@
       }
     ],
     "queuedAt": "2026-10-12T04:09:28.226Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3366-fold-url",
+    "title": "Landing blocked: lint-workflows red on land/bro-3366-fold-url",
+    "description": "land.yml did not land land/bro-3366-fold-url: the lint-workflows gate went red at 9b817a132c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38206695121",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3366-fold-url"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "9b817a132c6ce7f7026894c7c2a80e5ec01bebb4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38206695121"
+      }
+    ],
+    "queuedAt": "2026-10-12T05:36:49.074Z"
   }
 ]
