@@ -25,11 +25,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { createRequire } from 'node:module';
 
-const { MAIN_REPO_ROOT } = createRequire(import.meta.url)('../lib/repo-root.js');
-
-const LEDGER = path.join(MAIN_REPO_ROOT, 'data', 'audit', 'dispatch-ledger.jsonl');
+const LEDGER = path.join('/Users/tompryor/Broadwayscore', 'data', 'audit', 'dispatch-ledger.jsonl');
 
 // The fix's merge time. Only claims AFTER this are the population under test —
 // the pre-fix bursts (12 claims across 2 tasks on 08-19, 9 on 08-18, 7 on

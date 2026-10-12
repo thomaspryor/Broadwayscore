@@ -36,10 +36,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { MAIN_REPO_ROOT } = require('./lib/repo-root.js');
-const { computeDeadRate, CMUX_LANE, DEFAULTS } = require(path.join(MAIN_REPO_ROOT, 'scripts', 'lib', 'dispatch-health.js'));
+const { computeDeadRate, CMUX_LANE, DEFAULTS } = require('/Users/tompryor/Broadwayscore/scripts/lib/dispatch-health.js');
 
-const LEDGER = path.join(MAIN_REPO_ROOT, 'data', 'audit', 'dispatch-ledger.jsonl');
+const LEDGER = path.join('/Users/tompryor/Broadwayscore', 'data', 'audit', 'dispatch-ledger.jsonl');
 
 // The fix's merge commit landing time (git log -1 --format=%cI 4d19a7d554a).
 //

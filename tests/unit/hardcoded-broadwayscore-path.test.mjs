@@ -17,6 +17,13 @@ const ROOT = path.resolve(import.meta.dirname, '..', '..');
 const repoRoot = require('../../scripts/lib/repo-root.js');
 const { MAC_REPO, isCheckout, mainCheckoutOf, resolveRepoRoot } = repoRoot;
 const OWNER = 'scripts/lib/repo-root.js';
+// RECHECK-AFTER acceptance tests that read the Mac-only, gitignored dispatch
+// ledger on purpose; they fail anywhere else whichever path they use, so they
+// keep the literal and stay out of land.yml's colocated-test set.
+const MAC_ONLY_TESTS = new Set([
+  'scripts/verify-dispatch-dead-rate-recovery.test.mjs',
+  'scripts/tests/verify-watchdog-claim-loop-gone.test.mjs',
+]);
 const IS_TEST = /(\.test\.(js|mjs|cjs|ts)$)|[\\/](tests|__tests__)[\\/]/;
 
 function walk(dir, out) {
@@ -54,7 +61,7 @@ test('tests never load or read files through the Mac checkout literal (fixture s
   const hits = [];
   for (const f of files) {
     const rel = path.relative(ROOT, f);
-    if (!IS_TEST.test(rel) || rel === 'tests/unit/hardcoded-broadwayscore-path.test.mjs') continue;
+    if (!IS_TEST.test(rel) || MAC_ONLY_TESTS.has(rel) || rel === 'tests/unit/hardcoded-broadwayscore-path.test.mjs') continue;
     fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
       if (load.test(line)) hits.push(`${rel}:${i + 1}`);
     });
