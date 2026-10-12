@@ -836,6 +836,7 @@ jobs:
       # files pushed by other jobs since this job's checkout (never files
       # this job wrote), and record which shows drifted.
       - name: Sync review-texts drift before rebuild
+        timeout-minutes: 2
         if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
         uses: ./.github/actions/sync-review-texts-drift
 
@@ -865,6 +866,16 @@ jobs:
         run: >-
           node scripts/check-rebuild-staleness-advisory.js
           --shows-file=/tmp/stale-checkout-shows.txt
+
+      # Stale-checkout race guard, cleanup (BRO-3162): return the synced
+      # upstream files to the checkout state so push-review-texts' pull
+      # --rebase --autostash never replays them over newer upstream edits.
+      - name: Restore review-texts drift sync
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/sync-review-texts-drift
+        with:
+          mode: restore
 
       # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
       # the checkout-time baseline push-core-data diffs against (2beb6617c58);

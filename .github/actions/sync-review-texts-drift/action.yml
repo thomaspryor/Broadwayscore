@@ -13,6 +13,13 @@ inputs:
     description: Checkout-time review-texts SHA (default reads the one checkout-review-texts recorded)
     required: false
     default: ''
+  mode:
+    description: >
+      'sync' (default, right before the rebuild) or 'restore' (after the
+      post-rebuild check, with if: always(); puts synced files back so
+      push-review-texts never pushes them as stale diffs)
+    required: false
+    default: sync
   shows-file:
     description: Where to write drifted show ids (pass the same path to check-rebuild-staleness.js)
     required: false
@@ -21,12 +28,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Sync drifted review-texts files
+    - name: Sync (or restore) drifted review-texts files
       shell: bash
       env:
         CHECKOUT_SHA: ${{ inputs.checkout-sha }}
         SHOWS_FILE: ${{ inputs.shows-file }}
+        MODE: ${{ inputs.mode }}
       run: |
+        if [ "${MODE}" = "restore" ]; then
+          node "${GITHUB_WORKSPACE}/scripts/sync-review-texts-drift.js" --restore
+          exit $?
+        fi
         ARGS=(--dir=data/review-texts "--shows-file=${SHOWS_FILE}")
         if [ -n "${CHECKOUT_SHA}" ]; then ARGS+=("--checkout-sha=${CHECKOUT_SHA}"); fi
         node "${GITHUB_WORKSPACE}/scripts/sync-review-texts-drift.js" "${ARGS[@]}"

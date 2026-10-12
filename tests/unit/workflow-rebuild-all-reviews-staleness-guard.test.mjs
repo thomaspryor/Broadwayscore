@@ -58,6 +58,10 @@ function isSyncStep(step) {
   return step.uses === './.github/actions/sync-review-texts-drift';
 }
 
+function isPreRebuildSync(step) {
+  return isSyncStep(step) && !(step.with && step.with.mode === 'restore');
+}
+
 // Blocking guard (check-rebuild-staleness.js, the 3 original callers) or the
 // report-only one (check-rebuild-staleness-advisory.js, BRO-3162 rollout).
 const VERIFY_RE = /scripts\/check-rebuild-staleness(-advisory)?\.js/;
@@ -104,7 +108,7 @@ test('every rebuild-all-reviews.js step carries the stale-checkout race guard', 
     if (!before.some((s) => s.uses === './.github/actions/checkout-review-texts')) {
       failures.push(`${key}: no ./.github/actions/checkout-review-texts step before the rebuild`);
     }
-    if (!hasInlineGuard(step) && !before.some(isSyncStep)) {
+    if (!hasInlineGuard(step) && !before.some(isPreRebuildSync)) {
       failures.push(`${key}: no ./.github/actions/sync-review-texts-drift step before the rebuild`);
     }
     if (!after.some(isVerifyStep)) {
@@ -121,7 +125,7 @@ test('the sync step sits right before its rebuild and shares its condition', () 
     const key = `${file}#${jobId}#${step.id || step.name}`;
     if (EXEMPT.has(key)) continue;
     const prev = steps[idx - 1];
-    if (!prev || !isSyncStep(prev)) {
+    if (!prev || !isPreRebuildSync(prev)) {
       failures.push(`${key}: the step right before the rebuild must be the drift sync (anything in between reopens the race)`);
       continue;
     }
@@ -145,6 +149,42 @@ test('action-based verify steps are anchored on the rebuild outcome and stay adv
     }
     if (verify.run.includes('check-rebuild-staleness-advisory.js') && verify['continue-on-error'] !== true) {
       failures.push(`${key}: the advisory verify step must carry continue-on-error: true`);
+    }
+  }
+  assert.deepEqual(failures, [], failures.join('\n'));
+});
+
+function isRestoreStep(step) {
+  return isSyncStep(step) && step.with && step.with.mode === 'restore';
+}
+
+test('action-based syncs are undone (mode: restore, if: always()) after the verify and before any review-texts push', () => {
+  // Without the restore, the synced upstream files stay as uncommitted
+  // checkout->tip diffs and push-review-texts' `git pull --rebase --autostash`
+  // replays them over a NEWER tip: reverting later upstream edits or
+  // resurrecting deleted files (BRO-3162 review finding).
+  const failures = [];
+  for (const { file, jobId, steps, idx, step } of rebuildSites()) {
+    if (hasInlineGuard(step)) continue;
+    const key = `${file}#${jobId}#${step.id || step.name}`;
+    if (EXEMPT.has(key)) continue;
+    const after = steps.slice(idx + 1);
+    const verifyIdx = after.findIndex(isVerifyStep);
+    const restoreIdx = after.findIndex(isRestoreStep);
+    const pushIdx = after.findIndex((s) => s.uses === './.github/actions/push-review-texts'
+      || (typeof s.run === 'string' && /cd data\/review-texts|-C data\/review-texts (push|commit)/.test(s.run)));
+    if (restoreIdx === -1) {
+      failures.push(`${key}: no sync-review-texts-drift (mode: restore) step after the rebuild`);
+      continue;
+    }
+    if (verifyIdx !== -1 && restoreIdx < verifyIdx) {
+      failures.push(`${key}: restore runs before the post-rebuild check, which needs the synced files`);
+    }
+    if (pushIdx !== -1 && pushIdx < restoreIdx) {
+      failures.push(`${key}: a review-texts push runs before the restore`);
+    }
+    if (!String(after[restoreIdx].if || '').includes('always()')) {
+      failures.push(`${key}: the restore step must run with if: always()`);
     }
   }
   assert.deepEqual(failures, [], failures.join('\n'));
