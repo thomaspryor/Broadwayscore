@@ -343,7 +343,9 @@ function triage(cohort) {
       }
       rows.push({ id, title: show.title, field: 'synopsis', stored: String(show.synopsis).slice(0, 160), status: flags.length ? 'adjudicate' : 'ok', detail: flags });
     } else rows.push({ id, title: show.title, field: 'synopsis', status: 'not-stored' });
-    if (c.poster && c.poster.file) {
+    // The row's CURRENT art decides: art cleared since the check is "not stored", not still wrong.
+    const currentArt = show.images && (show.images.poster || show.images.thumbnail);
+    if (c.poster && c.poster.file && currentArt) {
       const flags = [];
       const tnorm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, '');
       for (const k of ['gemini', 'openai']) {
