@@ -21,11 +21,11 @@ function daysBetween(fromStr, toStr) {
 
 /**
  * @param {object} show shows.json entry
- * @param {{closingDate?: string|null}} ssData parsed ShowScore page
+ * @param {object} _ssData parsed ShowScore page (unused: a Closed page carries no run dates)
  * @param {string} todayStr YYYY-MM-DD
  * @returns {{trust: boolean, reason: string|null}}
  */
-function shouldTrustShowScoreClosed(show, ssData, todayStr) {
+function shouldTrustShowScoreClosed(show, _ssData, todayStr) {
   const opening = show && show.openingDate;
   if (opening && /^\d{4}-\d{2}-\d{2}$/.test(opening)) {
     const age = daysBetween(opening, todayStr);
@@ -34,9 +34,11 @@ function shouldTrustShowScoreClosed(show, ssData, todayStr) {
     }
   }
   const previews = show && show.previewsStartDate;
-  const ssEnd = ssData && ssData.closingDate;
-  if (previews && ssEnd && /^\d{4}-\d{2}-\d{2}$/.test(previews) && previews > ssEnd) {
-    return { trust: false, reason: `previews start ${previews} after ShowScore run end ${ssEnd} (prior production)` };
+  if (previews && /^\d{4}-\d{2}-\d{2}$/.test(previews) && daysBetween(previews, todayStr) < RECENT_OPENING_DAYS) {
+    return { trust: false, reason: `previews started ${previews} (within ${RECENT_OPENING_DAYS}d or future)` };
+  }
+  if (todayTixIdMismatch(show)) {
+    return { trust: false, reason: `todaytixId ${show.todaytixId} disagrees with ticketLinks TodayTix id, so the TodayTix-active check is unreliable` };
   }
   return { trust: true, reason: null };
 }
@@ -46,7 +48,7 @@ function todayTixIdFromTicketLinks(show) {
   const links = (show && show.ticketLinks) || [];
   for (const l of Array.isArray(links) ? links : []) {
     const url = typeof l === 'string' ? l : l && l.url;
-    const m = url && String(url).match(/todaytix\.com\/.*?(?:shows?\/|show\/)(\d{3,})/i);
+    const m = url && String(url).match(/todaytix\.com\/.*?shows?\/(\d+)/i);
     if (m) return m[1];
   }
   return null;

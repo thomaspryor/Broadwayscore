@@ -20,7 +20,7 @@ const { isShowScoreStatusEligible } = require('./lib/showscore-status-eligibilit
 const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
-const { shouldTrustShowScoreClosed, todayTixIdMismatch } = require('./lib/showscore-closure-guard');
+const { shouldTrustShowScoreClosed } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasBookableEvidence } = require('./lib/todaytix-reopen-guard');
 const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
@@ -401,6 +401,14 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
       continue;
     }
 
+    // BRO-4617: a just-opened show can carry a prior run's todaytixId that never
+    // appears on TodayTix; same recency/mismatch guard as the ShowScore path.
+    const staleGuard = shouldTrustShowScoreClosed(show, null, today);
+    if (!staleGuard.trust) {
+      console.log(`  ⚠️  ${show.title} (${cat}): missing from TodayTix ${daysMissing} days but ${staleGuard.reason} — skipping auto-close`);
+      continue;
+    }
+
     // Don't auto-close if closingDate is still in the future — TodayTix listing may have
     // been removed early (presale ended, etc.) but the show is still running
     if (show.closingDate && show.closingDate >= today) {
@@ -552,9 +560,6 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
     // Cross-validation: ShowScore says closed
     if (ssData.ssStatus === 'closed' && (show.status === 'open' || show.status === 'previews')) {
       const closeGuard = shouldTrustShowScoreClosed(show, ssData, new Date().toISOString().slice(0, 10));
-      if (todayTixIdMismatch(show)) {
-        console.log(`  ⚠️  ${show.title}: todaytixId ${show.todaytixId} disagrees with ticketLinks TodayTix id (stale prior-run id?)`);
-      }
       if (!closeGuard.trust) {
         // BRO-4617 slam-frank pattern: ShowScore page is a prior production
         console.log(`  ⚠️  ${show.title} (${cat}): ShowScore says "Closed" but ${closeGuard.reason} — NOT closing`);

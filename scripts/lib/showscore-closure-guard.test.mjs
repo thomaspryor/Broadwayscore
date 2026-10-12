@@ -1,6 +1,6 @@
 /**
  * Tests for scripts/lib/showscore-closure-guard.js (BRO-4617)
- * Run: node --test scripts/lib/update-show-status.test.mjs
+ * Run: node --test scripts/lib/showscore-closure-guard.test.mjs
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -20,13 +20,16 @@ test('slam-frank: just-opened show is not closed by a stale ShowScore page', () 
 test('future-dated show is never closed by ShowScore', () => {
   assert.equal(shouldTrustShowScoreClosed({ openingDate: '2026-12-01' }, {}, '2026-10-05').trust, false);
 });
-test('previews starting after the ShowScore run ended is a prior production', () => {
-  const s = { openingDate: '2026-01-01', previewsStartDate: '2025-12-10' };
-  assert.equal(shouldTrustShowScoreClosed(s, { closingDate: '2025-06-01' }, '2026-10-05').trust, false);
+test('recent previews with no openingDate is not closed by ShowScore', () => {
+  assert.equal(shouldTrustShowScoreClosed({ previewsStartDate: '2026-09-25' }, {}, '2026-10-05').trust, false);
+});
+test('todaytixId mismatch makes the close untrusted even for an old show', () => {
+  const s = { openingDate: '2026-01-10', todaytixId: 1, ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/22-chicago' }] };
+  assert.equal(shouldTrustShowScoreClosed(s, {}, '2026-10-05').trust, false);
 });
 test('long-open show with a consistent closed reading may close', () => {
   const s = { openingDate: '2026-01-10', previewsStartDate: '2025-12-20' };
-  assert.equal(shouldTrustShowScoreClosed(s, { closingDate: '2026-09-01' }, '2026-10-05').trust, true);
+  assert.equal(shouldTrustShowScoreClosed(s, {}, '2026-10-05').trust, true);
 });
 test('no dates at all: trust (legacy behaviour preserved)', () => {
   assert.equal(shouldTrustShowScoreClosed({}, {}, '2026-10-05').trust, true);
