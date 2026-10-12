@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5080",
   "planId": "1132df61-b270-4235-a62e-7979da8cd0e5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T21:34:08.874Z",
   "submitter": {
     "name": null,
@@ -278,5 +278,133 @@
         "description": "frankie-and-johnny-in-the-clair-de-lune-2002: synopsis cleared (synopsis-wrong-production) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/Frankie_and_Johnny_in_the_Clair_de_Lune)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T04:25:59.000Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran plan-we-historical-opening-repair.js successfully"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dear-evan-hansen-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for betrayal-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for present-laughter-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bleak-expectations-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for rockets-and-blue-lights-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-mongol-khan-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for death-drop-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for myras-story-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for aspects-of-love-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for aspects-of-love-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for bonnie-and-clyde-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for small-island-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for cuckoo-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-view-from-the-bridge-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-gospel-at-colonus-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-gospel-at-colonus-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-gospel-at-colonus-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for she-loves-me-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for she-loves-me-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for frankie-and-johnny-in-the-clair-de-lune-2002"
+    }
+  ]
 }
