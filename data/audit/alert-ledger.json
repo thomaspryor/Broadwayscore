@@ -3230,13 +3230,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-12T05:46:01.562Z",
+      "lastSeen": "2026-10-12T08:45:38.176Z",
       "lastNotifiedAt": "2026-10-11T13:10:08.074Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.818Z",
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3244,13 +3244,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-12T05:46:01.582Z",
+      "lastSeen": "2026-10-12T08:45:38.202Z",
       "lastNotifiedAt": "2026-10-11T13:10:08.095Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.835Z",
       "notifyCount": 24,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3502,13 +3502,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-12T05:46:01.589Z",
+      "lastSeen": "2026-10-12T08:45:38.207Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.687Z",
       "lastSurfacedAt": "2026-10-10T22:36:40.025Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5015",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3922,13 +3922,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-12T05:46:01.547Z",
+      "lastSeen": "2026-10-12T08:45:38.167Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.648Z",
       "lastSurfacedAt": "2026-10-06T13:33:30.414Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4295,13 +4295,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-09T12:26:41.876Z",
-      "lastSeen": "2026-10-12T05:46:01.534Z",
+      "lastSeen": "2026-10-12T08:45:38.158Z",
       "lastNotifiedAt": "2026-10-11T13:10:08.048Z",
       "lastSurfacedAt": "2026-10-09T12:26:41.876Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-4932",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5883,13 +5883,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-07T01:51:51.676Z",
-      "lastSeen": "2026-10-12T05:46:01.507Z",
+      "lastSeen": "2026-10-12T08:45:38.139Z",
       "lastNotifiedAt": "2026-10-11T13:10:08.020Z",
       "lastSurfacedAt": "2026-10-11T13:10:08.020Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5948,13 +5948,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-12T05:46:01.522Z",
+      "lastSeen": "2026-10-12T08:45:38.149Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.623Z",
       "lastSurfacedAt": "2026-10-12T00:49:43.623Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9206,13 +9206,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-12T05:46:01.555Z",
+      "lastSeen": "2026-10-12T08:45:38.172Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.655Z",
       "lastSurfacedAt": "2026-10-12T00:49:43.655Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -11971,13 +11971,13 @@
       "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
       "firstSeen": "2026-10-08T11:25:20.264Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.264Z",
-      "lastSeen": "2026-10-12T05:46:01.570Z",
+      "lastSeen": "2026-10-12T08:45:38.195Z",
       "lastNotifiedAt": "2026-10-11T13:10:08.082Z",
       "lastSurfacedAt": "2026-10-11T13:10:08.082Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
