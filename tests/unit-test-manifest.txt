@@ -1008,6 +1008,7 @@ tests/unit/playbill-verdict-discover.test.mjs
 tests/unit/poller-blocklist.test.mjs
 tests/unit/poller-idempotency.test.mjs
 tests/unit/poller-retry-supersede.test.mjs
+tests/unit/posthog-monday-workflow.test.mjs
 tests/unit/pr-supervisor-core.test.mjs
 tests/unit/pre-push-visual-gate-scope.test.mjs
 tests/unit/precursor-category-parser.test.mjs
@@ -1187,6 +1188,8 @@ tests/unit/scrapingdog-ack.test.mjs
 tests/unit/scrapingdog-failure-path-smoke.test.mjs
 tests/unit/sd-billed-credits.test.mjs
 tests/unit/sd-opening-window-budget-reserve.test.mjs
+tests/unit/search-performer-lookup.test.mjs
+tests/unit/search-zero-results-recovery.test.mjs
 tests/unit/seating-data-coverage.test.mjs
 tests/unit/self-contradictory-clear.test.mjs
 tests/unit/send-daily-digest.test.mjs

@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildShowsWithScores, isTourIndexableSlim } = require('./lib/search-shows-scores');
 const { isCategoryEnabled } = require('./lib/markets');
+const { castNamesForSearch } = require('./lib/show-search-match');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -111,6 +112,36 @@ const searchShows = visibleShows.map(show => {
 // Write compact JSON (no pretty-print to minimize file size)
 const outputPath = path.join(outputDir, 'search-shows.json');
 fs.writeFileSync(outputPath, JSON.stringify(searchShows));
+
+// HeaderSearch-only extras, kept out of search-shows.json so its other
+// consumers (my-shows import, list builders, admin forms) don't download them:
+//  - cast: top-billed names per indexed show, so performer searches find
+//    their show (BRO-4225).
+//  - archive: unscored closed shows. They have live, indexable /show pages,
+//    but leaving them out of search made "fleabag" and "alice in wonderland"
+//    dead ends (BRO-3628); HeaderSearch ranks them last. Same category flags
+//    as above; tours are excluded (an unscored closed tour is noindexed, see
+//    isTourIndexableSlim).
+const visibleIds = new Set(visibleShows.map(s => s.id));
+const cast = {};
+for (const show of visibleShows) {
+  const names = castNamesForSearch(show.cast);
+  if (names) cast[show.id] = names;
+}
+const archive = shows
+  .filter(show => !visibleIds.has(show.id) && show.status === 'closed'
+    && show.category !== 'tour' && isCategoryEnabled(show.category))
+  .map(show => {
+    const entry = { id: show.id, title: show.title, slug: show.slug, status: show.status, archived: true };
+    if (show.category && show.category !== 'broadway') entry.category = show.category;
+    if (Array.isArray(show.akaTitles) && show.akaTitles.length) entry.akaTitles = show.akaTitles;
+    const year = show.openingDate ? show.openingDate.slice(0, 4) : (show.id.match(/(\d{4})$/) || [])[1];
+    if (year) entry.year = year;
+    return entry;
+  });
+const extraPath = path.join(outputDir, 'header-search-extra.json');
+fs.writeFileSync(extraPath, JSON.stringify({ cast, archive }));
+console.log(`Generated ${extraPath} (${(fs.statSync(extraPath).size / 1024).toFixed(0)}KB, cast for ${Object.keys(cast).length} shows, ${archive.length} archived)`);
 
 const sizeKB = (fs.statSync(outputPath).size / 1024).toFixed(0);
 const excluded = shows.length - visibleShows.length;

@@ -12,6 +12,15 @@ on:
     - cron: '0 8 * * 1'  # Monday 8 AM UTC (4 AM EST)
   workflow_dispatch: {}
 
+# BRO-3489: a manual dispatch overlapping the Monday cron (or two dispatches)
+# would let two friction-fixer runners pick the same Linear issue before either
+# pushes its branch, and the loser's outcome comment could land last. Queue
+# instead; cancel-in-progress stays false so a mid-flight Claude call or PR push
+# finishes (same shape as commercial-weekly.yml).
+concurrency:
+  group: posthog-monday
+  cancel-in-progress: false
+
 jobs:
   weekly-insights:
     name: Weekly Insights → GitHub Issue
