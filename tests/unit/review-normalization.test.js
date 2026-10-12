@@ -1183,6 +1183,8 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
     publishDate: 'February 13th, 2024',
     wrongProduction: true,
   };
+  // The self-heal cases need a url that really moved (BRO-4911).
+  const MOVED_URL = 'https://www.thestage.co.uk/reviews/example-show-review-transfer';
 
   test('preserves Pre-opening guard flag on same-URL re-merge', () => {
     const existing = {
@@ -1236,10 +1238,29 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
       ...baseExisting,
       wrongProductionNote: 'Same URL exists in other-show-2020 which is closer to review year 2020',
     };
-    const incoming = { ...existing, source: 'show-score' };
+    const incoming = { ...existing, url: MOVED_URL, source: 'show-score' };
     const merged = mergeReviews(existing, incoming);
     assert.strictEqual(merged.wrongProduction, undefined, 'URL-based flag should auto-clear');
-    assert.strictEqual(merged.wrongProductionAutoCleared, true);
+    // A moved url is cleared by the url-changed path first, which records it in
+    // _urlChangedClear rather than wrongProductionAutoCleared.
+    assert.ok(
+      merged.wrongProductionAutoCleared === true
+        || (merged._urlChangedClear?.cleared || []).includes('wrongProduction'),
+      'the clear must be recorded'
+    );
+  });
+
+  // BRO-4911: the self-heal needs the url to CHANGE. The same url seen again
+  // (a re-scrape, an aggregator re-listing) is no evidence the verdict is void.
+  test('keeps a Same URL flag when the identical url is re-merged', () => {
+    const existing = {
+      ...baseExisting,
+      wrongProductionNote: 'Same URL exists in other-show-2020 which is closer to review year 2020',
+    };
+    const incoming = { ...existing, source: 'show-score' };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.wrongProduction, true, 'an unchanged url must not clear the flag');
+    assert.strictEqual(merged.wrongProductionAutoCleared, undefined);
   });
 
   // The 7 cases above all supply a wrongProductionNote, so none of them
@@ -1297,7 +1318,7 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
       wrongProductionNote: 'Same URL exists in other-show-2020',
       contentVerification: { wrongProduction: true, confidence: 'low' },
     };
-    const incoming = { ...existing, source: 'show-score' };
+    const incoming = { ...existing, url: MOVED_URL, source: 'show-score' };
     const merged = mergeReviews(existing, incoming);
     assert.strictEqual(merged.wrongProduction, undefined, 'weak CV must not pin a URL-based flag');
   });
@@ -1313,7 +1334,7 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
       _wrongProductionReason: 'URL matches other-show-2020 (year-based)',
       _wrongProductionDetectedBy: 'cleanup-dedup-comprehensive',
     };
-    const incoming = { ...existing, source: 'show-score' };
+    const incoming = { ...existing, url: MOVED_URL, source: 'show-score' };
     const merged = mergeReviews(existing, incoming);
     assert.strictEqual(
       merged.wrongProduction, undefined,
