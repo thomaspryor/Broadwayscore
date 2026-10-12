@@ -45,6 +45,18 @@ function opensWith(tour, stops) {
   return Math.abs(Date.parse(stops[0].start) - Date.parse(String(tour.openingDate).slice(0, 10))) <= 14 * 86400000;
 }
 
+/**
+ * Rows still running on or after the launch day. Mirrors tour-page-audit's
+ * stops-before-opening (a stop that ENDS before openingDate), so a one-night
+ * stop days before launch is dropped (Dirty Dancing's Utica, BRO-4978) while an
+ * opening engagement that starts a day or two early is kept (Lion King's Wichita).
+ */
+function rowsFromLaunch(rows, tour) {
+  if (!tour || !tour.openingDate) return rows;
+  const launch = Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`);
+  return rows.filter(r => r.end.getTime() >= launch);
+}
+
 /** The stops of the segment that is this tour, or null. Pure. */
 const MAX_LAYOFF_DAYS = 365;
 
@@ -64,7 +76,6 @@ function tourStops(tour, html, now = new Date()) {
   // Only the current era: a long-running title's page can run several
   // companies together back to 2020 (Hamilton); stops before this tour's
   // launch belong to an earlier company (BRO-4601).
-  const from = tour.openingDate ? Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) - 7 * 86400000 : -Infinity;
   // ...and none after it closed: A Beautiful Noise's page runs a second
   // company on from Oct 2026 after the first closed in July.
   const until = tour.closingDate ? Date.parse(`${String(tour.closingDate).slice(0, 10)}T00:00:00Z`) : Infinity;
@@ -75,7 +86,7 @@ function tourStops(tour, html, now = new Date()) {
   let pool = segment.rows;
   const legOver = segment.rows[segment.rows.length - 1].end < now;
   if (!tour.closingDate && legOver) pool = segments.slice(segments.indexOf(segment)).flatMap(s => s.rows);
-  const inRange = pool.filter(r => r.start.getTime() >= from && r.start.getTime() <= until);
+  const inRange = rowsFromLaunch(pool, tour).filter(r => r.start.getTime() <= until);
   // One company can't play two cities at once. Pages that run several
   // companies in one "Past Seasons" table (Hamilton, Lion King, Six) or list
   // a stop twice in error (Outsiders: DC and Chicago both Aug 2026) leave
@@ -147,4 +158,4 @@ async function main() {
 
 if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });
 
-module.exports = { tourStops, opensWith };
+module.exports = { tourStops, opensWith, rowsFromLaunch };

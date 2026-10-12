@@ -30,3 +30,19 @@ test('Show Score URL discovery skips tours (they only find the parent page)', ()
   assert.equal(canDiscoverShowScoreUrl({ category: 'tour' }), false);
   assert.equal(canDiscoverShowScoreUrl({ category: 'broadway' }), true);
 });
+
+// BRO-4978: the schedule fetcher must keep exactly what the audit accepts.
+test('fetcher drops stops ending before openingDate but keeps an opening engagement that starts early', () => {
+  const { rowsFromLaunch } = require('../fetch-tour-schedules.js');
+  const d = s => new Date(`${s}T00:00:00Z`);
+  const row = (city, start, end) => ({ city, venue: 'V', start: d(start), end: d(end) });
+  const show = { id: 'dd', title: 'Dirty Dancing', category: 'tour', status: 'open', closingDate: null, openingDate: '2026-08-12', images: { poster: '/images/shows/dd/poster.webp' }, synopsis: 'x'.repeat(50) };
+  const rows = [row('Utica, NY', '2026-08-07', '2026-08-07'), row('Wichita, KS', '2026-08-10', '2026-08-23'), row('St. Paul, MN', '2026-08-25', '2026-09-06')];
+  const kept = rowsFromLaunch(rows, show);
+  assert.deepEqual(kept.map(r => r.city), ['Wichita, KS', 'St. Paul, MN']);
+  const iso = x => x.toISOString().slice(0, 10);
+  const stops = kept.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) }));
+  assert.ok(!checkTourData({ show, parent: null, schedule: { stops }, today: '2026-10-11' }).some(f => f.code === 'stops-before-opening'));
+  const all = rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) }));
+  assert.ok(checkTourData({ show, parent: null, schedule: { stops: all }, today: '2026-10-11' }).some(f => f.code === 'stops-before-opening'));
+});
