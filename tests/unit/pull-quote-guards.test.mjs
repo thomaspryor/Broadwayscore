@@ -635,3 +635,10 @@ describe('isInServiceSection (BRO-4973)', () => {
     assert.strictEqual(isInServiceSection('x', null), false);
   });
 });
+
+// BRO-751: "yet again" is emphasis, not a reservation pivot.
+test('", yet again in triumph" on a rave is not rejected as a reservation', () => {
+  assert.equal(shouldRejectAsReservation('Now at the Winter Garden Theater, "Death of a Salesman" has returned to Broadway, yet again in triumph.', 92), false);
+  assert.equal(shouldRejectAsReservation('The set is impressive, but nothing could save this salesman from death.', 92), true);
+  assert.equal(shouldRejectAsReservation('The cast is lovely, yet the evening never takes flight.', 85), true);
+});

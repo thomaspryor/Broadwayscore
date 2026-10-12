@@ -19,7 +19,10 @@ const HEDGE_OPENER_RE = /^\s*(but|yet|still|though|although|however|despite|whil
 // on Giant: "I found Lithgow's performance a fascinating study in monstrosity,
 // but I found myself more engaged by the conversations I've had since seeing
 // 'Giant'" — reads as a withdrawal of endorsement on a 77-scoring review.
-const MID_SENTENCE_PIVOT_RE = /,\s+(but|yet|though|although|however|despite)\b/i;
+// "yet again" / "yet another" is emphasis, not a pivot: the NYT Critics' Pick
+// line ", has returned to Broadway, yet again in triumph" is the endorsement
+// BRO-751 asked the extractor to pick, and was being rejected.
+const MID_SENTENCE_PIVOT_RE = /,\s+(but|yet(?!\s+(?:again|another|once more)\b)|though|although|however|despite)\b/i;
 
 // A candidate outside this range is rejected: too short to stand alone out of
 // context ("Yes, they're spectacular!" — real, on-topic, but only 25 chars),
