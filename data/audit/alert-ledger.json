@@ -158,13 +158,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T05:04:24.152Z",
+      "lastSeen": "2026-10-12T05:19:18.527Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 24
+      "silentRefires": 25
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12600,11 +12600,11 @@
       "linearIdentifier": "BRO-5116",
       "absentRunIds": [
         "38202295146",
-        "38203493477",
-        "38205161549"
+        "38204195471",
+        "38206200316"
       ],
       "silentRefires": 2,
-      "resolvedAt": "2026-10-12T05:04:21.716Z",
+      "resolvedAt": "2026-10-12T05:19:18.175Z",
       "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:2a5215c8": {
@@ -14381,27 +14381,21 @@
       "cardId": null,
       "linearIdentifier": "BRO-5121",
       "absentRunIds": [
-        "38205161549"
+        "38206200316"
       ]
     },
     "test-yml:red:Unit Tests:f6206569": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"unchanged per-review ERROR warns, quarantines the row and permits the actual push gate\"",
-      "firstSeen": "2026-10-12T05:04:21.728Z",
-      "incidentOpenedAt": "2026-10-12T05:04:21.728Z",
-      "lastSeen": "2026-10-12T05:04:21.728Z",
-      "lastNotifiedAt": "2026-10-12T05:04:21.728Z",
+      "firstSeen": "2026-10-12T05:19:18.186Z",
+      "incidentOpenedAt": "2026-10-12T05:19:18.186Z",
+      "lastSeen": "2026-10-12T05:19:18.186Z",
+      "lastNotifiedAt": "2026-10-12T05:19:18.186Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5124",
-      "dispatch": {
-        "requestedAt": "2026-10-12T05:04:21.728Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38205161549",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38205161549"
-      }
+      "linearIdentifier": "BRO-5124"
     }
   }
 }
