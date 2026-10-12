@@ -2,18 +2,18 @@
 'use strict';
 
 /**
- * land-retry-cancelled.js — re-run Land jobs that were only queue casualties
- * of the shared `landing` slot (BRO-4246), spending an attempt only while the
- * slot is free (BRO-4653) or held by one running job with nobody pending
- * (BRO-4677). Run by land-retry-cancelled.yml.
+ * land-retry-cancelled.js — re-run Land jobs cancelled before they did any
+ * work (BRO-4246). Until BRO-5112 that was eviction from the shared `landing`
+ * slot and this script spent attempts only while the slot was free; the Land
+ * job's group is per branch now and the fast-forward waits in the landing
+ * mutex (scripts/lib/land-mutex.js), so a re-run evicts nobody and needs no
+ * slot check. Run by land-retry-cancelled.yml.
  *
  *   node scripts/land-retry-cancelled.js --sweep [--dry-run]
- *     Slot free, or held by a running job with the pending seat empty →
- *     re-run at most ONE stranded cancelled Land run, oldest first. Pending
- *     seat taken → wait, except a run stranded >30 min is
- *     re-run anyway (BRO-4676 aging; still one re-run per sweep).
+ *     Re-run at most ONE stranded cancelled Land run, oldest first (main-red
+ *     lanes first).
  *   node scripts/land-retry-cancelled.js --run=<id> [--dry-run]
- *     Targeted retry of one run, same slot rule.
+ *     Targeted retry of one run.
  *   node scripts/land-retry-cancelled.js --stranded [--only=<land/branch>] [--dry-run]
  *     Hourly pass over every land/** ref still on origin (BRO-4802): a ref
  *     evicted outside the fast-retry window gets a FULL re-run (Checks again
@@ -22,16 +22,13 @@
  *     back to Todo). Decisions: scripts/lib/land-stranded-refs.js.
  *
  * Decisions: scripts/lib/land-retry-on-cancel.js (is this run a queue
- * casualty?) and scripts/lib/land-queue-backoff.js (is the slot free, which
- * run goes next?).
+ * casualty?) and scripts/lib/land-queue-backoff.js (which run goes next?).
  */
 
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
-const {
-  slotQueries, scanSlot, supersededByNewerRun, decideSweep, landJobInSlot, MAX_AGE_HOURS, MAX_JOB_LOOKUPS,
-} = require('./lib/land-queue-backoff');
+const { supersededByNewerRun, decideSweep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
 
 const USAGE = 'usage: node scripts/land-retry-cancelled.js --sweep | --run=<id> | --stranded [--only=<land/branch>] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -51,43 +48,12 @@ const ghRaw = (args) => runGhWithFallback(args, { exec: execFileSync, fallbackTo
 const gh = (args) => JSON.parse(ghRaw(args));
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 
-// Memoized: the slot scan, rerunInFlight and the decisions can ask about the same run.
+// Memoized: the targeted and sweep decisions can ask about the same run.
 const jobsCache = new Map();
 const jobsOf = (id) => {
   if (!jobsCache.has(String(id))) jobsCache.set(String(id), gh([`repos/${repo}/actions/runs/${id}/jobs?filter=latest&per_page=50`]).jobs);
   return jobsCache.get(String(id));
 };
-
-// Status-filtered listings (not a created-desc page: re-runs keep their
-// original created_at), all gathered first, then checked likeliest holder
-// first. A land.yml run costs one jobs lookup to tell "in Checks" (clear) from
-// "Land job running or pending" (busy). Anything unknown reads as busy.
-function slotState(selfRunId) {
-  const byId = new Map();
-  for (const q of slotQueries(repo)) {
-    const page = gh([q]);
-    const runs = page.workflow_runs || [];
-    for (const run of runs) byId.set(run.id, run);
-    if ((page.total_count || 0) > runs.length) return { busy: true, rerunInFlight: true, blockers: [{ id: '-', branch: q, status: 'unlisted', why: 'too-many-in-flight' }] };
-  }
-  // BRO-4676: a land.yml re-run still in flight (pending or running) must finish
-  // before another aged re-run is allowed to compete for the slot.
-  // BRO-4802: only once its Land job holds or waits for the slot. A FULL re-run
-  // (the --stranded pass) spends ~30 min in Checks first, and counting that
-  // would stall every fast and aged retry for the whole time. A fast re-run
-  // keeps its Checks result, so its Land job is in the slot at once.
-  const rerunInFlight = [...byId.values()].some((r) => {
-    if (!/(^|\/)land\.yml$/.test(r.path || '') || (r.run_attempt || 1) <= 1 || r.status === 'completed') return false;
-    try { return landJobInSlot(jobsOf(r.id)); } catch { return true; } // unreadable reads as in flight
-  });
-  const withFlag = (s) => ({ ...s, rerunInFlight });
-  return withFlag(scanSlot([...byId.values()], {
-    jobsOf, selfRunId, now: Date.now(),
-    onStale: (run) => console.log(`ignoring stale in-flight run ${run.id} ${run.head_branch} (${run.status} since ${run.run_started_at || run.created_at})`),
-  }));
-}
-
-const describe = (blockers) => blockers.map((b) => `${b.id} ${b.branch} ${b.status} ${b.why}`).join(', ');
 
 function rerun(id, seenAttempt) {
   if (dry) { console.log(`dry-run: would re-run ${id}`); return; }
@@ -101,24 +67,6 @@ function rerun(id, seenAttempt) {
     return;
   }
   console.log(`re-run requested for ${id} (Land job only; Checks result kept)`);
-  settle(id);
-}
-
-// BRO-4677: the run can read `completed` for a few seconds after the POST. The
-// next sweep starts the moment this one exits, and would not see the re-run in
-// flight (rerunInFlight), re-running the next stranded run onto the same seat.
-function settle(id, tries = 12) {
-  for (let i = 0; i < tries; i += 1) {
-    try {
-      if (gh([`repos/${repo}/actions/runs/${id}`]).status !== 'completed') return;
-    } catch (err) {
-      console.log(`run ${id}: settle check failed (${String(err.message).split('\n')[0]}); the re-run itself went through`);
-      return;
-    }
-    execFileSync('sleep', ['5']);
-  }
-  console.log(`run ${id} still reads completed after ${tries * 5}s; continuing`);
-  console.log(`::warning::land re-run ${id} not visible in flight after ${tries * 5}s; a following sweep may stack another re-run`);
 }
 
 function runTargeted() {
@@ -135,18 +83,10 @@ function runTargeted() {
   const d = decideLandRetry({ run, jobs, branchExists, branchTip });
   console.log(`run ${runId} ${run.head_branch} attempt ${run.run_attempt}: ${d.retry ? 'eligible' : 'skip'} (${d.reason})`);
   if (!d.retry) return;
-  const slot = slotState(runId);
-  if (slot.busy) {
-    // Targeted retries keep the strict free-slot rule; only the sweep uses the
-    // BRO-4677 running-only exception.
-    console.log(`landing slot busy (${describe(slot.blockers)}): not re-running, no attempt spent; the next sweep picks it up`);
-    return;
-  }
   rerun(runId, run.run_attempt);
 }
 
 function runSweep() {
-  const slot = slotState();
   // Cancelled runs only (status filter): the last 24h held ~150 Land runs, so
   // an unfiltered page would drop the oldest stranded ones first.
   const since = encodeURIComponent(`>=${new Date(Date.now() - MAX_AGE_HOURS * 3600 * 1000).toISOString()}`);
@@ -157,11 +97,8 @@ function runSweep() {
     if (runs.length < 100) break;
   }
   const refs = landRefs();
-  const d = decideSweep({ slot, cancelledRuns, refs, now: Date.now() });
-  if (d.action === 'wait') { console.log(`landing slot busy (${describe(d.blockers)}): waiting, no attempt spent`); return; }
-  if (d.action !== 'inspect') { console.log(`slot free, ${d.reason}`); return; }
-  if (d.reason === 'no-pending-slot-busy') console.log(`landing slot held (${describe(d.blockers)}) but the pending seat is empty: re-running the oldest eligible stranded run (BRO-4677)`);
-  if (d.aged) console.log(`landing slot busy (${describe(d.blockers)}) but ${d.candidates.length} run(s) stranded past the aging threshold: re-running the oldest eligible (BRO-4676)`);
+  const d = decideSweep({ cancelledRuns, refs, now: Date.now() });
+  if (d.action !== 'inspect') { console.log(d.reason); return; }
   for (const run of d.candidates) {
     const latest = (gh([`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(run.head_branch)}&per_page=1`]).workflow_runs || [])[0];
     if (supersededByNewerRun(run, latest)) {
@@ -179,8 +116,8 @@ function runSweep() {
 
 // ---- --stranded (BRO-4802) ----
 const MAX_STRANDED_REFS = 250;
-// One: two full re-runs started together finish Checks together and evict each
-// other from the single pending `landing` seat.
+// One per hourly pass: a full re-run is ~10-30 min of Checks, and a backlog
+// re-run all at once would crowd the runners (no eviction since BRO-5112).
 const MAX_FULL_RERUNS_PER_PASS = 1;
 const STRANDED_ISSUE_QUERY = `query($id: String!) {
   issue(id: $id) { id identifier updatedAt state { name type } comments(first: 250) { nodes { body } } }

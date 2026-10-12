@@ -19,9 +19,10 @@
  *      without a landing (missing with no recent green run: a typo; or
  *      deleted after a red run)
  *
- * A cancelled run is an eviction from the shared landing slot, not a refusal:
+ * A cancelled run (Land cancelled before it did any work) is not a refusal:
  * land-retry-cancelled.yml re-runs it after the next Land completes, so this
- * keeps waiting. A run dispatched by hand (`land.yml` with branch=land/<name>)
+ * keeps waiting. Since BRO-5112 queued landings wait in the landing mutex
+ * instead of being evicted, so this is rare. A run dispatched by hand (`land.yml` with branch=land/<name>)
  * is listed under head_branch=main and is invisible here; for those the ref
  * check still reports the landing, and a refusal surfaces only at the timeout.
  */
@@ -68,7 +69,7 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
   if (run.conclusion === 'cancelled') {
     const retry = `node scripts/land-retry-cancelled.js --run=${run.id}`;
     if (ageMs > STALE_EVICTION_MS) return { verdict: 'waiting', why: `run ${run.id} cancelled 30+ min ago and not re-run (retries spent?): ${retry}` };
-    return { verdict: 'waiting', why: `run ${run.id} cancelled (evicted from the landing slot; the sweep re-runs it, or: ${retry})` };
+    return { verdict: 'waiting', why: `run ${run.id} cancelled (cancelled before landing; the sweep re-runs it, or: ${retry})` };
   }
   if (RED_CONCLUSIONS.has(run.conclusion)) return { verdict: 'refused', why: `run ${run.id} ${run.conclusion}` };
   return { verdict: 'waiting', why: `run ${run.id} ${run.conclusion}, ref not deleted yet` };
