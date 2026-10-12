@@ -430,3 +430,23 @@ test('computeCodeTreeHash against a real git repo: a data-only commit keeps the 
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('toplevel-regression (BRO-5117): keyed by failing file; ADVISORY (verdict pass, failure still named) until LAND_TOPLEVEL_BLOCKING=1', () => {
+  const line = '::error::toplevel-regression gate failed: scripts/test-opening-night-fixes.js (exit 1)';
+  assert.equal(GATES.includes('toplevel-regression'), true);
+  assert.equal(parseGateFailures('toplevel-regression', line).size, 1);
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: line } : { exit: 0, text: '' });
+  const prev = process.env.LAND_TOPLEVEL_BLOCKING;
+  try {
+    delete process.env.LAND_TOPLEVEL_BLOCKING;
+    const [adv] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read });
+    assert.equal(adv.verdict, 'pass');
+    assert.equal(adv.mode, 'advisory');
+    assert.equal(adv.newFailures.length, 1);
+    process.env.LAND_TOPLEVEL_BLOCKING = '1';
+    const [armed] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read });
+    assert.equal(armed.verdict, 'fail');
+  } finally {
+    if (prev === undefined) delete process.env.LAND_TOPLEVEL_BLOCKING; else process.env.LAND_TOPLEVEL_BLOCKING = prev;
+  }
+});

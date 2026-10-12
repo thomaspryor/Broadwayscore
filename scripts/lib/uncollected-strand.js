@@ -1,6 +1,7 @@
 'use strict';
 
 const { datesFromDiscoveredReviews } = require('./opening-signal');
+const { toDateMs } = require('./date-utils');
 
 /**
  * Date-independent detection of review URLs we discovered and then never fetched.
@@ -94,8 +95,8 @@ function isOtherProductionEvidence(show, review) {
   // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
   // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
   // nothing; require positive evidence the file is about the earlier run.
-  const pub = Date.parse(review.publishDate || '');
-  const open = Date.parse(show.openingDate || '');
+  const pub = toDateMs(review.publishDate || '');
+  const open = toDateMs(show.openingDate || '');
   if (!Number.isNaN(pub) && !Number.isNaN(open) && pub < open - 60 * 86400000) return true;
   return /\b(original|earlier|prior|previous|off-)?\s*(Broadway|Off-Broadway|New York|NYC)\b[^.]{0,40}\b(production|run)\b/i.test(note)
     && /original|earlier|prior|previous|ran\b/i.test(note);
