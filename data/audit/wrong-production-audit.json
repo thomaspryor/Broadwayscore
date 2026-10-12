@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T17:52:04.749Z",
+  "timestamp": "2026-10-12T18:31:39.217Z",
   "stats": {
     "totalReviews": 56065,
-    "alreadyFlagged": 20916,
+    "alreadyFlagged": 20917,
     "dateGuardCatches": 252,
     "directorMismatch": 1781,
     "tvFilmSignals": 1617,
-    "londonSignals": 2202,
+    "londonSignals": 2207,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5253
+    "noPublishDate": 5242
   },
   "findings": [
     {
@@ -58593,6 +58593,62 @@
       ]
     },
     {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": null,
+      "publishDate": "2026-10-09",
+      "url": "https://www.broadwayworld.com/westend/article/Review-END-OF-THE-WORLD-AND-HARD-BOILED-WONDERLAND-Barbican-Theatre-20261009",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "file": "everything-theatre--estelle-warner.json",
+      "score": null,
+      "publishDate": "2026-10-10",
+      "url": "https://everything-theatre.co.uk/2026/10/review-end-of-the-world-and-hard-boiled-wonderland-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": null,
+      "publishDate": "2026-10-08",
+      "url": "https://www.timeout.com/london/theatre/end-of-the-world-and-hard-boiled-wonderland-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "end-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 75,
@@ -79778,6 +79834,19 @@
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "radio-times--olivia-garrett.json",
+      "publishDate": "2026-10-07",
+      "url": "https://www.radiotimes.com/going-out/40-phantom-of-the-opera-backstage-secrets/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "standard--katie-rosseinsky.json",
       "score": 86,
       "publishDate": "2021-08-12",
@@ -83958,7 +84027,7 @@
     {
       "showId": "white-pearl-west-end-2019",
       "file": "thestage--ava-wong-davies.json",
-      "score": 65,
+      "score": 60,
       "publishDate": "May 20th, 2019",
       "url": "https://www.thestage.co.uk/reviews/white-pearl-review-at-royal-court-london--a-scathing-gleefully-nasty-corporate-satire",
       "findings": [
@@ -84000,7 +84069,7 @@
     {
       "showId": "white-pearl-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 61,
+      "score": 38,
       "publishDate": "May 17th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/white-pearl-royal-court_49094.html",
       "findings": [
