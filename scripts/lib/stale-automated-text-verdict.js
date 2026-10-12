@@ -85,6 +85,19 @@ function hasHumanVerdict(d) {
   return false;
 }
 
+/**
+ * True when the body on disk is byte-identical to the one the rejection was
+ * stamped on (rescore-lifecycle's rejectedTextHash). A "refetch" that brought
+ * back the same page is not new text, so the verdict stands. Without this a
+ * pre-review listing page (Time Out London franz-marie, BRO-5166) was cleared
+ * and re-rejected by the ensemble 14 times in 3 days, sitting in the T1/T2
+ * silent-gap audit between rounds.
+ */
+function isRejectedTextUnchanged(d) {
+  if (!d || typeof d.rejectedTextHash !== 'string' || !d.rejectedTextHash) return false;
+  return require('./rescore-lifecycle').rejectionTextFingerprint(d) === d.rejectedTextHash;
+}
+
 /** An automated text-quality rejection (reason + rejecter), regardless of timing. */
 function isAutomatedTextRejection(d) {
   return !!d && TEXT_QUALITY_REASONS.has(d.rejectionReason) && isAutomatedRejecter(d.rejectedBy);
@@ -107,7 +120,8 @@ function staleAutomatedTextVerdicts(d) {
   const hasRejection = d.rejectionReason != null;
   const rejectionStale = hasRejection &&
     isAutomatedTextRejection(d) &&
-    isTimestampAfter(d.textFetchedAt, d.rejectedAt);
+    isTimestampAfter(d.textFetchedAt, d.rejectedAt) &&
+    !isRejectedTextUnchanged(d);
   const nonReviewStale = d.nonReviewFlag === true &&
     AUTOMATED_NONREVIEW_METHODS.has(d.nonReviewMethod) &&
     isTimestampAfter(d.textFetchedAt, d.nonReviewFlaggedAt);
@@ -270,7 +284,7 @@ function neutralizePreContextWrongProduction(d, show, now) {
  * @returns {boolean} true when a rejection was cleared
  */
 function clearAutomatedTextRejectionOnRefetch(d, now) {
-  if (!d || !isAutomatedTextRejection(d) || hasHumanVerdict(d)) return false;
+  if (!d || !isAutomatedTextRejection(d) || hasHumanVerdict(d) || isRejectedTextUnchanged(d)) return false;
   const at = now || new Date().toISOString();
   const prior = { clearedAt: at, clearedBy: 'collect-review-texts-refetch' };
   _clearInto(d, REJECTION_FIELDS, prior);
@@ -290,6 +304,7 @@ module.exports = {
   staleAutomatedTextVerdicts,
   neutralizeStaleAutomatedTextVerdict,
   clearAutomatedTextRejectionOnRefetch,
+  isRejectedTextUnchanged,
   isPreContextWrongProduction,
   neutralizePreContextWrongProduction,
   parkTextDerivedScore,
