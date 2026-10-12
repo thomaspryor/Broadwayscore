@@ -136,7 +136,7 @@ node -e '
 const fs = require("fs"); const f = "data/audit/alert-ledger.json";
 const l = JSON.parse(fs.readFileSync(f, "utf8"));
 l.conditions["comp-" + process.argv[1]] = { status: "open", lastSeen: new Date().toISOString() };
-fs.writeFileSync(f, JSON.stringify(l, null, 2) + "\\n");' "$n"
+fs.writeFileSync(f, JSON.stringify(l, null, 2) + "\\n"); /* test-data-write-guard-allow: temp competitor clone */' "$n"
 echo "{\\"run\\":\\"comp-$n\\"}" > data/audit/verify-all-scored-state.json
 git add -A && git commit -q -m "competitor $n" && git push -q origin HEAD:main
 `);
@@ -176,7 +176,7 @@ function firstPassCommit(fx) {
   const ledgerPath = path.join(fx.runner, 'data/audit/alert-ledger.json');
   const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
   ledger.conditions['ours-row'] = { status: 'open', lastSeen: '2026-10-12T00:00:00.000Z' };
-  fs.writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2) + '\n');
+  fs.writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2) + '\n'); // test-data-write-guard-allow: temp runner clone
   write(path.join(fx.runner, 'data/audit/verify-all-scored-state.json'), '{"run":"ours"}\n');
   write(path.join(fx.runner, 'data/audit/critic-outlets-baseline.json'), '{"outlets":2}\n');
   const r = spawnSync('bash', [path.join(REPO, 'scripts/rebuild-fast-stage-commit.sh')], {
@@ -249,7 +249,7 @@ describe('replayed contention against a local bare repo', () => {
       assert.deepEqual(JSON.parse(originFile(fx, 'data/audit/verify-all-scored-state.json')), { run: 'comp-20' });
       assert.match(out, /verify-all-scored-state\.json conflicts with fresh main/);
     } finally {
-      fs.rmSync(fx.tmp, { recursive: true, force: true });
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -265,7 +265,7 @@ describe('replayed contention against a local bare repo', () => {
       assert.match(r.stdout + r.stderr, /failed for good after 3\/3 cycle/);
       assert.deepEqual(JSON.parse(originFile(fx, 'public/data/shows/show-a.json')), { id: 'show-a', reviews: 10 });
     } finally {
-      fs.rmSync(fx.tmp, { recursive: true, force: true });
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -278,7 +278,7 @@ describe('replayed contention against a local bare repo', () => {
       assert.notEqual(r.status, 0);
       assert.equal(lines(path.join(fx.tmp, 'push-invocations')), cycle.HARD_MAX_CYCLES);
     } finally {
-      fs.rmSync(fx.tmp, { recursive: true, force: true });
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -292,7 +292,7 @@ describe('replayed contention against a local bare repo', () => {
       assert.match(r.stdout + r.stderr, /redo refused/);
       assert.equal(lines(path.join(fx.tmp, 'push-invocations')), 1);
     } finally {
-      fs.rmSync(fx.tmp, { recursive: true, force: true });
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });
@@ -335,7 +335,7 @@ git push -q origin HEAD:main
       assert.deepEqual(JSON.parse(originFile(fx, 'public/data/shows/show-b.json')), { id: 'show-b', reviews: 6 });
       assert.equal(originFile(fx, 'data/audit/hot-ledger.jsonl').trim().split('\n').length, 2);
     } finally {
-      fs.rmSync(fx.tmp, { recursive: true, force: true });
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -354,7 +354,7 @@ git push -q origin HEAD:main
       assert.equal(r.status, 1, r.stdout + r.stderr);
       assert.match(r.stdout + r.stderr, /is a merge commit/);
     } finally {
-      fs.rmSync(fx.tmp, { recursive: true, force: true });
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });
@@ -389,7 +389,7 @@ describe('replay-audit validates a clean apply (third review, MEDIUM)', () => {
       assert.match(out, /applied: data\/audit\/ok-state\.json/);
       assert.deepEqual(JSON.parse(fs.readFileSync(path.join(tmp, 'data/audit/ok-state.json'), 'utf8')), { ok: 2 });
     } finally {
-      fs.rmSync(tmp, { recursive: true, force: true });
+      fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });

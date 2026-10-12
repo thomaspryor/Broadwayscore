@@ -497,6 +497,7 @@ jobs:
             exit "$COMMIT_RC"
           fi
 
+          # hygiene-stage-no-commit-ok: the commit is made by scripts/rebuild-fast-stage-commit.sh (COMMIT_RC above) before this push
           PUSH_CMD="bash scripts/lib/push-with-retry.sh 20 main" \
           REBUILD_FAST_REDO_CMD="bash scripts/rebuild-fast-redo.sh" \
             bash scripts/lib/rebuild-fast-push-cycle.sh
