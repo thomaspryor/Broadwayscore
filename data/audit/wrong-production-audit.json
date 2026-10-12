@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-12T08:10:07.474Z",
+  "timestamp": "2026-10-12T08:35:04.696Z",
   "stats": {
-    "totalReviews": 56017,
-    "alreadyFlagged": 20929,
+    "totalReviews": 55970,
+    "alreadyFlagged": 20879,
     "dateGuardCatches": 253,
     "directorMismatch": 1776,
-    "tvFilmSignals": 1612,
+    "tvFilmSignals": 1616,
     "londonSignals": 2199,
     "offBroadwaySignals": 505,
     "yearMismatch": 137,
@@ -1887,7 +1887,7 @@
     },
     {
       "showId": "all-my-sons-west-end-2019",
-      "file": "british-theatre--mark-ludmon.json",
+      "file": "britishtheatrecom--mark-ludmon.json",
       "score": 88,
       "publishDate": "2019-04-26",
       "url": "https://www.britishtheatre.com/posts/review-all-my-sons-old-vic-theatre-london",
@@ -3717,7 +3717,7 @@
     },
     {
       "showId": "be-more-chill-west-end-2021",
-      "file": "british-theatre--unknown.json",
+      "file": "britishtheatrecom--unknown.json",
       "publishDate": "2021-08-10",
       "url": "https://www.britishtheatre.com/shows/be-more-chill/articles",
       "findings": [
@@ -9059,7 +9059,7 @@
     },
     {
       "showId": "cruise-west-end-2021",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 89,
       "publishDate": "June 2nd, 2021",
       "url": "https://britishtheatre.com/review-cruise-duchess-theatre/",
@@ -13847,6 +13847,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "fire-fire-off-west-end-2026",
+      "file": "hollywood-reporter--angie-han.json",
+      "score": null,
+      "publishDate": "2026-09-21",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/line-of-fire-review-nbc-hope-davis-peter-krause-1236700815/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -19118,7 +19132,7 @@
     },
     {
       "showId": "im-every-woman-off-west-end-2026",
-      "file": "british-theatre--unknown.json",
+      "file": "britishtheatrecom--unknown.json",
       "publishDate": null,
       "url": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets",
       "findings": [
@@ -24931,6 +24945,20 @@
       ]
     },
     {
+      "showId": "man-to-man-west-end-2026",
+      "file": "hollywood-reporter--max-gao.json",
+      "score": null,
+      "publishDate": "2026-09-16",
+      "url": "https://www.hollywoodreporter.com/tv/tv-features/scott-speedman-r-j-decker-greys-anatomy-felicity-reunion-1236704021/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "manhunt-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
       "score": 76,
@@ -28827,7 +28855,7 @@
     },
     {
       "showId": "only-fools-and-horses-west-end-2019",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 76,
       "publishDate": "2019-02-20",
       "url": "https://www.britishtheatre.com/posts/review-only-fools-and-horses-the-musical-theatre-royal-haymarket",
@@ -32367,7 +32395,7 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "file": "british-theatre--anita-marguerite-butler.json",
+      "file": "britishtheatrecom--anita-marguerite-butler.json",
       "score": 84,
       "publishDate": "2026-04-02",
       "url": "https://www.britishtheatre.com/posts/romeo-and-juliet-review-sadie-sink-robert-icke-2026",
@@ -43469,7 +43497,7 @@
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "british-theatre--douglas-mayo.json",
+      "file": "britishtheatrecom--douglas-mayo.json",
       "score": 73,
       "publishDate": "2021-08-21",
       "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
@@ -44838,6 +44866,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "deadline--katie-campione.json",
+      "score": null,
+      "publishDate": "2026-09-22",
+      "url": "https://deadline.com/2026/09/monster-lizzie-borden-premiere-viewership-netflix-crew-girl-1237110521/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -47190,6 +47232,19 @@
     },
     {
       "showId": "uncle-vanya-west-end-2020",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2020-01-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "uncle-vanya-west-end-2020",
       "file": "thestage--natasha-tripney.json",
       "score": 86,
       "publishDate": "2020-01-24",
@@ -49052,7 +49107,7 @@
     },
     {
       "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 57,
       "publishDate": "2019-02-07T16:54:07+00:00",
       "url": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/",
@@ -52586,7 +52641,7 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
+      "file": "britishtheatrecom--susan-novak.json",
       "score": 78,
       "publishDate": "2026-04-18",
       "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
@@ -54987,7 +55042,7 @@
     },
     {
       "showId": "caroline-or-change-west-end-2018",
-      "file": "british-theatre--mark-ludmon.json",
+      "file": "britishtheatrecom--mark-ludmon.json",
       "score": 89,
       "publishDate": "2018-12-21",
       "url": "https://www.britishtheatre.com/fr/posts/review-caroline-or-change-playhouse-theatre",
@@ -57359,7 +57414,7 @@
     },
     {
       "showId": "death-of-a-salesman-west-end-2019",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 96,
       "publishDate": "2019-11-05",
       "url": "https://www.britishtheatre.com/posts/review-death-of-a-salesman-piccadilly-theatre-london",
@@ -60328,7 +60383,7 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
+      "file": "britishtheatrecom--susan-novak.json",
       "score": 91,
       "publishDate": "2026-05-01",
       "url": "https://www.britishtheatre.com/posts/grace-pervades-review-ralph-fiennes-and-miranda-raison-shine-in-david-hare-s-tri",
@@ -62388,7 +62443,7 @@
     },
     {
       "showId": "high-society-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
+      "file": "britishtheatrecom--susan-novak.json",
       "score": 93,
       "publishDate": "2026-06-04",
       "url": "https://www.britishtheatre.com/posts/high-society-review-a-joyous-champagne-soaked-revival-at-the-barbican",
@@ -66915,7 +66970,7 @@
     },
     {
       "showId": "marvellous-west-end-2022",
-      "file": "british-theatre--mark-ludmon.json",
+      "file": "britishtheatrecom--mark-ludmon.json",
       "score": 74,
       "publishDate": "2022-10-29",
       "url": "https://www.britishtheatre.com/posts/review-marvellous-sohoplace",
@@ -67097,7 +67152,7 @@
     },
     {
       "showId": "mary-poppins-west-end-2019",
-      "file": "british-theatre--mark-ludmon.json",
+      "file": "britishtheatrecom--mark-ludmon.json",
       "score": 88,
       "publishDate": "2019-11-15",
       "url": "https://www.britishtheatre.com/posts/review-mary-poppins-prince-edward-theatre-london",
@@ -67200,7 +67255,7 @@
     },
     {
       "showId": "master-harold-and-the-boys-west-end-2019",
-      "file": "british-theatre--mark-ludmon.json",
+      "file": "britishtheatrecom--mark-ludmon.json",
       "score": 79,
       "publishDate": "2019-10-07",
       "url": "https://www.britishtheatre.com/posts/review-master-harold-and-the-boys-national-theatre-london",
@@ -67620,7 +67675,7 @@
     },
     {
       "showId": "middle-west-end-2022",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 91,
       "publishDate": "2022-05-05",
       "url": "https://www.britishtheatre.com/posts/review-middle-national-theatre",
@@ -68136,7 +68191,7 @@
     },
     {
       "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 61,
       "publishDate": "2019-11-27",
       "url": "https://www.britishtheatre.com/posts/review-my-brilliant-friend-national-theatre-london",
@@ -71551,7 +71606,7 @@
     },
     {
       "showId": "rent-west-end-2026",
-      "file": "british-theatre--british-theatre.json",
+      "file": "britishtheatrecom--british-theatre.json",
       "score": 77,
       "publishDate": "2026-10-09",
       "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
@@ -71565,7 +71620,7 @@
     },
     {
       "showId": "rent-west-end-2026",
-      "file": "british-theatre--ray-rackham.json",
+      "file": "britishtheatrecom--ray-rackham.json",
       "publishDate": null,
       "url": "https://www.britishtheatre.com/shows/rent",
       "findings": [
@@ -71815,7 +71870,7 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
+      "file": "britishtheatrecom--susan-novak.json",
       "score": 94,
       "publishDate": "2026-04-04",
       "url": "https://www.britishtheatre.com/posts/romeo-and-juliet-review-sadie-sink-robert-icke-2026",
@@ -73145,7 +73200,7 @@
     },
     {
       "showId": "spirited-away-west-end-2024",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 62,
       "publishDate": "2024-06-06",
       "url": "https://www.britishtheatre.com/posts/review-spirited-away-london-coliseum",
@@ -79348,7 +79403,7 @@
     },
     {
       "showId": "the-old-man-and-the-pool-west-end-2023",
-      "file": "british-theatre--unknown.json",
+      "file": "britishtheatrecom--unknown.json",
       "score": 61,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-the-old-man-and-the-pool-wyndhams-theatre",
@@ -80020,7 +80075,7 @@
     },
     {
       "showId": "the-price-off-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
+      "file": "britishtheatrecom--susan-novak.json",
       "score": 82,
       "publishDate": "2026-04-26",
       "url": "https://www.britishtheatre.com/posts/the-price-at-marylebone-theatre-review",
@@ -82276,7 +82331,7 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "british-theatre--unknown.json",
+      "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": "2026-07-01",
       "url": "https://www.britishtheatre.com/posts/to-kill-a-mockingbird-review-a-powerful-stage-adaptation-that-resonates-more-tha",
@@ -83114,7 +83169,7 @@
     },
     {
       "showId": "waiting-for-godot-west-end-2024",
-      "file": "british-theatre--susan-novak.json",
+      "file": "britishtheatrecom--susan-novak.json",
       "score": 90,
       "publishDate": "2024-09-27",
       "url": "https://www.britishtheatre.com/es/posts/waiting-for-godot-review-roundup",
@@ -84018,7 +84073,7 @@
     },
     {
       "showId": "wise-children-west-end-2018",
-      "file": "british-theatre--paul-t-davies.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 78,
       "publishDate": "2018-10-19",
       "url": "https://www.britishtheatre.com/ko/posts/review-wise-children-old-vic-theatre",
