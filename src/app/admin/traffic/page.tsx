@@ -9,8 +9,8 @@ export const dynamic = 'force-dynamic';
 // crawler; noindex here as well in case a link to it ever leaks.
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
-export default function AdminTrafficPage() {
-  if (!isAdmin()) {
+export default async function AdminTrafficPage() {
+  if (!(await isAdmin())) {
     // Plain 404 rather than a gate form — don't advertise the admin surface.
     // Bootstrap via /api/admin/login?token=XXX&redirect=/admin/traffic.
     notFound();

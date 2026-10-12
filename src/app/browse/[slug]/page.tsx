@@ -30,7 +30,8 @@ export function generateStaticParams() {
   return getAllBrowseSlugs().map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const config = getBrowsePageConfig(params.slug);
   if (!config) return { title: 'Page Not Found' };
   if (config.source && !isCategoryEnabled(config.source)) return { title: 'Page Not Found' };
@@ -116,7 +117,8 @@ function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: 
   return sorts;
 }
 
-export default function BrowsePage({ params }: { params: { slug: string } }) {
+export default async function BrowsePage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const browseList = getBrowseList(params.slug);
 
   if (!browseList) {

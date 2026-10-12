@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 // No metadata export — we don't want this page in search indexes or social cards.
 // robots.ts disallows /admin/ for every crawler.
 
-export default function AdminFinancesPage() {
-  if (!isAdmin()) {
+export default async function AdminFinancesPage() {
+  if (!(await isAdmin())) {
     // Plain 404 rather than a gate form — don't advertise the admin surface.
     // Bootstrap via /api/admin/login?token=XXX (same as /admin/affiliate).
     notFound();

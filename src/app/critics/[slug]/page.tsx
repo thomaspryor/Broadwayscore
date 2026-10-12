@@ -7,7 +7,8 @@ import CriticDetailClient from './CriticDetailClient';
 export const revalidate = 43200;
 export const dynamicParams = true;
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const critic = getCriticBySlug(params.slug);
   if (!critic) return { title: 'Critic Not Found' };
 
@@ -33,7 +34,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function CriticDetailPage({ params }: { params: { slug: string } }) {
+export default async function CriticDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const critic = getCriticBySlug(params.slug);
   if (!critic) notFound();
 

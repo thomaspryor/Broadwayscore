@@ -17,7 +17,8 @@ export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const theater = getTheaterBySlug(params.slug);
   if (!theater) return { title: 'Theater Not Found' };
 
@@ -56,7 +57,8 @@ function getTheaterImageUrl(slug: string): string {
   return `/images/theaters/${slug}.jpg`;
 }
 
-export default function TheaterPage({ params }: { params: { slug: string } }) {
+export default async function TheaterPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const theater = getTheaterBySlug(params.slug);
   if (!theater) notFound();
 

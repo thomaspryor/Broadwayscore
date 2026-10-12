@@ -134,7 +134,7 @@ interface IngestResponse {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<IngestResponse>> {
-  if (!isAdmin()) {
+  if (!(await isAdmin())) {
     return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
   }
 

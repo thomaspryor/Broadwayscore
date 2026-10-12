@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, isTourIndexableShow, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
@@ -67,16 +66,8 @@ import { stopForReview, stopKey } from '@/lib/tour-schedule';
 import TourScheduleCard from '@/components/show-page/TourScheduleCard';
 import { getTourCities } from '@/lib/data-tour-cities';
 
-// Group A: personalized, auth-dependent — ssr:false so they don't block
-// the pre-rendered HTML, Suspense prevents hydration mismatch.
-const ShowPageWatchlistButton = dynamic(
-  () => import('@/components/user/ShowPageWatchlistButton'),
-  { ssr: false }
-);
-const ShowPageAddToListButton = dynamic(
-  () => import('@/components/user/ShowPageAddToListButton'),
-  { ssr: false }
-);
+// Group A: personalized, auth-dependent, client-only (see ShowPageUserButtons).
+import { ShowPageWatchlistButton, ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 
 export const revalidate = 86400;
 
@@ -92,7 +83,8 @@ export function generateStaticParams() {
   return getRecentShowSlugs().map(slug => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const show = getShowBySlug(params.slug);
   // Flag-gated categories (tour, regional) 404 at request time too, not just at prebuild.
   if (!show || !isCategoryEnabled(show.category)) return { title: 'Show Not Found' };
@@ -246,7 +238,8 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
   };
 }
 
-export default async function ShowPage({ params }: { params: { slug: string } }) {
+export default async function ShowPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const show = getShowBySlug(params.slug);
 
   if (!show || !isCategoryEnabled(show.category)) {

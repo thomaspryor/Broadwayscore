@@ -20,7 +20,8 @@ function addDays(days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-export default async function SeenFixturePage({ searchParams }: { searchParams: { state?: string; name?: string } }) {
+export default async function SeenFixturePage(props: { searchParams: Promise<{ state?: string; name?: string }> }) {
+  const searchParams = await props.searchParams;
   const all = getAllShows();
   const posters = all.filter(s => s.status === 'closed' && s.images?.poster).slice(0, 8).map(s => s.id);
   const noPoster = all.find(s => !s.images?.poster && !s.images?.thumbnail)?.id;

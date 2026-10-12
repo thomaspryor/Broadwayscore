@@ -6,8 +6,8 @@ export const dynamic = 'force-dynamic';
 
 // robots.ts disallows /admin/ for every crawler. Not advertised publicly.
 
-export default function AdminIngestPage() {
-  if (!isAdmin()) {
+export default async function AdminIngestPage() {
+  if (!(await isAdmin())) {
     notFound();
   }
 

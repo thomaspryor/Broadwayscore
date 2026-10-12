@@ -7,10 +7,8 @@ import { FANTASY_SEASON } from '@/config/fantasy';
  * Returns: { code, name, created_at, member_count }
  * Leaderboard data comes from GET /api/fantasy/leaderboard?league=[code]
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: { code: string } }
-) {
+export async function GET(_request: NextRequest, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   const code = params.code?.toLowerCase().trim();
   if (!code || code.length > 20) {
     return NextResponse.json({ error: 'Invalid league code' }, { status: 400 });

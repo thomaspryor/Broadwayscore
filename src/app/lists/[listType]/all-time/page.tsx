@@ -30,7 +30,8 @@ export function generateStaticParams() {
   return GOLD_LIST_CONFIGS.map(c => ({ listType: c.type }));
 }
 
-export function generateMetadata({ params }: { params: { listType: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ listType: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const config = GOLD_LIST_MAP[params.listType as GoldListType];
   if (!config) return {};
 
@@ -58,7 +59,8 @@ export function generateMetadata({ params }: { params: { listType: string } }): 
   };
 }
 
-export default function GoldListAllTimePage({ params }: { params: { listType: string } }) {
+export default async function GoldListAllTimePage(props: { params: Promise<{ listType: string }> }) {
+  const params = await props.params;
   const { listType } = params;
 
   if (!isValidGoldListType(listType)) {

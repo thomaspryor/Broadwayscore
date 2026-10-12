@@ -11,8 +11,9 @@ export function generateStaticParams() {
 export const dynamicParams = true;
 export const revalidate = 86400;
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const show = getDiaryShowById(params.id) || await getShowStubById(params.id);
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const show = getDiaryShowById(params.id) || (await getShowStubById(params.id));
   if (!show) return { title: 'Show Not Found' };
   return {
     // Root layout's title template already appends " | Broadway Scorecard".
@@ -24,11 +25,12 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function DiaryShowPage({ params }: { params: { id: string } }) {
+export default async function DiaryShowPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   // Fall back to a live-search stub (card 174) not yet promoted into
   // diary-lookup.json by the nightly resolver — a show added minutes ago
   // must still resolve, not 404 until tomorrow.
-  const show = getDiaryShowById(params.id) || await getShowStubById(params.id);
+  const show = getDiaryShowById(params.id) || (await getShowStubById(params.id));
   if (!show) notFound();
   return <DiaryShowClient show={show} />;
 }

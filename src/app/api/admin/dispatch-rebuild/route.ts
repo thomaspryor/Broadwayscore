@@ -47,7 +47,7 @@ interface DispatchRebuildBody {
  *   { success: false, error: string }
  */
 export async function POST(request: NextRequest) {
-  if (!isAdmin()) {
+  if (!(await isAdmin())) {
     return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
   }
 

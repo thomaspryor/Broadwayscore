@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 import Link from 'next/link';
 import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks } from '@/lib/data-types';
 import { featureFlags } from '@/config/feature-flags';

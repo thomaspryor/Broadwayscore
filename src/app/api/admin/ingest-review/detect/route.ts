@@ -20,7 +20,7 @@ export const runtime = 'nodejs';
  * The actual commit goes through /api/admin/ingest-review.
  */
 export async function POST(request: NextRequest) {
-  if (!isAdmin()) {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 

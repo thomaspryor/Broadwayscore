@@ -26,7 +26,8 @@ export function generateStaticParams() {
   return getAllComparisonSlugs().map((shows) => ({ shows }));
 }
 
-export function generateMetadata({ params }: { params: { shows: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ shows: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const parsed = parseComparisonSlug(params.shows);
   if (!parsed) return { title: 'Comparison Not Found' };
 
@@ -151,7 +152,8 @@ const TAG_BROWSE_MAP: Record<string, string> = {
   'jukebox': '/browse/jukebox-musicals-on-broadway',
 };
 
-export default function ComparisonPage({ params }: { params: { shows: string } }) {
+export default async function ComparisonPage(props: { params: Promise<{ shows: string }> }) {
+  const params = await props.params;
   const parsed = parseComparisonSlug(params.shows);
   if (!parsed) notFound();
 

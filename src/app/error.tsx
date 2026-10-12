@@ -26,6 +26,8 @@ export default function Error({
         >
           Try Again
         </button>
+        {/* Full reload on purpose: leaves a broken client state behind. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
           href="/"
           className="px-6 py-3 border border-white/20 text-gray-300 font-semibold rounded-lg hover:border-white/30 hover:text-white transition-colors"

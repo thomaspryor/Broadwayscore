@@ -17,11 +17,12 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const post = await client.fetch<PostDetail | null>(postBySlugQuery, { slug: params.slug });
   if (!post) return { title: 'Post not found' };
   return {
@@ -78,7 +79,8 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const post = await client.fetch<PostDetail | null>(postBySlugQuery, { slug: params.slug });
   if (!post) notFound();
 

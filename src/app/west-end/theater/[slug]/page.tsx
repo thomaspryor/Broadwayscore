@@ -42,7 +42,8 @@ function resolveWestEndVenue(slug: string): {
   return { theater, parentComplex: getWestEndComplexForVenue(slug) };
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const { theater } = resolveWestEndVenue(params.slug);
   if (!theater) return { title: 'Theatre Not Found' };
 
@@ -71,7 +72,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function LondonTheaterPage({ params }: { params: { slug: string } }) {
+export default async function LondonTheaterPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const { theater, parentComplex } = resolveWestEndVenue(params.slug);
   if (!theater) notFound();
 

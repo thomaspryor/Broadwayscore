@@ -159,43 +159,6 @@ const ALLOWLIST = [
     issue: 'BRO-3202',
     expires: '2027-01-13',
   },
-  // --- Next.js 14.2.35: both advisories' first patched release is 15.5.24 ---
-  // 14.2.35 is the LAST 14.x release (npm view next versions, 2026-09-13) —
-  // there is no 14.x backport, so "just patch it" is a Next 14 -> 15/16 major
-  // (React 19 + async request APIs). That upgrade is tracked separately; these
-  // entries carry a SHORT expiry (not the usual ~90d) because they are live
-  // criticals, not permanently-unfixable transitive cruft like decompress.
-  // Exposure was measured, not assumed — see BRO-3202.
-  {
-    ghsa: 'GHSA-p293-qw3h-jr36',
-    module: 'next',
-    reason: 'Range >=13.4.0 <15.5.24 — first patched release is 15.5.24, and 14.2.35 is the '
-      + 'last 14.x, so there is no patch reachable without the Next 14 -> 15/16 major.',
-    exposure: 'Not exposed: the advisory is Windows-filesystem-only ("when the server is hosted '
-      + 'on machines using a Windows filesystem"). Prod runs on Vercel (Linux serverless) and '
-      + 'every CI job runs on ubuntu-latest — this repo has no Windows runtime anywhere.',
-    issue: 'BRO-3202',
-    expires: '2026-11-15',
-  },
-  {
-    ghsa: 'GHSA-2xp9-vwfh-vxw4',
-    module: 'next',
-    reason: 'Range >=10.0.0 <15.5.24 — first patched release is 15.5.24, and 14.2.35 is the '
-      + 'last 14.x, so there is no patch reachable without the Next 14 -> 15/16 major.',
-    exposure: 'Assessed, not waved through: /_next/image IS live on prod (the OG route at '
-      + 'src/app/show/[slug]/opengraph-image.tsx self-calls it), so the affected endpoint is '
-      + 'reachable. Closed from both ends. (1) Attacker-supplied input removed: next.config.js '
-      + 'remotePatterns no longer carries host-only entries for the multi-tenant CDNs '
-      + 'res.cloudinary.com and **.amazonaws.com — verified 2026-09-13 that an arbitrary AVIF '
-      + 'under res.cloudinary.com/demo/ returned 200 through prod /_next/image. Remote input is '
-      + 'now scoped to our own Contentful space, and same-origin /images/** holds zero .avif '
-      + 'files; output formats is pinned to webp so libheif is never used to encode either. '
-      + '(2) Vercel has the platform mitigation the advisory describes ("optimization of AVIF '
-      + 'files is disabled"): an AVIF through prod /_next/image came back byte-identical at '
-      + 'w=64/256/640 (43247 B each), i.e. passed through, never decoded.',
-    issue: 'BRO-3202',
-    expires: '2026-11-15',
-  },
 ];
 
 /**

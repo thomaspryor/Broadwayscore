@@ -93,10 +93,8 @@ function notFoundSvg(): Response {
   });
 }
 
-export async function GET(
-  _request: Request,
-  { params }: { params: { slug: string } }
-): Promise<Response> {
+export async function GET(_request: Request, props: { params: Promise<{ slug: string }> }): Promise<Response> {
+  const params = await props.params;
   // Accept both `/api/badge/proof-2026` and `/api/badge/proof-2026.svg`.
   const slug = params.slug.replace(/\.svg$/i, '');
 

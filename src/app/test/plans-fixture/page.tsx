@@ -16,7 +16,8 @@ function addDays(days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-export default async function PlansFixturePage({ searchParams }: { searchParams: { state?: string } }) {
+export default async function PlansFixturePage(props: { searchParams: Promise<{ state?: string }> }) {
+  const searchParams = await props.searchParams;
   const open = getAllShows()
     .filter(s => s.status === 'open' && s.images?.poster)
     .slice(0, 7)

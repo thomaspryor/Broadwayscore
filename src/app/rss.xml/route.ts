@@ -2,6 +2,9 @@ import { getBroadwayShows, getWestEndShows } from '@/lib/data-core';
 import { getAllGuideSlugs, GUIDE_PAGES } from '@/config/guide-pages';
 import { getAllBrowseSlugs, getBrowsePageConfig } from '@/config/browse-pages';
 
+// Built once per deploy, as on Next 14 (Next 15 made GET handlers dynamic by default, BRO-3203).
+export const dynamic = 'force-static';
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 function escapeXml(str: string): string {

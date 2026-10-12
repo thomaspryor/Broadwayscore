@@ -26,7 +26,8 @@ export function generateStaticParams() {
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
-export function generateMetadata({ params }: { params: { season: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
+  const params = await props.params;
   return {
     title: `${params.season} Broadway Season | Investment Tracker`,
     description: `Commercial data and recoupment metrics for Broadway shows from the ${params.season} season.`,
@@ -41,7 +42,8 @@ export function generateMetadata({ params }: { params: { season: string } }): Me
   };
 }
 
-export default function SeasonPage({ params }: { params: { season: string } }) {
+export default async function SeasonPage(props: { params: Promise<{ season: string }> }) {
+  const params = await props.params;
   if (!featureFlags.commercial) notFound();
 
   const { season } = params;

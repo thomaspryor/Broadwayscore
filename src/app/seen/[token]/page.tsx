@@ -20,10 +20,11 @@ export const dynamic = 'force-dynamic';
 const load = cache((token: string) => loadSharedDiaryView(token));
 
 interface PageProps {
-  params: { token: string };
+  params: Promise<{ token: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const data = await load(params.token);
   if (data.status !== 'ok') return { ...privateShareMetadata, title: 'Theater diary' };
   const title = diaryTitle(data.view.name);
@@ -38,7 +39,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function SharedDiaryPage({ params }: PageProps) {
+export default async function SharedDiaryPage(props: PageProps) {
+  const params = await props.params;
   // A share sheet glued its message onto the link: send the friend to the
   // clean URL so the address bar (and anything copied from it) is the real link.
   const clean = shareTokenFromParam(params.token);

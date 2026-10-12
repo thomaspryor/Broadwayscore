@@ -18,12 +18,13 @@ interface SearchParams {
   mode?: string;
 }
 
-export default function AdminLockNewPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  if (!isAdmin()) {
+export default async function AdminLockNewPage(
+  props: {
+    searchParams: Promise<SearchParams>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  if (!(await isAdmin())) {
     notFound();
   }
 

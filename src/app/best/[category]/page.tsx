@@ -14,7 +14,8 @@ export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));
 }
 
-export function generateMetadata({ params }: { params: { category: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ category: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const list = getBestOfList(params.category as BestOfCategory);
   if (!list) return { title: 'List Not Found' };
 
@@ -44,7 +45,8 @@ export function generateMetadata({ params }: { params: { category: string } }): 
   };
 }
 
-export default function BestOfPage({ params }: { params: { category: string } }) {
+export default async function BestOfPage(props: { params: Promise<{ category: string }> }) {
+  const params = await props.params;
   const list = getBestOfList(params.category as BestOfCategory);
 
   if (!list) {

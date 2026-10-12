@@ -182,10 +182,8 @@ function notFoundHtml(): Response {
   });
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
-): Promise<Response> {
+export async function GET(request: Request, props: { params: Promise<{ slug: string }> }): Promise<Response> {
+  const params = await props.params;
   const url = new URL(request.url);
   const theme = url.searchParams.get('theme');
   const variant: 'auto' | 'light' | 'dark' =

@@ -11,7 +11,8 @@ export function generateStaticParams() {
   return []; // On-demand via ISR — saves ~21,000 pages of build time
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const profile = getActorBySlug(params.slug);
   if (!profile) return {};
 
@@ -32,7 +33,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function ActorDetailPage({ params }: { params: { slug: string } }) {
+export default async function ActorDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const profile = getActorBySlug(params.slug);
   if (!profile) notFound();
 

@@ -22,7 +22,7 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
 let cache: { data: unknown; expiresAt: number } | null = null;
 
 export async function GET(request: NextRequest) {
-  if (!isAdmin()) {
+  if (!(await isAdmin())) {
     return new NextResponse(null, { status: 404 });
   }
   const token = process.env.REVIEW_TEXTS_TOKEN;

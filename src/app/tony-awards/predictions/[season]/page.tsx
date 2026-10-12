@@ -41,7 +41,8 @@ export function generateStaticParams() {
   return allSeasons.map(s => ({ season: s.label }));
 }
 
-export function generateMetadata({ params }: { params: { season: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const season = allSeasons.find(s => s.label === params.season);
   if (!season) return {};
 
@@ -82,7 +83,8 @@ export function generateMetadata({ params }: { params: { season: string } }): Me
   };
 }
 
-export default function TonySeasonPredictionsPage({ params }: { params: { season: string } }) {
+export default async function TonySeasonPredictionsPage(props: { params: Promise<{ season: string }> }) {
+  const params = await props.params;
   if (!featureFlags.tonyPredictions) notFound();
   if (!/^\d{4}-\d{4}$/.test(params.season)) notFound();
 

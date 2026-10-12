@@ -48,7 +48,8 @@ export async function generateStaticParams() {
   return Array.from(seasons).map(season => ({ season }));
 }
 
-export async function generateMetadata({ params }: { params: { season: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const label = formatSeason(params.season);
   return {
     title: `${label} Broadway Award Scorecard`,
@@ -62,7 +63,8 @@ export async function generateMetadata({ params }: { params: { season: string } 
   };
 }
 
-export default function AwardScoreSeasonPage({ params }: { params: { season: string } }) {
+export default async function AwardScoreSeasonPage(props: { params: Promise<{ season: string }> }) {
+  const params = await props.params;
   if (!featureFlags.awardScoreV2) notFound();
 
   if (!/^\d{4}-\d{2}$/.test(params.season)) notFound();

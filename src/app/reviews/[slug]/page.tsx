@@ -23,7 +23,8 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const review = await getBlogReviewBySlug(params.slug);
   if (!review) return { title: 'Review Not Found' };
 
@@ -55,7 +56,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function ReviewPage({ params }: { params: { slug: string } }) {
+export default async function ReviewPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const review = await getBlogReviewBySlug(params.slug);
   if (!review) notFound();
   const { totalOutlets } = getDataStats();

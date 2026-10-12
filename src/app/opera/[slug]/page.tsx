@@ -10,18 +10,20 @@ export function generateStaticParams() {
   return getOperaShows().map(s => ({ slug: getOperaTitleSlug(s.slug) }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const show = getOperaShowByTitleSlug(params.slug);
   if (!show) return { title: 'Show Not Found' };
-  const base = showGenerateMetadata({ params: { slug: show.slug } });
+  const base = await showGenerateMetadata({ params: Promise.resolve({ slug: show.slug }) });
   return {
     ...base,
     alternates: { canonical: `${BASE_URL}/opera/${params.slug}` },
   };
 }
 
-export default async function OperaShowPage({ params }: { params: { slug: string } }) {
+export default async function OperaShowPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const show = getOperaShowByTitleSlug(params.slug);
   if (!show) throw notFound();
-  return ShowPage({ params: { slug: show.slug } });
+  return ShowPage({ params: Promise.resolve({ slug: show.slug }) });
 }

@@ -20,10 +20,11 @@ export const dynamic = 'force-dynamic';
 const load = cache((token: string) => loadSharedPlansView(token));
 
 interface PageProps {
-  params: { token: string };
+  params: Promise<{ token: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const data = await load(params.token);
   // Private, per-person pages: never indexed, and the token never leaves in a
   // Referer header when a friend taps through to another site.
@@ -40,7 +41,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function SharedPlansPage({ params }: PageProps) {
+export default async function SharedPlansPage(props: PageProps) {
+  const params = await props.params;
   // A share sheet glued its message onto the link: send the friend to the
   // clean URL so the address bar (and anything copied from it) is the real link.
   const clean = shareTokenFromParam(params.token);

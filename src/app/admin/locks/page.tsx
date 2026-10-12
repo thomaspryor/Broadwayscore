@@ -27,8 +27,8 @@ function readLocksJson(): LocksPayload {
   return JSON.parse(raw) as LocksPayload;
 }
 
-export default function AdminLocksPage() {
-  if (!isAdmin()) {
+export default async function AdminLocksPage() {
+  if (!(await isAdmin())) {
     notFound();
   }
 

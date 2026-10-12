@@ -49,26 +49,25 @@ const nextConfig = {
     // same-origin /images/**, which contains zero .avif files).
     formats: ['image/webp'],
   },
-  experimental: {
-    // Prevent NFT from tracing large/irrelevant files into serverless functions.
-    // Primary root cause fixed in data-tony-nominees.ts (replaced process.cwd()
-    // dynamic paths with static require()). This is a belt-and-suspenders guard
-    // for any future dynamic data/ access: exclude .git pack files, audit logs,
-    // and other files that are never needed at serverless runtime.
-    outputFileTracingExcludes: {
-      '**/*': [
-        'data/audit/**',
-        'data/review-texts/**',
-        // ~2400 cast files (~300MB total). Tony pages now consume cast data
-        // via data/actor-slugs.json (generated at prebuild). If any code path
-        // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
-        // to bundle the whole directory again — this exclude blocks that.
-        'data/cast/**',
-        'data/broadway.db',
-        'data/llm-scoring-runs.json',
-        'data/mezzanine-productions-raw.json',
-      ],
-    },
+  // Next 15 moved this out of `experimental` (BRO-3203).
+  // Prevent NFT from tracing large/irrelevant files into serverless functions.
+  // Primary root cause fixed in data-tony-nominees.ts (replaced process.cwd()
+  // dynamic paths with static require()). This is a belt-and-suspenders guard
+  // for any future dynamic data/ access: exclude .git pack files, audit logs,
+  // and other files that are never needed at serverless runtime.
+  outputFileTracingExcludes: {
+    '**/*': [
+      'data/audit/**',
+      'data/review-texts/**',
+      // ~2400 cast files (~300MB total). Tony pages now consume cast data
+      // via data/actor-slugs.json (generated at prebuild). If any code path
+      // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
+      // to bundle the whole directory again — this exclude blocks that.
+      'data/cast/**',
+      'data/broadway.db',
+      'data/llm-scoring-runs.json',
+      'data/mezzanine-productions-raw.json',
+    ],
   },
 }
 

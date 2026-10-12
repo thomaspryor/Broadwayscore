@@ -261,7 +261,7 @@ ${reviewsWarning}
 }
 
 export async function GET(request: NextRequest) {
-  if (!isAdmin()) {
+  if (!(await isAdmin())) {
     return new NextResponse(null, { status: 404 });
   }
 

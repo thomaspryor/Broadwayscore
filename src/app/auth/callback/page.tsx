@@ -121,6 +121,8 @@ export default function AuthCallbackPage() {
             {errorDetail}
           </p>
         )}
+        {/* Full reload on purpose: leaves a broken client state behind. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
           href="/"
           className="btn-primary text-sm"

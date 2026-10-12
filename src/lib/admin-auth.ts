@@ -23,10 +23,10 @@ export const ADMIN_COOKIE_NAME = 'admin_token';
  * Returns true if the current request carries a valid admin_token cookie.
  * Reads process.env.ADMIN_TOKEN — if unset, returns false (deny-by-default).
  */
-export function isAdmin(): boolean {
+export async function isAdmin(): Promise<boolean> {
   const expected = process.env.ADMIN_TOKEN;
   if (!expected) return false;
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const actual = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
   if (!actual) return false;
   return constantTimeEqual(actual, expected);

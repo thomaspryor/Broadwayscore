@@ -1,5 +1,6 @@
 'use client';
 
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { shouldShowSentiment } from '@/lib/social-pulse-display';
 

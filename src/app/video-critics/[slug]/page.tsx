@@ -12,7 +12,8 @@ export function generateStaticParams() {
   return getAllVideoCreatorSlugs().map(slug => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const creator = getVideoCreatorBySlug(params.slug);
   if (!creator) return { title: 'Video Critic Not Found' };
 
@@ -28,7 +29,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function VideoCreatorPage({ params }: { params: { slug: string } }) {
+export default async function VideoCreatorPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   if (!featureFlags.videoReviews) notFound();
 
   const creator = getVideoCreatorBySlug(params.slug);

@@ -108,8 +108,8 @@ function tierClass(tier: number): string {
 // Page
 // ---------------------------------------------------------------------------
 
-export default function AdminCriticCoveragePage() {
-  if (!isAdmin()) {
+export default async function AdminCriticCoveragePage() {
+  if (!(await isAdmin())) {
     notFound();
   }
 

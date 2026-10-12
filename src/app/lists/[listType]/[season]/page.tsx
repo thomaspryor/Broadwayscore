@@ -40,7 +40,8 @@ export function generateStaticParams() {
   return params;
 }
 
-export function generateMetadata({ params }: { params: { listType: string; season: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ listType: string; season: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const config = GOLD_LIST_MAP[params.listType as GoldListType];
   if (!config) return {};
 
@@ -68,7 +69,8 @@ export function generateMetadata({ params }: { params: { listType: string; seaso
   };
 }
 
-export default function GoldListSeasonPage({ params }: { params: { listType: string; season: string } }) {
+export default async function GoldListSeasonPage(props: { params: Promise<{ listType: string; season: string }> }) {
+  const params = await props.params;
   const { listType, season } = params;
 
   if (!isValidGoldListType(listType)) {

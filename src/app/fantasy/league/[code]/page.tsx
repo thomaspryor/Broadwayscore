@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, use } from 'react';
 import Link from 'next/link';
 
 type LeagueMeta = { code: string; name: string; created_at: string; member_count: number };
@@ -35,7 +35,8 @@ function CopyLinkButton({ code }: { code: string }) {
   );
 }
 
-export default function LeaguePage({ params }: { params: { code: string } }) {
+export default function LeaguePage(props: { params: Promise<{ code: string }> }) {
+  const params = use(props.params);
   const { code } = params;
   const [meta, setMeta] = useState<LeagueMeta | null>(null);
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);

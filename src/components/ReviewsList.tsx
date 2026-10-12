@@ -169,7 +169,7 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
   // Hover or keyboard focus already opened the popover, so the click (or
   // Enter) that usually follows should keep it open rather than toggle it shut.
   const openedPassively = useRef(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout>>();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const openPassively = () => {
     clearTimeout(closeTimer.current);
     if (!open) openedPassively.current = true;

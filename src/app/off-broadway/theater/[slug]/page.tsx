@@ -44,7 +44,8 @@ function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const { theater } = resolveOffBroadwayVenue(params.slug);
   if (!theater) return { title: 'Theater Not Found' };
 
@@ -73,7 +74,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function OffBroadwayTheaterPage({ params }: { params: { slug: string } }) {
+export default async function OffBroadwayTheaterPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const { theater, parentComplex } = resolveOffBroadwayVenue(params.slug);
   if (!theater) notFound();
   const subVenues = isComplex(theater) ? theater.subVenues : [];

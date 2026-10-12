@@ -134,11 +134,11 @@ describe('exposure assessment is mandatory', () => {
     }
   });
 
-  test('both Next.js RCE advisories are allowlisted with an exposure assessment', () => {
+  // BRO-3203: the Next 15.5 upgrade patched both advisories, so their
+  // exemptions must stay gone (an entry for a fixed advisory hides a regression).
+  test('neither Next.js RCE advisory is allowlisted any more', () => {
     for (const ghsa of ['GHSA-p293-qw3h-jr36', 'GHSA-2xp9-vwfh-vxw4']) {
-      const entry = ALLOWLIST.find((a) => a.ghsa === ghsa);
-      assert.ok(entry, `${ghsa} missing from ALLOWLIST`);
-      assert.equal(entry.module, 'next');
+      assert.equal(ALLOWLIST.find((a) => a.ghsa === ghsa), undefined, `${ghsa} is still in ALLOWLIST`);
     }
   });
 });

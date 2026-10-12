@@ -7,7 +7,8 @@ import OutletDetailClient from './OutletDetailClient';
 export const revalidate = 43200;
 export const dynamicParams = true;
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const outlet = getOutletBySlug(params.slug);
   if (!outlet) return { title: 'Outlet Not Found' };
 
@@ -37,7 +38,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function OutletDetailPage({ params }: { params: { slug: string } }) {
+export default async function OutletDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const outlet = getOutletBySlug(params.slug);
   if (!outlet) notFound();
 
