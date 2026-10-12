@@ -22,6 +22,7 @@
  *   COMMIT_EVERY — checkpoint interval (default 25)
  */
 
+const { OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -128,6 +129,8 @@ function categorizeReviews(reviewFiles) {
       if (!CLI.verifyOnly && (r.wrongProduction || r.wrongShow)) {
         // Skip wrongAttribution — those are typically correct
         if (r.wrongAttribution) continue;
+        // url-proven (BRO-5015): no LLM read can clear it, so don't pay for one
+        if (r.wrongProductionReason === OTHER_PRODUCTION_URL_REASON) continue;
 
         // Find best available text
         const text = r.fullText || r.wrongFullText || r.garbageFullText;
@@ -316,6 +319,13 @@ async function processRecover(items) {
 
         if (!CLI.dryRun && (result.confidence === 'high' || result.confidence === 'medium')) {
           const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
+          // The url itself proves another production (BRO-5015); an LLM reading
+          // the body cannot outrank that, and its override would exempt the
+          // file from the guard for good.
+          if (data.wrongProductionReason === OTHER_PRODUCTION_URL_REASON) {
+            console.log(`  KEEP ${label}: flag is url-proven (${OTHER_PRODUCTION_URL_REASON}), not recovering`);
+            continue;
+          }
 
           // Restore fullText from wherever it was saved
           if (!data.fullText && data.wrongFullText) {

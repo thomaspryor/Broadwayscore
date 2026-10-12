@@ -2006,6 +2006,9 @@ function isLikelyStaleWrongProduction(data, show) {
   if (data.wrongProductionManualClear === true) return false;
   if (data.wrongProductionOverride === true) return false;
   if (data.humanReviewedWrongProduction === false) return false;
+  // Url-proven other production (rebuild BRO-5015 guard): body text cannot
+  // refute it, and an LLM clear would exempt the file from the guard for good.
+  if (data.wrongProductionReason === 'other-production-url') return false;
 
   const fullText = String(data.fullText || '').trim();
   if (fullText.length < 1500) return false;
