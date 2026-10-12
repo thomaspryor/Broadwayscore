@@ -235,6 +235,46 @@ test('obClosingBacklogResults: recent todaytixStaleness candidate stays warn', (
   assert.match(results[0].message, /freshly-missing-2026 \(missing 4d\)/);
 });
 
+// BRO-4699: the 2026-10-05 detector run was cancelled, so the 09-28 snapshot
+// kept naming two shows already closed in shows.json (one counted twice).
+const STALE_OB_REPORT = {
+  reviewTextSweep: { candidates: [{ showId: 'my-joy-is-heavy-off-broadway-2025', proposedClosingDate: '2026-04-05', confidence: 'high' }] },
+  todaytixStaleness: { candidates: [
+    { showId: 'pied-a-terre-off-broadway-2026', consecutiveMissingChecks: 2, firstMissingDate: '2026-09-21' },
+    { showId: 'my-joy-is-heavy-off-broadway-2025', consecutiveMissingChecks: 2, firstMissingDate: '2026-09-21' },
+  ] },
+  unmonitoredOpenShows: [{ showId: 'closed-blind-2026', daysOpen: 40 }],
+};
+
+test('obClosingBacklogResults: candidates already closed in shows.json are dropped', () => {
+  const now = new Date('2026-10-12T00:00:00Z');
+  const shows = [
+    { id: 'my-joy-is-heavy-off-broadway-2025', status: 'closed' },
+    { id: 'pied-a-terre-off-broadway-2026', status: 'closed' },
+    { id: 'closed-blind-2026', status: 'closed' },
+  ];
+  assert.deepEqual(obClosingBacklogResults(STALE_OB_REPORT, now, shows), []);
+});
+
+test('obClosingBacklogResults: a show in both signals counts once; open shows still reported', () => {
+  const now = new Date('2026-10-12T00:00:00Z');
+  const shows = [
+    { id: 'my-joy-is-heavy-off-broadway-2025', status: 'open' },
+    { id: 'pied-a-terre-off-broadway-2026', status: 'open' },
+    { id: 'closed-blind-2026', status: 'open' },
+  ];
+  const results = obClosingBacklogResults(STALE_OB_REPORT, now, shows);
+  const row = results.find((r) => r.name === 'Data: OB closing candidates awaiting review');
+  assert.match(row.message, /^2 open Off-Broadway show\(s\)/);
+  assert.ok(results.find((r) => r.name === 'Data: OB shows no closing signal can detect'));
+  // Without shows, the snapshot is reported as-is (old behaviour).
+  assert.equal(obClosingBacklogResults(STALE_OB_REPORT, now).length, 2);
+  // An empty list or an id missing from shows.json never hides a row.
+  assert.equal(obClosingBacklogResults(STALE_OB_REPORT, now, []).length, 2);
+  const partial = obClosingBacklogResults(STALE_OB_REPORT, now, [{ id: 'my-joy-is-heavy-off-broadway-2025', status: 'closed' }]);
+  assert.match(partial.find((r) => r.name === 'Data: OB closing candidates awaiting review').message, /^1 open .*pied-a-terre/);
+});
+
 // --- neverRunWorkflowResults (task #737: workflows with zero lifetime runs) ---
 
 test('neverRunWorkflowResults: empty or absent report yields nothing', () => {

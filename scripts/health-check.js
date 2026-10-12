@@ -4049,15 +4049,25 @@ function neverRunWorkflowResults(report) {
 // single weekly warn line has clearly already failed to get it actioned.
 const { rankByAge } = require('./lib/backlog-digest-age');
 const OB_CLOSING_AGED_DAYS_ERROR = 21; // ~3 missed weekly runs
-function obClosingBacklogResults(report, now = new Date()) {
+// The report is a weekly snapshot, so it goes stale the moment a candidate is
+// closed by hand or the next weekly run fails (BRO-4699: the 2026-10-05 run
+// was cancelled and both named shows had already been closed in shows.json,
+// so the digest kept flagging them for a week). With `shows` given, entries
+// whose show is no longer open in the current shows.json are dropped, and the
+// count is per show (one show can sit in both signals).
+function obClosingBacklogResults(report, now = new Date(), shows = null) {
   if (!report || !report.reviewTextSweep) return [];
+  // Only a show found in shows.json and no longer open is dropped: an empty or
+  // partial list, or an id the data no longer has, keeps the row visible.
+  const statusById = new Map((Array.isArray(shows) ? shows : []).filter(Boolean).map((s) => [s.id, s.status]));
+  const stillOpen = (c) => !statusById.has(c.showId) || statusById.get(c.showId) === 'open';
   const candidates = [
     ...(report.reviewTextSweep.candidates || []),
     ...((report.todaytixStaleness && report.todaytixStaleness.candidates) || []),
-  ];
+  ].filter(stillOpen);
   // Open shows neither signal can watch (BRO-3086, Spellbound): listed even
   // when there are no candidates, or the blind spot stays a JSON-only fact.
-  const blind = report.unmonitoredOpenShows || [];
+  const blind = (report.unmonitoredOpenShows || []).filter(stillOpen);
   const blindResult = blind.length ? [{
     name: 'Data: OB shows no closing signal can detect',
     status: 'warn',
@@ -4074,7 +4084,7 @@ function obClosingBacklogResults(report, now = new Date()) {
   return [...blindResult, {
     name: 'Data: OB closing candidates awaiting review',
     status,
-    message: `${candidates.length} open Off-Broadway show(s) look closed per the weekly detector. Oldest: ${label}`,
+    message: `${new Set(candidates.map((c) => c.showId)).size} open Off-Broadway show(s) look closed per the weekly detector. Oldest: ${label}`,
     hint: 'Review data/audit/ob-closing-candidates.json; confirm evidence quotes, then set closingDate/status in shows.json (data repo).',
   }];
 }
@@ -4213,7 +4223,12 @@ function checkTourAutomation() {
 function checkObClosingBacklog() {
   try {
     const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
-    return obClosingBacklogResults(obReport);
+    let shows = null;
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+      shows = Array.isArray(raw) ? raw : raw.shows;
+    } catch { /* no shows.json: report the snapshot as-is */ }
+    return obClosingBacklogResults(obReport, new Date(), shows);
   } catch {
     return []; // report absent (detector not yet run) — nothing to surface
   }
