@@ -73,9 +73,13 @@ function _isLiveSameShowCopy(data, showId, filePath) {
   if (_isBlockingOwnerCopy(data)) return true;
   if (!data || data.isCombinedReview !== true || data.isRoundupArticle === true) return false;
   if (data.wrongShow === true || data.wrongProduction === true) return false;
+  // The caller DELETES on true: without the show's metadata the production
+  // guards are skipped, so fail closed.
+  const show = _showMeta(showId);
+  if (!show) return false;
   try {
     const { isIncludableForRebuild } = require('./review-guards');
-    return isIncludableForRebuild(data, _showMeta(showId), filePath);
+    return isIncludableForRebuild(data, show, filePath);
   } catch {
     return false; // unknown -> not live -> the caller deletes nothing
   }
@@ -188,6 +192,7 @@ function recordUrlOwner(url, showId, file, reviewTextsDir, record = null) {
 /** Test hook — drop the process cache. */
 function _resetUrlOwnershipIndex() {
   _index = null;
+  _showsById = null;
 }
 
 module.exports = {

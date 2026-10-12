@@ -79,7 +79,9 @@ describe('detector + stripper', () => {
     // the interstitial page captured without the reprints marker
     const noMarker = INTERSTITIAL.split('Dow Jones Reprints')[0];
     assert.equal(cq.isGarbageContent(noMarker).isGarbage, true);
-    assert.equal(cq.stripDowJonesReprintChrome(noMarker), '');
+    // no marker = no known boundary: nothing is cut (a review could follow)
+    assert.equal(cq.stripDowJonesReprintChrome(noMarker), noMarker);
+    assert.equal(cq.stripDowJonesReprintChrome(noMarker + REVIEW), noMarker + REVIEW);
   });
 
   test('interstitial + nav + review: chrome cut, review kept, not garbage', () => {
@@ -98,6 +100,11 @@ describe('detector + stripper', () => {
 
   test('a reprints FOOTER after the review never cuts the review', () => {
     const t = REVIEW + '\n\n' + PRINT_HEADER;
+    assert.equal(cq.stripDowJonesReprintChrome(t), t);
+  });
+
+  test('a short review + reprints footer is never erased', () => {
+    const t = 'A tight, funny, beautifully acted revival. Go.\n\n' + PRINT_HEADER;
     assert.equal(cq.stripDowJonesReprintChrome(t), t);
   });
 
@@ -218,10 +225,49 @@ describe('chrome cut persists as a record-level signal', () => {
       + 'If the star name were not on the marquee, it would not have gotten anywhere near Broadway.';
     const base = { fullText: capsule, outletId: 'wsj' };
     const withChrome = cq.classifyContentTier({ ...base, fullText: PRINT_HEADER + capsule });
-    const cleaned = cq.classifyContentTier({ ...base, fullTextTrimmed: { reason: cq.DOW_JONES_TRIM_REASON, fromLength: 1 } });
+    const cleaned = cq.classifyContentTier({ ...base, fullTextTrimmed: { reason: cq.DOW_JONES_TRIM_REASON, fromLength: 1, toLength: capsule.length } });
+    // a later, different body does not inherit the signal
+    const replaced = cq.classifyContentTier({ ...base, fullText: capsule + ' More.', fullTextTrimmed: { reason: cq.DOW_JONES_TRIM_REASON, fromLength: 1, toLength: capsule.length } });
+    assert.notEqual(replaced.contentTier, 'complete');
     const neither = cq.classifyContentTier(base);
     assert.equal(withChrome.contentTier, cleaned.contentTier);
     assert.equal(cleaned.contentTier, 'complete', cleaned.tierReason);
     assert.notEqual(neither.contentTier, 'complete', 'fixture must actually depend on the signal');
+  });
+});
+
+describe('codex review hardening', () => {
+  let tmp;
+  beforeEach(() => { tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'dj-hard-')); _resetUrlOwnershipIndex(); });
+  afterEach(() => { fs.rmSync(tmp, { recursive: true, force: true }); _resetUrlOwnershipIndex(); });
+
+  test('a truncated re-fetch of a chrome-bearing record gets no breadcrumb', () => {
+    const fp = path.join(tmp, 'zz-test-show-2010', 'wsj--critic.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    const committed = { showId: 'zz-test-show-2010', url: 'https://online.wsj.com/article/x.html', fullText: PRINT_HEADER + REVIEW };
+    fs.writeFileSync(fp, JSON.stringify(committed));
+    safeWriteReview(fp, { ...committed, fullText: REVIEW.slice(0, 700) }, { force: true });
+    const stored = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(stored.fullTextTrimmed, undefined);
+    assert.equal(isIntentionalClear('fullText', stored, committed), false);
+  });
+
+  test('a stale breadcrumb does not block restoring text after a later fetch replaced the body', () => {
+    const local = { fullText: 'short later fetch', fullTextTrimmed: { reason: cq.DOW_JONES_TRIM_REASON, fromLength: 5000, toLength: 4000 } };
+    const committed = { fullText: 'x'.repeat(5000) };
+    assert.equal(isIntentionalClear('fullText', local, committed), false);
+  });
+
+  test('interstitial with no marker is not stored over existing text', () => {
+    const fp = path.join(tmp, 'zz-test-show-2010', 'wsj--critic.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    const rec = { showId: 'zz-test-show-2010', url: 'https://online.wsj.com/article/x.html', fullText: REVIEW };
+    fs.writeFileSync(fp, JSON.stringify(rec));
+    safeWriteReview(fp, { ...rec, fullText: INTERSTITIAL.split('Dow Jones Reprints')[0] + REVIEW }, { force: true });
+    assert.equal(JSON.parse(fs.readFileSync(fp, 'utf8')).fullText, REVIEW);
+  });
+
+  test('_isLiveSameShowCopy fails closed when the show is unknown', () => {
+    assert.equal(_isLiveSameShowCopy({ criticName: 'X', isCombinedReview: true, fullText: REVIEW }, 'zz-no-such-show-1900', 'x'), false);
   });
 });

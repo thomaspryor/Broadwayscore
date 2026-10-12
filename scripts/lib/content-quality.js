@@ -239,7 +239,7 @@ const DOW_JONES_CHROME_WINDOW = 3000;
 // Chrome lines are short (nav labels, form prompts). A prose paragraph before
 // the marker means it is not a pure chrome prefix, so nothing is cut.
 const DOW_JONES_CHROME_MAX_LINE = 320;
-const DOW_JONES_CHROME_SIGNAL_RE = /please\s+register\s+to\s+gain\s+free\s+access|(?:»|&raquo;)\s*More\b|\bSkip to Main Content\b|\bOrder Reprints\b/i;
+const DOW_JONES_CHROME_SIGNAL_RE = /please\s+register\s+to\s+gain\s+free\s+access|(?:»|&raquo;)\s*More\b|\bSkip to Main Content\b|\bOrder Reprints\b|^\s*BROWSER UPDATE\b/i;
 
 /**
  * Cut the Dow Jones chrome prefix (see above) and return what follows it.
@@ -252,8 +252,11 @@ const DOW_JONES_CHROME_SIGNAL_RE = /please\s+register\s+to\s+gain\s+free\s+acces
 // (review-write-guard.js), so the record still says "full WSJ page capture"
 // after the evidence itself is gone (classifyContentTier Path 3).
 const DOW_JONES_TRIM_REASON = 'Dow Jones page chrome prefix (BRO-5198)';
-function isDowJonesChromeTrim(trimmed) {
-  return !!trimmed && trimmed.reason === DOW_JONES_TRIM_REASON;
+// Bound to the body it describes (toLength): a later, different fetch does not
+// inherit the "full page capture" signal.
+function isDowJonesChromeTrim(trimmed, fullText) {
+  return !!trimmed && trimmed.reason === DOW_JONES_TRIM_REASON
+    && typeof fullText === 'string' && trimmed.toLength === fullText.length;
 }
 
 function stripDowJonesReprintChrome(text) {
@@ -261,8 +264,10 @@ function stripDowJonesReprintChrome(text) {
   const front = text.slice(0, DOW_JONES_CHROME_WINDOW);
   const m = /www\.djreprints\.com\.?/i.exec(front);
   if (!m) {
-    // Interstitial-only page: short, and no marker for a review to follow.
-    return detectWsjRegistrationInterstitial(front).detected && text.length < DOW_JONES_CHROME_WINDOW ? '' : text;
+    // No marker = no known boundary between chrome and review: cut nothing.
+    // isGarbageContent still flags an interstitial left in the text, and
+    // safeWriteReview refuses to store it over the record's existing text.
+    return text;
   }
   const head = text.slice(0, m.index);
   if (!/dow\s+jones|this\s+copy\s+is\s+for\s+your\s+personal/i.test(head)) return text;
@@ -272,8 +277,9 @@ function stripDowJonesReprintChrome(text) {
   // Positive evidence the prefix is chrome, never just "short lines" (a short
   // review followed by a reprints footer has short lines too): either the
   // reprints sentence opens the text (print header), or the prefix carries the
-  // interstitial / nav rail / skip link (corpus 2026-10-12: 136 + 57 of 193).
-  if (chrome.trim().length >= 200 && !DOW_JONES_CHROME_SIGNAL_RE.test(chrome)) return text;
+  // interstitial / nav rail / skip link / browser banner (corpus 2026-10-12:
+  // 133 + 60 of 193).
+  if (chrome.trim() && !DOW_JONES_CHROME_SIGNAL_RE.test(chrome)) return text;
   // A flattened (single-line) capture of the current wsj.com header has no line
   // breaks to check, but opens with the skip link and stays under ~1.5KB.
   const flattenedHeader = /^[^\n]{0,200}\bSkip to Main Content\b/i.test(chrome) && chrome.length < 1500;
@@ -2020,7 +2026,7 @@ function classifyContentTier(review) {
   // BRO-4429: a leading JSON blob must not count toward length/completeness.
   const rawFullText = stripLeadingJsonBlob(review.fullText || '');
   const fullText = stripDowJonesReprintChrome(rawFullText);
-  const hadDowJonesChrome = fullText !== rawFullText || isDowJonesChromeTrim(review.fullTextTrimmed);
+  const hadDowJonesChrome = fullText !== rawFullText || isDowJonesChromeTrim(review.fullTextTrimmed, review.fullText);
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 

@@ -1180,6 +1180,9 @@ function _deliberateTextTrim(field, localData, committedData) {
   if (!TRIM_FOLLOWER_FIELDS.has(field)) return false;
   const t = localData.fullTextTrimmed;
   if (!t || typeof t.fromLength !== 'number' || !localData.fullText) return false;
+  // A breadcrumb that names the text it produced (BRO-5198 toLength) only
+  // covers that text: a later fetch replacing it is not a deliberate trim.
+  if (typeof t.toLength === 'number' && localData.fullText.length !== t.toLength) return false;
   return !!committedData && typeof committedData.fullText === 'string'
     && committedData.fullText.length === t.fromLength
     && committedData.fullText.length > localData.fullText.length;
@@ -1408,7 +1411,7 @@ function writeReviewOrThrow(filePath, newData, options = {}) {
  * the fullText it already had.
  */
 function stripDowJonesChromeForWrite(filePath, newData) {
-  const { stripDowJonesReprintChrome, DOW_JONES_TRIM_REASON } = require('./content-quality');
+  const { stripDowJonesReprintChrome, detectWsjRegistrationInterstitial, DOW_JONES_TRIM_REASON } = require('./content-quality');
   const incoming = newData.fullText;
   const stripped = stripDowJonesReprintChrome(incoming);
   let onDisk = null;
@@ -1419,31 +1422,37 @@ function stripDowJonesChromeForWrite(filePath, newData) {
     return onDisk;
   };
   const label = `${path.basename(path.dirname(filePath))}/${path.basename(filePath)}`;
-  const trimmed = (fromLength) => ({ reason: DOW_JONES_TRIM_REASON, fromLength, at: new Date().toISOString() });
+  const trimmed = (fromLength, body) => ({ reason: DOW_JONES_TRIM_REASON, fromLength, toLength: body.length, at: new Date().toISOString() });
 
-  if (stripped === incoming) {
-    // Already-clean text replacing a chrome-bearing copy of the same review.
-    if (newData.fullTextTrimmed) return newData; // already records a cut
-    const diskText = typeof readOnDisk().fullText === 'string' ? onDisk.fullText : '';
-    if (!diskText || diskText === incoming) return newData;
-    const diskBody = stripDowJonesReprintChrome(diskText);
-    if (diskBody === diskText || !diskBody.trim()) return newData;
-    if (!incoming.includes(diskBody.slice(0, 120).trim())) return newData; // a different article
-    return { ...newData, fullTextTrimmed: trimmed(diskText.length) };
-  }
-
-  if (!stripped.trim()) {
-    console.warn(`[review-write-guard] ${label}: incoming fullText is only the WSJ registration interstitial — not stored`);
+  const keepExistingText = () => {
+    console.warn(`[review-write-guard] ${label}: incoming fullText is the WSJ registration interstitial — not stored`);
     const kept = { ...newData };
     if (typeof readOnDisk().fullText === 'string') kept.fullText = onDisk.fullText;
     else delete kept.fullText;
     return kept;
+  };
+
+  if (stripped === incoming) {
+    // Already-clean text replacing a chrome-bearing copy of the same review.
+    // Interstitial with no marker: no boundary to cut at, so store nothing new.
+    if (detectWsjRegistrationInterstitial(incoming).detected) return keepExistingText();
+    if (newData.fullTextTrimmed && newData.fullTextTrimmed.toLength === incoming.length) return newData; // already records this cut
+    const diskText = typeof readOnDisk().fullText === 'string' ? onDisk.fullText : '';
+    if (!diskText || diskText === incoming) return newData;
+    const diskBody = stripDowJonesReprintChrome(diskText);
+    if (diskBody === diskText || !diskBody.trim()) return newData;
+    // Only the same review minus the chrome — never a shorter (truncated)
+    // re-fetch, whose breadcrumb would block restoring the longer text.
+    if (incoming.trim() !== diskBody.trim()) return newData;
+    return { ...newData, fullTextTrimmed: trimmed(diskText.length, incoming) };
   }
+
+  if (!stripped.trim() || detectWsjRegistrationInterstitial(stripped).detected) return keepExistingText();
   const diskText = typeof readOnDisk().fullText === 'string' ? onDisk.fullText : '';
   const fromLength = diskText && diskText.length > stripped.length && stripDowJonesReprintChrome(diskText) !== diskText
     ? diskText.length
     : incoming.length;
-  const out = { ...newData, fullText: stripped, fullTextTrimmed: trimmed(fromLength) };
+  const out = { ...newData, fullText: stripped, fullTextTrimmed: trimmed(fromLength, stripped) };
   const words = stripped.split(/\s+/).filter(Boolean).length;
   for (const f of ['textWordCount', 'wordCount']) if (typeof out[f] === 'number') out[f] = words;
   console.log(`[review-write-guard] ${label}: cut ${incoming.length - stripped.length} chars of Dow Jones page chrome from fullText`);
