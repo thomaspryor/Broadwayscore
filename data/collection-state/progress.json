@@ -43,7 +43,10 @@
     "the-little-mermaid-2008/washpost--peter-marks.json",
     "radio-golf-2007/talkinbroadway--matthew-murray.json",
     "talk-radio-2007/variety--charles-isherwood.json",
-    "tarzan-2006/variety--charles-isherwood.json"
+    "tarzan-2006/variety--charles-isherwood.json",
+    "its-only-a-play-2014/talkinbroadway--matthew-murray.json",
+    "ifthen-2014/talkinbroadway--matthew-murray.json",
+    "baby-its-you-2011/wsj--terry-teachout.json"
   ],
   "failed": [
     "fish-off-broadway-2026/timeout--unknown.json",
@@ -62,14 +65,11 @@
     "the-minutes-2022/timeout--adam-feldman.json",
     "a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json",
     "a-delicate-balance-2014/talkinbroadway--matthew-murray.json",
-    "its-only-a-play-2014/talkinbroadway--matthew-murray.json",
-    "ifthen-2014/talkinbroadway--matthew-murray.json",
     "rocky-2014/talkinbroadway--matthew-murray.json",
     "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json",
     "picnic-2013/talkinbroadway--matthew-murray.json",
     "private-lives-2011/talkinbroadway--matthew-murray.json",
     "chinglish-2011/washpost--peter-marks.json",
-    "baby-its-you-2011/wsj--terry-teachout.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
     "a-man-for-all-seasons-2008/talkinbroadway--matthew-murray.json",
     "journeys-end-2007/variety--david-rooney.json"
@@ -89,13 +89,6 @@
       "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
       "the-little-mermaid-2008/washpost--peter-marks.json"
-    ],
-    "amp": [
-      "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
-      "data/review-texts/journeys-end-2007/variety--david-rooney.json"
-    ],
-    "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -127,7 +120,8 @@
       "title-of-show-2008/talkinbroadway--matthew-murray.json",
       "radio-golf-2007/talkinbroadway--matthew-murray.json",
       "talk-radio-2007/variety--charles-isherwood.json",
-      "tarzan-2006/variety--charles-isherwood.json"
+      "tarzan-2006/variety--charles-isherwood.json",
+      "its-only-a-play-2014/talkinbroadway--matthew-murray.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -145,11 +139,13 @@
       "private-lives-2011/talkinbroadway--matthew-murray.json",
       "anything-goes-2011/talkinbroadway--matthew-murray.json",
       "american-buffalo-2008/talkinbroadway--matthew-murray.json",
-      "a-man-for-all-seasons-2008/talkinbroadway--matthew-murray.json"
+      "a-man-for-all-seasons-2008/talkinbroadway--matthew-murray.json",
+      "ifthen-2014/talkinbroadway--matthew-murray.json",
+      "baby-its-you-2011/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-10-12T20:59:55.801Z",
-  "lastProcessed": "tarzan-2006/variety--charles-isherwood.json",
+  "lastProcessed": "baby-its-you-2011/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-10-12T21:42:33.858Z",
@@ -201,5 +197,10 @@
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "its-only-a-play-2014/talkinbroadway--matthew-murray.json",
+    "ifthen-2014/talkinbroadway--matthew-murray.json",
+    "baby-its-you-2011/wsj--terry-teachout.json"
   ]
 }
