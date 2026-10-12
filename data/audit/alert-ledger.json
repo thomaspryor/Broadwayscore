@@ -158,12 +158,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-12T12:08:38.296Z",
-      "lastSeen": "2026-10-12T12:08:38.296Z",
+      "lastSeen": "2026-10-12T12:41:31.066Z",
       "lastNotifiedAt": "2026-10-12T12:08:38.296Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 133,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -14621,7 +14622,7 @@
       "title": "main test.yml red: E2E Tests / Run unit tests — \"still auto-clears Same URL (URL-based) flags on re-merge\"",
       "firstSeen": "2026-10-12T11:44:00.713Z",
       "incidentOpenedAt": "2026-10-12T11:44:00.713Z",
-      "lastSeen": "2026-10-12T12:08:38.264Z",
+      "lastSeen": "2026-10-12T12:41:31.055Z",
       "lastNotifiedAt": "2026-10-12T11:44:00.713Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -14633,7 +14634,7 @@
         "runId": "38242949861",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38242949861"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/batch-xshow-urlswap": {
       "status": "open",
