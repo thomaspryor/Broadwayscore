@@ -42,6 +42,7 @@ function extractReviewerLine(html) {
 
 // BRO-4475: BroadwayWorld's meta/author markup can carry the author PAGE URL
 // (broadwayworld.com/author/...) as the value; a name is never an href.
+const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|dotdash meredith|vox media|penske media|gannett|hearst)\b/i;
 const URL_LIKE_RE = /^(?:https?:)?\/\/|^www\.|^\/[a-z]|\.(?:com|co\.uk|org|net)\/|\/author\//i;
 
 const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
@@ -58,13 +59,22 @@ function extractJsonLdAuthor(html) {
     try {
       doc = JSON.parse(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
     } catch { continue; }
+    // BRO-3414: Yoast's @graph gives the article `"author": {"@id": ...}`
+    // and the Person (with its name) as a separate node. Resolve the
+    // reference so the article's own author wins over page chrome (a
+    // theaterscene "authors" sidebar credited its editor on every review).
+    const byId = new Map();
+    for (const n of [].concat(doc && doc['@graph'] ? doc['@graph'] : [])) {
+      if (n && typeof n === 'object' && n['@id']) byId.set(n['@id'], n);
+    }
     const queue = [doc];
     while (queue.length) {
       const node = queue.shift();
       if (!node || typeof node !== 'object') continue;
       if (Array.isArray(node)) { queue.push(...node); continue; }
       if (node.author) {
-        for (const a of [].concat(node.author)) {
+        for (let a of [].concat(node.author)) {
+          if (a && typeof a === 'object' && !a.name && a['@id'] && byId.has(a['@id'])) a = byId.get(a['@id']);
           if (a && typeof a === 'object' && a['@type'] && !/^Person$/i.test([].concat(a['@type'])[0])) continue;
           const raw = typeof a === 'string' ? a : a && a.name;
           if (typeof raw !== 'string') continue;
@@ -98,12 +108,18 @@ function extractByline(html) {
     // is tolerated so the capture is the name, not a miss (audit S7-T4).
     /<span[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+?)\s*(?:<br\s*\/?>\s*)*<\/span>/i,
     /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+?)\s*(?:<br\s*\/?>\s*)*<\/p>/i,
+    // Condé Nast (verso) bylines: <span>By </span><a class="byline__name-link">
+    // Name</a>. Its meta author is the publisher (BRO-3414).
+    /<a[^>]+class=["'][^"']*byline__name-link[^"']*["'][^>]*>([^<]+)<\/a>/i,
     // Inline "By Name" prose near top of article — FMJ-style "By Ross" right
     // after the headline. Capture follows the literal "By " token. The name
     // class accepts the curly apostrophe (’) and its entity forms (&rsquo;,
     // &#8217;) so "Holly O’Mahony" is captured whole instead of stopping at
     // "Holly O" (audit S7-T4).
-    />By\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s+(?:[A-Z]|<|—))/,
+    // "By:" and a name closed straight by a tag ("By Isa Goldberg</p>",
+    // theaterlife) are accepted; the old lookahead needed whitespace first,
+    // so the capture backtracked to the first name only (BRO-3414).
+    />By:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/]|\s+(?:[A-Z]|—))/,
     // <a rel="author"> — before the nested-author-name fallback below because
     // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
@@ -133,6 +149,11 @@ function extractByline(html) {
       name = stripBylineSuffixes(name);
       if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
       if (URL_LIKE_RE.test(name)) continue;
+      // A publisher or house byline is not a critic (New Yorker meta author
+      // "Condé Nast", house byline "The New Yorker", BRO-3414); fall through.
+      if (PUBLISHER_RE.test(name)) continue;
+      // A bare "By" preamble span read as the name (BRO-3414).
+      if (/^by:?$/i.test(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {
         name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');

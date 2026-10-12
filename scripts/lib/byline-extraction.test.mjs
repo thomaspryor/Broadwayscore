@@ -130,3 +130,28 @@ test('BRO-5065: an excluded creative name from author meta or JSON-LD is not ret
   assert.equal(extractAuthorFromHtml(meta, body, opts), 'Jane Critic');
   assert.equal(extractAuthorFromHtml(meta, body.replace('Jane Critic', 'Ayn Rand'), opts), null);
 });
+
+// BRO-3414: placeholder bylines on theaterscene / New Yorker / theaterlife.
+test('Yoast @graph author reference resolves to the article Person, not a sidebar author widget', () => {
+  const graph = { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'Article', '@id': 'https://x.net/a/#article', author: { '@id': 'https://x.net/#/schema/person/1' } },
+    { '@type': 'Person', '@id': 'https://x.net/#/schema/person/1', name: 'Joseph Pisano' },
+  ] };
+  const html = `<html><head><script type="application/ld+json">${JSON.stringify(graph)}</script></head><body>`
+    + '<div class="uw-text"><a href="/author/victor-gluck/" class="author-name">Victor Gluck, Editor-in-Chief</a></div></body></html>';
+  assert.equal(extractByline(html), 'Joseph Pisano');
+});
+
+test('publisher meta author and house byline are skipped; Condé Nast byline link wins', () => {
+  const head = '<meta name="author" content="Condé Nast"/>';
+  const named = `${head}<span class="byline"><span class="byline__preamble">By </span><a class="BylineLink byline__name-link byline link" href="/contributors/helen-shaw">Helen Shaw</a></span>`;
+  assert.equal(extractByline(named), 'Helen Shaw');
+  const house = `${head}<span class="byline"><span class="byline__preamble">By </span><a class="byline__name-link" href="/">The New Yorker</a></span>`;
+  assert.equal(extractByline(house), null);
+});
+
+test('"By Name" closed by a tag or slash keeps the full name', () => {
+  assert.equal(extractByline('<p>By Isa Goldberg</p><p>Text</p>'), 'Isa Goldberg');
+  assert.equal(extractByline('<em>By Isa Goldberg/Chief Theater Critic</em>'), 'Isa Goldberg');
+  assert.equal(extractByline('<p>By: David Sheward</p>'), 'David Sheward');
+});
