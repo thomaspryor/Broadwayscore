@@ -16,7 +16,7 @@
  * - tests/unit/wrong-production-autoclear.test.mjs
  */
 
-const { parseDate } = require('./date-utils');
+const { parseDate, toDateMs } = require('./date-utils');
 
 // Review-lag grace on the CLOSE/END side of a declared priorRuns or tourLegs
 // window (BRO-2561). Critics routinely file 1-7 days after a run's final
@@ -1031,8 +1031,8 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   let tradeFalsePositive = ctx.outletIsInternationalTrade === true
     && wpNote.startsWith('Cross-market: US outlet');
   if (tradeFalsePositive) {
-    const start = ctx.showEarliestDate ? new Date(ctx.showEarliestDate).getTime() : NaN;
-    const pub = data.publishDate ? new Date(data.publishDate).getTime() : NaN;
+    const start = toDateMs(ctx.showEarliestDate);
+    const pub = toDateMs(data.publishDate);
     const urlYear = (String(data.url).match(/\/((?:19|20)\d\d)\//) || [])[1];
     if (isNaN(start) || isNaN(pub) || pub < start - 14 * 86400000
         || (urlYear && Number(urlYear) < new Date(start).getUTCFullYear())) {
