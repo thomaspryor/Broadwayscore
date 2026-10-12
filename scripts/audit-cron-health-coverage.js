@@ -9,6 +9,7 @@ const path = require('path');
 const {
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
+  worstGapHours, extractCrons, classifyAlertPaths,
 } = require('./lib/cron-coverage');
 const { DIGEST_CRONS, DIGEST_ONLY } = require('./lib/health-digest-crons');
 
@@ -18,7 +19,6 @@ const CHECK_FILE = path.join(WORKFLOWS_DIR, 'check-cron-health.yml');
 const EXEMPT_FILE = path.join(__dirname, '..', '.cron-health-exempt.txt');
 // BRO-2818: entries grandfathered from the 2026-06-28 bulk seed that still carry no
 // justification. Only shrinks: a NEW exempt entry without a reason fails the audit.
-const UNJUSTIFIED_BASELINE_FILE = path.join(__dirname, '..', '.cron-health-exempt-unjustified.txt');
 
 // Entries whose max_hours is intentionally tighter than worst-gap + CUSHION_HOURS.
 // These trade part of the standard cron-lag cushion for faster cancel detection
@@ -57,74 +57,8 @@ const TIGHT_BY_DESIGN = {
   'commercial-rss-poll.yml': { maxHours: 8, why: 'GitHub throttles this hourly cron to ~1.5-5.5h real cadence (max observed 5h31m, 2026-09-16->20); expression-derived gap=1h is fiction' },
 };
 
-function parseField(field, min, max) {
-  if (field === '*') return null; // wildcard
-  const out = new Set();
-  for (const part of field.split(',')) {
-    if (part.startsWith('*/')) {
-      const step = parseInt(part.slice(2), 10);
-      for (let v = min; v <= max; v += step) out.add(v);
-    } else if (part.includes('-')) {
-      const [a, b] = part.split('-').map(Number);
-      for (let v = a; v <= b; v++) out.add(v);
-    } else {
-      out.add(parseInt(part, 10));
-    }
-  }
-  return out;
-}
-
-// Compute worst-case gap (hours) across a 60-day window, treating multiple crons as a union.
-function worstGapHours(cronExprs) {
-  const matchers = cronExprs.map(expr => {
-    const [m, h, dom, mon, dow] = expr.split(/\s+/);
-    return {
-      m: parseField(m, 0, 59),
-      h: parseField(h, 0, 23),
-      dom: parseField(dom, 1, 31),
-      mon: parseField(mon, 1, 12),
-      dow: parseField(dow, 0, 6),
-    };
-  });
-
-  const fires = [];
-  const start = new Date(Date.UTC(2026, 0, 5, 0, 0, 0)); // Mon 2026-01-05 — neutral start
-  const WINDOW_MIN = 60 * 24 * 60; // 60 days
-
-  for (let i = 0; i < WINDOW_MIN; i++) {
-    const t = new Date(start.getTime() + i * 60_000);
-    const tm = t.getUTCMinutes(), th = t.getUTCHours();
-    const tdom = t.getUTCDate(), tmon = t.getUTCMonth() + 1, tdow = t.getUTCDay();
-    for (const c of matchers) {
-      if (c.m && !c.m.has(tm)) continue;
-      if (c.h && !c.h.has(th)) continue;
-      if (c.mon && !c.mon.has(tmon)) continue;
-      // cron oddity: when dom and dow are both set, they're an OR
-      const domOk = !c.dom || c.dom.has(tdom);
-      const dowOk = !c.dow || c.dow.has(tdow);
-      if (c.dom && c.dow) {
-        if (!domOk && !dowOk) continue;
-      } else {
-        if (!domOk || !dowOk) continue;
-      }
-      fires.push(t.getTime());
-      break;
-    }
-  }
-
-  if (fires.length < 2) return null; // can't determine (seasonal cron or never fires)
-
-  let maxGap = 0;
-  for (let i = 1; i < fires.length; i++) {
-    maxGap = Math.max(maxGap, fires[i] - fires[i - 1]);
-  }
-  return Math.round(maxGap / 3_600_000);
-}
-
-function extractCrons(wfPath) {
-  if (!fs.existsSync(wfPath)) return [];
-  const yaml = fs.readFileSync(wfPath, 'utf8');
-  return [...yaml.matchAll(/-?\s*cron:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
+function extractCronsFromFile(wfPath) {
+  return fs.existsSync(wfPath) ? extractCrons(fs.readFileSync(wfPath, 'utf8')) : [];
 }
 
 function main() {
@@ -144,7 +78,7 @@ function main() {
       skipped++;
       continue;
     }
-    const crons = extractCrons(path.join(WORKFLOWS_DIR, wf));
+    const crons = extractCronsFromFile(path.join(WORKFLOWS_DIR, wf));
     if (!crons.length) {
       console.log(`  ⏭  ${name.padEnd(42)} (${wf}): no cron found, manual-trigger only?`);
       skipped++;
@@ -210,18 +144,12 @@ function main() {
   // ── BRO-2818: the exempt list must say WHY, and its coverage claims must be true ──
   const exemptEntries = parseExemptEntries(fs.existsSync(EXEMPT_FILE) ? fs.readFileSync(EXEMPT_FILE, 'utf8') : '');
   const falseClaims = findFalseDigestClaims(exemptEntries, DIGEST_CRONS.map(d => d.workflow));
-  const baseline = parseExemptList(fs.existsSync(UNJUSTIFIED_BASELINE_FILE) ? fs.readFileSync(UNJUSTIFIED_BASELINE_FILE, 'utf8') : '');
+  // BRO-4941: the grandfathered baseline is gone; every exempt entry must carry a reason.
   const unjustified = findUnjustifiedExempt(exemptEntries);
-  const newUnjustified = unjustified.filter(f => !baseline.has(f));
-  const baselineFixed = [...baseline].filter(f => !unjustified.includes(f)).sort();
   const paging = new Map(entries.map(([, wf, hrs]) => [wf, parseInt(hrs, 10)]));
   const drift = findDigestDrift(DIGEST_CRONS, paging, DIGEST_ONLY);
 
-  console.log(`Exempt justification: ${exemptEntries.size - unjustified.length} of ${exemptEntries.size} carry a reason; ${unjustified.length} grandfathered without one (${newUnjustified.length} new).`);
-  if (baselineFixed.length) {
-    console.log(`  🟡 ${baselineFixed.length} baselined entr(ies) now justified or removed (delete from .cron-health-exempt-unjustified.txt): ${baselineFixed.join(', ')}`);
-    warnings += baselineFixed.length;
-  }
+  console.log(`Exempt justification: ${exemptEntries.size - unjustified.length} of ${exemptEntries.size} carry a reason.`);
   if (drift.staleDigestOnly.length) {
     console.log(`  🟡 DIGEST_ONLY lists workflow(s) not in the digest (prune scripts/lib/health-digest-crons.js): ${drift.staleDigestOnly.join(', ')}`);
     warnings += drift.staleDigestOnly.length;
@@ -232,16 +160,30 @@ function main() {
     console.log('  fix: add the workflow to scripts/lib/health-digest-crons.js, or drop the [digest] claim.');
     justificationFailures += falseClaims.length;
   }
-  if (newUnjustified.length) {
-    console.log(`\n🔴 new exempt entr(ies) with no justification: ${newUnjustified.join(', ')}`);
+  if (unjustified.length) {
+    console.log(`\n🔴 exempt entr(ies) with no justification: ${unjustified.join(', ')}`);
     console.log('  fix: put a # comment above the entry (or inline) saying why a stale run is acceptable and what, if anything, watches it.');
-    justificationFailures += newUnjustified.length;
+    justificationFailures += unjustified.length;
   }
   if (drift.missingFromPaging.length || drift.hoursMismatch.length) {
     if (drift.missingFromPaging.length) console.log(`\n🔴 digest cron(s) missing from check-cron-health.yml CRITICAL_CRONS and not in DIGEST_ONLY: ${drift.missingFromPaging.join(', ')}`);
     if (drift.hoursMismatch.length) console.log(`\n🔴 digest vs paging max-hours mismatch: ${drift.hoursMismatch.join('; ')}`);
     console.log('  fix: scripts/lib/health-digest-crons.js and check-cron-health.yml CRITICAL_CRONS must agree.');
     justificationFailures += drift.missingFromPaging.length + drift.hoursMismatch.length;
+  }
+
+  // ── BRO-3492: which path tells someone each scheduled workflow stopped running ──
+  // Advisory only (§19): opt-outs and uncomputable cadences are warnings, never failures.
+  const paths = classifyAlertPaths(scheduled, paging, DIGEST_CRONS.map(d => d.workflow), exemptEntries);
+  const byPath = { paged: [], digest: [], liveness: [], none: [] };
+  for (const [f, p] of paths) byPath[p].push(f);
+  console.log(`\nStopped-running alert paths: ${byPath.paged.length} paged (CRITICAL_CRONS), ${byPath.digest.length} digest row, ${byPath.liveness.length} default liveness sweep (health-check.js), ${byPath.none.length} opted out.`);
+  if (process.argv.includes('--paths')) for (const [f, p] of paths) console.log(`     ${p.padEnd(8)} ${f}`);
+  if (byPath.none.length) console.log(`  ℹ  opted out of liveness ([no-liveness: ...]): ${byPath.none.join(', ')}`);
+  const noCadence = byPath.liveness.filter(f => worstGapHours(extractCronsFromFile(path.join(WORKFLOWS_DIR, f))) == null);
+  if (noCadence.length) {
+    console.log(`  🟡 ${noCadence.length} liveness-swept workflow(s) have no computable cadence (seasonal?) so the sweep skips them: ${noCadence.join(', ')}`);
+    warnings += noCadence.length;
   }
 
   if (failures > 0) {

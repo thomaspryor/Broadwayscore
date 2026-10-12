@@ -92,11 +92,12 @@ function runCacheKey(suffix) {
  * @param {number} [opts.limit=1] - per_page
  * @param {string} [opts.branch] - restrict to a branch
  * @param {string} [opts.status] - restrict to a run status, e.g. 'success'
+ * @param {string} [opts.event] - restrict to a trigger event, e.g. 'schedule'
  * @returns {string} shell command emitting a JSON array of
  *   {databaseId, headSha, createdAt, conclusion}
  */
 function ghRunsQuery(workflowFile, opts = {}) {
-  const { limit = 1, branch, status } = opts;
+  const { limit = 1, branch, status, event } = opts;
   // `gh run list --limit` paginated past 100; the REST endpoint silently caps
   // per_page at 100 and returns a SHORTER window than asked for, which for a
   // streak scan reads as "the streak ended here". Fail loudly instead.
@@ -106,6 +107,7 @@ function ghRunsQuery(workflowFile, opts = {}) {
   const params = [`per_page=${limit}`];
   if (branch) params.push(`branch=${branch}`);
   if (status) params.push(`status=${status}`);
+  if (event) params.push(`event=${event}`);
   const jq = '[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, conclusion: .conclusion}]';
   return `gh api "repos/${GH_REPO_PLACEHOLDER}/actions/workflows/${workflowFile}/runs?${params.join('&')}" --jq '${jq}'`;
 }
@@ -2270,6 +2272,71 @@ function checkCronHealth() {
       }
     })
   );
+}
+
+/**
+ * BRO-3492 default liveness sweep: every scheduled workflow that neither
+ * check-cron-health.yml (CRITICAL_CRONS) nor checkCronHealth() above watches.
+ * Before this, ~130 exempt crons could stop firing (disabled, broken YAML,
+ * startup_failure) and nothing noticed, because notify-failure only fires on a
+ * run that started. One aggregated row so a quiet day adds no digest noise.
+ * CI only: ~130 API calls, too many for every local /ship-check.
+ */
+function checkExemptCronLiveness() {
+  const NAME = 'Cron: exempt-cron liveness';
+  if (!process.env.GITHUB_ACTIONS || (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN)) {
+    return [{ name: NAME, status: 'pass', message: 'Skipped outside CI (runs in the daily digest)' }];
+  }
+  if (hasLowHeadroom()) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped: GitHub API headroom low' }];
+  }
+  return [runCheck(NAME, () => {
+    const { isScheduledWorkflow, parseExemptEntries, classifyAlertPaths, extractCrons, livenessVerdict } = require('./lib/cron-coverage');
+    const wfDir = path.join(__dirname, '..', '.github', 'workflows');
+    const exemptFile = path.join(__dirname, '..', '.cron-health-exempt.txt');
+    const paging = new Set([...fs.readFileSync(path.join(wfDir, 'check-cron-health.yml'), 'utf8')
+      .matchAll(/"([a-z0-9-]+\.yml)\|\d+\|/g)].map(m => m[1]));
+    const digest = require('./lib/health-digest-crons').DIGEST_CRONS.map(d => d.workflow);
+    const yamls = new Map(fs.readdirSync(wfDir).filter(f => f.endsWith('.yml'))
+      .map(f => [f, fs.readFileSync(path.join(wfDir, f), 'utf8')]));
+    const scheduled = [...yamls].filter(([, y]) => isScheduledWorkflow(y)).map(([f]) => f);
+    const paths = classifyAlertPaths(scheduled, paging,
+      digest, parseExemptEntries(fs.existsSync(exemptFile) ? fs.readFileSync(exemptFile, 'utf8') : ''));
+    const stale = [], errors = [], disabled = [];
+    let checked = 0;
+    for (const [wf, p] of paths) {
+      if (p !== 'liveness') continue;
+      const crons = extractCrons(yamls.get(wf));
+      try {
+        const raw = cachedShell(runCacheKey(`liveness:${wf}`), ghRunsQuery(wf, { limit: 5, event: 'schedule' }));
+        const runs = (raw ? JSON.parse(raw) : []).map(r => ({ conclusion: r.conclusion, created_at: r.createdAt }));
+        const v = livenessVerdict({ crons, runs });
+        if (v.status === 'unknown') continue;
+        checked++;
+        if (v.status !== 'stale') continue;
+        // A workflow someone switched off on purpose is not a dead cron: name it, don't warn.
+        // One extra call, stale workflows only.
+        // A failed state lookup must not hide a stale workflow: report it as stale.
+        let state = null;
+        try {
+          state = cachedShell(runCacheKey(`wfstate:${wf}`),
+            `gh api "repos/${GH_REPO_PLACEHOLDER}/actions/workflows/${wf}" --jq .state`);
+        } catch { /* fall through to stale */ }
+        if (state === 'disabled_manually') { disabled.push(wf); continue; }
+        stale.push(`${wf} (${v.ageHours == null ? 'no scheduled start in last 5 runs' : `last start ${v.ageHours}h ago`}, limit ${v.limitHours}h${state && state !== 'active' ? `, ${state}` : ''})`);
+      } catch (err) {
+        errors.push(`${wf}: ${String(err.message).substring(0, 60)}`);
+      }
+    }
+    const off = (disabled.length ? ` Disabled on purpose: ${disabled.join(', ')}.` : '')
+      + (errors.length ? ` ${errors.length} lookup(s) failed: ${errors.slice(0, 3).join('; ')}.` : '');
+    if (stale.length) {
+      return { name: NAME, status: 'warn', message: `${stale.length} of ${checked} exempt scheduled workflow(s) stopped starting: ${stale.join('; ')}.${off}`,
+        hint: 'Stopped, broken, or timing out every run (a timeout reads as cancelled, which notify-failure misses). Check the Actions tab.' };
+    }
+    if (errors.length > 5) return { name: NAME, status: 'warn', message: `${errors.length} lookups failed: ${errors.slice(0, 3).join('; ')}` };
+    return { name: NAME, status: 'pass', message: `${checked - disabled.length} exempt scheduled workflow(s) started on cadence.${off}` };
+  })];
 }
 
 // --- Category I: Secrets Health ---
@@ -5417,6 +5484,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCWV(),
     ...checkSEO(),
     ...checkCronHealth(),
+    ...checkExemptCronLiveness(),
     ...(await checkMainRedStreak(isCI)),
     ...checkCiGreenRate(isCI),
     ...checkSecretsHealth(),
@@ -5682,4 +5750,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift };
+module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };

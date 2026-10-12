@@ -26,8 +26,44 @@ const {
   deriveExpectations,
   diffAgainstLive,
   diffFunctionBodies,
+  findUnexpectedPolicies,
+  findUndeletedUserTables,
+  liveSiblings,
   LIVE_CATALOG_QUERY,
 } = require('./lib/supabase-schema-expectations');
+const DELETE_ACCOUNT_EXEMPT = require('./lib/delete-account-exempt');
+
+// BRO-4532: policies that exist on prod with no web migration behind them, and
+// why that is expected. All are the original base schema, created in the
+// dashboard before supabase/migrations existed (reviewed 2026-10-12, verify-schema
+// run 38218941990). Each is pinned by policyDefHash() of its live definition, so
+// a later change to one (say USING (true)) warns again. Anything else live-only
+// is printed as a warning.
+const KNOWN_LIVE_ONLY_POLICIES = {
+  "list_items:Anyone can view public list items": { def: 'e1025ac65634', why: 'base schema: owner CRUD via lists.user_id; public read only when the parent list is_public' },
+  "list_items:Users can CRUD own list items": { def: '910d7235268c', why: 'base schema: owner CRUD via lists.user_id; public read only when the parent list is_public' },
+  "lists:Anyone can view public lists": { def: '9a79e1181110', why: 'base schema: owner CRUD; public read only when is_public' },
+  "lists:Users can CRUD own lists": { def: '6c381405dcc8', why: 'base schema: owner CRUD; public read only when is_public' },
+  "profiles:Anyone can view public list owner profiles": { def: '32a3fabb8f51', why: 'base schema: own row only; public read limited to owners of public lists' },
+  "profiles:Users can insert own profile": { def: 'd3ccd199a78e', why: 'base schema: own row only; public read limited to owners of public lists' },
+  "profiles:Users can read own profile": { def: 'b4c3da844dbe', why: 'base schema: own row only; public read limited to owners of public lists' },
+  "profiles:Users can update own profile": { def: '3d1bf21b00f0', why: 'base schema: own row only; public read limited to owners of public lists' },
+  "push_log:Service role only": { def: 'f3eb6b0cc54c', why: 'base schema: service_role only' },
+  "push_tokens:Service role can read all tokens": { def: '5211d8a938ee', why: 'base schema: service_role read (iOS push sender)' },
+  "reviews:Users can delete own reviews": { def: '995c7cfd49f3', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "reviews:Users can insert own reviews": { def: 'ed1efb1ea29d', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "reviews:Users can read own reviews": { def: 'a278350523dc', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "reviews:Users can update own reviews": { def: '096635213bde', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "user_review_photos:delete own photos": { def: '995c7cfd49f3', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "user_review_photos:insert own photos": { def: 'ed1efb1ea29d', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "user_review_photos:select own photos": { def: 'a278350523dc', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "user_review_photos:update own photos": { def: '5981b7fcfc73', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "watchlist:Users can delete own watchlist": { def: '995c7cfd49f3', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "watchlist:Users can insert own watchlist": { def: 'ed1efb1ea29d', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "watchlist:Users can read own watchlist": { def: 'a278350523dc', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "watchlist:Users can update own watchlist": { def: '096635213bde', why: 'base schema: own rows only (auth.uid() = user_id)' },
+};
+const DELETE_ACCOUNT_FN = path.join(__dirname, '..', 'supabase', 'functions', 'delete-account', 'index.ts');
 
 if (process.argv.includes('--help') || process.argv.includes('-h')) {
   console.log(`verify-supabase-schema — fail loud when a committed migration is not applied to prod
@@ -107,6 +143,16 @@ async function main() {
   const drifted = diffFunctionBodies(expected, liveRows);
   const bodiesChecked = [...expected.values()].filter((o) => o.bodyHash).length;
 
+  // Advisory reports (warnings only, BRO-4532 / BRO-4534; §19: advisory first).
+  for (const p of findUnexpectedPolicies(expected, liveRows, KNOWN_LIVE_ONLY_POLICIES)) {
+    const what = p.changed ? 'allowlisted live-only policy CHANGED definition' : 'policy on prod that no migration declares';
+    console.log(`::warning::${what}: ${p.name} [def ${p.defHash}] = ${JSON.stringify(p.definition)} (drop it, add a migration, or pin it in KNOWN_LIVE_ONLY_POLICIES with a reason)`);
+  }
+  const fnSource = fs.existsSync(DELETE_ACCOUNT_FN) ? fs.readFileSync(DELETE_ACCOUNT_FN, 'utf8') : '';
+  for (const t of findUndeletedUserTables(liveRows, fnSource, DELETE_ACCOUNT_EXEMPT)) {
+    console.log(`::warning::per-user table ${t} survives account deletion: not in delete-account/index.ts, no cascade from auth.users/profiles, not in scripts/lib/delete-account-exempt.js`);
+  }
+
   if (missing.length === 0 && drifted.length === 0) {
     console.log(`✓ all ${expected.size} expected objects exist in prod (${bodiesChecked} function bodies match)`);
     return;
@@ -126,8 +172,10 @@ async function main() {
   const byMigration = {};
   for (const obj of missing) (byMigration[obj.file] ||= []).push(obj);
   for (const [file, objs] of Object.entries(byMigration)) {
-    for (const { kind, name } of objs) {
-      console.error(`::error::missing in prod: ${kind} ${name} (declared by ${file})`);
+    for (const obj of objs) {
+      const live = ['fnconfig', 'viewopt', 'fnresult'].includes(obj.kind) ? liveSiblings(obj, liveRows) : null;
+      const has = live ? ` (prod has: ${live.length ? live.join(' | ') : 'none'})` : '';
+      console.error(`::error::missing in prod: ${obj.kind} ${obj.name} (declared by ${file})${has}`);
     }
     console.error(
       `::error::apply it: gh workflow run apply-migration.yml -f migration=supabase/migrations/${file} -f confirm=APPLY`

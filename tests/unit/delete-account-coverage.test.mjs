@@ -14,14 +14,10 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const migrationsDir = path.join(root, 'supabase/migrations');
 const fnSource = fs.readFileSync(path.join(root, 'supabase/functions/delete-account/index.ts'), 'utf8');
 
-// Tables delete-account deliberately leaves alone, and why.
-const EXEMPT = {
-  user_show_stubs: 'shared catalog rows other users can point at; no personal content',
-  plan_shares: 'ON DELETE CASCADE from profiles, which delete-account removes',
-  diary_shares: 'ON DELETE CASCADE from profiles, which delete-account removes',
-  welcome_emails: 'ON DELETE CASCADE from auth.users, which delete-account removes; holds only user_id + send status',
-  seen_unrated: 'ON DELETE CASCADE from profiles, which delete-account removes',
-};
+// Tables delete-account deliberately leaves alone, and why. Shared with the
+// live-catalog check in scripts/verify-supabase-schema.js (BRO-4534).
+const require = createRequire(import.meta.url);
+const EXEMPT = require('../../scripts/lib/delete-account-exempt.js');
 
 function userOwnedTables() {
   const owned = new Set();
@@ -67,7 +63,6 @@ test('a 404 from the admin user delete counts as already deleted', () => {
 // single lookup left photo files in storage for anyone past 1000 photos
 // (BRO-4525). The edge function is Deno and can't be imported here, so run
 // its real selectAll against a fake PostgREST.
-const require = createRequire(import.meta.url);
 function loadSelectAll(fetchImpl) {
   const src = fnSource.match(/async function selectAll[\s\S]*?\n}\n/)?.[0];
   assert.ok(src, 'selectAll not found in delete-account/index.ts');

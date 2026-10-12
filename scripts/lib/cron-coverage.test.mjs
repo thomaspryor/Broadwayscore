@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
+  worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict,
 } = require('./cron-coverage.js');
 const { DIGEST_CRONS, DIGEST_ONLY } = require('./health-digest-crons.js');
 const fs = require('node:fs');
@@ -124,4 +125,61 @@ test('the watchdog digest row is liveness-only (it exits 1 by design when it pag
   assert.equal(w.livenessOnly, true);
   const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'health-check.js'), 'utf8');
   assert.match(src, /livenessOnly && run\.conclusion/, 'health-check.js must honour livenessOnly');
+});
+
+// ── BRO-3492: shared cadence helpers + default liveness sweep ──
+
+test('extractCrons: quoted, unquoted, trailing comments; comment lines ignored', () => {
+  const y = "on:\n  schedule:\n    - cron: '30 9 * * 1' # Mondays\n    - cron: 30 5 1,15 * *\n    # - cron: '1 1 * * *'\n    - cron: \"0 */6 * * *\"\n";
+  assert.deepEqual(extractCrons(y), ['30 9 * * 1', '30 5 1,15 * *', '0 */6 * * *']);
+  assert.deepEqual(extractCrons(''), []);
+});
+
+test('worstGapHours: weekly 168, daily 24, seasonal null', () => {
+  assert.equal(worstGapHours(['30 9 * * 1']), 168);
+  assert.equal(worstGapHours(['0 4 * * *']), 24);
+  assert.equal(worstGapHours(['0 9 * 4-6 *']), null);
+});
+
+test('classifyAlertPaths: paged > digest > opted-out > default liveness', () => {
+  const exempt = parseExemptEntries('a.yml  # weekly report\n# internal only [no-liveness: manual-only experiment]\nb.yml\nc.yml # x\n');
+  const r = classifyAlertPaths(['a.yml', 'b.yml', 'c.yml', 'd.yml', 'p.yml'], new Set(['p.yml']), ['d.yml'], exempt);
+  assert.deepEqual([...r], [['a.yml', 'liveness'], ['b.yml', 'none'], ['c.yml', 'liveness'], ['d.yml', 'digest'], ['p.yml', 'paged']]);
+  // A new scheduled workflow with no exempt entry still lands on liveness (covered by default).
+  assert.equal(classifyAlertPaths(['new.yml'], new Set(), [], new Map()).get('new.yml'), 'liveness');
+});
+
+test('livenessVerdict: red runs count as started; cancelled/startup_failure do not', () => {
+  const now = Date.parse('2026-10-12T12:00:00Z');
+  const weekly = ['30 9 * * 1']; // limit 168+24 = 192h
+  const at = h => new Date(now - h * 3_600_000).toISOString();
+  assert.deepEqual(livenessVerdict({ crons: weekly, runs: [{ conclusion: 'failure', created_at: at(100) }], now }),
+    { status: 'alive', limitHours: 192, ageHours: 100 });
+  // Real case 2026-10-12: scrape-dtli-show-score timed out (cancelled) 3 weeks running.
+  const v = livenessVerdict({ crons: weekly, now, runs: [
+    { conclusion: 'cancelled', created_at: at(17) }, { conclusion: 'cancelled', created_at: at(185) },
+    { conclusion: 'startup_failure', created_at: at(300) }, { conclusion: 'success', created_at: at(500) }] });
+  assert.equal(v.status, 'stale');
+  assert.equal(v.ageHours, 500);
+  assert.equal(livenessVerdict({ crons: weekly, runs: [], now }).status, 'stale');
+  assert.equal(livenessVerdict({ crons: ['0 9 * 4-6 *'], runs: [], now }).status, 'unknown');
+  // in-flight run (no conclusion yet) counts as started
+  assert.equal(livenessVerdict({ crons: weekly, runs: [{ conclusion: null, created_at: at(1) }], now }).status, 'alive');
+});
+
+test('real repo: every exempt-path cron is on a watched path; opt-outs give a reason', () => {
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const exempt = parseExemptEntries(fs.readFileSync(path.join(root, '.cron-health-exempt.txt'), 'utf8'));
+  for (const [f, v] of exempt) if (v.noLiveness) assert.match(v.reason, /\[no-liveness\s*:\s*\S/, f);
+});
+
+test('parseExemptList: inline reasons are not part of the filename (BRO-4941)', () => {
+  assert.deepEqual([...parseExemptList('# head\na.yml  # weekly report\nb.yml\n')], ['a.yml', 'b.yml']);
+});
+
+test('livenessVerdict: a monthly cron is alive late in a 31-day month', () => {
+  const v = livenessVerdict({ crons: ['0 12 1 * *'], runs: [{ conclusion: 'success', created_at: '2026-10-01T12:05:00Z' }], now: Date.parse('2026-11-01T11:00:00Z') });
+  assert.equal(v.status, 'alive');
+  const late = livenessVerdict({ crons: ['0 12 1 * *'], runs: [{ conclusion: 'success', created_at: '2026-09-01T12:05:00Z' }], now: Date.parse('2026-11-01T11:00:00Z') });
+  assert.equal(late.status, 'stale');
 });
