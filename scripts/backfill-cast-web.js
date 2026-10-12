@@ -30,6 +30,9 @@ const { serpQuery } = require('./lib/url-discovery');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
+  castWebSkipReason,
+  validateCastSourceUrl,
+  validateCastPageContext,
   validateCastExtraction,
   isOperaSourceUrl,
   scoreSerpResult,
@@ -100,7 +103,9 @@ function httpRequest(url, options = {}) {
 // SERP search via ScrapingBee
 // ============================================================================
 
-async function searchCast(title, year, category, venue) {
+async function searchCast(show, shows) {
+  const { title, category } = show;
+  const year = (show.openingDate || show.previewsStartDate || '').slice(0, 4);
   const isWestEnd = isLondonMarket(category);
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
 
@@ -114,7 +119,7 @@ async function searchCast(title, year, category, venue) {
   // rejected (see tests/unit/cast-extraction-guards.test.mjs). Pass year +
   // category so the lib's year-mismatch and market-mismatch defenses can
   // fire (added 2026-05-24).
-  const scored = results.map(r => scoreSerpResult(r, { title, year, category, venue }));
+  const scored = results.map(r => scoreSerpResult(r, { ...show, year }, shows));
 
   return scored
     .filter(r => r.score >= SERP_MIN_SCORE && r.url)
@@ -329,7 +334,13 @@ function parseJsonFromLLM(text) {
 // succeeded and every candidate page was read and cleanly rejected, or 0
 // search results came back) — mirrors backfill-cast.js's IBDB fix (#712).
 // Only genuine empties should be tombstoned; shouldTombstone() reads this.
-async function processShow(show) {
+async function processShow(show, shows = [], services = {}) {
+  const skipReason = castWebSkipReason(show);
+  if (skipReason) return { skipped: true, reason: skipReason, cast: [] };
+  const search = services.searchCast || searchCast;
+  const fetch = services.fetchPageText || fetchPageText;
+  const extract = services.extractCastWithLLM || extractCastWithLLM;
+  const delay = services.sleep || sleep;
   const year = show.openingDate ? show.openingDate.split('-')[0] :
     show.previewsStartDate ? show.previewsStartDate.split('-')[0] : null;
 
@@ -337,7 +348,7 @@ async function processShow(show) {
   console.log(`  Searching for cast pages...`);
   let searchResults;
   try {
-    searchResults = await searchCast(show.title, year, show.category, show.venue);
+    searchResults = await search(show, shows);
   } catch (e) {
     console.log(`  SERP error: ${e.message}`);
     return { fetchFailed: true, cast: [] };
@@ -349,25 +360,29 @@ async function processShow(show) {
   }
 
   // Step 2: Fetch page text and extract cast
-  const showIsOpera = /\bopera\b|the met\b/.test(String(show.title || '').toLowerCase());
   let anyTransientFailure = false;
 
   for (const sr of searchResults) {
+    const sourceCheck = validateCastSourceUrl(sr.url, show, shows);
+    if (!sourceCheck.ok) {
+      console.log(`  Skipping source (${sourceCheck.reason}): ${sr.url}`);
+      continue;
+    }
     // Skip opera-publication domains for non-opera shows entirely — saves
     // the ScrapingBee fetch + LLM call. Kavalier-Clay landed on parterre.com
     // and the LLM extracted Met Opera cast; this blocks the same class of
     // mistake at the source.
-    if (!showIsOpera && isOperaSourceUrl(sr.url)) {
+    if (isOperaSourceUrl(sr.url)) {
       console.log(`  Skipping opera-domain source: ${sr.url}`);
       continue;
     }
 
     console.log(`  Fetching: ${sr.url}`);
-    await sleep(FETCH_DELAY_MS);
+    await delay(FETCH_DELAY_MS);
 
     let pageText;
     try {
-      pageText = await fetchPageText(sr.url);
+      pageText = await fetch(sr.url);
     } catch (e) {
       console.log(`  Fetch error: ${e.message}`);
       anyTransientFailure = true;
@@ -383,13 +398,22 @@ async function processShow(show) {
       continue;
     }
 
+    const contextCheck = validateCastPageContext(pageText, show, shows);
+    if (!contextCheck.ok) {
+      console.log(`  Rejected page (${contextCheck.reason})`);
+      // Uncorroborated pages do not prove this production has no cast.
+      // Preserve existing data and allow a retry instead of tombstoning.
+      anyTransientFailure = true;
+      continue;
+    }
+
     // Step 3: LLM extraction
     console.log(`  Extracting cast via LLM...`);
-    await sleep(LLM_DELAY_MS);
+    await delay(LLM_DELAY_MS);
 
     let cast;
     try {
-      cast = await extractCastWithLLM(pageText, show.title, year, deriveVenueLabel(show.category, show.venue));
+      cast = await extract(pageText, show.title, year, deriveVenueLabel(show.category, show.venue));
     } catch (e) {
       console.log(`  LLM error: ${e.message}`);
       anyTransientFailure = true;
@@ -431,16 +455,6 @@ async function main() {
   if (limit) console.log('  Limit:', limit);
   console.log('');
 
-  // Verify API keys
-  const hasSerp = !!process.env.SCRAPINGBEE_API_KEY;
-  const hasLLM = !!process.env.GEMINI_API_KEY || !!process.env.ANTHROPIC_API_KEY;
-  if (!hasSerp) { console.error('SCRAPINGBEE_API_KEY required'); process.exit(1); }
-  if (!hasLLM) { console.error('GEMINI_API_KEY or ANTHROPIC_API_KEY required'); process.exit(1); }
-  console.log(`  SERP: ScrapingBee | LLM: ${process.env.GEMINI_API_KEY ? 'Gemini Flash' : 'Claude Haiku'}`);
-
-  // Ensure cast directory exists
-  if (!fs.existsSync(CAST_DIR)) fs.mkdirSync(CAST_DIR, { recursive: true });
-
   // Load shows
   const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
   let shows = showsData.shows;
@@ -462,6 +476,12 @@ async function main() {
       return true;
     });
   }
+
+  shows = shows.filter(show => {
+    const reason = castWebSkipReason(show);
+    if (reason) console.log(`  Skipping ${show.id} (${reason})`);
+    return !reason;
+  });
 
   // Skip shows that already have a cast file unless --force — applies even
   // under --show-filter, matching backfill-cast.js's pattern. Without this,
@@ -489,6 +509,14 @@ async function main() {
     return;
   }
 
+  // Only eligible work needs credentials or a writable cast directory.
+  const hasSerp = !!process.env.SCRAPINGBEE_API_KEY;
+  const hasLLM = !!process.env.GEMINI_API_KEY || !!process.env.ANTHROPIC_API_KEY;
+  if (!hasSerp) { console.error('SCRAPINGBEE_API_KEY required'); process.exit(1); }
+  if (!hasLLM) { console.error('GEMINI_API_KEY or ANTHROPIC_API_KEY required'); process.exit(1); }
+  console.log(`  SERP: ScrapingBee | LLM: ${process.env.GEMINI_API_KEY ? 'Gemini Flash' : 'Claude Haiku'}`);
+  if (!fs.existsSync(CAST_DIR)) fs.mkdirSync(CAST_DIR, { recursive: true });
+
   // Mass-wipe circuit breaker (--force only): count how many shows about to
   // be reprocessed currently have a populated cast file, mirroring
   // backfill-cast.js's guard (task #712 — the same bug class).
@@ -511,7 +539,8 @@ async function main() {
     console.log(`\n[${i + 1}/${shows.length}] ${show.title} (${show.id}) [${show.category}]`);
 
     try {
-      const result = await processShow(show);
+      const result = await processShow(show, showsData.shows);
+      if (result.skipped) { skipped++; continue; }
 
       if (!result.cast || !isViableCastExtraction(result.cast)) {
         // A transient failure (SERP/fetch/LLM error, blocked page) must NOT
@@ -612,7 +641,11 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+module.exports = { processShow };
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}

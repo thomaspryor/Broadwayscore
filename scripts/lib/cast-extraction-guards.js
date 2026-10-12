@@ -161,6 +161,62 @@ function normalizeVenueName(venue) {
     .trim();
 }
 
+// The theatre search/extraction path cannot identify rotating opera or
+// special-event casts safely. Use explicit catalogue fields, not title words
+// (The Phantom of the Opera is a musical).
+function castWebSkipReason(show) {
+  if (show.type === 'opera' || show.type === 'special') return `unsupported type: ${show.type}`;
+  // A musical can legitimately use the Met (The Last Ship, 2026).
+  if (show.type !== 'musical' && /^(?:the\s+)?(?:metropolitan|met)\s+opera(?:\s+house)?$/i.test(String(show.venue || '').trim())) {
+    return 'unsupported venue: Metropolitan Opera House';
+  }
+  return null;
+}
+
+// URL slugs are negative evidence only: never infer or write show metadata
+// from them. A production listing for another year/known id is not a source
+// for this production, regardless of its SERP score or the LLM's answer.
+function validateCastSourceUrl(url, show, shows = []) {
+  let segments;
+  try {
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol)) return { ok: false, reason: 'invalid-source-url' };
+    segments = parsed.pathname.split('/').filter(Boolean).map(s => decodeURIComponent(s).toLowerCase());
+  } catch { return { ok: false, reason: 'invalid-source-url' }; }
+
+  const other = shows.find(s => s.id && s.id !== show.id && segments.includes(s.id.toLowerCase()));
+  if (other) return { ok: false, reason: `other-production: ${other.id}` };
+
+  const year = String(show.openingDate || show.previewsStartDate || show.year || '').slice(0, 4);
+  if (/^\d{4}$/.test(year)) {
+    for (let i = 0; i < segments.length; i++) {
+      // Article publication dates and numeric listing ids are not production
+      // years. Restrict the hard guard to production-listing slugs.
+      const listing = /^(shows?|production)$/.test(segments[i - 1]);
+      const castPage = /^(cast|cast-and-creatives|cast-creative|current-cast|credits|people)$/.test(segments[i + 1] || '');
+      if (!listing && !castPage) continue;
+      const suffix = segments[i].match(/-((?:19|20)\d{2})$/);
+      if (suffix && suffix[1] !== year) return { ok: false, reason: 'production-year-mismatch' };
+    }
+  }
+  return { ok: true };
+}
+
+// Same-title productions need positive evidence from page text as well as
+// the URL veto. A date or venue in the URL/SERP alone is not corroboration.
+function validateCastPageContext(pageText, show, shows = []) {
+  const titleKey = title => foldDiacritics(String(title || '')).toLowerCase().trim();
+  const ambiguous = shows.some(s => s.id !== show.id && titleKey(s.title) === titleKey(show.title));
+  if (!ambiguous) return { ok: true };
+  const year = String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
+  const venue = normalizeVenueName(show.venue);
+  if (!/^\d{4}$/.test(year) || venue.length < 4) return { ok: false, reason: 'missing-production-context' };
+  if (!new RegExp(`\\b${year}\\b`).test(String(pageText || ''))) return { ok: false, reason: 'unconfirmed-production-year' };
+  const textVenue = normalizeVenueName(String(pageText || '').replace(/\s+/g, ' '));
+  if (!textVenue.includes(venue)) return { ok: false, reason: 'unconfirmed-production-venue' };
+  return { ok: true };
+}
+
 // Pure score for a single SERP result against a show. Higher = more
 // likely the right show's cast page. Caller filters by SERP_MIN_SCORE.
 //
@@ -168,10 +224,13 @@ function normalizeVenueName(venue) {
 // @param {string|{title:string, year?:number|string, category?:string, venue?:string}} show
 //   Target show. Strings are accepted for backward compat (treated as title-
 //   only) but year / market signals require the object form.
-function scoreSerpResult(result, show) {
+function scoreSerpResult(result, show, shows = []) {
   // Backward-compat: callers passing a bare title string get the title-only
   // scoring path (no year/market signals).
   const showObj = (typeof show === 'string') ? { title: show } : (show || {});
+  if (!validateCastSourceUrl(result.url || result.link, showObj, shows).ok) {
+    return { score: -Infinity, url: result.url || result.link || '', title: result.title || '' };
+  }
   const showTitle = showObj.title || '';
   const showYear = showObj.year ? Number(String(showObj.year).slice(0, 4)) : null;
   const showCategory = showObj.category || null;
@@ -328,6 +387,9 @@ function validateCastExtraction(cast, showTitle) {
 }
 
 module.exports = {
+  castWebSkipReason,
+  validateCastSourceUrl,
+  validateCastPageContext,
   validateCastExtraction,
   isOperaSourceUrl,
   scoreSerpResult,
