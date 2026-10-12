@@ -270,7 +270,7 @@ function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) 
   const armed = process.env.LAND_TOPLEVEL_BLOCKING === '1';
   return gates.map((gate) => {
     const d = decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: read(branch, gate) });
-    if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate)) return d;
+    if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate) || d.mode === 'fail-safe') return d; // a gate that never ran stays blocking
     return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (BRO-5117; not blocking until LAND_TOPLEVEL_BLOCKING=1): ${d.reason}` };
   });
 }
