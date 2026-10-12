@@ -1502,18 +1502,6 @@
     "queuedAt": "2026-10-12T03:15:03.003Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38202295146",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T04:11:45.585Z"
-  },
-  {
     "conditionKey": "land:land/codex-bro-4042",
     "title": "Landing blocked: rebase red on land/codex-bro-4042",
     "description": "land.yml did not land land/codex-bro-4042: the rebase gate went red at 0c5c4700ff. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-4042 @ 0c5c4700ff (origin/land/codex-bro-4042) → origin/main @ b6dc62e44e REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b6dc62e44e: Rebasing (1/1) error: could not apply 0c5c4700ffc... fix(BRO-4042): P1: ingest-review-from-url.js merge into an existing canonical review-texts file hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38195100620",
@@ -1570,5 +1558,17 @@
       }
     ],
     "queuedAt": "2026-10-12T04:09:28.226Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38203069212",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T04:22:31.049Z"
   }
 ]
