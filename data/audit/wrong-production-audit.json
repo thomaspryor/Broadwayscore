@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T22:48:55.910Z",
+  "timestamp": "2026-10-12T22:58:55.154Z",
   "stats": {
-    "totalReviews": 56118,
-    "alreadyFlagged": 20946,
-    "dateGuardCatches": 217,
-    "directorMismatch": 1798,
-    "tvFilmSignals": 1617,
-    "londonSignals": 2209,
+    "totalReviews": 56165,
+    "alreadyFlagged": 20952,
+    "dateGuardCatches": 216,
+    "directorMismatch": 1804,
+    "tvFilmSignals": 1621,
+    "londonSignals": 2210,
     "offBroadwaySignals": 507,
-    "yearMismatch": 137,
-    "noPublishDate": 5264
+    "yearMismatch": 139,
+    "noPublishDate": 5288
   },
   "findings": [
     {
@@ -8284,6 +8284,19 @@
     },
     {
       "showId": "clue-tour-2025",
+      "file": "broadwayworld--victoria-schwarz.json",
+      "publishDate": "2026-09-28",
+      "url": "https://www.broadwayworld.com/austin/article/Review-CLUE-at-Gaslight-Baker-Theatre-20260928",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
       "file": "houston-chronicle--doni-wilson.json",
       "score": 63,
       "publishDate": "2026-06-10",
@@ -10149,6 +10162,19 @@
       "score": 88,
       "publishDate": "2026-09-21",
       "url": "https://www.clevescene.com/arts/death-becomes-her-begins-a-new-life-with-tour-launch-at-playhouse-square/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "playbill--logan-culwell-block.json",
+      "publishDate": "2026-09-23",
+      "url": "https://playbill.com/article/get-a-1st-look-at-the-1st-national-tour-of-death-becomes-her",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -17145,6 +17171,24 @@
     },
     {
       "showId": "hadestown-tour-2024",
+      "file": "indiewire--wilson-chapman.json",
+      "publishDate": "2026-07-22",
+      "url": "https://www.indiewire.com/criticism/movies/hadestown-the-musical-movie-review-1235206370/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (4x) more than 2024 (0x). 2019 matches production: hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 91,
       "publishDate": "2025-11-20",
@@ -17575,6 +17619,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2024 (0x). 2018 matches production: harry-potter-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "rachelsreviewstheatre--unknown.json",
+      "publishDate": "2026-09-25",
+      "url": "https://rachelsreviewstheatre.com/2026/09/25/cursed-child-delivers-magical-spectacle-over-story-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2024 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
         }
       ]
     },
@@ -22919,6 +22976,7 @@
     {
       "showId": "king-lear-royal-exchange-regional-2026",
       "file": "guardian--mark-lawson.json",
+      "score": 63,
       "publishDate": "2026-10-10",
       "url": "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
       "findings": [
@@ -29828,6 +29886,19 @@
       ]
     },
     {
+      "showId": "paranormal-activity-chicago-regional-2025",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2025-10-18",
+      "url": "https://thefourthwalsh.com/2025/10/review-paranormal-activity-chicago-shakespeare-theater-staged-fright/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
       "showId": "paranormal-activity-dc-regional-2026",
       "file": "broadwayworld--roger-catlin.json",
       "score": 60,
@@ -33386,6 +33457,19 @@
       ]
     },
     {
+      "showId": "shucked-tour-2024",
+      "file": "the-globe-and-mail--ilana-lucas.json",
+      "publishDate": "2026-03-10",
+      "url": "https://www.theglobeandmail.com/culture/stage/article-shucked-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 69,
@@ -34616,6 +34700,19 @@
       "score": 87,
       "publishDate": "2026-10-06",
       "url": "https://mediamikes.com/2026/10/theater-review-spamalot/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "metrmag--kevin-t-baldwin.json",
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/monty-python-s-spamalot-by-eric-idle-and-john-du-prez-boch-center-wang-theatre-boston-ma-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -38083,7 +38180,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2025-05-13",
       "url": "https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqawIAzRPLCe5BipyMyYjw8DiIaqX0NUVtdid3ax7rY3-CHJtvH",
       "findings": [
@@ -39930,6 +40027,19 @@
       "score": 78,
       "publishDate": "2026-10-01",
       "url": "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "huntnewsnu--sabrina-lopez.json",
+      "publishDate": "2026-08-09",
+      "url": "https://huntnewsnu.com/93567/lifestyle/the-great-gatsby-trades-literary-depth-for-broadway-pizzazz/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42767,6 +42877,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "publishDate": "2026-08-08",
+      "url": "https://rachelweinbergreviews.com/2026/08/08/review-the-outsiders-national-tour-presented-by-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "revue--josh.json",
       "score": 78,
       "publishDate": "2026-06-10",
@@ -43372,6 +43495,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "broadwayworld--linda-hodges.json",
+      "publishDate": "2026-10-10",
+      "url": "https://www.broadwayworld.com/san-francisco/article/Review-PHANTOM-OF-THE-OPERA-at-Broadway-San-Jose-20261010",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         }
       ]
     },
@@ -45844,20 +45980,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -49445,6 +49567,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "working-girl-la-jolla-regional-2025",
+      "file": "latheatrix--anita-w-harris.json",
+      "publishDate": "2025-12-18",
+      "url": "https://www.latheatrix.com/post/review-la-jolla-playhouse-s-world-premiere-working-girl-is-well-timed-for-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -78686,6 +78821,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "trib-live--by-alexis-papalia.json",
+      "publishDate": "2026-09-11",
+      "url": "https://triblive.com/aande/theater-arts/review-disneys-the-lion-king-is-a-majestic-start-to-the-pnc-broadway-in-pittsburgh-series-season-at-the-benedum/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
