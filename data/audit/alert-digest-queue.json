@@ -1738,6 +1738,36 @@
     "queuedAt": "2026-10-12T20:42:23.479Z"
   },
   {
+    "conditionKey": "land:land/bro-5196-park-deep-queue",
+    "title": "Landing blocked: rebase red on land/bro-5196-park-deep-queue",
+    "description": "land.yml did not land land/bro-5196-park-deep-queue: the rebase gate went red at 2caac3b841. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5196-park-deep-queue @ 2caac3b841 (origin/land/bro-5196-park-deep-queue) → origin/main @ e3dcbf84f4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ace95319e6: Rebasing (1/2) error: could not apply bf76d74e557... feat(land): park Land jobs behind a deep mutex queue instead of sleep-polling a runner (BRO-5196) hint: Resolve all conflicts manually, mark them as re Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38300588855",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5196-park-deep-queue"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "2caac3b841d05efd8aee1234f9b9fdce58d0278a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38300588855"
+      }
+    ],
+    "queuedAt": "2026-10-12T22:07:42.174Z"
+  },
+  {
     "conditionKey": "land:land/bro-4823-real-ports",
     "title": "Landing blocked: lint-workflows red on land/bro-4823-real-ports",
     "description": "land.yml did not land land/bro-4823-real-ports: the lint-workflows gate went red at 98322e0874. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38305376336",
