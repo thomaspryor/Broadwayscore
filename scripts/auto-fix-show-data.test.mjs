@@ -334,6 +334,12 @@ test('generateSynopsisWithLLM grounds a Haiku plot too, and falls back to Opus w
   assert.ok(logs.some(l => /claude-haiku[^:]*: dropped, search results CONTRADICTED/.test(l)), logs.join('\n'));
 });
 
+test('generateSynopsisWithLLM does not pay for Opus when search found no plot for the Haiku answer', async () => {
+  const { out, prompts } = await runReplies(['A grieving teenager joins a punk band.', 'UNSUPPORTED: no plot in results', 'SHOULD NOT BE USED']);
+  assert.equal(out, null);
+  assert.equal(prompts.length, 2);
+});
+
 test('generateSynopsisWithLLM keeps a Haiku plot that search results support', async () => {
   const haikuPlot = 'Eileen, 15, grieves her sister Olive while trying to hold her family together.';
   const { out } = await runReplies([haikuPlot, 'SUPPORTED: same premise']);

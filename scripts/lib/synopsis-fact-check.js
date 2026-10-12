@@ -297,6 +297,13 @@ function gateScrapedSynopsis(show, candidate, ctx) {
   const probe = { ...show, synopsis: candidate };
   const lede = ledeTitleMismatch(probe);
   if (lede) return { ok: false, reason: `text is about "${lede.slice(0, 50)}", not this show` };
+  // Same title, other author (Home Front 1985 got Warren Leight's play, BRO-5080).
+  // ctx.checkAuthor:false for a page whose own identity already confirmed the production.
+  if (!ctx || ctx.checkAuthor !== false) {
+    const { synopsisAuthorMismatch } = require('./synopsis-validation');
+    const author = synopsisAuthorMismatch(probe);
+    if (author) return { ok: false, reason: `names ${author}, not in this row's credits` };
+  }
   const awardsByShow = (ctx && ctx.awardsByShow) || loadAwardsByShow();
   const claims = checkAwardClaims(probe, { awardsByShow, showsById: (ctx && ctx.showsById) || {} });
   if (claims.unsupported.length > 0) {

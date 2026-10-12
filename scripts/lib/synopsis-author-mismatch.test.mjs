@@ -29,3 +29,17 @@ test('source-work authors, sentence fragments and rows without writer credits ar
 test('a stored synopsis is not re-flagged bad for it (the credit may be the wrong side)', () => {
   assert.equal(classifyBadSynopsis(row('Sweetmeats is a play by Karim Khan that tells the story of Hema and Liaqat, a couple who run a sweet shop in east London.', [['George Kaufman', 'Playwright']])).bad, false);
 });
+
+test('review fixes: music directors are not writers, award phrases are not names, "from" in a title is not a source', () => {
+  assert.equal(synopsisAuthorMismatch(row('Cabaret is a musical by John Kander and Fred Ebb set in Weimar Berlin.', [['X Y', 'Director'], ['Z W', 'Music Director']])), null);
+  assert.equal(synopsisAuthorMismatch(row('Eclipsed is a play by Tony Award nominee Danai Gurira about women in the Liberian civil war.', [['Danai Gurira', 'Playwright']])), null);
+  assert.equal(synopsisAuthorMismatch(row('Notes from the Field is a play by Someone Else about the school-to-prison pipeline.', [['Anna Deavere Smith', 'Playwright']])), 'Someone Else');
+});
+
+test('the shared synopsis gate rejects another author unless the page identity is already confirmed', () => {
+  const { gateScrapedSynopsis } = require('./synopsis-fact-check.js');
+  const show = { title: 'Home Front', status: 'closed', creativeTeam: [{ name: 'James Duff', role: 'Playwright' }] };
+  const text = 'Home Front is a play by Warren Leight. It tells the story of an interracial couple who meet while celebrating V-J Day in 1945.';
+  assert.equal(gateScrapedSynopsis(show, text, { showsById: {}, awardsByShow: {} }).ok, false);
+  assert.equal(gateScrapedSynopsis(show, text, { showsById: {}, awardsByShow: {}, checkAuthor: false }).ok, true);
+});
