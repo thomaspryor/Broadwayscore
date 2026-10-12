@@ -1512,5 +1512,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-12T03:55:56.924Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-4042",
+    "title": "Landing blocked: rebase red on land/codex-bro-4042",
+    "description": "land.yml did not land land/codex-bro-4042: the rebase gate went red at 0c5c4700ff. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-4042 @ 0c5c4700ff (origin/land/codex-bro-4042) → origin/main @ b6dc62e44e REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b6dc62e44e: Rebasing (1/1) error: could not apply 0c5c4700ffc... fix(BRO-4042): P1: ingest-review-from-url.js merge into an existing canonical review-texts file hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38195100620",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-4042"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "0c5c4700ffcf81bbc511242cefd7af3cc45dafe9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38195100620"
+      }
+    ],
+    "queuedAt": "2026-10-12T04:06:21.355Z"
   }
 ]
