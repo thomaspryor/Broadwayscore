@@ -1,66 +1,64 @@
 {
-  "runDate": "2026-10-12T10:05:54.299Z",
+  "runDate": "2026-10-12T10:31:24.973Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "fish-off-broadway-2026,good-time-charlie-off-broadway-2026,fences-off-west-end-2026,a-ghost-in-your-ear-off-broadway-2026,bettys-summer-vacation-the-heights-players-off-broadway-2026",
+    "showFilter": "cosi-fan-tutte-off-broadway-2026,night-city-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
+    "processed": 0,
     "failed": 2,
     "skipped": 0,
-    "successRate": "71.4%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 5,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
     "tier1_9Attempts": 1,
     "tier1_9Success": 1,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 5,
+    "processed": 0,
     "failed": 2,
     "shows": [
-      "a-ghost-in-your-ear-off-broadway-2026",
-      "fences-off-west-end-2026",
-      "fish-off-broadway-2026",
-      "good-time-charlie-off-broadway-2026"
+      "cosi-fan-tutte-off-broadway-2026",
+      "night-city-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,49 +66,37 @@
       "failed": 0
     }
   },
-  "processed": [
-    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-    "fences-off-west-end-2026/ground--unknown.json",
-    "fences-off-west-end-2026/north-west-end--michelle-knight.json",
-    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "fish-off-broadway-2026/timeout--unknown.json",
-    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json"
+    "cosi-fan-tutte-off-broadway-2026/talkinbroadway--unknown.json",
+    "night-city-off-west-end-2026/timeout-london--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-      "fences-off-west-end-2026/ground--unknown.json",
-      "fences-off-west-end-2026/north-west-end--michelle-knight.json",
-      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
-    ],
+    "processed": [],
     "failed": [
-      "fish-off-broadway-2026/timeout--unknown.json",
-      "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json"
+      "cosi-fan-tutte-off-broadway-2026/talkinbroadway--unknown.json",
+      "night-city-off-west-end-2026/timeout-london--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "fences-off-west-end-2026/ground--unknown.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "fences-off-west-end-2026/north-west-end--michelle-knight.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
