@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-06",
   "planId": "11ed0cec-700f-46ab-a285-751d245994b6",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T22:52:13.944Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,128 @@
         "description": "Duplicate of vulture--sara-holdren.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T23:39:39.331Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-2022/variety--charles-isherwood.json url: \"https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126/\" -> \"https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mrs-warrens-profession-2010/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html\" -> \"http://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "relatively-speaking-2011/variety--charles-isherwood.json url: \"https://variety.com/2011/legit/reviews/talking-cure-1118045506/\" -> \"http://www.variety.com/review/VE1117946401\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sister-act-2011/timeout--david-cote.json url: \"https://www.timeout.com/newyork/theater/sister-act-review\" -> \"https://newyork.timeout.com/arts-culture/theater/1228219/review-sister-act\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spongebob-squarepants-2017/vulture--jesse-green.json url: \"https://www.vulture.com/2017/12/theater-review-spongebob-squarepants-the-broadway-musical.html\" -> \"https://www.vulture.com/2017/12/adaptable-yellow-and-porous-is-he-spongebob-broadway.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "that-championship-season-2011/vulture--jesse-green.json url: \"https://www.vulture.com/2011/03/theater_review_that_champions.html\" -> \"http://nymag.com/daily/entertainment/2011/03/stage_dive_the_faded_glory_of.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json url: \"https://variety.com/2012/legit/reviews/the-mystery-of-edwin-drood-1117948959/\" -> \"https://www.variety.com/review/VE1117948742\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/variety--david-rooney.json url: \"https://variety.com/2010/legit/reviews/the-pee-wee-herman-show-1117945092/\" -> \"http://www.variety.com/review/VE1117944035/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-constitution-means-to-me-2019/observer--rex-reed.json url: \"https://observer.com/2019/04/what-the-constitution-means-to-me-broadway-review/\" -> \"https://observer.com/2019/03/she-the-people-heidi-schreck-shreds-our-toxic-constitution/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-the-next-room-2009/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2009/11/20/theater/reviews/20room.html\" -> \"http://www.nytimes.com/2009/11/20/theater/reviews/20innextroom.html?_r=1\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/KingKong.html\" -> \"https://www.talkinbroadway.com/page/world/KingKong2018.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-on-this-island-2017/vulture--jesse-green.json url: \"https://www.vulture.com/2017/12/theater-review-once-on-this-island-revival.html\" -> \"https://www.vulture.com/2017/12/theater-the-performances-that-carry-once-on-this-island.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf applied, but the write guard also changed _duplicateOfCleared; check the record before trusting it"
+    }
+  ]
 }
