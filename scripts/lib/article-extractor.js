@@ -477,13 +477,42 @@ function extractLsaByline(text) {
 // the marker before treating a position as a real byline.
 const TB_BYLINE_SHAPE = /^\s*[A-Za-z][\w.'-]*(?:\s+[A-Za-z][\w.'-]*){0,3}\s*-\s*.{0,30}\b\d{4}\b/;
 
+// Regional pages (talkinbroadway.com/regional/{city}/...) have no "Theatre
+// Review by" marker. Their header is `Review by <a mailto>Critic</a> | <a
+// href="sched.html">Season Schedule</a>` and the review runs to the closing
+// </td> of the layout table (BRO-5106: Mystic Pizza tour, minn1534.html,
+// extracted 0 chars so the stub could never be recovered).
+const TB_REGIONAL_BYLINE_RE = /Review by\s*(?:<a[^>]*>)?[^<|]+?(?:<\/a>)?\s*\|\s*<a[^>]*>\s*Season Schedule\s*<\/a>\s*<\/p>\s*<\/center>/i;
+
+function extractTalkinBroadwayRegionalBody(html) {
+  const m = TB_REGIONAL_BYLINE_RE.exec(html);
+  if (!m) return null;
+  const restStart = m.index + m[0].length;
+  // The review opens with a right-floated photo <table>; its inner </td> must
+  // not end the body, so walk tags with a table-depth counter and stop at the
+  // first </td> that closes the layout cell itself (depth 0).
+  const rest = html.slice(restStart);
+  let depth = 0;
+  let end = rest.length;
+  for (const t of rest.matchAll(/<(\/?)(table|td)\b/gi)) {
+    const closing = t[1] === '/';
+    const tag = t[2].toLowerCase();
+    if (tag === 'table') depth += closing ? -1 : 1;
+    else if (closing && depth <= 0) { end = t.index; break; }
+  }
+  // Drop the photo table's caption text (depth-aware) before stripping tags.
+  const body = rest.slice(0, end).replace(/<table\b[\s\S]*?<\/table>/gi, ' ');
+  const text = stripHtml(body);
+  return text.length >= 300 ? text : null;
+}
+
 function extractTalkinBroadwayBody(html, criticHint) {
   const MARKER_LEN = 'Theatre Review by'.length;
   const rawPositions = [...html.matchAll(/Theatre Review by/gi)].map((m) => m.index);
   const positions = rawPositions.filter((p) =>
     TB_BYLINE_SHAPE.test(stripHtml(html.slice(p + MARKER_LEN, p + MARKER_LEN + 200)))
   );
-  if (!positions.length) return null;
+  if (!positions.length) return extractTalkinBroadwayRegionalBody(html);
 
   let start = positions[0];
   const hint = foldDiacritics((criticHint || '').toLowerCase()).replace(/[^a-z]/g, '');

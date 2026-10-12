@@ -141,3 +141,25 @@ describe('article-extractor: talkinbroadway.com', () => {
     assert.ok(text.includes('two thousand twenty three run'), 'punctuation-only hint should behave like no hint');
   });
 });
+
+describe('article-extractor: talkinbroadway.com regional layout (BRO-5106)', () => {
+  const body = 'Mystic Pizza might be the only movie, and now the only musical, inspired by a pizza place. '.repeat(8);
+  const html =
+    '<html><body>' + NEWSLETTER_CHROME +
+    '<div align="CENTER"><table><tbody><tr><td><center>' +
+    '<p class="page-title">Regional Reviews: Minneapolis/St. Paul</p>' +
+    '<p><font size="+2"><b><i>Mystic Pizza</i></b></font><br>National Tour<br>' +
+    'Review by <a href="mailto:adorman@talkinbroadway.com">Arthur Dorman</a> | <a href="sched.html">Season Schedule</a></p></center>' +
+    `<p>${body}</p><p>Cast: A, B, C</p></td></tr></tbody></table></div></body></html>`;
+
+  test('extracts regional review body without the newsletter chrome', () => {
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.startsWith('Mystic Pizza might be'), text);
+    assert.ok(!/E-Blast/.test(text));
+  });
+
+  test('critic name parsed from regional byline', async () => {
+    const { extractCriticName } = await import('../../scripts/lib/talkinbroadway-forum-link.js');
+    assert.strictEqual(extractCriticName(html), 'Arthur Dorman');
+  });
+});

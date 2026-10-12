@@ -37,6 +37,10 @@ const LINK_MARKER_RE = /<b>\s*Link\s*<\/b>\s*<\/td>\s*<td[^>]*>\s*<a[^>]+href="(
 // matches inside it).
 const CRITIC_RE = /Theatre Review by\s*(?:<a[^>]*>)?\s*([^<\n]+?)\s*(?:<\/a>)?\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}/i;
 
+// Regional-page byline (no "Theatre Review by" marker): `Review by <a
+// mailto>Critic</a> | <a href="sched.html">Season Schedule</a>` (BRO-5106).
+const REGIONAL_CRITIC_RE = /Review by\s*(?:<a[^>]*>)?\s*([^<|]+?)\s*(?:<\/a>)?\s*\|\s*<a[^>]*>\s*Season Schedule/i;
+
 function isForumThreadUrl(url) {
   return !!url && FORUM_URL_RE.test(url);
 }
@@ -49,7 +53,7 @@ function extractReviewPageUrl(html) {
 
 function extractCriticName(html) {
   if (!html) return null;
-  const m = html.match(CRITIC_RE);
+  const m = html.match(CRITIC_RE) || html.match(REGIONAL_CRITIC_RE);
   return m ? m[1].trim() : null;
 }
 

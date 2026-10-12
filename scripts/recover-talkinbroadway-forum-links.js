@@ -179,32 +179,67 @@ async function run() {
       continue;
     }
 
-    const ingestArgs = [
+    // Two passes: the writer can only rename the --unknown husk to the named
+    // byline slug once the file's url already equals the review page (it
+    // won't trust a byline read off a page the file doesn't yet point at), and
+    // ingest-review-from-url's stale check rejects an explicit --critic that
+    // can't land on the first pass. Pass 1 swaps url + body; pass 2 (only when
+    // a critic was read off the page) lands the byline/rename. BRO-5106.
+    const baseArgs = [
       path.join(__dirname, 'ingest-review-from-url.js'),
       `--show=${showId}`,
       `--url=${reviewPageUrl}`,
       '--outlet=talkinbroadway',
       `--data-dir=${reviewTextsDir}`,
     ];
-    if (critic) ingestArgs.push(`--critic=${critic}`);
+    const passes = [baseArgs];
+    if (critic) passes.push([...baseArgs, `--critic=${critic}`, '--byline-from-page']);
 
+    // ingest-review-from-url.js re-fetches the page with a single fetchPage
+    // call, so it hits the same intermittent Cloudflare/BD timeout this
+    // script's own fetch already retries (BRO-5106: Mystic Pizza stayed stuck
+    // because the one-shot ingest fetch lost the coin-flip twice). Retry the
+    // whole ingest on a fetch failure; other failures are not retried.
     let stdout;
-    try {
-      stdout = execFileSync('node', ingestArgs, { encoding: 'utf8' });
+    let ingestErr = null;
+    let newFilePathFromPass = null;
+    for (const ingestArgs of passes) {
+      ingestErr = null;
+      for (let attempt = 1; attempt <= 4; attempt++) {
+        try {
+          stdout = execFileSync('node', ingestArgs, { encoding: 'utf8' });
+          ingestErr = null;
+          break;
+        } catch (e) {
+          ingestErr = ((e.stdout || '') + (e.stderr || e.message)).trim();
+          if (!/Fetch failed|All scraping methods failed/.test(ingestErr) || attempt === 4) break;
+          console.log(`  (ingest retry ${attempt}/3 after fetch failure)`);
+        }
+      }
+      if (ingestErr && newFilePathFromPass) {
+        // Pass 1 (url + body) already landed; only the byline rename failed.
+        // Keep the recovery and let the backfill rename it later.
+        console.warn(`  ⚠️  byline pass failed, keeping pass-1 recovery: ${ingestErr.split('\n')[0]}`);
+        ingestErr = null;
+        break;
+      }
+      if (ingestErr) break;
       console.log(stdout.trim().split('\n').map((l) => `  ${l}`).join('\n'));
-    } catch (e) {
-      console.error(`  ingest failed: ${((e.stdout || '') + (e.stderr || e.message)).trim()}`);
+      const m = stdout.match(/✅ (?:Created|Updated): (.+)/);
+      if (m) newFilePathFromPass = m[1].trim();
+    }
+    if (ingestErr) {
+      console.error(`  ingest failed: ${ingestErr}`);
       failed++;
       continue;
     }
 
-    const writeMatch = stdout.match(/✅ (?:Created|Updated): (.+)/);
-    if (!writeMatch) {
+    if (!newFilePathFromPass) {
       console.warn('  ingest reported no write (skipped/no-op) — leaving husk file in place');
       skipped++;
       continue;
     }
-    const newFilePath = writeMatch[1].trim();
+    const newFilePath = newFilePathFromPass;
 
     // BRO-3790: ingest-review-from-url.js itself now verifies a merge-into-
     // existing "Updated" actually landed the url/fullText/--critic it was
@@ -214,7 +249,7 @@ async function run() {
     // development first surfaced). Reaching this line means the write is
     // already confirmed correct; no need to re-check it here too.
 
-    if (path.resolve(newFilePath) !== path.resolve(filePath) && fs.existsSync(newFilePath)) {
+    if (path.resolve(newFilePath) !== path.resolve(filePath) && fs.existsSync(newFilePath) && fs.existsSync(filePath)) {
       try {
         fs.unlinkSync(filePath);
         console.log(`  deleted superseded husk: ${path.join(showDir, file)}`);

@@ -86,6 +86,10 @@ const showId = getArg('show');
 const url = getArg('url');
 const outletArg = getArg('outlet');
 const criticArg = getArg('critic');
+// --byline-from-page: --critic was read off this URL's own page (not a human
+// assertion), so the writer may rename a matching --unknown file to the named
+// slug (BRO-5106; shouldUpgradeUnknownByline requires input.bylineFromOwnPage).
+const bylineFromPageFlag = process.argv.includes('--byline-from-page');
 // Extra heading spelling for a multi-show post whose section heading misspells
 // the title (interestedbystander's "Toera" for Torera, BRO-4658).
 const sectionTitleArg = getArg('section-title');
@@ -566,6 +570,7 @@ if (!show) {
     criticName: critic,
     url,
     source: 'submit-review-form',
+    bylineFromOwnPage: bylineFromPageFlag && !!criticArg,
     fields,
     // BRO-4431: this is one explicit url, so a longer copy of the same
     // article may replace a truncated stored body (issue 908).

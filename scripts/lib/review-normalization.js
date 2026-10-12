@@ -2432,6 +2432,15 @@ function _showSlugTokens(url) {
     const u = new URL(url);
     if ([...u.searchParams.keys()].some((k) => ARTICLE_ID_QUERY_KEY.test(k))) return [];
   } catch { /* not a URL: fall through */ }
+  // Talkin' Broadway review pages are opaque ids (/page/ob/10_05_26.html,
+  // /regional/minn/minn1534.html): the path never names the show. Read as a
+  // slug, "regional"/"minn"/"minn1534" looked like a different show and
+  // maybeUpgradeUrl refused the forum-thread -> review-page swap, so the
+  // Mystic Pizza stub could never recover (BRO-5106).
+  try {
+    const tb = new URL(url);
+    if (/(^|\.)talkinbroadway\.com$/i.test(tb.hostname) && /^\/(?:regional|page|ob)\//i.test(tb.pathname)) return [];
+  } catch { /* not a URL: fall through */ }
   const { urlSlugTokens } = require('./show-match-verifier');
   return urlSlugTokens(url).filter(
     (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
