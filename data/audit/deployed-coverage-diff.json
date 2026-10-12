@@ -1,32 +1,50 @@
 {
-  "generatedAt": "2026-10-12T08:34:19.939Z",
+  "generatedAt": "2026-10-12T08:45:43.134Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 227,
-  "clean": 226,
-  "defective": 1,
+  "clean": 225,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 1
+    "missing-from-prod": 2
   },
   "shows": [
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatre-weekly"
+          "detail": "1 scored outlet(s) absent from the deployed payload: britishtheatrecom"
         }
       ],
       "missingFromProd": [
-        "theatre-weekly"
+        "britishtheatrecom"
       ],
-      "localCount": 30,
-      "deployedCount": 29,
-      "firstDefectAt": "2026-10-12T08:34:17.269Z"
+      "localCount": 24,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-12T08:45:36.411Z"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "title": "The Phantom of the Opera",
+      "openingDate": "1986-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: britishtheatrecom"
+        }
+      ],
+      "missingFromProd": [
+        "britishtheatrecom"
+      ],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-12T08:45:36.411Z"
     }
   ],
   "persistentDefective": 0,

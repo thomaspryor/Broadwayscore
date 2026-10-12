@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-12T08:31:56.196Z",
+  "generatedAt": "2026-10-12T08:45:07.198Z",
   "windowDays": 21,
-  "targets": 1,
-  "auditedThisRun": 1,
-  "carriedForward": 724,
+  "targets": 6,
+  "auditedThisRun": 6,
+  "carriedForward": 719,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 408,
-    "missingCurrentRun": 928,
+    "withGap": 406,
+    "missingCurrentRun": 898,
     "totalCitedNoUrl": 8,
-    "totalFlaggedMisses": 916,
+    "totalFlaggedMisses": 918,
     "totalRecoverable": 5,
     "totalRecovered": 13,
-    "priorProductionCitations": 4794
+    "priorProductionCitations": 4823
   },
   "results": [
     {
@@ -2920,15 +2920,15 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn"
+        "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks"
       ],
       "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn",
-          "host": "redcircle.com",
+          "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks",
+          "host": "secrettheatre.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -2969,7 +2969,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -2989,7 +2989,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -2999,13 +2999,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 25,
         "byReason": {
-          "non-review-host": 23,
+          "non-review-host": 20,
           "aggregator-internal-nav": 2,
-          "census-junk-host": 2,
-          "write-path-blocked": 1,
-          "show-listing-page": 2,
+          "write-path-blocked": 2,
           "licensing-listing": 1
         }
       },
@@ -3013,9 +3011,9 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn",
-          "host": "redcircle.com",
-          "outletId": "redcircle",
+          "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks",
+          "host": "secrettheatre.com",
+          "outletId": "secrettheatre",
           "provisional": true,
           "ok": false,
           "noop": false,
@@ -3023,7 +3021,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"redcircle\" (not in registry) — onboard to outlet-registry.json after review."
+          "reason": "⚠️  provisional outlet \"secrettheatre\" (not in registry) — onboard to outlet-registry.json after rev"
         }
       ],
       "ingestSkippedByCap": [],
@@ -3031,28 +3029,28 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "redcircle.com",
-            "outlet": "redcircle.com",
+            "outletId": "secrettheatre.com",
+            "outlet": "secrettheatre.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn"
+            "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn",
-            "outletId": "redcircle.com",
+            "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks",
+            "outletId": "secrettheatre.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-12T08:45:07.198Z"
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
@@ -6506,16 +6504,10 @@
         "https://www.vulture.com/article/theater-reviews-the-holes-friedrich-america-who-hurt-you-sarah-jones.html",
         "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html"
       ],
-      "dirFiles": 16,
-      "dirClean": 12,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "dirFiles": 17,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -6558,40 +6550,16 @@
         "byReason": {
           "non-review-host": 35,
           "aggregator-internal-nav": 253,
-          "production-database-listing": 5,
           "not-http-url": 68,
+          "production-database-listing": 5,
           "aggregator-section-root": 11
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "america-who-hurt-you-off-broadway-2026: https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html is already owned by the-invention-of-love-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/the-invention-of-love-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -6626,17 +6594,16 @@
           },
           {
             "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "interestedbystander.com",
+            "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-12T08:45:07.198Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -37503,20 +37470,19 @@
         "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
         "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
         "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
-        "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
         "https://frontmezzjunkies.com/2026/10/08/cosi-fan-tutte-has-me-questioning-the-wisdom-of-testing-love/",
-        "https://medicine-opera.com/2026/10/cosi-fan-tutte-in-hd-2026/",
-        "https://www.theglobeandmail.com/culture/article-canadian-opera-companys-cosi-fan-tutte-is-invariably-glorious/",
-        "https://classicalfm.ca/ludwig-van/toronto/2026/10/05/scrutiny-the-canadian-opera-companys-remount-of-atom-egoyans-cosi-fan-tutte-is-simply-a-delight/",
+        "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
+        "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html",
         "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
         "https://operacanada.ca/the-metropolitan-opera-cosi-fan-tuttea-riot-of-colourful-invention/",
         "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
         "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
-        "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera"
+        "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
+        "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/"
       ],
-      "dirFiles": 27,
+      "dirFiles": 28,
       "dirClean": 6,
-      "inReviewsJson": 5,
+      "inReviewsJson": 6,
       "missing": [
         {
           "url": "https://www.nationalreview.com/2018/03/cosi-fan-tutte-metropolitan-opera-review-great-entertainment/",
@@ -37554,19 +37520,23 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://classicalfm.ca/ludwig-van/toronto/2026/10/05/scrutiny-the-canadian-opera-companys-remount-of-atom-egoyans-cosi-fan-tutte-is-simply-a-delight/",
-          "host": "classicalfm.ca",
+          "url": "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
+          "host": "fandango.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-          "host": "australianbookreview.com.au",
+          "url": "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/",
+          "host": "artsreviewhub.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "medicine-opera.com",
+          "count": 1
+        },
         {
           "host": "newyorkclassicalreview.com",
           "count": 1
@@ -37616,9 +37586,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theglobeandmail.com/culture/article-canadian-opera-companys-cosi-fan-tutte-is-invariably-glorious/",
-          "host": "theglobeandmail.com",
-          "knownOutletId": "the-globe-and-mail",
+          "url": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -37626,9 +37596,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "the-globe-and-mail--nirris-nagendrarajah.json",
+              "file": "toronto-star--glenn-sumi.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theglobeandmail.com/culture/article-canadian-opera-companys-cosi-fan-tutte-is-invariably-glorious/"
+              "urlInDir": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html"
             }
           ],
           "serpCensus": true
@@ -37641,7 +37611,7 @@
           "recoverableFile": "bachtrack--unknown.json",
           "recoverableOutletId": "bachtrack",
           "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
+          "recoverableCount": 1,
           "dirFlags": [
             {
               "file": "bachtrack--unknown.json",
@@ -37702,7 +37672,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -37752,25 +37722,26 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 408,
+        "count": 413,
         "byReason": {
-          "non-review-host": 58,
+          "non-review-host": 60,
           "aggregator-internal-nav": 278,
-          "census-junk-host": 3,
-          "production-database-listing": 10,
-          "review-hub-page": 1,
           "not-http-url": 49,
+          "production-database-listing": 10,
           "aggregator-section-root": 8,
+          "ticketing-listing": 1,
+          "census-junk-host": 4,
+          "review-hub-page": 2,
           "roundup-page": 1
         }
       },
@@ -37820,9 +37791,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://classicalfm.ca/ludwig-van/toronto/2026/10/05/scrutiny-the-canadian-opera-companys-remount-of-atom-egoyans-cosi-fan-tutte-is-simply-a-delight/",
-          "host": "classicalfm.ca",
-          "outletId": "classicalfm",
+          "url": "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
+          "host": "fandango.com",
+          "outletId": "fandango",
           "provisional": true,
           "ok": true,
           "noop": false,
@@ -37833,17 +37804,17 @@
           "reason": null
         },
         {
-          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-          "host": "australianbookreview.com.au",
-          "outletId": "australianbookreview",
+          "url": "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/",
+          "host": "artsreviewhub.com",
+          "outletId": "artsreviewhub",
           "provisional": true,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"australianbookreview\" (not in registry) — onboard to outlet-registry.json af"
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -37857,32 +37828,32 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 152 chars — pattern may be missing for this outlet. Add an entry to scri",
-          "recoveryCount": 1
+          "recoveryCount": 2
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "classicalfm.ca",
-            "outlet": "classicalfm.ca",
+            "outletId": "fandango.com",
+            "outlet": "fandango.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://classicalfm.ca/ludwig-van/toronto/2026/10/05/scrutiny-the-canadian-opera-companys-remount-of-atom-egoyans-cosi-fan-tutte-is-simply-a-delight/"
+            "url": "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews"
           },
           {
-            "outletId": "australianbookreview.com.au",
-            "outlet": "australianbookreview.com.au",
+            "outletId": "artsreviewhub.com",
+            "outlet": "artsreviewhub.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera"
+            "url": "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/"
           },
           {
-            "outletId": "the-globe-and-mail",
-            "outlet": "the-globe-and-mail",
+            "outletId": "toronto-star",
+            "outlet": "toronto-star",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theglobeandmail.com/culture/article-canadian-opera-companys-cosi-fan-tutte-is-invariably-glorious/"
+            "url": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html"
           },
           {
             "outletId": "bachtrack",
@@ -37909,20 +37880,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
-            "outletId": "operawire.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
-          },
-          {
             "url": "https://frontmezzjunkies.com/2026/10/08/cosi-fan-tutte-has-me-questioning-the-wisdom-of-testing-love/",
             "outletId": "frontmezzjunkies.com",
             "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://medicine-opera.com/2026/10/cosi-fan-tutte-in-hd-2026/",
-            "outletId": "medicine-opera.com",
+            "url": "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
+            "outletId": "operawire.com",
             "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
@@ -37933,25 +37898,25 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://classicalfm.ca/ludwig-van/toronto/2026/10/05/scrutiny-the-canadian-opera-companys-remount-of-atom-egoyans-cosi-fan-tutte-is-simply-a-delight/",
-            "outletId": "classicalfm.ca",
+            "url": "https://www.fandango.com/the-metropolitan-opera-cosi-fan-tutte-2026-246261/movie-reviews",
+            "outletId": "fandango.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
           },
           {
-            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-            "outletId": "australianbookreview.com.au",
+            "url": "https://artsreviewhub.com/cosi-fan-tutte-the-metropolitan-opera-new-york/",
+            "outletId": "artsreviewhub.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
           },
           {
-            "url": "https://www.theglobeandmail.com/culture/article-canadian-opera-companys-cosi-fan-tutte-is-invariably-glorious/",
-            "outletId": "the-globe-and-mail",
+            "url": "https://www.thestar.com/entertainment/stage/atom-egoyan-s-cos-fan-tutte-is-back-why-the-coc-production-still-stumbles/article_48d2ed25-ba4e-4c46-bc41-6e3d8767dce7.html",
+            "outletId": "toronto-star",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
           },
           {
             "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026",
@@ -37976,10 +37941,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 4,
-        "candidateCount": 10
+        "liveCount": 3,
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-12T08:45:07.198Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -180010,17 +179975,13 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-SHIP-Opens-on-Broadway-Updating-LIVE-20141026",
+        "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
         "https://www.broadwayworld.com/article/Review-Roundup-Sting-In-THE-LAST-SHIP-In-Toronto-20190221",
         "https://www.broadwayworld.com/article/Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
         "https://www.broadwayworld.com/article/Review-Roundup-Stings-Broadway-Bound-THE-LAST-SHIP-20140626"
       ],
       "aggregatorListedUrls": [
-        "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-        "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-        "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-        "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
         "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
         "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
         "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
@@ -180033,6 +179994,10 @@
         "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
         "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
         "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
+        "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+        "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+        "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+        "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
         "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
         "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
         "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
@@ -180053,149 +180018,207 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-          "host": "latimes.com",
-          "knownOutletId": "latimes"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-          "host": "easyreadernews.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
-          "host": "variety.com",
-          "knownOutletId": "variety"
-        },
-        {
           "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
           "host": "nytimes.com",
-          "knownOutletId": "nytimes"
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
           "host": "variety.com",
-          "knownOutletId": "variety"
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
           "host": "amny.com",
-          "knownOutletId": "amny"
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.timeout.com/newyork/theater/the-last-ship",
           "host": "timeout.com",
-          "knownOutletId": "timeout-london"
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
           "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
           "host": "newsday.com",
-          "knownOutletId": "newsday"
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
           "host": "thewrap.com",
-          "knownOutletId": "thewrap"
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
           "host": "olneyenterprise.com",
-          "knownOutletId": null
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
           "host": "usatoday.com",
-          "knownOutletId": "usatoday"
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
           "host": "theguardian.com",
-          "knownOutletId": "guardian"
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
           "host": "deadline.com",
-          "knownOutletId": "deadline"
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
           "host": "huffingtonpost.com",
-          "knownOutletId": "huffpost"
+          "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+          "host": "easyreadernews.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
           "host": "thestar.com",
-          "knownOutletId": "toronto-star"
+          "knownOutletId": "toronto-star",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
           "host": "mooneyontheatre.com",
-          "knownOutletId": null
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
           "host": "tribute.ca",
-          "knownOutletId": "tribute"
+          "knownOutletId": "tribute",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
           "host": "theglobeandmail.com",
-          "knownOutletId": "the-globe-and-mail"
+          "knownOutletId": "the-globe-and-mail",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
           "host": "nytimes.com",
-          "knownOutletId": "nytimes"
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
           "host": "variety.com",
-          "knownOutletId": "variety"
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
           "host": "vulture.com",
-          "knownOutletId": "vulture"
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
           "host": "newsday.com",
-          "knownOutletId": "newsday"
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
           "host": "usatoday.com",
-          "knownOutletId": "usatoday"
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
           "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune"
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.timeout.com/chicago/theater/the-last-ship",
           "host": "timeout.com",
-          "knownOutletId": "timeout-london"
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
           "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago"
+          "knownOutletId": "around-the-town-chicago",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
           "host": "chicagonow.com",
-          "knownOutletId": "chicago-now"
+          "knownOutletId": "chicago-now",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [],
@@ -180229,408 +180252,216 @@
         "byReason": {
           "non-review-host": 75,
           "aggregator-internal-nav": 1130,
-          "census-junk-host": 1,
           "not-http-url": 213,
-          "aggregator-section-root": 20
+          "aggregator-section-root": 20,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-SHIP-Opens-on-Broadway-Updating-LIVE-20141026",
+          "publishDate": "2014-10-26"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
+          "publishDate": "2020-01-24"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Sting-In-THE-LAST-SHIP-In-Toronto-20190221",
+          "publishDate": "2019-02-21"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
+          "publishDate": "2014-12-22"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Stings-Broadway-Bound-THE-LAST-SHIP-20140626",
+          "publishDate": "2014-06-26"
+        }
+      ],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-          "host": "latimes.com",
-          "outletId": "latimes",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-last-ship-off-broadway-2026/latimes--charles-mcnulty.json"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
-        },
-        {
-          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-          "host": "easyreadernews.com",
-          "outletId": "easyreadernews",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"easyreadernews\" (not in registry) — onboard to outlet-registry.json after re"
-        },
-        {
-          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
-          "host": "variety.com",
-          "outletId": "variety",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-last-ship-off-broadway-2026/variety--chris-willman.json →"
-        },
+      "weIngestBlocked": [
         {
           "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
           "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: the-last-ship-off-broadway-2026 → the-last-ship-2014 (year-level sibling m"
-        }
-      ],
-      "ingestSkippedByCap": [
+          "priorRun": true,
+          "reason": "prior-run"
+        },
         {
           "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
           "host": "variety.com",
-          "outletId": "variety"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
           "host": "amny.com",
-          "outletId": "amny"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.timeout.com/newyork/theater/the-last-ship",
           "host": "timeout.com",
-          "outletId": "timeout-london"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
           "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
           "host": "newsday.com",
-          "outletId": "newsday"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
           "host": "thewrap.com",
-          "outletId": "thewrap"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
           "host": "olneyenterprise.com",
-          "outletId": "olneyenterprise"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
           "host": "usatoday.com",
-          "outletId": "usatoday"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
           "host": "theguardian.com",
-          "outletId": "guardian"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
           "host": "deadline.com",
-          "outletId": "deadline"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
           "host": "huffingtonpost.com",
-          "outletId": "huffpost"
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+          "host": "easyreadernews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
           "host": "thestar.com",
-          "outletId": "toronto-star"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
           "host": "mooneyontheatre.com",
-          "outletId": "mooneyontheatre"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
           "host": "tribute.ca",
-          "outletId": "tribute"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
           "host": "theglobeandmail.com",
-          "outletId": "the-globe-and-mail"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
           "host": "nytimes.com",
-          "outletId": "nytimes"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
           "host": "variety.com",
-          "outletId": "variety"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
           "host": "vulture.com",
-          "outletId": "vulture"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
           "host": "newsday.com",
-          "outletId": "newsday"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
           "host": "usatoday.com",
-          "outletId": "usatoday"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
           "host": "chicagotribune.com",
-          "outletId": "chicagotribune"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.timeout.com/chicago/theater/the-last-ship",
           "host": "timeout.com",
-          "outletId": "timeout-london"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
           "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago"
+          "priorRun": true,
+          "reason": "prior-run"
         },
         {
           "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
           "host": "chicagonow.com",
-          "outletId": "chicago-now"
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "latimes",
-            "outlet": "latimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471"
-          },
-          {
-            "outletId": "easyreadernews.com",
-            "outlet": "easyreadernews.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/"
-          },
-          {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html"
-          },
-          {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/"
-          },
-          {
-            "outletId": "amny",
-            "outlet": "amny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.timeout.com/newyork/theater/the-last-ship"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011"
-          },
-          {
-            "outletId": "newsday",
-            "outlet": "newsday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888"
-          },
-          {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/"
-          },
-          {
-            "outletId": "olneyenterprise.com",
-            "outlet": "olneyenterprise.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff"
-          },
-          {
-            "outletId": "usatoday",
-            "outlet": "usatoday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre"
-          },
-          {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/"
-          },
-          {
-            "outletId": "huffpost",
-            "outlet": "huffpost",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html"
-          },
-          {
-            "outletId": "toronto-star",
-            "outlet": "toronto-star",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html"
-          },
-          {
-            "outletId": "mooneyontheatre.com",
-            "outlet": "mooneyontheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/"
-          },
-          {
-            "outletId": "tribute",
-            "outlet": "tribute",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/"
-          },
-          {
-            "outletId": "the-globe-and-mail",
-            "outlet": "the-globe-and-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html"
-          },
-          {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/"
-          },
-          {
-            "outletId": "vulture",
-            "outlet": "vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html"
-          },
-          {
-            "outletId": "newsday",
-            "outlet": "newsday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042"
-          },
-          {
-            "outletId": "usatoday",
-            "outlet": "usatoday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/"
-          },
-          {
-            "outletId": "chicagotribune",
-            "outlet": "chicagotribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.timeout.com/chicago/theater/the-last-ship"
-          },
-          {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/"
-          },
-          {
-            "outletId": "chicago-now",
-            "outlet": "chicago-now",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/"
-          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
@@ -180642,209 +180473,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-            "outletId": "latimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-            "outletId": "hollywood-reporter",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-            "outletId": "easyreadernews.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
-            "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
-            "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
-            "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
-            "outletId": "amny",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/the-last-ship",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.hollywoodreporter.com/review/last-ship-theater-review-744011",
-            "outletId": "hollywood-reporter",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
-            "outletId": "newsday",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.thewrap.com/the-last-ship-theater-review-sting-takes-a-cruise-to-nowhere/",
-            "outletId": "thewrap",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.olneyenterprise.com/ci_26804523/review-stings-last-ship-is-thrilling-stuff",
-            "outletId": "olneyenterprise.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.usatoday.com/story/life/theater/2014/10/27/broadway-review-last-ship/17765061/",
-            "outletId": "usatoday",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
-            "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
-            "outletId": "deadline",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
-            "outletId": "huffpost",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
-            "outletId": "toronto-star",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
-            "outletId": "mooneyontheatre.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
-            "outletId": "tribute",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-it-sank-on-broadway-but-stings-the-last-ship-floats-in/",
-            "outletId": "the-globe-and-mail",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html",
-            "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
-            "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.vulture.com/2014/12/theater-review-sting-joins-the-last-ship.html",
-            "outletId": "vulture",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
-            "outletId": "newsday",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
-            "outletId": "usatoday",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.chicagotribune.com/entertainment/theater/reviews/chi-last-ship-sting-review,0,1690622.column",
-            "outletId": "chicagotribune",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.timeout.com/chicago/theater/the-last-ship",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
-            "outletId": "around-the-town-chicago",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
-            "url": "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
-            "outletId": "chicago-now",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-13T06:23:39.338Z"
-          },
-          {
             "url": "https://www.nytimes.com/2026/06/09/theater/sting-the-last-ship-metropolitan-opera.html",
             "outletId": "nytimes",
             "state": "IN_FLIGHT",
@@ -180854,9 +180482,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 22
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-12T08:45:07.198Z"
     },
     {
       "showId": "the-last-ship-west-end-2026",
@@ -180865,17 +180493,13 @@
       "status": "closed",
       "category": "west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-SHIP-Opens-on-Broadway-Updating-LIVE-20141026",
+        "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
         "https://www.broadwayworld.com/article/Review-Roundup-Sting-In-THE-LAST-SHIP-In-Toronto-20190221",
         "https://www.broadwayworld.com/article/Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
         "https://www.broadwayworld.com/article/Review-Roundup-Stings-Broadway-Bound-THE-LAST-SHIP-20140626"
       ],
       "aggregatorListedUrls": [
-        "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-        "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-        "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-        "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
         "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
         "http://variety.com/2014/legit/reviews/broadway-review-stings-the-last-ship-1201339670/",
         "http://www.amny.com/entertainment/sting-s-last-ship-is-a-see-worthy-musical-1.9548739",
@@ -180888,6 +180512,10 @@
         "https://www.theguardian.com/stage/2014/oct/27/the-last-ship-review-sting-neil-simon-theatre",
         "http://deadline.com/2014/10/the-last-ship-review-sting-broadway-859644/",
         "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
+        "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+        "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+        "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+        "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
         "https://www.thestar.com/entertainment/stage/review/2019/02/20/there-are-some-impressive-elements-in-the-last-ship-but-its-not-all-smooth-sailing.html",
         "https://www.mooneyontheatre.com/2019/02/20/review-the-last-ship-mirvish/",
         "https://www.tribute.ca/news/the-last-ship-starring-sting-in-onstage-in-toronto-review/2019/02/20/",
@@ -180901,29 +180529,32 @@
         "http://www.timeout.com/chicago/theater/the-last-ship",
         "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
         "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
-        "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
+        "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
         "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
+        "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
+        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
         "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
         "https://www.britishtheatreguide.info/reviews/the-last-ship-theatre-royal-d-26042",
-        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
-        "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
         "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
         "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
         "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
         "https://www.harrytheatrelife.co.uk/post/review-the-last-ship-theatre-royal-drury-lane-london",
         "https://www.thestage.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane-london-sting",
         "https://www.pinkprincetheatre.com/post/review-the-last-ship-theatre-royal-drury-lane",
+        "https://www.timeout.com/london/theatre/the-last-ship",
         "https://matineemouse.substack.com/p/the-last-ship-review",
+        "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
         "https://loureviews.blog/2026/09/24/musical-review-the-last-ship-at-theatre-royal-drury-lane/",
         "https://readaboutstuff.com/2026/09/24/review-the-last-ship-theatre-royal-drury-lane-london/",
         "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
         "https://musicaltheatrereview.com/the-last-ship-theatre-royal-drury-lane/",
         "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
+        "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
+        "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
         "https://www.thetimes.com/culture/theatre-dance/article/the-last-ship-review-sting-theatre-royal-london-gzlz63nsm",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
         "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
         "https://www.westendbestfriend.co.uk/news/review-the-last-ship-theatre-royal-drury-lane",
-        "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
         "https://www.londonboxoffice.co.uk/news/post/the-last-ship-theatre-royal-drury-lane-review",
         "https://thespyinthestalls.com/2026/09/the-last-ship/",
         "https://www.london-unattached.com/the-last-ship-theatre-royal-drury-lane/",
@@ -180935,36 +180566,8 @@
       ],
       "dirFiles": 62,
       "dirClean": 42,
-      "inReviewsJson": 42,
+      "inReviewsJson": 43,
       "missing": [
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-          "host": "easyreadernews.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
           "host": "nytimes.com",
@@ -181039,6 +180642,34 @@
           "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
           "host": "huffingtonpost.com",
           "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+          "host": "easyreadernews.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -181209,6 +180840,42 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
+          "host": "islingtontribune.co.uk",
+          "knownOutletId": "islingtontribune",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "islingtontribune--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [
@@ -181306,7 +180973,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -181327,7 +180994,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -181337,37 +181004,37 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 18,
+        "resultCount": 22,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1460,
+        "count": 1457,
         "byReason": {
-          "non-review-host": 87,
+          "non-review-host": 86,
           "aggregator-internal-nav": 1130,
-          "census-junk-host": 2,
-          "write-path-blocked": 3,
           "not-http-url": 213,
           "aggregator-section-root": 20,
-          "roundup-page": 4,
-          "ticketing-listing": 1
+          "write-path-blocked": 2,
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
+          "roundup-page": 4
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
-          "publishDate": "2020-01-24"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-LAST-SHIP-Opens-on-Broadway-Updating-LIVE-20141026",
           "publishDate": "2014-10-26"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
+          "publishDate": "2020-01-24"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Sting-In-THE-LAST-SHIP-In-Toronto-20190221",
@@ -181384,30 +181051,6 @@
       ],
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
-          "host": "easyreadernews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
         {
           "url": "http://www.nytimes.com/2014/10/27/theater/the-last-ship-with-songs-by-sting-opens-on-broadway.html",
           "host": "nytimes.com",
@@ -181471,6 +181114,30 @@
         {
           "url": "http://www.huffingtonpost.com/regina-weinreich/stings-the-last-ship-the_b_6049640.html",
           "host": "huffingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-01-23/review-sting-stars-in-a-retooled-version-of-the-last-ship-but-it-is-still-a-leaky-vessel",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/last-ship-theater-1272471",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://easyreadernews.com/the-last-ship-in-port-at-the-ahmanson/",
+          "host": "easyreadernews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/sting-last-ship-review-ahmanson-musical-tour-1203496978/",
+          "host": "variety.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -181547,6 +181214,20 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "islingtontribune",
+            "outlet": "islingtontribune",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
+          },
+          {
             "outletId": "westendtheatre",
             "outlet": "WestendTheatre.com",
             "critic": "Unknown",
@@ -181563,16 +181244,28 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
-            "outletId": "londontheatre.co.uk",
+            "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
             "url": "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T05:40:09.820Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
@@ -181585,18 +181278,6 @@
             "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T05:40:09.820Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
@@ -181635,6 +181316,12 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
+            "url": "https://www.timeout.com/london/theatre/the-last-ship",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
+          },
+          {
             "url": "https://matineemouse.substack.com/p/the-last-ship-review",
             "outletId": "matineemouse.substack.com",
             "state": "live",
@@ -181671,6 +181358,12 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
+            "url": "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T00:42:40.641Z"
+          },
+          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/the-last-ship-review-sting-theatre-royal-london-gzlz63nsm",
             "outletId": "thetimes.com",
             "state": "live",
@@ -181691,12 +181384,6 @@
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-the-last-ship-theatre-royal-drury-lane",
             "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
-            "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
@@ -181749,6 +181436,20 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
+            "url": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
+            "outletId": "islingtontribune",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T08:45:07.198Z"
+          },
+          {
             "url": "",
             "outletId": "westendtheatre",
             "state": "GAP",
@@ -181758,9 +181459,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 31,
-        "candidateCount": 32
+        "candidateCount": 34
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-12T08:45:07.198Z"
     },
     {
       "showId": "the-lion-king-1997",
@@ -207802,16 +207503,10 @@
         "https://pagesonstages.com/2025/10/05/torera/",
         "https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html"
       ],
-      "dirFiles": 8,
-      "dirClean": 7,
-      "inReviewsJson": 7,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "dirFiles": 9,
+      "dirClean": 8,
+      "inReviewsJson": 8,
+      "missing": [],
       "dirOnly": [
         {
           "host": "3viewstheater.com",
@@ -207837,33 +207532,9 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Refusing ingest: could not isolate a \"Torera\" section in multi-show post https://www.interestedbysta"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -207898,17 +207569,16 @@
           },
           {
             "url": "https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "interestedbystander.com",
+            "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-12T00:42:40.641Z"
+      "computedAt": "2026-10-12T08:45:07.198Z"
     },
     {
       "showId": "touch-off-broadway-2026",
