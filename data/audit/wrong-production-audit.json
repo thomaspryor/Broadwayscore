@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T10:47:18.868Z",
+  "timestamp": "2026-10-12T10:58:53.721Z",
   "stats": {
-    "totalReviews": 55974,
-    "alreadyFlagged": 20879,
-    "dateGuardCatches": 253,
-    "directorMismatch": 1776,
+    "totalReviews": 55975,
+    "alreadyFlagged": 20880,
+    "dateGuardCatches": 254,
+    "directorMismatch": 1779,
     "tvFilmSignals": 1616,
     "londonSignals": 2197,
     "offBroadwaySignals": 505,
     "yearMismatch": 137,
-    "noPublishDate": 5220
+    "noPublishDate": 5217
   },
   "findings": [
     {
@@ -27028,7 +27028,9 @@
     },
     {
       "showId": "music-city-off-broadway-2026",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2024-11-21",
+      "url": "https://www.nytimes.com/2024/11/21/theater/music-city-babe-review-tomei.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -41964,6 +41966,24 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--marie-reiter.json",
+      "publishDate": "2025-09-14",
+      "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--michael-rabice.json",
       "score": 77,
       "publishDate": "2025-10-08",
@@ -42588,6 +42608,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: the-outsiders-world-premiere-regional-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--jeffrey-kare.json",
+      "publishDate": "2025-10-23",
+      "url": "https://www.broadwayworld.com/austin/article/Review-THE-OUTSIDERS-at-Bass-Concert-Hall-20251023",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
         }
       ]
     },
@@ -46020,6 +46053,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
