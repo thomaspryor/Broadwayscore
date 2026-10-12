@@ -90,10 +90,18 @@ function runTargeted() {
  * Tickets under refs/land-mutex/queue on origin (BRO-5196), or null when the
  * remote is unreadable (callers resume: a parked run is never held on a guess).
  */
+let depthMemo; // one ls-remote per sweep, however many parked candidates
 function queueDepth() {
+  if (depthMemo !== undefined) return depthMemo;
+  depthMemo = queueDepthUncached();
+  return depthMemo;
+}
+
+function queueDepthUncached() {
   const r = spawnSync('git', ['ls-remote', process.env.LAND_MUTEX_REMOTE || 'origin', 'refs/land-mutex/*'], { encoding: 'utf8', timeout: 60000 });
   if (r.status !== 0) return null;
-  return require('./lib/land-mutex').parseLsRemote(r.stdout).tickets.length;
+  const lm = require('./lib/land-mutex');
+  return lm.liveTicketCount(lm.parseLsRemote(r.stdout).tickets);
 }
 
 function runSweep() {
@@ -124,8 +132,8 @@ function runSweep() {
       // A parked run resumes only when the queue has room; resuming into a full
       // queue just parks it again and spends an attempt (BRO-5196).
       const depth = queueDepth();
-      const { PARK_DEPTH } = require('./lib/land-mutex');
-      if (depth !== null && depth >= PARK_DEPTH) { console.log(`run ${run.id} ${run.head_branch}: parked, queue still ${depth} deep (>= ${PARK_DEPTH}); not resumed yet`); continue; }
+      const cap = require('./lib/land-mutex').parkDepth();
+      if (depth !== null && cap > 0 && depth >= cap) { console.log(`run ${run.id} ${run.head_branch}: parked, queue still ${depth} deep (>= ${cap}); not resumed yet`); continue; }
     }
     if (r.retry) { rerun(run.id, fresh.run_attempt); return; } // one per sweep: the next Land completion sweeps again
   }

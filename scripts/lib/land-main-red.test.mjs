@@ -64,11 +64,12 @@ function runBlock(stepName) {
   return out.join('\n');
 }
 
-function runAdmit({ branch = 'land/bro-1', tickets = 0, lsFails = false, cancelFails = false, env = {} } = {}) {
+function runAdmit({ branch = 'land/bro-1', tickets = 0, staleTickets = 0, lsFails = false, cancelFails = false, env = {} } = {}) {
   const dir = mkdtempSync(path.join(tmpdir(), 'admit-'));
   try {
     const log = path.join(dir, 'calls.log');
-    const ls = Array.from({ length: tickets }, (_, i) => `sha${i}\trefs/land-mutex/queue/1-${String(1760000000000 + i).padStart(13, '0')}-${100 + i}-1`).join('\n');
+    const mk = (n, ageMs, off) => Array.from({ length: n }, (_, i) => `sha${off + i}\trefs/land-mutex/queue/1-${String(Date.now() - ageMs + i).padStart(13, '0')}-${100 + off + i}-1`);
+    const ls = [...mk(tickets, 60000, 0), ...mk(staleTickets, 3 * 3600e3, 500)].join('\n');
     const stub = (name, body) => { writeFileSync(path.join(dir, name), `#!/bin/bash\n${body}\n`); chmodSync(path.join(dir, name), 0o755); };
     writeFileSync(path.join(dir, 'ls.txt'), ls ? `${ls}\n` : '');
     stub('git', `echo "git $*" >> "${log}"; ${lsFails ? 'exit 1' : `cat "${dir}/ls.txt"`}`);
@@ -100,6 +101,11 @@ test('a queue at the park depth cancels the run (parks) and waits to be killed',
   assert.equal(r.cancelled, true);
   assert.match(r.calls, /sleep 600/);
   assert.equal(runAdmit({ tickets: 14 }).cancelled, true);
+});
+
+test('leaked tickets older than the park window do not count toward the depth', () => {
+  assert.equal(runAdmit({ tickets: 2, staleTickets: 20 }).cancelled, false);
+  assert.equal(runAdmit({ tickets: 4, staleTickets: 20 }).cancelled, true);
 });
 
 test('a main-red fix lane never parks, however deep the queue', () => {
