@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-11T22:55:13.503Z",
+  "generatedAt": "2026-10-12T00:25:36.010Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 228,
+  "checked": 227,
   "clean": 227,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "all-male-as-you-like-it-regional-2026",
-      "title": "As You Like It",
-      "openingDate": "2026-10-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.22 vs local 83.72 (Δ0.5)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-11T22:55:07.962Z"
-    }
-  ],
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
