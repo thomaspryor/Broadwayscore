@@ -155,3 +155,8 @@ test('"By Name" closed by a tag or slash keeps the full name', () => {
   assert.equal(extractByline('<em>By Isa Goldberg/Chief Theater Critic</em>'), 'Isa Goldberg');
   assert.equal(extractByline('<p>By: David Sheward</p>'), 'David Sheward');
 });
+
+test('publisher meta author PLASA Media falls through to the bold sign-off', () => {
+  const html = '<meta name="author" content="PLASA Media Inc - Lighting &amp; Sound America"><p>it seems shockingly apt. <b>--David Barbour</b></font></p>';
+  assert.equal(extractByline(html), 'David Barbour');
+});
