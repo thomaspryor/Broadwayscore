@@ -165,7 +165,7 @@
       "cardId": null,
       "linearIdentifier": "BRO-3030",
       "silentRefires": 1,
-      "resolvedAt": "2026-10-12T19:34:29.516Z"
+      "resolvedAt": "2026-10-12T19:36:35.471Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6018,27 +6018,24 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "incidentOpenedAt": "2026-10-09T00:11:23.379Z",
-      "lastSeen": "2026-10-09T00:41:25.279Z",
-      "lastNotifiedAt": "2026-10-09T00:11:23.379Z",
+      "incidentOpenedAt": "2026-10-12T19:36:39.697Z",
+      "lastSeen": "2026-10-12T19:36:39.697Z",
+      "lastNotifiedAt": "2026-10-12T19:36:39.697Z",
       "lastSurfacedAt": null,
-      "notifyCount": 6,
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-4873",
+      "linearIdentifier": "BRO-5197",
       "dispatch": {
-        "requestedAt": "2026-10-08T16:51:03.762Z",
+        "requestedAt": "2026-10-12T19:36:39.697Z",
         "mode": "dispatch-at-filing",
-        "runId": "37810073037",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37810073037"
+        "runId": "38295830217",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38295830217"
       },
-      "absentRunIds": [],
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-09T02:31:28.431Z",
-      "resolveReason": "job-green"
+      "absentRunIds": []
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -14824,47 +14821,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-5185",
       "silentRefires": 1,
-      "resolvedAt": "2026-10-12T19:34:31.453Z",
+      "resolvedAt": "2026-10-12T19:36:39.673Z",
       "resolveReason": "job-green"
-    },
-    "land:land/bro-4849-sidecar-guard": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-4849-sidecar-guard",
-      "firstSeen": "2026-10-12T19:18:50.933Z",
-      "incidentOpenedAt": "2026-10-12T19:18:50.933Z",
-      "lastSeen": "2026-10-12T19:18:50.933Z",
-      "lastNotifiedAt": "2026-10-12T19:18:50.933Z",
-      "lastSurfacedAt": "2026-10-12T19:18:50.933Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-3712-gmail-reauth": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Everybody's Talking About Jamie dates match the Playbill production page\"",
-      "firstSeen": "2026-10-12T18:28:13.035Z",
-      "incidentOpenedAt": "2026-10-12T18:28:13.035Z",
-      "lastSeen": "2026-10-12T18:28:13.035Z",
-      "lastNotifiedAt": "2026-10-12T18:28:13.035Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-5185"
-    },
-    "land:land/bro-4792-transfer-gaps": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: race red on land/bro-4792-transfer-gaps",
-      "firstSeen": "2026-10-12T19:29:33.675Z",
-      "incidentOpenedAt": "2026-10-12T19:29:33.675Z",
-      "lastSeen": "2026-10-12T19:29:33.675Z",
-      "lastNotifiedAt": "2026-10-12T19:29:33.675Z",
-      "lastSurfacedAt": "2026-10-12T19:29:33.675Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
     }
   }
 }
