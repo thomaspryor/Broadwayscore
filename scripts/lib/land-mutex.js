@@ -1,0 +1,162 @@
+'use strict';
+
+/**
+ * land-mutex.js — pure decisions for BRO-5112's landing queue.
+ *
+ * land.yml's Land job used to sit in ONE global concurrency group, `landing`.
+ * GitHub keeps one pending run per group and cancels the older pending run
+ * when a newer one queues, so with ~8 landers (2026-10-11) every landing was
+ * evicted 2-4 times and lived on land-retry-cancelled loops. The Land job's
+ * group is now per branch, and the fast-forward is serialized by this FIFO
+ * mutex built from git refs on origin (git ls-remote / push only, so polling
+ * costs no REST quota):
+ *
+ *   refs/land-mutex/queue/<p>-<enqueuedMs>-<runId>-<attempt>
+ *       one ticket per waiting run, pointing at its own parentless commit.
+ *       <p> is 0 for a main-red fix lane (BRO-5096), 1 otherwise, so names
+ *       sort into priority-then-FIFO order.
+ *   refs/land-mutex/lock
+ *       the holder's ticket sha. Created only with a create-only lease
+ *       (`--force-with-lease=<ref>:`), so exactly one push can win it: mutual
+ *       exclusion comes from this one compare-and-swap ref, and the queue only
+ *       decides who tries. Two waiters that both think they are head cannot
+ *       both hold the lock.
+ *
+ * Stale-break: a holder or queue head that has not moved for GRACE_MS is
+ * checked against the Actions API. Its run completed, or re-ran as a newer
+ * attempt, means it is gone; the lock/ticket is deleted with a lease on the
+ * exact sha seen, so a breaker can never delete a lock someone re-took in
+ * between. Unreadable API → gone only past STALE_AGE_MS from enqueue (longer
+ * than any job's timeout). A lock whose ticket is missing (its holder's ticket
+ * was dropped as stale) is broken after it stays orphaned for GRACE_MS.
+ *
+ * The caller (scripts/land-mutex.js) fails OPEN at its deadline or when the
+ * remote refuses the refs: land.js still makes ONE non-force fast-forward
+ * push that git rejects if main moved, so an unlocked landing degrades to the
+ * old race (a bounded re-attempt), never a bad push.
+ */
+
+const QUEUE_PREFIX = 'refs/land-mutex/queue/';
+const LOCK_REF = 'refs/land-mutex/lock';
+const GRACE_MS = 60 * 1000;
+const STALE_AGE_MS = 150 * 60 * 1000; // > the longest life after enqueue: 75m wait + autonomous-merge's ~50m hold
+// A live verdict is trusted this long: ~12 API calls/hour per waiter, so 8
+// waiters stay well inside the shared 1000/hour GITHUB_TOKEN budget.
+const LIVENESS_TTL_MS = 5 * 60 * 1000;
+const POLL_MIN_MS = 10 * 1000;
+const POLL_MAX_MS = 30 * 1000;
+const DEADLINE_MINUTES = 75;
+
+const TICKET_RE = /^refs\/land-mutex\/queue\/([01])-(\d{13})-(\d+)-(\d+)$/;
+
+function ticketName({ mainRed, enqueuedAt, runId, attempt }) {
+  return `${QUEUE_PREFIX}${mainRed ? 0 : 1}-${String(enqueuedAt).padStart(13, '0')}-${runId}-${attempt}`;
+}
+
+function parseTicket(ref, sha) {
+  const m = TICKET_RE.exec(ref || '');
+  if (!m) return null;
+  return { ref, sha, prio: Number(m[1]), enqueuedAt: Number(m[2]), runId: m[3], attempt: Number(m[4]) };
+}
+
+/** `git ls-remote origin 'refs/land-mutex/*'` output → {tickets (queue order), lock}. */
+function parseLsRemote(text) {
+  const tickets = [];
+  let lock = null;
+  for (const line of String(text || '').split('\n')) {
+    const [sha, ref] = line.trim().split(/\s+/);
+    if (!sha || !ref) continue;
+    if (ref === LOCK_REF) lock = { sha };
+    else {
+      const t = parseTicket(ref, sha);
+      if (t) tickets.push(t);
+    }
+  }
+  tickets.sort((a, b) => (a.ref < b.ref ? -1 : a.ref > b.ref ? 1 : 0));
+  return { tickets, lock };
+}
+
+const isSelf = (t, self) => Boolean(t && self) && t.runId === String(self.runId) && t.attempt === Number(self.attempt);
+
+/**
+ * A ticket's run (GET actions/runs/{id}, or null when unreadable) → 'live' | 'gone'.
+ * Gone: the run finished, or it is on a newer attempt than the ticket's (the
+ * ticket's attempt died without releasing). Unreadable: gone only past the age cap.
+ */
+function ticketLiveness(ticket, run, { now = Date.now(), staleAgeMs = STALE_AGE_MS } = {}) {
+  if (run && typeof run === 'object' && run.status) {
+    if (run.status === 'completed') return 'gone';
+    if (Number(run.run_attempt || 1) > ticket.attempt) return 'gone';
+    return 'live';
+  }
+  return now - ticket.enqueuedAt > staleAgeMs ? 'gone' : 'live';
+}
+
+/**
+ * One poll's decision.
+ *   state    — parseLsRemote() of this poll
+ *   self     — {runId, attempt}
+ *   liveness — (ref) => 'live' | 'gone' | undefined (cached API verdicts)
+ *   stuck    — {ref, since}: the blocker (holder ticket ref, or LOCK_REF for an
+ *              orphaned lock, or the head ticket ref) and when it was first seen
+ *              blocking; the caller keeps it across polls
+ * Returns {action, ...}:
+ *   enqueue     — no ticket of ours on the remote (first poll, or it was dropped)
+ *   held        — the lock points at our ticket
+ *   acquire     — no lock and our ticket is the head of the queue
+ *   check       — `ticket` has blocked for GRACE_MS: look up its run
+ *   break-lock  — the lock's holder is gone; delete LOCK_REF leased on `sha`
+ *   drop-ticket — the head `ticket` (ahead of us) is gone; delete it leased on its sha
+ *   wait        — `blocker` is ahead and live (or inside its grace)
+ */
+function decideStep({ state, self, liveness = () => undefined, stuck = null, now = Date.now(), graceMs = GRACE_MS } = {}) {
+  const { tickets = [], lock = null } = state || {};
+  const mine = tickets.find((t) => isSelf(t, self));
+  if (!mine) return { action: 'enqueue' };
+  const stuckLongEnough = (ref) => Boolean(stuck && stuck.ref === ref && now - stuck.since >= graceMs);
+
+  if (lock) {
+    if (lock.sha === mine.sha) return { action: 'held', ticket: mine };
+    const holder = tickets.find((t) => t.sha === lock.sha);
+    if (!holder) {
+      // Orphaned: the holder's ticket was dropped while the lock stayed.
+      if (stuckLongEnough(LOCK_REF)) return { action: 'break-lock', sha: lock.sha, reason: 'orphaned' };
+      return { action: 'wait', blocker: { ref: LOCK_REF, sha: lock.sha }, reason: 'orphaned-lock-grace' };
+    }
+    const v = liveness(holder.ref);
+    if (v === 'gone') return { action: 'break-lock', sha: lock.sha, holder, reason: 'holder-gone' };
+    if (v === undefined && stuckLongEnough(holder.ref)) return { action: 'check', ticket: holder };
+    return { action: 'wait', blocker: holder, reason: 'locked' };
+  }
+
+  const head = tickets[0];
+  if (isSelf(head, self)) return { action: 'acquire', ticket: mine };
+  const v = liveness(head.ref);
+  if (v === 'gone') return { action: 'drop-ticket', ticket: head };
+  if (v === undefined && stuckLongEnough(head.ref)) return { action: 'check', ticket: head };
+  return { action: 'wait', blocker: head, reason: 'queued' };
+}
+
+/** The blocker ref a decision names (for the caller's `stuck` tracking). */
+function blockerRef(decision) {
+  if (!decision) return null;
+  if (decision.action === 'wait') return decision.blocker.ref;
+  if (decision.action === 'check') return decision.ticket.ref;
+  return null;
+}
+
+/** Next poll delay: grows from POLL_MIN_MS to POLL_MAX_MS, ±20% jitter. */
+function nextPollMs(poll, { rand = Math.random } = {}) {
+  const base = Math.min(POLL_MAX_MS, POLL_MIN_MS * 1.5 ** Math.max(0, poll));
+  return Math.round(base * (0.8 + 0.4 * rand()));
+}
+
+/** Our tickets in a state (release deletes every one, any attempt name drift aside). */
+function ownTickets(state, self) {
+  return ((state && state.tickets) || []).filter((t) => isSelf(t, self));
+}
+
+module.exports = {
+  QUEUE_PREFIX, LOCK_REF, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
+  ticketName, parseTicket, parseLsRemote, ticketLiveness, decideStep, blockerRef, nextPollMs, ownTickets,
+};

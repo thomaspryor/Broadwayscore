@@ -23,13 +23,14 @@ name: Land
 #             lost because the older tip is never landed — the `land` job
 #             refuses a tip that is not the one its checks verified via
 #             --expect-tip). Runs in parallel across branches.
-#   land    — ONE global group, `landing`, shared with autonomous-merge.yml,
-#             cancel-in-progress false, so two landings never race the
-#             fast-forward. GitHub keeps at most ONE pending run per group and
-#             cancels an older pending one when a newer arrives; with 3+
-#             land/** pushes inside one landing window the middle one can be
-#             cancelled un-landed with its ref intact — re-push (an empty
-#             commit is fine) or dispatch this workflow with its branch name.
+#   land    — PER BRANCH too (`landing-<branch>`, cancel-in-progress
+#             false), and the fast-forward is serialized by a FIFO git-ref
+#             mutex (scripts/land-mutex.js, BRO-5112) shared with
+#             autonomous-merge.yml, so two landings never race it. Until
+#             BRO-5112 this was ONE global group, `landing`: GitHub keeps one
+#             pending run per group and cancels the older one, so every queued
+#             landing behind a burst was evicted. Now a queued landing waits
+#             in the mutex queue (main-red lanes first, then FIFO) instead.
 #
 # PUSH TOKEN: the `land` job checks out with REVIEW_TEXTS_TOKEN (the classic
 # PAT every workflow here already uses for cross-repo pushes) and land.js's
@@ -503,11 +504,13 @@ jobs:
     needs: [checks, admit]
     if: ${{ !cancelled() && needs.checks.result == 'success' }}
     runs-on: ubuntu-latest
-    # ONE landing at a time, across this workflow AND autonomous-merge.yml
-    # (same group name there): the fast-forward push must never be raced.
-    # cancel-in-progress is false — a landing in flight is never killed.
+    # Per branch (BRO-5112): a newer run for the same land/** branch queues
+    # behind this one (its older tip would be refused by --expect-tip
+    # anyway), and no other branch can evict it. ONE landing at a time across
+    # branches AND autonomous-merge.yml is the mutex steps below, not this
+    # group. cancel-in-progress is false — a landing in flight is never killed.
     concurrency:
-      group: landing
+      group: landing-${{ github.event.inputs.branch || github.ref_name }}
       cancel-in-progress: false
     # Starting budget (BRO-3873 step 3): the fast path (verified base, or an
     # inert-only move of main) is checkout + npm ci + core data + one push,
@@ -516,8 +519,10 @@ jobs:
     # merged-tree floor (merge-post-merge-test-gate.js: scripts/lib, workflow
     # guards, corresponding tests), so a guard outside that selection is
     # unchecked against the moved main (BRO-4812). It can approach this
-    # bound; re-measure from live runs before changing.
-    timeout-minutes: 15
+    # bound; re-measure from live runs before changing. BRO-5112: plus up to
+    # 75 min waiting in the landing mutex queue (land-mutex DEADLINE_MINUTES,
+    # then it fails open), so 15 + 75 + setup headroom.
+    timeout-minutes: 110
     steps:
       - name: Checkout main
         uses: actions/checkout@v5
@@ -556,6 +561,25 @@ jobs:
         run: |
           node scripts/build-actor-slugs-manifest.js
           node scripts/build-cast-manifest.js
+
+      - name: Wait for the landing mutex
+        id: mutex
+        # BRO-5112: FIFO queue + one lock ref on origin (refs/land-mutex/*),
+        # shared with autonomous-merge.yml. Setup above runs outside it so a
+        # waiting landing is ready the moment it gets the lock. Always exits
+        # 0: past its deadline, or when the remote refuses the refs, it fails
+        # OPEN (held=false) and land.js's non-force fast-forward still refuses
+        # a moved main. Missing on the checked-out main (the landing that
+        # introduces it) → proceeds unlocked.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LAND_BRANCH: ${{ env.BRANCH }}
+          # Kill switch: repo variable LAND_MUTEX_DISABLED=true skips the wait.
+          LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
+        run: |
+          if [ -f scripts/land-mutex.js ]; then node scripts/land-mutex.js acquire
+          else echo "::warning::scripts/land-mutex.js not on main yet: landing without the mutex"; echo "held=false" >> "$GITHUB_OUTPUT"; fi
 
       - name: Land the branch
         id: land
@@ -709,6 +733,19 @@ jobs:
           else
             echo "No ledger changes to commit."
           fi
+
+      - name: Release the landing mutex
+        # After the ledger push above: that also pushes main, so it stays
+        # inside the lock instead of racing the next holder's fast-forward.
+        # Right after land.js: the ledger/alert steps below don't touch the
+        # fast-forward. always(): a failed or cancelled landing must not hold
+        # the queue (a lock that survives anyway is broken by the next waiter
+        # once this run reads completed).
+        if: always()
+        env:
+          LAND_BRANCH: ${{ env.BRANCH }}
+        run: |
+          if [ -f scripts/land-mutex.js ]; then node scripts/land-mutex.js release; fi
 
       - name: Fail the job on a refused landing
         id: refused

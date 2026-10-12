@@ -228,7 +228,7 @@ test('resume prefers higher priority, then older card, and the newest refusal pe
   assert.equal(r.ref, 'land/bro-400-new');
 });
 
-test('a cancelled run is an eviction from the landing slot, not a refusal', () => {
+test('a cancelled run (cancelled before any work) is not a refusal', () => {
   assert.equal(findResumeCard([startedCard()], [landRef()], { nowMs: NOW }).kind, 'refused');
   assert.equal(findResumeCard([startedCard()], [landRef({}, { conclusion: 'cancelled' })], { nowMs: NOW }).kind, 'evicted');
 });

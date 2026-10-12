@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { decideAdmit, isMainRedBranch, isPriorityLaneActive } = require('./land-admit.js');
-const { decideSweep, landJobInSlot } = require('./land-queue-backoff.js');
+const { decideSweep } = require('./land-queue-backoff.js');
 
 const NOW = Date.parse('2026-10-11T22:00:00Z');
 const min = (m) => new Date(NOW - m * 60000).toISOString();
@@ -42,13 +42,6 @@ test('fail-open: unreadable listing admits', () => {
   assert.equal(decideAdmit({ selfBranch: 'land/a', selfRunId: 1, runs: undefined }).admit, true);
 });
 
-test('a lane waiting in admit holds no seat; after admit it does', () => {
-  const j = (admit) => [{ name: 'Checks', status: 'completed' }, { name: 'Admit', ...admit }, { name: 'Land', status: 'queued' }];
-  assert.equal(landJobInSlot(j({ status: 'in_progress' })), false);
-  assert.equal(landJobInSlot(j({ status: 'completed', conclusion: 'success' })), true);
-  assert.equal(landJobInSlot([{ name: 'Checks', status: 'completed' }, { name: 'Land', status: 'queued' }]), true, 'pre-admit runs unchanged');
-});
-
 // Replay of 2026-10-11: BRO-5079's lane was evicted by every newer ordinary
 // lane. With admit, ordinary lanes arriving while it is stranded wait, and the
 // sweep re-runs it even though ordinary lanes are pending.
@@ -63,20 +56,12 @@ test('replay 2026-10-11: ordinary pushes never evict the main-red lane; sweep pr
   }
   assert.equal(evictionsOfMainRed, 0);
   assert.deepEqual(admitted, []);
-  // Sweep: seat busy with a pending ordinary lane; both an ordinary and the main-red run are stranded.
+  // Sweep: both an ordinary and the main-red run are stranded.
   const ordinary = run(555, 'land/bro-5000-old', { conclusion: 'cancelled', updated_at: min(90), created_at: min(200) });
   const refs = new Map([[MR, stranded.head_sha], ['land/bro-5000-old', ordinary.head_sha]]);
-  const slot = { busy: true, pending: true, blockers: [{ id: 1, branch: 'land/bro-5009-z', status: 'queued', why: 'holds-slot' }], rerunInFlight: false };
-  const d = decideSweep({ slot, cancelledRuns: [ordinary, stranded], refs, now: NOW });
+  const d = decideSweep({ cancelledRuns: [ordinary, stranded], refs, now: NOW });
   assert.equal(d.action, 'inspect');
   assert.equal(d.candidates[0].id, stranded.id, 'main-red lane is re-run before an older ordinary lane');
-});
-
-test('sweep: with a main-red lane pending, ordinary stranded runs wait', () => {
-  const ordinary = run(555, 'land/bro-5000-old', { conclusion: 'cancelled', updated_at: min(90), created_at: min(200) });
-  const refs = new Map([['land/bro-5000-old', ordinary.head_sha]]);
-  const slot = { busy: true, pending: true, blockers: [{ id: 2, branch: MR, status: 'queued', why: 'holds-slot' }], rerunInFlight: false };
-  assert.equal(decideSweep({ slot, cancelledRuns: [ordinary], refs, now: NOW }).action, 'wait');
 });
 
 test('workflow wiring: admit job precedes Land, which fails open', () => {

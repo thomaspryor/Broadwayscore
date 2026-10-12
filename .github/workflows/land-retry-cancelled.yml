@@ -1,19 +1,17 @@
 name: Land retry on cancel
 
-# BRO-4246: land.yml's Land job waits in the single-pending `landing`
-# concurrency group (shared with autonomous-merge.yml); a newer landing queuing
-# behind it cancels it even though Checks passed.
-# BRO-4653: re-running every cancelled Land job at once made the re-runs evict
-# each other and spent the whole attempt budget in one landing burst. Now each
-# firing is a SWEEP: while a Land job or Autonomous Merge run holds or waits
-# for the slot it does nothing (no attempt spent); once the slot is free it
-# re-runs at most ONE stranded cancelled Land job, oldest first. It fires when a Land or Autonomous
-# Merge run completes (the moment the slot frees) and on a cron backstop.
-# BRO-4677: under sustained traffic the slot is never free, so waiting for free
-# starved evicted runs. Now a slot held by ONE running job with nobody pending
-# also gets a re-run (it takes the empty pending seat, evicting nobody); the
-# sweep waits only while a pending entrant exists (then the 30-min aging rule
-# of BRO-4676 applies).
+# BRO-4246: land.yml's Land job used to wait in the single-pending `landing`
+# concurrency group (shared with autonomous-merge.yml), so a newer landing
+# cancelled it even though Checks passed. BRO-4653/4676/4677 then gated the
+# re-runs on that one seat so they would not evict each other.
+# BRO-5112 removed the shared seat: the Land job's group is per branch and the
+# fast-forward waits in the git-ref landing mutex (scripts/land-mutex.js), so a
+# re-run evicts nobody. Each firing is a SWEEP that re-runs at most ONE
+# stranded cancelled Land job (main-red lanes first, then oldest). It fires
+# when a Land or Autonomous Merge run completes and on a cron backstop.
+# Cancelled Land runs now come from a human cancel (not replayed once work
+# started), same-branch runs, and pre-BRO-5112 land.yml definitions on
+# branches cut before it.
 # Decision logic + tests: scripts/lib/land-retry-on-cancel{,.test} and
 # scripts/lib/land-queue-backoff{,.test}.
 # BRO-4802: everything outside that fast window used to strand for good (nine
@@ -55,9 +53,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency:
-      # One sweep at a time, so two sweeps never both see the slot free and
-      # evict each other's re-run. A newer pending sweep replacing an older
-      # one loses nothing: it makes the same decision.
+      # One sweep at a time, so two sweeps never re-run the same stranded run.
+      # A newer pending sweep replacing an older one loses nothing: it makes
+      # the same decision.
       group: land-retry-sweep
       cancel-in-progress: false
     steps:
@@ -93,8 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
-      # Own group: the pass never touches the landing slot directly, so it must
-      # not queue behind (or evict) the sweep.
+      # Own group: the pass must not queue behind (or evict) the sweep.
       group: land-stranded-pass
       cancel-in-progress: false
     steps:
