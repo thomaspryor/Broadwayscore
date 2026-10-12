@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4449",
   "planId": "045f4ff0-a397-4865-99d7-b973e9e31c33",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T12:34:19.629Z",
   "submitter": {
     "name": null,
@@ -65,5 +65,33 @@
         "description": "Retire \"Drag Tales\": Park Theatre children's drag storytelling event"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T14:21:17.849Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired application-39-off-west-end-2026 (\"Application 39\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-ballad-of-john-and-paul-off-west-end-2026 (\"The Ballad Of John And Paul\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired an-evening-of-stratford-east-singers-2026-off-west-end-2026 (\"An Evening Of Stratford East Singers 2026\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired vittorio-angelone-you-cant-say-nothing-any-more-off-west-end-2026 (\"Vittorio Angelone You Cant Say Nothing Any More\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired drag-tales-off-west-end-2026 (\"Drag Tales\" @ Park Theatre) — title+venue blocked"
+    }
+  ]
 }
