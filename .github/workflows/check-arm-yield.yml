@@ -90,7 +90,6 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: node scripts/check-arm-yield.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
       # alert-ledger.json carries routeAlert()'s per-condition cooldown and
