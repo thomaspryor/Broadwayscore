@@ -32,6 +32,17 @@
  *   node scripts/sweep-pending-commercial.js --dry-run         # print plan
  *   node scripts/sweep-pending-commercial.js --report-json=/tmp/r.json
  *   node scripts/sweep-pending-commercial.js --requeue-cap=20 --archive-cap=50
+ *   node scripts/sweep-pending-commercial.js --reject=<pending-key> --reason="<why>"
+ *       A person rejects one recouped claim. The claim's source URLs go into
+ *       the archive under the show slug (rejectedSources), which the Friday
+ *       scraper and deep research both check before filing the same claim
+ *       again. A held backfill row (BRO-4990) keeps its research and loses
+ *       only the claim; any other row moves to the archive.
+ *
+ * Recouped claims are triaged first (lib/commercial-claim-triage.js): a stale
+ * duplicate is left for reconcile-recoupment-claims.js to close (or, on a held
+ * row the reconciler skips, has its claim stripped), and a wrong-production
+ * claim is rejected. Only the rest are reported for a person.
  */
 
 require('./lib/cli-help').exitOnHelp(module);
@@ -44,6 +55,7 @@ const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
 const ARCHIVE_PATH = path.join(DATA_DIR, 'commercial-pending-archive.json');
 const QUEUE_PATH = path.join(DATA_DIR, 'commercial-research-queue.json');
+const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
 
 const args = process.argv.slice(2);
 const flags = {};
@@ -55,6 +67,8 @@ for (const a of args) {
 }
 const DRY_RUN = flags['dry-run'] === true;
 const REPORT_JSON_PATH = flags['report-json'] || null;
+const REJECT_KEY = typeof flags['reject'] === 'string' ? flags['reject'] : null;
+const REJECT_REASON = typeof flags['reason'] === 'string' ? flags['reason'] : null;
 // Use intOr() (not `parseInt(...) || default`) so `--archive-cap=0` doesn't get
 // silently coerced to the default — 0 is a valid cap meaning "no archive this
 // run." Same trap as `parseInt(x) || 30` silently coercing 0 to 30 in
@@ -89,10 +103,13 @@ function daysAgo(isoString) {
 
 // Shared with apply-commercial-pending.js — same `_recoupedClaim || recouped`
 // semantics. Don't redefine inline; reuse so the rules stay in lockstep.
-const { hasRecoupedClaim, requiresHumanReview } = require('./lib/commercial-apply-gate');
+const { hasRecoupedClaim, isReviewHold, requiresHumanReview, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
+const { triageRecoupedClaim, recordRejection, writeArchiveRecord } = require('./lib/commercial-claim-triage');
 const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
-function classifyEntry(slug, entry, showsBySlug) {
+// ctx (optional): {commercialShows, showKeyIndex}, for recouped-claim triage.
+// Without it every claim is reported, the pre-triage behavior.
+function classifyEntry(slug, entry, showsBySlug, ctx) {
   // Out-of-scope (Off-Broadway / West End) entries must never re-enter the
   // research queue — archive them so the leak drains instead of cycling.
   // Deliberately checked BEFORE hasRecoupedClaim: an out-of-scope recouped
@@ -103,6 +120,22 @@ function classifyEntry(slug, entry, showsBySlug) {
   }
 
   if (hasRecoupedClaim(entry)) {
+    const triage = triageRecoupedClaim(slug, entry, ctx);
+    // Same skip set as reconcile-recoupment-claims.js: it never closes these,
+    // so a 'keep' would leave the claim uncarded forever.
+    const held = requiresHumanReview(entry) || isReviewHold(entry);
+    if (triage && triage.verdict === 'wrong-production') {
+      // A held row keeps its unreviewed research for --release-held; only the claim goes.
+      return held
+        ? { action: 'strip', reason: triage.reason, rejectAs: triage.slug }
+        : { action: 'archive', reason: triage.reason, rejectAs: triage.slug };
+    }
+    if (triage && triage.verdict === 'stale-duplicate') {
+      // The reconciler closes unheld duplicates; it skips held rows, so strip those here.
+      return held
+        ? { action: 'strip', reason: triage.reason }
+        : { action: 'keep', reason: `${triage.reason}; reconciler closes it` };
+    }
     return { action: 'report', reason: 'recouped-claim — needs human review' };
   }
 
@@ -168,16 +201,24 @@ function main() {
   const pending = loadJSON(PENDING_PATH, { shows: {} });
   const archive = loadJSON(ARCHIVE_PATH, { shows: {} });
   const queueFile = loadJSON(QUEUE_PATH, { shows: [], triggers: {} });
+  const commercialData = loadJSON(COMMERCIAL_PATH, null);
+  if (!commercialData) console.log(`::warning::${COMMERCIAL_PATH} not readable; stale-duplicate triage off this run`);
+  const ctx = { commercialShows: commercialData ? (commercialData.shows || commercialData) : null, showKeyIndex };
 
   pending.shows = pending.shows || {};
   archive.shows = archive.shows || {};
   queueFile.shows = queueFile.shows || [];
   queueFile.triggers = queueFile.triggers || {};
 
-  const buckets = { requeue: [], archive: [], report: [], keep: [] };
+  if (REJECT_KEY) {
+    rejectOne({ pending, archive, key: REJECT_KEY, reason: REJECT_REASON, showKeyIndex });
+    return;
+  }
+
+  const buckets = { requeue: [], archive: [], strip: [], report: [], keep: [] };
   for (const [slug, entry] of Object.entries(pending.shows)) {
-    const { action, reason } = classifyEntry(slug, entry, showsBySlug);
-    buckets[action].push({ slug, entry, reason });
+    const { action, reason, rejectAs } = classifyEntry(slug, entry, showsBySlug, ctx);
+    buckets[action].push({ slug, entry, reason, rejectAs });
   }
 
   // Apply caps by priority: report has no cap (just listed), archive before
@@ -191,13 +232,14 @@ function main() {
   console.log(`Pending total: ${Object.keys(pending.shows).length}`);
   console.log(`  archive: ${archivedActions.length} (overflow: ${archiveOverflow})`);
   console.log(`  requeue: ${requeuedActions.length} (overflow: ${requeueOverflow})`);
-  console.log(`  report (recouped-claim → Notion): ${buckets.report.length}`);
+  console.log(`  strip claim (held rows): ${buckets.strip.length}`);
+  console.log(`  report (recouped-claim → Linear): ${buckets.report.length}`);
   console.log(`  keep: ${buckets.keep.length}`);
   console.log('');
 
   if (DRY_RUN) {
     console.log('[dry-run] no writes. Sample of each bucket:');
-    for (const k of ['archive', 'requeue', 'report']) {
+    for (const k of ['archive', 'requeue', 'strip', 'report']) {
       for (const it of buckets[k].slice(0, 3)) {
         console.log(`  [${k}] ${it.slug} — ${it.reason}`);
       }
@@ -208,17 +250,26 @@ function main() {
   const now = new Date().toISOString();
 
   // Archive
-  for (const { slug, entry, reason } of archivedActions) {
-    archive.shows[slug] = {
-      ...entry,
-      archivedAt: now,
-      archivedReason: reason.startsWith('out of commercial scope')
-        ? 'out-of-commercial-scope'
-        : 'low-confidence-aged-out',
-    };
+  for (const { slug, entry, reason, rejectAs } of archivedActions) {
+    if (rejectAs) {
+      recordRejection(archive, { slug: rejectAs, pendingKey: slug, entry, detail: reason, now });
+    } else {
+      writeArchiveRecord(archive, slug, {
+        ...entry,
+        archivedAt: now,
+        archivedReason: reason.startsWith('out of commercial scope')
+          ? 'out-of-commercial-scope'
+          : 'low-confidence-aged-out',
+      });
+    }
     delete pending.shows[slug];
   }
-  if (archivedActions.length > 0) {
+  // Held rows (BRO-4990): drop only the claim, keep the research for a person.
+  for (const { slug, entry, reason, rejectAs } of buckets.strip) {
+    if (rejectAs) recordRejection(archive, { slug: rejectAs, pendingKey: slug, entry, detail: reason, now });
+    pending.shows[slug] = { ...withoutRecoupmentClaim(entry), claimStripped: { at: now, reason } };
+  }
+  if (archivedActions.length > 0 || buckets.strip.some((it) => it.rejectAs)) {
     archive.lastUpdated = now;
     writeJSON(ARCHIVE_PATH, archive);
   }
@@ -245,8 +296,11 @@ function main() {
   // Emit report for Notion sweep step
   const report = {
     sweptAt: now,
-    recoupedClaims: buckets.report.map(({ slug, entry, reason }) => ({
-      slug,
+    // Keyed by show SLUG so an ID-keyed row and its slug twin share one
+    // Linear card; pendingKey is what --show / --reject take.
+    recoupedClaims: dedupeBySlug(buckets.report.map(({ slug, entry, reason }) => ({
+      slug: resolveCommercialSlug(slug, entry, showKeyIndex).slug,
+      pendingKey: slug,
       reason,
       confidence: entry.confidence,
       sourceHost: entry.sourceHost || null,
@@ -255,7 +309,7 @@ function main() {
       evidence: entry.evidence || null,
       detectedBy: entry.detectedBy || null,
       researchedAt: entry.researchedAt || null,
-    })),
+    }))),
     overflow: { archive: archiveOverflow, requeue: requeueOverflow },
   };
   if (REPORT_JSON_PATH) {
@@ -267,6 +321,39 @@ function main() {
   if (buckets.report.length > 0) {
     console.log(`⚠ ${buckets.report.length} recouped-claim entries need human review (see Notion sweep step)`);
   }
+}
+
+function dedupeBySlug(items) {
+  const seen = new Set();
+  return items.filter((it) => (seen.has(it.slug) ? false : seen.add(it.slug)));
+}
+
+function rejectOne({ pending, archive, key, reason, showKeyIndex }) {
+  const entry = pending.shows[key];
+  if (!entry) {
+    console.error(`FATAL: no pending entry "${key}"`);
+    process.exit(1);
+  }
+  if (!hasRecoupedClaim(entry)) {
+    console.error(`FATAL: "${key}" carries no recouped claim`);
+    process.exit(1);
+  }
+  if (!reason || reason.length < 10) {
+    console.error('FATAL: --reason="<why>" (10+ chars) is required with --reject');
+    process.exit(1);
+  }
+  const slug = resolveCommercialSlug(key, entry, showKeyIndex).slug;
+  const held = requiresHumanReview(entry) || isReviewHold(entry);
+  console.log(`reject ${key} (show ${slug}, ${held ? 'held row: claim stripped, research kept' : 'row archived'}): ${reason}`);
+  if (DRY_RUN) return;
+  const now = new Date().toISOString();
+  recordRejection(archive, { slug, pendingKey: key, entry, detail: reason, now });
+  if (held) pending.shows[key] = { ...withoutRecoupmentClaim(entry), claimStripped: { at: now, reason } };
+  else delete pending.shows[key];
+  archive.lastUpdated = now;
+  pending.lastUpdated = now;
+  writeJSON(ARCHIVE_PATH, archive);
+  writeJSON(PENDING_PATH, pending);
 }
 
 if (require.main === module) main();
