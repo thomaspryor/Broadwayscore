@@ -574,7 +574,7 @@ jobs:
           elif [ -n "$WARNINGS" ]; then
             echo "All crons running on schedule, but some have recent failures:"
             echo -e "$WARNINGS"
-            # Emit the warnings to $GITHUB_OUTPUT so the next step can forward them to Discord.
+            # Emit the warnings to $GITHUB_OUTPUT so the next step can route them to the daily digest.
             # WARNINGS is multi-line, so use the heredoc form.
             {
               echo "warnings<<EOF"
