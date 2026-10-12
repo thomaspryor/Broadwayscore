@@ -5,9 +5,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const yml = fs.readFileSync(path.join(root, '.github/workflows/check-cron-health.yml'), 'utf8');
+const { parseExemptList } = createRequire(import.meta.url)('./lib/cron-coverage.js');
 const exempt = fs.readFileSync(path.join(root, '.cron-health-exempt.txt'), 'utf8');
 
 const block = yml.slice(yml.indexOf('CRITICAL_CRONS=('));
@@ -28,6 +30,6 @@ for (const [wf, [lo, hi]] of Object.entries(EXPECTED)) {
     assert.equal(rows.filter(([w]) => w === wf).length, 1);
   });
   test(`${wf} is not also in the exempt list`, () => {
-    assert.ok(!exempt.split('\n').some(l => l.trim() === wf));
+    assert.ok(!parseExemptList(exempt).has(wf));
   });
 }

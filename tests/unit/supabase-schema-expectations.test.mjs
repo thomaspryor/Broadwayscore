@@ -10,7 +10,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { deriveExpectations } = require('../../scripts/lib/supabase-schema-expectations.js');
+const {
+  deriveExpectations, diffAgainstLive, findUnexpectedPolicies, findUndeletedUserTables, policyDefHash,
+} = require('../../scripts/lib/supabase-schema-expectations.js');
+const DELETE_ACCOUNT_EXEMPT = require('../../scripts/lib/delete-account-exempt.js');
 
 test('semicolon inside a string literal does not fracture the statement split', () => {
   const r = deriveExpectations([{ name: 'a.sql', sql: `
@@ -221,4 +224,117 @@ test('real migrations: get_shared_plans expects the refuse-GET body from 2026100
   const old = files.find((f) => f.name.startsWith('20261001_plan_shares'));
   const oldHash = extractFunctionBodies(old.sql).find((f) => f.name === 'get_shared_plans').hash;
   assert.notEqual(entry.bodyHash, oldHash);
+});
+
+// ── BRO-4538: settings an unapplied migration can change while objects still exist ──
+
+test('ALTER FUNCTION ... SET search_path yields an fnconfig expectation that a live catalog without it misses', () => {
+  const r = deriveExpectations([{ name: 'a.sql', sql: `
+CREATE OR REPLACE FUNCTION public.f() RETURNS void LANGUAGE sql AS $$ SELECT 1 $$;
+ALTER FUNCTION public.f() SET search_path = '';
+` }]);
+  assert.ok(r.expected.has('fnconfig:f:search_path'));
+  const live = [{ kind: 'function', name: 'f' }];
+  assert.deepEqual(diffAgainstLive(r.expected, live).map((o) => `${o.kind}:${o.name}`), ['fnconfig:f:search_path']);
+  assert.deepEqual(diffAgainstLive(r.expected, [...live, { kind: 'fnconfig', name: 'f:search_path' }]), []);
+});
+
+test('CREATE OR REPLACE FUNCTION resets SET expectations (Postgres replaces proconfig); header SET after the body counts', () => {
+  const r = deriveExpectations([
+    { name: 'a.sql', sql: `CREATE FUNCTION g() RETURNS int LANGUAGE sql AS $$ SELECT 1 $$;\nALTER FUNCTION g() SET search_path = '';` },
+    { name: 'b.sql', sql: `CREATE OR REPLACE FUNCTION g() RETURNS int LANGUAGE plpgsql AS $$ BEGIN UPDATE t SET x = 1; RETURN 1; END $$ SET timezone = 'UTC';` },
+  ]);
+  assert.ok(!r.expected.has('fnconfig:g:search_path'), 'reset by the replace');
+  assert.ok(r.expected.has('fnconfig:g:timezone'), 'header SET after the body');
+  assert.ok(!r.expected.has('fnconfig:g:x'), 'a SET inside the body is not a function setting');
+});
+
+test('view options: WITH (...) on create, ALTER VIEW SET overrides, CREATE OR REPLACE resets, values normalized', () => {
+  const r1 = deriveExpectations([
+    { name: 'a.sql', sql: `CREATE VIEW v AS SELECT 1 AS a;\nALTER VIEW v SET (security_invoker = false);` },
+  ]);
+  assert.ok(r1.expected.has('viewopt:v:security_invoker=false'));
+  const r2 = deriveExpectations([
+    { name: 'a.sql', sql: `CREATE VIEW v AS SELECT 1 AS a;\nALTER VIEW v SET (security_invoker = false);` },
+    { name: 'b.sql', sql: `CREATE OR REPLACE VIEW public.v WITH (security_invoker = on) AS SELECT 1 AS a;` },
+  ]);
+  assert.ok(!r2.expected.has('viewopt:v:security_invoker=false'));
+  assert.ok(r2.expected.has('viewopt:v:security_invoker=true'));
+  // the unapplied-replace case: prod still has the old option
+  const missing = diffAgainstLive(r2.expected, [{ kind: 'view', name: 'v' }, { kind: 'viewopt', name: 'v:security_invoker=false' }]);
+  assert.deepEqual(missing.map((o) => o.name), ['v:security_invoker=true']);
+  const r3 = deriveExpectations([{ name: 'a.sql', sql: `CREATE VIEW v WITH (security_barrier) AS SELECT 1;\nDROP VIEW v;` }]);
+  assert.equal([...r3.expected.keys()].filter((k) => k.startsWith('viewopt')).length, 0, 'DROP VIEW cascades');
+});
+
+test('RETURNS TABLE column names: sorted, nested type parens, replace resets, drop cascades', () => {
+  const r = deriveExpectations([
+    { name: 'a.sql', sql: `CREATE FUNCTION h() RETURNS TABLE (id uuid, email text) LANGUAGE sql AS $$ SELECT 1 $$;` },
+    { name: 'b.sql', sql: `CREATE OR REPLACE FUNCTION h() RETURNS TABLE (id uuid, price numeric(10,2), "Zed" text) LANGUAGE sql AS $$ SELECT 1 $$;` },
+  ]);
+  assert.ok(r.expected.has('fnresult:h:Zed,id,price'), [...r.expected.keys()].join(' '));
+  assert.ok(!r.expected.has('fnresult:h:email,id'));
+  const d = deriveExpectations([
+    { name: 'a.sql', sql: `CREATE FUNCTION h() RETURNS TABLE (id uuid) LANGUAGE sql SET search_path = '' AS $$ SELECT 1 $$;` },
+    { name: 'b.sql', sql: `DROP FUNCTION IF EXISTS h();` },
+  ]);
+  assert.deepEqual([...d.expected.keys()], []);
+});
+
+test('real migrations: the BRO-4538 cases are now asserted', () => {
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../supabase/migrations');
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()
+    .map((name) => ({ name, sql: fs.readFileSync(path.join(dir, name), 'utf8') }));
+  const { expected, errors } = deriveExpectations(files);
+  assert.deepEqual(errors, []);
+  for (const k of ['fnconfig:update_updated_at:search_path', 'fnconfig:mask_email:search_path',
+    'fnconfig:get_shared_plans:timezone', 'viewopt:fantasy_entries_public:security_invoker=true']) {
+    assert.ok(expected.has(k), `missing ${k}`);
+  }
+  assert.ok(!expected.has('viewopt:fantasy_entries_public:security_invoker=false'), '20260422b replaced the 20260420 ALTER VIEW');
+});
+
+// ── BRO-4532: reverse policy diff ──
+
+test('a live policy no migration declares is reported unless allowlisted', () => {
+  const { expected } = deriveExpectations([{ name: 'a.sql', sql: `CREATE TABLE push_tokens (id int);\nCREATE POLICY own_select ON push_tokens FOR SELECT USING (true);` }]);
+  const live = [
+    { kind: 'policy', name: 'push_tokens:own_select', hash: 'SELECT TO public USING (true) CHECK ()' },
+    { kind: 'policy', name: 'push_tokens:push_tokens_insert_policy', hash: 'INSERT TO public USING () CHECK (true)' },
+    { kind: 'policy', name: 'lists:ios_only', hash: 'ALL TO public USING ((auth.uid() = user_id)) CHECK ()' },
+  ];
+  const names = (rows) => rows.map((r) => r.name);
+  assert.deepEqual(names(findUnexpectedPolicies(expected, live)), ['lists:ios_only', 'push_tokens:push_tokens_insert_policy']);
+  const known = { 'lists:ios_only': { def: policyDefHash(live[2].hash), why: 'iOS repo migration' } };
+  assert.deepEqual(names(findUnexpectedPolicies(expected, live, known)), ['push_tokens:push_tokens_insert_policy']);
+});
+
+test('an allowlisted live-only policy whose definition is broadened warns again', () => {
+  const { expected } = deriveExpectations([]);
+  const before = 'ALL TO public USING ((auth.uid() = user_id)) CHECK ()';
+  const known = { 'lists:legacy': { def: policyDefHash(before), why: 'base schema' } };
+  const live = [{ kind: 'policy', name: 'lists:legacy', hash: 'ALL TO public USING (true) CHECK ()' }];
+  const [hit] = findUnexpectedPolicies(expected, live, known);
+  assert.equal(hit.name, 'lists:legacy');
+  assert.equal(hit.changed, true);
+});
+
+test('live catalog query types its columns as text (pg "name" truncates at 63 bytes)', () => {
+  const { LIVE_CATALOG_QUERY } = require('../../scripts/lib/supabase-schema-expectations.js');
+  const first = LIVE_CATALOG_QUERY.split('\n')[0];
+  assert.match(first, /'table'::text AS kind, tablename::text AS name, NULL::text AS hash/);
+});
+
+// ── BRO-4534: deletion coverage from the live catalog ──
+
+test('an iOS-only per-user table that delete-account does not touch is reported', () => {
+  const live = [
+    { kind: 'usercol', name: 'ios_only_notes.user_id' },
+    { kind: 'usercol', name: 'push_tokens.user_id' },
+    { kind: 'usercol', name: 'plan_shares.created_by' },
+    { kind: 'usercol', name: 'cascaded.user_id' },
+    { kind: 'cascadefk', name: 'cascaded:auth.users' },
+  ];
+  const fnSource = "await deleteRows(base, auth, 'push_tokens', q);";
+  assert.deepEqual(findUndeletedUserTables(live, fnSource, DELETE_ACCOUNT_EXEMPT), ['ios_only_notes']);
 });

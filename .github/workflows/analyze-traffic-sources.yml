@@ -85,8 +85,13 @@ jobs:
       # request time; no deploy is involved.
       # hygiene-push-ok: pushes to the external private-repo checkout in /tmp —
       # push-with-retry.sh targets the main workspace checkout and can't be reused here.
+      # BRO-4958: non-fatal. This workflow is in check-cron-health.yml
+      # CRITICAL_CRONS, which keys on the last SUCCESSFUL run and redispatches a
+      # stale one; a red run here would re-send an email that already went out.
+      # A missed save self-heals: the next run re-queries the last 6 weeks.
       - name: Save visit history + dashboard data (private repo)
         if: always()
+        continue-on-error: true
         run: |
           # traffic-dashboard.json is optional: the script skips it when a
           # page/referrer/country query failed, keeping last week's lists.

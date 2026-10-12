@@ -698,7 +698,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/analyze-traffic-sources.js` (`--days`, `--out`); pure helpers unit-tested in `scripts/tests/analyze-traffic-sources.test.mjs`
 - **Failure semantics:** any failed query is listed in an "Incomplete report" banner and the job exits 1 (never a green half-report). PostHog 5xx/429 are retried once after 20s — a 504 takes ~5 min to come back; the history refresh has its own 12-minute budget, hence `timeout-minutes: 30`.
 - **Requires:** `GA4_PROPERTY_ID`, `GA_SERVICE_ACCOUNT_KEY`, `POSTHOG_PERSONAL_API_KEY` (all CI-only; local `.env` has none, which is why this is a workflow)
-- **Cron health:** digest-only (`.cron-health-exempt.txt`), not in `CRITICAL_CRONS`
+- **Cron health:** in `CRITICAL_CRONS` at 192h (BRO-4958). Staleness keys on the last green run and a stale one is redispatched, so a red run (incomplete report or failed send) gets a full-report retry; the history save is `continue-on-error` so it can't cause a duplicate email.
 - **Origin:** BRO-3419 (2026-09-15). First run found Hong Kong as a PostHog-only bot geo (added to `REAL_USERS_WHERE` + `data/audit/known-bot-geos.json`); BRO-3432 tracks teaching `audit-geo-bots.js` to read PostHog too.
 
 ## `check-seo-health.yml`

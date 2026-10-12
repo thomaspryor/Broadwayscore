@@ -157,6 +157,19 @@ jobs:
             # Watchable only since its link-integrity job moved to its own
             # workflow: a success now means the email was delivered.
             "weekly-affiliate-report.yml|192|Weekly Affiliate Report"
+            # BRO-4958: Monday owner traffic email (BRO-3419), exempt until
+            # now, so a dead cron meant no report and no alert. A red run is
+            # an incomplete report or a failed send, and the redispatch is the
+            # retry the owner wants (it re-sends the full report); the private
+            # history save is continue-on-error so a push hiccup never causes a
+            # duplicate email. 192h = weekly cadence + 24h cron-lag cushion.
+            "analyze-traffic-sources.yml|192|Analyze Traffic Sources"
+            # BRO-4958: daily r/Broadway digest snapshot + opening-post drafts
+            # (emailed to the owner). 36h = daily + 12h cushion. A redispatch
+            # rewrites the snapshot (idempotent); drafts are stamped emailedAt
+            # before commit, so it can repeat a draft email only when the
+            # previous run's commit failed after the send.
+            "reddit-engagement-digest.yml|36|Reddit Engagement Digest"
             "weekly-video-reviews.yml|192|Weekly Video Reviews"
             "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
             "outlet-listing-poller.yml|25|Outlet Listing Poller"
