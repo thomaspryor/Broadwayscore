@@ -26,7 +26,8 @@
  *
  * The contract for a named run, and the reason the exit codes are distinct:
  *
- *   0  every named target produced `match`
+ *   0  every named target produced `match` (or the advisory
+ *      `venue-unverified`, which validate-show-venue.js warns about)
  *   1  a named target produced `mismatch` — the entry IS wrong. Same code the
  *      existing --fail-on-mismatch gate uses, so the two paths agree.
  *   3  the question was not answered: an unresolved verdict, or the run never
@@ -39,9 +40,13 @@
 
 'use strict';
 
-// The only two verdicts that mean the run ANSWERED. They are graded very
-// differently below — `mismatch` is an answer, and a bad one.
-const DEFINITIVE_RESULTS = new Set(['match', 'mismatch']);
+// The verdicts that mean the run ANSWERED. They are graded very differently
+// below — `mismatch` is an answer, and a bad one. `venue-unverified`
+// (BRO-3903) answered every field except the venue, which Playbill's page did
+// not let us read; it exits 0 like `match` did before that result existed (a
+// new signal lands advisory, CLAUDE.md rule 19) and validate-show-venue.js
+// prints a ::warning:: naming the unchecked venue instead.
+const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'venue-unverified']);
 
 const EXIT_MISMATCH = 1;
 const EXIT_NOT_VALIDATED = 3;
