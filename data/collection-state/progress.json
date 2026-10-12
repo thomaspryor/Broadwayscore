@@ -1,36 +1,45 @@
 {
-  "processed": [
-    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-    "fences-off-west-end-2026/ground--unknown.json",
-    "fences-off-west-end-2026/north-west-end--michelle-knight.json",
-    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "fish-off-broadway-2026/timeout--unknown.json",
-    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json"
+    "cosi-fan-tutte-off-broadway-2026/talkinbroadway--unknown.json",
+    "night-city-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "fences-off-west-end-2026/ground--unknown.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "fences-off-west-end-2026/north-west-end--michelle-knight.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-10-12T10:02:54.601Z",
-  "lastProcessed": "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
-  "log": []
+  "startTime": "2026-10-12T10:28:24.181Z",
+  "lastProcessed": "night-city-off-west-end-2026/timeout-london--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-12T10:29:54.055Z",
+      "event": "bb-session",
+      "session": "7f8274ac",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-12T10:29:54.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T10:30:12.446Z",
+      "event": "bb-session",
+      "session": "16635191",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-12T10:30:12.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
