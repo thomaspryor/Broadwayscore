@@ -43,6 +43,7 @@ const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { fetchPage } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { roundupExcerptsAboutShow } = require('./lib/aggregator-page-show-guard');
 
 const USAGE = `sweep-we-aggregators.js — Sweep all WE aggregators for each open WE/OWE show.
 
@@ -468,6 +469,21 @@ function writeReview(review, showId) {
 
 // ─── WestEndTheatre (WP API) ────────────────────────────────────────────────
 
+/**
+ * Write one aggregator page's rows, unless the page as a whole is about a
+ * different show (BRO-3564: the archived Totoro page was the Peter Pan round-up).
+ */
+function writePageRows(rows, show, label) {
+  // rows.pageTitle: the WP headline sweepWET attaches when it has one.
+  const check = roundupExcerptsAboutShow(rows, show, { pageTitle: rows.pageTitle });
+  if (!check.ok) {
+    console.log(`  ${label}: SKIPPED page, ${check.reason}`);
+    return 0;
+  }
+  for (const r of rows) writeReview(r, show.id);
+  return rows.length;
+}
+
 async function sweepWET(show) {
   // Archive-skip: WET archives the rendered page HTML when section format is used
   const wetArchDir = path.join(ARCHIVE_BASE, 'westendtheatre');
@@ -495,7 +511,9 @@ async function sweepWET(show) {
   if (!FORCE && fs.existsSync(wetApiCache)) {
     try {
       const cached = JSON.parse(fs.readFileSync(wetApiCache, 'utf8'));
-      if (cached.reviews && cached.reviews.length > 0) return cached.reviews;
+      if (cached.reviews && cached.reviews.length > 0) {
+        return Object.assign(cached.reviews, { pageTitle: cached.wpTitle });
+      }
     } catch {}
   }
 
@@ -611,10 +629,10 @@ async function sweepWET(show) {
       // Cache extracted reviews so future runs skip the API call
       if (!DRY_RUN) {
         if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
-        fs.writeFileSync(wetApiCache, JSON.stringify({ reviews, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
+        fs.writeFileSync(wetApiCache, JSON.stringify({ wpTitle, reviews, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
       }
       bumpUrlGuessTier('westendtheatre', 'tier2', show.id);
-      return reviews;
+      return Object.assign(reviews, { pageTitle: wpTitle });
     }
   }
 
@@ -1323,7 +1341,7 @@ async function main() {
           stats.wet.found++;
           stats.wet.reviews += results.wet.length;
           console.log(`  WET: ${results.wet.length} reviews`);
-          for (const r of results.wet) writeReview(r, show.id);
+          writePageRows(results.wet, show, 'WET');
         } else {
           console.log('  WET: not found');
         }
@@ -1336,7 +1354,7 @@ async function main() {
           stats['theatre-reviews'].found++;
           stats['theatre-reviews'].reviews += results['theatre-reviews'].length;
           console.log(`  TR:  ${results['theatre-reviews'].length} reviews`);
-          for (const r of results['theatre-reviews']) writeReview(r, show.id);
+          writePageRows(results['theatre-reviews'], show, 'TR');
         } else {
           console.log('  TR:  not found');
         }
@@ -1349,7 +1367,7 @@ async function main() {
           stats.sd.found++;
           stats.sd.reviews += results.sd.length;
           console.log(`  SD:  ${results.sd.length} reviews`);
-          for (const r of results.sd) writeReview(r, show.id);
+          writePageRows(results.sd, show, 'SD');
         }
         // No sleep needed — local file read
       }
@@ -1360,7 +1378,7 @@ async function main() {
           stats.ts.found++;
           stats.ts.reviews += results.ts.length;
           console.log(`  TS:  ${results.ts.length} reviews`);
-          for (const r of results.ts) writeReview(r, show.id);
+          writePageRows(results.ts, show, 'TS');
         } else {
           console.log('  TS:  not found');
         }
@@ -1395,4 +1413,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { writeReview };
+module.exports = { writeReview, writePageRows };

@@ -4649,7 +4649,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         const cached = JSON.parse(fs.readFileSync(wetCache, 'utf8'));
         const wetReviews = cached.reviews || cached.ratings || [];
         const wetPostDate = cached.postDate || null;
-        if (wetReviews.length > 0) {
+        // BRO-3564: an archived round-up about another show (the Totoro page
+        // held the Peter Pan round-up) must not be replayed onto this show.
+        const wetPageCheck = require('./lib/aggregator-page-show-guard').roundupExcerptsAboutShow(wetReviews, show, { pageTitle: cached.wpTitle });
+        if (!wetPageCheck.ok) {
+          console.log(`    ✗ WET cache skipped, round-up is about another show: ${wetPageCheck.reason}`);
+        } else if (wetReviews.length > 0) {
           console.log(`    ✓ WET: ${wetReviews.length} reviews from cache${wetPostDate ? ` (date: ${wetPostDate})` : ''}`);
           for (const r of wetReviews) {
             foundReviews.push({
@@ -4855,6 +4860,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
                 }));
               }
             }
+            const wetPageCheck = reviews.length > 0
+              ? require('./lib/aggregator-page-show-guard').roundupExcerptsAboutShow(reviews, show, { pageTitle: wpTitle })
+              : { ok: true };
+            if (!wetPageCheck.ok) {
+              // BRO-3564: round-up about another show; never write or cache it.
+              console.log(`    ✗ WET round-up is about another show: ${wetPageCheck.reason}`);
+              continue;
+            }
             if (reviews.length > 0) {
               console.log(`    ✓ WET live: ${reviews.length} reviews`);
               for (const r of reviews) {
@@ -4871,7 +4884,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               const wetArchDir = path.join(archBase, 'westendtheatre');
               if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
               fs.writeFileSync(path.join(wetArchDir, `${showId}.json`),
-                JSON.stringify({ reviews: reviews.map(r => ({ ...r, source: 'westendtheatre' })), fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
+                JSON.stringify({ wpTitle, reviews: reviews.map(r => ({ ...r, source: 'westendtheatre' })), fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
               break;
             }
           }

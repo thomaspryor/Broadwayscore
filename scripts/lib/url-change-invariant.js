@@ -513,6 +513,33 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
  * @param {boolean} [opts.stampOnNoop=false]
  * @returns {object|null} The written record, or null if nothing was written
  */
+// Flags that already say the stored url is the wrong article: a score on such
+// a file is not trusted, so a move away from it may clear the score.
+const OLD_URL_WRONG_FLAGS = [
+  'wrongProduction', 'wrongShow', 'duplicateOf', 'wrongAttribution', 'wrongArticle',
+  'wrongFullText', 'showNotMentioned', 'isRoundupArticle', 'isNonReview',
+  'fabricatedEntry', 'urlPlaceholderSuspect',
+];
+const OLD_URL_WRONG_REASONS = new Set(['wrong_content', 'url_content_mismatch', 'scraper_garbage', 'wrong_show', 'wrong_production']);
+
+/**
+ * True when moving `existing` to a new url would clear a real score
+ * (originalScore / aggregatorStars) that nothing says is wrong.
+ * @param {object} existing  record on disk
+ * @param {{preserveFields?: Set<string>, oldUrlProvenWrong?: boolean}} [opts]
+ * @returns {boolean}
+ */
+function wouldDiscardScore(existing, opts = {}) {
+  const { hasPreservableAggregatorScore } = require('./aggregator-domains');
+  if (!existing || !hasPreservableAggregatorScore(existing)) return false;
+  if (opts.oldUrlProvenWrong === true) return false;
+  if (OLD_URL_WRONG_FLAGS.some((k) => existing[k])) return false;
+  if (OLD_URL_WRONG_REASONS.has(existing.incompleteReason)) return false;
+  const keep = opts.preserveFields;
+  const kept = (k) => existing[k] == null || (keep && typeof keep.has === 'function' && keep.has(k));
+  return !(kept('originalScore') && kept('aggregatorStars'));
+}
+
 function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) {
   const fs = require('fs');
   const path = require('path');
@@ -572,6 +599,23 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
       });
       return null;
     }
+  }
+  // Score-loss refusal (BRO-4131, maybeUpgradeUrl's BRO-4128 twin): a move
+  // clears originalScore/aggregatorStars as old-URL-derived, so an unflagged
+  // scored stub (a paywalled review sits there for good) would lose its real
+  // score to a candidate nobody proved is the same review. Allowed when the
+  // caller keeps the score (preserveFields: same review at a new address) or
+  // the old url is known wrong (flags on disk, or opts.oldUrlProvenWrong).
+  if (canonicalMove && wouldDiscardScore(existing, opts)) {
+    const { logExclusion } = require('./exclusion-logger');
+    logExclusion({
+      script: 'url-change-invariant',
+      showId: existing.showId || 'unknown',
+      file: path.basename(filePath),
+      reason: 'skippedScoreLossUrlSwap',
+      details: { existingUrl: existing.url, incomingUrl: newUrl, originalScore: existing.originalScore, aggregatorStars: existing.aggregatorStars },
+    });
+    return null;
   }
   if (!canonicalMove && !opts.stampOnNoop) return null;
   if (!canonicalMove && opts.stampOnNoop) {
@@ -643,6 +687,7 @@ module.exports = {
   isDifferentArticleRecovery,
   isUrlFlipFlop,
   updateFileUrlWithInvariant,
+  wouldDiscardScore,
   removeLlmScoreSidecar: _removeLlmScoreSidecar,
   NEW_ERA_FETCH_FIELDS,
   URL_DERIVED_FIELDS,

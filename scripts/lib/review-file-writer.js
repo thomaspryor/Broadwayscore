@@ -1515,6 +1515,37 @@ function applyPageByline(filepath, existing, { showId, criticName, source, pageT
  * Merge incoming data into an existing review file.
  * @private
  */
+// Body fields a write carries for the url it fetched (BRO-4132 Gap 2).
+// NEW_ERA_FETCH_FIELDS plus the article's own date.
+const URL_BODY_FIELDS = [
+  ...require('./url-change-invariant').NEW_ERA_FETCH_FIELDS,
+  'publishDate',
+];
+
+/**
+ * After the url decision: when the file kept a url canonically different from
+ * the write's url, undo the body fields the field merge filled from the write
+ * (blank before the merge, now equal to the incoming value). Mutates `existing`.
+ * @param {object} before   pre-merge snapshot
+ * @param {object} existing merged record (mutated)
+ * @param {object} input    write input ({url})
+ * @param {object} fields   incoming fields
+ * @returns {string[]} keys reverted
+ */
+function revertBodyFromRefusedUrl(before, existing, input, fields) {
+  if (!input || !input.url || !existing.url || !fields) return [];
+  const { urlCanonicallyChanged } = require('./url-change-invariant');
+  if (!urlCanonicallyChanged(existing.url, input.url)) return [];
+  const reverted = [];
+  for (const key of URL_BODY_FIELDS) {
+    if (fields[key] == null || before[key]) continue;
+    if (JSON.stringify(existing[key]) !== JSON.stringify(fields[key])) continue;
+    if (key in before) existing[key] = before[key]; else delete existing[key];
+    reverted.push(key);
+  }
+  return reverted;
+}
+
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
@@ -1795,6 +1826,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
   }
 
+  // BRO-4132 Gap 2: the field loop above merged this write's body onto
+  // `existing` BEFORE the url decision. When that decision kept the old url,
+  // the body (and its date) describe a page this file does not point at, so
+  // they come back off: a textless stub is recoverable, another article's
+  // text under this url is contamination.
+  for (const key of revertBodyFromRefusedUrl(preMergeSnapshot, existing, input, fields)) {
+    console.warn(`  ⊘ url kept: dropping ${key} merged from refused ${input.url} on ${filepath}`);
+    changed = true;
+  }
+
   // Custom merge callback — scraper can mutate existing, return false to abort
   if (onMerge) {
     const result = onMerge(existing, input);
@@ -1936,4 +1977,4 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'show-dir-outside-sparse-checkout',
 ]);
 
-module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline };
+module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };

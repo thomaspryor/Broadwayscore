@@ -6994,7 +6994,7 @@ async function processReview(review) {
           // values are dropped by JSON serialization = deletion).
           fabricatedEntry: undefined,
           fabricatedReason: undefined,
-        }, { stampOnNoop: true });
+        }, { stampOnNoop: true, oldUrlProvenWrong: true });
       } catch (e) {}
       review._urlCosmeticOnly = review._urlCosmeticOnly !== false && !isDifferentArticleRecovery(review.url, discoveredUrl);
       review.url = discoveredUrl;
@@ -7361,7 +7361,7 @@ async function processReview(review) {
         const updated = updateFileUrlWithInvariant(review.filePath, review.url, {
           urlDiscoveredAt: new Date().toISOString(),
           urlDiscoveryMethod: 'show-not-mentioned-recovery',
-        }, { preserveFields: preserve, stampOnNoop: true });
+        }, { preserveFields: preserve, stampOnNoop: true, oldUrlProvenWrong: true });
         if (updated) console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
       } catch (e) {
         console.log(`    ⚠ Could not persist URL discovery: ${e.message}`);
@@ -7534,21 +7534,6 @@ async function processReview(review) {
             return { success: false, error: 'garbage_content_from_discovered_url' };
           }
 
-          // Content is good — update the review file's URL (atomic write inside
-          // the helper). Disk still holds the OLD article's text/state here (the
-          // fresh retryResult.text is written by updateReviewJson further down),
-          // so the full URL-change invariant applies: old-URL-derived flags,
-          // excerpts, stars, scores and text clear with a durable breadcrumb.
-          try {
-            const updated = updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
-              urlDiscoveredAt: new Date().toISOString(),
-              urlDiscoveryMethod: 'google-serp',
-            }, { stampOnNoop: true });
-            if (updated) console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
-          } catch (writeErr) {
-            console.log(`    ⚠ Could not update URL in file: ${writeErr.message}`);
-          }
-
           const archivePath = retryResult.html ? archiveHtml(retryResult.html, review, retryResult.method) : null;
 
           // Post-fetch URL→content sanity check (Bug #2) — also on retry path
@@ -7576,6 +7561,37 @@ async function processReview(review) {
             });
             stats.totalFailed++;
             return { success: false, error: 'url_content_mismatch_retry', reason: retrySanity.reason };
+          }
+
+          // Content is good and about this show — update the review file's URL
+          // (atomic write inside the helper). Done AFTER the content sanity check
+          // above so a mismatched page never takes the slot (BRO-4131). Disk
+          // still holds the OLD article's text/state here (the fresh
+          // retryResult.text is written by updateReviewJson just below), so the
+          // URL-change invariant applies: old-URL flags and text clear with a
+          // durable breadcrumb. The old url 404'd and the outlet's own page
+          // replaced it, so this is the same review at a new address: its
+          // aggregator excerpts/stars/score describe the review and survive
+          // (same rule as rediscover-review-urls.js).
+          let urlWritten = null;
+          try {
+            const { AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
+            urlWritten = updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
+              urlDiscoveredAt: new Date().toISOString(),
+              urlDiscoveryMethod: 'google-serp',
+            }, { stampOnNoop: true, preserveFields: new Set(AGGREGATOR_FIELDS) });
+            if (urlWritten) console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
+          } catch (writeErr) {
+            console.log(`    ⚠ Could not update URL in file: ${writeErr.message}`);
+          }
+          if (!urlWritten) {
+            // Refused (cross-outlet, aggregator page, another critic's url, or
+            // score loss): writing the new page's text now would attach it to
+            // the OLD url (BRO-4132 Gap 2 shape).
+            console.log(`  ✗ URL write refused — not storing ${discoveredUrl}'s text under ${originalUrl}`);
+            review.url = originalUrl;
+            stats.totalFailed++;
+            return { success: false, error: 'discovered_url_write_refused' };
           }
 
           const validation = validateReviewText(retryResult.text, review);

@@ -22,7 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
-const { getWrongProductionReasonFromUrl } = require('./lib/review-guards');
+const { getWrongProductionReasonForAudit } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
@@ -81,7 +81,7 @@ for (const showId of showDirs) {
 
     if (laneBypasses(d, 'wrongProduction')) continue; // BRO-4807: lane reviews are never flagged
 
-    const reason = getWrongProductionReasonFromUrl(d.url, show);
+    const reason = getWrongProductionReasonForAudit(d, show);
     if (!reason) continue;
 
     flaggedDetails.push({

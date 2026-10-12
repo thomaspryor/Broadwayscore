@@ -84,4 +84,31 @@ function computeCombinedWith(showId, otherShowIds, siblingIndex) {
     .sort();
 }
 
-module.exports = { baseSlug, areSameTitleSiblings, computeCombinedWith };
+const JOINT_REVIEW_MIN_TEXT = 500;
+
+/**
+ * Should flag-combined-reviews.js clear a wrong_show rejection as joint coverage?
+ * URL co-occurrence alone was trusted, so a review of another show filed under
+ * two dirs got its wrongShow flag overridden (BRO-4599: an NYT Monte Cristo
+ * review under Becky Shaw, a Times Christmas Carol Goes Wrong review under The
+ * Play That Goes Wrong). Now refused when a human-approved fix set the flag, or
+ * when a substantive body never names this show. Short bodies keep the old
+ * behaviour: there is too little text to judge.
+ *
+ * @param {object} data review record
+ * @param {string|null} showTitle title of the dir the record is filed under
+ * @returns {boolean}
+ */
+function shouldRecoverJointWrongShow(data, showTitle) {
+  if (!data || data.wrongShow !== true || data.rejectionReason !== 'wrong_show') return false;
+  const { hasApprovedFlag } = require('./review-field-edit');
+  if (hasApprovedFlag(data, 'wrongShow')) return false;
+  const text = typeof data.fullText === 'string' ? data.fullText : '';
+  if (showTitle && text.length >= JOINT_REVIEW_MIN_TEXT) {
+    const { textMentionsTitle } = require('./show-title-variants');
+    if (!textMentionsTitle(text, showTitle)) return false;
+  }
+  return true;
+}
+
+module.exports = { baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };

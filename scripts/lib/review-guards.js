@@ -439,8 +439,10 @@ function isReviewWithinOwnProductionWindow(show, publishDate, opts = {}) {
   if (!show || !publishDate) return false;
   const leadDays = Number.isFinite(opts.leadDays) ? opts.leadDays : 21;
   const lagDays = Number.isFinite(opts.lagDays) ? opts.lagDays : 30;
-  const start = show.previewsStartDate || show.openingDate;
-  const openOrStart = show.openingDate || show.previewsStartDate;
+  // BRO-3513: same anchor as the URL-date guard (earliest of previewDate,
+  // previewsStartDate, openingDate) so the two never disagree.
+  const start = require('./date-guard').earliestShowDate(show);
+  const openOrStart = show.openingDate || show.previewsStartDate || start;
   if (!start || !openOrStart) return false;
   const { toDateMs } = require('./date-utils');
   const startMs = toDateMs(start);
@@ -1005,7 +1007,10 @@ function reasonFromParsedUrlDate(urlDate, urlDateStr, show) {
   // production, not a different one.
   if (isWithinTourLeg(urlDate, show.tourLegs)) return null;
 
-  const earliest = show.previewsStartDate || show.openingDate;
+  // BRO-3513: earliest of previewDate / previewsStartDate / openingDate, the
+  // canonical anchor (date-guard.js). Lazy require like the other date-guard use.
+  const earliest = require('./date-guard').earliestShowDate(show);
+  if (!earliest) return null;
   const earliestDate = new Date(earliest);
   if (isNaN(earliestDate.getTime())) return null;
 
@@ -1042,8 +1047,6 @@ function reasonFromParsedUrlDate(urlDate, urlDateStr, show) {
 function getWrongProductionReasonFromUrl(url, show) {
   if (!url || typeof url !== 'string') return null;
   if (!show) return null;
-  const earliest = show.previewsStartDate || show.openingDate;
-  if (!earliest) return null;
 
   // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
   // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
@@ -1171,11 +1174,22 @@ function getWrongProductionReasonForBww(review, show) {
   const primary = getWrongProductionReasonFromUrl(url, show);
   if (primary) return primary;
   if (!url || !/broadwayworld\.com/i.test(url)) return null;
-  const earliest = show.previewsStartDate || show.openingDate;
-  if (!earliest) return null;
   const urlDate = bwwTrailingDateFromUrl(url);
   if (!urlDate) return null;
   return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
+}
+
+/**
+ * The URL-date decision the post-hoc wrongProduction audits use
+ * (flag-wrong-production-by-url-date.js, flag-wrong-production-pending.js).
+ * BWW-sourced files get the same BWW-aware check ingest gives them
+ * (trailing -YYYYMMDD fallback); everything else gets the raw helper.
+ * One routing so the two audit scripts can't drift (BRO-3509, BRO-3513).
+ * No critic-name gating here: the audits annotate named critics for a human.
+ */
+function getWrongProductionReasonForAudit(review, show) {
+  if (!review || !show) return null;
+  return getWrongProductionReasonForBww(review, show) || getWrongProductionReasonFromUrl(review.url, show);
 }
 
 /**
@@ -5530,6 +5544,7 @@ module.exports = {
   getWrongProductionReasonForUnknownCritic,
   isCriticUnknown,
   getWrongProductionReasonForBww,
+  getWrongProductionReasonForAudit,
   urlYearFromPath,
   urlLooksLikeReview,
   isSluglessReviewUrl,

@@ -180,7 +180,19 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
         return { ok: false, reason: `wrongProduction: record carries a human clear (${guard.WRONG_PRODUCTION_CLEAR_MARKERS.filter((k) => next[k] != null).join(', ')}); a flag plan will not overrule it` };
       }
     }
-    else guard.invalidateWrongShowAutoClear(next);
+    else {
+      guard.invalidateWrongShowAutoClear(next);
+      // BRO-4599: same as BRO-5000 for a script-made wrongShowOverride.
+      const sc = guard.retractScriptWrongShowClear(next);
+      if (sc.blockedByManualClear) {
+        return { ok: false, reason: 'wrongShow: record carries wrongShowManualClear or a non-script wrongShowOverride; a flag plan will not overrule it' };
+      }
+      // The rebuild gate (wrongShowCleared) also honors wrongProduction clears.
+      // Refuse rather than report a flag that changes nothing.
+      if (require('./review-guards').wrongShowCleared(next)) {
+        return { ok: false, reason: 'wrongShow: a wrongProduction clear on this record still masks the flag, so it would change nothing' };
+      }
+    }
     sideEffectKeys = unexpectedChanges(beforeRetract, next, field);
   }
   if (field === 'url' && newValue) {
@@ -209,6 +221,16 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
   const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
   return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
+}
+
+/**
+ * True when an approved fix (a human-approved data plan) set `field` to true on
+ * this record. Heuristic clearers check this so they never undo a human verdict
+ * (BRO-4599: flag-combined-reviews.js re-clearing a human wrongShow flag).
+ */
+function hasApprovedFlag(record, field) {
+  return Array.isArray(record && record.approvedFixes)
+    && record.approvedFixes.some((f) => f && f.field === field && f.newValue === true);
 }
 
 /**
@@ -300,6 +322,10 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
     return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
   }
+  // A flag the rebuild still reads as cleared changes nothing (BRO-4599).
+  if (action.field === 'wrongShow' && action.newValue === true && require('./review-guards').wrongShowCleared(after)) {
+    return { ok: false, reason: `${action.file} wrongShow: written, but a clear on the record still masks it` };
+  }
   // Side effects the edit made itself (BRO-4849: the derived rating fields) must
   // survive the write too, or a half-written rating would report success.
   const lost = (res.sideEffectKeys || []).filter((k) => JSON.stringify(after[k] ?? null) !== JSON.stringify(res.record[k] ?? null));
@@ -313,4 +339,4 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   return { ok: true, msg: `${action.file} ${res.msg}` };
 }
 
-module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn };
+module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag };

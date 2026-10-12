@@ -100,3 +100,20 @@ test('computeCombinedWith is empty when every co-occurrence is a title-sibling',
   assert.deepEqual(computeCombinedWith(regional.id, showList, siblingIndex), []);
   assert.deepEqual(computeCombinedWith(bway.id, showList, siblingIndex), []);
 });
+
+// BRO-4599: URL co-occurrence alone cleared wrong_show rejections for reviews of
+// another show (NYT Monte Cristo under Becky Shaw).
+test('shouldRecoverJointWrongShow: refuses a substantive body that never names the show', () => {
+  const { shouldRecoverJointWrongShow } = require('./combined-review-utils.js');
+  const base = { wrongShow: true, rejectionReason: 'wrong_show' };
+  const other = 'Monte Cristo at the York Theater is a lavish swashbuckler with a fine cast. '.repeat(10);
+  assert.equal(shouldRecoverJointWrongShow({ ...base, fullText: other }, 'Becky Shaw'), false);
+  const joint = `${other} Meanwhile Becky Shaw, playing nearby, is sharper still.`;
+  assert.equal(shouldRecoverJointWrongShow({ ...base, fullText: joint }, 'Becky Shaw'), true);
+  // Too little text to judge: the old URL-only behaviour stands.
+  assert.equal(shouldRecoverJointWrongShow({ ...base, fullText: 'Short excerpt.' }, 'Becky Shaw'), true);
+  // A human-approved flag is never cleared, whatever the text says.
+  assert.equal(shouldRecoverJointWrongShow({ ...base, fullText: joint, approvedFixes: [{ field: 'wrongShow', newValue: true }] }, 'Becky Shaw'), false);
+  // Not a wrong_show rejection: nothing to recover.
+  assert.equal(shouldRecoverJointWrongShow({ wrongShow: true, rejectionReason: null, fullText: joint }, 'Becky Shaw'), false);
+});

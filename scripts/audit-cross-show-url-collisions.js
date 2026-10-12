@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: venue is read into an in-memory lookup for the skip decision; nothing here writes shows.json
 /**
  * audit-cross-show-url-collisions.js — Find URLs that appear in multiple shows' review-texts.
  *
@@ -28,10 +29,10 @@ const REPORT_PATH = process.env.REPORT_PATH
 
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+const { wrongShowSkipDecision } = require('./lib/cross-show-collision-skip');
 const { WRONG_SHOW_ORPHAN_DIR_PREFIX } = require('./lib/wrong-production-autoclear');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, wrongShowCleared } = require('./lib/review-guards');
 const { shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
-const { validateShowMentioned } = require('./lib/content-quality');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -122,7 +123,18 @@ for (const s of showsData.shows) {
     previewsStartDate: s.previewsStartDate ? new Date(s.previewsStartDate) : null,
     title: s.title,
     category: s.category,
+    // BRO-2261: the London + UK-outlet skip compares dates and venues.
+    id: s.id,
+    venue: s.venue || null,
+    previewDate: s.previewDate || null,
+    previewsStartDateRaw: s.previewsStartDate || null,
+    openingDateRaw: s.openingDate || null,
   };
+}
+const showsByTitle = {};
+for (const s of showsData.shows) {
+  const key = String(s.title || '').toLowerCase().trim();
+  (showsByTitle[key] = showsByTitle[key] || []).push({ id: s.id, venue: s.venue || null });
 }
 
 const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
@@ -423,32 +435,29 @@ if (APPLY) {
   // Guard: skip wrongShow for manually-cleared files, London-market shows reviewed by UK outlets,
   // URL market signal match, null publish date, or when fullText confirms the filed show.
   function shouldSkipWrongShow(showId, data) {
-    if (wrongShowCleared(data)) return true;
-    // Guard A: null publishDate means no date signal — date-proximity logic is unreliable
-    if (!data.publishDate) {
-      log(`  SKIPPED (null publishDate — no date signal): ${showId}/${data.outletId || 'unknown'}`);
-      return true;
+    const info = showDateMap[showId];
+    const show = info ? {
+      id: showId, title: info.title, venue: info.venue,
+      previewDate: info.previewDate, previewsStartDate: info.previewsStartDateRaw, openingDate: info.openingDateRaw,
+    } : null;
+    const londonUk = !!(info && isLondonMarket(info.category) && isUkOutletUrl(data.url));
+    const d = wrongShowSkipDecision({
+      data,
+      show,
+      sameTitleShows: info ? (showsByTitle[String(info.title || '').toLowerCase().trim()] || []) : [],
+      cleared: wrongShowCleared(data),
+      londonUk,
+      urlMarketMatch: !londonUk && urlMatchesShowMarket(showId, data),
+    });
+    const tag = `${showId}/${data.outletId || 'unknown'}`;
+    if (d.skip) {
+      if (d.reason === 'London market + UK outlet') londonMarketSkipped++;
+      if (d.reason === 'URL market signal matches show') urlMarketMatchSkipped++;
+      if (d.reason !== 'manually cleared') log(`  SKIPPED (${d.reason}): ${tag}`);
+    } else if (d.reason) {
+      log(`  NOT SKIPPED (${d.reason}): ${tag}`);
     }
-    const showInfo = showDateMap[showId];
-    if (showInfo && isLondonMarket(showInfo.category) && isUkOutletUrl(data.url)) {
-      londonMarketSkipped++;
-      log(`  SKIPPED (London market + UK outlet): ${showId}/${data.outletId || 'unknown'}`);
-      return true;
-    }
-    if (urlMatchesShowMarket(showId, data)) {
-      urlMarketMatchSkipped++;
-      log(`  SKIPPED (URL market signal matches show): ${showId}/${data.outletId || 'unknown'} — ${data.url}`);
-      return true;
-    }
-    // Guard B: fullText confirms the filed show — text evidence overrides date heuristic
-    if (showInfo && data.fullText && data.fullText.length >= 200) {
-      const textCheck = validateShowMentioned(data.fullText, showInfo.title, showId);
-      if (textCheck.valid) {
-        log(`  SKIPPED (fullText confirms filed show): ${showId}/${data.outletId || 'unknown'}`);
-        return true;
-      }
-    }
-    return false;
+    return d.skip;
   }
 
   // --- Tier 0: Generic/homepage URLs (5+ shows sharing same URL → null URL on all) ---

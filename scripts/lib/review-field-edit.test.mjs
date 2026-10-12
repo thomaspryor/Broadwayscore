@@ -227,6 +227,70 @@ test('FT pair: the plan actions succeed through the real write guard and leave H
   assert.equal(bano.duplicateOf, H, 'the Bano copy is the duplicate');
 });
 
+// BRO-4599: a human wrongShow flag over a SCRIPT-made wrongShowOverride was a
+// silent no-op (wrongShowCleared reads the override first). Driven through the
+// real write guard: without CLEAR_BREADCRUMBS entries the guard restored the override.
+test('wrongShow flag retracts a script wrongShowOverride and survives the write guard', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const { wrongShowCleared } = require('./review-guards.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-ws-')), 'magic-mike-live-west-end-2021');
+  fs.mkdirSync(dir, { recursive: true });
+  const p = path.join(dir, 'timeout-london--andrzej-lukowski.json');
+  const rec = {
+    showId: 'magic-mike-live-west-end-2021', outletId: 'timeout-london', criticName: 'Andrzej Lukowski',
+    url: 'https://www.timeout.com/london/theatre/example-review', fullText: 'Placeholder body. '.repeat(80),
+    isCombinedReview: true, rejectionReason: null,
+    wrongShowOverride: true,
+    wrongShowOverrideReason: 'flag-combined-reviews.js: URL co-occurs across 2 show dirs — joint review',
+    wrongShowOverrideAt: '2026-06-01T00:00:00.000Z',
+  };
+  fs.writeFileSync(p, JSON.stringify(rec, null, 2));
+  const action = { field: 'wrongShow', oldValue: null, newValue: true };
+  const res = applyReviewFieldEdit(rec, action, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.deepEqual([...res.sideEffectKeys].sort().filter((k) => k.startsWith('wrongShowOverride')),
+    ['wrongShowOverride', 'wrongShowOverrideAt', 'wrongShowOverrideReason']);
+  safeWriteReview(p, res.record, {});
+  const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(after.wrongShow, true);
+  assert.equal(after.wrongShowOverride, undefined, 'override not restored by the guard');
+  assert.equal(wrongShowCleared(after), false, 'flag is effective at rebuild');
+  assert.match(after._previousWrongShowClear.reason, /^flag-combined-reviews\.js/);
+  assert.deepEqual(unexpectedChanges(rec, after, 'wrongShow', res.sideEffectKeys), []);
+});
+
+test('wrongShow flag refuses over wrongShowManualClear or a non-script override', () => {
+  const manual = applyReviewFieldEdit({ wrongShowManualClear: true }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(manual.ok, false);
+  const human = applyReviewFieldEdit({ wrongShowOverride: true, wrongShowOverrideReason: 'checked by hand: joint review of both shows' },
+    { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(human.ok, false);
+});
+
+test('wrongShow flag refuses when a wrongProduction clear still masks it', () => {
+  const res = applyReviewFieldEdit({ wrongProductionManualClear: true }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /still masks/);
+});
+
+test('wrongShow flag with no clear markers has no side effects', () => {
+  const res = applyReviewFieldEdit({ outletId: 'x' }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(res.ok, true);
+  assert.deepEqual(res.sideEffectKeys, []);
+});
+
+test('hasApprovedFlag: only an approved true for that field counts', () => {
+  const { hasApprovedFlag } = require('./review-field-edit.js');
+  assert.equal(hasApprovedFlag({ approvedFixes: [{ field: 'wrongShow', newValue: true }] }, 'wrongShow'), true);
+  assert.equal(hasApprovedFlag({ approvedFixes: [{ field: 'wrongShow', newValue: false }] }, 'wrongShow'), false);
+  assert.equal(hasApprovedFlag({ approvedFixes: [{ field: 'wrongProduction', newValue: true }] }, 'wrongShow'), false);
+  assert.equal(hasApprovedFlag({}, 'wrongShow'), false);
+});
+
 test('a url fix undoes an outlet-split relabel that was made from the wrong url (BRO-4190 Hercules)', () => {
   const { unexpectedChanges } = require('./review-field-edit.js');
   const bad = 'https://www.britishtheatre.com/shows/disneys-hercules/cast';

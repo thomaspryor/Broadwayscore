@@ -45,6 +45,7 @@ const { isLikelyStaleWrongShow } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { shouldRefuseSurge } = require('./lib/wrong-show-blocker-cleanup');
+const { hasApprovedFlag } = require('./lib/review-field-edit');
 
 const FIX_SURGE_THRESHOLD = 25;
 
@@ -94,6 +95,8 @@ for (const showId of showDirs) {
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
     if (data.wrongShow !== true) continue;
     flagged++;
+    // A human-approved wrongShow flag is a verdict, not a stale heuristic (BRO-4599).
+    if (hasApprovedFlag(data, 'wrongShow')) continue;
     if (!isLikelyStaleWrongShow(data, show)) continue;
     predicateMatches++;
     candidates.push({ showId, file: f, filePath, data, show });

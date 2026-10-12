@@ -81,3 +81,42 @@ test('BRO-4977: a "Broadway"-titled show is still guarded, and its title cannot 
   // Other excluded titles keep the old behaviour (no new flags on The Visit).
   assert.equal(detectCrossShowUrlMismatch('the-visit-2015', 'https://variety.com/2015/legit/reviews/visit-review-broadway-chita-rivera-1201478/', { showsPath }), null);
 });
+
+// BRO-4986: outlets drop a leading "The" from the other show's slug.
+test('bare "the-" slug: flags heart-of-rock-and-roll URL filed under another show', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'the-heart-of-rock-and-roll-2024', title: 'The Heart of Rock and Roll' },
+    { id: 'hells-kitchen-2024', title: "Hell's Kitchen" },
+  ]);
+  const r = detectCrossShowUrlMismatch('hells-kitchen-2024',
+    'https://www.vulture.com/article/review-heart-of-rock-and-roll-broadway-huey-lewis.html', { index: idx });
+  assert.ok(r, 'expected a mismatch');
+  assert.equal(r.matchedShowId, 'the-heart-of-rock-and-roll-2024');
+});
+
+test('bare "the-" slug: one-word remainder ("performers") is ordinary prose, no flag', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'the-performers-2012', title: 'The Performers' },
+    { id: 'hells-kitchen-2024', title: "Hell's Kitchen" },
+  ]);
+  assert.equal(detectCrossShowUrlMismatch('hells-kitchen-2024',
+    'https://example.com/theater/hells-kitchen-review-performers-shine', { index: idx }), null);
+});
+
+test('bare "the-" slug: remainder made of this show\'s own words is the same play, no flag', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'the-pirates-of-penzance-1981', title: 'The Pirates of Penzance' },
+    { id: 'pirates-the-penzance-musical-2026', title: 'Pirates! The Penzance Musical' },
+  ]);
+  assert.equal(detectCrossShowUrlMismatch('pirates-the-penzance-musical-2026',
+    'https://example.com/theater/review-pirates-of-penzance-broadway', { index: idx }), null);
+});
+
+test('bare "the-" slug: "the-supporting-cast" is excluded as review prose', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'the-supporting-cast-1981', title: 'The Supporting Cast' },
+    { id: 'hells-kitchen-2024', title: "Hell's Kitchen" },
+  ]);
+  assert.equal(detectCrossShowUrlMismatch('hells-kitchen-2024',
+    'https://example.com/hells-kitchen-review-supporting-cast-steals-show', { index: idx }), null);
+});

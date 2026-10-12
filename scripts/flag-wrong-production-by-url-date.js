@@ -35,7 +35,7 @@
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
-const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl, isCriticUnknown } = require('./lib/review-guards');
+const { shouldSkipWrongProductionAudit, getWrongProductionReasonForAudit, isCriticUnknown } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
@@ -69,7 +69,7 @@ for (const showId of dirs) {
     if (shouldSkipWrongProductionAudit(d)) continue;
     if (!d.assignedScore && !d.llmScore?.score) continue;
 
-    const reason = getWrongProductionReasonFromUrl(d.url, show);
+    const reason = getWrongProductionReasonForAudit(d, show);
     if (!reason) continue;
 
     const urlDateMatch = reason.match(/\b(\d{4}-\d{2}-\d{2})\b/);

@@ -2593,9 +2593,14 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // Only upgrade if current content is bad
   // A url contradicted by an independent aggregator record counts as bad
   // content: the stored text may have come from the other url before a flip.
-  const badContent = !existingData.fullText
-    || (existingData.contentTier && existingData.contentTier !== 'complete')
-    || existingData.needsRefetch
+  // BRO-4132 Gap 2: judged on the pre-merge record when the caller has one.
+  // The write path's field merge runs first, so this write's own fullText/
+  // contentTier could otherwise make a textless file look "good" and keep the
+  // old url, leaving the new page's text under it.
+  const contentState = opts.preMergeSnapshot || existingData;
+  const badContent = !contentState.fullText
+    || (contentState.contentTier && contentState.contentTier !== 'complete')
+    || contentState.needsRefetch
     || corroboratedOverAutoPin;
   if (!badContent) return false;
 

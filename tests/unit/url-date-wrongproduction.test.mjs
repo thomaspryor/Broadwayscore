@@ -344,3 +344,37 @@ describe('getWrongProductionReasonForUnknownCritic — criticName gate', () => {
     );
   });
 });
+
+// BRO-3513: the anchor is the earliest of previewDate / previewsStartDate /
+// openingDate (date-guard.js earliestShowDate), shared by the URL guard and
+// isReviewWithinOwnProductionWindow; BWW files route through the BWW-aware
+// check in both post-hoc audits.
+describe('BRO-3513 URL-date anchor + audit routing', () => {
+  const g = require('../../scripts/lib/review-guards.js');
+  const OB = { id: 'fixture-ob-2026', category: 'off-broadway', previewDate: '2026-02-21', previewsStartDate: '2026-03-02', openingDate: '2026-03-02' };
+  const BWAY = { id: 'fixture-bway-2026', category: 'broadway', previewDate: '2026-02-01', previewsStartDate: '2026-03-02', openingDate: '2026-03-20' };
+
+  it('lead window counts from previewDate when it is earliest', () => {
+    // 2026-01-05 is 26d before previewDate (inside 30d) but 56d before previewsStartDate.
+    assert.equal(g.getWrongProductionReasonFromUrl('https://ex.com/2026/01/05/review/', BWAY), null);
+    const r = g.getWrongProductionReasonFromUrl('https://ex.com/2025/12/01/review/', BWAY);
+    assert.match(r, /before show earliest date 2026-02-01/);
+  });
+
+  it('a show with only previewDate is now guarded (intentional)', () => {
+    const r = g.getWrongProductionReasonFromUrl('https://ex.com/2024/01/10/review/', { category: 'broadway', previewDate: '2026-02-01' });
+    assert.match(r, /^Auto-flagged: URL date 2024-01-10/);
+  });
+
+  it('isReviewWithinOwnProductionWindow uses the same earliest anchor', () => {
+    // 2026-02-03 is 18d before previewDate (inside) but 27d before previewsStartDate (outside before the fix).
+    assert.equal(g.isReviewWithinOwnProductionWindow(OB, '2026-02-03'), true);
+  });
+
+  it('audit routing: BWW trailing-date fallback applies to BWW sources only', () => {
+    const url = 'https://www.broadwayworld.com/article/BWW-Review-Fixture-20190915';
+    assert.match(g.getWrongProductionReasonForAudit({ url, source: 'bww-roundup' }, BWAY), /URL date 2019-09-15/);
+    assert.equal(g.getWrongProductionReasonForAudit({ url, source: 'web-search' }, BWAY), null);
+    assert.match(g.getWrongProductionReasonForAudit({ url: 'https://ex.com/2019/09/15/r/', source: 'web-search' }, BWAY), /URL date 2019-09-15/);
+  });
+});

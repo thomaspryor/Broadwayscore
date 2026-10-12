@@ -621,6 +621,46 @@ function retractScriptWrongProductionClear(d) {
   return { retracted: present, blockedByHumanClear: false };
 }
 
+// Same class for wrongShow (BRO-4599): flag-combined-reviews.js clears a wrong_show rejection
+// through clearWrongProductionFlags({ wrongShowOnly }), which stamps wrongShowOverride with a
+// "<script>.js: ..." reason. wrongShowCleared reads the override first, so a later human
+// wrongShow flag was a silent no-op (Magic Mike Live, Time Out).
+const WRONG_SHOW_CLEAR_MARKERS = ['wrongShowOverride', 'wrongShowOverrideReason', 'wrongShowOverrideAt'];
+
+/**
+ * True when the wrongShowOverride was stamped by a script: its reason starts with the script
+ * file (`flag-combined-reviews.js: ...`), or it has no reason at all (legacy machine stamp).
+ * wrongShowManualClear is a verdict (human, or a script that meant it as one) and never yields.
+ */
+function isScriptWrongShowClear(d) {
+  if (!d || d.wrongShowManualClear === true) return false;
+  const reason = typeof d.wrongShowOverrideReason === 'string' ? d.wrongShowOverrideReason.trim() : '';
+  return !reason || /^[\w.-]+\.js\b/.test(reason);
+}
+
+/**
+ * Retract a SCRIPT-made wrongShow clear so a human flag takes effect. Mirrors
+ * retractScriptWrongProductionClear: the old reason moves to `_previousWrongShowClear` and
+ * the field-scoped breadcrumb lets safeWriteReview read the deletes as intent.
+ *
+ * @param {object} d review record (mutated in place)
+ * @returns {{retracted: string[], blockedByManualClear: boolean}}
+ */
+function retractScriptWrongShowClear(d) {
+  if (d && d.wrongShowManualClear === true) return { retracted: [], blockedByManualClear: true };
+  const present = WRONG_SHOW_CLEAR_MARKERS.filter((k) => !_isEmptyValue(d && d[k]));
+  if (present.length === 0) return { retracted: [], blockedByManualClear: false };
+  if (!isScriptWrongShowClear(d)) return { retracted: [], blockedByManualClear: true };
+  d._previousWrongShowClear = {
+    at: d.wrongShowOverrideAt || null,
+    reason: d.wrongShowOverrideReason || null,
+    retractedAt: new Date().toISOString().split('T')[0],
+  };
+  for (const k of present) delete d[k];
+  _recordClearBreadcrumbRetraction(d, present, 'retracted script wrongShow clear: later human flag (BRO-4599)');
+  return { retracted: present, blockedByManualClear: false };
+}
+
 /**
  * Stamp (or extend) the field-scoped retraction breadcrumb that makes deleting a PROTECTED
  * clear-breadcrumb field legible to safeWriteReview as intent rather than data loss.
@@ -1019,6 +1059,10 @@ const CLEAR_BREADCRUMBS = {
   wrongProductionOverrideReason: _clearBreadcrumbRetracted('wrongProductionOverrideReason'),
   wrongProductionOverrideSetAt: _clearBreadcrumbRetracted('wrongProductionOverrideSetAt'),
   wrongProductionOverrideSetBy: _clearBreadcrumbRetracted('wrongProductionOverrideSetBy'),
+  // BRO-4599: retractScriptWrongShowClear deletes these; without entries the guard restores them.
+  wrongShowOverride: _clearBreadcrumbRetracted('wrongShowOverride'),
+  wrongShowOverrideReason: _clearBreadcrumbRetracted('wrongShowOverrideReason'),
+  wrongShowOverrideAt: _clearBreadcrumbRetracted('wrongShowOverrideAt'),
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,
@@ -3518,4 +3562,4 @@ function _urlCorroboration(url, record) {
   return n;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };

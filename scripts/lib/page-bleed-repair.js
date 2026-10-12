@@ -15,18 +15,28 @@
  *     name), one opens the removed part: the author box that starts it.
  * Anything else (a rewritten article, a paywall stub, a different page) is
  * refused and the stored text stays. Pure, no I/O.
+ *
+ * minExtraRatio / minTailRatio (defaults 15% / 10%) size the "there is a tail"
+ * checks. A host whose glued part is short but always opens with a fixed
+ * site marker (out.com: page chrome before the body, a "FROM OUR SPONSORS"
+ * block after it, BRO-4986) may lower them, because the required marker then
+ * proves what follows is chrome rather than the review's own last lines.
  */
 
 'use strict';
 
 const { foldDiacritics } = require('./title-match');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 const RESCORE_REASON = 'page-bleed-trim (BRO-4977)';
 
 // Fold before stripping: "Bernábe" must compare equal across extractors, not
-// lose its letter (sibling-matchers-diacritics guard).
+// lose its letter (sibling-matchers-diacritics guard). Decode entities first:
+// older stored texts kept "season&#39;s" while the new body is cleaned to
+// "season's", and "&#39;" would otherwise normalise to a stray "39" (out.com,
+// BRO-4986).
 function norm(s) {
-  return foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, '');
+  return foldDiacritics(decodeHtmlEntities(String(s || ''))).toLowerCase().replace(/[^a-z0-9]+/g, '');
 }
 
 /**
@@ -34,10 +44,10 @@ function norm(s) {
  * @param {string} newText  body from the current extractor
  * @returns {{ok: true, previousLength: number} | {ok: false, reason: string}}
  */
-function checkBleedTrim(record, newText, { tailMarkers = [] } = {}) {
+function checkBleedTrim(record, newText, { tailMarkers = [], minExtraRatio = 0.15, minTailRatio = 0.1 } = {}) {
   const oldText = (record && record.fullText) || '';
   if (!newText || newText.length < 500) return { ok: false, reason: 'new text under 500 chars' };
-  if (oldText.length < newText.length * 1.15) return { ok: false, reason: 'stored text has no tail to trim' };
+  if (oldText.length < newText.length * (1 + minExtraRatio)) return { ok: false, reason: 'stored text has no tail to trim' };
   const o = norm(oldText);
   const n = norm(newText);
   if (n.length < 300) return { ok: false, reason: 'new text too short once normalised' };
@@ -59,7 +69,7 @@ function checkBleedTrim(record, newText, { tailMarkers = [] } = {}) {
     if (at >= 0) { tailEnd = at + win.length + (n.length - end); break; }
   }
   if (tailEnd < 0) return { ok: false, reason: 'closing passage not in the stored text' };
-  if (o.length - tailEnd < o.length * 0.1) return { ok: false, reason: 'stored text does not continue past the body' };
+  if (o.length - tailEnd < o.length * minTailRatio) return { ok: false, reason: 'stored text does not continue past the body' };
   // What follows the body must look like page chrome, not more of the same
   // review: the site's author box (critic name, outlet name) opens the glued
   // part on every Zox page. Text alone cannot tell a body cut off early from

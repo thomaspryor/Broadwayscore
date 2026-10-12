@@ -175,3 +175,28 @@ test('--apply flags the showId mismatch and the losing collision candidate, and 
     fs.rmSync(fixture.tmp, { recursive: true, force: true });
   }
 });
+
+test('BRO-2261: --apply flags an earlier same-title London run filed on the West End transfer despite the UK URL', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'audit-cross-show-url-collisions-2261-'));
+  const reviewTextsDir = path.join(tmp, 'review-texts');
+  const showsPath = path.join(tmp, 'fixture-shows.json');
+  const reportPath = path.join(tmp, 'url-collision-report.json');
+  try {
+    fs.writeFileSync(showsPath, JSON.stringify({ shows: [
+      { id: 'fixture-play-off-west-end-2019', title: 'Fixture Play', category: 'off-west-end', venue: 'Old Vic Theatre', openingDate: '2019-06-01' },
+      { id: 'fixture-play-west-end-2025', title: 'Fixture Play', category: 'west-end', venue: 'Harold Pinter Theatre', openingDate: '2025-03-10' },
+    ] }));
+    const url = 'https://www.theguardian.com/stage/2019/jun/02/fixture-play-review';
+    const text = 'Fixture Play at the Old Vic is a triumph. ' + 'The cast is strong and the staging is sharp. '.repeat(8);
+    for (const showId of ['fixture-play-off-west-end-2019', 'fixture-play-west-end-2025']) {
+      writeReview(reviewTextsDir, showId, 'guardian--critic.json', {
+        showId, outletId: 'guardian', criticName: 'Critic', url, publishDate: '2019-06-02', fullText: text,
+      });
+    }
+    runAudit({ reviewTextsDir, showsPath, reportPath }, ['--apply']);
+    assert.equal(readReview(reviewTextsDir, 'fixture-play-off-west-end-2019', 'guardian--critic.json').wrongShow, undefined);
+    assert.equal(readReview(reviewTextsDir, 'fixture-play-west-end-2025', 'guardian--critic.json').wrongShow, true);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

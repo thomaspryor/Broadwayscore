@@ -51,6 +51,14 @@ const CONCURRENCY = 4;
 const BUDGET_MS = Number(arg('budget-sec') || 210) * 1000;
 const DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
+// Per-host trim settings. Default (Zox / T2C): the author box opens the glued
+// part. out.com (RebelMouse, BRO-4986): ~1.8k of page chrome before the body
+// and a short "FROM OUR SPONSORS" block after it, so the block itself is the
+// required marker and the tail-size checks are lowered (checkBleedTrim).
+const HOST_TRIM = {
+  'out.com': { tailMarkers: ['FROM OUR SPONSORS'], minExtraRatio: 0.08, minTailRatio: 0.02 },
+};
+
 function hostOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return ''; }
 }
@@ -115,7 +123,7 @@ async function repairOne({ file, showId, d }, tally) {
     // The author box opens the glued part: critic name or outlet name.
     const critic = /^unknown$/i.test(d.criticName || '') ? '' : (d.criticName || '');
     const tailMarkers = [...critic.split(/\s+/), d.outlet || '', 'T2C'].filter(m => m.length >= 3);
-    const verdict = checkBleedTrim(d, newText, { tailMarkers });
+    const verdict = checkBleedTrim(d, newText, HOST_TRIM[HOST] || { tailMarkers });
     if (!verdict.ok) {
       if (verdict.reason === 'stored text has no tail to trim') tally.unchanged++;
       else tally.refused++;

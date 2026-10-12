@@ -17,6 +17,7 @@ const fs = require("fs");
 const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
 const { isLondonMarket } = require("./lib/venue-classification");
+const { hasApprovedFlag } = require("./lib/review-field-edit");
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
@@ -46,7 +47,8 @@ async function main() {
       const filePath = path.join(showPath, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-        if (data.wrongShow === true &&
+        // Skip human-approved wrongShow flags (BRO-4599).
+        if (data.wrongShow === true && !hasApprovedFlag(data, "wrongShow") &&
             data.contentVerificationPromoted &&
             data.fullText && data.fullText.length > 500 &&
             (!data.contentVerification || !data.contentVerification.contentHash)) {

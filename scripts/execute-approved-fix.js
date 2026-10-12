@@ -105,6 +105,10 @@ const ALLOWED_SCRIPTS = [
   // recomputes from live data and is idempotent; rules in
   // scripts/lib/we-historical-dates.js.
   'plan-we-historical-opening-repair.js',
+  // BRO-3564: strip westendtheatre excerpts/stars an archived round-up about
+  // another show planted (page judged by scripts/lib/aggregator-page-show-guard.js),
+  // then delete that archive page. Idempotent.
+  'clear-wrong-show-roundup-excerpts.js',
 ];
 
 // --- Helpers ---

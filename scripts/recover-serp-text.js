@@ -38,6 +38,7 @@
 
 const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const fs = require('fs');
+const { AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 const path = require('path');
 const { execSync } = require('child_process');
 
@@ -329,9 +330,12 @@ async function processRecovered(candidate, text, html, newUrl, method) {
       ...metadata,
       urlDiscoveredAt: metadata.textFetchedAt,
       urlDiscoveryMethod: 'google-serp',
-    }, { stampOnNoop: true });
+      // Same review at its current address: aggregator excerpts/stars/score
+      // describe the review and survive the move (rediscover-review-urls.js rule;
+      // without this the BRO-4131 score-loss guard refuses the move).
+    }, { stampOnNoop: true, preserveFields: new Set(AGGREGATOR_FIELDS) });
     if (!updated) {
-      console.log(`    URL-invariant write refused (cross-outlet or unreadable)`);
+      console.log(`    URL-invariant write refused (cross-outlet, aggregator page, other critic's url, or unreadable)`);
       return { ok: false, reason: 'invariant_refused' };
     }
     data = updated;

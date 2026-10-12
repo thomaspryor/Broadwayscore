@@ -242,7 +242,7 @@ async function main() {
               updated++;
             } else {
               // null = cross-outlet refusal or unreadable file — not a success
-              console.log(`      Refused (cross-outlet or unreadable): ${review.filePath}`);
+              console.log(`      Refused (cross-outlet, unreadable, or would discard a stored score): ${review.filePath}`);
               failed++;
             }
           }

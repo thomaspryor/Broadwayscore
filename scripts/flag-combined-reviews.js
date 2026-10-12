@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { baseSlug, computeCombinedWith } = require('./lib/combined-review-utils');
+const { baseSlug, computeCombinedWith, shouldRecoverJointWrongShow } = require('./lib/combined-review-utils');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
 
@@ -73,7 +73,9 @@ function main() {
   // 2+ DIFFERENT base shows (e.g. lost-boys + schmigadoon, NOT
   // the-lost-boys + the-lost-boys-2026).
 
-  const siblingIndex = buildSiblingIndex(loadShows());
+  const allShows = loadShows();
+  const siblingIndex = buildSiblingIndex(allShows);
+  const titleById = new Map(allShows.map((s) => [s.id, s.title]));
 
   let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0, staleFlagsCleared = 0;
   for (const [url, entries] of urlMap) {
@@ -156,7 +158,8 @@ function main() {
         // show dirs (excluding this entry's own title-siblings) is intentional
         // joint coverage, not a wrong-show false positive. Clear the flag so
         // this file lands in reviews.json.
-        if (data.wrongShow === true && data.rejectionReason === 'wrong_show') {
+        // Refused for a human-approved flag or a body that never names this show (BRO-4599).
+        if (shouldRecoverJointWrongShow(data, titleById.get(entry.showId) || null)) {
           clearWrongProductionFlags(data, {
             source: 'flag-combined-reviews.js',
             reason: 'URL co-occurs across ' + (newCombinedWith.length + 1) + ' show dirs — joint review',

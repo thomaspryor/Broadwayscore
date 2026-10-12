@@ -32,6 +32,8 @@ const CROSS_SHOW_SLUG_EXCLUDE = new Set([
   'broadway', 'west-end', 'the-story', 'romantic-comedy', 'the-red-shoes',
   'les-miserables', 'once-in-a-lifetime', 'body-count', 'the-car-man',
   'good-night-oscar', 'the-visit', 'the-outsiders', 'the-notebook',
+  // BRO-4986: "fine supporting cast" is review prose, not The Supporting Cast (1981).
+  'the-supporting-cast',
 ]);
 
 const _indexCache = new Map();
@@ -185,6 +187,23 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
         }
       }
       if (urlPath.includes(other.slug)) {
+        return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
+      }
+      // BRO-4986: outlets often drop a leading "The" ("heart-of-rock-and-roll-
+      // broadway-theater-review" for The Heart of Rock and Roll), so try the
+      // other show's slug without it, as a whole hyphen-delimited run, under
+      // the same exclusions and containment skips as the full slug.
+      // A one-word remainder ("performers", "audience", "children") is an
+      // ordinary word in review slugs, and a remainder made only of this
+      // show's own words is the same play ("pirates-of-penzance" on Pirates!
+      // The Penzance Musical), so neither counts.
+      const bare = other.slug.startsWith('the-') ? other.slug.slice(4) : null;
+      const bareWords = bare ? bare.split('-').filter(t => t.length >= 4 && !GENERIC_TOKENS.has(t)) : [];
+      if (bare && bare.length >= 8 && bare.includes('-') && !CROSS_SHOW_SLUG_EXCLUDE.has(bare)
+          && !bareWords.every(t => thisTokens.has(t))
+          && !URL_PATH_STOPWORDS.has(bare)
+          && !thisShow.slug.includes(bare) && !idSlug.includes(bare) && !bare.includes(idSlug)
+          && new RegExp(`(^|[^a-z0-9])${bare}([^a-z0-9]|$)`).test(urlPath)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
       // Also check a base-title slug (first significant words of the title, without

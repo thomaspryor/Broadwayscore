@@ -74,3 +74,27 @@ describe('applyBleedTrim', () => {
     assert.strictEqual(applyBleedTrim(rec, BODY).llmPullQuote, rec.llmPullQuote);
   });
 });
+
+// BRO-4986: out.com (RebelMouse) stored texts carry page chrome before the
+// body, a short "FROM OUR SPONSORS" block after it, and raw HTML entities.
+const OUT_BODY = Array.from({ length: 40 }, (_, i) => `Paragraph ${i} of the column says the revival&#39;s leads are wonderful and the staging is sharp.`).join(' ');
+const OUT_CLEAN = OUT_BODY.replace(/&#39;/g, "'");
+const OUT_HEAD = "Raven.config('x').install(); Home > Michael Musto > Some Column Michael Musto See Full Bio ".repeat(8);
+const OUT_TAIL = " FROM OUR SPONSORS The Latest Television A trailer goes viral, and other unrelated stories. Sign me up!";
+
+test('out.com: decoded entities still match, sponsor block accepted with host settings', () => {
+  const record = { fullText: OUT_HEAD + OUT_BODY + OUT_TAIL };
+  const v = checkBleedTrim(record, OUT_CLEAN, { tailMarkers: ['FROM OUR SPONSORS'], minExtraRatio: 0.08, minTailRatio: 0.02 });
+  assert.equal(v.ok, true, v.reason);
+});
+
+test('out.com shape is refused under the default (Zox) thresholds', () => {
+  const record = { fullText: OUT_HEAD + OUT_BODY + OUT_TAIL };
+  assert.equal(checkBleedTrim(record, OUT_CLEAN, { tailMarkers: ['Michael', 'Musto'] }).ok, false);
+});
+
+test('out.com host settings still refuse a tail that is not the sponsor block', () => {
+  const record = { fullText: OUT_HEAD + OUT_BODY + ' And the closing paragraph of the review continues here at some length.' };
+  const v = checkBleedTrim(record, OUT_CLEAN, { tailMarkers: ['FROM OUR SPONSORS'], minExtraRatio: 0.08, minTailRatio: 0.02 });
+  assert.equal(v.ok, false);
+});

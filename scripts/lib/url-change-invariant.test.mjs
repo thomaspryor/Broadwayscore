@@ -899,3 +899,115 @@ test('BRO-3122: fetch-first path (NEW_ERA_FETCH_FIELDS preserved) does not stran
   assert.equal(merged.contentTier, undefined);
   assert.equal(merged.tierReason, undefined);
 });
+
+// BRO-4132 Gap 1: a score already on disk (not supplied by this write) must
+// not be lost when a write offers a new url for a textless stub. The
+// BRO-4128 score-loss guard refuses the swap, so url and score both stay.
+test('BRO-4132 Gap 1: a pre-existing originalScore survives a write offering a new url', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-gap1-'));
+  const showId = 'hamilton-test-fixture';
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-a',
+    source: 'gather-reviews', sources: ['gather-reviews'],
+    fullText: null, originalScore: '3',
+  });
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage', criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-b',
+    source: 'serp-discovery',
+    fields: { originalScore: '4' },
+  }, { reviewTextsDir }));
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  assert.equal(after.url, 'https://www.thestage.co.uk/reviews/hamilton-a');
+  assert.equal(after.originalScore, '3', 'the on-disk score must not be wiped');
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+// BRO-4132 Gap 2: a textless file (no contentTier/needsRefetch) gets a write
+// with a new url and that url's full text. Before the fix the merged text made
+// the file look complete, the url swap was skipped, and B's text sat under A.
+test('BRO-4132 Gap 2: new url text and new url move together (no text under the old url)', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-gap2-'));
+  const showId = 'hamilton-test-fixture';
+  makeFixture(reviewTextsDir, showId, 'vulture--jesse-green.json', {
+    showId, outletId: 'vulture', outlet: 'Vulture', criticName: 'Jesse Green',
+    url: 'https://www.vulture.com/article/hamilton-review-a.html',
+    source: 'gather-reviews', sources: ['gather-reviews'], fullText: null,
+  });
+  const text = 'Hamilton is back on Broadway and the review goes on at length about it. '.repeat(30);
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'Vulture', criticName: 'Jesse Green',
+    url: 'https://www.vulture.com/article/hamilton-review-b.html',
+    source: 'serp-discovery',
+    fields: { fullText: text, contentTier: 'complete' },
+  }, { reviewTextsDir }));
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  assert.equal(after.url, 'https://www.vulture.com/article/hamilton-review-b.html',
+    'text from url B must never be stored under url A (pre-fix: url stayed A)');
+  assert.equal(after.fullText, text);
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+// BRO-4132 Gap 2 safety net: when the url decision keeps the old url, body
+// fields this write merged are taken back off.
+test('BRO-4132 revertBodyFromRefusedUrl drops body fields merged from a refused url', () => {
+  const { revertBodyFromRefusedUrl } = require('./review-file-writer.js');
+  const before = { url: 'https://x.com/a', fullText: null, originalScore: '3' };
+  const existing = { ...before, fullText: 'B text', contentTier: 'complete', publishDate: '2026-01-02' };
+  const fields = { fullText: 'B text', contentTier: 'complete', publishDate: '2026-01-02', originalScore: '4' };
+  const keys = revertBodyFromRefusedUrl(before, existing, { url: 'https://x.com/b' }, fields);
+  assert.deepEqual(keys.sort(), ['contentTier', 'fullText', 'publishDate']);
+  assert.equal(existing.fullText, null);
+  assert.equal('contentTier' in existing, false);
+  assert.equal(existing.originalScore, '3');
+  // Same url (or a canonical variant): nothing reverts.
+  const same = { ...before, fullText: 'A text' };
+  assert.deepEqual(revertBodyFromRefusedUrl(before, same, { url: 'https://x.com/a' }, { fullText: 'A text' }), []);
+  // A body that was already on disk is never touched.
+  const had = { url: 'https://x.com/a', fullText: 'old' };
+  assert.deepEqual(revertBodyFromRefusedUrl({ ...had }, had, { url: 'https://x.com/b' }, { fullText: 'new' }), []);
+});
+
+// BRO-4131: updateFileUrlWithInvariant (rediscover/collect/recover callers)
+// refuses a move that would clear an unflagged score, unless the caller keeps
+// the score or says the old url is wrong.
+test('BRO-4131 updateFileUrlWithInvariant refuses a score-losing move on an unflagged file', () => {
+  const { updateFileUrlWithInvariant, wouldDiscardScore } = require('./url-change-invariant.js');
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-4131-'));
+  const showId = 'hamilton-test-fixture';
+  const base = {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-a', fullText: null,
+  };
+  const scored = makeFixture(reviewTextsDir, showId, 'thestage--a.json', { ...base, originalScore: '4' });
+  assert.equal(quiet(() => updateFileUrlWithInvariant(scored, 'https://www.thestage.co.uk/reviews/hamilton-b')), null);
+  assert.equal(JSON.parse(fs.readFileSync(scored, 'utf8')).url, base.url);
+  // Same review at a new address: score kept via preserveFields → allowed, score survives.
+  const kept = quiet(() => updateFileUrlWithInvariant(scored, 'https://www.thestage.co.uk/reviews/hamilton-b', {},
+    { preserveFields: new Set(['originalScore', 'aggregatorStars']) }));
+  assert.equal(kept.url, 'https://www.thestage.co.uk/reviews/hamilton-b');
+  assert.equal(kept.originalScore, '4');
+  // Old url flagged wrong → the move may clear the score.
+  const flagged = makeFixture(reviewTextsDir, showId, 'thestage--c.json', { ...base, aggregatorStars: 2, wrongProduction: true });
+  const moved = quiet(() => updateFileUrlWithInvariant(flagged, 'https://www.thestage.co.uk/reviews/hamilton-c'));
+  assert.equal(moved.url, 'https://www.thestage.co.uk/reviews/hamilton-c');
+  assert.equal(moved.aggregatorStars, undefined);
+  // Caller proof, and unscored files, are never refused.
+  assert.equal(wouldDiscardScore({ ...base, originalScore: '4' }, { oldUrlProvenWrong: true }), false);
+  assert.equal(wouldDiscardScore({ ...base, originalScore: '4', incompleteReason: 'wrong_content' }), false);
+  assert.equal(wouldDiscardScore(base), false);
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+// BRO-4131 roundup half: a round-up page never takes a slot via this chokepoint.
+test('BRO-4131 updateFileUrlWithInvariant refuses a round-up page url', () => {
+  const { updateFileUrlWithInvariant } = require('./url-change-invariant.js');
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-4131r-'));
+  const f = makeFixture(reviewTextsDir, 'hamilton-test-fixture', 'thestage--r.json', {
+    showId: 'hamilton-test-fixture', outletId: 'thestage', criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-a', fullText: null,
+  });
+  assert.equal(quiet(() => updateFileUrlWithInvariant(f, 'https://www.thestage.co.uk/review-round-ups/hamilton-reviews-round-up')), null);
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});

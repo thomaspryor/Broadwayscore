@@ -28,6 +28,7 @@ const {
   getOutletDisplayName,
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { roundupExcerptsAboutShow } = require('./lib/aggregator-page-show-guard');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { fetchJSON: scraperFetchJSON, fetchPage, cleanup } = require('./lib/scraper');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -625,6 +626,13 @@ async function main() {
         };
         saveNoRatingsCache(noRatingsCache);
       }
+      continue;
+    }
+    // BRO-3564: the round-up must be about this show, or every row would hang
+    // another show's excerpt on this show's critic files.
+    const pageCheck = roundupExcerptsAboutShow(ratings, show, { pageTitle: stripHtml(wpTitle) });
+    if (!pageCheck.ok) {
+      console.log(`  [SKIP] ${show.title} (${show.id}): round-up is about another show, ${pageCheck.reason}`);
       continue;
     }
     if (noRatingsCache.posts[post.id]) {
