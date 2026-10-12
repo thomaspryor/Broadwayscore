@@ -1,0 +1,243 @@
+{
+ "issueNumber": "bro-5090-02",
+ "planId": "de6bf867-0418-46ad-9919-28b04c72614a",
+ "status": "pending",
+ "createdAt": "2026-10-12T11:19:41.332Z",
+ "submitter": {
+  "name": null,
+  "email": null
+ },
+ "plan": {
+  "summary": "BRO-5090 part 2: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+  "steps": [
+   "Page byline at https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/ is Angelique Jackson; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2016/12/04/theater/dear-evan-hansen-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://variety.com/2007/legit/reviews/deuce-1200558841/ is Terry Morgan; David Rooney came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944054/ is Russell Edwards; Charles Isherwood came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html is Neil Genzlinger; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--neil-genzlinger.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://variety.com/2009/legit/reviews/exit-the-king-1200472357/ is Phil Gallo; David Rooney came from the legacy web-search step and is not on the page.",
+   "Page byline at http://www.nytimes.com/2016/10/28/theater/falsettos-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://www.nytimes.com/2023/04/12/theater/fat-ham-review.html is Jesse Green; Jesse Stockwell came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.theatermania.com/new-york-city-theater/news/fat-ham-broadway_93842.html is Zachary Stewart; Adam Feldman came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2019/05/30/theater/frankie-and-johnny-review-audra-mcdonald.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://www.nytimes.com/2008/05/07/theater/reviews/07glory.html is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page.",
+   "Page byline at https://variety.com/2008/legit/reviews/glory-days-1200472041/ is Steven Suskin; David Rooney came from the legacy web-search step and is not on the page.",
+   "Page byline at https://variety.com/2009/legit/reviews/god-of-carnage-1200475776/ is Steven Oxman; Charles Isherwood came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.wsj.com/articles/grand-horizons-review-looking-for-laughs-at-the-end-of-the-road-11580416596 is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOoplwi0_hrl0iF6g18yZfPpoXMm7-f7uqhgsoZucAb9rGCzodPVh is Jessica Derschowitz; Kristen Baldwin came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/article/2015/08/06/hamilton-ew-stage-review/?srsltid=AfmBOoo40HjAluqwW-NQCC4BZ11HZWDPMTumEQqqDhgIPVB_oTR2HdJQ is Leah Greenblatt; Tim Stack came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html is Elisabeth Vincentelli; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/hells-kitchen-review-broadway-alicia-keys-8635661?srsltid=AfmBOoqm90TkcJeE-6x5siSLInCpQV_PDSaSeZaS5CYMbKL1XledHZha is Dalton Ross; Joey Nolfi came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/theater/theater-reviews/here-lies-love-review-broadway-david-byrne/?srsltid=AfmBOorjUmBwMUI8Jnj3gjhN0-pb-xC9gvsy6agmGzzgKdk8JpJ1aoUh is Christian Holub; Joey Nolfi came from the legacy web-search step and is not on the page.",
+   "Page byline at http://www.nytimes.com/2016/10/07/theater/review-holiday-inn-its-beginning-to-look-a-lot-like-a-recycled-movie.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it."
+  ],
+  "riskLevel": "Low",
+  "actions": [
+   {
+    "type": "review-field-edit",
+    "file": "cost-of-living-2022/variety--aramide-tinubu.json",
+    "field": "criticName",
+    "oldValue": "Aramide Tinubu",
+    "newValue": "Angelique Jackson",
+    "description": "Page byline at https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/ is Angelique Jackson; Aramide Tinubu came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+    "field": "criticName",
+    "oldValue": "Jesse Green",
+    "newValue": "Laura Collins-Hughes",
+    "description": "Page byline at https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "dear-evan-hansen-2016/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2016/12/04/theater/dear-evan-hansen-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "deuce-2007/variety--david-rooney.json",
+    "field": "criticName",
+    "oldValue": "David Rooney",
+    "newValue": "Terry Morgan",
+    "description": "Page byline at https://variety.com/2007/legit/reviews/deuce-1200558841/ is Terry Morgan; David Rooney came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "disaster-2016/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "disgraced-2014/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "driving-miss-daisy-2010/variety--charles-isherwood.json",
+    "field": "criticName",
+    "oldValue": "Charles Isherwood",
+    "newValue": "Russell Edwards",
+    "description": "Page byline at https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944054/ is Russell Edwards; Charles Isherwood came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "elf-2012/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--neil-genzlinger.json",
+    "description": "Page byline at https://www.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html is Neil Genzlinger; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--neil-genzlinger.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "exit-the-king-2009/variety--david-rooney.json",
+    "field": "criticName",
+    "oldValue": "David Rooney",
+    "newValue": "Phil Gallo",
+    "description": "Page byline at https://variety.com/2009/legit/reviews/exit-the-king-1200472357/ is Phil Gallo; David Rooney came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "falsettos-2016/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--charles-isherwood.json",
+    "description": "Page byline at http://www.nytimes.com/2016/10/28/theater/falsettos-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "fat-ham-2023/nytimes--jesse-stockwell.json",
+    "field": "criticName",
+    "oldValue": "Jesse Stockwell",
+    "newValue": "Jesse Green",
+    "description": "Page byline at https://www.nytimes.com/2023/04/12/theater/fat-ham-review.html is Jesse Green; Jesse Stockwell came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "fat-ham-2023/theatermania--adam-feldman.json",
+    "field": "criticName",
+    "oldValue": "Adam Feldman",
+    "newValue": "Zachary Stewart",
+    "description": "Page byline at https://www.theatermania.com/new-york-city-theater/news/fat-ham-broadway_93842.html is Zachary Stewart; Adam Feldman came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--jesse-green.json",
+    "description": "Page byline at https://www.nytimes.com/2019/05/30/theater/frankie-and-johnny-review-audra-mcdonald.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "frozen-2018/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--jesse-green.json",
+    "description": "Page byline at https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "glory-days-2008/nytimes--charles-isherwood.json",
+    "field": "criticName",
+    "oldValue": "Charles Isherwood",
+    "newValue": "Ben Brantley",
+    "description": "Page byline at https://www.nytimes.com/2008/05/07/theater/reviews/07glory.html is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "glory-days-2008/variety--david-rooney.json",
+    "field": "criticName",
+    "oldValue": "David Rooney",
+    "newValue": "Steven Suskin",
+    "description": "Page byline at https://variety.com/2008/legit/reviews/glory-days-1200472041/ is Steven Suskin; David Rooney came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "god-of-carnage-2009/variety--charles-isherwood.json",
+    "field": "criticName",
+    "oldValue": "Charles Isherwood",
+    "newValue": "Steven Oxman",
+    "description": "Page byline at https://variety.com/2009/legit/reviews/god-of-carnage-1200475776/ is Steven Oxman; Charles Isherwood came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "godspell-2011/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "grand-horizons-2020/wsj--charles-isherwood.json",
+    "field": "criticName",
+    "oldValue": "Charles Isherwood",
+    "newValue": "Terry Teachout",
+    "description": "Page byline at https://www.wsj.com/articles/grand-horizons-review-looking-for-laughs-at-the-end-of-the-road-11580416596 is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "hadestown-2019/ew--kristen-baldwin.json",
+    "field": "criticName",
+    "oldValue": "Kristen Baldwin",
+    "newValue": "Jessica Derschowitz",
+    "description": "Page byline at https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOoplwi0_hrl0iF6g18yZfPpoXMm7-f7uqhgsoZucAb9rGCzodPVh is Jessica Derschowitz; Kristen Baldwin came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "hamilton-2015/ew--tim-stack.json",
+    "field": "criticName",
+    "oldValue": "Tim Stack",
+    "newValue": "Leah Greenblatt",
+    "description": "Page byline at https://ew.com/article/2015/08/06/hamilton-ew-stage-review/?srsltid=AfmBOoo40HjAluqwW-NQCC4BZ11HZWDPMTumEQqqDhgIPVB_oTR2HdJQ is Leah Greenblatt; Tim Stack came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
+    "field": "criticName",
+    "oldValue": "Jesse Green",
+    "newValue": "Elisabeth Vincentelli",
+    "description": "Page byline at https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html is Elisabeth Vincentelli; Jesse Green came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "hells-kitchen-2024/ew--joey-nolfi.json",
+    "field": "criticName",
+    "oldValue": "Joey Nolfi",
+    "newValue": "Dalton Ross",
+    "description": "Page byline at https://ew.com/hells-kitchen-review-broadway-alicia-keys-8635661?srsltid=AfmBOoqm90TkcJeE-6x5siSLInCpQV_PDSaSeZaS5CYMbKL1XledHZha is Dalton Ross; Joey Nolfi came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "here-lies-love-2023/ew--joey-nolfi.json",
+    "field": "criticName",
+    "oldValue": "Joey Nolfi",
+    "newValue": "Christian Holub",
+    "description": "Page byline at https://ew.com/theater/theater-reviews/here-lies-love-review-broadway-david-byrne/?srsltid=AfmBOorjUmBwMUI8Jnj3gjhN0-pb-xC9gvsy6agmGzzgKdk8JpJ1aoUh is Christian Holub; Joey Nolfi came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "holiday-inn-the-new-irving-berlin-musical-2016/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--charles-isherwood.json",
+    "description": "Page byline at http://www.nytimes.com/2016/10/07/theater/review-holiday-inn-its-beginning-to-look-a-lot-like-a-recycled-movie.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it."
+   }
+  ]
+ }
+}
