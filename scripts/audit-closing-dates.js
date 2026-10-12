@@ -52,6 +52,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib/closing-audit-classify');
+const { pageMatchesShowTitle } = require('./lib/show-title-match');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -169,23 +170,9 @@ function parseScheduleDates(html) {
 }
 
 // Title-confirmation guard against broadway.com slug collisions across
-// revivals. `cabaret-2014` (id) → `cabaret` (slug) → could resolve to a
-// later revival's schedule. Require the page to mention a recognisable
-// keyword from the stored title before we trust its dates.
-function pageMatchesShow(html, showName) {
-  if (!html || !showName) return false;
-  // Strip HTML, lowercase, normalize whitespace
-  const haystack = html
-    .replace(/<[^>]+>/g, ' ')
-    .toLowerCase()
-    .replace(/\s+/g, ' ');
-  // Use the longest word from the title as the keyword (skips articles).
-  // For multi-word titles, also try the first 2 words concatenated.
-  const words = showName.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
-  if (words.length === 0) return true; // single-syllable title: skip guard
-  // Require at least one of the meaningful words
-  return words.some(w => haystack.includes(w));
-}
+// revivals (`cabaret-2014` → `cabaret` could resolve to a later revival's
+// schedule). Shared with the WE audit and press discovery (BRO-4753).
+const pageMatchesShow = pageMatchesShowTitle;
 
 async function fetchLatestSchedule(show, slug) {
   const url = `https://www.broadway.com/shows/${slug}/schedule/`;

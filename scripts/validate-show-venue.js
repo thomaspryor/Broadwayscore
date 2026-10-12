@@ -20,7 +20,7 @@
  * Output: data/audit/venue-date-mismatches.json (full report each run).
  *
  * Modes:
- *   --show=ID              one show only
+ *   --show=ID[,ID...]      the named show(s) only
  *   --all-provisional      every entry with provisional:true OR
  *                          discoverySource matching ^manual|^venue-page
  *   --all                  (BRO-2255) every show in the corpus, not just
@@ -851,9 +851,13 @@ async function main() {
       closingDate: c.closingDate || c.lastDateSeen || null,
     }));
   } else if (showFilter) {
-    targets = allShows.filter(s => s.id === showFilter || s.slug === showFilter);
-    if (!targets.length) {
-      console.error(`Show not found: ${showFilter}`);
+    // Comma list allowed (BRO-4794): a cloud run (cloud-run-script.js) checks
+    // a named batch in one dispatch instead of one workflow run per id.
+    const wanted = showFilter.split(',').map(x => x.trim()).filter(Boolean);
+    targets = allShows.filter(s => wanted.includes(s.id) || wanted.includes(s.slug));
+    const missing = wanted.filter(w => !targets.some(s => s.id === w || s.slug === w));
+    if (missing.length) {
+      console.error(`Show not found: ${missing.join(', ')}`);
       process.exit(2);
     }
   } else if (allProvisional) {

@@ -121,3 +121,38 @@ test('duplicateOf: a non-provisional duplicate with no reviews at the same house
   // Without duplicateOf, a non-provisional row still refuses.
   assert.match(applyRetireShow([{ ...dup }], { id: dup.id, expectTitle: dup.title, reason: 'x' }, { retire, reviewCount: none }).reason, /only provisional/);
 });
+
+test('nonProduction: a non-provisional announced row with no reviews retires with an evidence URL; anything else refuses (BRO-4449/BRO-4505)', () => {
+  const { retire, paths } = scratch();
+  const film = row('the-stranger-2-off-west-end-2026', 'The Stranger 2', { provisional: undefined });
+  const base = { id: film.id, expectTitle: film.title, reason: 'Kiln cinema screening, not a stage production', nonProduction: true, evidenceUrl: 'https://kilntheatre.com/whats-on/the-stranger-2/', blockTitleVenue: true };
+  const none = () => 0;
+  const cases = [
+    [{ ...base, evidenceUrl: undefined }, {}, none, /evidenceUrl/],
+    [{ ...base, evidenceUrl: 'http://kilntheatre.com/x' }, {}, none, /evidenceUrl/],
+    [{ ...base, nonProduction: 'yes' }, {}, none, /must be true/],
+    [{ ...base, duplicateOf: 'other-show' }, {}, none, /exclusive/],
+    [base, { status: 'open' }, none, /announced\/upcoming/],
+    [base, { status: 'closed' }, none, /announced\/upcoming/],
+    [base, { openingDate: '2026-10-01' }, none, /real run/],
+    [base, {}, () => 2, /2 review/],
+    [base, {}, undefined, /review count unavailable/],
+  ];
+  for (const [action, extra, reviewCount, re] of cases) {
+    const shows = [{ ...film, ...extra }];
+    const r = applyRetireShow(shows, action, { retire, reviewCount });
+    assert.equal(r.ok, false, String(re));
+    assert.match(r.reason, re);
+    assert.equal(shows.length, 1);
+  }
+  // Without nonProduction a non-provisional row still refuses.
+  const plain = applyRetireShow([{ ...film }], { id: film.id, expectTitle: film.title, reason: 'x' }, { retire, reviewCount: none });
+  assert.match(plain.reason, /only provisional/);
+  const shows = [{ ...film }, row('keep-me-2026', 'Keep Me')];
+  const ok = applyRetireShow(shows, base, { retire, reviewCount: none });
+  assert.equal(ok.ok, true, ok.reason);
+  assert.deepEqual(shows.map(s => s.id), ['keep-me-2026']);
+  const entry = loadRetiredIds({ listPath: paths.listPath }).find(e => e.id === film.id);
+  assert.match(entry.reason, /evidence: https:\/\/kilntheatre\.com/);
+  assert.ok(matchesRetired({ id: 'the-stranger-2-off-west-end-2027', title: 'The Stranger 2', venue: 'Kiln Theatre' }, loadRetiredIds({ listPath: paths.listPath })), 'title+venue block keeps it from returning');
+});

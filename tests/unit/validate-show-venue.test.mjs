@@ -796,3 +796,31 @@ test('compareShow skips the venue for a tour but still checks the year', () => {
     'https://playbill.com/production/beetlejuice-tour-2019');
   assert.deepEqual(wrongYear.mismatches.map(m => m.field), ['opening-year']);
 });
+
+// BRO-4794: --show takes a comma list so one cloud run checks a named batch;
+// any id not in shows.json fails the whole run with every missing id named.
+test('validate-show-venue --show accepts a comma list and names every missing id (BRO-4794)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-list-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([
+      { id: 'bro-4794-fixture-a-2099', title: 'BRO-4794 Fixture A', venue: 'Fixture Theatre', category: 'broadway', openingDate: '2099-01-01' },
+      { id: 'bro-4794-fixture-b-2099', title: 'BRO-4794 Fixture B', venue: 'Fixture Theatre', category: 'broadway', openingDate: '2099-01-01' },
+    ]));
+    const run = (show) => spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'), `--show=${show}`, '--dry-run', `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      env: { ...process.env, SCRAPINGBEE_API_KEY: '', BRIGHTDATA_TOKEN: '', SCRAPINGDOG_API_KEY: '', VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json') },
+    });
+    const missing = run('bro-4794-fixture-a-2099,nope-1,nope-2');
+    if (missing.error) throw missing.error;
+    assert.equal(missing.status, 2);
+    assert.match(missing.stderr, /Show not found: nope-1, nope-2/);
+    const both = run('bro-4794-fixture-a-2099,bro-4794-fixture-b-2099');
+    if (both.error) throw both.error;
+    assert.match(both.stdout, /validate-show-venue: 2 target\(s\)/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

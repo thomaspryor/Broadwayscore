@@ -15,6 +15,8 @@
  *   add-show       — Append one new shows.json entry (scripts/lib/add-show-action.js)
  *   retire-show    — Remove one provisional shows.json entry and record it in the
  *                    retired-id registry (scripts/lib/retire-show-action.js)
+ *   retitle-show   — Cosmetic title repair on one shows.json entry
+ *                    (scripts/lib/retitle-show-action.js)
  *   run-script     — Execute allowlisted pipeline scripts
  *   review-file-op — Move/delete/rename review files in data/review-texts/
  *   review-field-edit — Compare-and-set one allowlisted field on a review file
@@ -46,6 +48,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
+const { applyRetitleShow } = require('./lib/retitle-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./lib/commercial-record-checks.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
@@ -416,6 +419,15 @@ function executeRetireShow(action) {
   return result;
 }
 
+function executeRetitleShow(action) {
+  const data = loadJsonFile('data/shows.json');
+  const shows = data.shows || data;
+  const result = applyRetitleShow(shows, action);
+  if (!result.ok) return result;
+  saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
+  return result;
+}
+
 function executeRunScript(action) {
   const { script, args } = action;
 
@@ -634,6 +646,9 @@ async function main() {
       case 'retire-show':
         result = executeRetireShow(action);
         break;
+      case 'retitle-show':
+        result = executeRetitleShow(action);
+        break;
       case 'add-commercial-entry':
         result = executeAddCommercialEntry(action);
         break;
@@ -660,11 +675,11 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'add-commercial-entry');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
-    // add-show / retire-show / add-commercial-entry carry no `file`.
-    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
+    // add-show / retire-show / retitle-show / add-commercial-entry carry no `file`.
+    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
     const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
     console.log('\nRunning validation...');
     const touchedCommercialKeys = dataTouching

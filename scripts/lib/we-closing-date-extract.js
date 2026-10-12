@@ -174,21 +174,8 @@ function findAnchoredDates(text, now = new Date()) {
   return found;
 }
 
-// Title-confirmation guard — mirrors pageMatchesShow() in
-// audit-closing-dates.js / pageMatchesShowTitle() in closing-date-discovery.js.
-// Required before trusting a page's extracted date: without it, a stale
-// cached slug-map URL that now resolves to a different production (venue
-// reuse, WET slug reassignment) could silently apply a wrong show's date.
-function pageMatchesShowTitle(text, showTitle) {
-  if (!text || !showTitle) return false;
-  const haystack = text.toLowerCase();
-  const words = showTitle.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
-  if (words.length === 0) {
-    const tokens = showTitle.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
-    return tokens.some(t => new RegExp(`\\b${t}\\b`).test(haystack));
-  }
-  return words.some(w => haystack.includes(w));
-}
+// Title guard (substring-safe, generic-word-aware): scripts/lib/show-title-match.js (BRO-4753).
+const { pageMatchesShowTitle } = require('./show-title-match');
 
 /**
  * Extract the latest announced booking/closing date from a show's booking

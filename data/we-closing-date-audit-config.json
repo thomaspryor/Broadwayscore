@@ -1,6 +1,6 @@
 {
   "_comment": "Config for scripts/audit-we-closing-dates.js. Edited by hand; not auto-generated. West End analogue of data/closing-date-audit-config.json.",
-  "_lastUpdated": "2026-09-15",
+  "_lastUpdated": "2026-10-12",
   "urlOverrides": {
     "_comment": "show.id -> booking URL override, when SERP discovery (data/westend-slug-map.json) picks the wrong page or a show has no westendtheatre.com presence but a good officialUrl/other booking page exists."
   },
@@ -24,6 +24,17 @@
   },
   "ambiguousAllowlist": {
     "_comment": "Shows where stored closingDate is human-verified correct but the booking page's window cuts off earlier. Same self-cleaning allowlist pattern as data/closing-date-audit-config.json.",
-    "entries": {}
+    "entries": {
+      "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026": {
+        "verifiedStored": "2027-01-09",
+        "verifiedAt": "2026-10-12",
+        "source": "BRO-4808: 12-week Drury Lane season 16 Oct 2026 to Sat 9 Jan 2027 (https://www.londonboxoffice.co.uk/news/post/jesus-christ-superstar-to-extend-at-theatre-royal-drury-lane); WET page states no booking-until line."
+      },
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026": {
+        "verifiedStored": "2027-06-27",
+        "verifiedAt": "2026-10-12",
+        "source": "BRO-4808: booking period ends 27 June 2027 (nimaxtheatres.com, stored closingDateSource); WET page states no booking-until line."
+      }
+    }
   }
 }

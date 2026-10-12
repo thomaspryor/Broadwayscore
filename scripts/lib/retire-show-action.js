@@ -17,7 +17,11 @@
  *     in a plan refuses instead of deleting another show);
  *   - only a `provisional: true` row (an automated, not-yet-corroborated
  *     add) can be retired this way, or a duplicate named with `duplicateOf`
- *     (same title, same house as the kept row, zero reviews; id-only);
+ *     (same title, same house as the kept row, zero reviews; id-only), or a
+ *     non-production named with `nonProduction` (BRO-4449/BRO-4505: a film
+ *     screening, one-night concert or stand-up set minted before the dated
+ *     venue readers existed): still announced/upcoming, never dated as
+ *     opened, zero reviews, and `evidenceUrl` cites the venue listing;
  *   - `reason` is required (the registry breadcrumb);
  *   - `blockTitleVenue: true` for junk that must never return under any id;
  *     leave it off for a duplicate (the kept row shares title+venue).
@@ -87,6 +91,24 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount) {
   return null;
 }
 
+const NON_PRODUCTION_STATUSES = new Set(['announced', 'upcoming']);
+
+/**
+ * Why `row` may NOT be retired as a non-production, or null when it may. A
+ * row that has opened or carries any review is a real run; those go through
+ * a human Mac session, never a plan.
+ */
+function nonProductionRefusal(row, action, reviewCount) {
+  if (action.duplicateOf !== undefined) return 'nonProduction and duplicateOf are exclusive';
+  if (typeof action.evidenceUrl !== 'string' || !/^https:\/\/[^\s/]+\.[^\s]+$/.test(action.evidenceUrl)) return 'nonProduction needs evidenceUrl (https link to the venue listing that shows it is not a production)';
+  if (!NON_PRODUCTION_STATUSES.has(row.status)) return `status is "${row.status}": only an announced/upcoming row can be retired as a non-production`;
+  if (isoOrNull(row.openingDate)) return `openingDate ${row.openingDate} is set: a row dated as opened is a real run`;
+  if (typeof reviewCount !== 'function') return 'review count unavailable';
+  const n = reviewCount(row.id);
+  if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;
+  return null;
+}
+
 function applyRetireShow(shows, action, { retire, now, reviewCount } = {}) {
   const a = action || {};
   if (typeof a.id !== 'string' || !ID_RE.test(a.id)) return { ok: false, reason: 'retire-show: id must be a lowercase-kebab show id' };
@@ -97,7 +119,11 @@ function applyRetireShow(shows, action, { retire, now, reviewCount } = {}) {
   if (idx === -1) return { ok: false, reason: `retire-show: no show with id "${a.id}"` };
   const row = shows[idx];
   if (row.title !== a.expectTitle) return { ok: false, reason: `retire-show ${a.id}: title is "${row.title}", plan expected "${a.expectTitle}" — refused` };
-  if (a.duplicateOf !== undefined) {
+  if (a.nonProduction !== undefined && a.nonProduction !== true) return { ok: false, reason: `retire-show ${a.id}: nonProduction must be true when present` };
+  if (a.nonProduction === true) {
+    const why = nonProductionRefusal(row, a, reviewCount);
+    if (why) return { ok: false, reason: `retire-show ${a.id}: ${why}` };
+  } else if (a.duplicateOf !== undefined) {
     // A non-automated row may go when it duplicates another row (same title,
     // same house) and has no reviews; it is retired id-only, never with a
     // title+venue block, since the kept row shares both.
@@ -105,11 +131,11 @@ function applyRetireShow(shows, action, { retire, now, reviewCount } = {}) {
     const why = duplicateRefusal(row, a.duplicateOf, shows, reviewCount);
     if (why) return { ok: false, reason: `retire-show ${a.id}: ${why}` };
   } else if (row.provisional !== true) {
-    return { ok: false, reason: `retire-show ${a.id}: only provisional (automated, uncorroborated) rows can be retired by a plan, or a duplicate named with duplicateOf` };
+    return { ok: false, reason: `retire-show ${a.id}: only provisional (automated, uncorroborated) rows can be retired by a plan, a duplicate named with duplicateOf, or a non-production named with nonProduction + evidenceUrl` };
   }
   const doRetire = typeof retire === 'function' ? retire : require('./retired-show-ids').retireId;
   try {
-    doRetire(a.id, { reason: a.reason.trim(), archivedRow: row, blockTitleVenue: a.blockTitleVenue === true, ...(now ? { now } : {}) });
+    doRetire(a.id, { reason: a.nonProduction === true ? `${a.reason.trim()} (evidence: ${a.evidenceUrl})` : a.reason.trim(), archivedRow: row, blockTitleVenue: a.blockTitleVenue === true, ...(now ? { now } : {}) });
   } catch (e) {
     return { ok: false, reason: `retire-show ${a.id}: ${e.message}` };
   }
