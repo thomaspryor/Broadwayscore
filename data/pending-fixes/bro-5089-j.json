@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5089-j",
   "planId": "78a6b6d6-43ad-4c41-8ed5-40418e5e1535",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T00:34:28.561Z",
   "submitter": {
     "name": null,
@@ -232,5 +232,128 @@
         "description": "no-place-to-be-somebody-1971: synopsis cleared (producer copy): The text gives background and award information about Gordone and the play rather than describing the play's plot or characters, so it functions as marketing/background copy. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T05:21:24.854Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for jagged-little-pill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for my-name-is-lucy-barton-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-waverly-gallery-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-iceman-cometh-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for children-of-a-lesser-god-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for three-tall-women-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for angels-in-america-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for farinelli-and-the-king-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for latin-history-for-morons-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for amelie-a-new-musical-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pippin-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for kinky-boots-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-house-of-blue-leaves-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for that-championship-season-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dividing-the-estate-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dr-seuss-how-the-grinch-stole-christmas-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for that-championship-season-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for no-place-to-be-somebody-1971"
+    }
+  ]
 }
