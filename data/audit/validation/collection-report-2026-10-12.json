@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-12T23:23:34.425Z",
+  "runDate": "2026-10-12T23:22:55.089Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "from-the-heart-west-end-2026",
+    "showFilter": "good-time-charlie-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -38,13 +38,13 @@
     "tier1_9Success": 1,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
@@ -57,7 +57,7 @@
     "processed": 3,
     "failed": 1,
     "shows": [
-      "from-the-heart-west-end-2026"
+      "good-time-charlie-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,27 +66,25 @@
     }
   },
   "processed": [
-    "from-the-heart-west-end-2026/theatre-news--unknown.json",
-    "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
-    "from-the-heart-west-end-2026/stagedtheatre--unknown.json"
+    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
-    "from-the-heart-west-end-2026/reviewsgate--william-russell.json"
+    "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "from-the-heart-west-end-2026/theatre-news--unknown.json",
-      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
-      "from-the-heart-west-end-2026/stagedtheatre--unknown.json"
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
     ],
     "failed": [
-      "from-the-heart-west-end-2026/reviewsgate--william-russell.json"
+      "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "from-the-heart-west-end-2026/theatre-news--unknown.json",
-      "from-the-heart-west-end-2026/stagedtheatre--unknown.json"
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -95,9 +93,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
