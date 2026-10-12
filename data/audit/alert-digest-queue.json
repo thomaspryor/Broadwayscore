@@ -2067,5 +2067,35 @@
       }
     ],
     "queuedAt": "2026-10-12T23:21:29.648Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4317-orphan-report",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4317-orphan-report",
+    "description": "land.yml did not land land/bro-4317-orphan-report: the unit-tests-node gate went red at ca9a864dd1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38322008592",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4317-orphan-report"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ca9a864dd10715dd75342e944f95867b942fbc35"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38322008592"
+      }
+    ],
+    "queuedAt": "2026-10-12T23:51:31.707Z"
   }
 ]
