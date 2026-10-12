@@ -286,6 +286,9 @@ function summarizeRun(report, opts = {}) {
     generatedAt,
     naivePages: (report && report.naivePages) !== undefined ? report.naivePages : null,
     shows: agg.shows,
+    // Measured shows that contributed any ground truth. A show nothing could
+    // find (0 truth URLs) adds no evidence, so minShows counts these.
+    informativeShows: measured.filter(r => ((r.counts && r.counts.truth) || 0) > 0).length,
     excluded,
     truthUrls: agg.truthUrls,
     onDiskUrls: measured.reduce((n, r) => n + ((r.counts && r.counts.onDisk) || 0), 0),
@@ -337,8 +340,7 @@ function detectRecallRegression(entries, opts = {}) {
   // A run too thin to be judged is also too thin to judge others by
   // (BRO-2296): the 1-show 2026-10-05 row would otherwise sit in the next
   // four baselines. Rows without a `shows` count predate the field and stay.
-  const judgeable = e => !(typeof e.shows === 'number' && e.shows < cfg.minShows);
-  const history = list.slice(0, -1).filter(judgeable);
+  const history = list.slice(0, -1).filter(e => isJudgeableEntry(e, cfg));
   const prior = history.slice(-cfg.baselineRuns);
 
   if (!latest) {
@@ -358,11 +360,12 @@ function detectRecallRegression(entries, opts = {}) {
       regressions: [], latest, comparedArms: 0,
     };
   }
-  if (typeof latest.shows === 'number' && latest.shows < cfg.minShows) {
+  const latestShows = informativeShowsOf(latest);
+  if (latestShows !== null && latestShows < cfg.minShows) {
     const excluded = Object.entries(latest.excluded || {}).map(([k, n]) => `${n} ${k}`).join(', ');
     return {
       verdict: 'insufficient-sample',
-      reason: `latest run measured only ${latest.shows} show(s) (need ${cfg.minShows})${excluded ? `; excluded: ${excluded}` : ''} — one show's quirks are not an arm's recall`,
+      reason: `latest run measured only ${latestShows} show(s) with any findable reviews (need ${cfg.minShows})${excluded ? `; excluded: ${excluded}` : ''} — one show's quirks are not an arm's recall`,
       regressions: [], latest, comparedArms: 0,
     };
   }
@@ -478,6 +481,38 @@ function detectRecallRegression(entries, opts = {}) {
   };
 }
 
+/** Shows that carried ground truth; falls back to `shows` for older entries, null if neither. */
+function informativeShowsOf(e) {
+  if (e && typeof e.informativeShows === 'number') return e.informativeShows;
+  if (e && typeof e.shows === 'number') return e.shows;
+  return null;
+}
+
+/**
+ * Could this trend entry be judged — and so may it judge others? One rule for
+ * the detector's latest-run check, its baselines, and the same-date
+ * replacement in appendTrendEntry()/merge-census-recall-trend.js (BRO-2296):
+ * a 1-show run must neither raise an alarm nor sit in the next four medians,
+ * nor displace a sound measurement of the same day. Fields an older entry
+ * lacks are not held against it.
+ */
+function isJudgeableEntry(e, opts = {}) {
+  const cfg = { ...REGRESSION_DEFAULTS, ...opts };
+  if (!e || typeof e !== 'object') return false;
+  const shows = informativeShowsOf(e);
+  if (shows !== null && shows < cfg.minShows) return false;
+  if (typeof e.truthUrls === 'number' && e.truthUrls < cfg.minTruthUrls) return false;
+  return true;
+}
+
+/** Does `candidate` outrank `incumbent` for the same date? Judgeable first, then ground truth. */
+function outranksSameDayEntry(candidate, incumbent) {
+  const a = isJudgeableEntry(candidate);
+  const b = isJudgeableEntry(incumbent);
+  if (a !== b) return a;
+  return ((candidate && candidate.truthUrls) || 0) > ((incumbent && incumbent.truthUrls) || 0);
+}
+
 /**
  * Did the whole run hit a dead scraping chain rather than a real recall drop?
  *
@@ -551,6 +586,9 @@ module.exports = {
   classifySample,
   detectProviderOutage,
   detectRecallRegression,
+  informativeShowsOf,
+  isJudgeableEntry,
+  outranksSameDayEntry,
   parseTrendJsonl,
   perArmRecall,
   perCategoryRecall,

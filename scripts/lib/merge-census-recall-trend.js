@@ -12,12 +12,15 @@
  * (and setting PUSH_RECONCILE_MERGED_JSON=1 on the workflow) makes the helper
  * re-merge against the remote tip instead.
  *
- * Merge rule: one entry per date, and when both sides hold that date the entry
+ * Merge rule: one entry per date, and when both sides hold that date a
+ * judgeable entry beats one too thin to judge (BRO-2296), then the entry
  * measured against MORE ground truth wins. Recall is a ratio over a sample, so
  * "more truth URLs" is the more evidenced measurement — and it matches the
  * same-day downgrade guard in appendTrendEntry(). Ties keep ours (idempotent
  * re-runs must not churn the file).
  */
+
+const { outranksSameDayEntry } = require('./census-recall.js');
 
 const keyOf = (e) => (e && typeof e.date === 'string' && e.date ? e.date : null);
 
@@ -49,7 +52,7 @@ function mergeCensusRecallTrend(oursEntries, remoteEntries) {
       continue;
     }
     const mine = byDate.get(k);
-    if ((e.truthUrls || 0) > (mine.truthUrls || 0)) {
+    if (outranksSameDayEntry(e, mine)) {
       byDate.set(k, e);
       replaced += 1;
     } else {

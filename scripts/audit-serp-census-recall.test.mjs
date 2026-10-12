@@ -104,3 +104,56 @@ test('the same drop on a full sample still regresses', () => {
   ]);
   assert.equal(r.verdict, 'regressed');
 });
+
+// ── Ship-check follow-ups ───────────────────────────────────────────────────
+const { appendTrendEntry } = require('./audit-serp-census-recall.js');
+const { mergeCensusRecallTrend } = require('./lib/merge-census-recall-trend.js');
+const { isJudgeableEntry, outranksSameDayEntry } = require('./lib/census-recall.js');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+
+test('shows with zero findable reviews do not count toward minShows', () => {
+  // One 18-URL show plus two empty ones is still a one-show measurement.
+  const rows = [18, 0, 0].map((truth, i) => ({
+    showId: `s${i}`, sampleState: 'measured', counts: { truth, onDisk: truth },
+    newFromNaive: [], arms: [{ arm: 'onDisk', urls: Array.from({ length: truth }, (_, j) => `https://x/${i}/${j}`), ok: true }],
+  }));
+  const e = summarizeRun({ generatedAt: '2026-10-05T19:43:00Z', shows: rows });
+  assert.equal(e.shows, 3);
+  assert.equal(e.informativeShows, 1);
+  const r = detectRecallRegression([
+    wk('2026-09-21', 5, 120, 0.5, 12), wk('2026-09-28', 5, 120, 0.5, 12), { ...e, families: { naive: 0.1 } },
+  ]);
+  assert.equal(r.verdict, 'insufficient-sample');
+});
+
+test('isJudgeableEntry: thin on shows or on ground truth is not judgeable; legacy entries are', () => {
+  assert.equal(isJudgeableEntry(wk('d', 5, 120, 0.5, 12)), true);
+  assert.equal(isJudgeableEntry(wk('d', 1, 120, 0.5, 12)), false);
+  assert.equal(isJudgeableEntry(wk('d', 5, 6, 0.5, 12)), false);
+  assert.equal(isJudgeableEntry({ date: 'd', families: {} }), true);
+});
+
+test('a judgeable same-day entry outranks a thin one even with less ground truth', () => {
+  const thin = wk('2026-10-05', 1, 100, 0.2, 3);
+  const sound = wk('2026-10-05', 5, 80, 0.5, 12);
+  assert.equal(outranksSameDayEntry(sound, thin), true);
+  assert.equal(outranksSameDayEntry(thin, sound), false);
+  // Rebase merge applies the same rule.
+  const { merged } = mergeCensusRecallTrend([thin], [sound]);
+  assert.equal(merged[0].shows, 5);
+});
+
+test('appendTrendEntry keeps a sound same-day entry over a thin re-run', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-trend-'));
+  const p = path.join(dir, 'trend.jsonl');
+  try {
+    appendTrendEntry(p, wk('2026-10-05', 5, 80, 0.5, 12));
+    const all = appendTrendEntry(p, wk('2026-10-05', 1, 100, 0.2, 3));
+    assert.equal(all.length, 1);
+    assert.equal(all[0].shows, 5);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

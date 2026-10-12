@@ -1778,7 +1778,9 @@ function censusRecallResult(data, opts = {}) {
     return {
       name, status: 'warn',
       message: `Review coverage not judgeable yet: ${data.reason || data.verdict}`,
-      hint: 'Needs more weekly runs on record before a drop can be detected.',
+      hint: data.verdict === 'insufficient-sample'
+        ? 'This run measured too few shows or reviews to judge; the next weekly run re-judges on a fresh sample.'
+        : 'Needs more weekly runs on record before a drop can be detected.',
     };
   }
   return {

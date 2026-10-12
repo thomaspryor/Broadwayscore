@@ -76,7 +76,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { loadEnv } = require('./lib/load-env.js');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight.js');
 const {
-  classifySample, detectProviderOutage, detectRecallRegression, parseTrendJsonl,
+  classifySample, detectProviderOutage, detectRecallRegression, outranksSameDayEntry, parseTrendJsonl,
   perArmRecall, perCategoryRecall, summarizeRun,
 } = require('./lib/census-recall.js');
 
@@ -489,7 +489,9 @@ async function main() {
       regressions: judgement.regressions,
       comparedArms: judgement.comparedArms,
       trendEntries: entries.length,
-      latest: entry,
+      // The entry actually judged: when a same-day re-run lost to a stronger
+      // entry, that one is the ledger's latest, not this run's.
+      latest: judgement.latest || entry,
     }, null, 2) + '\n');
 
     console.log(`\n── TREND (${entries.length} run(s) on record) ──`);
@@ -532,10 +534,10 @@ function readTrendEntries(trendPath) {
 function appendTrendEntry(trendPath, entry, opts = {}) {
   const existing = readTrendEntries(trendPath);
   const stronger = entry.date
-    ? existing.find(e => e.date === entry.date && (e.truthUrls || 0) > (entry.truthUrls || 0))
+    ? existing.find(e => e.date === entry.date && outranksSameDayEntry(e, entry))
     : null;
   if (stronger && !opts.force) {
-    console.log(`  (kept the existing ${entry.date} entry — it measured ${stronger.truthUrls} ground-truth URLs vs this run's ${entry.truthUrls || 0}; pass --force-trend to override)`);
+    console.log(`  (kept the existing ${entry.date} entry — ${stronger.shows ?? '?'} show(s) / ${stronger.truthUrls} ground-truth URLs vs this run's ${entry.shows ?? '?'} / ${entry.truthUrls || 0}; pass --force-trend to override)`);
     return existing;
   }
   const kept = entry.date ? existing.filter(e => e.date !== entry.date) : existing;
