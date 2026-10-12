@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-12T11:02:20.255Z",
+    "generatedAt": "2026-10-12T11:19:29.602Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,23 +20,23 @@
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 224
+      "churn": 225
     },
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 152
+      "churn": 150
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 145
+      "churn": 147
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 119
+      "churn": 120
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 119
+      "churn": 120
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -74,15 +74,15 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 495
+      "churn": 498
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 459
+      "churn": 464
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 333
+      "churn": 330
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -98,11 +98,11 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 252
+      "churn": 251
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 120
+      "churn": 121
     },
     {
       "path": "public/data/shows/rent-west-end-2026.json",
@@ -337,10 +337,6 @@
       "churn": 32
     },
     {
-      "path": "public/data/shows/therese-raquin-2015.json",
-      "churn": 32
-    },
-    {
       "path": "public/data/shows/all-about-eve-west-end-2019.json",
       "churn": 31
     },
@@ -401,6 +397,10 @@
       "churn": 30
     },
     {
+      "path": "public/data/shows/therese-raquin-2015.json",
+      "churn": 30
+    },
+    {
       "path": "public/data/shows/uncle-vanya-west-end-2020.json",
       "churn": 30
     }
@@ -408,12 +408,12 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 1014,
+      "churn": 1012,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 659,
+      "churn": 658,
       "mergeAttr": "union"
     },
     {
@@ -438,17 +438,17 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 382,
+      "churn": 379,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 341,
+      "churn": 343,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/alert-router-attempts.jsonl",
-      "churn": 325,
+      "churn": 328,
       "mergeAttr": "union"
     },
     {
@@ -473,17 +473,17 @@
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 120,
+      "churn": 121,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 119,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 119,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
@@ -493,12 +493,12 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 108,
+      "churn": 109,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 88,
+      "churn": 89,
       "mergeAttr": "union"
     },
     {
@@ -508,12 +508,12 @@
     },
     {
       "path": "data/audit/orphan-unscored-into-the-woods-noel-coward-west-end-2026.json",
-      "churn": 78,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-from-the-heart-west-end-2026.json",
-      "churn": 77,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
@@ -523,7 +523,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-triumph-off-broadway-2026.json",
-      "churn": 57,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
