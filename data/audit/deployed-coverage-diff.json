@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-12T06:50:06.625Z",
+  "generatedAt": "2026-10-12T08:25:32.961Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 227,
-  "clean": 226,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "cosi-fan-tutte-off-broadway-2026",
-      "title": "Così fan tutte",
-      "openingDate": "2026-09-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79 vs local 81.4 (Δ2.4)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-10-12T06:50:01.238Z"
-    }
-  ],
+  "clean": 227,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
