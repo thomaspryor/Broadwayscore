@@ -2262,6 +2262,18 @@ test('startNowEligible: visitor health rows only; internal, owner/Mac, acknowled
   }
 });
 
+test('startNowEligible: START_NOW_ROUTER_DISABLED=true parks every card', () => {
+  const { router, restore } = loadRouterWithFakes();
+  const prev = process.env.START_NOW_ROUTER_DISABLED;
+  process.env.START_NOW_ROUTER_DISABLED = 'true';
+  try {
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Images: missing posters', description: 'd' }), false);
+  } finally {
+    if (prev === undefined) delete process.env.START_NOW_ROUTER_DISABLED; else process.env.START_NOW_ROUTER_DISABLED = prev;
+    restore();
+  }
+});
+
 test('routeAlert: an eligible health row files START-NOW (dispatch, High); a non-health key still files parked', async () => {
   const { router, calls, restore } = loadRouterWithFakes();
   try {

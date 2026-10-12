@@ -546,6 +546,8 @@ const START_NOW_PROVENANCE = 'Filed by owner-alert-router (START-NOW';
 
 /** PURE. Should this condition's card be filed START-NOW? */
 function startNowEligible({ conditionKey, description, verify }) {
+  // Kill switch: back to parked filing for every card, no code revert needed.
+  if (process.env.START_NOW_ROUTER_DISABLED === 'true') return false;
   const name = healthRowNameFromConditionKey(conditionKey);
   if (!name) return false;
   if (verify && verify.line && /owner-judgment/i.test(verify.line)) return false;

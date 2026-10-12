@@ -280,6 +280,7 @@ function linearIssuesToLedgerRows(issues) {
   for (const i of Array.isArray(issues) ? issues : []) {
     if (!i || !i.startedAt || String(i.title || '').startsWith(CANARY_TITLE_PREFIX)) continue;
     rows.push({ event: 'linear-start', ts: i.startedAt });
+    // A pass is credited to its dispatch day, as for the Mac ledgers (BRO-3321).
     if (i.state && i.state.type === 'completed') rows.push({ event: 'card-pass', ts: i.startedAt });
   }
   return rows;
