@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T03:07:47.696Z",
+      "lastSeen": "2026-10-12T03:21:07.614Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -12587,18 +12587,21 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-12T03:07:47.464Z",
-      "lastSeen": "2026-10-12T03:07:47.464Z",
-      "lastNotifiedAt": "2026-10-12T03:07:47.464Z",
+      "incidentOpenedAt": "2026-10-12T02:59:24.006Z",
+      "lastSeen": "2026-10-12T03:21:07.434Z",
+      "lastNotifiedAt": "2026-10-12T02:59:24.006Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-5116",
-      "absentRunIds": [
-        "38187654352",
-        "38189720816",
-        "38191732373"
-      ]
+      "absentRunIds": [],
+      "dispatch": {
+        "requestedAt": "2026-10-12T02:59:24.006Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38196863807",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38196863807"
+      },
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14190,7 +14193,7 @@
       "linearIdentifier": "BRO-5105",
       "silentRefires": 3,
       "absentRunIds": [
-        "38197332180"
+        "38198265032"
       ]
     },
     "land:land/bro-2735-pending-stubs": {
