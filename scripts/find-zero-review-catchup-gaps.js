@@ -40,7 +40,7 @@ function main() {
   const attempts = loadAttempts(ATTEMPTS_PATH);
   const now = Date.now();
 
-  const { batch, tooOld, exempt, givenUp } = selectCatchupCandidates(shows, reviews, attempts, { now });
+  const { batch, evidence, tooOld, exempt, givenUp } = selectCatchupCandidates(shows, reviews, attempts, { now });
 
   if (exempt.length) {
     console.log(`Exempt (noReviewsExpected, never dispatched): ${exempt.join(', ')}`);
@@ -49,10 +49,13 @@ function main() {
     console.log(`Given up (attempt budget exhausted): ${givenUp.join(', ')}`);
   }
   if (tooOld.length) {
-    console.log(`::warning::catchup-zero-review-shows: ${tooOld.length} open zero-review show(s) older than the 90-day age bound will NOT be re-dispatched — this is a status/data problem, not a discovery gap: ${tooOld.join(', ')}`);
+    console.log(`::warning::catchup-zero-review-shows: ${tooOld.length} zero-review show(s) past the 90-day age bound will NOT be re-dispatched — this is a status/data problem, not a discovery gap: ${tooOld.join(', ')}`);
+  }
+  if (evidence.length) {
+    console.log(`Including ${evidence.length} closed evidence-promoted show(s) (BRO-4290): ${evidence.join(', ')}`);
   }
   console.log(batch.length
-    ? `Found ${batch.length} open show(s) with 0 reviews needing collection: ${batch.join(', ')}`
+    ? `Found ${batch.length} show(s) with 0 reviews needing collection: ${batch.join(', ')}`
     : 'No zero-review gap shows found');
 
   const outputPath = process.env.GITHUB_OUTPUT;
