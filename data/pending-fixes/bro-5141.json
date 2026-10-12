@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5141",
   "planId": "29b59093-f787-4bd2-b9fd-f0ef9f8a8511",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T06:58:46.963Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,33 @@
         "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T08:11:53.808Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/artsdesk--laura-de-lisle.json"
+    }
+  ]
 }
