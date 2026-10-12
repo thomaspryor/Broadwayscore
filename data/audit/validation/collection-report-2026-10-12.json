@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-12T12:09:33.090Z",
+  "runDate": "2026-10-12T12:17:49.640Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 400,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "les-liaisons-dangereuses-2016",
+    "showFilter": "hercules-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 3,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
     "tier1_5Success": 1,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseMinutesUsed": 0.3,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 3,
+    "failed": 2,
     "shows": [
-      "les-liaisons-dangereuses-2016"
+      "hercules-west-end-2025"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,21 +66,34 @@
     }
   },
   "processed": [
-    "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/british-theatre--howard-loxton.json",
+    "hercules-west-end-2025/thestage--sam-marlowe.json"
   ],
-  "failed": [],
+  "failed": [
+    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+    "hercules-west-end-2025/times-uk--dominic-maxwell.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json"
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "hercules-west-end-2025/british-theatre--howard-loxton.json",
+      "hercules-west-end-2025/thestage--sam-marlowe.json"
     ],
-    "failed": []
+    "failed": [
+      "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+      "hercules-west-end-2025/times-uk--dominic-maxwell.json"
+    ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "hercules-west-end-2025/british-theatre--howard-loxton.json",
+      "hercules-west-end-2025/thestage--sam-marlowe.json"
+    ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/les-liaisons-dangereuses-2016/nytimes--ben-brantley.json",
-      "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json"
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
@@ -89,6 +102,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
