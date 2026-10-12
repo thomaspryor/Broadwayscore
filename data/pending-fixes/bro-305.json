@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-305",
   "planId": "7a9ec6aa-8732-4fe4-9082-2ef2220ff7ea",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T21:30:00Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "BRO-305: HerCampus student article prints no rating (checked the full text: no 'x/5', 'out of' or star). The '2/5' was a numeric-stars false match; ensemble unanimous Rave, site served 40."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T22:16:52.762Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json originalScore: \"2/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
 }
