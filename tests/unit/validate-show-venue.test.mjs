@@ -34,6 +34,9 @@ const broncoBillyPlaybillUrl = 'https://playbill.com/production/bronco-billy-the
 test('shortTitleSlug normalizes punctuation and dashes like Playbill URL slugs', () => {
   assert.equal(shortTitleSlug('Bronco Billy – The Musical'), 'bronco-billy-the-musical');
   assert.equal(shortTitleSlug("Schmigadoon!"), 'schmigadoon');
+  // BRO-2891: fold before the strip, so accents do not shred into separators.
+  assert.equal(shortTitleSlug('Les Misérables'), 'les-miserables');
+  assert.equal(shortTitleSlug('La Bohème'), 'la-boheme');
 });
 
 test('scorePlaybillUrl accepts the real Bronco Billy Playbill URL for the show', () => {

@@ -201,12 +201,10 @@ describe('deduplication.normalizeTitle', () => {
 // matches in content-verifier/score-input-validator/serp-slug-discovery) with
 // zero matches lost. See task #760 commit message for the per-file summary.
 const UNFOLDED_BASELINE = new Set([
-  // .mjs entries below became visible on 2026-09-08 when scanUnfolded was
-  // widened past .js (see its comment). They are PRE-EXISTING, not new — the
-  // guard simply could not see them before. Each still needs the per-file
-  // judgement of whether it matches show/critic titles at all; tracked as one
-  // issue rather than four, deliberately, on a board already at 1,080 open.
-  'transcript-scan.mjs',
+  // BRO-3036: the four .mjs files that became visible on 2026-09-08
+  // (transcript-scan.mjs here, three at scripts/ root) were judged per line
+  // and now carry diacritic-guard-ok markers (hashes, session ids, route
+  // paths, slugs, selectors), so any NEW shred line in them still flags.
   // route is one of our own hardcoded route paths ('/', '/show/hamilton') —
   // ASCII by construction, not a show title. See inline comment at the call site.
   'autonomous-ui-capture.js',
@@ -251,11 +249,6 @@ const UNFOLDED_BASELINE = new Set([
 // these (audit-cross-production.js, audit-review-url-clusters.js) have a
 // coordinated venueSlug() fix tracked in task #783.
 const UNFOLDED_BASELINE_ROOT = new Set([
-  // Pre-existing .mjs offenders, newly visible now that scanUnfolded scans
-  // .mjs as well as .js. See the note in UNFOLDED_BASELINE above.
-  'capture-aggregate-catalog.mjs',
-  'capture-show-page-catalog.mjs',
-  'visual-qa.mjs',
   'adjudicate-review-queue.js',
   'analyze-reviews.js',
   'audit-closing-dates.js',
@@ -326,7 +319,6 @@ const UNFOLDED_BASELINE_ROOT = new Set([
   'update-commercial-data.js',
   'update-show-status.js',
   'validate-data.js',
-  'validate-show-venue.js',
   'validate-stubhub-urls.js',
   'watch-aggregator-urls.js',
 ]);

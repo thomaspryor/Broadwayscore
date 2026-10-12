@@ -92,7 +92,7 @@ const path = require('path');
 
 const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
-const { canonicalVenue } = require('./lib/title-match');
+const { canonicalVenue, foldDiacritics } = require('./lib/title-match');
 // normalizeTitle is no longer imported here: the title comparison it backed
 // moved wholesale into playbill-title-match.js (BRO-2821), which calls it.
 const { playbillUrlTitleMatch, venueSlug, classifyMarketTail } = require('./lib/playbill-title-match');
@@ -296,7 +296,9 @@ function marketOf(category) {
 }
 
 function shortTitleSlug(title) {
-  return String(title || '').toLowerCase()
+  // Fold before the ASCII strip (BRO-2891): unfolded, "Les Misérables"
+  // shredded to "les-mis-rables".
+  return foldDiacritics(String(title || '')).toLowerCase()
     .replace(/[''""‘’“”]/g, '')
     .replace(/[&]/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
@@ -841,7 +843,7 @@ async function main() {
     const data = JSON.parse(fs.readFileSync(candidatesFile, 'utf8'));
     const list = Array.isArray(data) ? data : (data.candidates || []);
     targets = list.map(c => ({
-      id: c.id || (c.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-off-broadway-pending',
+      id: c.id || foldDiacritics(c.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-off-broadway-pending',
       title: c.title,
       venue: c.venue,
       category: 'off-broadway',

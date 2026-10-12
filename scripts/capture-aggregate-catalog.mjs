@@ -60,6 +60,7 @@ async function ensureServerUp() {
 }
 
 function fileSafe(s) {
+  // diacritic-guard-ok: s is a catalog route path we hardcode (ASCII by construction)
   return s.replace(/[^a-z0-9-]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'root';
 }
 

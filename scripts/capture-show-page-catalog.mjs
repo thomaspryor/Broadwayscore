@@ -67,6 +67,7 @@ async function ensureServerUp() {
 }
 
 function fileSafe(s) {
+  // diacritic-guard-ok: s is a shows.json slug, ASCII by construction
   return s.replace(/[^a-z0-9-]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase();
 }
 

@@ -127,6 +127,7 @@ const NEGATION_RE = /\b(?:not?|never|don'?t|do\s+not|avoid|please\s+do(?:n'|\s+n
 // "APPROVED:" detection — must be followed by a hash. Strict, case-sensitive.
 function approvalRe(hash) {
   // 16-char hex; escape characters in user-provided hash.
+  // diacritic-guard-ok: hash is our own hex verdict hash, not a title
   const safe = String(hash).replace(/[^a-zA-Z0-9]/g, '');
   if (!safe) return null;
   // Match `APPROVED: <hash>` allowing optional trailing chars but anchor on hash boundary.
@@ -547,7 +548,9 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
 // "ship immediately for:" and the review gate would then see it as spent and
 // block the very push the user just authorized.
 function markerPath(sessionId, markerNs = null) {
+  // diacritic-guard-ok: session id and gate namespace are ASCII ids we mint
   const safe = String(sessionId).replace(/[^a-zA-Z0-9_-]/g, '_');
+  // diacritic-guard-ok: gate namespace is a hardcoded ASCII label
   const ns = markerNs ? String(markerNs).replace(/[^a-zA-Z0-9_-]/g, '_') + '-' : '';
   return join(tmpdir(), `visual-qa-override-consumed-${ns}${safe}`);
 }

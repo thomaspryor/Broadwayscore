@@ -159,6 +159,7 @@ function getCurrentBranch() {
 }
 
 function slugify(s) {
+  // diacritic-guard-ok: s is a route path or CSS selector we write, used only as a filename
   return s.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'root';
 }
 
