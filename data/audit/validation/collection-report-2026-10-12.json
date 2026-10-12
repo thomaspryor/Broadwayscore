@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-12T23:27:52.885Z",
+  "runDate": "2026-10-12T23:28:11.146Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "martin-guerre-west-end-2026",
+    "showFilter": "franz-and-marie-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 4,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "57.1%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 7,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 3,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 6,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 4,
+    "failed": 3,
     "shows": [
-      "martin-guerre-west-end-2026"
+      "franz-and-marie-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,18 +66,36 @@
     }
   },
   "processed": [
-    "martin-guerre-west-end-2026/londontheatredirect--unknown.json"
+    "franz-and-marie-west-end-2026/adventuresintheatreland--unknown.json",
+    "franz-and-marie-west-end-2026/jolienstheatrediary--jolien.json",
+    "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
+    "franz-and-marie-west-end-2026/north-west-end--zain-russell.json"
+  ],
+  "failed": [
+    "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
+    "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json",
+    "franz-and-marie-west-end-2026/whatnightout--unknown.json"
   ],
   "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "martin-guerre-west-end-2026/londontheatredirect--unknown.json"
+      "franz-and-marie-west-end-2026/adventuresintheatreland--unknown.json",
+      "franz-and-marie-west-end-2026/jolienstheatrediary--jolien.json",
+      "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
+      "franz-and-marie-west-end-2026/north-west-end--zain-russell.json"
     ],
-    "failed": []
+    "failed": [
+      "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
+      "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json",
+      "franz-and-marie-west-end-2026/whatnightout--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "martin-guerre-west-end-2026/londontheatredirect--unknown.json"
+      "franz-and-marie-west-end-2026/adventuresintheatreland--unknown.json",
+      "franz-and-marie-west-end-2026/jolienstheatrediary--jolien.json",
+      "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
+      "franz-and-marie-west-end-2026/north-west-end--zain-russell.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -88,6 +106,28 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "First Night Magazine": {
+      "count": 1,
+      "domain": "firstnightmagazine.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Londonlivinglarge": {
+      "count": 1,
+      "domain": "londonlivinglarge.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "whatnightout": {
+      "count": 1,
+      "domain": "whatnightout.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
