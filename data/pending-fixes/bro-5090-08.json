@@ -1,0 +1,27 @@
+{
+ "issueNumber": "bro-5090-08",
+ "planId": "29a33105-6ca6-4c0f-b70a-82b47cf91c5d",
+ "status": "pending",
+ "createdAt": "2026-10-12T13:45:14.236Z",
+ "submitter": {
+  "name": null,
+  "email": null
+ },
+ "plan": {
+  "summary": "BRO-5090 part 8: correct 1 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+  "steps": [
+   "Page byline at https://www.wsj.com/articles/SB10001424052702303289904579196071894765670?gaa_at=eafs&gaa_n=AWEtsqcsgR3fxx8QM2R_FvTbOIN9Ou19cDBTWX9cEjAl6CyAJ99Edp7lmtlJ&gaa_ts=69a8c2de&gaa_sig=YeWQq1SNdKxjlHoOb6QTzzcgeLLZujMp6q2mdZ79BIXY7os35h19WBk_3B7N8QVos8Hm7A3nd3V2X91S5U6kyQ%3D%3D is Stefanie Cohen; Terry Teachout came from the legacy web-search step and is not on the page."
+  ],
+  "riskLevel": "Low",
+  "actions": [
+   {
+    "type": "review-field-edit",
+    "file": "after-midnight-2013/wsj--terry-teachout.json",
+    "field": "criticName",
+    "oldValue": "Terry Teachout",
+    "newValue": "Stefanie Cohen",
+    "description": "Page byline at https://www.wsj.com/articles/SB10001424052702303289904579196071894765670?gaa_at=eafs&gaa_n=AWEtsqcsgR3fxx8QM2R_FvTbOIN9Ou19cDBTWX9cEjAl6CyAJ99Edp7lmtlJ&gaa_ts=69a8c2de&gaa_sig=YeWQq1SNdKxjlHoOb6QTzzcgeLLZujMp6q2mdZ79BIXY7os35h19WBk_3B7N8QVos8Hm7A3nd3V2X91S5U6kyQ%3D%3D is Stefanie Cohen; Terry Teachout came from the legacy web-search step and is not on the page."
+   }
+  ]
+ }
+}
