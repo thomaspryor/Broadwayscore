@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4599-g",
   "planId": "ccbf6d0e-6847-4cfa-8b59-76609e80a51d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T11:08:34.271Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,28 @@
         "description": "review of I'm Every Woman (Chaka Khan musical); never names The Car Man"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T13:51:28.737Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "becky-shaw-2026/nytimes--elisabeth-vincentelli.json wrongShow: true -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/times-uk--clive-davis.json wrongShow: true -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "robin-hood-and-the-merry-mandem-off-west-end-2026/london-theatre--olivia-rook.json wrongShow: null -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-car-man-west-end-2026/guardian--ammar-kalia.json wrongShow: null -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    }
+  ]
 }
