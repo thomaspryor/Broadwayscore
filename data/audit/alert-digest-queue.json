@@ -1589,19 +1589,6 @@
     "queuedAt": "2026-10-12T05:36:49.074Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38211186359",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T06:16:34.786Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:a-ghost-in-your-ear-off-broadway-2026",
     "title": "Review gap — \"A Ghost In Your Ear\" missing 2 cited review(s)",
     "description": "A Ghost In Your Ear (a-ghost-in-your-ear-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-ghost-in-your-ear-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1726,5 +1713,18 @@
       }
     ],
     "queuedAt": "2026-10-12T06:13:08.784Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38211996579",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T06:25:03.837Z"
   }
 ]
