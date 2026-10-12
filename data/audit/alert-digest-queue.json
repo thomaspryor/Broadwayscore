@@ -1464,5 +1464,53 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-12T03:10:52.544Z"
+  },
+  {
+    "conditionKey": "coverage-holes:hay-fever-west-end-2026",
+    "title": "hay-fever-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- published 45 outside the critic's band 51-70 (star 2.5/5 band 51-70): hay-fever-west-end-2026/firstnightmagazine--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T03:15:02.944Z"
+  },
+  {
+    "conditionKey": "coverage-holes:good-time-charlie-off-broadway-2026",
+    "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: good-time-charlie-off-broadway-2026/nytimes--laura-collins-hughes.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T03:15:02.955Z"
+  },
+  {
+    "conditionKey": "coverage-holes:rent-west-end-2026",
+    "title": "rent-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: rent-west-end-2026/ground--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T03:15:02.966Z"
+  },
+  {
+    "conditionKey": "coverage-holes:an-oak-tree-off-west-end-2026",
+    "title": "an-oak-tree-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- published 68 outside the critic's band 71-90 (star 3.5/5 band 71-90): an-oak-tree-off-west-end-2026/the-spy-in-the-stalls--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T03:15:03.003Z"
   }
 ]
