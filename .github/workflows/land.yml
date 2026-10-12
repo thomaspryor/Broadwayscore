@@ -333,6 +333,7 @@ jobs:
         continue-on-error: true
         env:
           LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
+          LAND_TOPLEVEL_ADVISORY: ${{ vars.LAND_TOPLEVEL_ADVISORY }}
         run: |
           SRC="ran now (nothing cached)"
           [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
@@ -353,6 +354,7 @@ jobs:
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
           DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+          LAND_TOPLEVEL_ADVISORY: ${{ vars.LAND_TOPLEVEL_ADVISORY }}
         # A cached base was measured against an older private-data clone (the
         # unit batches read data/*.json, which is in no tree hash — it changes
         # every ~30 min and keying on it would never hit). If the data has

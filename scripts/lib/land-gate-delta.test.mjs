@@ -431,37 +431,48 @@ test('computeCodeTreeHash against a real git repo: a data-only commit keeps the 
   }
 });
 
-test('toplevel-regression (BRO-5117): keyed by failing file; ADVISORY (verdict pass, failure still named) until LAND_TOPLEVEL_BLOCKING=1', () => {
-  const line = '::error::toplevel-regression gate failed: scripts/test-opening-night-fixes.js (exit 1)';
-  assert.equal(GATES.includes('toplevel-regression'), true);
-  assert.equal(parseGateFailures('toplevel-regression', line).size, 1);
-  const read = (dir) => (dir === 'branch' ? { exit: 1, text: line } : { exit: 0, text: '' });
-  const prev = process.env.LAND_TOPLEVEL_BLOCKING;
+function withToplevelAdvisory(value, fn) {
+  const prev = process.env.LAND_TOPLEVEL_ADVISORY;
   try {
-    delete process.env.LAND_TOPLEVEL_BLOCKING;
-    const [adv] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read });
-    assert.equal(adv.verdict, 'pass');
-    assert.equal(adv.mode, 'advisory');
-    assert.equal(adv.newFailures.length, 1);
-    process.env.LAND_TOPLEVEL_BLOCKING = '1';
-    const [armed] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read });
-    assert.equal(armed.verdict, 'fail');
+    if (value === undefined) delete process.env.LAND_TOPLEVEL_ADVISORY; else process.env.LAND_TOPLEVEL_ADVISORY = value;
+    return fn();
   } finally {
-    if (prev === undefined) delete process.env.LAND_TOPLEVEL_BLOCKING; else process.env.LAND_TOPLEVEL_BLOCKING = prev;
+    if (prev === undefined) delete process.env.LAND_TOPLEVEL_ADVISORY; else process.env.LAND_TOPLEVEL_ADVISORY = prev;
   }
+}
+const TOPLEVEL_LINE = '::error::toplevel-regression gate failed: scripts/test-opening-night-fixes.js (exit 1)';
+
+test('toplevel-regression (BRO-5117): keyed by failing file; BLOCKS a newly-red file by default, advisory only with LAND_TOPLEVEL_ADVISORY=1', () => {
+  assert.equal(GATES.includes('toplevel-regression'), true);
+  assert.equal(parseGateFailures('toplevel-regression', TOPLEVEL_LINE).size, 1);
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: TOPLEVEL_LINE } : { exit: 0, text: '' });
+  for (const unset of [undefined, '', '0']) {
+    const [armed] = withToplevelAdvisory(unset, () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read }));
+    assert.equal(armed.verdict, 'fail', `LAND_TOPLEVEL_ADVISORY=${JSON.stringify(unset)} must block`);
+  }
+  const [adv] = withToplevelAdvisory('1', () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read }));
+  assert.equal(adv.verdict, 'pass');
+  assert.equal(adv.mode, 'advisory');
+  assert.equal(adv.newFailures.length, 1);
+});
+
+test('toplevel-regression armed: a file already red on origin/main is pre-existing, not blocking', () => {
+  const read = () => ({ exit: 1, text: TOPLEVEL_LINE });
+  const [d] = withToplevelAdvisory(undefined, () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read }));
+  assert.equal(d.verdict, 'pass');
+  assert.equal(d.preExisting.length, 1);
 });
 
 test('toplevel-regression advisory never downgrades a gate that did not run (fail-safe stays FAIL)', () => {
-  delete process.env.LAND_TOPLEVEL_BLOCKING;
-  const [d] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read: () => null });
+  const [d] = withToplevelAdvisory('1', () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read: () => null }));
   assert.equal(d.verdict, 'fail');
 });
 
-test('toplevel-regression advisory: base ran but parsed nothing (base tree predates the gate) does not block', () => {
-  delete process.env.LAND_TOPLEVEL_BLOCKING;
-  const line = '::error::toplevel-regression gate failed: scripts/test-opening-night-fixes.js (exit 1)';
-  const read = (dir) => (dir === 'branch' ? { exit: 1, text: line } : { exit: 1, text: '::error::land-gauntlet-toplevel-list.js derived ZERO' });
-  const [d] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read });
+test('toplevel-regression: base ran but parsed nothing is fail-safe (blocks when armed, advisory with the kill switch)', () => {
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: TOPLEVEL_LINE } : { exit: 1, text: '::error::land-gauntlet-toplevel-list.js derived ZERO' });
+  const [armed] = withToplevelAdvisory(undefined, () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read }));
+  assert.equal(armed.verdict, 'fail');
+  const [d] = withToplevelAdvisory('1', () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read }));
   assert.equal(d.verdict, 'pass');
   assert.equal(d.mode, 'advisory');
 });

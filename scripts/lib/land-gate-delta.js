@@ -98,8 +98,11 @@ const { isInertForVerification } = require('./land-branch.js');
 // The gates land.yml's checks job runs, in verdict order (the first failing
 // one names the digest line). Keep in step with scripts/lib/land-gauntlet.sh.
 const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'bash-integration', 'toplevel-regression', 'lint-workflows'];
-// Gates that report but do not block yet (CLAUDE.md §19: new blocking gates land
-// advisory first). toplevel-regression (BRO-5117) arms with LAND_TOPLEVEL_BLOCKING=1.
+// Gates that landed advisory first (CLAUDE.md §19). toplevel-regression
+// (BRO-5117) is ARMED since 2026-10-12: across its first 15 land runs it was
+// green 14 times and fired once, a true positive (BRO-2749's raw Date parse,
+// which then turned main test.yml red as BRO-5140). Kill switch: repo variable
+// LAND_TOPLEVEL_ADVISORY=1 puts it back to report-only.
 const ADVISORY_GATES = new Set(['toplevel-regression']);
 const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
@@ -267,14 +270,14 @@ function decideGateDelta({ gate, base, branch }) {
 
 /** Decide every gate. `read(dir, gate)` → {exit,text,root} | null. */
 function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) {
-  const armed = process.env.LAND_TOPLEVEL_BLOCKING === '1';
+  const armed = process.env.LAND_TOPLEVEL_ADVISORY !== '1';
   return gates.map((gate) => {
     const branchResult = read(branch, gate);
     const d = decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: branchResult });
     // Only a gate that never ran ON THE BRANCH stays blocking. A base tree that
     // predates the gate (first land of it) also reaches fail-safe, and must not block.
     if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate) || !branchResult) return d;
-    return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (BRO-5117; not blocking until LAND_TOPLEVEL_BLOCKING=1): ${d.reason}` };
+    return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (BRO-5117; LAND_TOPLEVEL_ADVISORY=1 is set): ${d.reason}` };
   });
 }
 

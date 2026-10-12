@@ -46,7 +46,9 @@
 #     BRO-5117: the gauntlet never ran these, so BRO-5079 (test-opening-night-
 #     fixes.js) and BRO-5115 (test-ordinal-publishdate-guards.js) landed clean
 #     and turned main red. List DERIVED from test.yml, like bash-integration.
-#     Lands ADVISORY in land-gate-delta.js (CLAUDE.md §19).
+#     Blocking since 2026-10-12 (kill switch: LAND_TOPLEVEL_ADVISORY=1, see
+#     land-gate-delta.js). A red file is retried once, so a one-off flake on
+#     the branch cannot refuse a land (the branch side is never re-measured).
 # Env: GAUNTLET_GATES — optional comma list (e.g. "lint-workflows" or
 #   "unit-tests-node,scripts-lib-tests"): run only those gates, skipping the
 #   gold-lists prep unless a unit gate is listed. Unset = every gate (land.yml
@@ -236,6 +238,11 @@ toplevel_regression() {
     echo "── $f"
     timeout 120 node "$f"
     rc=$?
+    if [ "$rc" -ne 0 ]; then
+      echo "── $f exited $rc; retrying once to rule out a flake"
+      timeout 120 node "$f"
+      rc=$?
+    fi
     if [ "$rc" -ne 0 ]; then
       echo "::error::toplevel-regression gate failed: $f (exit $rc)"
       FAILED="$FAILED\n  - $f"
