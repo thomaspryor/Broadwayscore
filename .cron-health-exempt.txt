@@ -297,3 +297,4 @@ cron-redispatch.yml
 # BRO-4282: weekly CV-promoted re-verify, capped per run; a missed week leaves the
 # backlog one more week, nothing user-facing.
 reverify-cv-promoted-weekly.yml
+retry-empty-body-reviews.yml  # twice-daily bounded sweep (max 10 files/run); failures reach the daily digest via notify-failure, stalls surface in the liveness sweep
