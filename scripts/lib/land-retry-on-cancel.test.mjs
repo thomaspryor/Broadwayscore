@@ -42,7 +42,7 @@ test('Land job that succeeded/failed is not retried', () => {
 });
 test('workflow wiring: triggers on Land completion and calls the real script', () => {
   const y = readFileSync(new URL('../../.github/workflows/land-retry-cancelled.yml', import.meta.url), 'utf8');
-  // BRO-4653: every Land completion triggers a slot-aware sweep (not only cancels)
+  // BRO-4653: every Land completion triggers a sweep (not only cancels)
   assert.match(y, /workflows: \['Land', 'Autonomous Merge'\]/);
   assert.match(y, /land-retry-cancelled\.js --sweep/);
   assert.match(y, /scripts\/land-retry-cancelled\.js/);
@@ -117,42 +117,22 @@ test('runGhWithFallback: buffer fits a 100-run listing (>1 MB; the 1 MB default 
   assert.ok(seen.maxBuffer >= 16 * 1024 * 1024);
 });
 
-// BRO-4676: a busy slot must not starve a stranded run forever.
-test('BRO-4676 aging: busy slot + stranded run past threshold → re-run; only young runs → wait', () => {
-  const { decideSweep, AGED_RETRY_MINUTES } = require('./land-queue-backoff.js');
-  const now = Date.parse('2026-10-05T05:30:00Z');
-  const mk = (id, minAgo) => ({
-    id, status: 'completed', conclusion: 'cancelled', run_attempt: 1, head_branch: `land/${id}`, head_sha: `s${id}`,
-    created_at: new Date(now - 600 * 60000).toISOString(), updated_at: new Date(now - minAgo * 60000).toISOString(),
-  });
-  const busy = { busy: true, blockers: [{ id: 1, branch: 'land/x', status: 'in_progress', why: 'holds-slot' }] };
-  const stale = mk(37259496468, AGED_RETRY_MINUTES + 60);
-  const fresh = mk(2, 5);
-  const refs = new Map([stale, fresh].map((r) => [r.head_branch, r.head_sha]));
-  const aged = decideSweep({ slot: busy, cancelledRuns: [stale, fresh], refs, now });
-  assert.equal(aged.action, 'inspect');
-  assert.deepEqual(aged.candidates.map((r) => r.id), [37259496468]);
-  assert.equal(decideSweep({ slot: busy, cancelledRuns: [fresh], refs, now }).action, 'wait');
-});
-
-test('BRO-4677: sustained traffic (a Land job always running, none pending) still selects the oldest stranded run', () => {
+// BRO-4677 (BRO-5112: no shared seat any more, so no slot gating): the sweep
+// selects the oldest stranded run and decideLandRetry accepts it.
+test('BRO-4677: the sweep selects the oldest stranded run and decideLandRetry accepts it', () => {
   const { decideSweep } = require('./land-queue-backoff.js');
   const now = Date.parse('2026-10-05T06:00:00Z');
   const mk = (id, minAgo) => ({
     id, status: 'completed', conclusion: 'cancelled', run_attempt: 1, head_branch: `land/b${id}`, head_sha: `s${id}`,
     created_at: new Date(now - (minAgo + 5) * 60000).toISOString(), updated_at: new Date(now - minAgo * 60000).toISOString(),
   });
-  // evicted 6 and 12 minutes ago: far below the 30-min aging threshold
   const stranded = [mk(2, 6), mk(1, 12)];
   const refs = new Map(stranded.map((r) => [r.head_branch, r.head_sha]));
-  const slot = { busy: true, pending: false, blockers: [{ id: 99, branch: 'land/live', status: 'in_progress', why: 'running' }] };
-  const sweep = decideSweep({ slot, cancelledRuns: stranded, refs, now });
+  const sweep = decideSweep({ cancelledRuns: stranded, refs, now });
   assert.equal(sweep.action, 'inspect');
   assert.equal(sweep.candidates[0].id, 1, 'oldest stranded run goes first');
   const verdict = decideLandRetry({ run: sweep.candidates[0], jobs: jobs(), branchExists: true, branchTip: 's1' });
   assert.equal(verdict.retry, true);
-  // the same traffic with a pending entrant keeps waiting (the re-run would evict it)
-  assert.equal(decideSweep({ slot: { ...slot, pending: true }, cancelledRuns: stranded, refs, now }).action, 'wait');
 });
 
 test('decideCancelledWait: a failed rerun POST is benign only when the run already moved on', () => {

@@ -1,7 +1,27 @@
 {
-  "generatedAt": "2026-10-11T13:38:35.915Z",
-  "bannerText": "173/232 Done(14d) verified on main · 6 FAILED · 1 vacuous · 8 stuck-but-done — PARTIAL RUN: 54 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-12T03:20:01.941Z",
+  "bannerText": "257/281 Done(14d) verified on main · 8 FAILED · 1 vacuous · 12 stuck-but-done — PARTIAL RUN: 8 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
+    {
+      "title": "FAILED BRO-5020 — Review held commercial research rows (BRO-4990 46 + BRO-5017) by truth-class rule before release",
+      "detail": "TAP version 13 # ⚠️ Rejected non-canonical designation \"bogus\" (valid: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit, Tour Stop) # ⚠️ Rejected non-canonica…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
+    },
+    {
+      "title": "FAILED BRO-4947 — Untangle mixed and duplicate outlet ids: dctheatrescene, observer, dc-metro/dc-theater-arts, gotham-playgoer/bobs-theater-blog, medium, zeal-nyc",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-outlet-tiers.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4947/untangle-mixed-and-duplicate-outlet-ids-dctheatrescene-observer-dc"
+    },
+    {
+      "title": "FAILED BRO-4884 — WE historical Phase C: 2023-24 to 2018-19",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-we-historical-season.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4884/we-historical-phase-c-2023-24-to-2018-19"
+    },
+    {
+      "title": "FAILED BRO-4167 — BSC Daily: Workflow repeat-failure: Land",
+      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Land\" still listed in the 2026-10-12T03:14:25.317Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4167/bsc-daily-workflow-repeat-failure-land"
+    },
     {
       "title": "FAILED BRO-3626 — Rage clicks on 'All' filter on Off-Broadway page",
       "detail": "TAP version 13 # node:internal/modules/esm/get_format:189 # throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath); # ^ # TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extensi…",
@@ -18,30 +38,10 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2883/p1-rebuild-reviews-push-core-data-retry-loop-cannot-converge-5"
     },
     {
-      "title": "FAILED BRO-5050 — BRO-5020 cap-only commercial fixes never applied (grey-house validation failure)",
-      "detail": "TAP version 13 # Subtest: the-lehman-trilogy-2021 carries the BRO-5020 values ok 1 - the-lehman-trilogy-2021 carries the BRO-5020 values --- duration_ms: 1.061569 ... # Subtest: m…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5050/bro-5020-cap-only-commercial-fixes-never-applied-grey-house-validation"
-    },
-    {
-      "title": "FAILED BRO-5020 — Review held commercial research rows (BRO-4990 46 + BRO-5017) by truth-class rule before release",
-      "detail": "TAP version 13 # ⚠️ Rejected non-canonical designation \"bogus\" (valid: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit, Tour Stop) # ⚠️ Rejected non-canonica…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
-    },
-    {
-      "title": "FAILED BRO-4947 — Untangle mixed and duplicate outlet ids: dctheatrescene, observer, dc-metro/dc-theater-arts, gotham-playgoer/bobs-theater-blog, medium, zeal-nyc",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-outlet-tiers.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4947/untangle-mixed-and-duplicate-outlet-ids-dctheatrescene-observer-dc"
-    },
-    {
-      "title": "STUCK BRO-3889 — P1: ~63% of owner-alert-router conditions still file undispatchable cards — BRO-3881 only covered health-check rows",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3889/p1-63percent-of-owner-alert-router-conditions-still-file"
-    },
-    {
-      "title": "STUCK BRO-3793 — P1: venue-page opening-date extraction wrote an openingDate its cited source does not contain (mis-sized opening-night monitor window by 4 days)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3793/p1-venue-page-opening-date-extraction-wrote-an-openingdate-its-cited"
+      "title": "FAILED BRO-447 — BSC Daily: Workflow repeat-failure: Check Corpus Drift",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/checkCorpusDrift.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-447/bsc-daily-workflow-repeat-failure-check-corpus-drift"
     }
   ],
-  "moreCount": 7
+  "moreCount": 13
 }

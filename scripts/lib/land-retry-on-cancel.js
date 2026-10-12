@@ -3,11 +3,12 @@
 /**
  * land-retry-on-cancel.js — pure decision for BRO-4246.
  *
- * land.yml's `land` job sits in the global concurrency group `landing`
- * (cancel-in-progress: false). GitHub keeps ONE pending run per group, so a
- * queued Land job is cancelled when a newer landing queues behind it, even
- * though its Checks job passed. This decides whether a completed Land run is
- * that case and should be re-run (`gh run rerun <id> --failed`, which re-runs
+ * land.yml's `land` job sat in the global concurrency group `landing` until
+ * BRO-5112 (now per branch, with the git-ref landing mutex serializing the
+ * fast-forward). GitHub keeps ONE pending run per group, so a queued Land job
+ * could be cancelled before doing any work even though its Checks job passed
+ * (still possible for a same-branch run or a pre-BRO-5112 definition). This
+ * decides whether a completed Land run is that case and should be re-run (`gh run rerun <id> --failed`, which re-runs
  * only the cancelled Land job and keeps the verified Checks result).
  *
  * Retry ONLY when: the run is cancelled, Checks succeeded, Land was cancelled

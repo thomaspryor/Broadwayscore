@@ -262,6 +262,7 @@ jobs:
           exit 0
 
       - name: Push core data (regional auto-promotion)
+        id: push_core_regional
         if: always()
         uses: ./.github/actions/push-core-data
         with:
@@ -301,7 +302,9 @@ jobs:
       # run, so per-id dispatches would drop all but the last. Weekly cron still
       # catches anything this misses.
       - name: Dispatch UK press discovery for Guardian-triggered shows
-        if: always()
+        # Only once the new show is actually in the private repo; a dispatch
+        # after a failed push would find no show to search for.
+        if: always() && steps.push_core_regional.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}

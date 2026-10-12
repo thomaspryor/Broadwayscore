@@ -22,7 +22,9 @@ function cityFromVenue(venue) {
   // "Venue Name, City, ST" — city is the second-to-last comma segment.
   const parts = venue.split(',').map((s) => s.trim()).filter(Boolean);
   if (parts.length < 2) return null;
-  return parts[parts.length - 2];
+  // A trailing 2-letter state/province ("Red Bank, NJ") means the city is one back;
+  // a UK venue ("Royal Shakespeare Theatre, Stratford-upon-Avon") ends in the city.
+  return /^[A-Z]{2}$/.test(parts[parts.length - 1]) ? parts[parts.length - 2] : parts[parts.length - 1];
 }
 
 // National tours (market 'tour') join the pool: their review corpus is the same

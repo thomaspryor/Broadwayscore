@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-11T13:48:36.107Z",
+  "generatedAt": "2026-10-12T03:30:12.625Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3708,
+  "scannedShows": 3725,
   "flaggedShows": 63,
   "flaggedFiles": 225,
   "readmissionRiskFiles": 0,
@@ -3416,6 +3416,42 @@
       ]
     },
     {
+      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
+      "title": "Dirty Dancing: The Classic Story on Stage",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Capital Theatre",
+      "previewsStartDate": "2026-10-16",
+      "openingDate": "2026-10-16",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Capital Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2023
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-theatre--sophie-thomas.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "london-theatre",
+          "criticName": "Sophie Thomas",
+          "publishDate": "January 26th, 2023",
+          "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-snowman-west-end-2026",
       "title": "The Snowman",
       "market": "west-end",
@@ -4383,42 +4419,6 @@
           "url": "https://www.londonboxoffice.co.uk/news/post/review-captain-corellis-mandolin",
           "wrongProduction": true,
           "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "hound-of-the-baskervilles-off-west-end-2026",
-      "title": "Hound of the Baskervilles",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "King's Head Theatre",
-      "previewsStartDate": "2026-10-06",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"King's Head Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2017
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--hugh-wooldridge.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Hugh Wooldridge",
-          "publishDate": "2017-12-12",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-hound-baskervilles",
-          "wrongProduction": true,
-          "wrongShow": false,
           "evaluationError": null
         }
       ]

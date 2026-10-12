@@ -14,13 +14,17 @@
  * lane (branch `land/**main-red**`, e.g. land/main-red-bro-5079) is admitted
  * at once. Everything is fail-open: a deadline, an unreadable listing or any
  * error admits the lane (today's behaviour), so admit can never deadlock the
- * queue. The sweep (land-queue-backoff.decideSweep) reuses isMainRedBranch so
- * it never evicts a pending main-red lane with an ordinary re-run.
+ * queue. The sweep (land-queue-backoff.decideSweep) and the landing mutex
+ * (scripts/lib/land-mutex.js, BRO-5112) reuse isMainRedBranch so main-red
+ * lanes are re-run and take the lock first.
+ *
+ * BRO-5112 gave the Land job a per-branch group, so ordinary lanes no longer
+ * evict the fix; admit stays as the card's invariant and still keeps ordinary
+ * lanes off the mutex queue while a fix is on its way.
  *
  * Known limits (BRO-5096 review): a main-red lane started by workflow_dispatch
  * lists under `main`, so admit cannot see it (name the push branch main-red);
- * autonomous-merge.yml shares `landing` without an admit step; two main-red
- * lanes can still evict each other (bounded by the retry budget); a dead
+ * autonomous-merge.yml has no admit step (it queues in the mutex); a dead
  * main-red lane holds ordinary lanes at most PRIORITY_STALE_HOURS.
  */
 

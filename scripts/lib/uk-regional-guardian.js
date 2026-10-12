@@ -31,23 +31,41 @@ const norm = (s) => foldDiacritics(String(s || ''))
   .replace(/[^a-z0-9']+/g, ' ')
   .trim();
 
+// Words that mark a slug as naming SOME venue. A company-level tag ("Royal
+// Shakespeare Company") alone does not prove the review is of a show AT that
+// company's house: the RSC and Bristol Old Vic co-produce and tour, and the
+// Guardian tags the company either way.
+const SLUG_VENUE_WORDS = new Set([
+  'theatre', 'theater', 'playhouse', 'rep', 'opera', 'hall', 'festival', 'arts',
+  'centre', 'center', 'lyceum', 'stage', 'studio', 'cathedral', 'castle',
+]);
+
 /**
  * Which flagship UK house a Guardian item belongs to, from its keyword tags
- * and URL slug. Aliases are matched on whole words, so "rsc" in a slug counts
- * but "rscx" does not.
+ * and URL slug. Aliases are matched on whole phrases.
+ *
+ * A slug that names the house is proof. A tag alone is accepted only when the
+ * slug names no other venue, or also names this house's city (Antigone Exits:
+ * tag "Chichester Festival theatre", slug "...-minerva-theatre-chichester-..."),
+ * so a tour date reviewed at a Newcastle theatre but tagged with the RSC is
+ * dropped instead of filed at Stratford.
  *
  * @param {{tags?: string[], slug?: string}} p tags already lower-cased/decoded or not (normalised here)
  * @returns {{venue: string, city: string, match: string, domain: string}|null}
  */
 function ukFlagshipVenueFor({ tags = [], slug = '' } = {}) {
-  const haystacks = [...tags.map(norm), norm(String(slug).replace(/-/g, ' '))].filter(Boolean);
+  const slugText = norm(String(slug).replace(/-/g, ' '));
+  const slugTokens = slugText.split(' ').filter(Boolean);
+  const tagTexts = tags.map(norm).filter(Boolean);
   for (const v of UK_VENUES) {
     const aliases = (v.aliases && v.aliases.length ? v.aliases : [v.match]).map(norm);
-    for (const a of aliases) {
-      const re = new RegExp(`(^| )${a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}( |$)`);
-      if (haystacks.some((h) => re.test(h))) {
-        return { venue: v.venue || v.match, city: v.city, match: v.match, domain: v.domain };
-      }
+    const hit = (h) => aliases.some((a) => new RegExp(`(^| )${a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}( |$)`).test(h));
+    const result = { venue: v.venue || v.match, city: v.city, match: v.match, domain: v.domain };
+    if (hit(slugText)) return result;
+    if (tagTexts.some(hit)) {
+      const cityToken = norm(v.city).split(' ')[0];
+      const namesOtherVenue = slugTokens.some((t) => SLUG_VENUE_WORDS.has(t));
+      if (!namesOtherVenue || slugTokens.includes(cityToken)) return result;
     }
   }
   return null;
@@ -71,6 +89,46 @@ function isUkFlagshipVenue(venue) {
  */
 function ukFlagshipShows(shows) {
   return (shows || []).filter((s) => s && s.category === 'regional' && isUkFlagshipVenue(s.venue));
+}
+
+const DAY_MS = 86400000;
+const titleKeys = (t) => {
+  const full = norm(t).replace(/ /g, '');
+  const keys = new Set(full ? [full] : []);
+  const head = norm(String(t || '').split(/:| - /)[0]);
+  // A multi-word head ("Game of Thrones" for "Game of Thrones: The Mad King") matches too.
+  if (head && head.includes(' ') && head.length >= 6) keys.add(head.replace(/ /g, ''));
+  return keys;
+};
+
+/**
+ * Is `candidate` (a Guardian item or staged row: title, venue, date or
+ * articlePublishedAt) a review of the production `show` already catalogues?
+ * Same flagship house, same title, and a review date inside the show's run
+ * (previews to closing, or 120 days when it has no closing date) give or take
+ * three weeks. Title alone is not enough: the RSC restages the canon, so a new
+ * Twelfth Night must not be swallowed by a closed 2019 one, and a Hamlet at
+ * Bristol Old Vic is not the RSC Hamlet.
+ */
+function isSameProduction(candidate, show) {
+  if (!candidate || !show) return false;
+  const house = ukVenueEntry(candidate.venue);
+  if (!house || house !== ukVenueEntry(show.venue)) return false;
+  const a = titleKeys(candidate.title);
+  const b = titleKeys(show.title);
+  if (![...a].some((k) => b.has(k))) return false;
+  const at = Date.parse(candidate.date || candidate.articlePublishedAt);
+  const dates = [show.previewsStartDate, show.openingDate].map((d) => Date.parse(d)).filter(Number.isFinite);
+  if (!Number.isFinite(at) || dates.length === 0) return true; // cannot tell: treat as already catalogued
+  const start = Math.min(...dates);
+  const close = Date.parse(show.closingDate);
+  const end = Number.isFinite(close) ? close : Math.max(...dates) + 120 * DAY_MS;
+  return at >= start - 21 * DAY_MS && at <= end + 21 * DAY_MS;
+}
+
+/** The catalogued show `candidate` reviews, or undefined. */
+function findSameProduction(candidate, shows) {
+  return (shows || []).find((s) => isSameProduction(candidate, s));
 }
 
 /**
@@ -135,4 +193,4 @@ function stageUkRegionalCandidates(candidates, nowIso = new Date().toISOString()
   return out;
 }
 
-module.exports = { ukFlagshipVenueFor, isUkFlagshipVenue, ukVenueEntry, ukFlagshipShows, decideUkFlagshipPromotion, stageUkRegionalCandidates };
+module.exports = { ukFlagshipVenueFor, isUkFlagshipVenue, ukVenueEntry, ukFlagshipShows, isSameProduction, findSameProduction, decideUkFlagshipPromotion, stageUkRegionalCandidates };

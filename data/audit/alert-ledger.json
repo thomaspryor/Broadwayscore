@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T03:21:07.614Z",
+      "lastSeen": "2026-10-12T03:54:48.846Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 21
+      "silentRefires": 23
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -636,13 +636,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-10-11T13:50:57.803Z",
+      "lastSeen": "2026-10-12T03:32:34.822Z",
       "lastNotifiedAt": "2026-10-07T09:04:37.321Z",
       "lastSurfacedAt": "2026-10-07T09:04:37.321Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -12587,21 +12587,15 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-12T02:59:24.006Z",
-      "lastSeen": "2026-10-12T03:21:07.434Z",
-      "lastNotifiedAt": "2026-10-12T02:59:24.006Z",
+      "incidentOpenedAt": "2026-10-12T03:07:47.464Z",
+      "lastSeen": "2026-10-12T03:54:48.841Z",
+      "lastNotifiedAt": "2026-10-12T03:07:47.464Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-5116",
       "absentRunIds": [],
-      "dispatch": {
-        "requestedAt": "2026-10-12T02:59:24.006Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38196863807",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38196863807"
-      },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14180,7 +14174,7 @@
       "linearIdentifier": "BRO-5106"
     },
     "test-yml:red:Unit Tests:d27c1fe5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"mrs-doubtfire-2021 carries the BRO-5020 values\"",
       "firstSeen": "2026-10-12T01:07:33.762Z",
@@ -14193,8 +14187,12 @@
       "linearIdentifier": "BRO-5105",
       "silentRefires": 3,
       "absentRunIds": [
-        "38198265032"
-      ]
+        "38197332180",
+        "38198673628",
+        "38200573284"
+      ],
+      "resolvedAt": "2026-10-12T03:54:48.816Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-2735-pending-stubs": {
       "status": "open",
@@ -14296,6 +14294,32 @@
       "lastSeen": "2026-10-12T03:15:03.003Z",
       "lastNotifiedAt": "2026-10-12T03:15:03.003Z",
       "lastSurfacedAt": "2026-10-12T03:15:03.003Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast:never-sent:into-the-woods-noel-coward-west-end-2026": {
+      "status": "open",
+      "disposition": "human",
+      "title": "Opening Night Email Never Reached Subscribers — Into the Woods",
+      "firstSeen": "2026-10-12T03:32:22.628Z",
+      "incidentOpenedAt": "2026-10-12T03:32:22.628Z",
+      "lastSeen": "2026-10-12T03:32:22.628Z",
+      "lastNotifiedAt": "2026-10-12T03:32:22.628Z",
+      "lastSurfacedAt": "2026-10-12T03:32:22.628Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast:never-sent:from-the-heart-west-end-2026": {
+      "status": "open",
+      "disposition": "human",
+      "title": "Opening Night Email Never Reached Subscribers — From The Heart",
+      "firstSeen": "2026-10-12T03:32:22.730Z",
+      "incidentOpenedAt": "2026-10-12T03:32:22.730Z",
+      "lastSeen": "2026-10-12T03:32:22.730Z",
+      "lastNotifiedAt": "2026-10-12T03:32:22.730Z",
+      "lastSurfacedAt": "2026-10-12T03:32:22.730Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

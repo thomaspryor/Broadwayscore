@@ -1,6 +1,7 @@
 'use strict';
 
 const { datesFromDiscoveredReviews } = require('./opening-signal');
+const { toDateMs } = require('./date-utils');
 
 /**
  * Date-independent detection of review URLs we discovered and then never fetched.
@@ -94,8 +95,8 @@ function isOtherProductionEvidence(show, review) {
   // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
   // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
   // nothing; require positive evidence the file is about the earlier run.
-  const pub = Date.parse(review.publishDate || '');
-  const open = Date.parse(show.openingDate || '');
+  const pub = toDateMs(review.publishDate);
+  const open = toDateMs(show.openingDate);
   if (!Number.isNaN(pub) && !Number.isNaN(open) && pub < open - 60 * 86400000) return true;
   return /\b(original|earlier|prior|previous|off-)?\s*(Broadway|Off-Broadway|New York|NYC)\b[^.]{0,40}\b(production|run)\b/i.test(note)
     && /original|earlier|prior|previous|ran\b/i.test(note);
@@ -217,7 +218,25 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
   };
 }
 
+/**
+ * Open `uncollected-blackout:<id>` ledger keys whose show is no longer in the
+ * current blackout set. Nothing else ever resolves these (BRO-5077: 14 sat
+ * open forever, so every card's "condition absent" acceptance check could
+ * never pass even after the data was fixed).
+ *
+ * @param {Object<string, {status?: string}>} conditions ledger.conditions
+ * @param {Iterable<string>} blackoutShowIds current blackouts
+ * @returns {string[]} conditionKeys to resolve
+ */
+function staleBlackoutKeys(conditions, blackoutShowIds) {
+  const live = new Set(blackoutShowIds || []);
+  const prefix = 'uncollected-blackout:';
+  return Object.keys(conditions || {}).filter(k =>
+    k.startsWith(prefix) && conditions[k] && conditions[k].status === 'open' && !live.has(k.slice(prefix.length)));
+}
+
 module.exports = {
+  staleBlackoutKeys,
   LIVE_STATUSES,
   DEFAULT_MAX_AGE_HOURS,
   isNeverAttempted,
