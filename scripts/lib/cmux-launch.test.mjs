@@ -794,10 +794,10 @@ test('BRO-2982: the FIRST crown of a chain (crown title, no successorOf) also ge
 });
 
 test('confirmWorkspaceListed (BRO-3380): a ref cmux never lists is NOT confirmed, even when probes would fail open', () => {
-  assert.equal(confirmWorkspaceListed('workspace:99999', { workspaceListed: () => false, listedSleep: () => {} }), false);
+  assert.equal(confirmWorkspaceListed('workspace:99999', { workspaceListed: () => false, listedSleep: () => {} }), 'absent');
 });
 test('confirmWorkspaceListed (BRO-3380): a list error is fail-CLOSED', () => {
-  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => { throw new Error('socket'); }, listedSleep: () => {} }), false);
+  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => { throw new Error('socket'); }, listedSleep: () => {} }), 'error');
 });
 test('confirmWorkspaceListed (BRO-3380): lagging list is retried and then confirmed', () => {
   let n = 0;
@@ -805,5 +805,10 @@ test('confirmWorkspaceListed (BRO-3380): lagging list is retried and then confir
 });
 test('confirmWorkspaceListed (BRO-3380): a workspace that vanishes at the settle re-check is rejected', () => {
   let n = 0;
-  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => ++n === 1, listedSleep: () => {} }), false);
+  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => ++n === 1, listedSleep: () => {} }), 'absent');
+});
+test('isSlowBootFailure (BRO-3380): an unreadable list is never a confirmed death; an absent ref is', () => {
+  const { isSlowBootFailure } = require('./cmux-launch-state.js');
+  assert.equal(isSlowBootFailure(STATES.LIST_UNREADABLE), true);
+  assert.equal(isSlowBootFailure(STATES.NOT_LISTED), false);
 });
