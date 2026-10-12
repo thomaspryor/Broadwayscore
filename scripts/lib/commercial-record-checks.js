@@ -356,7 +356,7 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // A hard-sourced cost whose quote says all-in or breakeven, with no
   // explicit weeklyRunningCostBasis (BRO-5093): the costBasis model would
   // read the text guess instead of a checked tag.
-  if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && show.weeklyRunningCostBasis == null && BASIS_CUE_TEXT.test(String(show.weeklyRunningCostSource || ''))) {
+  if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && show.weeklyRunningCostBasis == null && BASIS_CUE_TEXT.test(String(show.weeklyRunningCostSource || '').replace(URL_RE, ' '))) {
     out.push(`commercial.json: "${showId}" has a ${show.costMethodology} weeklyRunningCost whose source mentions all-in or breakeven but no weeklyRunningCostBasis (tag it running, breakeven or all-in)`);
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
