@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5166-b",
   "planId": "ec8f2481-c067-4c9e-b4e9-252cf8eb85c4",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T16:20:00.000Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,18 @@
         "description": "BRO-5166: Times review of a different opera (Fire in my mouth), matched by SERP discovery on the title words. Re-flag after the rebuild UK-URL heal cleared part 1."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T20:47:55.021Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fire-fire-off-west-end-2026/times-uk--unknown.json wrongShow: null -> true (retracted wrongShowAutoCleared, wrongShowAutoClearedAt)"
+    }
+  ]
 }
