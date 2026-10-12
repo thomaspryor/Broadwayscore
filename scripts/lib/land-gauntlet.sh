@@ -234,7 +234,7 @@ toplevel_regression() {
   local FAILED="" f rc
   for f in "${tests[@]}"; do
     echo "── $f"
-    timeout 300 node "$f"
+    timeout 120 node "$f"
     rc=$?
     if [ "$rc" -ne 0 ]; then
       echo "::error::toplevel-regression gate failed: $f (exit $rc)"

@@ -450,3 +450,9 @@ test('toplevel-regression (BRO-5117): keyed by failing file; ADVISORY (verdict p
     if (prev === undefined) delete process.env.LAND_TOPLEVEL_BLOCKING; else process.env.LAND_TOPLEVEL_BLOCKING = prev;
   }
 });
+
+test('toplevel-regression advisory never downgrades a gate that did not run (fail-safe stays FAIL)', () => {
+  delete process.env.LAND_TOPLEVEL_BLOCKING;
+  const [d] = decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read: () => null });
+  assert.equal(d.verdict, 'fail');
+});
