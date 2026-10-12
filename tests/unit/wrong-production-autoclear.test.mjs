@@ -38,6 +38,8 @@ const {
   DATE_ONLY_AUTO_REASONS,
   hasEnsembleConsensus,
   shouldAutoClearWrongProductionTourLeg,
+  isWrongProductionHeld,
+  isWrongShowHeld,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
 describe('hasDeclaredPriorRuns (transfer discovery gate)', () => {
@@ -1699,5 +1701,27 @@ describe('applyUrlChangeInvariant preserves URL-independent wrongShow (BRO-2868)
     const { merged } = run('Collector LLM: film/TV content (high) — reviews the movie');
     assert.strictEqual(merged.wrongShow, undefined);
     assert.strictEqual(merged.wrongShowReason, undefined);
+  });
+});
+
+// BRO-5166: a plan flagged a Times opera review on Fire Fire wrongShow and the
+// next rebuild's UK-URL clear removed it. Approved-plan flags are held.
+describe('approved-plan flags are held against heuristic clears (BRO-5166)', () => {
+  const approved = (field) => ({ approvedFixes: [{ fixId: 'p1', field, at: '2026-10-12T15:43:00Z', newValue: true }] });
+  it('UK-URL wrongShow clear refuses an approved wrongShow', () => {
+    const ctx = { isLondonMarketShow: true, isUkOutletUrl: true };
+    assert.equal(shouldAutoClearWrongShowUkUrl({ wrongShow: true }, ctx), true);
+    assert.equal(shouldAutoClearWrongShowUkUrl({ wrongShow: true, ...approved('wrongShow') }, ctx), false);
+  });
+  it('allowCrossMarket wrongShow clear refuses an approved wrongShow', () => {
+    assert.equal(shouldAutoClearWrongShow({ wrongShow: true, allowCrossMarket: true }), true);
+    assert.equal(shouldAutoClearWrongShow({ wrongShow: true, allowCrossMarket: true, ...approved('wrongShow') }), false);
+  });
+  it('isWrongProductionHeld covers an approved wrongProduction', () => {
+    assert.equal(isWrongProductionHeld({ wrongProduction: true }), false);
+    assert.equal(isWrongProductionHeld({ wrongProduction: true, ...approved('wrongProduction') }), true);
+  });
+  it('an approved flag on another field does not hold wrongShow', () => {
+    assert.equal(isWrongShowHeld({ wrongShow: true, ...approved('isNonReview') }), false);
   });
 });

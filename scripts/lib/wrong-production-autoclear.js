@@ -591,7 +591,15 @@ function hasAdjudicatedNote(data) {
 function isWrongProductionHeld(data) {
   if (!data) return false;
   if (data.humanReviewedWrongProduction === true) return true;
+  if (require('./review-field-edit').hasApprovedFlag(data, 'wrongProduction')) return true;
   return data.wrongProductionProvenance === 'manual';
+}
+
+// A wrongShow an approved data plan set is a human verdict; the heuristic
+// clearers below must not undo it (BRO-5166: a plan flagged a Times opera review
+// on Fire Fire wrongShow and the next rebuild's UK-URL clear removed it).
+function isWrongShowHeld(data) {
+  return !!data && require('./review-field-edit').hasApprovedFlag(data, 'wrongShow');
 }
 
 /**
@@ -637,6 +645,7 @@ function shouldAutoClearWrongProduction(data) {
  */
 function shouldAutoClearWrongShow(data) {
   if (data.wrongShow !== true) return false;
+  if (isWrongShowHeld(data)) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
   const hasManualReason = !!data.wrongShowReason;
   const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
@@ -701,6 +710,7 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cv
  */
 function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl, dateMismatchOver90d, urlSlugNamesOtherShow } = {}) {
   if (data.wrongShow !== true) return false;
+  if (isWrongShowHeld(data)) return false;
   if (!isLondonMarketShow) return false;
   if (!isUkOutletUrl) return false;
   if (dateMismatchOver90d) return false;
@@ -1133,6 +1143,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 
 module.exports = {
   isWrongProductionHeld,
+  isWrongShowHeld,
   isDateOnlyAutoReason,
   UK_CLEAR_PRE_RUN_DAYS,
   isPreRunForUkClear,
