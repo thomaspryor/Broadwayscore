@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4339-b",
   "planId": "de17113d-6e4b-489a-9798-660709c0dc60",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T18:00:00.000Z",
   "submitter": {
     "name": null,
@@ -118,5 +118,78 @@
         "description": "Review of the 2022 production (published 2022-03-31); to-kill-a-mockingbird-west-end-2022 already holds this critic's review, so the stray copy in the 2026 folder is deleted."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T22:05:22.271Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/thereviewshub--christine-stanton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/thereviewshub--reviewer-upload.json → the-comedy-about-spies-west-end-2025/thereviewshub--reviewer-upload.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json → the-comedy-about-spies-west-end-2025/thestage--holly-omahony.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/timeout-london--tom-wicker.json → the-comedy-about-spies-west-end-2025/timeout-london--tom-wicker.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json → the-comedy-about-spies-west-end-2025/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/times-uk--dominic-maxwell.json → the-comedy-about-spies-west-end-2025/times-uk--dominic-maxwell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/whatsonstage--alun-hood.json → the-comedy-about-spies-west-end-2025/whatsonstage--alun-hood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/artsdesk--helen-hawkins.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/london-theatre--matt-wolf.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/londontheatre1--chris-omaweng.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/the-spectator-uk--lloyd-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/theatre-weekly--greg-stewart.json"
+    }
+  ]
 }
