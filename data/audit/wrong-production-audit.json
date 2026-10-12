@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T16:49:52.377Z",
+  "timestamp": "2026-10-12T17:08:41.166Z",
   "stats": {
-    "totalReviews": 56013,
-    "alreadyFlagged": 20903,
+    "totalReviews": 56061,
+    "alreadyFlagged": 20910,
     "dateGuardCatches": 252,
-    "directorMismatch": 1783,
+    "directorMismatch": 1782,
     "tvFilmSignals": 1617,
     "londonSignals": 2202,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5211
+    "noPublishDate": 5253
   },
   "findings": [
     {
@@ -12304,6 +12304,19 @@
       ]
     },
     {
+      "showId": "equus-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "July 15th, 2019",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-review-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2489d before show (July 15th, 2019 vs 2026-05-08)"
+        }
+      ]
+    },
+    {
       "showId": "escape-to-margaritaville-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 78,
@@ -19962,9 +19975,8 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 82,
-      "publishDate": "2026-04-07",
+      "file": "daily-mail--unknown.json",
+      "publishDate": null,
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/amp/PATRICK-MARMION-reviews-Inter-Alia.html",
       "findings": [
         {
@@ -20037,19 +20049,6 @@
       "score": 77,
       "publishDate": "2026-04-08",
       "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-national-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "the-daily--unknown.json",
-      "publishDate": null,
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/amp/PATRICK-MARMION-reviews-Inter-Alia.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46129,20 +46128,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -53728,6 +53713,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
+      "score": 78,
       "publishDate": "2026-10-11",
       "url": "https://ayoungishperspective.co.uk/2026/10/11/review-blood-of-my-blood/",
       "findings": [
@@ -53782,6 +53768,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "british-theatre--keith-mckenna.json",
+      "score": 74,
       "publishDate": "2026-10-12",
       "url": "https://www.britishtheatreguide.info/reviews/blood-of-my-blo-royal-court-the-26105",
       "findings": [
