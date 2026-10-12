@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T23:24:32.894Z",
+  "timestamp": "2026-10-12T23:35:34.229Z",
   "stats": {
-    "totalReviews": 56165,
+    "totalReviews": 56168,
     "alreadyFlagged": 20954,
-    "dateGuardCatches": 216,
-    "directorMismatch": 1804,
-    "tvFilmSignals": 1620,
-    "londonSignals": 2209,
+    "dateGuardCatches": 217,
+    "directorMismatch": 1805,
+    "tvFilmSignals": 1621,
+    "londonSignals": 2211,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
-    "noPublishDate": 5287
+    "noPublishDate": 5285
   },
   "findings": [
     {
@@ -22958,6 +22958,19 @@
       ]
     },
     {
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": null,
+      "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from king-lear-2019"
+        }
+      ]
+    },
+    {
       "showId": "kinky-boots-2013",
       "file": "ap--mark-kennedy.json",
       "score": 78,
@@ -29798,6 +29811,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-2026",
+      "file": "frontmezzjunkies--unknown.json",
+      "publishDate": "2026-10-12",
+      "url": "https://frontmezzjunkies.com/2026/10/12/paranormal-activity-turns-broadway-into-a-house-of-horrors/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -45959,6 +45985,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -67048,6 +67088,19 @@
       ]
     },
     {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/musical/martin-guerre-tickets?srsltid=AU7gw4WVzbtbXp9TL94RyxsFIGKt5DdfBYwx9DlI3UZ93KzuEc_8bxaK",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "marvellous-west-end-2022",
       "file": "britishtheatrecom--mark-ludmon.json",
       "score": 74,
@@ -71641,6 +71694,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "relics-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2026-06-28",
+      "url": "https://liamodell.com/2026/06/28/relics-review-lyric-hammersmith-theatre-ben-ockrent-sally-phillips-sam-swainsbury-jj-feild-charly-clive-michael-longhurst/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
