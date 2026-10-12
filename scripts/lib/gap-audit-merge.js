@@ -534,6 +534,11 @@ function countsFor(results) {
     // actually recovers (Codex adversarial review, BRO-3928).
     totalRecoverable: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => m && m.recoverable).length, 0),
     totalRecovered: rs.reduce((a, r) => a + (Array.isArray(r.recoveryResults) ? r.recoveryResults.filter(x => x && x.recovered).length : 0), 0),
+    // BRO-4971: flaggedMisses split by who excluded them. automatedExcludedListed
+    // counts rows marked reverify (automated exclusion, current-run round-up listing).
+    humanExcluded: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => m && m.exclusion === 'humanExcluded').length, 0),
+    automatedExcluded: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => m && m.exclusion === 'automatedExcluded').length, 0),
+    automatedExcludedListed: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => m && m.reverify === true).length, 0),
     // Informational only — never gates withGap/--fail-on-gap. Reported
     // separately in the run Summary so a revival's prior-production citations
     // are visible without inflating the actionable number.

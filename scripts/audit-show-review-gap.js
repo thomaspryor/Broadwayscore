@@ -62,7 +62,9 @@ const {
   _buildDomainMap,
 } = require('./lib/outlet-canonicalize');
 const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
-const { isIncludableForRebuild } = require('./lib/review-guards');
+const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guards');
+// BRO-4971: human vs automated exclusion split + re-verify marking for flaggedMisses.
+const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed } = require('./lib/flagged-miss-basis');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { partitionUnextractable, updateZeroCharCounts } = require('./lib/gap-unextractable'); // BRO-4765
@@ -762,6 +764,14 @@ function isCoveredFile(d, show) {
   }
 }
 
+// Which guard excludes a file (explainExclusion reason), same context rules as
+// isCoveredFile. Feeds the flaggedMisses `basis` (BRO-4971); reporting only.
+function explainFileExclusion(d, show) {
+  const ctx = d._ctxShow || show;
+  const filePath = d._file ? path.join(REVIEW_TEXTS_DIR, ctx.id, d._file) : null;
+  return explainExclusion(d, ctx, filePath);
+}
+
 // FLAGGED_RECOVERY_CAP + isRecoverableFlaggedFile moved to scripts/lib/flagged-recovery.js
 // (CLAUDE.md §15) so the self-healing write-loop below and its unit test share one
 // implementation. A flagged-out file is auto-recoverable ONLY in the merge-safe
@@ -1195,6 +1205,8 @@ async function auditShow(show, opts = {}) {
         // healed by re-fetching the aggregator's CURRENT-production URL. Genuine
         // wrong-show / manually-protected exclusions are NOT recoverable.
         const recoverableFile = dirFiles.find(d => isRecoverableFlaggedFile(d));
+        // BRO-4971: humanExcluded vs automatedExcluded + which detector (basis).
+        const { exclusion, basis } = classifyFlaggedMiss(dirFiles, d => explainFileExclusion(d, show));
         result.flaggedMisses.push({
           url: aggUrl,
           host: aggHost,
@@ -1210,6 +1222,8 @@ async function auditShow(show, opts = {}) {
           recoverableCritic: recoverableFile ? (recoverableFile.criticName || null) : null,
           recoverableCount: recoverableFile ? (recoverableFile.aggUrlRecoveryCount || 0) : 0,
           dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
+          exclusion,
+          basis,
         });
       }
     }
@@ -1260,6 +1274,12 @@ async function auditShow(show, opts = {}) {
       if (serpCensusUrls.has(m.url)) m.serpCensus = true;
     }
   }
+
+  // BRO-4971: a CURRENT-run round-up listing contradicts an automated exclusion
+  // (backtest: 5/16 London rows were false positives). Mark those for re-check;
+  // runs after priorRun tagging so prior-production listings never qualify.
+  for (const m of result.flaggedMisses) m.reverify = shouldReverify(m);
+  result.automatedExcludedListed = countAutomatedExcludedListed(result.flaggedMisses);
 
   // Outlet-based coverage for URL-less WE citations (WET's dominant table format
   // cites outlet+stars with NO link — URL-only matching would silently drop the
@@ -2002,7 +2022,7 @@ async function main(argv = process.argv.slice(2)) {
           ];
           const delivered = await sendAlert({
             title: `WE review gap — ${s.title}: ${lines.length} outlet(s) missing`,
-            description: `${r.inReviewsJson} review(s) in reviews.json; WE roundups cite ${weMissing.length + r.citedNoUrl.length} outlet(s) we don't have. Ingest a URL: node scripts/ingest-review-from-url.js --show=${s.id} --url=<url>`,
+            description: `${r.inReviewsJson} review(s) in reviews.json; WE roundups cite ${weMissing.length + r.citedNoUrl.length} outlet(s) we don't have.${r.automatedExcludedListed ? ` Also ${r.automatedExcludedListed} round-up-listed review(s) we hold but an automated check excluded; re-verify those exclusions.` : ''} Ingest a URL: node scripts/ingest-review-from-url.js --show=${s.id} --url=<url>`,
             severity: 'warning',
             fields: [{ name: 'Missing outlets', value: lines.slice(0, 20).join('\n') || '(none)' }],
             url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
@@ -2042,13 +2062,13 @@ async function main(argv = process.argv.slice(2)) {
     const nPriorGap = splitGapCounts(r).priorProduction.total;
     const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length - nPriorGap;
     const gapSplit = splitGapCounts(r);
-    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${gapSplit.missing} flagged=${gapSplit.flaggedMisses} citedNoUrl=${gapSplit.citedNoUrl}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
+    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${gapSplit.missing} flagged=${gapSplit.flaggedMisses} citedNoUrl=${gapSplit.citedNoUrl}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})${r.automatedExcludedListed ? ` | ${r.automatedExcludedListed} automated exclusion(s) listed by a current round-up, re-verify` : ''}`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
     if (verbose && r.missing.length > 0) {
       for (const m of r.missing) console.log(`    ❌ ${m.url}`);
     }
     if (verbose && r.flaggedMisses.length > 0) {
-      for (const m of r.flaggedMisses) console.log(`    ⚠️ ${m.url} (flagged: ${m.dirFlags.map(f => f.flag).join(',')})`);
+      for (const m of r.flaggedMisses) console.log(`    ⚠️ ${m.url} (flagged: ${m.dirFlags.map(f => f.flag).join(',')}; ${m.exclusion || '?'}${m.basis && m.basis.length ? `: ${m.basis.join(',')}` : ''}${m.reverify ? '; REVERIFY' : ''})`);
     }
     if (dispatchGather && gapTotal > 0 && !dispatched.has(r.showId)) {
       const ok = await dispatchGatherFor(r.showId);
@@ -2645,7 +2665,7 @@ async function main(argv = process.argv.slice(2)) {
   // matches the file a reader would open to debug the discrepancy.
   const reportedAudit = (partial && quarantined) ? quarantined : audit;
   const reportedResults = reportedAudit.results;
-  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed, ${reportedAudit.counts.humanExcluded} human-excluded, ${reportedAudit.counts.automatedExcludedListed} automated-excluded to re-verify) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }

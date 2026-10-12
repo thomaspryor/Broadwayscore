@@ -547,3 +547,73 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
   const real = { url: 'https://www.thewrap.com/john-lithgow-stories-by-heart-broadway-review/', title: 'John Lithgow: Stories by Heart review' };
   assert.ok(acceptSerpCensusResult(real, { show: lithgow, showInfo: { title: lithgow.title, cast: [], creativeNames: [] }, now: Date.parse('2018-01-20') }));
 });
+
+// BRO-4971: round-up-listed reviews excluded by an automated verdict are split
+// from human exclusions and marked for re-check when a CURRENT-run round-up
+// lists them. Real functions only (CLAUDE.md §15): the lib classifier, the real
+// review-guards explainExclusion, and gap-audit-merge countsFor.
+{
+  const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed, hasHumanExclusionAssertion } = require('./lib/flagged-miss-basis.js');
+  const { explainExclusion } = require('./lib/review-guards.js');
+  const { countsFor } = require('./lib/gap-audit-merge.js');
+  const show = { id: 'bro4971-fixture', title: 'Fixture Play', category: 'west-end', status: 'open', openingDate: '2026-09-01' };
+  const explain = (d) => explainExclusion(d, show, null);
+  const body = 'A considered review of the evening. '.repeat(80);
+  const cvWrongProduction = {
+    _file: 'outlet-a--critic.json', outletId: 'outlet-a', criticName: 'Critic A',
+    url: 'https://www.outlet-a.co.uk/theatre/2026/09/a-night-out', publishDate: '2026-09-02',
+    fullText: body, wrongProduction: true,
+    wrongProductionNote: 'CV-promoted: content verifier says this covers a different production',
+  };
+  const showNotMentioned = {
+    _file: 'outlet-b--critic.json', outletId: 'outlet-b', criticName: 'Critic B',
+    url: 'https://www.outlet-b.co.uk/reviews/fixture', publishDate: '2026-09-02',
+    fullText: body, showNotMentioned: true,
+  };
+  const humanLocked = { ...cvWrongProduction, _file: 'outlet-c--critic.json', wrongProductionManual: true };
+  const humanProvenance = { ...cvWrongProduction, _file: 'outlet-d--critic.json', wrongProductionProvenance: 'manual' };
+
+  test('BRO-4971: automated CV wrongProduction exclusion is automatedExcluded with basis wrongProduction', () => {
+    const c = classifyFlaggedMiss([cvWrongProduction], explain);
+    assert.equal(c.exclusion, 'automatedExcluded');
+    assert.deepEqual(c.basis, ['wrongProduction']);
+  });
+
+  test('BRO-4971: showNotMentioned exclusion is automatedExcluded and names its detector', () => {
+    const c = classifyFlaggedMiss([showNotMentioned], explain);
+    assert.equal(c.exclusion, 'automatedExcluded');
+    // explainExclusion does not mirror the rebuild-only showNotMentioned guard;
+    // the raw detector field names it instead of 'unknown'.
+    assert.equal(explain(showNotMentioned), null);
+    assert.deepEqual(c.basis, ['showNotMentioned']);
+  });
+
+  test('BRO-4971: human breadcrumbs make the row humanExcluded', () => {
+    assert.equal(hasHumanExclusionAssertion(cvWrongProduction), false);
+    for (const d of [humanLocked, humanProvenance, { ...cvWrongProduction, _locked: true },
+      { ...cvWrongProduction, rejectedBy: 'manual-triage-bro-71' }]) {
+      assert.equal(classifyFlaggedMiss([d], explain).exclusion, 'humanExcluded', JSON.stringify(Object.keys(d)));
+    }
+    // A manual CLEAR is not a human exclusion assertion.
+    assert.equal(hasHumanExclusionAssertion({ ...cvWrongProduction, wrongProductionManualClear: false }), false);
+    // One human-asserted copy of the URL wins over an automated sibling slot.
+    assert.equal(classifyFlaggedMiss([cvWrongProduction, humanLocked], explain).exclusion, 'humanExcluded');
+  });
+
+  test('BRO-4971: human vs automated are reported distinctly; priorRun-listed automated rows are not reverify', () => {
+    const rows = [
+      { url: 'u1', ...classifyFlaggedMiss([cvWrongProduction], explain) },
+      { url: 'u2', ...classifyFlaggedMiss([showNotMentioned], explain) },
+      { url: 'u3', ...classifyFlaggedMiss([humanLocked], explain) },
+      { url: 'u4', ...classifyFlaggedMiss([cvWrongProduction], explain), priorRun: true },
+    ];
+    for (const m of rows) m.reverify = shouldReverify(m);
+    assert.deepEqual(rows.map(m => m.reverify), [true, true, false, false]);
+    assert.equal(countAutomatedExcludedListed(rows), 2);
+    const counts = countsFor([{ showId: show.id, missing: [], citedNoUrl: [], flaggedMisses: rows }]);
+    assert.equal(counts.humanExcluded, 1);
+    assert.equal(counts.automatedExcluded, 2); // priorRun row excluded from current-run counts
+    assert.equal(counts.automatedExcludedListed, 2);
+    assert.equal(counts.totalFlaggedMisses, 3);
+  });
+}
