@@ -3,6 +3,7 @@
 # deployed with --no-verify-jwt keeps that setting until a deploy says
 # otherwise (BRO-4631: show-score-proxy accepted forged tokens).
 project_id = "broadwayscorecard"
+# Never `supabase link` or `config push` from this file: it only pins function settings.
 
 [functions.show-score-proxy]
 verify_jwt = true

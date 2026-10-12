@@ -14,6 +14,7 @@ on:
     branches: [main]
     paths:
       - 'supabase/functions/**'
+      - 'supabase/config.toml'
   schedule:
     - cron: '17 9 * * 1' # Mondays 09:17 UTC — parser canary vs live Show Score
   workflow_dispatch:
@@ -88,6 +89,12 @@ jobs:
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
           npx supabase functions deploy theatr-screenshot-import \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+
+      - name: Probe JWT verification (forged token must get 401)
+        continue-on-error: true # advisory first (BRO-2123); BRO-4631
+        env:
+          SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: node --test tests/unit/show-score-proxy-jwt-verification.test.mjs
 
       - name: Notify on failure
         if: failure()
