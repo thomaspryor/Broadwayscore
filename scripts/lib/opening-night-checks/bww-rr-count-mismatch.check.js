@@ -209,4 +209,6 @@ async function run(show, context) {
   };
 }
 
-module.exports = { name, description, run };
+// live: fetches an aggregator page through the paid scraper chain, so
+// OPENING_NIGHT_CHECKLIST_OFFLINE=1 skips it (index.js, BRO-2777).
+module.exports = { name, description, run, live: true };

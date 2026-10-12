@@ -28,7 +28,7 @@ if ! command -v node >/dev/null 2>&1; then
 fi
 
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/push-trace2-diag.XXXXXX")"
-cleanup() { rm -rf "$WORK"; }
+cleanup() { [ -n "${STALL_PID:-}" ] && kill "$STALL_PID" 2>/dev/null; rm -rf "$WORK"; }
 trap cleanup EXIT
 
 git init -q --bare -b main "$WORK/origin.git"
@@ -39,14 +39,29 @@ git clone -q "$WORK/origin.git" "$WORK/repo" 2>/dev/null
   echo one > f.txt && git add f.txt && git commit -qm one && git push -q origin HEAD:main
 ) >/dev/null 2>&1 || { echo "fixture setup failed"; exit 1; }
 
+# A local HTTP endpoint that accepts the connection and never answers, so the
+# push really hangs until GIT_NET_TIMEOUT_SEC kills it (rc=124) and the timeout
+# diagnostics run. An unroutable address is not enough: behind an egress proxy
+# (cloud sandboxes) it is refused in 0s with rc=128 and every timeout-path case
+# below would pass without the path ever running.
+node -e '
+  const srv = require("net").createServer(() => {}).listen(0, "127.0.0.1", () => {
+    require("fs").writeFileSync(process.argv[1], String(srv.address().port));
+  });
+' "$WORK/stall.port" &
+STALL_PID=$!
+for _ in $(seq 1 50); do [ -s "$WORK/stall.port" ] && break; sleep 0.1; done
+STALL_PORT=$(cat "$WORK/stall.port" 2>/dev/null || true)
+[ -n "$STALL_PORT" ] || { echo "stalling server failed to start"; exit 1; }
+
 run_killed_push() {  # run_killed_push <log-file> <extra-env...>
   local log="$1"; shift
   (
     cd "$WORK/repo" || exit 1
     git config user.email t@t.t && git config user.name t
     echo "$RANDOM" > h.txt && git add h.txt && git commit -qm local
-    git remote set-url --push origin "https://x-access-token:FAKE_TRACE2_TOKEN_XYZ@10.255.255.1/blackhole.git"
-    env "$@" PUSH_SKIP_FAILURE_LEDGER=1 MAX_RETRIES=1 GIT_NET_TIMEOUT_SEC=3 \
+    git remote set-url --push origin "http://x-access-token:FAKE_TRACE2_TOKEN_XYZ@127.0.0.1:$STALL_PORT/blackhole.git"
+    env "$@" NO_PROXY=127.0.0.1 no_proxy=127.0.0.1 PUSH_SKIP_FAILURE_LEDGER=1 MAX_RETRIES=1 GIT_NET_TIMEOUT_SEC=3 \
       PUSH_API_FALLBACK_DISABLE=1 bash "$TARGET" 1 main
   ) > "$log" 2>&1
 }
@@ -73,7 +88,12 @@ fi
 # 3. Flag ON: a killed push must complete without crashing, same as case 1 —
 #    this is the actual new code path, not just the trap-declaration fix.
 LOG_ON="$WORK/on.log"
-run_killed_push "$LOG_ON" PUSH_TRACE2_DIAGNOSTICS=1
+LEDGER_ON="$WORK/on-failures.jsonl"
+run_killed_push "$LOG_ON" PUSH_TRACE2_DIAGNOSTICS=1 PUSH_FAILURE_LOG="$LEDGER_ON"
+if ! grep -q "git-transport stall phase" "$LOG_ON"; then
+  fail 0 "the push was not killed mid-transport, so the timeout diagnostics never ran and cases 3/4/6 would prove nothing"
+  sed 's/^/    /' "$LOG_ON" | head -20
+fi
 if grep -qi "unbound variable" "$LOG_ON"; then
   fail 3 "PUSH_TRACE2_DIAGNOSTICS=1 crashed with an unbound-variable error"
   cat "$LOG_ON"
@@ -92,6 +112,31 @@ fi
 
 # 5. A SUCCESSFUL (non-timeout) push with the flag ON must also complete
 #    cleanly — the RETURN trap runs on every exit, not just the timeout branch.
+# BRO-3465: the killed attempt's census + trace2 summary must reach the failure
+# ledger row (not only CI stdout), as ONE valid JSON line with no credential.
+# Every row is parsed: the hand-rolled printf is the thing under test, and
+# health-check's readJsonlLedgerOrNull silently drops a malformed line.
+if [ ! -s "$LEDGER_ON" ]; then
+  fail 6 "no failure-ledger row written for the killed push"
+elif ! node -e '
+  const rows = require("fs").readFileSync(process.argv[1], "utf8").trim().split("\n").map((l) => JSON.parse(l));
+  const r = rows[rows.length - 1];
+  const bad = [];
+  if (!/receive-pack=\d+ upload-pack=\d+/.test(r.traceCensus || "")) bad.push("traceCensus missing/unshaped: " + r.traceCensus);
+  if (!r.trace2Summary) bad.push("trace2Summary missing");
+  for (const k of ["traceCensus", "trace2Summary"]) {
+    if (/[\u0000-\u001f]/.test(r[k] || "")) bad.push(k + " has a control character");
+  }
+  if ((r.traceCensus || "").length > 300 || (r.trace2Summary || "").length > 500) bad.push("cap exceeded");
+  if (bad.length) { console.error(bad.join("; ")); process.exit(1); }
+' "$LEDGER_ON"; then
+  fail 6 "failure-ledger row is not valid JSON or lacks the trace diagnostics"; cat "$LEDGER_ON"
+elif grep -q "FAKE_TRACE2_TOKEN_XYZ" "$LEDGER_ON"; then
+  fail 6 "embedded credential leaked into the failure-ledger row"
+else
+  pass 6 "killed push: ledger row is valid JSON with traceCensus + trace2Summary, no credential"
+fi
+
 LOG_SUCCESS="$WORK/success.log"
 (
   cd "$WORK/repo" || exit 1

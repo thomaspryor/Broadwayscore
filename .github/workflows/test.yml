@@ -4891,11 +4891,16 @@ jobs:
         run: node scripts/test-ordinal-publishdate-guards.js
 
       - name: Run slow network-dependent unit tests
-        # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and
-        # takes ~75s for 3 tests. Kept out of the main runner to avoid blowing
-        # up the wall-clock budget there. continue-on-error: true so transient
-        # network flakes don't block PRs — failures still show up red in the
-        # test summary panel.
+        # opening-night-checks-skeleton.test.mjs no longer touches the network
+        # here (BRO-2778, verified 2026-10-12: 3/3 pass in ~1-8s with every
+        # proxy pointed at a dead port). Its only live path, bww-rr-discover,
+        # needs BROWSERBASE_* secrets this job does not set, and its fake show
+        # has no DTLI slug. It stays at this serial step, out of the manifest,
+        # because it writes stub *.check.js files into the directory another
+        # manifest test globs (see UNREGISTERED_TEST_QUARANTINE in
+        # scripts/lib/test-yml-manifest-paths.js). continue-on-error: true
+        # covers the other two files' live calls, so transient network flakes
+        # don't block PRs — failures still show up red in the test summary.
         #
         # tests/unit/dmarc-deliverability.test.mjs (BRO-2600) does a live
         # dns.resolveTxt() of _dmarc.broadwayscorecard.com — same reasoning:

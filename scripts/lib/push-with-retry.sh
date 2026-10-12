@@ -334,6 +334,24 @@ _LAST_STALL_PHASE="unknown"
 # call for the same reason _LAST_STALL_PHASE is (a later non-timeout attempt
 # must not inherit an earlier attempt's classification into the ledger row).
 _LAST_STALL_SERVICE="unknown"
+# BRO-3465: one-line forms of the trace-census and (PUSH_TRACE2_DIAGNOSTICS=1)
+# trace2-summary diagnostics, folded into record_push_failure's ledger rows so
+# a captured stall is readable from the durable ledger instead of one run's raw
+# CI log (BRO-3355 needed exactly that archaeology: its census would have shown
+# upload-pack traffic from the pre-push hook's `git fetch --unshallow`, BRO-3320).
+# Same per-call reset and last-attempt semantics as _LAST_STALL_PHASE: a later
+# non-timeout attempt clears an earlier attempt's census.
+_LAST_TRACE_CENSUS=""
+_LAST_TRACE2_SUMMARY=""
+# Collapse a multi-line diagnostic to one ledger-safe line: lines are joined
+# with "|", every remaining control character (tabs, CR, ESC…) is dropped, and
+# the result is capped at $1 BYTES (head -c counts bytes on BSD and GNU alike;
+# cut -c does not). A cap can split a multi-byte character; readers decode it
+# as U+FFFD, and push-ledger.js re-caps by characters for the durable ledger.
+# The JSON builders escape quotes and backslashes.
+_diag_oneline() {
+  paste -sd '|' - | tr -d '\000-\037\177' | head -c "$1"
+}
 git_push_traced() {
   # trace2_file is declared (and left "") even when PUSH_TRACE2_DIAGNOSTICS is
   # unset, NOT left to spring into existence only inside the `if` below: this
@@ -345,6 +363,8 @@ git_push_traced() {
   local trace_file rc kill_ts trace2_file=""
   _LAST_STALL_PHASE="unknown"
   _LAST_STALL_SERVICE="unknown"
+  _LAST_TRACE_CENSUS=""
+  _LAST_TRACE2_SUMMARY=""
   if [ "${PUSH_SKIP_STALL_DIAGNOSTICS:-}" = "1" ]; then
     git_push "$@"
     return $?
@@ -429,8 +449,10 @@ git_push_traced() {
         # produces receive-pack exchanges and nothing else (verified locally
         # from both a full and a depth-1 shallow clone of this repo), so a
         # non-zero upload-pack count here is the anomaly to chase.
-        node "$SCRIPT_DIR/../push-diagnostics-cli.js" census "$trace_file" 2>/dev/null \
-          | sed 's/^/    trace-census: /' || true
+        local _census_raw
+        _census_raw=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" census "$trace_file" 2>/dev/null || true)
+        [ -n "$_census_raw" ] && printf '%s\n' "$_census_raw" | sed 's/^/    trace-census: /'
+        _LAST_TRACE_CENSUS=$(printf '%s' "$_census_raw" | _diag_oneline 300 || true)
         # 8000 (not the 2000 default): the tail is the only durable record of a
         # failure nobody can reproduce on demand, and 2000 bytes was not even
         # enough to contain one request line on the runs that prompted this card.
@@ -441,8 +463,10 @@ git_push_traced() {
         # disagree by the gap between the two `date` forks and make the two
         # traces describe slightly different "now"s).
         if [ -n "$trace2_file" ]; then
-          node "$SCRIPT_DIR/../push-diagnostics-cli.js" trace2-summary "$trace2_file" "$kill_ts" 2>/dev/null \
-            | sed 's/^/    trace2: /' || true
+          local _trace2_raw
+          _trace2_raw=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" trace2-summary "$trace2_file" "$kill_ts" 2>/dev/null || true)
+          [ -n "$_trace2_raw" ] && printf '%s\n' "$_trace2_raw" | sed 's/^/    trace2: /'
+          _LAST_TRACE2_SUMMARY=$(printf '%s' "$_trace2_raw" | _diag_oneline 500 || true)
           node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace2_file" 8000 2>/dev/null \
             | sed 's/^/    trace2-raw: /' || true
         fi
@@ -728,10 +752,20 @@ record_push_failure() {
   # 2026-09-13 came to read "response-received-then-stalled" regardless.
   # Like stallPhase, this reflects the LAST attempt only — record_push_failure
   # fires once per invocation, on terminal exhaustion.
-  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s","stallPhase":"%s","stallService":"%s"}\n' \
+  # BRO-3465: the trace diagnostics are keyed in only when captured (a timed-out
+  # attempt), so ordinary rows keep their historical shape. Already one line
+  # with no control characters (_diag_oneline); escape \ and " like workflow.
+  local diag_fields=""
+  if [ -n "${_LAST_TRACE_CENSUS:-}" ]; then
+    diag_fields="${diag_fields},\"traceCensus\":\"$(printf '%s' "$_LAST_TRACE_CENSUS" | sed 's/\\/\\\\/g; s/"/\\"/g')\""
+  fi
+  if [ -n "${_LAST_TRACE2_SUMMARY:-}" ]; then
+    diag_fields="${diag_fields},\"trace2Summary\":\"$(printf '%s' "$_LAST_TRACE2_SUMMARY" | sed 's/\\/\\\\/g; s/"/\\"/g')\""
+  fi
+  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s","stallPhase":"%s","stallService":"%s"%s}\n' \
     "$ts" "${PULL_BRANCH:-?}" "$remote" "$reason" "$attempt" "${MAX_RETRIES:-?}" \
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
-    "$workflow" "${_LAST_STALL_PHASE:-unknown}" "${_LAST_STALL_SERVICE:-unknown}" \
+    "$workflow" "${_LAST_STALL_PHASE:-unknown}" "${_LAST_STALL_SERVICE:-unknown}" "$diag_fields" \
     >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
 
   # Durable telemetry (task: push-retry-failure telemetry, 2026-08-23).
@@ -765,6 +799,8 @@ record_push_failure() {
       "--workflow=$workflow" "--ci=$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
       "--stall-phase=${_LAST_STALL_PHASE:-unknown}" \
       "--stall-service=${_LAST_STALL_SERVICE:-unknown}" \
+      "--trace-census=${_LAST_TRACE_CENSUS:-}" \
+      "--trace2-summary=${_LAST_TRACE2_SUMMARY:-}" \
       >/dev/null 2>&1 || true
   fi
 }
@@ -2766,9 +2802,18 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # 5+ days of daily cancellations). Now: attempt 1 ≈5-9s … attempt 7 ≈17-21s,
   # cutting typical (2-3 attempt) sleep time ~65% while keeping random jitter to
   # avoid thundering-herd clustering and longer backoff on persistent contention.
-  WAIT=$(( 3 + i * 2 + RANDOM % 5 ))
-  echo "  Waiting ${WAIT}s before retry..."
-  sleep "$WAIT"
+  #
+  # BRO-2974: only when a next attempt exists. The final iteration used to sleep
+  # its ~17-21s here too, pure latency before the exhaustion path and the Git
+  # Data API fallback even started (same bug class push-via-git-api.sh's TIMEOUT
+  # branch fixed under BRO-2951).
+  if [ "$i" -lt "$MAX_RETRIES" ]; then
+    WAIT=$(( 3 + i * 2 + RANDOM % 5 ))
+    echo "  Waiting ${WAIT}s before retry..."
+    sleep "$WAIT"
+  else
+    echo "  No local attempts remain (attempt $i of $MAX_RETRIES) — skipping backoff"
+  fi
 done
 
 # ── Git Data API fallback (task #707, generalizes the task #698 live fix) ───

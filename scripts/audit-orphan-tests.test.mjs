@@ -14,7 +14,8 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { extractRunBlocks, REFERENCE_REGEX, checkManifests } = require('./audit-orphan-tests.js');
+const { extractRunBlocks, REFERENCE_REGEX, checkManifests, findRawOrphans, exemptionFor } = require('./audit-orphan-tests.js');
+const { ciCoverageOf } = require('./lib/ci-test-coverage.js');
 
 // BRO-111: REFERENCE_REGEX used to exclude dots from its match class, so a
 // dotted test filename (review-normalization.maybeUpgradeUrl.test.mjs) only
@@ -131,4 +132,87 @@ test('a sorted manifest of existing files reports nothing', () => {
   const { blocking, informational } = checkManifests(root);
   assert.deepEqual(forManifest(blocking), []);
   assert.deepEqual(forManifest(informational), []);
+});
+
+// BRO-2778: coverage used to be a Set of BARE FILENAMES, so a test was "covered"
+// whenever ANY file with the same basename was in a manifest or a run: step.
+// scripts/cast-backfill-year-validation.test.mjs and
+// scripts/ingest-manual-review.test.mjs ran in zero CI jobs behind same-named
+// tests/unit/ files. findRawOrphans() is the real audit path, driven here
+// against a fixture repo.
+function coverageRepo() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-coverage-'));
+  const write = (rel, body = '') => {
+    fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+    fs.writeFileSync(path.join(root, rel), body);
+  };
+  write('.github/workflows/test.yml', [
+    'on:',
+    '  push:',
+    '    paths:',
+    "      - 'tests/unit/paths-only.test.mjs'",
+    "      - 'scripts/collide.test.mjs'",
+    'jobs:',
+    '  t:',
+    '    steps:',
+    '      - name: Runs tests/unit/name-only.test.mjs (name only)',
+    '        run: |',
+    '          node --test tests/unit/run-step.test.mjs',
+    '          # node --test tests/unit/commented.test.mjs',
+    '          node --test tests/smoke/smoky.test.mjs',
+  ].join('\n'));
+  write(NODE_MANIFEST, 'tests/unit/collide.test.mjs\n');
+  for (const f of [
+    'tests/unit/paths-only.test.mjs', 'tests/unit/name-only.test.mjs', 'tests/unit/run-step.test.mjs',
+    'tests/unit/commented.test.mjs', 'tests/unit/collide.test.mjs', 'scripts/collide.test.mjs',
+    'tests/smoke/smoky.test.mjs', 'tests/smoke/lonely.test.mjs',
+  ]) write(f);
+  return root;
+}
+
+test('a test path mentioned only in on.push.paths is NOT covered; one named in a run: step is', () => {
+  const orphans = findRawOrphans(coverageRepo()).rawOrphans.map((f) => f.rel);
+  assert.ok(orphans.includes('tests/unit/paths-only.test.mjs'), 'on.push.paths entry must not count as coverage');
+  assert.ok(!orphans.includes('tests/unit/run-step.test.mjs'), 'a path a run: step executes is covered');
+});
+
+test('a same-named file in another directory does not lend its coverage', () => {
+  const orphans = findRawOrphans(coverageRepo()).rawOrphans.map((f) => f.rel);
+  assert.ok(!orphans.includes('tests/unit/collide.test.mjs'), 'the manifest-registered file is covered');
+  assert.ok(orphans.includes('scripts/collide.test.mjs'), 'its scripts/ namesake is not');
+});
+
+test('step names and shell comments inside run: do not count; tests/smoke is scanned', () => {
+  const orphans = findRawOrphans(coverageRepo()).rawOrphans.map((f) => f.rel);
+  assert.ok(orphans.includes('tests/unit/name-only.test.mjs'));
+  assert.ok(orphans.includes('tests/unit/commented.test.mjs'));
+  assert.ok(!orphans.includes('tests/smoke/smoky.test.mjs'));
+  assert.ok(orphans.includes('tests/smoke/lonely.test.mjs'));
+});
+
+test('ciCoverageOf: run: glob covers its directory only; whole-path boundaries hold', () => {
+  const ci = { manifestEntries: new Set(), runText: 'tests=(scripts/lib/*.test.mjs)\nnode --test scripts/tests/x.test.mjs' };
+  assert.equal(ciCoverageOf('scripts/lib/a.test.mjs', ci), 'glob');
+  assert.equal(ciCoverageOf('scripts/lib/deep/a.test.mjs', ci), false);
+  assert.equal(ciCoverageOf('scripts/a.test.mjs', ci), false);
+  assert.equal(ciCoverageOf('scripts/tests/x.test.mjs', ci), 'run-step');
+  assert.equal(ciCoverageOf('tests/x.test.mjs', ci), false, 'scripts/tests/x must not cover tests/x');
+});
+
+test('exemptionFor: a path key exempts only that file; a bare-name key exempts nothing', () => {
+  const map = { 'scripts/shim.test.mjs': 'BRO-1', 'legacy.test.mjs': 'BRO-2' };
+  assert.equal(exemptionFor(map, { name: 'shim.test.mjs', rel: 'scripts/shim.test.mjs' }), 'BRO-1');
+  assert.equal(exemptionFor(map, { name: 'shim.test.mjs', rel: 'tests/unit/shim.test.mjs' }), undefined);
+  assert.equal(exemptionFor(map, { name: 'legacy.test.mjs', rel: 'scripts/legacy.test.mjs' }), undefined);
+});
+
+// BRO-2778: a bare-filename exemption key exempts every same-named file in
+// every scanned dir. All keys must be repo-relative paths to a real file.
+test('exemption keys are repo-relative paths to files that exist', () => {
+  const { EXEMPT_KNOWN_BROKEN, EXEMPT_NEVER_CI } = require('./audit-orphan-tests.js');
+  const root = new URL('..', import.meta.url);
+  for (const key of [...Object.keys(EXEMPT_KNOWN_BROKEN), ...Object.keys(EXEMPT_NEVER_CI)]) {
+    assert.ok(key.includes('/'), `exemption key "${key}" must be a path, not a bare filename`);
+    assert.ok(fs.existsSync(new URL(key, root)), `exemption key "${key}" names no file`);
+  }
 });

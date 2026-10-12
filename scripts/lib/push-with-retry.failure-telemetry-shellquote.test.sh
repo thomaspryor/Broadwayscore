@@ -86,5 +86,29 @@ for r in "${REASONS[@]}"; do
   fi
 done
 
+# BRO-3465: trace diagnostics are arbitrary text. Quotes, backslashes, tabs and
+# an embedded newline must survive argv -> parseArgs -> buildFailureEntry as
+# one valid, control-character-free JSON field, capped, and absent when empty.
+(cd "$TMP/clone" && node "$RECORD_SCRIPT" --reason=trace-diag --attempt=1 --max-retries=7 \
+  --branch=main --remote=Broadwayscore --workflow=W --ci=true \
+  "--trace-census=bytes=9 records=2 receive-pack=1 upload-pack=1 \"q\" back\\slash	tab" \
+  "--trace2-summary=$(printf 'line1\nchild [0] depth=1: git \"x\"')" >/dev/null 2>&1)
+(cd "$TMP/clone" && node "$RECORD_SCRIPT" --reason=no-trace-diag --attempt=1 --max-retries=7 \
+  --branch=main --remote=Broadwayscore --workflow=W --ci=true --trace-census= >/dev/null 2>&1)
+CONTENT=$(git --git-dir="$TMP/origin.git" show push-retry-failures:failures.jsonl 2>/dev/null || echo "")
+if node -e '
+  const rows = process.argv[1].trim().split("\n").map((l) => JSON.parse(l));
+  const r = rows.find((x) => x.reason === "trace-diag");
+  const n = rows.find((x) => x.reason === "no-trace-diag");
+  const ok = r && r.traceCensus === "bytes=9 records=2 receive-pack=1 upload-pack=1 \"q\" back\\slashtab"
+    && r.trace2Summary === "line1|child [0] depth=1: git \"x\""
+    && n && !("traceCensus" in n) && !("trace2Summary" in n);
+  if (!ok) { console.error(JSON.stringify({ r, n })); process.exit(1); }
+' "$CONTENT"; then
+  echo "PASS: trace diagnostics round-trip as one sanitized JSON field each, omitted when empty"
+else
+  echo "FAIL: trace diagnostics did not round-trip cleanly"; fail=1
+fi
+
 if [ "$fail" -ne 0 ]; then echo "=== push-with-retry.failure-telemetry-shellquote.test.sh FAILED ==="; exit 1; fi
 echo "=== push-with-retry.failure-telemetry-shellquote.test.sh PASSED ==="

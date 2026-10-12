@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { MANIFESTS, readManifest, validateManifest } = require('../../scripts/lib/test-manifest.js');
-const { collectReferencedTests, EXEMPT_KNOWN_BROKEN, EXEMPT_NEVER_CI } = require('../../scripts/audit-orphan-tests.js');
+const { collectCiCoverage, exemptionFor, EXEMPT_KNOWN_BROKEN, EXEMPT_NEVER_CI } = require('../../scripts/audit-orphan-tests.js');
 
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -48,18 +48,21 @@ test('no test file is registered in both the node and tsx unit-test manifests', 
 // referenced anywhere CI would actually run it" correctly (it parses `run:`
 // blocks specifically, not just any YAML text, and knows the tracked
 // known-broken/never-CI exemptions) and is itself wired into CI — reusing its
-// exported collectReferencedTests()/exemption maps here, rather than
+// exported collectCiCoverage()/exemption maps here, rather than
 // re-deriving the same answer with a second, weaker check, is what keeps this
 // test from drifting out of sync with that canonical one (BRO-3061 ship-check,
 // Codex review).
 test('every tests/unit/*.test.mjs file is either registered in CI (per audit-orphan-tests.js) or a tracked exemption', () => {
   const unitDir = path.join(repoRoot, 'tests', 'unit');
   const files = fs.readdirSync(unitDir).filter((f) => f.endsWith('.test.mjs') && !f.startsWith('_skip-'));
-  const referenced = collectReferencedTests();
+  // BRO-2778: coverage is decided per repo-relative path (a basename Set let a
+  // file hide behind a same-named test in another directory).
+  const { coverageOf } = collectCiCoverage();
 
-  const homeless = files.filter(
-    (f) => !referenced.has(f) && !(f in EXEMPT_KNOWN_BROKEN) && !(f in EXEMPT_NEVER_CI)
-  );
+  const homeless = files.filter((name) => {
+    const f = { name, rel: `tests/unit/${name}` };
+    return !coverageOf(f.rel) && !exemptionFor(EXEMPT_KNOWN_BROKEN, f) && !exemptionFor(EXEMPT_NEVER_CI, f);
+  });
   assert.deepEqual(
     homeless,
     [],

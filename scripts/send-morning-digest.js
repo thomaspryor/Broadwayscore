@@ -513,7 +513,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Digest v3 summary: everything auto-fixable is BEING fixed — say that,
   // never point at sections that no longer exist (Closing soon / Data
   // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
-  const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + (freshnessCount ? 1 : 0) + (stuckCount ? 1 : 0)); // closingSoon intentionally absent — lives in the opening digest
+  // BRO-3697: both rollups are core health rows now, so the snapshot's warns
+  // usually already carry them; count each only when it is not there (stale
+  // snapshot, or the Mac-only stuck signals CI cannot see).
+  const rollupExtra = require('./lib/digest-autofix.js')
+    .localRollupIssues({ health: sections.health, freshnessCount, stuckCount }).length;
+  const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + rollupExtra); // closingSoon intentionally absent — lives in the opening digest
   const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
   // Task #1220/BRO-230: this line used to claim "being fixed"/"queued for
   // automated fix sessions" no matter what — including the 13 straight
@@ -1205,21 +1210,19 @@ async function main() {
   }
 
   // Digest v3 auto-fix (owner mandate 2026-08-02): every named health issue
-  // plus the freshness/stuck rollups gets its card filed and the oldest few
-  // dispatched as headless fix sessions — the email then REPORTS, never asks.
+  // gets its card filed and the oldest few dispatched as headless fix
+  // sessions — the email then REPORTS, never asks.
+  // BRO-3697: the freshness/stuck rollups are core health-check.js rows now
+  // ("Data freshness: shows missing poster/synopsis/tickets" via
+  // checkDataFreshnessGaps, "Stuck pipeline items" via
+  // checkStuckPipelineItems), so they normally reach planAutofix through
+  // sections.health.warns from the snapshot. localRollupIssues folds the
+  // local counts in only when the snapshot lacks that row (a stale snapshot,
+  // or stuck signals only this machine can see), never as a duplicate.
   // Fail-soft: any error here degrades to un-annotated rows, never blocks the send.
   let autofixRows = null;
   try {
-    const { planAutofix, runAutofix, keepDecisionQueued } = require('./lib/digest-autofix.js');
-    const extraIssues = [];
-    if (sections.freshness?.count > 0) {
-      extraIssues.push({ name: 'Data freshness: shows missing poster/synopsis/tickets',
-        message: `${sections.freshness.count} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.` });
-    }
-    if (stuckCount > 0) {
-      extraIssues.push({ name: 'Stuck pipeline items',
-        message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.` });
-    }
+    const { planAutofix, runAutofix, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
     let tasks = [];
     // loadTasks REQUIRES the shared task directory — a bare call silently
     // returns [] (readdirSync(undefined) swallowed), which disabled dedup on
@@ -1249,7 +1252,7 @@ async function main() {
     // that machine, so 3 here means at most 5 concurrent headless sessions.
     // Raise it further only against a fresh `sysctl vm.swapusage` reading.
     const DIGEST_CONCURRENCY_CAP = 3;
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely

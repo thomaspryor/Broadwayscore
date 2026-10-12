@@ -52,9 +52,11 @@ test('no test.yml manifest registers a file audit-orphan-tests.js declares never
     const abs = path.join(REPO, rel);
     if (!fs.existsSync(abs)) continue;
     for (const entry of readManifestEntries(abs)) {
-      // Keys are bare names of scripts/*.test.mjs probes and shims; tests/unit
-      // holds same-named real tests that CI is meant to run.
-      if (/^scripts\/[^/]+$/.test(entry) && Object.prototype.hasOwnProperty.call(EXEMPT_NEVER_CI, path.basename(entry))) clash.push(`${rel}: ${entry}`);
+      // Older keys are bare names of scripts/*.test.mjs probes and shims;
+      // tests/unit holds same-named real tests that CI is meant to run. Newer
+      // keys (BRO-2778) are repo-relative paths and match exactly.
+      const own = (k) => Object.prototype.hasOwnProperty.call(EXEMPT_NEVER_CI, k);
+      if (own(entry) || (/^scripts\/[^/]+$/.test(entry) && own(path.basename(entry)))) clash.push(`${rel}: ${entry}`);
     }
   }
   assert.deepEqual(clash, []);

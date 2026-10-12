@@ -291,3 +291,17 @@ test('two concurrent in-process probe calls stay side-effect-free (reentrancy â€
   }
   assert.equal(realWriteCalls, 0, `overlapping probes performed ${realWriteCalls} real fs write(s)`);
 });
+
+// BRO-3833 cousin: `Cron failed: X` and `Cron: X` are one check's row under two
+// names, so a card filed from the failed row must verify against the sibling.
+test('findRowForTarget: Cron failed falls back to the same cron\'s Cron: row', () => {
+  const { findRowForTarget } = require('./health-row-probe.js');
+  const rows = [{ name: 'Cron: Update Show Status', status: 'pass', message: '1h ago, success' }];
+  assert.equal(findRowForTarget(rows, 'Cron failed: Update Show Status'), rows[0]);
+  // exact match wins over the sibling
+  const both = [rows[0], { name: 'Cron failed: Update Show Status', status: 'warn', message: 'x' }];
+  assert.equal(findRowForTarget(both, 'Cron failed: Update Show Status'), both[1]);
+  // no sibling fallback for other names, or when the sibling is absent
+  assert.equal(findRowForTarget(rows, 'Cron failed: Other'), undefined);
+  assert.equal(findRowForTarget(rows, 'Something else'), undefined);
+});

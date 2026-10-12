@@ -21,6 +21,8 @@
  * @property {string} name
  * @property {string} description
  * @property {function(Object, CheckContext): CheckResult} run
+ * @property {boolean} [live]  - spends network/paid-scraper calls; skipped when
+ *                               OPENING_NIGHT_CHECKLIST_OFFLINE=1 (BRO-2777)
  */
 
 module.exports = {};

@@ -6,6 +6,12 @@ const path = require('path');
 const CHECKS_DIR = __dirname;
 const SKIP = new Set(['index.js', 'types.js']);
 
+// BRO-2777 test seam. A check that spends network or paid-scraper credit
+// exports `live: true`; with this env var set to '1', runChecks() reports it
+// as a skipped warning instead of running it. Lets the CLI test exercise the
+// whole checklist with zero Scrapingdog/ScrapingBee/Browserbase spend.
+const OFFLINE_ENV = 'OPENING_NIGHT_CHECKLIST_OFFLINE';
+
 function loadChecks() {
   return fs.readdirSync(CHECKS_DIR)
     .filter(f => f.endsWith('.check.js') && !SKIP.has(f))
@@ -28,7 +34,18 @@ function loadChecks() {
  */
 async function runChecks(show, context) {
   const checks = loadChecks();
+  const offline = process.env[OFFLINE_ENV] === '1';
   const results = await Promise.all(checks.map(async check => {
+    if (offline && check.live) {
+      return {
+        name: check.name,
+        description: check.description,
+        ok: true,
+        severity: 'warning',
+        message: `skipped: live check, ${OFFLINE_ENV}=1`,
+        details: { skippedOffline: true },
+      };
+    }
     try {
       const result = await check.run(show, context);
       return { name: check.name, description: check.description, ...result };
@@ -57,4 +74,4 @@ async function runChecks(show, context) {
   return { show, results, summary };
 }
 
-module.exports = { runChecks, loadChecks };
+module.exports = { runChecks, loadChecks, OFFLINE_ENV };

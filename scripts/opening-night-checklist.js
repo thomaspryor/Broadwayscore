@@ -6,6 +6,12 @@
  *
  * Usage:
  *   node scripts/opening-night-checklist.js [--show=ID] [--stage=T-12h|T-6h|T-2h|post-open] [--json]
+ *     [--out=FILE]   with --json: write the JSON to FILE (stdout carries scraper logs)
+ *
+ * Env (test seams, BRO-2777): OPENING_NIGHT_CHECKLIST_OFFLINE=1 skips every
+ * check that declares `live: true` (network / paid scraper calls; see
+ * scripts/lib/opening-night-checks/index.js). OPENING_NIGHT_CHECKLIST_DATA_DIR
+ * points all data reads and writes at a fixture directory.
  *
  * For each show opening within ±2 days (or a specific show), runs all automated
  * checks from scripts/lib/opening-night-checks/ and reports results.
@@ -29,7 +35,15 @@ const {
 } = require('./lib/opening-night-remediation.js');
 const { routeAlert } = require('./lib/owner-alert-router.js');
 
-const DATA_DIR = path.resolve(__dirname, '../data');
+// OPENING_NIGHT_CHECKLIST_DATA_DIR (BRO-2777, test seam): read shows/reviews
+// and write the history ledger, remediation log and score snapshot under a
+// fixture directory instead of the repo's data/, which in a worktree is a
+// symlink into the shared core-data checkout. Production never sets it.
+// Individual checks still READ some repo data directly (score-history.jsonl
+// in unexplained-score-jump, the outlet registry); nothing is written there.
+const DATA_DIR = process.env.OPENING_NIGHT_CHECKLIST_DATA_DIR
+  ? path.resolve(process.env.OPENING_NIGHT_CHECKLIST_DATA_DIR)
+  : path.resolve(__dirname, '../data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 const CRITIC_CONSENSUS_FILE = path.join(DATA_DIR, 'critic-consensus.json');
@@ -460,6 +474,22 @@ function appendToHistorySafe(showResults, now) {
   }
 }
 
+// --json output: to --out=<file> when given, else stdout. Shared by the normal
+// path and the "0 target shows" early exit (BRO-2777). Variable deliberately
+// NOT named outPath/filePath/etc: those names are on lint-write-routing.sh's
+// review-texts write heuristic; this write targets the caller-chosen JSON
+// destination (e.g. /tmp/checklist.json), never a review file.
+function emitJson(payload) {
+  const outArg = args.find((a) => a.startsWith('--out='));
+  if (outArg) {
+    const checklistJsonDest = outArg.slice('--out='.length);
+    fs.writeFileSync(checklistJsonDest, payload + '\n');
+    console.log(`[checklist] JSON written to ${checklistJsonDest} (${payload.length} bytes)`);
+  } else {
+    console.log(payload);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -481,7 +511,10 @@ async function main() {
       ? `Show '${showIdArg}' not found in shows.json`
       : 'No shows with openingDate within ±2 days';
     if (jsonMode) {
-      console.log(JSON.stringify({ generatedAt: now.toISOString(), stage: stageArg, shows: [], error: msg }));
+      // BRO-2777: honor --out here too. This path used to print to stdout
+      // only, so a --out caller (both opening-night workflows) found no file
+      // or the previous run's stale one.
+      emitJson(JSON.stringify({ generatedAt: now.toISOString(), stage: stageArg, shows: [], error: msg }));
     } else {
       console.error(msg);
     }
@@ -493,7 +526,7 @@ async function main() {
   }
 
   // Snapshot before running checks (A6 requirement)
-  recordDailySnapshot(targetShows);
+  recordDailySnapshot(targetShows, path.join(DATA_DIR, 'audit', 'score-history.jsonl'));
 
   const context = {
     reviewsDoc,
@@ -575,18 +608,8 @@ async function main() {
     // STDOUT (e.g. '[SB Call] {...}'), so even a clean stderr redirect left
     // /tmp/checklist.json unparseable — which silently un-scoped the SLA
     // dispatcher for its entire life (2026-08-02 false P0 storm).
-    // Variable deliberately NOT named outPath/filePath/etc — those names are
-    // on lint-write-routing.sh's review-texts write heuristic; this write
-    // targets the caller-chosen JSON destination (e.g. /tmp/checklist.json),
-    // never a review file.
-    const outArg = args.find((a) => a.startsWith('--out='));
-    if (outArg) {
-      const checklistJsonDest = outArg.slice('--out='.length);
-      fs.writeFileSync(checklistJsonDest, payload + '\n');
-      console.log(`[checklist] JSON written to ${checklistJsonDest} (${payload.length} bytes)`);
-    } else {
-      console.log(payload);
-    }
+    // (emitJson below documents the variable-naming constraint on that write.)
+    emitJson(payload);
   } else {
     printHumanReadable(showResults);
   }

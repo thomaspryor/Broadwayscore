@@ -87,13 +87,14 @@ function findManifestPathGaps(repoRoot) {
 // --strict when zero outlets carry 'long-biographical' — the original 2026-05-16
 // loss was a clean 3-way merge silently dropping every key.
 //
-// KNOWN SCOPE LIMIT: this scans tests/unit only. 8 of the ~96 scripts/*.test.mjs
-// files are in no manifest, and the colocated step globs scripts/lib/*.test.mjs
-// rather than scripts/*.test.mjs, so those run nowhere either;
-// tests/smoke/stage-latency-wiring.test.mjs is referenced by nothing at all.
-// Same disease, deliberately not widened here — each of those needs triaging
-// (does it pass? does it belong in a batch?) before a blocking gate can demand
-// registration, and shipping a gate that reds main on day one helps nobody.
+// SCOPE: this scans tests/unit only, by design. Test files elsewhere
+// (scripts/*.test.mjs, scripts/tests/, tests/smoke/, tests/live/, top-level
+// tests/) are policed by scripts/audit-orphan-tests.js, which since BRO-2778
+// decides coverage per repo-relative path: a file counts only when that exact
+// path is in a manifest, matched by a run: glob, or named in a run: step. Its
+// old basename match let scripts/ tests hide behind same-named tests/unit/
+// files; tests/smoke/stage-latency-wiring.test.mjs is now manifest-registered.
+// Do not widen this scan into a second orphan gate.
 //
 // Directories scanned are those whose contents are expected to be manifest-
 // registered. tests/e2e and tests/fixtures are driven by Playwright / read as
@@ -125,10 +126,6 @@ const TEST_FILE_RE = /\.test\.(c?js|mjs|tsx?)$/;
  */
 const RUNS_AT_OWN_STEP = 'DOES run';
 const UNREGISTERED_TEST_QUARANTINE = new Map([
-  [
-    'tests/unit/opening-night-checklist-cli.test.mjs',
-    'BRO-2777 — runs nowhere today and cannot pass as written: it parses --json off stdout, which carries progress logs before the JSON, and it spends a live Scrapingdog credit per run.',
-  ],
   [
     'tests/unit/scraper-cookie-wiring.test.mjs',
     'BRO-2778 — DOES run in CI, by design, at its own test.yml step ("Run scraper-cookie-wiring tests (direct exec, no --test wrapper)"). It monkey-patches https.get/https.request globally, which under `node --test` trips a worker-IPC "Unable to deserialize cloned data" error on Node 20 EVERY run (regression noted 2026-04-30). Adding it to the manifest would put it back in the `node --test` batch, which has no continue-on-error. Must stay unregistered.',

@@ -67,8 +67,9 @@ test('digest surfaces blind spots even with zero candidates', () => {
     reviewTextSweep: { candidates: [] }, todaytixStaleness: { candidates: [] },
     unmonitoredOpenShows: findUnmonitoredOpenShows([spellbound], none, TODAY),
   };
-  const out = obClosingBacklogResults(report);
+  const out = obClosingBacklogResults(report).filter((r) => r.status !== 'pass');
   assert.equal(out.length, 1);
   assert.match(out[0].message, /spellbound-off-broadway-2026/);
-  assert.deepEqual(obClosingBacklogResults({ ...report, unmonitoredOpenShows: [] }), []);
+  // BRO-3833: nothing flagged = one pass row per flaggable name, never [].
+  assert.deepEqual(obClosingBacklogResults({ ...report, unmonitoredOpenShows: [] }).map((r) => r.status), ['pass', 'pass']);
 });

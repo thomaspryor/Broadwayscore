@@ -345,6 +345,7 @@ scripts/verify-prior-run-former-cast-sweep.test.mjs
 scripts/verify-reroute-migration.test.mjs
 scripts/wrong-production-exclusion-analysis.test.mjs
 scripts/wrong-url-review-attribution.test.mjs
+tests/smoke/stage-latency-wiring.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/absence-claim-control.test.mjs
 tests/unit/actions-cache-runid-key.test.mjs
@@ -741,6 +742,7 @@ tests/unit/health-check-ci-green-rate.test.mjs
 tests/unit/health-check-coverage-probe.test.mjs
 tests/unit/health-check-green-streak.test.mjs
 tests/unit/health-check-main-red-streak-alert.test.mjs
+tests/unit/health-check-pass-rows.test.mjs
 tests/unit/health-check-repeat-failures.test.mjs
 tests/unit/health-check-tour-automation.test.mjs
 tests/unit/high-confidence-author.test.mjs
@@ -914,6 +916,7 @@ tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-automation.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
 tests/unit/opening-night-bypass-corpus.test.mjs
+tests/unit/opening-night-checklist-cli.test.mjs
 tests/unit/opening-night-checklist-failure.test.mjs
 tests/unit/opening-night-checklist-push.test.mjs
 tests/unit/opening-night-checks-bww-rr.test.mjs
@@ -1047,6 +1050,7 @@ tests/unit/push-via-git-api-rest-integration.test.mjs
 tests/unit/push-via-git-api.test.mjs
 tests/unit/push-with-retry-abort-preserves-head.test.mjs
 tests/unit/push-with-retry-fallback-eligibility.test.mjs
+tests/unit/push-with-retry-sleep-backoff.test.mjs
 tests/unit/push-with-retry-trap-exit-code.test.mjs
 tests/unit/rebuild-all-reviews.test.mjs
 tests/unit/rebuild-dedup-scored-preference.test.mjs

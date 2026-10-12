@@ -1382,8 +1382,34 @@ function keepDecisionQueued(queued, autofixRows) {
   return (Array.isArray(queued) ? queued : []).filter(q => q && keys.has(q.conditionKey));
 }
 
+// BRO-3697: the freshness / stuck rollups are core health-check.js rows, so the
+// CI snapshot normally carries them and they reach planAutofix through
+// health.warns. The digest still computes both counts locally, and the stuck
+// count sees Mac-only signals (worktrees, cmux, headless jobs) CI cannot. Fold
+// a local rollup in ONLY when the snapshot lacks a row of that name: never a
+// duplicate, and the row name always matches the core row so a card filed from
+// it can be verified by check-health-row-absent.js --live.
+const ROLLUP_ROW_NAMES = {
+  freshness: 'Data freshness: shows missing poster/synopsis/tickets',
+  stuck: 'Stuck pipeline items',
+};
+function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0 } = {}) {
+  const present = new Set([...(health?.errors || []), ...(health?.warns || [])]
+    .filter(Boolean).map((e) => (typeof e === 'string' ? e : e.name)));
+  const out = [];
+  if (freshnessCount > 0 && !present.has(ROLLUP_ROW_NAMES.freshness)) {
+    out.push({ name: ROLLUP_ROW_NAMES.freshness,
+      message: `${freshnessCount} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.` });
+  }
+  if (stuckCount > 0 && !present.has(ROLLUP_ROW_NAMES.stuck)) {
+    out.push({ name: ROLLUP_ROW_NAMES.stuck,
+      message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.` });
+  }
+  return out;
+}
+
 module.exports = {
-  keepDecisionQueued,
+  keepDecisionQueued, localRollupIssues, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,

@@ -151,7 +151,8 @@ test('preview: no shared history (shallow boundary) is a skip, never a block', (
 // ── test registration (branch-scoped) ──────────────────────────────────────
 function auditRepo() {
   const d = baseRepo();
-  for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/test-manifest.js']) {
+  // ci-test-coverage.js + bash-integration-test-list.js: the audit's coverage rule (BRO-2778).
+  for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/test-manifest.js', 'scripts/lib/ci-test-coverage.js', 'scripts/lib/bash-integration-test-list.js']) {
     write(d, f, fs.readFileSync(path.join(ROOT, f), 'utf8'));
   }
   write(d, '.github/workflows/test.yml', 'name: t\n');

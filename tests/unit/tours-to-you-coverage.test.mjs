@@ -147,11 +147,11 @@ test(`stale = unread for more than ${STALE_DAYS} days; a newly listed page gets 
 test('the digest warns about unread pages and stays quiet when all are current', () => {
   const base = { generatedAt: daysAgo(0.1), created: [] };
   const ok = tourAutomationResults({ autocreate: { ...base, discovery: { error: null, coverage: { a: { seenAt: daysAgo(9), checkedAt: daysAgo(1) } } } } }, NOW);
-  assert.deepEqual(ok.filter(r => /Tours To You pages/.test(r.name)), []);
+  assert.deepEqual(ok.filter(r => /Tours To You pages/.test(r.name) && r.status !== 'pass'), []);
   const rows = tourAutomationResults({ autocreate: { ...base, discovery: { error: null, coverage: {
     a: { seenAt: daysAgo(9), checkedAt: daysAgo(1) },
     'operation-mincemeat': { seenAt: daysAgo(9), checkedAt: daysAgo(7) },
-  } } } }, NOW).filter(r => /Tours To You pages/.test(r.name));
+  } } } }, NOW).filter(r => /Tours To You pages/.test(r.name) && r.status !== 'pass');
   assert.equal(rows.length, 1);
   assert.equal(rows[0].status, 'warn');
   assert.match(rows[0].message, /1 of 2 .*operation-mincemeat/);

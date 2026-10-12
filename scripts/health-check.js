@@ -2963,6 +2963,51 @@ function checkStuckPipelineItems() {
   return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
 }
 
+// --- Data freshness gaps (BRO-3697) ---
+//
+// send-morning-digest.js used to push this row only into its own
+// extraIssues list, so it never existed in computeCoreHealthResults() and
+// the auto-filed card's check-health-row-absent.js --live verify could only
+// ever say 'unknown'. Same source and same 36h staleness bar as the digest
+// (digest-snapshots.js readFreshnessReport / summarizeFreshnessHighSeverity),
+// so the row and the digest's own freshness section cannot disagree.
+// Distinct from checkFreshness() above, which checks file AGE, not content.
+const DATA_FRESHNESS_GAPS_CHECK = 'Data freshness: shows missing poster/synopsis/tickets';
+
+// Pure: takes readFreshnessReport()'s {status, snapshot, generatedAt} result.
+function dataFreshnessGapsResult(r) {
+  const name = DATA_FRESHNESS_GAPS_CHECK;
+  if (!r || r.status !== 'fresh') {
+    // Missing/stale/invalid report: the check could not run. The message
+    // MUST start with "Skipped" so health-row-probe.js reads 'unknown', never
+    // 'absent' (a still-open gap must not verify as fixed). Status stays
+    // 'pass' so the skip does not file a misnamed "missing poster" card;
+    // the digest already banners a stale report under "no fresh data from".
+    return { name, status: 'pass', message: `Skipped — data/freshness-report.json is ${r ? r.status : 'unreadable'}${r && r.generatedAt ? ` (generated ${r.generatedAt})` : ''}; check-show-freshness.yml may not have run` };
+  }
+  if (!Array.isArray(r.snapshot?.dataQuality?.hasIssues)) {
+    return { name, status: 'pass', message: 'Skipped — freshness-report.json has no dataQuality.hasIssues array (producer shape changed?)' };
+  }
+  const { summarizeFreshnessHighSeverity } = require('./lib/digest-snapshots.js');
+  const summary = summarizeFreshnessHighSeverity(r.snapshot);
+  const count = summary ? summary.count : 0;
+  if (count > 0) {
+    return {
+      name,
+      status: 'warn',
+      message: `${count} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.`,
+    };
+  }
+  return { name, status: 'pass', message: 'No open show is missing a poster, synopsis or tickets' };
+}
+
+function checkDataFreshnessGaps({ dataDir = DATA_DIR, now = Date.now() } = {}) {
+  return [runCheck(DATA_FRESHNESS_GAPS_CHECK, () => {
+    const { readFreshnessReport } = require('./lib/digest-snapshots.js');
+    return dataFreshnessGapsResult(readFreshnessReport({ dataDir, now }));
+  })];
+}
+
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
@@ -3504,11 +3549,17 @@ async function checkStuckWorkInner() {
     results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: `No in-progress cards idle >48h${recNote(rec.resolvedCounts.orphaned)}` });
   }
 
+  // BRO-3833: explicit pass rows (this point is only reached after a real
+  // fetch of a non-empty card set) so a fixed row can verify 'absent'.
   if (pausedStale.length > 0) {
     results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)${recNote(rec.resolvedCounts.pausedStale)}` });
+  } else {
+    results.push({ name: 'Stuck work: paused P2/other cards', status: 'pass', message: 'No lower-priority cards Paused >7d' });
   }
   if (invalidDates > 0) {
     results.push({ name: 'Stuck work: unparseable timestamps', status: 'warn', message: `${invalidDates} card(s) skipped — last_edited_time did not parse (they may be hiding stuck work)` });
+  } else {
+    results.push({ name: 'Stuck work: unparseable timestamps', status: 'pass', message: 'Every card timestamp parsed' });
   }
   return results;
 }
@@ -4069,13 +4120,21 @@ function obClosingBacklogResults(report, now = new Date(), shows = null) {
   // Open shows neither signal can watch (BRO-3086, Spellbound): listed even
   // when there are no candidates, or the blind spot stays a JSON-only fact.
   const blind = (report.unmonitoredOpenShows || []).filter(stillOpen);
+  // BRO-3833: a report that was read and found nothing emits an explicit pass
+  // row under each flaggable name, so a card targeting either row can verify
+  // its own fix ('absent') via health-row-probe.js instead of reading
+  // 'unknown' forever. An absent report still returns [] above (never a pass).
   const blindResult = blind.length ? [{
     name: 'Data: OB shows no closing signal can detect',
     status: 'warn',
     message: `${blind.length} open Off-Broadway show(s) have no TodayTix id, no review texts and no closingDate, so a closure would go unnoticed. Oldest: ${blind.reduce((a, b) => (b.daysOpen > a.daysOpen ? b : a)).showId}`,
     hint: 'Verify each on its venue/ticketing page; set closingDate (and status if closed) in shows.json (data repo), or add closingDate once announced.',
-  }] : [];
-  if (candidates.length === 0) return blindResult;
+  }] : Array.isArray(report.unmonitoredOpenShows)
+    ? [{ name: 'Data: OB shows no closing signal can detect', status: 'pass', message: 'Every open Off-Broadway show has a closing signal the detector can watch' }]
+    : []; // older report without the field: this row was never computed, so no pass
+  if (candidates.length === 0) {
+    return [...blindResult, { name: 'Data: OB closing candidates awaiting review', status: 'pass', message: 'No open Off-Broadway show looks closed per the weekly detector' }];
+  }
 
   const { oldest, ageDays, status } = rankByAge(candidates, 'firstMissingDate', OB_CLOSING_AGED_DAYS_ERROR, now);
   const label = oldest.proposedClosingDate
@@ -4107,6 +4166,14 @@ const TOUR_JOBS_EXPECTED_FROM = '2026-10-06';
 
 function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date()) {
   const out = [];
+  // BRO-3833: a pass row is a verification ('absent' in health-row-probe.js),
+  // so it is only issued while all three reports are present and fresh. A
+  // stale or missing report keeps the row but marks it "Skipped", which the
+  // probe reads as 'unknown': the last clean report never verifies a fix
+  // after its producer stopped writing.
+  let allFresh = true;
+  const pass = (name, message) => ({ name, status: 'pass',
+    message: allFresh ? message : `Skipped (a tour job report is missing or stale): ${message}` });
   const jobs = [
     ['sweep', sweep, 'daily tour review mover (rebuild-reviews.yml)'],
     ['dates', dates, 'daily tour dates check (update-show-status.yml)'],
@@ -4116,9 +4183,11 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
   for (const [key, report, label] of jobs) {
     const at = report && report.generatedAt ? new Date(report.generatedAt) : null;
     if (!at || Number.isNaN(at.getTime())) {
+      allFresh = false;
       if (now.toISOString().slice(0, 10) >= TOUR_JOBS_EXPECTED_FROM) quiet.push(`${label}: no report yet`);
     } else {
       const hours = (now - at) / 3600000;
+      if (hours > TOUR_JOB_MAX_AGE_HOURS[key]) allFresh = false;
       if (hours > TOUR_JOB_MAX_AGE_HOURS[key]) quiet.push(`${label}: last report ${Math.round(hours / 24)} day(s) ago`);
     }
   }
@@ -4129,6 +4198,12 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `A national-tour job has not run on schedule: ${quiet.join('; ')}.`,
       hint: 'Check that workflow\'s recent runs; the step may be failing or the kill switch (TOUR_SWEEP / TOUR_DATES_MODE / TOUR_AUTOCREATE) set to off.',
     });
+  } else if (allFresh) {
+    // BRO-3833: pass rows only when the report each row reads was actually
+    // present — a missing report never yields a pass (that would be a false
+    // 'absent' in health-row-probe.js). Before TOUR_JOBS_EXPECTED_FROM a
+    // missing report is not flagged, but it is not proof of health either.
+    out.push(pass('Data: tour automation stopped reporting', 'All three national-tour jobs reported on schedule'));
   }
   const held = (sweep && sweep.held) || [];
   if (held.length) {
@@ -4138,6 +4213,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `The daily tour sweep refused to move reviews for ${held.join(', ')}: more than it should ever need to, so nothing was moved.`,
       hint: `Look at: node scripts/sweep-tour-reviews.js --tour=${held[0]} (dry run). If the moves are right, run it with --execute.`,
     });
+  } else if (sweep) {
+    out.push(pass('Data: tour review sweep held', 'The daily tour sweep held nothing back'));
   }
   const problems = ((dates && dates.tours) || []).filter(t => t.problem);
   if (problems.length) {
@@ -4147,6 +4224,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `${problems.length} tour(s) could not be dated automatically: ${problems.map(p => `${p.id} (${p.problem})`).join('; ')}`,
       hint: 'See data/audit/tour-dates.json. A page that parses to nothing usually means Tours To You changed layout or the slug differs (set tourScheduleSlug on the entry).',
     });
+  } else if (dates) {
+    out.push(pass('Data: tour dates need a look', 'Every tour was dated automatically'));
   }
   // Running-tour discovery (BRO-4325) fails soft so roundups still get
   // created; this is where a Tours To You change shows up.
@@ -4158,6 +4237,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `Finding national tours on Tours To You failed: ${discovery.error}. New running tours won't be added until it works again.`,
       hint: 'Run node scripts/discover-running-tours.js locally; the Tours To You pages API or page layout may have changed (scripts/lib/tour-discovery.js).',
     });
+  } else if (discovery) {
+    out.push(pass('Data: running-tour discovery failed', 'Running-tour discovery on Tours To You succeeded'));
   }
   // Every Broadway-titled Tours To You page should be read every couple of
   // days (BRO-4725); one that isn't is a tour that could appear late or never.
@@ -4173,6 +4254,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
         message: `${stale.length} of ${total} Tours To You show pages have not been read in over ${STALE_DAYS} days (${stale.slice(0, 8).map(r => r.slug).join(', ')}${stale.length > 8 ? ', ...' : ''}). A tour on one of them can't be added until it is.`,
         hint: 'See discovery in data/audit/tour-autocreate.json (rateLimited, failed). The daily BWW landing job reads the oldest pages first; repeated 429s mean Tours To You wants a slower pace (GAP_MS in scripts/lib/tours-to-you.js).',
       });
+    } else {
+      out.push(pass('Data: Tours To You pages not checked', `All ${Object.keys(coverage).length} Tours To You show pages read within ${STALE_DAYS} days`));
     }
   }
   const created = (autocreate && autocreate.created) || [];
@@ -4183,6 +4266,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `Added ${created.join(', ')} from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia).`,
       hint: 'Nothing to do unless one is wrong; see data/audit/tour-autocreate.json.',
     });
+  } else if (autocreate) {
+    out.push(pass('Data: national tours added automatically', 'No national tours added automatically this run'));
   }
   // A closed tour its page lists again (BRO-4724): reopened when the page's
   // history says it is the same tour, left closed when it can't tell.
@@ -4194,6 +4279,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `Reopened ${reopened.join(', ')}: Tours To You lists new dates and its history names them as the same tour.`,
       hint: 'Nothing to do unless one is wrong; see lifecycle in data/audit/tour-autocreate.json.',
     });
+  } else if (autocreate) {
+    out.push(pass('Data: closed national tours reopened automatically', 'No closed national tours reopened'));
   }
   const undecided = (autocreate && autocreate.lifecycle && autocreate.lifecycle.undecided) || [];
   if (undecided.length) {
@@ -4203,6 +4290,8 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `${undecided.map(u => `${u.id} (closed ${u.closingDate}, listed again from ${u.resumes}: ${u.reason})`).join('; ')}. Left closed: the page doesn't say whether it is the same tour.`,
       hint: 'If it is the same tour, clear its closingDate; if a new one, it is created once the Tours To You history names it.',
     });
+  } else if (autocreate) {
+    out.push(pass('Data: closed national tour lists new dates', 'No closed national tour lists new dates'));
   }
   return out;
 }
@@ -4253,7 +4342,13 @@ function cloudMemoryDriftResults(report, now = new Date()) {
       message: `cloud-memory/ is not being refreshed from claude-config: ${report.error}`,
       hint: 'Check the latest Cloud Memory Reconcile run; REVIEW_TEXTS_TOKEN must be able to read thomaspryor/claude-config.',
     });
+  } else {
+    // BRO-3833: explicit pass rows so a fixed drift can verify 'absent'.
+    out.push({ name: 'Memory: cloud mirror reconcile failing', status: 'pass', message: 'cloud-memory/ reconcile read claude-config cleanly' });
   }
+  // A failed reconcile could not compare against claude-config, so an empty
+  // waitingForMac then proves nothing: no pass row for the second name.
+  if (report.error) return out;
   const aged = (report.waitingForMac || [])
     .map((d) => ({ ...d, hours: (now - new Date(d.firstSeenAt)) / 36e5 }))
     .filter((d) => d.hours > CLOUD_MEMORY_DRIFT_MAX_HOURS)
@@ -4265,6 +4360,8 @@ function cloudMemoryDriftResults(report, now = new Date()) {
       message: `${aged.length} cloud-memory note(s) differ from the Mac's memory for over ${CLOUD_MEMORY_DRIFT_MAX_HOURS}h. Oldest: ${aged[0].name} (${aged[0].reason}, ${Math.round(aged[0].hours)}h)`,
       hint: "The Mac's session-stop sync (scripts/sync-memory-to-repo.sh --commit from ~/Broadwayscore) is not adopting them; check that checkout is on main and can pull. List: data/audit/cloud-memory-drift.json.",
     });
+  } else {
+    out.push({ name: 'Memory: cloud notes not reaching the Mac', status: 'pass', message: `No cloud-memory note has waited more than ${CLOUD_MEMORY_DRIFT_MAX_HOURS}h for the Mac` });
   }
   return out;
 }
@@ -5534,6 +5631,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixThroughput(isCI),
     ...checkDigestInvariantFail(isCI),
     ...checkStuckPipelineItems(),
+    ...checkDataFreshnessGaps(),
   ];
 }
 
@@ -5779,4 +5877,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };

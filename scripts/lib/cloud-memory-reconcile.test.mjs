@@ -237,11 +237,15 @@ describe('cloudMemoryDriftResults (daily digest)', () => {
   const { cloudMemoryDriftResults } = require('../health-check.js');
   const now = new Date('2026-10-11T12:00:00Z');
 
-  it('stays silent for a fresh report and for no report', () => {
+  it('emits nothing for no report, and pass rows (BRO-3833) for a healthy one', () => {
     assert.deepEqual(cloudMemoryDriftResults(null, now), []);
-    assert.deepEqual(cloudMemoryDriftResults({
+    const rows = cloudMemoryDriftResults({
       waitingForMac: [{ name: 'a.md', reason: 'only-in-mirror', firstSeenAt: '2026-10-10T00:00:00Z' }],
-    }, now), []);
+    }, now);
+    assert.deepEqual(rows.map((r) => [r.name, r.status]), [
+      ['Memory: cloud mirror reconcile failing', 'pass'],
+      ['Memory: cloud notes not reaching the Mac', 'pass'],
+    ]);
   });
 
   it('warns past 48h naming the oldest note', () => {
@@ -251,7 +255,7 @@ describe('cloudMemoryDriftResults (daily digest)', () => {
         { name: 'b.md', reason: 'cloud-edit-merged', firstSeenAt: '2026-10-08T12:00:00Z' },
         { name: 'old.md', reason: 'no-common-version', firstSeenAt: '2026-10-01T12:00:00Z' },
       ],
-    }, now);
+    }, now).filter((r) => r.status !== 'pass');
     assert.equal(rows.length, 1);
     assert.equal(rows[0].status, 'warn');
     assert.match(rows[0].message, /^2 cloud-memory note/);
@@ -260,6 +264,7 @@ describe('cloudMemoryDriftResults (daily digest)', () => {
 
   it('warns when the reconcile could not read claude-config', () => {
     const rows = cloudMemoryDriftResults({ error: 'could not clone', waitingForMac: [] }, now);
+    // No pass row for the notes check: a failed reconcile proves nothing about it.
     assert.equal(rows.length, 1);
     assert.equal(rows[0].name, 'Memory: cloud mirror reconcile failing');
   });

@@ -194,9 +194,13 @@ test('feedbackBacklogResults: open backlog warns with count, oldest age, newest 
 
 // --- obClosingBacklogResults (weekly OB closing-detector digest check) ---
 
-test('obClosingBacklogResults: empty or absent report yields nothing', () => {
+test('obClosingBacklogResults: absent report yields nothing; empty report yields pass rows (BRO-3833)', () => {
   assert.deepEqual(obClosingBacklogResults(null), []);
-  assert.deepEqual(obClosingBacklogResults({ reviewTextSweep: { candidates: [] }, todaytixStaleness: { candidates: [] } }), []);
+  // No unmonitoredOpenShows field (older report): only the candidates row was computed.
+  assert.deepEqual(
+    obClosingBacklogResults({ reviewTextSweep: { candidates: [] }, todaytixStaleness: { candidates: [] } }).map((r) => [r.name, r.status]),
+    [['Data: OB closing candidates awaiting review', 'pass']],
+  );
 });
 
 test('obClosingBacklogResults: single candidate warns with count and show', () => {
@@ -253,7 +257,12 @@ test('obClosingBacklogResults: candidates already closed in shows.json are dropp
     { id: 'pied-a-terre-off-broadway-2026', status: 'closed' },
     { id: 'closed-blind-2026', status: 'closed' },
   ];
-  assert.deepEqual(obClosingBacklogResults(STALE_OB_REPORT, now, shows), []);
+  // Nothing left to flag: BRO-3833 pass rows (same names) instead of [].
+  const rows = obClosingBacklogResults(STALE_OB_REPORT, now, shows);
+  assert.deepEqual(rows.map((r) => [r.name, r.status]), [
+    ['Data: OB shows no closing signal can detect', 'pass'],
+    ['Data: OB closing candidates awaiting review', 'pass'],
+  ]);
 });
 
 test('obClosingBacklogResults: a show in both signals counts once; open shows still reported', () => {

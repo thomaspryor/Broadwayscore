@@ -98,7 +98,7 @@ function originUrl(cwd) {
 function parseArgs(argv) {
   const out = {};
   for (const arg of argv) {
-    const m = arg.match(/^--([^=]+)=(.*)$/);
+    const m = arg.match(/^--([^=]+)=([\s\S]*)$/); // [\s\S]: a value with a newline must not be dropped (BRO-3465)
     if (m) out[m[1]] = m[2];
   }
   return out;
@@ -123,7 +123,7 @@ function jitterMs(attempt, base = 150, cap = 1800) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...]');
+    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...] [--trace-census=...] [--trace2-summary=...]');
     process.exit(0);
   }
 
@@ -154,6 +154,9 @@ async function main() {
     stallPhase: args['stall-phase'] || 'unknown',
     // BRO-2839 — see buildFailureEntry's field comment in scripts/lib/push-ledger.js.
     stallService: args['stall-service'] || 'unknown',
+    // BRO-3465 — see buildFailureEntry in scripts/lib/push-ledger.js.
+    traceCensus: args['trace-census'] || '',
+    trace2Summary: args['trace2-summary'] || '',
   });
 
   const cwd = process.cwd();

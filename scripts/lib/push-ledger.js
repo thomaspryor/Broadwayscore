@@ -55,9 +55,11 @@ function buildFailureEntry({
   ts,
   stallPhase,
   stallService,
+  traceCensus,
+  trace2Summary,
 }) {
   if (!reason) throw new Error('buildFailureEntry: reason is required');
-  return JSON.stringify({
+  const entry = {
     reason,
     attempt: attempt || 0,
     maxRetries: maxRetries || 0,
@@ -81,7 +83,25 @@ function buildFailureEntry({
     // row that is not "receive-pack" describes traffic the push did not
     // generate, so its stallPhase is not evidence about the push.
     stallService: stallService || 'unknown',
-  });
+  };
+  // BRO-3465: one-line summaries of a timed-out attempt's whole curl trace
+  // (receive-pack vs upload-pack request counts + request list) and, when
+  // PUSH_TRACE2_DIAGNOSTICS=1, its trace2 child-process summary. Keyed in only
+  // when captured so rows from non-timeout failures keep their historical
+  // shape. Re-sanitized here (push-with-retry.sh already collapses them):
+  // control characters dropped and length capped, because this CLI is the
+  // durable write and must not trust its caller's formatting.
+  const census = oneLineDiagnostic(traceCensus, 300);
+  if (census) entry.traceCensus = census;
+  const trace2 = oneLineDiagnostic(trace2Summary, 500);
+  if (trace2) entry.trace2Summary = trace2;
+  return JSON.stringify(entry);
+}
+
+function oneLineDiagnostic(value, max) {
+  if (typeof value !== 'string') return '';
+  // eslint-disable-next-line no-control-regex
+  return value.replace(/\r?\n/g, '|').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, max);
 }
 
 // Detects whether the current process is running inside a GitHub Actions

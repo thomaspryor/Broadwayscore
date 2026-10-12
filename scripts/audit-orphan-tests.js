@@ -18,6 +18,12 @@
  * per-machine-ledger recheck-after probe) and moved to EXEMPT_NEVER_CI below;
  * the rest were wired into tests/unit-test-manifest.txt.
  *
+ * BRO-2778 (2026-10-12): coverage is decided per repo-relative PATH
+ * (scripts/lib/ci-test-coverage.js): the exact path in a manifest, matched by a
+ * run: glob, or named in a run: step. The old basename match let a scripts/
+ * test hide behind a same-named tests/unit/ file. tests/, tests/smoke/ and
+ * tests/live/ joined the scan in the same change (see SCANNED_DIRS).
+ *
  * Notion 362637c5-416f-81f4 — discovered 59 orphans (33% of the suite) during the
  * Stuart King Fixes v2 session. The orphan that triggered the audit (bulk-import-
  * summary.test.mjs) had shipped 2 weeks earlier without being registered, so
@@ -51,17 +57,10 @@ const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
 const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex, validateManifest } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
-const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
-const SCRIPTS_DIR = path.join(ROOT, 'scripts'); // top level only; scripts/lib/ runs via its own glob
-const SCRIPTS_TESTS_DIR = path.join(ROOT, 'scripts', 'tests'); // BRO-4133: was unscanned entirely
-const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
-// test.yml's main runner reads file lists from these manifests (task #763 —
-// replaced a single 15,987-char inline `node --test <368 files>` line, which
-// guaranteed a merge conflict on every concurrent test addition) instead of
-// listing test filenames inline. A registration now lives in the manifest,
-// not literally inside test.yml, so it must be scanned too or every
-// manifest-registered test reads as an orphan.
-const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
+// test.yml's main runner reads file lists from MANIFESTS (task #763 —
+// replaced a single 15,987-char inline `node --test <368 files>` line), so a
+// registration lives in a manifest, not literally inside test.yml; see
+// collectCiCoverage() below.
 
 // Known-broken tests that need investigation before they can be wired into CI.
 // Each entry MUST have a Notion card so the exemption can be unwound. Audit will
@@ -74,24 +73,24 @@ const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
-  'ccusage-baseline.test.mjs': 'BRO-4491',
+  'scripts/ccusage-baseline.test.mjs': 'BRO-4491',
   // BRO-2136 acceptance-command shim; re-imports the CI-registered tests/unit copy.
-  'scrape-playbill-verdict.test.mjs': 'BRO-2136',
+  'scripts/scrape-playbill-verdict.test.mjs': 'BRO-2136',
   // BRO-3137 live-data acceptance check (data-state, would flap in CI).
-  'opening-night-express.test.mjs': 'BRO-3137',
+  'scripts/opening-night-express.test.mjs': 'BRO-3137',
   // BRO-328 live-data acceptance check (data-state, would flap in CI).
-  'matilda-theatre-row-closed.test.mjs': 'BRO-328',
+  'scripts/matilda-theatre-row-closed.test.mjs': 'BRO-328',
   // Deferred-effect acceptance probe (task #695, card 3ae637c5-416f-81bb):
   // asserts a 7-day provider-spend streak, EXPECTED to fail until the ledger
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
   // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/.
-  'verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
+  'scripts/verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
   // Deferred-effect acceptance probe (task #419, card 3a7637c5-416f-81fd):
   // asserts the "SEO: health" digest condition doesn't fire on the next
   // weekly check-seo-health.yml run. Run by autonomous-acceptance-recheck.js
   // at its RECHECK-AFTER date, never by CI. Lives in scripts/, not
   // tests/unit/ (same pattern as the entry above).
-  'verify-seo-health-clean.test.mjs': '3a7637c5-416f-81fd',
+  'scripts/verify-seo-health-clean.test.mjs': '3a7637c5-416f-81fd',
   // Deferred-effect acceptance probe (task #1466, card 3bc637c5-416f-8118):
   // asserts promote-we-aggregator.yml's daily cron produced a real
   // we-promotion-log.jsonl entry after the feature merged 2026-08-14.
@@ -99,7 +98,7 @@ const EXEMPT_NEVER_CI = {
   // merging session (#1478 ship-check found it as an orphan-tests block
   // when merging unrelated work) — same fix as the two entries above:
   // exempt from CI, let autonomous-acceptance-recheck.js pick it up.
-  'verify-we-aggregator-promotion-ran.test.mjs': '3bc637c5-416f-8118',
+  'scripts/verify-we-aggregator-promotion-ran.test.mjs': '3bc637c5-416f-8118',
   // Deferred-effect acceptance probe (card 3bd637c5-416f-81ed): asserts main's
   // test.yml has HELD green for 24h after the 2026-08-14 recovery from an
   // 89-failure red streak, reading the committed trunk snapshot (the recheck's
@@ -108,7 +107,7 @@ const EXEMPT_NEVER_CI = {
   // that is EXPECTED to report "not yet 24h" on its first evaluation must
   // never be able to redden the very trunk it is measuring. Lives in scripts/,
   // not tests/unit/ (same pattern as the three entries above).
-  'verify-main-green-streak.test.mjs': '3bd637c5-416f-81ed',
+  'scripts/verify-main-green-streak.test.mjs': '3bd637c5-416f-81ed',
   // Deferred-effect acceptance probe (task #1812, BRO-445): asserts the
   // cmux wrapper-detection fix (96ec6d951d8, merged 2026-08-19T04:05Z)
   // actually moved the dead-launch rate. EXPECTED to fail/be inconclusive
@@ -119,7 +118,7 @@ const EXEMPT_NEVER_CI = {
   // push repo-wide for 3 days (2026-08-17 through 2026-08-19), including
   // the daily health-check snapshot commit, which is why the snapshot went
   // stale and "Stuck pipeline items" got flagged.
-  'verify-dispatch-dead-rate-recovery.test.mjs': 'task-1812',
+  'scripts/verify-dispatch-dead-rate-recovery.test.mjs': 'task-1812',
   // Deferred-effect acceptance probe (task #1814, BRO-445): asserts
   // update-show-status.yml stops ending CANCELLED after the timeout raise
   // (0d3716a9ba8, landed 2026-08-19T10:19:28Z) + the setup-playwright
@@ -129,42 +128,59 @@ const EXEMPT_NEVER_CI = {
   // pattern as the entries above). Added by BRO-445 alongside the #1812
   // entry above — both were left off this map by their authoring sessions
   // and both blocked every push-with-retry.sh push repo-wide.
-  'verify-update-show-status-no-cancellations.test.mjs': 'task-1814',
+  'scripts/verify-update-show-status-no-cancellations.test.mjs': 'task-1814',
   // BRO-2718: asserts the Linear backlog's refused-command ratio has
   // materially improved over a hardcoded pre-remediation baseline — a
   // FUTURE-state claim that fails against today's live Linear board by
   // design (the file's own header says so). Exists to be run directly as
   // BRO-2718's acceptance command once that sweep lands, never by CI.
-  'linear-backlog-verifiability.test.mjs': 'BRO-2718',
+  'scripts/tests/linear-backlog-verifiability.test.mjs': 'BRO-2718',
   // task #1564: reads the per-machine, gitignored dispatch-ledger.jsonl at a
   // hardcoded absolute path (/Users/tompryor/Broadwayscore/data/audit/) —
   // cannot run in CI (no such file in a fresh checkout) or on any other
   // machine. A RECHECK-AFTER acceptance probe for autonomous-acceptance-
   // recheck.js, same pattern as the entries above.
-  'verify-watchdog-claim-loop-gone.test.mjs': 'task-1564',
+  'scripts/tests/verify-watchdog-claim-loop-gone.test.mjs': 'task-1564',
   // BRO-4467: asserts comparative-rescore stopped re-scoring the same groups
   // every chain run, from the live data/llm-scoring-runs.json. Needs post-fix
   // run history, so it is a RECHECK-AFTER probe, never run by CI.
-  'verify-comparative-no-repeat.test.mjs': 'BRO-4467',
+  'scripts/verify-comparative-no-repeat.test.mjs': 'BRO-4467',
   // BRO-4486: asserts the NYT Degenerates rescore and the star re-anchoring
   // happened, from live review files. Red until the enrich + scoring crons
   // act, so it is a RECHECK-AFTER probe, never run by CI.
-  'verify-bro-4486-recheck.test.mjs': 'BRO-4486',
+  'scripts/verify-bro-4486-recheck.test.mjs': 'BRO-4486',
   // BRO-4725: asserts the daily landing job read every Broadway-titled Tours To
   // You page within the stale window, from live data/audit/tour-autocreate.json.
   // Needs scheduled runs after the fix, so it is a RECHECK-AFTER probe.
-  'verify-tours-to-you-coverage.test.mjs': 'BRO-4725',
+  'scripts/verify-tours-to-you-coverage.test.mjs': 'BRO-4725',
   // BRO-4724: asserts the first tour auto-create write run and the next day's
   // schedule fetch acted, from live data. Date-gated RECHECK-AFTER probe; it
   // sat in the CI unit manifest and redded main (BRO-4837).
-  'verify-bro-4724-recheck.test.mjs': 'BRO-4724',
+  'scripts/verify-bro-4724-recheck.test.mjs': 'BRO-4724',
   // BRO-4930: asserts the 2026-10 outlet tier moves reached published show
   // JSON after the nightly rebuild-reviews run. Date-gated RECHECK-AFTER probe.
-  'verify-outlet-tiers-published.test.mjs': 'BRO-4930',
+  'scripts/verify-outlet-tiers-published.test.mjs': 'BRO-4930',
   // BRO-5063: asserts the synopsis cleanup plan applied and the rows it
   // cleared were refilled, from live data/shows.json. Red between the plan
   // run and the backfill, so it is an acceptance probe, never run by CI.
-  'verify-bro-5063-synopses.test.mjs': 'BRO-5063',
+  'scripts/verify-bro-5063-synopses.test.mjs': 'BRO-5063',
+  // BRO-2778: keys are repo-relative PATHS. A bare filename used to exempt
+  // every same-named file in every scanned directory (ccusage-baseline and
+  // opening-night-express each have a tests/unit/ twin), the collision this
+  // card fixed; audit-orphan-tests.test.mjs rejects any key without a '/'.
+  // BRO-2778 triage: these hid behind a same-named tests/unit/ or scripts/lib/
+  // file under the old basename match. Both are one-line acceptance-command
+  // shims that only import a suite CI already runs (registering them would run
+  // that suite twice).
+  // BRO-4051 shim: imports tests/unit/cast-backfill-year-validation.test.mjs (unit manifest).
+  'scripts/cast-backfill-year-validation.test.mjs': 'BRO-4051',
+  // BRO-3151 shim: imports scripts/lib/manual-review-url-change.test.mjs (scripts/lib/*.test.mjs glob).
+  'scripts/ingest-manual-review.test.mjs': 'BRO-3151',
+  // BRO-4434 LIVE VERIFY probes in tests/live/ (first scanned BRO-2778): run the
+  // real `npm audit` against the registry advisory feed and the calendar, so
+  // their answer changes without a code change. Card acceptance commands only.
+  'tests/live/audit-dependencies-clean.test.mjs': 'BRO-4434',
+  'tests/live/audit-dependencies-no-expiring.test.mjs': 'BRO-4434',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
@@ -181,11 +197,11 @@ const EXEMPT_KNOWN_BROKEN = {
   // The test now scrubs BROWSERBASE_* itself and is registered in test.yml.
   // Surfaced when this gate ran for the first time ever — see the note on the
   // decayed-exemption step in test.yml.)
-  //
-  // 1/2 tests fails because the CLI prints "Fetching: ..." to stdout in --json
-  // mode, breaking JSON.parse. Either CLI should silence stdout in --json mode,
-  // or test should parse last line / strip preamble.
-  'opening-night-checklist-cli.test.mjs': '363637c5-416f-814f',
+
+  // (opening-night-checklist-cli.test.mjs removed 2026-10-12, BRO-2777 — it now
+  // drives the CLI with --json --out=<file> like its production callers, runs
+  // offline against a temp fixture (OPENING_NIGHT_CHECKLIST_OFFLINE=1), and is
+  // registered in tests/unit-test-manifest.txt.)
   // (opening-night-checks-skeleton.test.mjs removed 2026-05-16 — it actually passes
   // given a 30s per-test budget; the original "TIMEOUT" report was from a 30s
   // wall-clock kill across 3 sequential tests. Now registered in test.yml's main
@@ -205,17 +221,35 @@ const EXEMPT_KNOWN_BROKEN = {
 const TEST_FILE_REGEX = testFileRegex();
 const REFERENCE_REGEX = testReferenceRegex();
 
+// Exemption lookup by repo-relative path only (BRO-2778).
+const has = (map, k) => Object.prototype.hasOwnProperty.call(map, k);
+function exemptionFor(map, f) {
+  return has(map, f.rel) ? map[f.rel] : undefined;
+}
+
+// Directories scanned, each NON-recursively (readdirSync): scripts/lib/ is
+// covered by scripts/lib/colocated-test-ci-coverage.test.mjs, and tests/e2e /
+// tests/fixtures are Playwright specs and data. BRO-2778 added tests/ itself
+// (star-rating-extractors.test.js), tests/smoke/ and tests/live/: a test there
+// was invisible to every orphan check (stage-latency-wiring.test.mjs sat in
+// tests/smoke/ referenced by nothing).
+const SCANNED_DIRS = ['tests', 'tests/unit', 'tests/smoke', 'tests/live', 'scripts', 'scripts/tests'];
+
 // Returns { name, rel } for each test file: name is the bare filename (used for
-// the reference/exempt lookups, matching how they're cited in YAML), rel is the
-// repo-relative path (used in messages). readdirSync is non-recursive, so the
-// scripts/ scan sees top-level files only — scripts/lib/ is excluded by design.
-function listTestFiles() {
-  const fromDir = (dir, prefix) => fs.readdirSync(dir)
-    .filter(f => TEST_FILE_REGEX.test(f))
-    .filter(f => !f.startsWith('_skip-'))     // explicit opt-out prefix
-    .map(f => ({ name: f, rel: `${prefix}/${f}` }));
-  return [...fromDir(TESTS_DIR, 'tests/unit'), ...fromDir(SCRIPTS_DIR, 'scripts'), ...fromDir(SCRIPTS_TESTS_DIR, 'scripts/tests')]
-    .sort((a, b) => a.rel.localeCompare(b.rel));
+// the exemption-map lookups), rel is the repo-relative path (what coverage is
+// decided on, BRO-2778).
+function listTestFiles(root = ROOT) {
+  const out = [];
+  for (const dir of SCANNED_DIRS) {
+    const abs = path.join(root, dir);
+    if (!fs.existsSync(abs)) continue;
+    for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
+      if (!entry.isFile() || !TEST_FILE_REGEX.test(entry.name)) continue;
+      if (entry.name.startsWith('_skip-')) continue; // explicit opt-out prefix
+      out.push({ name: entry.name, rel: `${dir}/${entry.name}` });
+    }
+  }
+  return out.sort((x, y) => x.rel.localeCompare(y.rel));
 }
 
 // Task #1643: a bare filename mention anywhere in a workflow's raw text used
@@ -261,33 +295,42 @@ function extractRunBlocks(content) {
   return out.join('\n');
 }
 
-function collectReferencedTests() {
-  const referenced = new Set();
-  for (const file of fs.readdirSync(WORKFLOWS_DIR).filter(f => f.endsWith('.yml'))) {
-    const content = fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf8');
-    for (const match of extractRunBlocks(content).matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
-  }
-  // Manifest files are plain newline-separated path lists — no comments, no
-  // YAML list syntax — so stripping is a deliberate no-op here, not applied.
-  //
-  // BRO-2751: a manifest entry only proves execution for a file `node --test`
-  // can actually run, because every manifest is fed straight to it. Since `sh`
-  // joined the scanned extensions, listing a *.test.sh in a manifest would
-  // otherwise satisfy this audit while guaranteeing a run-time failure for the
-  // wrong reason — an all-clear audit sitting on top of a broken invocation.
-  // Refuse the claim here so the maintainer is told "not registered" (true)
-  // instead of debugging a generic node error later.
-  for (const manifestPath of MANIFEST_FILES) {
-    if (!fs.existsSync(manifestPath)) continue;
-    const content = fs.readFileSync(manifestPath, 'utf8');
-    for (const match of content.matchAll(REFERENCE_REGEX)) {
-      const name = match[0];
-      const ext = name.slice(name.lastIndexOf('.') + 1);
-      if (!NODE_RUNNABLE_TEST_EXTENSIONS.includes(ext)) continue;
-      referenced.add(name);
+// BRO-2778: coverage is decided per repo-relative PATH, never per basename.
+// The old collectReferencedTests() returned a Set of bare filenames, so
+// scripts/foo.test.mjs read as covered whenever tests/unit/foo.test.mjs (a
+// different file) was in a manifest or a run: step. Two scripts/ tests ran in
+// zero CI jobs behind that collision. The rule itself lives in
+// scripts/lib/ci-test-coverage.js (rule 15) so the regression test drives the
+// real function against a fixture tree.
+//
+// Manifest entries only prove execution for a file `node --test` can run
+// (BRO-2751): every manifest is fed straight to it, so a *.test.sh listed
+// there would satisfy the audit while guaranteeing a run-time failure.
+// ciCoverageOf() ignores manifests for .sh for exactly that reason.
+function collectCiCoverage(root = ROOT) {
+  // Lazy: bash-integration-test-list.js (pulled in by ci-test-coverage.js)
+  // require()s this module for extractRunBlocks.
+  const { ciCoverageOf } = require('./lib/ci-test-coverage.js');
+  const { executableWorkflowText } = require('./lib/bash-integration-test-list.js');
+  const runText = executableWorkflowText(path.join(root, '.github', 'workflows'));
+  const manifestEntries = new Set();
+  for (const manifest of MANIFESTS) {
+    const abs = path.join(root, manifest);
+    if (!fs.existsSync(abs)) continue;
+    for (const line of fs.readFileSync(abs, 'utf8').split('\n')) {
+      const entry = line.trim();
+      if (entry && !entry.startsWith('#')) manifestEntries.add(entry);
     }
   }
-  return referenced;
+  const ci = { manifestEntries, runText };
+  return { ...ci, coverageOf: (rel) => ciCoverageOf(rel, ci) };
+}
+
+// Every scanned test file with no CI execution path, before exemptions.
+function findRawOrphans(root = ROOT) {
+  const files = listTestFiles(root);
+  const { coverageOf } = collectCiCoverage(root);
+  return { files, rawOrphans: files.filter((f) => !coverageOf(f.rel)) };
 }
 
 // Manifest hygiene (BRO-4525). CI's test-manifest-integrity test refuses an
@@ -321,9 +364,10 @@ function main() {
   // EXEMPT_NEVER_CI is excluded by construction: those are expected to start
   // passing, and their passing is not decay.
   if (process.argv.includes('--list-exempt')) {
-    const byName = new Map(listTestFiles().map(f => [f.name, f.rel]));
-    for (const name of Object.keys(EXEMPT_KNOWN_BROKEN)) {
-      const rel = byName.get(name);
+    const byKey = new Map(listTestFiles().map(f => [f.rel, f.rel]));
+    for (const key of Object.keys(EXEMPT_KNOWN_BROKEN)) {
+      const name = path.basename(key);
+      const rel = byKey.get(key);
       // A missing file means the exemption outlived the test — surface it
       // rather than silently emitting a path that can't run.
       if (!rel) {
@@ -370,17 +414,15 @@ function main() {
   // apart from "this push touched test.yml for any other reason" without a
   // content diff, so this stays a real, informational-only gap covered by
   // CI's unscoped full check as the safety net (test.yml:2566/2600).
-  const files = listTestFiles();
-  const referenced = collectReferencedTests();
-  const rawOrphans = files.filter(f => !referenced.has(f.name));
-  const isExempt = f => (f.name in EXEMPT_KNOWN_BROKEN) || (f.name in EXEMPT_NEVER_CI);
+  const { files, rawOrphans } = findRawOrphans(ROOT);
+  const isExempt = f => exemptionFor(EXEMPT_KNOWN_BROKEN, f) || exemptionFor(EXEMPT_NEVER_CI, f);
   const orphans = rawOrphans.filter(f => !isExempt(f));
   const exemptKnownBroken = rawOrphans
-    .filter(f => f.name in EXEMPT_KNOWN_BROKEN)
-    .map(f => ({ file: f.rel, notion: EXEMPT_KNOWN_BROKEN[f.name] }));
+    .filter(f => exemptionFor(EXEMPT_KNOWN_BROKEN, f))
+    .map(f => ({ file: f.rel, notion: exemptionFor(EXEMPT_KNOWN_BROKEN, f) }));
   const exemptNeverCi = rawOrphans
-    .filter(f => f.name in EXEMPT_NEVER_CI)
-    .map(f => ({ file: f.rel, notion: EXEMPT_NEVER_CI[f.name] }));
+    .filter(f => exemptionFor(EXEMPT_NEVER_CI, f))
+    .map(f => ({ file: f.rel, notion: exemptionFor(EXEMPT_NEVER_CI, f) }));
   const { blocking, informational } = decideOrphanGate({ orphans, changedFiles: scope });
   const manifestGate = checkManifests(ROOT, scope);
 
@@ -405,7 +447,7 @@ function main() {
       for (const f of informational) console.error(`  ${f.rel}`);
     }
     console.error('');
-    console.error('Fix: add the file to the appropriate `node --test ...` line in .github/workflows/test.yml.');
+    console.error('Fix: add its repo-relative path to tests/unit-test-manifest.txt (sorted), or name that exact path in a workflow run: step. A same-named file elsewhere, or an on.push.paths entry, does not count (BRO-2778).');
     console.error('Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Linear issue (BRO-N).');
     console.error('Opt-out (deferred-effect acceptance probe, run only by autonomous-acceptance-recheck.js): add to EXEMPT_NEVER_CI in scripts/audit-orphan-tests.js — do this in the SAME commit that adds the test file (BRO-445: this was missed 2x in one day and blocked every repo-wide push for 3 days).');
     console.error('Opt-out (intentional): rename to `_skip-${name}.test.mjs`.');
@@ -427,10 +469,6 @@ function main() {
   process.exit(blocking.length > 0 || manifestGate.blocking.length > 0 ? 1 : 0);
 }
 
-// Guarded so `require()`-ing this file from a test (CLAUDE.md rule 15) doesn't
-// also execute the CLI against the real repo and process.exit() the test run.
-if (require.main === module) main();
-
 module.exports = {
   extractRunBlocks,
   REFERENCE_REGEX,
@@ -440,8 +478,21 @@ module.exports = {
   // copy (e.g. a raw substring scan over workflow YAML, or a re-typed
   // exemption list) is exactly the kind of drift-prone duplicate this file's
   // own MANIFESTS comment (scripts/lib/test-manifest.js) warns against.
-  collectReferencedTests,
+  //
+  // BRO-2778: replaces collectReferencedTests(), whose basename Set let a
+  // scripts/ test hide behind a same-named tests/unit/ file.
+  collectCiCoverage,
+  findRawOrphans,
+  listTestFiles,
+  exemptionFor,
+  SCANNED_DIRS,
   checkManifests,
   EXEMPT_KNOWN_BROKEN,
   EXEMPT_NEVER_CI,
 };
+
+// Guarded so `require()`-ing this file from a test (CLAUDE.md rule 15) doesn't
+// also execute the CLI against the real repo and process.exit() the test run.
+// After module.exports (BRO-2778): main() lazily loads ci-test-coverage.js,
+// whose dependency require()s this module back for extractRunBlocks.
+if (require.main === module) main();

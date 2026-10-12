@@ -136,6 +136,19 @@ function withWritesDisabled(fn) {
   })();
 }
 
+// checkCronHealth emits ONE row per cron, but under two names: `Cron failed:
+// X` while the last run failed, `Cron: X` once it recovers (pass) or goes
+// stale (error). A card filed from the failed row therefore never sees its own
+// name again when fixed, so the probe read 'unknown' forever (BRO-3833
+// cousin). Fall back to the sibling name, which is the same check's row.
+const CRON_FAILED_PREFIX = 'Cron failed: ';
+function findRowForTarget(results, target) {
+  const exact = results.find((r) => normalizeName(r.name) === target);
+  if (exact || !target.startsWith(CRON_FAILED_PREFIX)) return exact;
+  const sibling = normalizeName('Cron: ' + target.slice(CRON_FAILED_PREFIX.length));
+  return results.find((r) => normalizeName(r.name) === sibling);
+}
+
 /**
  * Re-runs the live core health checks and reports whether `rowName` is
  * currently flagged.
@@ -161,7 +174,7 @@ async function probeHealthRowLive(rowName) {
     return computeCoreHealthResults(false, { dryRun: true });
   });
 
-  const match = allResults.find((r) => normalizeName(r.name) === target);
+  const match = findRowForTarget(allResults, target);
 
   let verdict;
   if (!match || isSkipPlaceholder(match)) {
@@ -180,4 +193,4 @@ async function probeHealthRowLive(rowName) {
   };
 }
 
-module.exports = { probeHealthRowLive, normalizeName, isSkipPlaceholder, LIMIT };
+module.exports = { probeHealthRowLive, findRowForTarget, normalizeName, isSkipPlaceholder, LIMIT };
