@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5089-k",
   "planId": "db6db094-4312-4029-9038-1e558a1c137b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T00:34:28.562Z",
   "submitter": {
     "name": null,
@@ -232,5 +232,128 @@
         "description": "all-my-sons-west-end-2019: synopsis cleared (invented plot details): The synopsis incorrectly claims a son returns home alive whom Joe believed dead, whereas in Arthur Miller's All My Sons the presumed-dead son (Larry) never returns and the drama centers on Joe Keller' (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T05:24:37.425Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for old-times-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for picnic-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for man-and-boy-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for elling-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for american-buffalo-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-country-girl-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for losing-louie-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for flower-drum-song-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for ah-wilderness-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for twilight-los-angeles-1992-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for stanley-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sarafina-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for joe-turners-come-and-gone-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for not-now-darling-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-view-from-the-bridge-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-present-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sylvia-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for beauty-and-the-beast-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-three-sisters-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for cost-of-living-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for suddenly-last-summer-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lost-in-yonkers-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for all-my-sons-west-end-2019"
+    }
+  ]
 }
