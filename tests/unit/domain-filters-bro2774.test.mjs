@@ -48,6 +48,8 @@ const BLOCKED = [
   ['ntlive.com', 'https://www.ntlive.com/plays/golden-boy/'],
   ['royalcourttheatre.com', 'https://royalcourttheatre.com/'],
   ['royalcourttheatre.com', 'https://royalcourttheatre.com/events/man-to-man'],
+  // BRO-3230: Royal Literary Fund essay site (man-to-man-west-end-2026/rlf--*).
+  ['rlf.org.uk', 'https://www.rlf.org.uk/posts/stephen-unwin-on-translating-manfred-karges-play-man-to-man-for-the-modern-age/'],
 ];
 
 /**

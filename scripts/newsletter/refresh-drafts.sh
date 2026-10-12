@@ -60,7 +60,11 @@ DATA_REPO=$(node -e "console.log(require('path').dirname(require('fs').realpathS
 # --autostash: local sessions and background jobs leave churn in the data
 # clone; without it this pull hard-fails on any unstaged change.
 git -C "$DATA_REPO" pull --rebase --autostash --quiet
-git -C data/review-texts pull --rebase --quiet 2>/dev/null || true
+# BRO-2254: guarded, so a conflicting local commit has its rebase aborted
+# instead of leaving the shared clone stuck mid-rebase for every later sync.
+# Still non-fatal here: this script only reads review-texts.
+( source scripts/lib/rebase-guards.sh && cd data/review-texts && guarded_pull_rebase --quiet ) \
+  || echo "WARNING: review-texts pull did not complete; drafts use the local copy" >&2
 # The per-show cs/rc JSONs (public/data/shows/) that generate.mjs reads live in
 # THIS repo and are committed by CI rebuilds — a fresh reviews.json alone is not
 # enough. Skipping this pull shipped a stale review count (24 vs 23, 2026-07-19),

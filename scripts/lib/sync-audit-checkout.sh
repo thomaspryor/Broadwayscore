@@ -70,18 +70,16 @@
 # through to the ordinary loud refusal — this only ever short-circuits the
 # case that was ALWAYS safe to resolve, never a genuine content conflict.
 #
-# WHAT PUSHES THE RESULTING COMMIT (/code-review finding, BRO-3212): this
-# script NEVER pushes — none of the seven launchd/cron callers of this file
-# do either. The "chore: sync audit ledgers" commit reaches origin
-# opportunistically, the next time ANY worktree session runs
-# merge-worktree-to-main.sh against this same MAIN_DIR (it merges+pushes
-# whatever is on local main, so it sweeps this commit up for free). This is
-# an acceptable, self-limiting wait, not a new "sits forever" risk: local
-# main was already ahead-until-the-next-merge for ordinary worktree work
-# before this change, active sessions merge every ~30 min per CLAUDE.md, and
-# even in a long gap with zero merges the worst case is more local-only
-# commits piling up (still correct content, just later to origin) — never
-# data loss, and strictly better than the pre-fix permanent refusal.
+# WHAT PUSHES THE RESULTING COMMIT (BRO-3405, replacing BRO-3212's "never
+# pushes"): after either recovery succeeds, push_recovered_checkout() pushes
+# HEAD via push-with-retry.sh, but ONLY when every non-merge commit ahead of
+# origin/main touches nothing but merge=union *.jsonl ledgers
+# (recoveryPushAllowed() in sync-audit-decision.js). A session's unpushed
+# work is never pushed from here. The push is best-effort: a failure leaves
+# the same benign ahead-of-origin state as before and the gate still exits 0.
+# Without it the ledger commit waited for an unrelated session to push it
+# (one sat local-only for 17.5h on 2026-09-14), and every origin move made
+# the checkout diverge again, one extra local merge per tick.
 #
 # Concurrency: this repo runs many launchd jobs and worktree sessions that
 # touch the SAME checkout, and merge-worktree-to-main.sh already established
@@ -595,43 +593,95 @@ BEHIND_COUNT=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
 # declared for data/audit/stage-latency.jsonl and scraper-spend-ledger.jsonl
 # with a header comment stating union is the lossless resolution for these
 # bot-written append logs. A hardcoded filename list here would drift from it.
-# TRACKED-only: `git checkout HEAD -- <p>` has nothing to restore for a path
-# HEAD does not contain, so an untracked union-attributed path must refuse.
-UNION_PATHS=""
+# The shell only gathers per-path facts (tracked? on disk? merge attr?);
+# unionLedgerCandidates() in sync-audit-decision.js decides, and documents why
+# each one is required (tracked-only, *.jsonl-only, and BRO-3441: a ledger
+# missing from the worktree is a pending deletion and must refuse).
+UNION_FACTS=""
+TAB=$(printf '\t')
 if [ -n "$REMAINING_DIRTY" ]; then
   while IFS= read -r p; do
     [ -n "$p" ] || continue
-    git ls-files --error-unmatch -- "$p" >/dev/null 2>&1 || continue
-    # merge=union alone is NOT enough. .gitattributes also marks
-    # tests/unit-test-manifest.txt and data/opening-night-timeline/*.jsonl as
-    # union, and for a manifest a union RESURRECTS a line origin deliberately
-    # deleted — union is only the right resolution for a file where every line
-    # is an independent appended event that nothing ever removes. Requiring
-    # *.jsonl as well keeps this stage on the append-only ledgers it was built
-    # for (found in pre-ship review).
     case "$p" in *.jsonl) : ;; *) continue ;; esac
-    attr=$(git check-attr merge -- "$p" 2>/dev/null | sed 's/.*: //')
-    [ "$attr" = "union" ] || continue
     # The decision is carried to node as newline-joined text and back as
     # pipe-joined text, and backup filenames encode '/' as '%'. A path holding
-    # '|' or '%', or with edge whitespace that the transport would trim, cannot
-    # round-trip faithfully — and a mis-decoded path is a write to the wrong
-    # file. None of the real ledgers look like this; if one ever does, it falls
-    # through to the ordinary refusal rather than being silently mangled.
+    # '|', '%' or a tab, or with edge whitespace that the transport would
+    # trim, cannot round-trip faithfully — and a mis-decoded path is a write
+    # to the wrong file. None of the real ledgers look like this; if one ever
+    # does, it falls through to the ordinary refusal rather than being
+    # silently mangled.
     case "$p" in
-      *"|"*|*"%"*|" "*|*" ") echo "::error::[$TAG] $p cannot be safely round-tripped by the recovery stage — refusing it"; continue ;;
+      *"|"*|*"%"*|*"$TAB"*|" "*|*" ") echo "::error::[$TAG] $p cannot be safely round-tripped by the recovery stage — refusing it"; continue ;;
     esac
-    UNION_PATHS="${UNION_PATHS}${p}\n"
+    tracked=0; git ls-files --error-unmatch -- "$p" >/dev/null 2>&1 && tracked=1
+    present=0; [ -f "$p" ] && present=1
+    attr=$(git check-attr merge -- "$p" 2>/dev/null | sed 's/.*: //')
+    UNION_FACTS="${UNION_FACTS}${p}${TAB}${tracked}${TAB}${present}${TAB}${attr}
+"
   done <<EOF
 $REMAINING_DIRTY
 EOF
-  UNION_PATHS=$(printf '%b' "$UNION_PATHS")
 fi
+
+# BRO-3405: push what a successful recovery left ahead of origin/main, when
+# it is nothing but ledger commits. Best-effort; always returns 0.
+# Pushes the exact commit it validated (HEAD at decision time), non-force,
+# while still HOLDING push-mutex.sh: no unlocked window in which another
+# writer could add commits that would ride along, and no rebase of a shared
+# checkout. If origin/main moved since our fetch the push is rejected as
+# non-fast-forward and the next tick merges and tries again. Requires that we
+# HELD the mutex (it fails open on timeout).
+# SYNC_AUDIT_PUSH_CMD overrides the push command (tests); it gets the
+# validated commit as $SYNC_AUDIT_PUSH_SHA.
+push_recovered_checkout() {
+  if [ "${PUSH_MUTEX_HELD:-0}" != "1" ]; then
+    echo "[$TAG] recovered, but the push mutex was not held — leaving the local ledger commit(s) for a later push"
+    return 0
+  fi
+  [ -n "$(git rev-list --max-count=1 origin/main..HEAD 2>/dev/null)" ] || return 0
+  local sha commits c p attr touched="" n=0
+  sha=$(git rev-parse HEAD 2>/dev/null) || return 0
+  commits=$(git rev-list --no-merges "origin/main..$sha" 2>/dev/null) || return 0
+  for c in $commits; do
+    n=$((n + 1))
+    while IFS= read -r p; do
+      [ -n "$p" ] || continue
+      attr=$(git check-attr merge -- "$p" 2>/dev/null | sed 's/.*: //')
+      touched="${touched}${p}${TAB}${attr}
+"
+    done <<EOF
+$(git diff-tree --no-commit-id --name-only -r "$c" 2>/dev/null)
+EOF
+  done
+  if ! COUNT="$n" TOUCHED="$touched" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
+    const { recoveryPushAllowed } = require(process.env.DECISION_LIB);
+    const touched = (process.env.TOUCHED || "").split("\n").filter(Boolean).map((l) => {
+      const [path, mergeAttr] = l.split("\t");
+      return { path, mergeAttr };
+    });
+    process.exit(recoveryPushAllowed({ commitCount: Number(process.env.COUNT), touched }) ? 0 : 1);
+  ' 2>/dev/null; then
+    echo "[$TAG] recovered; local commits ahead of origin/main touch more than audit ledgers — not pushing them from here"
+    return 0
+  fi
+  local rc=0
+  if [ -n "${SYNC_AUDIT_PUSH_CMD:-}" ]; then
+    SYNC_AUDIT_PUSH_SHA="$sha" bash -c "$SYNC_AUDIT_PUSH_CMD" || rc=$?
+  else
+    timeout "${SYNC_AUDIT_PUSH_TIMEOUT_SEC:-120}" git push -q origin "$sha:refs/heads/main" || rc=$?
+  fi
+  if [ "$rc" -eq 0 ]; then
+    echo "[$TAG] pushed the recovered ledger commit(s) to origin/main"
+  else
+    echo "::warning::[$TAG] push of the recovered ledger commit(s) failed (rc=$rc) — left local; the next tick or session push carries them"
+  fi
+  return 0
+}
 
 # One node call returns the whole decision; the logic lives in
 # scripts/lib/sync-audit-decision.js so it is unit-testable (CLAUDE.md r15).
-DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION="$UNION_PATHS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
-  const { ffBlockingPaths, classifyBlock } = require(process.env.DECISION_LIB);
+DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION_FACTS="$UNION_FACTS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
+  const { ffBlockingPaths, classifyBlock, unionLedgerCandidates } = require(process.env.DECISION_LIB);
   const split = (v) => (v || "").split("\n").map((s) => s.trim()).filter(Boolean);
   const blockingPaths = ffBlockingPaths({
     dirtyPaths: split(process.env.DIRTY),
@@ -641,7 +691,10 @@ DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUN
     blockingPaths,
     aheadCount: Number(process.env.AHEAD || 0),
     behindCount: Number(process.env.BEHIND || 0),
-    unionMergePaths: split(process.env.UNION),
+    unionMergePaths: unionLedgerCandidates((process.env.UNION_FACTS || "").split("\n").filter(Boolean).map((l) => {
+      const [path, tracked, inWorktree, mergeAttr] = l.split("\t");
+      return { path, tracked: tracked === "1", inWorktree: inWorktree === "1", mergeAttr };
+    })),
   });
   process.stdout.write([d.action, d.reason, d.blockingPaths.join("|"), d.unionPaths.join("|")].join("\n"));
 ') || DECISION=$'refuse\ndirty-unresolved\n\n'
@@ -807,6 +860,7 @@ EOF
     if git rebase --autostash origin/main --quiet 2>/dev/null; then
       echo "[$TAG] recovered — committed local ledger append(s) and rebased onto origin/main"
       clear_refused_snapshot
+      push_recovered_checkout
       exit 0
     fi
     echo "::error::[$TAG] rebase onto origin/main failed after committing the ledger(s) — aborting rebase, ledger commit preserved locally for the next run to carry forward (git status will look clean; see git log -1 / merge-worktree-to-main.sh)"
@@ -867,7 +921,7 @@ if [ "$ACTION" = "merge-origin" ]; then
     REASON="diverged"
   else
     echo "[$TAG] diverged with nothing blocking the fast-forward ($AHEAD_COUNT ahead, $BEHIND_COUNT behind) — reconciling with a 3-way merge of origin/main"
-    if git merge --autostash --no-edit origin/main --quiet 2>/dev/null; then
+    if git merge --autostash --no-edit -m "chore: merge origin/main into the shared checkout [skip ci]" origin/main --quiet 2>/dev/null; then
       # GUARD 3 - a 0 exit is NOT proof the tree is clean. Verified
       # empirically: when the merge itself succeeds but restoring the
       # --autostash CONFLICTS, git prints "Applying autostash resulted in
@@ -904,6 +958,7 @@ EOF
       else
         echo "[$TAG] recovered — merged origin/main into the local checkout"
         clear_refused_snapshot
+        push_recovered_checkout
         exit 0
       fi
     else

@@ -100,9 +100,17 @@ cleanup() {
       # fullText to files that the simulation's rebuild also touched for metadata).
       # Without this pull, git add -A would commit the local (stale) version and
       # overwrite the remote's newer fullText with null — a data loss bug.
-      git pull --rebase origin main -q 2>/dev/null || true
+      # BRO-2254: never stage/commit on top of a pull that stopped mid-rebase.
+      # shellcheck source=scripts/lib/rebase-guards.sh
+      source ../../scripts/lib/rebase-guards.sh
+      RT_PULL_OK=1
+      guarded_pull_rebase origin main -q || RT_PULL_OK=0
 
       CHANGED=$(git status --porcelain | wc -l | tr -d ' ')
+      if [ "$RT_PULL_OK" != "1" ]; then
+        echo "  ⚠️  Skipping review-texts sync this run (pull conflicted; resolve by hand)"
+        CHANGED=0
+      fi
       if [ "$CHANGED" -gt 0 ]; then
         # Protect fetched review text: for any modified review-text JSON,
         # ensure we don't overwrite fullText/contentTier with stale values.

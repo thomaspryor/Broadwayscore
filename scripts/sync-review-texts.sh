@@ -96,7 +96,12 @@ fi
 # that was fetched/committed by other processes while local changes were pending.
 # unbounded-fetch-ok: bound arrives via $(depth_args), see the depth_args()
 # definition near the top of this script for the full rationale.
-git pull --rebase origin main $(depth_args) -q 2>/dev/null || true
+# BRO-2254: a pull that stops mid-rebase (conflict) used to be swallowed by
+# `|| true`, after which `git add -A` staged the conflict markers and the
+# commit below landed on a half-finished rebase. Abort and fail loud instead.
+# shellcheck source=scripts/lib/rebase-guards.sh
+source "$SCRIPT_DIR/lib/rebase-guards.sh"
+guarded_pull_rebase origin main $(depth_args) -q || exit 1
 
 # Restore protected fields (humanReviewScore, humanReviewedWrongProduction, etc.)
 # from pre-rebase HEAD. ORIG_HEAD is set by git when a rebase replayed commits.

@@ -33,7 +33,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const LIB = path.join(HERE, 'sync-audit-checkout.sh');
+const LIB = process.env.SYNC_AUDIT_LIB || path.join(HERE, 'sync-audit-checkout.sh');
 const {
   ffBlockingPaths, classifyBlock, unionLedgerLines, stripTornTrailingLine, unionIsSafe,
 } = require(path.join(HERE, 'sync-audit-decision.js'));
@@ -271,17 +271,17 @@ function advanceOrigin(root, origin, tmpName, mutate) {
   fs.rmSync(via, { recursive: true, force: true });
 }
 
-function runSync(clone, tag) {
+function runSync(clone, tag, env = {}) {
   const res = execFileSync('bash', [LIB, clone], {
     encoding: 'utf8',
-    env: { ...process.env, SYNC_TAG: tag },
+    env: { ...process.env, SYNC_TAG: tag, ...env },
   });
   return res;
 }
 
-function trySync(clone, tag) {
+function trySync(clone, tag, env = {}) {
   try {
-    return { code: 0, out: runSync(clone, tag) };
+    return { code: 0, out: runSync(clone, tag, env) };
   } catch (e) {
     return { code: e.status ?? 1, out: `${e.stdout || ''}${e.stderr || ''}` };
   }
@@ -370,6 +370,120 @@ test('ACCEPTANCE (BRO-3212): a DIVERGED checkout whose only blocker is a union-s
       fs.readFileSync(path.join(clone, 'local-note.txt'), 'utf8'), 'local-only commit\n',
       "the unrelated local commit's content survived the rebase",
     );
+  });
+});
+
+test('BRO-3441: a ledger MISSING from the worktree of a diverged checkout refuses and is never committed as a deletion', () => {
+  withTmp((root) => {
+    const { origin, clone } = setupPair(root, 'gone');
+    fs.writeFileSync(path.join(clone, 'local-note.txt'), 'local-only commit\n');
+    git(clone, 'add', '-A');
+    git(clone, 'commit', '-q', '-m', 'local: unrelated commit');
+    advanceOrigin(root, origin, 'via-gone', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+    });
+    // The ledger vanished from disk (a job rotated/removed it mid-tick). It
+    // is tracked, *.jsonl and merge=union, so before BRO-3441 it was routed
+    // to commit-and-rebase: `git add` staged the deletion, the commit landed,
+    // the rebase hit modify/delete and aborted, and the deletion commit was
+    // stranded locally for every later tick to trip over.
+    fs.rmSync(path.join(clone, LEDGER));
+    const headBefore = git(clone, 'rev-parse', 'HEAD').trim();
+
+    const { code, out } = trySync(clone, 'gone');
+    assert.equal(code, 1, `a missing ledger must refuse, not recover:\n${out}`);
+    assert.equal(git(clone, 'rev-parse', 'HEAD').trim(), headBefore, 'no commit may be made');
+    assert.equal(
+      git(clone, 'log', '--diff-filter=D', '--format=%h', 'origin/main..HEAD', '--', LEDGER).trim(), '',
+      'the ledger deletion must never be committed',
+    );
+    assert.equal(git(clone, 'diff', '--cached', '--name-only').trim(), '', 'nothing left staged');
+  });
+});
+
+// ── BRO-3405: push after a successful recovery ──────────────────────────────
+// PUSH_OK runs the script's own default push (the validated sha, non-force)
+// against the fixture origin; PUSH_FAIL stands in for a failed push.
+const PUSH_OK = {};
+const PUSH_FAIL = { SYNC_AUDIT_PUSH_CMD: 'exit 1' };
+const aheadOfOrigin = (clone) => {
+  git(clone, 'fetch', '-q', 'origin', 'main');
+  return Number(git(clone, 'rev-list', '--count', 'origin/main..HEAD').trim());
+};
+
+// A stranded "chore: sync audit ledgers" commit (ahead) + a fresh dirty append
+// on a ledger origin also moved: the commit-and-rebase recovery's own shape.
+function strandedLedgerCommit(root, name) {
+  const { origin, clone } = setupPair(root, name);
+  fs.appendFileSync(path.join(clone, LEDGER), 'stranded\n');
+  git(clone, 'add', '--', LEDGER);
+  git(clone, 'commit', '-q', '-m', 'chore: sync audit ledgers [skip ci]');
+  advanceOrigin(root, origin, `via-${name}`, (via) => {
+    fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+  });
+  fs.appendFileSync(path.join(clone, LEDGER), 'local-only\n');
+  return { origin, clone };
+}
+
+test('BRO-3405 ACCEPTANCE: commit-and-rebase recovery pushes, leaving the checkout NOT ahead of origin/main', () => {
+  withTmp((root) => {
+    const { origin, clone } = strandedLedgerCommit(root, 'pushok');
+    const { code, out } = trySync(clone, 'pushok', PUSH_OK);
+    assert.equal(code, 0, out);
+    assert.match(out, /pushed the recovered ledger commit/);
+    assert.equal(aheadOfOrigin(clone), 0, 'nothing may be left local-only');
+    const originLedger = git(clone, 'show', 'origin/main:' + LEDGER).split('\n').filter(Boolean);
+    for (const row of ['origin-only', 'stranded', 'local-only']) {
+      assert.equal(count(originLedger, row), 1, `${row} reached origin exactly once`);
+    }
+    assert.equal(git(origin, 'rev-parse', 'main').trim(), git(clone, 'rev-parse', 'HEAD').trim());
+  });
+});
+
+test('BRO-3405 ACCEPTANCE: a failed push still exits 0 and keeps the recovered commits local', () => {
+  withTmp((root) => {
+    const { clone } = strandedLedgerCommit(root, 'pushfail');
+    const { code, out } = trySync(clone, 'pushfail', PUSH_FAIL);
+    assert.equal(code, 0, `a push failure must not fail the gate:\n${out}`);
+    assert.match(out, /::warning::.*push of the recovered ledger commit\(s\) failed/);
+    assert.ok(aheadOfOrigin(clone) > 0, 'the recovered commits are still there for a later push');
+    assert.equal(git(clone, 'status', '--porcelain').trim(), '');
+  });
+});
+
+test('BRO-3405: merge-origin recovery pushes when the only local commit is a ledger commit', () => {
+  withTmp((root) => {
+    const { origin, clone } = setupPair(root, 'mergepush');
+    fs.appendFileSync(path.join(clone, LEDGER), 'stranded\n');
+    git(clone, 'add', '--', LEDGER);
+    git(clone, 'commit', '-q', '-m', 'chore: sync audit ledgers [skip ci]');
+    advanceOrigin(root, origin, 'via-mergepush', (via) => {
+      fs.writeFileSync(path.join(via, 'scripts.txt'), 'new code from origin\n');
+    });
+    const { code, out } = trySync(clone, 'mergepush', PUSH_OK);
+    assert.equal(code, 0, out);
+    assert.match(out, /merged origin\/main/);
+    assert.equal(aheadOfOrigin(clone), 0);
+    assert.match(git(origin, 'log', '-1', '--format=%s', 'main'), /\[skip ci\]/, 'the recovery merge must not trigger CI');
+  });
+});
+
+test('BRO-3405: a non-ledger local commit is never pushed by the recovery', () => {
+  withTmp((root) => {
+    const { origin, clone } = setupPair(root, 'nopush');
+    fs.writeFileSync(path.join(clone, 'local-note.txt'), 'a session\'s unpushed work\n');
+    git(clone, 'add', '-A');
+    git(clone, 'commit', '-q', '-m', 'local: unrelated commit');
+    advanceOrigin(root, origin, 'via-nopush', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+    });
+    fs.appendFileSync(path.join(clone, LEDGER), 'local-only\n');
+    const originBefore = git(origin, 'rev-parse', 'main').trim();
+
+    const { code, out } = trySync(clone, 'nopush', PUSH_OK);
+    assert.equal(code, 0, out);
+    assert.match(out, /not pushing them from here/);
+    assert.equal(git(origin, 'rev-parse', 'main').trim(), originBefore, 'origin must be untouched');
   });
 });
 

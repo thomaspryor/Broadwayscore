@@ -149,6 +149,12 @@ on:
       # BRO-4146: historical backfill cursor (scripts/historical-backfill-next.test.mjs)
       - 'scripts/historical-backfill-next.js'
       - 'scripts/historical-backfill-next.test.mjs'
+      # BRO-2254: review-text sync (pull/rebase guard), its JS sibling and the
+      # test named after them; all are
+      # top-level scripts/ files outside the scripts/lib/** glob.
+      - 'scripts/sync-review-texts.sh'
+      - 'scripts/sync-review-texts.js'
+      - 'scripts/sync-review-texts.test.mjs'
       # BRO-3375: same gap shape — a top-level scripts/ file outside the
       # scripts/lib/** glob, so a solo edit would trigger ZERO CI. Its decision
       # logic deliberately lives OUTSIDE this repo, in

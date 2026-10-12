@@ -101,13 +101,69 @@ function ffBlockingPaths({ dirtyPaths = [], originChangedPaths = [] } = {}) {
 }
 
 /**
+ * Which dirty paths may the union-ledger recovery stages touch?
+ *
+ * sync-audit-checkout.sh gathers one fact per dirty path:
+ *   { path, tracked, inWorktree, mergeAttr }
+ * A path qualifies only when ALL hold:
+ *   - tracked: `git checkout HEAD -- <p>` needs something to restore.
+ *   - *.jsonl and merge=union: union is lossless only for append-only event
+ *     logs. .gitattributes also marks tests/unit-test-manifest.txt union,
+ *     and a union there resurrects lines origin deleted on purpose.
+ *   - inWorktree (BRO-3441): the file exists on disk. A ledger that is
+ *     tracked but missing from the worktree is a pending DELETION, not an
+ *     append. commit-and-rebase would `git add` it, commit the deletion, and
+ *     when the rebase then fails the deletion commit is stranded locally; the
+ *     job recreates the ledger as untracked next tick and every run after
+ *     refuses with no recovery message. A missing ledger refuses here
+ *     instead, with the deletion still uncommitted for a human to see.
+ *
+ * @param {{path: string, tracked: boolean, inWorktree: boolean, mergeAttr: string}[]} facts
+ * @returns {string[]} the qualifying paths, input order kept
+ */
+function unionLedgerCandidates(facts = []) {
+  return (Array.isArray(facts) ? facts : [])
+    .filter((f) => f && typeof f.path === 'string' && f.path
+      && f.tracked === true
+      && f.inWorktree === true
+      && f.path.endsWith('.jsonl')
+      && f.mergeAttr === 'union')
+    .map((f) => f.path);
+}
+
+/**
+ * May a successful recovery push what it left ahead of origin/main (BRO-3405)?
+ *
+ * Only when everything ahead is the recovery's own ledger output: at least
+ * one non-merge commit, and every path those commits touch is a *.jsonl
+ * merge=union ledger. Anything else ahead (a session's unpushed work, a
+ * stray code commit) is never pushed from here; sessions land through the
+ * land/** gates, and pushing their work from a launchd tick would bypass
+ * them. Merge commits are excluded from `touched` by the caller (`rev-list
+ * --no-merges`): the merge-origin recovery's own merge brings in nothing but
+ * origin/main, and any other merge's side commits are non-merge commits that
+ * still have to pass this check.
+ *
+ * @param {number} commitCount  non-merge commits in origin/main..HEAD
+ * @param {{path: string, mergeAttr: string}[]} touched  every path they touch
+ * @returns {boolean}
+ */
+function recoveryPushAllowed({ commitCount = 0, touched = [] } = {}) {
+  const list = Array.isArray(touched) ? touched : [];
+  if (!(Number(commitCount) > 0) || !list.length) return false;
+  return list.every((t) => t && typeof t.path === 'string'
+    && t.path.endsWith('.jsonl') && t.mergeAttr === 'union');
+}
+
+/**
  * What should the sync gate do about a still-blocked fast-forward?
  *
  * @param {string[]} blockingPaths   output of ffBlockingPaths()
  * @param {number}   aheadCount      `git rev-list --count origin/main..HEAD`
  * @param {number}   behindCount     `git rev-list --count HEAD..origin/main`
- * @param {string[]} unionMergePaths blocking paths that are BOTH tracked and
- *                                   declared `merge=union` in .gitattributes.
+ * @param {string[]} unionMergePaths blocking paths unionLedgerCandidates()
+ *                                   accepted (tracked, on disk, *.jsonl,
+ *                                   `merge=union` in .gitattributes).
  *                                   Untracked paths must never appear here:
  *                                   `git checkout HEAD -- <p>` cannot restore
  *                                   a path HEAD does not contain, so the
@@ -275,6 +331,8 @@ function unionIsSafe({ mergedCount = 0, baseCount = 0, extraCount = 0 } = {}) {
 module.exports = {
   ffBlockingPaths,
   classifyBlock,
+  unionLedgerCandidates,
+  recoveryPushAllowed,
   unionLedgerLines,
   stripTornTrailingLine,
   unionIsSafe,

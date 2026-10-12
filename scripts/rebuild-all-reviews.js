@@ -45,9 +45,9 @@ function parseReviewFileText(raw) {
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
-const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
-const { applyPaywallTierOverride } = require('./lib/paywall-completeness');
+const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
 const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow, contentHash: cvContentHash } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
@@ -2659,8 +2659,8 @@ showDirs.forEach(showId => {
       {
         // BRO-4334: keep a collector paywall truncation (hard-paywall partial
         // text) instead of resetting it to 'complete' on every rebuild.
-        const tierResult = applyPaywallTierOverride(data, classifyContentTier(data));
-        const oldTier = data.contentTier;
+        // BRO-3238: classifyTierWriteBack also reports a reason-only change.
+        const { tierResult, tierChanged, reasonOnlyChanged } = classifyTierWriteBack(data);
         data.contentTier = tierResult.contentTier;
         // Propagate truncationSignals so classifyIncompleteReason (called next) can
         // use them for routing (e.g., nyt_bot_stub → bot_blocked not paywall).
@@ -2672,7 +2672,7 @@ showDirs.forEach(showId => {
           data.textQuality = 'truncated';
           data.isFullReview = false;
         }
-        if (!oldTier || oldTier !== tierResult.contentTier) {
+        if (tierChanged) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             sourceData.contentTier = tierResult.contentTier;
@@ -2688,6 +2688,20 @@ showDirs.forEach(showId => {
             stats.reclassifiedTiers = (stats.reclassifiedTiers || 0) + 1;
           } catch (writeErr) {
             // Non-fatal: source file write failure doesn't block rebuild
+          }
+        } else if (reasonOnlyChanged) {
+          // BRO-3238: same tier, stale reason text (an older classifier's
+          // wording). Only the reason is changed here; safeWriteReview still
+          // applies its usual at-write corrections, as on every rebuild
+          // write. The in-memory record keeps the stored reason this run,
+          // exactly as it did before, so inclusion is unchanged.
+          try {
+            const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            sourceData.contentTierReason = tierResult.tierReason;
+            safeWriteReview(filePath, sourceData, { force: true });
+            stats.resyncedTierReasons = (stats.resyncedTierReasons || 0) + 1;
+          } catch (writeErr) {
+            // Non-fatal, same as the tier write-back above
           }
         }
       }

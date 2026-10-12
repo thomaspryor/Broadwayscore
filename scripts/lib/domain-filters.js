@@ -178,6 +178,11 @@ const REFERENCE_DOMAINS = new Set([
   // ingested as a review credited to the playwright. 0 of 23,068 scored
   // review URLs are on it.
   'theatricalia.com',
+  // BRO-3230: the Royal Literary Fund publishes writers' and directors'
+  // essays, not criticism. Its Stephen Unwin essay on Man to Man came in via
+  // /submit-review credited to the submitter and was rejected not_a_review.
+  // Not a registered outlet; 0 scored review URLs on it.
+  'rlf.org.uk',
 ]);
 
 // Venue/producer own-site listing pages — box-office "what's on" copy, never

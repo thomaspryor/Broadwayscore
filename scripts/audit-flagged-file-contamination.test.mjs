@@ -56,3 +56,32 @@ test('criticNamesMatch treats normalized-equal names as a match', () => {
   assert.equal(criticNamesMatch('Stephen Unwin', 'stephen-unwin'), true);
   assert.equal(criticNamesMatch('Stephen Unwin', 'Nicola Slavin'), false);
 });
+
+// BRO-3232: --llm-adjudicate, with the model call stubbed.
+const { parseAdjudication, adjudicateTierB, buildAdjudicationPrompt } = require('./audit-flagged-file-contamination.js');
+
+test('parseAdjudication: a different named author is a hit, the file\'s own critic is not', () => {
+  assert.deepEqual(parseAdjudication('{"differs": true, "author": "Henry Hitchings"}', 'Dominic Cavendish'),
+    { differs: true, author: 'Henry Hitchings' });
+  assert.equal(parseAdjudication('{"differs": true, "author": "Dominic Cavendish"}', 'Dominic Cavendish').differs, false);
+  assert.equal(parseAdjudication('```json\n{"differs": false, "author": null}\n```', 'X').differs, false);
+  assert.equal(parseAdjudication('no idea', 'X').error, 'unparseable');
+});
+
+test('adjudicateTierB drops a hit whose reasoning never discusses authorship (interview subject)', async () => {
+  const rows = [
+    { show: 's', file: 'a.json', criticName: 'Dave Quinn', rejectionReasoning: 'An interview with Nathan Lane, not a review.' },
+    { show: 's', file: 'b.json', criticName: 'Nicola Slavin', rejectionReasoning: 'An essay by director Stephen Unwin; the byline is Stephen Unwin.' },
+    { show: 's', file: 'c.json', criticName: 'Y', rejectionReasoning: null },
+  ];
+  const stub = async (prompt) => (prompt.includes('Nathan Lane')
+    ? '{"differs": true, "author": "Nathan Lane"}'
+    : '{"differs": true, "author": "Stephen Unwin"}');
+  const out = await adjudicateTierB(rows, stub);
+  assert.equal(out.length, 2, 'rows without stored reasoning are skipped, never sent to the model');
+  assert.equal(out[0].differs, false);
+  assert.equal(out[0].droppedNoAuthorshipCue, true);
+  assert.equal(out[1].differs, true);
+  assert.equal(out[1].author, 'Stephen Unwin');
+  assert.match(buildAdjudicationPrompt(rows[1]), /Nicola Slavin/);
+});

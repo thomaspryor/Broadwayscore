@@ -39,6 +39,11 @@
  *   node scripts/audit-flagged-file-contamination.js
  *   node scripts/audit-flagged-file-contamination.js --json > report.json
  *   node scripts/audit-flagged-file-contamination.js --show=some-show-id
+ *   node scripts/audit-flagged-file-contamination.js --llm-adjudicate
+ *     (BRO-3232) one gpt-4o-mini call per Tier B file that has stored
+ *     rejectionReasoning, asking whether that text names an author other
+ *     than criticName. Reuses the ensemble's stored reasoning, no re-fetch.
+ *     ~80 calls, a few cents. Hits land in report.tierBLlm.
  */
 'use strict';
 
@@ -48,9 +53,15 @@ const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { normalizeCritic, areCriticsSimilar, isRegisteredOutlet } = require('./lib/review-normalization');
 const { foldDiacritics } = require('./lib/title-match');
 const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const args = process.argv.slice(2);
+if (require.main === module && hasHelpFlag(args)) {
+  console.log('Usage: node scripts/audit-flagged-file-contamination.js [--json] [--show=<id>] [--llm-adjudicate]\n\nRead-only report on flagged review-text files whose flag reasoning names another critic. --llm-adjudicate sends each Tier B file\'s reasoning to gpt-4o-mini (needs OPENAI_API_KEY).');
+  process.exit(0);
+}
 const asJson = args.includes('--json');
+const llmAdjudicate = args.includes('--llm-adjudicate');
 const showFilter = (args.find((a) => a.startsWith('--show=')) || '').slice('--show='.length) || null;
 
 const RT_DIR = resolveReviewTextsDir();
@@ -138,7 +149,7 @@ function listShowDirs() {
   });
 }
 
-function main() {
+async function main() {
   if (!fs.existsSync(RT_DIR)) {
     console.error(`review-texts checkout not found at ${RT_DIR}`);
     process.exit(1);
@@ -221,6 +232,11 @@ function main() {
     },
   };
 
+  if (llmAdjudicate) {
+    report.tierBLlm = await adjudicateTierB(tierB);
+    report.summary.tierBLlmDiffers = report.tierBLlm.filter((r) => r.differs).length;
+  }
+
   if (showDirsErrored > 0 || filesUnreadable > 0) {
     console.error(`WARNING: ${showDirsErrored} show dirs and ${filesUnreadable} files could not be read/parsed — scannedFlaggedFiles undercounts the true corpus.`);
   }
@@ -245,10 +261,93 @@ function main() {
   for (const r of tierB) {
     console.log(`  ${r.show}/${r.file}  critic=${r.criticName || '(none)'}  sources=${JSON.stringify(r.sources)}  reason=${r.rejectionReason}`);
   }
+
+  if (report.tierBLlm) {
+    console.log(`\nTIER B LLM adjudication — ${report.summary.tierBLlmDiffers} of ${report.tierBLlm.length} name a different author`);
+    for (const r of report.tierBLlm.filter((x) => x.differs)) {
+      console.log(`  ${r.show}/${r.file}  critic=${r.criticName || '(none)'}  named author=${r.author}`);
+    }
+  }
+}
+
+// BRO-3232: the question asked of each Tier B file's stored reasoning.
+function buildAdjudicationPrompt(row) {
+  return [
+    'Below is an automated reviewer\'s reasoning for rejecting a theatre review file.',
+    `The file says the review was written by: ${row.criticName || 'Unknown'}`,
+    'Does the reasoning state that the article\'s BYLINE (who wrote it) is a DIFFERENT, named person?',
+    'A person the article is ABOUT (interview subject, artist, cast member) is not its author: answer false for those.',
+    'Answer with JSON only: {"differs": true|false, "author": "<the other named author, or null>"}',
+    '',
+    'Reasoning:',
+    String(row.rejectionReasoning || '').slice(0, 4000),
+  ].join('\n');
+}
+
+// Parses the model reply; a reply naming the file's own critic is not a hit.
+function parseAdjudication(text, criticName) {
+  const m = String(text || '').match(/\{[\s\S]*\}/);
+  if (!m) return { differs: false, author: null, error: 'unparseable' };
+  let j;
+  try { j = JSON.parse(m[0]); } catch { return { differs: false, author: null, error: 'unparseable' }; }
+  const author = typeof j.author === 'string' && j.author.trim() && j.author.trim().toLowerCase() !== 'null'
+    ? j.author.trim() : null;
+  const differs = j.differs === true && !!author && !(criticName && criticNamesMatch(author, criticName));
+  return { differs, author };
+}
+
+function callGpt4oMini(prompt) {
+  const https = require('https');
+  const { GPT4O_MINI } = require('./lib/models');
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return Promise.reject(new Error('OPENAI_API_KEY not set'));
+  const body = JSON.stringify({ model: GPT4O_MINI, temperature: 0, messages: [{ role: 'user', content: prompt }] });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+    }, (res) => {
+      let data = '';
+      res.on('data', (c) => { data += c; });
+      res.on('end', () => {
+        if (res.statusCode !== 200) return reject(new Error(`OpenAI HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        try { resolve(JSON.parse(data).choices?.[0]?.message?.content || ''); } catch (e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+// gpt-4o-mini reads interview subjects and choreographers as authors (2 of 2
+// raw hits on the 2026-10-12 run were Nathan Lane and Matthew Bourne), so a
+// hit only counts when the stored reasoning itself talks about authorship.
+const AUTHORSHIP_CUE = /\b(by-?line|written by|authored|author is|penned by|essay by|piece by|article by)\b/i;
+
+async function adjudicateTierB(rows, call = callGpt4oMini) {
+  const out = [];
+  for (const row of rows) {
+    if (!row.rejectionReasoning) continue;
+    let verdict;
+    try {
+      verdict = parseAdjudication(await call(buildAdjudicationPrompt(row)), row.criticName);
+      if (verdict.differs && !AUTHORSHIP_CUE.test(row.rejectionReasoning)) {
+        verdict = { ...verdict, differs: false, droppedNoAuthorshipCue: true };
+      }
+    } catch (e) {
+      verdict = { differs: false, author: null, error: e.message };
+    }
+    out.push({ show: row.show, file: row.file, criticName: row.criticName, ...verdict });
+  }
+  return out;
 }
 
 if (require.main === module) {
-  main();
+  main().catch((e) => { console.error(e); process.exit(1); });
 }
 
-module.exports = { extractNamedAuthor, criticNamesMatch, looksLikeName };
+module.exports = {
+  extractNamedAuthor, criticNamesMatch, looksLikeName,
+  buildAdjudicationPrompt, parseAdjudication, adjudicateTierB, AUTHORSHIP_CUE,
+};

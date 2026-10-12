@@ -37,6 +37,8 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESTORE_JS="$SCRIPT_DIR/restore-protected-fields.js"
+# shellcheck source=rebase-guards.sh
+source "$SCRIPT_DIR/rebase-guards.sh"
 
 cd "$REPO_DIR"
 
@@ -50,7 +52,7 @@ if ! git diff --quiet -- '*.json' 2>/dev/null; then
 fi
 
 # Safety 2: refuse if there's a partial rebase or merge in progress.
-if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ] || [ -f .git/MERGE_HEAD ]; then
+if rebase_in_progress || [ -f "$(git rev-parse --git-path MERGE_HEAD)" ]; then
   echo "ERROR: rebase or merge in progress in $REPO_DIR"
   echo "       Resolve or abort it first: 'git rebase --abort' / 'git merge --abort'"
   exit 1
@@ -82,9 +84,21 @@ for attempt in $(seq 1 "$MAX_RETRIES"); do
     echo "  Fast-forwarding to origin/$BRANCH..."
     git merge --ff-only "origin/$BRANCH"
   else
-    # Diverged. Rebase -X theirs keeps OUR local commits' content.
-    if git rebase -X theirs "origin/$BRANCH"; then
-      echo "  Rebase succeeded."
+    # Diverged. Rebase -X theirs keeps OUR local commits' content. If our
+    # side holds a merge commit, a plain rebase would silently drop it from
+    # HEAD's ancestry (BRO-3899/BRO-3942), so merge instead: `merge -X ours`
+    # has the same "local wins on conflict" meaning as `rebase -X theirs`.
+    if range_has_merge_commit "origin/$BRANCH" HEAD; then
+      echo "  Local commits include a merge commit; merging origin/$BRANCH instead of rebasing."
+      SYNC_OK=0
+      git merge -X ours --no-edit "origin/$BRANCH" && SYNC_OK=1
+      [ "$SYNC_OK" = 1 ] || git merge --abort >/dev/null 2>&1 || true
+    else
+      SYNC_OK=0
+      git rebase -X theirs "origin/$BRANCH" && SYNC_OK=1
+    fi
+    if [ "$SYNC_OK" = 1 ]; then
+      echo "  Sync with origin/$BRANCH succeeded."
       # Restore CI-added fields that may have been dropped by -X theirs.
       if [ -x "$(command -v node)" ] && [ -f "$RESTORE_JS" ]; then
         echo "  Checking for CI-added protected fields to restore..."
@@ -99,11 +113,11 @@ for attempt in $(seq 1 "$MAX_RETRIES"); do
       fi
     else
       # Conflicts the rebase strategy couldn't resolve — REFUSE to reset.
-      echo "::error::Rebase had unresolvable conflicts in $REPO_DIR."
+      echo "::error::Rebase/merge had unresolvable conflicts in $REPO_DIR."
       echo "        DO NOT run 'git reset --hard origin/main && rsync' to escape."
       echo "        That wipes CI-added fields (llmScore, ensembleData, etc.)."
       echo "        Resolve per-file with 'git status' + 'git diff --name-only --diff-filter=U',"
-      echo "        then 'git add' + 'git rebase --continue'."
+      echo "        then 'git add' + 'git rebase --continue' (or 'git commit' on the merge path)."
       git rebase --abort >/dev/null 2>&1 || true
       exit 1
     fi

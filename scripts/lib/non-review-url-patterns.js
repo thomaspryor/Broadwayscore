@@ -374,6 +374,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // non-review-url-patterns.test.mjs so a SERP census doesn't count it as
   // an uncovered review gap.
   { host: /(^|\.)rexfeatures\.com$/, reason: 'photo-agency-page' },
+  // BRO-3230: mirror of domain-filters.js's REFERENCE_DOMAINS entry — the
+  // Royal Literary Fund site (author/fellow pages), never a review source.
+  { host: /(^|\.)rlf\.org\.uk$/, reason: 'reference-page' },
   // BRO-3794 (main-red incident). Mirrors domain-filters.js's AGGREGATOR_DOMAINS
   // entry — see that file for why southasianheritage.org.uk (South Asian
   // Heritage Month events-calendar site) is not a review source.
