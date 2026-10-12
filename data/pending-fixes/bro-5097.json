@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5097",
   "planId": "8f0e8a74-eedf-4520-b8f1-be40feba0aa7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T23:14:03.000Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,43 @@
         "description": "The review url's critic segment is tony-marinelli (Theater Scene's convention). The old byline came from the Chip Deffaa column ingested from the tag page."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T01:43:42.269Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fire-fire-off-west-end-2026/times-uk--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-regional-2026/curtainup--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-regional-2026/curtainup--unknown.json wrongProductionReason: null -> \"CurtainUp page visitwtf14.html is the 2014 Williamstown Theatre Festival production, not the 2026 production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json isNonReviewReason: null -> \"Time Out listings page, unsigned blurb with dates and prices, no critic or rating\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json url: \"https://www.theaterscene.net/tag/burning-leaves/\" -> \"https://www.theaterscene.net/plays/offbway-plays/burning-leaves/tony-marinelli/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json criticName: \"Victor Gluck\" -> \"Tony Marinelli\""
+    }
+  ]
 }
