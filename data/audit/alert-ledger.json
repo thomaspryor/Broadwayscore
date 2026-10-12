@@ -14089,7 +14089,7 @@
       "silentRefires": 2
     },
     "land:land/bro-4589-commercial-claim-triage": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4589-commercial-claim-triage",
       "firstSeen": "2026-10-11T21:51:12.542Z",
@@ -14100,7 +14100,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T02:48:02.537Z"
     },
     "land:land/bro-5081-review-factcheck": {
       "status": "resolved",
@@ -14131,7 +14132,7 @@
       "silentRefires": 1
     },
     "land:land/bro-3475-drift-order-test": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-3475-drift-order-test",
       "firstSeen": "2026-10-11T23:31:06.887Z",
@@ -14142,7 +14143,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-12T02:49:55.945Z"
     },
     "land:land/bro-4838-scorer-clear": {
       "status": "open",
@@ -14219,6 +14221,19 @@
       "lastSeen": "2026-10-12T02:16:52.172Z",
       "lastNotifiedAt": "2026-10-12T02:16:52.172Z",
       "lastSurfacedAt": "2026-10-12T02:16:52.172Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-3657-rage-click-instrumentation": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3657-rage-click-instrumentation",
+      "firstSeen": "2026-10-12T02:52:19.781Z",
+      "incidentOpenedAt": "2026-10-12T02:52:19.781Z",
+      "lastSeen": "2026-10-12T02:52:19.781Z",
+      "lastNotifiedAt": "2026-10-12T02:52:19.781Z",
+      "lastSurfacedAt": "2026-10-12T02:52:19.781Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
