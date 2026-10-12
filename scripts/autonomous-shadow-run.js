@@ -51,6 +51,7 @@ const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { selectShadowSlice } = require('./lib/autonomous-shadow-slice.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // Over-fetch multiplier for the real-card candidate pool (card #669):
 // notion-brain `list` sorts Priority-ascending, and human-territory
@@ -75,7 +76,7 @@ function isHumanTerritory(card) {
 const REPO = path.join(__dirname, '..');
 const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || 'claude-sonnet-5';
 
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

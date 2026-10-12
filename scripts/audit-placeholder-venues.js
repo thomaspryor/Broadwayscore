@@ -47,7 +47,7 @@ const { isPlaceholderVenue, NEIGHBOURHOOD_BLOBS, UNKNOWN_MARKERS, JUNK_SUBSTRING
 // checkout, not copied on EnterWorktree), so the __dirname-relative path below
 // resolves to a worktree root with no shows.json. Fall back to the canonical
 // repo — same idiom load-env.js and dispatch-ledger.js use (task #983).
-const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: CANONICAL_REPO } = require('./lib/repo-root');
 
 function loadShows(explicitPath) {
   // Resolve from __dirname, not cwd — this script runs from worktrees and from CI.

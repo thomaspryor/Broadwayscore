@@ -98,7 +98,7 @@ const core = require('./lib/ack-landed-core.js');
 // Canonical checkout, hardcoded for the same reason dispatch-ledger.js
 // hardcodes LEDGER_PATH: this is run from inside worktrees, and both the
 // ledger and the origin/main ancestry check must refer to ONE repo.
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const VERIFY_TIMEOUT_MS = 10 * 60 * 1000;
 const CODE_PATHS = ['scripts', 'src', '.github', 'package.json', 'next.config.js', 'tsconfig.json'];
 

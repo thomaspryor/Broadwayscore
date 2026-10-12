@@ -117,6 +117,7 @@ const { listWorkBranchStatuses } = require('./lib/worktree-branch-guard.js');
 // task #1896 fix) — same shared primitive, separate claim dir/id-space (see
 // DISPATCH_CLAIM_DIR below).
 const { acquireClaim, releaseClaim } = require('./lib/atomic-claim.js');
+const { MAC_REPO } = require('./lib/repo-root');
 
 // BRO-3045: the idempotency refusal used to print a dispatch record's body and
 // timestamp but never its AGE, so "it already looks dispatched" read the same
@@ -158,7 +159,7 @@ function describeAge(ts, now = Date.now()) {
 // unconditionally by DISPATCH_CLAIM_DIR/subprocess cwd regardless of any
 // flag, so deferring its own single fs.existsSync() stat buys nothing.
 const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
-const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
+const REPO = resolveDispatchRepoRoot(MAC_REPO, __dirname);
 
 const CLI_NAME = 'scripts/linear-next.js';
 

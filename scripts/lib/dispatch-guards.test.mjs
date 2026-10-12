@@ -382,6 +382,8 @@ const { resolveCanonicalRepoRoot } = require('./dispatch-guards.js');
 
 test('resolveCanonicalRepoRoot: an existing hardcoded path wins over the fallback (the dev-machine case)', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2647-repo-root-'));
+  // A real checkout, not just an existing dir (BRO-4295).
+  fs.writeFileSync(path.join(tmp, 'package.json'), '{}'); fs.mkdirSync(path.join(tmp, '.git'));
   try {
     assert.equal(resolveCanonicalRepoRoot(tmp, '/some/unrelated/module/dir'), tmp);
   } finally {
@@ -498,4 +500,18 @@ test('findLiveWorkspaceForTask + makeProvablyDeadFn: only provably dead shells s
   const boom = () => { throw new Error('cmux down'); };
   assert.equal(find([launch, dead], mk([launch, dead], boom, boom)), ws);
   assert.equal(find([launch, dead], () => { throw new Error('x'); }), ws);
+});
+
+// BRO-4295: cloud containers carry a stray /Users/tompryor/Broadwayscore/data/audit/
+// tree (lock dirs mkdir -p'd under the literal). Existing-but-not-a-checkout
+// must fall back, or every acceptance path is refused as phantom again.
+test('resolveCanonicalRepoRoot: a stray partial dir at the hardcoded path does not count as the dev machine', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4295-stray-'));
+  try {
+    fs.mkdirSync(path.join(tmp, 'data', 'audit'), { recursive: true });
+    const moduleDir = '/home/runner/work/Broadwayscore/Broadwayscore/scripts';
+    assert.equal(resolveCanonicalRepoRoot(tmp, moduleDir), path.resolve(moduleDir, '..'));
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });

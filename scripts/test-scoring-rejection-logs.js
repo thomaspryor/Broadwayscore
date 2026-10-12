@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // Replicate isScoreable from scripts/llm-scoring/is-scoreable.ts
 const EXCERPT_FIELDS = ['bwwExcerpt', 'dtliExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'playbillVerdictExcerpt'];
@@ -49,7 +50,7 @@ function buildRejectionReason(d) {
 function main() {
   const dir = fs.existsSync('data/review-texts')
     ? 'data/review-texts'
-    : '/Users/tompryor/Broadwayscore/data/review-texts';
+    : path.join(MAIN_REPO_ROOT, 'data', 'review-texts');
 
   // Sample: 500 files, count how many are rejected and log reasons
   let total = 0, scoreable = 0, rejected = 0;

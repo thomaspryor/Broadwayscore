@@ -34,6 +34,7 @@ const { buildDispatchUrl, attachHealthFixUrls } = require('./lib/dispatch-link.j
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText, actionableAttentionCountOf } = require('./lib/autonomous-email-render.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomous-recheck-core.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
@@ -82,7 +83,7 @@ const QUEUE_SUMMARY_MAX_AGE_H = 24; // stale queues describe a different night
 // — one short call per item, ≤3 items/night.
 const PLAIN_LANGUAGE_MODEL = process.env.AUTONOMOUS_EMAIL_COPY_MODEL || 'claude-haiku-4-5-20251001';
 
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

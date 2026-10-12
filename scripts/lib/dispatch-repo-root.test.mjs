@@ -26,6 +26,8 @@ const { resolveCanonicalRepoRoot } = require('./dispatch-guards.js');
 
 test('resolveCanonicalRepoRoot: hardcoded path present returns it unchanged (the dev-machine case)', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2668-repo-root-'));
+  // A real checkout, not just an existing dir (BRO-4295).
+  fs.writeFileSync(path.join(tmp, 'package.json'), '{}'); fs.mkdirSync(path.join(tmp, '.git'));
   try {
     assert.equal(resolveCanonicalRepoRoot(tmp, '/some/unrelated/module/dir'), tmp);
   } finally {
@@ -41,6 +43,8 @@ test('resolveCanonicalRepoRoot: hardcoded path absent falls back to moduleDir/..
 
 test('resolveCanonicalRepoRoot: invoked from inside a worktree still returns the main checkout, not the worktree root', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2668-repo-root-worktree-'));
+  // A real checkout, not just an existing dir (BRO-4295).
+  fs.writeFileSync(path.join(tmp, 'package.json'), '{}'); fs.mkdirSync(path.join(tmp, '.git'));
   try {
     // Shaped like a real worktree's scripts/ dir: <repo>/.claude/worktrees/<name>/scripts.
     // A naive path.resolve(moduleDir, '..') from here lands on the WORKTREE root,

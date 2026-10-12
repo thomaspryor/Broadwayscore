@@ -39,7 +39,7 @@ Usage:
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
-const MAIN_REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: MAIN_REPO } = require('./lib/repo-root');
 const REVIEW_TEXTS_DIR = path.join(MAIN_REPO, 'data', 'review-texts');
 
 const args = process.argv.slice(2);

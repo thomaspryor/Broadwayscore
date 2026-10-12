@@ -49,7 +49,7 @@ const { foldDiacritics } = require('./title-match');
 // resolves to a worktree root with no outlet-registry.json. Fall back to the
 // canonical repo — same idiom audit-placeholder-venues.js's loadShows() uses
 // (task #983).
-const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: CANONICAL_REPO } = require('./repo-root');
 
 function buildOutletDomains() {
   const local = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');

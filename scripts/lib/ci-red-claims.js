@@ -23,7 +23,7 @@ const path = require('path');
 // caller (a hook, a CLI a session runs from inside a worktree) must share
 // ONE ledger file, not a worktree-local copy that would defeat the whole
 // point of a cross-session claim.
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./repo-root');
 const CLAIMS_PATH = path.join(REPO, 'data', 'audit', 'ci-red-claims.jsonl');
 
 // 2 hours — long enough to cover one session's diagnose-fix-push cycle,

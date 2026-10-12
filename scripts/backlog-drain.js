@@ -45,7 +45,7 @@ const { execFileSync, spawn } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { gitSafeJobId } = require('./lib/bsc-runner.js'); // job branches use the SANITIZED id (linear: ids carry a git-illegal colon)
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
 

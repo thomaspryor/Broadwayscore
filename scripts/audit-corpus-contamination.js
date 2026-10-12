@@ -66,7 +66,7 @@ const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard
 // rule and scripts/sweep-named-non-review-urls.js share this exact list.
 const { SUSPECT_SOURCES } = require('./lib/unvetted-serp-sources');
 
-const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: CANONICAL_REPO } = require('./lib/repo-root');
 
 function loadShows() {
   const local = path.join(__dirname, '..', 'data', 'shows.json');

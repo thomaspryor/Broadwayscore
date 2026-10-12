@@ -53,7 +53,8 @@ const { execFileSync, spawnSync } = require('child_process');
 // DISPATCH_CLAIM_DIR/SUCCESSION_LOCK_DIR/QUEUE_PATH/subprocess cwd regardless
 // of any flag, so deferring its own single fs.existsSync() stat buys nothing.
 const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
-const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
+const { MAC_REPO } = require('./lib/repo-root');
+const REPO = resolveDispatchRepoRoot(MAC_REPO, __dirname);
 const cmuxws = require('./lib/cmux-workspaces.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
 const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');

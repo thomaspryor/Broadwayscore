@@ -32,13 +32,14 @@ const fs = require('fs');
 const path = require('path');
 const { buildCadenceReport } = require('./lib/outlet-cadence');
 const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
 function resolveDataFile(relPath) {
   const worktreePath = path.join(REPO_ROOT, relPath);
   if (fs.existsSync(worktreePath)) return worktreePath;
-  const mainPath = path.join('/Users/tompryor/Broadwayscore', relPath);
+  const mainPath = path.join(MAIN_REPO_ROOT, relPath);
   if (fs.existsSync(mainPath)) return mainPath;
   return worktreePath;
 }

@@ -24,6 +24,7 @@ const https = require('https');
 const { isRoundupUrl } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const USAGE = `backfill-lbo-individual-stars.js — backfill aggregatorStars on lbo-individual review files.
 
@@ -45,7 +46,7 @@ const LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : Infinity;
 // the other scripts had.
 // `private: true` marks the source-of-truth repo — see selectCandidate().
 const REVIEW_TEXTS_DIRS = [
-  { dir: '/Users/tompryor/Broadwayscore/data/review-texts', private: false },
+  { dir: path.join(MAIN_REPO_ROOT, 'data', 'review-texts'), private: false },
   { dir: '/Users/tompryor/broadway-review-texts', private: true },
 ];
 

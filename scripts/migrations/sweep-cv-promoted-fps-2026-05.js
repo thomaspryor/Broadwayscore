@@ -111,7 +111,7 @@ if (typeof shouldDeferCvWrongShow !== 'function') {
 // ---------- scan ----------
 if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
   console.error('ERROR: review-texts dir not found at ' + REVIEW_TEXTS_DIR);
-  console.error('Run from /Users/tompryor/Broadwayscore (main repo root).');
+  console.error('Run from the main repo root.');
   process.exit(1);
 }
 

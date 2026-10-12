@@ -43,6 +43,7 @@ const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const { cmuxSpawnEnv } = require('./lib/cmux-socket-auth.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 const USAGE = `probe-cmux-launch.js — reproduce the dispatch false-negative on demand.
 
 Usage:
@@ -57,7 +58,7 @@ then compares launchCmuxSession's verdict against what actually happened.
 
 Env:
   PROBE_REPO   repo whose scripts/lib/cmux-launch.js to exercise
-               (default /Users/tompryor/Broadwayscore)
+               (default: the main checkout)
 `;
 
 // Before the REPO require and before any launch: this script spawns a real
@@ -69,7 +70,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 // Overridable so the probe can exercise a worktree's cmux-launch.js — otherwise
 // it would always test main's copy and silently "verify" the wrong code.
-const REPO = process.env.PROBE_REPO || '/Users/tompryor/Broadwayscore';
+const REPO = process.env.PROBE_REPO || MAIN_REPO_ROOT;
 const { launchCmuxSession } = require(path.join(REPO, 'scripts/lib/cmux-launch.js'));
 
 const stamp = Date.now();

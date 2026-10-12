@@ -25,6 +25,7 @@ const https = require('https');
 
 const { spawnSync } = require('child_process');
 const { readEntries, deadmanStatus, appendEntry } = require('./lib/autonomous-ledger.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // Armed = the nightly job is ACTUALLY LOADED in launchd, not merely that the
 // plist file exists — `launchctl bootout` (the documented kill switch) leaves
@@ -39,7 +40,7 @@ const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 const PLIST_PATH = path.join(os.homedir(), 'Library', 'LaunchAgents', 'com.broadwayscore.autonomous-nightly.plist');
 
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

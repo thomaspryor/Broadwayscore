@@ -69,10 +69,11 @@ const QUEUE_MAX_AGE_H = 12;
 // one definition (scripts/lib/autonomous-checks.js), not a second 5-minute
 // literal that can drift from the gauntlet's.
 const CHECK_TIMEOUT_MS = require('./lib/autonomous-checks.js').CHECK_TIMEOUT_MS;
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
 // checkout so NOTION_API_KEY resolves either way (pattern from triage).
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

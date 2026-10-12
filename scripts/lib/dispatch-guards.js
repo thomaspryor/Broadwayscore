@@ -59,6 +59,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isCheckout, mainCheckoutOf } = require('./repo-root.js');
 const dispatchLedger = require('./dispatch-ledger.js');
 const cmuxws = require('./cmux-workspaces.js');
 // gitSafeJobId only (no lease/runJob I/O pulled in) — matchesTaskWorkBranch
@@ -400,8 +401,17 @@ function resolvePathCheck(gate, repoRoot) {
 // when the path check itself will run) so --force/--dry-run/--print-prompt
 // still skip the fs I/O entirely, matching resolvePathCheck()'s own
 // "don't do work whose result gets discarded" convention above.
+//
+// BRO-4295: "present" means a real checkout (repo-root.js isCheckout), not
+// bare existsSync. Cloud containers grew a stray partial
+// /Users/tompryor/Broadwayscore/data/audit/ tree (other scripts mkdir -p'd
+// their locks under the literal), which made existsSync say "dev machine"
+// and every acceptance path look phantom again. The fallback is the main
+// checkout moduleDir belongs to, so a worktree run shares the main ledgers.
 function resolveCanonicalRepoRoot(hardcodedRepo, moduleDir) {
-  return fs.existsSync(hardcodedRepo) ? hardcodedRepo : path.resolve(moduleDir, '..');
+  if (isCheckout(hardcodedRepo)) return hardcodedRepo;
+  const scriptsParent = path.resolve(moduleDir, '..');
+  return mainCheckoutOf(scriptsParent) || scriptsParent;
 }
 
 // ok:true alone is not enough to pass (Codex adversarial review, BRO-2569):

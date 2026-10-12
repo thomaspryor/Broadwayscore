@@ -29,6 +29,7 @@ const vulture = require(path.join(__dirname, 'lib/author-pages/vulture.js'));
 const { computeCriticCoverage } = require(path.join(__dirname, 'lib/check-critic-coverage.js'));
 const { buildCadenceReport } = require(path.join(__dirname, 'lib/outlet-cadence.js'));
 const { updateHeartbeatState } = require(path.join(__dirname, 'lib/outlet-heartbeat-state.js'));
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -46,7 +47,7 @@ const mode = modeArg ? modeArg.split('=')[1] : 'default';
 function resolveDataFile(relPath) {
   const worktreePath = path.join(REPO_ROOT, relPath);
   if (fs.existsSync(worktreePath)) return worktreePath;
-  const mainPath = path.join('/Users/tompryor/Broadwayscore', relPath);
+  const mainPath = path.join(MAIN_REPO_ROOT, relPath);
   if (fs.existsSync(mainPath)) return mainPath;
   return worktreePath; // let the caller throw
 }

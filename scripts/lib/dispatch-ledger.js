@@ -25,7 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { foldAttempts, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 
-// Hardcoded (not path.join(__dirname, '..', '..')) on purpose: both callers
+// The MAIN checkout (repo-root.js), not path.join(__dirname, '..', '..'), on purpose: both callers
 // of this module (bsc-next.js, bsc-prune.js) are interactive tools an owner
 // routinely runs from inside a worktree (this session included) — a
 // __dirname-relative REPO would resolve to that worktree's own
@@ -34,8 +34,9 @@ const { foldAttempts, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 // bsc-next.js already applies to its own REPO/QUEUE_PATH, with the same
 // rationale in its header comment. (autonomous-ledger.js gets away with the
 // relative pattern because autonomous-run.js only ever runs from the
-// canonical checkout via launchd — never from a worktree.)
-const REPO = '/Users/tompryor/Broadwayscore';
+// canonical checkout via launchd — never from a worktree.) BRO-2681: was a
+// bare literal; repo-root.js also resolves the main checkout off the Mac.
+const { MAIN_REPO_ROOT: REPO } = require('./repo-root');
 const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl');
 const { stripAutoPrefix } = require('./workspace-naming.js');
 

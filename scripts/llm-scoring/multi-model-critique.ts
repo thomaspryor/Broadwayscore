@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node --project /Users/tompryor/Broadwayscore/scripts/tsconfig.json
+#!/usr/bin/env npx ts-node --project scripts/tsconfig.json
 /**
  * Multi-Model Critique of LLM Scoring Proposals
  *
@@ -9,8 +9,10 @@ import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as fs from 'fs';
+import * as path from 'path';
+const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
 
-const PROPOSALS = fs.readFileSync('/Users/tompryor/Broadwayscore/data/audit/llm-scoring-proposals.md', 'utf8');
+const PROPOSALS = fs.readFileSync(path.join(MAIN_REPO_ROOT, 'data', 'audit', 'llm-scoring-proposals.md'), 'utf8');
 
 const CRITIQUE_PROMPT = `You are an expert in machine learning evaluation and ensemble methods.
 
@@ -119,7 +121,7 @@ async function main() {
   };
 
   fs.writeFileSync(
-    '/Users/tompryor/Broadwayscore/data/audit/multi-model-critique.json',
+    path.join(MAIN_REPO_ROOT, 'data', 'audit', 'multi-model-critique.json'),
     JSON.stringify(output, null, 2)
   );
 

@@ -41,9 +41,10 @@ function loadEnvFile(envPath) {
   }
   return true;
 }
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 try {
   loadEnvFile(pathMod.join(ROOT, '.env'))
-    || loadEnvFile('/Users/tompryor/Broadwayscore/.env');
+    || loadEnvFile(pathMod.join(MAIN_REPO_ROOT, '.env'));
 } catch {}
 
 const { fetchPage } = require('./lib/scraper');

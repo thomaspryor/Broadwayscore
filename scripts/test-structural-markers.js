@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasStructuralMarkers, cleanHtmlForLLM } = require('./lib/llm-extractor');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 function testDirectory(dir, expectedAggregator, sampleSize) {
   if (!fs.existsSync(dir)) {
@@ -61,7 +62,7 @@ function testDirectory(dir, expectedAggregator, sampleSize) {
 
 function main() {
   const SAMPLE = parseInt(process.argv[2] || '100');
-  const archiveBase = '/Users/tompryor/Broadwayscore/data/aggregator-archive';
+  const archiveBase = path.join(MAIN_REPO_ROOT, 'data', 'aggregator-archive');
 
   console.log(`Testing structural markers against ${SAMPLE} pages per aggregator\n`);
 

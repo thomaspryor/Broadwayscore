@@ -580,3 +580,7 @@ public/images/shows/**/*.incoming
 
 # BRO-5022 A/B: pre-change verifier copied next to the live one while the A/B runs
 scripts/lib/.ab-old-verify-image-*.js
+
+# Mac-local markers written under the main checkout (repo-root.js); never commit (BRO-2682)
+/data/audit/job-log-prune.lock
+/data/audit/disk-pressure-alert-last-sent.json

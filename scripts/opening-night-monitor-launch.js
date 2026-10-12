@@ -49,7 +49,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 
 // launchd hands this process only PATH, HOME and CLAUDE_CODE_OAUTH_TOKEN, so
 // RESEND_API_KEY / OWNER_EMAIL were absent on every tick and every escalation

@@ -16,7 +16,7 @@ const path = require('path');
 const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
-const REPO_ROOT = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO_ROOT } = require('./lib/repo-root');
 const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
 const showsPath = path.join(REPO_ROOT, '.core-data-checkout', 'shows.json');
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));

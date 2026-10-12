@@ -25,6 +25,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { starToBand, letterGradeToBand, buildSystemPromptV6, buildPromptV6, scoreToBucket, ScoreBand } from './config';
+const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
 
 // ============================================================================
 // Paths
@@ -38,7 +39,7 @@ import { starToBand, letterGradeToBand, buildSystemPromptV6, buildPromptV6, scor
 const DATA_DIR = process.env.STAR_ANCHOR_DATA_DIR ||
   (fs.existsSync(path.resolve(__dirname, '../../data/review-texts'))
     ? path.resolve(__dirname, '../../data/review-texts')
-    : '/Users/tompryor/Broadwayscore/data/review-texts');
+    : path.join(MAIN_REPO_ROOT, 'data', 'review-texts'));
 // /tmp/ was wiped between sessions, losing the sample. Persist to claude-outputs
 // (iCloud-synced) so multi-session runs survive. The HTML report contains
 // 80-char excerpts of copyrighted prose — short-snippet/fair-use territory,
@@ -479,7 +480,7 @@ async function runScore(): Promise<void> {
 }
 
 function loadEnvFromMain(): void {
-  const envPath = '/Users/tompryor/Broadwayscore/.env';
+  const envPath = path.join(MAIN_REPO_ROOT, '.env');
   if (!fs.existsSync(envPath)) return;
   const text = fs.readFileSync(envPath, 'utf8');
   for (const line of text.split('\n')) {

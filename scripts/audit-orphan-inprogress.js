@@ -313,7 +313,7 @@ function run(argv) {
   if (startedIdsRaw === null) {
     const msg = `dispatch-ledger.jsonl not readable at ${path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl')}\n`
       + '  It is gitignored, so it does not exist in a git worktree. Re-run from the main checkout\n'
-      + '  (/Users/tompryor/Broadwayscore). Refusing to classify: with no ledger every task would\n'
+      + '  (the main checkout). Refusing to classify: with no ledger every task would\n'
       + '  look never-started, which is a wrong answer, not a cautious one.';
     if (argv.includes('--json')) console.log(JSON.stringify({ error: msg }, null, 2));
     else console.error(`[audit-orphan-inprogress] REFUSED — ${msg}`);

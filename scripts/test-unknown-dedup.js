@@ -8,11 +8,12 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 function main() {
   const dir = fs.existsSync('data/review-texts')
     ? 'data/review-texts'
-    : '/Users/tompryor/Broadwayscore/data/review-texts';
+    : path.join(MAIN_REPO_ROOT, 'data', 'review-texts');
 
   let totalCollisions = 0;
   const examples = [];

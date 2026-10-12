@@ -23,7 +23,7 @@ const ledger = require('./lib/dispatch-ledger.js');
 const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const core = require('./lib/fanout-verified-core.js');
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const VERIFY_TIMEOUT_MS = 15 * 60 * 1000;
 
 const USAGE = `fanout-verified.js — record a real combined check across >= 2 dispatched children (the ledger row Gate O v2 reads before CLOSE ME).

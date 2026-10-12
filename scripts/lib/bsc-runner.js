@@ -32,7 +32,7 @@ const { killedTasksLedgerFields } = require('./headless-background-task-guard.js
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./repo-root');
 const LEASE_ROOT = path.join(REPO, 'data', 'audit', 'job-leases');
 const LOG_ROOT = path.join(os.homedir(), 'Library', 'Logs', 'bsc-jobs');
 

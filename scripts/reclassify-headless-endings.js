@@ -53,7 +53,7 @@ const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./lib/autonom
 const { getIssue } = require('./lib/linear-client.js');
 const { parseSessionReportStatus } = require('./lib/linear-session-reporting.js');
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const DEFAULT_REASON = 'no THIS SESSION: status line in final result';
 const DEFAULT_SINCE = '2026-09-20T00:00:00.000Z';
 // Padding around the job's own [spawn, terminal] window for the git-log

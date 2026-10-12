@@ -19,7 +19,7 @@ if (!process.env.GEMINI_API_KEY) {
   process.exit(2);
 }
 
-const reviewPath = '/Users/tompryor/Broadwayscore/data/review-texts/burlesque-west-end-2026/london-theatre--anya-ryan.json';
+const reviewPath = `${require('../lib/repo-root.js').MAIN_REPO_ROOT}/data/review-texts/burlesque-west-end-2026/london-theatre--anya-ryan.json`;
 const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
 
 const band = starToBand(5, 5);

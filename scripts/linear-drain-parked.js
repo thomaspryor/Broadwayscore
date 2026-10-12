@@ -122,7 +122,7 @@ const {
 
 require('./lib/load-env').loadEnv();
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'linear-drain-parked-ledger.jsonl');
 const DISPATCH_CAP = 6;
 // BRO-4535: this drain's own fleet ceiling, raised from backlog-drain.js's

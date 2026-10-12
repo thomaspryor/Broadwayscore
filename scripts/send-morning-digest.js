@@ -37,12 +37,13 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const https = require('https');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
 
 // .env preamble (same pattern as the other launchd-run senders — launchd
 // does not inherit shell env, so keys must come from the repo's .env).
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

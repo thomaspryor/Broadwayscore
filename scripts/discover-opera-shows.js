@@ -28,6 +28,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const USAGE = `discover-opera-shows.js — Discovers Met Opera productions from metopera.org season pages and adds.
 
@@ -41,7 +42,7 @@ Usage:
 const OPERA_IDS_FILE = (() => {
   const candidates = [
     path.join(__dirname, '..', 'src', 'lib', 'opera-show-ids.ts'),
-    path.join('/Users/tompryor/Broadwayscore', 'src', 'lib', 'opera-show-ids.ts'),
+    path.join(MAIN_REPO_ROOT, 'src', 'lib', 'opera-show-ids.ts'),
   ];
   return candidates.find(p => { try { fs.accessSync(p); return true; } catch { return false; } })
     || candidates[0];

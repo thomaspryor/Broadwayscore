@@ -5,12 +5,13 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const TIER_W = { 1: 1.0, 2: 0.75, 3: 0.35 };
 
 const reviews = JSON.parse(fs.readFileSync('/Users/tompryor/broadway-scorecard-data/reviews.json', 'utf8'));
 const shows = JSON.parse(fs.readFileSync('/Users/tompryor/broadway-scorecard-data/shows.json', 'utf8'));
-const registry = JSON.parse(fs.readFileSync('/Users/tompryor/Broadwayscore/data/outlet-registry.json', 'utf8'));
+const registry = JSON.parse(fs.readFileSync(path.join(MAIN_REPO_ROOT, 'data', 'outlet-registry.json'), 'utf8'));
 const tierByOutlet = {};
 for (const [id, o] of Object.entries(registry.outlets)) tierByOutlet[id] = o.tier;
 

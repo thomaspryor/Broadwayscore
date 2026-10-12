@@ -55,7 +55,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // Hardcoded canonical repo (same rationale as dispatch-ledger.js: this tool
 // is routinely run from worktrees, and the ledger/dispatcher must be the one
 // canonical copy, never a worktree-local fork).
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const STATE_DIR = path.join(os.homedir(), '.claude', 'state');
 const HEARTBEAT_PATH = path.join(STATE_DIR, 'dispatch-watchdog.json');
 const TAB_STATE_PATH = path.join(STATE_DIR, 'dispatch-watchdog-tab.json');

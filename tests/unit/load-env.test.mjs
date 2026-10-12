@@ -137,7 +137,7 @@ test('loadEnv keeps "=" inside values intact', () => {
 // notion-brain.js hit (commit 3fd452ba1fc) before the fix was generalized here
 // (task #983). Self-skips off the machine that owns CANONICAL_REPO (e.g. CI).
 test('loadEnv() with no repoRoot falls back to the canonical repo .env', () => {
-  const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+  const { MAIN_REPO_ROOT: CANONICAL_REPO } = require('../../scripts/lib/repo-root.js');
   if (!fs.existsSync(path.join(CANONICAL_REPO, '.env'))) return;
   const res = loadEnv();
   assert.equal(res.path, path.join(CANONICAL_REPO, '.env'));

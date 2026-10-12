@@ -15,11 +15,12 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // Support running from a worktree where data/ isn't present
 const _candidates = [
   path.join(__dirname, '..', 'data', 'review-texts'),
-  '/Users/tompryor/Broadwayscore/data/review-texts',
+  path.join(MAIN_REPO_ROOT, 'data', 'review-texts'),
   path.join(process.env.HOME || '', 'Broadwayscore', 'data', 'review-texts'),
 ];
 const REVIEW_TEXTS_DIR = _candidates.find(d => fs.existsSync(d)) || _candidates[0];

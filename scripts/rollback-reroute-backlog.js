@@ -16,7 +16,7 @@ if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
   process.exit(0);
 }
 
-const REPO_ROOT = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO_ROOT } = require('./lib/repo-root');
 const LOG_PATH = path.join(REPO_ROOT, 'data', 'reroute-migration-log.json');
 
 if (!fs.existsSync(LOG_PATH)) {

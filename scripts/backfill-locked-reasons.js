@@ -57,7 +57,7 @@ const reviewTextsDir = dirArg
   : path.resolve(process.cwd(), 'data', 'review-texts');
 if (!fs.existsSync(reviewTextsDir)) {
   console.error(`✕ review-texts dir not found: ${reviewTextsDir}`);
-  console.error(`  Run from the main repo (cd /Users/tompryor/Broadwayscore) or pass --review-texts-dir=/abs/path.`);
+  console.error(`  Run from the main repo root or pass --review-texts-dir=/abs/path.`);
   process.exit(1);
 }
 const NEEDED_PF = ['lockedReason', 'lockedAt', 'lockedBy'];

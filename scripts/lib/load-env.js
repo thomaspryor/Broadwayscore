@@ -33,7 +33,7 @@ const path = require('path');
 // notion-brain.js fix in commit 3fd452ba1fc). Only applies when the caller
 // did not pass an explicit repoRoot, so callers that need a specific
 // directory (e.g. tests) are unaffected.
-const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: CANONICAL_REPO } = require('./repo-root');
 
 /**
  * Pure parser: .env text → { KEY: value }. No I/O, no process.env access, so it

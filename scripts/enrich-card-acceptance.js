@@ -118,6 +118,7 @@ const { priorityOf } = require('./lib/linear-watchdog-source.js');
 // and why a rewrite is refused without the enricher's own label.
 const { selectRearmCandidates, refuseRearmWrite } = require('./lib/card-rearm.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
 const MODEL = process.env.ENRICH_CARD_MODEL || CLAUDE_HAIKU;
@@ -131,7 +132,7 @@ const DEFAULT_LIMIT = 100;
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
 // checkout, same pattern as autonomous-triage.js.
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

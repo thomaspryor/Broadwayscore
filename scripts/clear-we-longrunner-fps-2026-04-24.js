@@ -46,7 +46,7 @@ const TARGETS = [
 // Resolve data/review-texts via main repo path. Worktrees don't carry the
 // directory (main has the private-repo-backed files). See memory:
 // feedback_worktree_script_data_paths.md.
-const MAIN_REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: MAIN_REPO } = require('./lib/repo-root');
 const REVIEW_TEXTS_DIR = path.join(MAIN_REPO, 'data', 'review-texts');
 
 let cleared = 0;

@@ -26,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync, spawnSync: realSpawnSync } = require('child_process');
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { execErrorDetail } = require('./lib/exec-error-detail.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');

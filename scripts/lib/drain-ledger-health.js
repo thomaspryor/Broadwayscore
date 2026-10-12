@@ -32,18 +32,9 @@
 // threshold owned in JS next to the thing it describes, not hardcoded in
 // YAML, so the cadence assumption and the constant live together.
 //
-// KNOWN OVER-COUNT IN CI (biases toward alerting, never toward silence) —
-// scripts/linear-drain-parked.js:115 hardcodes
-// `const REPO = '/Users/tompryor/Broadwayscore'` and derives its LEDGER_PATH
-// from it, so on a GitHub Actions runner that path is absent, the read
-// degrades to [] (ENOENT is swallowed, not thrown), and the dry-run applies
-// NO park or 6h-cooldown exclusions. The count CI reports is therefore >= the
-// count the Mac would really select. That can page when the Mac is correctly
-// idle, but only if the ledger is ALSO >20h stale, and it can never hide a
-// dead drain — which is the failure this exists to catch, and the direction
-// to fail in. Fixing it properly means resolving REPO from __dirname so the
-// drain finds its own committed ledger; that is a dispatch-layer change
-// needing its own rule-18 review, tracked as BRO-3545.
+// CI reads the real committed drain ledger: BRO-3545 resolved
+// linear-drain-parked.js's REPO through scripts/lib/repo-root.js (it used to
+// be a Mac-only literal, so CI saw [] and over-counted candidates).
 //
 // Pure — no fs, no network, no process. The ledger read and the exit code
 // live in scripts/check-linear-drain-health.js (CLAUDE.md rule 15: the test

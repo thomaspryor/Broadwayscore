@@ -33,7 +33,7 @@ Usage:
   --help, -h   show this message, do nothing else
 `;
 
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 
 /**

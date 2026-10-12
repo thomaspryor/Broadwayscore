@@ -36,7 +36,7 @@ const {
 // convention, for the same reason, as scripts/lib/dispatch-ledger.js:38 and
 // scripts/verify-dispatch-dead-rate-recovery.test.mjs, both of which already
 // documented that the ledger is one shared per-machine file.
-const REPO = '/Users/tompryor/Broadwayscore';
+const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
 const LEDGER = path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl');
 
 function arg(name, fallback) {

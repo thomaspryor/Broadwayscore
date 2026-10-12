@@ -61,7 +61,8 @@ const { detectDuplicateCrownTabs } = require('./lib/crown-duplicate-detector.js'
 // `w.cwd === repoRoot` never matched. Same canonical-root resolver bsc-next.js
 // already uses for exactly this reason (BRO-2668).
 const { resolveCanonicalRepoRoot } = require('./lib/dispatch-guards.js');
-const REPO = resolveCanonicalRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
+const { MAC_REPO } = require('./lib/repo-root');
+const REPO = resolveCanonicalRepoRoot(MAC_REPO, __dirname);
 const { isReclaimable } = require('./lib/prune-dead-autodispatch-tabs.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');

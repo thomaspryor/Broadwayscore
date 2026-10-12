@@ -480,7 +480,7 @@ const showsJsonPath = path.resolve(CWD, 'data', 'shows.json');
 const showsData = readJson(showsJsonPath);
 if (!showsData) {
   console.error('ERROR: could not read shows.json at ' + showsJsonPath);
-  console.error('Run this script from the main repo root (/Users/tompryor/Broadwayscore).');
+  console.error('Run this script from the main repo root.');
   process.exit(1);
 }
 const showList = showsData.shows || showsData;

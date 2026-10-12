@@ -69,6 +69,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { runMain } = require('./lib/run-main');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // Worktrees don't ship the gitignored core-data files (commercial.json,
 // shows.json live in the private repo). Fall back to the main repo's data
@@ -79,7 +80,7 @@ function dataPath(filename, { writable = false } = {}) {
   const local = path.join(__dirname, '..', 'data', filename);
   if (fs.existsSync(local)) return local;
   if (writable) return local;
-  const mainRepo = path.join('/Users/tompryor/Broadwayscore/data', filename);
+  const mainRepo = path.join(MAIN_REPO_ROOT, 'data', filename);
   if (fs.existsSync(mainRepo)) return mainRepo;
   return local;
 }

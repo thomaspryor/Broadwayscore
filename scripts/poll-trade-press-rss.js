@@ -45,6 +45,7 @@ const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
 const { pickRecoupmentCandidates, RSS_SCOPE } = require('./lib/recoupment-scan-scope');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
 const { runMain } = require('./lib/run-main');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // ---- args ----
 const args = process.argv.slice(2);
@@ -80,7 +81,7 @@ function dataPath(filename, { writable = false } = {}) {
   const local = path.join(__dirname, '..', 'data', filename);
   if (fs.existsSync(local)) return local;
   if (writable) return local;
-  const mainRepo = path.join('/Users/tompryor/Broadwayscore/data', filename);
+  const mainRepo = path.join(MAIN_REPO_ROOT, 'data', filename);
   if (fs.existsSync(mainRepo)) return mainRepo;
   return local;
 }

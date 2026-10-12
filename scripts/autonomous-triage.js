@@ -33,6 +33,7 @@ const { estimateUSD } = require('./lib/autonomous-budget.js');
 const ledgerLib = require('./lib/autonomous-ledger.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const { loadParkOverrides } = require('./lib/attempt-memory.js');
+const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -45,7 +46,7 @@ const FETCH_MAX = 120;
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
 // checkout so ANTHROPIC_API_KEY / NOTION_API_KEY resolve either way.
-for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.env']) {
+for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const t = line.trim();

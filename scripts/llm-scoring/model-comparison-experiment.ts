@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node --project /Users/tompryor/Broadwayscore/scripts/tsconfig.json
+#!/usr/bin/env npx ts-node --project scripts/tsconfig.json
 /**
  * Model Comparison Experiment
  *
@@ -14,6 +14,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
+const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
 
@@ -137,7 +138,7 @@ async function scoreWithClaude(client: Anthropic, text: string): Promise<number 
 }
 
 async function loadReviewsWithExplicitScores(): Promise<ReviewData[]> {
-  const reviewTextsDir = '/Users/tompryor/Broadwayscore/data/review-texts';
+  const reviewTextsDir = path.join(MAIN_REPO_ROOT, 'data', 'review-texts');
   const reviews: ReviewData[] = [];
 
   const shows = listShowDirs(reviewTextsDir);
@@ -237,7 +238,7 @@ async function main() {
 
       // Save intermediate results
       fs.writeFileSync(
-        '/Users/tompryor/Broadwayscore/data/audit/model-comparison-results.json',
+        path.join(MAIN_REPO_ROOT, 'data', 'audit', 'model-comparison-results.json'),
         JSON.stringify({
           timestamp: new Date().toISOString(),
           processed,
@@ -320,7 +321,7 @@ async function main() {
   };
 
   fs.writeFileSync(
-    '/Users/tompryor/Broadwayscore/data/audit/model-comparison-results.json',
+    path.join(MAIN_REPO_ROOT, 'data', 'audit', 'model-comparison-results.json'),
     JSON.stringify(output, null, 2)
   );
 
