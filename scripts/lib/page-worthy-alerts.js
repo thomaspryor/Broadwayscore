@@ -243,6 +243,11 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
 
 function isPageWorthy(conditionKey) {
   if (!conditionKey) return false;
+  // BRO-4043: terminal opening-night reports need their own paging keys.
+  // A mid-window send under the base nightly key must not consume the final
+  // report's cooldown. Only these suffixes page; retries reuse the same final
+  // key so the router still dedupes repeated delivery attempts.
+  if (/^on-monitor-report-.+-(?:parity|escalation)-final$/.test(conditionKey)) return true;
   if (PAGE_WORTHY_CONDITION_KEYS.has(conditionKey)) return true;
   return PAGE_WORTHY_PREFIXES.some((prefix) => conditionKey.startsWith(prefix));
 }
