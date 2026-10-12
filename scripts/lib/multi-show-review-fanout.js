@@ -149,6 +149,39 @@ function isParenthetical(text, at) {
 }
 
 /** Start of the sentence containing `pos` (or the separator just before it). */
+// A theatre listing line: street address, phone number, or price range.
+const LISTING_LINE_RE = /\b\d+\s+[NSEW]\.?\s+\d+(?:st|nd|rd|th)\s+St\b|\b\d{3}-\d{3}-\d{4}\b|\$\d+(?:\.\d\d)?\s*-\s*\$\d+/;
+const LISTING_MAX_LINE = 80;
+const LISTING_LEDE_MAX = 400;
+
+/**
+ * Start of a listing block (2+ short listing paragraphs, optionally followed
+ * by one short lede paragraph) that ends right at `cut`, or null. Never
+ * reaches back past `floor`.
+ */
+function listingLedStart(text, cut, floor) {
+  const paras = [];
+  const re = /[^\n]+(?:\n(?!\s*\n)[^\n]+)*/g;
+  const window = text.slice(floor, cut);
+  let m;
+  while ((m = re.exec(window))) paras.push({ at: floor + m.index, body: m[0].trim() });
+  if (!paras.length) return null;
+  let i = paras.length - 1;
+  const isListing = (p) => p.body.length <= LISTING_MAX_LINE;
+  if (!isListing(paras[i]) || !LISTING_LINE_RE.test(paras[i].body)) {
+    if (paras[i].body.length > LISTING_LEDE_MAX) return null;
+    i--; // one lede paragraph between the listing and the cut
+  }
+  let start = null;
+  let listingHits = 0;
+  while (i >= 0 && isListing(paras[i])) {
+    if (LISTING_LINE_RE.test(paras[i].body)) listingHits++;
+    start = paras[i].at;
+    i--;
+  }
+  return listingHits >= 2 ? start : null;
+}
+
 function sentenceStart(text, pos) {
   let i = pos;
   while (i > 0) {
@@ -299,6 +332,16 @@ function introSections(text, shows, ownShowId, publishDate) {
     // title later ("At Sunday's opening ... the original 'Jitney' ensemble")
     // is colour inside the same review (Sweat/Showbiz411, BRO-4431 review).
     if (intros[i].at - cuts[i] > INTRO_LEAD_CHARS) return [];
+  }
+
+  // A section opens with its own listing block + lede when the column puts
+  // them first (WSJ Teachout: "Music Box Theatre, / 239 W. 45th St. / ... /
+  // Ken Ludwig writes comfy farces ..." then "'Lend Me a Tenor,' last seen
+  // ..."): move the cut back over them so they leave the previous section
+  // (BRO-5198 ship-check, the-addams-family-2010 / lend-me-a-tenor-2010).
+  for (let i = 1; i < cuts.length; i++) {
+    const back = listingLedStart(text, cuts[i], Math.max(cuts[i - 1], intros[i - 1].at));
+    if (back !== null && countMatches(intros[i - 1].m.any, text.slice(back, cuts[i])) === 0) cuts[i] = back;
   }
 
   const sections = [];
