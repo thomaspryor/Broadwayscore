@@ -158,9 +158,13 @@ test(
       const [showId, file] = key.split('::');
       return fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId, file));
     });
-    // 3 = the TKAM files still on disk after the 2026-10-09 rebuild; a lower
-    // count means another known-good file was renamed or dropped silently.
-    assert.ok(presentKnownGood.length >= 3,
+    // Floor is 1, not a count of today's files (BRO-5214): prior-run cleanup
+    // keeps removing 2022 TKAM reviews by design (3 -> 2 on 2026-10-12 via an
+    // approved fix), so a fixed count turns routine data drift into a main
+    // red. Zero present means the list is fully stale and the check below
+    // is vacuous. Guard recall is pinned on fixtures in
+    // tests/unit/prior-run-review-display.test.mjs, not on this corpus.
+    assert.ok(presentKnownGood.length >= 1,
       `only ${presentKnownGood.length} KNOWN_GOOD_FLAGS file(s) remain in the corpus: re-baseline KNOWN_GOOD_FLAGS against a show that still has a confirmed former-cast quote`);
     for (const key of presentKnownGood) {
       assert.ok(actualFlags.has(key),
