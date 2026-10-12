@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getFirstInvalidField } from '@/lib/feedback-form-validation';
-import { createNotionPage } from '@/lib/notion-api';
-import { isMalformedFeedbackPayload, buildFeedbackNotionProperties } from '@/lib/notion-feedback-integration';
+import { getFirstInvalidField, isMalformedFeedbackPayload } from '@/lib/feedback-form-validation';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// Best-effort secondary destination — keeps the existing process-feedback.yml
-// AI bug-diagnosis pipeline (polls Formspree, auto-files GitHub issues) alive
-// alongside the new direct Notion write. Same endpoint feedback/page.tsx used
-// as its `endpoint` default before this route existed.
+// The real consumer: process-feedback.yml polls Formspree for the AI
+// bug-diagnosis pipeline (auto-files GitHub issues). The old secondary Notion
+// write was removed with the Notion board's retirement (BRO-4717). Same
+// endpoint feedback/page.tsx used as its `endpoint` default before this route
+// existed.
 const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mojdjwqo';
 
 // In-memory rate limiting: 5 requests per minute per IP. Same shape as
@@ -110,24 +109,6 @@ export async function POST(req: NextRequest) {
     // polls it for the AI bug-diagnosis pipeline), so success is gated on its
     // actual response, not just the fetch resolving (BRO-3382).
     const formspreeOk = await forwardToFormspree(formData);
-
-    // Notion is purely additive and best-effort: a missing key or a failed
-    // write must never fail a request, and its success never substitutes for
-    // Formspree's — the automated pipeline doesn't read Notion (BRO-3379).
-    const notionKey = process.env.NOTION_API_KEY;
-    if (notionKey) {
-      const properties = buildFeedbackNotionProperties({
-        ...fields,
-        submittedAt: new Date().toISOString(),
-      });
-      try {
-        await createNotionPage(properties, notionKey);
-      } catch (err) {
-        console.error('Notion feedback create failed (non-fatal):', (err as Error).message);
-      }
-    } else {
-      console.error('NOTION_API_KEY not configured (non-fatal)');
-    }
 
     if (!formspreeOk) {
       return NextResponse.json(

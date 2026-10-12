@@ -28,4 +28,9 @@ function getFirstInvalidField(values, fields = FEEDBACK_FIELDS) {
   return null;
 }
 
-module.exports = { FEEDBACK_FIELDS, getFirstInvalidField };
+/** True when `body` isn't a plausible feedback payload at all (wrong shape, not a malformed field). */
+function isMalformedFeedbackPayload(body) {
+  return body === null || body === undefined || typeof body !== 'object' || Array.isArray(body);
+}
+
+module.exports = { FEEDBACK_FIELDS, getFirstInvalidField, isMalformedFeedbackPayload };

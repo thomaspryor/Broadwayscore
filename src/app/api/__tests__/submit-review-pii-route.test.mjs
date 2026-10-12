@@ -1,6 +1,6 @@
 /**
  * BRO-4454 — the real /submit-review POST handler must create its PUBLIC
- * GitHub issue (and the Notion record) with no submitter email in it, while
+ * GitHub issue with no submitter email in it, while
  * the sealed contact still decrypts to the address for the notify emails.
  *
  * Requires the real route and the real helper; only global fetch is stubbed.
@@ -25,6 +25,8 @@ const EMAIL = 'ada.lovelace@example.com';
 const realFetch = globalThis.fetch;
 
 process.env.GH_DISPATCH_TOKEN = 'test-token';
+// Set so a regression re-adding the retired Notion write (BRO-4717) would
+// fire a fetch to api.notion.com, which the stub below rejects as unexpected.
 process.env.NOTION_API_KEY = 'test-notion';
 
 function formData() {
@@ -38,7 +40,7 @@ function formData() {
 }
 
 async function submit(ip) {
-  const captured = { issue: null, notion: null };
+  const captured = { issue: null };
   globalThis.fetch = async (url, init) => {
     const u = String(url);
     if (u.includes('api.github.com/search/issues')) {
@@ -47,10 +49,6 @@ async function submit(ip) {
     if (u.includes('api.github.com') && init?.method === 'POST') {
       captured.issue = init.body;
       return new Response(JSON.stringify({ number: 4454 }), { status: 201 });
-    }
-    if (u.includes('api.notion.com')) {
-      captured.notion = init?.body ?? '';
-      return new Response(JSON.stringify({ id: 'page' }), { status: 200 });
     }
     throw new Error(`unexpected fetch in test: ${u}`);
   };
@@ -68,13 +66,12 @@ async function submit(ip) {
   }
 }
 
-test('issue and Notion payloads carry no email; the sealed contact decrypts to it', async () => {
+test('issue payload carries no email; the sealed contact decrypts to it', async () => {
   process.env.APPROVAL_HMAC_SECRET = SECRET;
   const { res, captured } = await submit('10.44.54.1');
   assert.equal(res.status, 200);
   assert.ok(captured.issue, 'GitHub issue was created');
   assert.equal(firstRealEmail(captured.issue), null, 'GitHub issue request carries no email');
-  assert.equal(firstRealEmail(captured.notion || ''), null, 'Notion record carries no email');
   const { body } = JSON.parse(captured.issue);
   assert.ok(body.includes(CONTACT_HEADING));
   assert.ok(!body.includes('### Submitter Email'), 'legacy plaintext heading is gone');

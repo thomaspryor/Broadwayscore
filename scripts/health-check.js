@@ -4423,53 +4423,28 @@ function silentGapBacklogResults(report, now = new Date()) {
 }
 
 // Daily-digest surfacing for undispatchable backlog cards (data/audit/
-// card-verifiability.json, written by audit-card-verifiability.js — task
-// #646). bsc-next correctly refuses to dispatch a card with no runnable
-// acceptance-criteria command, but that refusal has no channel of its own —
-// a card can sit stuck indefinitely with nobody noticing. enrich-card-
-// acceptance.js is the fix; this warn row is the visibility that was missing
-// before it existed (#116 sat refused until a human hand-enriched it).
+// card-verifiability-linear.json, written by audit-card-verifiability.js
+// --source linear — task #646, BRO-3619). A card with no runnable
+// acceptance-criteria command is refused by the dispatcher, but that refusal
+// has no channel of its own, so a card can sit stuck indefinitely with nobody
+// noticing. enrich-card-acceptance.js is the fix; these warn rows are the
+// visibility. BRO-4717 retired the Notion-board twin of these rows (it read
+// card-verifiability.json, regenerated daily from the frozen Notion mirror);
+// only the Linear report is read now.
 const LINEAR_VERIFIABILITY_STALE_MS = 3 * 24 * 60 * 60 * 1000; // the audit runs daily; 3 days means it stopped
 
-function cardVerifiabilityBacklogResults(report, drainMetric, linearReport, now = Date.now()) {
+function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
-  if (report && Array.isArray(report.refused) && report.refused.length > 0) {
-    const refused = report.refused;
-    const first = refused[0];
-    // BRO-2570: turns "N refused" into "N cards, mostly one directory away
-    // from armed" — actionable instead of opaque. Always derived from
-    // refused[].kind (never report.byKind) so this can't silently diverge
-    // from the canonical per-card rows on a stale/partial/malformed
-    // aggregate (ship-check finding) — an older report with no per-entry
-    // kind just degrades cleanly to a single 'unknown' bucket.
-    const byKind = refused.reduce((acc, c) => {
-      const k = c.kind || 'unknown';
-      acc[k] = (acc[k] || 0) + 1;
-      return acc;
-    }, {});
-    const kindEntries = Object.entries(byKind).sort((a, b) => b[1] - a[1]);
-    const kindSummary = kindEntries.length ? ` Refusal causes: ${kindEntries.map(([k, n]) => `${k}=${n}`).join(', ')}.` : '';
-    results.push({
-      name: 'Data: undispatchable backlog cards',
-      status: 'warn',
-      message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}${kindSummary}`,
-      hint: 'node scripts/enrich-card-acceptance.js --source linear drafts missing criteria for LINEAR issues only; this row counts the frozen Notion report (BRO-4717 retires it) criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
-    });
-  }
-  // BRO-3619: the armed-but-vacuous bucket (a `test -f` on a file already on main passes before any work is done), for
-  // BOTH boards. Each source is read independently so one absent report never silences the other.
-  const sources = [['Notion', report], ['Linear', linearReport]]
-    .map(([label, r]) => [label, r && Array.isArray(r.vacuousChecks) ? r.vacuousChecks : []])
-    .filter(([, list]) => list.length > 0);
-  if (sources.length > 0) {
-    const all = sources.flatMap(([, list]) => list);
-    const neverFails = all.filter((c) => c.polarity === 'never-fails').length;
-    const neverPasses = all.filter((c) => c.polarity === 'never-passes').length;
-    const first = all[0];
+  // BRO-3619: the armed-but-vacuous bucket (a `test -f` on a file already on main passes before any work is done).
+  const vacuous = linearReport && Array.isArray(linearReport.vacuousChecks) ? linearReport.vacuousChecks : [];
+  if (vacuous.length > 0) {
+    const neverFails = vacuous.filter((c) => c.polarity === 'never-fails').length;
+    const neverPasses = vacuous.filter((c) => c.polarity === 'never-passes').length;
+    const first = vacuous[0];
     results.push({
       name: 'Data: armed-but-vacuous backlog cards',
       status: 'warn',
-      message: `${all.length} card(s) carry an acceptance check that cannot tell done from not done (${sources.map(([l, list]) => `${l}=${list.length}`).join(', ')}; ${neverFails} can never fail, ${neverPasses} can never pass). First: ${first.id || '?'} ${first.name || ''}`.trim(),
+      message: `${vacuous.length} Linear card(s) carry an acceptance check that cannot tell done from not done (${neverFails} can never fail, ${neverPasses} can never pass). First: ${first.id || '?'} ${first.name || ''}`.trim(),
       hint: 'node scripts/enrich-card-acceptance.js --source linear --rearm --dry-run shows the rewrite; drop --dry-run to apply (BRO-3395).',
     });
   }
@@ -5619,16 +5594,14 @@ async function main() {
       allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
-    // Each report is read in its own try so one absent file never silences the other bucket (the Notion board is frozen,
-    // so its report is the likelier one to vanish).
-    let cvReport = null;
+    // BRO-4717: only the Linear report is read; the Notion card-verifiability.json
+    // was regenerated from the frozen mirror and its row is retired.
     let cvLinear = null;
-    try { cvReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability.json'), 'utf8')); } catch { /* audit not yet run */ }
     try { cvLinear = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability-linear.json'), 'utf8')); } catch { /* audit not yet run */ }
-    if (cvReport || cvLinear) {
-      let drainMetric = null;
-      try { drainMetric = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/backlog-drain-metric.json'), 'utf8')); } catch { /* drain not yet run */ }
-      allResults.push(...cardVerifiabilityBacklogResults(cvReport, drainMetric, cvLinear));
+    let drainMetric = null;
+    try { drainMetric = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/backlog-drain-metric.json'), 'utf8')); } catch { /* drain not yet run */ }
+    if (cvLinear || drainMetric) {
+      allResults.push(...cardVerifiabilityBacklogResults(drainMetric, cvLinear));
     }
 
     try {

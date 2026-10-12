@@ -255,28 +255,9 @@ test('neverRunWorkflowResults: offenders warn with count and file list', () => {
   assert.match(results[0].message, /ingest-urls\.yml, btc-results-preview\.yml/);
 });
 
-// --- cardVerifiabilityBacklogResults (task #646: undispatchable backlog cards) ---
-
-test('cardVerifiabilityBacklogResults: empty or absent report yields nothing', () => {
-  assert.deepEqual(cardVerifiabilityBacklogResults(null), []);
-  assert.deepEqual(cardVerifiabilityBacklogResults({ total: 40, refused: [] }), []);
-});
-
-test('cardVerifiabilityBacklogResults: refused cards warn with count and first card', () => {
-  const results = cardVerifiabilityBacklogResults({
-    total: 42,
-    refusedCount: 2,
-    refused: [
-      { id: 'abc', name: 'Fix the widget', priority: 'P1 Next', reason: 'names no runnable command (prose only)' },
-      { id: 'def', name: 'Another card', priority: 'P2 Later', reason: 'no acceptance-criteria section or VERIFY line' },
-    ],
-  });
-  assert.equal(results.length, 1);
-  assert.equal(results[0].status, 'warn');
-  assert.match(results[0].message, /2 of 42 pending\/in-progress card/);
-  assert.match(results[0].message, /\[P1 Next\] Fix the widget/);
-  assert.match(results[0].hint, /enrich-card-acceptance\.js/);
-});
+// --- cardVerifiabilityBacklogResults (task #646): the Linear-report rows are
+// covered in tests/unit/health-check-card-verifiability-vacuous.test.mjs; the
+// Notion-report row was retired (BRO-4717).
 
 // --- progressWatchResults (task #597: liveness monitor for pipeline counters) ---
 
@@ -403,10 +384,10 @@ test('progressWatchResults: an oversized lastSummary is truncated in the alert m
 
 test('cardVerifiabilityBacklogResults surfaces human-gated drain skips as their own row', () => {
   const rows = cardVerifiabilityBacklogResults(
-    { total: 200, refused: [{ name: 'X', priority: 'P2' }] },
     { humanGatedSkips: [{ id: '61', codes: ['VISUAL_QA_GATE'] }, { id: '63', codes: ['VISUAL_QA_GATE'] }] },
+    null,
   );
-  assert.equal(rows.length, 2);
+  assert.equal(rows.length, 1);
   const gated = rows.find(r => r.name === 'Data: cards the drain cannot finish unattended');
   assert.ok(gated, `expected the gated row, got ${rows.map(r => r.name).join(' | ')}`);
   assert.match(gated.message, /#61, #63/);
@@ -414,21 +395,17 @@ test('cardVerifiabilityBacklogResults surfaces human-gated drain skips as their 
   assert.equal(gated.status, 'warn');
 });
 
-test('cardVerifiabilityBacklogResults stays back-compatible when the drain metric is absent', () => {
-  const rows = cardVerifiabilityBacklogResults({ total: 200, refused: [{ name: 'X', priority: 'P2' }] }, null);
-  assert.equal(rows.length, 1);
-  assert.equal(rows[0].name, 'Data: undispatchable backlog cards');
-});
-
-test('cardVerifiabilityBacklogResults emits the gated row even when the verifiability report is missing', () => {
-  const rows = cardVerifiabilityBacklogResults(null, { humanGatedSkips: [{ id: '61', codes: ['VISUAL_QA_GATE'] }] });
-  assert.equal(rows.length, 1);
-  assert.equal(rows[0].name, 'Data: cards the drain cannot finish unattended');
+test('cardVerifiabilityBacklogResults combines the gated row with Linear rows', () => {
+  const rows = cardVerifiabilityBacklogResults(
+    { humanGatedSkips: [{ id: '61', codes: ['VISUAL_QA_GATE'] }] },
+    { total: 3, refused: [{ id: 'BRO-1', name: 'X' }], vacuousChecks: [], generatedAt: new Date().toISOString() },
+  );
+  assert.deepEqual(rows.map(r => r.name).sort(), ['Data: cards the drain cannot finish unattended', 'Data: undispatchable Linear backlog cards']);
 });
 
 test('cardVerifiabilityBacklogResults is silent when both buckets are empty', () => {
   assert.equal(cardVerifiabilityBacklogResults(null, null).length, 0);
-  assert.equal(cardVerifiabilityBacklogResults({ total: 5, refused: [] }, { humanGatedSkips: [] }).length, 0);
+  assert.equal(cardVerifiabilityBacklogResults({ humanGatedSkips: [] }, null).length, 0);
 });
 
 // BRO-4288: oldest backlog entries must be named even when listed last.
