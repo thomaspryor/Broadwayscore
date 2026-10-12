@@ -72,6 +72,16 @@ describe('text-confirmed URLs', () => {
     assert.strictEqual(check.sourceTextNamesShow(['x'.repeat(2000) + ' Torera'], check.buildMentionRegex(SHOW)), false);
   });
 
+  it('one common word of a title in the lede does not confirm', () => {
+    const strict = (title, id) => check.buildMentionRegex({ id, title }, { titleWords: false });
+    assert.strictEqual(check.sourceTextNamesShow(['Punch, the new play at the Booth, is a great evening.'],
+      strict('The Great Gatsby', 'the-great-gatsby-2024')), false);
+    assert.strictEqual(check.sourceTextNamesShow(['It is just the kind of revival that time forgot.'],
+      strict('Just in Time', 'just-in-time-2025')), false);
+    assert.strictEqual(check.sourceTextNamesShow(['The Great Gatsby lands at the Broadway Theatre.'],
+      strict('The Great Gatsby', 'the-great-gatsby-2024')), true);
+  });
+
   it('no saved text (missing dir) leaves the old behavior: flag', () => {
     const r = run(SHOW, { reviewTextsRoot: path.join(root, 'nope'), reviewsDoc: ctx([HEADLINE]).reviewsDoc });
     assert.strictEqual(r.ok, false);

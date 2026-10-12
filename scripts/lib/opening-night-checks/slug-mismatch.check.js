@@ -64,7 +64,7 @@ function urlSearchSlug(url) {
  * CORRECTLY about this show: the title-derived slug, shows.json slug, alias slugs,
  * and the show id without trailing year suffix.
  */
-function buildAcceptSlugs(show) {
+function buildAcceptSlugs(show, { titleWords = true } = {}) {
   // Fold accents first: titleToSlug drops non-ASCII, so "Amélie" would become
   // "amlie" and never match an "/amelie-review" URL (BRO-4697).
   const title = foldDiacritics(show.title || '');
@@ -82,7 +82,7 @@ function buildAcceptSlugs(show) {
   // how critics and URLs usually name the show ("SIX the Musical" -> "six",
   // "Dog Man - The Musical" -> "dog-man"). Whole-title match only.
   const core = title
-    .replace(/\s+(?:[-–—:]\s+|:\s*).*$/, '')
+    .replace(/(?:\s+[-–—]\s+|\s*:\s*).*$/, '')
     .replace(/\s+(?:the|a new)\s+(?:musical|play)$/i, '')
     .trim();
   if (core && core !== title) {
@@ -114,7 +114,10 @@ function buildAcceptSlugs(show) {
 
   // Add meaningful single-word tokens from the title (length>=4, not stopwords).
   // This catches "schmigadoon" in longer URLs even if our slug is "schmigadoon".
+  // titleWords:false skips them for prose matching, where one common word of a
+  // title ("great", "time") is no evidence the text is about the show.
   const significantWords = [];
+  if (!titleWords) return Array.from(slugs).filter(Boolean);
   for (const token of title.toLowerCase().split(/[\s/]+/)) {
     const clean = token.replace(/[^a-z0-9]/g, '');
     if (clean.length >= 4 && !STOPWORDS.has(clean)) {
@@ -202,9 +205,9 @@ function isOpaqueUrlSlug(urlSlug) {
  * to any run of spaces/hyphens, matched on word boundaries. Shared with
  * fulltext-mentions-show.check.js so the two checks agree on what a mention is.
  */
-function buildMentionRegex(show) {
-  const patterns = buildAcceptSlugs(show)
-    .map(s => escapeRegex(s).replace(/\\-/g, '[\\s-]*'))
+function buildMentionRegex(show, opts) {
+  const patterns = buildAcceptSlugs(show, opts)
+    .map(s => escapeRegex(s).replace(/\\-/g, '[^A-Za-z0-9]*'))
     .filter(s => s.length >= 3);
   if (patterns.length === 0) return null;
   return new RegExp(`(^|[^A-Za-z0-9])(${patterns.join('|')})($|[^A-Za-z0-9])`, 'i');
@@ -263,7 +266,8 @@ function run(show, context) {
   const opaqueSkipped = [];
   let textConfirmed = 0;
   let sourceTextByUrl = null;
-  const mentionRe = buildMentionRegex(show);
+  // Whole title / alias only: a single title word in a lede proves nothing.
+  const mentionRe = buildMentionRegex(show, { titleWords: false });
   for (const review of reviews) {
     if (!review.url) continue;
     const urlSlug = urlSearchSlug(review.url);
