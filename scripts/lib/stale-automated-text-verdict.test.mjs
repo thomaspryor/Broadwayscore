@@ -343,3 +343,25 @@ test('BRO-5166: a refetch that brought back the rejected text keeps the verdict 
   assert.equal(isRejectedTextUnchanged(legacy), false);
   assert.equal(clearAutomatedTextRejectionOnRefetch(legacy, '2026-10-12T00:00:00Z'), true);
 });
+
+test('BRO-5166: unchanged-text skip is scoped to the ensemble (the only rejectedTextHash writer)', async () => {
+  const { rejectionTextFingerprint } = await import('./rescore-lifecycle.js').then((m) => m.default || m);
+  const { isRejectedTextUnchanged } = await import('./stale-automated-text-verdict.js').then((m) => m.default || m);
+  const pre = staleRejection({ rejectionReason: 'not_a_review', rejectedBy: 'preopening-interview-signal' });
+  pre.rejectedTextHash = rejectionTextFingerprint(pre); // leftover from an earlier ensemble verdict
+  assert.equal(isRejectedTextUnchanged(pre), false);
+  assert.equal(clearAutomatedTextRejectionOnRefetch(pre, '2026-10-12T00:00:00Z'), true);
+});
+
+test('BRO-5166: collector holds the refetch of a freshly ensemble-rejected page, then retries', async () => {
+  const { isRejectedRefetchOnHold, REJECTED_REFETCH_HOLD_HOURS } = await import('./stale-automated-text-verdict.js').then((m) => m.default || m);
+  const now = new Date('2026-10-12T20:00:00Z');
+  const fresh = staleRejection({ rejectionReason: 'not_a_review', rejectedAt: '2026-10-12T19:00:00Z' });
+  assert.equal(isRejectedRefetchOnHold(fresh, now), true);
+  const old = staleRejection({ rejectionReason: 'not_a_review', rejectedAt: new Date(now - (REJECTED_REFETCH_HOLD_HOURS + 1) * 3600000).toISOString() });
+  assert.equal(isRejectedRefetchOnHold(old, now), false, 'after the hold a real review at the same URL can land');
+  assert.equal(isRejectedRefetchOnHold(staleRejection({ rejectionReason: 'wrong_production', rejectedAt: '2026-10-12T19:00:00Z' }), now), false);
+  assert.equal(isRejectedRefetchOnHold(staleRejection({ rejectionReason: 'not_a_review', rejectedBy: 'manual-triage', rejectedAt: '2026-10-12T19:00:00Z' }), now), false);
+  assert.equal(isRejectedRefetchOnHold(staleRejection({ rejectionReason: null, rejectedAt: '2026-10-12T19:00:00Z' }), now), false);
+  assert.equal(isRejectedRefetchOnHold(staleRejection({ rejectionReason: 'not_a_review', rejectedAt: 'garbage' }), now), false);
+});
