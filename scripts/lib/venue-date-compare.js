@@ -97,8 +97,22 @@ function compareShow(show, parsed, playbillUrl) {
   // A national tour (BRO-4211) has no single house: shows.json says "North
   // American Tour" and Playbill names a stop, so the venue cannot be compared.
   // The year, dates and revival/type checks below still apply.
-  if (show.category !== 'tour'
-      && show.venue && parsed.titleParse?.venue && !venuesMatch(show.venue, parsed.titleParse.venue)) {
+  // venueCheck (BRO-3903) records what the venue comparison actually did, so
+  // "the venues agree" and "the venue was never compared" stop looking the
+  // same. When shows.json has a venue but the page yielded none (a <title>
+  // the parser could not read), the check used to be skipped silently and the
+  // row read as a clean 'match' — mystic-pizza-regional-2025 "matched" a
+  // page for a different tour leg that way. classifyComparison() turns that
+  // into the distinct, non-blocking 'venue-unverified' result.
+  let venueCheck;
+  if (show.category === 'tour' || !show.venue) {
+    venueCheck = 'not-applicable';
+  } else if (!parsed.titleParse?.venue) {
+    venueCheck = 'unverified';
+  } else if (venuesMatch(show.venue, parsed.titleParse.venue)) {
+    venueCheck = 'match';
+  } else {
+    venueCheck = 'different';
     record({
       field: 'venue',
       shows: show.venue,
@@ -180,7 +194,25 @@ function compareShow(show, parsed, playbillUrl) {
       playbill: parsed.tagLine.showType,
     });
   }
-  return { mismatches, explainedByPriorRun };
+  return { mismatches, explainedByPriorRun, venueCheck };
+}
+
+/**
+ * The audit `result` for a compareShow() outcome (BRO-3903).
+ *
+ *   'mismatch'         — at least one field disagrees with Playbill.
+ *   'venue-unverified' — nothing disagrees, BUT shows.json has a venue and the
+ *                        Playbill page yielded none, so the venue was never
+ *                        compared. Not a pass on the venue; deliberately NOT a
+ *                        mismatch either (CLAUDE.md rule 19: a new signal lands
+ *                        advisory) — surfaced as a ::warning::, never fails
+ *                        --fail-on-mismatch, never blocks on deferral.
+ *   'match'            — everything that could be compared agrees.
+ */
+function classifyComparison({ mismatches, venueCheck }) {
+  if (mismatches && mismatches.length) return 'mismatch';
+  if (venueCheck === 'unverified') return 'venue-unverified';
+  return 'match';
 }
 
 /**
@@ -237,7 +269,10 @@ const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra
  * the show, and it is why such a show can never be validated and must not hold
  * the gate red forever.
  */
-const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'no-playbill-url']);
+// 'venue-unverified' (BRO-3903) is definitive for the fields it DID compare
+// (year, dates, revival, type), so it never holds the gate red on deferral —
+// but resolveLastDefinitive() refuses to let it clear a recorded mismatch.
+const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'no-playbill-url', 'venue-unverified']);
 
 /**
  * What this run leaves as the last thing we actually KNOW about a show.
@@ -263,6 +298,9 @@ function resolveLastDefinitive(freshResult, priorRow) {
   const prior = priorRow ? priorRow.lastDefinitiveResult : undefined;
   if (!DEFINITIVE_RESULTS.has(freshResult)) return prior;
   if (freshResult === 'no-playbill-url' && prior === 'mismatch') return 'mismatch';
+  // Same rule for a page whose venue could not be read (BRO-3903): the venue
+  // half of a recorded mismatch was not re-examined, so it is not cleared.
+  if (freshResult === 'venue-unverified' && prior === 'mismatch') return 'mismatch';
   return freshResult;
 }
 
@@ -343,7 +381,9 @@ function provisionalPriorityTier(showId, previousResultById) {
   // Asserted exhaustively by 'INVARIANT: anything that blocks is checked first'.
   if (blocksOnDeferral(showId, previousResultById)) return 1;
   if (row.result === 'no-playbill-url') return 4;
-  if (row.result === 'match') return 3;
+  // A venue-unverified row was looked at and agreed on every field it could
+  // compare: re-sweep like a clean match (BRO-3903), not ahead of new shows.
+  if (row.result === 'match' || row.result === 'venue-unverified') return 3;
   if (TRANSIENT_PRIOR_RESULTS.has(row.result)) return 2;
   return 1;
 }
@@ -607,6 +647,7 @@ module.exports = {
   urlYear,
   findCorroboratingPriorRun,
   compareShow,
+  classifyComparison,
   orderProvisionalTargets,
   provisionalPriorityTier,
   deferredHighPriorityShows,
