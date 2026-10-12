@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-12T00:18:22.913Z",
+  "generated": "2026-10-12T00:28:43.618Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 31,
+  "count": 24,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -22,13 +22,6 @@
       "loserFile": "guardian--charles-isherwood.json",
       "targetFile": "guardian--adrian-horton.json",
       "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "bring-it-on-the-musical-2012",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--scott-brown.json",
-      "reason": "orphaned-duplicate-heal: vulture--scott-brown.json was flagged invalid after vulture--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -60,31 +53,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "hells-kitchen-2024",
-      "loserFile": "thewrap--steve-pond.json",
-      "targetFile": "thewrap--robert-hofler.json",
-      "reason": "orphaned-duplicate-heal: thewrap--robert-hofler.json was flagged invalid after thewrap--steve-pond.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "jagged-little-pill-2019",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--helen-shaw.json",
-      "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "kiss-me-kate-2019",
       "loserFile": "guardian--jesse-oxfeld.json",
       "targetFile": "guardian--david-jays.json",
       "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--sara-holdren.json",
-      "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -127,13 +99,6 @@
       "loserFile": "variety--frank-rizzo.json",
       "targetFile": "variety--maya-phillips.json",
       "reason": "orphaned-duplicate-heal: variety--maya-phillips.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "picnic-2013",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--scott-brown.json",
-      "reason": "orphaned-duplicate-heal: vulture--scott-brown.json was flagged invalid after vulture--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -193,13 +158,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "time-and-the-conways-2017",
-      "loserFile": "deadline--pete-hammond.json",
-      "targetFile": "deadline--jeremy-gerard.json",
-      "reason": "orphaned-duplicate-heal: deadline--jeremy-gerard.json was flagged invalid after deadline--pete-hammond.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
@@ -212,13 +170,6 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "mamma-mia-2001",
-      "loserFile": "jks-theatre-scene--jeff-kready.json",
-      "targetFile": "jks-theatre-scene--jeff-kyler.json",
-      "reason": "orphaned-duplicate-heal: jks-theatre-scene--jeff-kyler.json was flagged invalid after jks-theatre-scene--jeff-kready.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
