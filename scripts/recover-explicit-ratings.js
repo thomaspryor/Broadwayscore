@@ -41,6 +41,7 @@ const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { persistReviewSnapshot } = require('./lib/persist-review-snapshot');
+const { resolveTheaterLifeStars } = require('./lib/theater-life-stars');
 
 // showId → shows.json record so isScoreable sees what the rebuild sees: the
 // wrongShow stale-flag override (Notion 34e637c5-416f-8121), the pre-opening
@@ -541,12 +542,13 @@ async function fetchTheaterLifeRatings(reviews) {
 
       if (posts.length > 0) {
         const title = posts[0].title?.rendered || '';
-        // Check for star pattern in title
-        const match = title.match(/\s+([*★]{1,5})\s*(1\/2)?\s*$/);
-        if (match) {
-          const stars = match[1].length;
-          const halfStar = match[2] ? 0.5 : 0;
-          const total = stars + halfStar;
+        // Shared with scrape-wp-theater-blogs.js (BRO-305): the footer line
+        // naming this show beats the post title, and a title-only star keeps
+        // the corroboration-gated 'wp-api-title' label.
+        const bodyText = String(posts[0].content?.rendered || '').replace(/<[^>]+>/g, ' ');
+        const stars = resolveTheaterLifeStars({ title, text: bodyText, showTitles: [review.data.showTitle || ''] });
+        if (stars.rating) {
+          const total = parseFloat(stars.rating);
 
           recovered++;
           stats.phase2Recovered++;
@@ -558,9 +560,9 @@ async function fetchTheaterLifeRatings(reviews) {
             setExtractedScore(review.data, {
               value: `${total}/5 stars`,
               normalizedValue: Math.round((total / 5) * 100),
-              source: 'wp-api-title',
+              source: stars.source,
             });
-            review.data.scoreSource = 'wp-api-title';
+            review.data.scoreSource = stars.source;
             review.data.scoreExtractedFrom = 'api-metadata';
             review.data.scoreRecoveredAt = new Date().toISOString();
             persistReviewSnapshot(review);

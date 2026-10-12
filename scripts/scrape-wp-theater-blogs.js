@@ -26,12 +26,18 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { generateReviewFilename } = require('./lib/review-normalization');
 const { sanitizeCriticName } = require('./lib/byline-normalization');
+const { parseTitleStars, resolveTheaterLifeStars } = require('./lib/theater-life-stars');
 
 // ---------------------------------------------------------------------------
 // CLI args
 // ---------------------------------------------------------------------------
 
 const args = process.argv.slice(2);
+// --help used to start a real (writing) scrape (BRO-305).
+if (require.main === module && require('./lib/cli-help').hasHelpFlag(args)) {
+  console.log('Usage: node scripts/scrape-wp-theater-blogs.js [--site=<id>] [--dry-run] (see header comment)');
+  process.exit(0);
+}
 const DRY_RUN = args.includes('--dry-run');
 const SITE_FILTER = args.find(a => a.startsWith('--site='))?.split('=')[1] || '';
 
@@ -177,19 +183,8 @@ function htmlToPlainText(html) {
 // Star rating extraction (theaterlife.com)
 // ---------------------------------------------------------------------------
 
-function extractStarRatingFromTitle(title) {
-  // Match: "Show Name *** 1/2", "Show Name ****", "Show Name **"
-  // Anchored to end-of-string with \s+ prefix to avoid mid-title matches
-  const match = title.match(/\s+([*★]{1,5})\s*(1\/2)?\s*$/);
-  if (!match) return { cleanTitle: title, rating: null };
-
-  const stars = match[1].length;
-  const halfStar = match[2] ? 0.5 : 0;
-  const total = stars + halfStar;
-
-  const cleanTitle = title.replace(/\s+[*★]{1,5}\s*(1\/2)?\s*$/, '').trim();
-  return { cleanTitle, rating: `${total}/5 stars` };
-}
+// Title + footer parsing lives in scripts/lib/theater-life-stars.js, shared
+// with recover-explicit-ratings.js (BRO-305: the footer line beats the title).
 
 // ---------------------------------------------------------------------------
 // Author mapping (with pagination)
@@ -474,11 +469,8 @@ async function scrapeSite(site, shows) {
 
     // Extract star rating from title if applicable
     let titleForMatching = cleanTitle;
-    let starRating = null;
     if (site.extractStarRating) {
-      const extracted = extractStarRatingFromTitle(cleanTitle);
-      titleForMatching = extracted.cleanTitle;
-      starRating = extracted.rating;
+      titleForMatching = parseTitleStars(cleanTitle).cleanTitle;
     }
 
     // Match title to show — ALWAYS pass year hint (P0 from pre-mortem review)
@@ -521,6 +513,14 @@ async function scrapeSite(site, shows) {
       continue;
     }
 
+    let starRating = null;
+    let starSource = null;
+    if (site.extractStarRating) {
+      const stars = resolveTheaterLifeStars({ title: cleanTitle, text: plainText, showTitles: [show.title] });
+      starRating = stars.rating;
+      starSource = stars.source;
+    }
+
     const authorName = resolveAuthorName(site, authorId, authorMapping, plainText, post);
 
     // Build review data
@@ -535,6 +535,7 @@ async function scrapeSite(site, shows) {
 
     if (starRating) {
       reviewData.originalScore = starRating;
+      reviewData.scoreSource = starSource;
     }
 
     if (DRY_RUN) {
