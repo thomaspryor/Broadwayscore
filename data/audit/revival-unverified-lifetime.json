@@ -1,13 +1,14 @@
 {
-  "updatedAt": "2026-10-11T13:50:26.772Z",
-  "scanned": 2687,
-  "showsWithViolations": 65,
-  "totalViolations": 65,
-  "newSinceLastRun": 3,
+  "updatedAt": "2026-10-12T03:32:12.473Z",
+  "scanned": 2700,
+  "showsWithViolations": 68,
+  "totalViolations": 68,
+  "newSinceLastRun": 4,
   "newViolationKeys": [
-    "hadestown-west-end-2024",
-    "operation-mincemeat-tour-2026",
-    "all-male-as-you-like-it-regional-2026"
+    "the-notebook-tour-2025",
+    "beauty-and-the-beast-tour-2025",
+    "the-sound-of-music-tour-2025",
+    "mamma-mia-tour-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -65,16 +66,19 @@
     "lost-in-del-valle-return-off-broadway-2026",
     "and-juliet-tour-2024",
     "beetlejuice-tour-2026",
+    "the-notebook-tour-2025",
     "the-outsiders-tour-2025",
     "water-for-elephants-tour-2025",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
     "elektra-off-broadway-2026",
     "operation-mincemeat-tour-2026",
+    "beauty-and-the-beast-tour-2025",
+    "the-sound-of-music-tour-2025",
     "spamalot-tour-2025",
     "the-music-man-tour-2026",
+    "mamma-mia-tour-2026",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-    "shucked-tour-2027",
-    "all-male-as-you-like-it-regional-2026"
+    "shucked-tour-2027"
   ],
   "hits": [
     {
@@ -324,7 +328,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 58x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 60x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -423,7 +427,7 @@
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
       "openingDate": "2026-09-23",
-      "message": "cosi-fan-tutte-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cosi-fan-tutte-off-broadway-2026 review text mentions \"revival\" 11x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -573,10 +577,19 @@
       ]
     },
     {
+      "showId": "the-notebook-tour-2025",
+      "title": "The Notebook",
+      "openingDate": "2025-09-06",
+      "message": "the-notebook-tour-2025 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 39x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 40x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -618,10 +631,28 @@
       ]
     },
     {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "title": "Beauty and the Beast",
+      "openingDate": "2025-06-25",
+      "message": "beauty-and-the-beast-tour-2025 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-tour-2025",
+      "title": "The Sound of Music",
+      "openingDate": "2025-09-05",
+      "message": "the-sound-of-music-tour-2025 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 32x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -631,6 +662,15 @@
       "title": "The Music Man",
       "openingDate": "2026-01-12",
       "message": "the-music-man-tour-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "mamma-mia-tour-2026",
+      "title": "Mamma Mia!",
+      "openingDate": "2026-03-05",
+      "message": "mamma-mia-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -649,15 +689,6 @@
       "title": "Shucked",
       "openingDate": "2027-01-12",
       "message": "shucked-tour-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "all-male-as-you-like-it-regional-2026",
-      "title": "As You Like It",
-      "openingDate": "2026-10-07",
-      "message": "all-male-as-you-like-it-regional-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
