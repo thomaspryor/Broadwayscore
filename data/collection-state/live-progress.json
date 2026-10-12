@@ -1,19 +1,70 @@
 {
-  "updatedAt": "2026-10-12T21:04:11.207Z",
-  "processed": 7,
-  "failed": 3,
-  "successRate": "70.0%",
+  "updatedAt": "2026-10-12T21:50:57.071Z",
+  "processed": 17,
+  "failed": 12,
+  "successRate": "58.6%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 2,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-10-12T21:42:33.858Z",
+      "event": "bb-session",
+      "session": "0a750b11",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-12T21:42:46.726Z",
+      "event": "bb-session",
+      "session": "555ca400",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-12T21:42:47.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T21:43:04.288Z",
+      "event": "bb-session",
+      "session": "3cf68d19",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-12T21:43:04.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T21:46:13.217Z",
+      "event": "bb-session",
+      "session": "a8ee27c2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T21:46:13.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T21:46:30.632Z",
+      "event": "bb-session",
+      "session": "d889c2b6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T21:46:30.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

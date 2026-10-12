@@ -6,12 +6,31 @@
     "fences-off-west-end-2026/ground--unknown.json",
     "fences-off-west-end-2026/north-west-end--michelle-knight.json",
     "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
+    "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+    "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+    "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "slam-frank-off-broadway-2026/timeout--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "fish-off-broadway-2026/timeout--unknown.json",
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
-    "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json"
+    "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,13 +38,22 @@
       "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
       "fences-off-west-end-2026/a-youngish-perspective--unknown.json",
       "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
-      "fences-off-west-end-2026/ground--unknown.json"
+      "fences-off-west-end-2026/ground--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/cititour--unknown.json"
@@ -33,10 +61,64 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "fences-off-west-end-2026/north-west-end--michelle-knight.json"
+      "fences-off-west-end-2026/north-west-end--michelle-knight.json",
+      "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
     ]
   },
   "startTime": "2026-10-12T20:59:55.801Z",
-  "lastProcessed": "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
-  "log": []
+  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-12T21:42:33.858Z",
+      "event": "bb-session",
+      "session": "0a750b11",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-12T21:42:46.726Z",
+      "event": "bb-session",
+      "session": "555ca400",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-12T21:42:47.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T21:43:04.288Z",
+      "event": "bb-session",
+      "session": "3cf68d19",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-12T21:43:04.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T21:46:13.217Z",
+      "event": "bb-session",
+      "session": "a8ee27c2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T21:46:13.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T21:46:30.632Z",
+      "event": "bb-session",
+      "session": "d889c2b6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T21:46:30.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
