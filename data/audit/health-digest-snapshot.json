@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-12T03:14:25.317Z",
-  "subject": "BSC URGENT (day 57): 7 unresolved errors",
-  "bannerText": "7 errors, 41 warnings",
-  "consecutiveErrorDays": 57,
+  "generatedAt": "2026-10-12T05:05:44.545Z",
+  "subject": "BSC URGENT (day 58): 5 unresolved errors",
+  "bannerText": "5 errors, 42 warnings",
+  "consecutiveErrorDays": 58,
   "errors": [
     {
       "name": "Data: OB closing candidates awaiting review",
       "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 21d)"
     },
     {
-      "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 4.2h (no green run found in the runs checked — actual gap may be longer) (28 failing runs) — first red commit f2d28e234, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "name": "Alert Router: dispatch deadman",
+      "message": "Most recent auto-dispatch attempt failed (97/373 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
     },
     {
       "name": "Push-retry deadman",
@@ -18,15 +18,7 @@
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 13 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: PostHog Ad-hoc Query",
-      "message": "PostHog Ad-hoc Query failed 8 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Land",
-      "message": "Land failed 7 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 16 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -39,8 +31,12 @@
       "message": "1 open show(s) have audience data on a source that didn't link — Mezzanine: An Oak Tree (57 ratings ↔ An Oak Tree)"
     },
     {
+      "name": "Sync: baseline drift",
+      "message": "Reviews dropped: 28732 vs baseline 28921"
+    },
+    {
       "name": "Quality: star-vs-score mismatch",
-      "message": "18 NEW review(s) whose explicit rating contradicts the score (worst: therese-raquin-2015 HuffPost A→90 vs LLM 24, gap 66)"
+      "message": "20 NEW review(s) whose explicit rating contradicts the score (worst: therese-raquin-2015 HuffPost A→90 vs LLM 24, gap 66)"
     },
     {
       "name": "Quality: corpus drift",
@@ -56,31 +52,31 @@
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (13h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (2h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "76 NEW unhandled CV.wrongProduction review(s) since last run (1110 total across 537 show(s), 13h ago)"
+      "message": "71 NEW unhandled CV.wrongProduction review(s) since last run (1175 total across 577 show(s), 2h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "61 NEW unmatched review(s) since last run (858 total across 426 show(s), 13h ago)"
+      "message": "22 NEW unmatched review(s) since last run (839 total across 434 show(s), 2h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "25 NEW cross-show URL mismatch(es) since last run (1789 total across 807 show(s), 13h ago)"
+      "message": "15 NEW cross-show URL mismatch(es) since last run (1801 total across 819 show(s), 2h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "message": "3 NEW unverified revival flag(s) since last run (65 total across 65 show(s), 13h ago)"
+      "message": "4 NEW unverified revival flag(s) since last run (68 total across 68 show(s), 2h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
-      "message": "9 show(s) opened and qualified but never emailed subscribers (1 still alertable, 8 aged out past the paging window, 13h ago)"
+      "message": "10 show(s) opened and qualified but never emailed subscribers (2 still alertable, 8 aged out past the paging window, 2h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
-      "message": "1 show(s) still 'announced' after apparently opening (18 silenced by contamination, 13h ago)"
+      "message": "1 show(s) still 'announced' after apparently opening (18 silenced by contamination, 2h ago)"
     },
     {
       "name": "Coverage: SERP census recall",
@@ -115,20 +111,24 @@
       "message": "ai-estimated tier count up 24 (108 → 132)"
     },
     {
+      "name": "Commercial model: stored vs fresh run",
+      "message": "2 of 271 records differ from a fresh run (2 same-day, 0 drift, 0 method): pictures-from-home-2023 [same-day] run 2026-10-12 stored -54.1%, same inputs give -47.9%; the-minutes-2022 [same-day] run 2026-10-12 stored -264.4%, same inputs give -248.8%"
+    },
+    {
       "name": "SEO: health",
       "message": "Last SEO check 56d ago (>14d)"
     },
     {
       "name": "Cron failed: Update Mezzanine",
-      "message": "Last run inconclusive: failure (2h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (4h ago), no success in 192h"
     },
     {
       "name": "Main: green rate",
-      "message": "rate 73.4% (green 422 / red 153, 575 runs, 1 hung (cancelled >= 10 min, counted red)), 7d trend from 63.8%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 71.2% (green 405 / red 164, 569 runs, 1 hung (cancelled >= 10 min, counted red)), 7d trend from 63.8%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "23 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: BRO-235: The Stage + pages-on-stages stub extraction (56d); P1: ~20% of cmux dispatches die silently — chronic week-long (56d); Route 39 direct-ScrapingBee scripts through fetchPage() (com (55d) [38 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "23 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: BRO-235: The Stage + pages-on-stages stub extraction (56d); P1: ~20% of cmux dispatches die silently — chronic week-long (56d); Route 39 direct-ScrapingBee scripts through fetchPage() (com (56d) [38 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
@@ -163,10 +163,6 @@
       "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. Shows losing scored reviews: on-your-feet-west-end-2019: 4→1 reviews (scored files exist but being dropped); waitress-west-end-2019: 5→2 reviews (scored files exist but being dropped)"
     },
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "message": "Rebuild Reviews (Fast) failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
       "name": "Feedback: needs-manual-review backlog",
       "message": "6 open user-feedback issue(s) awaiting manual review (oldest 19d). Newest: #1019 [Review Submission] 100 Word Review review of Human Things"
     },
@@ -180,7 +176,7 @@
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
-      "message": "5 live schedule(s) still reference the frozen Notion mirror (13h ago)"
+      "message": "5 live schedule(s) still reference the frozen Notion mirror (2h ago)"
     },
     {
       "name": "Data: undispatchable backlog cards",
@@ -1303,13 +1299,6 @@
       ]
     },
     {
-      "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-      "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38197332180",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
       "title": "Landing blocked: unit-tests-node red on land/bro-3657-rage-click-instrumentation",
       "description": "land.yml did not land land/bro-3657-rage-click-instrumentation: the unit-tests-node gate went red at 97a9624dbf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38195221856",
       "severity": "error",
@@ -1334,19 +1323,90 @@
       ]
     },
     {
-      "title": "Main test.yml red — no confirmed-green run in 4.2h (still open — BRO-3030)",
-      "description": "Still firing after 68 notifications since it was filed. Tracked at BRO-3030.\n\nmain's Test Suite has had no confirmed-green run in AT LEAST 4.2h (no green run found in the runs checked — actual gap may be longer) (28 failing runs) — first red commit f2d28e234, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk.",
+      "title": "hay-fever-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "description": "- published 45 outside the critic's band 51-70 (star 2.5/5 band 51-70): hay-fever-west-end-2026/firstnightmagazine--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "description": "- rejected as not-a-review, verification says review: good-time-charlie-off-broadway-2026/nytimes--laura-collins-hughes.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "rent-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "description": "- rejected as not-a-review, verification says review: rent-west-end-2026/ground--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "an-oak-tree-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "description": "- published 68 outside the critic's band 71-90 (star 3.5/5 band 71-90): an-oak-tree-off-west-end-2026/the-spy-in-the-stalls--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Landing blocked: rebase red on land/codex-bro-4042",
+      "description": "land.yml did not land land/codex-bro-4042: the rebase gate went red at 0c5c4700ff. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-4042 @ 0c5c4700ff (origin/land/codex-bro-4042) → origin/main @ b6dc62e44e REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b6dc62e44e: Rebasing (1/1) error: could not apply 0c5c4700ffc... fix(BRO-4042): P1: ingest-review-from-url.js merge into an existing canonical review-texts file hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38195100620",
       "severity": "error",
       "url": null,
       "fields": [
         {
-          "name": "First red commit",
-          "value": "f2d28e234b905e9cdd396f10eb099a856ae9ac37"
+          "name": "branch",
+          "value": "land/codex-bro-4042"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "0c5c4700ffcf81bbc511242cefd7af3cc45dafe9"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38195100620"
         }
       ]
+    },
+    {
+      "title": "Landing blocked: unit-tests-tsx red on land/bro-4521-followup",
+      "description": "land.yml did not land land/bro-4521-followup: the unit-tests-tsx gate went red at 7ab7e27275. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38200527272",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-4521-followup"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-tsx"
+        },
+        {
+          "name": "tip",
+          "value": "7ab7e272753da733b4c4f6517a272410681525bf"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38200527272"
+        }
+      ]
+    },
+    {
+      "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+      "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38205161549",
+      "severity": "warning",
+      "url": null,
+      "fields": []
     }
   ],
   "autoFixedCount": 0,
-  "passedCount": 59,
-  "totalCount": 111
+  "passedCount": 57,
+  "totalCount": 108
 }
