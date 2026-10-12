@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { isShowScoreStatusEligible } = require('./showscore-status-eligibility.js');
-const { checkTourData, expectedCities } = require('./tour-page-audit.js');
+const { checkTourData, expectedCities, isScoredSlim } = require('./tour-page-audit.js');
 import { readFileSync } from 'node:fs';
 
 // BRO-4876: ShowScore "Closed" on a tour's borrowed URL closed the live
@@ -63,4 +63,10 @@ test('audit script feeds expectedCities scored ids, not every tours-list id', ()
   const src = readFileSync(new URL('../audit-tour-pages.js', import.meta.url), 'utf8');
   assert.ok(!/expectedCities\([^)]*listedIds: new Set\(listed\.keys\(\)\)/.test(src));
   assert.ok(/listedIds: scoredIds/.test(src));
+});
+
+test('isScoredSlim: cs present means scored; missing json or cs does not', () => {
+  assert.equal(isScoredSlim({ cs: 84.59 }), true);
+  assert.equal(isScoredSlim({ id: 'x', cov: {} }), false);
+  assert.equal(isScoredSlim(null), false);
 });

@@ -189,9 +189,16 @@ async function main() {
     // tours under "Reviews coming in" (BRO-4931). A scored tour's public JSON
     // carries `cs`; an unscored one's does not.
     const scoredIds = new Set();
+    const jsonCache = new Map();
     await pool([...listed.keys()], 6, async id => {
       const r = await fetchText(`${BASE}/data/shows/${id}.json`);
-      try { if (JSON.parse(r.text).cs != null) scoredIds.add(id); } catch { /* no public json: not scored */ }
+      jsonCache.set(id, r);
+      let d = null;
+      try { d = JSON.parse(r.text); } catch { /* handled below */ }
+      // A listed tour with no readable public JSON is a real anomaly, and
+      // treating it as unscored would drop its cities and raise false errors.
+      if (r.status !== 200 || !d) { findings.push({ severity: 'error', code: 'list-tour-json-unreadable', where: `/data/shows/${id}.json`, message: `HTTP ${r.status}, cannot tell if ${id} is scored` }); return; }
+      if (A.isScoredSlim(d)) scoredIds.add(id);
     });
     const expected = A.expectedCities({ tours, schedules, listedIds: scoredIds, today });
     const expectedYesterday = A.expectedCities({ tours, schedules, listedIds: scoredIds, today: todays[0] });
@@ -209,7 +216,7 @@ async function main() {
     // 4. Every tour show page.
     await pool(tours, 6, async t => {
       const url = `/show/${t.slug || t.id}`;
-      const [r, j] = await Promise.all([fetchText(`${BASE}${url}`), fetchText(`${BASE}/data/shows/${t.id}.json`)]);
+      const [r, j] = await Promise.all([fetchText(`${BASE}${url}`), jsonCache.get(t.id) || fetchText(`${BASE}/data/shows/${t.id}.json`)]);
       pagesChecked++;
       if (r.status !== 200) {
         // A tour added to shows.json after the live build has no page yet:

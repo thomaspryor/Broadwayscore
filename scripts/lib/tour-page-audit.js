@@ -527,6 +527,9 @@ function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays
  * `listedIds` must be the SCORED tours (isTourListed), not every tour on the
  * tours list: unscored running tours are on the list but never count here.
  */
+/** A tour's public slim JSON carries `cs` only once it has enough reviews for a score. */
+function isScoredSlim(json) { return !!json && json.cs != null; }
+
 function expectedCities({ tours, schedules, listedIds, today, minTours = 3, indexMinTours = 5, recentDays = 365 }) {
   const since = addDays(today, -recentDays);
   const open = tours.filter(t => t.status !== 'closed');
@@ -668,6 +671,6 @@ async function runAlerts({ findings, router, runContext = {}, previousCodes = nu
 module.exports = {
   citySlug, nowNext, normTitle, addDays, unwrapTicketUrl,
   parseShowPage, parseListPage, parseCityPage, rangeMatchesStop,
-  checkTourData, checkShowPage, checkCityPage, expectedCities,
+  checkTourData, checkShowPage, checkCityPage, expectedCities, isScoredSlim,
   validateEvent, eventsIn, runAlerts, CONDITION_PREFIX,
 };
