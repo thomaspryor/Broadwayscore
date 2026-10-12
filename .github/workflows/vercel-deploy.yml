@@ -199,6 +199,13 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
+      - name: Check runtime env names (advisory)
+        # BRO-5170: LINEAR_API_KEY was missing from Vercel prod, so the digest
+        # "Fix this" route failed on every tap. Names only, values never printed.
+        # Advisory first (CLAUDE.md rule 19); make it blocking once it has run clean.
+        continue-on-error: true
+        run: node scripts/lib/check-vercel-required-env.js
+
       - name: Guard — no demo-only flags in production
         run: |
           # Extract DEMO_FEATURES from source code (single source of truth)

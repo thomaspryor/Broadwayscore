@@ -4,7 +4,8 @@ import {
   TEAM_KEY,
   TERMINAL_STATE_TYPES,
   buildDispatchIssue,
-  conditionAnchor,
+  conditionSearchPrefix,
+  hasConditionAnchor,
   pickCanonicalIssue,
   pickTodoState,
 } from '@/lib/linear-dispatch-issue';
@@ -67,15 +68,17 @@ async function linearGraphql(apiKey: string, query: string, variables: Record<st
 // owner-alert-router.js writes the same anchor, so this also finds an issue the
 // automatic health-check path already filed; a tap then lands on that issue.
 async function queryConditionIssues(conditionKey: string, apiKey: string): Promise<LinearCandidate[]> {
+  // Prefix search + exact client-side check: Linear escapes the stored anchor,
+  // so a `contains` on the full anchor never matches (BRO-5170).
   const data = await linearGraphql(apiKey,
     `query($teamKey: String!, $anchor: String!, $terminal: [String!]) {
       issues(first: 50, filter: { team: { key: { eq: $teamKey } }, description: { contains: $anchor }, state: { type: { nin: $terminal } } }) {
-        nodes { id identifier url createdAt state { type } }
+        nodes { id identifier url createdAt description state { type } }
       }
     }`,
-    { teamKey: TEAM_KEY, anchor: conditionAnchor(conditionKey), terminal: TERMINAL_STATE_TYPES });
+    { teamKey: TEAM_KEY, anchor: conditionSearchPrefix(conditionKey), terminal: TERMINAL_STATE_TYPES });
   const nodes = ((data.issues as { nodes?: Array<Record<string, unknown>> } | undefined)?.nodes) || [];
-  return nodes.map(n => ({
+  return nodes.filter(n => hasConditionAnchor(String(n.description || ''), conditionKey)).map(n => ({
     id: String(n.id),
     identifier: String(n.identifier || ''),
     url: String(n.url || ''),

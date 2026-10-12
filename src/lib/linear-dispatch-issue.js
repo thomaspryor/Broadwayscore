@@ -54,6 +54,29 @@ function conditionAnchor(conditionKey) {
   return `[conditionKey:${conditionKey}]`;
 }
 
+// Linear stores descriptions as markdown and backslash-escapes on save, so the
+// anchor reads back as `\[conditionKey:<key>\]`, and its `contains` filter
+// never matches the full raw anchor (verified 2026-10-12, BRO-5170: the route's
+// dedup query returned nothing for an open issue holding the anchor, so a
+// repeat tap would file a twin). Search server-side for
+// the raw prefix up to the first character Linear might escape (the prefix
+// does match), then confirm the exact anchor client-side with
+// hasConditionAnchor. Same unescape as scripts/lib/linear-dispatch.js
+// findOpenIssueForTerm (BRO-4623).
+function conditionSearchPrefix(conditionKey) {
+  return `[conditionKey:${String(conditionKey).split(/[\\`*_{}[\]()#+!|~<>]/)[0]}`;
+}
+
+function unescapeMarkdown(text) {
+  return String(text || '').replace(/\\([\\`*_{}[\]()#+\-.!|~<>])/g, '$1');
+}
+
+function hasConditionAnchor(description, conditionKey) {
+  const anchor = conditionAnchor(conditionKey);
+  const d = String(description || '');
+  return d.includes(anchor) || unescapeMarkdown(d).includes(anchor);
+}
+
 /** Strip text that would forge a markdown heading or an acceptance VERIFY line. */
 function sanitizeText(s) {
   return String(s || '')
@@ -116,6 +139,8 @@ module.exports = {
   rowMatchKey,
   acceptanceCommand,
   conditionAnchor,
+  conditionSearchPrefix,
+  hasConditionAnchor,
   sanitizeText,
   buildDispatchIssue,
   pickCanonicalIssue,

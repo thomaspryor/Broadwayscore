@@ -75,3 +75,29 @@ test('pickTodoState prefers Todo among unstarted states', () => {
   assert.equal(lib.pickTodoState(states.slice(0, 2)).id, '2');
   assert.equal(lib.pickTodoState([states[0]]), null);
 });
+
+// BRO-5170: Linear stores the anchor escaped (`\[conditionKey:k\]`), and its
+// `contains` filter never matched the full raw anchor, so the route's dedup
+// could not see an open issue. The route now searches by a raw prefix and
+// confirms the exact anchor client-side.
+test('hasConditionAnchor matches the escaped form Linear stores', () => {
+  const stored = 'body\n\n\\[conditionKey:test-yml:red:E2E Tests:920ecd18\\]';
+  assert.equal(lib.hasConditionAnchor(stored, 'test-yml:red:E2E Tests:920ecd18'), true);
+  assert.equal(lib.hasConditionAnchor('[conditionKey:k]', 'k'), true);
+});
+
+test('hasConditionAnchor rejects a key that is only a prefix of the stored one', () => {
+  assert.equal(lib.hasConditionAnchor('\\[conditionKey:abc-d\\]', 'abc'), false);
+  assert.equal(lib.hasConditionAnchor('', 'abc'), false);
+});
+
+test('conditionSearchPrefix stops before characters Linear may escape', () => {
+  assert.equal(lib.conditionSearchPrefix('bro-5170-live-probe'), '[conditionKey:bro-5170-live-probe');
+  assert.equal(lib.conditionSearchPrefix('health-check:row_name'), '[conditionKey:health-check:row');
+  assert.equal(lib.conditionSearchPrefix('cron-health-chronic:Weekly A/B Monitors'), '[conditionKey:cron-health-chronic:Weekly A/B Monitors');
+  // the built issue body still carries the exact anchor the check looks for
+  const { description } = lib.buildDispatchIssue({ conditionKey: 'x_y', title: 't', description: '' });
+  assert.ok(description.startsWith('## Problem'));
+  assert.equal(lib.hasConditionAnchor(description, 'x_y'), true);
+  assert.ok(description.includes(lib.conditionSearchPrefix('x_y')));
+});

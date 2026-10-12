@@ -19,6 +19,7 @@ import assert from 'node:assert/strict';
 const require = createRequire(import.meta.url);
 const { buildDispatchUrl } = require('../../scripts/lib/dispatch-link.js');
 const { buildActionUrl } = require('../../scripts/lib/autonomous-links.js');
+const { conditionSearchPrefix } = require('../../src/lib/linear-dispatch-issue.js');
 
 const SECRET = 'dispatch-test-secret';
 const realFetch = globalThis.fetch;
@@ -54,8 +55,11 @@ function stubLinear({ openBefore = [], openAfter = null } = {}) {
     }
     if (/issues\(/.test(query)) {
       calls.queries++;
-      assert.equal(variables.anchor, `[conditionKey:${KEY}]`);
-      const nodes = created ? (openAfter || [created]) : openBefore;
+      // Linear's contains never matches the full anchor it stores escaped
+      // (BRO-5170), so the route searches by the raw prefix.
+      assert.equal(variables.anchor, conditionSearchPrefix(KEY));
+      const nodes = (created ? (openAfter || [created]) : openBefore)
+        .map(n => ({ description: `body\n\n\\[conditionKey:${KEY}\\]`, ...n }));
       return ok({ issues: { nodes } });
     }
     throw new Error(`unexpected GraphQL: ${query.slice(0, 80)}`);
@@ -171,4 +175,16 @@ test('retired approve/reject/revert links answer 410 and touch nothing', withEnv
       assert.match(res.body, /Retired/);
     }
     assert.equal(calls.creates.length + calls.queries + calls.other.length, 0);
+  }));
+
+// BRO-5170: the prefix search also returns issues whose key merely starts with
+// ours; the exact client-side anchor check must ignore them.
+test('an open issue for a longer key that shares the prefix does not block a tap', withEnv(
+  { APPROVAL_HMAC_SECRET: SECRET, LINEAR_API_KEY: 'lin_test', DISPATCH_LINKS_DISABLED: undefined },
+  async () => {
+    const decoy = { id: 'decoy', identifier: 'BRO-77', url: 'u', createdAt: '2026-10-01T00:00:00Z', state: { type: 'started' },
+      description: `\\[conditionKey:${KEY} and more\\]` };
+    const calls = stubLinear({ openBefore: [decoy] });
+    const { body } = await call(signedUrl());
+    assert.equal(calls.creates.length, 1, body);
   }));
