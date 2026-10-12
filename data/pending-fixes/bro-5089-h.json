@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5089-h",
   "planId": "ac8cb0dd-35ac-4cc1-b5a9-62c194a1c1b2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T00:34:28.561Z",
   "submitter": {
     "name": null,
@@ -366,5 +366,128 @@
         "description": "the-pirates-of-penzance-1976: poster and thumbnail cleared, other-production: Top billing shows Kevin Kline, Linda Ronstadt, Angela Lansbury, George Rose, Rex Smith — film/other-cast billing, not the 1976 Gershwin (Michael Heyland) production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T05:14:32.090Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mr-happiness-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mr-happiness-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lamppost-reunion-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-glass-menagerie-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-glass-menagerie-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for habeas-corpus-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for habeas-corpus-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-musical-jubilee-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-musical-jubilee-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for murder-among-friends-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for murder-among-friends-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-poison-tree-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-poison-tree-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-lady-from-the-sea-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-lady-from-the-sea-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for whos-afraid-of-virginia-woolf-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for whos-afraid-of-virginia-woolf-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for fame-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for fame-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sizwe-banzi-is-dead-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for sizwe-banzi-is-dead-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-hashish-club-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-hashish-club-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-pirates-of-penzance-1976"
+    }
+  ]
 }
