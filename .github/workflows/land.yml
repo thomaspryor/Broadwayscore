@@ -180,17 +180,48 @@ jobs:
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
+      - name: Decide whether the gauntlet can be skipped (prose-only branch)
+        id: optimize
+        # BRO-4299: a branch whose every changed path is unreferenced Markdown
+        # under memory/, cloud-memory/, docs/ or the root skips BOTH gauntlet
+        # runs (~16 min each) and every setup step below: its code tree is the
+        # base's and no check reads what changed, so the new-failures-vs-base
+        # delta is empty by construction. Rules + proof: the header of
+        # scripts/lib/land-gauntlet-optimizer.js; scenarios pinned by
+        # scripts/land-gauntlet-optimizer.test.mjs. FAIL-CLOSED: the BASE
+        # tree's copy runs (a branch cannot edit it into skipping itself; a
+        # base without it = no skip), skip=true is written only as its last
+        # act, and continue-on-error keeps any crash on the full path. Kept
+        # out of the verdict list: it is an optimisation, never a gate.
+        continue-on-error: true
+        env:
+          BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
+        run: |
+          OPT="$RUNNER_TEMP/land-gauntlet-optimizer.js"
+          if ! git show "$BASE:scripts/lib/land-gauntlet-optimizer.js" > "$OPT" 2>/dev/null; then
+            echo "optimizer not on origin/main @ ${BASE:0:10} yet — running the full gauntlet"
+            exit 0
+          fi
+          node "$OPT" --base "$BASE" --head "$REBASED" \
+            $([ "$LAND_STRICT_GATES" = "1" ] && echo --strict) \
+            --github-output "$GITHUB_OUTPUT" --summary-file "$GITHUB_STEP_SUMMARY"
+
       - name: Setup Node.js
+        if: steps.optimize.outputs.skip != 'true'
         uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
+        if: steps.optimize.outputs.skip != 'true'
         id: deps
         run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Checkout core data
+        if: steps.optimize.outputs.skip != 'true'
         id: coredata
         # src/lib/data-*.ts import data/*.json via resolveJsonModule; tsc and
         # the unit batches need the private core data exactly as test.yml's
@@ -200,12 +231,14 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Generate gitignored manifests
+        if: steps.optimize.outputs.skip != 'true'
         id: manifests
         run: |
           node scripts/build-actor-slugs-manifest.js
           node scripts/build-cast-manifest.js
 
       - name: Install actionlint
+        if: steps.optimize.outputs.skip != 'true'
         id: actionlint
         run: |
           ACTIONLINT_VERSION=1.7.7
@@ -213,6 +246,7 @@ jobs:
           sudo mv actionlint /usr/local/bin/
 
       - name: Stage the branch's gauntlet harness
+        if: steps.optimize.outputs.skip != 'true'
         id: harness
         # Both runs use the BRANCH's copy of the harness: the base tree may
         # predate scripts/lib/land-gauntlet.sh entirely (the first landing of
@@ -231,6 +265,7 @@ jobs:
       # entirely and land-gate-delta.js judges the branch strictly (any red
       # gate refuses) — the pre-delta behaviour, no code change needed.
       - name: Base cache key
+        if: steps.optimize.outputs.skip != 'true'
         id: basekey
         env:
           BASE: ${{ steps.rebase.outputs.base }}
@@ -243,7 +278,7 @@ jobs:
 
       - name: Restore the base gauntlet result (actions/cache)
         id: base_cache
-        if: vars.LAND_STRICT_GATES != '1'
+        if: steps.optimize.outputs.skip != 'true' && vars.LAND_STRICT_GATES != '1'
         uses: actions/cache/restore@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
@@ -251,7 +286,7 @@ jobs:
 
       - name: Restore the base gauntlet result (artifact saved by another land/** run)
         id: base_artifact
-        if: vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true'
+        if: steps.optimize.outputs.skip != 'true' && vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NAME: ${{ steps.basekey.outputs.key }}
@@ -280,7 +315,7 @@ jobs:
 
       - name: Run the base gauntlet (origin/main @ base) — nothing cached
         id: base_run
-        if: vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
+        if: steps.optimize.outputs.skip != 'true' && vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE: ${{ steps.rebase.outputs.base }}
@@ -298,14 +333,14 @@ jobs:
             --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
 
       - name: Save the base gauntlet result (actions/cache)
-        if: steps.base_run.outcome == 'success'
+        if: steps.optimize.outputs.skip != 'true' && steps.base_run.outcome == 'success'
         uses: actions/cache/save@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
           key: ${{ steps.basekey.outputs.key }}
 
       - name: Save the base gauntlet result (artifact, visible to every land/** run)
-        if: steps.base_run.outcome == 'success'
+        if: steps.optimize.outputs.skip != 'true' && steps.base_run.outcome == 'success'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
@@ -315,6 +350,7 @@ jobs:
 
       # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
       - name: Run the gauntlet on the rebased branch
+        if: steps.optimize.outputs.skip != 'true'
         id: branch_run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -328,6 +364,7 @@ jobs:
           bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/branch"
 
       - name: Gate verdict — new failures vs base
+        if: steps.optimize.outputs.skip != 'true'
         id: delta
         # scripts/lib/land-gate-delta.js: per gate, PASS unless a failure is
         # present on the branch and absent on the base; both sets (new,
@@ -354,7 +391,7 @@ jobs:
 
       - name: Confirm a refusal against a FRESH base (the cached one may be stale)
         id: confirm
-        if: steps.delta.outcome == 'failure' && (steps.base_cache.outputs.cache-hit == 'true' || steps.base_artifact.outputs.hit == 'true')
+        if: steps.optimize.outputs.skip != 'true' && (steps.delta.outcome == 'failure' && (steps.base_cache.outputs.cache-hit == 'true' || steps.base_artifact.outputs.hit == 'true'))
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE: ${{ steps.rebase.outputs.base }}
@@ -385,7 +422,7 @@ jobs:
             --base-source "fresh re-run to confirm a refusal made on a cached base"
 
       - name: Publish the fresh base result (artifact)
-        if: always() && steps.confirm.outputs.fresh == 'true'
+        if: steps.optimize.outputs.skip != 'true' && always() && steps.confirm.outputs.fresh == 'true'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
@@ -429,6 +466,7 @@ jobs:
               *)       GATE="${{ steps.delta.outputs.gate }}"; GATE="${GATE:-delta}" ;;
             esac
           fi
+          echo "  optimize (not a gate): ${{ steps.optimize.outcome }}, skip=${{ steps.optimize.outputs.skip || 'unset' }}"
           echo "gate=$GATE" >> "$GITHUB_OUTPUT"
           {
             echo "### land.yml checks — \`$BRANCH\`"
@@ -436,6 +474,7 @@ jobs:
             echo "- tip: \`${{ steps.rebase.outputs.tip }}\`"
             echo "- rebased onto origin/main: \`${{ steps.rebase.outputs.base }}\` (rebased tip \`${{ steps.rebase.outputs.rebased }}\`)"
             echo "- verdict: ${GATE:+RED (first failing gate: $GATE)}${GATE:-GREEN}"
+            if [ "${{ steps.optimize.outputs.skip }}" = "true" ]; then echo "- gauntlet: SKIPPED, prose-only branch (land-gauntlet-optimizer.js, BRO-4299)"; fi
           } >> "$GITHUB_STEP_SUMMARY"
           if [ -n "$GATE" ]; then
             echo "::error::checks RED — first failing gate: $GATE"
@@ -460,7 +499,7 @@ jobs:
       # is an optimisation and never fails a landing.
       - name: Next-base key (the rebased tip's tree)
         id: tipkey
-        if: success() && vars.LAND_STRICT_GATES != '1'
+        if: steps.optimize.outputs.skip != 'true' && success() && vars.LAND_STRICT_GATES != '1'
         continue-on-error: true
         env:
           REBASED: ${{ steps.rebase.outputs.rebased }}
@@ -476,7 +515,7 @@ jobs:
           echo "rebased tip ${REBASED:0:10} → next landing's base key $KEY"
 
       - name: Publish the branch result as the next landing's base (artifact)
-        if: success() && steps.tipkey.outputs.key != ''
+        if: steps.optimize.outputs.skip != 'true' && success() && steps.tipkey.outputs.key != ''
         continue-on-error: true
         uses: actions/upload-artifact@v5
         with:
