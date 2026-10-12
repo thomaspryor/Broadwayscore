@@ -426,7 +426,7 @@ const landing = (over = {}) => ({
 
 test('landedViaLandRef needs a successful Land run for the card after it was filed, and no ref left', () => {
   const l = (over, identifier = 'BRO-1') => landedViaLandRef({ identifier, cardCreatedAt: created, landing: over === null ? null : landing(over) });
-  assert.deepEqual(l({}), { landed: true, branch: 'land/bro-1-the-fix', runId: 901 });
+  assert.deepEqual(l({}), { landed: true, branch: 'land/bro-1-the-fix', runId: 901, createdAt: iso(NOW - 5 * DAY) });
   assert.equal(l(null).reason, 'no-land-evidence');
   assert.equal(l({ refs: [{ branch: 'land/bro-1-retry', sha: 'newtip' }] }).reason, 'land-ref-still-open');
   assert.equal(l({ refs: ['land/bro-1-retry'] }).reason, 'land-ref-still-open'); // no sha known: wait
@@ -448,7 +448,7 @@ test('landedViaLandRef needs a successful Land run for the card after it was fil
 });
 
 test('decideClosure land route: landed + ref gone + test touched closes without a commit naming the card', () => {
-  const anon = [{ sha: 'ddd444', message: 'tighten the guard\n\nno card named here' }];
+  const anon = [{ sha: 'ddd444', message: 'tighten the guard\n\nno card named here', date: iso(NOW - 7 * DAY) }];
   const d = (over = {}) => decideClosure({ candidate: { ...candidate, sharesTestFile: false, ...over.cand }, issue: issue({ createdAt: created }), commits: over.commits || anon, landing: 'landing' in over ? over.landing : landing(), nowMs: NOW });
   assert.deepEqual(d(), { close: true, route: 'land-ref', sha: 'ddd444', branch: 'land/bro-1-the-fix', runId: 901 });
   // The commit route still wins when it applies.
@@ -460,6 +460,10 @@ test('decideClosure land route: landed + ref gone + test touched closes without 
   assert.equal(d({ commits: [{ sha: 'r', message: 'Revert "BRO-1: fix"' }, ...anon] }).reason, 'landed-but-reverted');
   assert.equal(d({ commits: [{ sha: 'r', message: 'Revert "unrelated"' }] }).reason, 'landed-but-test-untouched-since-card');
   // The safety checks before the landing still apply.
+  // The touching commit must predate the landing run, and a revert/undo branch is no landing.
+  assert.equal(d({ commits: [{ ...anon[0], date: iso(NOW - 1 * DAY) }] }).reason, 'landed-but-test-untouched-since-card');
+  assert.equal(d({ commits: [{ sha: 'u', message: 'x' }] }).reason, 'landed-but-test-untouched-since-card');
+  assert.equal(d({ landing: landing({ runs: [{ id: 9, branch: 'land/revert-bro-1-x', headSha: 'tip901', createdAt: iso(NOW - 5 * DAY) }] }) }).close, false);
   assert.equal(decideClosure({ candidate, issue: issue({ createdAt: created, updatedAt: iso(NOW - 3600e3) }), commits: anon, landing: landing(), nowMs: NOW }).reason, 'recent-activity');
 });
 
@@ -506,7 +510,7 @@ test('CLI closes a multi-file card via the land route, reads land evidence once,
   const commitsTouching = async (p) => {
     touched.push(p);
     // b501 only: no subject names the card. c502: subject names it. d503: nothing at all.
-    if (p.includes('b501')) return [{ sha: 'eee555eee555', message: 'harden the parser' }];
+    if (p.includes('b501')) return [{ sha: 'eee555eee555', message: 'harden the parser', date: new Date(now - 7 * DAY).toISOString() }];
     if (p.includes('c502')) return [{ sha: 'fff666fff666', message: 'BRO-502: the fix' }];
     return [];
   };
@@ -615,7 +619,7 @@ test('CLI lists Land runs further back for a card older than the first listing',
   const log = console.log;
   console.log = () => {};
   try {
-    assert.equal(await main([], { linear, commitsTouching: async () => [{ sha: 'b1b1', message: 'anon' }], fetchLanding, auditPath, outPath }), 0);
+    assert.equal(await main([], { linear, commitsTouching: async () => [{ sha: 'b1b1', message: 'anon', date: new Date(now - 35 * DAY).toISOString() }], fetchLanding, auditPath, outPath }), 0);
   } finally {
     console.log = log;
   }

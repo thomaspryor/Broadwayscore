@@ -114,7 +114,7 @@ function apiCommitsTouching() {
       const url = `https://api.github.com/repos/${GH_REPO}/commits?sha=main&path=${encodeURIComponent(testPath)}&since=${encodeURIComponent(sinceIso)}&per_page=100&page=${page}`;
       const batch = await fetchGitHubJSON(url);
       if (!Array.isArray(batch)) break;
-      for (const c of batch) commits.push({ sha: c.sha, message: (c.commit && c.commit.message) || '' });
+      for (const c of batch) commits.push({ sha: c.sha, message: (c.commit && c.commit.message) || '', date: c.commit && c.commit.committer && c.commit.committer.date });
       if (batch.length < 100) break;
     }
     return commits;

@@ -95,7 +95,7 @@ function landedViaLandRef({ identifier, cardCreatedAt, landing }) {
   const createdMs = Date.parse(cardCreatedAt);
   if (n == null || !Number.isFinite(createdMs)) return { landed: false, reason: 'no-land-evidence' };
   const { landRefCardNumber } = require('./cloud-worker-pick.js');
-  const mine = landing.runs.filter((r) => r && landRefCardNumber(r.branch) === n);
+  const mine = landing.runs.filter((r) => r && landRefCardNumber(r.branch) === n && !REVERT_BRANCH_RE.test(r.branch));
   // A ref still naming the card is unlanded work unless its tip is exactly a
   // tip Land already landed (cloud sessions cannot delete refs, so a landed
   // ref can linger). Anything else, including a ref with no known sha, waits.
@@ -111,8 +111,11 @@ function landedViaLandRef({ identifier, cardCreatedAt, landing }) {
     if (Number.isFinite(landing.coveredSinceMs) && landing.coveredSinceMs > createdMs) return { landed: false, reason: 'land-history-not-covered' };
     return { landed: false, reason: NO_OWN_COMMIT };
   }
-  return { landed: true, branch: run.branch, runId: run.id };
+  return { landed: true, branch: run.branch, runId: run.id, createdAt: run.createdAt };
 }
+
+// A land branch that undoes work also names the card; it is not the card's landing.
+const REVERT_BRANCH_RE = /(?:revert|undo|rollback)/i;
 
 const isRevert = (c) => /^Revert\b/.test(String((c && c.message) || '').trim());
 
@@ -226,7 +229,10 @@ function decideClosure({ candidate, issue, commits, landing, nowMs }) {
   if (!land.landed) return { close: false, reason: land.reason === 'no-land-evidence' ? NO_OWN_COMMIT : land.reason };
   if (candidate.sharesTestFile) return { close: false, reason: 'landed-but-test-shared-with-another-card' };
   if (all.some((c) => isRevert(c) && mentionsCard(c.message, candidate.id))) return { close: false, reason: 'landed-but-reverted' };
-  const touched = all.find((c) => !isRevert(c));
+  // The touching commit must be dated inside the card's life and no later than
+  // the landing run; an undated commit cannot prove that, so it does not count.
+  const runMs = Date.parse(land.createdAt);
+  const touched = all.find((c) => !isRevert(c) && Date.parse(c.date) >= Date.parse(issue.createdAt) && Date.parse(c.date) <= runMs);
   if (!touched) return { close: false, reason: 'landed-but-test-untouched-since-card' };
   return { close: true, route: 'land-ref', sha: touched.sha, branch: land.branch, runId: land.runId };
 }
