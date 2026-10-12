@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3564",
   "planId": "c03ef518-4ec2-4850-946d-20c9c8b86495",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T12:00:00.000Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,13 @@
         "description": "Dry run: 1 page rejected (my-neighbour-totoro-west-end-2025), 10 files to clear"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T13:55:07.864Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran clear-wrong-show-roundup-excerpts.js successfully"
+    }
+  ]
 }
