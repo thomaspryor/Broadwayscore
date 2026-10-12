@@ -135,6 +135,22 @@ export function pickConsensusRejection(rejections: ModelOutcome[]): ModelOutcome
 // ENSEMBLE SCORER
 // ========================================
 
+let _showsById: Map<string, any> | null = null;
+/** shows.json record for a show id (status, openingDate), or null when unavailable. */
+function showRecordFor(showId: string): any {
+  if (!_showsById) {
+    _showsById = new Map();
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+      const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+      for (const s of shows) _showsById.set(s.id, s);
+    } catch { /* shows.json missing: treat every show as unknown */ }
+  }
+  return _showsById.get(showId) || null;
+}
+
 export class EnsembleReviewScorer {
   private claudeScorer: ReviewScorer;
   private openaiScorer: OpenAIReviewScorer;
@@ -865,39 +881,18 @@ export class EnsembleReviewScorer {
       }
     }
 
-    // Extract publishDate from LLM if review doesn't already have one.
-    // Take the first non-null date from any model (Claude > OpenAI > Gemini > Kimi).
-    //
-    // THIS DATE IS A GUESS, NOT AN EXTRACTION — do not treat it as authoritative.
-    // It is a by-product of scoring: no URL segment, no dateline, no JSON-LD
-    // behind it, and nothing downstream verifies it. The `!scoredFile.publishDate`
-    // guard means a real date is never overwritten, but an invented one becomes
-    // durable and is then indistinguishable on disk from a real one.
-    //
-    // A hallucinated year previously reached the ingest date-plausibility guard
-    // and was read as proof of a different production — a phantom
-    // wrongProduction that held main red. scripts/lib/date-plausibility.js now
-    // ignores dateSource === 'llm-scoring' for exactly that reason; any NEW date
-    // guard must do the same rather than trusting this field.
-    //
-    // Nulling this fill outright was considered and deliberately NOT done: with
-    // no date at all these reviews fall to the dateless-revival guard
-    // (scripts/lib/date-guard.js evaluateDatelessRevivalGuard, called from
-    // rebuild-all-reviews.js), which WRITES wrongProduction: true for
-    // multi-production titles that have not yet opened. That is a score-moving
-    // behaviour change on the opening-night path and needs its own validation,
-    // so the guard-side fix was taken first. If this fill is ever removed, size
-    // that dateless-revival exposure before landing it.
-    if (!scoredFile.publishDate) {
-      const llmDate = ensembleResult.modelResults.claude?.publishDate
-        || ensembleResult.modelResults.openai?.publishDate
-        || ensembleResult.modelResults.gemini?.publishDate
-        || ensembleResult.modelResults.kimi?.publishDate
-        || null;
-      if (llmDate) {
-        scoredFile.publishDate = llmDate;
-        (scoredFile as any).dateSource = 'llm-scoring';
-      }
+    // The models' publishDate is a GUESS, never an extraction: no URL segment,
+    // no dateline, no JSON-LD behind it. On the historical backfill it was
+    // wrong and then sat on disk looking real (BRO-5081: Wolf Hall THR stored
+    // 2015-03-20, the first preview, for a review published 2015-04-09). It is
+    // always kept as llmPublishDateGuess; it fills publishDate (dateSource
+    // 'llm-scoring', provisional: collect-review-texts.js replaces it with the
+    // page date) only near opening, where a dateless review on a
+    // multi-production title would be held by the dateless-revival guard
+    // (scripts/lib/date-guard.js). Decision: scripts/lib/publish-date-provenance.js.
+    {
+      const { llmScoringDateFields } = require('../lib/publish-date-provenance');
+      Object.assign(scoredFile as any, llmScoringDateFields(scoredFile, ensembleResult.modelResults, showRecordFor(reviewFile.showId)));
     }
 
     return {

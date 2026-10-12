@@ -52,6 +52,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement } = require('./lib/review-filter');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -156,6 +157,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
+const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -397,7 +399,9 @@ const CONFIG = {
   excludeDomains: (process.env.EXCLUDE_DOMAINS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Exclude these domains
   incompleteReasonFilter: (process.env.INCOMPLETE_REASON_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by incompleteReason
   marketFilter: process.env.MARKET_FILTER || '', // Filter by market: west-end, off-broadway (matches show ID suffix)
-  reviewFilter: new Set((process.env.REVIEW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)), // Filter to specific review filenames
+  // Specific review files: bare filename, showId/file, or force:<entry> to
+  // refetch over existing text (scripts/lib/review-filter.js, BRO-5090).
+  reviewFilter: require('./lib/review-filter').parseReviewFilter(process.env.REVIEW_FILTER),
   archiveFirst: process.env.ARCHIVE_FIRST !== 'false', // Archive.org first for older reviews (opt-OUT via ARCHIVE_FIRST=false)
   // Opt-in wall-clock budget (ms). Unset by default so long-running callers
   // (bulk-collect-review-texts.yml: timeout-minutes 300+, collect-review-texts.yml: 120)
@@ -4703,6 +4707,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       : null
   );
 
+  // A forced refetch replaces text that came from the wrong page, so the score
+  // read from that text is wrong too (the excerpt trigger above only fires
+  // when there was no text before). BRO-5090.
+  if (shouldRescoreForcedReplacement(review, fullTextBeforeUpdate, cleanedText)) {
+    data.needsRescore = true;
+    data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
+    console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
+  }
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;
   data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
@@ -4719,12 +4731,19 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // flagger still sees it.
   const sentinelPublishDate = evaluateShowScorePreviousProduction({ review: data, show: null }).flag ? data.publishDate : null;
   if (sentinelPublishDate) data.publishDate = null;
+  // BRO-5081: an LLM-scoring guess or a roundup article's own date
+  // (dateSource 'llm-scoring' / 'roundup-article') is a placeholder too. Let
+  // the page, URL or byline replace it; keep it only if none finds a date.
+  const provisionalPublishDate = !sentinelPublishDate && isProvisionalPublishDate(data) ? data.publishDate : null;
+  const provisionalDateSource = provisionalPublishDate ? data.dateSource : null;
+  if (provisionalPublishDate) data.publishDate = null;
 
   // Extract publishDate from HTML if not already set
   if (!data.publishDate && html) {
     const extractedDate = extractPublishDateFromHtml(html);
     if (extractedDate) {
       data.publishDate = extractedDate;
+      if (provisionalPublishDate) data.dateSource = 'html-page';
       console.log(`    → Extracted publishDate from HTML: ${extractedDate}`);
     }
   }
@@ -4742,7 +4761,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Fallback 2: extract publishDate from first 500 chars of fullText (byline dates)
   // Only when exactly one date found. Rejects run/closing dates via context words.
-  if (!data.publishDate && data.fullText && data.fullText.length > 100) {
+  // Not over a provisional date: a roundup date is within days of the real
+  // one, a regex hit in body text can be a run or closing date (BRO-5090).
+  if (!data.publishDate && !provisionalPublishDate && data.fullText && data.fullText.length > 100) {
     const extractedDate = extractDateFromText(data.fullText);
     if (extractedDate) {
       data.publishDate = extractedDate;
@@ -4751,6 +4772,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
   if (sentinelPublishDate && !data.publishDate) data.publishDate = sentinelPublishDate;
+  if (provisionalPublishDate && !data.publishDate) {
+    data.publishDate = provisionalPublishDate;
+    data.dateSource = provisionalDateSource;
+  } else if (provisionalPublishDate && data.publishDate !== provisionalPublishDate) {
+    console.log(`    → Replaced provisional publishDate ${provisionalPublishDate} (${provisionalDateSource}) with ${data.publishDate}`);
+  }
 
   // Schmigadoon 2026 postmortem Bug #5: anticipatory pre-opening-night posts.
   // For preview-heavy outlets (frontmezzjunkies, broadwaydirect, ...) require
@@ -6123,7 +6150,7 @@ function findReviewsToProcess() {
   }
 
   if (CONFIG.reviewFilter.size > 0) {
-    console.log(`  🎯 FAST PATH: Only processing ${CONFIG.reviewFilter.size} specific file(s): ${[...CONFIG.reviewFilter].join(', ')}`);
+    console.log(`  🎯 FAST PATH: Only processing ${CONFIG.reviewFilter.size} specific file(s): ${[...CONFIG.reviewFilter.files, ...CONFIG.reviewFilter.keys].join(', ')}${CONFIG.reviewFilter.force.size ? ` (${CONFIG.reviewFilter.force.size} forced)` : ''}`);
   }
 
   // listShowDirs tolerates dangling symlinks / stray files (one bad entry
@@ -6187,7 +6214,7 @@ function findReviewsToProcess() {
 
     for (const file of files) {
       // Skip if review_filter is active and this file isn't in it
-      if (CONFIG.reviewFilter.size > 0 && !CONFIG.reviewFilter.has(file)) continue;
+      if (!matchesReviewFilter(CONFIG.reviewFilter, showId, file)) continue;
 
       const filePath = path.join(showDir, file);
       const reviewId = `${showId}/${file}`;
@@ -6311,7 +6338,11 @@ function findReviewsToProcess() {
         // Skip if already has good text (unless retrying failed or filtering by reason)
         // When filtering by incompleteReason, trust the reason field instead of re-checking text length
         // (important: wrong_content reviews may have long text from the *wrong* page)
-        if (CONFIG.incompleteReasonFilter.length === 0) {
+        // force: entries skip the has-good-text checks below: the stored text
+        // is known to come from the wrong page (BRO-5090).
+        const forcedRefetch = isForcedRefetch(CONFIG.reviewFilter, showId, file);
+        if (forcedRefetch) console.log(`  ↻ ${file}: forced refetch (REVIEW_FILTER force:)`);
+        if (CONFIG.incompleteReasonFilter.length === 0 && !forcedRefetch) {
           const textLen = data.fullText ? data.fullText.length : 0;
           // BRO-4334: inside the opening window, a hard-paywall text labelled
           // 'complete' that fails the completeness assessment (e.g. page one of
@@ -6508,6 +6539,7 @@ function findReviewsToProcess() {
           _storedSalvage: data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data),
           _paywallRecheck: data._paywallRecheck === true,
           _datelessDateRetry: data._datelessDateRetry === true,
+          _forceRefetch: forcedRefetch,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);

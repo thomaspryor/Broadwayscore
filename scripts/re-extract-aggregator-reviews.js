@@ -22,6 +22,7 @@ const {
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 
@@ -78,6 +79,9 @@ function writeReviewFile(review) {
       bwwExcerpt: review.bwwExcerpt || null,
       showScoreExcerpt: review.showScoreExcerpt || null,
       publishDate: review.publishDate || null,
+      // No dateSource here: the merge fills fields one by one, so a
+      // 'roundup-article' source would land on a file whose real publishDate
+      // it keeps. Only new files from gather-reviews carry the marker.
     },
   }, { dryRun });
 
@@ -248,7 +252,8 @@ function reExtractBWW() {
                 outlet: outletName,
                 criticName,
                 url: null,
-                publishDate: normalizePublishDate(publishDate) || null,
+                // The roundup article's own date, marked provisional (BRO-5081).
+                ...roundupEntryDateFields(normalizePublishDate(publishDate) || null),
                 bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
                 source: 'bww-roundup',
               });

@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { buildSiblingCategoriesByTitle } = require('./lib/show-matching');
@@ -88,7 +89,8 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
       outlet: outlet.name,
       criticName,
       url: null,
-      publishDate: normalizePublishDate(publishDate) || null,
+      // The roundup article's own date, marked provisional (BRO-5081).
+      ...roundupEntryDateFields(normalizePublishDate(publishDate) || null),
       assignedScore: null,
       bucket: null,
       thumb: null,
