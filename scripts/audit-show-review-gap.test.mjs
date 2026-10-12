@@ -528,6 +528,12 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
   assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/bwwopera/article/Review-COSI-FAN-TUTTE-at-the-Met-20260925', cosi), null);
   assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/off-broadway/article/Review-THE-SECRET-CIRCUS-at-SoHo-Playhouse-20260927', circus), null);
   assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/article/Review-THE-SECRET-CIRCUS-at-SoHo-Playhouse-20260927', circus), null);
+  // Parity with the write path's isLikelyTourReview on every BWW edition shape.
+  const { isLikelyTourReview } = require('./lib/review-guards.js');
+  for (const ed of ['toronto', 'chicago', 'cabaret', 'westend', 'bwwtv', 'bwwopera', 'off-broadway']) {
+    const u = `https://www.broadwayworld.com/${ed}/article/Review-COSI-FAN-TUTTE-20261004`;
+    assert.equal(!!otherProductionUrlSignal(u, cosi), isLikelyTourReview(u, cosi.id), ed);
+  }
   // A London show is not judged by this rule (BWW /westend/ is its home edition).
   const we = { id: 'darkling-off-west-end-2026', title: 'Darkling', category: 'off-west-end', venue: 'Bush Theatre', openingDate: '2026-09-10' };
   assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260911', we), null);

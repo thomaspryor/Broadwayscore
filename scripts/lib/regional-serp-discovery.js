@@ -180,4 +180,4 @@ function resolveRegisteredOutlet(url) {
 }
 
 
-module.exports = { BWW_NYC_SECTIONS, normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet, DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, tourCandidateVerdict, cityFromVenue };
+module.exports = { normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet, DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, tourCandidateVerdict, cityFromVenue };
