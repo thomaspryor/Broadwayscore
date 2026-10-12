@@ -879,15 +879,15 @@
   },
   {
     "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps, Audit same-URL byline double-counts",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38264979990",
+    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps, Audit same-URL byline double-counts — already tracked at BRO-5168",
+    "description": "This condition already has an open tracker (BRO-5168); not filing a duplicate. It will go quiet in the digest from here.\n\nCorpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38265502053",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "tracked": null,
+    "tracked": "BRO-5168",
     "fields": [],
-    "queuedAt": "2026-10-12T14:50:20.434Z"
+    "queuedAt": "2026-10-12T14:54:28.461Z"
   }
 ]
