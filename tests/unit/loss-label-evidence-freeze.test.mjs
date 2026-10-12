@@ -99,5 +99,14 @@ describe('commercial-record-checks designationBasis rules', () => {
     assert.equal(hit(rec({ weeklyRunningCostBasis: 'breakeven' })), false);
     assert.equal(hit(rec({ costMethodology: 'deep-research' })), false);
     assert.equal(hit(rec({ weeklyRunningCostSource: 'Variety: weekly running costs of $900,000' })), false);
+    // Shapes a reviewer flagged: a cue only in the URL, negations, "all in all".
+    assert.equal(hit(rec({ weeklyRunningCostSource: 'Variety: running costs of $900,000 https://variety.com/all-in-costs' })), false);
+    assert.equal(hit(rec({ weeklyRunningCostSource: 'Variety: $900,000 a week, not all-in' })), false);
+    assert.equal(hit(rec({ weeklyRunningCostSource: 'Variety: all in all, $900,000 a week to run' })), false);
+    assert.ok(hit(rec({ weeklyRunningCostSource: 'Variety: the show breaks even at $900,000' })));
+  });
+
+  it('lets the add-entry path set weeklyRunningCostBasis (BRO-5093)', () => {
+    assert.ok(require('../../scripts/lib/commercial-entry-action.js').ALLOWED_ENTRY_FIELDS.has('weeklyRunningCostBasis'));
   });
 });

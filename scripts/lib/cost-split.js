@@ -31,7 +31,8 @@ const EXTRA_VARIABLE = {
 
 const ALL_IN_TEXT = /\ball[- ]in\b|\bincludes?\s+(?:royalt|amortiz)/i;
 // A cue that the figure includes gross-linked costs, or is a breakeven.
-const BASIS_CUE_TEXT = /\ball[- ]in\b|\bincludes?\s+(?:royalt|amortiz)|\bbreak[- ]?even\b/i;
+// Negated cues ("not all-in", "never broke even") and "all in all" are not.
+const BASIS_CUE_TEXT = /(?<!\b(?:not|never|n't)\s+)(?:\ball[- ]in\b(?![- ]all\b)|\bincludes?\s+(?:royalt|amortiz)|\bbreak(?:s|ing)?[- ]?even\b)/i;
 const RUNNING_TEXT = /\bexcl\w*\s+royalt|\bbefore royalt|\bpure operating\b/i;
 
 /** 'all-in' | 'running' for the record's weekly cost figure. */

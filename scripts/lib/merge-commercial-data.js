@@ -153,7 +153,7 @@ const MODEL_RUN_FIELDS = [
 const LINKED_FIELD_GROUPS = [
   ['designation', 'designationBasis', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason'],
   ['capitalization', 'capitalizationSource'],
-  ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange'],
+  ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange', 'weeklyRunningCostBasis'],
   MODEL_RUN_FIELDS,
 ];
 const GROUP_OF = new Map(LINKED_FIELD_GROUPS.flatMap(g => g.map(f => [f, g])));
