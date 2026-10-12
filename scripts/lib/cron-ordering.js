@@ -61,11 +61,16 @@ function workflowName(yamlText) {
   return m ? m[1] : null;
 }
 
-// True when the consumer has a workflow_run trigger on the producer's name.
+// True when the consumer has a workflow_run trigger on the producer's name
+// (flow list `workflows: [a, b]` or block list `workflows:\n  - a`).
 function chainsOn(consumerYaml, producerName) {
-  const m = String(consumerYaml).match(/^\s+workflow_run:\s*\n\s+workflows:\s*\[([^\]]*)\]/m);
-  if (!m || !producerName) return false;
-  return m[1].split(',').map((s) => s.trim().replace(/^['"]|['"]$/g, '')).includes(producerName);
+  if (!producerName) return false;
+  const m = String(consumerYaml).match(/^\s+workflow_run:\s*\n\s+workflows:[ \t]*(\[[^\]]*\]|\n(?:[ \t]+-[^\n]*\n?)+)/m);
+  if (!m) return false;
+  const names = m[1].startsWith('[')
+    ? m[1].slice(1, -1).split(',')
+    : m[1].split('\n').filter((l) => /^\s+-/.test(l)).map((l) => l.replace(/^\s+-\s*/, ''));
+  return names.map((s) => s.trim().replace(/^['"]|['"]$/g, '')).includes(producerName);
 }
 
 // Minute-of-day for a cron with single minute and hour fields, else null.

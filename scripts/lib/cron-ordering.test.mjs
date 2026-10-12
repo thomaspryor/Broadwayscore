@@ -36,3 +36,10 @@ test('a producer whose registered cron moved is reported, not silently passed', 
   assert.match(p[0].problem, /no longer has cron/);
   assert.equal(minuteOfDay('*/5 * * * *'), null);
 });
+
+test('chainsOn reads flow and block workflow lists', () => {
+  assert.equal(chainsOn('on:\n  workflow_run:\n    workflows: ["A", \'B\']\n', 'B'), true);
+  assert.equal(chainsOn('on:\n  workflow_run:\n    workflows:\n      - "Rebuild Reviews Data"\n      - Other\n    types: [completed]\n', 'Other'), true);
+  assert.equal(chainsOn('on:\n  workflow_run:\n    workflows:\n      - "Rebuild Reviews Data"\n    types: [completed]\n', 'types'), false);
+  assert.equal(chainsOn('on:\n  push:\n', 'A'), false);
+});
