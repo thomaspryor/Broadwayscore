@@ -89,3 +89,16 @@ test('a staged candidate path under public/images/shows is gitignored, so a cras
   // check-ignore exits 0 when the path is ignored (the file need not exist).
   execFileSync('git', ['check-ignore', '-q', '--no-index', staged], { cwd: repo });
 });
+
+test('finalizeStaged reports a served format whose rename failed as discarded', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stage-rename-'));
+  const final = path.join(dir, 'thumbnail.webp');
+  const staged = {};
+  writeStagedCandidate(staged, 'thumbnail', { local: '/images/shows/x/thumbnail.webp', final }, Buffer.from('new'));
+  const failingFs = { ...fs, existsSync: fs.existsSync, renameSync: () => { throw new Error('EXDEV'); }, unlinkSync: fs.unlinkSync };
+  const r = finalizeStaged(staged, { thumbnail: '/images/shows/x/thumbnail.webp' }, failingFs);
+  assert.deepEqual(r, { promoted: [], discarded: ['thumbnail'] });
+  assert.equal(fs.existsSync(final), false);
+  assert.deepEqual(fs.readdirSync(dir), []);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

@@ -2872,8 +2872,16 @@ function applyImages(show, images) {
   }
   // Rename surviving staged candidates into place, delete the rest (BRO-4906).
   if (staged) {
-    finalizeStaged(staged, safe);
+    const servedStaged = Object.keys(staged).filter((f) => safe[f] === staged[f].local);
+    const { discarded } = finalizeStaged(staged, safe);
     sweepStagedCandidates(path.join(IMAGES_DIR, show.id));
+    // A served candidate whose rename failed: the live file still holds the
+    // old bytes (or nothing), so keep the old path and don't record the
+    // Google source for it.
+    for (const f of servedStaged.filter((x) => discarded.includes(x))) {
+      safe[f] = show.images ? show.images[f] ?? null : null;
+      if (fileSources) delete fileSources[f];
+    }
   }
   show.images = safe;
   // Files this fetch wrote and the row now serves: record where they came from,

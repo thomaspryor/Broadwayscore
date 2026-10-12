@@ -410,11 +410,20 @@ function _resolveGeo(query, override) {
  */
 function scrapingdogSerpFailureDetail(error, q, geo, page, dated) {
   const body = error && error.response && error.response.data;
+  // Only the provider's own message/error string, never the raw body (it may
+  // echo the request), with the key and the query text scrubbed out.
   let msg = null;
-  if (body && typeof body === 'object') msg = body.message || body.error || JSON.stringify(body);
-  else if (typeof body === 'string') msg = body;
+  if (body && typeof body === 'object') {
+    const m = typeof body.message === 'string' ? body.message : (typeof body.error === 'string' ? body.error : null);
+    msg = m;
+  } else if (typeof body === 'string') msg = body;
+  if (msg) {
+    msg = String(msg).replace(/api_key=[^&\s"']*/gi, 'api_key=[redacted]');
+    if (q && q.length >= 4) msg = msg.split(q).join('[query]');
+    try { if (q) msg = msg.split(encodeURIComponent(q)).join('[query]'); } catch { /* malformed q */ }
+  }
   return {
-    msg: msg ? String(msg).slice(0, 160) : null,
+    msg: msg ? msg.slice(0, 160) : null,
     qlen: (q || '').length,
     quoted: /"/.test(q || ''),
     ops: ((q || '').match(/\b(site|after|before|intitle|inurl):/g) || []).length,
@@ -425,7 +434,9 @@ function scrapingdogSerpFailureDetail(error, q, geo, page, dated) {
   };
 }
 
-async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page = 0) {
+// `attempt.ran` is set once a request is actually sent, so a caller can tell
+// "Scrapingdog missed" from "Scrapingdog was skipped" (breaker, quota, cap).
+async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page = 0, attempt = {}) {
   if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY) return null;
 
   // Circuit breaker (mirrors BD/SB SERP): once Scrapingdog SERP has failed
@@ -465,6 +476,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   if (isProbe) log(`    ⟳ Scrapingdog SERP breaker half-open — probing after ${Math.round(SERP_BREAKER_COOLDOWN_MS / 60000)}min cooldown`);
 
   const axios = require('axios');
+  attempt.ran = true;
   let q = query;
   if (dateRange) {
     const fmtD = d => d.toISOString().split('T')[0];
@@ -937,7 +949,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // as the safety net.
   let _fallbackFrom = null;
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
-    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page);
+    const sdAttempt = {};
+    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page, sdAttempt);
     if (sdResults && sdResults.length > 0) {
       _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
       return { results: sdResults, provider: 'scrapingdog' };
@@ -956,8 +969,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
       _serpCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty' });
       return { results: [], provider: 'scrapingdog-empty' };
     }
-    // Reaching BD/SB after SD ran: tag their ledger rows (BRO-3344).
-    _fallbackFrom = 'scrapingdog';
+    // Reaching BD/SB after an SD request really went out: tag their ledger
+    // rows (BRO-3344). A skipped SD (breaker/quota/cap) is not a fallback.
+    if (sdAttempt.ran) _fallbackFrom = 'scrapingdog';
   }
 
   const _entries = {
@@ -1878,18 +1892,27 @@ function imagesSerpChainOrder({ sdKey, sbKey, skip } = {}) {
 }
 
 /** Scrapingdog google_images call. null = unavailable/failed (caller falls back). */
-async function _serpImagesViaScrapingdog(query, sdKey, nbResults, log) {
+async function _serpImagesViaScrapingdog(query, sdKey, nbResults, log, attempt = {}) {
   const verdict = consecutiveFailureBreakerBlocked(_sdImagesFailures, _sdImagesBreakerOpenedAt, Date.now());
   if (verdict.blocked) { _sdImagesBreakerOpenedAt = verdict.openedAt; return null; }
   scraper.checkScrapingdogQuotaOnce();
   if (scraper.sdQuotaExceeded) return null;
   if (!consultScrapingdog().allowed) return null;
   const axios = require('axios');
+  attempt.ran = true;
   try {
     const response = await axios.get('https://api.scrapingdog.com/google_images', {
       params: { api_key: sdKey, query, country: 'us' },
       timeout: 30000,
     });
+    // A 200 without an images list is an error payload, not "Google found
+    // nothing": fall back instead of treating it as a final empty answer.
+    const d = response.data;
+    if (!d || typeof d !== 'object' || !(Array.isArray(d.images_results) || Array.isArray(d.image_results))) {
+      const e = new Error('no images_results in Scrapingdog response');
+      e.response = { status: 200, data: d };
+      throw e;
+    }
     _sdImagesFailures = 0;
     _sdImagesBreakerOpenedAt = null;
     recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: true, status: 200, credits: SD_SERP_IMAGES_CREDITS_PER_CALL });
@@ -1936,9 +1959,10 @@ async function serpImagesQuery(query, options = {}) {
   let tried = null;
   for (const provider of order) {
     if (provider === 'scrapingdog') {
-      const results = await _serpImagesViaScrapingdog(query, sdKey, nbResults, log);
+      const sdAttempt = {};
+      const results = await _serpImagesViaScrapingdog(query, sdKey, nbResults, log, sdAttempt);
       if (results) return { exhausted: false, failed: false, results, provider };
-      tried = 'scrapingdog';
+      if (sdAttempt.ran) tried = 'scrapingdog';
       continue;
     }
     const res = await withSpendFallback(tried, () => _serpTypedViaScrapingBee(query, sbKey, 'images', nbResults, log));
