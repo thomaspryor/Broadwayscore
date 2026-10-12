@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4849-b",
   "planId": "afa53f37-f59d-4c75-9696-94ea37004db4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T10:21:50.515Z",
   "submitter": {
     "name": null,
@@ -105,5 +105,63 @@
         "description": "Clear the wrong-show flag"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T13:03:59.970Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/seatplan--unknown.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/seatplan--unknown.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/seatplan--unknown.json criticName: \"Patrick Jeremyfor\" -> \"Patrick Jeremy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/nytg--austin-fimmano.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/nytg--austin-fimmano.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/nytg--austin-fimmano.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json wrongShow: true -> false"
+    }
+  ]
 }
