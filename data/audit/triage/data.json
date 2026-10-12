@@ -1,15 +1,15 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-11T13:36:32.693Z",
+  "lastChecked": "2026-10-12T03:14:25.228Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Data: OB closing candidates awaiting review",
-      "status": "warn",
-      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 20d)"
+      "status": "error",
+      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 21d)"
     },
     {
       "name": "Data: tour dates need a look",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "status": "error",
-      "message": "15 discovered review(s) not reaching the composite score (5 T1). Oldest: million-dollar-quartet-off-west-end-2026 — broadwayworld (unscored)"
+      "status": "warn",
+      "message": "6 discovered review(s) not reaching the composite score (2 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "36 discovered review URL(s) across 25 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
+      "message": "34 discovered review URL(s) across 23 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"De Profundis\" (guardian-review — missing 5d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "8 aggregator-reviewed show(s) not in the catalogue. Oldest: \"De Profundis\" (guardian-review — missing 6d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: undispatchable backlog cards",
