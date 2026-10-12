@@ -12,8 +12,11 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import { getAllShows, getRelatedShowsAlgorithmic, getRelatedShowsClosed, getRelatedShowsOpen } from '../../src/lib/data-core';
 
+const relatedShowsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data/related-shows.json'), 'utf8')) as { shows?: Record<string, unknown> };
 const all = getAllShows();
 // Broadway shows that have NO curated lookup entry and no reviews of their own, i.e. the
 // exact shape of the reported bug. Falls back to any previews/upcoming Broadway show.
@@ -41,6 +44,23 @@ describe('related-shows algorithmic fallback', () => {
       for (const s of open) assert.ok(['open', 'previews', 'upcoming'].includes(s.status), `${s.id} is ${s.status}`);
     });
   }
+
+  // BRO-5122: curated lists (data/related-shows.json) go stale when a curated rec
+  // changes status; the curated path must top up from the algorithmic pool.
+  test('every Broadway show with a curated open/closed list still gets a full pool', () => {
+    const curated = all.filter(s => s.category === 'broadway' && relatedShowsData.shows?.[s.id]);
+    assert.ok(curated.length > 0, 'no curated Broadway entries in data/related-shows.json');
+    const short: string[] = [];
+    for (const show of curated) {
+      const open = getRelatedShowsOpen(show);
+      const closed = getRelatedShowsClosed(show);
+      if (open.length !== 6) short.push(`${show.id}: open ${open.length}`);
+      if (closed.length !== 6) short.push(`${show.id}: closed ${closed.length}`);
+      if (new Set(open.map(s => s.id)).size !== open.length) short.push(`${show.id}: duplicate open rec`);
+      if (new Set(closed.map(s => s.id)).size !== closed.length) short.push(`${show.id}: duplicate closed rec`);
+    }
+    assert.deepEqual(short, []);
+  });
 
   test('statusFilter is applied before the cut (limit=1 still returns the best closed show)', () => {
     const closed = getRelatedShowsAlgorithmic(sources[0], 1, 'closed');
