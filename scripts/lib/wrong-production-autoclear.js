@@ -1020,8 +1020,29 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   // or specifically registry-region 'london' (dual-market outlets alone are
   // NOT enough here — their flags can be genuine same-title other-market
   // reviews, see the inline comment this predicate replaces).
-  if (!ctx.isUkUrl && !ctx.outletIsDualOrUk) return false;
-  if (!ctx.isUkUrl && !ctx.outletIsLondonRegion) return false;
+  // BRO-2749: a registry-listed international trade (THR, Variety, Deadline)
+  // flagged by the forward guard's "US outlet reviewing London show" rule is a
+  // false positive by construction; the guard now exempts them, so heal the
+  // flags written before that. Only the guard's own note qualifies, and every
+  // gate below (date, city, CV, adjudication, ensemble) still applies.
+  // The outlet gates are the only thing that tied a review to a London
+  // production, so the trade path needs its own proof: a parseable publishDate
+  // on or after the run start (minus 14 days), and no earlier year in the URL.
+  let tradeFalsePositive = ctx.outletIsInternationalTrade === true
+    && wpNote.startsWith('Cross-market: US outlet');
+  if (tradeFalsePositive) {
+    const start = ctx.showEarliestDate ? new Date(ctx.showEarliestDate).getTime() : NaN;
+    const pub = data.publishDate ? new Date(data.publishDate).getTime() : NaN;
+    const urlYear = (String(data.url).match(/\/((?:19|20)\d\d)\//) || [])[1];
+    if (isNaN(start) || isNaN(pub) || pub < start - 14 * 86400000
+        || (urlYear && Number(urlYear) < new Date(start).getUTCFullYear())) {
+      return false;
+    }
+  }
+  if (!tradeFalsePositive) {
+    if (!ctx.isUkUrl && !ctx.outletIsDualOrUk) return false;
+    if (!ctx.isUkUrl && !ctx.outletIsLondonRegion) return false;
+  }
 
   if (ctx.cvBlocksClear) return false;
   if (data.wrongProductionReason) return false;

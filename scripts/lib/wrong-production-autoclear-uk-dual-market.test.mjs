@@ -452,3 +452,32 @@ describe('date-guard AFTER-close flags are not auto-cleared (BRO-4851)', () => {
     );
   });
 });
+
+describe('BRO-2749 international trade false-positive heal', () => {
+  const flagged = {
+    wrongProduction: true,
+    wrongProductionNote: 'Cross-market: US outlet "hollywood-reporter" reviewing London show',
+    url: 'https://www.hollywoodreporter.com/review/x',
+    publishDate: '2026-09-02',
+  };
+  const ctx = { ...baseCtx, isUkUrl: false, outletIsInternationalTrade: true, showEarliestDate: '2026-08-15' };
+  it('clears the guard\'s own US-outlet note for an international trade', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(flagged, ctx), true);
+  });
+  it('does not clear without the trade ctx', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(flagged, { ...ctx, outletIsInternationalTrade: false }), false);
+  });
+  it('does not clear a different note for a trade outlet', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...flagged, wrongProductionNote: 'Same URL exists on other show' }, ctx), false);
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...flagged, wrongProductionNote: 'Manual: wrong show' }, ctx), false);
+  });
+  it('still respects the date mismatch guard', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(flagged, { ...ctx, isDateMismatch: true }), false);
+  });
+  it('does not clear without a publishDate', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...flagged, publishDate: undefined }, ctx), false);
+  });
+  it('does not clear an older production URL (2015 Broadway review)', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...flagged, url: 'https://deadline.com/2015/08/hamilton-broadway-review/' }, ctx), false);
+  });
+});
