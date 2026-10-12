@@ -152,20 +152,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T07:40:05.283Z",
-      "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
-      "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 132,
+      "incidentOpenedAt": "2026-10-12T11:59:25.876Z",
+      "lastSeen": "2026-10-12T11:59:25.876Z",
+      "lastNotifiedAt": "2026-10-12T11:59:25.876Z",
+      "lastSurfacedAt": "2026-10-12T11:59:25.876Z",
+      "notifyCount": 133,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 30,
-      "resolvedAt": "2026-10-12T08:04:03.802Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -14621,7 +14619,7 @@
       "title": "main test.yml red: E2E Tests / Run unit tests — \"still auto-clears Same URL (URL-based) flags on re-merge\"",
       "firstSeen": "2026-10-12T11:44:00.713Z",
       "incidentOpenedAt": "2026-10-12T11:44:00.713Z",
-      "lastSeen": "2026-10-12T11:44:00.713Z",
+      "lastSeen": "2026-10-12T11:59:25.865Z",
       "lastNotifiedAt": "2026-10-12T11:44:00.713Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -14632,33 +14630,8 @@
         "mode": "dispatch-at-filing",
         "runId": "38242949861",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38242949861"
-      }
-    },
-    "land:land/batch-xshow-urlswap": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/batch-xshow-urlswap",
-      "firstSeen": "2026-10-12T11:47:42.233Z",
-      "incidentOpenedAt": "2026-10-12T11:47:42.233Z",
-      "lastSeen": "2026-10-12T11:47:42.233Z",
-      "lastNotifiedAt": "2026-10-12T11:47:42.233Z",
-      "lastSurfacedAt": "2026-10-12T11:47:42.233Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "test-yml:red:E2E Tests:920ecd18": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: E2E Tests / Run unit tests — \"still auto-clears Same URL (URL-based) flags on re-merge\"",
-      "firstSeen": "2026-10-12T11:57:53.934Z",
-      "incidentOpenedAt": "2026-10-12T11:57:53.934Z",
-      "lastSeen": "2026-10-12T11:57:53.934Z",
-      "lastNotifiedAt": "2026-10-12T11:57:53.934Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-5160"
+      },
+      "silentRefires": 1
     }
   }
 }

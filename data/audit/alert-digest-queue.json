@@ -343,6 +343,36 @@
     "queuedAt": "2026-10-12T11:36:14.128Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it (still open — BRO-3030)",
+    "description": "Still firing after 133 notifications since it was filed. Tracked at BRO-3030.\n\nmain test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38244604066",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": "BRO-3030",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38244604066)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38244161669)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "4"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "E2E Tests"
+      }
+    ],
+    "queuedAt": "2026-10-12T11:59:25.877Z"
+  },
+  {
     "conditionKey": "land:land/batch-xshow-urlswap",
     "title": "Landing blocked: unit-tests-node red on land/batch-xshow-urlswap",
     "description": "land.yml did not land land/batch-xshow-urlswap: the unit-tests-node gate went red at fd139b71a9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38241470014",
@@ -371,18 +401,5 @@
       }
     ],
     "queuedAt": "2026-10-12T11:47:42.234Z"
-  },
-  {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38245405820",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T11:58:50.962Z"
   }
 ]
