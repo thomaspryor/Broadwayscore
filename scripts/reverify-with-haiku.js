@@ -92,7 +92,7 @@ function buildVerifyInput(showId, r) {
   const show = showsMap.get(showId);
   return {
     scrapedText: r.fullText,
-    excerpt: r.dtliExcerpt || r.bwwExcerpt || r.showScoreExcerpt || '',
+    excerpt: require('./lib/excerpt-fields').verifierExcerpt(r),
     showTitle: show?.title || showId,
     outletName: r.outlet || r.outletId || '',
     criticName: r.criticName || '',

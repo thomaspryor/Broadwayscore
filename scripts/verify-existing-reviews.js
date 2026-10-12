@@ -185,7 +185,7 @@ async function processVerify(items) {
     try {
       const result = await verifyContent({
         scrapedText: item.text,
-        excerpt: r.dtliExcerpt || r.bwwExcerpt || r.showScoreExcerpt || '',
+        excerpt: require('./lib/excerpt-fields').verifierExcerpt(r),
         showTitle: show?.title || item.showId,
         outletName: r.outlet || r.outletId || '',
         criticName: r.criticName || '',
@@ -287,7 +287,7 @@ async function processRecover(items) {
     try {
       const result = await verifyContent({
         scrapedText: item.text,
-        excerpt: r.dtliExcerpt || r.bwwExcerpt || r.showScoreExcerpt || '',
+        excerpt: require('./lib/excerpt-fields').verifierExcerpt(r),
         showTitle: show?.title || item.showId,
         outletName: r.outlet || r.outletId || '',
         criticName: r.criticName || '',

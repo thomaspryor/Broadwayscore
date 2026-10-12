@@ -179,7 +179,7 @@ async function main() {
     try {
       const result = await verifyContent({
         scrapedText: data.wrongFullText, // verify the quarantined text — restoring it IS the candidate change
-        excerpt: data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '',
+        excerpt: require('./lib/excerpt-fields').verifierExcerpt(data),
         showTitle,
         outletName: outletCritic[0] || f.outletId || 'unknown',
         criticName: outletCritic[1] || f.criticName || 'unknown',

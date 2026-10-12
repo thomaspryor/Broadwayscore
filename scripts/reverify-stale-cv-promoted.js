@@ -162,7 +162,7 @@ async function main() {
     try {
       const result = await verifyContent({
         scrapedText: data.fullText, // KEY: verify the STORED text, so the new hash always matches it
-        excerpt: data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '',
+        excerpt: require('./lib/excerpt-fields').verifierExcerpt(data),
         showTitle,
         outletName: outletCritic[0] || f.outletId || 'unknown',
         criticName: outletCritic[1] || f.criticName || 'unknown',

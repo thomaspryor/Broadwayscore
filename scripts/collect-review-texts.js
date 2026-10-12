@@ -7271,7 +7271,7 @@ async function processReview(review) {
       try {
         // Get excerpt and show metadata from existing review data
         const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        const excerpt = reviewData.dtliExcerpt || reviewData.bwwExcerpt || reviewData.showScoreExcerpt || reviewData.nycTheatreExcerpt || reviewData.lboRoundupExcerpt || '';
+        const excerpt = require('./lib/excerpt-fields').verifierExcerpt(reviewData);
         const showId = reviewData.showId || review.showId || '';
 
         // Look up show metadata for richer context

@@ -104,7 +104,7 @@ async function runTests() {
         const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
 
         if (data.fullText && data.fullText.length > 500) {
-          const excerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+          const excerpt = require('./lib/excerpt-fields').verifierExcerpt(data);
 
           const result = heuristicVerify({
             scrapedText: data.fullText,

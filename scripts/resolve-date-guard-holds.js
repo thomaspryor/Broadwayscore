@@ -140,7 +140,7 @@ async function main() {
         const [outlet, critic] = file.replace('.json', '').split('--');
         cvResult = await verifyContent({
           scrapedText: text,
-          excerpt: data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || '',
+          excerpt: require('./lib/excerpt-fields').verifierExcerpt(data),
           showTitle: show.title,
           outletName: outlet || data.outlet || 'unknown',
           criticName: critic || data.criticName || 'unknown',

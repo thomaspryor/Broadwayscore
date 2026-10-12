@@ -7,6 +7,8 @@
  * to find any hardcoded lists that need updating.
  */
 
+const { isLegacyWebSearchOnly } = require('./legacy-web-search');
+
 const EXCERPT_FIELDS = [
   'dtliExcerpt',
   'bwwExcerpt',
@@ -50,4 +52,17 @@ function getLongestExcerpt(data) {
   }, '');
 }
 
-module.exports = { EXCERPT_FIELDS, hasExcerpt, getExcerpts, getLongestExcerpt };
+/**
+ * The excerpt handed to the content verifier (verifyContent) as the reference
+ * the scraped page should match. A legacy web-search row's excerpt was made up
+ * by that step (BRO-5183), so comparing the real page against it can only
+ * mislead the verifier: it gets none.
+ * @param {object} data - Review data object
+ * @returns {string}
+ */
+function verifierExcerpt(data) {
+  if (!data || isLegacyWebSearchOnly(data)) return '';
+  return data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '';
+}
+
+module.exports = { EXCERPT_FIELDS, hasExcerpt, getExcerpts, getLongestExcerpt, verifierExcerpt };

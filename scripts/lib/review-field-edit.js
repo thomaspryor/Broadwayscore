@@ -96,10 +96,16 @@ const FIELD_VALUE_CHECKS = {
     const { classifyReviewUrl } = require('./non-review-url-patterns');
     const current = record.url || '';
     const currentAggregator = isAggregatorPageUrl(current);
+    // BRO-5183: a legacy web-search row the scorer already excludes for want of
+    // page text holds a url that step made up (outlet 404 pages, patterned
+    // Washington Post GUIDs). Nothing ever vouched for it, so it may be repaired
+    // to the review's real url; the collector then refetches and verifies it.
+    const unverifiedSearchUrl = require('./review-guards').isUnverifiableWebSearchRow(record);
     const currentWrong = currentAggregator
       || (current && classifyReviewUrl(current).ok === false)
-      || ctx.currentUrlOwnedByOtherCritic === true;
-    if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, or another critic\'s review)';
+      || ctx.currentUrlOwnedByOtherCritic === true
+      || unverifiedSearchUrl;
+    if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, or an unverified legacy web-search url)';
     if (v === '') return currentAggregator ? null : 'url: clearing to "" is only for an aggregator-page url';
     if (typeof v !== 'string' || !/^https?:\/\//i.test(v)) return 'url must be an http(s) url or ""';
     if (!classifyReviewUrl(v).ok || isAggregatorPageUrl(v)) return 'url: new value is not a review-candidate url';

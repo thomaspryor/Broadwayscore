@@ -4256,10 +4256,23 @@ function isUnverifiableWebSearchRow(data) {
   // That step also copied its one-sentence summary into fullText (175 live rows
   // of 50-299 chars, all "X is a show that knows exactly what it wants..."), so
   // a url row needs a real page's worth of text to count as checkable.
-  if (String(data.fullText || '').trim().length >= (data.url ? 300 : 50)) return false;
   if (data.humanReviewScore || data.adjudicatedScore) return false;
-  return true;
+  if (String(data.fullText || '').trim().length < (data.url ? 300 : 50)) return true;
+  // BRO-5183: real text arriving does not make the score real. Until the row
+  // is rescored on that text its score is still the one read from the
+  // invented excerpt, so a legacy web-search url row stays out while its LLM
+  // score says it was read from an excerpt, or, with no such record, while a
+  // rescore is pending. A score read from the page itself (originalScore) is
+  // not from the excerpt.
+  if (data.url && isLegacyWebSearchOnly(data) && !data.originalScore) {
+    const textSource = data.llmMetadata && data.llmMetadata.textSource && data.llmMetadata.textSource.type;
+    if (textSource === 'excerpt') return true;
+    if (!textSource && data.needsRescore === true) return true;
+  }
+  return false;
 }
+
+const { isLegacyWebSearchOnly } = require('./legacy-web-search');
 
 /**
  * BRO-3126: a "first look" piece published while the show was still in previews, scored and
@@ -5839,6 +5852,7 @@ module.exports = {
   isNamedNonReviewUrlRecord,
   isCancelledBeforeOpeningShow,
   isUnverifiableWebSearchRow,
+  isLegacyWebSearchOnly,
   isPreviewFirstLookPiece,
   bodylessScoreProvenance,
   isBodylessAggregatorScoreUncorroborated,
