@@ -239,12 +239,14 @@ const DOW_JONES_CHROME_WINDOW = 3000;
 // Chrome lines are short (nav labels, form prompts). A prose paragraph before
 // the marker means it is not a pure chrome prefix, so nothing is cut.
 const DOW_JONES_CHROME_MAX_LINE = 320;
+const DOW_JONES_SITE_SENTENCE_RE = /wall\s+street\s+journal|\bwsj\b|browser|e-?mail\s+announcements|dow\s+jones/i;
+const DOW_JONES_MIN_BODY = 300;
 const DOW_JONES_CHROME_SIGNAL_RE = /please\s+register\s+to\s+gain\s+free\s+access|(?:»|&raquo;)\s*More\b|\bSkip to Main Content\b|\bOrder Reprints\b|^\s*BROWSER UPDATE\b/i;
 
 /**
  * Cut the Dow Jones chrome prefix (see above) and return what follows it.
- * Unchanged when the text has no such prefix. Returns '' for a page that is
- * only the registration interstitial (no marker, no review after it).
+ * Unchanged when the text has no such prefix, or when the boundary is not
+ * certain (no marker, review prose before it, no review after it).
  * @param {string} text
  * @returns {string}
  */
@@ -284,8 +286,18 @@ function stripDowJonesReprintChrome(text) {
   // breaks to check, but opens with the skip link and stays under ~1.5KB.
   const flattenedHeader = /^[^\n]{0,200}\bSkip to Main Content\b/i.test(chrome) && chrome.length < 1500;
   if (!flattenedHeader && chrome.split('\n').some((line) => line.trim().length > DOW_JONES_CHROME_MAX_LINE)) return text;
+  // Old online.wsj.com pages put "Order Reprints" in the top toolbar and the
+  // reprints notice in the FOOTER, so a signal before the marker does not
+  // prove the review is after it. Review prose before the marker (any long
+  // sentence that is not WSJ's own site boilerplate; 0 of 193 real chrome
+  // prefixes have one, corpus 2026-10-12) means nothing is cut.
+  const proseSentences = (chrome.match(/[^.!?\n]{60,}[.!?]["\u201d\u2019)]?(?=\s|$)/g) || [])
+    .filter((x) => x.trim().split(/\s+/).length >= 12 && !DOW_JONES_SITE_SENTENCE_RE.test(x));
+  if (proseSentences.length > 0) return text;
   // Drop the article URL the print header appends after the marker.
-  return text.slice(m.index + m[0].length).replace(/^\s*https?:\/\/\S+/, '').trim();
+  const body = text.slice(m.index + m[0].length).replace(/^\s*https?:\/\/\S+/, '').trim();
+  // A review must follow the marker (shortest real one in the corpus: 994).
+  return body.length >= DOW_JONES_MIN_BODY ? body : text;
 }
 
 // Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
