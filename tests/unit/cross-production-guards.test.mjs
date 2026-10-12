@@ -13,6 +13,8 @@ test('evergreen: tickets/listing pages are detected (date heuristic must skip th
   assert.equal(isEvergreenListingUrl('https://example.com/tickets/'), true);
   assert.equal(isEvergreenListingUrl('https://venue.com/whats-on/wicked'), true);
   assert.equal(isEvergreenListingUrl('https://www.londonmumsmagazine.com/whats-on/review-holy-fool-at-park-theatre-a-powerful-story/'), false);
+  assert.equal(isEvergreenListingUrl('https://venue.com/whats-on/wicked?utm_campaign=reviews'), true);
+  assert.equal(isEvergreenListingUrl('https://venue.com/whats-on/wicked#reviews'), true);
   assert.equal(isEvergreenListingUrl('https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet/'), true);
   assert.equal(isEvergreenListingUrl('https://venue.com/buy-tickets'), true);
 });

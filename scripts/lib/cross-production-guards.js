@@ -32,7 +32,7 @@ function isEvergreenListingUrl(url) {
     // /whats-on/ is a venue listing unless the path says "review" as a whole word
     // (londonmumsmagazine.com/whats-on/review-holy-fool-..., BRO-2854); same rule
     // as isBlockedUrl in domain-filters.js.
-    (/\/whats-on\//.test(u) && !/(^|[^a-z])review(s|ed)?([^a-z]|$)/.test(u.replace(/^https?:\/\/[^\/]+/, ''))) ||
+    (/\/whats-on\//.test(u) && !/(^|[^a-z])review(s|ed)?([^a-z]|$)/.test(u.replace(/^https?:\/\/[^\/]+/, '').replace(/[?#].*$/, ''))) ||
     /\/listings?\//.test(u) ||                     // nymag.com/listings/theater/...
     /\/shows?\/[^\/?#]*-tickets\b/.test(u) ||
     // westendtheatre.com show pages (/56719/shows/dinosaur-world-live/) are venue/
