@@ -58,6 +58,11 @@ const PARK_STEP_NAME = 'Admit to the landing queue';
 // Parked runs resume only when the queue has room, so re-parks are rare; the
 // budget is still bounded and stays below land-stranded-refs STRANDED_MAX_ATTEMPT.
 const PARKED_MAX_ATTEMPTS = 15;
+// Only tickets younger than this count toward the park depth. A live waiter's
+// ticket is <= DEADLINE_MINUTES old (+ a lock hold); a dead run's leaked
+// ticket is removed only by a live waiter, and when every arrival parks there
+// is none, so leaked tickets must stop counting on their own.
+const PARK_TICKET_MAX_AGE_MS = (75 + 15) * 60 * 1000;
 
 const TICKET_RE = /^refs\/land-mutex\/queue\/([01])-(\d{13})-(\d+)-(\d+)$/;
 
@@ -163,6 +168,17 @@ function nextPollMs(poll, { rand = Math.random } = {}) {
   return Math.round(base * (0.8 + 0.4 * rand()));
 }
 
+/** Park depth from the repo variable (LAND_MUTEX_PARK_DEPTH), default PARK_DEPTH; 0 disables. */
+function parkDepth(env = process.env) {
+  const n = Number(env.LAND_MUTEX_PARK_DEPTH);
+  return env.LAND_MUTEX_PARK_DEPTH !== undefined && env.LAND_MUTEX_PARK_DEPTH !== '' && Number.isInteger(n) && n >= 0 ? n : PARK_DEPTH;
+}
+
+/** Tickets that count toward the park depth: recent enough to belong to a live waiter. */
+function liveTicketCount(tickets, now = Date.now()) {
+  return (tickets || []).filter((t) => now - t.enqueuedAt <= PARK_TICKET_MAX_AGE_MS).length;
+}
+
 /**
  * Is this Land job (from the run's jobs listing) one that parked itself?
  * The admit step ended cancelled, nothing after it ran to completion, and
@@ -183,6 +199,6 @@ function ownTickets(state, self) {
 }
 
 module.exports = {
-  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
+  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, PARK_TICKET_MAX_AGE_MS, parkDepth, liveTicketCount, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
   ticketName, parseTicket, parseLsRemote, ticketLiveness, decideStep, blockerRef, nextPollMs, ownTickets,
 };

@@ -242,3 +242,21 @@ test('the parked budget stays below the stranded pass budget so ownership never 
   assert.ok(m.PARKED_MAX_ATTEMPTS < STRANDED_MAX_ATTEMPT);
   assert.ok(m.PARKED_MAX_ATTEMPTS > require('./land-retry-on-cancel.js').MAX_ATTEMPTS);
 });
+
+test('liveTicketCount ignores leaked tickets; parkDepth reads the repo variable', () => {
+  const fresh = T('1', { at: NOW - 60000 });
+  const leaked = T('2', { at: NOW - m.PARK_TICKET_MAX_AGE_MS - 1000 });
+  assert.equal(m.liveTicketCount([fresh, leaked], NOW), 1);
+  assert.equal(m.parkDepth({}), m.PARK_DEPTH);
+  assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: '' }), m.PARK_DEPTH);
+  assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: '7' }), 7);
+  assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: '0' }), 0);
+  assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: 'abc' }), m.PARK_DEPTH);
+});
+
+test('the client-side cancel budget covers a parked run (no false REFUSED while the server still resumes it)', () => {
+  const lb = require('./land-branch.js');
+  assert.ok(lb.MAX_CANCEL_RETRIES === undefined || lb.MAX_CANCEL_RETRIES >= m.PARKED_MAX_ATTEMPTS - 1);
+  const d = lb.decideCancelledLandRetry({ landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a', tip: 'a', retriesUsed: m.PARKED_MAX_ATTEMPTS - 2 });
+  assert.equal(d.retry, true);
+});

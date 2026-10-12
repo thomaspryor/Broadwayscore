@@ -140,8 +140,8 @@ test('decideCancelledLandRetry (BRO-4379): retries only a cancelled Land with gr
   const base = { landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a'.repeat(40), tip: 'a'.repeat(40), retriesUsed: 0 };
   assert.deepEqual(decideCancelledLandRetry(base).retry, true);
   assert.deepEqual([0, 1, 2].map(n => decideCancelledLandRetry({ ...base, retriesUsed: n }).backoffSec), [30, 60, 120]);
-  // budget matches the server-side re-trigger: MAX_ATTEMPTS attempts = MAX_ATTEMPTS-1 re-runs
-  assert.equal(MAX_CANCEL_RETRIES, require('./land-retry-on-cancel.js').MAX_ATTEMPTS - 1);
+  // budget matches the server-side re-trigger: the largest attempt budget (a parked job's, BRO-5196) = that many minus 1 re-runs
+  assert.equal(MAX_CANCEL_RETRIES, Math.max(require('./land-retry-on-cancel.js').MAX_ATTEMPTS, require('./land-mutex.js').PARKED_MAX_ATTEMPTS) - 1);
   assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: MAX_CANCEL_RETRIES - 1 }).retry, true);
   assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: MAX_CANCEL_RETRIES }).retry, false);
   assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 1, maxRetries: 1 }).retry, false);

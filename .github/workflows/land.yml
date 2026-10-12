@@ -565,7 +565,10 @@ jobs:
           if ! queue=$(git ls-remote "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" 'refs/land-mutex/queue/*'); then
             echo "::warning::could not read the landing queue; proceeding to the in-runner wait"; exit 0
           fi
-          depth=$(printf '%s\n' "$queue" | grep -c . || true)
+          # Count only tickets younger than 90 min (ref name carries the enqueue
+          # ms): a dead run's leaked ticket must not hold the park depth forever.
+          cutoff=$(( ($(date +%s) - 5400) * 1000 ))
+          depth=$(printf '%s\n' "$queue" | awk -v c="$cutoff" '{ n = split($2, p, "/"); split(p[n], f, "-"); if (f[2] + 0 >= c) k++ } END { print k + 0 }')
           if [ "$depth" -lt "$cap" ]; then echo "queue is $depth deep (park at $cap); proceeding"; exit 0; fi
           echo "::notice::landing queue is $depth deep (park at $cap): parking this run; the Land retry sweep re-runs it when there is room"
           if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/cancel" > /dev/null; then

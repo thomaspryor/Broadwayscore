@@ -171,7 +171,10 @@ function shouldRetry(attempt, maxAttempts = MAX_ATTEMPTS) {
 // Same cap as the server-side re-trigger (land-retry-on-cancel.js: a run may
 // reach MAX_ATTEMPTS attempts, i.e. MAX_ATTEMPTS-1 re-runs), so the script never
 // calls a cancel final while the server would still re-run it.
-const MAX_CANCEL_RETRIES = require('./land-retry-on-cancel').MAX_ATTEMPTS - 1;
+// BRO-5196: a parked run may be resumed up to PARKED_MAX_ATTEMPTS - 1 times; the
+// script cannot tell parked from evicted, and a server that refuses ends it as a
+// resumable TIMEOUT, never a false REFUSED.
+const MAX_CANCEL_RETRIES = Math.max(require('./land-retry-on-cancel').MAX_ATTEMPTS, require('./land-mutex').PARKED_MAX_ATTEMPTS) - 1;
 const CANCEL_RETRY_BACKOFF_SEC = [30, 60, 120];
 
 /**
