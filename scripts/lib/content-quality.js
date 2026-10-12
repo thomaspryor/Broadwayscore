@@ -1881,6 +1881,23 @@ function classifyContentTier(review) {
         };
       }
     }
+    // BRO-3584: a manual tier never hides a stored 404 / error page. Only this
+    // garbage class: the corpus's other manual-tier garbage hits (newsletter
+    // boxes, paywall prompts) are false positives on real reviews, which is
+    // exactly what a person set the override to say. The "Garbage content:"
+    // prefix is what review-guards isGarbageTierReason reads, so a
+    // wrongProduction clear cannot lift this tier back.
+    if (review.manualContentTier !== 'invalid' && review.fullText) {
+      const garbage = isGarbageContent(review.fullText);
+      if (garbage && garbage.isGarbage && /^Error\/404 page/.test(garbage.reason || '')) {
+        return {
+          contentTier: 'invalid',
+          wordCount: countWords(review.fullText),
+          truncationSignals: [],
+          tierReason: `Garbage content: ${garbage.reason} (overrides manualContentTier: ${review.manualContentTier})`
+        };
+      }
+    }
     return {
       contentTier: review.manualContentTier,
       wordCount: countWords(review.fullText || ''),

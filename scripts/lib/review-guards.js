@@ -1788,11 +1788,7 @@ function invalidTierVerdict(data) {
   const reason = data.contentTierReason;
   // Garbage text is about the body, not a verdict a person can clear — even
   // when the file also carries a rejection (FT paywall stubs with wrong_show).
-  if (typeof reason === 'string' && /^(Garbage content|Marked as garbage)/.test(reason)) return null;
-  // Same for a garbage rejection under a verdict reason (30 files carry
-  // 'Wrong show' + rejectionReason garbage_text; one scraper_garbage).
-  if (typeof data.rejectionReason === 'string' && /garbage/.test(data.rejectionReason)) return null;
-  if (typeof data.incompleteReason === 'string' && /garbage/.test(data.incompleteReason)) return null;
+  if (isGarbageTierReason(data)) return null;
   if (reason === 'Wrong production') return 'wrongProduction';
   if (reason === 'Wrong show' || data.rejectionReason === 'wrong_show') return 'wrongShow';
   if (data.rejectionReason === 'not_a_review' || data.incompleteReason === 'non_review'
@@ -1810,6 +1806,48 @@ function invalidTierVerdict(data) {
  * invalid tier, the pre-BRO-5130 rule). One helper so explainExclusion,
  * isRejectedNonReview and scoring-delta.js's replay cannot drift apart.
  */
+/**
+ * True when the file's invalid tier (or its rejection) was stamped for GARBAGE
+ * text: a 404 page, cookie wall, paywall prompt and the like. Includes a garbage
+ * rejection under a verdict reason (30 files carry 'Wrong show' + rejectionReason
+ * garbage_text; one scraper_garbage).
+ */
+function isGarbageTierReason(data) {
+  if (!data) return false;
+  const reason = data.contentTierReason;
+  if (typeof reason === 'string' && /^(Garbage content|Marked as garbage)/.test(reason)) return true;
+  if (typeof data.rejectionReason === 'string' && /garbage/.test(data.rejectionReason)) return true;
+  if (typeof data.incompleteReason === 'string' && /garbage/.test(data.incompleteReason)) return true;
+  return false;
+}
+
+/**
+ * A person looked at this file's text and vouched for it: a human content
+ * verification, or a written manual-clear reason. Same verifiedBy spelling
+ * isProductionAwareCvVerdict accepts as human.
+ */
+function invalidTierHumanVerified(data) {
+  if (!data) return false;
+  const v = data.contentVerification && data.contentVerification.verifiedBy;
+  if (typeof v === 'string' && (v.startsWith('human') || v === 'manual')) return true;
+  return typeof data.manualClearReason === 'string' && data.manualClearReason.trim().length > 0;
+}
+
+/**
+ * BRO-3584: may a wrongProduction clear lift a contentTier 'invalid'? Yes when the
+ * tier came from anything but garbage text (the clear answers the verdict that
+ * stamped it, or the tier is "no text" and the text/signal check decides). For a
+ * GARBAGE tier a wrongProduction clear says nothing about the text, so it lifts
+ * the tier only when a person also vouched for the text. The one live file this
+ * keeps is proof-2026/new-york-sun: a paywall-prompt false positive on a
+ * human-verified review. Note the rebuild itself does not exclude on the
+ * invalid tier at all (reviews.json carries ~170 invalid-tier rows); this rule
+ * lives in explainExclusion and scoring-delta's replay only.
+ */
+function wrongProductionClearLiftsInvalidTier(data) {
+  return !isGarbageTierReason(data) || invalidTierHumanVerified(data);
+}
+
 function invalidTierClearedByHuman(data) {
   const verdict = invalidTierVerdict(data);
   if (verdict === 'wrongShow') return wrongShowCleared(data);
@@ -4746,7 +4784,8 @@ function explainExclusion(data, show, filePath) {
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false ||
       isFreshWpAutoCleared(data);
-    if (!wpCleared && !invalidTierClearedByHuman(data)) return 'contentTierInvalid';
+    const wpLifts = wpCleared && wrongProductionClearLiftsInvalidTier(data);
+    if (!wpLifts && !invalidTierClearedByHuman(data)) return 'contentTierInvalid';
     // Cleared — fall through and let text/signal check decide
   }
 
@@ -5564,6 +5603,9 @@ module.exports = {
   wrongShowCleared,
   invalidTierVerdict,
   invalidTierClearedByHuman,
+  isGarbageTierReason,
+  invalidTierHumanVerified,
+  wrongProductionClearLiftsInvalidTier,
   rejectedAtHumanCleared,
   isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,

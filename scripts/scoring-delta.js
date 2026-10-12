@@ -1239,10 +1239,15 @@ function decideInclusion(review, show, guards) {
     // made EVERY auto-clear-driven inclusion flip invisible to this gate — a clear
     // computed a few lines above could never change the verdict. wrongProductionCleared
     // stands in for the stamp the replay cannot write.
-    const wpCleared = wrongProductionCleared
+    // BRO-3584: for a garbage-text tier a wrongProduction clear lifts it only
+    // when a person also vouched for the text. Optional for baseline guards.
+    const wpLifts = typeof guards.wrongProductionClearLiftsInvalidTier === 'function'
+      ? guards.wrongProductionClearLiftsInvalidTier(review)
+      : true;
+    const wpCleared = (wrongProductionCleared
       || review.wrongProductionManualClear === true
       || review.wrongProductionOverride === true
-      || review.humanReviewedWrongProduction === false;
+      || review.humanReviewedWrongProduction === false) && wpLifts;
     // BRO-5130: a human clear of the wrongShow / not-a-review verdict that
     // stamped the tier lifts it too. Optional so the baseline guards (which
     // predate the helper) still load.
@@ -1630,6 +1635,15 @@ function main() {
         // scripts/lib/review-guards.explain.test.mjs asserts this line exists.
         && (baseline.explainExclusion?.toString() || '') === (working.explainExclusion?.toString() || '')
         && (baseline.isPrematureReviewForUnopenedShow?.toString() || '') === (working.isPrematureReviewForUnopenedShow?.toString() || '')
+        // Helpers explainExclusion / decideInclusion delegate to (BRO-3584, BRO-3179):
+        // an edit inside one leaves the caller's source unchanged.
+        && (baseline.invalidTierClearedByHuman?.toString() || '') === (working.invalidTierClearedByHuman?.toString() || '')
+        && (baseline.wrongProductionClearLiftsInvalidTier?.toString() || '') === (working.wrongProductionClearLiftsInvalidTier?.toString() || '')
+        && (baseline.isGarbageTierReason?.toString() || '') === (working.isGarbageTierReason?.toString() || '')
+        && (baseline.invalidTierHumanVerified?.toString() || '') === (working.invalidTierHumanVerified?.toString() || '')
+        && (baseline.evaluateLateDateGuard?.toString() || '') === (working.evaluateLateDateGuard?.toString() || '')
+        && (baseline.evaluateUrlYearGuard?.toString() || '') === (working.evaluateUrlYearGuard?.toString() || '')
+        && (baseline.evaluateDirectorGuard?.toString() || '') === (working.evaluateDirectorGuard?.toString() || '')
         // Threshold constants are free variables of the pre-opening gate — a
         // constant-only edit leaves the function source identical (same trap
         // as PRE_WINDOW_DAYS above), so compare by value.
