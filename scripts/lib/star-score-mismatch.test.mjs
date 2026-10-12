@@ -150,7 +150,10 @@ test('generic-pattern star with a low-confidence LLM is still flagged (the rebui
 
 // Ship-check finding: rebuild P0a can still serve an adjudicatedScore next to
 // a dropped generic star, so that case keeps flagging.
-test('generic-pattern star with an adjudicatedScore is still evaluated', () => {
-  const r = { outletId: 'lbc', originalScore: '1/5', originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars', assignedScore: 78, adjudicatedScore: 78, llmScore: { score: 78, confidence: 'high' } };
-  assert.notEqual(evaluateReview(r), null);
+// Live shape: oh-mary-west-end-2025 LBC carries adjudicatedScore 78, agreeing
+// with the LLM, so the served score never contradicts anything on the site.
+test('generic-pattern star: flagged only when the adjudication sided with the star', () => {
+  const base = { outletId: 'lbc', originalScore: '1/5', originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars', assignedScore: 78, llmScore: { score: 78, confidence: 'high' } };
+  assert.equal(evaluateReview({ ...base, adjudicatedScore: 78 }), null);
+  assert.notEqual(evaluateReview({ ...base, adjudicatedScore: 25 }), null);
 });

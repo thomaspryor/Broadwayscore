@@ -12,6 +12,8 @@
  *   node scripts/print-review-text.js <showId>/<file.json> [more...] [--max=N]
  *   node scripts/print-review-text.js --star-mismatch-new [--max=N]
  *     (every NEW finding of scripts/audit-star-score-mismatch.js)
+ *   --fields=llmScore,ensembleData  print these fields whole, whatever their
+ *     size (shortFields drops big objects such as llmScore)
  *
  * Prints each record's short fields (strings under 300 chars, numbers,
  * booleans), then fullText up to --max characters (default 12000).
@@ -23,20 +25,22 @@ const path = require('path');
 const ROOT = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 function parseArgs(argv) {
-  const out = { keys: [], max: 12000, starMismatchNew: false };
+  const out = { keys: [], max: 12000, starMismatchNew: false, fields: [] };
   for (const a of argv) {
     if (a.startsWith('--max=')) out.max = parseInt(a.slice(6), 10) || out.max;
     else if (a === '--star-mismatch-new') out.starMismatchNew = true;
+    else if (a.startsWith('--fields=')) out.fields = a.slice(9).split(',').map(f => f.trim()).filter(Boolean);
     else if (a.startsWith('--')) throw new Error(`unknown option ${a}`);
     else out.keys.push(a);
   }
   return out;
 }
 
-function shortFields(rec) {
+function shortFields(rec, fields = []) {
   const out = {};
+  for (const f of fields) if (f !== 'fullText' && f in rec) out[f] = rec[f];
   for (const [k, v] of Object.entries(rec)) {
-    if (k === 'fullText') continue;
+    if (k === 'fullText' || k in out) continue;
     if (typeof v === 'number' || typeof v === 'boolean' || v === null) out[k] = v;
     else if (typeof v === 'string' && v.length < 300) out[k] = v;
     else if (typeof v === 'object' && JSON.stringify(v).length < 400) out[k] = v;
@@ -44,7 +48,7 @@ function shortFields(rec) {
   return out;
 }
 
-function printOne(key, max) {
+function printOne(key, max, fields) {
   const [showId, file] = key.split('/');
   if (!showId || !file || key.includes('..')) { console.log(`=== ${key}: bad key (want <showId>/<file.json>)`); return false; }
   const p = path.join(ROOT, showId, file);
@@ -52,7 +56,7 @@ function printOne(key, max) {
   const rec = JSON.parse(fs.readFileSync(p, 'utf8'));
   const text = String(rec.fullText || '');
   console.log(`=== ${key}`);
-  console.log(JSON.stringify(shortFields(rec), null, 1));
+  console.log(JSON.stringify(shortFields(rec, fields), null, 1));
   console.log(`--- fullText (${text.length} chars${text.length > max ? `, first ${max}` : ''})`);
   console.log(text.slice(0, max));
   console.log('');
@@ -74,7 +78,7 @@ function main() {
   }
   if (keys.length === 0) { console.error('usage: print-review-text.js <showId>/<file.json> [...] [--max=N] | --star-mismatch-new'); process.exit(2); }
   let ok = 0;
-  for (const k of keys) if (printOne(k, args.max)) ok++;
+  for (const k of keys) if (printOne(k, args.max, args.fields)) ok++;
   process.exit(ok === keys.length ? 0 : 1);
 }
 

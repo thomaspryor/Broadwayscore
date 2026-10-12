@@ -145,9 +145,12 @@ function evaluateReview(review, opts = {}) {
 
   const expected = parsed.expected;
   if (humanScoreResolvesBand(review)) return null;
-  // An adjudicatedScore can still be served (rebuild P0a) next to a dropped
-  // star, so only skip when there is none to contradict the rating.
-  if (review.adjudicatedScore == null && isUncorroboratedGenericStar(review, expected)) return null;
+  // Rebuild P0a can serve an adjudicatedScore next to a dropped star. Skip
+  // unless that adjudication sided with the junk star (then the served score
+  // is the star's, and the LLM contradiction is still worth a look).
+  const adj = typeof review.adjudicatedScore === 'number' ? review.adjudicatedScore : null;
+  const adjSidesWithStar = adj !== null && Math.abs(adj - expected) <= threshold;
+  if (!adjSidesWithStar && isUncorroboratedGenericStar(review, expected)) return null;
   const llm = review.llmScore && typeof review.llmScore.score === 'number' ? review.llmScore.score : null;
   const assigned = typeof review.assignedScore === 'number' ? review.assignedScore : null;
   if (llm === null && assigned === null) return null;
