@@ -273,8 +273,18 @@ async function processShow(show) {
         }
 
         // Try to get full-size image from the source page
-        console.log(`   Trying source: ${sourceUrl.substring(0, 60)}...`);
-        const imageUrls = await getOriginalImageUrl(sourceUrl, show.title);
+        // Scrapingdog results already carry the full-size image URL: try it
+        // before paying for a fetch of the source page (BRO-3377).
+        const direct = result._directUrl && result.imageUrl ? [result.imageUrl] : [];
+        let imageUrls = direct;
+        if (direct.length) {
+          const first = await tryDownloadImage(direct[0], 400);
+          if (!first || !first.isSquare) imageUrls = [];
+        }
+        if (!imageUrls.length) {
+          console.log(`   Trying source: ${sourceUrl.substring(0, 60)}...`);
+          imageUrls = await getOriginalImageUrl(sourceUrl, show.title);
+        }
 
         for (const imgUrl of imageUrls) {
           const img = await tryDownloadImage(imgUrl, 400);
