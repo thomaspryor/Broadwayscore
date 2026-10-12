@@ -1504,14 +1504,14 @@
   {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38201384237",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38202295146",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-12T03:55:56.924Z"
+    "queuedAt": "2026-10-12T04:11:45.585Z"
   },
   {
     "conditionKey": "land:land/codex-bro-4042",
@@ -1541,5 +1541,34 @@
       }
     ],
     "queuedAt": "2026-10-12T04:06:21.355Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4521-followup",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-4521-followup",
+    "description": "land.yml did not land land/bro-4521-followup: the unit-tests-tsx gate went red at 7ab7e27275. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38200527272",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4521-followup"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "7ab7e272753da733b4c4f6517a272410681525bf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38200527272"
+      }
+    ],
+    "queuedAt": "2026-10-12T04:09:28.226Z"
   }
 ]

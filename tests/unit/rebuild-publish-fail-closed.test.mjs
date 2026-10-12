@@ -175,7 +175,13 @@ for (const cfg of WINDOWS) {
     const { steps } = windowSteps(cfg);
     const revertIdx = steps.findIndex((s) => /Revert public data for shows flagged by staleness guard/i.test(s.name || ''));
     assert.ok(revertIdx >= 0, `${cfg.file}: revert step not found`);
-    const run = String(steps[revertIdx].run || '');
+    let run = String(steps[revertIdx].run || '');
+    // BRO-2783 extracted the logic to scripts/lib/revert-staleness-flagged-
+    // shows.sh (shared with the post-lost-race redo); check the script the
+    // step actually runs rather than only the step's inline text.
+    for (const m of run.matchAll(/bash\s+(scripts\/lib\/[\w.-]+\.sh)/g)) {
+      run += '\n' + fs.readFileSync(path.join(REPO_ROOT, m[1]), 'utf-8');
+    }
     assert.match(
       run,
       /git cat-file -e "HEAD:/,
