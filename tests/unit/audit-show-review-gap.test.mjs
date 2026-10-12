@@ -129,7 +129,7 @@ test('computeResidualCounts: a genuine uncaptured URL alongside prior-run noise 
 // gap the SAME run just closed still reported as open.
 test('currentRunUncollected: prior-run citations are excluded, matching pre-send-check.mjs\'s "uncollected"', () => {
   const r = { missing: priorMiss(5), citedNoUrl: [{ outletId: 'o', priorRun: true }] };
-  assert.equal(currentRunUncollected(r), 0);
+  assert.equal(currentRunUncollected(r, { blocklist: null }), 0);
 });
 
 test('currentRunUncollected: a URL this same run successfully ingested no longer counts as uncollected', () => {
@@ -137,7 +137,7 @@ test('currentRunUncollected: a URL this same run successfully ingested no longer
     missing: [{ host: 'a.com', url: 'https://a.com/1' }, { host: 'b.com', url: 'https://b.com/1' }],
     ingestResults: [{ url: 'https://a.com/1', ok: true }, { url: 'https://b.com/1', ok: false }],
   };
-  assert.equal(currentRunUncollected(r), 1, 'only the URL that failed to ingest is still uncollected');
+  assert.equal(currentRunUncollected(r, { blocklist: null }), 1, 'only the URL that failed to ingest is still uncollected');
 });
 
 test('currentRunUncollected: an ingest attempt that failed or was skipped still counts as uncollected', () => {
@@ -146,5 +146,35 @@ test('currentRunUncollected: an ingest attempt that failed or was skipped still 
     citedNoUrl: [{ outletId: 'o1' }],
     ingestResults: [],
   };
-  assert.equal(currentRunUncollected(r), 2);
+  assert.equal(currentRunUncollected(r, { blocklist: null }), 2);
+});
+
+// BRO-5133: the alert reads rows carried forward from runs that predate the
+// BRO-4190 candidate gate. Lost in Del Valle's 2026-10-10 row listed a Show
+// Score page, an Apple podcast and an iloveny.com promo as missing reviews and
+// re-alerted 15 times; a fresh audit drops all three. Re-gate at read time.
+test('currentRunUncollected: a stale row never counts URLs the current candidate gate rejects', () => {
+  const r = {
+    showId: 'lost-in-del-valle-return-off-broadway-2026',
+    missing: [
+      { host: 'show-score.com', url: 'https://www.show-score.com/off-off-broadway-shows/lost-in-del-valle' },
+      { host: 'apple.com', url: 'https://podcasts.apple.com/us/podcast/ned-van-zandt-amir-arison-bring-lost-in-del-valle-to-nyc/id1706573083' },
+      { host: 'iloveny.com', url: 'https://www.iloveny.com/thebeat/post/presenting-the-us-premiere-of-lost-in-del-valle/' },
+      { host: 'theknockturnal.com', url: 'https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/' },
+    ],
+  };
+  assert.equal(currentRunUncollected(r, { blocklist: null }), 1, 'only the real review URL still counts');
+});
+
+test('currentRunUncollected: a URL on the show blocklist is not uncollected', () => {
+  const { loadBlocklist } = require('../../scripts/lib/poller-blocklist.js');
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bl-'));
+  const blocked = 'https://www.ticketnews.com/2026/02/lost-in-del-valle-sets-u-s-premiere-at-soho-playhouse/';
+  fs.writeFileSync(path.join(dir, '_blocklist.json'), JSON.stringify([{ url: blocked, reason: 'news-not-review' }]));
+  const r = { showId: 'x', missing: [{ host: 'ticketnews.com', url: blocked }, { host: 'vulture.com', url: 'https://www.vulture.com/article/review-x.html' }] };
+  assert.equal(currentRunUncollected(r, { blocklist: loadBlocklist(dir) }), 1);
+  assert.equal(currentRunUncollected(r, { blocklist: null }), 2);
 });

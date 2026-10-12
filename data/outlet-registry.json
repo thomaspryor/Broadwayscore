@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-12T14:16:35.520Z",
+    "lastUpdated": "2026-10-12T14:19:27.000Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5128: split BritishTheatre.com (britishtheatrecom, britishtheatre.com) out of british-theatre (British Theatre Guide, now britishtheatreguide.info)"
+    "lastChange": "BRO-5133: add New York Social Diary (newyorksocialdiary, newyorksocialdiary.com); its Lost in Del Valle review was filed under vulture and excluded as domain-unvalidated"
   },
   "outlets": {
     "westendtheatre": {
@@ -12513,6 +12513,17 @@
         "thesuburban"
       ],
       "domain": "thesuburban.com"
+    },
+    "newyorksocialdiary": {
+      "displayName": "New York Social Diary",
+      "tier": 4,
+      "aliases": [
+        "newyorksocialdiary",
+        "new-york-social-diary",
+        "nysd"
+      ],
+      "accessModel": "free",
+      "domain": "newyorksocialdiary.com"
     }
   },
   "_aliasIndex": {

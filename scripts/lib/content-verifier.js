@@ -579,6 +579,19 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
 }
 
 /**
+ * BRO-4189: the old one-line definition ("preview: written before opening,
+ * previewing what to expect") let the CV model reason "published at/just after
+ * opening => preview": 106 genuine opening-night reviews on 130 recent shows
+ * were stamped articleType='preview' with reasoning like "a preview piece
+ * written before or immediately upon opening", then CV-promoted to isNonReview.
+ * A preview is defined by whether the critic had SEEN the production, never by
+ * publish timing. Exported so the wording is pinned by
+ * tests/unit/isNonReview-opening-night.test.mjs.
+ */
+const PREVIEW_ARTICLE_TYPE_GUIDANCE = `   - **preview**: written BEFORE the critic saw the production (a pre-opening announcement, season preview, or "what to expect" piece) that describes the show but gives no verdict on a performance the writer attended.
+   - **Timing is NOT the test.** Reviews published on opening night, immediately upon opening, or in the days after are REVIEWS, not previews: press performances happen before opening and embargoes lift at opening. Never call an article a preview because of when it was published. If the writer evaluates the performance, cast, staging or direction they watched (praise or criticism, with or without stars), it is a review, even if it opens with several paragraphs of background, plot or production history.`;
+
+/**
  * Pure prompt-builder for verifyContent — no network calls, so it's directly
  * unit-testable (content-verifier.test.mjs) without mocking LLM providers.
  *
@@ -744,7 +757,7 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
   if (_openDate && _pubDate) {
     const daysDiff = Math.abs((_pubDate.getTime() - _openDate.getTime()) / 86400000);
     if (daysDiff <= 30) {
-      temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production. Be very cautious about flagging wrongProduction or isFilmTv for opening-week reviews. Do NOT confuse the show with same-name films, musicals, or prior productions — use the publish date as strong evidence this is the current ${mc.label} production. Do NOT hallucinate prior productions that may not exist.`;
+      temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production. Be very cautious about flagging wrongProduction or isFilmTv for opening-week reviews. Do NOT confuse the show with same-name films, musicals, or prior productions — use the publish date as strong evidence this is the current ${mc.label} production. Do NOT hallucinate prior productions that may not exist. Publication near opening is also NOT evidence the article is a preview: an opening-week article that evaluates the production is a review (articleType "review").`;
     }
   }
 
@@ -816,7 +829,7 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
 **Check these specific things:**
 
 1. **Article type (CRITICAL)**: Is this a REVIEW — a critic evaluating a show after seeing it and giving their opinion? Or is it something else:
-   - **preview**: written before opening, previewing what to expect
+${PREVIEW_ARTICLE_TYPE_GUIDANCE}
    - **interview**: conversation with cast/creatives
    - **news/feature**: reporting on the show (casting, box office, closings)
    - **box-office**: grosses/financial data
@@ -1120,6 +1133,7 @@ function isCvVerdictFromTruncatedFetch(cv, text, url) {
 module.exports = {
   buildVerificationPrompt,
   CV_WINDOW_CHARS,
+  PREVIEW_ARTICLE_TYPE_GUIDANCE,
   isCvVerdictFromPartialWindow,
   isCvVerdictFromTruncatedFetch,
   verifyContent,

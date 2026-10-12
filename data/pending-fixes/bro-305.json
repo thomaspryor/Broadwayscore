@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-305",
   "planId": "2348f02a-477d-4cf6-928c-e00619e016b4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T14:30:00Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,33 @@
         "description": "BRO-305: why humanReviewScore was set"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T14:58:28.550Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/huffpost--michael-glitz.json originalScore: \"A\" -> \"1/4 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "be-more-chill-2019/dc-theater-arts--deb-miller.json originalScore: \"D\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-dinosaurs-off-broadway/theater-life--samuel-l-leiter.json originalScore: \"4/5 stars\" -> \"2.5/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json humanReviewScore: null -> 58"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json humanReviewNote: null -> \"BRO-305: 3/5 Times review; LLM 25 came from a paywall-truncated page. 58 sits inside the 3/5 band (51-70), matching the mixed-positive verdict.\""
+    }
+  ]
 }

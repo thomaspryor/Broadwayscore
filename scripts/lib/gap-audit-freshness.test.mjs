@@ -131,3 +131,26 @@ test('undated shows sort last among ties without throwing', () => {
   const dated = { id: 'dated', status: 'open', openingDate: iso(60 * DAY) };
   assert.ok(compareAuditPriority(dated, undated, {}, NOW) < 0);
 });
+
+// BRO-5133: a show at day 8-21 whose row still alerts must re-audit ahead of the
+// back catalogue, or its stale row re-fires the daily digest for a week+.
+test('alerting show inside the 21-day alert window sorts ahead of an older back-catalogue retry', () => {
+  const alerting = { id: 'del-valle', status: 'open', openingDate: iso(19 * DAY) };
+  const backlog = { id: 'old-closed-gap', status: 'closed', openingDate: iso(300 * DAY) };
+  const checkpoint = {
+    'del-valle': { at: new Date(NOW - 2 * DAY).toISOString(), uncollected: 7 },
+    'old-closed-gap': { at: new Date(NOW - 30 * DAY).toISOString(), uncollected: 3 },
+  };
+  assert.ok(compareAuditPriority(alerting, backlog, checkpoint, NOW) < 0);
+});
+
+test('alert-window tier needs a live show with uncollected reviews on its row', () => {
+  const { auditTier } = require('./gap-audit-freshness.js');
+  const show = { id: 'x', status: 'open', openingDate: iso(15 * DAY) };
+  assert.equal(auditTier(show, { uncollected: 1 }, NOW), 1);
+  assert.equal(auditTier(show, { uncollected: 0 }, NOW), 2);
+  assert.equal(auditTier(show, undefined, NOW), 1, "never audited in the alert window: check it first");
+  assert.equal(auditTier({ ...show, status: 'closed' }, { uncollected: 1 }, NOW), 2);
+  assert.equal(auditTier({ ...show, openingDate: iso(40 * DAY) }, { uncollected: 1 }, NOW), 2);
+  assert.equal(auditTier(openedToday, undefined, NOW), 0);
+});

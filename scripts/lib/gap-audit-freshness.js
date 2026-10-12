@@ -79,9 +79,25 @@ function checkpointTs(entry) {
 // Purpose (9/16) sat at queue positions 95 and 116 behind ~46 never-audited
 // open shows and 58 closed ones, were never audited, and shipped in the
 // 2026-09-28 newsletter with no review-completeness data at all (BRO-4592).
+//
+// Tier 1 (BRO-5133): a live show past its first week, still inside the
+// opening-window alert (inOpeningWindow, 21 days), whose last row still counts
+// uncollected reviews, sorts ahead of the back catalogue. The alert re-reads
+// that row every day, so without this a show at day 8-21 waited a week or more
+// behind back-catalogue retries while the digest repeated its stale gap 15
+// times (Lost in Del Valle, Midnight, Elf Lyons, 2026-10; 34 shows 6-13 days
+// stale on 2026-10-12). Spend-neutral: the run is time-boxed, this only
+// reorders it, and these shows keep the 12h freshness. A live in-window show
+// with no row at all is tier 1 too: it has never been checked (BRO-4592 class).
+function auditTier(show, entry, now = Date.now()) {
+  if (inOpeningPriorityWindow(show, now)) return 0;
+  if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
+  return 2;
+}
+
 function compareAuditPriority(a, b, checkpoint, now = Date.now()) {
-  const wa = inOpeningPriorityWindow(a, now) ? 0 : 1;
-  const wb = inOpeningPriorityWindow(b, now) ? 0 : 1;
+  const wa = auditTier(a, checkpoint[a.id], now);
+  const wb = auditTier(b, checkpoint[b.id], now);
   if (wa !== wb) return wa - wb;
   const byAge = checkpointTs(checkpoint[a.id]) - checkpointTs(checkpoint[b.id]); // oldest / never-audited first
   if (byAge !== 0) return byAge;
@@ -96,6 +112,7 @@ module.exports = {
   freshnessMsFor,
   inOpeningPriorityWindow,
   compareAuditPriority,
+  auditTier,
   checkpointTs,
   OPENING_PRIORITY_WINDOW_DAYS,
   OPENING_HOT_DAYS,

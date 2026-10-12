@@ -306,7 +306,7 @@ A REVIEW evaluates the quality of a production — acting, direction, writing, d
 NOT a review — classify as the appropriate type:
 - PROFILE: biographical article about a cast or creative team member
 - INTERVIEW: Q&A or conversation with someone involved in the production
-- PREVIEW: pre-opening article that describes but does NOT evaluate the production
+- PREVIEW: article written before the writer saw the production, that describes but does NOT evaluate it. Publication on or right after opening night does NOT make an article a preview (BRO-4189): an opening-night piece that evaluates the performance is a review.
 - FEATURE: general interest article about the show's topic, history, or context
 - NEWS: casting announcements, box office reports, award nominations, closings
 - OBITUARY: memorial article about a deceased theater person
