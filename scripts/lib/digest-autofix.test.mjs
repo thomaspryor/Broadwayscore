@@ -1379,6 +1379,9 @@ test('planAutofix tags daily-health rows only; isVisitorFacingRow needs health +
   assert.equal(isVisitorFacingRow(byName['Show pages: missing poster images']), true);
   assert.equal(isVisitorFacingRow(byName['Data: undispatchable backlog cards']), false, 'internal health row');
   assert.equal(isVisitorFacingRow(byName['Some extra issue']), false, 'extraIssues are not health rows');
+  // BRO-5168: owner-money / owner-Mac rows default to 'visitors' in digest-audience but no worker can fix them.
+  assert.equal(isVisitorFacingRow({ name: 'Credits: ScrapingBee', fromHealth: true }), false, 'owner money row');
+  assert.equal(isVisitorFacingRow({ name: 'Cookies: BWW', fromHealth: true }), false, 'owner Mac row');
   assert.equal(isVisitorFacingRow(byName['Router line']), false, 'queued router lines are not health rows');
 });
 
@@ -1436,4 +1439,10 @@ test('START_NOW_REFUSED_RE matches the refusal linear-issue-create actually thro
   } catch (e) { err = e; }
   assert.ok(err, 'expected a refusal');
   assert.match(err.message, START_NOW_REFUSED_RE);
+});
+
+test('planAutofix: a queued router line already titled "BSC Daily: <row>" is not prefixed twice (BRO-5168)', () => {
+  const { planAutofix } = require('./digest-autofix.js');
+  const plan = planAutofix({ health: { errors: [], warns: [] }, today: '2026-10-12', queued: [{ title: 'BSC Daily: Data: stale rows', description: 'x', conditionKey: 'health-check:Data: stale rows' }] });
+  assert.deepEqual(plan.map((r) => r.title), ['BSC Daily: Data: stale rows']);
 });

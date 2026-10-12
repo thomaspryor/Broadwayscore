@@ -345,6 +345,34 @@ async function listOpenIssuesWithDescriptions(teamKey = TEAM_KEY) {
   return issues;
 }
 
+// BRO-5168: issues touched since `since` (an ISO date or ISO duration like
+// "-P14D") whose title starts with one of `titlePrefixes` or whose body
+// contains one of `descriptionMarkers`, archived ones included. Used to count
+// automated-fix throughput from Linear, which CI and the Mac can both read.
+async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMarkers = [] }, teamKey = TEAM_KEY) {
+  const or = [
+    ...titlePrefixes.map((p) => ({ title: { startsWith: p } })),
+    ...descriptionMarkers.map((m) => ({ description: { contains: m } })),
+  ];
+  if (!or.length) return [];
+  const query = `query($teamKey: String!, $since: DateTimeOrDuration!, $or: [IssueFilter!], $after: String) {
+    issues(first: 100, after: $after, includeArchived: true, filter: { team: { key: { eq: $teamKey } }, updatedAt: { gte: $since }, or: $or }) {
+      nodes { identifier title createdAt startedAt completedAt canceledAt state { name type } }
+      pageInfo { hasNextPage endCursor }
+    }
+  }`;
+  const issues = [];
+  let after = null;
+  for (;;) {
+    const data = await graphql(query, { teamKey, since, or, after });
+    const { nodes, pageInfo } = data.issues || { nodes: [], pageInfo: { hasNextPage: false } };
+    issues.push(...(nodes || []));
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return issues;
+}
+
 // identifier -> comment nodes for many issues of one team, 50 per request
 // (BRO-4642). Callers attach these as issue.comments for sortedCommentBodies.
 async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
@@ -705,6 +733,7 @@ module.exports = {
   getIssue,
   listOpenIssues,
   listOpenIssuesWithDescriptions,
+  listIssuesByProvenance,
   listIssueComments,
   searchIssues,
   createComment,

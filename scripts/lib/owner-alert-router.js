@@ -94,10 +94,12 @@ const { createLinearIssue, isUsageLimitExceeded } = require('./linear-issue-crea
 // BRO-4054: provenance marker for cards filed for dispatch-at-filing (no
 // PARKED sentinel) — shared with the Mac-side red-first pass that selects them.
 const { DISPATCH_AT_FILING_MARKER } = require('./linear-drain-parked');
+const { startNowHealthRowReason, startNowLine } = require('./start-now-filing.js');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
 const linearClient = require('./linear-client');
+const { isTerminalStateType } = require('./linear-state-types.js');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 // Git-tracked ledger — CI only. Every job that routes an alert stages and
@@ -527,6 +529,29 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
 // when it matters (a real 429 burst). If this ever needs bounding, pass
 // timeoutMs/maxAttempts through to linear-client.js's graphql() rather than
 // wrapping the whole call in a race — see linear-client.js's graphql() opts.
+// BRO-5168: a parked card is clamped to Medium and only the Mac-side drain
+// (linear-drain-parked.js) ever dispatches it, so while the Mac was down no
+// router-filed health card was worked. A daily health row a worker can fix on
+// its own (start-now-filing.js: visitor-facing, not an owner-money/Mac row,
+// not acknowledged) with a machine-checkable VERIFY is filed START-NOW
+// instead: Todo at High, so cloud-worker-pick.js takes it. Capped per process
+// so a cohort of rows reaching their 72h filing age on one run cannot fill
+// the cloud worker's one-card-per-firing queue; the rest file parked.
+const MAX_START_NOW_PER_RUN = 3;
+let startNowFiledThisRun = 0;
+// The provenance line deliberately avoids linear-drain-parked's
+// AUTO_FILED_MARKER ("Auto-filed by owner-alert-router") and
+// DISPATCH_AT_FILING_MARKER, so neither Mac-side pass double-selects it.
+const START_NOW_PROVENANCE = 'Filed by owner-alert-router (START-NOW';
+
+/** PURE. Should this condition's card be filed START-NOW? */
+function startNowEligible({ conditionKey, description, verify }) {
+  const name = healthRowNameFromConditionKey(conditionKey);
+  if (!name) return false;
+  if (verify && verify.line && /owner-judgment/i.test(verify.line)) return false;
+  return startNowHealthRowReason({ name, message: description }) === null;
+}
+
 async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling }) {
   let notes = buildCardNotes({ description, hint, fields, conditionKey, verify });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
@@ -555,15 +580,35 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
   if (dispatchMode) {
     notes = `${DISPATCH_AT_FILING_MARKER} (BRO-4054; condition: ${conditionKey}). The Mac-side red-first pass dispatches it headless within ~5 minutes of filing; it needs no owner triage unless the VERIFY line below says owner-judgment.\n\n${notes}`;
   }
+  // BRO-5168: START-NOW filing (see startNowEligible). The pickability check
+  // runs here, before the create, because a START-NOW card the cloud worker
+  // would skip sits in Todo forever (BRO-5017); such a card files parked.
+  let startNow = false;
+  if (!dispatchMode && startNowFiledThisRun < MAX_START_NOW_PER_RUN && startNowEligible({ conditionKey, description, verify })) {
+    const startNowNotes = `${startNowLine('the Mac drain')}\n${START_NOW_PROVENANCE}; condition: ${conditionKey}).\n\n${notes}`;
+    let unpickable = null;
+    try {
+      unpickable = require('./cloud-worker-pick.js').startNowUnpickableReason({ title, description: startNowNotes, priority: 2, mode: 'dispatch' });
+    } catch (e) {
+      unpickable = { reason: `check-failed: ${e.message}` };
+    }
+    if (unpickable) {
+      console.warn(`[alert-router] "${title}" not filed START-NOW (${unpickable.reason}); filing parked`);
+    } else {
+      startNow = true;
+      notes = startNowNotes;
+    }
+  }
   try {
     const { issue } = await createLinearIssue({
       title,
       description: notes,
-      priority: linearPriority,
-      ...(dispatchMode ? { dispatch: true } : { park: parkReason }),
+      priority: startNow ? 2 : linearPriority,
+      ...(dispatchMode || startNow ? { dispatch: true } : { park: parkReason }),
     });
+    if (startNow) startNowFiledThisRun++;
     logDispatchAttempt({ conditionKey, title, ok: true });
-    return { ok: true, cardId: null, linearIdentifier: issue.identifier, dispatchMode };
+    return { ok: true, cardId: null, linearIdentifier: issue.identifier, dispatchMode, ...(startNow ? { startNow: true } : {}) };
   } catch (err) {
     // Log the REAL error verbatim — this is the exact spot the npm-ci incident
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
@@ -816,6 +861,32 @@ function alertIdempotencyKey(conditionKey, cooldownHours, nowMs, incident = '') 
   return `owner-alert:${id}:${Math.floor(nowMs / windowMs)}`;
 }
 
+// BRO-5168. Is this tracker issue closed or gone? A card closed as a
+// duplicate is followed to its original (board triage closes the newer twin,
+// e.g. BRO-4093 -> BRO-3795 -> BRO-3712), so a row whose original is still
+// open stays tracked. Any lookup error counts as "still open", so a Linear
+// outage never files a duplicate.
+const MAX_DUPLICATE_HOPS = 3;
+async function trackerIsClosed(identifier, getIssueFn) {
+  let id = identifier;
+  try {
+    for (let hop = 0; hop <= MAX_DUPLICATE_HOPS; hop++) {
+      const issue = await getIssueFn(id);
+      if (!issue) return true;
+      const type = issue.state && issue.state.type;
+      if (type !== 'duplicate') return isTerminalStateType(type);
+      const rel = ((issue.relations && issue.relations.nodes) || [])
+        .find((r) => r && r.type === 'duplicate' && r.relatedIssue && r.relatedIssue.identifier && r.relatedIssue.identifier !== id);
+      if (!rel) return true;
+      id = rel.relatedIssue.identifier;
+    }
+    return false; // a longer chain than this is unusual; don't refile on a guess
+  } catch (err) {
+    console.error(`[alert-router] tracker check for ${identifier} failed (treating it as open): ${err.message}`);
+    return false;
+  }
+}
+
 async function routeAlert(opts) {
   const {
     conditionKey,
@@ -860,7 +931,15 @@ async function routeAlert(opts) {
   // this a recurrence reads as "already tracked" and never gets a card
   // (ship-check P0). The old tracker may be closed or swept; if it is still
   // open, the duplicate check at filing time finds it again.
-  const staleTracker = deferAuto && !!(existing && existing.linearIdentifier) && incidentOpenedAt === now;
+  let staleTracker = deferAuto && !!(existing && existing.linearIdentifier) && incidentOpenedAt === now;
+  // BRO-5168: the same incident can outlive its tracker. A card closed while
+  // the row stayed red (e.g. "Quality: corpus drift" -> a July card, row still
+  // open in October) left linearIdentifier set, and deferredAutoIsDue() is
+  // false whenever it is set, so the condition was never carded again.
+  if (!staleTracker && deferAuto && existing && existing.linearIdentifier
+      && (nowMs - Date.parse(incidentOpenedAt)) / 3600000 >= fileAfterHours) {
+    staleTracker = await trackerIsClosed(existing.linearIdentifier, (opts && opts.getIssueFn) || linearClient.getIssue);
+  }
   const existingForDecision = staleTracker ? { ...existing, linearIdentifier: null } : existing;
 
   // A deferred incident that has reached its filing age must get past the
@@ -1231,6 +1310,11 @@ module.exports = {
   decideDigestEscalation,
   currentIncidentOpenedAt,
   deferredAutoIsDue,
+  // BRO-5168: START-NOW eligibility for router-filed cards, and its per-run cap.
+  startNowEligible,
+  MAX_START_NOW_PER_RUN,
+  trackerIsClosed,
+  _resetStartNowCountForTests: () => { startNowFiledThisRun = 0; },
   DEFERRED_AUTO_FILE_AFTER_HOURS,
   INCIDENT_GAP_RESET_HOURS,
   isNeverQuietCondition,
