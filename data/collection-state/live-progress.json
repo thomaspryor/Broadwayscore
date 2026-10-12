@@ -1,29 +1,40 @@
 {
-  "updatedAt": "2026-10-12T14:24:38.159Z",
-  "processed": 27,
-  "failed": 149,
-  "successRate": "15.3%",
+  "updatedAt": "2026-10-12T14:28:45.371Z",
+  "processed": 193,
+  "failed": 88,
+  "successRate": "68.7%",
   "tierBreakdown": {
-    "playwright": 7,
-    "amp": 1,
-    "browserbase": 0,
-    "directCookies": 1,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
-    "brightdata": 10,
+    "playwright": 104,
+    "amp": 4,
+    "browserbase": 4,
+    "directCookies": 0,
+    "scrapingdog": 17,
+    "scrapingbee": 15,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 49
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 24,
   "recentActivity": [
     {
-      "t": "2026-10-12T12:10:15.445Z",
+      "t": "2026-10-12T12:08:34.884Z",
       "event": "bb-session",
-      "session": "8ded4ba9",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+      "session": "0a17fed4",
+      "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
     },
     {
-      "t": "2026-10-12T12:10:16.318Z",
+      "t": "2026-10-12T12:08:35.649Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-12T12:56:55.430Z",
+      "event": "bb-session",
+      "session": "41228c3c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-12T12:56:56.298Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
