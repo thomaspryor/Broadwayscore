@@ -294,5 +294,35 @@
       }
     ],
     "queuedAt": "2026-10-12T11:04:56.987Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3488-notion-token",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3488-notion-token",
+    "description": "land.yml did not land land/bro-3488-notion-token: the unit-tests-node gate went red at 11d889c577. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38238888924",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3488-notion-token"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "11d889c5779c90370efc01b65d4690ee8688f28f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38238888924"
+      }
+    ],
+    "queuedAt": "2026-10-12T11:26:57.063Z"
   }
 ]
