@@ -2358,5 +2358,35 @@
       }
     ],
     "queuedAt": "2026-10-13T22:29:00.561Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4674-sibling-misroute",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4674-sibling-misroute",
+    "description": "land.yml did not land land/bro-4674-sibling-misroute: the unit-tests-node gate went red at fed9d38597. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38474237021",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4674-sibling-misroute"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fed9d385975e4dcf2f24fe79a287af0d02a7dcb4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38474237021"
+      }
+    ],
+    "queuedAt": "2026-10-13T22:32:43.040Z"
   }
 ]
