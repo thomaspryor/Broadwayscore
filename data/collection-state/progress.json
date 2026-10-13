@@ -1,254 +1,27 @@
 {
   "processed": [
-    "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json",
     "the-farnsworth-invention-2007/variety--charles-isherwood.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
-    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-    "parade-2023/wsj--charles-isherwood.json",
-    "burn-this-2019/wsj--terry-teachout.json"
+    "enchanted-april-2003/variety--charles-isherwood.json"
   ],
   "failed": [
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
-    "the-music-man-2022/wsj--charles-isherwood.json",
-    "fun-home-2015/wsj--terry-teachout.json"
+    "cyrano-de-bergerac-2007/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "data/review-texts/parade-2023/wsj--charles-isherwood.json",
-      "parade-2023/wsj--charles-isherwood.json",
-      "data/review-texts/burn-this-2019/wsj--terry-teachout.json",
-      "burn-this-2019/wsj--terry-teachout.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+      "enchanted-april-2003/variety--charles-isherwood.json"
+    ],
     "archiveToday": [],
-    "archive": [
-      "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-10-12T20:59:55.801Z",
-  "lastProcessed": "fun-home-2015/wsj--terry-teachout.json",
-  "log": [
-    {
-      "t": "2026-10-12T21:42:33.858Z",
-      "event": "bb-session",
-      "session": "0a750b11",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
-    },
-    {
-      "t": "2026-10-12T21:42:46.726Z",
-      "event": "bb-session",
-      "session": "555ca400",
-      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
-    },
-    {
-      "t": "2026-10-12T21:42:47.078Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-12T21:43:04.288Z",
-      "event": "bb-session",
-      "session": "3cf68d19",
-      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
-    },
-    {
-      "t": "2026-10-12T21:43:04.650Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-12T21:46:13.217Z",
-      "event": "bb-session",
-      "session": "a8ee27c2",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-12T21:46:13.555Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-12T21:46:30.632Z",
-      "event": "bb-session",
-      "session": "d889c2b6",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-12T21:46:30.991Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T01:21:31.015Z",
-      "event": "bb-session",
-      "session": "3effcc8e",
-      "url": "https://www.talkinbroadway.com/page/regional/minn/minn1534.html"
-    },
-    {
-      "t": "2026-10-13T01:21:31.473Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T01:21:48.547Z",
-      "event": "bb-session",
-      "session": "88c9de87",
-      "url": "https://www.talkinbroadway.com/page/regional/minn/minn1534.html"
-    },
-    {
-      "t": "2026-10-13T01:21:48.875Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T02:48:00.474Z",
-      "event": "bb-session",
-      "session": "d53f1e94",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
-    },
-    {
-      "t": "2026-10-13T02:48:18.995Z",
-      "event": "bb-session",
-      "session": "2625ea20",
-      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
-    },
-    {
-      "t": "2026-10-13T02:48:19.901Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T02:48:38.111Z",
-      "event": "bb-session",
-      "session": "7a999aaa",
-      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
-    },
-    {
-      "t": "2026-10-13T02:48:38.995Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T02:52:12.075Z",
-      "event": "bb-session",
-      "session": "16abca13",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-13T02:52:12.963Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T02:52:31.219Z",
-      "event": "bb-session",
-      "session": "58626f48",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-13T02:52:32.128Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-13T02:53:31.213Z",
-      "event": "bb-session",
-      "session": "ee131ab0",
-      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
-    },
-    {
-      "t": "2026-10-13T09:57:26.858Z",
-      "event": "bb-session",
-      "session": "cf0df71f",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-10-13T09:57:27.359Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T09:57:45.899Z",
-      "event": "bb-session",
-      "session": "9565500f",
-      "url": "https://www.wsj.com/articles/parade-review-a-broadway-musical-of-american-bigotr"
-    },
-    {
-      "t": "2026-10-13T09:57:46.395Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T09:58:06.401Z",
-      "event": "bb-session",
-      "session": "d458f064",
-      "url": "https://www.wsj.com/articles/the-music-man-review-hugh-jackman-and-sutton-foster"
-    },
-    {
-      "t": "2026-10-13T09:58:06.862Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T09:58:16.339Z",
-      "event": "bb-session",
-      "session": "8f635a30",
-      "url": "https://www.wsj.com/articles/the-music-man-review-hugh-jackman-and-sutton-foster"
-    },
-    {
-      "t": "2026-10-13T09:58:16.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T09:59:37.029Z",
-      "event": "bb-session",
-      "session": "9243d186",
-      "url": "https://www.wsj.com/articles/burn-this-review-red-hot-romance-fizzles-1155561505"
-    },
-    {
-      "t": "2026-10-13T09:59:37.530Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T10:00:44.764Z",
-      "event": "bb-session",
-      "session": "3aee677e",
-      "url": "https://www.wsj.com/articles/fun-home-review-a-musical-both-heartbreaking-and-he"
-    },
-    {
-      "t": "2026-10-13T10:00:45.272Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ],
-  "recoveredAfterFailure": [
-    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
-    "hadestown-2019/theater-life--isa-goldberg.json",
-    "the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json",
-    "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
-    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json"
-  ]
+  "startTime": "2026-10-13T10:25:34.425Z",
+  "lastProcessed": "enchanted-april-2003/variety--charles-isherwood.json",
+  "log": []
 }
