@@ -40,6 +40,7 @@
 const { extractPublishDate } = require('./article-extractor');
 const { isCurrentRunRoundup } = require('./gap-reference-sources');
 const { isUrlYearInPriorRun, urlYearOf } = require('./url-discovery');
+const { toDateMs } = require('./date-utils');
 
 /**
  * Date an aggregator article against the show's current opening window.
@@ -158,9 +159,9 @@ function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources, serpCensusG
  * @returns {boolean}
  */
 function isPublishDateBeforeRun(publishDate, show, graceDays = 90) {
-  const pub = Date.parse(publishDate);
+  const pub = toDateMs(publishDate);
   if (!Number.isFinite(pub)) return false;
-  const start = Date.parse((show && (show.previewsStartDate || show.openingDate)) || '');
+  const start = toDateMs((show && (show.previewsStartDate || show.openingDate)) || '');
   if (!Number.isFinite(start)) return false;
   if (pub >= start - graceDays * 86400000) return false;
   const { findMatchingPriorRun } = require('./wrong-production-autoclear');
@@ -182,13 +183,13 @@ function pendingPriorRunUrls(pending, show) {
   // A dated URL path (/2026/10/, BWW YYYYMMDD) that disagrees with the stored date
   // means the stored date may be a misread: no verdict from it.
   const pathYear = (u) => { const m = /\/((?:19|20)\d\d)\/(?:0[1-9]|1[0-2])\//.exec(u); return m ? Number(m[1]) : urlYearOf(u); };
-  const consistent = (p) => { const y = pathYear(p.url); return !y || y === new Date(Date.parse(p.publishDate)).getUTCFullYear(); };
+  const consistent = (p) => { const y = pathYear(p.url); return !y || y === new Date(toDateMs(p.publishDate)).getUTCFullYear(); };
   const early = (pending || []).filter((p) => p && p.url && consistent(p) && isPublishDateBeforeRun(p.publishDate, show));
   const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
   const out = new Map();
   for (const p of early) {
-    const t = Date.parse(p.publishDate);
-    const hosts = new Set(early.filter((q) => Math.abs(Date.parse(q.publishDate) - t) <= 14 * 86400000).map((q) => hostOf(q.url)));
+    const t = toDateMs(p.publishDate);
+    const hosts = new Set(early.filter((q) => Math.abs(toDateMs(q.publishDate) - t) <= 14 * 86400000).map((q) => hostOf(q.url)));
     if (hosts.size < 3) out.set(p.url, p.publishDate);
   }
   return out;
