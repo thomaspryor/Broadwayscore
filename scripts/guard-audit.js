@@ -19,6 +19,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
   node scripts/guard-audit.js            write the snapshot, route DEFECT / cap-drift alerts
   node scripts/guard-audit.js --dry-run  print the snapshot JSON; no writes, no alerts
   node scripts/guard-audit.js --html     print the cost-report HTML section; no writes, no alerts
+                                         (the weekly report uses scripts/render-guard-audit.js, which cannot alert)
 
 Env:
   BRIGHTDATA_ZONE              the web-unlocker zone whose trips stamp 'bd-budget' (default web_unlocker2)
@@ -29,46 +30,17 @@ Env:
 
 const fs = require('fs');
 const path = require('path');
-const core = require('./lib/guard-audit-core');
-const { readLedger } = require('./lib/breaker-transitions');
+const { runGuardAuditFromFiles, DEFAULT_SNAPSHOT_PATH } = require('./lib/guard-audit-io');
+const { renderGuardAuditHtml } = require('./lib/guard-audit-core');
 
-const AUDIT = path.join(__dirname, '..', 'data', 'audit');
-const SNAPSHOT = process.env.GUARD_AUDIT_SNAPSHOT_PATH || path.join(AUDIT, 'guard-audit-snapshot.json');
-const THRESHOLDS = path.join(__dirname, 'config', 'provider-spend-thresholds.json');
+const SNAPSHOT = process.env.GUARD_AUDIT_SNAPSHOT_PATH || DEFAULT_SNAPSHOT_PATH;
 const DRY_RUN = process.argv.includes('--dry-run');
 const HTML = process.argv.includes('--html');
 
-function readJson(p) {
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
-}
-function readJsonl(p) {
-  try {
-    return fs.readFileSync(p, 'utf8').split('\n').filter(Boolean)
-      .map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-  } catch { return []; }
-}
-
 async function main() {
-  const bdZone = (process.env.BRIGHTDATA_ZONE || '').trim() || 'web_unlocker2';
-  const bdState = readJson(path.join(AUDIT, 'bd-circuit-breaker.json'));
-  const states = {
-    'sd-circuit-breaker': readJson(path.join(AUDIT, 'sd-circuit-breaker.json')),
-    'sb-circuit-breaker': readJson(path.join(AUDIT, 'sb-circuit-breaker.json')),
-  };
-  // bd-circuit-breaker.json holds one entry per zone under `zones`.
-  for (const [zone, z] of Object.entries((bdState && bdState.zones) || {})) states[`bd-circuit-breaker-${zone}`] = z;
-  const snapshot = core.runGuardAudit({
-    ledger: readLedger(),
-    spendRows: readJsonl(path.join(AUDIT, 'scraper-spend-ledger.jsonl')),
-    dailyRows: readJsonl(path.join(AUDIT, 'provider-spend-daily.jsonl')),
-    states,
-    thresholds: readJson(THRESHOLDS) || {},
-    prevSnapshot: readJson(SNAPSHOT),
-    nowIso: new Date().toISOString(),
-    bdZone,
-  });
+  const snapshot = runGuardAuditFromFiles({ snapshotPath: SNAPSHOT });
 
-  if (HTML) { console.log(core.renderGuardAuditHtml(snapshot)); return; }
+  if (HTML) { console.log(renderGuardAuditHtml(snapshot)); return; }
   console.log(snapshot.bannerText);
   for (const it of snapshot.items) console.log(`  ${it.title}: ${it.detail}`);
   if (DRY_RUN) { console.log('--dry-run: snapshot not written, alerts not routed'); return; }

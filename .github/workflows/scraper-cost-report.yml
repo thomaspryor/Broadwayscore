@@ -160,9 +160,10 @@ jobs:
 
           # BRO-3011: the spend-guard audit (trip days per breaker, rerouted
           # spend, cap drift, DEFECT rule) replaces the old "Top SB Credit
-          # Consumers" awk tally. --html prints only; it writes nothing and
-          # routes no alerts (the daily data-health-check run owns those).
-          GUARD_AUDIT_HTML=$(node scripts/guard-audit.js --html 2>/dev/null || echo "<p>Spend guard audit unavailable this run.</p>")
+          # Consumers" awk tally. It prints only; it writes nothing and
+          # routes no alerts (the daily data-health-check run owns those):
+          # render-guard-audit.js has no owner-alert-router in its require graph.
+          GUARD_AUDIT_HTML=$(node scripts/render-guard-audit.js 2>/dev/null || echo "<p>Spend guard audit unavailable this run.</p>")
 
           # --- Browserbase last 7 days (sessions × \$0.10) ---
           # Previously invisible. Feb 2026 spike was 12,876 sessions = \$1,287 in

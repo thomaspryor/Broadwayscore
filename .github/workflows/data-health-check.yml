@@ -414,6 +414,29 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/sweep-resolved-alert-cards.js --apply
 
+      # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
+      # days — trip days per breaker from data/audit/breaker-transitions.jsonl,
+      # rerouted spend on trip days, cap drift vs 14-day demand, DEFECT when a
+      # guard trips > 2 days unless owner-accepted. Reads files only (no API).
+      # Writes data/audit/guard-audit-snapshot.json (committed by the step
+      # below, read by the morning digest) and routes one digest alert per
+      # defect/drift with a 168h cooldown. The weekly scraper cost report
+      # embeds the same audit (render-guard-audit.js). Placed BEFORE
+      # "Provider spend reconciliation" so that step stays directly followed
+      # by its commit step (BRO-3317); this step's snapshot and alert-router
+      # writes ride that same commit. It therefore reads yesterday's
+      # provider-spend-daily row (14-day median, so one day of lag is noise).
+      # continue-on-error: a crash here must not block the snapshot commits;
+      # a stuck producer shows as stale.
+      # hygiene-run-budget-ok: local file reads only, no network loop.
+      - name: Spend guard audit
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: node scripts/guard-audit.js
+
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
       # daily billing-API reconciliation. continue-on-error because a crash
       # here must not block the health snapshot commit below — a stuck
@@ -443,24 +466,6 @@ jobs:
           # the alert-router dispatch-deadman page (2026-09-21/22).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/check-provider-spend.js
-
-      # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
-      # days — trip days per breaker from data/audit/breaker-transitions.jsonl,
-      # rerouted spend on trip days, cap drift vs 14-day demand, DEFECT when a
-      # guard trips > 2 days unless owner-accepted. Reads files only (no API).
-      # Writes data/audit/guard-audit-snapshot.json (committed by the step
-      # below, read by the morning digest) and routes one digest alert per
-      # defect/drift with a 168h cooldown. The weekly scraper cost report
-      # embeds the same audit via --html. continue-on-error: a crash here must
-      # not block the snapshot commits; a stuck producer shows as stale.
-      # hygiene-run-budget-ok: local file reads only, no network loop.
-      - name: Spend guard audit
-        if: always()
-        continue-on-error: true
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: node scripts/guard-audit.js
 
       # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
       # lands in the working tree UNCOMMITTED. Every later commit checkpoint

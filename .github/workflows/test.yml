@@ -1771,6 +1771,7 @@ on:
       # BRO-3011 — the weekly spend-guard audit CLI (pure core is
       # scripts/lib/guard-audit-core.js, covered by the scripts/lib glob).
       - 'scripts/guard-audit.js'
+      - 'scripts/render-guard-audit.js'
       # BRO-3022 — the one-shot seeder for the breaker trip-transition ledger
       # those two checkers now append to. Same gap shape as the CLIs listed
       # above: a top-level scripts/ file outside the scripts/lib/** glob, whose
