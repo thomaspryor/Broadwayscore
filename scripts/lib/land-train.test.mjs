@@ -540,3 +540,16 @@ test('tipFromRun / holdsLock', () => {
   assert.equal(t.holdsLock(st, { runId: '6', attempt: 1 }), false);
   assert.equal(t.holdsLock(st, { runId: '5', attempt: 2 }), false);
 });
+
+test('trainsFromLandings: a runUrl naming 2+ branches is one train; solo landings and old rows are not', () => {
+  const rows = [
+    { ts: '2026-10-13T22:00:00Z', branch: 'land/h', sha: A, runUrl: 'u1' },
+    { ts: '2026-10-13T22:00:01Z', branch: 'land/r', sha: B, runUrl: 'u1' },
+    { ts: '2026-10-13T22:05:00Z', branch: 'land/r', sha: B, runUrl: 'u2' },
+    { ts: '2026-10-13T22:06:00Z', branch: 'land/s', sha: C, runUrl: 'u3' },
+    { ts: '2026-10-12T00:00:00Z', branch: 'land/x', sha: D, runUrl: 'u0' },
+    { ts: '2026-10-12T00:00:01Z', branch: 'land/y', sha: D, runUrl: 'u0' },
+  ];
+  assert.deepEqual(t.trainsFromLandings(rows, '2026-10-13T21:15'), [{ runUrl: 'u1', branches: ['land/h', 'land/r'], shas: [A, B] }]);
+  assert.equal(t.trainsFromLandings(rows).length, 2);
+});
