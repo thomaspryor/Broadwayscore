@@ -4256,7 +4256,7 @@ function isCancelledBeforeOpeningShow(show) {
 //    search source, so an aggregator-backed stub (show-score, bww-*, dtli,
 //    theatre-record) is never touched. Human overrides keep a row.
 const UNVERIFIABLE_SEARCH_SOURCES = new Set([...require('./unvetted-serp-sources').SUSPECT_SOURCES, 'web-search']);
-function isUnverifiableWebSearchRow(data) {
+function isUnverifiableWebSearchRow(data, opts) {
   if (!data) return false;
   const sources = [].concat(data.sources || [], data.source || []).filter((x) => typeof x === 'string' && x);
   if (!sources.length || !sources.every((x) => UNVERIFIABLE_SEARCH_SOURCES.has(x))) return false;
@@ -4295,8 +4295,17 @@ function isUnverifiableWebSearchRow(data) {
   // originalScore may be that step's own guess too.
   if (data.url && !(data.originalScore && data.originalScoreSource)) {
     const textSource = data.llmMetadata && data.llmMetadata.textSource && data.llmMetadata.textSource.type;
-    if (textSource === 'excerpt') return true;
-    if (!textSource && data.needsRescore === true) return true;
+    const scoreFromExcerpt = textSource === 'excerpt' || (!textSource && data.needsRescore === true);
+    // BRO-5222: the scorer is how such a row gets a score read from the page,
+    // so this clause cannot hold the scorer out (it deadlocked the recovered
+    // Farnsworth Variety row, and audit-stuck-rescore-flags --fix then cleared
+    // the flag of rows like it). The scorer is still held out when it would
+    // fall back to excerpts, which for these rows are the invented ones.
+    if (scoreFromExcerpt) {
+      if (!(opts && opts.forScoring)) return true;
+      const sel = require('./scorable-text').selectScorableText(data, {});
+      if (!sel || sel.isExcerpt) return true;
+    }
   }
   return false;
 }
@@ -4546,12 +4555,18 @@ function isRejectedAtExclusion(data) {
   return false;
 }
 
-function explainExclusion(data, show, filePath) {
+/**
+ * @param {Object} [opts]
+ * @param {boolean} [opts.forScoring] - the LLM scorer's eligibility (isScoreable) only: a legacy
+ *   web-search row whose score came from an excerpt stays scoreable when its page text is
+ *   scoreable, so it can be rescored (BRO-5222). Never pass it from a rebuild/inclusion path.
+ */
+function explainExclusion(data, show, filePath, opts) {
   if (!data) return 'no-data';
   // BRO-4890: show-level and unverifiable-row exclusions run first; the rebuild loop and
   // scoring-delta.js decideInclusion mirror them in the same order.
   if (isCancelledBeforeOpeningShow(show)) return 'cancelledBeforeOpening';
-  if (isUnverifiableWebSearchRow(data)) return 'unverifiableWebSearchRow';
+  if (isUnverifiableWebSearchRow(data, opts)) return 'unverifiableWebSearchRow';
   if (isPreviewFirstLookPiece(data)) return 'previewFirstLookPiece';
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
@@ -5055,8 +5070,8 @@ function explainExclusion(data, show, filePath) {
  * ~35 call sites depend on this boolean; it delegates to explainExclusion() so
  * the two can never disagree. Do not reimplement the rule chain here.
  */
-function isIncludableForRebuild(data, show, filePath) {
-  return explainExclusion(data, show, filePath) === null;
+function isIncludableForRebuild(data, show, filePath, opts) {
+  return explainExclusion(data, show, filePath, opts) === null;
 }
 
 /**
