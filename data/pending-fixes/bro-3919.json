@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3919",
   "planId": "7ecf5025-f7b8-4ea2-87c8-108f8f291616",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T13:32:07.192Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,43 @@
         "description": "BRO-3919: the review text ends with the reviewer credit \"Nicole Darvill-Batten\"; stored byline \"Westendwilma\" disagrees."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T17:07:16.320Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bernhardthamlet-2018/onandoffbroadwaytheaterreviews--richard-seff.json criticName: \"Richard Seff\" -> \"Jonathan Mandell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: cats-west-end-2026/british-theatre--steve-orme.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/london-theatre-reviews--ltr.json criticName: \"LTR\" -> \"Cara-Louise Scott-Lapish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-sons-a-queer-but-what-can-you-do-west-end-2026/london-theatre-reviews--matt-wolf.json criticName: \"Matt Wolf\" -> \"Andrea Golinucci\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/london-theatre-reviews--ltr.json criticName: \"LTR\" -> \"David Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: the-car-man-west-end-2026/british-theatre--susan-novak.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/west-end-wilma--westendwilma.json criticName: \"Westendwilma\" -> \"Nicole Darvill-Batten\""
+    }
+  ]
 }
