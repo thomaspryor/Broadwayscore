@@ -1649,6 +1649,36 @@
     "queuedAt": "2026-10-13T16:29:29.040Z"
   },
   {
+    "conditionKey": "land:land/bro-5256-retire-approve-broadcast",
+    "title": "Landing blocked: rebase red on land/bro-5256-retire-approve-broadcast",
+    "description": "land.yml did not land land/bro-5256-retire-approve-broadcast: the rebase gate went red at cae39c111c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38423251479",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5256-retire-approve-broadcast"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cae39c111cf973726ea13f6ed96e7c4a7f25e1ae"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38423251479"
+      }
+    ],
+    "queuedAt": "2026-10-13T16:33:14.718Z"
+  },
+  {
     "conditionKey": "land:land/bro-3574-autofix-breaker",
     "title": "Landing blocked: unit-tests-node red on land/bro-3574-autofix-breaker",
     "description": "land.yml did not land land/bro-3574-autofix-breaker: the unit-tests-node gate went red at a3268e09fa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38420520020",
