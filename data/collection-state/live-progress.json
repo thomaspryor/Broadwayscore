@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-13T01:27:06.568Z",
-  "processed": 45,
-  "failed": 136,
-  "successRate": "24.9%",
+  "updatedAt": "2026-10-13T01:29:34.498Z",
+  "processed": 92,
+  "failed": 129,
+  "successRate": "41.6%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 38,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 2,
-    "brightdata": 19,
+    "scrapingdog": 10,
+    "scrapingbee": 4,
+    "brightdata": 20,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 26
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-12T21:42:33.858Z",
@@ -63,6 +63,28 @@
     },
     {
       "t": "2026-10-12T21:46:30.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:21:31.015Z",
+      "event": "bb-session",
+      "session": "3effcc8e",
+      "url": "https://www.talkinbroadway.com/page/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-13T01:21:31.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:21:48.547Z",
+      "event": "bb-session",
+      "session": "88c9de87",
+      "url": "https://www.talkinbroadway.com/page/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-13T01:21:48.875Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
