@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4891",
   "planId": "a00564f8-ebc1-4b11-9d57-805833f3491f",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T00:29:44.505Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,28 @@
         "description": "source for the corrected openingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T01:21:29.753Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for paddington-the-musical-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for john-proctor-is-the-villain-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
 }
