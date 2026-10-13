@@ -969,6 +969,32 @@ test('BRO-4132 revertBodyFromRefusedUrl drops body fields merged from a refused 
   assert.deepEqual(revertBodyFromRefusedUrl({ ...had }, had, { url: 'https://x.com/b' }, { fullText: 'new' }), []);
 });
 
+// BRO-5169: a BWW Review-Roundup url matched an existing single-critic BWW
+// review by outlet+critic. The file kept its own url but Guard E's roundup
+// flag (judged on the write's url) landed on it, excluding a real review.
+test('BRO-5169 roundup flag from a refused url does not land on the kept review', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-roundup-'));
+  const showId = 'hamilton-test-fixture';
+  const reviewUrl = 'https://www.broadwayworld.com/article/Review-HAMILTON-Starring-Someone-20260930';
+  makeFixture(reviewTextsDir, showId, 'broadwayworld--aliya-al-hassan.json', {
+    showId, outletId: 'broadwayworld', outlet: 'BroadwayWorld', criticName: 'Aliya Al-Hassan',
+    url: reviewUrl, source: 'serp-discovery', sources: ['serp-discovery'],
+    fullText: 'Hamilton review body with a real verdict from one critic. '.repeat(30),
+    contentTier: 'complete', originalScore: '3/5',
+  });
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'BroadwayWorld', criticName: 'Aliya Al-Hassan',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Critics-Weigh-In-20261001',
+    source: 'opening-night-discovery',
+    fields: {},
+  }, { reviewTextsDir }));
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  assert.equal(after.url, reviewUrl);
+  assert.equal(after.isRoundupArticle, undefined, 'roundup verdict belongs to the refused url, not this review');
+  assert.equal(after.roundupArticleReason, undefined);
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
 // BRO-4131: updateFileUrlWithInvariant (rediscover/collect/recover callers)
 // refuses a move that would clear an unflagged score, unless the caller keeps
 // the score or says the old url is wrong.

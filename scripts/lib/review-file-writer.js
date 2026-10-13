@@ -1591,6 +1591,13 @@ function applyPageByline(filepath, existing, { showId, criticName, source, pageT
 const URL_BODY_FIELDS = [
   ...require('./url-change-invariant').NEW_ERA_FETCH_FIELDS,
   'publishDate',
+  // BRO-5169: Guards E/E1/E2/digest/compilation stamp the roundup flag from
+  // the WRITE's url/page. When the file keeps its own url, that verdict
+  // describes a page this file does not point at: a BWW Review-Roundup SERP hit
+  // merged onto broadwayworld--aliya-al-hassan.json (the-standard-of-living)
+  // and excluded her real single-critic review as a roundup.
+  'isRoundupArticle',
+  'roundupArticleReason',
 ];
 
 /**
