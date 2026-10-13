@@ -316,7 +316,7 @@ async function main() {
       }
 
       if (didClear) { console.log('  >>> CLEARED'); stats.cleared++; }
-      else { console.log(fileArg ? '  Verdict stored (row was not flagged)' : '  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
+      else { console.log(fileArg ? `  Verdict ${dryRun ? 'would be stored' : 'stored'} (row was not flagged)` : '  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
       console.log('');
 
       await new Promise(r => setTimeout(r, 300));
