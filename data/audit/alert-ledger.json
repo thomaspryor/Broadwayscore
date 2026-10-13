@@ -4916,13 +4916,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-13T18:28:00.873Z",
-      "lastNotifiedAt": "2026-10-13T16:46:00.416Z",
+      "lastSeen": "2026-10-13T18:29:31.760Z",
+      "lastNotifiedAt": "2026-10-13T15:09:21.336Z",
       "lastSurfacedAt": "2026-10-12T14:58:59.768Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5168",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -15942,16 +15942,21 @@
       "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
-      "firstSeen": "2026-10-13T17:59:30.461Z",
-      "incidentOpenedAt": "2026-10-13T17:59:30.461Z",
-      "lastSeen": "2026-10-13T17:59:30.461Z",
-      "lastNotifiedAt": "2026-10-13T17:59:30.461Z",
+      "firstSeen": "2026-10-13T14:59:32.419Z",
+      "incidentOpenedAt": "2026-10-13T14:59:32.419Z",
+      "lastSeen": "2026-10-13T18:03:50.046Z",
+      "lastNotifiedAt": "2026-10-13T14:59:32.419Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5281",
-      "resolvedAt": "2026-10-13T18:28:49.197Z",
-      "resolveReason": "job-green"
+      "dispatch": {
+        "requestedAt": "2026-10-13T14:59:32.419Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38406423041",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38406423041"
+      },
+      "silentRefires": 1
     },
     "land:land/bro-3444-digest-recheck": {
       "status": "open",
@@ -15977,21 +15982,46 @@
       "lastSurfacedAt": "2026-10-13T17:16:40.320Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
-    "test-yml:red:Lint Workflows:688d32b5": {
+    "land:land/bro-3919-body-bylines": {
       "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Lint Workflows / Audit — no API route dispatches a workflow from GET (BRO-5262)",
-      "firstSeen": "2026-10-13T18:28:49.213Z",
-      "incidentOpenedAt": "2026-10-13T18:28:49.213Z",
-      "lastSeen": "2026-10-13T18:28:49.213Z",
-      "lastNotifiedAt": "2026-10-13T18:28:49.213Z",
-      "lastSurfacedAt": null,
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3919-body-bylines",
+      "firstSeen": "2026-10-13T14:18:27.617Z",
+      "incidentOpenedAt": "2026-10-13T14:18:27.617Z",
+      "lastSeen": "2026-10-13T14:18:27.617Z",
+      "lastNotifiedAt": "2026-10-13T14:18:27.617Z",
+      "lastSurfacedAt": "2026-10-13T14:18:27.617Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5286"
+      "linearIdentifier": null
+    },
+    "land:land/bro-5261-s3-2609": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5261-s3-2609",
+      "firstSeen": "2026-10-13T14:29:27.598Z",
+      "incidentOpenedAt": "2026-10-13T14:29:27.598Z",
+      "lastSeen": "2026-10-13T14:29:27.598Z",
+      "lastNotifiedAt": "2026-10-13T14:29:27.598Z",
+      "lastSurfacedAt": "2026-10-13T14:29:27.598Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-5261-s3-3208": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5261-s3-3208",
+      "firstSeen": "2026-10-13T14:41:12.067Z",
+      "incidentOpenedAt": "2026-10-13T14:41:12.067Z",
+      "lastSeen": "2026-10-13T14:41:12.067Z",
+      "lastNotifiedAt": "2026-10-13T14:41:12.067Z",
+      "lastSurfacedAt": "2026-10-13T14:41:12.067Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
