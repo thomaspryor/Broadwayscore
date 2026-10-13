@@ -1,31 +1,37 @@
 {
-  "updatedAt": "2026-10-13T18:05:38.080Z",
-  "processed": 188,
-  "failed": 91,
-  "successRate": "67.4%",
+  "updatedAt": "2026-10-13T18:06:21.838Z",
+  "processed": 51,
+  "failed": 38,
+  "successRate": "57.3%",
   "tierBreakdown": {
-    "playwright": 113,
-    "amp": 5,
-    "browserbase": 2,
+    "playwright": 32,
+    "amp": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 25,
     "scrapingbee": 18,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 62
+    "archive": 10
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-13T16:03:55.343Z",
+      "t": "2026-10-13T17:58:47.372Z",
       "event": "bb-session",
-      "session": "3e3eb892",
-      "url": "https://www.nytimes.com/2026/10/12/theater/joey-arias-basil-twist-arias-with-a-t"
+      "session": "1b3f07a9",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
     },
     {
-      "t": "2026-10-13T16:03:56.000Z",
+      "t": "2026-10-13T18:03:00.947Z",
+      "event": "bb-session",
+      "session": "34390ca8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T18:03:01.690Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "talkinbroadway.com"
     }
   ]
 }
