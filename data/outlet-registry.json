@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-13T12:49:43.082Z",
+    "lastUpdated": "2026-10-13T17:40:26.215Z",
     "version": "2.1.0",
     "lastChange": "BRO-5137: split The Sunday Times (sunday-times, splitFrom times-uk) out of times-uk"
   },
@@ -12672,6 +12672,28 @@
         "uktheatrenetwork"
       ],
       "domain": "uktheatrenetwork.com"
+    },
+    "counselmagazine": {
+      "displayName": "Counselmagazine",
+      "tier": 3,
+      "aliases": [
+        "counselmagazine"
+      ],
+      "domain": "counselmagazine.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-13T17:40:26.215Z"
+    },
+    "mildconcern": {
+      "displayName": "Mildconcern",
+      "tier": 3,
+      "aliases": [
+        "mildconcern"
+      ],
+      "domain": "mildconcern.substack.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-13T17:40:26.215Z"
     }
   },
   "_aliasIndex": {
