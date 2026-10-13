@@ -1,9 +1,9 @@
 name: Weekly Geo Bot Audit
 
-# Runs every Monday at 9 AM UTC. Queries GA4 for last 7 days of country-level
-# engagement metrics, alerts via Discord + email if any new bot countries
-# (high sessions, low engagement) appeared since last audit. Silent on
-# no-new-bots so we don't get spammed.
+# Runs every Monday at 9 AM UTC. Queries GA4 (country engagement) and, since
+# BRO-3432, PostHog (sessions/users/pageviews per country, for bots GA4
+# filters out) for the last 7 days, and queues a digest alert for any new bot
+# country not in data/audit/known-bot-geos.json. Silent on no-new-bots.
 #
 # See: scripts/audit-geo-bots.js + memory/analytics-real-users-segment.md
 
@@ -44,6 +44,8 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          # BRO-3432: PostHog leg (bots GA4 filters but PostHog ingests).
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}

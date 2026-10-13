@@ -12,9 +12,18 @@
  * country nobody has triaged yet queues one Daily Digest line per 7-day
  * cooldown instead of a fresh line every week). Silent if no new bots.
  *
+ * PostHog leg (BRO-3432): GA4 filters some bot traffic that PostHog still
+ * ingests (Hong Kong ran 11 weeks unflagged), so the same audit also runs a
+ * HogQL country query and flags sessions >= 100 with users/session >= 0.98
+ * and pageviews/session <= 1.05 (scripts/lib/posthog-geo-bots.js). Skipped
+ * when POSTHOG_PERSONAL_API_KEY is unset locally (a missing key in CI, or a
+ * PostHog query failure, still lets the GA4 alerts go out, then fails the
+ * run so the gap is visible).
+ *
  * Run weekly via .github/workflows/weekly-geo-audit.yml.
  *
- * Env: GA4_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY (base64) or GA_KEY_FILE
+ * Env: GA4_PROPERTY_ID, GA_SERVICE_ACCOUNT_KEY (base64) or GA_KEY_FILE,
+ *      POSTHOG_PERSONAL_API_KEY (optional)
  */
 
 const fs = require('fs');
@@ -22,6 +31,11 @@ const path = require('path');
 const { getGaClient } = require('./lib/ga4-client');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
+const { phQuery } = require('./lib/posthog-query');
+const {
+  buildPosthogGeoQuery, parsePosthogGeoRows, isPosthogBotGeo, formatPosthogStats,
+  partitionByKnown, buildGeoBotAlerts,
+} = require('./lib/posthog-geo-bots');
 
 const KNOWN_BOTS_FILE = path.join(__dirname, '..', 'data', 'audit', 'known-bot-geos.json');
 
@@ -117,41 +131,62 @@ async function main() {
 
   const bots = stats.filter(isBotGeo);
   const known = loadKnownBots();
-  const newBots = bots.filter((b) => !known.has(b.country));
-  const knownBotsSeen = bots.filter((b) => known.has(b.country));
+  const { newBots, knownSeen: knownBotsSeen } = partitionByKnown(bots, known);
 
   console.log(`Known bots seen this week (${knownBotsSeen.length}):`);
   for (const b of knownBotsSeen) console.log(`  ${b.country}: ${formatStats(b)}`);
   console.log(`\nNew bot countries (${newBots.length}):`);
   for (const b of newBots) console.log(`  ${b.country}: ${formatStats(b)}`);
 
-  if (newBots.length === 0) {
+  // PostHog leg (BRO-3432).
+  let phNew = [];
+  let posthogError = null;
+  if (!process.env.POSTHOG_PERSONAL_API_KEY) {
+    // In CI a missing key would silently recreate the blind spot this leg
+    // exists to close, so it fails the run (after the GA4 alerts go out).
+    if (process.env.CI) posthogError = new Error('POSTHOG_PERSONAL_API_KEY not set in CI');
+    console.log('\nPostHog leg skipped: POSTHOG_PERSONAL_API_KEY not set.');
+  } else {
+    try {
+      const rows = parsePosthogGeoRows(await phQuery(buildPosthogGeoQuery(7)));
+      const phBots = rows.filter((r) => isPosthogBotGeo(r));
+      const split = partitionByKnown(phBots, known);
+      phNew = split.newBots;
+      console.log(`\nPostHog geo audit: ${rows.length} countries in last 7 days`);
+      console.log(`Known bots seen in PostHog (${split.knownSeen.length}):`);
+      for (const b of split.knownSeen) console.log(`  ${b.country}: ${formatPosthogStats(b)}`);
+      console.log(`New PostHog bot countries (${phNew.length}):`);
+      for (const b of phNew) console.log(`  ${b.country}: ${formatPosthogStats(b)}`);
+    } catch (err) {
+      posthogError = err;
+      console.error(`\nPostHog geo query failed: ${err.message}`);
+    }
+  }
+
+  const gaThresholdText = `≥${BOT_THRESHOLDS.minSessions} sessions, ` +
+    `<${BOT_THRESHOLDS.maxEngagementPct}% engagement, ` +
+    `<${BOT_THRESHOLDS.maxDurationSeconds}s avg session, ` +
+    `<${BOT_THRESHOLDS.maxPagesPerSession} pages/session`;
+  const alerts = buildGeoBotAlerts(
+    newBots.map((b) => ({ country: b.country, text: formatStats(b) })),
+    phNew.map((b) => ({ country: b.country, text: formatPosthogStats(b) })),
+    gaThresholdText,
+  );
+
+  if (alerts.length === 0) {
     console.log('\nNo new bot countries — silent success.');
-    return;
+  } else {
+    // Route each new bot country through owner-alert-router individually so a
+    // country that's still undispositioned after 7 days re-queues instead of
+    // going silent forever, while a country the owner just triaged doesn't
+    // requeue every week until it's actually added to known-bot-geos.json.
+    for (const alert of alerts) await routeAlert(alert);
+    console.log(`\nQueued digest alert(s) for ${alerts.length} new bot countr${alerts.length === 1 ? 'y' : 'ies'}.`);
   }
 
-  // Route each new bot country through owner-alert-router individually so a
-  // country that's still undispositioned after 7 days re-queues instead of
-  // going silent forever, while a country the owner just triaged doesn't
-  // requeue every week until it's actually added to known-bot-geos.json.
-  for (const b of newBots) {
-    await routeAlert({
-      conditionKey: `geo-bots:${b.country}`,
-      title: `New bot country detected: ${b.country}`,
-      description:
-        `Weekly geo audit found ${b.country} matching the bot signature ` +
-        `(${formatStats(b)}; thresholds: ≥${BOT_THRESHOLDS.minSessions} sessions, ` +
-        `<${BOT_THRESHOLDS.maxEngagementPct}% engagement, ` +
-        `<${BOT_THRESHOLDS.maxDurationSeconds}s avg session, ` +
-        `<${BOT_THRESHOLDS.maxPagesPerSession} pages/session). ` +
-        `Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md ` +
-        `+ the 3 PostHog Real Users insights + the GA4 Real Users comparison.`,
-      severity: 'warning',
-      disposition: 'digest',
-    });
+  if (posthogError) {
+    throw new Error(`PostHog leg failed (GA4 leg completed): ${posthogError.message}`);
   }
-
-  console.log(`\nQueued digest alert(s) for ${newBots.length} new bot countr${newBots.length === 1 ? 'y' : 'ies'}.`);
 }
 
 main().catch((err) => {
