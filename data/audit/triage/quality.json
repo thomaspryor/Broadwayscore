@@ -1,30 +1,35 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-12T09:14:10.911Z",
+  "lastChecked": "2026-10-13T05:05:37.908Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
+      "name": "Quality: opening date vs review dates",
+      "status": "pass",
+      "message": "No opening date contradicts its reviews (0 acked)"
+    },
+    {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "21 NEW review(s) whose explicit rating contradicts the score (worst: therese-raquin-2015 HuffPost A→90 vs LLM 24, gap 66)"
+      "status": "pass",
+      "message": "No new star/score contradictions (35 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "97.4% scored (28900/29671)"
+      "message": "97.6% scored (28743/29451)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "23 audit(s) drifting: shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc), content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/commercial.json physics/contradiction — full --strict (gate = FAIL only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only), critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), same-title-sibling review misrouted to the wrong production (baseline-diff), duplicate SHOW entries in shows.json (baseline-diff), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets, critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection, a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)"
+      "message": "26 audit(s) drifting: shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc), content-quality regex false-positive rate, reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear), cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/commercial.json physics/contradiction — full --strict (gate = FAIL only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only), critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), same-title-sibling review misrouted to the wrong production (baseline-diff), duplicate SHOW entries in shows.json (baseline-diff), exclusion flag contradicted by its own content-verification pass (baseline-diff), review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets, critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it), exclusion rule census: per-rule count jump or explainExclusion-vs-rebuild disagreement rise"
     },
     {
       "name": "Quality: DMARC deliverability",
-      "status": "warn",
-      "message": "Newest DMARC report is 43d old (reporters send daily)"
+      "status": "pass",
+      "message": "13317 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -34,17 +39,17 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "warn",
-      "message": "4 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
+      "message": "6 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1534 outlet(s), 56343 review(s)"
+      "message": "No broken-extractor signature in 1546 outlet(s), 56272 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1534 outlet(s), 56343 review(s)"
+      "message": "No broken-extractor signature in 1546 outlet(s), 56272 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -53,13 +58,13 @@
     },
     {
       "name": "Quality: coverageExpectation drift",
-      "status": "warn",
-      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
+      "status": "pass",
+      "message": "No coverageExpectation re-probes needed"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "warn",
-      "message": "2 NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: hollywood-reporter/off-broadway, 2545d silent vs 2102d threshold; 32 known/baselined)"
+      "message": "3 NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: hollywood-reporter/off-broadway, 2549d silent vs 2102d threshold; 29 known/baselined)"
     }
   ]
 }

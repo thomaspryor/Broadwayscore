@@ -1,20 +1,55 @@
 {
   "system": "data",
-  "status": "error",
-  "lastChecked": "2026-10-12T09:14:10.912Z",
+  "status": "warn",
+  "lastChecked": "2026-10-13T05:05:37.909Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Data: OB shows no closing signal can detect",
+      "status": "warn",
+      "message": "1 open Off-Broadway show(s) have no TodayTix id, no review texts and no closingDate, so a closure would go unnoticed. Oldest: day-of-the-hog-off-broadway-2026"
+    },
+    {
       "name": "Data: OB closing candidates awaiting review",
-      "status": "error",
-      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 21d)"
+      "status": "pass",
+      "message": "No open Off-Broadway show looks closed per the weekly detector"
+    },
+    {
+      "name": "Data: tour automation stopped reporting",
+      "status": "pass",
+      "message": "All three national-tour jobs reported on schedule"
+    },
+    {
+      "name": "Data: tour review sweep held",
+      "status": "pass",
+      "message": "The daily tour sweep held nothing back"
     },
     {
       "name": "Data: tour dates need a look",
       "status": "warn",
       "message": "1 tour(s) could not be dated automatically: spamilton-an-american-parody-tour-2018 (no schedule segment matches this tour)"
+    },
+    {
+      "name": "Data: running-tour discovery failed",
+      "status": "pass",
+      "message": "Running-tour discovery on Tours To You succeeded"
+    },
+    {
+      "name": "Data: Tours To You pages not checked",
+      "status": "pass",
+      "message": "All 225 Tours To You show pages read within 4 days"
+    },
+    {
+      "name": "Data: national tours added automatically",
+      "status": "pass",
+      "message": "No national tours added automatically this run"
+    },
+    {
+      "name": "Data: closed national tours reopened automatically",
+      "status": "pass",
+      "message": "No closed national tours reopened"
     },
     {
       "name": "Data: closed national tour lists new dates",
@@ -23,28 +58,28 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "status": "error",
-      "message": "11 discovered review(s) not reaching the composite score (3 T1). Oldest: truly-howard-hughes-off-broadway-2026 — cititour (unscored)"
+      "status": "warn",
+      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (unscored); 1 newer still in flight"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "37 discovered review URL(s) across 26 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
+      "message": "34 discovered review URL(s) across 24 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "error",
-      "message": "8 aggregator-reviewed show(s) not in the catalogue. Oldest: \"De Profundis\" (guardian-review — missing 6d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "status": "warn",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Nina\" (guardian-review — missing 0d)"
     },
     {
-      "name": "Data: undispatchable backlog cards",
+      "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "17 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P2 Later] [Review Submission] The American review of Who's Afraid of Virginia Woolf Refusal causes: no-section=17."
+      "message": "4 Linear card(s) carry an acceptance check that cannot tell done from not done (4 can never fail, 0 can never pass). First: BRO-4602 Deploy's Google sitemap submission gets 403 (service account lacks Search Console permission)"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "352 of 911 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5056 Opening-night audit 2026-10-11"
+      "message": "267 of 775 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5165 Newsletter /cast links ignore the site's -2 collision suffix"
     }
   ]
 }

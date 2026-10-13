@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-12T03:30:12.625Z",
+  "generatedAt": "2026-10-13T05:18:59.907Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3725,
-  "flaggedShows": 63,
-  "flaggedFiles": 225,
+  "scannedShows": 3724,
+  "flaggedShows": 65,
+  "flaggedFiles": 227,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 35,
-    "needs-human-review": 28
+    "needs-human-review": 30
   },
   "shows": [
     {
@@ -3452,6 +3452,42 @@
       ]
     },
     {
+      "showId": "ivanov-west-end-2026",
+      "title": "Ivanov",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Bridge Theatre",
+      "previewsStartDate": "2027-07-27",
+      "openingDate": "2027-08-03",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Bridge Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--emmie-newitt.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "london-box-office",
+          "criticName": "Emmie Newitt",
+          "publishDate": "2026-02-23",
+          "url": "https://www.londonboxoffice.co.uk/news/post/ivanov-starring-chris-pine-postponed-to-2027",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-snowman-west-end-2026",
       "title": "The Snowman",
       "market": "west-end",
@@ -3740,42 +3776,6 @@
       ]
     },
     {
-      "showId": "gloria-2026",
-      "title": "Gloria",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Hayes Theater",
-      "previewsStartDate": "2027-03-17",
-      "openingDate": "2027-04-05",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Hayes Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2015
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "billboard--david-rooney.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "billboard",
-          "criticName": "David Rooney",
-          "publishDate": "2015-11-06",
-          "url": "https://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-gloria-estefan",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",
       "market": "broadway",
@@ -3842,6 +3842,42 @@
           "publishDate": "2026-06-18",
           "url": "https://www.londonboxoffice.co.uk/news/post/one-day-the-musical-to-transfer-to-west-end",
           "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "market": "broadway",
+      "status": "previews",
+      "venue": "Daryl Roth Theatre",
+      "previewsStartDate": "2026-09-25",
+      "openingDate": "2026-10-15",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Daryl Roth Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "one-minute-critic--ryan-leeds.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "one-minute-critic",
+          "criticName": "Ryan Leeds",
+          "publishDate": "2026-02-12",
+          "url": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -4245,7 +4281,7 @@
     },
     {
       "showId": "king-lear-2-off-west-end-2026",
-      "title": "King Lear 2",
+      "title": "King Lear",
       "market": "west-end",
       "status": "upcoming",
       "venue": "Orange Tree Theatre",
@@ -4419,6 +4455,42 @@
           "url": "https://www.londonboxoffice.co.uk/news/post/review-captain-corellis-mandolin",
           "wrongProduction": true,
           "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "market": "tour",
+      "status": "upcoming",
+      "venue": "North American Tour",
+      "previewsStartDate": null,
+      "openingDate": "2026-10-30",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"North American Tour\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "toronto-star--jeremy-daniel.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "toronto-star",
+          "criticName": "Jeremy Daniel",
+          "publishDate": "2026-05-05",
+          "url": "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+          "wrongProduction": true,
+          "wrongShow": false,
           "evaluationError": null
         }
       ]
