@@ -58,6 +58,8 @@ Usage:
   node scripts/reverify-stale-cv-promoted.js --cv-promoted-nonreview --opened-since=2026-07-01
                                                          select CV-promoted isNonReview files (any hash state)
                                                          on shows opened since the date instead of stale-hash findings
+  node scripts/reverify-stale-cv-promoted.js --file=<show-id>/<file>.json[,...] --dry-run
+                                                         re-verify just these files' stored text (any flag state)
   node scripts/reverify-stale-cv-promoted.js --help, -h  print this usage and exit
 
 Makes live LLM verification calls and writes review files — never blind-clears.
@@ -115,7 +117,19 @@ async function main() {
   for (const s of showsData.shows) showById[s.id] = s;
 
   let findings;
-  if (args.includes('--cv-promoted-nonreview')) {
+  const fileArg = args.find(a => a.startsWith('--file='));
+  if (fileArg) {
+    // BRO-5243: re-verify named files against their stored text, whatever their
+    // flags (a stale verdict on an unflagged row, e.g. one judged on a raw fetch).
+    findings = fileArg.slice('--file='.length).split(',').filter(Boolean).map(spec => {
+      const [showId, file] = spec.split('/');
+      if (!showId || !file || !file.endsWith('.json') || showId.includes('..') || file.includes('..')) {
+        console.error(`--file expects <show-id>/<file>.json, got "${spec}"`);
+        process.exit(1);
+      }
+      return { showId, file };
+    });
+  } else if (args.includes('--cv-promoted-nonreview')) {
     const sinceArg = args.find(a => a.startsWith('--opened-since='));
     const openedSince = sinceArg ? sinceArg.split('=')[1] : undefined;
     if (sinceArg && !/^\d{4}-\d{2}-\d{2}$/.test(openedSince)) {
@@ -178,6 +192,7 @@ async function main() {
       });
 
       console.log(`  New: isValid=${result.isValid} wrongArticle=${result.wrongArticle} wrongProduction=${result.wrongProduction} isFilmTv=${result.isFilmTv} confidence=${result.confidence}`);
+      if (fileArg) console.log(`  issues=${JSON.stringify(result.issues || [])} reasoning=${String(result.reasoning || '').slice(0, 400)}`);
 
       // DETERMINISTIC REFUSAL GATE (2026-08-15 incident, six CI errors incl. a
       // manufactured same-URL duplicate). The LLM's booleans are a NECESSARY
