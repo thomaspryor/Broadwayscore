@@ -138,6 +138,6 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
-**Multi-repo cloud session:** no repo hooks load; first run `bash scripts/cloud-bootstrap-data.sh` (CLOUD.md § Multi-repo).
+**Multi-repo cloud session:** hooks load only via the setup-script install (CLOUD.md § Multi-repo).
 **Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
 **Start important work yourself** with `create_session` (CLOUD.md § Starting a worker session); the worker queue takes weeks. **SAFE TO EXIT** only when all discussed work is done and verified.
