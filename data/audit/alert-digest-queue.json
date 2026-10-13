@@ -847,5 +847,35 @@
       }
     ],
     "queuedAt": "2026-10-13T08:31:03.896Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2394-mcp-visual-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2394-mcp-visual-gate",
+    "description": "land.yml did not land land/bro-2394-mcp-visual-gate: the unit-tests-node gate went red at 03874461d6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366092888",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2394-mcp-visual-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "03874461d6ec1a5d7a210846ff56a83f99c4c05d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366092888"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:32:28.937Z"
   }
 ]
