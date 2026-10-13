@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3065",
   "planId": "8136ced6-f9b6-45d8-9c57-e593082fc21f",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T14:41:36.669Z",
   "submitter": {
     "name": null,
@@ -139,5 +139,78 @@
         "description": "Date of the Deadline 2015 premiere review whose text this file holds (deadline.com/2015/06/mary-louise-parker-heisenberg-world-premiere-1201437648/), so the date guard keeps the wrongProduction flag."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T17:14:29.707Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "black-is-the-color-of-my-voice-west-end-2026/guardian--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burlesque-west-end-2026/financialtimes--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/nytg--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/whatsonstage--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "michael-r-jackson-wake-up-call-off-broadway-2026/thewrap--robert-hofler.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "new-born-off-broadway-2026/nytimes--michael-paulson.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "9-to-5-the-musical-west-end-2019/independent--paul-taylor.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bridge-off-west-end-2026/london-box-office--stuart-king.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/backstage--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-hot-wing-king-west-end-2024/times-uk--clive-davis.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-west-end-2021/telegraph--charles-spencer.json url: \"https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--alun-hood.json url: \"https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/\" -> \"https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json wrongProduction: false -> true (retracted clearBreadcrumbRetractedAt, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json publishDate: \"October 16th, 2016\" -> \"2015-06-04\""
+    }
+  ]
 }
