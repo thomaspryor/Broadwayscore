@@ -2488,5 +2488,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-13T04:11:59.854Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5217-cloud-copies",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5217-cloud-copies",
+    "description": "land.yml did not land land/bro-5217-cloud-copies: the unit-tests-node gate went red at 4d757f7a25. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38343775023",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5217-cloud-copies"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4d757f7a2574850944ef158a239cb40d037d2f90"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38343775023"
+      }
+    ],
+    "queuedAt": "2026-10-13T04:26:16.059Z"
   }
 ]
