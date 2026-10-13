@@ -64,13 +64,11 @@ for (const call of ['fetch()', 'https.request()/http.request()']) {
   });
 }
 
-test('scanner: a fetch() call bound to a local `const fetch = ...` helper is not the global fetch (BRO-3603)', async () => {
+test('scanner: the shorthand `{ timeout }` option counts as a timeout option (BRO-3840)', () => {
   const { checkSource } = require('../../scripts/audit-fetch-timeouts.js');
-  const local = 'function resolve(deps) {\n  const fetch = deps.fetchOriginMain || fetchOriginMain;\n  if (!fetch(repoOpts)) return null;\n}\n';
-  assert.deepEqual(checkSource('x.js', local), []);
-  // The binding is scoped: a global fetch() in a sibling function is still checked.
-  const sibling = local + 'async function load(url) {\n  return fetch(url);\n}\n';
-  assert.equal(checkSource('x.js', sibling).length, 1);
-  const fixedSibling = local + 'async function load(url) {\n  return fetch(url, { signal: AbortSignal.timeout(60000) });\n}\n';
-  assert.deepEqual(checkSource('x.js', fixedSibling), []);
+  const shorthand = "function f(url, timeout) {\n  const req = https.request(url, { method: 'HEAD', timeout }, () => {});\n  req.on('timeout', () => { req.destroy(); });\n  req.on('error', () => {});\n}\n";
+  assert.deepEqual(checkSource('x.js', shorthand), []);
+  // The option alone is still not protection: no destroy handler -> flagged.
+  const noDestroy = "function f(url, timeout) {\n  const req = https.request(url, { timeout }, () => {});\n  req.on('error', () => {});\n}\n";
+  assert.equal(checkSource('x.js', noDestroy).length, 1);
 });

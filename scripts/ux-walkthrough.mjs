@@ -107,7 +107,7 @@ async function resolveServiceRoleKey() {
   if (!accessToken) throw new Error('SUPABASE_SERVICE_ROLE_KEY not set and no SUPABASE_ACCESS_TOKEN to derive it');
   const ref = process.env.SUPABASE_PROJECT_REF || new global.URL(URL_ENV).hostname.split('.')[0];
   const res = await fetch(`https://api.supabase.com/v1/projects/${ref}/api-keys`, {
-    signal: AbortSignal.timeout(300000),
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${accessToken}` },
   });
   if (!res.ok) throw new Error(`Management API api-keys HTTP ${res.status}`);
@@ -120,7 +120,7 @@ async function resolveServiceRoleKey() {
 /** GoTrue admin call with the service-role key. */
 async function adminFetch(serviceKey, method, path, body) {
   const res = await fetch(`${URL_ENV}/auth/v1/${path}`, {
-    signal: AbortSignal.timeout(300000),
+    signal: AbortSignal.timeout(60000),
     method,
     headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, 'Content-Type': 'application/json' },
     ...(body ? { body: JSON.stringify(body) } : {}),
@@ -146,7 +146,7 @@ async function mintSession(serviceKey, email) {
   const hashed = link.json?.hashed_token ?? link.json?.properties?.hashed_token;
   if (!link.ok || !hashed) throw new Error(`generateLink: HTTP ${link.status} ${link.text.slice(0, 200)}`);
   const res = await fetch(`${URL_ENV}/auth/v1/verify`, {
-    signal: AbortSignal.timeout(300000),
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: { apikey: ANON, 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'magiclink', token_hash: hashed }),
@@ -215,7 +215,7 @@ async function sweepOrphanedTestUsers(serviceKey) {
 /** One PostgREST call with a user JWT — mirrors src/lib/supabase-rest.ts. */
 async function rest(token, method, path, body, prefer = 'return=representation') {
   const res = await fetch(`${URL_ENV}/rest/v1/${path}`, {
-    signal: AbortSignal.timeout(300000),
+    signal: AbortSignal.timeout(60000),
     method,
     headers: {
       apikey: ANON,
