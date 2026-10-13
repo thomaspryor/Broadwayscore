@@ -7,7 +7,7 @@ import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo'
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, DataStalenessBanner } from '@/components/show-cards';
 import { StandingRoomTable } from '@/components/SortableLotteryRushTables';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
@@ -196,6 +196,7 @@ export default function StandingRoomPage() {
             {showsWithSRO.length} shows with SRO · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="broadway" />
 
         <DiscountTicketsNav active="standing-room" />
 

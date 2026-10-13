@@ -7,7 +7,7 @@ import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo'
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, DataStalenessBanner } from '@/components/show-cards';
 import { StandingRoomTable } from '@/components/SortableLotteryRushTables';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
@@ -184,6 +184,7 @@ export default function WestEndStandingRoomPage() {
             {showsWithSRO.length} shows with standing room · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="west-end" />
 
         <DiscountTicketsNav active="standing-room" market="west-end" />
 

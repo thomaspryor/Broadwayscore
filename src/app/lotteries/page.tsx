@@ -8,7 +8,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
 import { LotteryTable } from '@/components/SortableLotteryRushTables';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, DataStalenessBanner } from '@/components/show-cards';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
 
@@ -231,6 +231,7 @@ export default function LotteriesPage() {
             {showsWithLottery.length} shows with lotteries · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="broadway" />
 
         <DiscountTicketsNav active="lotteries" />
 

@@ -8,7 +8,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
 import { RushTable } from '@/components/SortableLotteryRushTables';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, DataStalenessBanner } from '@/components/show-cards';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { formatTicketPrice } from '@/lib/formatting';
 
@@ -266,6 +266,7 @@ export default function RushPage() {
             {showsWithRush.length} shows with rush tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="broadway" />
 
         <DiscountTicketsNav active="rush" />
 

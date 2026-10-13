@@ -94,6 +94,7 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 | `ShowSearchDropdown` | Search/autocomplete for shows |
 | `MustSeeCrown` | Crown icon for Critical Gold scores |
 | `CostStatusPill` | Box-office cost status (Well Above / Above / Near / Below Cost, Too early, No cost, Closing/Closed). Takes `costPill()` from `@/lib/box-office-v2-display`; tones map to `status-open`, `status-closed-bg`, `score-tepid`, dashed pending. BRO-5007, unreleased |
+| `DataStalenessBanner` | Amber (`score-tepid`) "data may be out of date" banner for feed-backed pages. Props `lastUpdated`, `kind` (`ticket-policies` 7d / `grosses` 10d), `thresholdDays`, `market`. Not dismissible; decided client-side after mount (static export). On the 9 lottery/rush/SRO/discount/box-office pages. BRO-901 |
 
 **Other shared utilities** (not in show-cards barrel but used by it):
 - `ShowImage` from `@/components/ShowImage` — Optimized show image with fallback/loading states

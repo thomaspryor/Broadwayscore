@@ -13,6 +13,7 @@ import NewMusicalsChart from '@/components/box-office/NewMusicalsChart';
 import PriceMapLazy from '@/components/box-office/PriceMapLazy';
 // Unreleased (BRO-5007): a client loader, so the tables are their own chunk and a flag-off page never fetches them.
 import BoxOfficeV2Tables from '@/components/BoxOfficeV2TablesLazy';
+import { DataStalenessBanner } from '@/components/show-cards';
 
 
 export const metadata: Metadata = {
@@ -127,6 +128,7 @@ export default function BoxOfficePage() {
             Week ending {weekEnding} · {market ? 'Broadway League figures' : <>Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</>}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} kind="grosses" market="broadway" />
 
         {market ? (
           <>

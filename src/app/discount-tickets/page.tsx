@@ -5,6 +5,7 @@ import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { DiscountTicketsTable, type DiscountShowRow } from './DiscountTicketsTable';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { DataStalenessBanner } from '@/components/show-cards';
 
 export const metadata: Metadata = {
   title: 'Cheap Broadway Tickets - Lotteries, Rush & Standing Room',
@@ -166,6 +167,7 @@ export default function DiscountTicketsPage() {
             {rows.length} shows · {lotteryCount} lotteries · {rushCount} rush · {sroCount} standing room · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="broadway" />
 
         <DiscountTicketsNav active="all" />
 

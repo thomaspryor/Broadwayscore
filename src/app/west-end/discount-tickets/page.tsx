@@ -5,6 +5,7 @@ import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { DiscountTicketsTable, type DiscountShowRow } from '../../discount-tickets/DiscountTicketsTable';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { DataStalenessBanner } from '@/components/show-cards';
 
 export const metadata: Metadata = {
   title: { absolute: 'Cheap West End Tickets — Lotteries, Rush & Standing Room' },
@@ -169,6 +170,7 @@ export default function WestEndDiscountTicketsPage() {
             {rows.length} shows · {lotteryCount} lotteries · {rushCount} rush · {sroCount} standing room · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="west-end" />
 
         <DiscountTicketsNav active="all" market="west-end" />
 
