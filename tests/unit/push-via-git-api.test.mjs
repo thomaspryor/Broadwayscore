@@ -738,11 +738,12 @@ async function runRecorded(extraEnv) {
     sh('git add -A', runnerDir);
     sh('git commit -q -m "our change"', runnerDir);
     const logFile = path.join(tmp, 'timeouts.log');
-    const res = await spawnScriptWithEnv(['main', baseSha, '1'], runnerDir, {
+    const { __MAX = '1', ...env } = extraEnv;
+    const res = await spawnScriptWithEnv(['main', baseSha, __MAX], runnerDir, {
       PATH: `${recordingTimeoutShim(tmp, logFile)}:${process.env.PATH}`,
       PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
       PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
-      ...extraEnv,
+      ...env,
     });
     const ops = fs.existsSync(logFile)
       ? fs.readFileSync(logFile, 'utf8').trim().split('\n').filter(Boolean).map((l) => { const [secs, sub] = l.split(' '); return { secs: Number(secs), sub }; })
@@ -753,14 +754,26 @@ async function runRecorded(extraEnv) {
   }
 }
 
-test('BRO-3125: with the deadline spent, every network op of the one attempt is clamped to the floor', async () => {
+test('BRO-3125: with the deadline spent, the tip lookups are clamped to the floor but attempt 1\'s push keeps its full cap', async () => {
   const { res, ops } = await runRecorded({ PUSH_API_DEADLINE_SEC: '0', GIT_NET_TIMEOUT_SEC: '90', PUSH_OP_MIN_TIMEOUT_SEC: '7' });
   const gitOps = ops.filter((o) => o.sub);
-  assert.ok(gitOps.some((o) => o.sub === 'push'), `the push must have run under the shim\n${res.stderr}`);
-  assert.ok(gitOps.some((o) => o.sub === 'ls-remote'), `ls-remote must have run under the shim\n${res.stderr}`);
-  assert.deepEqual(gitOps.filter((o) => o.secs !== 7), [], `every op must get the 7s floor, not 90s: ${JSON.stringify(gitOps)}`);
-  assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124, cap 7s\)/, 'the log must name the cap the push actually ran under');
-  assert.match(res.stderr, /1 timed out at the 7s cap/);
+  const lookups = gitOps.filter((o) => o.sub !== 'push');
+  const pushes = gitOps.filter((o) => o.sub === 'push');
+  assert.ok(lookups.some((o) => o.sub === 'ls-remote'), `ls-remote must have run under the shim\n${res.stderr}`);
+  assert.deepEqual(lookups.filter((o) => o.secs !== 7), [], `ls-remote/fetch must get the 7s floor, not 90s: ${JSON.stringify(gitOps)}`);
+  // The ref update is the step this fallback exists to retry; clamping the one
+  // guaranteed attempt would fail pushes that succeed in 40-80s under contention.
+  assert.deepEqual(pushes.map((o) => o.secs), [90], JSON.stringify(gitOps));
+  assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124, cap 90s\)/, 'the log must name the cap the push actually ran under');
+});
+
+test('BRO-3125: a later attempt\'s push is clamped to the time left', async () => {
+  const { res, ops } = await runRecorded({ PUSH_API_DEADLINE_SEC: '50', GIT_NET_TIMEOUT_SEC: '90', PUSH_OP_MIN_TIMEOUT_SEC: '7', __MAX: '2' });
+  const pushes = ops.filter((o) => o.sub === 'push').map((o) => o.secs);
+  assert.equal(pushes.length, 2, `expected two attempts\n${res.stderr}`);
+  assert.equal(pushes[0], 90, 'attempt 1 keeps the full cap');
+  assert.ok(pushes[1] <= 50 && pushes[1] >= 45, `attempt 2 must be clamped to the ~50s left, got ${pushes[1]}`);
+  assert.match(res.stderr, /2 timed out at caps of \d+-90s/, 'mixed caps must be reported as a range');
 });
 
 test('BRO-3125: no deadline keeps the full GIT_NET_TIMEOUT_SEC cap (direct callers unchanged)', async () => {
@@ -775,10 +788,16 @@ test('BRO-3125: a floor above the cap leaves the cap, and garbage values fall ba
   const high = await runRecorded({ PUSH_API_DEADLINE_SEC: '0', GIT_NET_TIMEOUT_SEC: '30', PUSH_OP_MIN_TIMEOUT_SEC: '200' });
   assert.deepEqual(high.ops.filter((o) => o.sub && o.secs !== 30), [], JSON.stringify(high.ops));
   const garbage = await runRecorded({ PUSH_API_DEADLINE_SEC: '0', GIT_NET_TIMEOUT_SEC: 'abc', PUSH_OP_MIN_TIMEOUT_SEC: '0' });
-  const gitOps = garbage.ops.filter((o) => o.sub);
-  assert.ok(gitOps.length >= 2, garbage.res.stderr);
-  // GIT_NET_TIMEOUT_SEC=abc -> 90, floor 0 -> 20, deadline spent -> 20.
-  assert.deepEqual(gitOps.filter((o) => o.secs !== 20), [], JSON.stringify(gitOps));
+  const lookups = garbage.ops.filter((o) => o.sub && o.sub !== 'push');
+  const pushes = garbage.ops.filter((o) => o.sub === 'push');
+  assert.ok(lookups.length >= 1 && pushes.length === 1, garbage.res.stderr);
+  // GIT_NET_TIMEOUT_SEC=abc -> 90, floor 0 -> 20, deadline spent -> lookups 20, push keeps 90.
+  assert.deepEqual(lookups.filter((o) => o.secs !== 20), [], JSON.stringify(garbage.ops));
+  assert.equal(pushes[0].secs, 90);
+  // A leading-zero deadline is decimal, not octal (08 used to abort under set -e).
+  const octal = await runRecorded({ PUSH_API_DEADLINE_SEC: '08', GIT_NET_TIMEOUT_SEC: '90', PUSH_OP_MIN_TIMEOUT_SEC: '3' });
+  assert.doesNotMatch(octal.res.stderr, /value too great for base/, octal.res.stderr);
+  assert.ok(octal.ops.some((o) => o.sub === 'push'), octal.res.stderr);
 });
 
 // BRO-2951: a TIMEOUT-classified retry used to sleep a near-flat 1-3s
