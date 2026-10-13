@@ -1518,5 +1518,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-13T14:45:15.985Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3333-ci-board-batch",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3333-ci-board-batch",
+    "description": "land.yml did not land land/bro-3333-ci-board-batch: the unit-tests-node gate went red at 0edde25e84. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38410239325",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3333-ci-board-batch"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0edde25e84a96460b3fd9eb04ee45ff90bd1bd40"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38410239325"
+      }
+    ],
+    "queuedAt": "2026-10-13T14:48:21.807Z"
   }
 ]
