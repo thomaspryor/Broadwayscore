@@ -546,3 +546,38 @@ test('manifest left unsorted on the rebased tree blocks; a sorted one passes (BR
   assert.equal(v.detail.manifests.status, 'pass');
   assert.equal(v.decision, 'allow', v.message);
 });
+
+// BRO-4909: a push touching .github/workflows runs the workflow lints and the
+// DEPENDENCIES.md freshness check on the landing tree; others never pay for it.
+test('workflow checks: run only when workflows change, block on exit 1, fail open on anything else (BRO-4909)', async () => {
+  const { checkWorkflowChecks, judgeLand, blockMessage, WORKFLOW_CHECKS } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = baseRepo();
+  write(d, 'scripts/lint-workflow-guards.sh', '#!/bin/sh\n');
+  write(d, 'scripts/audit-workflow-hygiene.js', '\n');
+  write(d, 'scripts/generate-workflow-dependencies.js', '\n');
+  write(d, '.github/workflows/a.yml', 'name: a\n');
+  sh(d, 'git add -A && git commit -qm wf && git checkout -qb feat');
+  const calls = [];
+  const stub = (code) => (cmd, args) => { calls.push([cmd, ...args].join(' ')); return { status: code, stdout: 'DEPENDENCIES.md is stale', stderr: '' }; };
+  // unrelated change: nothing runs
+  write(d, 'g2.txt', 'x\n');
+  sh(d, 'git add -A && git commit -qm unrelated');
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) }).status, 'clean');
+  assert.equal(calls.length, 0);
+  // workflow change: all three checks run on the landing tree
+  write(d, '.github/workflows/a.yml', 'name: b\n');
+  sh(d, 'git commit -qam wfchange');
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(0) }).status, 'clean');
+  assert.equal(calls.length, WORKFLOW_CHECKS.length);
+  // exit 1 blocks and the message names the fix
+  const bad = checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) });
+  assert.equal(bad.status, 'fail');
+  assert.match(blockMessage({ target: 'land/x', base: 'main', workflows: bad }), /generate-workflow-dependencies\.js --check fails on the landing tree/);
+  // a check that crashes (exit 2) or times out never blocks
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(2) }).status, 'clean');
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: () => ({ error: new Error('ETIMEDOUT'), status: null }) }).status, 'clean');
+  // judgeLand wires it in: a failing check blocks the land push
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false, seams: { checkWorkflowChecks: () => bad } });
+  assert.equal(v.decision, 'block');
+  assert.match(v.message, /Workflow checks \(CI would go red/);
+});
