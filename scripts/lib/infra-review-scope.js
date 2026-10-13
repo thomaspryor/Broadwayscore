@@ -143,7 +143,7 @@ const SHARED_INFRA_RULES = [
     // mirrors the file's own stated principle for 'ci-gate' above (line
     // ~159): "CI gates", not "everything that looks like it might be one" —
     // a curated name list here, not an open name-shape guess.
-    re: /^(?:scripts\/(?:lib\/(?:file-lock|locks-index|send-lock|[a-z-]*-lock|monitor-lock-staleness|atomic-[a-z-]+|[a-z-]*-atomic-write|push-[a-z-]+|run-push-audits)|merge-worktree-to-main)\.(?:js|mjs|cjs|sh)|\.github\/actions\/(?:push-core-data|push-review-texts|push-aggregator-archive|checkout-core-data|checkout-review-texts|checkout-aggregator-archive|commit-scraper-spend-ledger)\/action\.ya?ml)$/,
+    re: /^(?:scripts\/(?:lib\/(?:file-lock|locks-index|send-lock|[a-z-]*-lock|monitor-lock-staleness|atomic-[a-z-]+|[a-z-]*-atomic-write|push-[a-z-]+|run-push-audits)|merge-worktree-to-main)\.(?:js|mjs|cjs|sh)|\.github\/actions\/(?:push-core-data|push-review-texts|push-aggregator-archive|checkout-core-data|checkout-review-texts|checkout-aggregator-archive|commit-scraper-spend-ledger|commit-stage-latency)\/action\.ya?ml)$/,
     why: 'many sessions write here at once; a defect corrupts or silently drops another session\'s work',
   },
   {

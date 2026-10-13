@@ -1258,3 +1258,57 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     assert.strictEqual(_isIncludable(data), true);
   });
 });
+
+// BRO-2766: on 2026-09-04 check-rebuild-staleness counted a BWW show LANDING
+// page stub (glengarry-glen-ross-2005/broadwayworld--unknown.json) as
+// scoreable, failed every rebuild-fast run and stranded reviews.json for all
+// shows. Pins the gate's real predicate (isScoreableFile) against both shapes
+// that file has had: the content-free stub from that night, and the later
+// Wayback-recovered landing page carrying a json-ld aggregate "70/100".
+describe('BRO-2766: BWW landing-page stub is never scoreable for the staleness gate', () => {
+  const { isScoreableFile } = require('../../scripts/lib/rebuild-staleness-scan.js');
+  const show = { id: 'glengarry-glen-ross-2005' };
+  const filePath = 'data/review-texts/glengarry-glen-ross-2005/broadwayworld--unknown.json';
+  const stub = {
+    showId: 'glengarry-glen-ross-2005', outletId: 'broadwayworld', outlet: 'BroadwayWorld',
+    criticName: 'Unknown', url: 'https://www.broadwayworld.com/shows/Glengarry-Glen-Ross-335166.html',
+    publishDate: null, fullText: null, isFullReview: false, originalScore: null, assignedScore: null,
+    source: 'serp-discovery', contentTier: 'stub', contentTierReason: 'No text content',
+    incompleteReason: 'not_attempted',
+  };
+  const landingWithJsonLdScore = {
+    ...stub,
+    fullText: 'Show synopsis and casting news from a show landing page. '.repeat(20),
+    contentTier: 'truncated', textWordCount: 180, fetchMethod: 'wayback-recovery',
+    originalScore: '70/100', originalScoreNormalized: 70, originalScoreSource: 'json-ld',
+    incompleteReason: 'partial_text',
+  };
+
+  test('control: a real dated review for the same show IS scoreable', () => {
+    const real = {
+      showId: 'glengarry-glen-ross-2005', outletId: 'nytimes', outlet: 'The New York Times',
+      criticName: 'Jesse Green', url: 'https://www.nytimes.com/2025/03/31/theater/glengarry-glen-ross-review.html',
+      publishDate: '2025-03-31', fullText: 'The revival is sharp and fierce. '.repeat(120),
+      contentTier: 'complete', textWordCount: 720, assignedScore: 80,
+    };
+    assert.strictEqual(
+      isScoreableFile(real, { ...show, openingDate: '2025-03-31' }, filePath.replace('broadwayworld--unknown', 'nytimes--jesse-green')),
+      true,
+    );
+  });
+
+  test('content-free stub (2026-09-04 shape) is not scoreable', () => {
+    assert.strictEqual(isScoreableFile({ ...stub }, show, filePath), false);
+  });
+
+  test('landing page with a json-ld aggregate score is not scoreable, even unflagged', () => {
+    assert.strictEqual(isScoreableFile({ ...landingWithJsonLdScore }, show, filePath), false);
+  });
+
+  test('flagged isNonReview landing page (current on-disk shape) is not scoreable', () => {
+    assert.strictEqual(
+      isScoreableFile({ ...landingWithJsonLdScore, isNonReview: true, nonReviewType: 'news' }, show, filePath),
+      false,
+    );
+  });
+});
