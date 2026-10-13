@@ -482,11 +482,10 @@ function classifyMarketRouting(args) {
     );
     if (sameMarketSiblings.length >= 1) {
       const ctx = { url, publishDate };
-      const currentSignals = collectSameTitleSignals(
-        { openingDate: sibData.openingDate, previewsStartDate: sibData.previewsStartDate,
-          closingDate: sibData.closingDate, venue: sibData.venue },
-        ctx
-      );
+      const currentSignals = collectSameTitleSignals(Object.assign(
+        { openingDate: sibData.openingDate, closingDate: sibData.closingDate, venue: sibData.venue },
+        { previewsStartDate: sibData.previewsStartDate }
+      ), ctx);
       const scored = sameMarketSiblings.map(s => ({
         id: s.id,
         signals: collectSameTitleSignals(s, ctx),
