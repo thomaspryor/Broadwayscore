@@ -158,7 +158,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -170,7 +170,8 @@
       "notifyCount": 137,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-13T06:22:59.802Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -15246,7 +15247,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:4244a68e": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no image file carries a hash rejected by eye\"",
       "firstSeen": "2026-10-13T05:09:25.068Z",
@@ -15263,7 +15264,9 @@
         "runId": "38348677399",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38348677399"
       },
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-13T06:22:59.652Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-2278-tour-leg-guard": {
       "status": "open",
