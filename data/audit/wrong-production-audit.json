@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T23:46:19.866Z",
+  "timestamp": "2026-10-13T00:00:49.752Z",
   "stats": {
-    "totalReviews": 56201,
+    "totalReviews": 56188,
     "alreadyFlagged": 20960,
-    "dateGuardCatches": 216,
+    "dateGuardCatches": 217,
     "directorMismatch": 1805,
     "tvFilmSignals": 1623,
-    "londonSignals": 2219,
+    "londonSignals": 2213,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
-    "noPublishDate": 5271
+    "noPublishDate": 5270
   },
   "findings": [
     {
@@ -46020,6 +46020,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -53632,20 +53646,6 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "file": "a-youngish-perspective--unknown.json",
-      "score": 78,
-      "publishDate": "2026-10-11",
-      "url": "https://ayoungishperspective.co.uk/2026/10/11/review-blood-of-my-blood/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "blood-of-my-blood-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
       "score": 82,
       "publishDate": "2026-10-09",
@@ -53756,7 +53756,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -53798,6 +53798,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "plays-international--unknown.json",
+      "score": 82,
       "publishDate": "2026-10-12",
       "url": "https://playsinternational.org.uk/blood-of-my-blood-royal-court-theatre-upstairs/",
       "findings": [
@@ -62648,20 +62649,6 @@
     },
     {
       "showId": "high-society-west-end-2026",
-      "file": "everything-theatre--unknown.json",
-      "score": 59,
-      "publishDate": "2026-06-05",
-      "url": "https://everything-theatre.co.uk/2026/06/review-high-society-the-barbican/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "high-society-west-end-2026",
       "file": "firstnightmagazine--unknown.json",
       "score": 82,
       "publishDate": "2026-06-06",
@@ -62746,20 +62733,6 @@
     },
     {
       "showId": "high-society-west-end-2026",
-      "file": "londontheatre1--unknown.json",
-      "score": 75,
-      "publishDate": "2026-06-04",
-      "url": "https://www.londontheatre1.com/reviews/high-society-barbican-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "high-society-west-end-2026",
       "file": "londontheatredirect--sian-mcbride.json",
       "score": 98,
       "publishDate": "2026-06-03",
@@ -62830,35 +62803,7 @@
     },
     {
       "showId": "high-society-west-end-2026",
-      "file": "theatreandtonic--unknown.json",
-      "score": 87,
-      "publishDate": "2026-06-06",
-      "url": "https://theatreandtonic.co.uk/blog/high-society-at-the-barbican-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "high-society-west-end-2026",
       "file": "theupcoming--sophia-moss.json",
-      "score": 91,
-      "publishDate": "2026-06-04",
-      "url": "https://www.theupcoming.co.uk/2026/06/04/high-society-at-barbican-theatre-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "high-society-west-end-2026",
-      "file": "theupcoming--unknown.json",
       "score": 91,
       "publishDate": "2026-06-04",
       "url": "https://www.theupcoming.co.uk/2026/06/04/high-society-at-barbican-theatre-theatre-review/",
@@ -63054,20 +62999,6 @@
     {
       "showId": "hot-mess-a-new-musical-off-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
-      "score": 88,
-      "publishDate": "2026-06-24",
-      "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "hot-mess-a-new-musical-off-west-end-2026",
-      "file": "london-theatre--unknown.json",
       "score": 88,
       "publishDate": "2026-06-24",
       "url": "https://www.londontheatre.co.uk/reviews/hot-mess-a-new-musical-review-the-other-palace",
