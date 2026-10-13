@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T05:32:50.867Z",
+  "timestamp": "2026-10-13T06:10:18.296Z",
   "stats": {
     "totalReviews": 56295,
-    "alreadyFlagged": 21000,
+    "alreadyFlagged": 21002,
     "dateGuardCatches": 218,
     "directorMismatch": 1859,
-    "tvFilmSignals": 1629,
+    "tvFilmSignals": 1638,
     "londonSignals": 2232,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5264
+    "noPublishDate": 5256
   },
   "findings": [
     {
@@ -1004,6 +1004,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "a-tale-of-two-cities-2008",
+      "file": "variety--david-rooney.json",
+      "publishDate": "2008-09-19",
+      "url": "https://variety.com/2008/film/awards/a-tale-of-two-cities-6-1200470437/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -15824,6 +15837,19 @@
       ]
     },
     {
+      "showId": "god-of-carnage-2009",
+      "file": "variety--charles-isherwood.json",
+      "publishDate": "2009-03-23",
+      "url": "https://variety.com/2009/film/awards/god-of-carnage-1200474074/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
+        }
+      ]
+    },
+    {
       "showId": "godspell-2011",
       "file": "about-entertainment--charles-isherwood.json",
       "score": 59,
@@ -22760,6 +22786,19 @@
       ]
     },
     {
+      "showId": "journeys-end-2007",
+      "file": "variety--david-rooney.json",
+      "publishDate": "2007-02-23",
+      "url": "https://variety.com/2007/film/awards/journey-s-end-1200510125/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
+        }
+      ]
+    },
+    {
       "showId": "junk-2017",
       "file": "variety--marilyn-stasio.json",
       "score": 66,
@@ -25529,6 +25568,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-stuart-2009",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": "2009-04-20",
+      "url": "https://variety.com/2009/film/awards/mary-stuart-4-1200474491/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -32425,6 +32477,19 @@
       ]
     },
     {
+      "showId": "pygmalion-2007",
+      "file": "variety--david-rooney.json",
+      "publishDate": "2007-10-19",
+      "url": "https://variety.com/2007/legit/markets-festivals/pygmalion-4-1200555250/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
+        }
+      ]
+    },
+    {
       "showId": "queen-versailles-2025",
       "file": "ap--mark-kennedy.json",
       "score": 56,
@@ -38894,6 +38959,19 @@
       ]
     },
     {
+      "showId": "the-constant-wife-2005",
+      "file": "variety--charles-isherwood.json",
+      "publishDate": "2005-06-17",
+      "url": "https://variety.com/2005/legit/markets-festivals/the-constant-wife-3-1200525090/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
+        }
+      ]
+    },
+    {
       "showId": "the-cottage-2023",
       "file": "queerty--matthew-wexler.json",
       "score": 60,
@@ -42146,6 +42224,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-norman-conquests-2009",
+      "file": "variety--charles-isherwood.json",
+      "publishDate": "2009-04-24",
+      "url": "https://variety.com/2009/film/awards/the-norman-conquests-2-1200474437/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -50481,6 +50572,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "file": "variety--charles-isherwood.json",
+      "publishDate": "2010-11-05",
+      "url": "https://variety.com/2010/legit/news/women-on-the-verge-of-a-nervous-breakdown-1117943995/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -80012,6 +80116,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-little-mermaid-2008",
+      "file": "variety--david-rooney.json",
+      "publishDate": "2008-01-10",
+      "url": "https://variety.com/2008/film/awards/the-little-mermaid-2-1200553677/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
