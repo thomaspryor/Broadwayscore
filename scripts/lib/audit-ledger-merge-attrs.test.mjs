@@ -8,6 +8,10 @@ import {
   isExemptLedgerPath,
   findLedgersMissingUnionOrExemption,
   findExemptLedgersWronglyUnioned,
+  VERIFIED_UNION_LEDGERS,
+  isVerifiedUnionPath,
+  findUnverifiedUnionLedgers,
+  findStaleVerifiedUnionPatterns,
 } from './audit-ledger-merge-attrs.js';
 
 const REPO_ROOT = path.resolve(fileURLToPath(new URL('../..', import.meta.url)));
@@ -61,7 +65,9 @@ test('isExemptLedgerPath is true only for a listed path', () => {
 test('EXEMPT_LEDGERS entries are well-formed', () => {
   assert.ok(EXEMPT_LEDGERS.length > 0, 'sanity: exemption list is non-empty');
   for (const entry of EXEMPT_LEDGERS) {
-    assert.match(entry.file, /^data\/audit\/[^/]+\.jsonl$/, `exemption path looks wrong: ${entry.file}`);
+    // BRO-2497: repo-wide, so any repo-relative *.jsonl path (no leading
+    // slash, no `..`), not just data/audit/.
+    assert.match(entry.file, /^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))[^\s]+\.jsonl$/, `exemption path looks wrong: ${entry.file}`);
     assert.ok(entry.reason && entry.reason.length > 40, `exemption reason too thin for ${entry.file}`);
   }
 });
@@ -78,13 +84,58 @@ test('EXEMPT_LEDGERS has no duplicate file entries', () => {
   assert.deepEqual(dupes, [], `duplicate EXEMPT_LEDGERS entry(ies): ${JSON.stringify(dupes)}`);
 });
 
-test('REGRESSION: every real tracked data/audit/*.jsonl ledger is either merge=union or a documented exemption', () => {
-  const tracked = git(['ls-files', 'data/audit'])
-    .split('\n')
-    .map((s) => s.trim())
+test('findUnverifiedUnionLedgers flags a union *.jsonl outside data/audit with no VERIFIED_UNION_LEDGERS entry', () => {
+  const gaps = findUnverifiedUnionLedgers(
+    ['data/new-thing/log.jsonl', 'data/audit/stage-latency.jsonl', 'data/opening-night-timeline/x.jsonl', 'data/plain.jsonl'],
+    (f) => (f === 'data/plain.jsonl' ? 'unspecified' : 'union')
+  );
+  // data/audit/ union files were reviewed by BRO-2493; the opening-night
+  // timeline is verified; a non-union file is the coverage check's job.
+  assert.deepEqual(gaps, [{ file: 'data/new-thing/log.jsonl' }]);
+});
+
+test('isVerifiedUnionPath: `*` matches one path segment only', () => {
+  assert.equal(isVerifiedUnionPath('data/opening-night-timeline/beaches-2026.jsonl'), true);
+  assert.equal(isVerifiedUnionPath('data/opening-night-timeline/nested/beaches-2026.jsonl'), false);
+  assert.equal(isVerifiedUnionPath('data/opening-night-timeline/beaches-2026.json'), false);
+});
+
+test('findStaleVerifiedUnionPatterns flags a pattern matching no tracked file', () => {
+  assert.deepEqual(findStaleVerifiedUnionPatterns([]), VERIFIED_UNION_LEDGERS.map((e) => e.pattern));
+  assert.deepEqual(findStaleVerifiedUnionPatterns(['data/opening-night-timeline/x.jsonl']), []);
+});
+
+test('VERIFIED_UNION_LEDGERS entries are well-formed', () => {
+  for (const entry of VERIFIED_UNION_LEDGERS) {
+    assert.match(entry.pattern, /\.jsonl$/, `pattern must target *.jsonl: ${entry.pattern}`);
+    assert.ok(!entry.pattern.startsWith('data/audit/'), `data/audit/ is covered by .gitattributes review, not this list: ${entry.pattern}`);
+    assert.ok(entry.reason && entry.reason.length > 40, `verified-union reason too thin for ${entry.pattern}`);
+  }
+});
+
+// Discovery is every tracked *.jsonl in the repo (BRO-2497), not just
+// `git ls-files data/audit` (BRO-2493): sync-audit-checkout.sh's union-recovery
+// stage has no path filter, and unionLedgerCandidates() keys on `*.jsonl` +
+// merge=union regardless of directory. Non-.jsonl union files (today only
+// tests/unit-test-manifest.txt) are refused by that predicate, so they are out
+// of scope — see the module header.
+function listTrackedJsonl() {
+  return git(['ls-files', '-z', '--', '*.jsonl'])
+    .split('\0')
     .filter(Boolean)
     .filter((f) => f.endsWith('.jsonl'));
-  assert.ok(tracked.length > 5, 'sanity: found a plausible number of tracked data/audit/*.jsonl ledgers');
+}
+
+test('REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption', () => {
+  const tracked = listTrackedJsonl();
+  assert.ok(
+    tracked.filter((f) => f.startsWith('data/audit/')).length > 5,
+    'sanity: found a plausible number of tracked data/audit/*.jsonl ledgers'
+  );
+  assert.ok(
+    tracked.some((f) => !f.startsWith('data/audit/')),
+    'sanity: discovery reaches *.jsonl outside data/audit/ (BRO-2497 widening)'
+  );
 
   const attrOut = execFileSync('git', ['check-attr', 'merge', '--stdin'], {
     cwd: REPO_ROOT,
@@ -106,7 +157,7 @@ test('REGRESSION: every real tracked data/audit/*.jsonl ledger is either merge=u
   assert.deepEqual(
     gaps,
     [],
-    `data/audit/*.jsonl ledger(s) with neither merge=union in .gitattributes nor an EXEMPT_LEDGERS entry (scripts/lib/audit-ledger-merge-attrs.js): ${JSON.stringify(gaps)}`
+    `tracked *.jsonl file(s) with neither merge=union in .gitattributes nor an EXEMPT_LEDGERS entry (scripts/lib/audit-ledger-merge-attrs.js): ${JSON.stringify(gaps)}`
   );
 
   // A file listed in EXEMPT_LEDGERS for a checked, reasoned disqualifier must
@@ -118,6 +169,16 @@ test('REGRESSION: every real tracked data/audit/*.jsonl ledger is either merge=u
     [],
     `EXEMPT_LEDGERS entry(ies) that are ALSO declared merge=union in .gitattributes — remove the union declaration or remove the exemption: ${JSON.stringify(contradictions)}`
   );
+
+  const unverified = findUnverifiedUnionLedgers(tracked, attrOf);
+  assert.deepEqual(
+    unverified,
+    [],
+    `merge=union *.jsonl outside data/audit/ with no VERIFIED_UNION_LEDGERS entry (check its readers for order/duplicate sensitivity, then add one or exempt it): ${JSON.stringify(unverified)}`
+  );
+
+  const stalePatterns = findStaleVerifiedUnionPatterns(tracked);
+  assert.deepEqual(stalePatterns, [], `VERIFIED_UNION_LEDGERS pattern(s) matching no tracked file: ${JSON.stringify(stalePatterns)}`);
 
   // Every EXEMPT_LEDGERS entry should name a file that still actually exists
   // and is still tracked — a stale entry for a deleted/renamed file silently

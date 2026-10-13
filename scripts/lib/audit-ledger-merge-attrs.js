@@ -1,8 +1,28 @@
 'use strict';
 /**
- * Lint gate (BRO-2493): every tracked data/audit/*.jsonl ledger must either
- * be declared `merge=union` in .gitattributes, or appear in the
- * EXEMPT_LEDGERS list below with a dated, checked reason.
+ * Lint gate (BRO-2493, widened repo-wide by BRO-2497): every tracked *.jsonl
+ * file ANYWHERE in the repo must either be declared `merge=union` in
+ * .gitattributes, or appear in the EXEMPT_LEDGERS list below with a dated,
+ * checked reason. A union-declared *.jsonl OUTSIDE data/audit/ must also be
+ * covered by a VERIFIED_UNION_LEDGERS entry naming its checked-safe reader
+ * (data/audit/'s union set was reviewed file by file in BRO-2493 and is
+ * documented inline in .gitattributes).
+ *
+ * WHY REPO-WIDE (BRO-2497): the original gate only listed `data/audit`, but
+ * the union-recovery stage in sync-audit-checkout.sh reads
+ * `git status --porcelain --untracked-files=all` with no path filter and
+ * scripts/lib/sync-audit-decision.js's unionLedgerCandidates() accepts ANY
+ * tracked path that is `*.jsonl` AND merge=union. The mechanism is keyed on
+ * the extension plus the attribute, not the directory, so the gate is too.
+ *
+ * WHY *.jsonl AND NOT EVERY merge=union FILE: unionLedgerCandidates()
+ * deliberately refuses non-.jsonl paths even when they are merge=union (its
+ * doc comment names tests/unit-test-manifest.txt, the only such tracked file
+ * today, as the reason). A non-.jsonl union file therefore can never enter
+ * the recovery path this gate protects; its driver only matters to ordinary
+ * `git merge`, and the manifest's own .gitattributes comment documents that
+ * its reader treats it as a set. Widening to it would gate a file the
+ * mechanism cannot touch.
  *
  * WHY THIS EXISTS: sync-audit-checkout.sh's union-recovery stage (BRO-2314)
  * only unblocks a launchd job's `git merge --ff-only` for a path that is
@@ -31,8 +51,8 @@
  * next real write.
  *
  * Pure (string/array in, data out) per CLAUDE.md rule 15 — the git reads
- * (`git ls-files`, `git check-attr`) live in the colocated test's
- * "REGRESSION: every real tracked ledger..." case
+ * (`git ls-files '*.jsonl'`, `git check-attr`) live in the colocated test's
+ * "REGRESSION: every real tracked *.jsonl..." case
  * (scripts/lib/audit-ledger-merge-attrs.test.mjs), same pattern
  * scripts/lib/core-data-registry-coverage.js already uses.
  */
@@ -183,6 +203,58 @@ const EXEMPT_LEDGERS = [
       '(scripts/lib/autonomous-recheck-core.js), which arms automatic card-' +
       'reopening — too consequential a gate to risk on merge-disturbed order.',
   },
+  {
+    file: 'data/linear-import-mapping.jsonl',
+    reason:
+      '2026-10-13 (BRO-2497): scripts/lib/import-ledger.js documents its READ ' +
+      'SEMANTICS as "last row wins per pageId" — indexByPageId() and ' +
+      'indexByIdentifier() walk the file in order and Map.set() each row, so a ' +
+      'correction is a LATER row superseding an earlier one. That is criterion ' +
+      '(b): a union recovery appends locally-saved rows after origin\'s, so a ' +
+      'stale pre-correction row could land after its correction and silently ' +
+      'win, pointing the anti-join / rollback at the wrong Linear issue. The ' +
+      'Notion->Linear migration it served is finished (Notion retired ' +
+      '2026-08-20), so there is no live concurrent writer to protect either.',
+  },
+  {
+    file: 'data/archive/notion-card-history.jsonl',
+    reason:
+      '2026-10-13 (BRO-2497): export-notion-outcome-history.js rebuilds the ' +
+      'WHOLE file from the frozen Notion corpus, sorted by pageId, and ' +
+      'fs.writeFileSync()s it (tmp + rename) — a "COMPLETE fresh snapshot" like ' +
+      'multiauthor-attribution-candidates.jsonl, not an append-only ledger. A ' +
+      'union merge would keep superseded copies of re-exported rows beside the ' +
+      'new ones. Notion is retired (2026-08-20), so nothing re-exports it on a ' +
+      'schedule; its only other reader is lint-committed-pii.js (a PII scan, ' +
+      'order-insensitive).',
+  },
+  {
+    file: 'data/seat-research-eval/history.jsonl',
+    reason:
+      '2026-10-13 (BRO-2497): written only by a hand-run dev tool ' +
+      '(eval-seat-research.js appendFileSync; no workflow invokes it), so CI ' +
+      'never moves it on origin and there is no concurrent-append race to ' +
+      'protect. Its reader is also order-sensitive (criterion b): ' +
+      'compareVersions() takes `runs[runs.length - 1]` as the LATEST run per ' +
+      'promptVersion in file order, so a union-reordered file would compare the ' +
+      'wrong runs.',
+  },
+  {
+    file: 'tests/fixtures/lint-committed-pii/clean.jsonl',
+    reason:
+      '2026-10-13 (BRO-2497): static test fixture read by ' +
+      'tests/unit/lint-committed-pii.test.mjs (scanFile). No writer appends to ' +
+      'it, so there is no race to protect; a union driver would only let a ' +
+      'merge silently combine two edits of an expected-output fixture.',
+  },
+  {
+    file: 'tests/fixtures/lint-committed-pii/dirty-attempts.jsonl',
+    reason:
+      '2026-10-13 (BRO-2497): static test fixture for lint-committed-pii.js, ' +
+      'same as clean.jsonl beside it — hand-edited, never appended to by any ' +
+      'script, so merge=union protects nothing and could mask a conflicting ' +
+      'fixture edit.',
+  },
 ];
 
 const EXEMPT_LEDGER_PATHS = new Set(EXEMPT_LEDGERS.map((e) => e.file));
@@ -192,7 +264,7 @@ function isExemptLedgerPath(file) {
 }
 
 /**
- * @param {string[]} files repo-relative tracked data/audit/*.jsonl paths
+ * @param {string[]} files repo-relative tracked *.jsonl paths (repo-wide)
  * @param {(file: string) => string|null|undefined} mergeAttrOf returns the
  *   file's git `merge` attribute value (e.g. 'union', 'unspecified', null)
  * @returns {{file: string}[]} files that are neither declared merge=union
@@ -223,8 +295,72 @@ function findExemptLedgersWronglyUnioned(mergeAttrOf) {
   return EXEMPT_LEDGERS.filter((e) => mergeAttrOf(e.file) === 'union').map((e) => ({ file: e.file }));
 }
 
+// merge=union *.jsonl outside data/audit/ whose readers were checked against
+// criteria (a) and (b) above. `pattern` is a repo-relative glob where `*`
+// matches within one path segment only.
+const VERIFIED_UNION_LEDGERS = [
+  {
+    pattern: 'data/opening-night-timeline/*.jsonl',
+    reason:
+      '2026-10-13 (BRO-2497): one append-only snapshot log per show, written by ' +
+      'scripts/generate-status-page.js (appendFileSync, CI rebuild-reviews.yml ' +
+      'commits them). Readers checked by grepping "opening-night-timeline" ' +
+      'across scripts/, src/, .github/: only generate-status-page.js reads the ' +
+      'rows (show-id-keyed-files.js and rebuild-reviews.yml only name the path). ' +
+      'Criterion (a): nothing sums or aggregates by key; rows are plotted as a ' +
+      'sparkline. Criterion (b): BOTH reads trusted file order (dedupe against ' +
+      'the last line; sparkline + date label from [0]/[length-1]) — fixed in ' +
+      'this card by routing both through scripts/lib/opening-night-timeline.js ' +
+      'parseTimelineJsonl(), which re-sorts by the explicit `t` timestamp and ' +
+      'collapses exact-duplicate lines. Worst case after that is one redundant ' +
+      'snapshot row, a cosmetic sparkline point on a noindex status page.',
+  },
+];
+
+function globToRegExp(glob) {
+  const escaped = glob.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*');
+  return new RegExp(`^${escaped}$`);
+}
+
+const VERIFIED_UNION_MATCHERS = VERIFIED_UNION_LEDGERS.map((e) => ({ ...e, re: globToRegExp(e.pattern) }));
+
+function isVerifiedUnionPath(file) {
+  return VERIFIED_UNION_MATCHERS.some((m) => m.re.test(file));
+}
+
+/**
+ * BRO-2497: a merge=union *.jsonl outside data/audit/ with no
+ * VERIFIED_UNION_LEDGERS entry — union declared, but nobody checked whether
+ * its readers survive unordered/duplicated rows.
+ *
+ * @param {string[]} files repo-relative tracked *.jsonl paths
+ * @param {(file: string) => string|null|undefined} mergeAttrOf
+ * @returns {{file: string}[]}
+ */
+function findUnverifiedUnionLedgers(files, mergeAttrOf) {
+  if (!Array.isArray(files)) throw new TypeError('files must be an array');
+  if (typeof mergeAttrOf !== 'function') throw new TypeError('mergeAttrOf must be a function');
+  return files
+    .filter((f) => !f.startsWith('data/audit/') && mergeAttrOf(f) === 'union' && !isVerifiedUnionPath(f))
+    .map((file) => ({ file }));
+}
+
+/**
+ * @param {string[]} files repo-relative tracked *.jsonl paths
+ * @returns {string[]} VERIFIED_UNION_LEDGERS patterns matching no tracked file
+ *   (stale: the directory was renamed or emptied, so the entry vouches for nothing)
+ */
+function findStaleVerifiedUnionPatterns(files) {
+  if (!Array.isArray(files)) throw new TypeError('files must be an array');
+  return VERIFIED_UNION_MATCHERS.filter((m) => !files.some((f) => m.re.test(f))).map((m) => m.pattern);
+}
+
 module.exports = {
   EXEMPT_LEDGERS,
+  VERIFIED_UNION_LEDGERS,
+  isVerifiedUnionPath,
+  findUnverifiedUnionLedgers,
+  findStaleVerifiedUnionPatterns,
   isExemptLedgerPath,
   findLedgersMissingUnionOrExemption,
   findExemptLedgersWronglyUnioned,

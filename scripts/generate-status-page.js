@@ -22,6 +22,7 @@ const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./open
 const { getTier, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { parseTimelineJsonl } = require('./lib/opening-night-timeline');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
@@ -238,16 +239,13 @@ function main() {
       bc: s.broadcast.state,
     };
     const tlPath = path.join(TIMELINE_DIR, `${s.id}.jsonl`);
-    // Deduplicate: skip if the last entry has the same review count + score
+    // Deduplicate: skip if the latest entry (by timestamp, not file order:
+    // the file is merge=union, BRO-2497) has the same review count + score
     let skip = false;
     if (fs.existsSync(tlPath)) {
-      const lines = fs.readFileSync(tlPath, 'utf8').trim().split('\n');
-      if (lines.length > 0) {
-        try {
-          const last = JSON.parse(lines[lines.length - 1]);
-          if (last.rc === entry.rc && last.s === entry.s) skip = true;
-        } catch {}
-      }
+      const rows = parseTimelineJsonl(fs.readFileSync(tlPath, 'utf8'));
+      const last = rows[rows.length - 1];
+      if (last && last.rc === entry.rc && last.s === entry.s) skip = true;
     }
     if (!skip) {
       fs.appendFileSync(tlPath, JSON.stringify(entry) + '\n');
@@ -259,8 +257,8 @@ function main() {
     const tlPath = path.join(TIMELINE_DIR, `${s.id}.jsonl`);
     if (fs.existsSync(tlPath)) {
       try {
-        const lines = fs.readFileSync(tlPath, 'utf8').trim().split('\n');
-        s.timeline = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+        // Sorted by `t`: union merges can leave rows out of order (BRO-2497).
+        s.timeline = parseTimelineJsonl(fs.readFileSync(tlPath, 'utf8'));
       } catch {}
     }
   }
