@@ -74,7 +74,23 @@ const MAX_PAGES = 30; // 3,000 issues — measured live at 1,260 non-terminal
 // residue" — someone is still expected to move it.
 const EXCLUDED_STATE_TYPES = TERMINAL_STATE_TYPES;
 
-function buildRecheckCandidatesQuery() {
+// BRO-3469: a Done card that still carries an unresolved RECHECK-AFTER stamp
+// (BRO-3382, BRO-3446's own motivating card) is invisible to the non-terminal
+// listing above. Fetch ONLY completed-type cards whose description or any
+// comment mentions the stamp keyword — a bounded set (not "every completed
+// issue ever"), which is the unbounded-growth objection the comment above
+// raises. No recency filter, for the same reason: a stamp stays due forever.
+const STAMP_KEYWORD = 'RECHECK-AFTER';
+
+function buildRecheckCandidatesQuery(mode) {
+  const stamped = mode === 'stamped-done';
+  const stateFilter = stamped
+    ? `state: { type: { eq: "completed" } }
+        or: [
+          { description: { contains: ${JSON.stringify(STAMP_KEYWORD)} } }
+          { comments: { some: { body: { contains: ${JSON.stringify(STAMP_KEYWORD)} } } } }
+        ]`
+    : `state: { type: { nin: ${JSON.stringify(EXCLUDED_STATE_TYPES)} } }`;
   // No explicit orderBy (ship-check finding, Codex): `orderBy: updatedAt`
   // sorts by a MUTABLE field, and a card can legitimately be commented on —
   // changing its own updatedAt — while this multi-page scan is still running,
@@ -87,7 +103,7 @@ function buildRecheckCandidatesQuery() {
     issues(
       first: ${PAGE_SIZE}
       after: $after
-      filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(EXCLUDED_STATE_TYPES)} } } }
+      filter: { team: { key: { eq: $teamKey } }, ${stateFilter} }
     ) {
       nodes {
         identifier
@@ -183,6 +199,18 @@ function mapIssueToCard(issue) {
  *   cards in the shape mapIssueToCard returns
  */
 async function fetchLinearRecheckCandidates(client, opts = {}) {
+  const open = await fetchCandidatePages(client, opts, 'open');
+  // Skip the stamped-Done pass when the open pass already failed or ran out of
+  // budget: the caller logs that error/truncation, and more calls would only
+  // compound a Linear outage.
+  if (open.error || open.truncated) return open;
+  const done = await fetchCandidatePages(client, opts, 'stamped-done');
+  const seen = new Set(open.cards.map((c) => c.id));
+  const cards = open.cards.concat(done.cards.filter((c) => !seen.has(c.id)));
+  return { cards, truncated: done.truncated, error: done.error };
+}
+
+async function fetchCandidatePages(client, opts, mode) {
   const cards = [];
   const now = opts.now || Date.now;
   const deadline = now() + (Number.isFinite(opts.deadlineMs) ? opts.deadlineMs : DEADLINE_MS);
@@ -194,7 +222,7 @@ async function fetchLinearRecheckCandidates(client, opts = {}) {
     let data;
     try {
       data = await lc.graphql(
-        buildRecheckCandidatesQuery(),
+        buildRecheckCandidatesQuery(mode),
         { teamKey, after },
         { timeoutMs: ATTEMPT_TIMEOUT_MS, maxAttempts: MAX_ATTEMPTS }
       );
@@ -218,6 +246,7 @@ async function fetchLinearRecheckCandidates(client, opts = {}) {
 
 module.exports = {
   EXCLUDED_STATE_TYPES,
+  STAMP_KEYWORD,
   ATTEMPT_TIMEOUT_MS,
   MAX_ATTEMPTS,
   DEADLINE_MS,
