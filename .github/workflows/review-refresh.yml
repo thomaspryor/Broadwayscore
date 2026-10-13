@@ -347,6 +347,7 @@ jobs:
       - name: Extract reviews from aggregator pages
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: |
+          # blanket-sweep-audit-ok: data/audit/market-misroutes.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           echo "Extracting reviews from archived aggregator pages..."
           node scripts/extract-show-score-reviews.js 2>/dev/null || true
           node scripts/extract-dtli-reviews.js 2>/dev/null || true
@@ -409,11 +410,16 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
+          # blanket-sweep-audit-ok: data/audit/recover-ratings-state.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/recover-ratings-report.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           echo "Running Phase 0 URL discovery for WE reviews without URLs..."
           node scripts/recover-explicit-ratings.js --phase=0 --market=west-end --limit=50
 
       - name: Cleanup phantom outlet duplicates
-        run: node scripts/cleanup-phantom-outlets.js --apply
+        run: |
+          # blanket-sweep-audit-ok: data/audit/phantom-outlets-report.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          node scripts/cleanup-phantom-outlets.js --apply
 
       # Task #653 — corpus determinism. Every other rebuild entry point that
       # matters (rebuild-fast.yml, rebuild-reviews.yml) runs the temporal
@@ -440,6 +446,12 @@ jobs:
         id: rebuild
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: |
+          # blanket-sweep-audit-ok: data/audit/rebuild-show-drift.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/rebuild-regression.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/skipped-alias-collisions.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/cross-show-fingerprint-collisions.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/stage-latency.jsonl multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           echo "Rebuilding reviews.json from review-texts data..."
           node scripts/rebuild-all-reviews.js
           echo "Reviews rebuilt successfully"

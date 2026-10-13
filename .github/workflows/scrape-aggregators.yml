@@ -62,6 +62,7 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SHOWS: ${{ inputs.shows }}
         run: |
+          # blanket-sweep-audit-ok: data/audit/market-misroutes.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           echo "Scraping Did They Like It reviews..."
           node scripts/extract-dtli-reviews.js ${{ inputs.shows && format('--shows {0}', inputs.shows) || '' }}
 

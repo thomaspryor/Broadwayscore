@@ -82,7 +82,9 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: node scripts/auto-fix-show-data.js
+        run: |
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          node scripts/auto-fix-show-data.js
 
       # Step 4: Closing dates handled by audit-closing-dates.yml (daily 14:00 UTC)
 
@@ -105,7 +107,12 @@ jobs:
       - name: Validate data integrity
         if: always() && steps.changes.outputs.has_changes == 'true'
         continue-on-error: true
-        run: node scripts/validate-data.js
+        run: |
+          # blanket-sweep-audit-ok: data/audit/validation-baseline.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          node scripts/validate-data.js
 
       - name: Build site (verify no breaking changes)
         if: always() && steps.changes.outputs.has_changes == 'true'
