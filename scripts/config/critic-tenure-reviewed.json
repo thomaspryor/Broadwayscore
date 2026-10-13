@@ -1,6 +1,6 @@
 {
   "_comment": "Critic/outlet tenure flags checked by hand and found correct (BRO-5222). key = <showId>/<file>#<kind>:<criticSlug> (as printed by scripts/audit-critic-tenure.js); evidence = a link showing the byline at that outlet. maxUnresolved is a ratchet: tests/acceptance/critic-tenure-flags.test.mjs fails if unresolved flags exceed it, so lower it as flags are fixed or reviewed (BRO-5232 takes it to 0).",
-  "maxUnresolved": 120,
+  "maxUnresolved": 2,
   "reviewed": [
     {
       "key": "angels-in-america-2018/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
@@ -211,6 +211,51 @@
       "key": "oklahoma-2019/theater-pizzazz--sandi-durell.json#byline_contradicted:sandi-durell",
       "evidence": "https://theaterpizzazz.com/an-oklahoma-not-too-familiar/",
       "note": "BRO-5232: live page bylined to Sandi Durell; the other name in the text is the author of an earlier review it cites (high confidence)"
+    },
+    {
+      "key": "a-taste-of-honey-west-end-2019/sunday-times--jane-edwardes.json#unsupported_pair:jane-edwardes",
+      "evidence": "http://web.archive.org/web/20191215013229/https://www.thetimes.co.uk/article/theatre-review-a-taste-of-honey-the-duchess-of-malfi-fairview-ravens-spassky-vs-fischer-73lmqfqmt",
+      "note": "BRO-5232: Sunday Times roundup of 15 Dec 2019, author meta names Jane Edwardes (cloud byline check run 38394312235); Show Score lists the same review under her name"
+    },
+    {
+      "key": "faith-hope-and-charity-west-end-2019/sunday-times--jane-edwardes.json#unsupported_pair:jane-edwardes",
+      "evidence": "https://www.thetimes.com/uk/article/theatre-review-faith-hope-and-charity-big-the-musical-astana-ballet-the-king-of-hells-palace-2wpsmqdw2",
+      "note": "BRO-5232: Sunday Times roundup, author meta names Jane Edwardes (cloud byline check run 38394312235)"
+    },
+    {
+      "key": "the-lion-king-1997/njcom--michael-sommers.json#unsupported_pair:michael-sommers",
+      "evidence": "https://www.show-score.com/broadway-shows/the-lion-king",
+      "note": "BRO-5232: Show Score lists this review as NJ.com, Michael Sommers, 14 Nov 1997 (the Star-Ledger; the row url is a reprint named pr_tlk_njsl111497)"
+    },
+    {
+      "key": "when-we-have-sufficiently-tortured-each-other-west-end-2019/islington-gazette--bridget-galton.json#unsupported_pair:bridget-galton",
+      "evidence": "https://www.theatrerecord.com/archive/volume/39/dest/2_when_we_have_sufficiently_tor",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing"
+    },
+    {
+      "key": "fosse-1999/financialtimes--david-jays.json#unsupported_pair:david-jays",
+      "evidence": "https://www.theatrerecord.com/archive/volume/20/page/139",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing"
+    },
+    {
+      "key": "best-of-enemies-west-end-2022/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.theatrerecord.com/archive/2022/11/2736-best-of-enemies",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing; Theatre Record lists Purves under the Daily Mail for five shows 2022-2026"
+    },
+    {
+      "key": "my-sons-a-queer-but-what-can-you-do-west-end-2023/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.theatrerecord.com/archive/2023/2/3096-my-son-s-a-queer-but",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing; Theatre Record lists Purves under the Daily Mail for five shows 2022-2026"
+    },
+    {
+      "key": "small-island-west-end-2019/financialtimes--matt-trueman.json#unsupported_pair:matt-trueman",
+      "evidence": "https://www.theatrerecord.com/archive/volume/39/dest/9_small_island",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing"
+    },
+    {
+      "key": "mischief-movie-night-west-end-2020/thestage--theo-bosanquet.json#unsupported_pair:theo-bosanquet",
+      "evidence": "https://www.theatrerecord.com/archive/volume/40/dest/24_mischief_movie_night",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing; the old thestage.co.uk review url now 404s"
     }
   ]
 }
