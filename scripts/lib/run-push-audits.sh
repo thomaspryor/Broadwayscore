@@ -264,4 +264,59 @@ if grep -qE "^scripts/[^/]+\.js$|^scripts/\.help-flag-safety-baseline\.json$" <<
   run_audit "help-flag-safety" "scripts/audit-help-flag-safety.js" || FAIL=1
 fi
 
+# BRO-3014: blocking CI audits that were missing from this lane. Each one
+# was checked to be blocking in test.yml, deterministic, independent of the
+# private data clones, and fast (0.02-1.7s on the full tree). Each fires only
+# when its own inputs change, so an unrelated push pays nothing.
+#
+# Not wired, on purpose (full list with reasons on BRO-3014):
+#   - text-quality --gate: needs the private data/review-texts clone.
+#   - new-gate-arming: diffs against the push's before-SHA, which this lane
+#     does not have (CI passes github.event.before).
+#   - linear-issuecreate-chokepoint, digest-clip-safety, alert-senders,
+#     invisible-verification, direct-provider-calls, venue-write-guard: they
+#     scan all of scripts/**, so they would run on nearly every push from ~20
+#     concurrent sessions and, with no --scope-stdin mode, block the pusher on
+#     someone else's violation in a shared checkout. CI-only until they can
+#     be scoped like cmux-spawn-credential above.
+#
+# workflow-hygiene and cron-health-coverage also run in scripts/hooks/pre-push's
+# inline workflow block; here they reach merge-worktree-to-main.sh too. The
+# sub-2s duplicate on a plain push is accepted, same as workflow-concurrency.
+WF_RE='^\.github/workflows/.*\.ya?ml$'
+if grep -qE "$WF_RE|^\.github/actions/.*\.ya?ml$|^scripts/audit-workflow-hygiene\.js$|^scripts/lib/(workflow-run-coverage|audit-workflow-hygiene-rules|paid-provider-push-scan)\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "workflow-hygiene" "scripts/audit-workflow-hygiene.js" || FAIL=1
+fi
+if grep -qE "$WF_RE|^scripts/audit-cron-health-coverage\.js$|^scripts/lib/(cron-coverage|health-digest-crons|cron-ordering)\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js" || FAIL=1
+fi
+if grep -qE "$WF_RE|^scripts/(lib/)?(audit-)?data-gate-heal-paths\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "data-gate-heal-paths" "scripts/audit-data-gate-heal-paths.js" || FAIL=1
+fi
+if grep -qE "$WF_RE|^scripts/(lib/)?(audit-)?reconcile-coverage\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "reconcile-coverage" "scripts/audit-reconcile-coverage.js" || FAIL=1
+fi
+if grep -qE "$WF_RE|^scripts/lib/push-with-retry\.sh$|^scripts/(lib/)?audit-push-retry-budgets\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "push-retry-budgets" "scripts/audit-push-retry-budgets.js" --fail-on-job-timeout || FAIL=1
+fi
+if grep -qE "$WF_RE|^scripts/lib/stage-data-changes\.sh$|^scripts/(lib/)?audit-blanket-sweep-audit-writes\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "blanket-sweep-audit-writes" "scripts/audit-blanket-sweep-audit-writes.js" || FAIL=1
+fi
+# Reads test.yml's --gate/--strict steps and the audit scripts they run.
+if grep -qE "^\.github/workflows/test\.yml$|^scripts/audit-[^/]+\.js$|^scripts/lib/(gate-corpus-guard-coverage|corpus-scan-guard)\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "gate-corpus-guard-coverage" "scripts/audit-gate-corpus-guard-coverage.js" || FAIL=1
+fi
+if grep -qE "^scripts/(launchd|local-triggers)/|^scripts/autonomous-nightly\.sh$|^scripts/(lib/)?(audit-)?launchd-stale-sync-guard\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "launchd-stale-sync-guard" "scripts/audit-launchd-stale-sync-guard.js" || FAIL=1
+fi
+if grep -qE "^scripts/(audit-duplicate-of-(floor|url-mismatch)\.js|\.duplicate-of-floor\.json|lib/duplicate-of-gate\.js)$" <<<"$CHANGED_FILES"; then
+  run_audit "duplicate-of-floor" "scripts/audit-duplicate-of-floor.js" || FAIL=1
+fi
+if grep -qE "^scripts/(sweep-we-aggregators|scrape-stagedoor-critics|audit-verifier-wiring)\.js$|^scripts/lib/show-match-verifier\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "verifier-wiring" "scripts/audit-verifier-wiring.js" || FAIL=1
+fi
+if grep -qE "^next\.config\.js$|^src/|^scripts/audit-nft-excluded-runtime-reads\.js$" <<<"$CHANGED_FILES"; then
+  run_audit "nft-excluded-runtime-reads" "scripts/audit-nft-excluded-runtime-reads.js" || FAIL=1
+fi
+
 exit $FAIL
