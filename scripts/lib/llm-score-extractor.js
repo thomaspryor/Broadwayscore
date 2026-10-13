@@ -228,6 +228,7 @@ function callGemini(systemPrompt, userPrompt) {
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();
@@ -273,6 +274,7 @@ function callOpenAI(systemPrompt, userPrompt) {
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();

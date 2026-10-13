@@ -40,6 +40,7 @@ const STATE_PATH = process.env.FLAG_PARITY_STATE_FILE
 // if the project ever grows past that page size.
 async function fetchLiveFlag(apiKey, key) {
   const res = await fetch(`https://us.posthog.com/api/projects/${PROJECT_ID}/feature_flags/?search=${encodeURIComponent(key)}`, {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) throw new Error(`PostHog feature_flags API ${res.status} for '${key}': ${(await res.text()).slice(0, 200)}`);

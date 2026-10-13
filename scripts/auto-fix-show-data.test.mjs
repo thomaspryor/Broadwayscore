@@ -247,6 +247,7 @@ test('generateSynopsisWithLLM logs UNKNOWN and cut-off replies by their real rea
   const logs = [];
   https.request = (_opts, onRes) => {
     const req = new EventEmitter();
+    req.setTimeout = () => req; // real ClientRequest API; the code arms an idle timeout (BRO-3840)
     req.write = () => {};
     req.end = () => {
       const res = new EventEmitter();
@@ -290,6 +291,7 @@ async function runReplies(replyList) {
   const logs = [];
   https.request = (_opts, onRes) => {
     const req = new EventEmitter();
+    req.setTimeout = () => req; // real ClientRequest API; the code arms an idle timeout (BRO-3840)
     req.write = (body) => prompts.push(JSON.parse(body).messages[0].content);
     req.end = () => {
       const res = new EventEmitter();
@@ -357,6 +359,7 @@ test('generateCreativeTeamWithSerpVerification anchors directors to the venue', 
   const grounded = [];
   https.request = (_opts, onRes) => {
     const req = new EventEmitter();
+    req.setTimeout = () => req; // real ClientRequest API; the code arms an idle timeout (BRO-3840)
     let body = '';
     req.write = chunk => { body += chunk; };
     req.end = () => {

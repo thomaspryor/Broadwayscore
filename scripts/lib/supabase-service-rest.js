@@ -29,7 +29,7 @@ function headers(prefer) {
 
 /** SELECT rows via PostgREST query params, e.g. "select=*&resolved_at=is.null". */
 async function selectRows(table, params) {
-  const res = await fetch(`${baseUrl()}/rest/v1/${table}?${params}`, { headers: headers() });
+  const res = await fetch(`${baseUrl()}/rest/v1/${table}?${params}`, { signal: AbortSignal.timeout(60000), headers: headers() });
   if (!res.ok) throw new Error(`selectRows ${table}: HTTP ${res.status} ${await res.text().catch(() => '')}`);
   return res.json();
 }
@@ -37,6 +37,7 @@ async function selectRows(table, params) {
 /** UPDATE rows matching `filters` (query-string form) with `patch`. */
 async function updateRows(table, filters, patch) {
   const res = await fetch(`${baseUrl()}/rest/v1/${table}?${filters}`, {
+    signal: AbortSignal.timeout(60000),
     method: 'PATCH',
     headers: headers('return=minimal'),
     body: JSON.stringify(patch),
@@ -47,6 +48,7 @@ async function updateRows(table, filters, patch) {
 /** DELETE rows matching `filters` (query-string form). */
 async function deleteRows(table, filters) {
   const res = await fetch(`${baseUrl()}/rest/v1/${table}?${filters}`, {
+    signal: AbortSignal.timeout(60000),
     method: 'DELETE',
     headers: headers('return=minimal'),
   });
@@ -60,6 +62,7 @@ async function deleteRows(table, filters) {
  */
 async function insertIgnoreDuplicates(table, row) {
   const res = await fetch(`${baseUrl()}/rest/v1/${table}`, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: headers('resolution=ignore-duplicates,return=representation'),
     body: JSON.stringify(row),
@@ -71,6 +74,7 @@ async function insertIgnoreDuplicates(table, row) {
 /** Call a Postgres function through PostgREST (POST /rpc/<fn>). */
 async function rpc(fn, args) {
   const res = await fetch(`${baseUrl()}/rest/v1/rpc/${fn}`, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(args || {}),

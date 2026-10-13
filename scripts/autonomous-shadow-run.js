@@ -141,6 +141,7 @@ function callSonnet(prompt) {
         } catch (e) { reject(new Error(`Anthropic parse error: ${e.message}`)); }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();

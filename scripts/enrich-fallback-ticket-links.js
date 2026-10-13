@@ -75,6 +75,7 @@ function fetchStatus(url, timeout) {
         resolve({ status: res.statusCode || 0, location: res.headers.location });
       }
     );
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', () => resolve({ status: 0 }));
     req.on('timeout', () => { req.destroy(); resolve({ status: 0 }); });
     req.end();

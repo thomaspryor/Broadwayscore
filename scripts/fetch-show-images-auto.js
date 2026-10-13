@@ -546,6 +546,7 @@ async function loadMezzanineProductions() {
                 catch (e) { reject(new Error('Mezzanine parse error')); }
               });
             });
+            req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
             req.on('error', reject);
             req.write(body);
             req.end();

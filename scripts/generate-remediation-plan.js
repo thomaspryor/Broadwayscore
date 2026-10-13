@@ -109,6 +109,7 @@ async function sendEmail(to, from, subject, html) {
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(data);
     req.end();
@@ -287,6 +288,7 @@ If everything looks correct, return {"passed": true, "issues": [], "confidence":
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', (err) => {
       console.log(`GPT-4o verification network error: ${err.message}`);
       resolve({ verified: true, skipped: true });

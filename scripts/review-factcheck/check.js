@@ -93,7 +93,7 @@ Reply with JSON only, no prose, in exactly this shape:
 
 async function postJson(url, body, headers) {
   for (let attempt = 0; attempt < 4; attempt++) {
-    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) });
+    const res = await fetch(url, { signal: AbortSignal.timeout(300000), method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) });
     const txt = await res.text();
     if (res.ok) return JSON.parse(txt);
     if (res.status === 429 || res.status >= 500) { await new Promise(r => setTimeout(r, 10000 * (attempt + 1))); continue; }

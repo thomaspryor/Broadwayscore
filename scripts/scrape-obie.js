@@ -97,7 +97,7 @@ function parseRecipients(text) {
 async function main() {
   const url = `https://en.wikipedia.org/wiki/${PAGE}`;
   process.stdout.write(`Fetching ${PAGE}... `);
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': USER_AGENT } });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const html = await res.text();
   console.log(`${html.length} bytes`);

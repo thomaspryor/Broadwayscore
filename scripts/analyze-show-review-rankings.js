@@ -24,6 +24,7 @@ async function gsc(token, body) {
   const res = await fetch(
     `https://www.googleapis.com/webmasters/v3/sites/${SITE}/searchAnalytics/query`,
     {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

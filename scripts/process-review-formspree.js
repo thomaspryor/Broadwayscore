@@ -66,6 +66,7 @@ async function fetchSubmissions() {
     const res = await fetch(
       `https://formspree.io/api/0/forms/${FORM_ID}/submissions?since=${since.toISOString()}`,
       {
+        signal: AbortSignal.timeout(60000),
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -143,6 +144,7 @@ async function createGitHubIssue(title, body) {
   const [owner, repoName] = repo.split('/');
 
   const res = await fetch(`https://api.github.com/repos/${owner}/${repoName}/issues`, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -182,6 +184,7 @@ async function triggerValidationWorkflow(issueNumber) {
     const res = await fetch(
       `https://api.github.com/repos/${owner}/${repoName}/actions/workflows/process-review-submission.yml/dispatches`,
       {
+        signal: AbortSignal.timeout(60000),
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

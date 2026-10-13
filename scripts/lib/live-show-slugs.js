@@ -36,7 +36,7 @@ async function fetchLiveShowSlugs(siteUrl) {
     const shardUrls = await fetchSitemapIndexUrls(siteUrl);
     if (shardUrls.length === 0) return [];
     const shardXmls = await Promise.all(
-      shardUrls.map(url => fetch(url).then(res => (res.ok ? res.text() : null)).catch(() => null))
+      shardUrls.map(url => fetch(url, { signal: AbortSignal.timeout(60000) }).then(res => (res.ok ? res.text() : null)).catch(() => null))
     );
     const slugs = new Set();
     for (const xml of shardXmls) {

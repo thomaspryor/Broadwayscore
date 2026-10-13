@@ -107,6 +107,7 @@ const body = {
 };
 
 const res = await fetch('https://api.resend.com/emails', {
+  signal: AbortSignal.timeout(60000),
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${KEY}` },
   body: JSON.stringify(body),

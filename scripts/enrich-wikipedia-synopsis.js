@@ -95,6 +95,7 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_OPUS) {
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
 
     req.on('error', () => resolve(null));
     req.write(postData);

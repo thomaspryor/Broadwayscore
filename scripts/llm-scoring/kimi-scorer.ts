@@ -68,6 +68,7 @@ export class KimiScorer {
         }
 
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          signal: AbortSignal.timeout(300000),
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

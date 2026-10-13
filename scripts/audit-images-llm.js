@@ -200,7 +200,7 @@ class ImageVerifier {
     // Download the image first, then send as base64
     // Gemini doesn't support arbitrary fileUri URLs
     try {
-      const resp = await fetch(imageUrl);
+      const resp = await fetch(imageUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const buffer = Buffer.from(await resp.arrayBuffer());
         const contentType = resp.headers.get('content-type') || 'image/jpeg';

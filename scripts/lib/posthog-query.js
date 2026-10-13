@@ -68,6 +68,7 @@ const REAL_USERS_WHERE = `
 
 async function authCheck() {
   const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/`, {
+    signal: AbortSignal.timeout(60000),
     headers: { 'Authorization': `Bearer ${getApiKey()}` },
   });
   if (!res.ok) {

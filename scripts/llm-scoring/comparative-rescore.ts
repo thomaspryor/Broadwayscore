@@ -164,6 +164,7 @@ async function callOpenAI(prompt: string): Promise<string | null> {
   if (!key) return null;
   try {
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      signal: AbortSignal.timeout(300000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
       body: JSON.stringify({

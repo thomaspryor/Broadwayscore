@@ -357,6 +357,7 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
 
   try {
     const response = await fetch(url, {
+      signal: AbortSignal.timeout(60000),
       headers: {
         'User-Agent': 'BroadwayScorecard/1.0 (broadway data aggregator; contact@example.com)'
       }

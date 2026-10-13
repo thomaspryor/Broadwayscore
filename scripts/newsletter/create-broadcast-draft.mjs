@@ -135,7 +135,7 @@ function apiHeaders() {
 async function apiJSON(method, url, payload) {
   const opt = { method, headers: apiHeaders() };
   if (payload !== undefined) opt.body = JSON.stringify(payload);
-  const res = await fetch(url, opt);
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), ...opt });
   const text = await res.text();
   let body; try { body = JSON.parse(text); } catch { body = text; }
   if (!res.ok) {

@@ -129,7 +129,7 @@ async function searchFallback(show) {
   const qualifier = type === 'play' ? 'play' : 'musical';
   const q = `${cleanSearchTitle(show.title)} ${qualifier}`;
   const url = `${API}?action=query&list=search&srsearch=${encodeURIComponent(q)}&srlimit=3&format=json`;
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': USER_AGENT } });
   if (!res.ok) return [];
   const data = await res.json();
   return (data?.query?.search || []).map((r) => r.title);
@@ -141,7 +141,7 @@ async function searchFallback(show) {
  */
 async function resolvePage(title) {
   const url = `${API}?action=query&titles=${encodeURIComponent(title)}&prop=revisions&rvprop=content&rvslots=main&redirects=1&format=json`;
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': USER_AGENT } });
   if (!res.ok) return null;
   const data = await res.json();
   const pages = data?.query?.pages || {};

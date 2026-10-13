@@ -102,6 +102,7 @@ function queryParse(className, body) {
         catch (e) { reject(new Error('Parse error: ' + body.substring(0, 200))); }
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.write(data);
     req.end();
