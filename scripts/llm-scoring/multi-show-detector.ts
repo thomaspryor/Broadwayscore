@@ -9,6 +9,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { extractVenueBoxSectionForShowId } from './venue-box-sections';
 
 // ========================================
 // TYPES
@@ -168,6 +169,12 @@ export function detectMultiShow(
   otherShows.sort((a, b) => b.mentions - a.mentions);
 
   if (otherShows.length === 0) {
+    // A review column with a production box per show (WSJ) names the other
+    // shows only 2-4 times; the box layout is the signal (BRO-5294).
+    const box = extractVenueBoxSectionForShowId(text, targetShowId);
+    if (box.ok) {
+      return { isMultiShowReview: true, otherShows: [], recommendation: 'warn', reason: `Review column: ${box.reason}` };
+    }
     return { isMultiShowReview: false, otherShows: [], recommendation: 'score' };
   }
 
