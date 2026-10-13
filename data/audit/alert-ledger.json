@@ -164,9 +164,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-13T17:28:26.107Z",
-      "lastSeen": "2026-10-13T17:28:26.107Z",
-      "lastNotifiedAt": "2026-10-13T17:28:26.107Z",
+      "incidentOpenedAt": "2026-10-13T17:38:27.656Z",
+      "lastSeen": "2026-10-13T17:38:27.656Z",
+      "lastNotifiedAt": "2026-10-13T17:38:27.656Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 138,
       "cardId": null,
@@ -15975,8 +15975,59 @@
       "lastSurfacedAt": "2026-10-13T17:16:40.320Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
+    },
+    "land:land/bro-3919-body-bylines": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3919-body-bylines",
+      "firstSeen": "2026-10-13T14:18:27.617Z",
+      "incidentOpenedAt": "2026-10-13T14:18:27.617Z",
+      "lastSeen": "2026-10-13T14:18:27.617Z",
+      "lastNotifiedAt": "2026-10-13T14:18:27.617Z",
+      "lastSurfacedAt": "2026-10-13T14:18:27.617Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-5261-s3-2609": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5261-s3-2609",
+      "firstSeen": "2026-10-13T14:29:27.598Z",
+      "incidentOpenedAt": "2026-10-13T14:29:27.598Z",
+      "lastSeen": "2026-10-13T14:29:27.598Z",
+      "lastNotifiedAt": "2026-10-13T14:29:27.598Z",
+      "lastSurfacedAt": "2026-10-13T14:29:27.598Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-5235-mezzanine-token": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5235-mezzanine-token",
+      "firstSeen": "2026-10-13T14:36:49.217Z",
+      "incidentOpenedAt": "2026-10-13T14:36:49.217Z",
+      "lastSeen": "2026-10-13T14:36:49.217Z",
+      "lastNotifiedAt": "2026-10-13T14:36:49.217Z",
+      "lastSurfacedAt": "2026-10-13T14:36:49.217Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:c9be3b4a": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
+      "firstSeen": "2026-10-13T17:38:27.161Z",
+      "incidentOpenedAt": "2026-10-13T17:38:27.161Z",
+      "lastSeen": "2026-10-13T17:38:27.161Z",
+      "lastNotifiedAt": "2026-10-13T17:38:27.161Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5281"
     }
   }
 }
