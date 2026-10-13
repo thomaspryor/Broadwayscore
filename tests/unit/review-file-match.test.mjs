@@ -13,6 +13,16 @@ test('same critic name at a different outlet does NOT match (BRO-3943)', () => {
   assert.equal(matchesOutletCriticFile('timeout--jesse-green-2.json', 'nytimes', 'jesse-green'), false);
 });
 
+test('edition variants of the same outlet still match (timeout vs timeout-london)', () => {
+  assert.equal(matchesOutletCriticFile('timeout-london--jesse-green.json', 'timeout', 'jesse-green'), true);
+  assert.equal(matchesOutletCriticFile('timeout--jesse-green.json', 'timeout-london', 'jesse-green'), true);
+});
+
+test('outlets that merely share a leading word do not match', () => {
+  assert.equal(matchesOutletCriticFile('new-york-post--jesse-green.json', 'new-york-times', 'jesse-green'), false);
+  assert.equal(matchesOutletCriticFile('timeoutx--jesse-green.json', 'timeout', 'jesse-green'), false);
+});
+
 test('critic slug that is only a prefix of another critic does not match', () => {
   assert.equal(matchesOutletCriticFile('nytimes--jesse-greenberg.json', 'nytimes', 'jesse-green'), false);
 });
