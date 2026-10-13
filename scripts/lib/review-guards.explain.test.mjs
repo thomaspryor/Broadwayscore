@@ -104,8 +104,11 @@ test('each exclusion rule name fires for its own trigger', () => {
     ['namedNonReviewUrl', { fullText: text, source: 'serp-discovery', url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship' }],
     ['previewPlaceholder', { fullText: text, isPreviewPlaceholder: true }],
     ['previewPlaceholder', { aggregatorStars: 4, isPreviewPlaceholder: true }],
-    // BRO-4317: a production-level clear does not clear wrongShow.
-    ['wrongShow', { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, wrongProductionManualClear: true }],
+    // wrongShow survives its own rule via a production-level clear but still
+    // blocks the stale wrong_content flag (live shape: titanique-2026
+    // theatermania, whose duplicate ships only while this stays non-inheritable).
+    ['wrongContentFlagsUncleared', { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, humanReviewedWrongProduction: false }],
+    ['wrongContentFlagsUncleared', { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, wrongProductionManualClear: true }],
     ['wrongContentNoUsableSignal', { incompleteReason: 'wrong_content' }],
   ];
   for (const [expected, data] of cases) {
@@ -379,6 +382,11 @@ test('BRO-4317: a clear aimed at wrongShow admits the file, including its stale 
   // A live wrongProduction still blocks even with wrongShow cleared.
   assert.strictEqual(explainExclusion({ fullText: text, wrongShow: true, wrongShowManualClear: true, wrongProduction: true }, null, undefined), 'wrongProduction');
   assert.strictEqual(wrongShowExplicitlyCleared({ wrongProductionManualClear: true }), false);
+  // Duplicate inheritance (titanique-2026 theatermania): a referent with only a
+  // production-level clear must not pass a wrongShow exclusion to its duplicate.
+  const ref = { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, humanReviewedWrongProduction: false };
+  assert.strictEqual(guards.duplicateOfInheritedFlag({ duplicateOf: 'x.json' }, ref, null, undefined), null);
+  assert.strictEqual(guards.duplicateOfInheritedFlag({ duplicateOf: 'x.json' }, { fullText: text, wrongShow: true }, null, undefined), 'wrongShow');
   assert.strictEqual(wrongShowExplicitlyCleared({ wrongShowManualClear: 'true' }), false);
   assert.strictEqual(wrongShowExplicitlyCleared(null), false);
 });

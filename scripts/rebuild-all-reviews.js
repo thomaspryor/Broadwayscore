@@ -5593,7 +5593,7 @@ if (fs.existsSync(reviewsJsonPath)) {
               const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
               if (d.assignedScore == null) continue;
               // Explicit exclusion flags (set by audit passes or guard writes that succeeded)
-              if (d.wrongShow || d.wrongProduction || d.duplicateOf || d.isRoundupArticle
+              if ((d.wrongShow && !wrongShowExplicitlyCleared(d)) || d.wrongProduction || d.duplicateOf || d.isRoundupArticle
                   || d.incompleteReason === 'wrong_content' || d.contentTier === 'invalid') {
                 scoredFlagged++;
               } else {

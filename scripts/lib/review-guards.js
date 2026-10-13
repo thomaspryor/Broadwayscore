@@ -4642,12 +4642,17 @@ function explainExclusion(data, show, filePath) {
     if (!cleared && !cvFlagVetoedInWindow(data, show, 'wrongProduction')) return 'wrongProduction';
   }
 
-  // wrongShow — cleared only by a clear aimed at this flag
-  // (wrongShowExplicitlyCleared), the same predicate the rebuild gate uses
-  // (BRO-4317). A production-level clear (wrongProductionManualClear etc.) no
-  // longer admits a wrongShow file here: the rebuild never honored it, so this
-  // branch disagreed with what shipped (titanique-2026 w42st was the one file
-  // affected). A Giant-style mis-rejection is fixed with wrongShowManualClear.
+  // wrongShow — manual clears via wrongShowCleared() (5-flag check, single
+  // source of truth shared with the other gates). If a human has verified the
+  // correct production, that also means the correct show — the LLM ensemble's
+  // wrong_show rejection for Giant (Mark Rosenblatt play vs musical) on
+  // 2026-04-22 is exactly this case: LLM knew "Giant the musical" from
+  // training and mis-identified the Broadway play as the wrong show.
+  // BRO-4317: kept broader than the rebuild's own wrongShow gate on purpose.
+  // Narrowing it to wrongShowExplicitlyCleared changed duplicateOfInheritedFlag
+  // for titanique-2026 theatermania (a production-level clear whose duplicate
+  // ships), dropping a live review; the wrong_content branch below still needs
+  // the explicit clear, so those files stay excluded here as before.
   //
   // Stale-flag override (Notion 34e637c5-416f-8121): when no manual clear is
   // set but the data + URL signals strongly indicate a real review of THIS
@@ -4657,7 +4662,7 @@ function explainExclusion(data, show, filePath) {
   // In-window + slug-match veto (audit S6-T4): same rule as the
   // wrongProduction branch above, for CV-promoted / classifier wrongShow.
   if (data.wrongShow === true && !laneOk('wrongProduction')) {
-    if (!wrongShowExplicitlyCleared(data) && !isLikelyStaleWrongShow(data, show)
+    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)
         && !cvFlagVetoedInWindow(data, show, 'wrongShow')) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
