@@ -20,6 +20,7 @@
  * ------------------------------
  *   - file has no humanReviewScore
  *   - file has no originalScore (any source — never clobber prior extractions)
+ *   - file's rating was not deliberately cleared (originalScoreCleared: BRO-5295)
  *   - fullText is at least minTextLength chars
  *   - extractor returns 1-100 score from a trusted source
  *
@@ -104,6 +105,11 @@ function runScoreExtractorPrePass(data, opts) {
     typeof data.originalScore === 'string' &&
     data.originalScore.trim().length > 0;
   if (hasHuman || hasOriginal) return null;
+  // A rating a person or fix script cleared stays cleared. The collector's
+  // first pass already honours this; the pre-pass did not, so on 2026-10-13 it
+  // re-read a phantom 2/5 onto the Death Becomes Her tour Her Campus review
+  // that BRO-305 had cleared the day before (BRO-5295).
+  if (data.originalScoreCleared === true) return null;
   if (isExcludedRecord(data)) return null;
 
   let extracted;

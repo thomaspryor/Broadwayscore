@@ -169,7 +169,7 @@ function extractGradeFromText(text, outletId = null) {
   }
 
   // Pattern 3: Star patterns like "★★★★" or "4 stars"
-  const starMatch = text.match(/(\d+(?:\.\d+)?)\s*stars?\b/i);
+  const starMatch = text.match(/(?<!\d|\d\.)(\d+(?:\.\d+)?)\s*stars?\b/i);
   if (starMatch) {
     const stars = parseFloat(starMatch[1]);
     // Assume 5-star scale unless otherwise indicated

@@ -117,8 +117,8 @@ function extractTimeOutScore(html, text) {
   }
 
   // Try "X out of 5 stars" pattern
-  const outOfMatch = html.match(/(\d+(?:\.\d+)?)\s*out of\s*5\s*stars?/i) ||
-                     text.match(/(\d+(?:\.\d+)?)\s*out of\s*5\s*stars?/i);
+  const outOfMatch = html.match(/(?<!\d|\d\.)(\d+(?:\.\d+)?)\s*out of\s*5\s*stars?/i) ||
+                     text.match(/(?<!\d|\d\.)(\d+(?:\.\d+)?)\s*out of\s*5\s*stars?/i);
   if (outOfMatch) {
     const rating = parseFloat(outOfMatch[1]);
     return {
@@ -644,7 +644,7 @@ function extractNYPostScore(html, text) {
   }
 
   // Star rating in text: "4 stars" or "3 stars out of 5"
-  const starMatch = text.match(/(\d)\s*stars?\s*(?:out\s*of\s*5)?/i);
+  const starMatch = text.match(/(?<![\d/]|\d\.)(\d)\s*stars?\b\s*(?:out\s*of\s*5)?/i);
   if (starMatch) {
     const rating = parseInt(starMatch[1]);
     if (rating >= 1 && rating <= 5) {
@@ -980,7 +980,7 @@ function extractUKStarRating(html, text) {
   const textPatterns = [
     { re: /(\d(?:\.\d)?)\s*\/\s*5\b/g,            needsAnchor: true  },
     { re: /(\d(?:\.\d)?)\s*out\s*of\s*5\b/gi,    needsAnchor: false },
-    { re: /(\d(?:\.\d)?)\s*stars?\b/gi,           needsAnchor: false },
+    { re: /(?<![\d/]|\d\.)(\d(?:\.\d)?)\s*stars?\b/gi,   needsAnchor: false },
   ];
   const len = text.length;
   for (const { re, needsAnchor } of textPatterns) {
@@ -1045,7 +1045,7 @@ function extractUSATodayScore(html, text) {
   }
 
   // Try star ratings (USA Today sometimes uses stars)
-  const starMatch = text.match(/(\d(?:\.\d)?)\s*(?:out\s+of\s+)?4\s*stars?/i);
+  const starMatch = text.match(/(?<!\d|\d\.)(\d(?:\.\d)?)\s*(?:out\s+of\s+)?4\s*stars?\b/i);
   if (starMatch) {
     const rating = parseFloat(starMatch[1]);
     return {
@@ -1074,11 +1074,16 @@ function extractGenericStarRating(html, text) {
   // "X stars" and "X out of 5" are unambiguous — try them first
   const unambiguousPatterns = [
     // "4/5 stars" or "4.0/5.0 stars" — X/Y stars format, unambiguous with "stars" keyword
-    /(\d(?:\.\d)?)\s*\/\s*\d(?:\.\d)?\s*stars?/i,
-    // "4 stars" or "4.5 stars" — reject if preceded by "/" (part of "X/5 stars" already handled above)
-    /(?<!\d\s*\/\s*)(\d(?:\.\d)?)\s*stars?(?:\s*(?:out\s+of|\/)\s*5)?/i,
-    // "4 out of 5" — explicit wording, safe
-    /(\d(?:\.\d)?)\s*out\s*of\s*5/i,
+    /(?<!\d|\d\.)(\d(?:\.\d)?)\s*\/\s*\d(?:\.\d)?\s*stars?\b/i,
+    // "4 out of 5" — explicit wording, safe. Tried BEFORE the bare "N stars"
+    // form: in "4.0 out of 5.0 stars" the bare form would read the trailing
+    // "5.0 stars" as the rating (shinylife served 5/5 for a 4.0 review).
+    /(?<!\d|\d\.)(\d(?:\.\d)?)\s*out\s*of\s*5/i,
+    // "4 stars" or "4.5 stars". Rejects a digit that is the tail of a longer
+    // number or the denominator of a fraction/"out of" (handled above), and
+    // needs a word boundary after "star(s)" so "1992 starring ..." and
+    // "© 2014 StarTribune" are not "2 stars" / "4 stars" (BRO-5295).
+    /(?<!\d|\d\.|\d\s*\/\s*|\bof\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
     // Unicode stars — visual, unambiguous
     /([★☆]{3,5})/
   ];
@@ -1232,8 +1237,8 @@ function extractOneMinuteCriticScore(html, text) {
     }
   }
   // 2. Text pattern: "N out of 5 stars" (appears at end of review)
-  const textMatch = text.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i)
-                 || html.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i);
+  const textMatch = text.match(/(?<!\d|\d\.)(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i)
+                 || html.match(/(?<!\d|\d\.)(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i);
   if (textMatch) {
     const rating = parseFloat(textMatch[1]);
     if (rating >= 1 && rating <= 5) {

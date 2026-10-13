@@ -153,3 +153,11 @@ Johnny Oleksinski raves: This is the most fun I've had at a Broadway musical in 
   }
   assert.ok(runScoreExtractorPrePass({ contentTier: 'complete' }, { fullText, outletId: 'nypost' }));
 });
+
+// ─── BRO-5295: a cleared rating stays cleared ────────────────────────────
+test('originalScoreCleared blocks pre-pass even when the text still yields a star', () => {
+  const fullText = 'A wonderful night at the theatre. '.repeat(10) + '4 out of 5 stars.';
+  const base = { outletId: 'timeout' };
+  assert.ok(runScoreExtractorPrePass({ ...base }, { fullText, outletId: 'timeout' }), 'control: extractor fires without the breadcrumb');
+  assert.equal(runScoreExtractorPrePass({ ...base, originalScoreCleared: true }, { fullText, outletId: 'timeout' }), null);
+});
