@@ -194,3 +194,13 @@ test('a roundup citing its own verdict with no link is not a missing review (BRO
   assert.strictEqual(isRoundupSelfCitation({ outletId: 'financialtimes', source: 'westendtheatre' }), false);
   assert.strictEqual(isRoundupSelfCitation({ outletId: 'westendtheatre' }), false);
 });
+
+test('a stored date that disagrees with the year in the URL gives no prior-run verdict; kill switch', () => {
+  const { pendingPriorRunUrls } = require('./gap-ingest-policy.js');
+  const show = { previewsStartDate: '2026-09-25' };
+  const misread = { url: 'https://newyorkclassicalreview.com/2026/10/alternate-cast-boheme/', publishDate: '2014-12-28' };
+  const old = { url: 'https://www.nytimes.com/2016/10/15/theater/review-stuffed.html', publishDate: '2016-10-14' };
+  assert.deepStrictEqual([...pendingPriorRunUrls([misread, old], show).keys()], [old.url]);
+  process.env.GAP_PENDING_PRIOR_RUN_DISABLED = '1';
+  try { assert.strictEqual(pendingPriorRunUrls([old], show).size, 0); } finally { delete process.env.GAP_PENDING_PRIOR_RUN_DISABLED; }
+});

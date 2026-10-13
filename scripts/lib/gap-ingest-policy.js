@@ -178,7 +178,12 @@ function isPublishDateBeforeRun(publishDate, show, graceDays = 90) {
  * @returns {Map<string,string>} url -> publishDate for URLs to tag prior-run
  */
 function pendingPriorRunUrls(pending, show) {
-  const early = (pending || []).filter((p) => p && p.url && isPublishDateBeforeRun(p.publishDate, show));
+  if (process.env.GAP_PENDING_PRIOR_RUN_DISABLED === '1') return new Map(); // kill switch
+  // A dated URL path (/2026/10/, BWW YYYYMMDD) that disagrees with the stored date
+  // means the stored date may be a misread: no verdict from it.
+  const pathYear = (u) => { const m = /\/((?:19|20)\d\d)\/(?:0[1-9]|1[0-2])\//.exec(u); return m ? Number(m[1]) : urlYearOf(u); };
+  const consistent = (p) => { const y = pathYear(p.url); return !y || y === new Date(Date.parse(p.publishDate)).getUTCFullYear(); };
+  const early = (pending || []).filter((p) => p && p.url && consistent(p) && isPublishDateBeforeRun(p.publishDate, show));
   const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
   const out = new Map();
   for (const p of early) {
