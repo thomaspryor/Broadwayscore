@@ -8,8 +8,9 @@
  * writes rejectedAt/rejectionReason/etc. to disk via saveReviewFile() but
  * increments `skipped`, not `processed` — so those downstream steps saw
  * "nothing happened" even though real review-text state changed. Reading
- * `filesModified` (every saveReviewFile() call this run, scored OR
- * rejected — scripts/llm-scoring/index.ts) instead of `processed` alone
+ * `filesModified` (every saveReviewFile() write that changed bytes this
+ * run, scored OR rejected — scripts/llm-scoring/index.ts; identical rewrites
+ * are not counted since BRO-3108) instead of `processed` alone
  * fixes that. See P1 352637c5-416f-81ab.
  */
 

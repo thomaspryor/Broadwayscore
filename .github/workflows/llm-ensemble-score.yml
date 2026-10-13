@@ -684,8 +684,8 @@ jobs:
           fi
           # Check if actual review files changed via scoring-progress.json
           # (review-texts is a nested git repo, so git diff --staged can't detect changes there).
-          # Reads filesModified (every saveReviewFile() call this run, scored OR
-          # rejected) instead of processed alone — an all-rejected batch still
+          # Reads filesModified (every saveReviewFile() write that changed bytes
+          # this run, scored OR rejected; BRO-3108) instead of processed alone — an all-rejected batch still
           # writes rejectedAt/rejectionReason to disk and must not read as
           # "nothing happened" (P1 352637c5-416f-81ab).
           HAS_SCORED=$(node -e "
@@ -709,6 +709,7 @@ jobs:
       # Never on a dry_run dispatch (BRO-4467): one writer forgetting to honor
       # dry_run would otherwise reach the private repo.
       - name: Push review-texts to private repo
+        id: push-review-texts
         if: always() && github.event.inputs.dry_run != 'true'
         uses: ./.github/actions/push-review-texts
         with:
@@ -765,8 +766,14 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from llm-ensemble-score'
 
+      # BRO-3108: gated on the review-texts push, not has_changes alone.
+      # has_changes is true on every run (scoring-progress.json is always
+      # rewritten), so runs that logged "No review-texts changes to push"
+      # still dispatched rebuild-fast (38399219408, 2026-10-13). Review-text
+      # changes reach the site only through that push, so it is the exact
+      # "a rebuild is needed" signal for every writer in this job.
       - name: Auto-trigger rebuild for non-chain runs
-        if: ${{ github.event.inputs.chain != 'true' && github.event_name != 'schedule' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' }}
+        if: ${{ github.event.inputs.chain != 'true' && github.event_name != 'schedule' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' && steps.push-review-texts.outputs.pushed == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

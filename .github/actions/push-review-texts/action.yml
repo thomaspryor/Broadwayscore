@@ -10,10 +10,16 @@ inputs:
     required: false
     default: 'data: Update review texts'
 
+outputs:
+  pushed:
+    description: "'true' only when this call pushed a commit to the private repo; empty when there was nothing to push (BRO-3108)"
+    value: ${{ steps.push.outputs.pushed }}
+
 runs:
   using: composite
   steps:
     - name: Push review-texts to private repo
+      id: push
       shell: bash
       working-directory: data/review-texts
       env:
@@ -354,6 +360,7 @@ runs:
             if git push origin main 2>"$STDERR_FILE"; then
               cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully (attempt $i)"
+              echo "pushed=true" >> "$GITHUB_OUTPUT"
               rm -f "$STDERR_FILE"
               exit 0
             fi
@@ -514,6 +521,7 @@ runs:
             if git push origin main 2>"$STDERR_FILE"; then
               cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
+              echo "pushed=true" >> "$GITHUB_OUTPUT"
               rm -f "$STDERR_FILE"
               exit 0
             fi

@@ -105,6 +105,7 @@ const { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch } = require('../
 const { urgentScoringShowIds } = require('../lib/scoring-lane');
 const { loadReviewEvidence } = require('../lib/review-evidence');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
+const { writeFileIfChanged } = require('../lib/write-if-changed');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
 const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure, stampRejectedTextFingerprint, isBlockedByStickyRejection } = require('../lib/rescore-lifecycle');
 const { pushWithRetry } = require('../lib/push-with-retry.js');
@@ -294,8 +295,9 @@ const SCORING_PROGRESS_PATH = path.join(PROJECT_ROOT, 'data', 'collection-state'
 // batch path ever writes has no such second writer. (task #516 ship-check)
 const SCORING_BATCH_STATE_PATH = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-batch-state.json');
 
-// Every saveReviewFile() call increments this, regardless of whether the
-// file ended up scored or merely rejected/flagged. `processed` alone misses
+// Every saveReviewFile() call that changes bytes on disk increments this,
+// regardless of whether the file ended up scored or merely rejected/flagged
+// (identical rewrites are skipped and not counted, BRO-3108). `processed` alone misses
 // all-rejected batches — the CI gate (scripts/lib/scoring-progress-gate.js)
 // reads this to know real review-text writes happened even when zero files
 // scored (P1 352637c5-416f-81ab).
@@ -872,8 +874,9 @@ function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: s
  */
 function saveReviewFile(filePath: string, data: any, opts: { skipRejectionReasonClear?: boolean } = {}): void {
   clearFailureFlags(data, { skipRejectionReasonClear: !!opts.skipRejectionReasonClear });
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-  filesModifiedCount++;
+  // BRO-3108: byte-identical re-serialisations are not modifications — they
+  // used to bump filesModified and make no-op runs dispatch a rebuild.
+  if (writeFileIfChanged(filePath, JSON.stringify(data, null, 2) + '\n')) filesModifiedCount++;
 }
 
 /**
