@@ -787,5 +787,35 @@
       }
     ],
     "queuedAt": "2026-10-13T08:29:10.642Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2800-deadline-overshoot",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-2800-deadline-overshoot",
+    "description": "land.yml did not land land/bro-2800-deadline-overshoot: the scripts-lib-tests gate went red at 4bd1409ced. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366445322",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2800-deadline-overshoot"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "4bd1409ced55a91b5363568a999c26fd9390abb8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366445322"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:31:03.896Z"
   }
 ]
