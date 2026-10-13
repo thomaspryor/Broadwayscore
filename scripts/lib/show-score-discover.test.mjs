@@ -105,12 +105,40 @@ test('a curated London entry is still returned for a West End show', () => {
 
 // BRO-3556: the curated-map check above only catches a collision with a
 // CURATED sibling. Two same-title productions that are BOTH un-curated each
-// construct the identical URL and both silently claim one page. With the full
-// shows list passed in, that fails closed: neither gets a constructed URL.
-test('un-curated same-title siblings both get no URL when allShows is passed', () => {
-  const all = [show1994, show2016];
-  assert.equal(showScoreUrlForShow(show1994, {}, all), null);
-  assert.equal(showScoreUrlForShow(show2016, {}, all), null);
+// construct the identical URL. With the full shows list passed in, the newest
+// production keeps it (Show Score's page shows the most recent production);
+// older siblings get null, and an ambiguous newest fails closed for all.
+const old1994 = { ...show1994, openingDate: '1993-06-10' };
+const new2016 = { ...show2016, openingDate: '2016-03-17' };
+
+test('un-curated same-title siblings: the newest keeps the URL, the older gets null', () => {
+  const all = [old1994, new2016];
+  assert.equal(showScoreUrlForShow(old1994, {}, all), null);
+  assert.equal(showScoreUrlForShow(new2016, {}, all), SLM_2016);
+});
+
+test('newest falls back to previewsStartDate, then the id year', () => {
+  const prev = { id: 'she-loves-me-2030', title: 'She Loves Me', category: 'broadway', previewsStartDate: '2030-01-05' };
+  assert.equal(showScoreUrlForShow(prev, {}, [new2016, prev]), SLM_2016);
+  assert.equal(showScoreUrlForShow(new2016, {}, [new2016, prev]), null);
+  // No dates at all: the trailing id year decides.
+  assert.equal(showScoreUrlForShow(show2016, {}, [show1994, show2016]), SLM_2016);
+  assert.equal(showScoreUrlForShow(show1994, {}, [show1994, show2016]), null);
+});
+
+test('a tie for newest fails closed for every sibling', () => {
+  const a = { id: 'she-loves-me-a', title: 'She Loves Me', category: 'broadway', openingDate: '2016-03-17' };
+  const all = [a, new2016, old1994];
+  assert.equal(showScoreUrlForShow(a, {}, all), null);
+  assert.equal(showScoreUrlForShow(new2016, {}, all), null);
+  assert.equal(showScoreUrlForShow(old1994, {}, all), null);
+});
+
+test('an undatable sibling fails closed for every sibling', () => {
+  const undated = { id: 'she-loves-me-revival', title: 'She Loves Me', category: 'broadway' };
+  const all = [undated, new2016];
+  assert.equal(showScoreUrlForShow(new2016, {}, all), null);
+  assert.equal(showScoreUrlForShow(undated, {}, all), null);
 });
 
 test('a unique un-curated title still gets its constructed URL with allShows', () => {

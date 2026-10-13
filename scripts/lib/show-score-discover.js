@@ -51,6 +51,35 @@ function constructShowScoreUrl(show) {
   return `https://www.show-score.com/${section}/${slug}`;
 }
 
+/**
+ * A production's recency key for same-title tie-breaking (BRO-3556):
+ * openingDate, else previewsStartDate, else Jan 1 of a trailing -YYYY in the
+ * id. null when none is usable.
+ */
+function productionRecencyMs(show) {
+  for (const d of [show && show.openingDate, show && show.previewsStartDate]) {
+    if (!d) continue;
+    const ms = new Date(d).getTime();
+    if (Number.isFinite(ms)) return ms;
+  }
+  const m = String((show && show.id) || '').match(/-((?:19|20)\d{2})$/);
+  return m ? Date.UTC(parseInt(m[1], 10), 0, 1) : null;
+}
+
+/**
+ * True only when `show` is strictly newer than every rival. Any undatable
+ * production in the group (show or rival) or a tie at the top → false.
+ */
+function isNewestProduction(show, rivals) {
+  const mine = productionRecencyMs(show);
+  if (mine === null) return false;
+  for (const r of rivals) {
+    const theirs = productionRecencyMs(r);
+    if (theirs === null || theirs >= mine) return false;
+  }
+  return true;
+}
+
 const normSsUrl = (u) => u.toLowerCase().replace(/\/+$/, '');
 
 /**
@@ -61,8 +90,9 @@ const normSsUrl = (u) => u.toLowerCase().replace(/\/+$/, '');
  * @param {object} show      shows.json record
  * @param {object} [urlMap]  curated show-id → URL map
  * @param {object[]} [allShows]  every shows.json record (BRO-3556). When
- *   given, a constructed URL that an un-curated same-title sibling would ALSO
- *   construct is refused. Omitting it keeps the curated-map-only check.
+ *   given, a constructed URL that un-curated same-title siblings would ALSO
+ *   construct goes only to the newest of them (null for the rest, and for
+ *   all of them when the newest is ambiguous). Omitting it keeps the curated-map-only check.
  */
 function showScoreUrlForShow(show, urlMap, allShows) {
   if (!show) return null;
@@ -98,19 +128,24 @@ function showScoreUrlForShow(show, urlMap, allShows) {
 
   // BRO-3556: the curated-map check above misses the case where BOTH same-title
   // productions are un-curated — each constructs the identical URL and both
-  // silently claim the one page (which belongs to at most one of them). Fail
-  // closed: neither gets a constructed URL until an operator curates one (a
-  // curated entry for either side then resolves it — the curated side returns
-  // above, and the other side is refused by the curated-map check). A sibling
-  // that IS curated (to any URL) is skipped here: if it points at this URL the
-  // check above already refused it; if it points elsewhere it does not compete.
+  // silently claim the one page. Show Score keeps one page per title, showing
+  // the current or most recent production, so the NEWEST colliding sibling
+  // keeps the constructed URL and every older one gets null (owned by neither
+  // is too costly: strict fail-closed cost 6 active shows their discovery).
+  // When the newest cannot be named unambiguously (a tie, or a sibling with no
+  // date at all), fail closed for every sibling until an operator curates one.
+  // A sibling that IS curated (to any URL) is skipped here: if it points at this
+  // URL the check above already refused it; if it points elsewhere it does not
+  // compete.
   if (Array.isArray(allShows)) {
+    const rivals = [];
     for (const other of allShows) {
       if (!other || other.id === show.id) continue;
       if (urlMap && typeof urlMap[other.id] === 'string' && urlMap[other.id]) continue;
       const theirs = constructShowScoreUrl(other);
-      if (theirs && normSsUrl(theirs) === want) return null;
+      if (theirs && normSsUrl(theirs) === want) rivals.push(other);
     }
+    if (rivals.length > 0 && !isNewestProduction(show, rivals)) return null;
   }
   return constructed;
 }
@@ -254,6 +289,7 @@ module.exports = {
   showScorePosterFromHtml,
   showScoreUrlForShow,
   constructShowScoreUrl,
+  productionRecencyMs,
   loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,
