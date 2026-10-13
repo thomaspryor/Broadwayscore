@@ -37,5 +37,35 @@
     "tracked": "BRO-3030",
     "fields": [],
     "queuedAt": "2026-10-13T05:06:56.613Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5228-session-model",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5228-session-model",
+    "description": "land.yml did not land land/bro-5228-session-model: the unit-tests-node gate went red at 5893487b9f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38347372433",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5228-session-model"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5893487b9f463be0142ac1f84e6e1908675f95c4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38347372433"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:09:26.673Z"
   }
 ]
