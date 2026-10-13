@@ -115,6 +115,16 @@ jobs:
             ${{ inputs.no_trend && ' ' || '--trend' }} \
             | tee "$GITHUB_STEP_SUMMARY"
 
+      # BRO-2731: review URLs this census found on domains with NO outlet-registry
+      # entry. Discovery never fetches those and stage-latency never sees them, so
+      # without this list they are invisible. Advisory: lists them in the summary.
+      - name: Unregistered review domains in this census
+        if: ${{ always() }}
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          { echo '### Review URLs on unregistered domains'; echo '```'; node scripts/outlet-registry-census-reconciler.js --all; echo '```'; } | tee -a "$GITHUB_STEP_SUMMARY"
+
       # The ledger IS the detector's memory — a run that measures and does not
       # commit leaves the next run with the same two data points and the same
       # 'blind' verdict forever.

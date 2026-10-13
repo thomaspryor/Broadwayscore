@@ -6,8 +6,8 @@ on:
   workflow_dispatch: {}
 
 # BRO-2957: this workflow no longer creates issues, so it no longer needs
-# issues: write. Six `gh run list`/`gh run view` calls in the first step still
-# need actions: read, and checkout needs contents: read.
+# issues: write. The run-history queries (gh_runs_query) and `gh run view` calls
+# in the first step still need actions: read, and checkout needs contents: read.
 permissions:
   contents: read
   actions: read
@@ -42,21 +42,61 @@ jobs:
           PERIOD_END=$(date '+%b %d')
 
           # --- Collect workflow run counts ---
+          # BRO-2792: one paginated REST query per workflow FILE, both counts derived
+          # from that one array. Was two `gh run list --workflow="<display name>"`
+          # calls: capped at 20 runs (Collect Review Texts alone runs 100+ a week)
+          # and uncorrelated, so FAILED=RUNS-SUCCESS could go negative. The display
+          # name is read from the file's own `name:` line, so no map can drift.
+          wf_display_name() {
+            grep -m1 '^name:' ".github/workflows/$1" | sed -E "s/^name:[[:space:]]*//; s/^['\"]//; s/['\"][[:space:]]*$//"
+          }
+          # All runs created since $SINCE, as one JSON array. GitHub caps a filtered
+          # listing at 1000 results (10 pages of 100), so 1000 means "capped".
+          wf_runs_since() {
+            local file="$1" page=1 all='[]' batch n
+            while [ "$page" -le 10 ]; do
+              if ! batch=$(gh_runs_query "$GITHUB_REPOSITORY" "$file" 100 "created=%3E$SINCE" "page=$page"); then
+                return 1
+              fi
+              all=$(jq -s 'add' <(printf '%s' "$all") <(printf '%s' "$batch"))
+              n=$(printf '%s' "$batch" | jq 'length')
+              if [ "$n" -lt 100 ]; then break; fi
+              page=$((page + 1))
+            done
+            printf '%s\n' "$all"
+          }
           WORKFLOW_ROWS=""
           TOTAL_RUNS=0
           TOTAL_FAILED=0
-          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial Data" "Fix Platform Ticket Links"; do
-            RUNS=$(gh run list --workflow="$wf" --created=">$SINCE" --json conclusion -q 'length' 2>/dev/null || echo "0")
-            SUCCESS=$(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --json conclusion -q '[.[] | select(.conclusion=="success")] | length' 2>/dev/null || echo "0")
-            FAILED=$((RUNS - SUCCESS))
+          TOTAL_CANCELLED=0
+          for wf_file in collect-review-texts.yml gather-reviews.yml opening-night-poller.yml opening-night-reviews.yml enrich-ibdb-dates.yml bulk-show-score.yml check-show-freshness.yml scrape-bww-reviews.yml update-commercial.yml fix-platform-ticket-links.yml; do
+            wf=$(wf_display_name "$wf_file")
+            [ -n "$wf" ] || wf="$wf_file"
+            if ! RUNS_JSON=$(wf_runs_since "$wf_file"); then
+              echo "::warning::run history query failed for $wf_file; its row shows '?'"
+              WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>?</td><td style='padding:4px 12px;text-align:center'>query failed</td></tr>"
+              continue
+            fi
+            RUNS=$(printf '%s' "$RUNS_JSON" | jq 'length')
+            RUNS_CAPPED=""
+            if [ "$RUNS" -ge 1000 ]; then RUNS_CAPPED=" (capped at 1000)"; fi
+            # A timeout-minutes overrun ends `cancelled`, not `timed_out` (see the
+            # timeout note at the top of this job), so cancelled runs get their
+            # own column count rather than vanishing.
+            FAILED=$(printf '%s' "$RUNS_JSON" | jq '[.[] | select(.conclusion=="failure" or .conclusion=="timed_out" or .conclusion=="startup_failure")] | length')
+            CANCELLED=$(printf '%s' "$RUNS_JSON" | jq '[.[] | select(.conclusion=="cancelled")] | length')
             if [ "$RUNS" -gt 0 ]; then
               TOTAL_RUNS=$((TOTAL_RUNS + RUNS))
               TOTAL_FAILED=$((TOTAL_FAILED + FAILED))
+              TOTAL_CANCELLED=$((TOTAL_CANCELLED + CANCELLED))
               FAIL_BADGE=""
               if [ "$FAILED" -gt 0 ]; then
                 FAIL_BADGE="<span style='color:#dc2626;font-weight:bold'>$FAILED failed</span>"
               fi
-              WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>$RUNS</td><td style='padding:4px 12px;text-align:center'>$FAIL_BADGE</td></tr>"
+              if [ "$CANCELLED" -gt 0 ]; then
+                FAIL_BADGE="$FAIL_BADGE <span style='color:#b45309'>$CANCELLED cancelled</span>"
+              fi
+              WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>$RUNS$RUNS_CAPPED</td><td style='padding:4px 12px;text-align:center'>$FAIL_BADGE</td></tr>"
             fi
           done
 
@@ -68,9 +108,11 @@ jobs:
           # provider-reported numbers below are the billing ground truth.
           PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
           SB_BY_WF_FILE=$(mktemp)
-          for wf in "Collect Review Texts" "Gather Review Data" "Opening Night Poller" "Opening Night Reviews" "Enrich IBDB Dates" "Bulk Show Score" "Auto-Maintain Show Data" "Scrape BWW Reviews" "Update Commercial Data" "Fix Platform Ticket Links" "Audit Aggregator Review Gap" "Scrape New Aggregators"; do
+          for wf_file in collect-review-texts.yml gather-reviews.yml opening-night-poller.yml opening-night-reviews.yml enrich-ibdb-dates.yml bulk-show-score.yml check-show-freshness.yml scrape-bww-reviews.yml update-commercial.yml fix-platform-ticket-links.yml audit-aggregator-gap.yml scrape-new-aggregators.yml; do
+            wf=$(wf_display_name "$wf_file")
+            [ -n "$wf" ] || wf="$wf_file"
             wf_name=$(echo "$wf" | tr ' ' '_')
-            for run_id in $(gh run list --workflow="$wf" --created=">$SINCE" --status=completed --limit=5 --json databaseId -q '.[].databaseId' 2>/dev/null); do
+            for run_id in $(gh_runs_query "$GITHUB_REPOSITORY" "$wf_file" 5 "created=%3E$SINCE" "status=completed" 2>/dev/null | jq -r '.[].databaseId' 2>/dev/null); do
               # Sum ALL summary lines per log (multi-call scripts emit multiple)
               while IFS= read -r SUMMARY; do
                 [ -z "$SUMMARY" ] && continue
@@ -246,8 +288,11 @@ jobs:
           # degrades. Override via repo secret if plan changes.
           SB_TARGET_CAP=${SB_TARGET_CAP:-1000000}
           ACTION_NEEDED=""
+          # Cancelled runs are not in this threshold: most are concurrency-group
+          # cancels (Gather Review Data had 58 of 246 in the week this landed),
+          # which would fire it every week. They are shown per row instead.
           if [ "$TOTAL_FAILED" -gt 5 ]; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>$TOTAL_FAILED workflow failures this week — check logs</li>"
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>$TOTAL_FAILED workflow failures this week ($TOTAL_CANCELLED cancelled runs not counted) — check logs</li>"
           fi
           # Forward-looking SB cap alert (highest priority — site degrades when cap hits).
           # Explicit numeric guard: bash -gt on non-numeric is undefined and could silently

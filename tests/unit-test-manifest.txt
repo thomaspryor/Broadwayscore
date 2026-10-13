@@ -23,6 +23,7 @@ scripts/audit-notion-schedule-coupling.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
 scripts/audit-orphan-inprogress.test.mjs
 scripts/audit-orphan-tests.test.mjs
+scripts/audit-outlet-registry.test.mjs
 scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-pull-quotes.test.mjs
 scripts/audit-push-core-data-audit-gap.test.mjs
@@ -95,6 +96,7 @@ scripts/collect-review-texts.test.mjs
 scripts/critical-workflow-alert-conditions.test.mjs
 scripts/cron-health-chronic.test.mjs
 scripts/discover-new-shows.test.mjs
+scripts/discover-show-score-urls-from-listings.test.mjs
 scripts/dispatch-watchdog.test.mjs
 scripts/enrich-card-acceptance.test.mjs
 scripts/enrich-fallback-ticket-links.test.mjs
@@ -230,6 +232,7 @@ scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
 scripts/opening-night-pipeline.test.mjs
 scripts/opening-night-tools-data-dir.test.mjs
+scripts/outlet-registry-census-reconciler.test.mjs
 scripts/outlet-registry.test.mjs
 scripts/plan-we-historical-opening-repair.test.mjs
 scripts/pre-push.test.mjs
@@ -252,6 +255,7 @@ scripts/scoring-delta-data-inputs.test.mjs
 scripts/scoring-delta-rebuild-loop-touch.test.mjs
 scripts/scrape-broadway-com-audience.test.mjs
 scripts/scrape-mezzanine-audience.test.mjs
+scripts/scrape-theatre-reviews.test.mjs
 scripts/scrape-wp-theater-blogs.test.mjs
 scripts/send-btc-confirmation-emails.test.mjs
 scripts/send-opening-digest.test.mjs
@@ -1221,6 +1225,7 @@ tests/unit/scraper-domain-match-alias-subdomain.test.mjs
 tests/unit/scraper-spend-attribution.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
+tests/unit/scraper-wordpress.test.mjs
 tests/unit/scrapingdog-ack.test.mjs
 tests/unit/scrapingdog-failure-path-smoke.test.mjs
 tests/unit/scroll-row-shelves.test.mjs

@@ -287,36 +287,24 @@ test('the helper is sourced only after the repo is checked out', () => {
   }
 });
 
-test('scraper-cost-report has no `gh run list --limit` latest-run lookup left (BRO-2780)', () => {
-  // Narrower than the blanket "no live gh run list" assertion above, because this file
-  // KEEPS three `gh run list --workflow="<display name>" --created=">$SINCE"` count
-  // queries on purpose: the REST endpoint keys runs by file name, not by the display
-  // `name:`, so converting them needs a name-to-filename map that is not in this card's
-  // scope. What must never come back is the ORDER-SENSITIVE form — `--limit=N` used to
-  // pick "the latest run" — which is the one the stale-result-set bug silently corrupts.
+test('scraper-cost-report has no live `gh run list` left (BRO-2780, BRO-2792)', () => {
+  // BRO-2780 removed the order-sensitive `--limit=N` latest-run lookups. BRO-2792
+  // converted the last three display-name `gh run list --workflow="$wf"` count
+  // queries (capped at 20 runs, and a two-query FAILED=RUNS-SUCCESS that could go
+  // negative) to one paginated gh_runs_query per workflow FILE. None may return.
   const rel = '.github/workflows/scraper-cost-report.yml';
-
-  // The three survivors are all the DISPLAY-NAME form (`--workflow="$wf"` where $wf is a
-  // workflow's `name:`, not its file name). The helper cannot serve them: the REST path is
-  // /actions/workflows/{id_or_FILENAME}/runs. Converting them needs a name-to-filename map,
-  // tracked separately. Freeze the count so the exception cannot quietly grow, and require
-  // every survivor to be that form — a NEW file-name-form `--limit` lookup, the shape this
-  // card removed, fails here.
-  const KNOWN_DISPLAY_NAME_SURVIVORS = 3;
+  const KNOWN_DISPLAY_NAME_SURVIVORS = 0;
   const listCalls = liveLines(rel).filter((l) => l.includes('gh run list'));
-  const displayNameForm = listCalls.filter((l) => /--workflow="\$wf"/.test(l));
-  const unexpected = listCalls.filter((l) => !/--workflow="\$wf"/.test(l));
-
-  assert.deepEqual(
-    unexpected,
-    [],
-    `${rel} has a gh run list that is NOT the known display-name form — the order-sensitive file-name lookups were converted to gh_runs_query and must stay converted: ${unexpected.join(' | ')}`,
-  );
   assert.equal(
-    displayNameForm.length,
+    listCalls.length,
     KNOWN_DISPLAY_NAME_SURVIVORS,
-    `${rel} display-name gh run list count changed (${displayNameForm.length} vs ${KNOWN_DISPLAY_NAME_SURVIVORS}). If one was converted, lower this number; if one was ADDED, convert it instead — these read a truncated, arbitrarily-ordered result set.`,
+    `${rel} has a live gh run list again: ${listCalls.join(' | ')}. Use gh_runs_query (scripts/lib/gh-runs-query.sh) with the workflow file name.`,
   );
+
+  // Both run counts come from ONE query per workflow, so FAILED can never go negative.
+  const src0 = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+  assert.match(src0, /RUNS_JSON=\$\(wf_runs_since "\$wf_file"\)/);
+  assert.doesNotMatch(src0, /FAILED=\$\(\(RUNS - SUCCESS\)\)/);
 
   // And the two lookups it replaced must actually be going through the helper.
   const src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');

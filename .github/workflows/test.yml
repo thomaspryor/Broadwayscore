@@ -1292,6 +1292,17 @@ on:
       # so a solo edit to either triggers CI.
       - 'scripts/audit-false-balance.js'
       - 'scripts/audit-false-balance.test.mjs'
+      # BRO-2716/2726/2731/2747/2595: top-level scripts/ files (no scripts/** glob)
+      # with colocated tests registered in tests/unit-test-manifest.txt — each
+      # listed so a solo edit to either triggers CI.
+      - 'scripts/audit-outlet-registry.test.mjs'
+      - 'scripts/audit-registry-nonreview-outlets.js'
+      - 'scripts/scrape-theatre-reviews.js'
+      - 'scripts/scrape-theatre-reviews.test.mjs'
+      - 'scripts/discover-show-score-urls-from-listings.js'
+      - 'scripts/discover-show-score-urls-from-listings.test.mjs'
+      - 'scripts/outlet-registry-census-reconciler.js'
+      - 'scripts/outlet-registry-census-reconciler.test.mjs'
       # BRO-3219: top-level scripts/ file (no scripts/** glob) with a colocated
       # test registered explicitly in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs files are NOT globbed) — both need their own entry

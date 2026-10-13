@@ -79,11 +79,12 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 //
 // WHAT IS DELIBERATELY STILL ABSENT, and why the scanner is not being widened
 // to admit it:
-//   - audit-outlet-registry.js  — `saveAuditResults()` runs UNCONDITIONALLY at
-//     scripts/audit-outlet-registry.js:948, outside every flag guard, writing
-//     data/audit/outlet-registry-gaps.json, which is git-TRACKED. `--strict`
-//     is not a read-only mode of this script. (This is why BRO-2717's stated
-//     acceptance command cannot simply be allowlisted.)
+//   - audit-outlet-registry.js  — `--strict` no longer writes (BRO-2747:
+//     the git-tracked data/audit/outlet-registry-gaps.json is written in
+//     report mode only, with repo-relative paths), but the file still holds
+//     --update/--fix/--update-baseline writes, which a static scan cannot
+//     tell apart from the gate path. Its unit test
+//     (scripts/audit-outlet-registry.test.mjs) pins --strict as no-write.
 //   - audit-critic-outlets.js   — same shape: writes data/critic-registry.json
 //     and data/audit/critic-outlet-affinity.json on every run.
 //   - audit-card-verifiability.js — writes its report, and shells out to

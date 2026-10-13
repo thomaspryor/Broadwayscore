@@ -17,6 +17,12 @@
  *   node scripts/audit-outlet-registry.js --update      # Add missing outlets to registry (with confirmation)
  *   node scripts/audit-outlet-registry.js --strict          # Exit 1 on NEW (non-baselined) missing outlets
  *   node scripts/audit-outlet-registry.js --update-baseline # Regenerate the baseline from current scan
+ *   node scripts/audit-outlet-registry.js --report-only     # Report without writing the gaps file
+ *
+ * BRO-2747: data/audit/outlet-registry-gaps.json (git-tracked) is written only
+ * in report mode, never under --strict/--report-only, and its file paths are
+ * repo-relative. It used to be rewritten on every --strict run with absolute
+ * paths, so the CI gate run from a worktree re-pathed ~3,000 lines.
  *
  * Baseline-diff (task #1666), mirrors audit-broadway-category-predicate.js
  * (task #1665): the pre-existing missing-outlet backlog is frozen in
@@ -69,7 +75,9 @@ function lastRebuildMs() {
 // move the red from the null-domain ceiling to this gate.
 const { loadStagedOutletIds, STAGING_RELATIVE_PATH: OUTLET_STAGING_PATH } = require('./lib/outlet-auto-register');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { outletRegistryAuditExclusionBranch } = require('./lib/outlet-registry-audit-exclusions');
+const { outletRegistryAuditExclusionBranch, isQuarantinedDuplicateOfCanonical } = require('./lib/outlet-registry-audit-exclusions');
+const { relativizeRepoPaths, shouldSaveAuditResults } = require('./lib/outlet-registry-gaps-output');
+const { isIncludableForRebuild } = require('./lib/review-guards');
 // Advisory only (BRO-4401 what-else): branch 6 excludes unscored files (by
 // the rebuild's own getBestScore predicate), which is correct (the rebuild
 // never includes them) but could hide a real registry gap indefinitely if a
@@ -124,6 +132,8 @@ const JSON_OUTPUT = args.includes('--json');
 const UPDATE_MODE = args.includes('--update');
 const AUTO_MODE = args.includes('--auto'); // Skip confirmation prompts (for CI)
 const STRICT = args.includes('--strict'); // Exit 1 on NEW (non-baselined) missing outlets
+const REPORT_ONLY = args.includes('--report-only');
+const REPO_ROOT = path.join(__dirname, '..');
 const UPDATE_BASELINE = args.includes('--update-baseline');
 
 function loadBaseline() {
@@ -215,6 +225,28 @@ function getAllReviewFiles() {
   return reviewFiles;
 }
 
+// shows.json by id, loaded once on first use (BRO-2726 sibling include check).
+let _showsById = null;
+function showsById() {
+  if (!_showsById) {
+    _showsById = {};
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf-8'));
+      for (const s of (Array.isArray(raw) ? raw : raw.shows || [])) _showsById[s.id] = s;
+    } catch { /* no shows.json: isIncludableForRebuild runs without show context */ }
+  }
+  return _showsById;
+}
+
+// Parsed sibling review in the same show directory, or null (BRO-2726).
+function readSiblingReview(fullPath, name) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(path.dirname(fullPath), name), 'utf-8'));
+  } catch {
+    return null;
+  }
+}
+
 // Extract outlet ID from filename (format: outletId--criticName.json)
 function extractOutletIdFromFilename(filename) {
   const match = filename.match(/^(.+?)--/);
@@ -298,6 +330,7 @@ function auditOutletRegistry() {
     junkEntriesInRegistry: [],    // Junk/sentinel ids or aliases already IN the registry (task #1783)
     skippedJunkOutlets: [],        // outletIds seen in reviews but never suggested — isJunkOutlet (task #1783)
     pendingUnscoredExcluded: { total: 0, stale: [] }, // branch-6 exclusions, with the ones waiting > PENDING_UNSCORED_STALE_DAYS (advisory)
+    quarantinedDuplicatesSkipped: 0, // duplicateOf copies of an existing canonical sibling (BRO-2726)
   };
 
   // A reserved-sentinel id (e.g. "unknown" — literally what
@@ -352,6 +385,12 @@ function auditOutletRegistry() {
       // to scripts/lib/outlet-registry-audit-exclusions.js so it's unit
       // tested (scripts/outlet-registry.test.mjs) instead of re-derived here.
       // See that file's comments for the incident history behind each branch.
+      if (isQuarantinedDuplicateOfCanonical(review, name => readSiblingReview(reviewFile.fullPath, name),
+        sibling => isIncludableForRebuild(sibling, showsById()[reviewFile.showId]))) {
+        findings.quarantinedDuplicatesSkipped++;
+        continue;
+      }
+
       const exclusionBranch = outletRegistryAuditExclusionBranch(review);
       if (exclusionBranch !== 0) {
         // Count only files that branch 6 ALONE excludes: a blocked-domain or
@@ -588,6 +627,9 @@ function printReport(auditResult) {
   console.log(`  Unused in registry: ${findings.unusedInRegistry.length} outlets`);
   if (findings.skippedJunkOutlets.length > 0) {
     console.log(`  Skipped as junk (never suggested): ${findings.skippedJunkOutlets.length} outlets`);
+  }
+  if (findings.quarantinedDuplicatesSkipped > 0) {
+    console.log(`  Skipped as write-guard duplicates of an existing canonical file: ${findings.quarantinedDuplicatesSkipped} files`);
   }
   if (findings.pendingUnscoredExcluded && findings.pendingUnscoredExcluded.total > 0) {
     const { total, stale } = findings.pendingUnscoredExcluded;
@@ -1041,7 +1083,7 @@ async function main() {
       process.exit(0);
     }
 
-    const jsonOutput = generateJsonOutput(auditResult);
+    const jsonOutput = relativizeRepoPaths(generateJsonOutput(auditResult), REPO_ROOT);
 
     if (JSON_OUTPUT) {
       // Output JSON to stdout
@@ -1051,8 +1093,8 @@ async function main() {
       printReport(auditResult);
     }
 
-    // Always save to file
-    saveAuditResults(jsonOutput);
+    // Report mode only: --strict is CI's read-only gate (BRO-2747).
+    if (shouldSaveAuditResults({ strict: STRICT, reportOnly: REPORT_ONLY })) saveAuditResults(jsonOutput);
 
     // Handle --fix or --dry-run
     if (FIX_MODE || DRY_RUN) {

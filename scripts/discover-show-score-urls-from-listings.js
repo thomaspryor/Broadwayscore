@@ -29,6 +29,7 @@ const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { venuesMatch } = require('./lib/deduplication');
 const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { disambiguateByVenue } = require('./lib/show-score-venue-disambiguation');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -464,16 +465,17 @@ async function main() {
       return null;
     }
 
-    // Venue disambiguation: when listing title includes a venue and multiple candidates exist
-    if (filtered.length > 1 && listingVenue) {
-      const venueMatched = filtered.filter(s => venuesMatch(listingVenue, s.venue));
-      if (venueMatched.length >= 1) {
-        if (verbose && venueMatched.length < filtered.length) {
-          console.log(`    [VENUE] Narrowed ${filtered.length} → ${venueMatched.length} via venue "${listingVenue}"`);
-        }
-        filtered = venueMatched;
-      }
+    // Venue disambiguation: when listing title includes a venue and multiple
+    // candidates exist. A named venue that matches none of them is a rejection,
+    // not a fall back to all of them (BRO-2595).
+    const byVenue = disambiguateByVenue(filtered, listingVenue, venuesMatch);
+    if (byVenue.rejected) {
+      return { venueRejected: true, titleMatches: filtered.map(s => s.id) };
     }
+    if (verbose && byVenue.candidates.length < filtered.length) {
+      console.log(`    [VENUE] Narrowed ${filtered.length} → ${byVenue.candidates.length} via venue "${listingVenue}"`);
+    }
+    filtered = byVenue.candidates;
 
     // Log ambiguous multi-production matches for spot-checking
     if (filtered.length > 1 && verbose) {
@@ -510,9 +512,11 @@ async function main() {
   let alreadyCached = 0;
   let noMatch = 0;
   let urlConflict = 0;
+  let venueRejected = 0;
   let dateRejected = 0;
   const discoveries = [];
   const candidates = []; // Unmatched listings → potential new shows
+  const venueRejects = []; // Title matched, venue did not (BRO-2595) → venueRejected key, never auto-consumed
   const assignedInThisRun = new Set(); // Prevent same show getting 2 URLs in one run
 
   function processListings(listings, category, label) {
@@ -531,6 +535,25 @@ async function main() {
 
       const listingVenue = extractVenueFromTitle(listing.title);
       const match = findBestMatch(listing, category, listingVenue);
+      if (match && match.venueRejected) {
+        // Title matches 2+ productions but the listing's venue matches none:
+        // a production we don't have yet, or a venue spelling venuesMatch()
+        // doesn't model. Kept OUT of `candidates`, which discover-new-shows.js
+        // --consume-show-score-candidates turns into new shows automatically
+        // (and its duplicate check uses the same venue matching that just
+        // failed). Written under the file's separate `venueRejected` key.
+        venueRejected++;
+        venueRejects.push({
+          title: displayTitle,
+          showScoreUrl: fullUrl,
+          category: category || 'broadway',
+          reason: 'venue-mismatch',
+          listingVenue,
+          titleMatches: match.titleMatches,
+        });
+        console.log(`  [VENUE REJECTED] "${displayTitle}" venue "${listingVenue}" matches none of ${match.titleMatches.join(', ')} (→ show-score-candidates.json venueRejected, not auto-added)`);
+        continue;
+      }
       if (!match) {
         noMatch++;
         candidates.push({
@@ -604,6 +627,7 @@ async function main() {
   console.log(`Already cached:   ${alreadyCached}`);
   console.log(`No match in DB:   ${noMatch} (→ candidates)`);
   console.log(`URL conflicts:    ${urlConflict}`);
+  console.log(`Venue rejected:   ${venueRejected} (title matched, venue did not → venueRejected, not auto-added)`);
   console.log(`Date rejected:    ${dateRejected}`);
   console.log('═══════════════════════════════════════\n');
 
@@ -672,7 +696,7 @@ async function main() {
       mergedCandidates.push(c);
     }
 
-    if (mergedCandidates.length > 0 || existingCandidates.length > 0) {
+    if (mergedCandidates.length > 0 || existingCandidates.length > 0 || venueRejects.length > 0) {
       const candidatesData = {
         _meta: {
           lastUpdated: new Date().toISOString(),
@@ -680,6 +704,9 @@ async function main() {
           ttlDays: CANDIDATE_TTL_DAYS,
         },
         candidates: mergedCandidates,
+        // This run's venue mismatches, for a person (BRO-2595). Not read by
+        // discover-new-shows.js, which consumes only `candidates`.
+        venueRejected: venueRejects.map(v => ({ ...v, discoveredAt: new Date().toISOString() })),
       };
 
       if (!dryRun) {

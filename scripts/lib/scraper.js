@@ -195,6 +195,20 @@ function _isPlaywrightFirstDomain(url) {
   } catch { return false; }
 }
 
+// Upper bound on the post-DOMContentLoaded networkidle settle (BRO-2729).
+// Pages that go idle return as soon as they do; pages that never do proceed
+// after this. 15s keeps goto (30s) + settle well inside
+// PLAYWRIGHT_TIER_DEADLINE_MS.
+const PLAYWRIGHT_SETTLE_MS = 15000;
+
+/** How fetchWithPlaywright navigates (BRO-2729): always DOMContentLoaded,
+ * then a bounded networkidle settle unless the caller asked for speed or
+ * waits on its own selector. */
+function playwrightNavigationPlan(options = {}) {
+  const settle = !options.playwrightWaitForSelector && !options.fast;
+  return { waitUntil: 'domcontentloaded', settleMs: settle ? PLAYWRIGHT_SETTLE_MS : 0 };
+}
+
 // --- Domains whose pages never reach networkidle (BRO-2763) ---
 // Ad/analytics-heavy WordPress sites: Playwright's default networkidle wait
 // times out at 30s on every call. domcontentloaded is enough for them.
@@ -1189,10 +1203,23 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
     // settle (Signature Theatre being the canonical example — networkidle
     // times out at 45s; domcontentloaded + waitForSelector('.type-event')
     // returns in ~3s).
-    const waitUntil = options.playwrightWaitForSelector
-      ? 'domcontentloaded'
-      : (options.fast ? 'domcontentloaded' : 'networkidle');
-    await page.goto(url, { waitUntil, timeout: 30000 });
+    // BRO-2729: never navigate with waitUntil 'networkidle'. On ad/analytics-
+    // heavy pages (hollywoodreporter.com, wordpress.com blogs, timeout.com on
+    // press nights) it never settles, goto throws at 30s, and fetchPage
+    // reported 'All scraping methods failed' for a page that had loaded.
+    // Navigate to DOMContentLoaded, then give JS-rendered pages a BOUNDED
+    // networkidle settle; a settle timeout means "read what rendered".
+    // fast/never-idle/selector callers keep no settle, as before.
+    const nav = playwrightNavigationPlan(options);
+    await page.goto(url, { waitUntil: nav.waitUntil, timeout: 30000 });
+    if (nav.settleMs > 0) {
+      try {
+        await page.waitForLoadState('networkidle', { timeout: nav.settleMs });
+      } catch (e) {
+        if (e?.name !== 'TimeoutError') throw e;
+        console.log(`  ⏱️  Playwright: network still busy after ${nav.settleMs / 1000}s at ${url} — reading the DOMContentLoaded page`);
+      }
+    }
     // Optional: wait for a specific selector to appear before reading content.
     // Required when networkidle times out (e.g. Signature Theatre's
     // /productions/ — see scripts/lib/venue-listing-discover.js for the
@@ -2153,6 +2180,8 @@ module.exports = {
   verifyFetchedUrl,
   SAME_HOST_INDEX_REDIRECTS,
   NEVER_IDLE_DOMAINS,
+  playwrightNavigationPlan,
+  PLAYWRIGHT_SETTLE_MS,
   recordUrlMismatch,
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },

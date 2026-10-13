@@ -316,7 +316,15 @@ function parseReviewParagraph($, $p, text, stars) {
   const CRITIC = "([A-Z][a-z]+(?:\\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)";
   const patternA = text.match(new RegExp("^(?:<[^>]+>)?((?:The\\s+i)|[A-Z][\\w\\s&.'-]+?)" + POSSESSIVE + CRITIC));
   if (patternA) {
-    if (!outlet) outlet = patternA[1].trim();
+    const proseOutlet = patternA[1].trim();
+    // BRO-2726: theatre.reviews sometimes links only PART of the outlet name
+    // ("T<a>he Standard</a>‘s", "<a>Time Ou</a>t’s"), so the link text alone
+    // produced outletIds "he-standard" / "time-ou". When the link text is a
+    // strict prefix or suffix of the prose outlet (3+ chars, so a stray
+    // one-letter link can't hijack it), the prose is the whole name.
+    const isFragment = outlet.length >= 3 && proseOutlet.length > outlet.length
+      && (proseOutlet.startsWith(outlet) || proseOutlet.endsWith(outlet));
+    if (!outlet || isFragment) outlet = proseOutlet;
     critic = patternA[2].trim();
   }
 
@@ -346,8 +354,12 @@ function parseReviewParagraph($, $p, text, stars) {
 
   // --- Extract excerpts (text in single curly quotes) ---
   // Matches: \u2018...\u2019 (curly) and '...' (straight)
+  // BRO-2726: an opening quote must not follow a letter (theatre.reviews
+  // writes possessives as "Standard\u2018s", which opened a bogus excerpt
+  // "s Nick Curtis called the play ..."), and a closing quote must not be
+  // followed by one ("Posner\u2019s" inside a quote ended the excerpt early).
   const excerpts = [];
-  const quoteRegex = /[\u2018']([^'\u2019]+)[\u2019']/g;
+  const quoteRegex = /(?<![\p{L}\p{N}])[\u2018']((?:(?![\u2019'](?![\p{L}\p{N}]))[\s\S])+)[\u2019'](?![\p{L}\p{N}])/gu;
   let m;
   while ((m = quoteRegex.exec(text)) !== null) {
     const q = m[1].trim();

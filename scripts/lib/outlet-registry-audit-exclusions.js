@@ -131,7 +131,34 @@ function isUnscoredForRebuild(review) {
   return best === null || best === undefined;
 }
 
+/**
+ * BRO-2726: a file the write guard quarantined as a copy of a sibling
+ * (`duplicateOf: "<sibling>.json"`) never needs its own registry entry when
+ * that sibling exists and is itself canonical (no duplicateOf of its own).
+ * The rebuild never includes the copy, and the sibling carries the outlet
+ * into this audit on its own. Without this, a scraper-mangled copy
+ * ("time-ou--x.json" -> timeout-london--x.json) failed --strict forever.
+ * A dangling pointer, one at another duplicate, or one at a sibling that is
+ * itself excluded stays in scope: the rebuild RECOVERS a copy whose reference
+ * it excludes (rebuild-all-reviews.js dupeRefExcludedRecovered), so that copy
+ * can register its own outletId.
+ * @param {object} review parsed review-text JSON
+ * @param {(name: string) => object|null} readSibling parsed sibling file from
+ *   the same show directory, or null when it does not exist / cannot parse
+ * @param {(sibling: object) => boolean} [siblingIncluded] the rebuild's
+ *   include decision for the sibling (isIncludableForRebuild); default: yes
+ * @returns {boolean}
+ */
+function isQuarantinedDuplicateOfCanonical(review, readSibling, siblingIncluded = () => true) {
+  const target = review && review.duplicateOf;
+  if (typeof target !== 'string' || !target || target.includes('/') || target.includes('\\')) return false;
+  const sibling = readSibling(target);
+  if (!sibling || sibling.duplicateOf) return false;
+  return outletRegistryAuditExclusionBranch(sibling) === 0 && !!siblingIncluded(sibling);
+}
+
 module.exports = {
+  isQuarantinedDuplicateOfCanonical,
   isExcludedFromOutletRegistryAudit,
   outletRegistryAuditExclusionBranch,
   isUnscoredForRebuild,
