@@ -89,7 +89,7 @@ test('removeTreeSync wins against a writer that is still running when teardown s
   }
 });
 
-test('retried rmSync cleans a real git repo while a background gc runs', async () => {
+test('removeTreeSync cleans a real git repo while a background gc runs', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3620-gc-'));
   const git = (...a) => execFileSync('git', a, { cwd: root, stdio: 'pipe' });
   git('init', '-q');
@@ -103,10 +103,12 @@ test('retried rmSync cleans a real git repo while a background gc runs', async (
   const gc = spawn('git', ['gc', '--quiet'], { cwd: root, stdio: 'ignore' });
   try {
     await new Promise((r) => setTimeout(r, 10));
-    assert.doesNotThrow(() => fs.rmSync(root, RETRIED));
+    // fs.rmSync's own maxRetries lost this race ~1 run in 6 locally
+    // (ENOTEMPTY on .git while gc wrote a pack); the whole-tree retry wins.
+    assert.doesNotThrow(() => removeTreeSync(root));
   } finally {
     await waitExit(gc);
-    fs.rmSync(root, RETRIED);
+    removeTreeSync(root);
   }
   assert.equal(fs.existsSync(root), false);
 });
