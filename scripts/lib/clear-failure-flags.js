@@ -79,11 +79,18 @@ function hasSuccessfulFetch(data) {
  *   rejectedBy set, rejectionReasoning populated, rejectionReason: null).
  *   Every OTHER rule in this function still runs — this narrows the skip to
  *   exactly the one field a fresh-rejection write can't safely pass through.
+ * @param {boolean} [opts.skipIncompleteReasonClear=false] - Skip the
+ *   incompleteReason/incompleteDetail stale-clear rule. For callers that set
+ *   a FRESH incompleteReason on the same object right before calling (e.g.
+ *   collect-review-texts.js after classifyIncompleteReason): a non-complete
+ *   tier with >=500 chars of text plus an aggregator/LLM score satisfies the
+ *   generic clear rule, which would null the reason that was just set before
+ *   it reaches disk (BRO-2241, sibling of BRO-79). Other rules still run.
  * @returns {string[]} List of flags that were cleared
  */
 function clearFailureFlags(data, opts = {}) {
   if (!data || typeof data !== 'object') return [];
-  const { skipRejectionReasonClear = false } = opts;
+  const { skipRejectionReasonClear = false, skipIncompleteReasonClear = false } = opts;
   const cleared = [];
 
   const hasText = hasCompletText(data);
@@ -93,7 +100,7 @@ function clearFailureFlags(data, opts = {}) {
   // incompleteReason/incompleteDetail: clear when content is good
   // These are descriptive metadata re-derived by rebuild — safe to auto-clear
   // when: (a) content tier is complete, OR (b) full text is long enough
-  if (data.incompleteReason != null) {
+  if (data.incompleteReason != null && !skipIncompleteReasonClear) {
     const contentComplete = data.contentTier === 'complete';
     const textGood = hasText;
     const aggSignal = hasAggregatorSignal(data);
