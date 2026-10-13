@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5232-i",
   "planId": "aa8489ca-e0bb-46e4-b91c-c46bc9e10fcc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T09:20:23.503Z",
   "submitter": {
     "name": null,
@@ -202,5 +202,123 @@
         "description": "BRO-5232: live page byline line under the title names Maryam Philpott as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/bull-park-theatre/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T12:14:01.186Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oedipus-west-end-2024/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-west-end-2023/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Mark Shenton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Franco Milazzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pillowman-west-end-2023/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-shitheads-west-end-2026/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"David Wootton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unbelievers-west-end-2025/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-west-end-2024/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oslo-2017/usatoday--elysa-gardner.json criticName: \"Elysa Gardner\" -> \"Bill Canacci\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/usatoday--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Patrick Ryan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mcneal-2024/usatoday--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Patrick Ryan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "constellations-2015/newsday--jeremy-gerard.json criticName: \"Jeremy Gerard\" -> \"Linda Winer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lennon-2005/nydailynews--joe-dziemianowicz.json criticName: \"Joe Dziemianowicz\" -> \"Howard Kissel\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-in-paris-2015/ew--thom-geier.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-in-paris-2015/ew--thom-geier.json wrongAttributionReason: null -> \"BRO-5232: review is by Melissa Rose Bernardo, already held by ew--melissa-rose-bernardo.json; evidence http://www.ew.com/article/2015/04/12/an-american-in-paris-broadway-ew-review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sherlock-holmes-west-end-2026/city-am--adam-bloodworth.json criticName: \"Adam Bloodworth\" -> \"Steve Dinneen\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "to-kill-a-mockingbird-2018/theater-news-online--david-cote.json criticName: \"David Cote\" -> \"Jeremy Gerard\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-2022/front-row-center--tulis-mccall.json criticName: \"Tulis McCall\" -> \"Betsyann Faiella\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-humans-2016/nytg--tulis-mccall.json criticName: \"Tulis McCall\" -> \"Kathleen Campion\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lucky-guy-2013/theater-life--eric-march.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lucky-guy-2013/theater-life--eric-march.json wrongAttributionReason: null -> \"BRO-5232: copy of theater-life--isa-goldberg.json credited to the wrong outlet/critic; evidence https://theaterlife.com/lucky-guy-ds/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-west-end-2024/west-end-best-friend--nick-wayne.json criticName: \"Nick Wayne\" -> \"Callum Wallace\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Maryam Philpott\""
+    }
+  ]
 }
