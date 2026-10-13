@@ -18,6 +18,8 @@
 const fs = require('fs');
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
+const { toDateMs } = require('./date-utils');
+const { earliestShowDate } = require('./date-guard');
 
 const DEFAULT_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
@@ -38,6 +40,61 @@ const CROSS_SHOW_SLUG_EXCLUDE = new Set([
 
 const _indexCache = new Map();
 
+function yearOf(value) {
+  const ms = toDateMs(value);
+  return Number.isNaN(ms) ? null : new Date(ms).getUTCFullYear();
+}
+
+/**
+ * {startYear, endYear} of a show's runs, from shows.json date fields only
+ * (never the URL, CLAUDE.md §3). startYear is the earliest of previews,
+ * opening and any priorRuns opening; endYear the latest closing, or null when
+ * any run has no closingDate (an open or undated run has no known end).
+ */
+function showRunYears(show) {
+  const starts = [yearOf(earliestShowDate(show))];
+  const ends = [show.closingDate ? yearOf(show.closingDate) : null];
+  for (const r of Array.isArray(show.priorRuns) ? show.priorRuns : []) {
+    starts.push(yearOf(r && (r.previewsStartDate || r.openingDate)));
+    ends.push(r && r.closingDate ? yearOf(r.closingDate) : null);
+  }
+  const s = starts.filter(y => y != null);
+  return {
+    startYear: s.length ? Math.min(...s) : null,
+    endYear: ends.every(y => y != null) ? Math.max(...ends) : null,
+  };
+}
+
+// A review can't be of a show that opened more than this many years after it
+// was published, or that closed more than this many years before.
+const YEARS_BEFORE_START = 1;
+const YEARS_AFTER_END = 2;
+
+/**
+ * True when the review's publish year rules out `other` as the show it covers
+ * (BRO-3065: a 2016 Vulture "white-rabbit-red-rabbit" review matched the 2026
+ * West End run; a 2025 Hell's Kitchen review matched Knockout, 1979).
+ */
+function outsideRunYears(other, reviewYear) {
+  if (reviewYear == null) return false;
+  if (other.startYear != null && other.startYear > reviewYear + YEARS_BEFORE_START) return true;
+  if (other.endYear != null && other.endYear < reviewYear - YEARS_AFTER_END) return true;
+  return false;
+}
+
+// Whole hyphen-delimited run: "knockout" must not match "knockouts".
+function hasSlugRun(urlPath, slug) {
+  const esc = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^a-z0-9])${esc}([^a-z0-9]|$)`).test(urlPath);
+}
+
+// BroadwayWorld files regional coverage under /<region>/article/ ("oklahoma",
+// "charlotte"); that section word says nothing about the show reviewed.
+function stripBwwSection(hostname, urlPath) {
+  if (!/(^|\.)broadwayworld\.com$/.test(hostname)) return urlPath;
+  return urlPath.replace(/^\/[^/]+\/article\//, '/article/');
+}
+
 /**
  * Build the {id,title,slug} index from a shows array (pure, no IO).
  */
@@ -46,7 +103,7 @@ function buildShowSlugIndex(shows) {
   for (const s of shows || []) {
     const slug = slugify(s.title);
     if (slug.length >= 8 && !CROSS_SHOW_SLUG_EXCLUDE.has(slug)) {
-      index.push({ id: s.id, title: s.title, slug });
+      index.push({ id: s.id, title: s.title, slug, ...showRunYears(s) });
     }
   }
   return index;
@@ -94,13 +151,17 @@ function getGenericTitleShow(showId, showsPath = DEFAULT_SHOWS_PATH) {
 /**
  * @param {string} showId   show the review is currently filed under
  * @param {string} url      the review URL
- * @param {object} [opts]   { showsPath, index } — inject an index for tests
+ * @param {object} [opts]   { showsPath, index, publishDate } — inject an index
+ *   for tests; publishDate (the review's own field, any format toDateMs reads)
+ *   drops candidates whose run years rule them out.
  * @returns {null | { matchedShowId, matchedTitle, showTitle }}
  */
 function detectCrossShowUrlMismatch(showId, url, opts = {}) {
   if (!url) return null;
   try {
-    const urlPath = new URL(url).pathname.toLowerCase();
+    const parsed = new URL(url);
+    const urlPath = stripBwwSection(parsed.hostname.toLowerCase(), parsed.pathname.toLowerCase());
+    const reviewYear = opts.publishDate ? yearOf(opts.publishDate) : null;
     const index = opts.index || getShowSlugIndex(opts.showsPath || DEFAULT_SHOWS_PATH);
     let thisShow = index.find(s => s.id === showId);
     // A show whose title is itself a generic URL word ("Broadway", 1987) is
@@ -143,6 +204,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
     // Check if URL contains a different show's slug
     for (const other of index) {
       if (other.id === showId) continue;
+      if (outsideRunYears(other, reviewYear)) continue;
       // Skip shows that share a base title with this show (same slug or prefix relationship)
       const otherIdSlug = other.id.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
       if (otherIdSlug === idSlug) continue;
@@ -186,7 +248,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
           if (phrases.some(p => urlPath.includes(p))) continue;
         }
       }
-      if (urlPath.includes(other.slug)) {
+      if (hasSlugRun(urlPath, other.slug)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
       // BRO-4986: outlets often drop a leading "The" ("heart-of-rock-and-roll-
@@ -203,7 +265,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
           && !bareWords.every(t => thisTokens.has(t))
           && !URL_PATH_STOPWORDS.has(bare)
           && !thisShow.slug.includes(bare) && !idSlug.includes(bare) && !bare.includes(idSlug)
-          && new RegExp(`(^|[^a-z0-9])${bare}([^a-z0-9]|$)`).test(urlPath)) {
+          && hasSlugRun(urlPath, bare)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
       // Also check a base-title slug (first significant words of the title, without
@@ -215,7 +277,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
           && baseTitle !== idSlug
           && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
-          && urlPath.includes(baseTitle)) {
+          && hasSlugRun(urlPath, baseTitle)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
     }
@@ -227,6 +289,7 @@ module.exports = {
   slugify,
   CROSS_SHOW_SLUG_EXCLUDE,
   buildShowSlugIndex,
+  showRunYears,
   getShowSlugIndex,
   detectCrossShowUrlMismatch,
 };

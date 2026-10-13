@@ -3376,7 +3376,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // with an eligible status, re-route to its review-texts dir via recursive
   // createReviewFile (same pattern as the cross-market reroute above).
   if (reviewData.url) {
-    const mismatch = detectCrossShowUrlMismatch(showId, reviewData.url);
+    const mismatch = detectCrossShowUrlMismatch(showId, reviewData.url, { publishDate: reviewData.publishDate });
     if (mismatch) {
       const matchedShow = mismatch.matchedShowId ? getShowData(mismatch.matchedShowId) : null;
       const eligibleStatuses = new Set(['open', 'upcoming', 'previews']);

@@ -102,11 +102,11 @@ function main() {
       const url = d.url || d.sourceUrl;
       if (!url) continue;
       scanned++;
-      const mismatch = detectCrossShowUrlMismatch(showId, url, showsPath ? { showsPath } : {});
+      const mismatch = detectCrossShowUrlMismatch(showId, url, { ...(showsPath ? { showsPath } : {}), publishDate: d.publishDate });
       if (!mismatch) continue;
       const handled = isAlreadyHandled(d);
       const scored = (d.score ?? d.normalizedScore ?? d.assignedScore) != null;
-      hits.push({ showId, file: f, filePath: fp, matchedShowId: mismatch.matchedShowId, matchedTitle: mismatch.matchedTitle, handled, scored, url });
+      hits.push({ showId, file: f, filePath: fp, matchedShowId: mismatch.matchedShowId, matchedTitle: mismatch.matchedTitle, handled, scored, url, publishDate: d.publishDate || null });
     }
   }
 
