@@ -21,15 +21,12 @@ const { foldDiacritics } = require('./title-match');
 const SS_HOSTS = /(^|\.)show-score\.com$/i;
 
 /**
- * Resolve a show's Show Score page URL. Prefers the curated map
- * (data/show-score-urls.json); otherwise constructs the section + slug URL.
+ * The CONSTRUCTED (un-curated) Show Score page URL for a show: section + slug
+ * from the title, NYC categories only. null when no URL can be constructed.
+ * No ownership/collision checks — see showScoreUrlForShow for those.
  */
-function showScoreUrlForShow(show, urlMap) {
-  if (!show) return null;
-  if (urlMap && typeof urlMap[show.id] === 'string' && urlMap[show.id]) {
-    return urlMap[show.id];
-  }
-  if (!show.title) return null;
+function constructShowScoreUrl(show) {
+  if (!show || !show.title) return null;
   // foldDiacritics FIRST: without it "Les Misérables" slugs to
   // "les-mis-rables" (the é is a non-[a-z0-9] char and becomes a separator),
   // which 404s. Show Score's own slugs are ASCII-folded. Task #648.
@@ -48,10 +45,33 @@ function showScoreUrlForShow(show, urlMap) {
   // and fed its critic links into the gap audit as current-run misses
   // (space-dogs-off-west-end-2026 listed MCC's 2022 Off-Broadway reviews,
   // two of which were ingested and then flagged wrongProduction). Non-NYC
-  // shows get Show Score only via an explicit curated entry above.
+  // shows get Show Score only via an explicit curated entry.
   if (cat !== 'broadway' && cat !== 'off-broadway') return null;
   const section = cat === 'off-broadway' ? 'off-broadway-shows' : 'broadway-shows';
-  const constructed = `https://www.show-score.com/${section}/${slug}`;
+  return `https://www.show-score.com/${section}/${slug}`;
+}
+
+const normSsUrl = (u) => u.toLowerCase().replace(/\/+$/, '');
+
+/**
+ * Resolve a show's Show Score page URL. Prefers the curated map
+ * (data/show-score-urls.json); otherwise constructs the section + slug URL,
+ * unless that constructed URL is ambiguous between productions (see below).
+ *
+ * @param {object} show      shows.json record
+ * @param {object} [urlMap]  curated show-id → URL map
+ * @param {object[]} [allShows]  every shows.json record (BRO-3556). When
+ *   given, a constructed URL that an un-curated same-title sibling would ALSO
+ *   construct is refused. Omitting it keeps the curated-map-only check.
+ */
+function showScoreUrlForShow(show, urlMap, allShows) {
+  if (!show) return null;
+  if (urlMap && typeof urlMap[show.id] === 'string' && urlMap[show.id]) {
+    return urlMap[show.id];
+  }
+  const constructed = constructShowScoreUrl(show);
+  if (!constructed) return null;
+  const want = normSsUrl(constructed);
 
   // Never hand back a CONSTRUCTED url that another show already owns in the
   // curated map (BRO-3416). Show Score keeps one page per title — the current
@@ -70,10 +90,26 @@ function showScoreUrlForShow(show, urlMap) {
   // that stays their call. This is the same "already cached for another show"
   // test scrape-show-score-audience.js:550 applies during its own discovery.
   if (urlMap) {
-    const want = constructed.toLowerCase();
     for (const [id, u] of Object.entries(urlMap)) {
       if (id === show.id || typeof u !== 'string') continue;
-      if (u.toLowerCase().replace(/\/+$/, '') === want) return null;
+      if (normSsUrl(u) === want) return null;
+    }
+  }
+
+  // BRO-3556: the curated-map check above misses the case where BOTH same-title
+  // productions are un-curated — each constructs the identical URL and both
+  // silently claim the one page (which belongs to at most one of them). Fail
+  // closed: neither gets a constructed URL until an operator curates one (a
+  // curated entry for either side then resolves it — the curated side returns
+  // above, and the other side is refused by the curated-map check). A sibling
+  // that IS curated (to any URL) is skipped here: if it points at this URL the
+  // check above already refused it; if it points elsewhere it does not compete.
+  if (Array.isArray(allShows)) {
+    for (const other of allShows) {
+      if (!other || other.id === show.id) continue;
+      if (urlMap && typeof urlMap[other.id] === 'string' && urlMap[other.id]) continue;
+      const theirs = constructShowScoreUrl(other);
+      if (theirs && normSsUrl(theirs) === want) return null;
     }
   }
   return constructed;
@@ -217,6 +253,7 @@ function showScorePosterFromHtml(html) {
 module.exports = {
   showScorePosterFromHtml,
   showScoreUrlForShow,
+  constructShowScoreUrl,
   loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,

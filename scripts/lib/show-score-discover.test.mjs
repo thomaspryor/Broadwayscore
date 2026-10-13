@@ -103,6 +103,53 @@ test('a curated London entry is still returned for a West End show', () => {
   assert.equal(showScoreUrlForShow(show, { 'hadestown-west-end-2024': url }), url);
 });
 
+// BRO-3556: the curated-map check above only catches a collision with a
+// CURATED sibling. Two same-title productions that are BOTH un-curated each
+// construct the identical URL and both silently claim one page. With the full
+// shows list passed in, that fails closed: neither gets a constructed URL.
+test('un-curated same-title siblings both get no URL when allShows is passed', () => {
+  const all = [show1994, show2016];
+  assert.equal(showScoreUrlForShow(show1994, {}, all), null);
+  assert.equal(showScoreUrlForShow(show2016, {}, all), null);
+});
+
+test('a unique un-curated title still gets its constructed URL with allShows', () => {
+  const unique = { id: 'example-show-2026', title: 'Example Show', category: 'broadway' };
+  const all = [show1994, show2016, unique];
+  assert.equal(showScoreUrlForShow(unique, {}, all), 'https://www.show-score.com/broadway-shows/example-show');
+});
+
+test('curating one sibling resolves the un-curated collision', () => {
+  // The curated side returns its entry; the other side is refused by the
+  // existing curated-map ownership check.
+  const all = [show1994, show2016];
+  const map = { 'she-loves-me-2016': SLM_2016 };
+  assert.equal(showScoreUrlForShow(show2016, map, all), SLM_2016);
+  assert.equal(showScoreUrlForShow(show1994, map, all), null);
+});
+
+test('a sibling curated to a DIFFERENT url does not block the constructed one', () => {
+  const all = [show1994, show2016];
+  const map = { 'she-loves-me-1994': 'https://www.show-score.com/broadway-shows/she-loves-me-1994-revival' };
+  assert.equal(showScoreUrlForShow(show2016, map, all), SLM_2016);
+});
+
+test('same title in a different section is not an un-curated collision', () => {
+  const ob = { id: 'she-loves-me-off-broadway-2026', title: 'She Loves Me', category: 'off-broadway' };
+  const all = [ob, show2016];
+  assert.equal(showScoreUrlForShow(ob, {}, all), 'https://www.show-score.com/off-broadway-shows/she-loves-me');
+  assert.equal(showScoreUrlForShow(show2016, {}, all), SLM_2016);
+});
+
+test('a London sibling with the same title does not collide (it constructs nothing)', () => {
+  const we = { id: 'she-loves-me-west-end-2026', title: 'She Loves Me', category: 'west-end' };
+  assert.equal(showScoreUrlForShow(show2016, {}, [show2016, we]), SLM_2016);
+});
+
+test('the show itself appearing in allShows is not a collision', () => {
+  assert.equal(showScoreUrlForShow(show2016, {}, [show2016]), SLM_2016);
+});
+
 // BRO-4996: the show's own poster only, never a promoted show's.
 test('showScorePosterFromHtml takes the poster in the og:image folder, any CloudFront host', () => {
   const { showScorePosterFromHtml } = require('./show-score-discover.js');

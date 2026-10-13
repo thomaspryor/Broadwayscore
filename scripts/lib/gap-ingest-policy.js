@@ -111,6 +111,42 @@ function isUrlYearOutOfWindow(url, show) {
 }
 
 /**
+ * BRO-3556: production-identity gate for gather-reviews.js's OWN Show Score
+ * path (curated-URL / slug-guess page scrape, Playwright carousel, HTML
+ * fallback, pagination API). BRO-1412 gated only the audit's Show Score
+ * discovery; gather-reviews ingested Show Score critic links with no such
+ * check. Same semantics as audit-show-review-gap.js's Show Score loop: a
+ * critic link whose URL-embedded year predates this production's window is a
+ * prior production's review ('show-score-url-year', the audit's priorRun
+ * source tag). A URL with no embedded year, or a missing URL, fails open —
+ * exactly as isUrlYearOutOfWindow does.
+ * @param {string|null} url  the outlet review URL Show Score linked to
+ * @param {object} show shows.json record
+ * @returns {'show-score-url-year'|null}
+ */
+function showScoreUrlBlockReason(url, show) {
+  if (!url || typeof url !== 'string') return null;
+  return isUrlYearOutOfWindow(url, show) ? 'show-score-url-year' : null;
+}
+
+/**
+ * Split Show Score-sourced review candidates into ingestable and blocked.
+ * @param {Array<{url?: string|null}>} reviews
+ * @param {object} show shows.json record
+ * @returns {{kept: object[], blocked: Array<{review: object, reason: string}>}}
+ */
+function partitionShowScoreReviews(reviews, show) {
+  const kept = [];
+  const blocked = [];
+  for (const review of reviews || []) {
+    const reason = showScoreUrlBlockReason(review && review.url, show);
+    if (reason) blocked.push({ review, reason });
+    else kept.push(review);
+  }
+  return { kept, blocked };
+}
+
+/**
  * Why an aggregator-listed URL must NOT be auto-ingested (null = ingestable).
  * @param {object} m    missing/flaggedMiss entry ({priorRun, weRef, weRefSources, serpCensus})
  * @param {object} ctx  {showIsWe: boolean, weGateOn: boolean, lowTrustSources?: Set<string>, serpCensusGateOn?: boolean}
@@ -215,4 +251,4 @@ function isRoundupSelfCitation(row) {
   return SELF_VERDICT_ROUNDUPS.has(src) && normalizeOutlet(row.outletId || row.outletName || '') === src;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isPublishDateBeforeRun, pendingPriorRunUrls, isRoundupSelfCitation };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, isRoundupSelfCitation };

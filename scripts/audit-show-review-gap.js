@@ -369,6 +369,16 @@ function getShowScoreUrlMap() {
   return _showScoreUrlMap;
 }
 
+// Every shows.json record, loaded once, for showScoreUrlForShow's un-curated
+// same-title collision check (BRO-3556): two un-curated productions that
+// construct the same Show Score URL get none until an operator curates one.
+let _allShowsForShowScore = null;
+function getAllShowsForShowScore() {
+  if (_allShowsForShowScore) return _allShowsForShowScore;
+  try { _allShowsForShowScore = loadShows(); } catch { _allShowsForShowScore = []; }
+  return _allShowsForShowScore;
+}
+
 function loadReviews() {
   const data = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
   return Array.isArray(data) ? data : (data.reviews || []);
@@ -892,7 +902,7 @@ async function auditShow(show, opts = {}) {
   const ssPriorRunUrls = new Map(); // url -> priorRunSource
   try {
     const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
-    const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
+    const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap(), getAllShowsForShowScore());
     if (ssUrl) {
       const fetchHtml = async (u) => {
         const r = await fetchPage(u, { timeout: 45000 });

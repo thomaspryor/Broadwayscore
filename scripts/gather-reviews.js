@@ -107,6 +107,7 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { partitionShowScoreReviews } = require('./lib/gap-ingest-policy');
 const { recordSbCall, sbBilledCredits, withSpendShow } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -4339,10 +4340,24 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   if (showScoreResult) {
     health.showScore.found = true;
     let showScoreCount = 0;
+    // Production identity (BRO-3556): Show Score keeps ONE page per title and
+    // links straight to each outlet's review, so a revival's page can carry a
+    // prior production's notice. Same URL-embedded-year gate the gap audit
+    // applies to its Show Score discovery (BRO-1412, lib/gap-ingest-policy.js);
+    // a blocked link is never pushed into foundReviews, so no file is written.
+    const gateShowScore = (reviews, label) => {
+      const { kept, blocked } = partitionShowScoreReviews(reviews, show);
+      for (const { review, reason } of blocked) {
+        console.log(`    ✗ Show Score ${label}: skip ${review.url} (${reason}: prior production)`);
+      }
+      return kept;
+    };
     // Extract initial reviews from page (first 8 visible in carousel)
     if (showScoreResult.reviews && showScoreResult.reviews.length > 0) {
       console.log(`    Playwright extracted ${showScoreResult.reviews.length} reviews directly`);
-      for (const review of showScoreResult.reviews) {
+      // Gate on the RAW Show Score link: the mapping below may null the url
+      // (urlLooksLikeReview) and would then hide a stale-year link from the gate.
+      for (const review of gateShowScore(showScoreResult.reviews, 'carousel')) {
         // Map Playwright review to our format
         // When outlet is missing from Playwright extraction, resolve from URL domain
         let outletId, outletDisplayName;
@@ -4392,7 +4407,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       }
     } else {
       // Fall back to HTML extraction for initial reviews
-      const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId, show.title);
+      const showScoreReviews = gateShowScore(extractShowScoreReviews(showScoreResult.html, showId, show.title), 'page');
       showScoreCount += showScoreReviews.length;
       foundReviews.push(...showScoreReviews);
     }
@@ -4402,7 +4417,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const paginatedReviews = await fetchShowScorePaginatedReviews(
       showScoreResult.url, showScoreResult.html, showId, show.title
     );
-    for (const review of paginatedReviews) {
+    for (const review of gateShowScore(paginatedReviews, 'pagination')) {
       // Only add if not already found (avoid duplicates from initial extraction)
       if (!foundReviews.some(r => r.url === review.url)) {
         showScoreCount++;
