@@ -61,7 +61,7 @@ const GENERIC_PREFIX_WORDS = new Set([
  * @param {string} s
  * @returns {string}
  */
-const CENSORED_F_WORD_RE = /\b(mother)?f[*‐‑‒–—―−\-#@!.]{1,4}(c?k(?:ers?|ing|in|ed|s)?|ers?|ing|in|ed)\b/gi;
+const CENSORED_F_WORD_RE = /\b(mother)?f[*‐‑‒–—―−\-#@!]{1,4}(c?k(?:ers?|ing|in|ed|s)?|ers?|ing|in|ed)\b/gi;
 
 function normalizeForMention(s) {
   if (!s) return '';

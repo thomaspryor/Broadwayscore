@@ -556,6 +556,10 @@ describe('validateContentMentionsShow — censored title + entity-encoded <title
     assert.strictEqual(normalizeForMention('f*cker'), 'fucker');
     assert.strictEqual(normalizeForMention('f-16 jets'), 'f-16 jets');
     assert.strictEqual(normalizeForMention('Fifth-Avenue'), 'fifth-avenue');
+    // Initials stay initials; a dash-censored "F-ing" is the word (deliberate).
+    assert.strictEqual(normalizeForMention('F.K. Smith'), 'f k smith');
+    assert.strictEqual(normalizeForMention('F.Ed Smith'), 'f ed smith');
+    assert.strictEqual(normalizeForMention('F-ing tests'), 'fucking tests');
   });
 
   test('right show passes on the entity-decoded leading <title>', () => {
