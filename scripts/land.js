@@ -102,7 +102,23 @@ function trainMarkerVerdict({ tip, repoDir, remote = 'origin', git = null }) {
   return { ...decideFollower({ markerSha, ancestor: anc !== null ? true : null }), markerSha };
 }
 
-function main(argv = process.argv.slice(2), land = landBranch, markerCheck = trainMarkerVerdict) {
+/** Holder-side train for an older land.yml: collect only while holding the lock. */
+function autoCollect({ branch, repoDir }) {
+  const { holdsLock } = require('./lib/land-train.js');
+  const { parseLsRemote } = require('./lib/land-mutex.js');
+  const ls = execFileSync('git', ['ls-remote', 'origin', 'refs/land-mutex/*'], { cwd: repoDir, encoding: 'utf8', timeout: 90000 });
+  const self = { runId: String(process.env.GITHUB_RUN_ID || ''), attempt: Number(process.env.GITHUB_RUN_ATTEMPT || 1) };
+  if (!holdsLock(parseLsRemote(ls), self)) return [];
+  const out = path.join(require('os').tmpdir(), `land-riders-${process.pid}.json`);
+  execFileSync(process.execPath, [path.join(__dirname, 'land-train.js'), 'collect', '--branch', branch, '--out', out], { cwd: repoDir, stdio: ['ignore', 'inherit', 'inherit'], timeout: 300000 });
+  return JSON.parse(fs.readFileSync(out, 'utf8'));
+}
+
+function autoMark(resultFile, repoDir) {
+  execFileSync(process.execPath, [path.join(__dirname, 'land-train.js'), 'mark', '--result-file', resultFile], { cwd: repoDir, stdio: ['ignore', 'inherit', 'inherit'], timeout: 300000 });
+}
+
+function main(argv = process.argv.slice(2), land = landBranch, markerCheck = trainMarkerVerdict, trainAuto = autoCollect) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const args = parseArgs(argv);
   if (!args.branch || args.branch === true) {
@@ -136,6 +152,17 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
     }
   }
   const repoDir = args.repo ? path.resolve(String(args.repo)) : cwdRepo();
+  // BRO-5282: an older land.yml (no train steps) still runs THIS land.js from
+  // main. When this run holds the landing lock, form the train here and mark
+  // the riders after the push, so branches forked before the train ride too.
+  let autoTrain = false;
+  if (!args['riders-file'] && args['train-landed-only'] !== true && args['expect-tip'] && args['dry-run'] !== true
+      && process.env.GITHUB_ACTIONS === 'true' && process.env.LAND_TRAIN_AUTO !== '0' && trainAuto) {
+    try { riders = trainAuto({ branch: args.branch, repoDir }) || []; autoTrain = riders.length > 0; } catch (err) {
+      console.error(`[land] train: auto-collect failed (${String(err.message).split('\n')[0]}) — landing alone`);
+      riders = [];
+    }
+  }
   const t0 = Date.now();
   const writeResult = (result) => {
     if (args['result-file'] && args['result-file'] !== true) {
@@ -173,6 +200,13 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
     trainBases: args['verified-base'] ? [args['verified-base']] : [],
     log: (m) => console.error(m),
   });
+  if (autoTrain && result.landed && (result.riders || []).length) {
+    const tmp = path.join(require('os').tmpdir(), `land-result-${process.pid}.json`);
+    try {
+      fs.writeFileSync(tmp, JSON.stringify({ branch: args.branch, ...result }));
+      autoMark(tmp, repoDir || process.cwd());
+    } catch (err) { console.error(`[land] train: marking riders failed (${String(err.message).split('\n')[0]}) — their own runs confirm them`); }
+  }
   // A dry-run whose checks are green is a success for the caller asking
   // "would this land?" — only a real refusal (red check, conflict, lost race) is exit 1.
   return writeResult(result);

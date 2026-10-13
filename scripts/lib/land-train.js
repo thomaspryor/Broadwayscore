@@ -147,6 +147,25 @@ function decideFollower({ markerSha, ancestor }) {
   return { landed: true, reason: `landed by a merge train as ${String(markerSha).slice(0, 10)}` };
 }
 
+/**
+ * The verified tip of a Land run whose workflow file predates the train (it
+ * passes no LAND_TIP): a push-triggered run's head_sha is the tip it was
+ * started for, and it counts only while the land/** ref still points there
+ * (a newer push has its own run). Anything else → null (never a rider).
+ */
+function tipFromRun({ event, headSha, refSha }) {
+  if (event !== 'push') return null;
+  if (!SHA_RE.test(String(headSha || '')) || headSha !== refSha) return null;
+  return headSha;
+}
+
+/** Does `self` hold the landing lock in this ls-remote state? */
+function holdsLock(state, self) {
+  const lock = state && state.lock;
+  if (!lock || !self) return false;
+  return (state.tickets || []).some((x) => x.sha === lock.sha && x.runId === String(self.runId) && Number(x.attempt) === Number(self.attempt));
+}
+
 // A rider's own run reads its marker within one queue poll; past the Land
 // job's whole life (125 min) a marker can only be a leak.
 const MARKER_MAX_AGE_SEC = 6 * 3600;
@@ -163,5 +182,5 @@ function staleMarkers(markers, landTips, ageSec = {}) {
 
 module.exports = {
   MARKER_PREFIX, DEFAULT_TRAIN_MAX, MARKER_MAX_AGE_SEC, markerRef, parseMarkers, ticketTrailers, parseTicketMessage, trainMax,
-  selectRiders, segmentHeads, decideFollower, staleMarkers,
+  selectRiders, segmentHeads, tipFromRun, holdsLock, decideFollower, staleMarkers,
 };

@@ -111,8 +111,21 @@ function failOpen(why, state) {
   process.exit(0);
 }
 
+// BRO-5282: a Land run on a workflow file older than the train passes no
+// LAND_TIP; its push-event head_sha is the tip, while the land ref still
+// points there. Lets older branches ride (and finish from) merge trains.
+function deriveTip() {
+  if (self.tip || !branch || env.GITHUB_EVENT_NAME !== 'push') return;
+  const run = env.LAND_MUTEX_TEST_RUN ? JSON.parse(env.LAND_MUTEX_TEST_RUN) : fetchRun(self.runId);
+  const ref = git(['ls-remote', remote, `refs/heads/${branch}`]);
+  const refSha = ref.ok ? (ref.out.split(/\s+/)[0] || null) : null;
+  const tip = require('./lib/land-train').tipFromRun({ event: run && run.event, headSha: run && run.head_sha, refSha });
+  if (tip) { self.tip = tip; log(`verified tip ${tip.slice(0, 10)} from the run (no LAND_TIP)`); }
+}
+
 function acquire() {
   if (env.LAND_MUTEX_DISABLED === 'true') failOpen('LAND_MUTEX_DISABLED=true');
+  try { deriveTip(); } catch { /* no tip: no train for this run, the old behavior */ }
   const { isMainRedBranch } = require('./lib/land-main-red');
   const deadline = Date.now() + deadlineMin * 60000;
   const cache = new Map(); // ticket ref → {v, at}

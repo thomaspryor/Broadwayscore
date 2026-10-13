@@ -57,6 +57,9 @@ function git(args, timeout = 90000) {
 
 function runLiveness(ticket) {
   if (env.LAND_TRAIN_NO_API === '1') return 'live';
+  // No token (land.js forming a train from an older land.yml's Land step):
+  // a ticket younger than the mutex deadline belongs to a waiting run.
+  if (!env.GH_TOKEN && !env.GH_FALLBACK_TOKEN) return Date.now() - ticket.enqueuedAt < m.DEADLINE_MINUTES * 60000 ? 'live' : undefined;
   try {
     const { runGhWithFallback } = require('./lib/land-retry-on-cancel');
     const run = JSON.parse(runGhWithFallback([`repos/${repo}/actions/runs/${ticket.runId}`], { exec: execFileSync, fallbackToken: env.GH_FALLBACK_TOKEN }));

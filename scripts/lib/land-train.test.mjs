@@ -400,7 +400,7 @@ if (outs.train_landed === 'true') {
 }
 `;
 
-function runDriver(w, name, tip, base, delayMs) {
+function runDriver(w, name, tip, base, delayMs, extraEnv = {}) {
   return new Promise((resolve) => {
     setTimeout(() => {
       const dir = w.clone(`job-${name}`);
@@ -412,7 +412,7 @@ function runDriver(w, name, tip, base, delayMs) {
         env: {
           ...process.env, SCRIPTS, JOURNAL: path.join(w.root, 'journal'), GITHUB_OUTPUT: files.out, RIDERS: files.riders, RESULT: files.result,
           GITHUB_RUN_ID: String(100 + delayMs), GITHUB_RUN_ATTEMPT: '1', LAND_BRANCH: name, LAND_TIP: tip, LAND_BASE: base,
-          LAND_MUTEX_NO_API: '1', LAND_TRAIN_NO_API: '1', LAND_MUTEX_POLL_SCALE: '0.02', LAND_MUTEX_GRACE_MS: '300', LAND_TRAIN_MAX: '4',
+          LAND_MUTEX_NO_API: '1', LAND_TRAIN_NO_API: '1', LAND_MUTEX_POLL_SCALE: '0.02', LAND_MUTEX_GRACE_MS: '300', LAND_TRAIN_MAX: '4', ...extraEnv,
         },
       });
       let out = '';
@@ -469,4 +469,74 @@ test('E2E: 4 concurrent landings → one train push, followers finish from marke
     const left = sh(w.root, ['--git-dir', w.origin, 'for-each-ref', '--format=%(refname)', 'refs/land-mutex/']).split('\n').filter(Boolean);
     assert.deepEqual(left, [], 'no lock, ticket or train marker left behind');
   } finally { w.cleanup(); }
+});
+
+// The same race on an OLDER land.yml (no LAND_TIP, no train steps): the
+// mutex derives each run's tip from its push-event head_sha, and land.js
+// (always main's copy) forms the train and marks the riders itself.
+const OLD_DRIVER = `
+const fs = require('fs');
+const { spawnSync, execFileSync } = require('child_process');
+const S = process.env.SCRIPTS;
+const { landBranch } = require(S + '/lib/land-branch.js');
+const landCli = require(S + '/land.js');
+const cli = (args) => { const r = spawnSync(process.execPath, args, { env: process.env, encoding: 'utf8' }); process.stdout.write(r.stdout + r.stderr); return r.status; };
+const tip = process.env.TIP;
+delete process.env.LAND_TIP;
+cli([S + '/land-mutex.js', 'acquire']);
+const outs = Object.fromEntries(fs.readFileSync(process.env.GITHUB_OUTPUT, 'utf8').split('\\n').filter(Boolean).map((l) => l.split('=')));
+const journal = (s) => fs.appendFileSync(process.env.JOURNAL, s + '\\n');
+const sleep = (ms) => execFileSync('sleep', [String(ms / 1000)]);
+const green = () => { sleep(1500); return [{ name: 'fake-green', pass: true }]; };
+let called = false;
+const land = (o) => { called = true; return landBranch({ ...o, checks: green, trainChecks: green, pushMain: ({ cwd }) => execFileSync('git', ['push', '-q', 'origin', 'HEAD:main'], { cwd }) }); };
+if (outs.held === 'true') journal('enter ' + process.env.LAND_BRANCH);
+const rc = landCli.main(['--branch', process.env.LAND_BRANCH, '--source', 'origin', '--expect-tip', tip, '--result-file', process.env.RESULT], land);
+const r = JSON.parse(fs.readFileSync(process.env.RESULT, 'utf8'));
+journal((outs.held === 'true' ? 'exit ' : 'follower ') + process.env.LAND_BRANCH + ' rc=' + rc + ' landed=' + r.landed + ' riders=' + (r.riders || []).length + ' landBranch=' + called);
+if (outs.held === 'true') cli([S + '/land-mutex.js', 'release']);
+`;
+
+test('E2E (older land.yml): tips derived from the run, land.js trains and marks on its own, followers never call landBranch', { timeout: 120000 }, async () => {
+  const w = makeWorld();
+  try {
+    fs.writeFileSync(path.join(w.root, 'driver.cjs'), OLD_DRIVER);
+    fs.writeFileSync(path.join(w.root, 'journal'), '');
+    const branches = ['land/o1', 'land/o2', 'land/o3'];
+    const tips = branches.map((b, i) => w.pushBranch(b, { [`o${i + 1}.txt`]: `o${i + 1}\n` }));
+    const tree = sh(w.root, ['--git-dir', w.origin, 'hash-object', '-t', 'tree', '-w', '/dev/null']);
+    const prevSha = sh(w.root, ['--git-dir', w.origin, '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit-tree', tree, '-m', 'previous landing']);
+    const prevTicket = m.ticketName({ mainRed: false, enqueuedAt: Date.now() - 1000, runId: '1', attempt: 1 });
+    sh(w.root, ['--git-dir', w.origin, 'update-ref', prevTicket, prevSha]);
+    sh(w.root, ['--git-dir', w.origin, 'update-ref', m.LOCK_REF, prevSha]);
+    const released = new Promise((r) => setTimeout(() => {
+      sh(w.root, ['--git-dir', w.origin, 'update-ref', '-d', m.LOCK_REF]);
+      sh(w.root, ['--git-dir', w.origin, 'update-ref', '-d', prevTicket]);
+      r();
+    }, 5000));
+    const results = await Promise.all(branches.map((b, i) => runDriver(w, b, tips[i], '', i * 300, {
+      TIP: tips[i], GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'push', GH_TOKEN: '', GH_FALLBACK_TOKEN: '', LAND_TRAIN_NO_API: '',
+      LAND_MUTEX_TEST_RUN: JSON.stringify({ event: 'push', head_sha: tips[i] }),
+    })));
+    await released;
+    const journal = fs.readFileSync(path.join(w.root, 'journal'), 'utf8').trim().split('\n');
+    for (const r of results) assert.equal(r.code, 0, r.out);
+    for (let i = 0; i < 3; i++) assert.equal(w.onMain(`o${i + 1}.txt`), `o${i + 1}`, journal.join(' | '));
+    const holders = journal.filter((l) => l.startsWith('exit'));
+    assert.equal(holders.length, 1, journal.join(' | '));
+    assert.match(holders[0], /rc=0 landed=true riders=2 landBranch=true/);
+    const followers = journal.filter((l) => l.startsWith('follower'));
+    assert.equal(followers.length, 2, journal.join(' | '));
+    for (const f of followers) assert.match(f, /rc=0 landed=true riders=0 landBranch=false/);
+  } finally { w.cleanup(); }
+});
+
+test('tipFromRun / holdsLock', () => {
+  assert.equal(t.tipFromRun({ event: 'push', headSha: A, refSha: A }), A);
+  assert.equal(t.tipFromRun({ event: 'push', headSha: A, refSha: B }), null, 'ref moved: a newer push has its own run');
+  assert.equal(t.tipFromRun({ event: 'workflow_dispatch', headSha: A, refSha: A }), null);
+  const st = m.parseLsRemote(`${C}\trefs/land-mutex/lock\n${C}\trefs/land-mutex/queue/1-0000000000001-5-1\n${D}\trefs/land-mutex/queue/1-0000000000002-6-1`);
+  assert.equal(t.holdsLock(st, { runId: '5', attempt: 1 }), true);
+  assert.equal(t.holdsLock(st, { runId: '6', attempt: 1 }), false);
+  assert.equal(t.holdsLock(st, { runId: '5', attempt: 2 }), false);
 });
