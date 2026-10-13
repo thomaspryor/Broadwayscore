@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5222-b",
   "planId": "7294142b-166e-4abb-b17d-6a4aad2ce4f7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T04:28:03.418993Z",
   "submitter": {
     "name": null,
@@ -40,5 +40,23 @@
         "description": "Stored url /newyork/theater/amelie-a-new-musical 404s (legacy web-search url). Time Out's real review of the Broadway production is at /newyork/things-to-do/amelie (fetched 2026-10-13, byline David Cote)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T05:48:18.869Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-2012/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/once\" -> \"https://www.timeout.com/newyork/theater/once-1\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/amelie-a-new-musical\" -> \"https://www.timeout.com/newyork/things-to-do/amelie\""
+    }
+  ]
 }
