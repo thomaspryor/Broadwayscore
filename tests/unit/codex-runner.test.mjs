@@ -380,3 +380,11 @@ test('codexExitTransient: only Codex ERROR lines near the end count', () => {
   assert.equal(r.codexExitTransient('ran tests: Error 503 from fixture\n' + 'x\n'.repeat(50) + 'Codex timed out'), null);
   assert.equal(r.codexExitTransient('curl said error: 503\nmore'), null, 'not a line Codex itself printed as ERROR:');
 });
+
+test('landWaitMinutes: landing waits never run past the hard stop', () => {
+  const now = Date.parse('2026-10-13T22:30:00Z');
+  const hard = Date.parse('2026-10-13T22:43:00Z'); // 20:51 start + 112 min
+  assert.equal(r.landWaitMinutes({ hardEndMs: Infinity, wrapUpMs: 480_000, nowMs: now }), 90, 'no hard stop: the usual 90');
+  assert.equal(r.landWaitMinutes({ hardEndMs: hard, wrapUpMs: 480_000, nowMs: now }), 5);
+  assert.ok(r.landWaitMinutes({ hardEndMs: hard, wrapUpMs: 480_000, nowMs: hard - 60_000 }) < 1, 'inside the wrap-up time: do not wait');
+});

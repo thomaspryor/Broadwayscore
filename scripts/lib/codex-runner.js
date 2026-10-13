@@ -419,6 +419,14 @@ function codexCardFit({ title = '', description = '', verify = '' } = {}) {
 }
 
 /**
+ * Minutes a landing may be waited for: wait-for-land's usual 90, cut so the run still has
+ * wrapUpMs before its hard stop (BRO-5287: the routine kills the runner at 120 min). < 1 = do not wait.
+ */
+function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
+  return Math.min(90, Math.floor((hardEndMs - wrapUpMs - nowMs) / 60_000));
+}
+
+/**
  * What to do with a card a dead run's stale lock names. Only a card still In Progress from
  * a start no later than that lock stamp is the dead run's (Linear clears startedAt when a
  * card goes back to Todo, so a later re-claim by anyone moves startedAt past the stamp).
@@ -487,6 +495,7 @@ module.exports = {
   lockRun,
   lockTipVerdict,
   lockStampTooOld,
+  landWaitMinutes,
   codexExitTransient,
   stripHookNoise,
   codexCardFit,

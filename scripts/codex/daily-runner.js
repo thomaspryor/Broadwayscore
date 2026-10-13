@@ -9,6 +9,7 @@
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
  *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
+ *        [--hard-stop-minutes 112]
  *   node scripts/codex/daily-runner.js --lock-status   (exit 0 free, 3 a live run holds it, 4 unreadable)
  *
  * Per card (same picker rules as the hourly Claude cloud worker, minus
@@ -77,7 +78,26 @@ const OPTS = {
   // One card's wall clock: a fix-round exec starts only with 15+ min of exec plus the
   // review still inside it, and is cut to fit, so fix rounds cannot run past the budget.
   cardMaxMinutes: Number(arg('card-max-minutes', 120)),
+  // The wall clock the run must be fully done by (summary posted, lock released), 0 = none.
+  // The routine's background task is killed at 120 min, and a kill during a Codex exec or a
+  // check never reaches the SIGTERM handler (spawnSync blocks it): on 2026-10-13 the 20:47
+  // firing's runner died mid-card, posted no summary and left its lock and BRO-4277 stranded
+  // (BRO-5287). Cards, fix rounds and landing waits are all cut to fit inside it.
+  hardStopMinutes: Number(arg('hard-stop-minutes', 0)),
 };
+const RUN_STARTED_MS = Date.now();
+const HARD_END_MS = OPTS.hardStopMinutes > 0 ? RUN_STARTED_MS + OPTS.hardStopMinutes * 60_000 : Infinity;
+// Time kept free before the hard stop for the summary, the login save and the lock release.
+const WRAP_UP_MS = 8 * 60_000;
+// A card is started only with this much time left before the hard stop: verify (up to 10 min),
+// a 15-min exec, land checks (about 15) and the review (30 min), plus slack.
+const CARD_START_MIN_MS = 75 * 60_000;
+if (process.argv.includes('--hard-stop-minutes') && !(OPTS.hardStopMinutes >= 30)) {
+  console.error(`--hard-stop-minutes needs a number of minutes >= 30 (got ${arg('hard-stop-minutes')})`);
+  process.exit(2);
+}
+/** True while `ms` more still fits before the hard stop's wrap-up time. */
+const fitsBeforeHardStop = (ms) => HARD_END_MS - WRAP_UP_MS - Date.now() >= ms;
 const CODEX_TIMEOUT_MS = 45 * 60_000;
 let checkSpentUsd = 0;
 let checkCount = 0;
@@ -389,8 +409,11 @@ async function landPreflight(ref) {
 }
 
 function waitForLand(ref) {
+  // Never past the hard stop: an unfinished landing stays In Progress for the resume path.
+  const minutes = R.landWaitMinutes({ hardEndMs: HARD_END_MS, wrapUpMs: WRAP_UP_MS, nowMs: Date.now() });
+  if (minutes < 1) return Promise.resolve({ code: 2, out: 'not waited for: the run reached its hard stop' });
   return new Promise((resolve) => {
-    const p = spawn('node', ['scripts/lib/wait-for-land.js', ref, '90'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+    const p = spawn('node', ['scripts/lib/wait-for-land.js', ref, String(minutes)], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
     let out = '';
     p.stdout.on('data', (d) => { out += d; });
     p.stderr.on('data', (d) => { out += d; });
@@ -527,13 +550,16 @@ async function workCard(pick, stats, inFlight) {
     // A fix-round exec starts only while 15 min of exec plus the review after it still fit the
     // card budget. The land checks and review after the last exec still run, so
     // a card can overrun the budget by those (bounded by their own timeouts).
-    const cardDeadline = claimedMs + OPTS.cardMaxMinutes * 60_000;
+    const cardDeadline = Math.min(claimedMs + OPTS.cardMaxMinutes * 60_000, HARD_END_MS - WRAP_UP_MS);
     // A fix round's exec gets what is left after the review (down to 15 min), not a fixed 45:
     // reserving a whole 45-min exec + 30-min review never fit the routine's 60-min card budget,
     // so no card ever got a second attempt (BRO-5287).
     const REVIEW_RESERVE_MS = 30 * 60_000;
     const MIN_FIX_EXEC_MS = 15 * 60_000;
-    const execFits = () => cardDeadline - Date.now() >= MIN_FIX_EXEC_MS + REVIEW_RESERVE_MS;
+    const LAND_CHECKS_MS = 15 * 60_000;
+    const execFits = () => cardDeadline - Date.now() >= MIN_FIX_EXEC_MS + REVIEW_RESERVE_MS
+      && fitsBeforeHardStop(MIN_FIX_EXEC_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS);
+    const firstExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, HARD_END_MS - WRAP_UP_MS - Date.now() - REVIEW_RESERVE_MS));
     const fixExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, cardDeadline - Date.now() - REVIEW_RESERVE_MS));
     let report = '';
     let check = null;
@@ -563,8 +589,8 @@ async function workCard(pick, stats, inFlight) {
     };
     const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
     for (;;) {
-      // The first exec always gets the full timeout; fix rounds fit the card budget.
-      const cx = await exec(prompt(extra), execs === 0 ? CODEX_TIMEOUT_MS : fixExecMs());
+      // The first exec gets the full timeout unless the hard stop is near; fix rounds fit the card budget.
+      const cx = await exec(prompt(extra), execs === 0 ? firstExecMs() : fixExecMs());
       report = cx.report;
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
       if (cx.code !== 0) { abort = failed(cx); break; }
@@ -589,6 +615,12 @@ async function workCard(pick, stats, inFlight) {
         check = { verdict: 'REJECT', text: `The checks land runs (node unit batch, scripts/lib tests, lint-workflows audits) have new failures on this branch that fresh main does not have:\n${landFails}` };
         log(`${id}: attempt ${attempt} land checks red`);
         step = R.nextStep({ verdict: 'REJECT', hasDiff: true, attempt });
+      } else if (!fitsBeforeHardStop(REVIEW_RESERVE_MS)) {
+        // A review the hard stop would kill mid-way lands nothing and strands the card: hand it back.
+        check = { verdict: 'REJECT', text: `The run reached its ${OPTS.hardStopMinutes}-min hard stop before the independent review could run, so nothing was landed. The Codex change was not reviewed.` };
+        log(`${id}: no time left before the hard stop for the review`);
+        step = 'bounce';
+        break;
       } else {
         keepLock();
         check = runCheck(card, body, report, `check${execs}`, data);
@@ -938,6 +970,7 @@ async function runLocked(startedMs) {
     if (worked >= OPTS.limit) break;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd });
     if (!stop && stats.aborted) stop = stats.aborted;
+    if (!stop && HARD_END_MS - Date.now() < CARD_START_MIN_MS) stop = `under ${CARD_START_MIN_MS / 60_000} min left before the ${OPTS.hardStopMinutes}-min hard stop`;
     let held = true;
     try { held = refreshLock(MAX_STAMP_GAP_MS); } catch { /* transient git error: the keep-alive retries */ }
     if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';

@@ -30,12 +30,15 @@ the run lock. Exit 0 means no live runner anywhere: start it. Exit 4 (lock
 unreadable): start it anyway, the runner re-checks and waits its turn.
 
 1. `codex --version` must print 0.160.0; otherwise `npm i -g --no-audit --no-fund @openai/codex@0.160.0`.
-2. Start `node scripts/codex/daily-runner.js --limit 6 --max-minutes 105 --card-max-minutes 60 > /tmp/codex-run.log 2>&1`
+2. Start `node scripts/codex/daily-runner.js --limit 6 --max-minutes 105 --card-max-minutes 60 --hard-stop-minutes 112 > /tmp/codex-run.log 2>&1`
    with run_in_background AND timeout 7200000. The default background limit is
    30 minutes and it killed the runner mid-card on 2026-10-11, after Codex had
    pushed a passing fix. Codex works on the owner's ChatGPT plan, so it takes
    up to 6 cards a firing (owner decision 2026-10-11); --max-minutes stops it
-   starting a new card that could not finish inside the 2-hour limit. It restores the owner's Codex login, has Codex fix
+   starting a new card that could not finish inside the 2-hour limit, and
+   --hard-stop-minutes 112 makes it cut cards, fix rounds and landing waits so it
+   posts its summary and frees its lock before that limit kills it (a kill
+   mid-card left a stale lock and a stranded card on 2026-10-13). It restores the owner's Codex login, has Codex fix
    each card, gates every result on a Claude check, lands what passes and
    returns the rest to Todo. Do not touch .claude/worktrees/codex-runner.
 
