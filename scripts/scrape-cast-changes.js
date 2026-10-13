@@ -37,6 +37,7 @@ const { isNotBroadway } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
   mergePreservingAddedDate,
+  findDatelessIncompleteDupe,
   findClosureDupe,
 } = require('./lib/cast-changes-filters');
 const {
@@ -1266,6 +1267,19 @@ function mergeEvents(existing, newEvents, source) {
           continue;
         }
         // No existing closure — fall through to add it as new.
+      }
+
+      // Dateless incomplete row vs its dated twin (BRO-3539): the date-keyed
+      // checks below can't match when one side has no date.
+      const datelessDupe = findDatelessIncompleteDupe(showData.upcoming, event);
+      if (datelessDupe) {
+        if (datelessDupe.kind === 'upgrade-existing') {
+          mergePreservingAddedDate(datelessDupe.match, event);
+          if (datelessDupe.match.date || datelessDupe.match.endDate) delete datelessDupe.match.incomplete;
+          changes.push({ showId, type: 'upgraded-dated', event, source });
+          stats.eventsUpgraded++;
+        }
+        continue;
       }
 
       // Check for exact duplicate

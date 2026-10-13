@@ -424,6 +424,38 @@ function mergePreservingAddedDate(target, source) {
 }
 
 /**
+ * Match a dateless `incomplete:true` arrival/departure against its dated twin
+ * (BRO-3539). The exact/fuzzy/same-person dedup checks in mergeEvents all
+ * require BOTH events to carry a matching date, so a dateless incomplete row
+ * (LLM extraction with no date in the article) could never be recognized once
+ * a later scrape found the real date: a second dated row was added and the
+ * flagged one lingered forever (cleanExpiredEvents skips dateless rows).
+ *
+ * Returns { kind, match } or null:
+ *   - kind 'upgrade-existing': an existing dateless incomplete row is the same
+ *     casting event (name+role+type) as the incoming DATED event; the caller
+ *     upgrades it in place (the merge clears `incomplete`).
+ *   - kind 'drop-incoming': the incoming event is itself a dateless incomplete
+ *     row and a dated row for the same casting event already exists; the
+ *     caller skips it rather than re-adding a flagged duplicate.
+ */
+function findDatelessIncompleteDupe(upcoming, event) {
+  if (!event || !Array.isArray(upcoming)) return null;
+  if (event.type !== 'arrival' && event.type !== 'departure') return null;
+  const same = (e) => e.name === event.name && e.role === event.role && e.type === event.type;
+  const isDateless = (e) => !e.date && !e.endDate;
+  if (!isDateless(event)) {
+    const match = upcoming.find(e => same(e) && isDateless(e) && e.incomplete === true);
+    return match ? { kind: 'upgrade-existing', match } : null;
+  }
+  if (event.incomplete === true || !event.date) {
+    const match = upcoming.find(e => same(e) && !isDateless(e));
+    return match ? { kind: 'drop-incoming', match } : null;
+  }
+  return null;
+}
+
+/**
  * Find an existing closure event in `upcoming` that is the same closing as
  * `event`. A production has exactly ONE upcoming closure, but the captured
  * `name`/`role`/`date` all vary by source ("Death Becomes Her" vs the showId
@@ -592,6 +624,7 @@ module.exports = {
   noteMatchesClosurePhrase,
   earliestAddedDate,
   mergePreservingAddedDate,
+  findDatelessIncompleteDupe,
   findClosureDupe,
   dedupeClosures,
   reconcileClosureDateWithClosingDate,
