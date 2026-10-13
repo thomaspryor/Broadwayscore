@@ -5,8 +5,10 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { buildScoreMap } = require('./related-shows-scores.js');
 
-function makeReviews(showId, scores) {
-  return scores.map(assignedScore => ({ showId, assignedScore }));
+// T1 outlet, one distinct critic per review (the scorer dedups per outlet+critic),
+// so the tier-weighted Critic Score equals the plain mean in these fixtures.
+function makeReviews(showId, scores, prefix = 'c') {
+  return scores.map((assignedScore, i) => ({ showId, assignedScore, outletId: 'nytimes', criticName: `${prefix}${i}` }));
 }
 
 describe('buildScoreMap (#1906)', () => {
@@ -42,8 +44,8 @@ describe('buildScoreMap (#1906)', () => {
     const shows = [{ id: 'mixed-nulls-2021' }];
     const reviews = [
       ...makeReviews('mixed-nulls-2021', [90, 92, 88, 95, 91]),
-      { showId: 'mixed-nulls-2021', assignedScore: null },
-      { showId: 'mixed-nulls-2021', assignedScore: null },
+      { showId: 'mixed-nulls-2021', assignedScore: null, outletId: 'nytimes', criticName: 'n1' },
+      { showId: 'mixed-nulls-2021', assignedScore: null, outletId: 'nytimes', criticName: 'n2' },
     ];
 
     const result = buildScoreMap(reviews, shows);
@@ -60,5 +62,22 @@ describe('buildScoreMap (#1906)', () => {
     const result = buildScoreMap(reviews, shows);
     assert.equal(result.get('show-a'), 100);
     assert.equal(result.get('show-b'), 50);
+  });
+
+  test('weights by tier like the show page (not a raw mean) — BRO-4313', () => {
+    const shows = [{ id: 'tiered-2024' }];
+    const reviews = [
+      ...makeReviews('tiered-2024', [90, 90, 90, 90, 90]),
+      { showId: 'tiered-2024', assignedScore: 40, outletId: 'some-unknown-blog', criticName: 'blogger' },
+    ];
+    // raw mean = 81.7. Canonical: the 5 NYT critics share one T1 outlet vote
+    // (weight 1.0 total), the T3 blog weighs 0.40 → (90 + 16) / 1.4 = 75.7
+    assert.equal(buildScoreMap(reviews, shows).get('tiered-2024'), 76);
+  });
+
+  test('uses the per-market minimum (off-broadway needs 3, not 5)', () => {
+    const shows = [{ id: 'ob-2024', category: 'off-broadway' }];
+    const result = buildScoreMap(makeReviews('ob-2024', [80, 80, 80]), shows);
+    assert.equal(result.get('ob-2024'), 80);
   });
 });

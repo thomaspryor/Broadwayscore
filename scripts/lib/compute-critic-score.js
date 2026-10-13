@@ -1,12 +1,15 @@
 /**
- * Shared critic score computation for build-time scripts.
+ * THE critic score formula: the only implementation in the repo.
  *
- * This is the JS-side mirror of src/lib/engine.ts::computeCriticScore().
- * Both implementations load tier data from src/config/outlet-tiers.json
- * so they cannot drift. If you change the SCORING FORMULA (dedup rules,
- * tier weights, designation bumps, confidence weights), you must update
- * BOTH this file AND engine.ts, and tests/unit/compute-critic-score.test.mjs
- * will fail if they disagree on a real show.
+ * Build-time scripts call computeCriticScore() (slim-file `cs`, gold lists,
+ * homepage archive), and the website's src/lib/engine.ts::computeCriticScore()
+ * delegates to scoreReviews() here (BRO-4312), so every page and the slim
+ * files compute the same number by construction. Change the formula (dedup
+ * rules, tier weights, designation bumps, confidence weights) HERE only.
+ * tests/unit/critic-score-canonical-parity.test.ts checks every show's
+ * displayed score against this module end to end.
+ *
+ * Also used by src/lib/engine.ts (website, server bundle only).
  *
  * Used by:
  *   - scripts/generate-mobile-data.js
@@ -46,7 +49,9 @@ const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
 //
 // v5 (2026-04-29): entries can declare `tiers: { nyc, london }` for region-
 // aware lookup. Falls back to legacy `tier` field when showCategory absent.
-const OUTLET_TIERS_DATA = require(path.join(__dirname, '..', '..', 'src', 'config', 'outlet-tiers.json'));
+// Static relative path (not path.join(__dirname, ...)) so webpack can bundle this
+// module into src/lib/engine.ts, which delegates its scoring here (BRO-4312).
+const OUTLET_TIERS_DATA = require('../../src/config/outlet-tiers.json');
 // Flatten to { id: { default, nyc?, london? } } for fast lookup
 const OUTLET_TIER_OVERRIDES = {};
 for (const [id, entry] of Object.entries(OUTLET_TIERS_DATA)) {
@@ -76,7 +81,7 @@ const TOP_CRITICS = new Set([
 ]);
 
 /**
- * Compute tier-weighted composite critic score.
+ * Compute tier-weighted composite critic score with per-review detail.
  *
  * @param {Array} showReviews - Reviews for a single show
  * @param {Object} outletRegistry - Outlet registry keyed by lowercase outletId
@@ -87,9 +92,12 @@ const TOP_CRITICS = new Set([
  *   equally (forced T1, no off-market multiplier) since Met opera coverage doesn't
  *   follow theater's NYT-dominant tier hierarchy — Operawire, Parterre, NYCR are
  *   first-class voices.
- * @returns {{ s: number, rc: number, t1: number, t2: number } | null}
+ * @returns {{ s: number, rc: number, t1: number, t2: number, t3: number,
+ *   reviews: Array<{ review: any, tier: number, tierWeight: number, reviewScore: number,
+ *     confidenceWeight: number, outletShare: number, weightedScore: number }> } | null}
+ *   `reviews` holds the deduped, SCORED reviews (assignedScore != null) in dedup order.
  */
-function computeCriticScore(showReviews, outletRegistry = {}, showCategory, showType) {
+function scoreReviews(showReviews, outletRegistry = {}, showCategory, showType) {
   const isOpera = showType === 'opera';
   if (!showReviews || showReviews.length === 0) return null;
 
@@ -126,7 +134,9 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory, show
   let totalWeight = 0;
   let tier1Count = 0;
   let tier2Count = 0;
+  let tier3Count = 0;
   let scoredCount = 0;
+  const scored = [];
 
   for (const review of dedupedReviews) {
     // Determine tier (top critics get T1 regardless of outlet).
@@ -197,11 +207,14 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory, show
     const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
     const outletShare = 1 / (criticCountByOutlet.get(outletKey) || 1);
 
-    weightedSum += score * tierWeight * confidenceWeight * outletShare;
+    const weightedScore = score * tierWeight * confidenceWeight * outletShare;
+    weightedSum += weightedScore;
     totalWeight += tierWeight * confidenceWeight * outletShare;
 
     if (tier === 1) tier1Count++;
     if (tier === 2) tier2Count++;
+    if (tier === 3) tier3Count++;
+    scored.push({ review, tier, tierWeight, reviewScore: score, confidenceWeight, outletShare, weightedScore });
   }
 
   if (totalWeight === 0) return null;
@@ -214,7 +227,20 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory, show
     rc: scoredCount,
     t1: tier1Count,
     t2: tier2Count,
+    t3: tier3Count,
+    reviews: scored,
   };
 }
 
-module.exports = { computeCriticScore, TIER_WEIGHTS, OFF_MARKET_MULTIPLIER, TOP_CRITICS, DEFAULT_TIER };
+/**
+ * Compute tier-weighted composite critic score (aggregate only).
+ * Same inputs and null cases as scoreReviews().
+ * @returns {{ s: number, rc: number, t1: number, t2: number } | null}
+ */
+function computeCriticScore(showReviews, outletRegistry = {}, showCategory, showType) {
+  const r = scoreReviews(showReviews, outletRegistry, showCategory, showType);
+  if (!r) return null;
+  return { s: r.s, rc: r.rc, t1: r.t1, t2: r.t2 };
+}
+
+module.exports = { computeCriticScore, scoreReviews, DESIGNATION_BUMPS, DESIGNATION_FLOORS, TIER_WEIGHTS, OFF_MARKET_MULTIPLIER, TOP_CRITICS, DEFAULT_TIER };

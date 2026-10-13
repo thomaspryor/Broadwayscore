@@ -226,9 +226,11 @@ test('summarize: any error fails (exit 1); warnings alone pass (exit 0)', () => 
 // Code-only structural check: reads tracked src/ files only (no data/), so
 // it cannot make this advisory gate's data checks blocking (CLAUDE.md §19).
 test('structural: score-buckets.ts handles every market and the browse page serializes category', () => {
-  const scoreBuckets = fs.readFileSync(path.join(ROOT, 'src', 'config', 'score-buckets.ts'), 'utf8');
+  // The display gate score-buckets.ts re-exports lives in scripts/lib/min-reviews.js (BRO-4312).
+  const scoreBuckets = fs.readFileSync(path.join(ROOT, 'src', 'config', 'score-buckets.ts'), 'utf8')
+    + fs.readFileSync(path.join(ROOT, 'scripts', 'lib', 'min-reviews.js'), 'utf8');
   for (const market of MARKETS) {
-    assert.ok(sourceHandlesMarket(scoreBuckets, market), `score-buckets.ts does not handle '${market}'`);
+    assert.ok(sourceHandlesMarket(scoreBuckets, market), `score-buckets.ts / min-reviews.js do not handle '${market}'`);
   }
   const browse = fs.readFileSync(path.join(ROOT, 'src', 'app', 'browse', '[slug]', 'page.tsx'), 'utf8');
   assert.ok(browseSerializesCategory(browse), 'browse page no longer serializes category');

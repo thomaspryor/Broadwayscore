@@ -17,12 +17,9 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { computeCriticScore } = require('./lib/compute-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
-const { shouldHideReviews } = require('./lib/should-hide-reviews');
-const { dedupByCritic } = require('./lib/dedup-by-critic');
-const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
+const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { mayServeDiskImage } = require('./lib/image-source-match');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
@@ -521,13 +518,10 @@ for (const show of visibleShows) {
 
   const allShowReviews = reviewsByShow[show.id] || [];
 
-  // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
-  // publishDate. Matches src/lib/engine.ts computeCriticScore() which keeps
-  // distinct critics from the same outlet (NYSR, NYT, etc. publish multiple critics).
-  // Previous outlet-level dedup was wrong — it dropped second critics (e.g. Sommers
-  // when Finkle existed for NYSR on Titanique opening night 2026-04-12).
-  // Extracted to lib/dedup-by-critic so verify-opening-night-live counts identically.
-  const showReviews = dedupByCritic(allShowReviews);
+  // Dedup, hide rules, scoring and the display gate: scripts/lib/slim-critic-score.js
+  // (shared with the site-parity test, BRO-4312). Critic-level dedup keeps
+  // distinct critics from the same outlet (NYSR, NYT, etc.).
+  const { showReviews, cs: slimCs, rc: slimRc } = computeSlimCriticScore(show, allShowReviews, outletRegistry);
   const buzz = audienceBuzz[show.id];
 
   // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Critical Miss (<55)
@@ -621,27 +615,6 @@ for (const show of visibleShows) {
     }
   }
 
-  // Compute composite score using shared module (matches engine.ts).
-  // shouldHideReviews mirrors src/config/scoring.ts → engine.ts:676. Pre-2005
-  // closed shows (not in CURATED_HISTORICAL_SHOWS) get null criticScore so the
-  // per-show JSON matches what the market list pages render. Announced shows
-  // also suppressed — any reviews on file belong to a prior production.
-  // Notion 362637c5-416f-8132 audited this asymmetry 2026-05-16.
-  const hideReviews = shouldHideReviews(show) || show.status === 'announced';
-  const scoreResult = hideReviews ? null : computeCriticScore(showReviews, outletRegistry, show.category, show.type);
-
-  // Minimum review thresholds per market — single source of truth in
-  // scripts/lib/min-reviews.js (CommonJS mirror of src/config/score-buckets.ts,
-  // kept in sync by scripts/lib/min-reviews.test.mjs). Do NOT hardcode here.
-  let minReviews = getMarketMinReviews(show.category);
-  // T3-only shows need extra reviews
-  if (scoreResult && scoreResult.t1 === 0) {
-    // Check if there are any T2 reviews
-    const t2Count = reviewEntries.filter(r => r.t === 2).length;
-    if (t2Count === 0) minReviews += T3_ONLY_EXTRA;
-  }
-  const hasEnough = scoreResult && scoreResult.rc >= minReviews;
-
   // Build detail object
   const detail = {
     _v: DETAIL_SCHEMA_VERSION,
@@ -654,9 +627,9 @@ for (const show of visibleShows) {
   }
 
   // Composite score + review count (only if meets minimum threshold)
-  if (scoreResult && hasEnough) {
-    detail.cs = scoreResult.s;
-    detail.rc = scoreResult.rc;
+  if (slimCs != null) {
+    detail.cs = slimCs;
+    detail.rc = slimRc;
   }
 
   // Score breakdown (always include if reviews exist — shows review sentiment even pre-score)

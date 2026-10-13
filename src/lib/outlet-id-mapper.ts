@@ -19,6 +19,31 @@ type RegistryTierEntry = {
 };
 
 let _registryTierCache: Record<string, RegistryTierEntry> | null = null;
+let _registryRawCache: Record<string, unknown> | null = null;
+
+/**
+ * The raw `outlets` map from data/outlet-registry.json (keys are lowercase
+ * outlet ids), in the exact shape scripts/generate-mobile-show-details.js
+ * passes to scripts/lib/compute-critic-score.js. engine.ts hands this same map
+ * to the shared scorer so site and slim-file tier resolution are identical
+ * (BRO-4312). Empty object when the registry is unavailable (browser context).
+ */
+export function getOutletRegistry(): Record<string, unknown> {
+  if (_registryRawCache) return _registryRawCache;
+  _registryRawCache = {};
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const registryPath = path.join(process.cwd(), 'data', 'outlet-registry.json');
+    if (fs.existsSync(registryPath)) {
+      const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+      _registryRawCache = (registry.outlets || {}) as Record<string, unknown>;
+    }
+  } catch {
+    // Registry not available (e.g., in browser context) — return empty
+  }
+  return _registryRawCache;
+}
 
 function _loadRegistryTiers(): Record<string, RegistryTierEntry> {
   if (_registryTierCache) return _registryTierCache;

@@ -9,6 +9,11 @@
  * Historical incident (2026-04-12): Three independent drift classes shipped to production
  * because no test compared the two implementations directly. This test prevents that.
  *
+ * Since BRO-4312 engine.ts delegates to compute-critic-score.js, so this file
+ * now guards against someone re-forking the formula into engine.ts. The
+ * end-to-end check (every show, display gate included) is
+ * tests/unit/critic-score-canonical-parity.test.ts.
+ *
  * Run: npx tsx --test tests/unit/scoring-parity.test.ts
  */
 

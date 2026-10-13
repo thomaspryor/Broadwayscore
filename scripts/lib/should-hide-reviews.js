@@ -42,4 +42,9 @@ function shouldHideReviews(show) {
   return true;
 }
 
-module.exports = { shouldHideReviews, SCORE_DISPLAY_YEAR_CUTOFF };
+/** @param {string} showId @returns {boolean} show is in data/curated-historical-shows.json */
+function isCuratedHistoricalShow(showId) {
+  return !!showId && _loadCurated().has(showId);
+}
+
+module.exports = { shouldHideReviews, isCuratedHistoricalShow, SCORE_DISPLAY_YEAR_CUTOFF };

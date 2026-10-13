@@ -38,7 +38,7 @@ const https = require('https');
 
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
-const { getMarketMinReviews } = require('./lib/min-reviews');
+const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
 const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
 const {
   TOKENS,
@@ -257,6 +257,13 @@ function computeCriticScore(showReviews, market, showType) {
   return result ? Math.round(result.s) : null;
 }
 
+/** The score the site shows for these reviews, or null while it shows TBD. */
+function displayedCriticScore(showReviews, market, showType) {
+  const result = canonicalComputeCriticScore(showReviews, outletRegistry, market, showType);
+  if (!result || !hasEnoughReviews(result.rc, market, result.t1 + result.t2)) return null;
+  return Math.round(result.s);
+}
+
 function scoreQualifies(showReviews, market) {
   const t = publishThresholds(market);
   let t1 = 0, t2 = 0, highConf = 0;
@@ -312,9 +319,8 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
       // Only show a firm critic score once we clear the live-site minimum.
       // Below it the row renders "TBD" — the review-progress line still shows
       // the running count, so the owner sees momentum without a premature verdict.
-      const score = reviews.length >= minReviewsToShowScore(market)
-        ? computeCriticScore(reviews, market, s.type)
-        : null;
+      // Same gate as the site badge (deduped scored count, +2 when no T1/T2), BRO-4312.
+      const score = displayedCriticScore(reviews, market, s.type);
       const q = scoreQualifies(reviews, market);
       const audience = getAudience(audienceBuzz, s.id);
       const excluded = excludedMap.has(s.id);
@@ -933,6 +939,7 @@ async function main() {
 // parity test (#1245: The Pass showed 73 in the email vs 70 on site) can
 // drive the real function instead of a reimplementation.
 module.exports = {
+  displayedCriticScore,
   minReviewsToShowScore,
   isBroadcastOverdue,
   classifyRows,

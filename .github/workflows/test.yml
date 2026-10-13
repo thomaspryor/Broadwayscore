@@ -3221,6 +3221,10 @@ on:
       # colocated-tested) is under scripts/lib/**; this thin CLI wrapper is
       # path-listed so a solo edit triggers CI.
       - 'scripts/audit-get-route-dispatch.js'
+      # BRO-4313: raw-mean-of-assignedScore audit CLI (logic in
+      # scripts/lib/raw-mean-scores.js, colocated-tested); path-listed so a solo
+      # edit triggers CI.
+      - 'scripts/audit-raw-mean-scores.js'
       # BRO-3507: self-heal-orphan-show-files.yml's deletion CLI. Its decision
       # logic (scripts/lib/orphan-grace-period.js, colocated-tested) is
       # covered by the scripts/lib/** glob above, but this thin CLI wrapper is
@@ -3435,6 +3439,16 @@ jobs:
         # this job bans continue-on-error (workflow-audit-steps-always.test.mjs),
         # and the scan exits 0 on the tree it lands with.
         run: node scripts/audit-get-route-dispatch.js
+
+      - name: Audit — raw mean of assignedScore instead of canonical Critic Score (BRO-4313, advisory)
+        if: always() && steps.deps.outcome == 'success'
+        # Flags code that averages reviews' assignedScore instead of the
+        # canonical Critic Score (scripts/lib/slim-critic-score.js /
+        # canonical-critic-scores.ts), the bug class behind #784, #956, #957.
+        # Advisory first (CLAUDE.md §19): no --strict, so it reports ::warning::
+        # annotations and exits 0; only a crash fails. Promote to --strict after
+        # green main runs. Logic + fixtures: scripts/lib/raw-mean-scores.js(.test.mjs).
+        run: node scripts/audit-raw-mean-scores.js
 
       - name: Audit — new blocking gates land advisory or baselined (BRO-2123)
         if: always() && steps.deps.outcome == 'success'

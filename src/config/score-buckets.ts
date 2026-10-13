@@ -192,49 +192,12 @@ export function getScoreBgColor(score: number | null, category?: string): string
   return getScoreBucket(score, category).bgColor;
 }
 
-/**
- * Check if a score meets the minimum threshold for display.
- * T3-only shows (no T1/T2 reviews) require extra reviews for qualification.
- */
-export function hasEnoughReviews(
-  reviewCount: number,
-  category?: string,
-  tier1And2Count?: number,
-  isCuratedHistorical?: boolean,
-): boolean {
-  return reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCuratedHistorical) === 0;
-}
-
-/**
- * How many more reviews are needed before a score can be displayed.
- * Returns 0 when the show already qualifies. Mirrors `hasEnoughReviews` —
- * if you change the threshold logic, change it here too.
- */
-export function reviewsRemainingForScore(
-  reviewCount: number,
-  category?: string,
-  tier1And2Count?: number,
-  isCuratedHistorical?: boolean,
-): number {
-  let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
-    : category === 'off-off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
-    : category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_OFF_WEST_END
-    : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
-    : category === 'regional' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
-    : category === 'tour' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
-    : MIN_REVIEWS_FOR_SCORE;
-
-  // Curated historical override: only applies to Broadway (the bigger threshold)
-  // and requires at least 1 T1+T2 review (so we don't accept e.g. 4 random blogs).
-  if (isCuratedHistorical && (!category || category === 'broadway') && (tier1And2Count ?? 0) >= 1) {
-    min = MIN_REVIEWS_FOR_SCORE_CURATED_HISTORICAL;
-  }
-
-  if (tier1And2Count !== undefined && tier1And2Count === 0) {
-    min += T3_ONLY_EXTRA_REVIEWS;
-  }
-  return Math.max(0, min - reviewCount);
-}
+// Display gate (hasEnoughReviews / reviewsRemainingForScore): ONE implementation
+// in scripts/lib/min-reviews.js, shared with the slim-file generator so the site
+// badge and the slim `cs` can't disagree on which shows carry a score (BRO-4312).
+// T3-only shows (no T1/T2 reviews) need extra reviews; curated historical
+// Broadway shows with a T1/T2 review need only MIN_REVIEWS_FOR_SCORE_CURATED_HISTORICAL.
+export { hasEnoughReviews, reviewsRemainingForScore } from '../../scripts/lib/min-reviews';
 
 // ===========================================
 // COVERAGE VERDICT SCORE-REGRESSION FLOOR (S3, task #905)

@@ -24,6 +24,24 @@ const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { buildScoreMap } = require('./lib/related-shows-scores');
 const { isEligibleSource, closedPoolAllows, qualityBonus } = require('./lib/related-shows-eligibility');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must exit before any data load or LLM call: a bare run is LIVE and
+// spends OpenAI/Gemini credits (it once started a full paid run on --help).
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(`Usage: node scripts/generate-related-shows.js [--force] [--show=<id>] [--max=N] [--dry-run]
+
+LLM-ranked related-show recommendations → data/related-shows.json.
+A run without --dry-run is LIVE (paid LLM calls, writes the file).
+
+  --force      Regenerate every eligible show, not just new/stale ones.
+  --show=<id>  Only this show.
+  --max=N      Cap at N shows (new first).
+  --dry-run    Print results without saving.
+`);
+  process.exit(0);
+}
+
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
@@ -102,7 +120,14 @@ for (const r of reviews) {
 }
 
 // Build score map
-const scoreMap = buildScoreMap(reviews, showsData.shows);
+let outletRegistry = {};
+try {
+  outletRegistry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8')).outlets || {};
+} catch (err) {
+  // Tiers fall back to src/config/outlet-tiers.json + default, so scores can drift from the site's.
+  console.warn(`⚠ outlet-registry.json unreadable (${err.message}); related-show scores may differ from the site`);
+}
+const scoreMap = buildScoreMap(reviews, showsData.shows, outletRegistry);
 
 // ─── Algorithmic pre-filter (matches data-core.ts logic) ───
 // statusFilter: 'open' = open/previews only, 'closed' = closed only, null = all

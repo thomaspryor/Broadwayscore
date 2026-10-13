@@ -24,7 +24,7 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 - **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit (`--show=ID`/`--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
 - **Stars are score bands:** 2/5→31-50, 3/5→51-70, 4/5→71-90, 5/5→91-100; read the WHOLE article for the rating, never override outside. `memory/feedback_star_score_cap.md`
-- **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads the live site's `cs`. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Why: `memory/feedback_critic_score_canonical_helper.md`.
+- **Critic Score for external claims:** `getCriticScore(showId)` (`scripts/lib/canonical-critic-scores.ts`). Never raw-mean `reviews.json` (`audit-raw-mean-scores.js`). One formula, `scripts/lib/compute-critic-score.js`; `engine.ts` delegates (BRO-4312). Why: `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.

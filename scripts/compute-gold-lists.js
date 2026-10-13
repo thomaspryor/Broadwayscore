@@ -23,7 +23,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getMarketMinReviews } = require('./lib/min-reviews');
+const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
+const { isCuratedHistoricalShow } = require('./lib/should-hide-reviews');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const outputPath = path.join(dataDir, 'gold-lists-computed.json');
@@ -145,13 +146,14 @@ function computeCriticalGoldForMarket(listType, membershipFilter, season, uncapp
   for (const [showId, revs] of Object.entries(reviewsByShow)) {
     const show = showById[showId];
     if (!show || !membershipFilter(show) || getSeason(show.openingDate) !== season) continue;
-    if (revs.length < cfg.minReviews) continue;
 
     // Canonical tier-weighted score: dedup + OUTLET_TIERS + designation bumps + confidence weights
     const scoreResult = computeCriticScore(revs, outletRegistry, show.category, show.type);
     if (!scoreResult) continue;
-    // Apply minReviews to the deduped count, not raw count
-    if (scoreResult.rc < cfg.minReviews) continue;
+    // Same display gate as the site badge (scripts/lib/min-reviews.js, BRO-4312):
+    // deduped scored count, +2 when no T1/T2 review, curated-historical carve-out.
+    // A gold list ranks by score, so it only includes shows that display one.
+    if (!hasEnoughReviews(scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, isCuratedHistoricalShow(show.id))) continue;
     if (scoreResult.s < cfg.minScore) continue;
 
     const rounded = Math.round(scoreResult.s * 10) / 10;

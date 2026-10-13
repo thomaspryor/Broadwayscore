@@ -345,6 +345,7 @@ lint_workflows() {
     audit-workflow-concurrency \
     audit-data-gate-heal-paths \
     audit-get-route-dispatch \
+    audit-raw-mean-scores \
     audit-new-gate-arming \
     audit-workflow-hygiene \
     assert-broadcast-step-order \

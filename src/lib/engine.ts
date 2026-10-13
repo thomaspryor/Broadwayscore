@@ -22,17 +22,28 @@ import {
   BUZZ_CONFIG,
   CONFIDENCE_THRESHOLDS,
   AUDIENCE_DIVERGENCE_THRESHOLD,
-  TOP_CRITICS,
   getCriticLabel,
   SCORE_DISPLAY_YEAR_CUTOFF,
   MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF,
   LOW_CONF_SCORE_SOURCES,
   shouldHideReviews,
 } from '@/config/scoring';
-import { getRegistryTier } from './outlet-id-mapper';
+import { getRegistryTier, getOutletRegistry } from './outlet-id-mapper';
+// The one critic-score formula, shared with the slim-file generator (BRO-4312).
+import { scoreReviews } from '../../scripts/lib/compute-critic-score';
+
+/** Per-review detail returned by scripts/lib/compute-critic-score.js scoreReviews(). */
+interface SharedScoredReview {
+  review: unknown;
+  tier: number;
+  tierWeight: number;
+  reviewScore: number;
+  confidenceWeight: number;
+  outletShare: number;
+  weightedScore: number;
+}
 import { getMarketDate } from './date-utils';
 import { getReviewAgeYear } from './show-date-line';
-import { isOperaShow } from './show-market';
 import { stripInlineMarkdown } from './formatting';
 
 // ===========================================
@@ -355,200 +366,59 @@ export function getOutletConfig(outletId?: string, outletName?: string, showCate
 }
 
 // ===========================================
-// HELPER: PARSE RATING TO SCORE
-// ===========================================
-
-function parseOriginalRating(rating: string): number | null {
-  const normalized = rating.trim();
-
-  // Letter grades (B+, A-, etc.)
-  const upperRating = normalized.toUpperCase();
-  if (LETTER_GRADE_MAP[upperRating] !== undefined) {
-    return LETTER_GRADE_MAP[upperRating];
-  }
-
-  // Star ratings: "4/5", "3.5/5", "3 stars"
-  const starMatch = normalized.match(/^(\d+\.?\d*)\s*(?:\/\s*(\d+)|stars?)/i);
-  if (starMatch) {
-    const value = parseFloat(starMatch[1]);
-    const max = starMatch[2] ? parseFloat(starMatch[2]) : 5;
-    return Math.round((value / max) * 100);
-  }
-
-  // Percentage
-  const percentMatch = normalized.match(/^(\d+)\s*%?$/);
-  if (percentMatch) {
-    return Math.min(100, parseInt(percentMatch[1]));
-  }
-
-  return null;
-}
-
-// ===========================================
 // CRITIC SCORE CALCULATION
 // ===========================================
 
 export function computeCriticScore(reviews: RawReview[], showCategory?: string, showType?: string): CriticScoreResult | null {
-  if (reviews.length === 0) return null;
-  // Opera flat-weighting (2026-05-01): Met opera coverage doesn't follow theater's
-  // tier hierarchy (Operawire/Parterre/NYCR are first-class voices, not T3 blogs).
-  // Force tier=1 for all opera reviews and skip the off-market multiplier.
-  // Mirrors scripts/lib/compute-critic-score.js — drift = silent score divergence.
-  const isOpera = isOperaShow({ type: showType });
+  // The formula lives ONLY in scripts/lib/compute-critic-score.js, the same
+  // module that writes the slim files' `cs` (BRO-4312). This used to be a
+  // second, hand-mirrored copy; on the same inputs both agreed on all 1,500
+  // scored shows, but it differed latently (an unscored review counted as
+  // originalRating-or-50 here and was skipped there; an outletName-only tier
+  // fallback existed only here). Delegating removes the second pipeline, so
+  // every page that reads criticScore.score shows the canonical number.
+  // Opera flat-weighting, critic-level dedup, per-outlet share, designation
+  // floors/bumps and confidence weights are all applied inside scoreReviews.
+  // A review without assignedScore is neither scored nor listed in
+  // criticScore.reviews (the slim `rv` list drops it too); 0 such rows today.
+  const result = scoreReviews(reviews, getOutletRegistry(), showCategory, showType);
+  if (!result) return null;
 
-  // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
-  // publishDate. This dedups the case where the same critic re-reviews after a cast
-  // change (legitimate) but KEEPS distinct critics from the same outlet (NYSR, NYT,
-  // Variety, Vulture, EW, etc. routinely publish multiple critic reviews per show).
-  //
-  // To prevent multi-critic outlets from getting disproportionate weight, each
-  // critic's effective weight is divided by the count of distinct critics that
-  // outlet has on this show. NYSR with 3 critics → each contributes (1/3) × T2,
-  // summing to NYSR's full T2 vote — same total weight as a single-critic outlet.
-  // Reviews with no criticName fall back to a per-outlet bucket so an unknown-author
-  // review still counts as the outlet's vote.
-  const byCritic = new Map<string, RawReview>();
-  for (const review of reviews) {
-    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const criticKey = (review.criticName || '__unknown__').toLowerCase();
-    const key = `${outletKey}|${criticKey}`;
-    const existing = byCritic.get(key);
-    if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
-      byCritic.set(key, review);
-    }
-  }
-  const dedupedReviews = Array.from(byCritic.values());
-
-  // Count distinct critics per outlet for per-outlet weight normalization.
-  // Reviews missing criticName all share the synthetic '__unknown__' bucket so an
-  // outlet that publishes one anonymous review still counts as one vote.
-  const criticCountByOutlet = new Map<string, number>();
-  for (const review of dedupedReviews) {
-    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    criticCountByOutlet.set(outletKey, (criticCountByOutlet.get(outletKey) || 0) + 1);
-  }
-
-  const computedReviews: ComputedReview[] = dedupedReviews.map(review => {
-    const outletConfig = getOutletConfig(review.outletId, review.outlet, showCategory);
-    const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
-    const resolvedTier = isTopCritic ? 1 : outletConfig.tier;
-    const tier = isOpera ? 1 : resolvedTier;
-    const isOffMarket = !isOpera && (showCategory === 'off-broadway' || showCategory === 'off-west-end');
-    const baseTierWeight = TIER_WEIGHTS[tier];
-    const tierWeight = isOffMarket ? baseTierWeight * 0.8 : baseTierWeight;
-
-    // Determine the review score.
-    // assignedScore is the canonical scoring output from scripts/rebuild-all-reviews.js
-    // (via getBestScore in scripts/lib/rebuild-helpers.js), which is the single source
-    // of truth for per-review scoring including LLM calibration. There is intentionally
-    // no llmScore fallback here: reviews.json does not carry an llmScore object, and
-    // any future change that adds one would silently bypass calibration.
-    let assignedScore: number;
-    let bucketScore: number | undefined;
-    let thumbScore: number | undefined;
-
-    if (review.assignedScore !== undefined) {
-      assignedScore = review.assignedScore;
-    } else if (review.originalRating) {
-      const parsed = parseOriginalRating(review.originalRating);
-      assignedScore = parsed ?? 50;
-    } else {
-      assignedScore = 50; // Default
-    }
-
-    // Get bucket and thumb scores for reference/averaging
-    if (review.bucket) {
-      bucketScore = BUCKET_SCORE_MAP[review.bucket];
-    }
-    if (review.thumb) {
-      thumbScore = THUMB_SCORE_MAP[review.thumb];
-    }
-
-    // Calculate final review score
-    // If we have both assigned score and a mapped score, average them
-    // Otherwise use the assigned score directly
-    let reviewScore = assignedScore;
-
-    // Apply designation floor and bump if applicable
-    if (review.designation) {
-      if (DESIGNATION_FLOORS[review.designation]) {
-        reviewScore = Math.max(reviewScore, DESIGNATION_FLOORS[review.designation]);
-      }
-      if (DESIGNATION_BUMPS[review.designation]) {
-        reviewScore = Math.min(100, reviewScore + DESIGNATION_BUMPS[review.designation]);
-      }
-    }
-
-    // Calculate confidence weight based on text quality
-    // Full text = full weight, excerpts = reduced weight
-    // If needsReview=true, the score doesn't reflect current signals (e.g., thumb
-    // was added after scoring), so don't credit the thumb until rescore happens
-    const thumbReflectedInScore = !!(review.dtliThumb || review.bwwThumb) && !review.needsReview;
-    let confidenceWeight = 1.0;
-    if (review.contentTier === 'excerpt' || review.contentTier === 'stub') {
-      confidenceWeight = thumbReflectedInScore ? 0.75 : 0.5;
-    } else if (review.contentTier === 'truncated') {
-      confidenceWeight = 0.85;
-    }
-
-    // Per-outlet share: when an outlet has multiple critics on this show, each
-    // critic's effective weight is divided by the count so the outlet still
-    // contributes one full tier-weight vote (not N votes). Equivalent to
-    // averaging critic scores within the outlet then tier-weighting that average.
-    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const outletCriticCount = criticCountByOutlet.get(outletKey) || 1;
-    const outletShare = 1 / outletCriticCount;
-
-    // Calculate weighted score (per-outlet share applied so multi-critic outlets
-    // sum to one full tier vote)
-    const weightedScore = reviewScore * tierWeight * confidenceWeight * outletShare;
-
+  const computedReviews: ComputedReview[] = result.reviews.map((r: SharedScoredReview) => {
+    const review = r.review as RawReview;
     return {
       showId: review.showId,
-      outletId: outletConfig.id,
+      // Display id only (tier comes from the shared scorer above).
+      outletId: getOutletConfig(review.outletId, review.outlet, showCategory).id,
       outlet: review.outlet,
       criticName: review.criticName,
       url: review.url,
       publishDate: review.publishDate,
-      tier,
-      tierWeight,
-      assignedScore,
-      bucketScore,
-      thumbScore,
-      reviewScore,
-      confidenceWeight,
-      weightedScore,
+      tier: r.tier as 1 | 2 | 3 | 4,
+      tierWeight: r.tierWeight,
+      assignedScore: review.assignedScore as number,
+      bucketScore: review.bucket ? BUCKET_SCORE_MAP[review.bucket] : undefined,
+      thumbScore: review.thumb ? THUMB_SCORE_MAP[review.thumb] : undefined,
+      reviewScore: r.reviewScore,
+      confidenceWeight: r.confidenceWeight,
+      weightedScore: r.weightedScore,
       designation: review.designation,
       quote: review.quote,
       summary: review.summary,
       pullQuote: review.pullQuote,
       originalRating: review.originalRating,
-      outletShare,
+      outletShare: r.outletShare,
     };
   });
 
-  // Weighted average using tier weights
-  // The denominator must include the same outletShare so the math collapses to a
-  // proper outlet-level weighted mean (not an inflated count).
-  const weightedSum = computedReviews.reduce((sum, r) => sum + r.weightedScore, 0);
-  const totalWeight = computedReviews.reduce(
-    (sum, r) => sum + r.tierWeight * r.confidenceWeight * (r.outletShare ?? 1),
-    0,
-  );
-  const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
-
-  const tier1Count = computedReviews.filter(r => r.tier === 1).length;
-  const tier2Count = computedReviews.filter(r => r.tier === 2).length;
-  const tier3Count = computedReviews.filter(r => r.tier === 3).length;
-
   return {
-    score: weightedScore,
-    weightedScore,
-    reviewCount: dedupedReviews.length,
-    tier1Count,
-    tier2Count,
-    tier3Count,
-    label: getCriticLabel(Math.round(weightedScore)),
+    score: result.s,
+    weightedScore: result.s,
+    reviewCount: result.rc,
+    tier1Count: result.t1,
+    tier2Count: result.t2,
+    tier3Count: result.t3,
+    label: getCriticLabel(Math.round(result.s)),
     reviews: computedReviews.sort((a, b) => b.reviewScore - a.reviewScore),
   };
 }

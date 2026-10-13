@@ -16,6 +16,13 @@
  * different filtered inputs. The 2026-06-02 incident shipped a guest-post doc
  * with the helper's fabricated numbers because nothing reconciled to prod.
  *
+ * 2026-10-13 (BRO-4312): engine.ts no longer has its own formula; it calls
+ * scripts/lib/compute-critic-score.js scoreReviews(), and the website's badge
+ * gate and the slim generator share scripts/lib/min-reviews.js. Measured on the
+ * same data: all 1,507 scored shows identical on the site and in `cs`.
+ * tests/unit/critic-score-canonical-parity.test.ts keeps it that way. This
+ * helper is still the one to use outside the Next.js build (no data-core load).
+ *
  * Display convention: integer rounding (the site does this — external copy
  * must match). Use `getCriticScore(showId)` which already rounds; only use
  * `getCriticScoreRaw(showId)` if you have a specific internal reason for a

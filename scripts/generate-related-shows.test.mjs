@@ -28,7 +28,7 @@ test('script does not read data/reviews.json directly', () => {
 });
 
 test('a show whose only scores come from blog rows still gets a score', () => {
-  const blogOnly = [70, 75, 80, 65, 72].map(assignedScore => ({ showId: 'blog-only', assignedScore }));
+  const blogOnly = [70, 75, 80, 65, 72].map((assignedScore, i) => ({ showId: 'blog-only', assignedScore, outletId: 'nytimes', criticName: `c${i}` }));
   assert.equal(buildScoreMap([], [{ id: 'blog-only' }]).has('blog-only'), false);
   assert.equal(buildScoreMap(blogOnly, [{ id: 'blog-only' }]).get('blog-only'), 72);
 });

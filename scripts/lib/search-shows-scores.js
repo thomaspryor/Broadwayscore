@@ -52,10 +52,10 @@ function buildShowsWithScores(reviews, shows, publicShowsDir) {
  * score (BRO-4601). `slim` is the public/data/shows/{id}.json object (rc, rv[].t).
  */
 function isTourListedSlim(slim) {
-  const { getMarketMinReviews } = require('./min-reviews');
+  const { hasEnoughReviews } = require('./min-reviews');
   const rc = (slim && slim.rc) || 0;
   const top = ((slim && slim.rv) || []).filter(r => r && (r.t === 1 || r.t === 2)).length;
-  return rc >= getMarketMinReviews('tour') + (top === 0 ? 2 : 0);
+  return hasEnoughReviews(rc, 'tour', top);
 }
 
 /**

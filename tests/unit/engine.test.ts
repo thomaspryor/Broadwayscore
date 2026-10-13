@@ -120,22 +120,18 @@ describe('computeCriticScore', () => {
   // asserting llmScore fallback behavior have been deleted because the
   // behavior they covered no longer exists.
 
-  test('originalRating letter grade parsed correctly', () => {
+  // BRO-4312: engine.ts now delegates to scripts/lib/compute-critic-score.js
+  // (the slim-file scorer). A review without assignedScore no longer falls
+  // back to originalRating or 50: it is skipped, exactly as the slim `cs` does.
+  test('review without assignedScore is skipped, not parsed from originalRating', () => {
     const result = computeCriticScore([
-      makeReview({ originalRating: 'B+' }),
+      makeReview({ originalRating: 'B+', criticName: 'Unscored Critic' }),
+      makeReview({ assignedScore: 70, criticName: 'Scored Critic' }),
     ]);
     assert.ok(result);
-    // B+ = 80 from LETTER_GRADE_MAP
-    assert.strictEqual(result.reviews[0].assignedScore, 80);
-  });
-
-  test('originalRating star format parsed correctly', () => {
-    const result = computeCriticScore([
-      makeReview({ originalRating: '4/5' }),
-    ]);
-    assert.ok(result);
-    // 4/5 = 80
-    assert.strictEqual(result.reviews[0].assignedScore, 80);
+    assert.strictEqual(result.reviewCount, 1);
+    assert.strictEqual(result.score, 70);
+    assert.strictEqual(result.reviews.length, 1);
   });
 
   test('designation bump applied', () => {
@@ -233,12 +229,11 @@ describe('computeCriticScore', () => {
     assert.strictEqual(stayAway.label, 'Critical Miss');
   });
 
-  test('default score is 50 when no score source available', () => {
+  test('returns null when no review carries a score (no default-50)', () => {
     const result = computeCriticScore([
-      makeReview({}), // No assignedScore, no llmScore, no originalRating
+      makeReview({}), // No assignedScore, no originalRating
     ]);
-    assert.ok(result);
-    assert.strictEqual(result.reviews[0].assignedScore, 50);
+    assert.strictEqual(result, null);
   });
 });
 
