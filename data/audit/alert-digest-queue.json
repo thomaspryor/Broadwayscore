@@ -2448,5 +2448,35 @@
       }
     ],
     "queuedAt": "2026-10-13T22:42:05.529Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5295-b-guard-force",
+    "title": "Landing blocked: rebase red on land/bro-5295-b-guard-force",
+    "description": "land.yml did not land land/bro-5295-b-guard-force: the rebase gate went red at 98253d6a52. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5295-b-guard-force @ 98253d6a52 (origin/land/bro-5295-b-guard-force) → origin/main @ eb94bcebc2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ eb94bcebc2: Rebasing (1/1) error: could not apply 98253d6a527... fix(BRO-5295): a plan can remove a rating re-added to an already-cleared record hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38477217245",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5295-b-guard-force"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "98253d6a5279f11965168dfcda2b60086278de72"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38477217245"
+      }
+    ],
+    "queuedAt": "2026-10-13T22:58:37.406Z"
   }
 ]
