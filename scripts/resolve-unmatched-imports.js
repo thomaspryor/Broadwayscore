@@ -281,6 +281,7 @@ async function main() {
 
   if ((stats.resolved > 0 || stats.stubsDrained > 0) && !dryRun) {
     const output = { shows: diaryShows, lastUpdated: new Date().toISOString() };
+    require('./lib/cloud-data-copy').assertNotCloudCopy(diaryShowsPath); // BRO-5217
     fs.writeFileSync(diaryShowsPath, JSON.stringify(output, null, 2));
     console.log(`\nWrote ${diaryShowsPath} (${diaryShows.length} total shows, +${stats.resolved} resolved, +${stats.stubsDrained} stubs promoted)`);
     // Only now is it safe to delete the drained stub rows — the entries
