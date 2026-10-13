@@ -1,29 +1,8 @@
 {
-  "generatedAt": "2026-10-13T17:02:55.327Z",
+  "generatedAt": "2026-10-13T19:50:54.391Z",
   "windowDays": 45,
   "showsScanned": 164,
   "gaps": [
-    {
-      "showId": "good-time-charlie-off-broadway-2026",
-      "title": "Good Time Charlie",
-      "openingDate": "2026-10-09",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:per-file-cap"
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=good-time-charlie-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/10_09_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-12T20:09:47.097Z",
-      "fileAgeHours": 20.885130277777776,
-      "gapSeenAt": "2026-10-12T21:04:10.700Z",
-      "nonTerminalAgeHours": 19.979063055555557
-    },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
@@ -38,9 +17,9 @@
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 119.30157305555555,
+      "fileAgeHours": 122.09446527777777,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 114.26969833333334
+      "nonTerminalAgeHours": 117.06943833333334
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -56,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 504.37302166666666,
+      "fileAgeHours": 507.16608444444444,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 55.3923125
+      "nonTerminalAgeHours": 58.1920525
     }
   ],
   "contradictions": []
