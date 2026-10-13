@@ -976,3 +976,58 @@ test('both dispatchers load and resolve the shared helper at require time', () =
     assert.doesNotMatch(src, /for \(const b of hg\.blockers\) console\.error\(`    \$\{b\.code\}/, f);
   }
 });
+
+// ── BRO-2583: a headless dispatch comment is posted at job END ──────────────
+import { liveDispatchCommentVerdict } from './linear-dispatch.js';
+
+const OPEN_ISSUE = (body) => ({
+  identifier: 'BRO-2583',
+  state: { type: 'unstarted', name: 'Todo' },
+  comments: { nodes: [{ body, createdAt: '2026-10-01T00:00:00.000Z' }] },
+});
+
+test('liveDispatchCommentVerdict: a headless comment with an EMPTY ledger (other machine / lost ledger) is not live', () => {
+  const v = liveDispatchCommentVerdict(OPEN_ISSUE(HEADLESS_DISPATCHED), 'linear:BRO-2583', []);
+  assert.equal(v.live, null);
+  assert.equal(v.demotedBy, 'headless-completion');
+  assert.ok(v.raw, 'raw comment still returned for the NOTE line');
+});
+
+test('liveDispatchCommentVerdict: a cmux comment with an empty ledger is still live (unchanged)', () => {
+  const v = liveDispatchCommentVerdict(OPEN_ISSUE(CMUX_DISPATCHED), 'linear:BRO-2583', []);
+  assert.equal(v.live && v.live.body, CMUX_DISPATCHED);
+  assert.equal(v.demotedBy, null);
+});
+
+test('liveDispatchCommentVerdict: a comment with no (mode) suffix stays live (fail toward refusing)', () => {
+  const body = 'Dispatched to workspace:42 at 2026-08-12T12:00:00.000Z';
+  const v = liveDispatchCommentVerdict(OPEN_ISSUE(body), 'linear:BRO-2583', []);
+  assert.equal(v.live && v.live.body, body);
+});
+
+test('liveDispatchCommentVerdict: own finished launch is still demoted as before', () => {
+  const taskId = 'linear:BRO-2583';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-2583', correlationId: '0e0f245d', ts: '2026-08-31T01:00:00.000Z' },
+    { event: 'job-spawned', taskId, jobId: 'j', ts: '2026-08-31T01:00:05.000Z' },
+    { event: 'job-done', taskId, jobId: 'j', ts: '2026-08-31T01:59:00.000Z' },
+  ];
+  const v = liveDispatchCommentVerdict(OPEN_ISSUE(HEADLESS_DISPATCHED), taskId, entries);
+  assert.equal(v.demotedBy, 'own-finished-launch');
+});
+
+test('liveDispatchCommentVerdict: only the NEWEST comment counts — an older cmux comment behind a newer headless one is not resurrected', () => {
+  const issue = {
+    identifier: 'BRO-2583', state: { type: 'unstarted' },
+    comments: { nodes: [
+      { body: HEADLESS_DISPATCHED, createdAt: '2026-08-31T02:00:00.000Z' },
+      { body: CMUX_DISPATCHED, createdAt: '2026-08-31T00:43:00.704Z' },
+    ] },
+  };
+  assert.equal(liveDispatchCommentVerdict(issue, 'linear:BRO-2583', []).live, null);
+});
+
+test('liveDispatchCommentVerdict: terminal issue → nothing', () => {
+  const issue = { ...OPEN_ISSUE(CMUX_DISPATCHED), state: { type: 'completed' } };
+  assert.deepEqual(liveDispatchCommentVerdict(issue, 'linear:BRO-2583', []), { raw: null, live: null, demotedBy: null });
+});

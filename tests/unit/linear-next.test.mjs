@@ -919,6 +919,68 @@ test('BRO-3481: a reopened issue with a finished headless dispatch comment is di
   assert.doesNotMatch(res.stderr, /already looks dispatched/, 'must not hit the stale idempotency refusal — this is the BRO-3481 regression');
 });
 
+for (const [label, body, expectDispatch] of [
+  ['headless', 'Dispatched 9a9a9a9a to linear:BRO-3431-zz at 2026-09-15T21:07:44.458Z (headless)', true],
+  ['cmux', 'Dispatched 9a9a9a9a to workspace:77 at 2026-09-15T21:07:44.458Z (cmux)', false],
+]) test(`BRO-2583: a ${label} dispatch comment with an EMPTY ledger (other machine / lost ledger) ${expectDispatch ? 'dispatches' : 'still refuses'}`, () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const taskId = 'linear:BRO-3431';
+    const issue = {
+      id: 'issue-uuid-bro-3481', identifier: 'BRO-3431',
+      title: 'Reopened after a finished headless dispatch',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-3431/reopened',
+      priority: 2,
+      // Reopened: back to a non-terminal state, same as the real incident.
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: ${JSON.stringify(body)}, createdAt: '2026-09-15T21:07:44.458Z' },
+      ] },
+    };
+    const entries = [];
+    // No --detach: that re-execs a real detached subprocess (see
+    // dispatchArgvFor's own comment on why it's required for the true
+    // watchdog dispatch) which ignores every injected dep below and hits the
+    // real Linear API/ledger — exactly like the sibling "guard parity" test
+    // above, --headless alone is enough to exercise the idempotency guard
+    // in-process against the fixture.
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue,
+      readLedgerEntries: () => entries,
+      appendLedgerEntry: () => {},
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'job2', logFile: null, headlessOutcome: 'done' }; },
+      cmuxAvailable: () => false,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      linear: {
+        createComment: async () => {},
+        getTeam: async () => ({ states: [] }),
+        getIssue: async () => issue,
+        updateIssue: async () => {},
+        TEAM_KEY: 'BRO',
+      },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  if (expectDispatch) {
+    assert.match(res.stderr, /RUNJOB_WAS_CALLED/, `expected the dispatch to reach runJob. stderr:\n${res.stderr}`);
+    assert.doesNotMatch(res.stderr, /already looks dispatched/);
+    assert.match(res.stderr, /HEADLESS dispatch comment/);
+  } else {
+    assert.match(res.stderr, /already looks dispatched/, `expected the cmux comment to still refuse. stderr:\n${res.stderr}`);
+    assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/);
+  }
+});
+
 // ── scripts/linear-next.js's own pure helpers ───────────────────────────────
 
 test('ledgerTaskId: namespaces Linear dispatches distinctly from bare numeric Notion task ids', () => {

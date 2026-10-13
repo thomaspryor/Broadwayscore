@@ -920,15 +920,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // for why both exist (cross-machine vs. host-local).
   const entries0 = readLedgerEntriesFn();
   if (!args.force) {
-    const rawComment = ld.findUnresolvedDispatchComment(issue);
-    // BRO-3045: a "Dispatched ..." comment naming a correlationId this host
-    // launched and has since journaled terminal is our OWN finished dispatch,
-    // not evidence of live work. Without this the ledger half of the fix
-    // unblocks nothing: reportDispatchOnIssue posts a comment on every
-    // dispatch, and findUnresolvedDispatchComment returns it for any
-    // non-terminal issue, so the comment alone would still refuse all 127.
-    const commentFinished = ld.dispatchCommentIsOurFinishedLaunch(rawComment, taskId, entries0);
-    const priorComment = commentFinished ? null : rawComment;
+    // BRO-3045 / BRO-2583: see ld.liveDispatchCommentVerdict's header. A
+    // comment naming a launch this host journaled terminal, or ANY headless
+    // dispatch comment (posted only after the job finished), is demoted.
+    const commentVerdict = ld.liveDispatchCommentVerdict(issue, taskId, entries0);
+    const rawComment = commentVerdict.raw;
+    const priorComment = commentVerdict.live;
     const liveLedger = ld.hasLiveLedgerEntry(taskId, entries0);
     // Demotions are printed even when the dispatch proceeds — a guard that
     // silently stops refusing is indistinguishable from a guard that broke.
@@ -964,8 +961,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     if (ledgerCrumb && !liveLedger) {
       console.error(`[linear-next] NOTE: ledger dispatch record for ${taskId} was already closed by a '${ledgerCrumb.event}' breadcrumb at ${ledgerCrumb.ts} — not treating it as live.`);
     }
-    if (commentFinished) {
+    if (commentVerdict.demotedBy === 'own-finished-launch') {
       console.error(`[linear-next] NOTE: the "Dispatched ..." comment on ${identifier} (${rawComment.createdAt}) names a dispatch this host already journaled as finished — not treating it as live.`);
+    } else if (commentVerdict.demotedBy === 'headless-completion') {
+      console.error(`[linear-next] NOTE: the "Dispatched ..." comment on ${identifier} (${rawComment.createdAt}) is a HEADLESS dispatch comment, which is only posted after that job finished — not treating it as live.`);
     }
     if (priorComment || liveLedger) {
       console.error(`[linear-next] REFUSING to dispatch ${identifier}: it already looks dispatched.`);

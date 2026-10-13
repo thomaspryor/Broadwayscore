@@ -551,6 +551,41 @@ function dispatchCommentIsOurFinishedLaunch(comment, taskId, entries) {
     || Boolean(dispatchLedger.terminalJobEventForLaunch(launch, list));
 }
 
+// BRO-2583: the single decision linear-next.js's idempotency refusal makes
+// about the issue's newest "Dispatched ..." comment. Returns
+//   { raw, live, demotedBy }
+// raw       — findUnresolvedDispatchComment(issue) (unchanged; other callers
+//             such as red-first-dispatch.js keep its plain semantics)
+// live      — the comment if it still reads as a live dispatch, else null
+// demotedBy — why it was demoted: 'own-finished-launch' (BRO-3045/3481: this
+//             host journaled that exact launch terminal) or
+//             'headless-completion' (below), else null.
+//
+// A HEADLESS dispatch comment is never evidence of a live dispatch:
+// linear-next.js posts it only after `await runJob()` returned ok, i.e. at
+// the END of a job that already ran to completion (see dispatchFloor's header
+// below for the same fact). BRO-3481 already demoted it when THIS host's
+// ledger still had the matching launch; this closes the remaining gap — a
+// lost/rotated ledger or a dispatch from another machine — where the refusal
+// fired with a false reason and taught the operator to reach for --force
+// (BRO-2506's wasted dispatch). A headless job that is genuinely RUNNING
+// posts no comment at all, so it was never covered by this signal: the
+// local ledger (hasLiveLedgerEntry) and bsc-runner.js's PID-checked lease
+// cover that case. Only the NEWEST dispatch comment is considered, as
+// before — an older cmux comment behind a newer headless one is not
+// resurrected (that would revive long-stale refusals).
+function liveDispatchCommentVerdict(issue, taskId, entries) {
+  const raw = findUnresolvedDispatchComment(issue);
+  if (!raw) return { raw: null, live: null, demotedBy: null };
+  if (dispatchCommentIsOurFinishedLaunch(raw, taskId, entries)) {
+    return { raw, live: null, demotedBy: 'own-finished-launch' };
+  }
+  if (dispatchCommentMode(raw) === 'headless') {
+    return { raw, live: null, demotedBy: 'headless-completion' };
+  }
+  return { raw, live: raw, demotedBy: null };
+}
+
 // Terminal-state guard (task #1517, BRO-247 incident root cause): a
 // re-dispatch of an issue Linear itself already considers resolved
 // (completed/canceled) is never correct — the incident this closes was
@@ -1161,6 +1196,7 @@ module.exports = {
   buildDispatchComment,
   generateCorrelationId,
   findUnresolvedDispatchComment,
+  liveDispatchCommentVerdict,
   hasLiveLedgerEntry,
   terminalBreadcrumbForTask,
   dispatchCommentIsOurFinishedLaunch,
