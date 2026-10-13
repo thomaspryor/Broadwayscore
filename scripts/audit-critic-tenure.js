@@ -14,13 +14,14 @@
 'use strict';
 
 const { scanReviewTexts } = require('./lib/critic-review-scan');
-const { findTenureFlags, applyReviewedTenureFlags } = require('./lib/critic-tenure');
+const { findTenureFlags, applyReviewedTenureFlags, tenureFlagKey } = require('./lib/critic-tenure');
 const { reviewed } = require('./config/critic-tenure-reviewed.json');
 
 function main() {
   const maxArg = process.argv.slice(2).find(a => a.startsWith('--max='));
-  const max = maxArg ? parseInt(maxArg.slice('--max='.length), 10) : null;
-  if (maxArg && !Number.isFinite(max)) {
+  const maxRaw = maxArg ? maxArg.slice('--max='.length) : null;
+  const max = maxRaw !== null ? Number(maxRaw) : null;
+  if (maxArg && !/^\d+$/.test(maxRaw)) {
     console.error(`Invalid ${maxArg}`);
     process.exit(2);
   }
@@ -32,7 +33,7 @@ function main() {
     const detail = f.kind === 'outside_tenure'
       ? `${f.year} outside ${f.tenure.first}-${f.tenure.last}`
       : `no verified row at this outlet`;
-    console.log(`  [${f.kind}] ${f.critic} at ${f.outlet} for ${f.showId}: ${detail}`);
+    console.log(`  [${f.kind}] ${f.critic} at ${f.outlet} for ${f.showId}: ${detail}  key=${tenureFlagKey(f)}`);
   }
   for (const e of r.stale) console.log(`  [stale reviewed entry] ${e.key}`);
   console.log(`Tenure flags: ${flags.length} unresolved, ${r.reviewed.length} reviewed, ${r.stale.length} stale, ${r.invalid.length} invalid entries (${totalFiles} files scanned)`);

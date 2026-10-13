@@ -66,17 +66,20 @@ test('verified rows and review year', () => {
 test('applyReviewedTenureFlags: evidence-backed entries resolve flags, stale and invalid entries surface', () => {
   const { applyReviewedTenureFlags, tenureFlagKey } = require('../../scripts/lib/critic-tenure.js');
   const flags = [
-    { showId: 'a-2009', file: 'variety--x.json', kind: 'unsupported_pair' },
-    { showId: 'b-2010', file: 'nytimes--y.json', kind: 'outside_tenure' },
+    { showId: 'a-2009', file: 'variety--x.json', kind: 'unsupported_pair', criticSlug: 'x' },
+    { showId: 'b-2010', file: 'nytimes--y.json', kind: 'outside_tenure', criticSlug: 'y' },
   ];
-  assert.strictEqual(tenureFlagKey(flags[0]), 'a-2009/variety--x.json');
+  assert.strictEqual(tenureFlagKey(flags[0]), 'a-2009/variety--x.json#unsupported_pair:x');
   const r = applyReviewedTenureFlags(flags, [
-    { key: 'a-2009/variety--x.json', evidence: 'https://variety.com/2009/x' },
-    { key: 'b-2010/nytimes--y.json', evidence: 'checked by hand' },
-    { key: 'gone-2001/ew--z.json', evidence: 'https://ew.com/z' },
+    { key: 'a-2009/variety--x.json#unsupported_pair:x', evidence: 'https://variety.com/2009/x' },
+    { key: 'b-2010/nytimes--y.json#outside_tenure:y', evidence: 'checked by hand' },
+    { key: 'gone-2001/ew--z.json#unsupported_pair:z', evidence: 'https://ew.com/z' },
   ]);
-  assert.deepStrictEqual(r.reviewed.map(tenureFlagKey), ['a-2009/variety--x.json']);
-  assert.deepStrictEqual(r.unresolved.map(tenureFlagKey), ['b-2010/nytimes--y.json']);
-  assert.deepStrictEqual(r.stale.map(e => e.key), ['gone-2001/ew--z.json']);
+  assert.deepStrictEqual(r.reviewed.map(tenureFlagKey), ['a-2009/variety--x.json#unsupported_pair:x']);
+  assert.deepStrictEqual(r.unresolved.map(tenureFlagKey), ['b-2010/nytimes--y.json#outside_tenure:y']);
+  assert.deepStrictEqual(r.stale.map(e => e.key), ['gone-2001/ew--z.json#unsupported_pair:z']);
   assert.strictEqual(r.invalid.length, 1);
+  // A byline change on a reviewed row reopens it.
+  const moved = applyReviewedTenureFlags([{ ...flags[0], criticSlug: 'other' }], [{ key: 'a-2009/variety--x.json#unsupported_pair:x', evidence: 'https://variety.com/2009/x' }]);
+  assert.strictEqual(moved.unresolved.length, 1);
 });
