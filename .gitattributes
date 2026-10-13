@@ -415,6 +415,14 @@ data/audit/guard-escalation-state.json merge-coverage=exempt
 data/outlet-registry.json merge-coverage=exempt
 .github/workflows/test.yml merge-coverage=exempt
 scripts/collect-review-texts.js merge-coverage=exempt
+# Re-run of the drift monitor after sweep #2 (same day) flagged three more:
+# image-sources.json (image-sources-store.js) and todaytix-ids.json
+# (fetch-show-images-auto.js loadTodayTixIds/saveTodayTixIds) are show-keyed
+# caches each run reads, updates and writes back (accumulate-state);
+# health-check.js is human-edited source.
+data/image-sources.json merge-coverage=exempt
+data/todaytix-ids.json merge-coverage=exempt
+scripts/health-check.js merge-coverage=exempt
 
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
