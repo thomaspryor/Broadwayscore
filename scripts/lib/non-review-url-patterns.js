@@ -169,6 +169,10 @@ const NON_REVIEW_PATH_PATTERNS = [
  * is excluded, not the whole host. `reason` is a stable label surfaced by
  * the S5 probe's classifyNonReviewUrl() when a candidate is named-excluded.
  */
+// Time Out New York listing capsules are NOT listed here on purpose
+// (BRO-5222): /newyork/theater/<slug> is also where 407 real reviews live, so
+// the URL cannot tell them apart. The page can: scripts/lib/timeout-capsule.js
+// is checked by the collector after fetch.
 const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)newyorkcitytheatre\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)newbrunswicktheater\.com$/, reason: 'ticketing-reseller' },

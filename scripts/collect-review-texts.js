@@ -163,6 +163,7 @@ const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve } = require('./lib/browserbase-caps');
 const { pinBrowserbaseFirst } = require('./lib/browserbase-route');
+const { classifyTimeoutPage, isTimeoutUrl } = require('./lib/timeout-capsule');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
@@ -7423,6 +7424,29 @@ async function processReview(review) {
         });
         stats.totalFailed++;
         return { success: false, error: 'url_content_mismatch', reason: sanity.reason };
+      }
+    }
+
+    // Time Out serves listing capsules and real reviews at the same URL shape;
+    // only the page tells them apart. A capsule (or review) signed by another
+    // critic, or a post-2014 listing capsule, is not this row's review
+    // (BRO-5222: once-2012, the-minutes-2022).
+    if (result.html && isTimeoutUrl(review.url) && !review._salvageUsed) {
+      const showYearMatch = String(review.showId || '').match(/-(\d{4})$/);
+      const timeoutPage = classifyTimeoutPage({
+        html: result.html,
+        critic: review.critic,
+        showYear: showYearMatch ? Number(showYearMatch[1]) : null,
+      });
+      if (timeoutPage.verdict === 'wrong_critic' || timeoutPage.verdict === 'listing_capsule') {
+        console.log(`  ✗ TIME OUT PAGE: ${timeoutPage.reason}`);
+        recordFailedFetch(review, 'url_content_mismatch', {
+          method: result.method,
+          mismatchReason: `timeout_${timeoutPage.verdict}: ${timeoutPage.reason}`,
+          textLength: result.text.length,
+        });
+        stats.totalFailed++;
+        return { success: false, error: 'url_content_mismatch', reason: timeoutPage.reason };
       }
     }
 
