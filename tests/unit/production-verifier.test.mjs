@@ -116,3 +116,31 @@ test('still flags the wrong leg phrased as a current run at the other venue', ()
   assert.ok(findOtherTourLegVenue('The tour plays the Bristol Hippodrome this week.', 'Gielgud Theatre'));
   assert.ok(findOtherTourLegVenue('It runs at Leeds Playhouse until Saturday.', 'Lyttelton Theatre (National Theatre)'));
 });
+
+// Real-corpus audit, 2026-10-13: 7 hits over 10,292 WE/OWE files. These are
+// the ones that must NOT be flagged.
+test('declared priorRuns / tourLegs venues are the same production, not another leg', () => {
+  const { declaredRunVenues } = require('../../scripts/lib/production-verifier.js');
+  const carMan = {
+    venue: "Sadler's Wells",
+    priorRuns: [{ venue: 'UK Tour pre-London (Curve Leicester, The Lowry Salford, Hull New Theatre, Milton Keynes Theatre, Theatre Royal Plymouth, Lyceum Sheffield)' }],
+  };
+  assert.equal(findOtherTourLegVenue('The Car Man runs until 27 June at Lowry, Salford, before continuing a tour.', carMan.venue, declaredRunVenues(carMan)), null);
+  assert.equal(findOtherTourLegVenue('Performances continue at Theatre Royal Plymouth until Saturday 18th July.', carMan.venue, declaredRunVenues(carMan)), null);
+  const croc = { venue: 'Lyric Hammersmith', priorRuns: [{ venue: 'Leeds Playhouse' }] };
+  assert.equal(findOtherTourLegVenue('At Leeds Playhouse until 6 January.', croc.venue, declaredRunVenues(croc)), null);
+  // Without the declaration the same sentence is another leg.
+  assert.ok(findOtherTourLegVenue('At Leeds Playhouse until 6 January.', croc.venue, []));
+});
+
+test('an "initial run ... cut short" history line is not a current run', () => {
+  const text = "Pinnock's new play, which had its initial run at the Royal Exchange Manchester cut short by the pandemic, attempts the opposite.";
+  assert.equal(findOtherTourLegVenue(text, 'Dorfman Theatre'), null);
+  assert.equal(findOtherTourLegVenue('Its run at the Royal Exchange Manchester was cut short.', 'Dorfman Theatre'), null);
+});
+
+test('gather-reviews.js routes its verifier call through verifierCategoryFor with fullText and showData', async () => {
+  const src = (await import('node:fs')).readFileSync(new URL('../../scripts/gather-reviews.js', import.meta.url), 'utf8');
+  assert.match(src, /fullText: reviewData\.fullText,/);
+  assert.match(src, /category: verifierCategoryFor\(showData, allowOffBroadway\),\s*\n\s*showData,/);
+});

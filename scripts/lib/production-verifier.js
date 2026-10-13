@@ -177,19 +177,27 @@ function currentRunAt(sentence, venueLower) {
   const v = escapeRe(venueLower);
   return new RegExp(`\\b(?:runs?|running|plays?|playing|continues?|is on|on stage)\\b[^.]{0,50}?\\buntil\\b[^.]{0,50}?\\bat (?:the )?${v}`).test(sentence)
     || new RegExp(`\\b(?:at|plays?|playing) (?:the )?${v}\\b[^.]{0,40}?\\b(?:until|till|through|this week)\\b`).test(sentence)
-    || new RegExp(`\\b(?:runs?|running|plays?|playing|continues?) at (?:the )?${v}\\b`).test(sentence);
+    || new RegExp(`\\b(?:runs|running|plays|playing|continues) at (?:the )?${v}\\b`).test(sentence);
 }
 // Framing that makes the other venue history, or the tour's next stop.
-const TOUR_FRAMING_RE = /\b(then tours?|tour continues|touring to|tours to|next stop|before touring|before heading|heads? to|moves? to|transfers? to|before transferring|transferr(?:ing|ed)|after (?:its|a|an) |following (?:its|a|an) |previously|earlier|last (?:year|spring|summer|autumn|fall|winter|season|month)|in (?:19|20)\d\d|originally|original|first (?:saw|seen|staged|produced)|premiered|on tour|staging was|production was|version|outing|revival|caught it|saw it)\b/;
+const TOUR_FRAMING_RE = /\b(then tours?|tour continues|touring to|tours to|next stop|before touring|before heading|heads? to|moves? to|transfers? to|before transferring|transferr(?:ing|ed)|after (?:its|a|an) |following (?:its|a|an) |previously|earlier|initial(?:ly)?|cut short|last (?:year|spring|summer|autumn|fall|winter|season|month)|in (?:19|20)\d\d|originally|original|first (?:saw|seen|staged|produced)|premiered|on tour|staging was|production was|version|outing|revival|caught it|saw it)\b/;
 
 /**
  * BRO-2278: on a West End / Off-West End show, find a review that names a
  * DIFFERENT UK touring/regional venue as where the production is running now,
- * without ever naming the show's own venue. Returns the matched venue and its
- * sentence, or null. Pure; exported for the corpus audit and tests.
+ * without ever naming the show's own venue or one of its declared earlier runs
+ * or tour legs (declaredVenues). Returns the matched venue and its sentence,
+ * or null. Pure; exported for the corpus audit and tests.
  */
-function findOtherTourLegVenue(text, showVenue) {
+function declaredRunVenues(showData) {
+  return [...((showData && showData.priorRuns) || []), ...((showData && showData.tourLegs) || [])].map((r) => r && r.venue);
+}
+function findOtherTourLegVenue(text, showVenue, declaredVenues = []) {
   if (!text || !showVenue) return null;
+  // Venues of the show's declared priorRuns / tourLegs are the same production
+  // by this codebase's convention (wrong-production-autoclear.js, date-guard.js):
+  // their reviews are legitimate coverage, never another leg's contamination.
+  const declared = declaredVenues.filter(Boolean).map(foldText);
   const folded = foldText(text);
   const ownCores = ownVenueCores(showVenue);
   if (!ownCores.length) return null;
@@ -203,6 +211,7 @@ function findOtherTourLegVenue(text, showVenue) {
     const lower = foldText(name).replace(/^the /, '');
     const otherCore = venueCore(name);
     if (!otherCore || ownCores.some((c) => c.includes(otherCore) || otherCore.includes(c))) continue;
+    if (declared.some((d) => d.includes(lower) || d.includes(otherCore))) continue;
     const re = new RegExp(`\\b${escapeRe(lower)}\\b`, 'g');
     for (const m of folded.matchAll(re)) {
       const sentence = sentenceAt(folded, m.index);
@@ -430,7 +439,7 @@ function verifyProduction({ showId, url, publishDate, text, fullText, showData, 
   // the show's category AND declared venue; Broadway/off-Broadway are untouched.
   const legText = fullText || text;
   if (legText && (category === 'west-end' || category === 'off-west-end') && showData && showData.venue) {
-    const otherLeg = findOtherTourLegVenue(legText, showData.venue);
+    const otherLeg = findOtherTourLegVenue(legText, showData.venue, declaredRunVenues(showData));
     if (otherLeg) {
       issues.push({
         type: 'uk_tour_leg_venue_mismatch',
@@ -510,6 +519,7 @@ function getShowData(showId) {
 module.exports = {
   verifyProduction,
   findOtherTourLegVenue,
+  declaredRunVenues,
   verifierCategoryFor,
   UK_TOURING_VENUES,
   quickDateCheck,

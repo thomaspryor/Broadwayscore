@@ -20,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { findOtherTourLegVenue } = require('./lib/production-verifier');
+const { findOtherTourLegVenue, declaredRunVenues } = require('./lib/production-verifier');
 
 const ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
@@ -51,7 +51,7 @@ function audit({ showFilter = null } = {}) {
       const text = d.fullText || d.excerpt;
       if (!text) continue;
       scanned++;
-      const m = findOtherTourLegVenue(text, show.venue);
+      const m = findOtherTourLegVenue(text, show.venue, declaredRunVenues(show));
       if (m) hits.push({ showId: show.id, file, showVenue: show.venue, matchedVenue: m.otherVenue, context: m.context });
     }
   }

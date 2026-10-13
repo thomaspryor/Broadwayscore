@@ -75,7 +75,7 @@ function fallbackOutletIdFromHost(hostname) {
   return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
 }
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
-const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
+const { verifyProduction, quickDateCheck, getShowData, verifierCategoryFor } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -3322,7 +3322,11 @@ function createReviewFile(showId, reviewData, options = {}) {
         url: reviewData.url,
         publishDate: reviewData.publishDate,
         text: reviewText,
-        category: allowOffBroadway ? 'off-broadway' : undefined
+        fullText: reviewData.fullText,
+        // UK shows get the cross-tour-leg venue check (BRO-2278); US shows keep
+        // the old value (see verifierCategoryFor).
+        category: verifierCategoryFor(showData, allowOffBroadway),
+        showData,
       });
 
       if (verification.shouldReject) {
