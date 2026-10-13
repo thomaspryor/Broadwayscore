@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
+const { matchesOutletCriticFile } = require('./lib/review-file-match');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -104,9 +105,10 @@ function findMatchingFile(showId, outletId, criticNorm) {
         return path.join(showDir, file);
       }
     }
-    // Try matching by critic name alone (outlet names vary)
+    // Same outlet family (edition variants like timeout / timeout-london), never
+    // a critic-name-only match across outlets (BRO-3943).
     for (const file of files) {
-      if (file.includes(`--${criticNorm}.json`)) {
+      if (matchesOutletCriticFile(file, outletId, criticNorm)) {
         return path.join(showDir, file);
       }
     }
