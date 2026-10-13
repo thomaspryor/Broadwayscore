@@ -1679,6 +1679,19 @@
     "queuedAt": "2026-10-13T16:29:29.040Z"
   },
   {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1772/1750 reqs) (still open — BRO-3030)",
+    "description": "Still firing after 26 notifications since it was filed. Tracked at BRO-3030.\n\nZone web_unlocker2 billed 1772 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n11 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (789), collect-review-texts.js (431), gather-reviews.js (308).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-3030",
+    "fields": [],
+    "queuedAt": "2026-10-13T16:45:36.389Z"
+  },
+  {
     "conditionKey": "land:land/bro-5256-retire-approve-broadcast",
     "title": "Landing blocked: rebase red on land/bro-5256-retire-approve-broadcast",
     "description": "land.yml did not land land/bro-5256-retire-approve-broadcast: the rebase gate went red at cae39c111c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38423251479",

@@ -834,7 +834,7 @@
       "resolvedAt": "2026-08-13T13:57:50.493Z"
     },
     "sd-circuit-breaker": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
@@ -843,24 +843,25 @@
       "lastNotifiedAt": "2026-09-06T09:46:22.709Z",
       "notifyCount": 18,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-13T16:45:36.950Z"
     },
     "bd-circuit-breaker-web_unlocker2": {
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (349/250 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1772/1750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.704Z",
       "incidentOpenedAt": "2026-10-11T01:35:25.966Z",
-      "lastSeen": "2026-10-11T01:35:25.966Z",
-      "lastNotifiedAt": "2026-10-11T01:35:25.966Z",
-      "lastSurfacedAt": "2026-10-11T01:35:25.966Z",
-      "notifyCount": 25,
+      "lastSeen": "2026-10-13T16:45:36.387Z",
+      "lastNotifiedAt": "2026-10-13T16:45:36.387Z",
+      "lastSurfacedAt": "2026-10-13T16:45:36.387Z",
+      "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
     "bd-circuit-breaker-serp_api1": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Bright Data daily breaker TRIPPED: serp_api1 (254/250 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
@@ -870,7 +871,8 @@
       "lastSurfacedAt": "2026-10-11T14:27:23.909Z",
       "notifyCount": 20,
       "cardId": null,
-      "linearIdentifier": "BRO-4950"
+      "linearIdentifier": "BRO-4950",
+      "resolvedAt": "2026-10-13T16:45:36.193Z"
     },
     "test-yml:main-streak": {
       "status": "resolved",
