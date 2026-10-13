@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T02:54:49.008Z",
+  "timestamp": "2026-10-13T03:13:20.942Z",
   "stats": {
-    "totalReviews": 56238,
-    "alreadyFlagged": 20984,
-    "dateGuardCatches": 218,
+    "totalReviews": 56244,
+    "alreadyFlagged": 20990,
+    "dateGuardCatches": 217,
     "directorMismatch": 1852,
-    "tvFilmSignals": 1624,
+    "tvFilmSignals": 1625,
     "londonSignals": 2217,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
-    "noPublishDate": 5262
+    "noPublishDate": 5257
   },
   "findings": [
     {
@@ -22900,6 +22900,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "new-statesman--rachel-cooke.json",
+      "publishDate": "2024-02-14",
+      "url": "https://www.newstatesman.com/culture/theatre/2024/02/live-aid-musical-just-for-one-day-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -46210,20 +46223,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -80274,7 +80273,7 @@
       "showId": "the-norman-conquests-2009",
       "file": "nytimes--ben-brantley.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2009-04-23",
       "url": "https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html",
       "findings": [
         {
