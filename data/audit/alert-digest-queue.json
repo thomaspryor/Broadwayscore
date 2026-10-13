@@ -1808,19 +1808,6 @@
     "queuedAt": "2026-10-13T17:47:30.793Z"
   },
   {
-    "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
-    "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
-    "description": "check-corpus-drift.js audit \"orphaned-wrongprod-provenance\" (node scripts/audit-orphaned-wrongprod-provenance.js --gate) has been drifting. Latest output:\n\nScanned 56494 files: 16 orphaned (15 baselined, 1 NEW, 5 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  cats-2016/northjerseycom--robert-feldberg.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.\n(run --update-baseline to drop 5 fixed entries)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-13T17:16:40.322Z"
-  },
-  {
     "conditionKey": "opening-night-drift:into-the-woods-noel-coward-west-end-2026",
     "title": "Opening night drift: Into the Woods (into-the-woods-noel-coward-west-end-2026)",
     "description": "Review counts do not reconcile for Into the Woods (into-the-woods-noel-coward-west-end-2026): local review-texts=74, reviews.json aggregate=31, live production=31, drift=43 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
@@ -1954,6 +1941,19 @@
       }
     ],
     "queuedAt": "2026-10-13T18:44:50.742Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
+    "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
+    "description": "check-corpus-drift.js audit \"orphaned-wrongprod-provenance\" (node scripts/audit-orphaned-wrongprod-provenance.js --gate) has been drifting. Latest output:\n\nScanned 56562 files: 16 orphaned (15 baselined, 1 NEW, 5 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  cats-2016/northjerseycom--robert-feldberg.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.\n(run --update-baseline to drop 5 fixed entries)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T19:33:47.106Z"
   },
   {
     "conditionKey": "land:land/bro-3603-3840-3125-network-timeouts-r2",
