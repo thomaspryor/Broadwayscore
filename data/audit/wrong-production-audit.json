@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-13T04:20:15.764Z",
+  "timestamp": "2026-10-13T04:33:18.350Z",
   "stats": {
     "totalReviews": 56295,
-    "alreadyFlagged": 20998,
-    "dateGuardCatches": 217,
-    "directorMismatch": 1855,
-    "tvFilmSignals": 1626,
-    "londonSignals": 2218,
+    "alreadyFlagged": 20997,
+    "dateGuardCatches": 218,
+    "directorMismatch": 1859,
+    "tvFilmSignals": 1629,
+    "londonSignals": 2232,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
     "noPublishDate": 5266
@@ -2414,6 +2414,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/american-psycho-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -9022,6 +9040,25 @@
       ]
     },
     {
+      "showId": "cruise-west-end-2021",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-cruise-duchess-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "cruise-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 99,
@@ -11100,6 +11137,19 @@
       "score": 84,
       "publishDate": "2023-10-16",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/death-of-england-closing-time-in-the-west-end-review_1625939/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24901,6 +24951,25 @@
       "file": "nytimes--matt-wolf.json",
       "score": 88,
       "publishDate": "2019-11-07",
+      "url": "https://www.nytimes.com/2019/11/07/theater/lungs-old-vic-claire-foy-matt-smith.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "lungs-west-end-2019",
+      "file": "nytimes--unknown.json",
+      "score": 77,
+      "publishDate": null,
       "url": "https://www.nytimes.com/2019/11/07/theater/lungs-old-vic-claire-foy-matt-smith.html",
       "findings": [
         {
@@ -41047,6 +41116,19 @@
     },
     {
       "showId": "the-hills-of-california-west-end-2024",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-hills-of-california-review-theatre-b2492218.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
       "file": "london-theatre--olivia-rook.json",
       "score": 94,
       "publishDate": "2024-02-08",
@@ -41196,6 +41278,19 @@
       "score": 57,
       "publishDate": "2024-02-11",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/the-hills-of-california-review-four-sisters-soar-in-new-jez-butterworth-play_1570271/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44851,6 +44946,24 @@
       ]
     },
     {
+      "showId": "the-secret-diary-of-adrian-mole-aged-13-3-4-west-end-2019",
+      "file": "britishtheatrecom--unknown.json",
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-secret-diary-of-adrian-mole-aged-13-3-4-musical-ambassadors-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-shark-is-broken-2023",
       "file": "queerty--matthew-wexler.json",
       "score": 61,
@@ -46256,6 +46369,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -57329,6 +57456,20 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2019",
+      "file": "britishtheatrecom--paul-t-davies.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-cyrano-de-bergerac-playhouse-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 90,
       "publishDate": "December 8th, 2019",
@@ -62342,6 +62483,20 @@
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 64,
       "publishDate": "2023-10-19",
+      "url": "https://www.broadwayworld.com/westend/article/Review-HAMNET-Garrick-Theatre-20231019",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-west-end-2023",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
       "url": "https://www.broadwayworld.com/westend/article/Review-HAMNET-Garrick-Theatre-20231019",
       "findings": [
         {
@@ -67788,6 +67943,19 @@
     },
     {
       "showId": "manor-west-end-2021",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/manor-review-national-theatre-b1963431.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "manor-west-end-2021",
       "file": "liamodell--liam-odell.json",
       "score": 45,
       "publishDate": "2021-11-23",
@@ -67845,6 +68013,19 @@
       "file": "times-uk--clive-davis.json",
       "score": 11,
       "publishDate": "2021-11-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/manor-review-moira-buffini-s-improbable-satire-is-breathtakingly-inept-cljd6qhdg",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "manor-west-end-2021",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/manor-review-moira-buffini-s-improbable-satire-is-breathtakingly-inept-cljd6qhdg",
       "findings": [
         {
@@ -71032,6 +71213,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "opening-night-west-end-2024",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-opening-night-gielgud-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -77364,6 +77559,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/the-comedy-about-spies-noel-coward-theatre-review-b1227551.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "theatreandtonic--unknown.json",
       "score": 82,
       "publishDate": "2026-08-09",
@@ -79896,6 +80105,20 @@
     },
     {
       "showId": "the-mirror-and-the-light-west-end-2021",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/es/posts/review-the-mirror-and-the-light-gielgud-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mirror-and-the-light-west-end-2021",
       "file": "independent--paul-taylor.json",
       "score": 96,
       "publishDate": "October 7th, 2021",
@@ -80821,6 +81044,20 @@
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 78,
+      "publishDate": "April 2nd, 2017",
+      "url": "http://www.theatermania.com/broadway/reviews/the-play-that-goes-wrong_80570.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-2017",
       "file": "thestage--mark-shenton.json",
       "score": 97,
       "publishDate": "2017-04-03",
@@ -81330,6 +81567,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-real-thing-west-end-2024",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-REAL-THING-The-Old-Vic-20240904",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -84563,6 +84813,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "what-if-if-only-west-end-2021",
+      "file": "london-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/what-if-if-only-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
