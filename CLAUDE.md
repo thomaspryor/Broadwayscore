@@ -100,7 +100,7 @@ Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full
 Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
 
 ### Commercial (`/biz`)
-Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` without citation.
+Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` without citation (a quotable forum post counts).
 
 ### Content Quality
 5 tiers: complete→truncated→excerpt→stub→invalid. Flags `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
