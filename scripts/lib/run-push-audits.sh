@@ -278,17 +278,25 @@ fi
 #     scan all of scripts/**, so they would run on nearly every push from ~20
 #     concurrent sessions and, with no --scope-stdin mode, block the pusher on
 #     someone else's violation in a shared checkout. CI-only until they can
-#     be scoped like cmux-spawn-credential above.
+#     be scoped like cmux-spawn-credential above. (nft-excluded-runtime-reads
+#     is also a whole-tree scan, but of src/ only, at 0.1s, and CI keeps main
+#     clean for it, so a hit almost always comes from the pusher's own diff.)
 #
 # workflow-hygiene and cron-health-coverage also run in scripts/hooks/pre-push's
 # inline workflow block; here they reach merge-worktree-to-main.sh too. The
 # sub-2s duplicate on a plain push is accepted, same as workflow-concurrency.
 WF_RE='^\.github/workflows/.*\.ya?ml$'
-if grep -qE "$WF_RE|^\.github/actions/.*\.ya?ml$|^scripts/audit-workflow-hygiene\.js$|^scripts/lib/(workflow-run-coverage|audit-workflow-hygiene-rules|paid-provider-push-scan)\.js$" <<<"$CHANGED_FILES"; then
+if grep -qE "$WF_RE|^\.github/actions/.*\.ya?ml$|^scripts/audit-workflow-hygiene\.js$|^scripts/lib/(workflow-run-coverage|audit-workflow-hygiene-rules|paid-provider-push-scan|github-api-budget)\.js$" <<<"$CHANGED_FILES"; then
   run_audit "workflow-hygiene" "scripts/audit-workflow-hygiene.js" || FAIL=1
 fi
 if grep -qE "$WF_RE|^scripts/audit-cron-health-coverage\.js$|^scripts/lib/(cron-coverage|health-digest-crons|cron-ordering)\.js$" <<<"$CHANGED_FILES"; then
-  run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js" || FAIL=1
+  # Same escape hatch CI honours (test.yml): a [skip-cron-audit] tag in the
+  # tip commit message skips it, so the lane never blocks what CI allows.
+  if git log -1 --format=%B 2>/dev/null | grep -Fq "[skip-cron-audit]"; then
+    [ "$LIST_ONLY" = "1" ] || echo "run-push-audits: cron-health-coverage skipped via [skip-cron-audit]"
+  else
+    run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js" || FAIL=1
+  fi
 fi
 if grep -qE "$WF_RE|^scripts/(lib/)?(audit-)?data-gate-heal-paths\.js$" <<<"$CHANGED_FILES"; then
   run_audit "data-gate-heal-paths" "scripts/audit-data-gate-heal-paths.js" || FAIL=1
