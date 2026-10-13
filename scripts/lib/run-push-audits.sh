@@ -299,7 +299,9 @@ if grep -qE "$WF_RE|^scripts/audit-cron-health-coverage\.js$|^scripts/lib/(cron-
   # A pattern match, not `| grep -q`: under pipefail an early grep exit can
   # SIGPIPE the writer and turn a match into a miss.
   _tip_msg="${PUSH_AUDITS_TIP_MESSAGE-$(git log -1 --format=%B 2>/dev/null)}"
-  if [[ "$_tip_msg" == *"[skip-cron-audit]"* ]]; then
+  # A line of its own, exactly as test.yml requires: a message that merely
+  # mentions the tag in prose must not skip the audit.
+  if grep -Fxq "[skip-cron-audit]" <<<"$_tip_msg"; then
     [ "$LIST_ONLY" = "1" ] || echo "run-push-audits: cron-health-coverage skipped via [skip-cron-audit]"
   else
     run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js" || FAIL=1

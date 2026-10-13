@@ -176,7 +176,10 @@ test('BRO-3014: narrow triggers select exactly their audit', () => {
 
 test('BRO-3014: a [skip-cron-audit] tip commit skips cron-health-coverage, like CI', () => {
   assert.ok(listAudits(['.github/workflows/x.yml']).includes('cron-health-coverage'));
-  assert.ok(!listAudits(['.github/workflows/x.yml'], 'chore: retime cron [skip-cron-audit]').includes('cron-health-coverage'));
+  assert.ok(!listAudits(['.github/workflows/x.yml'], 'chore: retime cron\n\n[skip-cron-audit]\n').includes('cron-health-coverage'));
+  // Mentioning the tag in prose (a subject or body line) must not skip it.
+  assert.ok(listAudits(['.github/workflows/x.yml'], 'chore: retime cron [skip-cron-audit]').includes('cron-health-coverage'));
+  assert.ok(listAudits(['.github/workflows/x.yml'], 'fix: honour [skip-cron-audit] like CI').includes('cron-health-coverage'));
 });
 
 test('BRO-3014: the scripts/** source scanners stay CI-only (no --scope-stdin yet)', () => {

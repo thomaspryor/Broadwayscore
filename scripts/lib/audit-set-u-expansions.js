@@ -126,7 +126,7 @@ function findArrayFindings(src) {
     // Match on the comment-stripped line with (( )) arithmetic removed, so a
     // `<<NAME` in a trailing comment or a `(( x << n ))` shift cannot open a
     // heredoc that never closes.
-    const hd = heredoc ? null : line.replace(/\(\([^()]*\)\)/g, '').match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
+    const hd = heredoc ? null : line.replace(/\(\([^()]*\)\)/g, '').match(/<<-?\s*(['"]?|\\)([A-Za-z_][A-Za-z0-9_]*)(?:['"](?=\s|$))?/);
     line = line.replace(/\\\$/g, ''); // \$ is a literal dollar, not an expansion
     // Mask guarded forms so only bare expansions remain.
     const masked = line
@@ -139,6 +139,7 @@ function findArrayFindings(src) {
       if (annotated(lines, idx)) continue;
       out.push({ line: idx + 1, kind: 'array', name, text: raw.trim() });
     }
+    // <<'EOF', <<"EOF" and <<\EOF are all quoted (literal) heredocs.
     if (hd && !/<<</.test(raw)) heredoc = { end: hd[2], quoted: hd[1] !== '' };
   });
   return out;

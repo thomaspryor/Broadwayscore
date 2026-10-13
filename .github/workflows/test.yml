@@ -3968,7 +3968,9 @@ jobs:
         # from check-cron-health.yml, simulates 60 days of cron fires for each
         # referenced workflow, and fails if max_hours < worst real gap.
         run: |
-          if git log -1 --format=%B | grep -Fq "[skip-cron-audit]"; then
+          # The tag must be a line of its own: a commit that merely mentions it
+          # in prose skipped this audit twice in one session (BRO-3014).
+          if git log -1 --format=%B | grep -Fxq "[skip-cron-audit]"; then
             echo "::warning::cron-health coverage audit skipped via [skip-cron-audit] commit-message tag"
             exit 0
           fi
@@ -5288,10 +5290,15 @@ jobs:
           [ -f "$before" ] || { echo "No snapshot; skipping."; exit 0; }
           after="$RUNNER_TEMP/audit-after.txt"
           find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$after" || true
-          new=$(comm -13 <(sort "$before") <(sort "$after") | awk '{print $2}')
+          # comm -3: changed, created AND deleted files; strip the hash, keep
+          # the whole path (spaces included).
+          new=$(comm -3 <(sort "$before") <(sort "$after") | sed -E 's/^\t?[0-9a-f]{64}  //' | sort -u)
           if [ -n "$new" ]; then
             echo "::warning::Unit tests wrote to production ledgers under data/audit:"
-            echo "$new"
+            # mtime per file: match it to the step timestamps above to find the writer.
+            while IFS= read -r f; do
+              if [ -e "$f" ]; then echo "$f (modified $(date -u -r "$f" +%H:%M:%S) UTC)"; else echo "$f (deleted)"; fi
+            done <<< "$new"
             echo "Isolate the test: redirect the ledger path to a tmp dir (see BRO-2656)."
           else
             echo "OK: no test wrote to data/audit."

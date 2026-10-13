@@ -49,6 +49,29 @@ function run(input, { env = {}, home = freshHome(), cwd = REPO_ROOT, script = AD
   return { status: r.status, stdout: r.stdout || '', stderr: r.stderr || '', seen, home };
 }
 
+// Scratch repo: origin/main plus a 'work' branch committing src/app/page.tsx,
+// with the gate's libs copied in. Built once; tests leave it on 'work'.
+let repoMemo = null;
+function scratchRepo() {
+  if (repoMemo) return repoMemo;
+  const origin = path.join(scratch, 'origin.git');
+  const repo = path.join(scratch, 'repo');
+  execFileSync('git', ['init', '-q', '--bare', '-b', 'main', origin]);
+  execFileSync('git', ['init', '-q', '-b', 'main', repo]);
+  const git = (...a) => execFileSync('git', ['-C', repo, '-c', 'user.email=t@e', '-c', 'user.name=t', ...a], { encoding: 'utf8' });
+  fs.mkdirSync(path.join(repo, 'scripts'));
+  fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(repo, 'scripts', 'lib'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'README.md'), 'x');
+  git('add', '-A'); git('commit', '-q', '-m', 'base');
+  git('remote', 'add', 'origin', origin); git('push', '-q', 'origin', 'main');
+  git('checkout', '-q', '-b', 'work');
+  fs.mkdirSync(path.join(repo, 'src', 'app'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'src', 'app', 'page.tsx'), 'export default 1');
+  git('add', '-A'); git('commit', '-q', '-m', 'ui');
+  repoMemo = { repo, git };
+  return repoMemo;
+}
+
 test('UI files in a Broadwayscore MCP push run the gate with a git-push-shaped input', () => {
   const r = run(ui());
   assert.equal(r.status, 0, 'advisory: never blocks');
@@ -78,12 +101,33 @@ test('enforce mode (env or HOME file) passes the gate block through as exit 2', 
   assert.equal(run(ui(), { home }).status, 2);
 });
 
-test('gate passing means silence, in either mode', () => {
+test('gate passing means silence, in either mode, when the UI files are in this checkout\'s commits', () => {
+  const { repo } = scratchRepo();
   for (const env of [{ STUB_RC: '0' }, { STUB_RC: '0', MCP_PUSH_GATES_ENFORCE: '1' }]) {
-    const r = run(ui(), { env });
+    const r = run(ui(), { env, cwd: repo });
     assert.equal(r.status, 0);
     assert.equal(r.stdout, '');
   }
+});
+
+test('gate passes but the payload carries UI files this checkout never committed: reported (ship-check finding)', () => {
+  const { repo } = scratchRepo();
+  const unseen = ui({ files: [{ path: 'src/app/page.tsx' }, { path: 'src/components/New.tsx' }] });
+  const adv = run(unseen, { env: { STUB_RC: '0' }, cwd: repo });
+  assert.equal(adv.status, 0);
+  assert.match(JSON.parse(adv.stdout).hookSpecificOutput.additionalContext, /not in this checkout's commits.*src\/components\/New\.tsx/);
+  const enf = run(unseen, { env: { STUB_RC: '0', MCP_PUSH_GATES_ENFORCE: '1' }, cwd: repo });
+  assert.equal(enf.status, 2);
+  assert.match(enf.stderr, /src\/components\/New\.tsx/);
+  const bypass = run({ ...unseen, tool_input: { ...unseen.tool_input, message: 'NO-VERIFY: copy-only change, no layout touched' } },
+    { env: { STUB_RC: '0', MCP_PUSH_GATES_ENFORCE: '1' }, cwd: repo });
+  assert.equal(bypass.status, 0);
+});
+
+test('the advisory names at most 5 UI files and counts the rest', () => {
+  const many = ui({ files: Array.from({ length: 7 }, (_, i) => ({ path: `src/app/p${i}.tsx` })) });
+  const out = JSON.parse(run(many).stdout).hookSpecificOutput.additionalContext;
+  assert.match(out, /\(\+2 more\)/);
 });
 
 test('no UI files, another repo, or a non-write tool: the gate is never invoked', () => {
@@ -142,22 +186,8 @@ test('github-main-guard.sh (registered on all three MCP write tools) calls the a
   assert.equal(toMain.seen, null);
 });
 
-test('end to end with the REAL visual gate: an unverified UI commit is reported, a backend one is not', () => {
-  // Scratch repo: origin/main plus one local commit, with the gate's libs copied in.
-  const origin = path.join(scratch, 'origin.git');
-  const repo = path.join(scratch, 'repo');
-  execFileSync('git', ['init', '-q', '--bare', '-b', 'main', origin]);
-  execFileSync('git', ['init', '-q', '-b', 'main', repo]);
-  const git = (...a) => execFileSync('git', ['-C', repo, '-c', 'user.email=t@e', '-c', 'user.name=t', ...a], { encoding: 'utf8' });
-  fs.mkdirSync(path.join(repo, 'scripts'));
-  fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(repo, 'scripts', 'lib'), { recursive: true });
-  fs.writeFileSync(path.join(repo, 'README.md'), 'x');
-  git('add', '-A'); git('commit', '-q', '-m', 'base');
-  git('remote', 'add', 'origin', origin); git('push', '-q', 'origin', 'main');
-  git('checkout', '-q', '-b', 'work');
-  fs.mkdirSync(path.join(repo, 'src', 'app'), { recursive: true });
-  fs.writeFileSync(path.join(repo, 'src', 'app', 'page.tsx'), 'export default 1');
-  git('add', '-A'); git('commit', '-q', '-m', 'ui');
+test('end to end with the REAL visual gate: an unverified UI commit is reported, and so is one never committed here', () => {
+  const { repo, git } = scratchRepo();
 
   const env = { BSC_HOOK_TEST: '', MCP_PUSH_VISUAL_GATE: '' };
   const blocked = run(ui(), { cwd: repo, env });
@@ -167,6 +197,14 @@ test('end to end with the REAL visual gate: an unverified UI commit is reported,
   assert.equal(enforced.status, 2);
   assert.match(enforced.stderr, /BLOCKED: push of UI changes without a visual-qa verdict/);
 
-  git('checkout', '-q', 'main');   // local diff vs origin/main has no UI files
-  assert.equal(run(ui(), { cwd: repo, env: { ...env, MCP_PUSH_GATES_ENFORCE: '1' } }).status, 0);
+  // On main the local diff has no UI files: the gate itself passes, but the
+  // payload's page.tsx was never committed here, so it is still reported.
+  git('checkout', '-q', 'main');
+  const unseen = run(ui(), { cwd: repo, env: { ...env, MCP_PUSH_GATES_ENFORCE: '1' } });
+  git('checkout', '-q', 'work');
+  assert.equal(unseen.status, 2);
+  assert.match(unseen.stderr, /not in this checkout's commits/);
+  // A backend-only write stays silent.
+  const backend = payload('push_files', { ...BWS, branch: 'land/x', message: 'm', files: [{ path: 'scripts/x.js' }] });
+  assert.equal(run(backend, { cwd: repo, env: { ...env, MCP_PUSH_GATES_ENFORCE: '1' } }).status, 0);
 });

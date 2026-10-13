@@ -3,8 +3,15 @@
 const fs = require('fs');
 const path = require('path');
 
+// Under `node --test` (NODE_TEST_CONTEXT is set by the runner, never in a real
+// run) the default is a per-process temp dir: tests reach logExclusion through
+// review-guards and friends and used to append synthetic rows to the real
+// data/audit/exclusions-<date>.jsonl (BRO-2664; caught by test.yml's ledger
+// isolation check). An explicit EXCLUSION_LOGGER_AUDIT_DIR always wins.
 const AUDIT_DIR = process.env.EXCLUSION_LOGGER_AUDIT_DIR
-  || path.join(__dirname, '../../data/audit');
+  || (process.env.NODE_TEST_CONTEXT
+    ? path.join(require('os').tmpdir(), `exclusion-logger-test-${process.pid}`)
+    : path.join(__dirname, '../../data/audit'));
 
 const MAX_DETAILS_BYTES = 1024;
 

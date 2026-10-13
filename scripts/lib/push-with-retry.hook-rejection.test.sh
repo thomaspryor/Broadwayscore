@@ -5,6 +5,10 @@
 # remote, real failing pre-push hook. A hook whose text says "non-fast-forward"
 # is a recoverable race and must still be retried.
 set -uo pipefail
+# BRO-2664: no case may append to the real data/audit/push-retry-failures.jsonl
+# (push-with-retry.sh logs failures there in CI). The script only appends
+# (>>), so /dev/null is safe; cases that read the log set their own path.
+export PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-/dev/null}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET="$SCRIPT_DIR/push-with-retry.sh"
 fails=0

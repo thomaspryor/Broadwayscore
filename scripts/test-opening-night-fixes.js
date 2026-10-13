@@ -11,6 +11,16 @@
  * See: scripts/lib/review-guards.js
  */
 
+// hygiene-help-flag-ok: test script; its only fs write is its own temp dir (BRO-2664)
+// BRO-2664: review-guards' exclusion logger appends to
+// data/audit/exclusions-<date>.jsonl; keep this run's rows in a temp dir.
+if (!process.env.EXCLUSION_LOGGER_AUDIT_DIR) {
+  const os = require('os');
+  const fs = require('fs');
+  const path = require('path');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'exclusions-'));
+  process.on('exit', () => fs.rmSync(process.env.EXCLUSION_LOGGER_AUDIT_DIR, { recursive: true, force: true }));
+}
 const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, evaluateShowMentionGuard, pickShowTitleForHeuristic, buildShowKeywordSet, findShowKeywordInText, pickRerouteTarget } = require('./lib/review-guards');
 
 let passed = 0;

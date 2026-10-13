@@ -89,6 +89,11 @@ test('BRO-5261 retro-review: a file sourced by a set -u script inherits nounset 
   assert.deepEqual(auditSource(lib, { inheritsSetU: true }).map((f) => f.kind), ['array']);
 });
 
+test('<<\EOF is a quoted heredoc: its body is literal', () => {
+  assert.deepEqual(auditSource(`${SETU}a=()\ncat <<\\EOF\n\${a[@]}\nEOF\n`), []);
+  assert.equal(auditSource(`${SETU}a=()\ncat <<\\EOF\nx\nEOF\necho "\${a[@]}"\n`).length, 1, 'scan resumes after the heredoc');
+});
+
 test('the live repo is clean: every set -u site is guarded or annotated (regression lock)', () => {
   const lines = [];
   const rc = main(['--strict'], { repoRoot: REPO_ROOT, log: (l) => lines.push(l) });

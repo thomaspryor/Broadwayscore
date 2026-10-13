@@ -49,8 +49,10 @@ repo=${repo%.git}
 [ "$owner/$repo" = "thomaspryor/broadwayscore" ] || exit 0
 
 paths=$(printf '%s' "$input" | jq -r '(.tool_input.files // [] | .[]? | .path // empty), (.tool_input.path // empty)' 2>/dev/null)
-ui_files=$(printf '%s\n' "$paths" | sed 's#^/##' | grep -E "$UI_PATTERN" | head -5)
-[ -z "$ui_files" ] && exit 0
+ui_all=$(printf '%s\n' "$paths" | sed 's#^/##' | grep -E "$UI_PATTERN" | sort -u)
+[ -z "$ui_all" ] && exit 0
+ui_count=$(printf '%s\n' "$ui_all" | grep -c .)
+ui_files=$(printf '%s\n' "$ui_all" | head -5)
 
 branch=$(printf '%s' "$input" | jq -r '.tool_input.branch // empty' 2>/dev/null | tr -d '[:space:]')
 branch=${branch#refs/}; branch=${branch#heads/}
@@ -81,13 +83,23 @@ synthetic=$(printf '%s' "$input" | jq -c --arg cmd "$cmd" \
 
 gate_err=$(printf '%s' "$synthetic" | bash "$GATE" 2>&1 >/dev/null)
 gate_rc=$?
-[ "$gate_rc" -eq 2 ] || exit 0
+if [ "$gate_rc" -ne 2 ]; then
+  # The gate judges this checkout's commits (origin/main...HEAD). UI files the
+  # payload carries that are NOT among them were never seen by any visual-QA
+  # verdict, so a gate pass says nothing about them (ship-check finding).
+  # Unknown base (no origin/main) keeps the old fail-open behaviour.
+  local_diff=$(git diff --name-only origin/main...HEAD 2>/dev/null) || exit 0
+  unseen=$(comm -23 <(printf '%s\n' "$ui_all") <(printf '%s\n' "$local_diff" | sort -u) | head -5)
+  [ -n "$unseen" ] && [ -z "$no_verify" ] || exit 0
+  gate_err="UI file(s) in this write are not in this checkout's commits, so no visual-QA verdict covers them: $(printf '%s' "$unseen" | tr '\n' ' ')"
+fi
 
 if [ "${MCP_PUSH_GATES_ENFORCE:-0}" = "1" ] || [ -e "$HOME/.claude/MCP_PUSH_GATES_ENFORCE" ]; then
   printf '%s\n' "$gate_err" >&2
   exit 2
 fi
 files_line=$(printf '%s' "$ui_files" | tr '\n' ' ')
+[ "$ui_count" -gt 5 ] && files_line="$files_line(+$((ui_count - 5)) more)"
 msg="ADVISORY (BRO-2394, not blocking yet): this GitHub-tool write to $branch carries UI files ($files_line) and the visual-QA push gate would block the same git push. Run /visual-qa before landing, or put NO-VERIFY: <reason> in the commit message. Gate said: $gate_err"
 { mkdir -p "$HOME/.claude/logs" && printf '%s\t%s\t%s\t%s\n' "$(date -u +%FT%TZ)" "$tool_name" "$branch" "$files_line" \
     >> "$HOME/.claude/logs/mcp-push-visual-gate.log"; } 2>/dev/null

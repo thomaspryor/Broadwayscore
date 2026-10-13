@@ -57,7 +57,9 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO = path.join(__dirname, '..', '..');
-const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'intake-ledger.jsonl');
+// INTAKE_LEDGER_PATH redirects the ledger (tests only): linear-issue-create's
+// test drives the real recordCreated() and created this file in CI (BRO-2664).
+const LEDGER_PATH = process.env.INTAKE_LEDGER_PATH || path.join(REPO, 'data', 'audit', 'intake-ledger.jsonl');
 const DISABLE_ENV = 'INTAKE_BREAKER_DISABLED';
 
 // Sized from the measurement, not from taste: mean real intake is 34.3/day and
