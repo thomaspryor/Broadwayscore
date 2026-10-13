@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-13T19:57:26.539Z",
+  "generatedAt": "2026-10-13T20:07:29.898Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 4,
+    "newlyFlagged": 4,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 4,
+    "avgSimilarity": 100,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -96,7 +96,56 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "AP wire",
+      "showId": "of-mice-and-men-2014",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "wsj",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "wsj--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    },
+    {
+      "critic": "AP wire",
+      "showId": "pippin-2013",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "wsj",
+      "primaryFile": "ap--associated-press.json",
+      "secondaryFile": "wsj--associated-press.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    },
+    {
+      "critic": "AP wire",
+      "showId": "the-glass-menagerie-2013",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "wsj",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "wsj--terry-teachout.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    },
+    {
+      "critic": "AP wire",
+      "showId": "the-realistic-joneses-2014",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "wsj",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "wsj--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

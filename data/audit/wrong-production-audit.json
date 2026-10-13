@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-13T20:04:11.740Z",
+  "timestamp": "2026-10-13T20:13:05.285Z",
   "stats": {
     "totalReviews": 56437,
     "alreadyFlagged": 21038,
     "dateGuardCatches": 212,
     "directorMismatch": 1874,
-    "tvFilmSignals": 1642,
+    "tvFilmSignals": 1643,
     "londonSignals": 2237,
     "offBroadwaySignals": 510,
     "yearMismatch": 139,
@@ -44014,6 +44014,19 @@
       "score": 42,
       "publishDate": "2017-11-30",
       "url": "https://www.washingtonpost.com/lifestyle/is-the-real-washington-this-much-of-a-snooze/2017/11/30/074c901c-d5f0-11e7-9461-ba77d604373d_story.html?utm_term=.e11772c96ae9",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "November 30th, 2017",
+      "url": "https://www.wsj.com/articles/the-parisian-woman-review-a-broadway-debut-lacking-in-star-quality-1512091800",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
