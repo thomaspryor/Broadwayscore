@@ -794,6 +794,10 @@ function ensureTab() {
     // running this very script — never SIGTERM an unrelated process.
     const staleCodePid = existing && codeVerdict.stale && hb && hb.pid && hb.pid !== process.pid
       && hb.mode !== 'starting' && age !== null && age < HEARTBEAT_STALE_MS
+      // A code-identity-less heartbeat is only stale if the replacement will run
+      // code that writes one: createTab launches the main checkout's script, so
+      // a worktree copy must not retire it (would re-kill the same old code).
+      && (codeVerdict.reason !== 'legacy-no-code-identity' || path.resolve(__dirname) === path.resolve(REPO, 'scripts'))
       && pidAlive(hb.pid) && pidRunsWatchdog(hb.pid) ? hb.pid : null;
     if (staleCodePid) {
       // We hold the lock, so the dashboard is not inside executeSweep (it only
@@ -916,7 +920,9 @@ function codeChangedOnDisk() {
 async function dashboardLoop() {
   let lastTitle = '';
   refreshCodeBaseline();
-  process.on('SIGTERM', () => { releaseLock(); process.exit(0); });
+  // Exit RESTART_EXIT_CODE so the tab launcher relaunches (on the code now on
+  // disk) even when ensureTab's 10s wait timed out and gave up on this pid.
+  process.on('SIGTERM', () => { releaseLock(); process.exit(staleCode.RESTART_EXIT_CODE); });
   process.on('SIGINT', () => { releaseLock(); process.exit(0); });
   for (;;) {
     // BRO-3390: refresh the Linear source before each sweep. Awaited inside
