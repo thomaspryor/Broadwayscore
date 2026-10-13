@@ -149,6 +149,7 @@ function getNytCriticsPicks() {
   return _nytCriticsPicks;
 }
 const { isLondonMarket } = require('./lib/venue-classification');
+const { isUrlCorrectedRefetch, mayShortCircuitCollected } = require('./lib/url-corrected-refetch');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { resolveShowIdentity } = require('./lib/show-identity');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
@@ -6331,7 +6332,7 @@ function findReviewsToProcess() {
         // wrongShow cooldown, unfetched, with the preview author's byline frozen in
         // (girl-interrupted 2026-06-05). When set, bypass the wrong-content cooldown
         // AND the "already has good text" short-circuit below.
-        const urlCorrectedRefetch = data.needsRefetch === true && !!data.urlCorrectedFrom;
+        const urlCorrectedRefetch = isUrlCorrectedRefetch(data);
         // Set before the gate so the wrong_content-filtered pass also fetches a
         // dateless-revival hold's stored url instead of SERP-rediscovering it.
         if (shouldRetryDatelessHoldFetch(data)) data._datelessDateRetry = true;
@@ -6437,15 +6438,20 @@ function findReviewsToProcess() {
           // Skip complete reviews even if they appear in failedFetches — the failure entry is stale
           // from URL discovery before a different source (Theatre Record, WET, etc.) provided full text.
           // Prevents wasted Browserbase sessions on reviews that don't need re-collection.
-          if ((data.contentTier === 'complete' || data.textQuality === 'full') && !isTruncated && !hasGarbageText && !data._datelessDateRetry) {
-            continue;
-          }
           // Guard: never re-fetch a review that has an assigned score + reasonable text, even if it
           // appears in failedFetches. Re-collection can destroy live scored reviews by fetching garbage
           // and triggering LLM rejection flags that null fullText and delete assignedScore.
           // Override: explicit reviewFilter (specific file targeting) bypasses this guard.
           // Override: truncated reviews always need re-collection (scored on partial text is wrong).
-          if (!isTruncated && shouldSkipScoredReview(data, CONFIG.reviewFilter.size)) {
+          // BRO-5231: neither skip applies to a URL-corrected review, its complete-looking
+          // text and score belong to the OLD url (decision lives in lib/url-corrected-refetch.js).
+          if (mayShortCircuitCollected(data, {
+            isTruncated,
+            hasGarbageText,
+            datelessDateRetry: !!data._datelessDateRetry,
+            completeSkip: data.contentTier === 'complete' || data.textQuality === 'full',
+            scoredSkip: shouldSkipScoredReview(data, CONFIG.reviewFilter.size),
+          })) {
             continue;
           }
         }
