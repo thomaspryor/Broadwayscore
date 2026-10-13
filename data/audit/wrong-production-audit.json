@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T06:20:19.157Z",
+  "timestamp": "2026-10-13T06:50:27.231Z",
   "stats": {
     "totalReviews": 56295,
-    "alreadyFlagged": 21003,
-    "dateGuardCatches": 217,
-    "directorMismatch": 1859,
+    "alreadyFlagged": 21005,
+    "dateGuardCatches": 218,
+    "directorMismatch": 1860,
     "tvFilmSignals": 1638,
-    "londonSignals": 2232,
+    "londonSignals": 2233,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5256
+    "noPublishDate": 5250
   },
   "findings": [
     {
@@ -2436,6 +2436,24 @@
       "file": "london-theatre--unknown.json",
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/american-psycho-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2026-02-02",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/american-psycho-almeida-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46467,6 +46485,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
