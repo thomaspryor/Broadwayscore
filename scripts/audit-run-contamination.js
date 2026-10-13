@@ -46,6 +46,7 @@ const ROOT = path.join(__dirname, '..');
 const ARGV = process.argv.slice(2);
 const argVal = (n) => { const a = ARGV.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
 const JSON_OUT = ARGV.includes('--json');
+const DETAIL = ARGV.includes('--detail'); // full class-5 url groups for triage (BRO-5239)
 const ONLY = argVal('class') ? new Set(argVal('class').split(',').map(Number)) : null;
 const TODAY = argVal('today') || new Date().toISOString().slice(0, 10);
 const RECENT_SINCE = '2026-06-01';
@@ -156,6 +157,9 @@ function class2(ctx) {
     if (!s) continue;
     const earliest = earliestShowDate(s);
     if (!earliest) continue;
+    // A month-only date ("2026-09") has no day, so it reads as the 1st: it is pre-window
+    // only when the whole month precedes the show's earliest date (BRO-5239).
+    if (/^\d{4}-\d{2}$/.test(String(r.publishDate)) && String(r.publishDate) >= earliest.slice(0, 7)) continue;
     const days = daysBetween(earliest, r.publishDate);
     if (days <= 1) continue;
     const f = matchFile(r, files.get(r.showId));
@@ -263,6 +267,7 @@ function class5(ctx) {
   return {
     sameUrlTwoShows: multi.length,
     sameUrlSample: multi.slice(0, 8).map(([u, set]) => `${u.slice(0, 70)} -> ${[...set].join(' | ')}`),
+    ...(DETAIL ? { sameUrlAll: multi.map(([u, set]) => ({ url: u, shows: [...set].sort(), rows: rows.filter((r) => r.url && canon(r.url) === u && !r.inheritedFromShowId).map((r) => ({ showId: r.showId, outletId: r.outletId, criticName: r.criticName, publishDate: r.publishDate })) })) } : {}),
     urllessBesideUrl: urlless.length,
     urllessShows: urllessShows.size,
     urllessRows: urlless,

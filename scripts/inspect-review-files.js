@@ -15,7 +15,8 @@ exitOnHelp(module);
 
 const ARGV = process.argv.slice(2);
 const val = (n) => { const a = ARGV.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3).split(',') : null; };
-const shows = val('show');
+const class7 = ARGV.includes('--class7'); // the audit's class-7 candidates, with rating context
+const shows = val('show') || (class7 ? fs.readdirSync(path.join(__dirname, '..', 'data', 'review-texts')) : null);
 const outlets = val('outlet');
 const fileSub = val('file');
 if (!shows) { console.error('usage: inspect-review-files.js --show=a,b [--outlet=x] [--file=sub]'); process.exit(2); }
@@ -31,6 +32,15 @@ for (const show of shows) {
     let r;
     try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
     if (outlets && !outlets.includes(r.outletId)) continue;
+    if (class7) {
+      const t = String(r.fullText || '');
+      const ev = /\b[0-5](?:\.5)?\s*(?:\/|out of|-)\s*5\b|\bstars?\b|★|☆|five-star|four-star|three-star/i.test(t);
+      if (r.originalScoreSource !== 'numeric-stars' || !r.originalScore || ev || r.humanReviewScore) continue;
+      if (r.wrongProduction && !r.wrongProductionManualClear && !r.wrongProductionOverride) continue;
+      const m = /[^\n]{0,80}\d\s*(?:\/|of)\s*\d[^\n]{0,80}/.exec(t);
+      console.log(JSON.stringify({ show, file: f, outletId: r.outletId, originalScore: r.originalScore, scoreSource: r.scoreSource, len: t.length, ctx: m ? m[0] : null, head: t.replace(/\s+/g, ' ').slice(0, 120) }));
+      continue;
+    }
     const flags = {};
     for (const k of FLAGS) if (r[k] !== undefined && r[k] !== null && r[k] !== false) flags[k] = r[k];
     console.log(JSON.stringify({

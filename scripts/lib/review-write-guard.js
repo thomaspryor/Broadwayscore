@@ -598,10 +598,18 @@ const WRONG_PRODUCTION_CLEAR_MARKERS = [
  * a legacy machine stamp (The Car Man, Daily Echo). Only script/legacy-machine clears yield to
  * a later flag.
  */
+// One-shot batch clears stamp their script's bare name or a dated label instead of
+// "<file>.js" (BRO-5239): both are machine clears, so a later human flag must win.
+const SCRIPT_CLEAR_SET_BY = new Set([
+  'clear-own-venue-tour-fps-2026-10',
+  'reverify-era-venue-wrongprod',
+  'clear-we-longrunner-fps-2026-04-24',
+]);
+
 function isScriptWrongProductionClear(d) {
   if (!d) return false;
   const by = typeof d.wrongProductionOverrideSetBy === 'string' ? d.wrongProductionOverrideSetBy.trim() : '';
-  if (by) return /\.js\b/.test(by);
+  if (by) return /\.js\b/.test(by) || SCRIPT_CLEAR_SET_BY.has(by);
   return d.wrongProductionManualClear !== true;
 }
 

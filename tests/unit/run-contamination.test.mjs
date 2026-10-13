@@ -133,3 +133,10 @@ test('legacy Override with no setBy yields to a later plan flag (The Car Man, Da
   const dino = { wrongProduction: true, wrongProductionManualClear: true, approvedFixes: [{ field: 'wrongProduction', at: '2026-09-30T00:00:00Z' }] };
   assert.equal(rc.humanFlagOutranksScriptClear(dino), false);
 });
+
+test('batch-script setBy labels without .js count as script clears; owner does not (BRO-5239)', () => {
+  for (const by of ['clear-own-venue-tour-fps-2026-10', 'reverify-era-venue-wrongprod', 'clear-we-longrunner-fps-2026-04-24', 'x.js']) {
+    assert.equal(guard.isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by }), true, by);
+  }
+  assert.equal(guard.isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'owner' }), false);
+});
