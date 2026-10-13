@@ -6,7 +6,7 @@
     "name": null,
     "email": null
   },
-  "status": "pending",
+  "status": "applied",
   "plan": {
     "summary": "BRO-5232 p: undo a weekly-refresh byline overwrite on Side Show (Time Out, Adam Feldman) and flag three earlier-production reviews the refresh filed under new show ids.",
     "steps": [
@@ -72,5 +72,43 @@
         "description": "Earlier production. Review published March 31, 2014 of an earlier production; filed under heathers-the-musical-2025 by the 2026-10-13 weekly review refresh, which matched an older DTLI page by title. Article: http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T20:20:51.662Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "side-show-2014/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-2026/nytimes--charles-isherwood.json wrongProductionReason: null -> \"Review published January 10, 2013 of an earlier production; filed under the-other-place-2026 by the 2026-10-13 weekly review refresh, which matched an older DTLI page by title. Article: http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html?_r=0\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-2026/nytimes--charles-isherwood.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "you-got-older-2026/nytimes--charles-isherwood.json wrongProductionReason: null -> \"Review published November 7, 2014 of an earlier production; filed under you-got-older-2026 by the 2026-10-13 weekly review refresh, which matched an older DTLI page by title. Article: http://www.nytimes.com/2014/11/08/theater/clare-barrons-you-got-older-at-here-arts-center.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "you-got-older-2026/nytimes--charles-isherwood.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json wrongProductionReason: null -> \"Review published March 31, 2014 of an earlier production; filed under heathers-the-musical-2025 by the 2026-10-13 weekly review refresh, which matched an older DTLI page by title. Article: http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json wrongProduction: null -> true"
+    }
+  ]
 }
