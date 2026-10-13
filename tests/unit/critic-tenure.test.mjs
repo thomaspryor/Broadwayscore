@@ -62,3 +62,21 @@ test('verified rows and review year', () => {
   assert.equal(reviewYear('once-2012', {}), 2012);
   assert.equal(reviewYear('no-year', {}), null);
 });
+
+test('applyReviewedTenureFlags: evidence-backed entries resolve flags, stale and invalid entries surface', () => {
+  const { applyReviewedTenureFlags, tenureFlagKey } = require('../../scripts/lib/critic-tenure.js');
+  const flags = [
+    { showId: 'a-2009', file: 'variety--x.json', kind: 'unsupported_pair' },
+    { showId: 'b-2010', file: 'nytimes--y.json', kind: 'outside_tenure' },
+  ];
+  assert.strictEqual(tenureFlagKey(flags[0]), 'a-2009/variety--x.json');
+  const r = applyReviewedTenureFlags(flags, [
+    { key: 'a-2009/variety--x.json', evidence: 'https://variety.com/2009/x' },
+    { key: 'b-2010/nytimes--y.json', evidence: 'checked by hand' },
+    { key: 'gone-2001/ew--z.json', evidence: 'https://ew.com/z' },
+  ]);
+  assert.deepStrictEqual(r.reviewed.map(tenureFlagKey), ['a-2009/variety--x.json']);
+  assert.deepStrictEqual(r.unresolved.map(tenureFlagKey), ['b-2010/nytimes--y.json']);
+  assert.deepStrictEqual(r.stale.map(e => e.key), ['gone-2001/ew--z.json']);
+  assert.strictEqual(r.invalid.length, 1);
+});
