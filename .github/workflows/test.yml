@@ -1616,6 +1616,7 @@ on:
       # exemptions). Unlisted until 2026-08-01, so an edit to the exempt map
       # shipped with ZERO CI — exactly the hole this allow-list exists to close.
       - 'scripts/audit-orphan-tests.js'
+      - 'scripts/audit-orphaned-audit-writes.js'
       - 'scripts/audit-orphan-tests.test.mjs'
       # BRO-3431 reopen: root-level scripts/*.js + *.test.mjs pair, no
       # scripts/** broad glob covers it.
