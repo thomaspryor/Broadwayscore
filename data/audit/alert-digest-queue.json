@@ -1918,5 +1918,41 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-13T18:12:08.277Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Weekly Video Reviews",
+    "title": "Cron's latest run failed (not yet stale): Weekly Video Reviews",
+    "description": "Weekly Video Reviews: Latest run failed (last success 186h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38449070858",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38449070858)"
+      }
+    ],
+    "queuedAt": "2026-10-13T18:44:50.728Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Mezzanine",
+    "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
+    "description": "Update Mezzanine: Latest run failed (last success 2h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38449070858",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38449070858)"
+      }
+    ],
+    "queuedAt": "2026-10-13T18:44:50.742Z"
   }
 ]
