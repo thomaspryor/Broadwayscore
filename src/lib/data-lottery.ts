@@ -4,9 +4,12 @@
 import type { ShowLotteryRush } from './data-types';
 import lotteryRushData from '../../data/lottery-rush.json';
 import showsData from '../../data/shows.json';
+import { ticketPolicyCheckedAt } from './lottery-rush-freshness';
 
 interface LotteryRushFile {
   lastUpdated: string;
+  /** Last successful scrape, stamped even when no policy changed (BRO-5261). */
+  lastCheckedAt?: string;
   source: string;
   shows: Record<string, ShowLotteryRush>;
 }
@@ -45,10 +48,12 @@ export function hasLotteryOrRush(showId: string): { hasLottery: boolean; hasRush
 }
 
 /**
- * Get lottery/rush data last updated timestamp
+ * When the lottery/rush data was last confirmed current: the last successful
+ * scrape (lastCheckedAt), falling back to the last change (lastUpdated).
+ * Drives the pages' "Updated" line and the staleness banner (BRO-901/5261).
  */
 export function getLotteryRushLastUpdated(): string {
-  return lotteryRush.lastUpdated;
+  return ticketPolicyCheckedAt(lotteryRush);
 }
 
 /**

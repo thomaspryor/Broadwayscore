@@ -140,7 +140,9 @@ describe('every ticket-discovery page renders the banner', () => {
       assert.match(m[0], new RegExp(`market="${market}"`));
       // Above the fold: right under the title block, before the page body.
       const bannerAt = src.indexOf(m[0]);
-      assert.ok(bannerAt > src.indexOf('<h1'), 'banner after the title');
+      const h1At = src.indexOf('<h1');
+      assert.notEqual(h1At, -1, `${page} has no <h1>; place the banner under the page title`);
+      assert.ok(bannerAt > h1At, 'banner after the title');
       const nav = src.indexOf('<DiscountTicketsNav');
       if (nav !== -1) assert.ok(bannerAt < nav, 'banner before the page nav');
     });
@@ -150,5 +152,61 @@ describe('every ticket-discovery page renders the banner', () => {
     assert.match(src, /<DataStalenessBanner[^>]*kind="grosses"/);
     // Measured from the covered week, not just the last scrape.
     assert.match(src, /<DataStalenessBanner[^>]*weekEnding=\{weekEnding\}/);
+  });
+});
+
+// BRO-5261: ticket-policy freshness keys on the last successful check, not the
+// last policy change, so a healthy feed with nothing new never warns.
+import { createRequire } from 'node:module';
+import { ticketPolicyCheckedAt } from '../../src/lib/lottery-rush-freshness.ts';
+const requireCjs = createRequire(import.meta.url);
+const { isFullCheck, stampCheckOnly } = requireCjs('../../scripts/lib/lottery-rush-check.js');
+
+describe('ticket-policy freshness keys on lastCheckedAt (BRO-5261)', () => {
+  const th = STALENESS_THRESHOLD_DAYS['ticket-policies'];
+  test('a recent check wins over an old lastUpdated: no banner', () => {
+    const asOf = ticketPolicyCheckedAt({ lastUpdated: daysAgo(21), lastCheckedAt: daysAgo(1) });
+    assert.equal(staleDays(asOf, th, NOW), null);
+  });
+  test('falls back to lastUpdated for files written before lastCheckedAt existed', () => {
+    assert.equal(ticketPolicyCheckedAt({ lastUpdated: daysAgo(9) }), daysAgo(9));
+    assert.equal(ticketPolicyCheckedAt({ lastUpdated: daysAgo(9), lastCheckedAt: null }), daysAgo(9));
+    assert.equal(staleDays(ticketPolicyCheckedAt({ lastUpdated: daysAgo(9) }), th, NOW), 9);
+  });
+  test('a dead feed still warns', () => {
+    assert.equal(staleDays(ticketPolicyCheckedAt({ lastUpdated: daysAgo(30), lastCheckedAt: daysAgo(10) }), th, NOW), 10);
+  });
+  test('no dates at all gives no banner, not an invented age', () => {
+    assert.equal(staleDays(ticketPolicyCheckedAt({}), th, NOW), null);
+  });
+  test('the pages read the check date through getLotteryRushLastUpdated()', () => {
+    const src = readFileSync('src/lib/data-lottery.ts', 'utf8');
+    assert.match(src, /getLotteryRushLastUpdated\(\): string \{\s*return ticketPolicyCheckedAt\(lotteryRush\);/);
+  });
+});
+
+describe('scraper check stamp (scripts/lib/lottery-rush-check.js)', () => {
+  const all = { bwayrush: true, playbill: true, twopenny: true };
+  test('a full run where every source answered is a check', () => {
+    assert.equal(isFullCheck(undefined, all), true);
+  });
+  test('a source that came back empty is not a check', () => {
+    assert.equal(isFullCheck(undefined, { ...all, playbill: false }), false);
+    assert.equal(isFullCheck(undefined, { bwayrush: true, twopenny: true }), false);
+  });
+  test('a --source partial run is not a check', () => {
+    assert.equal(isFullCheck('bwayrush', all), false);
+  });
+  test('no-change stamp keeps the file and lastUpdated, adds lastCheckedAt', () => {
+    const snap = { lastUpdated: '2026-10-01T10:00:00.000Z', source: 'x', shows: { a: { rush: { price: 30 } } } };
+    const out = stampCheckOnly(snap, '2026-10-12T10:00:00.000Z');
+    assert.deepEqual(out, { ...snap, lastCheckedAt: '2026-10-12T10:00:00.000Z' });
+    assert.equal(snap.lastCheckedAt, undefined, 'snapshot not mutated');
+  });
+  test('the scraper writes the stamp on a no-change full check, and only then', () => {
+    const src = readFileSync('scripts/scrape-lottery-rush.js', 'utf8');
+    assert.match(src, /require\('\.\/lib\/lottery-rush-check'\)/);
+    assert.match(src, /if \(fullCheck\) existing\.lastCheckedAt = runAt;/);
+    assert.match(src, /if \(!fullCheck\) return;\s*\/\/[^\n]*\n[^\n]*\n\s*const stamped = stampCheckOnly\(originalSnapshot, runAt\);/);
   });
 });

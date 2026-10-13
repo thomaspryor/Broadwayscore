@@ -1347,6 +1347,7 @@ function mergeIntoExisting(existing, scraped, source) {
 const { evaluateShowIdStability } = require('./lib/lottery-stability-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { isFullCheck, stampCheckOnly } = require('./lib/lottery-rush-check');
 
 const USAGE = `scrape-lottery-rush.js — Robust Lottery/Rush Data System.
 
@@ -1837,10 +1838,14 @@ async function main() {
   const originalSnapshot = JSON.parse(JSON.stringify(existing));
 
   const allChanges = [];
+  // Which sources answered with data this run (BRO-5261). A run where every
+  // source answered is a successful check even when nothing changed.
+  const sourceAnswered = {};
 
   // Scrape sources
   if (!sourceFilter || sourceFilter === 'bwayrush') {
     const bwayrushData = await scrapeBwayRush();
+    sourceAnswered.bwayrush = Object.keys(bwayrushData).length > 0;
     if (Object.keys(bwayrushData).length > 0) {
       const changes = mergeIntoExisting(existing, bwayrushData, 'bwayrush');
       allChanges.push(...changes);
@@ -1849,6 +1854,7 @@ async function main() {
 
   if (!sourceFilter || sourceFilter === 'playbill') {
     const playbillData = await scrapePlaybill();
+    sourceAnswered.playbill = Object.keys(playbillData).length > 0;
     if (Object.keys(playbillData).length > 0) {
       const changes = mergeIntoExisting(existing, playbillData, 'playbill');
       allChanges.push(...changes);
@@ -1857,6 +1863,7 @@ async function main() {
 
   if (!sourceFilter || sourceFilter === 'twopenny') {
     const twopennyData = await scrapeTwopenny();
+    sourceAnswered.twopenny = Object.keys(twopennyData).length > 0;
     if (Object.keys(twopennyData).length > 0) {
       const changes = mergeIntoExisting(existing, twopennyData, 'twopenny');
       allChanges.push(...changes);
@@ -1877,9 +1884,18 @@ async function main() {
   // Cross-source price comparison report
   printPriceComparisonReport(allChanges);
 
-  // Update top-level metadata
-  existing.lastUpdated = new Date().toISOString();
+  // Update top-level metadata.
+  // lastUpdated = last time a policy changed (only written when allChanges is
+  // non-empty). lastCheckedAt = last full run where every source answered,
+  // changes or not: the site's "data may be stale" banner keys on it, so a
+  // healthy feed with nothing new never warns shoppers (BRO-901/BRO-5261).
+  // A --source partial run or a source that came back empty is not a full check.
+  const runAt = new Date().toISOString();
+  const fullCheck = isFullCheck(sourceFilter, sourceAnswered);
+  existing.lastUpdated = runAt;
   existing.source = PLAYBILL_URL;
+  if (fullCheck) existing.lastCheckedAt = runAt;
+  else console.log(`[Check] Not a full check (sources answered: ${JSON.stringify(sourceAnswered)}); lastCheckedAt left at ${existing.lastCheckedAt || 'unset'}`);
 
   // Validate stability against original (closed/orphan cleanups excluded — see fn doc)
   validateShowIdStability(originalSnapshot, existing, allChanges);
@@ -1889,6 +1905,16 @@ async function main() {
 
   if (allChanges.length === 0) {
     console.log('\n[Result] No changes — data is up to date');
+    if (!fullCheck) return;
+    // Record the successful check only: the file as it was on disk plus the
+    // new lastCheckedAt. No backup, no tag sync, lastUpdated untouched.
+    const stamped = stampCheckOnly(originalSnapshot, runAt);
+    if (dryRun) {
+      console.log(`[Dry Run] Would stamp lastCheckedAt=${runAt} in lottery-rush.json`);
+      return;
+    }
+    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(stamped, null, 2) + '\n');
+    console.log(`[Output] Stamped lastCheckedAt=${runAt} in lottery-rush.json (no policy changes)`);
     return;
   }
 
