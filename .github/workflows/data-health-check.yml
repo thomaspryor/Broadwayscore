@@ -444,6 +444,24 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/check-provider-spend.js
 
+      # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
+      # days — trip days per breaker from data/audit/breaker-transitions.jsonl,
+      # rerouted spend on trip days, cap drift vs 14-day demand, DEFECT when a
+      # guard trips > 2 days unless owner-accepted. Reads files only (no API).
+      # Writes data/audit/guard-audit-snapshot.json (committed by the step
+      # below, read by the morning digest) and routes one digest alert per
+      # defect/drift with a 168h cooldown. The weekly scraper cost report
+      # embeds the same audit via --html. continue-on-error: a crash here must
+      # not block the snapshot commits; a stuck producer shows as stale.
+      # hygiene-run-budget-ok: local file reads only, no network loop.
+      - name: Spend guard audit
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: node scripts/guard-audit.js
+
       # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
       # lands in the working tree UNCOMMITTED. Every later commit checkpoint
       # in this job — starting with "Commit acceptance recheck ledger" right
@@ -479,6 +497,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          # BRO-3011: the spend-guard audit snapshot written just above.
+          git add data/audit/guard-audit-snapshot.json 2>/dev/null || true
           git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true

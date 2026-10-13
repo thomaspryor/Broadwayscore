@@ -664,6 +664,8 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // sitting unread on 2026-09-15 — including BRO-282 itself, for 28 days.
   // It must therefore count toward the subject's "N decisions for you".
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
+  // Spend guard audit (BRO-3011) — same {bannerText, items} shape.
+  if (sections.guardAudit) blocks.push(renderNamedDigestBlock('Spend guards (last 7 days)', sections.guardAudit));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
   if (sections.coverageVerdict) blocks.push(renderNamedDigestBlock('Coverage verdict', sections.coverageVerdict));

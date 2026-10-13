@@ -1768,6 +1768,9 @@ on:
       - 'scripts/check-sd-breaker.js'
       # BRO-3010 — ScrapingBee's daily breaker (shadow first), same gate.
       - 'scripts/check-sb-breaker.js'
+      # BRO-3011 — the weekly spend-guard audit CLI (pure core is
+      # scripts/lib/guard-audit-core.js, covered by the scripts/lib glob).
+      - 'scripts/guard-audit.js'
       # BRO-3022 — the one-shot seeder for the breaker trip-transition ledger
       # those two checkers now append to. Same gap shape as the CLIs listed
       # above: a top-level scripts/ file outside the scripts/lib/** glob, whose

@@ -107,11 +107,9 @@ jobs:
           # Jul 13 2026. Telemetry here is sampled ATTRIBUTION; the
           # provider-reported numbers below are the billing ground truth.
           PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
-          SB_BY_WF_FILE=$(mktemp)
           for wf_file in collect-review-texts.yml gather-reviews.yml opening-night-poller.yml opening-night-reviews.yml enrich-ibdb-dates.yml bulk-show-score.yml check-show-freshness.yml scrape-bww-reviews.yml update-commercial.yml fix-platform-ticket-links.yml audit-aggregator-gap.yml scrape-new-aggregators.yml; do
             wf=$(wf_display_name "$wf_file")
             [ -n "$wf" ] || wf="$wf_file"
-            wf_name=$(echo "$wf" | tr ' ' '_')
             for run_id in $(gh_runs_query "$GITHUB_REPOSITORY" "$wf_file" 5 "created=%3E$SINCE" "status=completed" 2>/dev/null | jq -r '.[].databaseId' 2>/dev/null); do
               # Sum ALL summary lines per log (multi-call scripts emit multiple)
               while IFS= read -r SUMMARY; do
@@ -122,9 +120,6 @@ jobs:
                 SB_CR=$(echo "$SUMMARY" | grep -oP '\d+ credits' | head -1 | grep -oP '^\d+' || echo "0")
                 PW_TOTAL=$((PW_TOTAL + PW)); BD_TOTAL=$((BD_TOTAL + BD))
                 SB_TOTAL=$((SB_TOTAL + SB)); SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
-                if [ "$SB_CR" -gt 0 ]; then
-                  echo "$SB_CR $wf_name" >> "$SB_BY_WF_FILE"
-                fi
               done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
             done
           done
@@ -163,15 +158,11 @@ jobs:
           # should not blank the entire Monday report.
           set +e
 
-          # Top 5 SB-credit consumers — fast attribution when a spike happens.
-          # Format: "Workflow_Name: 12,345 credits" (one per line).
-          # NOTE: every conditional below uses if/then/fi (NOT `[ ] && X`) because
-          # the workflow runs under `bash -e` and `[ false ] && X` exits 1.
-          SB_TOP5=$(awk '{a[$2]+=$1} END {for(k in a) printf "%d %s\n", a[k], k}' "$SB_BY_WF_FILE" 2>/dev/null \
-            | sort -rn | head -5 \
-            | awk '{printf "%s: %s credits\n", substr($0, index($0," ")+1), $1}' \
-            | tr "_" " " || echo "—")
-          if [ -z "$SB_TOP5" ]; then SB_TOP5="—"; fi
+          # BRO-3011: the spend-guard audit (trip days per breaker, rerouted
+          # spend, cap drift, DEFECT rule) replaces the old "Top SB Credit
+          # Consumers" awk tally. --html prints only; it writes nothing and
+          # routes no alerts (the daily data-health-check run owns those).
+          GUARD_AUDIT_HTML=$(node scripts/guard-audit.js --html 2>/dev/null || echo "<p>Spend guard audit unavailable this run.</p>")
 
           # --- Browserbase last 7 days (sessions × \$0.10) ---
           # Previously invisible. Feb 2026 spike was 12,876 sessions = \$1,287 in
@@ -357,8 +348,8 @@ jobs:
             <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0">Target cap: <strong>$SB_TARGET_CAP credits.</strong> Projection compares trajectory ($SB_PROJECTED_ABS credits) against the target cap, not the current $SB_CAP_NUM-credit cap.</p>
             <p style="font-size:14px;margin:0"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:$SB_COLOR;margin-right:6px"></span>$SB_STATUS</p>
 
-            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Top SB Credit Consumers This Week</h3>
-            <pre style="font-size:12px;background:#f9fafb;padding:8px 12px;border-radius:6px;margin:0">$SB_TOP5</pre>
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Spend Guards (last 7 days)</h3>
+            $GUARD_AUDIT_HTML
 
             <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Workflow Runs ($TOTAL_RUNS total)</h3>
             <table style="font-size:13px;border-collapse:collapse;width:100%">

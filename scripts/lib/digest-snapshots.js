@@ -126,6 +126,12 @@ const SNAPSHOTS = [
   // CI-produced in data-health-check.yml and committed, like health.
   // optionalIfMissing until the first daily run lands the file on main.
   { key: 'doneEvidence', label: 'done-evidence audit', file: 'done-evidence-digest-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/guard-audit.js (BRO-3011) — spend-guard audit over the last 7
+  // days (trip days per breaker, rerouted spend, cap drift, DEFECT rule).
+  // CI-produced daily in data-health-check.yml and committed. A standing
+  // line, same reasoning as doneEvidence. optionalIfMissing until the first
+  // daily run lands the file on main.
+  { key: 'guardAudit', label: 'spend guard audit', file: 'guard-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

@@ -350,6 +350,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   {
+    file: 'audit/guard-audit-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-13 (BRO-3011): sole writer scripts/guard-audit.js, invoked only by data-health-check.yml\'s "Spend guard audit" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step; scraper-cost-report.yml runs it with --html, which writes nothing. Regenerated from the transition and spend ledgers each run (its spendByDay carry-forward is ours-wins by design: the last writer read the previous snapshot) — nothing to union.',
+  },
+  {
     file: 'audit/scraper-spend-daily-agg.jsonl',
     surface: 'public-repo',
     status: 'single-writer',
