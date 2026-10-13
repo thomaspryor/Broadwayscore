@@ -28,25 +28,10 @@ const AGGREGATOR_TRUTH_FILE = path.join(DATA_DIR, 'aggregator-truth.json');
 
 const strictMode = process.argv.includes('--strict');
 
-// Thresholds for validation
-const THRESHOLDS = {
-  WARN_DUPLICATE_RATIO: 1.5,   // localCount > maxAggregator * 1.5 = likely duplicates
-  WARN_MISSING_RATIO: 0.7,    // localCount < maxAggregator * 0.7 = likely missing reviews
-  FAIL_DUPLICATE_RATIO: 2.0,  // localCount > maxAggregator * 2.0 = definite problem
-  MIN_AGGREGATOR_COUNT: 5,    // Only validate shows with at least this many aggregator reviews
-};
-
-// High-coverage shows that legitimately have 2x+ aggregator reviews
-// These are Tony winners, blockbusters, or critically acclaimed shows with extensive coverage
-// We collect from more sources than aggregators, so higher ratios are expected
-const HIGH_COVERAGE_EXCEPTIONS = new Set([
-  'stereophonic-2024',         // Tony Best Play 2024, extraordinary coverage
-  'illinoise-2024',            // Tony Best Choreography 2024
-  'an-enemy-of-the-people-2024', // Star-driven, Ivo van Hove, extensive coverage
-  'suffs-2024',                // Tony Best Score 2024
-  'hamilton-2015',             // Cultural phenomenon
-  'hadestown-2019',            // Tony Best Musical 2019
-]);
+// Thresholds, high-coverage exceptions and the ratio bucketing live in
+// lib/aggregator-truth-validator.js (BRO-2507, unit-tested in
+// tests/unit/validate-aggregator-truth.test.mjs). This file does I/O + printing.
+const { THRESHOLDS, classifyAggregatorTruth } = require('./lib/aggregator-truth-validator');
 
 let errors = [];
 let warnings = [];
@@ -107,53 +92,13 @@ function validateAggregatorTruth() {
   console.log('');
 
   // Categorize shows by validation result
-  const likelyDuplicates = [];    // ratio > 1.5
-  const definiteDuplicates = [];  // ratio > 2.0
-  const likelyMissing = [];       // ratio < 0.7
-  const noAggregatorData = [];    // maxAggregator === 0 or ratio === null
-  const healthy = [];             // within acceptable range
-
-  for (const showId of showIds) {
-    const show = shows[showId];
-    const { maxAggregator, localCount, ratio } = show;
-
-    // Skip shows without aggregator data (new shows, not yet indexed)
-    if (ratio === null || maxAggregator === 0) {
-      noAggregatorData.push({ showId, localCount, maxAggregator });
-      continue;
-    }
-
-    // Skip shows with very few aggregator reviews (not enough data to validate)
-    if (maxAggregator < THRESHOLDS.MIN_AGGREGATOR_COUNT) {
-      // Still check for extreme duplicates though
-      if (ratio > THRESHOLDS.FAIL_DUPLICATE_RATIO) {
-        definiteDuplicates.push({ showId, localCount, maxAggregator, ratio });
-      }
-      continue;
-    }
-
-    // Check for definite duplicate problem (ratio > 2.0)
-    if (ratio > THRESHOLDS.FAIL_DUPLICATE_RATIO) {
-      // High-coverage exceptions are warnings, not errors
-      if (HIGH_COVERAGE_EXCEPTIONS.has(showId)) {
-        likelyDuplicates.push({ showId, localCount, maxAggregator, ratio, isException: true });
-      } else {
-        definiteDuplicates.push({ showId, localCount, maxAggregator, ratio });
-      }
-    }
-    // Check for likely duplicates (ratio > 1.5)
-    else if (ratio > THRESHOLDS.WARN_DUPLICATE_RATIO) {
-      likelyDuplicates.push({ showId, localCount, maxAggregator, ratio });
-    }
-    // Check for likely missing reviews (ratio < 0.7)
-    else if (ratio < THRESHOLDS.WARN_MISSING_RATIO) {
-      likelyMissing.push({ showId, localCount, maxAggregator, ratio });
-    }
-    // Healthy show
-    else {
-      healthy.push({ showId, localCount, maxAggregator, ratio });
-    }
-  }
+  const {
+    likelyDuplicates,    // ratio > 1.5 (or > 2.0 for a high-coverage exception)
+    definiteDuplicates,  // ratio > 2.0
+    likelyMissing,       // ratio < 0.7
+    noAggregatorData,    // maxAggregator === 0 or ratio === null
+    healthy,             // within acceptable range
+  } = classifyAggregatorTruth(shows);
 
   // Report results
   console.log('-'.repeat(60));

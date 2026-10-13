@@ -967,18 +967,6 @@
       "kind": "assignment",
       "snippet": "if (!dryRun) show.venue = ssData.venue;"
     },
-    "scripts/validate-archive-productions.js::expected: { year: expectedYear, venue: show.venue },": {
-      "file": "scripts/validate-archive-productions.js",
-      "line": 125,
-      "kind": "literal",
-      "snippet": "expected: { year: expectedYear, venue: show.venue },"
-    },
-    "scripts/validate-archive-productions.js::expected: { venue: show.venue || 'Broadway' },": {
-      "file": "scripts/validate-archive-productions.js",
-      "line": 210,
-      "kind": "literal",
-      "snippet": "expected: { venue: show.venue || 'Broadway' },"
-    },
     "scripts/validate-show-venue.js::return { rawTitle: m[1].trim(), market: m[2], venue: m[3].trim(), year: parseInt(m[4], 10) };": {
       "file": "scripts/validate-show-venue.js",
       "line": 636,

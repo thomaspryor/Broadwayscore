@@ -8,8 +8,24 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { isLondonMarket } = require('./lib/venue-classification');
-const { parseDate } = require('./lib/date-utils');
+// Pure decision logic lives in lib/market-expansion-validator.js (BRO-2507,
+// unit-tested in tests/unit/validate-market-expansion.test.mjs). This file
+// only does the I/O and the printing.
+const {
+  MARKETS,
+  findSlugMarkerMisses,
+  findIdMarkerMisses,
+  findShowsWithoutSlug,
+  findSlugCollisions,
+  findStaleOpenShows,
+  findMissingRequiredFields,
+  buildOutletDomainMaps,
+  scanShowReviews,
+  sourceHandlesMarket,
+  browseSerializesCategory,
+  seoMarkerFor,
+  summarize,
+} = require('./lib/market-expansion-validator');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SRC_DIR = path.join(__dirname, '..', 'src');
@@ -38,8 +54,7 @@ try {
   warn('Could not load outlet-registry.json — skipping outlet checks');
 }
 
-const markets = ['west-end', 'off-west-end', 'off-broadway'];
-const marketsToCheck = targetMarket === 'all' ? markets : [targetMarket];
+const marketsToCheck = targetMarket === 'all' ? MARKETS : [targetMarket];
 
 console.log('');
 console.log('=== Market Expansion Validation ===');
@@ -49,18 +64,19 @@ console.log('');
 // ===== 1. SLUG CHECKS =====
 console.log('--- Slug Checks ---');
 
+// Every show needs a slug (it is the URL); reported before the market loops so
+// a slug-less show fails the gate with a clear message.
+for (const show of findShowsWithoutSlug(shows)) {
+  error(`show ${show.id} has no slug`);
+}
+
 for (const market of marketsToCheck) {
   const marketShows = shows.filter(s => s.category === market);
   const slugMarker = market; // 'west-end' or 'off-broadway'
 
-  // Every show with this category should have the marker in its slug.
-  // For off-west-end: many shows were originally categorized as west-end and retain
-  // legacy slugs with "west-end" (not "off-west-end"). Renaming would break URLs/SEO,
-  // so accept "west-end" in slugs for off-west-end shows as valid (it's a superset).
-  const missing = marketShows.filter(s => {
-    if (market === 'off-west-end') return !s.slug.includes('west-end');
-    return !s.slug.includes(slugMarker);
-  });
+  // Every show with this category should have the marker in its slug
+  // (off-west-end accepts legacy "west-end" slugs; see the lib).
+  const missing = findSlugMarkerMisses(marketShows, market);
   if (missing.length > 0) {
     warn(`${missing.length} ${market} shows missing "${slugMarker}" in slug: ${missing.slice(0, 5).map(s => s.slug).join(', ')}${missing.length > 5 ? '...' : ''}`);
   } else {
@@ -68,7 +84,7 @@ for (const market of marketsToCheck) {
   }
 
   // ID pattern: should include market marker
-  const badIds = marketShows.filter(s => !s.id.includes(slugMarker));
+  const badIds = findIdMarkerMisses(marketShows, market);
   if (badIds.length > 0) {
     warn(`${badIds.length} ${market} show IDs missing "${slugMarker}": ${badIds.slice(0, 3).map(s => s.id).join(', ')}${badIds.length > 3 ? '...' : ''}`);
   } else {
@@ -76,25 +92,8 @@ for (const market of marketsToCheck) {
   }
 }
 
-// Cross-market slug collision check
-const slugToMarkets = {};
-for (const show of shows) {
-  const base = show.slug.replace(/-west-end$/, '').replace(/-off-broadway$/, '').replace(/-\d{4}$/, '');
-  if (!slugToMarkets[base]) slugToMarkets[base] = [];
-  slugToMarkets[base].push({ slug: show.slug, market: show.category || 'broadway', id: show.id });
-}
-const crossCollisions = Object.entries(slugToMarkets)
-  .filter(([_, entries]) => {
-    const uniqueMarkets = new Set(entries.map(e => e.market));
-    return uniqueMarkets.size > 1 && entries.length > 1;
-  });
-// Only flag if the EXACT same slug appears in multiple markets (not just similar base)
-const exactDupSlugs = {};
-for (const show of shows) {
-  if (!exactDupSlugs[show.slug]) exactDupSlugs[show.slug] = [];
-  exactDupSlugs[show.slug].push(show);
-}
-const realCollisions = Object.entries(exactDupSlugs).filter(([_, entries]) => entries.length > 1);
+// Only flag if the EXACT same slug appears in multiple shows (not just similar base)
+const realCollisions = findSlugCollisions(shows);
 if (realCollisions.length > 0) {
   for (const [slug, entries] of realCollisions) {
     error(`Slug collision: "${slug}" used by ${entries.map(e => `${e.id} (${e.category || 'broadway'})`).join(', ')}`);
@@ -110,7 +109,7 @@ console.log('\n--- Scoring Threshold Checks ---');
 try {
   const scoreBucketsContent = fs.readFileSync(path.join(SRC_DIR, 'config', 'score-buckets.ts'), 'utf8');
   for (const market of marketsToCheck) {
-    if (scoreBucketsContent.includes(`'${market}'`)) {
+    if (sourceHandlesMarket(scoreBucketsContent, market)) {
       ok(`score-buckets.ts handles '${market}'`);
     } else {
       error(`score-buckets.ts does NOT handle '${market}' — hasEnoughReviews() will use wrong threshold`);
@@ -130,7 +129,7 @@ try {
   } catch (e) { /* optional */ }
   const combinedContent = scoreBadgeContent + marketUtilsContent;
   for (const market of marketsToCheck) {
-    if (combinedContent.includes(`'${market}'`)) {
+    if (sourceHandlesMarket(combinedContent, market)) {
       ok(`ScoreBadge handles '${market}' (via market-utils)`);
     } else {
       error(`ScoreBadge does NOT handle '${market}' — score display will use wrong threshold`);
@@ -146,19 +145,9 @@ console.log('\n--- Show Data Checks ---');
 for (const market of marketsToCheck) {
   const marketShows = shows.filter(s => s.category === market);
 
-  // No "open" shows with closingDate more than the auto-close grace period in
-  // the past. update-show-status.js uses CLOSING_GRACE_PERIOD_DAYS=7 (line 33)
-  // — the auto-close waits a week before flipping status=open→closed so we can
-  // catch extensions. The validator must respect that grace window or it fires
-  // on every show that just closed (real incident: 4 OB shows on 2026-04-26
-  // wedged Test Suite for ~2 hours waiting for the cron to act, when the cron
-  // was correctly holding off). Add a 1-day buffer for the cron itself to run.
-  const GRACE_DAYS = 7 + 1;
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - GRACE_DAYS);
-  const badOpen = marketShows.filter(s =>
-    s.status === 'open' && s.closingDate && new Date(s.closingDate) < cutoff
-  );
+  // No "open" shows with closingDate older than the auto-close grace window
+  // (CLOSING_GRACE_DAYS in the lib: update-show-status.js's 7 days + 1).
+  const badOpen = findStaleOpenShows(marketShows);
   if (badOpen.length > 0) {
     for (const s of badOpen) {
       error(`${market} show "${s.title}" (${s.id}) status is "open" but closingDate ${s.closingDate} is in the past`);
@@ -167,16 +156,8 @@ for (const market of marketsToCheck) {
     ok(`No ${market} shows with open status and past closingDate`);
   }
 
-  // Required fields. Shows with status='announced' are exempt from the `type`
-  // requirement: production type (musical/play) is often unknown until previews
-  // are dated. update-show-status.yml's discovery path adds new shows with
-  // status='announced' and no type yet; an enrichment pass fills it later.
-  // 2026-05-26: this gate spuriously failed for 15 OB shows discovered the
-  // morning of opening-night season because the discovery path doesn't yet
-  // pull production type.
-  const missingFields = marketShows.filter(
-    (s) => !s.title || !s.category || !s.status || (s.status !== 'announced' && !s.type),
-  );
+  // Required fields (type exempt while status='announced'; see the lib).
+  const missingFields = findMissingRequiredFields(marketShows);
   if (missingFields.length > 0) {
     error(`${missingFields.length} ${market} shows missing required fields (title/category/status, or type once status≠announced)`);
   } else {
@@ -191,13 +172,7 @@ const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
 const hasReviewTexts = fs.existsSync(reviewTextsDir);
 
 if (hasReviewTexts && registryData) {
-  const outlets = registryData.outlets || {};
-  const outletDomains = {};
-  const outletDomainAliases = {};
-  for (const [id, outlet] of Object.entries(outlets)) {
-    if (outlet.domain) outletDomains[id] = outlet.domain.toLowerCase();
-    if (outlet.domainAliases) outletDomainAliases[id] = outlet.domainAliases.map(d => d.toLowerCase());
-  }
+  const { outletDomains, outletDomainAliases } = buildOutletDomainMaps(registryData);
 
   for (const market of marketsToCheck) {
     const marketShows = shows.filter(s => s.category === market);
@@ -211,51 +186,20 @@ if (hasReviewTexts && registryData) {
       if (!fs.existsSync(showDir)) continue;
 
       const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
-      const byOutlet = {};
-
+      const reviews = [];
       for (const file of files) {
         try {
-          const review = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
-          if (review.wrongProduction || review.wrongShow || review.duplicateOf || review.wrongUrl) continue;
-          totalReviews++;
-
-          const outletId = review.outletId || file.split('--')[0];
-
-          // URL/domain check
-          if (review.url && outletDomains[outletId]) {
-            let urlDomain;
-            try { urlDomain = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase(); } catch(e) { continue; }
-            const expected = outletDomains[outletId].replace(/^www\./, '');
-            const aliases = outletDomainAliases[outletId] || [];
-            // Exact domain or subdomain match (e.g. m.nytimes.com matches nytimes.com)
-            const domainOrSub = (a, b) => a === b || a.endsWith('.' + b) || b.endsWith('.' + a);
-            const domainMatches = domainOrSub(urlDomain, expected)
-              || aliases.some(a => domainOrSub(urlDomain, a.replace(/^www\./, '')));
-            if (!domainMatches) {
-              urlMismatches++;
-            }
-          }
-
-          // Outlet dedup tracking
-          if (!byOutlet[outletId]) byOutlet[outletId] = [];
-          byOutlet[outletId].push(file);
-
-          // Early date check (>1 year before opening)
-          if (review.publishDate && show.openingDate) {
-            const pub = parseDate(review.publishDate);
-            const open = new Date(show.openingDate);
-            const daysBefore = pub ? (open - pub) / (1000 * 60 * 60 * 24) : 0;
-            if (daysBefore > 365) earlyReviews++;
-          }
+          reviews.push({ file, review: JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8')) });
         } catch (e) {
           // skip malformed files
         }
       }
 
-      // Count duplicate outlet pairs
-      for (const [outlet, files] of Object.entries(byOutlet)) {
-        if (files.length > 1) duplicatePairs++;
-      }
+      const stats = scanShowReviews(show, reviews, outletDomains, outletDomainAliases);
+      totalReviews += stats.totalReviews;
+      urlMismatches += stats.urlMismatches;
+      duplicatePairs += stats.duplicatePairs;
+      earlyReviews += stats.earlyReviews;
     }
 
     info(`${market}: ${totalReviews} active reviews scanned`);
@@ -276,7 +220,7 @@ console.log('\n--- Display Checks ---');
 // Browse page category serialization
 try {
   const browseContent = fs.readFileSync(path.join(SRC_DIR, 'app', 'browse', '[slug]', 'page.tsx'), 'utf8');
-  const hasCategorySerialization = browseContent.includes('category:') && browseContent.includes('show.category');
+  const hasCategorySerialization = browseSerializesCategory(browseContent);
   if (hasCategorySerialization) {
     ok('Browse page serializes category field');
   } else {
@@ -310,7 +254,7 @@ console.log('\n--- Copy Checks ---');
 try {
   const seoContent = fs.readFileSync(path.join(SRC_DIR, 'lib', 'seo.ts'), 'utf8');
   for (const market of marketsToCheck) {
-    const marker = market === 'west-end' ? 'West End Scorecard' : market === 'off-west-end' ? 'Off-West End Scorecard' : 'Off-Broadway Scorecard';
+    const marker = seoMarkerFor(market);
     if (seoContent.includes(marker)) {
       ok(`seo.ts references "${marker}"`);
     } else {
@@ -345,13 +289,12 @@ console.log('\n============================================================');
 console.log('MARKET EXPANSION VALIDATION RESULT');
 console.log('============================================================\n');
 
-if (errors > 0) {
+const verdict = summarize(errors, warnings);
+if (verdict.status === 'failed') {
   console.log(`❌ FAILED: ${errors} error(s), ${warnings} warning(s)`);
-  process.exit(1);
-} else if (warnings > 0) {
+} else if (verdict.status === 'warnings') {
   console.log(`⚠️  PASSED with ${warnings} warning(s)`);
-  process.exit(0);
 } else {
   console.log('✅ ALL CHECKS PASSED');
-  process.exit(0);
 }
+process.exit(verdict.exitCode);
