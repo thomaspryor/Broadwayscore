@@ -253,7 +253,7 @@ function main() {
   const loadFiles = (id) => {
     const dir = path.join(REVIEW_TEXTS_DIR, id);
     let names;
-    try { names = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { return []; }
+    try { names = fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort(); } catch { return []; }
     const out = [];
     for (const file of names) {
       try { out.push({ file, data: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) }); } catch { /* unreadable */ }

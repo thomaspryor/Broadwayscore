@@ -8,7 +8,7 @@
   "email": null
  },
  "plan": {
-  "summary": "BRO-4674: clear the 14 un-baselined audit-sibling-title-misroute --strict hits and the same-url double counts the audit now reports. Seven files filed under a later same-title production move to the production they review (Comedy About Spies 2026 -> 2025, Cruise 2022 -> 2021). Nine copies of a review whose correct production already holds the same url (or whose url names another venue) get wrongProduction with a reason. One britishtheatre.com ticket page under Titanique West End is marked isNonReview. Three ambiguous hits (For Black Boys 2024 x2, Inter Alia 2025) were false positives fixed in market-routing.js, not here.",
+  "summary": "(part a of 2) BRO-4674: clear the 14 un-baselined audit-sibling-title-misroute --strict hits and the same-url double counts the audit now reports. Seven files filed under a later same-title production move to the production they review (Comedy About Spies 2026 -> 2025, Cruise 2022 -> 2021). Nine copies of a review whose correct production already holds the same url (or whose url names another venue) get wrongProduction with a reason. One britishtheatre.com ticket page under Titanique West End is marked isNonReview. Three ambiguous hits (For Black Boys 2024 x2, Inter Alia 2025) were false positives fixed in market-routing.js, not here.",
   "steps": [
    "move the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json -> the-comedy-about-spies-west-end-2025/ (published 2025-05-21, Noel Coward Theatre run)",
    "move the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json -> the-comedy-about-spies-west-end-2025/ (2025-05-14 round-up of the Noel Coward Theatre opening)",
@@ -23,10 +23,7 @@
    "flag the-comedy-about-spies-west-end-2026/sunday-times--unknown.json wrongProduction (2025 Times review; the-comedy-about-spies-west-end-2025/times-uk--clive-davis.json holds the same url)",
    "flag old-times-1971/amny--matt-windman.json wrongProduction (amNY review of the 2015 revival; old-times-2015 holds the same url)",
    "flag as-you-like-it-globe-west-end-2026/guardian--unknown.json wrongProduction (Guardian review of the RSC Stratford production (url ends as-you-like-it-review-rsc); all-male-as-you-like-it-regional-2026 holds the same url)",
-   "flag leopoldstadt-west-end-2021/artsdesk--matt-wolf.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)",
-   "flag leopoldstadt-west-end-2021/standard--nick-curtis.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)",
-   "flag leopoldstadt-west-end-2021/times-uk--clive-davis.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)",
-   "mark titanique-west-end-2024/britishtheatrecom--susan-novak.json isNonReview (britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review)"
+   "flag leopoldstadt-west-end-2021/artsdesk--matt-wolf.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)"
   ],
   "riskLevel": "low",
   "actions": [
@@ -189,54 +186,6 @@
     "field": "wrongProductionReason",
     "oldValue": null,
     "newValue": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url",
-    "description": "reason for the flag"
-   },
-   {
-    "type": "review-field-edit",
-    "file": "leopoldstadt-west-end-2021/standard--nick-curtis.json",
-    "field": "wrongProduction",
-    "oldValue": null,
-    "newValue": true,
-    "description": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url"
-   },
-   {
-    "type": "review-field-edit",
-    "file": "leopoldstadt-west-end-2021/standard--nick-curtis.json",
-    "field": "wrongProductionReason",
-    "oldValue": null,
-    "newValue": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url",
-    "description": "reason for the flag"
-   },
-   {
-    "type": "review-field-edit",
-    "file": "leopoldstadt-west-end-2021/times-uk--clive-davis.json",
-    "field": "wrongProduction",
-    "oldValue": null,
-    "newValue": true,
-    "description": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url"
-   },
-   {
-    "type": "review-field-edit",
-    "file": "leopoldstadt-west-end-2021/times-uk--clive-davis.json",
-    "field": "wrongProductionReason",
-    "oldValue": null,
-    "newValue": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url",
-    "description": "reason for the flag"
-   },
-   {
-    "type": "review-field-edit",
-    "file": "titanique-west-end-2024/britishtheatrecom--susan-novak.json",
-    "field": "isNonReview",
-    "oldValue": null,
-    "newValue": true,
-    "description": "BRO-4674: britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review"
-   },
-   {
-    "type": "review-field-edit",
-    "file": "titanique-west-end-2024/britishtheatrecom--susan-novak.json",
-    "field": "isNonReviewReason",
-    "oldValue": null,
-    "newValue": "BRO-4674: britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review",
     "description": "reason for the flag"
    }
   ]
