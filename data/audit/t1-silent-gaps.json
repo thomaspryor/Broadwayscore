@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T04:12:09.997Z",
+  "generatedAt": "2026-10-13T06:41:13.068Z",
   "windowDays": 45,
   "showsScanned": 164,
   "gaps": [
@@ -20,9 +20,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=good-time-charlie-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/10_09_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-12T20:09:47.097Z",
-      "fileAgeHours": 8.037853055555555,
+      "fileAgeHours": 10.52298888888889,
       "gapSeenAt": "2026-10-12T21:04:10.700Z",
-      "nonTerminalAgeHours": 7.133137777777778
+      "nonTerminalAgeHours": 9.617324444444444
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 106.45429055555556,
+      "fileAgeHours": 108.93946555555556,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 101.42377305555556
+      "nonTerminalAgeHours": 103.90795972222222
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -50,16 +50,16 @@
       "outletId": "daily-mail",
       "tier": 1,
       "type": "unscored",
-      "dispatchable": false,
+      "dispatchable": true,
       "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 491.5257438888889,
+      "fileAgeHours": 494.01111333333336,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 42.54638722222222
+      "nonTerminalAgeHours": 45.03057388888889
     }
   ],
   "contradictions": []

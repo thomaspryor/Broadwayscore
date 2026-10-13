@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-13T04:11:59.529Z",
-  "windowDays": 1095,
-  "targets": 628,
-  "auditedThisRun": 19,
-  "carriedForward": 709,
+  "generatedAt": "2026-10-13T06:41:07.802Z",
+  "windowDays": 21,
+  "targets": 2,
+  "auditedThisRun": 2,
+  "carriedForward": 726,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 406,
+    "withGap": 405,
     "missingCurrentRun": 858,
-    "totalCitedNoUrl": 9,
-    "totalFlaggedMisses": 932,
-    "totalRecoverable": 5,
+    "totalCitedNoUrl": 8,
+    "totalFlaggedMisses": 929,
+    "totalRecoverable": 4,
     "totalRecovered": 13,
     "humanExcluded": 0,
-    "automatedExcluded": 72,
-    "automatedExcludedListed": 72,
+    "automatedExcluded": 73,
+    "automatedExcludedListed": 73,
     "priorProductionCitations": 4996
   },
   "results": [
@@ -102969,17 +102969,11 @@
         "http://theater.nytimes.com/2012/07/09/theater/reviews/alan-cumming-in-macbeth-at-lincoln-center-festival.html",
         "http://www.hollywoodreporter.com/review/alan-cumming-macbeth-good-wife-346374",
         "http://www.huffingtonpost.com/2012/07/06/alan-cummings-macbeth-review_n_1654590.html",
-        "http://www.newsday.com/entertainment/theater/cumming-shows-range-in-one-man-macbeth-1.3825927",
-        "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
-        "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026",
-        "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the-met-operas-season-491640f2",
-        "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
-        "https://www.nytimes.com/2026/09/23/style/met-opera-opening-night-macbeth.html",
-        "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.html"
+        "http://www.newsday.com/entertainment/theater/cumming-shows-range-in-one-man-macbeth-1.3825927"
       ],
       "dirFiles": 62,
-      "dirClean": 13,
-      "inReviewsJson": 11,
+      "dirClean": 14,
+      "inReviewsJson": 12,
       "missing": [
         {
           "url": "https://nystagereview.com/2022/04/29/macbeth-loud-sound-intermittent-fury-signifying-nothing/",
@@ -103295,15 +103289,17 @@
           "knownOutletId": "newsday",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
-          "host": "classicalsource.com",
-          "knownOutletId": "classical-source",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "bachtrack.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
         {
           "host": "classicalvoiceamerica.org",
           "count": 1
@@ -103342,8 +103338,13 @@
               "urlInDir": "https://www.amny.com/entertainment/broadway/review-macbeth-hits-broadway-with-daniel-craig-and-weird-direction/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://ew.com/theater/theater-reviews/macbeth-broadway-daniel-craig-ruth-negga/",
@@ -103361,8 +103362,13 @@
               "urlInDir": "https://ew.com/theater/theater-reviews/macbeth-broadway-daniel-craig-ruth-negga/?srsltid=AfmBOooJNQuj_HN2SEY3xzhoaIUOc1g0yRU-matkmtFIUqToCGFeatx4"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.hollywoodreporter.com/review/macbeth-theater-review-658859",
@@ -103380,8 +103386,13 @@
               "urlInDir": "http://www.hollywoodreporter.com/review/macbeth-theater-review-658859"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.newsday.com/entertainment/theater/macbeth-review-witches-outshine-ethan-hawke-1.6470795",
@@ -103399,8 +103410,13 @@
               "urlInDir": "http://www.newsday.com/entertainment/theater/macbeth-review-witches-outshine-ethan-hawke-1.6470795"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.chicagotribune.com/entertainment/theater/sc-ent-1121-macbeth-broadway-review-20131121,0,3454739.column",
@@ -103423,8 +103439,13 @@
               "urlInDir": "http://www.chicagotribune.com/entertainment/theater/sc-ent-1121-macbeth-broadway-review-20131121,0,3454739.column"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.nydailynews.com/entertainment/music-arts/macbeth-theater-review-article-1.1523606",
@@ -103442,8 +103463,13 @@
               "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/macbeth-theater-review-article-1.1523606"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.timeout.com/newyork/theater/macbeth-22",
@@ -103466,130 +103492,30 @@
               "urlInDir": "http://www.timeout.com/newyork/theater/macbeth-22"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": true,
-          "recoverableFile": "bachtrack--susan-stempleski.json",
-          "recoverableOutletId": "bachtrack",
-          "recoverableCritic": "Susan Stempleski",
-          "recoverableCount": 1,
-          "dirFlags": [
-            {
-              "file": "bachtrack--susan-stempleski.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--elisabeth-vincentelli.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.html"
-            }
-          ],
-          "serpCensus": true
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Macbeth\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Macbeth\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Macbeth\" review metropolitan",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Macbeth\" Verdi review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Macbeth Metropolitan Opera House review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Macbeth Metropolitan Opera House review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Macbeth Metropolitan Opera House review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 10,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 2249,
+        "count": 2226,
         "byReason": {
-          "non-review-host": 166,
           "aggregator-internal-nav": 1467,
-          "census-junk-host": 3,
-          "production-database-listing": 57,
-          "review-hub-page": 1,
           "not-http-url": 414,
+          "production-database-listing": 57,
           "aggregator-section-root": 37,
-          "roundup-page": 104
+          "non-review-host": 151,
+          "roundup-page": 100
         }
       },
       "dedupedVariants": [
@@ -103635,6 +103561,7 @@
           "publishDate": "2012-07-09"
         }
       ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -103908,60 +103835,11 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
-          "host": "classicalsource.com",
-          "outletId": "classical-source",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: macbeth-off-broadway-2026/classical-source--ccaspell.json → q"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026",
-          "host": "bachtrack.com",
-          "file": "bachtrack--susan-stempleski.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 198 chars — pattern may be missing for this outlet. Add an entry to scri",
-          "recoveryCount": 2
-        }
-      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "classical-source",
-            "outlet": "classical-source",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -104059,52 +103937,13 @@
             "outletId": "theater.nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
-            "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the-met-operas-season-491640f2",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/09/23/style/met-opera-opening-night-macbeth.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
-            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
-            "outletId": "classical-source",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T22:52:36.905Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 11,
-        "candidateCount": 14
+        "liveCount": 9,
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-13T06:41:07.802Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -184289,28 +184128,27 @@
         "http://www.timeout.com/chicago/theater/the-last-ship",
         "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
         "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
-        "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
-        "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
         "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
-        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
+        "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
         "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
         "https://www.britishtheatreguide.info/reviews/the-last-ship-theatre-royal-d-26042",
+        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
+        "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
         "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
+        "https://medium.com/@jon.malysiak/stings-the-last-ship-should-soar-on-the-power-of-its-music-so-why-doesn-t-it-f712ae3be497",
         "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
-        "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
         "https://www.harrytheatrelife.co.uk/post/review-the-last-ship-theatre-royal-drury-lane-london",
         "https://www.thestage.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane-london-sting",
+        "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
         "https://www.pinkprincetheatre.com/post/review-the-last-ship-theatre-royal-drury-lane",
         "https://www.timeout.com/london/theatre/the-last-ship",
         "https://matineemouse.substack.com/p/the-last-ship-review",
-        "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
+        "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
         "https://loureviews.blog/2026/09/24/musical-review-the-last-ship-at-theatre-royal-drury-lane/",
         "https://readaboutstuff.com/2026/09/24/review-the-last-ship-theatre-royal-drury-lane-london/",
-        "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
+        "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
         "https://musicaltheatrereview.com/the-last-ship-theatre-royal-drury-lane/",
-        "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
         "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
-        "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
         "https://www.thetimes.com/culture/theatre-dance/article/the-last-ship-review-sting-theatre-royal-london-gzlz63nsm",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
         "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
@@ -184319,6 +184157,7 @@
         "https://thespyinthestalls.com/2026/09/the-last-ship/",
         "https://www.london-unattached.com/the-last-ship-theatre-royal-drury-lane/",
         "https://www.broadwayworld.com/westend/article/Review-THE-LAST-SHIP-starring-Sting-Theatre-Royal-Drury-Lane-20260924",
+        "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
         "https://playsinternational.org.uk/the-last-ship-theatre-royal-drury-lane/",
         "https://www.adventuresintheatreland.com/post/the-last-ship-theatre-royal-drury-lane",
         "https://westendwilma.com/review-the-last-ship-musical-london/",
@@ -184509,6 +184348,12 @@
           "knownOutletId": "chicago-now",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://medium.com/@jon.malysiak/stings-the-last-ship-should-soar-on-the-power-of-its-music-so-why-doesn-t-it-f712ae3be497",
+          "host": "medium.com",
+          "knownOutletId": "medium",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -184579,8 +184424,13 @@
               "urlInDir": "http://www.timeout.com/chicago/theater/the-last-ship"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
@@ -184598,8 +184448,13 @@
               "urlInDir": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
@@ -184617,38 +184472,15 @@
               "urlInDir": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": true
         }
       ],
-      "citedNoUrl": [
-        {
-          "outletId": "westendtheatre",
-          "outletName": "WestendTheatre.com",
-          "stars": 3,
-          "source": "westendtheatre",
-          "sourceArticleUrl": "https://www.westendtheatre.com/368678/news/the-last-ship-reviews/",
-          "priorRun": false,
-          "hasExcludedFiles": false
-        }
-      ],
+      "citedNoUrl": [],
       "weReference": {
         "rowCount": 33,
         "sources": {
@@ -184714,7 +184546,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 8,
             "error": null
           },
           {
@@ -184733,7 +184565,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -184764,26 +184596,26 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 22,
+        "resultCount": 21,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1457,
+        "count": 1459,
         "byReason": {
-          "non-review-host": 86,
           "aggregator-internal-nav": 1130,
           "not-http-url": 213,
           "aggregator-section-root": 20,
-          "write-path-blocked": 2,
-          "ticketing-listing": 1,
+          "non-review-host": 87,
+          "roundup-page": 4,
           "census-junk-host": 1,
-          "roundup-page": 4
+          "write-path-blocked": 3,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -184809,6 +184641,7 @@
           "publishDate": "2014-06-26"
         }
       ],
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -184968,31 +184801,38 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://medium.com/@jon.malysiak/stings-the-last-ship-should-soar-on-the-power-of-its-music-so-why-doesn-t-it-f712ae3be497",
+          "host": "medium.com",
+          "outletId": "medium",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "medium",
+            "outlet": "medium",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://medium.com/@jon.malysiak/stings-the-last-ship-should-soar-on-the-power-of-its-music-so-why-doesn-t-it-f712ae3be497"
+          },
           {
             "outletId": "islingtontribune",
             "outlet": "islingtontribune",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "WestendTheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": ""
           }
         ],
         "suppressedMissing": [],
@@ -185004,28 +184844,16 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
             "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
-            "outletId": "whatsonstage.com",
+            "url": "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
-            "firstSeenAt": "2026-09-24T05:40:09.820Z"
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
@@ -185040,6 +184868,18 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T05:40:09.820Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T23:04:09.984Z"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -185048,12 +184888,6 @@
           {
             "url": "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
             "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
-            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
@@ -185068,6 +184902,12 @@
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
             "url": "https://www.pinkprincetheatre.com/post/review-the-last-ship-theatre-royal-drury-lane",
@@ -185088,6 +184928,12 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
+            "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
+            "outletId": "theatrevibe.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://loureviews.blog/2026/09/24/musical-review-the-last-ship-at-theatre-royal-drury-lane/",
             "outletId": "loureviews.blog",
             "state": "live",
@@ -185100,22 +184946,10 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
-            "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
-            "outletId": "theatrevibe.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T22:37:42.816Z"
-          },
-          {
             "url": "https://musicaltheatrereview.com/the-last-ship-theatre-royal-drury-lane/",
             "outletId": "musicaltheatrereview.com",
             "state": "live",
             "firstSeenAt": "2026-09-27T22:52:36.905Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
             "url": "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
@@ -185172,6 +185006,12 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
             "url": "https://playsinternational.org.uk/the-last-ship-theatre-royal-drury-lane/",
             "outletId": "playsinternational.org.uk",
             "state": "live",
@@ -185196,32 +185036,25 @@
             "firstSeenAt": "2026-10-12T00:42:40.641Z"
           },
           {
+            "url": "https://medium.com/@jon.malysiak/stings-the-last-ship-should-soar-on-the-power-of-its-music-so-why-doesn-t-it-f712ae3be497",
+            "outletId": "medium",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-13T06:41:07.802Z"
+          },
+          {
             "url": "https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane",
             "outletId": "islingtontribune",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-12T08:45:07.198Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T08:45:07.198Z"
-          },
-          {
-            "url": "",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 31,
-        "candidateCount": 34
+        "candidateCount": 33
       },
-      "computedAt": "2026-10-12T08:45:07.198Z"
+      "computedAt": "2026-10-13T06:41:07.802Z"
     },
     {
       "showId": "the-lion-king-1997",
