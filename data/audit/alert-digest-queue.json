@@ -2418,5 +2418,35 @@
       }
     ],
     "queuedAt": "2026-10-13T22:32:43.040Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5046-workflow-hygiene",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5046-workflow-hygiene",
+    "description": "land.yml did not land land/bro-5046-workflow-hygiene: the unit-tests-node gate went red at 073ec1582d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38475261139",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5046-workflow-hygiene"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "073ec1582d7565774e9f8dfa9e8a4df3653e6651"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38475261139"
+      }
+    ],
+    "queuedAt": "2026-10-13T22:42:05.529Z"
   }
 ]
