@@ -147,13 +147,21 @@ function decideFollower({ markerSha, ancestor }) {
   return { landed: true, reason: `landed by a merge train as ${String(markerSha).slice(0, 10)}` };
 }
 
-/** Markers whose tip no land/** ref points at any more: nobody needs them. */
-function staleMarkers(markers, landTips) {
+// A rider's own run reads its marker within one queue poll; past the Land
+// job's whole life (125 min) a marker can only be a leak.
+const MARKER_MAX_AGE_SEC = 6 * 3600;
+
+/**
+ * Markers nobody needs: no land/** ref points at the tip any more, or the
+ * landed commit is older than MARKER_MAX_AGE_SEC (ageSec: {tip: seconds},
+ * from the commit date; unknown age keeps the marker).
+ */
+function staleMarkers(markers, landTips, ageSec = {}) {
   const live = new Set(landTips || []);
-  return Object.keys(markers || {}).filter((tip) => !live.has(tip));
+  return Object.keys(markers || {}).filter((tip) => !live.has(tip) || (ageSec[tip] !== undefined && ageSec[tip] > MARKER_MAX_AGE_SEC));
 }
 
 module.exports = {
-  MARKER_PREFIX, DEFAULT_TRAIN_MAX, markerRef, parseMarkers, ticketTrailers, parseTicketMessage, trainMax,
+  MARKER_PREFIX, DEFAULT_TRAIN_MAX, MARKER_MAX_AGE_SEC, markerRef, parseMarkers, ticketTrailers, parseTicketMessage, trainMax,
   selectRiders, segmentHeads, decideFollower, staleMarkers,
 };

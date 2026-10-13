@@ -295,6 +295,45 @@ test('train: main moves across INERT paths during the combined check → whole t
   } finally { w.cleanup(); }
 });
 
+test('train: main moves SUBSTANTIVELY during the combined check → retry lands the holder ALONE (riders taken back out of HEAD)', () => {
+  const w = makeWorld();
+  try {
+    w.pushBranch('land/h', { 'h.txt': 'h\n' });
+    const tipA = w.pushBranch('land/a', { 'a.txt': 'a\n' });
+    const repo = w.clone('runner');
+    const other = w.clone('other');
+    let moved = false;
+    const soloSeen = [];
+    const r = landBranch({
+      branch: 'land/h', source: 'origin', repoDir: repo, riders: [{ branch: 'land/a', tip: tipA }],
+      checks: (o) => { soloSeen.push([...o.changedFiles]); return green(); },
+      trainChecks: () => {
+        if (!moved) {
+          moved = true;
+          sh(other, ['pull', '-q', 'origin', 'main']);
+          fs.writeFileSync(path.join(other, 'code.js'), '// substantive\n');
+          sh(other, ['add', '-A']); sh(other, ['commit', '-qm', 'other session']); sh(other, ['push', '-q', 'origin', 'HEAD:main']);
+        }
+        return green();
+      },
+      pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.deepEqual(r.riders, []);
+    assert.deepEqual(soloSeen, [['h.txt']], 'attempt 2 checks the holder alone');
+    assert.equal(w.onMain('a.txt'), null, 'the rider did not ride along unmarked');
+    assert.equal(sh(w.origin, ['show', '-s', '--format=%s', r.sha]), 'feat land/h', 'result.sha is the holder commit');
+    assert.match(r.trainDropped[0].reason, /main moved substantively/);
+  } finally { w.cleanup(); }
+});
+
+test('staleMarkers: an old marker is pruned even while a land ref still points at its tip', () => {
+  assert.deepEqual(t.staleMarkers({ [A]: B }, [A], { [A]: t.MARKER_MAX_AGE_SEC + 1 }), [A]);
+  assert.deepEqual(t.staleMarkers({ [A]: B }, [A], { [A]: 60 }), []);
+  assert.deepEqual(t.staleMarkers({ [A]: B }, [A]), [], 'unknown age keeps it');
+});
+
 test('land.js: a rider of an earlier train finishes from its marker; --train-landed-only never lands unlocked', () => {
   const w = makeWorld();
   try {

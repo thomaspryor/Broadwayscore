@@ -146,7 +146,13 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
   };
   // A rider of an earlier merge train: nothing to rebase, check or push.
   if (args['expect-tip'] && args['dry-run'] !== true) {
-    const v = markerCheck({ tip: args['expect-tip'], repoDir });
+    let v = markerCheck({ tip: args['expect-tip'], repoDir });
+    // The mutex step saw the marker: a git hiccup here must not turn a real
+    // train landing into a refusal (and an owner alert).
+    for (let i = 0; i < 3 && !v.landed && args['train-landed-only'] === true; i += 1) {
+      execFileSync('sleep', [String(5 * (i + 1))]);
+      v = markerCheck({ tip: args['expect-tip'], repoDir });
+    }
     if (v.landed) {
       console.error(`[land] ${v.reason} — nothing to push`);
       return writeResult({ landed: true, sha: v.markerSha, attempts: 0, wallMs: Date.now() - t0, failedCheck: null, reason: v.reason, pushed: false, files: [], verified: 'LANDED', contentNote: null, baseSha: null, verifiedBase: args['verified-base'] || null, churnSkips: 0, riders: [], trainDropped: [], train: 'rider' });

@@ -84,8 +84,15 @@ function collect() {
     if (ref && ref.startsWith('refs/heads/land/')) landTips[ref.slice('refs/heads/'.length)] = sha;
   }
 
-  // Housekeeping: a marker whose tip no land/** ref points at is not needed.
-  for (const tip of t.staleMarkers(state.landed, Object.values(landTips)).slice(0, 20)) {
+  // Housekeeping: a marker no land/** ref needs, or one older than any live
+  // rider could still be waiting on (a leak that would otherwise swallow a
+  // re-land of the same tip), is removed.
+  const markerAgeSec = {};
+  for (const [tip, sha] of Object.entries(state.landed)) {
+    const ct = git(['log', '-1', '--format=%ct', sha]);
+    if (ct.ok && /^\d+$/.test(ct.out)) markerAgeSec[tip] = Date.now() / 1000 - Number(ct.out);
+  }
+  for (const tip of t.staleMarkers(state.landed, Object.values(landTips), markerAgeSec).slice(0, 20)) {
     const r = git(['push', '--no-verify', remote, `:${t.markerRef(tip)}`, `--force-with-lease=${t.markerRef(tip)}:${state.landed[tip]}`]);
     log(r.ok ? `pruned stale marker for ${tip.slice(0, 10)}` : `stale marker prune failed for ${tip.slice(0, 10)}`);
   }
@@ -101,11 +108,20 @@ function collect() {
   });
   for (const x of tickets) x.remoteTip = x.info ? (landTips[x.info.branch] || null) : null;
 
-  // Liveness only for tickets that pass every free check, in queue order.
-  const pre = t.selectRiders({ holderBranch: branch, self, tickets: tickets.map((x) => ({ ...x, liveness: 'live' })), markers: state.landed, max });
-  const candidates = new Set(pre.riders.map((r) => `${r.runId}-${r.attempt}`));
-  for (const x of tickets) x.liveness = candidates.has(`${x.runId}-${x.attempt}`) ? runLiveness(x) : undefined;
-  const sel = t.selectRiders({ holderBranch: branch, self, tickets, markers: state.landed, max });
+  // Liveness only for tickets that pass every free check, in queue order;
+  // one that turns out not live frees its slot for the next (bounded rounds).
+  const key = (x) => `${x.runId}-${x.attempt}`;
+  const looked = new Map();
+  let sel;
+  for (let round = 0; round < 3; round += 1) {
+    const assume = tickets.map((x) => ({ ...x, liveness: looked.has(key(x)) ? looked.get(key(x)) : 'live' }));
+    const pre = t.selectRiders({ holderBranch: branch, self, tickets: assume, markers: state.landed, max });
+    const todo = pre.riders.filter((r) => !looked.has(key(r)));
+    if (!todo.length) break;
+    for (const r of todo) looked.set(key(r), runLiveness(tickets.find((x) => key(x) === key(r))));
+  }
+  for (const x of tickets) x.liveness = looked.get(key(x));
+  sel = t.selectRiders({ holderBranch: branch, self, tickets, markers: state.landed, max });
   for (const s of sel.skipped) log(`skip ${s.ref}: ${s.reason}`);
   log(`${sel.reason}${sel.riders.length ? `: ${sel.riders.map((r) => `${r.branch}@${r.tip.slice(0, 10)}`).join(', ')}` : ''}`);
   write(sel.riders);
@@ -128,8 +144,8 @@ function mark() {
       ok = p.ok || git(['ls-remote', remote, ref]).out.startsWith(r.sha);
       if (!ok) { log(`marker push for ${r.branch} failed (${p.err.split('\n').pop()}), retrying`); spawnSync('sleep', [String(2 * (i + 1))]); }
     }
-    console.log(ok ? `land-train: marked ${r.branch} @ ${r.tip.slice(0, 10)} landed as ${r.sha.slice(0, 10)}` : `::warning::land-train: could not mark ${r.branch} landed; its own run will confirm it by rebasing to empty`);
-    if (appendLanding) {
+    console.log(ok ? `land-train: marked ${r.branch} @ ${r.tip.slice(0, 10)} landed as ${r.sha.slice(0, 10)}` : `::warning::land-train: could not mark ${r.branch} landed; its own run will confirm it by rebasing to empty (and record it)`);
+    if (ok && appendLanding) {
       try {
         appendLanding({ repoDir: process.cwd(), branch: r.branch, sha: r.sha, tip: r.tip, base: r.base || null, runUrl: env.LAND_RUN_URL || null, attempts: result.attempts });
       } catch (err) { log(`landings.jsonl row for ${r.branch} not written (${err.message})`); }

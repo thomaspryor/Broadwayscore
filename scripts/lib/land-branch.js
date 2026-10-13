@@ -636,6 +636,7 @@ function landBranch(o) {
     // A conflict, an empty result or an unfetchable tip drops that rider (it
     // lands on its own turn) and HEAD goes back to exactly where it was.
     let train = [];
+    let holderHead = null;
     const assembleTrain = (list, baseSha) => {
       const added = [];
       for (const r of list) {
@@ -704,7 +705,7 @@ function landBranch(o) {
       }
       // BRO-5282 merge train, attempt 1 only (a restart re-checks the holder
       // alone, keeping the job inside its timeout).
-      const holderHead = head;
+      holderHead = head;
       const holderCount = Number(git(['rev-list', '--count', `${baseSha}..${holderHead}`], workdir));
       train = [];
       if (attempt === 1 && riders.length && !beforePush && !dryRun) {
@@ -865,7 +866,14 @@ function landBranch(o) {
       });
       }
       if (restart) {
-        for (const r of train) trainDropped.push({ branch: r.branch, reason: 'main moved substantively: the retry re-checks the holder alone' });
+        if (train.length) {
+          // The retry is the holder alone: take the riders' commits back out
+          // of HEAD, or attempt 2's rebase would carry them along unmarked.
+          for (const r of train) trainDropped.push({ branch: r.branch, reason: 'main moved substantively: the retry re-checks the holder alone' });
+          train = [];
+          discardResidue('train restart');
+          git(['reset', '-q', '--hard', holderHead], workdir);
+        }
         continue;
       }
     }
