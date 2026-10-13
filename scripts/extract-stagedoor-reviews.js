@@ -24,6 +24,7 @@ const {
 } = require('./lib/review-normalization');
 const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/stagedoor');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -138,10 +139,17 @@ let newFiles = 0;
 let mergedFiles = 0;
 let unknownOutlets = [];
 
+const liveShowIds = loadLiveShowIds();
 for (const file of files) {
   const archive = JSON.parse(fs.readFileSync(path.join(archiveDir, file), 'utf8'));
   const showId = archive.ourShowId;
   const reviews = archive.criticReviews || [];
+  // BRO-5288: an archive mapped to an id shows.json does not have would get
+  // a show folder of its own, where no date check can run.
+  if (filterToLiveShowIds([showId], liveShowIds).dropped.length) {
+    console.log(`Skipping ${showId}: not in shows.json`);
+    continue;
+  }
 
   if (reviews.length === 0) continue;
 

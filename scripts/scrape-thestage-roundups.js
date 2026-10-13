@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -360,9 +361,15 @@ async function main() {
     // Extract-only mode: process existing archives
     console.log('Extract-only mode: processing existing archives\n');
     const files = fs.readdirSync(ARCHIVE_DIR).filter(f => f.endsWith('.html'));
+    const liveShowIds = loadLiveShowIds();
     for (const f of files) {
       const showId = f.replace('.html', '');
       if (TARGET_SHOWS && !TARGET_SHOWS.includes(showId)) continue;
+      // BRO-5288: an archive page under an id shows.json does not have writes nothing.
+      if (filterToLiveShowIds([showId], liveShowIds).dropped.length) {
+        console.log(`  ${showId}: skipped, not in shows.json`);
+        continue;
+      }
       const html = fs.readFileSync(path.join(ARCHIVE_DIR, f), 'utf8');
       const reviews = extractReviews(html, showId);
       console.log(`  ${showId}: ${reviews.length} reviews`);

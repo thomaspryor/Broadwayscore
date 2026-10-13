@@ -36,4 +36,19 @@ function filterToLiveShowIds(ids, liveIds, opts = {}) {
   return { kept, dropped, filtered };
 }
 
-module.exports = { filterToLiveShowIds, MIN_PLAUSIBLE_SHOWS };
+/**
+ * shows.json ids as a Set, or null when the file is missing or unreadable
+ * (filterToLiveShowIds then keeps everything). For archive-driven review
+ * writers that map a file name to a show folder (BRO-5288).
+ * @param {string} [showsPath]
+ * @returns {Set<string>|null}
+ */
+function loadLiveShowIds(showsPath = require('path').join(__dirname, '../../data/shows.json')) {
+  try {
+    return new Set(JSON.parse(require('fs').readFileSync(showsPath, 'utf8')).shows.map(s => s.id));
+  } catch {
+    return null;
+  }
+}
+
+module.exports = { filterToLiveShowIds, loadLiveShowIds, MIN_PLAUSIBLE_SHOWS };

@@ -18,6 +18,8 @@ const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } =
 const { classifyMarketRouting, resolveWriteTarget, buildSiblingIndex } = require('./lib/market-routing');
 const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 const { recordMarketMisroute } = require('./lib/market-misroute-ledger');
+const { filterToLiveShowIds } = require('./lib/live-show-ids');
+const { newRowPredatesProduction, canonicalSlotNamesOtherCritic } = require('./lib/dtli-ingest-guards');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -43,6 +45,22 @@ function _getSiblingIndex() {
     _siblingIndexCache = new Map();
   }
   return _siblingIndexCache;
+}
+
+// BRO-5288: shows.json rows by id. An archived page whose id is not a
+// shows.json row (stale id, or a DTLI slug like "purpose") is never written:
+// safeWriteReview's date check needs the show row, so those folders got 2003-2014
+// reviews unchecked.
+let _showByIdCache = null;
+function _getShowById() {
+  if (!_showByIdCache) {
+    try {
+      _showByIdCache = new Map(require(SHOWS_PATH).shows.map(s => [s.id, s]));
+    } catch {
+      _showByIdCache = new Map();
+    }
+  }
+  return _showByIdCache;
 }
 
 let _skipCrossShowDupeCache = null;
@@ -415,6 +433,11 @@ function readReviewOnDisk(showDir, review) {
 }
 
 function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited) {
+  const showById = _getShowById();
+  if (filterToLiveShowIds([review.showId], new Set(showById.keys())).dropped.length) {
+    console.warn(`  ⛔ Unknown show id: skipping ${review.outletId}/${review.criticName || 'Unknown'} for ${review.showId} (not in shows.json)`);
+    return null;
+  }
   // Guard A mirror (BRO-363): same cross-market sibling reroute
   // review-file-writer.js's createOrMergeReviewFile applies at its shared
   // chokepoint. This script writes via safeWriteReview instead, so without
@@ -495,9 +518,6 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
 // the record where it is without re-entering the routing block.
 function saveReviewUnrouted(review, overwrite = false, dir = outputDir) {
   const showDir = path.join(dir, review.showId);
-  if (!fs.existsSync(showDir)) {
-    fs.mkdirSync(showDir, { recursive: true });
-  }
 
   // Use canonical filename for new files
   const filename = generateReviewFilename(review.outletId, review.criticName);
@@ -535,8 +555,26 @@ function saveReviewUnrouted(review, overwrite = false, dir = outputDir) {
     } catch { /* corrupt file — fall through */ }
   }
 
-  // Check for existing file under any outlet ID variant (canonical or legacy)
+  // Check for existing file under any outlet ID variant (canonical or legacy).
+  // No url on purpose: the URL pass returns the first same-outlet file with that
+  // url, and when two critics' files share one url that is the wrong critic's
+  // (BRO-5288 review: 13 live show/outlet groups).
   const existingFile = !overwrite ? findExistingReviewFile(showDir, review.outletId, review.criticName) : null;
+  if (!overwrite && !(existingFile && existingFile.data) && fs.existsSync(filepath)) {
+    let onDisk = null;
+    try { onDisk = JSON.parse(fs.readFileSync(filepath, 'utf-8')); } catch { /* corrupt — normal path */ }
+    if (canonicalSlotNamesOtherCritic(review.criticName, onDisk)) {
+      console.warn(`  ⏭️  Byline kept: ${review.showId}/${filename} names ${onDisk.criticName}, DTLI says ${review.criticName}`);
+      return null;
+    }
+  }
+  if (!overwrite && !(existingFile && existingFile.data) && !fs.existsSync(filepath)) {
+    const predates = newRowPredatesProduction({ publishDate: review.publishDate, show: _getShowById().get(review.showId) });
+    if (predates.skip) {
+      console.warn(`  ⛔ Earlier production: not creating ${review.showId}/${filename} (${predates.reason})`);
+      return null;
+    }
+  }
   if (existingFile && existingFile.data) {
     // Merge into the existing file (preserve its path/filename)
     filepath = existingFile.path;
@@ -577,6 +615,8 @@ function saveReviewUnrouted(review, overwrite = false, dir = outputDir) {
   // exact-revert ping-pong (19361 → 19510 → 19358 on 2026-08-02, 51 swings ≥40
   // reviews in 30 days). safeWriteReview's default merge preserves PROTECTED_FIELDS
   // from the file on disk, so a re-extraction can no longer resurrect contamination.
+  // Created only once a write is certain, so a skipped row leaves no folder.
+  if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
   safeWriteReview(filepath, review);
   return filepath;
 }
@@ -615,7 +655,14 @@ if (!fs.existsSync(dtliDir)) {
   process.exit(1);
 }
 
-const files = fs.readdirSync(dtliDir).filter(f => f.endsWith('.html'));
+const allFiles = fs.readdirSync(dtliDir).filter(f => f.endsWith('.html'));
+// BRO-5288: pages archived under an id shows.json does not have write nothing,
+// neither review files nor aggregator-summary thumb counts.
+const live = filterToLiveShowIds(allFiles.map(f => f.replace('.html', '')), new Set(_getShowById().keys()));
+if (live.dropped.length) console.log(`Skipping ${live.dropped.length} archived page(s) not in shows.json: ${live.dropped.join(', ')}`);
+if (!live.filtered) console.warn('WARNING: shows.json is below the plausibility floor; not filtering orphan ids');
+const liveIds = new Set(live.kept);
+const files = allFiles.filter(f => liveIds.has(f.replace('.html', '')));
 
 console.log('Extracting reviews from DTLI pages:\n');
 
@@ -626,6 +673,10 @@ let totalThumbsSaved = 0;
 
 // Load aggregator summary for saving thumb counts
 const aggregatorSummary = loadAggregatorSummary();
+// Thumb counts an earlier run saved for the skipped ids are stale too.
+for (const id of live.dropped) {
+  if (aggregatorSummary.dtli && aggregatorSummary.dtli[id]) delete aggregatorSummary.dtli[id];
+}
 
 for (const file of files.sort()) {
   const filePath = path.join(dtliDir, file);
