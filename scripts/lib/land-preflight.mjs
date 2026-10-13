@@ -463,6 +463,43 @@ export function checkRebasedManifests({ base, src, tip, cwd }) {
   return problems.length ? { status: 'fail', problems } : { status: 'pass' };
 }
 
+// BRO-4909: a push that touches .github/workflows is judged by CI's workflow
+// lints and the DEPENDENCIES.md freshness check; running them here saves the
+// ~30 minute land cycle they would otherwise cost (a stale DEPENDENCIES.md
+// reddened main's land runs this way). Judged on the tree that will land.
+export const WORKFLOW_PATH_RE = /^\.github\/workflows\/|^scripts\/(lint-workflow-guards\.sh|audit-workflow-hygiene\.js|generate-workflow-dependencies\.js)$|^scripts\/lib\/(audit-workflow-hygiene-rules|workflow-dependency-graph)\.js$/;
+export const WORKFLOW_CHECKS = [
+  { name: 'lint-workflow-guards.sh workflows', cmd: 'bash', args: ['scripts/lint-workflow-guards.sh', 'workflows'], fix: 'fix the lines it prints' },
+  { name: 'audit-workflow-hygiene.js', cmd: 'node', args: ['scripts/audit-workflow-hygiene.js'], fix: 'fix the lines it prints (or the exemption comment it names)' },
+  { name: 'generate-workflow-dependencies.js --check', cmd: 'node', args: ['scripts/generate-workflow-dependencies.js', '--check'], fix: 'node scripts/generate-workflow-dependencies.js, then commit .github/workflows/DEPENDENCIES.md' },
+];
+/** -> { status: 'clean' | 'fail' | 'skip', problems?, reason? }. Fails open: a check that cannot run is not a block. */
+export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync }) {
+  const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
+  if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
+  if (!out(diff).split('\n').some((f) => WORKFLOW_PATH_RE.test(f))) return { status: 'clean', reason: 'no workflow files changed' };
+  const root = out(git(cwd, ['rev-parse', '--show-toplevel']));
+  const judgeRoot = materializeTree(cwd, landedTip || tip);
+  if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
+  try {
+    const problems = [];
+    // js-yaml and friends live in the checkout's node_modules, not in the exported tree.
+    const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [path.join(root, 'node_modules'), process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
+    for (const c of WORKFLOW_CHECKS) {
+      if (!fs.existsSync(path.join(judgeRoot, c.args[0]))) continue;
+      const r = run(c.cmd, c.args, { cwd: judgeRoot, env, encoding: 'utf8', timeout: 90000, maxBuffer: 16 * 1024 * 1024 });
+      if (r.error || r.signal || (r.status !== 0 && r.status !== 1)) continue; // could not run: fail open
+      if (r.status === 1) {
+        const tail = `${r.stdout || ''}\n${r.stderr || ''}`.split('\n').map((l) => l.trim()).filter(Boolean).slice(-6).join(' | ').slice(0, 600);
+        problems.push(`${c.name} fails on the landing tree (${c.fix}): ${tail}`);
+      }
+    }
+    return problems.length ? { status: 'fail', problems } : { status: 'clean' };
+  } finally {
+    fs.rmSync(judgeRoot, { recursive: true, force: true, maxRetries: 5 });
+  }
+}
+
 function fetchBase(cwd) {
   const r = git(cwd, ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', 'fetch', '-q', 'origin', 'main'], { timeout: 20000 });
   return ok(r) ? null : r.timedOut ? 'fetch timed out' : `fetch failed: ${r.stderr.trim().slice(0, 120)}`;
@@ -483,7 +520,7 @@ function testTreeDirty(cwd) {
   return paths.filter((p) => TEST_FILE_RE.test(p) || isManifest(p) || p.startsWith('.github/workflows/'));
 }
 
-export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests }) {
+export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows }) {
   const lines = [`LAND PREFLIGHT: land.yml would refuse this push to ${target}. Fix it on the branch and push again (about 30 minutes saved).`];
   if (rebase?.status === 'conflict') {
     lines.push(
@@ -504,6 +541,10 @@ export function blockMessage({ target, rebase, tests, base, botOwned, staleRever
     lines.push('', '* Test manifest order (test-manifest-integrity would go red after the land rebase):');
     for (const p of manifests.problems) lines.push(`   - ${p}`);
     lines.push('   Fix: git fetch origin main && git merge origin/main, then node -e "require(\'./scripts/lib/test-manifest.js\').sortManifestFile(\'<manifest>\')", commit, squash.');
+  }
+  if (workflows?.status === 'fail') {
+    lines.push('', '* Workflow checks (CI would go red on these):');
+    for (const p of workflows.problems) lines.push(`   - ${p}`);
   }
   if (staleRevert?.status === 'fail') {
     lines.push(
@@ -572,10 +613,12 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
     ? (seams.checkRebasedManifests || checkRebasedManifests)({ base, src, tip: rebase.tip, cwd })
     : { status: 'skip' };
   detail.manifests = manifests;
+  const workflows = (seams.checkWorkflowChecks || checkWorkflowChecks)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
+  detail.workflows = workflows;
   const warnings = [...(tests.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
   detail.warnings = warnings;
-  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status].some((x) => x === true || x === 'fail')) {
-    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests });
+  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status].some((x) => x === true || x === 'fail')) {
+    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows });
     return { decision: 'block', message: warnings.length ? `${message}\n\nAlso: ${warnings.join('\n')}` : message, warnings, detail };
   }
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
