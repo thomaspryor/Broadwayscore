@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-b-02",
   "planId": "0f6b24dd-366d-449b-b1cc-bed6a874d8fc",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T01:56:27.497Z",
   "submitter": {
     "name": null,
@@ -191,5 +191,133 @@
         "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T02:35:06.572Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/stagebuddy--bill-crouch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/theater-life--iris-wiener.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/theater-pizzazz--adam-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/tv-and-city--elazar-abrahams.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/blogcritics--jon-sobel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/guardian--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/nydailynews--joe-dziemianowicz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/nypost--elisabeth-vincentelli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/theatre-reviews-limited--david-roberts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hans-litten-the-jew-who-crossexamined-hitler-2026/nyt-theater--jonathan-mandell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hate-radio-2026/front-row-center--brittany-crowell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hate-radio-2026/off-off-online--deirdre-donovan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hate-radio-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/guardian--chris-wiegand.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/thestage--oliver-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/west-end-best-friend--kate-soper.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/whatsonstage--taylor-vaughan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/chicagotribune--chris-jones.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/cititour--brian-scott-lipton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/ew--thom-geier.json (delete it first or set overwrite: true)"
+    }
+  ]
 }
