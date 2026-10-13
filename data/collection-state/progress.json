@@ -344,7 +344,8 @@
     "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
     "grace-pervades-west-end-2026/independent--alice-saville.json",
     "mercury-off-broadway-2026/independent--roisin-oconnor.json",
-    "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json"
+    "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
   ],
   "failed": [
     "fish-off-broadway-2026/timeout--unknown.json",
@@ -645,7 +646,11 @@
     "grace-pervades-west-end-2026/standard--ghenet-pinderhughes-randall.json",
     "grace-pervades-west-end-2026/thestage--tom-wicker.json",
     "mercury-off-broadway-2026/theatrecat--unknown.json",
-    "mercury-off-broadway-2026/thestage--unknown.json"
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -835,7 +840,8 @@
       "well-ill-let-you-go-off-broadway-2026/nytg--andy-lefkowitz.json",
       "grace-pervades-west-end-2026/independent--alice-saville.json",
       "mercury-off-broadway-2026/independent--roisin-oconnor.json",
-      "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json"
+      "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "amp": [
       "data/review-texts/dirty-dancing-tour-2026/hollywood-reporter--caitlin-huston.json",
@@ -1030,7 +1036,7 @@
     ]
   },
   "startTime": "2026-10-12T20:59:55.801Z",
-  "lastProcessed": "chaplin-2012/wsj--terry-teachout.json",
+  "lastProcessed": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
   "log": [
     {
       "t": "2026-10-12T21:42:33.858Z",
@@ -1158,6 +1164,46 @@
       "t": "2026-10-13T02:53:31.213Z",
       "event": "bb-session",
       "session": "ee131ab0",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-13T05:21:57.675Z",
+      "event": "bb-session",
+      "session": "a512f3b4",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T05:23:12.542Z",
+      "event": "bb-session",
+      "session": "d936e1c9",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-13T05:23:13.066Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T05:25:50.986Z",
+      "event": "bb-session",
+      "session": "42841bab",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T05:25:51.541Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T05:26:19.985Z",
+      "event": "bb-session",
+      "session": "64e8b9eb",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-13T05:27:31.000Z",
+      "event": "bb-session",
+      "session": "4338710a",
       "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ],
