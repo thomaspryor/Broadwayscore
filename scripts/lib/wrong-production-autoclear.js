@@ -884,6 +884,38 @@ const WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES = Object.freeze([
   WRONG_SHOW_ORPHAN_DIR_PREFIX,
 ]);
 
+/**
+ * BRO-4317: flags that only describe the folder a review file sat in, and so go
+ * stale when an approved-fix plan moves the file out of `srcFolder`:
+ *   - wrongShow from audit-cross-show-url-collisions Pre-pass 2, reason
+ *     `Orphaned generic directory "<srcFolder>" ...`
+ *   - wrongProduction from its Pre-pass 1, note `File showId "X" doesn't match
+ *     directory "<srcFolder>"`, with no reason, content provenance, LLM verdict,
+ *     rejection or high-confidence content verification behind it.
+ * A held (human/plan) flag is never stale. Returns which flags to auto-clear.
+ */
+function locationFlagsStaleAfterMove(data, srcFolder) {
+  const out = { wrongShow: false, wrongProduction: false };
+  if (!data || !srcFolder) return out;
+  const cv = data.contentVerification || {};
+  const cvHigh = cv.confidence === 'high';
+  out.wrongShow = data.wrongShow === true
+    && typeof data.wrongShowReason === 'string'
+    && data.wrongShowReason.startsWith(`${WRONG_SHOW_ORPHAN_DIR_PREFIX}"${srcFolder}"`)
+    && !isWrongShowHeld(data)
+    && !(cvHigh && (cv.wrongArticle === true || cv.wrongShow === true));
+  out.wrongProduction = data.wrongProduction === true
+    && typeof data.wrongProductionNote === 'string'
+    && data.wrongProductionNote.includes(`doesn't match directory "${srcFolder}"`)
+    && !data.wrongProductionReason
+    && data.wrongProductionProvenance !== 'content'
+    && !data.llmClassified
+    && !data.rejectionReason
+    && !(cvHigh && cv.wrongProduction === true)
+    && !isWrongProductionHeld(data);
+  return out;
+}
+
 function isUrlIndependentWrongShowReason(reason) {
   return typeof reason === 'string'
     && WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES.some((p) => reason.startsWith(p));
@@ -1142,6 +1174,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  locationFlagsStaleAfterMove,
   isWrongProductionHeld,
   isWrongShowHeld,
   isDateOnlyAutoReason,

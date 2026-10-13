@@ -161,7 +161,7 @@ describe('moveReviewFile (approved-fix review-file-op move)', () => {
     assert.match(r.reason, /Destination exists/);
     assert.equal(fs.readFileSync(path.join(dir, 'show-2023', 'a--b.json'), 'utf8'), '{"keep":1}');
     assert.equal(moveReviewFile(dir, 'old-folder/a--b.json', 'show-2023/a--b.json', { overwrite: true }).ok, true);
-    assert.equal(fs.readFileSync(path.join(dir, 'show-2023', 'a--b.json'), 'utf8'), '{}');
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'show-2023', 'a--b.json'), 'utf8')), { showId: 'show-2023' });
   });
 
   test('moves into a new folder and refuses paths that escape the corpus', () => {
@@ -171,6 +171,60 @@ describe('moveReviewFile (approved-fix review-file-op move)', () => {
     assert.equal(moveReviewFile(dir, 'new-2026/a--b.json', '../x.json').ok, false);
     assert.equal(moveReviewFile(dir, '../etc.json', 'x/y.json').ok, false);
     assert.equal(moveReviewFile(dir, 'missing/a.json', 'x/y.json').ok, false);
+  });
+});
+
+describe('moveReviewFile retags a cross-folder move (BRO-4317: 29 of 69 rehomed reviews stayed hidden)', () => {
+  const ORPH = 'Orphaned generic directory "spamalot" is not in shows.json — year-suffixed siblings exist';
+  const write = (dir, rel, obj) => fs.writeFileSync(path.join(dir, rel), JSON.stringify(obj));
+  const read = (dir, rel) => JSON.parse(fs.readFileSync(path.join(dir, rel), 'utf8'));
+
+  test('showId follows the destination; location-only flags naming the source folder auto-clear', () => {
+    const dir = tmpCorpus({ spamalot: [] });
+    write(dir, 'spamalot/a--b.json', {
+      showId: 'spamalot', url: 'https://x.com/r1',
+      wrongShow: true, wrongShowReason: ORPH,
+      wrongProduction: true, wrongProductionNote: 'File showId "spamalot" doesn\'t match directory "spamalot" — placed in wrong production directory',
+    });
+    const r = moveReviewFile(dir, 'spamalot/a--b.json', 'spamalot-2023/a--b.json');
+    assert.equal(r.ok, true, r.reason);
+    assert.deepEqual(r.cleared, ['wrongShow', 'wrongProduction']);
+    const d = read(dir, 'spamalot-2023/a--b.json');
+    assert.equal(d.showId, 'spamalot-2023');
+    assert.equal(d.wrongShow, false);
+    assert.equal(d.wrongProduction, false);
+    assert.match(d.wrongShowAutoCleared, /review-file-move/);
+    assert.equal(d.wrongShowReason, undefined);
+    assert.ok(!fs.existsSync(path.join(dir, 'spamalot', 'a--b.json')));
+  });
+
+  test('content verdicts, held flags and reasons naming another folder stay set', () => {
+    const dir = tmpCorpus({ spamalot: [] });
+    write(dir, 'spamalot/c.json', { showId: 'spamalot', url: 'https://x.com/c', wrongShow: true, wrongShowReason: ORPH.replace('"spamalot"', '"other"') });
+    write(dir, 'spamalot/d.json', { showId: 'spamalot', url: 'https://x.com/d', wrongProduction: true,
+      wrongProductionNote: 'File showId "x" doesn\'t match directory "spamalot"', wrongProductionProvenance: 'content' });
+    write(dir, 'spamalot/e.json', { showId: 'spamalot', url: 'https://x.com/e', wrongProduction: true,
+      wrongProductionNote: 'File showId "x" doesn\'t match directory "spamalot"', wrongProductionReason: 'ambiguous-production' });
+    for (const f of ['c.json', 'd.json', 'e.json']) {
+      const r = moveReviewFile(dir, `spamalot/${f}`, `spamalot-2023/${f}`);
+      assert.equal(r.ok, true, r.reason);
+      assert.deepEqual(r.cleared, [], f);
+    }
+    assert.equal(read(dir, 'spamalot-2023/c.json').wrongShow, true);
+    assert.equal(read(dir, 'spamalot-2023/d.json').wrongProduction, true);
+    assert.equal(read(dir, 'spamalot-2023/e.json').wrongProduction, true);
+    assert.equal(read(dir, 'spamalot-2023/e.json').showId, 'spamalot-2023');
+  });
+
+  test('a locked file is refused and an overwritten destination is restored when the move is refused', () => {
+    const dir = tmpCorpus({ spamalot: [], 'spamalot-2023': [] });
+    write(dir, 'spamalot/l.json', { showId: 'spamalot', url: 'https://x.com/l', _locked: true });
+    write(dir, 'spamalot-2023/l.json', { showId: 'spamalot-2023', keep: 1 });
+    const r = moveReviewFile(dir, 'spamalot/l.json', 'spamalot-2023/l.json', { overwrite: true });
+    assert.equal(r.ok, false);
+    assert.match(r.reason, /locked/);
+    assert.equal(read(dir, 'spamalot-2023/l.json').keep, 1);
+    assert.ok(!fs.existsSync(path.join(dir, 'spamalot-2023', 'l.json.move-backup')));
   });
 });
 
