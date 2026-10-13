@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4889-c",
   "planId": "c6156033-cc15-4d8c-aeda-328e3a7d20da",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T03:12:26.720Z",
   "submitter": {
     "name": null,
@@ -80,5 +80,48 @@
         "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T03:59:29.098Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/usatoday--elysa-gardner.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/usatoday--elysa-gardner.json isNonReviewReason: null -> \"BRO-4889: one-sentence March 2006 preview blurb (172 chars); the real review is usatoday.com/life/theater/reviews/2006-04-19-three-days_x.htm\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2008/latimes--charles-mcnulty-bway.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2008/latimes--charles-mcnulty-bway.json isNonReviewReason: null -> \"BRO-4889: LA Times Calendar reader-letters page (\\\"Breaking through the Brick wall\\\"), not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/vulture--scott-brown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/vulture--scott-brown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/newyorker--hilton-als.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/newyorker--hilton-als.json wrongProductionManualClear: null -> true"
+    }
+  ]
 }
