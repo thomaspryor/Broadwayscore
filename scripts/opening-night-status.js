@@ -29,7 +29,7 @@ const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { findOpeningShows } = require('./lib/find-opening-shows');
-const { findSentRecord } = require('./lib/missed-broadcasts');
+const { showBroadcastStatus } = require('./lib/broadcast-status');
 const { sendAlert } = require('./lib/discord-notify');
 
 // Paths
@@ -133,53 +133,7 @@ function getShowReviewStats(reviewsArr, showId, outletRegistry, showCategory) {
  * Get broadcast status from opening-night-sent.json
  */
 function getBroadcastStatus(sentData, showId, market) {
-  if (!sentData?.shows) return { state: 'waiting', detail: 'No broadcast data' };
-
-  // A real send, not `completed` (set at draft creation): a draft still
-  // waiting in Resend falls through to 'waiting' (BRO-4474).
-  const completed = findSentRecord(sentData.shows, showId, market);
-  if (completed) {
-    return {
-      state: 'complete',
-      detail: completed.sentAt ? `Broadcast sent at ${new Date(completed.sentAt).toLocaleString()}` : 'Broadcast sent',
-      reviewCount: completed.reviewCount,
-      sentAt: completed.sentAt,
-    };
-  }
-
-  // Check for preview sent today
-  const today = new Date().toISOString().slice(0, 10);
-  const previewKey = `preview:${market}:${showId}:${today}`;
-  const preview = sentData.shows[previewKey];
-  if (preview) {
-    return {
-      state: 'preview-sent',
-      detail: `Preview sent to ${preview.previewTo || 'owner'} at ${new Date(preview.sentAt).toLocaleTimeString()}`,
-      reviewCount: preview.reviewCount,
-    };
-  }
-
-  // Check for any previous preview
-  const prevPreviews = Object.keys(sentData.shows).filter(k => k.startsWith(`preview:`) && k.includes(showId));
-  if (prevPreviews.length > 0) {
-    const lastKey = prevPreviews.sort().pop();
-    const last = sentData.shows[lastKey];
-    return {
-      state: 'preview-sent-earlier',
-      detail: `Last preview: ${lastKey.split(':').pop()} (${last.reviewCount} reviews)`,
-    };
-  }
-
-  // Check for overdue alert
-  const overdueKey = `overdue-alert:${showId}`;
-  if (sentData.shows[overdueKey]) {
-    return {
-      state: 'overdue',
-      detail: `Overdue alert sent at ${new Date(sentData.shows[overdueKey].sentAt).toLocaleString()}`,
-    };
-  }
-
-  return { state: 'waiting', detail: 'Awaiting reviews' };
+  return showBroadcastStatus(sentData && sentData.shows, showId, market);
 }
 
 /**
@@ -305,12 +259,15 @@ function readinessBar(current, required, label) {
   return `${color}${icon}${RESET} ${label}: ${BOLD}${current}${RESET}/${required}`;
 }
 
+const BROADCAST_ICON = { complete: ':mega:', 'not-sent': ':no_bell:', overdue: ':rotating_light:' };
+
 function broadcastBadge(state) {
   const map = {
     'complete': `${BG_GREEN}${BOLD} SENT ${RESET}`,
     'preview-sent': `${BG_YELLOW}${BOLD} PREVIEW ${RESET}`,
     'preview-sent-earlier': `${YELLOW}preview (earlier)${RESET}`,
     'overdue': `${BG_RED}${BOLD} OVERDUE ${RESET}`,
+    'not-sent': `${DIM}not sent (skipped)${RESET}`,
     'waiting': `${DIM}waiting${RESET}`,
   };
   return map[state] || state;
@@ -530,7 +487,7 @@ async function sendStatusNotification(data) {
     const reviewStr = `${show.reviews.total} reviews (T1:${show.reviews.t1} T2:${show.reviews.t2} T3:${show.reviews.t3})`;
 
     const readyIcon = show.readiness.ready ? ':white_check_mark:' : ':hourglass:';
-    const broadcastIcon = show.broadcast.state === 'complete' ? ':mega:' : show.broadcast.state === 'overdue' ? ':rotating_light:' : ':clock3:';
+    const broadcastIcon = BROADCAST_ICON[show.broadcast.state] || ':clock3:';
 
     const missingStr = show.missingT1.length > 0
       ? `Missing T1: ${show.missingT1.map(m => m.name || m).join(', ')}`
@@ -564,7 +521,10 @@ async function sendStatusNotification(data) {
   // Determine severity
   const hasFailure = data.workflows?.deploy?.status === 'failure' || data.paused;
   const hasOverdue = data.shows.some(s => s.broadcast.state === 'overdue');
-  const allComplete = data.shows.every(s => s.broadcast.state === 'complete');
+  // 'not-sent' (owner skipped) is finished but not a success: green only
+  // when every show is done and at least one email actually went out.
+  const allComplete = data.shows.every(s => s.broadcast.state === 'complete' || s.broadcast.state === 'not-sent')
+    && data.shows.some(s => s.broadcast.state === 'complete');
   const severity = hasOverdue || hasFailure ? 'error'
     : allComplete ? 'success'
     : data.shows.some(s => s.readiness.ready) ? 'warning'

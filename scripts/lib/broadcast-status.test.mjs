@@ -1,0 +1,33 @@
+// The status pages' one reading of a show's broadcast (BRO-3087 follow-up).
+// require()s the real function (CLAUDE.md §15); `now` is pinned.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { showBroadcastStatus } = require('./broadcast-status.js');
+const { markDraftDiscarded } = require('./broadcast-state.js');
+
+const now = new Date('2026-10-13T12:00:00Z');
+const skipped = markDraftDiscarded({}, { nowIso: '2026-10-12T00:00:00Z', reason: 'skip' });
+const st = (shows, id = 'x') => showBroadcastStatus(shows, id, 'broadway', now).state;
+
+test('a skipped show is not-sent, even with an overdue alert or an older preview', () => {
+  assert.equal(st({ x: skipped, 'overdue-alert:x': { sentAt: '2026-10-11T00:00:00Z' } }), 'not-sent');
+  assert.equal(st({ x: skipped, 'preview:broadway:x:2026-10-10': { reviewCount: 9 } }), 'not-sent');
+});
+
+test('a skip recorded only on the combo record counts', () => {
+  assert.equal(st({ 'broadway:x+y': skipped, 'overdue-alert:x': { sentAt: '2026-10-11T00:00:00Z' } }), 'not-sent');
+});
+
+test("today's preview after a skip shows (the owner reconsidered)", () => {
+  assert.equal(st({ x: skipped, 'preview:broadway:x:2026-10-13': { reviewCount: 9, sentAt: '2026-10-13T10:00:00Z' } }), 'preview-sent');
+});
+
+test('without a skip: sent, overdue and waiting read as before', () => {
+  assert.equal(st({ x: { completed: true, draftId: 'd', draftStatus: 'sent', sentAt: '2026-10-12T00:00:00Z' } }), 'complete');
+  assert.equal(st({ x: { completed: true, draftId: 'd', draftStatus: 'draft' }, 'overdue-alert:x': { sentAt: '2026-10-12T00:00:00Z' } }), 'overdue');
+  assert.equal(st({}), 'waiting');
+  assert.equal(st({ 'preview:broadway:xy:2026-10-10': { reviewCount: 3 } }), 'waiting'); // another show's preview key
+});

@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findSentRecord } = require('./lib/missed-broadcasts');
+const { showBroadcastStatus } = require('./lib/broadcast-status');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./opening-night-poller');
 const { getTier, TIER_WEIGHTS } = require('./lib/outlet-tiers');
@@ -131,26 +131,9 @@ function main() {
     const thresholds = getThresholds(market);
 
     // Broadcast status
-    let broadcastState = 'waiting';
-    let broadcastDetail = 'Not yet broadcast-ready';
-    if (sentData?.shows) {
-      // A real send, not `completed` (set at draft creation) (BRO-4474).
-      const completed = findSentRecord(sentData.shows, show.id, market);
-      if (completed) {
-        broadcastState = 'complete';
-        broadcastDetail = completed.sentAt ? `Sent ${new Date(completed.sentAt).toLocaleString()}` : 'Sent';
-      } else {
-        const today = now.toISOString().slice(0, 10);
-        const pk = `preview:${market}:${show.id}:${today}`;
-        if (sentData.shows[pk]) {
-          broadcastState = 'preview-sent';
-          broadcastDetail = `Preview sent (${sentData.shows[pk].reviewCount} reviews)`;
-        } else if (sentData.shows[`overdue-alert:${show.id}`]) {
-          broadcastState = 'overdue';
-          broadcastDetail = 'Overdue alert sent';
-        }
-      }
-    }
+    const bc = showBroadcastStatus(sentData && sentData.shows, show.id, market, now);
+    let broadcastState = bc.state;
+    let broadcastDetail = bc.state === 'waiting' ? 'Not yet broadcast-ready' : bc.detail;
 
     // Fix contradictory text: if readiness gates pass but broadcast hasn't sent, say "awaiting send"
     if (readiness.ready && broadcastState === 'waiting') {
@@ -350,6 +333,7 @@ function generateHTML() {
   .bc-preview { background: var(--yellow); color: #000; }
   .bc-overdue { background: var(--red); color: #fff; }
   .bc-waiting { background: var(--border); color: var(--dim); }
+  .bc-notsent { background: transparent; color: var(--dim); border: 1px dashed var(--dim); }
   .missing-section { margin-top: 6px; }
   .missing-toggle { font-size: 11px; color: var(--dim); cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; gap: 4px; padding: 3px 0; }
   .missing-toggle .chevron { transition: transform 0.2s; display: inline-block; font-size: 9px; }
@@ -403,8 +387,8 @@ function scoreTier(s) {
   if (s >= 55) return 'amber';
   return 'red';
 }
-function bcClass(s) { return { complete:'bc-complete', 'preview-sent':'bc-preview', 'preview-sent-earlier':'bc-preview', overdue:'bc-overdue' }[s] || 'bc-waiting'; }
-function bcLabel(s) { return { complete:'SENT', 'preview-sent':'PREVIEW', 'preview-sent-earlier':'PREVIEW', overdue:'OVERDUE' }[s] || 'WAITING'; }
+function bcClass(s) { return { complete:'bc-complete', 'preview-sent':'bc-preview', 'preview-sent-earlier':'bc-preview', overdue:'bc-overdue', 'not-sent':'bc-notsent' }[s] || 'bc-waiting'; }
+function bcLabel(s) { return { complete:'SENT', 'preview-sent':'PREVIEW', 'preview-sent-earlier':'PREVIEW', overdue:'OVERDUE', 'not-sent':'NOT SENT' }[s] || 'WAITING'; }
 function marketLabel(c) { return { broadway:'Broadway', 'off-broadway':'Off-Broadway', 'west-end':'West End', 'off-west-end':'Off-West End' }[c] || c; }
 function marketClass(c) { return 'market-' + (c || 'broadway'); }
 function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
