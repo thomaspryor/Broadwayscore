@@ -237,3 +237,72 @@ test('BRO-3059: RETRY_FAILED in ONE process re-appends the same id (the real dup
   assert.equal(removed.failed, 1);
   assert.deepEqual(st.failed, ['r-old']);
 });
+
+// BRO-3599: a checkpoint commit whose push failed must be re-pushed by the
+// next checkpoint even when no new file changed. Real git: a bare "remote", a
+// clone with one committed-but-unpushed checkpoint, then the real helpers.
+const { countUnpushedCommits, decideCheckpointAction } = require('./lib/review-texts-checkpoint-gate.js');
+
+function mkGitPair() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3599-'));
+  const bare = path.join(root, 'remote.git');
+  const work = path.join(root, 'work');
+  const git = (cwd, ...args) => execFileSync('git', args, { cwd, stdio: 'pipe' }).toString().trim();
+  git(root, 'init', '-q', '--bare', '-b', 'main', bare);
+  git(root, 'clone', '-q', bare, work);
+  git(work, 'config', 'user.name', 't');
+  git(work, 'config', 'user.email', 't@t');
+  git(work, 'checkout', '-q', '-b', 'main');
+  fs.writeFileSync(path.join(work, 'a.json'), '{}');
+  git(work, 'add', '-A');
+  git(work, 'commit', '-q', '-m', 'base');
+  git(work, 'push', '-q', 'origin', 'main');
+  return { root, work, git };
+}
+
+test('BRO-3599: decideCheckpointAction pushes an unpushed earlier commit even with a clean index', () => {
+  assert.equal(decideCheckpointAction({ hasStagedChanges: true, unpushedCommits: null }), 'commit-and-push');
+  assert.equal(decideCheckpointAction({ hasStagedChanges: false, unpushedCommits: 1 }), 'push-only');
+  assert.equal(decideCheckpointAction({ hasStagedChanges: false, unpushedCommits: 0 }), 'skip');
+  // Unknown count (no tracking ref) keeps the old behaviour: the job's final
+  // push step still publishes it.
+  assert.equal(decideCheckpointAction({ hasStagedChanges: false, unpushedCommits: null }), 'skip');
+});
+
+test('BRO-3599: after a failed checkpoint push, the next checkpoint sees the commit as unpushed', (t) => {
+  const { root, work, git } = mkGitPair();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  assert.equal(countUnpushedCommits(work, 'main'), 0);
+
+  // Checkpoint N commits, push fails (simulated by not pushing).
+  fs.writeFileSync(path.join(work, 'b.json'), '{"x":1}');
+  git(work, 'add', '-A');
+  git(work, 'commit', '-q', '-m', 'chore: Checkpoint review texts (1 collected)');
+
+  // Checkpoint N+1: nothing new changed, so the staged diff is clean...
+  git(work, 'add', '-A');
+  assert.equal(git(work, 'diff', '--staged', '--name-only'), '');
+  // ...but the earlier commit is still owed to the remote.
+  const unpushed = countUnpushedCommits(work, 'main');
+  assert.equal(unpushed, 1);
+  assert.equal(decideCheckpointAction({ hasStagedChanges: false, unpushedCommits: unpushed }), 'push-only');
+
+  git(work, 'push', '-q', 'origin', 'main');
+  assert.equal(countUnpushedCommits(work, 'main'), 0);
+});
+
+test('BRO-3599: countUnpushedCommits returns null (never throws) without a tracking ref', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3599-nr-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  assert.equal(countUnpushedCommits(dir, 'main'), null);
+  execFileSync('git', ['init', '-q', dir]);
+  assert.equal(countUnpushedCommits(dir, 'main'), null);
+});
+
+test('BRO-3599: pushReviewTextsCheckpoint no longer returns on a clean index without checking unpushed commits', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'collect-review-texts.js'), 'utf8');
+  const body = src.slice(src.indexOf('function pushReviewTextsCheckpoint('), src.indexOf('// FIND REVIEWS TO PROCESS'));
+  assert.match(body, /decideCheckpointAction\(/);
+  assert.match(body, /countUnpushedCommits\(rtDir/);
+  assert.doesNotMatch(body, /git diff --staged --quiet'[^\n]*\);\s*\n\s*\/\/ No changes\s*\n\s*return;/);
+});
