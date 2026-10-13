@@ -44,6 +44,13 @@ export interface TonySeasonRecord {
   notes?: string;
   /** Citation for verifiability — URL or short description */
   source: string;
+  /** ISO date this window was last checked against `source` (BRO-3040).
+   *  scripts/check-cutoff-freshness.js warns when a season's `end` is within
+   *  60 days and this is more than 60 days old, and fails on a record
+   *  without it. Re-stamp only after actually re-checking the source; a
+   *  provisional record keeps its old date so the check fires before its
+   *  placeholder cutoff arrives. */
+  lastVerified: string;
 }
 
 export const TONY_CUTOFFS: TonySeasonRecord[] = [
@@ -53,6 +60,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2013-04-26',
     end: '2014-04-24',
     source: 'en.wikipedia.org/wiki/68th_Tony_Awards',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2015,
@@ -60,6 +68,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2014-04-25',
     end: '2015-04-23',
     source: 'en.wikipedia.org/wiki/69th_Tony_Awards',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2016,
@@ -67,6 +76,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2015-04-24',
     end: '2016-04-28',
     source: 'en.wikipedia.org/wiki/70th_Tony_Awards',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2017,
@@ -74,6 +84,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2016-04-29',
     end: '2017-04-27',
     source: 'tonyawards.com — 71st announcement (start "Apr 29, 2016—immediately following the eligibility cutoff for the prior season")',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2018,
@@ -81,6 +92,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2017-04-28',
     end: '2018-04-26',
     source: 'tonyawards.com — 72nd eligibility part 4',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2019,
@@ -88,6 +100,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2018-04-27',
     end: '2019-04-25',
     source: 'tonyawards.com — 2019 rules & regulations PDF',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2020,
@@ -96,6 +109,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     end: '2020-02-19',
     notes: 'COVID truncation — Broadway shut down 2020-03-12; only 18 shows that opened by Feb 19 were eligible. Original cutoff would have been ~Apr 23, 2020.',
     source: 'en.wikipedia.org/wiki/74th_Tony_Awards; broadwaynews.com/2020/08/21/tony-awards-to-announce-february-eligibility-cutoff-date',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2021,
@@ -104,6 +118,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     end: '2021-04-25',
     notes: 'No separate ceremony for 2020-21 — combined into the 75th (held 2022). This sub-window is a project convention covering the calendar 2020-21 portion of the combined COVID eligibility period.',
     source: 'project convention; underlying combined-eligibility per en.wikipedia.org/wiki/75th_Tony_Awards (Feb 20, 2020 → May 4, 2022)',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2022,
@@ -112,6 +127,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     end: '2022-05-04',
     notes: 'COVID-extended cutoff (originally Apr 28, 2022 — extended one week to accommodate delayed openings). 75th ceremony covered the combined Feb 20, 2020 → May 4, 2022 window.',
     source: 'en.wikipedia.org/wiki/75th_Tony_Awards; variety.com/2022/legit/news/tony-awards-2022-date-extension-1235239180',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2023,
@@ -119,6 +135,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2022-05-05',
     end: '2023-04-27',
     source: 'en.wikipedia.org/wiki/76th_Tony_Awards',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2024,
@@ -126,6 +143,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2023-04-28',
     end: '2024-04-25',
     source: 'en.wikipedia.org/wiki/77th_Tony_Awards; tonyawards.com — 2024 eligibility part 4',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2025,
@@ -133,6 +151,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2024-04-26',
     end: '2025-04-27',
     source: 'tonyawards.com — 78th announcement; en.wikipedia.org/wiki/78th_Tony_Awards',
+    lastVerified: '2026-04-28',
   },
   {
     ceremonyYear: 2026,
@@ -140,6 +159,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     start: '2025-04-28',
     end: '2026-04-26',
     source: 'tonyawards.com/press/the-tony-awards-announces-calendar-of-events-for-2025-2026-season; broadwaydirect.com/shows-eligible-for-the-2026-tony-awards',
+    lastVerified: '2026-10-13',
   },
   {
     ceremonyYear: 2027,
@@ -148,6 +168,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     end: '2027-04-25',
     notes: 'PROVISIONAL — Tony Awards Administration Committee has not yet announced the 80th cutoff. Start is the day after the 79th cutoff. End is a placeholder using the recent ~Apr 25 trend; update when announced (typically released summer/fall of the season-start year).',
     source: 'projected — pending official 80th announcement',
+    lastVerified: '2026-04-28',
   },
 ];
 

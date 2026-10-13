@@ -8,7 +8,7 @@
  * Checks per show:
  *   1. Orchestrator cron — has it fired recently for this market?
  *   2. Cron health — orchestrator in CRITICAL_CRONS list (static check)
- *   3. ScrapingBee credits — >25% remaining
+ *   3. ScrapingBee credits — lib/sb-credit-verdict.js (fails only when exhausted)
  *   4. Wrong-production pre-scores — no stale score files
  *   5. DTLI slug verification (Broadway only)
  *   6. Bright Data zone — not disabled
@@ -25,7 +25,8 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { sbUsageFields } = require('./lib/provider-billing'); // BRO-3010: SB /usage field names live in one place
+const { classifySBUsage } = require('./lib/check-sb-credits');
+const { sbReadinessCheck } = require('./lib/sb-credit-verdict');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -63,27 +64,31 @@ function checkOrchestratorCron(market) {
   return { pass: true, detail: `Last run ${Math.round(hoursAgo)}h ago (${latest.conclusion || latest.status})` };
 }
 
+// BRO-3039: no hand-rolled /usage field reads. The payload is classified by
+// lib/check-sb-credits.js and judged by lib/sb-credit-verdict.js, the same
+// pair check-opening-night-readiness.js uses, so a payload missing
+// max_api_credit is "unknown" instead of "100% remaining".
 function checkScrapingBeeCredits() {
   const key = process.env.SCRAPINGBEE_API_KEY;
-  if (!key) return { pass: null, detail: 'SCRAPINGBEE_API_KEY not set — check in CI' };
+  if (!key) return sbReadinessCheck({ ok: false, reason: 'no-key' });
 
+  let status = 0;
+  let data = null;
+  let error;
   try {
-    const result = execSync(
-      `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${key}"`,
+    // -w appends the HTTP status on its own line, so a non-200 body is never
+    // read as a usage payload.
+    const out = execSync(
+      `curl -s -w "\n%{http_code}" "https://app.scrapingbee.com/api/v1/usage?api_key=${encodeURIComponent(key)}"`,
       { timeout: 10000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
     );
-    const sbFields = sbUsageFields(JSON.parse(result));
-    const used = sbFields.used || 0;
-    const max = sbFields.max || 1;
-    const pctUsed = Math.round((used / max) * 100);
-    const pctRemaining = 100 - pctUsed;
-
-    if (pctRemaining < 25) return { pass: false, detail: `${pctRemaining}% remaining (${used}/${max} used) — opening nights at risk` };
-    if (pctRemaining < 50) return { pass: true, detail: `${pctRemaining}% remaining (monitor)`, warn: true };
-    return { pass: true, detail: `${pctRemaining}% remaining` };
+    const nl = out.lastIndexOf('\n');
+    status = Number(out.slice(nl + 1)) || 0;
+    data = JSON.parse(out.slice(0, nl));
   } catch (e) {
-    return { pass: null, detail: `API check failed: ${e.message}` };
+    error = e.message;
   }
+  return sbReadinessCheck(classifySBUsage(status, data, error));
 }
 
 function checkBrightDataZone() {
@@ -286,6 +291,8 @@ function main() {
   console.log('');
 }
 
-main();
+// Guarded: generate-status-page.js requires this file for runChecks() and
+// should not get the CLI report printed as a side effect.
+if (require.main === module) main();
 
-module.exports = { runChecks };
+module.exports = { runChecks, checkScrapingBeeCredits };

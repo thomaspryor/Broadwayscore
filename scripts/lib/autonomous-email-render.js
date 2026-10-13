@@ -614,7 +614,12 @@ function buildOwnerView({
   // never counted (or shown) twice.
   let reviewQueue = null;
   if (inReviewBacklog) {
-    const seen = new Set((Array.isArray(awaitingOwner?.items) ? awaitingOwner.items : []).filter(Boolean).map(ownerItemKey));
+    // needsYou too (BRO-3444): it now carries Linear DECISION NEEDED cards,
+    // which can also sit In Review.
+    const seen = new Set([
+      ...(Array.isArray(awaitingOwner?.items) ? awaitingOwner.items : []),
+      ...(Array.isArray(needsYou?.items) ? needsYou.items : []).filter((it) => it && it.url),
+    ].filter(Boolean).map(ownerItemKey));
     const items = (Array.isArray(inReviewBacklog.items) ? inReviewBacklog.items : [])
       .filter((it) => it && !seen.has(ownerItemKey(it)));
     const moreCount = Number(inReviewBacklog.moreCount) > 0 ? Number(inReviewBacklog.moreCount) : 0;

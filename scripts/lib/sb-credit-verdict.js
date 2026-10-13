@@ -119,8 +119,25 @@ function sbCreditVerdict(status, thresholds = {}) {
   return { level: 'pass', detail: where };
 }
 
+/**
+ * Map a credit status onto the {pass, detail, warn} shape the per-show
+ * readiness CLI (scripts/opening-night-readiness.js) prints (BRO-3039).
+ * pass:true only for a status that was actually read; an unread one
+ * (no key, API error, missing cap) is pass:null so it counts as unknown,
+ * never as healthy.
+ */
+function sbReadinessCheck(status, thresholds) {
+  const v = sbCreditVerdict(status, thresholds);
+  const read = !!(status && status.ok);
+  if (v.level === 'fail') return { pass: false, detail: v.detail };
+  if (v.level === 'pass') return { pass: true, detail: v.detail };
+  if (v.level === 'skip') return { pass: null, detail: v.detail };
+  return read ? { pass: true, detail: v.detail, warn: true } : { pass: null, detail: v.detail, warn: true };
+}
+
 module.exports = {
   sbCreditVerdict,
+  sbReadinessCheck,
   DEFAULT_WARN_PCT_USED,
   DEFAULT_ATTENTION_PCT_USED,
   DEFAULT_FAIL_PCT_USED,

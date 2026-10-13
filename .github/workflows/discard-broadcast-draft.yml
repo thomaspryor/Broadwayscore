@@ -27,6 +27,11 @@ on:
         required: false
         type: string
         default: 'owner decision: unsent draft deleted, not sent'
+      no_draft:
+        description: "Show has no Resend draft (never drafted, or it 404s): just record that it will not be sent (BRO-3087)"
+        required: false
+        type: boolean
+        default: false
       dry_run:
         description: 'Rehearse only (check status, delete nothing)'
         required: false
@@ -40,6 +45,7 @@ permissions:
 # and re-push the tracker while a discard is mid-write.
 concurrency:
   group: reconcile-broadcast-state
+  # concurrency-queue-ok: manual-only and rare; an evicted pending discard is never silent, because the missed-broadcast alert keeps naming the same command until a discard lands
   cancel-in-progress: false
 
 jobs:
@@ -66,6 +72,7 @@ jobs:
           SHOWS: ${{ inputs.shows }}
           REASON: ${{ inputs.reason }}
           DRY_RUN: ${{ inputs.dry_run }}
+          NO_DRAFT: ${{ inputs.no_draft }}
         run: |
           SHOWS="${SHOWS//[[:space:]]/}"
           if ! [[ "$SHOWS" =~ ^[a-z0-9-]+(,[a-z0-9-]+)*$ ]]; then
@@ -74,6 +81,7 @@ jobs:
           fi
           FLAGS="--execute"
           [ "$DRY_RUN" = "true" ] && FLAGS=""
+          [ "$NO_DRAFT" = "true" ] && FLAGS="$FLAGS --no-draft"
           node scripts/discard-stuck-broadcast-drafts.js --show="$SHOWS" --reason="$REASON" $FLAGS
 
       # opening-night-sent.json is a CORE_FILE: untracked in the public repo,

@@ -63,3 +63,24 @@ test('updateErrorFingerprint records the post-autofix actionable set; clears on 
   updateErrorFingerprint(history, [], {});
   assert.equal(history.lastErrorFingerprint, '');
 });
+
+// BRO-3444: an internal-only error set (nothing a visitor can see) never says
+// URGENT, however long the streak or however often the set changes.
+test('internal-only errors never escalate to URGENT', () => {
+  const today = results('Push-retry deadman', 'Workflow repeat-failure: Land');
+  const history = { consecutiveErrorDays: 61, lastErrorFingerprint: 'something else' };
+  const subject = getDigestSubject(today, history, {});
+  assert.ok(!subject.includes('URGENT'), subject);
+  assert.match(subject, /^BSC Daily: 2 internal issues, site unaffected \(day 61\)$/);
+});
+
+test('internal churn next to a stable visitor-facing error does not re-trigger URGENT', () => {
+  const yesterday = results('T1 Coverage', 'Workflow repeat-failure: Land');
+  const today = results('T1 Coverage', 'Push-retry deadman');
+  const history = updateErrorFingerprint({}, yesterday, {});
+  history.consecutiveErrorDays = 20;
+  const subject = getDigestSubject(today, history, {});
+  assert.ok(!subject.includes('URGENT'), subject);
+  history.lastVisitorErrorFingerprint = '';
+  assert.ok(getDigestSubject(today, history, {}).includes('URGENT'), 'a new visitor-facing error still escalates');
+});

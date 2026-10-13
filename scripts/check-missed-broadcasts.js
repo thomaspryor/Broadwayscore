@@ -57,7 +57,21 @@ function fileExists(file) {
  * 'draft-unknown' may ALREADY have gone out (re-running would email real
  * subscribers twice — CLAUDE.md §17). Only 'never-drafted' gets a send command.
  */
-function remediationFor(m) {
+// BRO-3087: every alertable state also says how to stop it for good when the
+// owner decides the email will not go out. --no-draft for the states with no
+// Resend draft to delete; the default mode deletes a waiting draft first.
+function wontSendLine(m, sentShows) {
+  return `\n\nWon't send it? Record that, and this alert stops:\n  ${wontSendCommand(sentShows, m.id, m.state)}`;
+}
+
+const { wontSendCommand } = require('./lib/broadcast-dismiss');
+
+function remediationFor(m, sentShows) {
+  if (m.state === 'covered-by-roundup') return remediationText(m);
+  return remediationText(m) + wontSendLine(m, sentShows);
+}
+
+function remediationText(m) {
   const checklist = `  node scripts/opening-night-checklist.js --show=${m.id}`;
   if (m.state === 'covered-by-roundup') {
     return (
@@ -258,7 +272,7 @@ async function main() {
         `${m.title} opened ${m.openingDate} (${m.daysSinceOpening} days ago) and qualified to ` +
         `broadcast (${m.readiness}), but subscribers were never emailed. ` +
         `State: ${STATE_LABEL[m.state] || m.state}.\n\n` +
-        `${remediationFor(m)}\n\n` +
+        `${remediationFor(m, sentRaw.shows)}\n\n` +
         `If the show is simply too stale to be worth emailing, no action is needed — this alert ` +
         `stops on its own once the show is more than ${m.ageBoundDays} days past opening.`,
       severity: 'error',

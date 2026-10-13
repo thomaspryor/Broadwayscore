@@ -42,6 +42,18 @@ async function fetchSBCreditStatus() {
     // surfaces only as a generic api-error WARN (BRO-3032 review).
     `https://app.scrapingbee.com/api/v1/usage?api_key=${encodeURIComponent(key)}`
   );
+  return classifySBUsage(status, data, error);
+}
+
+/**
+ * Pure classification of one /usage response (BRO-3039). Split out of
+ * fetchSBCreditStatus so a synchronous caller that fetched the payload
+ * itself (scripts/opening-night-readiness.js) reads it the same way instead
+ * of hand-rolling the field reads. A non-200, an unparseable body, or a
+ * well-formed payload without a positive max_api_credit is never "ok": the
+ * old hand-rolled reader turned a missing cap into "100% remaining".
+ */
+function classifySBUsage(status, data, error) {
   if (status !== 200 || !data) {
     return { ok: false, reason: 'api-error', status, error, message: `usage endpoint returned ${status}` };
   }
@@ -65,7 +77,7 @@ async function fetchSBCreditStatus() {
   };
 }
 
-module.exports = { fetchSBCreditStatus };
+module.exports = { fetchSBCreditStatus, classifySBUsage };
 
 if (require.main === module) {
   (async () => {

@@ -1,8 +1,9 @@
 name: Check Cutoff Freshness
 
-# Advisory v1: warns when an awards eligibility cutoff is approaching but
-# the lastVerified date on the record is stale. Exits 0 always — does not
-# block deploys. Flip to fail once we trust the gate (after one full cycle).
+# Fails when an awards eligibility cutoff is approaching but the record's
+# lastVerified date is stale, or a record has none (BRO-3040). It used to
+# exit 0 with a ::warning nobody saw; a red run reaches the morning digest.
+# Not a deploy gate: nothing depends on this workflow.
 #
 # Why: SOLT and the Tony Administration Committee occasionally shift windows
 # late in the season (COVID precedent; calendar resets). A wrong end date

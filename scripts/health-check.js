@@ -33,6 +33,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
+const { classifyHealthCheck } = require('./lib/digest-audience');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
@@ -4809,6 +4810,9 @@ function isEscalationDay(days) {
   return days === 3 || days === 7 || (days > 7 && (days - 7) % 7 === 0);
 }
 
+// BRO-3444: URGENT is kept for errors a site visitor could notice
+// (lib/digest-audience.js). The escalation milestones alone let an
+// internal-only set that changed daily say URGENT for 61 straight days.
 function getDigestSubject(results, history, autoFixResults) {
   const errors = results.filter(r => r.status === 'error');
   const warns = results.filter(r => r.status === 'warn');
@@ -4826,7 +4830,17 @@ function getDigestSubject(results, history, autoFixResults) {
     && history.lastErrorFingerprint === errorSetFingerprint(unfixedErrors);
 
   if (unfixedErrors.length > 0 && days >= 5) {
-    if (!sameSetAsYesterday || isEscalationDay(days)) {
+    const visitorErrors = unfixedErrors.filter(r => classifyHealthCheck(r) === 'visitors');
+    if (visitorErrors.length === 0) {
+      return `BSC Daily: ${unfixedErrors.length} internal issue${unfixedErrors.length > 1 ? 's' : ''}, site unaffected (day ${days})`;
+    }
+    // "New news" is judged on the visitor-facing errors alone, so internal
+    // rows churning daily cannot re-trigger URGENT on a stable visitor set.
+    // History written before this field existed falls back to the full set.
+    const sameVisitorSet = history.lastVisitorErrorFingerprint === undefined
+      ? sameSetAsYesterday
+      : history.lastVisitorErrorFingerprint === errorSetFingerprint(visitorErrors);
+    if (!sameVisitorSet || isEscalationDay(days)) {
       return `BSC URGENT (day ${days}): ${unfixedErrors.length} unresolved error${unfixedErrors.length > 1 ? 's' : ''}`;
     }
     // Same unresolved set, non-milestone day: calm subject, no repeat scream.
@@ -4859,6 +4873,8 @@ function updateErrorFingerprint(history, results, autoFixResults) {
   const fixMap = autoFixResults || {};
   const unfixedErrors = results.filter(r => r.status === 'error' && !fixMap[r.name]?.fixed && isActionableResult(r));
   history.lastErrorFingerprint = unfixedErrors.length ? errorSetFingerprint(unfixedErrors) : '';
+  const visitorErrors = unfixedErrors.filter(r => classifyHealthCheck(r) === 'visitors');
+  history.lastVisitorErrorFingerprint = visitorErrors.length ? errorSetFingerprint(visitorErrors) : '';
   return history;
 }
 

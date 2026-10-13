@@ -111,3 +111,22 @@ test('the condition key is on the owner page-worthy allowlist', () => {
   assert.equal(CONDITION_KEY, 'owner-decisions:new');
   assert.equal(isPageWorthy(CONDITION_KEY), true);
 });
+
+// BRO-3444: the morning digest's "Needs your decision" section is built from
+// the same decision list, minus awaiting-owner cards (listed elsewhere).
+test('buildDecisionsSection: DECISION NEEDED cards in, awaiting-owner cards out', async () => {
+  const { buildDecisionsSection } = require('../../scripts/lib/owner-decision-notify.js');
+  const { buildSubject, mergeNeedsYouSections } = require('../../scripts/send-morning-digest.js');
+  const issues = [
+    { identifier: 'BRO-1', title: 'a', url: 'https://linear.app/x/BRO-1', description: 'DECISION NEEDED: Ship the new page?', priority: 2, labels: { nodes: [] } },
+    { identifier: 'BRO-2', title: 'b', url: 'https://linear.app/x/BRO-2', description: 'DECISION NEEDED: Spend $50?', priority: 2, labels: { nodes: [{ name: 'awaiting-owner' }] } },
+    { identifier: 'BRO-3', title: 'c', url: 'https://linear.app/x/BRO-3', description: 'no marker', priority: 2, labels: { nodes: [] } },
+  ];
+  const section = buildDecisionsSection(issues);
+  assert.equal(section.items.length, 1);
+  assert.equal(section.items[0].url, 'https://linear.app/x/BRO-1');
+  assert.equal(buildDecisionsSection([issues[2]]), null);
+  const merged = mergeNeedsYouSections({ bannerText: '1 tab', items: [{ title: 'tab' }] }, section);
+  assert.equal(merged.items.length, 2);
+  assert.match(buildSubject({ needsYou: section }), /1 decision for you/);
+});

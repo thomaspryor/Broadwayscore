@@ -397,6 +397,19 @@ function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGE
   return syncRefused.tags.some(mine);
 }
 
+// BRO-3444: one "Needs your decision" section from the Mac's cmux tabs and
+// Linear's DECISION NEEDED cards. Either may be null.
+function mergeNeedsYouSections(cmux, linear) {
+  if (!cmux) return linear;
+  if (!linear) return cmux;
+  return {
+    generatedAt: linear.generatedAt,
+    bannerText: `${cmux.bannerText}; ${linear.bannerText}`,
+    items: [...(cmux.items || []), ...(linear.items || [])],
+    moreCount: (Number(cmux.moreCount) || 0) + (Number(linear.moreCount) || 0),
+  };
+}
+
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
 // scripts/lib/scheduled-email-count-rules.js — the one-email-per-day monitor
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
@@ -970,6 +983,23 @@ async function main() {
   } catch (err) {
     console.error(`[digest] WARN needs-you snapshot failed: ${String(err.message).slice(0, 120)}`);
   }
+  // BRO-3444: the cmux tabs above exist only on the Mac. Linear cards with a
+  // "DECISION NEEDED:" line are the owner's decisions wherever the digest
+  // runs, so they join the same section (and so the subject's "N decisions
+  // for you"). Started now, awaited after the awaiting-owner fetch below so
+  // the two Linear round trips overlap; fail-soft and time-boxed like it.
+  const linearDecisionsPromise = (async () => {
+    const { fetchOpenIssues } = require('./notify-owner-decisions.js');
+    const { buildDecisionsSection } = require('./lib/owner-decision-notify.js');
+    let timer;
+    const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('timed out after 15000ms')), 15_000); });
+    try {
+      return buildDecisionsSection(await Promise.race([fetchOpenIssues(), timeout]));
+    } finally {
+      clearTimeout(timer);
+    }
+  })();
+  linearDecisionsPromise.catch(() => {}); // handled where awaited
 
   // Waiting on your approval (BRO-282) — Linear issues carrying the
   // 'awaiting-owner' label (see scripts/lib/owner-approval-channel.js for why
@@ -1019,6 +1049,13 @@ async function main() {
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  try {
+    const linearDecisions = await linearDecisionsPromise;
+    if (linearDecisions) sections.needsYou = mergeNeedsYouSections(sections.needsYou, linearDecisions);
+  } catch (err) {
+    console.error(`[digest] WARN Linear decisions section failed: ${String(err.message).slice(0, 120)}`);
   }
 
   // Parked in review (BRO-3376) — the passive half of BRO-282. See
@@ -1442,4 +1479,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

@@ -147,8 +147,33 @@ function formatEmail(plan) {
   return { title, description: lines.join('\n') };
 }
 
+/**
+ * BRO-3444: the morning digest's "Needs your decision" section from the same
+ * findOwnerDecisions() list the decision email uses, so the digest and the
+ * email agree on what a decision is. Cards carrying the awaiting-owner label
+ * are left out: the digest already lists them in its "Waiting on your
+ * approval" section, and counting them twice would inflate "N decisions for
+ * you". Same {generatedAt, bannerText, items, moreCount} shape as every other
+ * digest section. Returns null when there is nothing to show.
+ */
+function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
+  const labelled = new Set((issues || [])
+    .filter((i) => i && labelNames(i).includes(AWAITING_OWNER_LABEL))
+    .map((i) => i.identifier));
+  const decisions = findOwnerDecisions(issues).filter((d) => d.question && !labelled.has(d.identifier));
+  if (!decisions.length) return null;
+  const shown = decisions.slice(0, max);
+  return {
+    generatedAt: now.toISOString(),
+    bannerText: `${decisions.length} card${decisions.length === 1 ? '' : 's'} waiting on your decision`,
+    items: shown.map((d) => ({ title: d.question, detail: `${d.identifier}: ${d.title}`, url: d.url })),
+    moreCount: decisions.length - shown.length,
+  };
+}
+
 module.exports = {
   MAX_LISTED,
+  buildDecisionsSection,
   extractDecisionQuestion,
   findOwnerDecisions,
   planNotification,

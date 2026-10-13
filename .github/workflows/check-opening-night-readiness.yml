@@ -16,14 +16,22 @@ on:
           - auto
           - broadway
           - west-end
+      triggered_by:
+        description: 'Set by update-show-status.yml for its unattended run; leave empty when dispatching by hand'
+        required: false
+        type: string
+        default: ''
 
+# contents: write — the routing step below commits the alert ledger (BRO-3038).
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    # Above the 600s push deadline of the ledger commit step.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
 
@@ -43,7 +51,10 @@ jobs:
           node-version: 20
 
       - name: Run readiness check
+        id: readiness
         env:
+          SHOW_ID: ${{ inputs.show_id }}
+          MARKET: ${{ inputs.market }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -58,10 +69,52 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MARKET_FLAG=""
-          if [ -n "${{ inputs.market }}" ] && [ "${{ inputs.market }}" != "auto" ]; then
-            MARKET_FLAG="--market=${{ inputs.market }}"
+          if [ -n "$MARKET" ] && [ "$MARKET" != "auto" ]; then
+            MARKET_FLAG="--market=$MARKET"
           fi
-          node scripts/check-opening-night-readiness.js --show=${{ inputs.show_id }} $MARKET_FLAG
+          node scripts/check-opening-night-readiness.js --show="$SHOW_ID" $MARKET_FLAG
+
+      # BRO-3038: notify-failure below is 'warning' (digest only), which is
+      # right for a run someone dispatched and is watching, but too late for
+      # update-show-status.yml's unattended run the day before opening. That
+      # one files a High Linear card for the board workers instead (not an
+      # email: BRO-4603, a worker can fix this). Any passing run resolves the
+      # condition so the card closes itself. Gated on the check step's own
+      # outcome so a failed checkout never files a "readiness failed" card.
+      - name: Route unattended failure / resolve on pass
+        if: always() && (steps.readiness.outcome == 'success' || steps.readiness.outcome == 'failure')
+        continue-on-error: true
+        env:
+          SHOW_ID: ${{ inputs.show_id }}
+          TRIGGERED_BY: ${{ inputs.triggered_by }}
+          OUTCOME: ${{ steps.readiness.outcome }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          node scripts/route-readiness-failure.js --show="$SHOW_ID" --outcome="$OUTCOME" \
+            --triggered-by="$TRIGGERED_BY" --run-id="$RUN_ID" --run-url="$RUN_URL"
+
+      # The router's cooldown ledger + attempt log must be committed by the
+      # job that wrote them (same shape as audit-imageless-scored-shows.yml).
+      - name: Commit alert ledger
+        if: always() && (steps.readiness.outcome == 'success' || steps.readiness.outcome == 'failure')
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: opening-night readiness alert ledger [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Notify on failure
         if: failure()

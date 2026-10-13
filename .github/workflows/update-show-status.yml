@@ -1915,7 +1915,7 @@ jobs:
 
           echo "$SHOWS" | while IFS='|' read -r SHOW_ID MARKET; do
             echo "Triggering readiness check for: $SHOW_ID (market: $MARKET)"
-            gh workflow run check-opening-night-readiness.yml -f show_id="$SHOW_ID" -f market="$MARKET" || echo "::warning::Failed to trigger readiness check for $SHOW_ID"
+            gh workflow run check-opening-night-readiness.yml -f show_id="$SHOW_ID" -f market="$MARKET" -f triggered_by=update-show-status || echo "::warning::Failed to trigger readiness check for $SHOW_ID"
           done
 
   # Alert on consecutive failures

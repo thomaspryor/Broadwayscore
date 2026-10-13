@@ -207,9 +207,9 @@ function main() {
   // ── Readiness checks for upcoming + today's shows ──
   let readinessData = null;
   try {
-    // Lazy require: opening-night-readiness executes its full readiness sweep
-    // at require time (no require.main guard), so a top-level require would run
-    // it even for --help. Same lazy pattern as loadReviewsWithBlog below.
+    // Lazy require: requiring opening-night-readiness is cheap since its CLI
+    // got a require.main guard (BRO-3039), but runChecks() still does network
+    // calls. Same lazy pattern as loadReviewsWithBlog below.
     const { runChecks } = require('./opening-night-readiness');
     readinessData = runChecks();
     // Merge per-show readiness into upcoming cards
