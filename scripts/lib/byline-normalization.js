@@ -277,8 +277,10 @@ function extractBodyByline(text, opts = {}) {
   if (!name) return null;
   const tokens = name.toLowerCase().split(/\s+/);
   if (tokens.some((t) => BODY_BYLINE_STOPWORDS.has(t))) return null;
-  const title = String(opts.showTitle || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
-  const flat = name.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const { foldDiacritics } = require('./title-match');
+  const flatten = (v) => foldDiacritics(String(v || '').toLowerCase()).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const title = flatten(opts.showTitle);
+  const flat = flatten(name);
   if (title && (title === flat || title.includes(flat))) return null;
   return name;
 }
