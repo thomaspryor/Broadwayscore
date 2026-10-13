@@ -1945,8 +1945,13 @@ reconcile_merged_json() {
   # opt-in sweep) — so without this second, targeted call it would be
   # silently unprotected on the common path. Scoped to exactly this one file;
   # does not change the opt-in default for any other MANAGED file or caller.
+  # BRO-2463: audit/feedback-request-ledger.json has the same gap and no
+  # writer that deletes entries, so the two-way union is safe for it.
+  # audit/express-retry-queue.json is deliberately NOT here: its writer prunes
+  # stale entries and a two-way union would resurrect them (selectDueRetries
+  # has no age guard); it needs a three-way merger first.
   local ledger_out
-  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json) || ledger_out=""
+  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json) || ledger_out=""
   if [ -n "$ledger_out" ]; then
     out="${out}${out:+$'\n'}${ledger_out}"
   fi

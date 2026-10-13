@@ -17,15 +17,16 @@ const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../.
 const RECONCILE = path.join(REPO, 'scripts/lib/reconcile-merged-json.js');
 const PUSH = fs.readFileSync(path.join(REPO, 'scripts/lib/push-with-retry.sh'), 'utf8');
 
+const EXPRESS = { file: 'data/audit/express-retry-queue.json' };
 const CASES = [
-  { file: 'data/audit/express-retry-queue.json', mk: (id) => ({ showId: id, market: 'broadway', queuedAt: `2026-10-13T00:00:0${id.length}Z`, dueAt: '2026-10-13T01:00:00Z', attempted: false }) },
+  { file: 'data/audit/express-retry-queue.json', e2eOnly: true, mk: (id) => ({ showId: id, market: 'broadway', queuedAt: `2026-10-13T00:00:0${id.length}Z`, dueAt: '2026-10-13T01:00:00Z', attempted: false }) },
   { file: 'data/audit/feedback-request-ledger.json', mk: (id) => ({ key: `req-${id}`, status: 'open' }) },
 ];
 
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
 for (const c of CASES) {
-  test(`push-with-retry.sh reconciles ${c.file} unconditionally`, () => {
+  if (!c.e2eOnly) test(`push-with-retry.sh reconciles ${c.file} unconditionally`, () => {
     const line = PUSH.split('\n').find((l) => l.includes('reconcile-merged-json.js') && l.includes('"origin/$PULL_BRANCH"') && l.includes('data/audit/alert-digest-queue.json'));
     assert.ok(line, 'targeted reconcile call not found');
     assert.ok(line.includes(c.file), `${c.file} missing from the targeted reconcile call`);
@@ -58,3 +59,8 @@ for (const c of CASES) {
     }
   });
 }
+
+test('express-retry-queue.json stays OUT of the unconditional call until it has a three-way merger (pruned entries would be resurrected)', () => {
+  const line = PUSH.split('\n').find((l) => l.includes('reconcile-merged-json.js') && l.includes('data/audit/alert-digest-queue.json'));
+  assert.ok(line && !line.includes(EXPRESS.file));
+});
