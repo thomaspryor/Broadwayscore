@@ -150,7 +150,7 @@ function mark() {
     console.log(ok ? `land-train: marked ${r.branch} @ ${r.tip.slice(0, 10)} landed as ${r.sha.slice(0, 10)}` : `::warning::land-train: could not mark ${r.branch} landed; its own run will confirm it by rebasing to empty (and record it)`);
     if (ok && appendLanding) {
       try {
-        appendLanding({ repoDir: process.cwd(), branch: r.branch, sha: r.sha, tip: r.tip, base: r.base || null, runUrl: env.LAND_RUN_URL || null, attempts: result.attempts });
+        appendLanding({ repoDir: process.cwd(), branch: r.branch, sha: r.sha, tip: r.tip, base: r.base || null, runUrl: env.LAND_RUN_URL || (env.GITHUB_RUN_ID ? `${env.GITHUB_SERVER_URL || 'https://github.com'}/${repo}/actions/runs/${env.GITHUB_RUN_ID}` : null), attempts: result.attempts });
       } catch (err) { log(`landings.jsonl row for ${r.branch} not written (${err.message})`); }
     }
   }

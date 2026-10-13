@@ -166,6 +166,23 @@ function holdsLock(state, self) {
   return (state.tickets || []).some((x) => x.sha === lock.sha && x.runId === String(self.runId) && Number(x.attempt) === Number(self.attempt));
 }
 
+/**
+ * Merge trains in data/audit/landings.jsonl rows: the holder's run writes its
+ * own row and its riders' rows with the same runUrl, so a runUrl naming 2+
+ * distinct branches is one train. Rows before `since` (ISO) are ignored.
+ * → [{runUrl, branches:[...], shas:[...]}]
+ */
+function trainsFromLandings(rows, since = '') {
+  const byRun = new Map();
+  for (const r of rows || []) {
+    if (!r || !r.runUrl || !r.branch || String(r.ts || '') < since) continue;
+    const g = byRun.get(r.runUrl) || { runUrl: r.runUrl, branches: [], shas: [] };
+    if (!g.branches.includes(r.branch)) { g.branches.push(r.branch); g.shas.push(r.sha); }
+    byRun.set(r.runUrl, g);
+  }
+  return [...byRun.values()].filter((g) => g.branches.length >= 2);
+}
+
 // A rider's own run reads its marker within one queue poll; past the Land
 // job's whole life (125 min) a marker can only be a leak.
 const MARKER_MAX_AGE_SEC = 6 * 3600;
@@ -182,5 +199,5 @@ function staleMarkers(markers, landTips, ageSec = {}) {
 
 module.exports = {
   MARKER_PREFIX, DEFAULT_TRAIN_MAX, MARKER_MAX_AGE_SEC, markerRef, parseMarkers, ticketTrailers, parseTicketMessage, trainMax,
-  selectRiders, segmentHeads, tipFromRun, holdsLock, decideFollower, staleMarkers,
+  selectRiders, segmentHeads, tipFromRun, holdsLock, trainsFromLandings, decideFollower, staleMarkers,
 };
