@@ -195,4 +195,6 @@ test('Cititour /NYC_Events/ and THR /lists/ are listings; their review paths are
   assert.equal(listingPageUrlReason('https://example.com/a/somewhere-to-watch-the-sunset-review'), null);
   assert.equal(listingPageUrlReason('https://example.com/a/somewhere-to-watch-the-sunset'), null);
   assert.equal(listingPageUrlReason('https://example.com/tv/how-to-watch-the-tonys-online.html'), 'watch-guide-page');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/chicago/regional/The-Humanities'), 'show-listing-page');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/chicago/article/Review-THE-HUMANITIES-at-Steppenwolf-20261010'), null);
 });

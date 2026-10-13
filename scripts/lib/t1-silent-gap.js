@@ -24,7 +24,7 @@
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
-const { classifyReviewUrl } = require('./non-review-url-patterns');
+const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
 const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
 // would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
@@ -103,6 +103,12 @@ function hasNonReviewUrl(f) {
   if (!f || typeof f.url !== 'string' || !f.url.startsWith('http')) return false;
   const r = classifyReviewUrl(f.url);
   return r.ok === false && r.reason !== 'not-http-url' && r.reason !== 'unparseable-url';
+}
+
+// The rebuild's listingPageUrl exclusion (review-guards), as the audit reads it.
+function isListingPageFile(f) {
+  return typeof f.url === 'string' && f.listingPageUrlManualClear !== true
+    && !!listingPageUrlReason(f.url);
 }
 
 function hasWrongUrlSignal(f) {
@@ -213,6 +219,13 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   //    originalScore from first-party page stars — stage-star-svg) scores at
   //    rebuild time and is NOT a gap; isEmptyBodyFile only checks fullText/
   //    aggregatorStars/assignedScore, so use the canonical score predicate.
+  //  - BRO-5166: a listing-page URL (show page, hub, event listing; the
+  //    rebuild's listingPageUrl exclusion) and no ensemble verdict: a re-fetch
+  //    can only re-fetch the listing, so nothing will ever close it
+  //    (broadwayworld.com/chicago/regional/The-Humanities, empty). Placed after
+  //    the rejectedAt branch on purpose: a rejected listing file still reports
+  //    as rejected-unscoreable (#1141 guard). A human clear wins.
+  if (isListingPageFile(file)) return null;
   if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
     return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
   }
@@ -391,6 +404,9 @@ function classifyGapCardState({ file, show, tier, outletScored, now, filePath })
   // here as a terminal state rather than plain "not eligible" so a stale
   // card for a file that was later reclassified as garbage still closes.
   if (file.contentTier === 'invalid') return GAP_CARD_STATE.NO_REVIEW;
+  // Same mirror for classifySilentGap's listing-page early return (BRO-5166):
+  // a card opened before the listing rule existed must close.
+  if (isListingPageFile(file)) return GAP_CARD_STATE.NO_REVIEW;
   return null;
 }
 

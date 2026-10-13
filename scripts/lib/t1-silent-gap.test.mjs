@@ -285,3 +285,15 @@ test('non-review URL the scorer will never take (and no verdict ever recorded) i
     url: 'https://www.nydailynews.com/2026/09/08/million-dollar-quartet-review-west-end/' };
   assert.equal(classify(real, LATER)?.type, 'unscored');
 });
+
+test('BRO-5166: empty-body file at a listing page (BWW regional show page) is not a gap; a manual clear restores it', () => {
+  const listing = {
+    showId: 'the-humanities-regional-2026', outletId: 'broadwayworld', criticName: 'Unknown',
+    url: 'https://www.broadwayworld.com/chicago/regional/The-Humanities',
+    source: 'submit-review-form', contentTier: 'truncated', incompleteReason: 'partial_text',
+  };
+  assert.equal(classify(listing), null);
+  assert.notEqual(classify({ ...listing, listingPageUrlManualClear: true }), null);
+  // A real BWW regional review article still reports.
+  assert.notEqual(classify({ ...listing, url: 'https://www.broadwayworld.com/chicago/article/Review-THE-HUMANITIES-at-Steppenwolf-20261010' }), null);
+});

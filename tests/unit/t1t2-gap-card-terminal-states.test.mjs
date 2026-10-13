@@ -211,3 +211,20 @@ describe('dedupeGapCards: one card per show+outlet per run', () => {
     assert.deepEqual(dedupeGapCards([]), { primary: [], duplicates: [] });
   });
 });
+
+describe('terminal state: listing-page url (BRO-5166)', () => {
+  const listing = {
+    url: 'https://www.broadwayworld.com/chicago/regional/The-Humanities',
+    criticName: 'Unknown', contentTier: 'truncated', incompleteReason: 'partial_text',
+  };
+  test('empty file at a BWW regional show page → no_review (an open card closes)', () => {
+    assert.equal(classifyGapCardState({ file: listing, show: SHOW, tier: 2, outletScored: false, now: NOW }), GAP_CARD_STATE.NO_REVIEW);
+  });
+  test('watch-guide page with text → no_review', () => {
+    const file = { url: 'https://www.hollywoodreporter.com/tv/tv-news/watch-american-horror-story-season-13-free-streaming-2026-1236709672/', criticName: 'Erin Lassner', fullText: 'x'.repeat(1011), contentTier: 'truncated' };
+    assert.equal(classifyGapCardState({ file, show: SHOW, tier: 2, outletScored: false, now: NOW }), GAP_CARD_STATE.NO_REVIEW);
+  });
+  test('a human clear keeps it open', () => {
+    assert.equal(classifyGapCardState({ file: { ...listing, listingPageUrlManualClear: true }, show: SHOW, tier: 2, outletScored: false, now: NOW }), GAP_CARD_STATE.OPEN);
+  });
+});

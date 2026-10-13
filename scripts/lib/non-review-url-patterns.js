@@ -471,6 +471,11 @@ const LISTING_PAGE_URL_PATTERNS = [
   // Broader than the NAMED_NON_REVIEW_URL_PATTERNS entry above (which needs a
   // /shows/<id>/<sub-page> segment): the bare show page is a listing too.
   { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // BWW regional show pages, /<market>/regional/<Title>[/...] (BRO-5166: The
+  // Humanities, Chicago, ingested as an empty T2 "review"). Regional reviews
+  // live under /<market>/article/ (0 of 56k scored rows on 2026-10-13 use a
+  // /regional/ path).
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/[^/]+\/regional\//i, reason: 'show-listing-page' },
   // TheaterMania /shows/ show pages; reviews live under /news/review-…/.
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
   // Show Score catalog/show pages (its per-critic review records are captured
