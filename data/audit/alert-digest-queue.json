@@ -457,5 +457,35 @@
       }
     ],
     "queuedAt": "2026-10-13T05:54:10.181Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5222-tenure-6",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5222-tenure-6",
+    "description": "land.yml did not land land/bro-5222-tenure-6: the unit-tests-node gate went red at d2613e6f84. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38358328668",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5222-tenure-6"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d2613e6f84196fac220079a6abb99bbf3af97b5c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38358328668"
+      }
+    ],
+    "queuedAt": "2026-10-13T07:09:02.857Z"
   }
 ]
