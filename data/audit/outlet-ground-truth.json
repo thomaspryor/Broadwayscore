@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T06:43:11.885Z",
+  "generatedAt": "2026-10-13T17:05:12.794Z",
   "phase": "done",
   "days": 21,
   "shows": 64,
@@ -26,7 +26,7 @@
     },
     "nytimes": {
       "queries": 4,
-      "listed": 0,
+      "listed": 1,
       "errors": 0
     },
     "theatre-reviews": {
@@ -36,7 +36,13 @@
     }
   },
   "listingTruncated": false,
-  "listed": 95,
-  "ingested": [],
+  "listed": 96,
+  "ingested": [
+    {
+      "showId": "slam-frank-off-broadway-2026",
+      "url": "https://www.nytimes.com/2026/10/13/theater/slam-frank-review.html",
+      "ok": true
+    }
+  ],
   "missing": []
 }
