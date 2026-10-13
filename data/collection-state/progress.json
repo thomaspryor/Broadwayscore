@@ -95,7 +95,13 @@
     "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
     "baby-its-you-2011/wsj--terry-teachout.json",
     "private-lives-2011/wsj--unknown.json",
-    "the-mountaintop-2011/wsj--terry-teachout.json"
+    "the-mountaintop-2011/wsj--terry-teachout.json",
+    "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
   ],
   "failed": [
     "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -163,7 +169,19 @@
     "the-testament-of-mary-2013/wsj--terry-teachout.json",
     "cat-on-a-hot-tin-roof-2013/wsj--terry-teachout.json",
     "stick-fly-2011/wsj--terry-teachout.json",
-    "la-bete-2010/wsj--terry-teachout.json"
+    "la-bete-2010/wsj--terry-teachout.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -234,7 +252,12 @@
       "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "gobstopper-off-broadway-2026/front-row-center--david-walters.json",
-      "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -245,7 +268,9 @@
       "data/review-texts/the-lifespan-of-a-fact-2018/wsj--terry-teachout.json",
       "the-lifespan-of-a-fact-2018/wsj--terry-teachout.json",
       "data/review-texts/the-parisian-woman-2017/wsj--terry-teachout.json",
-      "the-parisian-woman-2017/wsj--terry-teachout.json"
+      "the-parisian-woman-2017/wsj--terry-teachout.json",
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -290,11 +315,12 @@
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "baby-its-you-2011/wsj--terry-teachout.json",
       "private-lives-2011/wsj--unknown.json",
-      "the-mountaintop-2011/wsj--terry-teachout.json"
+      "the-mountaintop-2011/wsj--terry-teachout.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "la-bete-2010/wsj--terry-teachout.json",
+  "lastProcessed": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
   "log": [
     {
       "t": "2026-10-13T19:44:44.248Z",
@@ -735,6 +761,29 @@
       "t": "2026-10-13T20:24:28.562Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:35:13.854Z",
+      "event": "bb-session",
+      "session": "d858bb05",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T20:39:40.172Z",
+      "event": "bb-session",
+      "session": "fd962b1d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T20:39:40.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T20:42:43.800Z",
+      "event": "bb-session",
+      "session": "b4dbf5ab",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ]
 }
