@@ -7,10 +7,12 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 
-// The lib reads/writes a fixed audit path. We monkey-patch the module's
-// COUNTS_FILE by re-requiring with a swapped path via a thin shim — but
-// that requires module mutation. Simpler: write the file there directly
-// and ensure tests don't pollute each other.
+// BRO-2664: point the lib at a temp store BEFORE requiring it. These tests
+// delete and reseed the store, and used to do that to the real tracked
+// data/audit/ob-venue-counts.json (675 lines of venue history per run).
+const tmpDir = require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'venue-anomaly-'));
+process.env.VENUE_COUNTS_FILE = require('node:path').join(tmpDir, 'ob-venue-counts.json');
+test.after(() => require('node:fs').rmSync(tmpDir, { recursive: true, force: true }));
 
 const lib = require('../../scripts/lib/venue-anomaly.js');
 const { checkVenueAnomaly, COUNTS_FILE } = lib;
@@ -25,6 +27,11 @@ function seedHistory(venue, countsByDate) {
   fs.mkdirSync(require('node:path').dirname(COUNTS_FILE), { recursive: true });
   fs.writeFileSync(COUNTS_FILE, JSON.stringify(data, null, 2));
 }
+
+test('the store is redirected away from the tracked production file', () => {
+  assert.equal(COUNTS_FILE, process.env.VENUE_COUNTS_FILE);
+  assert.ok(!COUNTS_FILE.includes(`${require('node:path').sep}data${require('node:path').sep}audit${require('node:path').sep}`));
+});
 
 test('checkVenueAnomaly: no baseline → no alarm', () => {
   clearCounts();

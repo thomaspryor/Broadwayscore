@@ -29,7 +29,10 @@ const path = require('path');
 
 const MIN_ABSOLUTE_SPIKE = 3;
 const MIN_ROT_MEDIAN = 2;
-const COUNTS_FILE = path.join(__dirname, '..', '..', 'data', 'audit', 'ob-venue-counts.json');
+// VENUE_COUNTS_FILE redirects the store (tests only): the unit test used to
+// delete and rewrite the real tracked file on every run (BRO-2664 class).
+const COUNTS_FILE = process.env.VENUE_COUNTS_FILE
+  || path.join(__dirname, '..', '..', 'data', 'audit', 'ob-venue-counts.json');
 const MIN_BASELINE_DAYS = 7;
 const ANOMALY_MULTIPLIER = 2;
 
