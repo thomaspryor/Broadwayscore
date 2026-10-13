@@ -161,5 +161,35 @@
       }
     ],
     "queuedAt": "2026-10-13T09:36:41.378Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3014-push-lane-audits-v2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3014-push-lane-audits-v2",
+    "description": "land.yml did not land land/bro-3014-push-lane-audits-v2: the unit-tests-node gate went red at b84ffa81e0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38377749787",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3014-push-lane-audits-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b84ffa81e015d3dc506130f0516b0b4cc3094b05"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38377749787"
+      }
+    ],
+    "queuedAt": "2026-10-13T10:07:10.209Z"
   }
 ]
