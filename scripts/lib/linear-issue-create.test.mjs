@@ -6,6 +6,14 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+// BRO-2664: recordCreated() appends to the intake ledger. Point it at a temp
+// file BEFORE the first require, so no test touches data/audit.
+{
+  const fs = require('node:fs'); const os = require('node:os'); const path = require('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'intake-ledger-'));
+  process.env.INTAKE_LEDGER_PATH = path.join(dir, 'intake-ledger.jsonl');
+  test.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+}
 const { createLinearIssue, pickStateForMode, isUsageLimitExceeded } = require('./linear-issue-create.js');
 
 const STATES = [
@@ -14,6 +22,12 @@ const STATES = [
   { id: 'progress-1', name: 'In Progress', type: 'started' },
   { id: 'done-1', name: 'Done', type: 'completed' },
 ];
+
+test('the intake ledger is redirected away from data/audit (BRO-2664)', () => {
+  const { LEDGER_PATH } = require('./intake-breaker.js');
+  assert.equal(LEDGER_PATH, process.env.INTAKE_LEDGER_PATH);
+  assert.ok(!/[\\/]data[\\/]audit[\\/]/.test(LEDGER_PATH));
+});
 
 test('pickStateForMode park: picks the backlog-type state', () => {
   const state = pickStateForMode(STATES, 'park');

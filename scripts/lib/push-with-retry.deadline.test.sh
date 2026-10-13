@@ -12,6 +12,10 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PUSH_SCRIPT="$SCRIPT_DIR/push-with-retry.sh"
+# BRO-2664: a default for every case, so no invocation can append to the real
+# data/audit/push-retry-failures.jsonl (cases that set their own still win).
+PUSH_FAILURE_LOG_DEFAULT_DIR="$(mktemp -d)"
+export PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-$PUSH_FAILURE_LOG_DEFAULT_DIR/failures.jsonl}"
 fail=0
 
 setup_repo() {
@@ -24,7 +28,7 @@ setup_repo() {
 
 # --- Case 1: deadline=0 → break before any attempt, exit 1, warning present ---
 TMP1=$(mktemp -d)
-trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}" "${TMP4:-}" "${TMP5:-}" "${TMP6:-}" "${TMP7:-}" "${TMP8:-}" "${TMP9:-}"' EXIT
+trap 'rm -rf "$PUSH_FAILURE_LOG_DEFAULT_DIR" "$TMP1" "${TMP2:-}" "${TMP3:-}" "${TMP4:-}" "${TMP5:-}" "${TMP6:-}" "${TMP7:-}" "${TMP8:-}" "${TMP9:-}"' EXIT
 setup_repo "$TMP1"
 # A staged (clean) change so there is real work queued; no remote is configured,
 # so a push WOULD fail — but deadline=0 must short-circuit before that.
