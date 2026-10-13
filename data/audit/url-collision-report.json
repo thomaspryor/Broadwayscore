@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-13T10:04:08.622Z",
+  "generatedAt": "2026-10-13T10:28:51.793Z",
   "summary": {
-    "total": 15,
-    "high": 9,
+    "total": 12,
+    "high": 7,
     "medium": 4,
-    "low": 2
+    "low": 1
   },
   "collisions": [
     {
@@ -251,33 +251,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.timeout.com/london/theatre/othello-23-review",
-      "normalizedUrl": "https://timeout.com/london/theatre/othello-23-review",
-      "candidates": [
-        {
-          "showId": "othello-west-end-2022",
-          "file": "timeout-london--andrzej-lukowski.json",
-          "publishDate": "2022-12-01",
-          "openingDate": "2022-11-30",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout-london"
-        },
-        {
-          "showId": "othello-west-end-2025",
-          "file": "timeout-london--andrzej-lukowski.json",
-          "publishDate": "2025-11-05",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout-london"
-        }
-      ],
-      "suggestedWinner": "othello-west-end-2022",
-      "reason": "publishDate 2022-12-01 is 1 days from othello-west-end-2022 opening (2022-11-30)",
-      "confidence": "high"
-    },
-    {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
       "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
       "candidates": [
@@ -356,60 +329,6 @@
       ],
       "suggestedWinner": "the-comedy-about-spies-west-end-2025",
       "reason": "publishDate May 14th, 2025 is 8 days from the-comedy-about-spies-west-end-2025 opening (2025-05-06)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",
-      "normalizedUrl": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",
-      "candidates": [
-        {
-          "showId": "the-score-regional-2026",
-          "file": "artsdesk--rachel-halliburton.json",
-          "publishDate": null,
-          "openingDate": "2026-09-16",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "artsdesk"
-        },
-        {
-          "showId": "the-score-west-end-2025",
-          "file": "artsdesk--rachel-halliburton.json",
-          "publishDate": "2025-02-28",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "artsdesk"
-        }
-      ],
-      "suggestedWinner": "the-score-regional-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "candidates": [
-        {
-          "showId": "to-kill-a-mockingbird-west-end-2022",
-          "file": "timeout-london--andrzej-lukowski.json",
-          "publishDate": "2022-03-31",
-          "openingDate": "2022-03-31",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout-london"
-        },
-        {
-          "showId": "to-kill-a-mockingbird-west-end-2026",
-          "file": "timeout-london--andrzej-lukowski.json",
-          "publishDate": "2023-02-07",
-          "openingDate": "2026-06-30",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "timeout-london"
-        }
-      ],
-      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
-      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
       "confidence": "high"
     }
   ]
