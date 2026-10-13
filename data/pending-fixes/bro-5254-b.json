@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5254-b",
   "planId": "81dfeb15-f341-401e-a77d-59c62ec7441e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T22:31:18.826Z",
   "submitter": {
     "name": null,
@@ -22,5 +22,13 @@
         "description": "BRO-5254: strip promo modules from 27 more live Variety review texts (A/B sample)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T23:25:51.445Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
 }
