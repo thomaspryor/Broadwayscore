@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-13T00:11:45.917Z",
+  "timestamp": "2026-10-13T00:37:35.564Z",
   "stats": {
-    "totalReviews": 56188,
+    "totalReviews": 56195,
     "alreadyFlagged": 20961,
-    "dateGuardCatches": 216,
+    "dateGuardCatches": 218,
     "directorMismatch": 1805,
     "tvFilmSignals": 1623,
-    "londonSignals": 2213,
+    "londonSignals": 2214,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
     "noPublishDate": 5270
@@ -44016,6 +44016,20 @@
       ]
     },
     {
+      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "file": "the-list--unknown.json",
+      "score": 79,
+      "publishDate": "2020-10-18",
+      "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2184d before show (2020-10-18 vs 2026-10-11)"
+        }
+      ]
+    },
+    {
       "showId": "the-prince-of-egypt-west-end-2020",
       "file": "daily-mail--patrick-marmion.json",
       "score": 82,
@@ -46016,6 +46030,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -59536,6 +59564,19 @@
       "score": 60,
       "publishDate": "2018-09-14",
       "url": "https://www.timeout.com/london/theatre/foxfinder-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "franz-and-marie-west-end-2026",
+      "file": "cineramafilm--cinerama-film.json",
+      "publishDate": "2026-10-12",
+      "url": "https://cineramafilm.com/2026/10/12/franz-and-marie/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

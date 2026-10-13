@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T00:11:56.687Z",
+  "generatedAt": "2026-10-13T00:37:42.689Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -929,28 +929,28 @@
       "status": "open",
       "slug": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
       "thumbnail": "/images/shows/the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thumbnail.jpg",
-      "siteScore": 79.09,
-      "liveScore": 79,
-      "scoreDrift": -0.09000000000000341,
+      "siteScore": 81.27,
+      "liveScore": 81,
+      "scoreDrift": -0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 8,
       "t1": 1,
       "t2": 2,
-      "t3": 2,
-      "positive": 4,
+      "t3": 5,
+      "positive": 7,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "8/12 total",
           "T1:1/3",
           "T2:2/3",
-          "hi-conf:2/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1166,10 +1166,6 @@
           "isDualMarket": false
         },
         {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
           "name": "Rolling Stone",
           "isDualMarket": false
         },
@@ -1262,10 +1258,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Stage",
-          "isDualMarket": true
-        },
-        {
           "name": "London Box Office",
           "isDualMarket": false
         },
@@ -1319,6 +1311,18 @@
           "t2": 2,
           "t3": 2,
           "p": 4,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-13T00:37:42.689Z",
+          "rc": 8,
+          "s": 81.27,
+          "t1": 1,
+          "t2": 2,
+          "t3": 5,
+          "p": 7,
           "m": 1,
           "n": 0,
           "bc": "waiting"
