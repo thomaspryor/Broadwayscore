@@ -94,9 +94,25 @@ test('marketingProjectGuard: no project set (undefined) is allowed — fails ope
   assert.equal(marketingProjectGuard(issue, {}), null);
 });
 
-test('marketingProjectGuard: --force bypasses the refusal', () => {
+test('marketingProjectGuard: --force does NOT bypass the refusal (BRO-2584)', () => {
   const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
-  assert.equal(marketingProjectGuard(issue, { force: true }), null);
+  const err = marketingProjectGuard(issue, { force: true });
+  assert.match(err, /--force does NOT clear this/);
+  assert.match(err, /--allow-marketing/);
+});
+
+test('marketingProjectGuard: a bare --allow-marketing (no reason) does not apply, and says so (BRO-2584)', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  assert.match(marketingProjectGuard(issue, { 'allow-marketing': true }), /without a reason/);
+  assert.match(marketingProjectGuard(issue, { 'allow-marketing': 'ok', force: true }), /without a reason/);
+});
+
+test('marketingProjectGuard: --allow-marketing "<reason>" bypasses, and is journaled via bypassReasonForLedger (BRO-2584)', () => {
+  const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
+  const opts = { 'allow-marketing': '  owner approved in chat 2026-10-13  ' };
+  assert.equal(marketingProjectGuard(issue, opts), null);
+  assert.equal(bypassReasonForLedger(opts, 'allow-marketing'), 'owner approved in chat 2026-10-13');
+  assert.equal(bypassReasonForLedger(opts), null, 'default flag is still --allow-reported-work');
 });
 
 test('marketingProjectGuard: --dry-run and --print-prompt also bypass it (preview stays side-effect-free)', () => {

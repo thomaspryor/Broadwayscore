@@ -54,9 +54,10 @@
  *   node scripts/linear-next.js --id BRO-123 --detach        accepted no-op alias for the default (kept for old callers)
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
- *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
+ *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards (not reported-work or marketing)
  *   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"
- *                                                            the ONE guard --force does not cover (BRO-2543)
+ *                                                            re-dispatch work that already reported back; --force does not cover it (BRO-2543)
+ *   node scripts/linear-next.js --id BRO-123 --allow-marketing "<reason>"  dispatch an owner-approved Marketing/distribution issue (--force does NOT cover this; BRO-2584)
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch headless even when the issue needs a human to finish it
  *                                                            (the default refuses such a card loudly and points at --tab)
@@ -193,6 +194,7 @@ Usage:
   node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
   node scripts/linear-next.js --id BRO-123 --allow-session-parked  waive PARKED_SENTINEL only when every PARKED line names a technical reason a worker can clear (BRO-4535)
   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"  re-dispatch even though this issue's outstanding dispatch already reported done/in-review (--force does NOT cover this; BRO-2543)
+  node scripts/linear-next.js --id BRO-123 --allow-marketing "<reason>"  dispatch a Marketing/distribution-project issue the owner approved (--force does NOT cover this; BRO-2584)
   node scripts/linear-next.js --id BRO-123 --dry-run        print the seed prompt, launch nothing
   node scripts/linear-next.js --help, -h                    show this message, do nothing else
 
@@ -206,7 +208,7 @@ a local cmux tab, overriding the headless default. No --decide / Cyrus routing y
 // not the truthy string "0" (BRO-2543/BRO-2576). The shared parser does that
 // for every flag except the declared free-text ones below (BRO-2628): an
 // undeclared new flag is treated as a switch, the safe direction.
-const LINEAR_NEXT_TEXT_FLAGS = ['id', 'model', 'allow-reported-work'];
+const LINEAR_NEXT_TEXT_FLAGS = ['id', 'model', 'allow-reported-work', 'allow-marketing'];
 function parseArgs(argv) {
   return parseCliArgs(argv, { coerceBooleans: true, textFlags: LINEAR_NEXT_TEXT_FLAGS });
 }
@@ -725,7 +727,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // Marketing-project guard (BRO-2488): closes the gap that let BRO-128
   // (Linear project "Marketing/distribution") dispatch cleanly with no
   // refusal — see ld.marketingProjectGuard's header for the incident and why
-  // it self-exempts only --force, not --id. Same placement rationale as the
+  // its only override is --allow-marketing "<reason>" (BRO-2584: --force no
+  // longer clears it), not --id. Same placement rationale as the
   // terminal-state guard above: a Marketing card should never even reach the
   // verify/idempotency gates below, which assume a card safe for unattended
   // work.
@@ -1162,6 +1165,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         allowAutomationParked: args['allow-automation-parked'] || null,
         allowSessionParked: args['allow-session-parked'] || null,
         allowReportedWork: ld.bypassReasonForLedger(args),
+        allowMarketing: ld.bypassReasonForLedger(args, ld.MARKETING_BYPASS_FLAG),
         notionId: null, linearId: issue.identifier, correlationId,
       });
     } catch (e) { console.error(`[linear-next] WARN ledger launch write failed (non-fatal): ${e.message}`); }
@@ -1289,6 +1293,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       allowAutomationParked: args['allow-automation-parked'] || null,
       allowSessionParked: args['allow-session-parked'] || null,
         allowReportedWork: ld.bypassReasonForLedger(args),
+        allowMarketing: ld.bypassReasonForLedger(args, ld.MARKETING_BYPASS_FLAG),
       notionId: null, adoptedLate: res.adoptedLate || null, linearId: issue.identifier, correlationId,
       // Task #1904 — see bsc-next.js's identical field for why the live cmux
       // terminal-runtime count is worth carrying on every launch row.

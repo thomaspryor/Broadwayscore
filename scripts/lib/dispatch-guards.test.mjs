@@ -135,7 +135,7 @@ test('marketingProjectGuard: a Marketing/distribution-project issue is REFUSED',
   const err = marketingProjectGuard(issue, {});
   assert.match(err, /BRO-128/);
   assert.match(err, /Marketing\/distribution/);
-  assert.match(err, /--force/);
+  assert.match(err, /--allow-marketing/);
 });
 
 test('marketingProjectGuard: an issue with no project (or a non-Marketing project) is ALLOWED', () => {
@@ -143,9 +143,9 @@ test('marketingProjectGuard: an issue with no project (or a non-Marketing projec
   assert.equal(marketingProjectGuard({ identifier: 'BRO-2', project: { name: 'Infrastructure' } }, {}), null);
 });
 
-test('marketingProjectGuard: --force bypasses the refusal', () => {
+test('marketingProjectGuard: --force no longer bypasses the refusal (BRO-2584)', () => {
   const issue = { identifier: 'BRO-128', project: { name: 'Marketing/distribution' } };
-  assert.equal(marketingProjectGuard(issue, { force: true }), null);
+  assert.ok(marketingProjectGuard(issue, { force: true }));
 });
 
 // ── BRO-2575: a still-running workspace is never classified as having died ──

@@ -615,19 +615,36 @@ function checkTerminalStateGuard(issue) {
 // isCardEligible, which explicitly lets `--id`/`--pick` through human-
 // territory categories): linear-next.js has no separate auto-pick layer the
 // way bsc-next.js does — every dispatch, automated or not, goes through
-// `--id` — so gating on `--id` alone would gate nothing. `--force` is the
-// only override, matching checkTerminalStateGuard's own bypass just above.
+// `--id` — so gating on `--id` alone would gate nothing.
+//
+// BRO-2584: `--force` NO LONGER clears this guard. It used to, exactly like
+// startedStateGuard before BRO-2543, and --force is the flag recovery
+// operators (and LLM crown loops) reach for by default — so the BRO-128
+// incident stayed one reflexive flag away. Following BRO-2543's pattern
+// (closedCardGuard / reportedOutcomeGuard precedent: a guard whose refused
+// population must never be silently cleared gets its own narrow flag), the
+// only override is `--allow-marketing "<reason, >= 10 chars>"`, journaled on
+// the ledger launch row. A bare `--allow-marketing` (boolean) does not
+// apply. --dry-run / --print-prompt stay exempt (side-effect-free previews).
+// No automated caller needs the flag: dispatch-watchdog's dispatchArgvFor
+// and spawn-detached-dispatch's dispatchDetached emit only
+// --id/--headless/--model/--allow-autofix-filed.
 const MARKETING_PROJECT_NAMES = new Set(['marketing/distribution', 'marketing']);
+const MARKETING_BYPASS_FLAG = 'allow-marketing';
 
 function marketingProjectGuard(issue, opts) {
   const o = opts || {};
-  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  if (o['dry-run'] || o['print-prompt']) return null;
+  if (isValidBypassReason(o[MARKETING_BYPASS_FLAG])) return null;
   const name = issue && issue.project && issue.project.name;
   if (!name || !MARKETING_PROJECT_NAMES.has(String(name).trim().toLowerCase())) return null;
-  return `${(issue && issue.identifier) || '(unknown)'} is in Linear project "${name}" — refusing to dispatch. ` +
+  const bareFlag = o[MARKETING_BYPASS_FLAG] !== undefined
+    ? ` (--${MARKETING_BYPASS_FLAG} was passed without a reason of at least ${REPORTED_WORK_BYPASS_MIN_REASON} characters, so it did not apply)`
+    : '';
+  return `${(issue && issue.identifier) || '(unknown)'} is in Linear project "${name}" — refusing to dispatch${bareFlag}. ` +
     `Marketing/distribution is owner-judgment territory (external-facing copy: Reddit posts, journalist pitches, ` +
-    `donor/broadcast email), not safe for unattended dispatch. Re-run with --force if the owner has reviewed and ` +
-    `approved this specific card.`;
+    `donor/broadcast email), not safe for unattended dispatch. --force does NOT clear this (BRO-2584). Only if the ` +
+    `owner has reviewed and approved this specific card, re-run with: --${MARKETING_BYPASS_FLAG} "<who approved it and when>".`;
 }
 
 // Auto-filed-pipeline guard (BRO-2499): the OTHER half of the same
@@ -850,8 +867,10 @@ function isValidBypassReason(flagValue) {
 // Only a reason that ACTUALLY cleared the guard is journaled: a bare
 // --allow-reported-work does not bypass, and recording `true` for it would
 // leave an audit trail implying a waiver that never happened.
-function bypassReasonForLedger(opts) {
-  const v = (opts || {})[REPORTED_WORK_BYPASS_FLAG];
+// `flag` defaults to --allow-reported-work; linear-next.js also journals
+// --allow-marketing (BRO-2584) through the same function.
+function bypassReasonForLedger(opts, flag = REPORTED_WORK_BYPASS_FLAG) {
+  const v = (opts || {})[flag];
   return isValidBypassReason(v) ? v.trim() : null;
 }
 
@@ -1135,6 +1154,7 @@ module.exports = {
   findResolvedOutcomeComment,
   RESOLVED_REPORT_STATUSES,
   REPORTED_WORK_BYPASS_FLAG,
+  MARKETING_BYPASS_FLAG,
   REPORTED_WORK_BYPASS_MIN_REASON,
   MARKETING_PROJECT_NAMES,
   buildLinearSeed,

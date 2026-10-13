@@ -1563,17 +1563,45 @@ test('main(): refuses to dispatch a Marketing/distribution-project issue (BRO-24
   assert.match(errors.join('\n'), /Marketing\/distribution/);
 });
 
-test('main(): --force overrides the marketing-project refusal and proceeds to launch', async () => {
+test('main(): --force ALONE no longer overrides the marketing-project refusal (BRO-2584)', async () => {
+  const origExit = process.exit;
+  const origError = console.error;
+  const errors = [];
+  let exitCode = null;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  console.error = (msg) => errors.push(String(msg));
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-2488', '--force', '--tab'], {
+      getIssue: async () => makeMarketingIssue(),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must not be called'); },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /--force does NOT clear this/);
+});
+
+test('main(): --allow-marketing "<reason>" overrides the marketing-project refusal, journals it, and proceeds to launch (BRO-2584)', async () => {
   const origError = console.error;
   console.error = () => {};
   let launched = false;
+  let journaled;
   try {
-    await main(['--id', 'BRO-2488', '--force', '--tab'], {
+    await main(['--id', 'BRO-2488', '--force', '--tab', '--allow-marketing', 'owner approved this card 2026-10-13'], {
       getIssue: async () => makeMarketingIssue(),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
       readLedgerEntries: () => [],
-      appendLedgerEntry: () => {},
+      appendLedgerEntry: (e) => { if (e.event === 'launch') journaled = e.allowMarketing; },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
       ...noopLinearDeps(),
@@ -1582,6 +1610,7 @@ test('main(): --force overrides the marketing-project refusal and proceeds to la
     console.error = origError;
   }
   assert.equal(launched, true);
+  assert.equal(journaled, 'owner approved this card 2026-10-13');
 });
 
 test('main(): a non-Marketing-project issue is unaffected by the guard (dry-run reaches the seed print)', async () => {
