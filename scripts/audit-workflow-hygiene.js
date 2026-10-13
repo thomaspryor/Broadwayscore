@@ -233,6 +233,7 @@ const {
   findNodeTeeWithoutPipefail,
   findMaskedPushFailures,
   findStringInputInterpolation,
+  findCompositeShellHazards,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -1071,6 +1072,20 @@ async function main() {
     }
   } else {
     console.log('✅ Rule (q): no git diff/status/show on gitignored paths');
+  }
+
+  // Rules (t)/(u) also cover composite actions (BRO-4730/4621 cousins).
+  if (fs.existsSync(ACTIONS_DIR)) {
+    for (const dir of fs.readdirSync(ACTIONS_DIR)) {
+      const full = path.join(ACTIONS_DIR, dir, 'action.yml');
+      if (!fs.existsSync(full)) continue;
+      const raw = fs.readFileSync(full, 'utf8');
+      for (const [kind, key, tag] of [['masked-push', 'maskedPush', 'hygiene-masked-push-ok:'], ['string-input', 'stringInput', 'hygiene-string-input-ok:']]) {
+        if (raw.includes(tag)) continue;
+        const hits = findCompositeShellHazards(raw).filter((h) => h.kind === kind).map((h) => ({ name: 'composite step', lineNum: h.lineNum, handler: h.detail, input: h.detail.replace(/^inputs\./, '') }));
+        if (hits.length) violations[key].push({ file: `actions/${dir}/action.yml`, hits });
+      }
+    }
   }
 
   const total =
