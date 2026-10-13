@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-13T18:31:23.809Z",
+  "generated": "2026-10-13T18:46:09.323Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 26,
+  "count": 24,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -116,13 +116,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "loserFile": "londontheatredirect--unknown.json",
-      "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
-      "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-hills-of-california-west-end-2024",
       "loserFile": "independent--unknown.json",
       "targetFile": "independent--alice-saville.json",
@@ -177,13 +170,6 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "loserFile": "londontheatredirect--unknown.json",
-      "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
-      "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
