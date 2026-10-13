@@ -699,6 +699,36 @@
     "queuedAt": "2026-10-13T08:13:19.306Z"
   },
   {
+    "conditionKey": "land:land/bro-5222-jsonld-7",
+    "title": "Landing blocked: colocated-tests red on land/bro-5222-jsonld-7",
+    "description": "land.yml did not land land/bro-5222-jsonld-7: the colocated-tests gate went red at 37e94cab11. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5222-jsonld-7 @ 37e94cab11 (origin/land/bro-5222-jsonld-7) → origin/main @ c98330c958 [land] attempt 1/3: rebased onto c98330c958, 13 file(s) changed — running checks [land] verified-base: main moved 63b8555e31 → c98330c958 across 111 file(s), substantive — re-checking on the merged tree (+20 test file(s) changed on main since the verified base) [land] linked 21 gitignored path(s)  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38364071440",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5222-jsonld-7"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "37e94cab1111ac702a7410c088debefdc82d1752"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38364071440"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:28:31.316Z"
+  },
+  {
     "conditionKey": "land:land/bro-340-fix",
     "title": "Landing blocked: unit-tests-node red on land/bro-340-fix",
     "description": "land.yml did not land land/bro-340-fix: the unit-tests-node gate went red at 02d34e85a8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38365951914",
