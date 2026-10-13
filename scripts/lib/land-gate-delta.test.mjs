@@ -334,7 +334,7 @@ test('CLI: same red gates on base and branch → exit 0, gate= empty, summary ap
     assert.match(fs.readFileSync(ghout, 'utf8'), /^gate=\nnew_failures=0\npre_existing=2\nfixed=0\n$/m);
     assert.match(fs.readFileSync(summary, 'utf8'), /base gauntlet: cache hit/);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -349,7 +349,7 @@ test('CLI: a new failure → exit 1, gate=<first failing>, ::error:: annotation 
     assert.match(r.stdout, /::error::unit-tests-node: NEW failure on the branch .*tests\/unit\/z\.test\.mjs::brand new/);
     assert.match(fs.readFileSync(ghout, 'utf8'), /^gate=unit-tests-node$/m);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -366,7 +366,7 @@ test('CLI: --strict / LAND_STRICT_GATES=1 ignores an existing base dir (the roll
     const env = { ...process.env, LAND_STRICT_GATES: '1' }; delete env.NODE_TEST_CONTEXT;
     assert.equal(spawnSync(process.execPath, [CLI, '--base-dir', base, '--branch-dir', branch, '--gates', 'tsc'], { encoding: 'utf8', env }).status, 1);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -380,7 +380,7 @@ test('CLI: no base dir (never ran, cache miss AND run failed) → strict: branch
     // main() in-process too (the exported entry point)
     assert.equal(main(['--base-dir', path.join(tmp, 'missing'), '--branch-dir', green, '--gates', 'tsc']), 0);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -427,7 +427,7 @@ test('computeCodeTreeHash against a real git repo: a data-only commit keeps the 
     assert.equal(cli.status, 0);
     assert.equal(cli.stdout.trim(), h2.hash);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

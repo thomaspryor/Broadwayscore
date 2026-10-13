@@ -268,7 +268,7 @@ function advanceOrigin(root, origin, tmpName, mutate) {
   git(via, 'add', '-A');
   git(via, 'commit', '-q', '-m', 'ci: advance');
   git(via, 'push', '-q', 'origin', 'main');
-  fs.rmSync(via, { recursive: true, force: true });
+  fs.rmSync(via, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 }
 
 function runSync(clone, tag, env = {}) {
@@ -292,7 +292,7 @@ const count = (arr, v) => arr.filter((x) => x === v).length;
 
 function withTmp(fn) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sync-audit-'));
-  try { return fn(root); } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  try { return fn(root); } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 }
 
 test('ACCEPTANCE: a dirty merge=union ledger that origin also moved no longer parks the job', () => {

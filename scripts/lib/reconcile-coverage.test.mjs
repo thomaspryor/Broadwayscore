@@ -456,6 +456,6 @@ test('PUSH_RECONCILE_MERGED_JSON=1 survives a nearby-slug remote edit through th
     assert.equal(finalJson.shows['show-a'].claim, 'LOCAL-EDIT-a', 'our edit must survive');
     assert.equal(finalJson.shows['show-b'].claim, 'REMOTE-EDIT-b', 'the concurrent writer\'s nearby-slug edit must survive too');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

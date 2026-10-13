@@ -93,7 +93,7 @@ test('local merge commit stays an ancestor of the pushed tip', () => {
     assert.equal(JSON.parse(git(f.origin, 'show', 'main:b/y.json')).fullText, 'ci');
     assert.equal(JSON.parse(git(f.origin, 'show', 'main:a/side.json')).fullText, 'side');
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -110,7 +110,7 @@ test('merge path: conflicting line resolves to the local side, like rebase -X th
     assert.equal(JSON.parse(git(f.origin, 'show', 'main:a/x.json')).fullText, 'local wins');
     assert.equal(fs.existsSync(path.join(f.local, '.git', 'MERGE_HEAD')), false);
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -127,6 +127,6 @@ test('no merge commit in range: keeps the linear rebase path', () => {
     assert.equal(git(f.origin, 'rev-list', '--merges', '--count', 'main'), '0', 'history stays linear');
     assert.equal(JSON.parse(git(f.origin, 'show', 'main:a/x.json')).fullText, 'local');
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

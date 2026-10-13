@@ -185,7 +185,7 @@ test('applyMultiShowFanoutToFile writes the sibling, trims the parent, and is id
   // Second pass: parent already processed, child already exists.
   const r2 = applyMultiShowFanoutToFile(file, { shows: SHOWS, reviewTextsDir: dir });
   assert.equal(r2.applied, false);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('applyMultiShowFanoutToFile fills a textless discovery stub for the same article', () => {
@@ -203,7 +203,7 @@ test('applyMultiShowFanoutToFile fills a textless discovery stub for the same ar
   assert.equal(filled.contentTier, 'complete');
   assert.equal(filled.source, 'outlet-listing-poller', 'keeps the discovery source');
   assert.match(filled.fullText, /Cherry Orchard/);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('fan-out honours the child show blocklist and never trims a parent when no sibling was written', () => {
@@ -222,7 +222,7 @@ test('fan-out honours the child show blocklist and never trims a parent when no 
   const parent = JSON.parse(fs.readFileSync(file, 'utf8'));
   assert.equal(parent.fullText, TWO_SHOW_COLUMN, 'parent kept whole');
   assert.equal(parent.llmScore.score, 70);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('re-ingesting the article under a missing sibling show keeps only that section', () => {
@@ -239,7 +239,7 @@ test('re-ingesting the article under a missing sibling show keeps only that sect
   assert.equal(r.children[0].action, 'held');
   assert.equal(r.parentRewritten, true);
   assert.doesNotMatch(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, /Delirium/);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('a processed parent whose full article was re-collected is trimmed again', () => {
@@ -294,7 +294,7 @@ test('review-texts push ownership gate keeps split siblings, still drops an unre
   execFileSync('node', [script, `--base=${git('rev-parse', 'HEAD~1').toString().trim()}`], { cwd: dir, stdio: 'pipe' });
   assert.equal(fs.existsSync(path.join(dir, 'unrelated-show-2026/vulture--sara-holdren.json')), false, 'unrelated cross-show copy still dropped');
   assert.ok(fs.existsSync(path.join(dir, 'arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json')));
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('writer Guard I lets a split article be re-created under a section show it names, not under others', () => {
@@ -315,7 +315,7 @@ test('writer Guard I lets a split article be re-created under a section show it 
   assert.equal(refused.action, 'skipped');
   assert.match(refused.reason, /cross-show-url-owned/);
   _resetUrlOwnershipIndex();
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('New Yorker extractor reads every body block (second show was dropped before)', () => {
@@ -452,7 +452,7 @@ test('a failed submission becomes a queued-retry stub that counts as pending, no
   const res = checkSubmissionLanded({ showId, url, reviews: [], reviewTextsDir: dir, show: { id: showId, title: 'Golden Boy', openingDate: '2026-09-15' } });
   assert.equal(res.landed, false);
   assert.equal(res.pendingScore, true, 'goes to the awaiting-score sweep (close when live, escalate after 36h)');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ---------------------------------------------------------------------------

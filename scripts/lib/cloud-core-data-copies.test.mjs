@@ -65,7 +65,7 @@ test('cloud setup-local-data.sh: plain copies, no links, no .pre-symlink-backup,
     assert.deepEqual(left, []);
     assert.equal(fs.readFileSync(path.join(fx.data, '.core-data-sha'), 'utf8').trim(), git(fx.clone, 'rev-parse', 'HEAD').trim());
     assert.deepEqual(read(path.join(fx.data, 'awards.json')), { v: 1 });
-  } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('off cloud (the Mac) and with the kill switch: links as before', () => {
@@ -75,7 +75,7 @@ test('off cloud (the Mac) and with the kill switch: links as before', () => {
       run(fx, 'setup-local-data.sh', ['--link-only'], env);
       for (const f of SYMLINK_FILES) assert.equal(isLink(path.join(fx.data, f)), true, `${f} ${JSON.stringify(env)}`);
       assert.equal(fs.existsSync(path.join(fx.data, '.core-data-sha')), false);
-    } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
+    } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
   }
 });
 
@@ -98,7 +98,7 @@ test('cloud bootstrap: converts snapshot links, re-copies on startup when the cl
     assert.deepEqual(read(shows), { f: 'shows.json', v: 2 });
     assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone, files: getLocalSymlinkFiles() }), []);
     assert.deepEqual(execFileSync('git', ['-C', fx.clone, 'status', '--porcelain'], { encoding: 'utf8' }), '', 'clone untouched');
-  } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('writers refuse a cloud copy loudly; links, non-cloud and the scratch override are allowed', () => {
@@ -123,7 +123,7 @@ test('writers refuse a cloud copy loudly; links, non-cloud and the scratch overr
     const playbill = path.join(fx.data, 'playbill-urls.json');
     fs.writeFileSync(playbill, '{}');
     assert.equal(cloudCopyWriteRefusal(playbill, cloud), null);
-  } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('kill switch after a conversion: copies and marker go, links come back', () => {
@@ -135,5 +135,5 @@ test('kill switch after a conversion: copies and marker go, links come back', ()
     for (const f of SYMLINK_FILES) assert.equal(isLink(path.join(fx.data, f)), true, f);
     assert.equal(fs.existsSync(path.join(fx.data, '.core-data-sha')), false);
     assert.deepEqual(fs.readdirSync(fx.data).filter((n) => /pre-symlink-backup/.test(n)), []);
-  } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

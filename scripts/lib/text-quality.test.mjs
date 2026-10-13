@@ -33,7 +33,7 @@ test('text-quality.js is on the scoring-delta Phase B watchlist', () => {
 
 test('an uncommitted text-quality.js edit trips the Phase B diff check', (t) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'scoring-delta-tq-'));
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const git = (...args) => execFileSync('git', args, { cwd: dir, stdio: 'pipe' });
   git('init', '-q');
   git('config', 'user.email', 't@example.com');

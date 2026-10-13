@@ -61,7 +61,7 @@ test('control: git cat-file -e succeeds on the older commit but merge-base --is-
       'fixture precondition: this is the exact false negative the incident hit'
     );
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -113,7 +113,7 @@ test('checkLanded never reports NOT_LANDED for a shallow-truncated commit that i
     assert.equal(result.landed, true);
     assert.equal(isShallowRepo(workdir), false, 'checkLanded should have restored full history as a side effect');
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -150,7 +150,7 @@ test('checkLanded reports UNKNOWN, not NOT_LANDED, when unshallow is impossible'
       'must log a distinct loud warning when unshallow fails, not fail silently'
     );
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -203,7 +203,7 @@ for (const [label, skip] of [['GITHUB_ACTIONS is set (CI)', 'ci'], ['PUSH_SKIP_U
       // runner where each execFileSync('git') spawn is slow.
       assert.ok(elapsedMs < 5000, `must return without a network attempt; took ${elapsedMs}ms`);
     } finally {
-      fs.rmSync(root, { recursive: true, force: true });
+      fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 }
@@ -222,7 +222,7 @@ test('the skip does NOT fire on a repo that is not shallow — a full checkout s
     assert.equal(result.landed, true);
     assert.equal(result.reason, null);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -256,7 +256,7 @@ test('an ancestor-check ERROR (invalid sha) reports UNKNOWN, not NOT_LANDED — 
     assert.equal(result.reason, 'ancestor-check-error');
     assert.ok(warnings.length > 0, 'an ancestor-check error must be logged loudly, not swallowed');
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -290,6 +290,6 @@ test('control: non-shallow repo + commit truly not on branch reports NOT_LANDED'
     assert.equal(result.landed, false);
     assert.equal(result.shallow, false);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

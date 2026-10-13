@@ -90,7 +90,7 @@ function makeWorld() {
     try { sh(repoDir, ['merge-base', '--is-ancestor', sha, 'origin/main']); return true; } catch { return false; }
   };
   const worktreeCount = () => sh(repoDir, ['worktree', 'list', '--porcelain']).split('\n').filter(l => l.startsWith('worktree ')).length;
-  const cleanup = () => { try { fs.rmSync(root, { recursive: true, force: true }); } catch { /* best effort */ } };
+  const cleanup = () => { try { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); } catch { /* best effort */ } };
   return { root, origin, repoDir, other, commitOn, moveOrigin, makeBranch, originMain, branchSha, isAncestorOfOrigin, worktreeCount, cleanup };
 }
 
@@ -758,7 +758,7 @@ test('BRO-5180: a substantive move hands the test files main changed since the v
     notAnc({ cwd: wt, baseSha: b, repoDir: '/repo', log: (l) => logs2.push(l) });
     assert.match(logs2.join('\n'), /unknown: verified base is not an ancestor/);
   } finally {
-    fs.rmSync(wt, { recursive: true, force: true });
+    fs.rmSync(wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 
   assert.deepEqual(mergedTreeGateInput(['a.js', 't/x.test.mjs'], ['t/x.test.mjs', 't/y.test.mjs']), ['a.js', 't/x.test.mjs', 't/y.test.mjs']);
@@ -776,7 +776,7 @@ test('BRO-5180: the floor actually selects an intervening guard the branch diff 
     assert.ok(!selectTestFiles(root, branch).includes('tests/unit/guard.test.mjs'), 'precondition: the branch diff alone misses the guard (the incident)');
     assert.ok(selectTestFiles(root, mergedTreeGateInput(branch, ['tests/unit/guard.test.mjs'])).includes('tests/unit/guard.test.mjs'));
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

@@ -15,7 +15,7 @@ const ROOT = path.dirname(SCRIPTS);
 
 function tmp(t, prefix) {
   const d = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), prefix)));
-  t.after(() => fs.rmSync(d, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   return d;
 }
 

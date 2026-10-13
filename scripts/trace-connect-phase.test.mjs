@@ -279,7 +279,7 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
     G('add', 'b.txt');
     G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'second');
   } catch (err) {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     // Skipping is right on a developer machine with an unusual git config, but
     // WRONG in CI: there, a fixture that suddenly cannot be built is a real
     // breakage, and silently skipping would hide it behind a green run
@@ -342,7 +342,7 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
     server.listen(0, '127.0.0.1', () => resolve(true));
   });
   if (!listening) {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     return t.skip('cannot listen on loopback in this environment');
   }
 
@@ -447,6 +447,6 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
     }
   } finally {
     server.close();
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

@@ -77,7 +77,7 @@ test('checkout of main fails after a successful stash: exits non-zero, stash res
     assert.match(r.stdout + r.stderr, /could not checkout main/);
     assert.equal(git(repo, 'stash', 'list').trim(), '', 'stash abandoned after checkout failure');
     assert.equal(git(repo, 'status', '--porcelain'), before, 'working tree not restored');
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 for (const sig of ['TERM', 'HUP', 'INT']) {
@@ -104,7 +104,7 @@ for (const sig of ['TERM', 'HUP', 'INT']) {
       assert.equal(before.includes('tracked.txt'), true);
     } finally {
       try { process.kill(-child.pid, 'SIGKILL'); } catch { /* already gone */ }
-      rmSync(root, { recursive: true, force: true }); rmSync(marker, { force: true }); }
+      rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); rmSync(marker, { force: true }); }
   });
 }
 

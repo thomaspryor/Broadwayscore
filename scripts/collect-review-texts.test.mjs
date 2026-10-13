@@ -197,7 +197,7 @@ function procRun(file, reviewId, { retryFailed = false } = {}) {
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'bro3059-'));
 
 test('BRO-3059: two concurrent processes on one progress.json file are last-writer-wins, not duplicated', (t) => {
-  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const file = path.join(dir, 'progress.json');
   fs.writeFileSync(file, JSON.stringify(freshState()));
   // Both load the SAME snapshot before either saves (the race window).
@@ -215,7 +215,7 @@ test('BRO-3059: two concurrent processes on one progress.json file are last-writ
 });
 
 test('BRO-3059: git line-merge of two processes appending the same failed id collapses to one entry (identical-append case only)', (t) => {
-  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const doc = (ids) => JSON.stringify({ failed: ids, processed: [] }, null, 2) + '\n';
   fs.writeFileSync(path.join(dir, 'base.json'), doc(['r-old']));
   fs.writeFileSync(path.join(dir, 'a.json'), doc(['r-old', 'r-new']));
@@ -225,7 +225,7 @@ test('BRO-3059: git line-merge of two processes appending the same failed id col
 });
 
 test('BRO-3059: RETRY_FAILED in ONE process re-appends the same id (the real duplicate source); write-time dedupe collapses it', (t) => {
-  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const file = path.join(dir, 'progress.json');
   fs.writeFileSync(file, JSON.stringify(freshState()));
   // Without retry the in-process guard blocks the repeat attempt.

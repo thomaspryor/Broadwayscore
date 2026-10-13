@@ -21,7 +21,7 @@ function initRepo() {
   execFileSync('git', ['commit', '-q', '-m', 'init'], { cwd: dir });
   // fake an "origin" remote in the same repo so origin/main exists
   execFileSync('git', ['update-ref', 'refs/remotes/origin/main', 'HEAD'], { cwd: dir });
-  return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) };
+  return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }) };
 }
 
 function commit(dir, file, body, msg) {

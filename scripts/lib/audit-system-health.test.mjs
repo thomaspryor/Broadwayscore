@@ -148,5 +148,5 @@ test('#7: a review-texts clone behind origin is flagged untrustworthy; a copied 
   fs.mkdirSync(copied);
   assert.equal(reviewTextsFreshness({ dir: copied }).level, 'unknown', 'never measured against the enclosing repo');
   assert.match(classifyDataFreshness({ behindCount: 3, refsFetched: true }).message, /^Core data is 3/, 'core-data wording unchanged');
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });

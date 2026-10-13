@@ -56,7 +56,7 @@ test('plan CLI end to end: a mocked private checkout never shadows a tracked pub
   }
   const out = execFileSync('node', [LIB, 'plan', priv, repo], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
   assert.deepEqual(out.trim().split('\n'), ['awards.json', 'extra.json', 'reviews.json', 'shows.json']);
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('findStaleCopies flags a drifted copy, ignores identical, missing and symlinked files', () => {
@@ -75,7 +75,7 @@ test('findStaleCopies flags a drifted copy, ignores identical, missing and symli
   const stale = findStaleCopies({ dataDir: data, coreDataDir: core, files: ['critic-registry.json', 'grosses.json', 'awards.json', 'shows.json'] });
   assert.deepEqual(stale, ['critic-registry.json']);
   assert.deepEqual(findStaleCopies({ dataDir: data, coreDataDir: path.join(tmp, 'nope') }), []);
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('stale-copies --warn prints session-start.sh\'s warning only when a copy is stale', () => {
@@ -93,7 +93,7 @@ test('stale-copies --warn prints session-start.sh\'s warning only when a copy is
   const out = run(core);
   assert.match(out, /STALE LOCAL CORE-DATA COPY: .* for: grosses\.json/);
   assert.match(out, /setup-local-data\.sh/);
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // BRO-2937: verifyCoreDataCopy — the checkout-core-data canary.

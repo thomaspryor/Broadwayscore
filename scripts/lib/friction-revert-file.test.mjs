@@ -27,7 +27,7 @@ test('revertFile restores a HEAD-tracked file to its committed content', () => {
   revertFile('existing.txt', root);
 
   assert.equal(fs.readFileSync(path.join(root, 'existing.txt'), 'utf8'), 'committed-content\n');
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('revertFile removes a file HEAD never had (BRO-3595 cousin: newly-added, never committed)', () => {
@@ -44,5 +44,5 @@ test('revertFile removes a file HEAD never had (BRO-3595 cousin: newly-added, ne
   assert.equal(fs.existsSync(path.join(root, 'new-file.txt')), false);
   const status = execSync('git status --porcelain', { cwd: root }).toString();
   assert.equal(status.includes('new-file.txt'), false, `expected no dangling index entry, got: ${status}`);
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });

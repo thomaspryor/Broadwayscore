@@ -102,7 +102,7 @@ test('conflicting local commit: aborts the rebase and exits 1 without pushing co
     // The local commit is still there for a human to resolve.
     assert.equal(git(f.local, 'log', '-1', '--format=%s'), 'local');
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -119,7 +119,7 @@ test('uncommitted local change + unrelated remote commit still syncs (exit 0)', 
     assert.match(JSON.parse(git(f.origin, 'show', 'main:show-a/outlet--critic.json')).fullText, /local edit/);
     assert.equal(JSON.parse(git(f.origin, 'show', 'main:show-b/outlet--critic.json')).fullText, 'b2');
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -147,7 +147,7 @@ test('guarded_pull_rebase: conflict returns 1 and leaves no rebase; refusal to s
     assert.match(conflict.stdout, /::error::/);
     assert.equal(midRebase(f.local), false);
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -180,7 +180,7 @@ test('guarded_pull_rebase: an unfinished rebase/merge it did not start is left u
     assert.equal(rebasing.status, 1);
     assert.equal(midRebase(f.local), true, 'a rebase this call did not start must not be aborted');
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -193,6 +193,6 @@ test('guarded_pull_rebase: a non-local-changes failure (bad remote) warns and re
     assert.equal(r.status, 0, r.stderr);
     assert.match(r.stdout, /::warning::.*not a local-changes refusal/);
   } finally {
-    fs.rmSync(f.root, { recursive: true, force: true });
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

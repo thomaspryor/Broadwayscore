@@ -35,7 +35,7 @@ function setup() {
 
 test('clean depth-1 clone on main: safe to reset', () => {
   const { root, clone } = setup();
-  try { assert.equal(check(clone).work, false); } finally { rmSync(root, { recursive: true, force: true }); }
+  try { assert.equal(check(clone).work, false); } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('clean clone after upstream moved and fetched: still safe', () => {
@@ -44,12 +44,12 @@ test('clean clone after upstream moved and fetched: still safe', () => {
     writeFileSync(path.join(src, 'shows.json'), '[2]\n'); git(src, 'commit', '-qam', 'three');
     git(clone, 'fetch', '-q', '--depth', '1', 'origin', 'main');
     assert.equal(check(clone).work, false);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('untracked file only: safe (reset keeps it)', () => {
   const { root, clone } = setup();
-  try { writeFileSync(path.join(clone, 'scratch.txt'), 'x'); assert.equal(check(clone).work, false); } finally { rmSync(root, { recursive: true, force: true }); }
+  try { writeFileSync(path.join(clone, 'scratch.txt'), 'x'); assert.equal(check(clone).work, false); } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('uncommitted tracked edit: refuse', () => {
@@ -58,7 +58,7 @@ test('uncommitted tracked edit: refuse', () => {
     writeFileSync(path.join(clone, 'shows.json'), '[9]\n');
     const r = check(clone);
     assert.equal(r.work, true); assert.match(r.why, /uncommitted/);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('committed but unpushed: refuse (the case the old guard missed)', () => {
@@ -67,7 +67,7 @@ test('committed but unpushed: refuse (the case the old guard missed)', () => {
     writeFileSync(path.join(clone, 'shows.json'), '[9]\n'); git(clone, 'commit', '-qam', 'local');
     const r = check(clone);
     assert.equal(r.work, true); assert.match(r.why, /unpushed/);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('off main: refuse', () => {
@@ -75,7 +75,7 @@ test('off main: refuse', () => {
   try {
     git(clone, 'checkout', '-qb', 'feature');
     assert.match(check(clone).why, /not on main/);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('local commit on top of an old shallow tip after upstream moved: refuse', () => {
@@ -85,7 +85,7 @@ test('local commit on top of an old shallow tip after upstream moved: refuse', (
     writeFileSync(path.join(src, 'shows.json'), '[2]\n'); git(src, 'commit', '-qam', 'three');
     git(clone, 'fetch', '-q', '--depth', '1', 'origin', 'main');
     assert.match(check(clone).why, /1 local commit/);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('full (non-shallow) clone behind origin: safe', () => {
@@ -96,7 +96,7 @@ test('full (non-shallow) clone behind origin: safe', () => {
     writeFileSync(path.join(src, 'shows.json'), '[2]\n'); git(src, 'commit', '-qam', 'three');
     git(full, 'fetch', '-q', 'origin', 'main');
     assert.equal(check(full).work, false);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('every shell script that resets the shared clone sources this guard', async () => {

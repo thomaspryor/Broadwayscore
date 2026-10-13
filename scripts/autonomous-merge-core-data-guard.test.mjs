@@ -132,7 +132,7 @@ test('dirtyTrackedPaths: reports modified TRACKED files and ignores untracked on
     assert.deepEqual(merge.dirtyTrackedPaths(dir), ['data/outlet-registry.json'],
       'the tracked core-data copy is what aborts the checkout, so it must be reported');
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -165,7 +165,7 @@ test('the real failure: a plain checkout ABORTS on the dirty tracked file, a for
     assert.equal(fs.readFileSync(path.join(dir, 'data/shows.json'), 'utf8'), '{"untracked":true}\n',
       'UNTRACKED core data must survive — the re-verify still needs the private shows.json/reviews.json');
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

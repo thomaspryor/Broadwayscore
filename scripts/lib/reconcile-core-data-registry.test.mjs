@@ -35,7 +35,7 @@ test('reconcile-core-data-registry: unions remote-only slugs into a registered p
     const merged = JSON.parse(fs.readFileSync(path.join(checkout, 'awards.json'), 'utf8'));
     assert.deepEqual(Object.keys(merged.shows).sort(), ['a', 'b']);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -55,7 +55,7 @@ test('reconcile-core-data-registry: no-op when local already matches (nothing pr
     assert.equal(out.trim(), '');
     assert.equal(fs.readFileSync(path.join(checkout, 'awards.json'), 'utf8'), content);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -73,7 +73,7 @@ test('reconcile-core-data-registry: skips a file that is untouched locally (was 
     assert.equal(out.trim(), '');
     assert.equal(fs.existsSync(path.join(checkout, 'awards.json')), false);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -93,7 +93,7 @@ test('reconcile-core-data-registry: fails open on a corrupt remote snapshot (ski
     assert.equal(out.trim(), '');
     assert.equal(fs.readFileSync(path.join(checkout, 'awards.json'), 'utf8'), content);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -113,7 +113,7 @@ test('reconcile-core-data-registry: reconciles multiple registered files indepen
     const out = run(checkout, snapshot);
     assert.deepEqual(out.trim().split('\n').sort(), ['awards.json', 'opening-night-sent.json']);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -155,7 +155,7 @@ test('reconcile-core-data-registry: a dropped Unknown-byline fossil leaves a dur
     assert.equal(row.supersededBy, 'Olivia Garrett');
     assert.equal(row.url, base.url);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -188,7 +188,7 @@ test('reconcile-core-data-registry: stdout is newline-terminated (BRO-4809)', ()
     const out = run(checkout, snapshot);
     assert.ok(out.endsWith('\n'), `stdout must end with a newline, got ${JSON.stringify(out)}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -219,7 +219,7 @@ test('push-core-data consumer loop stages the deduped reviews.json that follows 
     const stagedDoc = JSON.parse(git(checkout, 'show', ':reviews.json'));
     assert.equal(stagedDoc.reviews.length, 1, 'staged reviews.json must be the deduped copy');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -233,7 +233,7 @@ test('push-core-data consumer loop tolerates an unterminated / missing last line
     execFileSync('bash', ['-e', '-c', extractConsumerLoop()], { cwd: tmp, env: { ...process.env, LIST: list } });
     assert.deepEqual(git(tmp, 'diff', '--staged', '--name-only').split('\n').filter(Boolean), ['a.json']);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -265,6 +265,6 @@ test('reconcile-core-data-registry: base dir keeps rebuild exclusions out of rev
     execFileSync('node', [SCRIPT, remoteDir, path.join(tmp, 'missing')], { cwd: checkout, encoding: 'utf8' });
     assert.deepEqual(showIds(), ['soon-off-broadway-2026', 'two-girls-off-broadway-2026', 'wicked-2003']);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
