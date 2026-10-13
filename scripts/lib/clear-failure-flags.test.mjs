@@ -11,7 +11,7 @@ const fresh = () => ({
   contentTier: 'excerpt',
   fullText: longText,
   aggregatorStars: 4,
-  incompleteReason: 'scraper_garbage',
+  incompleteReason: 'partial_text',
   incompleteDetail: 'just classified',
 });
 
@@ -26,7 +26,7 @@ test('skipIncompleteReasonClear keeps the reason and detail', () => {
   const d = fresh();
   const cleared = clearFailureFlags(d, { skipIncompleteReasonClear: true });
   assert.ok(!cleared.includes('incompleteReason'));
-  assert.equal(d.incompleteReason, 'scraper_garbage');
+  assert.equal(d.incompleteReason, 'partial_text');
   assert.equal(d.incompleteDetail, 'just classified');
 });
 
@@ -35,11 +35,20 @@ test('skipIncompleteReasonClear does not disable the other clear rules', () => {
   const cleared = clearFailureFlags(d, { skipIncompleteReasonClear: true });
   assert.ok(cleared.includes('serpRetryCount'));
   assert.ok(cleared.includes('fetchAttempts'));
-  assert.equal(d.incompleteReason, 'scraper_garbage');
+  assert.equal(d.incompleteReason, 'partial_text');
 });
 
 test('skipRejectionReasonClear still works independently', () => {
   const d = { fullText: longText, rejectionReason: 'garbage_text', rejectedBy: ['a'] };
   clearFailureFlags(d, { skipRejectionReasonClear: true });
   assert.equal(d.rejectionReason, 'garbage_text');
+});
+
+test('skipIncompleteReasonClear also keeps wrong_content and no_url reasons', () => {
+  const a = { ...fresh(), incompleteReason: 'wrong_content', contentTier: 'complete' };
+  clearFailureFlags(a, { skipIncompleteReasonClear: true });
+  assert.equal(a.incompleteReason, 'wrong_content');
+  const b = { ...fresh(), incompleteReason: 'no_url', url: 'https://example.com/a' };
+  clearFailureFlags(b, { skipIncompleteReasonClear: true });
+  assert.equal(b.incompleteReason, 'no_url');
 });
