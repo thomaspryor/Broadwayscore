@@ -70,7 +70,7 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
-7. **Scoring-logic edits** — two watchlists (unit tests NOT sufficient). Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/{scoring,engine,data-core}.ts`. Score-source: `scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js`. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary (Stop hook enforces). See `memory/feedback_scoring_delta_required.md`.
+7. **Scoring-logic edits** — two watchlists (unit tests NOT sufficient). Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/{scoring,engine,data-core}.ts`. Score-source + LLM input: `SCORE_VALUE_FILES` in `scripts/scoring-delta.js` (LLM input exits 2: A/B per §13). **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary (Stop hook enforces). See `memory/feedback_scoring_delta_required.md`.
 8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — **MUST run** `node scripts/audit-regex-patterns.js --full` (catches bare-keyword FPs unit tests miss; Stop hook enforces; also runs non-blocking in `check-corpus-drift.yml`). See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.**
 

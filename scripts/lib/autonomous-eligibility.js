@@ -169,7 +169,7 @@ const TIER1_ALLOW_FILES = new Set([
 ]);
 
 // Exact-path exclusions. The scoring-delta watchlists (INCLUSION_FILES +
-// SCORE_VALUE_FILES from scripts/scoring-delta.js) are mirrored here — a
+// SCORE_VALUE_FILES + LLM_INPUT_FILES from scripts/scoring-delta.js) are mirrored here — a
 // colocated drift test fails if scoring-delta.js gains an entry we miss.
 const EXCLUDED_FILES = new Set([
   'scripts/lib/scraper.js',
@@ -189,6 +189,22 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',
   'scripts/lib/score-routing.js',
+  // scoring-delta INCLUSION_FILES added after this list was first mirrored.
+  // The old drift guard only asked isPathAllowed (Tier 1), so Tier 3
+  // (isCodePathAllowed) still let the loop edit several of these.
+  'scripts/lib/content-quality.js',
+  'scripts/lib/show-title-variants.js',
+  'scripts/lib/stale-flag-after-url-correction.js',
+  'scripts/lib/date-plausibility.js',
+  'scripts/lib/review-write-guard.js',
+  'scripts/lib/content-filters.js',
+  'scripts/lib/excerpt-validation.js',
+  // scoring-delta LLM_INPUT_FILES (BRO-2609): they shape the text the LLM
+  // scorer reads, and the replay cannot measure an edit to them.
+  'scripts/lib/text-quality.js',
+  'scripts/lib/text-cleaning.js',
+  'scripts/llm-scoring/input-builder.ts',
+  'scripts/lib/excerpt-fields.js',
   // The gate itself (2026-08-17). Every file above is refused because
   // CLAUDE.md rule 12.7 requires scoring-delta.js to run before the change
   // ships — but scoring-delta.js was itself self-servable, so an unattended

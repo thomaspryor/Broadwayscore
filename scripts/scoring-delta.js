@@ -236,6 +236,9 @@ const LLM_INPUT_FILES = [
   'scripts/lib/content-quality.js',
   'scripts/lib/text-cleaning.js',
   'scripts/llm-scoring/input-builder.ts',
+  // text-quality.js requires EXCERPT_FIELDS from here: it decides which
+  // excerpt fields getBestTextForScoring() falls back to.
+  'scripts/lib/excerpt-fields.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but
@@ -394,6 +397,30 @@ function gitDiffHasChanges(files, { cwd = REPO_ROOT, baseRef = BASE_REF } = {}) 
   } catch (e) {
     throw new Error(`git diff failed: ${e.message}`);
   }
+}
+
+// Which of `files` differ from baseRef (working tree vs baseRef). Names only,
+// so a message can say exactly what changed instead of listing the watchlist.
+function changedFiles(files, { cwd = REPO_ROOT, baseRef = BASE_REF } = {}) {
+  try {
+    const out = execSync(
+      `git diff --name-only ${baseRef} -- ${files.map(f => `'${f}'`).join(' ')}`,
+      { cwd, encoding: 'utf8' }
+    );
+    return out.split('\n').map(l => l.trim()).filter(Boolean);
+  } catch (e) {
+    throw new Error(`git diff failed: ${e.message}`);
+  }
+}
+
+const LLM_INPUT_CHANGED_MSG = (files) => 'LLM scoring input changed (' + files.join(', ') + '). The replay uses stored scores and cannot measure this: spot-check getBestTextForScoring() output on affected reviews, and re-score through the A/B check (CLAUDE.md §13) before trusting new scores.';
+
+// The single exit decision (BRO-2609 retro). A replay over stored scores
+// cannot see an LLM input change, a touched rebuild loop, or data-input drift,
+// so each of those is significant on its own, whatever the flip counts say.
+function isSignificant({ cannotAutoVerify = false, dataInputDrift = false, llmInputChanged = [], totalFlips = 0, t1Flips = 0 } = {}) {
+  return !!(cannotAutoVerify || dataInputDrift || (llmInputChanged && llmInputChanged.length > 0)
+    || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD);
 }
 
 // ─── rebuild-all-reviews.js inline-loop touch detector ──────────────────────
@@ -1444,9 +1471,13 @@ function main() {
   // Guard 1: any diff in either watchlist?
   let inclusionDiff = false;
   let scoreValueDiff = false;
+  let llmInputChanged = [];
   try {
     inclusionDiff = gitDiffHasChanges(INCLUSION_FILES);
     scoreValueDiff = gitDiffHasChanges(SCORE_VALUE_FILES);
+    // BRO-2609 retro: computed once here; it feeds the warning, the verdict,
+    // the --json payload and the exit code.
+    llmInputChanged = changedFiles(LLM_INPUT_FILES);
   } catch (e) {
     log(`[scoring-delta] ${e.message}`);
     process.exit(1);
@@ -1495,8 +1526,8 @@ function main() {
 
   log(`[scoring-delta] Phase A (inclusion): ${inclusionDiff ? 'code diff detected' : 'no code diff'}${dataFlagDiff ? `, ${changedReviewFiles.size} review-texts flag-field changes` : ''}`);
   log(`[scoring-delta] Phase B (score-source): ${scoreValueDiff ? 'diff detected' : 'no diff'}`);
-  if (scoreValueDiff && gitDiffHasChanges(LLM_INPUT_FILES)) {
-    log('[scoring-delta] ⚠️  LLM scoring input changed (' + LLM_INPUT_FILES.join(', ') + '). The replay below uses stored scores and cannot measure this: spot-check getBestTextForScoring() output on affected reviews, and re-score through the A/B check (CLAUDE.md §13) before trusting new scores.');
+  if (llmInputChanged.length > 0) {
+    log('[scoring-delta] ⚠️  ' + LLM_INPUT_CHANGED_MSG(llmInputChanged));
   }
 
   // ── Phase A prep: load inclusion guards if needed ──
@@ -1743,6 +1774,13 @@ function main() {
       }
       process.exit(2);
     }
+    if (llmInputChanged.length > 0) {
+      // Defensive: LLM_INPUT_FILES are part of SCORE_VALUE_FILES, so Phase B
+      // always runs when one changed. Never let this path read as clean anyway.
+      log('[scoring-delta] ⚠️  SCORING DELTA — significant change detected: ' + LLM_INPUT_CHANGED_MSG(llmInputChanged) + ' Exiting 2.');
+      if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'llm-input-changed', significant: true, llmInputChanged }));
+      process.exit(2);
+    }
     if (dataInputDrift) {
       log('[scoring-delta] ⚠️  SCORING DELTA — significant change detected: replay found nothing, BUT a scoring data input changed (above). BEFORE MERGING: measure the affected reviews by hand. Exiting 2.');
       if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'data-input-drift', cannotAutoVerify: true, dataInputs: dataInputReport.inputs }));
@@ -1963,11 +2001,17 @@ function main() {
   // decideInclusion()'s replay above (however clean) does not cover the real
   // change — never let this report "safe to proceed" on flip counts alone.
   const cannotAutoVerify = rebuildLoopTouch.touched;
+  const significant = isSignificant({ cannotAutoVerify, dataInputDrift, llmInputChanged, totalFlips, t1Flips });
 
   if (OUT_JSON) {
     console.log(JSON.stringify({
       base: BASE_REF,
       processed,
+      // Total flips under the same name the early exits use, so consumers
+      // (autoclear-batch-gate.js) read one field on every path.
+      flips: totalFlips,
+      significant,
+      llmInputChanged,
       phasesRun: { inclusion: runPhaseA, scoreValue: runPhaseB },
       flipsExcluded: flipsExcluded.length,
       flipsIncluded: flipsIncluded.length,
@@ -1992,10 +2036,11 @@ function main() {
       rebuildLoopTouchedSites: cannotAutoVerify ? rebuildLoopTouch.sites : undefined,
     }, null, 2));
   } else {
-    const significant = cannotAutoVerify || dataInputDrift || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
     const header = cannotAutoVerify
       ? '🛑 SCORING DELTA — rebuild-all-reviews.js exclusion loop touched, CANNOT AUTO-VERIFY'
-      : (significant ? '⚠️  SCORING DELTA — significant change detected' : '✅ scoring delta — minor change');
+      : (llmInputChanged.length > 0
+        ? '⚠️  SCORING DELTA — LLM scoring input changed, the replay CANNOT measure it'
+        : (significant ? '⚠️  SCORING DELTA — significant change detected' : '✅ scoring delta — minor change'));
     console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(header);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -2061,16 +2106,19 @@ function main() {
       console.log('  1. Paste this summary to the user');
       console.log('  2. For each affected flagship show, spot-check the review — is the change correct?');
       console.log('  3. Get user confirmation that the delta is intentional');
+      if (llmInputChanged.length > 0) {
+        console.log('  4. ' + LLM_INPUT_CHANGED_MSG(llmInputChanged));
+      }
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     } else {
       console.log('Delta within tolerance. Safe to proceed.');
     }
   }
 
-  process.exit((cannotAutoVerify || dataInputDrift || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
+  process.exit(significant ? 2 : 0);
 }
 
-module.exports = { SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
+module.exports = { INCLUSION_FILES, SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, changedFiles, isSignificant, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
 
 if (require.main === module) {
   try {

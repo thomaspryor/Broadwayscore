@@ -60,6 +60,12 @@ function assessBatchClearGate({ enableAllowed, scoringDelta, thresholds = DEFAUL
   if (scoringDelta.dataInputDrift || scoringDelta.cannotAutoVerify || scoringDelta.reason === 'data-input-drift') {
     return { proceed: false, reason: 'scoring-delta-cannot-verify', checks };
   }
+  // BRO-2609 retro: an LLM scoring input change is not measured by the replay
+  // either, and `significant` is scoring-delta's own exit-2 verdict.
+  if ((Array.isArray(scoringDelta.llmInputChanged) && scoringDelta.llmInputChanged.length > 0)
+      || scoringDelta.reason === 'llm-input-changed' || scoringDelta.significant === true) {
+    return { proceed: false, reason: 'scoring-delta-cannot-verify', checks };
+  }
   if ((scoringDelta.t1Flips || 0) > thresholds.maxT1Flips) {
     return { proceed: false, reason: 'scoring-delta-t1-flip', checks };
   }

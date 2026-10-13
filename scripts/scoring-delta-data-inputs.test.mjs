@@ -96,4 +96,10 @@ test('scoring-delta.js wires the guard before both green exits', () => {
     const before = src.slice(Math.max(0, g.index - 900), g.index);
     assert.match(before, /if \(dataInputDrift\)/, 'green exit lacks the data-input guard');
   }
+  // BRO-2609 retro: the replay-found-nothing green exit must also refuse an
+  // LLM scoring input change (the no-diff exit cannot see one: an LLM input
+  // change is a SCORE_VALUE_FILES diff, so it never reaches that branch).
+  const nothing = greens.find(g => g[1] === 'Nothing meaningful to replay');
+  const before = src.slice(Math.max(0, nothing.index - 1500), nothing.index);
+  assert.match(before, /if \(llmInputChanged\.length > 0\)/, 'green exit lacks the LLM-input guard');
 });

@@ -57,3 +57,18 @@ test('BRO-2833: unmeasurable delta (flips:0 + drift / cannotAutoVerify) → bloc
     assert.equal(r.reason, 'scoring-delta-cannot-verify');
   }
 });
+
+test('BRO-2609 retro: LLM scoring input change (flips:0) → blocked', () => {
+  for (const scoringDelta of [
+    { flips: 0, t1Flips: 0, llmInputChanged: ['scripts/lib/text-quality.js'] },
+    { flips: 0, t1Flips: 0, reason: 'llm-input-changed', llmInputChanged: ['scripts/lib/excerpt-fields.js'] },
+    { flips: 0, t1Flips: 0, significant: true },
+  ]) {
+    const r = assessBatchClearGate({ enableAllowed: true, scoringDelta });
+    assert.equal(r.proceed, false);
+    assert.equal(r.reason, 'scoring-delta-cannot-verify');
+  }
+  // An empty list is not a change.
+  const ok = assessBatchClearGate({ enableAllowed: true, scoringDelta: { flips: 0, t1Flips: 0, llmInputChanged: [], significant: false } });
+  assert.equal(ok.proceed, true);
+});

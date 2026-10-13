@@ -16,8 +16,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
+// Resolve from this file, not process.cwd(), so the test passes from any cwd.
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const delta = require('../scoring-delta.js');
 const { getBestTextForScoring } = require('./text-quality.js');
 
@@ -25,10 +28,10 @@ test('text-quality.js is on the scoring-delta Phase B watchlist', () => {
   assert.ok(delta.LLM_INPUT_FILES.includes('scripts/lib/text-quality.js'));
   assert.ok(delta.SCORE_VALUE_FILES.includes('scripts/lib/text-quality.js'));
   // BRO-2610: the patterns text-quality.js strips with live in content-quality.js
-  for (const f of ['scripts/lib/content-quality.js', 'scripts/llm-scoring/input-builder.ts']) {
+  for (const f of ['scripts/lib/content-quality.js', 'scripts/llm-scoring/input-builder.ts', 'scripts/lib/excerpt-fields.js']) {
     assert.ok(delta.LLM_INPUT_FILES.includes(f), f);
   }
-  for (const f of delta.LLM_INPUT_FILES) assert.ok(fs.existsSync(path.join(process.cwd(), f)), `${f} must exist`);
+  for (const f of delta.LLM_INPUT_FILES) assert.ok(fs.existsSync(path.join(REPO_ROOT, f)), `${f} must exist`);
 });
 
 test('an uncommitted text-quality.js edit trips the Phase B diff check', (t) => {
@@ -50,6 +53,20 @@ test('an uncommitted text-quality.js edit trips the Phase B diff check', (t) => 
   fs.writeFileSync(file, 'module.exports = { getBestTextForScoring: r => r.fullText.trim() };\n');
   assert.equal(delta.gitDiffHasChanges(delta.SCORE_VALUE_FILES, opts), true);
   assert.equal(delta.gitDiffHasChanges(delta.LLM_INPUT_FILES, opts), true);
+  // changedFiles names only what changed, not the whole watchlist.
+  assert.deepEqual(delta.changedFiles(delta.LLM_INPUT_FILES, opts), ['scripts/lib/text-quality.js']);
+});
+
+test('isSignificant: an LLM input change alone is significant (exit 2)', () => {
+  assert.equal(delta.isSignificant({ llmInputChanged: ['scripts/lib/text-quality.js'], totalFlips: 0, t1Flips: 0 }), true);
+  assert.equal(delta.isSignificant({ llmInputChanged: [], totalFlips: 0, t1Flips: 0 }), false);
+  assert.equal(delta.isSignificant({}), false);
+  // The pre-existing triggers still hold.
+  assert.equal(delta.isSignificant({ cannotAutoVerify: true }), true);
+  assert.equal(delta.isSignificant({ dataInputDrift: true }), true);
+  assert.equal(delta.isSignificant({ t1Flips: 1 }), true);
+  assert.equal(delta.isSignificant({ totalFlips: 5 }), false);
+  assert.equal(delta.isSignificant({ totalFlips: 6 }), true);
 });
 
 test('getBestTextForScoring strips the NYT bot-wall stub', () => {

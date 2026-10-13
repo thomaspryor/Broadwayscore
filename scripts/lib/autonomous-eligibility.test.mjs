@@ -202,18 +202,16 @@ test('isDiffAllowed names every refused file', () => {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 test('EXCLUDED_FILES stays in sync with scoring-delta.js watchlists', () => {
-  const src = fs.readFileSync(path.join(__dirname, '..', 'scoring-delta.js'), 'utf8');
-  const { EXCLUDED_FILES } = require('./autonomous-eligibility.js');
-  // Pull every quoted path out of the two watchlist arrays.
-  const lists = /const INCLUSION_FILES = \[([\s\S]*?)\];[\s\S]*?const SCORE_VALUE_FILES = \[([\s\S]*?)\];/.exec(src);
-  assert.ok(lists, 'could not locate watchlist arrays in scoring-delta.js — update this drift guard');
-  const entries = [...(lists[1] + lists[2]).matchAll(/'([^']+)'/g)].map(m => m[1]);
-  assert.ok(entries.length >= 10, `expected ≥10 watchlist entries, parsed ${entries.length}`);
+  // BRO-2609 retro: require the real arrays. The old version regex-parsed the
+  // SCORE_VALUE_FILES literal (missing its ...LLM_INPUT_FILES spread) and only
+  // asked the Tier-1 predicate, so Tier 3 could still edit text-quality.js.
+  const delta = require('../scoring-delta.js');
+  const entries = [...new Set([...delta.INCLUSION_FILES, ...delta.SCORE_VALUE_FILES, ...delta.LLM_INPUT_FILES])];
+  assert.ok(entries.length >= 10, `expected ≥10 watchlist entries, got ${entries.length}`);
+  assert.ok(entries.includes('scripts/lib/text-quality.js'), 'LLM_INPUT_FILES must be covered');
   for (const f of entries) {
-    assert.ok(
-      EXCLUDED_FILES.has(f) || !isPathAllowed(f),
-      `scoring-delta watchlist entry ${f} is not refused by autonomous-eligibility`
-    );
+    assert.equal(isPathAllowed(f), false, `scoring-delta watchlist entry ${f} is allowed by isPathAllowed (Tier 1)`);
+    assert.equal(isCodePathAllowed(f), false, `scoring-delta watchlist entry ${f} is allowed by isCodePathAllowed (Tier 3)`);
   }
 });
 
