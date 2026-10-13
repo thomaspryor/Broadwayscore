@@ -1,13 +1,11 @@
 {
-  "generatedAt": "2026-10-13T05:17:34.292Z",
+  "generatedAt": "2026-10-13T09:45:14.779Z",
   "apply": true,
-  "auditGeneratedAt": "2026-10-13T05:08:04.566Z",
+  "auditGeneratedAt": "2026-10-13T09:35:55.766Z",
   "counts": {
-    "skip:command-shared-with-another-card": 2,
-    "skip:command-multi-file-test": 1,
+    "skip:command-shared-with-another-card": 1,
     "bounce:recent-activity": 1,
-    "no-landing-naming-card": 1,
-    "recent-activity": 10,
+    "recent-activity": 9,
     "closed": 2
   },
   "rows": [
@@ -18,31 +16,25 @@
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-3021",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-landing-naming-card"
-    },
-    {
-      "id": "BRO-2497",
+      "id": "BRO-2872",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-5230",
+      "id": "BRO-269",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5231",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
       "id": "BRO-5171",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5103",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -55,24 +47,6 @@
     },
     {
       "id": "BRO-5082",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-5077",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "fd27b6fa5c86d93c9aecc4a03ac775cb8c65c57b"
-    },
-    {
-      "id": "BRO-5071",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "7b654ad61b1d9dc4a3af9d439b46b5a704332d42"
-    },
-    {
-      "id": "BRO-5000",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
@@ -94,6 +68,18 @@
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-4478",
+      "state": "In Review",
+      "action": "closed",
+      "sha": "1ce1c9226032eb40781182887de1fd16e2944857"
+    },
+    {
+      "id": "BRO-4171",
+      "state": "In Review",
+      "action": "closed",
+      "sha": "d0c353a8f1813828826198f5dba309547f5549ea"
     }
   ]
 }
