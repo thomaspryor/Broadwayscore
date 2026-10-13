@@ -114,6 +114,7 @@ const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody } = r
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
+const { preCleanForStorage, textAsStored } = require('./lib/stored-text-form');
 
 // LLM-based content verification
 const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash, isCvVerdictFromTruncatedFetch } = require('./lib/content-verifier');
@@ -122,7 +123,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
-const { assessTextQuality, isGarbageContent, stripExemptedChrome, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
@@ -4730,7 +4731,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Clean text (decode entities, strip control chars, collapse whitespace, strip junk) before classification
   // Remove the banner lines isGarbageContent() exempts as trailing/leading junk (BRO-2860)
-  let preCleanedText = stripExemptedChrome(cleanText(text) || text);
+  // Shared with verifyFetchedContent so the verifier judges the stored body (BRO-5243).
+  let preCleanedText = preCleanForStorage(text);
 
   // Multi-show blog posts (interestedbystander): keep only THIS show's
   // section, or store nothing (BRO-4387 follow-up: until 2026-09-29 only
@@ -7083,7 +7085,9 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
       } catch (e) { /* shows.json unavailable */ }
 
       contentVerification = await verifyContent({
-        scrapedText: result.text,
+        // The body as stored (junk/chrome stripped), not the raw fetch: a verdict
+        // on text we then strip described a different body (BRO-5243).
+        scrapedText: textAsStored(result.text) || result.text,
         excerpt: excerpt,
         showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
         outletName: review.outlet,
