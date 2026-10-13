@@ -1325,5 +1325,35 @@
       }
     ],
     "queuedAt": "2026-10-13T14:14:04.702Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3528-ob-serp-backoff",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3528-ob-serp-backoff",
+    "description": "land.yml did not land land/bro-3528-ob-serp-backoff: the scripts-lib-tests gate went red at d5b1ec7b89. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38406539275",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3528-ob-serp-backoff"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "d5b1ec7b89a3784c587e479cbbcc021ad940cde9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38406539275"
+      }
+    ],
+    "queuedAt": "2026-10-13T14:15:25.054Z"
   }
 ]
