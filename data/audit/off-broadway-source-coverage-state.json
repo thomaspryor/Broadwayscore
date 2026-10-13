@@ -3,15 +3,19 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-12T17:12:05.221Z"
+    "at": "2026-10-13T12:39:05.203Z"
   },
   "venueReaders": {
-    "at": "2026-10-12T17:12:05.221Z",
+    "at": "2026-10-13T12:39:05.203Z",
     "readers": 54,
     "active": 165,
     "activeCovered": 101,
     "activeDated": 77,
     "uncovered": {
+      "la mama experimental theatre club": {
+        "firstSeen": "2026-10-03T12:53:57.507Z",
+        "venue": "La MaMa Experimental Theatre Club"
+      },
       "broadway comedy club": {
         "firstSeen": "2026-10-01T15:00:20.501Z",
         "venue": "Broadway Comedy Club"
@@ -23,10 +27,6 @@
       "gene frankel": {
         "firstSeen": "2026-10-12T17:12:05.221Z",
         "venue": "Gene Frankel Theatre"
-      },
-      "la mama experimental theatre club": {
-        "firstSeen": "2026-10-03T12:53:57.507Z",
-        "venue": "La MaMa Experimental Theatre Club"
       },
       "tank": {
         "firstSeen": "2026-10-01T15:00:20.501Z",
@@ -69,6 +69,11 @@
         "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
       },
       {
+        "venue": "Theaterlab",
+        "recentShows": 3,
+        "reason": "site returns an empty page to a plain fetch"
+      },
+      {
         "venue": "Urban Stages",
         "recentShows": 3,
         "reason": "site lists readings and a music festival, no production listing"
@@ -82,16 +87,11 @@
         "venue": "spit&vigor's Tiny Baby Blackbox Theatre",
         "recentShows": 2,
         "reason": "Wix events widget returns only the next ~8 dates"
-      },
-      {
-        "venue": "Theaterlab",
-        "recentShows": 2,
-        "reason": "site returns an empty page to a plain fetch"
       }
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-12T17:12:05.221Z",
+    "at": "2026-10-13T12:39:05.203Z",
     "readers": 23,
     "active": 93,
     "activeCovered": 31,
