@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-b-04",
   "planId": "d82527e8-a496-400b-9f7e-c0d0e24501a0",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T01:56:27.497Z",
   "submitter": {
     "name": null,
@@ -194,5 +194,133 @@
         "description": "same-url copy already in the-play-that-goes-wrong-off-broadway-2019"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T02:35:28.328Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pen-pals-2025/off-off-online--marc-miller.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pen-pals-2025/the-interested-bystander--cary-wong.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pen-pals-2025/theater-scene--lydia-singer.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted perfect-crime-1987/nytimes--jason-zinoman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-dinosaurs-2026/talkinbroadway--marc-miller.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-dinosaurs-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-dinosaurs-2026/vulture--jackson-mchenry.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-disappear-2026/this-week-in-new-york--mark-rifkin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monsters-2026/theatermania--pete-hempstead.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monsters-2026/vulture--jackson-mchenry.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/artsdesk--demetrios-matheou.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/london-theatre--holly-omahony.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/telegraph--claire-allfree.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/whatsonstage--sarah-crompton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/broadway-blog--samuel-l-leiter.json → the-play-that-goes-wrong-2017/broadway-blog--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2019/broadwayworld--michael-dale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2019/city-cabaret--elizabeth-ahlfors.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json → the-play-that-goes-wrong-2017/curtainup--simon-saltzman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/dc-theater-arts--richard-seff.json → the-play-that-goes-wrong-2017/dc-theater-arts--richard-seff.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-play-that-goes-wrong-2017/dctheatrescene--jonathan-mandell.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/exeunt-magazine--kev-berry.json → the-play-that-goes-wrong-2017/exeunt-magazine--kev-berry.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2019/front-row-center--sarah-downs.json"
+    }
+  ]
 }
