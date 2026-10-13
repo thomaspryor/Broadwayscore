@@ -31,6 +31,7 @@ Usage:
     --files=a/x.json,b/y.json   only these rows (show/file)
     --verbose            print every removed line (dry run prints a clipped summary)
   node scripts/strip-variety-promo-bleed.js --refetch-list  rows the strip refuses (need a refetch)
+  node scripts/strip-variety-promo-bleed.js --verify-live [--limit=N|--files=]  removed lines vs the live article (exit 1 on a hit)
   node scripts/strip-variety-promo-bleed.js --ab            A/B of stripped rows: pre-strip score vs rescore
   node scripts/strip-variety-promo-bleed.js --dump[=N]      marker stats and N context samples (read-only)
 `;
@@ -50,8 +51,11 @@ function varietyFiles() {
     const showDir = path.join(DIR, showId);
     for (const f of fs.readdirSync(showDir)) {
       if (!f.endsWith('.json')) continue;
+      const raw = fs.readFileSync(path.join(showDir, f), 'utf8');
+      // Cheap filter before parsing every file in the corpus.
+      if (!/^variety--/.test(f) && !/variety\.com/i.test(raw)) continue;
       let d;
-      try { d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { continue; }
+      try { d = JSON.parse(raw); } catch { continue; }
       const isVariety = /^variety--/.test(f) || /variety\.com/i.test(d.url || '');
       if (!isVariety || typeof d.fullText !== 'string') continue;
       out.push({ rel: `${showId}/${f}`, d });
@@ -180,9 +184,15 @@ function run({ apply, limit, files, verbose, refetchOnly }) {
       console.log(`  ✗ ${rel}: write did not stick (${(res && (res.skipped || res.reason)) || 'text differs after write'})`);
       continue;
     }
+    if (after.wrongShow && !d.wrongShow) {
+      // The write guard's wrong-article screen dropped the row from the rebuild:
+      // the strip may have removed the text that tied it to the show. Stop the batch.
+      failed++;
+      console.log(`  ✗ ${rel}: ${what}, but the write guard flagged wrongShow — batch stopped, check by hand`);
+      break;
+    }
     wrote++;
-    const flag = after.wrongShow && !d.wrongShow ? ' — write guard flagged wrongShow, check by hand' : '';
-    console.log(`  ✓ ${rel}: ${what}${flag}`);
+    console.log(`  ✓ ${rel}: ${what}`);
   }
   // Lines removed more than once: the headline runs should be mostly unique; a
   // repeated line that reads like review prose would mean the rule is too wide.
@@ -192,6 +202,43 @@ function run({ apply, limit, files, verbose, refetchOnly }) {
   return failed ? 1 : 0;
 }
 
+/**
+ * Read-only check of the rule against the live article: every line the strip
+ * would remove must be absent from Variety's article body (extractVarietyBody
+ * already drops the promo modules at the HTML level). A removed line found in
+ * the body is a review sentence the rule would delete: exit 1.
+ */
+async function verifyLive({ limit, files }) {
+  const { fetchPage } = require('./lib/scraper');
+  const { extractVarietyBody } = require('./lib/article-extractor');
+  const { foldDiacritics } = require('./lib/title-match');
+  const norm = (t) => foldDiacritics(String(t)).replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/[^a-z0-9]+/gi, ' ').trim().toLowerCase();
+  let rows = candidates().rows;
+  if (files) rows = rows.filter(x => files.includes(x.rel));
+  const ok = rows.map(x => ({ ...x, r: stripVarietyPromoBleed(x.d.fullText) })).filter(x => !x.r.refused);
+  let inBody = 0, checked = 0, noPage = 0;
+  for (const { rel, d, r } of spread(ok, limit || 5)) {
+    let body = null;
+    try {
+      const page = await fetchPage(d.url);
+      if (page && page.content) body = extractVarietyBody(page.content);
+    } catch (e) { console.log(`  ? ${rel}: fetch failed (${(e.message || '').slice(0, 80)})`); }
+    if (!body) { noPage++; console.log(`  ? ${rel}: no article body from the live page`); continue; }
+    const live = norm(body);
+    checked++;
+    const removed = r.blocks.flatMap(b => b.lines);
+    const hits = removed.filter(l => norm(l).length >= 12 && live.includes(norm(l)));
+    // The kept text should be the live article: its first and last 80 chars should be in the body.
+    const kept = norm(r.text);
+    const edges = [kept.slice(0, 80), kept.slice(-80)].filter(e => !live.includes(e));
+    inBody += hits.length;
+    console.log(`  ${hits.length ? '✗' : '✓'} ${rel}: ${removed.length} removed line(s)${hits.length ? `; IN ARTICLE BODY: ${hits.map(h => JSON.stringify(clip(h, 80))).join(' | ')}` : ', none in the article body'}${edges.length ? '; kept text edges not found live (page changed?)' : ''}`);
+    for (const l of removed) console.log(`      removed: ${JSON.stringify(clip(l, 120))}`);
+  }
+  console.log(`verify-live: ${checked} checked, ${noPage} without a live body; removed lines found in the article body: ${inBody}`);
+  return inBody ? 1 : checked ? 0 : 2;
+}
+
 /** Pre-strip score (stamp) vs the rescored row, with the llm-scoring A/B limits. */
 function ab() {
   const { compare, SHIFT_LIMIT, DRIFT_LIMIT } = require('./report-false-truncation-ab');
@@ -199,7 +246,8 @@ function ab() {
   const current = new Map();
   for (const { rel, d } of varietyFiles()) {
     const s = d.varietyPromoStrip;
-    if (!s) continue;
+    // Unscored before the strip: nothing to compare, and a null bucket would skew the shares.
+    if (!s || s.previousScore == null) continue;
     before.push({ file: rel, score: s.previousScore, bucket: s.previousBucket, scoredAt: s.previousScoredAt, confidence: null, textStatus: null });
     current.set(rel, d);
   }
@@ -221,6 +269,10 @@ if (arg('dump') !== null) {
   dump(Number(arg('dump')) || 20);
 } else if (arg('ab') !== null) {
   process.exit(ab());
+} else if (arg('verify-live') !== null) {
+  const files = arg('files');
+  verifyLive({ limit: Number(arg('limit')) || 0, files: files ? files.split(',') : null })
+    .then(code => process.exit(code), e => { console.error(e); process.exit(1); });
 } else {
   const files = arg('files');
   process.exit(run({

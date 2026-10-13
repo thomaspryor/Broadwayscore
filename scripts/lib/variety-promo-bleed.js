@@ -21,6 +21,8 @@
 const MARKER_LINE_RE = /^\s*(Related Stories|Popular on Variety)\s*$/i;
 // Flat (no line breaks) page chrome still names the module inline.
 const FLAT_MARKER_RE = /\b(Related Stories|Popular on Variety)\b/i;
+// A marker that starts a line but has text after it on the same line.
+const INLINE_MARKER_RE = /(^|\n)[^\S\n]*(Related Stories|Popular on Variety)\b/;
 // A whole Variety review is ~3-9K chars; a lede plus promo is ~600-840
 // (the 2026-05-29 truncation incident). Below this, strip would leave a
 // fragment that then gets scored as the whole review: refetch instead.
@@ -28,6 +30,10 @@ const MIN_CLEAN_LENGTH = 1500;
 const MAX_REMOVED_RATIO = 0.2;
 // Headlines and captions between the marker and the prose.
 const MAX_BLOCK_LINES = 6;
+// A Title Case line this short that ends like a sentence could be a headline
+// ending in "?" or a cast sentence ("Sutton Foster and Hugh Jackman lead the
+// cast."); neither guess is safe, so the row goes to a refetch.
+const AMBIGUOUS_LINE_CHARS = 160;
 const MAX_BLOCK_CHARS = 600;
 const RESCORE_REASON = 'variety-promo-bleed (BRO-5254)';
 
@@ -38,12 +44,16 @@ function isTitleCase(t) {
   return caps / words.length >= 0.6;
 }
 
-/** Review prose (stop line), as opposed to a headline or video caption. */
+/**
+ * Review prose (stop line), as opposed to a headline or video caption. Any line
+ * that ends like a sentence or clause counts as prose, so a real sentence is
+ * never removed; Variety's injected headlines and captions carry no end mark.
+ */
 function isProseLine(line) {
   const t = line.trim();
   if (!t) return false;
   if (t.length >= 200) return true;
-  return /[.!?…]["”’'»)\]]*$/.test(t) && !isTitleCase(t);
+  return /[.!?…:;,]["”’'»)\]]*$/.test(t);
 }
 
 /**
@@ -75,7 +85,8 @@ function findVarietyPromoBleed(text) {
       end: j < lines.length ? offsets[j] : text.length,
       marker: m[1],
       lines: content,
-      unsafe: content.length > MAX_BLOCK_LINES || chars > MAX_BLOCK_CHARS || j >= lines.length,
+      unsafe: content.length > MAX_BLOCK_LINES || chars > MAX_BLOCK_CHARS || j >= lines.length
+        || (lines[j].trim().length < AMBIGUOUS_LINE_CHARS && isTitleCase(lines[j].trim())),
     });
     i = j - 1;
   }
@@ -86,6 +97,7 @@ function findVarietyPromoBleed(text) {
 function hasVarietyPromoBleed(text) {
   if (typeof text !== 'string' || !text) return false;
   if (findVarietyPromoBleed(text).length) return true;
+  if (INLINE_MARKER_RE.test(text)) return true;
   return !text.includes('\n') && FLAT_MARKER_RE.test(text);
 }
 
@@ -97,7 +109,8 @@ function stripVarietyPromoBleed(text) {
   if (typeof text !== 'string' || !text) return { text, blocks: [], refused: 'no text' };
   const blocks = findVarietyPromoBleed(text);
   if (!blocks.length) {
-    return { text, blocks, refused: hasVarietyPromoBleed(text) ? 'flat page chrome' : null };
+    if (!hasVarietyPromoBleed(text)) return { text, blocks, refused: null };
+    return { text, blocks, refused: text.includes('\n') ? 'marker inline with text' : 'flat page chrome' };
   }
   if (blocks.some(b => b.unsafe)) return { text, blocks, refused: 'block is not a short headline run' };
   let out = '';
@@ -140,7 +153,8 @@ function applyVarietyPromoStrip(record, newText, { at } = {}) {
   delete out.rescoreCompletedAt;
   // Push restore must not read the old (longer) copy as richer text (review-write-guard _deliberateTextTrim).
   out.fullTextTrimmed = { reason: RESCORE_REASON, fromLength: previousLength, toLength: newText.length, at: stamp };
-  out.varietyPromoStrip = {
+  // A second strip (after a refetch brought a marker back) keeps the first baseline.
+  out.varietyPromoStrip = record.varietyPromoStrip || {
     at: stamp,
     previousLength,
     newLength: newText.length,
