@@ -262,7 +262,7 @@ test('workflow stamps exactly what the gate tracks (drift guard)', () => {
 });
 
 test('--meta-args prints one <name>BlobSha=<git blob sha> per tracked file present in data/', () => {
-  const dir = fs.mkdtempSync('/tmp/claude-0/s/meta-');
+  const dir = fs.mkdtempSync((await import('node:os')).tmpdir() + '/gate-meta-');
   fs.mkdirSync(dir + '/data');
   fs.writeFileSync(dir + '/data/reviews.json', '{"a":1}\n');
   fs.writeFileSync(dir + '/data/critic-consensus.json', '{}\n');
