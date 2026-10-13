@@ -2143,5 +2143,35 @@
       }
     ],
     "queuedAt": "2026-10-13T19:49:19.982Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5288-dtli-ingest-guards",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5288-dtli-ingest-guards",
+    "description": "land.yml did not land land/bro-5288-dtli-ingest-guards: the scripts-lib-tests gate went red at 6430a85ed5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38454446938",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5288-dtli-ingest-guards"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "6430a85ed5414dc811da012e2d215a28d651031b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38454446938"
+      }
+    ],
+    "queuedAt": "2026-10-13T19:59:47.108Z"
   }
 ]
