@@ -14,6 +14,8 @@
  *   unsupported_pair the row has no verified text, the pair has no verified
  *                    row at all, and the critic has >= MIN_CRITIC_VERIFIED
  *                    verified rows elsewhere
+ *   byline_contradicted the stored page credits another of the outlet's
+ *                    critics and never names this one (bylineContradicted)
  * "Verified" = text a fetch stored and the content tier accepted, so a made-up
  * row cannot vouch for itself.
  */
@@ -34,6 +36,61 @@ function isVerifiedRow(data) {
   if (!data || !data.url) return false;
   if (!['complete', 'truncated'].includes(data.contentTier)) return false;
   return typeof data.fullText === 'string' && data.fullText.length >= 1000;
+}
+
+/** Characters of stored text searched for a byline (USA Today puts it ~80 in). */
+const BYLINE_HEAD_CHARS = 600;
+/** Two to four capitalised words: a person, not "Unknown" or a lowercase handle. */
+const PERSON_NAME = /^[A-Z][\p{L}'\u2019.-]+(?: [A-Z][\p{L}'\u2019.-]*){1,3}$/u;
+/** Outlet names and labels the corpus stores as critic names ("New York", "Written By"). */
+const NOT_A_PERSON = /\b(?:The|New|York|Time|Times|Out|Stage|Written|By|Daily|News|Magazine|Theatre|Theater|Review|Reviews|Staff|Editor|Post|Journal|Press|Mail|Globe|Online|Team|Admin|Desk)\b/;
+
+/**
+ * True when the stored page credits another critic and never names the row's
+ * own: its head names a critic who also writes for this outlet, and the row's
+ * surname appears nowhere in the text. Such a row cannot vouch for its own
+ * byline (BRO-5232: three web-search usatoday--charles-isherwood rows carried
+ * Patrick Ryan's reviews, stored text and all, and supported each other as
+ * Isherwood's USA Today tenure).
+ * @param {string} text - stored fullText
+ * @param {string} criticName - the row's critic
+ * @param {string[]} outletCritics - display names of the outlet's other critics
+ * @returns {boolean}
+ */
+function bylineContradicted(text, criticName, outletCritics) {
+  if (typeof text !== 'string' || !text) return false;
+  const surname = String(criticName || '').split(/[,(]/)[0].trim().split(/\s+/).pop();
+  if (!surname || surname.length < 3) return false;
+  const noMarks = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const body = noMarks(text);
+  const lower = body.toLowerCase();
+  if (lower.includes(noMarks(surname).toLowerCase())) return false;
+  const head = body.slice(0, BYLINE_HEAD_CHARS);
+  const headLower = lower.slice(0, BYLINE_HEAD_CHARS);
+  const own = noMarks(String(criticName).trim()).toLowerCase();
+  return outletCritics.some(n => {
+    if (!PERSON_NAME.test(String(n || '').trim()) || NOT_A_PERSON.test(String(n))) return false;
+    const name = noMarks(String(n).trim()).toLowerCase();
+    if (name === own) return false;
+    for (let i = headLower.indexOf(name); i !== -1; i = headLower.indexOf(name, i + 1)) {
+      if (isBylineAt(head, i, name.length)) return true;
+    }
+    return false;
+  });
+}
+
+/**
+ * The name at head[i, i+len) reads as a byline, not a mention ("as Frank Rich
+ * wrote", "James Graham's play"): "By NAME" / "review by NAME", "NAME in the
+ * West End" (Plays International), or the name run straight into the outlet
+ * or a handle with no space ("Patrick RyanUSA TODAY", "Bill Canacci@...").
+ */
+function isBylineAt(head, i, len) {
+  const before = head.slice(Math.max(0, i - 12), i);
+  const after = head.slice(i + len, i + len + 30);
+  if (/\bby:?\s*$/i.test(before)) return true;
+  if (/^\s+in (?:the West End|(?:[A-Z][a-z]+ )?London)\b/.test(after)) return true;
+  return /^(?:[A-Z]{2}|[A-Z][a-z]+[A-Z.]|@)/.test(after);
 }
 
 /**
@@ -63,6 +120,10 @@ function findTenureFlags(critics, opts = {}) {
     // isNonReview rows (closing notices, listings, reviews that never ran,
     // BRO-5232) carry no review byline: neither flagged nor tenure evidence.
     const reviews = c.reviews.filter(r => !r.nonReview);
+    // The stored page credits another of the outlet's critics (set by the scan).
+    for (const r of reviews) {
+      if (r.bylineContradicted) flags.push({ critic: c.displayName, criticSlug, outlet: r.outlet, showId: r.showId, file: r.file, year: r.year, kind: 'byline_contradicted' });
+    }
     const verified = reviews.filter(r => r.verified && Number.isFinite(r.year));
     if (verified.length === 0) continue;
     const tenure = {};
@@ -79,6 +140,7 @@ function findTenureFlags(critics, opts = {}) {
       .filter(([o, yc]) => o !== outlet && (yc[year] || 0) >= MIN_ELSEWHERE_VERIFIED)
       .map(([o, yc]) => `${o} (${yc[year]})`);
     for (const r of reviews) {
+      if (r.bylineContradicted) continue;
       const t = tenure[r.outlet];
       const base = { critic: c.displayName, criticSlug, outlet: r.outlet, showId: r.showId, file: r.file, year: r.year };
       if (t && t.count >= MIN_PAIR_VERIFIED && Number.isFinite(r.year)
@@ -130,4 +192,4 @@ function applyReviewedTenureFlags(flags, reviewed = []) {
   return { unresolved, reviewed: matched, stale, invalid };
 }
 
-module.exports = { tenureFlagKey, applyReviewedTenureFlags, isVerifiedRow, reviewYear, findTenureFlags, MIN_PAIR_VERIFIED, MIN_CRITIC_VERIFIED, TENURE_SLACK_YEARS, MIN_ELSEWHERE_VERIFIED };
+module.exports = { bylineContradicted, tenureFlagKey, applyReviewedTenureFlags, isVerifiedRow, reviewYear, findTenureFlags, MIN_PAIR_VERIFIED, MIN_CRITIC_VERIFIED, TENURE_SLACK_YEARS, MIN_ELSEWHERE_VERIFIED };

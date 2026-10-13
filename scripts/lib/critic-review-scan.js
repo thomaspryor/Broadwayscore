@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./review-normalization');
 const { listShowDirs } = require('./list-show-dirs');
-const { isVerifiedRow, reviewYear } = require('./critic-tenure');
+const { isVerifiedRow, reviewYear, bylineContradicted } = require('./critic-tenure');
 const { foldDiacritics } = require('./title-match');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
@@ -125,6 +125,9 @@ function scanReviewTexts(REVIEW_TEXTS_DIR = DEFAULT_REVIEW_TEXTS_DIR) {
           file,
           year: reviewYear(showId, data),
           verified: isVerifiedRow(data),
+          // Dropped after the scan: only for the byline cross-check below.
+          _text: isVerifiedRow(data) ? data.fullText : null,
+          _critic: criticName,
           // Kept in the registry counts (a news story still shows where a
           // critic writes), but the tenure check neither flags nor trusts it.
           nonReview: data.isNonReview === true,
@@ -132,6 +135,23 @@ function scanReviewTexts(REVIEW_TEXTS_DIR = DEFAULT_REVIEW_TEXTS_DIR) {
       } catch (e) {
         // Skip unparseable files
       }
+    }
+  }
+
+  // A verified row whose stored page credits another of the outlet's critics,
+  // and never names its own, is not tenure evidence (BRO-5232).
+  const outletCritics = {};
+  for (const c of Object.values(critics)) {
+    for (const r of c.reviews) (outletCritics[r.outlet] || (outletCritics[r.outlet] = new Set())).add(c.displayName);
+  }
+  for (const c of Object.values(critics)) {
+    for (const r of c.reviews) {
+      if (r.verified && bylineContradicted(r._text, r._critic, [...outletCritics[r.outlet]])) {
+        r.verified = false;
+        r.bylineContradicted = true;
+      }
+      delete r._text;
+      delete r._critic;
     }
   }
 

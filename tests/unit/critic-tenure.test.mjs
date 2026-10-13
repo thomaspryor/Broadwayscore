@@ -61,6 +61,32 @@ test('isNonReview rows are neither flagged nor tenure evidence (BRO-5232)', () =
   assert.equal(findTenureFlags({ e }).length, 1);
 });
 
+test('a stored page crediting another of the outlet critics contradicts the byline (BRO-5232)', () => {
+  const { bylineContradicted } = require('../../scripts/lib/critic-tenure.js');
+  const page = 'Headline about a revival Patrick RyanUSA TODAYDec. 20, 2024 ' + 'x'.repeat(1200);
+  assert.equal(bylineContradicted(page, 'Charles Isherwood', ['Patrick Ryan', 'Charles Isherwood']), true);
+  // Own surname anywhere in the text: not contradicted.
+  assert.equal(bylineContradicted(page + ' Isherwood', 'Charles Isherwood', ['Patrick Ryan']), false);
+  // The other name must be one of the outlet's critics, and sit in the head.
+  assert.equal(bylineContradicted(page, 'Charles Isherwood', ['Kelly Lawler']), false);
+  assert.equal(bylineContradicted('x'.repeat(700) + ' Patrick Ryan', 'Charles Isherwood', ['Patrick Ryan']), false);
+  assert.equal(bylineContradicted(page, 'Patrick Ryan', ['Patrick Ryan']), false);
+  // Byline forms count; a mention in the prose does not.
+  const pad = 'x'.repeat(1200);
+  assert.equal(bylineContradicted('Theatre Review by Howard Miller - July 11 ' + pad, 'Matthew Murray', ['Howard Miller']), true);
+  assert.equal(bylineContradicted('Jeremy Malies in the West End 13 Nov ' + pad, 'Maryam Philpott', ['Jeremy Malies']), true);
+  assert.equal(bylineContradicted('as Frank Rich wrote in 1991 ' + pad, 'Jesse Green', ['Frank Rich']), false);
+  assert.equal(bylineContradicted('in James Graham\u2019s play ' + pad, 'Sam Marlowe', ['James Graham']), false);
+  assert.equal(bylineContradicted('opened at the Walter Kerr Theater ' + pad, 'Ben Brantley', ['Walter Kerr']), false);
+  assert.equal(bylineContradicted('By New York ' + pad, 'Ben Brantley', ['New York']), false);
+  // A contradicted row is flagged and does not build the pair's tenure.
+  const critics = { ci: { displayName: 'Charles Isherwood', reviews: [...rows('wsj', [2020, 2021, 2022, 2023, 2024]),
+    { showId: 'g-2024', file: 'usatoday--charles-isherwood.json', outlet: 'usatoday', year: 2024, verified: false, bylineContradicted: true },
+    { showId: 'h-2024', file: 'usatoday--charles-isherwood.json', outlet: 'usatoday', year: 2024, verified: false }] } };
+  const flags = findTenureFlags(critics);
+  assert.deepEqual(flags.map(f => f.kind).sort(), ['byline_contradicted', 'unsupported_pair']);
+});
+
 test('Unknown critics are never flagged', () => {
   const critics = { unknown: { displayName: 'Unknown', reviews: [...rows('x', [2020, 2020, 2020]), ...rows('y', [2010, 2010, 2010, 2010])] } };
   assert.deepEqual(findTenureFlags(critics), []);
