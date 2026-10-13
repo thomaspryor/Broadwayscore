@@ -164,9 +164,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-13T17:40:33.209Z",
-      "lastSeen": "2026-10-13T17:40:33.209Z",
-      "lastNotifiedAt": "2026-10-13T17:40:33.209Z",
+      "incidentOpenedAt": "2026-10-13T17:49:33.016Z",
+      "lastSeen": "2026-10-13T17:49:33.016Z",
+      "lastNotifiedAt": "2026-10-13T17:49:33.016Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 138,
       "cardId": null,
@@ -16003,31 +16003,18 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/bro-5261-s2-retro-fixes": {
+    "test-yml:red:Unit Tests:c9be3b4a": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-5261-s2-retro-fixes",
-      "firstSeen": "2026-10-13T17:47:30.792Z",
-      "incidentOpenedAt": "2026-10-13T17:47:30.792Z",
-      "lastSeen": "2026-10-13T17:47:30.792Z",
-      "lastNotifiedAt": "2026-10-13T17:47:30.792Z",
-      "lastSurfacedAt": "2026-10-13T17:47:30.792Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
+      "firstSeen": "2026-10-13T17:49:32.326Z",
+      "incidentOpenedAt": "2026-10-13T17:49:32.326Z",
+      "lastSeen": "2026-10-13T17:49:32.326Z",
+      "lastNotifiedAt": "2026-10-13T17:49:32.326Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/job/linear-BRO-5117-mv4o093n": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/job/linear-BRO-5117-mv4o093n",
-      "firstSeen": "2026-10-13T17:49:32.737Z",
-      "incidentOpenedAt": "2026-10-13T17:49:32.737Z",
-      "lastSeen": "2026-10-13T17:49:32.737Z",
-      "lastNotifiedAt": "2026-10-13T17:49:32.737Z",
-      "lastSurfacedAt": "2026-10-13T17:49:32.737Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-5281"
     }
   }
 }
