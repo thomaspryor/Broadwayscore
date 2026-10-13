@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T22:54:53.045Z",
+  "generatedAt": "2026-10-13T23:47:38.649Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,24 +7,26 @@
   "clean": 228,
   "defective": 1,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "title": "Blood of my Blood",
-      "openingDate": "2026-10-07",
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 80.96 vs local 80.57 (Δ0.39)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: co"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-13T22:54:47.776Z"
+      "missingFromProd": [
+        "co"
+      ],
+      "localCount": 36,
+      "deployedCount": 36,
+      "firstDefectAt": "2026-10-13T23:47:36.107Z"
     }
   ],
   "persistentDefective": 0,
