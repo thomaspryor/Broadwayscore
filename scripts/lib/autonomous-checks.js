@@ -386,10 +386,10 @@ function npmCiInto(workdir) {
   for (const k of ['HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'https_proxy', 'http_proxy', 'no_proxy', 'NODE_EXTRA_CA_CERTS']) {
     if (process.env[k] !== undefined) env[k] = process.env[k];
   }
-  // npm's own routing config (proxy, registry, CA, userconfig) set as
+  // npm's own routing config (proxy, registry, CA) set as
   // npm_config_* env, as cloud containers do (BRO-5216).
   for (const [k, v] of Object.entries(process.env)) {
-    if (/^npm_config_(https?_proxy|proxy|noproxy|registry|cafile|ca|strict_ssl|userconfig)$/i.test(k)) env[k] = v;
+    if (/^npm_config_(https?_proxy|proxy|noproxy|registry|cafile|ca|strict_ssl)$/i.test(k)) env[k] = v;
   }
   const logPath = path.join(os.tmpdir(), `npm-ci-${path.basename(workdir)}-${process.pid}.log`);
   let fd = null;
@@ -447,8 +447,15 @@ function prepareCheckWorkdir(workdir, repoRoot, { install = npmCiInto } = {}) {
   // type-check it against the old packages, so it gets its own `npm ci`.
   const installRoot = resolveInstallRoot(repoRoot);
   const wdModules = path.join(workdir, 'node_modules');
-  const stale = fs.existsSync(wdModules) ? []
-    : [...staleTopLevelDeps(workdir, installRoot), ...staleNestedDeps(workdir, installRoot)];
+  // Both checks see a top-level drift; keep one line per package.
+  const byName = new Map();
+  if (!fs.existsSync(wdModules)) {
+    for (const d of [...staleTopLevelDeps(workdir, installRoot), ...staleNestedDeps(workdir, installRoot)]) {
+      const name = d.slice(0, d.lastIndexOf(' '));
+      if (!byName.has(name)) byName.set(name, d);
+    }
+  }
+  const stale = [...byName.values()];
   if (stale.length) {
     const result = install(workdir);
     const ok = result === true || Boolean(result && result.ok);

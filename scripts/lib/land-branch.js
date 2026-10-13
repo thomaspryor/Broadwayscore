@@ -332,6 +332,8 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], baseSha, repo
   // the same repoDir to both is safe and never silently drops the fix.
   const linked = prepareCheckWorkdir(cwd, repoDir);
   if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
+  // The npm ci outcome (own install, or a FAILED fallback naming its log).
+  for (const l of linked) if (l.startsWith('node_modules (')) log(`[land] ${l}`);
   const results = runSafeChecks({
     cwd,
     changedFiles: files,

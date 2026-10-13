@@ -462,6 +462,14 @@ test('staleNestedDeps: a matching hidden lockfile, absent optional entries and l
   fs.rmSync(root, { recursive: true, force: true });
 });
 
+test('prepareCheckWorkdir: a top-level drift seen by both checks is counted once', () => {
+  const { root, repo, wt } = depsFixture({ installed: { next: '14.2.35' }, pinned: { next: '15.5.27' } });
+  writeHiddenLock(repo, { 'node_modules/next': { version: '14.2.35' } });
+  const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { fs.mkdirSync(path.join(dir, 'node_modules')); return { ok: true }; } });
+  assert.ok(linked.some(l => l.includes('npm ci: 1 package version(s) differ')), linked.join(' | '));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
 test('prepareCheckWorkdir: a failed install names its kept log in the FAILED marker', () => {
   const { root, repo, wt } = depsFixture({ installed: { react: '18.3.1' }, pinned: { react: '19.3.0' } });
   const linked = prepareCheckWorkdir(wt, repo, { install: () => ({ ok: false, logPath: '/tmp/npm-ci-x.log' }) });
