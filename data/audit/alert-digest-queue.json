@@ -337,5 +337,35 @@
       }
     ],
     "queuedAt": "2026-10-13T05:36:46.178Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5137-sunday-times",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5137-sunday-times",
+    "description": "land.yml did not land land/bro-5137-sunday-times: the scripts-lib-tests gate went red at 5d543f2a7e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38350516544",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5137-sunday-times"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "5d543f2a7e400100214b153a124ecd207cf1e7c0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38350516544"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:49:52.534Z"
   }
 ]
