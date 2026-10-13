@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3573",
   "planId": "6c92f49f-0cc0-4f3a-87b4-ff2efa6296d6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T13:35:38.661Z",
   "submitter": {
     "name": null,
@@ -158,5 +158,88 @@
         "description": "Clear the stale flag (see above)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T15:03:56.075Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1536-west-end-2026/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1536-west-end-2026/standard--nick-curtis.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--unknown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2025/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2025/standard--nick-curtis.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2026/daily-mail--patrick-marmion.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2026/daily-mail--patrick-marmion.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json wrongProduction: true -> false"
+    }
+  ]
 }
