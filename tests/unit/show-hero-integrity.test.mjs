@@ -167,3 +167,25 @@ for (const c of KNOWN_BAD_QUOTES) {
     assert.deepEqual(bad.map((r) => `${r.o} / ${r.cn}: ${r.q.slice(0, 80)}`), []);
   });
 }
+
+// BRO-5236: BRO-4251 deleted the files but the core-data shows.json kept
+// pointing at them, so the image archiver re-downloaded the same rejected
+// bytes and main went red. The source of truth must drop the field too.
+const REJECTED_IMAGE_FIELDS = [
+  ['hangmen-2022', 'hero'],
+  ['the-snowman-west-end-2026', 'hero'],
+  ['the-snowman-west-end-2026', 'poster'],
+];
+test('shows.json no longer points at the rejected hero/poster fields', (t) => {
+  const file = path.join(ROOT, 'data', 'shows.json');
+  if (!fs.existsSync(file)) return t.skip('data/shows.json not present (no-data job)');
+  const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  const bad = [];
+  for (const [id, field] of REJECTED_IMAGE_FIELDS) {
+    const s = shows.find((x) => x.id === id);
+    assert.ok(s, `${id} missing from shows.json (renamed? update this guard)`);
+    if (s.images && s.images[field]) bad.push(`${id}.images.${field} = ${s.images[field]}`);
+  }
+  assert.deepEqual(bad, []);
+});
