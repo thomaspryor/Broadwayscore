@@ -314,6 +314,26 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
  * a throwaway copy, so a plan is proven before it lands (BRO-4849: a write tripped the guard's url-collision duplicate
  * marking, which only the real write showed).
  */
+/**
+ * Excerpt fields the write guard's cloned-excerpt rule would strip from this
+ * record, given its same-folder siblings on disk (same call the guard makes).
+ * @returns {string[]}
+ */
+function predictedExcerptStrips(abs, record) {
+  const fs = require('fs');
+  const path = require('path');
+  const guard = require('./cloned-excerpt-guard');
+  if (guard.excerptValues(record).size === 0) return [];
+  const dir = path.dirname(abs);
+  const self = path.basename(abs);
+  const siblings = [];
+  for (const f of fs.readdirSync(dir)) {
+    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+    try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) }); } catch { /* unreadable sibling */ }
+  }
+  return guard.excerptFieldsToStrip(self, record, siblings).fields;
+}
+
 function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const fs = require('fs');
   const path = require('path');
@@ -352,11 +372,19 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   if (lost.length) {
     return { ok: false, reason: `${action.file} ${action.field}: write guard reverted ${lost.join(', ')}` };
   }
-  const extra = unexpectedChanges(record, after, action.field, res.sideEffectKeys || []);
+  // BRO-5232: the write guard strips an aggregator excerpt a same-outlet sibling
+  // provably owns (cloned-excerpt-guard, BRO-4406) on ANY write, so a byline or
+  // verdict fix on a phantom row (king-lear-2019 guardian--jesse-green) always
+  // nulled its cloned dtli/showScore excerpts and was refused here. Expect
+  // exactly the fields the guard's own rule names for this record, and only as
+  // nulled; any other change still refuses.
+  const stripped = predictedExcerptStrips(abs, res.record).filter((k) => record[k] != null && after[k] == null);
+  const extra = unexpectedChanges(record, after, action.field, [...(res.sideEffectKeys || []), ...stripped]);
   if (extra.length) {
     return { ok: false, reason: `${action.file} ${action.field} applied, but the write guard also changed ${extra.join(', ')}; check the record before trusting it` };
   }
-  return { ok: true, msg: `${action.file} ${res.msg}` };
+  const note = stripped.length ? ` (write guard stripped cloned ${stripped.join(', ')})` : '';
+  return { ok: true, msg: `${action.file} ${res.msg}${note}` };
 }
 
 module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag };
