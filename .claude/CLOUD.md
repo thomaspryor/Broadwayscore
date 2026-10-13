@@ -10,7 +10,7 @@ Cloud sandboxes (claude.ai/code, iOS, Mac desktop) don't mount the owner's `~/.c
 
 ## Project hooks that fire in cloud (project-scoped subset)
 
-Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude/hooks/<basename>` exists, so the Mac runs the master. About 25 of ~40 Mac hooks (e.g. design-system-lint) do not fire in cloud; follow those by hand from the global instructions. None fire in multi-repo sessions (see below).
+Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude/hooks/<basename>` exists, so the Mac runs the master. About 25 of ~40 Mac hooks (e.g. design-system-lint) do not fire in cloud; follow those by hand from the global instructions. In multi-repo sessions they fire only through the setup-script install (see below).
 
 - `session-start.sh`: critical-rules banner + integrity check.
 - `verify-edits.sh` (Stop): blocks "done" without Bash verification; requires a closing `SAFE TO EXIT` / `NOT SAFE TO EXIT` line (SAFE TO EXIT means the owner may close or kill the session now); blocks an unmerged PR with no stated blocker (`CI still running`, `CI red`, a merge conflict, `DECISION NEEDED:`, or `PR-BLOCKER: <reason>`; a bare NOT SAFE TO EXIT or "waiting on review" does not count); NOCARD blocks work with no Linear card filed or claimed (`NO-CARD: <reason>`; it and the Linear close-out gate fail open when Linear is down); INFLIGHT blocks SAFE TO EXIT while a background Agent has not handed back or a self-bound Routine (`send_later`/`create_trigger` into this session) is still pending: collect, stop or delete it first, or end `NOT SAFE TO EXIT — <what is in flight>`; OPENWORK (BRO-5040) blocks it while a session you started has not been seen finished via `get_session`, or when the closing message hands work to the board worker (`BACKLOG-OK: <why it can wait>`); OWNERMERGE blocks "waiting on your merge" / "ready for your review" / "unreviewed"; LANDUNCHECKED blocks SAFE TO EXIT after a land push with no run check. General bypass `NO-VERIFY: <reason>`.
@@ -69,7 +69,13 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 
 ## Owner one-time setup (cloud environment → Edit → Setup script)
 
-Probably has no effect; don't ask the owner to redo it (BRO-5008). Cloud sessions don't read `~/.claude/settings.json` and the auto-mode classifier reads `autoMode` only from user, managed or `--settings` sources. Repo settings, repo plugins and the environment cannot add classifier rules; only org server-managed settings might (unverified). A session cannot check (reading or editing its own settings is refused as Self-Modification). When the classifier refuses an owner-requested action, say so plainly, name it, and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card). The pasted snippet (in git history before BRO-5072) wrote an `autoMode` block into `~/.claude/settings.json` and ran `./scripts/setup-local-data.sh --all`; that data step is the part that can still matter.
+The setup script runs after the clones and before Claude starts, and its result is cached across sessions. It needs this one line (BRO-5221), which gives `/home/user` sessions the project hooks and commands (above):
+
+```
+for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && node "$d/scripts/install-home-claude-config.js"; done; true
+```
+
+It does not change auto mode: cloud sessions don't read `~/.claude/settings.json` and the classifier reads `autoMode` only from user, managed or `--settings` sources (BRO-5008). Repo settings, repo plugins and the environment cannot add classifier rules; only org server-managed settings might (unverified). A session cannot check (reading or editing its own settings is refused as Self-Modification). When the classifier refuses an owner-requested action, say so plainly, name it, and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
 ## Fixing private data (review-texts, core data) from cloud
 
@@ -92,13 +98,15 @@ Never put review text or reader contact details in a plan: the file is public.
 
 CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret rotation stays on the Mac). Probe first (BRO-4595; decide by `gh api user` and `ToolSearch mcp__github`, since one session had no `mcp__github__*` tools at all): with the agent proxy, `gh` may be preconfigured (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) and REST works (`gh api user`, `gh run list/view`, `gh workflow run`) even though `gh auth status` says the token is invalid; GraphQL is blocked, so use REST routes instead of `gh pr list`/`gh issue view`. No `--jq`. Job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file and slice it. Monitoring: a `run_in_background` loop on the public API (works without a token) or one `get_workflow_run` per turn, never ScheduleWakeup alone.
 
-## Multi-repo sessions (BRO-5008)
+## Multi-repo sessions (BRO-5008, BRO-5221)
 
-With more than one repo attached (the usual phone setup), the session starts in `/home/user` and the platform loads no hooks and no repo plugins. None of the hooks above fire. Do by hand:
+With more than one repo attached (the usual phone setup), the session starts in `/home/user`; each repo is passed with `--add-dir`, which loads its commands but never its hooks. A `create_session` with a misspelled source_url also starts there, with neither. `/home/user/.claude` is those sessions' project config, so `scripts/install-home-claude-config.js` wires every hook in `.claude/settings.json` there (through `.claude/hooks/lib/home-hook-runner.sh`, which skips tool hooks aimed at another repo) and links `commands/` and `skills/`. The environment setup script runs it before Claude starts (one line, below). Check a session: `node scripts/install-home-claude-config.js --check`.
+
+If `--check` reports DRIFT or nothing is installed (setup line missing, or a hook added since the container was cached), none of the hooks fire this session. Do by hand:
 
 1. First tool call: `bash scripts/cloud-bootstrap-data.sh` in the Broadwayscore checkout (refreshes core data and copies review texts from the attached clone).
-2. Follow the hook rules yourself: never `POST /broadcasts/{id}/send`; never write Broadwayscore `main` through the GitHub MCP; review before landing; close the Linear card.
-3. A single-repo Broadwayscore session loads the hooks normally.
+2. Follow the hook rules yourself: never `POST /broadcasts/{id}/send`; never write Broadwayscore `main` through the GitHub MCP; review before landing; close the Linear card; `create_session` source_url exactly `https://github.com/thomaspryor/Broadwayscore`.
+3. Running the installer mid-session fixes the next session in this container only (hooks are read at startup).
 
 ## Production API keys from a phone session (BRO-5008)
 
@@ -120,7 +128,7 @@ The owner works from the iPhone/iPad most of the time. Before saying something n
 | `~/.claude/commands/`, `~/.claude/skills/` | NO, only the repo's `.claude/` copies | YES |
 | Bright Data / Browserbase scrapers | YES if secrets uploaded | YES |
 | Local `.env` | NO, use `cloud-run-script.js` | YES |
-| Repo hooks in multi-repo sessions | NO (platform) | YES |
+| Repo hooks in multi-repo sessions | Only via `install-home-claude-config.js` in the setup script | YES |
 | `claude-sync` for `~/.claude` | NO | YES |
 | `bsc-next.js --id` cmux dispatch | NO, use `create_session` | YES |
 
@@ -136,7 +144,7 @@ Owner 2026-10-11: "Trigger sessions yourself." The board worker takes one card p
 2. `create_session` with `source_url: "https://github.com/thomaspryor/Broadwayscore"` (exactly that, capital B: `broadwayscore` starts the session in /home/user with no project commands or hooks, BRO-5068; the hook denies it), `title: "BRO-N: <short>"`, `tags: ["bro-n"]` and a self-contained prompt: the card id and what done means; claim it with `linear-session.js claim`; make the worktree with `git worktree add`, never `EnterWorktree`; land via `land/<name>`, follow the run, re-run VERIFY on main, close the card; never call `create_session`, `send_later` or `create_trigger`; if `/ship-check`, `/what-else` or `/wrap-up` fails with "Unknown skill", Read `.claude/commands/<name>.md` and follow it by hand (BRO-5068). Several independent cards get several sessions (soft cap ~8).
 3. Each `create_session` can put one approval tap on the owner's phone. Tell them in one line that you started a session for X.
 4. Follow it with `get_session` every 20-30 min, not in a tight loop. `status_bucket` BLOCKED usually means an unanswered permission prompt: `interrupt_session`, then `send_message` the workaround. FAILED means fix or restart it.
-5. **SAFE TO EXIT only after its work is verified**: `get_session` shows COMPLETED or REVIEW_READY and you re-ran its VERIFY on origin/main yourself. With two or more sessions, also check the combined result once the last one lands; per-session checks alone are not enough. Until then: `NOT SAFE TO EXIT — <which session is doing what, and how you will check it>`. OPENWORK enforces this in single-repo sessions; multi-repo sessions follow it by hand.
+5. **SAFE TO EXIT only after its work is verified**: `get_session` shows COMPLETED or REVIEW_READY and you re-ran its VERIFY on origin/main yourself. With two or more sessions, also check the combined result once the last one lands; per-session checks alone are not enough. Until then: `NOT SAFE TO EXIT — <which session is doing what, and how you will check it>`. OPENWORK enforces this (in multi-repo sessions only once the setup-script install is in place).
 
 **No human in the session** (a routine, the board worker, a child you started): never `create_session`. File the card with a `START-NOW:` line: `node scripts/linear-brain.js create "<title>" --dispatch --priority 2 --notes "START-NOW: <why it should not wait> ..."`. The board worker (`scripts/cloud-worker-pick.js`, every 2 hours) takes START-NOW Todo cards filed 10 minutes to 48 hours ago first; `linear-brain.js create` refuses one the picker would skip (no safe VERIFY). If `linear-session.js claim` prints `"action": "noop"` for a card that was Todo when picked, another worker took it; stop.
 

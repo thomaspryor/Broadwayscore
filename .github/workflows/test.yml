@@ -2330,6 +2330,11 @@ on:
       - '.claude/hooks/github-main-guard.sh'
       - '.claude/hooks/block-resend-broadcasts.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
+      # BRO-5221: hooks/commands for cloud sessions that start in /home/user;
+      # driven for real by scripts/tests/install-home-claude-config.test.mjs.
+      - '.claude/hooks/lib/home-hook-runner.sh'
+      - 'scripts/install-home-claude-config.js'
+      - 'scripts/tests/install-home-claude-config.test.mjs'
       # BRO-4593: land rebase + test-registration preflight; driven for real by
       # tests/unit/land-preflight.test.mjs (rides 'tests/**' and 'scripts/lib/**').
       - '.claude/hooks/pre-push-land-preflight.sh'
