@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-13T19:07:38.794Z",
+  "timestamp": "2026-10-13T19:17:41.642Z",
   "stats": {
-    "totalReviews": 56430,
+    "totalReviews": 56429,
     "alreadyFlagged": 21035,
     "dateGuardCatches": 212,
     "directorMismatch": 1874,
@@ -79434,6 +79434,20 @@
       ]
     },
     {
+      "showId": "the-hot-wing-king-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2024-07-19",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-hot-wing-king-review-dorfman-national-theatre-cmp663bfr",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "artsdesk--demetrios-matheou.json",
       "score": 79,
@@ -80335,20 +80349,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": null,
-      "publishDate": "2024-07-19",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-hot-wing-king-review-dorfman-national-theatre-cmp663bfr",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
