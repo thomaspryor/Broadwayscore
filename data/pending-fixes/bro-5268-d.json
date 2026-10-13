@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5268-d",
   "planId": "c8d1888e-39a9-4489-87f1-16bd5ad29ca2",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -55,7 +55,7 @@
             "type": "manual",
             "url": "https://broadwayscorecard.com",
             "date": "2026-02-03",
-            "excerpt": "Detailed financial analysis: Universal Music contributed ~50% of $10M. All 3 ABBA members were investors. Littlestar paid \u00a35.7M fees + \u00a3900K dividend."
+            "excerpt": "Detailed financial analysis: Universal Music contributed ~50% of $10M. All 3 ABBA members were investors. Littlestar paid £5.7M fees + £900K dividend."
           }
         ],
         "newValue": [
@@ -385,5 +385,98 @@
         "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T16:57:50.763Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mamma-mia-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for i-need-that"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for saint-joan-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for a-few-good-men-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-few-good-men"
+    }
+  ]
 }
