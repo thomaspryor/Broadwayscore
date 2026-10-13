@@ -1,19 +1,131 @@
 {
-  "updatedAt": "2026-10-13T22:22:39.466Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-10-13T22:31:53.334Z",
+  "processed": 201,
+  "failed": 125,
+  "successRate": "61.7%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 124,
+    "amp": 5,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 28,
+    "scrapingbee": 18,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 34
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-13T20:22:37.331Z",
+      "event": "bb-session",
+      "session": "932daae7",
+      "url": "http://online.wsj.com/article/SB10001424052970204323904577039983355570926.html"
+    },
+    {
+      "t": "2026-10-13T20:22:37.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:22:56.799Z",
+      "event": "bb-session",
+      "session": "f8738aaa",
+      "url": "http://online.wsj.com/article/SB10001424052970204323904577039983355570926.html"
+    },
+    {
+      "t": "2026-10-13T20:22:57.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:23:25.225Z",
+      "event": "bb-session",
+      "session": "d6f210a1",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:25.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:23:43.512Z",
+      "event": "bb-session",
+      "session": "69841e4e",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:44.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:24:10.004Z",
+      "event": "bb-session",
+      "session": "3dba0a25",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-13T20:24:10.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:24:28.066Z",
+      "event": "bb-session",
+      "session": "9cf1e0dd",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-13T20:24:28.562Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:35:13.854Z",
+      "event": "bb-session",
+      "session": "d858bb05",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T20:39:40.172Z",
+      "event": "bb-session",
+      "session": "fd962b1d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T20:39:40.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T20:42:43.800Z",
+      "event": "bb-session",
+      "session": "b4dbf5ab",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-13T22:15:13.260Z",
+      "event": "bb-session",
+      "session": "0914e348",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-13T22:15:14.193Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-13T22:19:09.105Z",
+      "event": "bb-session",
+      "session": "cb24d691",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-13T22:19:09.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
