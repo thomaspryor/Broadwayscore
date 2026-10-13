@@ -4258,7 +4258,20 @@ function isUnverifiableWebSearchRow(data) {
   // of 50-299 chars, all "X is a show that knows exactly what it wants..."), so
   // a url row needs a real page's worth of text to count as checkable.
   if (data.humanReviewScore || data.adjudicatedScore) return false;
-  if (String(data.fullText || '').trim().length < (data.url ? 300 : 50)) return true;
+  const textLength = String(data.fullText || '').trim().length;
+  if (textLength < (data.url ? 300 : 50)) return true;
+  // BRO-5183: 300 chars is not proof of a real page. 103 live legacy rows held
+  // a 365-char TheaterMania shell or a ~400-char Talkin' Broadway stub the
+  // classifier itself tiers 'invalid', and kept their invented-excerpt score.
+  // A legacy url row's text counts as the page only when the content verifier
+  // passed it, or, never verified, when it is a full page (1000+ chars) that
+  // the tier classifier did not call invalid or stub.
+  if (data.url) {
+    const cv = data.contentVerification;
+    const verified = !!cv && cv.isValid === true && !cv.wrongProduction && !cv.wrongArticle;
+    const fullUnverifiedPage = !cv && textLength >= 1000 && !['invalid', 'stub'].includes(data.contentTier);
+    if (!verified && !fullUnverifiedPage && !cv) return true;
+  }
   // BRO-5183: real text arriving does not make the score real. Until the row
   // is rescored on that text its score is still the one read from the
   // invented excerpt, so a legacy web-search url row stays out while its LLM

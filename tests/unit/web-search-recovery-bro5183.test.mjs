@@ -10,7 +10,7 @@ const { isUnverifiableWebSearchRow } = require('../../scripts/lib/review-guards.
 const { verifierExcerpt } = require('../../scripts/lib/excerpt-fields.js');
 const { applyReviewFieldEdit } = require('../../scripts/lib/review-field-edit.js');
 
-const PAGE = 'p '.repeat(300);
+const PAGE = 'p '.repeat(600);
 const ROW = {
   showId: 'a-dolls-house-part-2-2017', outletId: 'observer', criticName: 'Rex Reed',
   source: 'web-search', sources: ['web-search'],
@@ -29,6 +29,16 @@ test('recovered text does not bring the row back until it is rescored on that te
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, originalScore: '2/5 stars' }), true, 'a bare originalScore may be the search step\'s own guess');
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, humanReviewScore: 70 }), false, 'human score');
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, sources: ['web-search', 'dtli'] }), false, 'aggregator-backed row: not this rule');
+});
+
+test('a legacy url row counts only with a verified or full page, not a 300-char shell', () => {
+  const scored = { ...ROW, llmMetadata: { textSource: { type: 'fullText' } } };
+  const shell = 'x'.repeat(365);
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: shell, contentTier: 'truncated' }), true, '365-char TheaterMania shell, never verified');
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: 'y'.repeat(1200), contentTier: 'invalid' }), true, 'classifier tiers it invalid');
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: 'y'.repeat(1200), contentTier: 'complete' }), false, 'full page, never verified');
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: shell, contentVerification: { isValid: true, verifiedBy: 'llm:claude-haiku' } }), false, 'short but verified');
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: shell, contentVerification: { isValid: false, wrongArticle: true } }), false, 'a verifier rejection is left to the wrong-article guards');
 });
 
 test('the verifier never gets a legacy web-search excerpt as its reference', () => {

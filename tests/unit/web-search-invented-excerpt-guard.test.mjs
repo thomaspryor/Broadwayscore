@@ -13,7 +13,7 @@ test('url + no text + web-search only: excluded', () => {
   assert.equal(isUnverifiableWebSearchRow({ ...base, fullText: 'A Bronx Tale is a show that knows exactly what it wants to be and executes that vision with considerable skill and heart.' }), true);
 });
 test('real page text, an aggregator source, a SERP url row or a human score keeps the row', () => {
-  assert.equal(isUnverifiableWebSearchRow({ ...base, fullText: 'x '.repeat(400) }), false);
+  assert.equal(isUnverifiableWebSearchRow({ ...base, fullText: 'x '.repeat(600) }), false);
   assert.equal(isUnverifiableWebSearchRow({ ...base, sources: ['web-search', 'dtli'] }), false);
   assert.equal(isUnverifiableWebSearchRow({ ...base, source: 'serp-discovery', sources: ['serp-discovery'] }), false);
   assert.equal(isUnverifiableWebSearchRow({ ...base, humanReviewScore: 70 }), false);

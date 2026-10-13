@@ -166,6 +166,7 @@ const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./li
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { verificationPublishDate } = require('./lib/verification-publish-date');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
+const { discoveredPageVerdict } = require('./lib/discovered-page-verdict');
 const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
 const { parseDate } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
@@ -6956,6 +6957,97 @@ function stampDatelessRetry(filePath) {
   } catch (e) { /* non-fatal: next run re-evaluates */ }
 }
 
+/**
+ * Run the content verifier (LLM, heuristic fallback) on a fetched page for
+ * this review. Shared by the main fetch path and the discovered-url retry
+ * (BRO-5183: the retry used to store a searched-up page with no verification
+ * at all, so a 2018 touring review landed on the 2015 Broadway show).
+ * Returns null when the text is under 200 words or the verifier threw.
+ */
+async function verifyFetchedContent(review, result, validation) {
+  let contentVerification = null;
+  if (validation.wordCount >= 200) {
+    console.log(`  LLM Verification...`);
+    try {
+      // Get excerpt and show metadata from existing review data
+      const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      const excerpt = verifierExcerpt(reviewData);
+      const showId = reviewData.showId || review.showId || '';
+
+      // Look up show metadata for richer context
+      let showMeta = null;
+      try {
+        if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+        showMeta = _showsJsonCache.shows.find(s => s.id === showId);
+      } catch (e) { /* shows.json unavailable */ }
+
+      contentVerification = await verifyContent({
+        scrapedText: result.text,
+        excerpt: excerpt,
+        showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
+        outletName: review.outlet,
+        criticName: review.critic,
+        openingDate: showMeta?.openingDate || null,
+        venue: showMeta?.venue || null,
+        // Opera shows (type='opera') get the 'opera' market, and shows at known
+        // prestige/arena venues (Radio City, Park Ave Armory, Carnegie Hall, NYU
+        // Skirball, NYC Center) get 'special-venue' — both tell the LLM the named
+        // venue IS canonical instead of flagging wrong PRODUCTION/VENUE on every
+        // mention. See resolveCvMarket() in lib/content-verifier.js.
+        market: resolveCvMarket(showMeta),
+        // Long-runners (Mousetrap 1952, Phantom WE 1986, etc.) get a prompt
+        // adjustment that tells the LLM not to flag wrongProduction based on
+        // publishDate-vs-openingDate age gap alone. See scripts/lib/long-runner-registry.js
+        // and WE long-runner CV hardening card issue #3.
+        isLongRunningProduction: showMeta ? _isLongRunner(showMeta) : false,
+        // Pass publishDate so applyTemporalOverrides can downgrade wrongProduction
+        // confidence on opening-week reviews (DoaS Apr 9-10 postmortem #9: missing
+        // publishDate caused legitimate revival reviews to have their text nulled).
+        // Falls back to textFetchedAt, then today, only for a current show (lib/verification-publish-date.js).
+        // On opening night, fresh stubs have publishDate=null and textFetchedAt=null —
+        // without this fallback, temporal override never fires and the LLM's high-confidence
+        // wrongProduction FP (44% rate; Proof 2026-04-17) stamps the file immediately.
+        // BRO-4884: read the page's own date first (it used to be extracted
+        // only at save, after this call) and drop the today fallback for a
+        // long-closed show, whose reviews were otherwise "written in 2026".
+        publishDate: verificationPublishDate({
+          storedDate: reviewData.publishDate,
+          derivedDate: extractPublishDateFromHtml(result.html)
+            || (() => { const u = reviewData.url ? extractDateFromUrlCanonical(reviewData.url) : null; return u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '') ? u.date : null; })()
+            || (result.text && result.text.length > 100 ? extractDateFromText(result.text) : null),
+          textFetchedAt: reviewData.textFetchedAt,
+          show: showMeta,
+          today: new Date().toISOString().slice(0, 10),
+        }),
+        // URL passed in so verifyContent can surface URL-year-vs-publishDate
+        // conflicts to the LLM (issue #4, Mamma Mia WE 2021 case). Not used to
+        // override — the LLM decides with both dates in hand. See CLAUDE.md rule 3.
+        url: review.url || reviewData.url || null,
+        // BRO-989: foreign-roundup bypass of the temporal override.
+        bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
+        otherShowTitles: (_showsJsonCache?.shows || []).filter(s => s.id !== showId && s.title && s.title.length >= 6).map(s => s.title),
+        // Show metadata passed in so applyTemporalOverrides can run the named-entity
+        // bypass (Hamlet 2026-05-08 FRC class): if CV reasoning names a "directed by X"
+        // that doesn't match show.creativeTeam directors AND the actual director
+        // isn't mentioned ≥2x in scrapedText, keep wrongProduction at full confidence.
+        show: showMeta || null,
+      });
+
+      const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
+      console.log(`  ${verifier} Verify: ${contentVerification.isValid ? 'VALID' : 'REJECTED'} (${contentVerification.confidence} confidence)`);
+      if (contentVerification.issues.length > 0) {
+        console.log(`  Issues: ${contentVerification.issues.join(', ')}`);
+      }
+      if (contentVerification.reasoning) {
+        console.log(`  Reasoning: ${contentVerification.reasoning}`);
+      }
+    } catch (e) {
+      console.log(`  LLM Verify error: ${e.message}`);
+    }
+  }
+  return contentVerification;
+}
+
 async function processReview(review) {
   // BRO-4334: fetchReviewText's partial-text deadline counts from here (main()
   // stamps it just before the REVIEW_TIMEOUT race; this covers other callers).
@@ -7281,86 +7373,7 @@ async function processReview(review) {
     }
 
     // LLM-based content verification (runs by default, falls back to heuristic without API key)
-    let contentVerification = null;
-    if (validation.wordCount >= 200) {
-      console.log(`  LLM Verification...`);
-      try {
-        // Get excerpt and show metadata from existing review data
-        const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        const excerpt = verifierExcerpt(reviewData);
-        const showId = reviewData.showId || review.showId || '';
-
-        // Look up show metadata for richer context
-        let showMeta = null;
-        try {
-          if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-          showMeta = _showsJsonCache.shows.find(s => s.id === showId);
-        } catch (e) { /* shows.json unavailable */ }
-
-        contentVerification = await verifyContent({
-          scrapedText: result.text,
-          excerpt: excerpt,
-          showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
-          outletName: review.outlet,
-          criticName: review.critic,
-          openingDate: showMeta?.openingDate || null,
-          venue: showMeta?.venue || null,
-          // Opera shows (type='opera') get the 'opera' market, and shows at known
-          // prestige/arena venues (Radio City, Park Ave Armory, Carnegie Hall, NYU
-          // Skirball, NYC Center) get 'special-venue' — both tell the LLM the named
-          // venue IS canonical instead of flagging wrong PRODUCTION/VENUE on every
-          // mention. See resolveCvMarket() in lib/content-verifier.js.
-          market: resolveCvMarket(showMeta),
-          // Long-runners (Mousetrap 1952, Phantom WE 1986, etc.) get a prompt
-          // adjustment that tells the LLM not to flag wrongProduction based on
-          // publishDate-vs-openingDate age gap alone. See scripts/lib/long-runner-registry.js
-          // and WE long-runner CV hardening card issue #3.
-          isLongRunningProduction: showMeta ? _isLongRunner(showMeta) : false,
-          // Pass publishDate so applyTemporalOverrides can downgrade wrongProduction
-          // confidence on opening-week reviews (DoaS Apr 9-10 postmortem #9: missing
-          // publishDate caused legitimate revival reviews to have their text nulled).
-          // Falls back to textFetchedAt, then today, only for a current show (lib/verification-publish-date.js).
-          // On opening night, fresh stubs have publishDate=null and textFetchedAt=null —
-          // without this fallback, temporal override never fires and the LLM's high-confidence
-          // wrongProduction FP (44% rate; Proof 2026-04-17) stamps the file immediately.
-          // BRO-4884: read the page's own date first (it used to be extracted
-          // only at save, after this call) and drop the today fallback for a
-          // long-closed show, whose reviews were otherwise "written in 2026".
-          publishDate: verificationPublishDate({
-            storedDate: reviewData.publishDate,
-            derivedDate: extractPublishDateFromHtml(result.html)
-              || (() => { const u = reviewData.url ? extractDateFromUrlCanonical(reviewData.url) : null; return u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '') ? u.date : null; })()
-              || (result.text && result.text.length > 100 ? extractDateFromText(result.text) : null),
-            textFetchedAt: reviewData.textFetchedAt,
-            show: showMeta,
-            today: new Date().toISOString().slice(0, 10),
-          }),
-          // URL passed in so verifyContent can surface URL-year-vs-publishDate
-          // conflicts to the LLM (issue #4, Mamma Mia WE 2021 case). Not used to
-          // override — the LLM decides with both dates in hand. See CLAUDE.md rule 3.
-          url: reviewData.url || null,
-          // BRO-989: foreign-roundup bypass of the temporal override.
-          bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
-          otherShowTitles: (_showsJsonCache?.shows || []).filter(s => s.id !== showId && s.title && s.title.length >= 6).map(s => s.title),
-          // Show metadata passed in so applyTemporalOverrides can run the named-entity
-          // bypass (Hamlet 2026-05-08 FRC class): if CV reasoning names a "directed by X"
-          // that doesn't match show.creativeTeam directors AND the actual director
-          // isn't mentioned ≥2x in scrapedText, keep wrongProduction at full confidence.
-          show: showMeta || null,
-        });
-
-        const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
-        console.log(`  ${verifier} Verify: ${contentVerification.isValid ? 'VALID' : 'REJECTED'} (${contentVerification.confidence} confidence)`);
-        if (contentVerification.issues.length > 0) {
-          console.log(`  Issues: ${contentVerification.issues.join(', ')}`);
-        }
-        if (contentVerification.reasoning) {
-          console.log(`  Reasoning: ${contentVerification.reasoning}`);
-        }
-      } catch (e) {
-        console.log(`  LLM Verify error: ${e.message}`);
-      }
-    }
+    const contentVerification = await verifyFetchedContent(review, result, validation);
 
     // Update JSON (pass HTML for score extraction)
     await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
@@ -7586,6 +7599,25 @@ async function processReview(review) {
             return { success: false, error: 'url_content_mismatch_retry', reason: retrySanity.reason };
           }
 
+          // A searched-up page must pass the content verifier (right show, right
+          // production, right article) before it takes the slot (BRO-5183).
+          const retryVerification = await verifyFetchedContent(review, retryResult, validateReviewText(retryResult.text, review));
+          const discoveredVerdict = discoveredPageVerdict(retryVerification);
+          if (!discoveredVerdict.accept) {
+            console.log(`  ✗ DISCOVERED PAGE REFUSED: ${discoveredVerdict.reason}`);
+            recordFailedFetch(review, 'discovered_url_unverified', {
+              method: retryResult.method,
+              discoveredUrl,
+              reason: discoveredVerdict.reason,
+              textLength: retryResult.text.length,
+              archivePath,
+              retry: true,
+            });
+            review.url = originalUrl;
+            stats.totalFailed++;
+            return { success: false, error: 'discovered_url_unverified', reason: discoveredVerdict.reason };
+          }
+
           // Content is good and about this show — update the review file's URL
           // (atomic write inside the helper). Done AFTER the content sanity check
           // above so a mismatched page never takes the slot (BRO-4131). Disk
@@ -7618,7 +7650,7 @@ async function processReview(review) {
           }
 
           const validation = validateReviewText(retryResult.text, review);
-          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', null);
+          await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', retryVerification);
 
           const retryMethodKey = retryResult.method === 'direct-cookies' ? 'directCookies' : retryResult.method;
           if (retryMethodKey && state.tierBreakdown[retryMethodKey]) {
