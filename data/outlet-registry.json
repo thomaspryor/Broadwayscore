@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-13T17:40:26.215Z",
+    "lastUpdated": "2026-10-13T20:18:41.290Z",
     "version": "2.1.0",
     "lastChange": "BRO-5137: split The Sunday Times (sunday-times, splitFrom times-uk) out of times-uk"
   },
@@ -12705,6 +12705,17 @@
       "region": "london",
       "accessModel": "free",
       "domain": "louderthanwar.com"
+    },
+    "kiddoadventures": {
+      "displayName": "Kiddoadventures",
+      "tier": 3,
+      "aliases": [
+        "kiddoadventures"
+      ],
+      "domain": "kiddoadventures.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-13T20:18:41.290Z"
     }
   },
   "_aliasIndex": {
