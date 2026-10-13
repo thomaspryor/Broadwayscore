@@ -388,6 +388,34 @@ data/audit/opening-night-history.json merge-coverage=exempt
 data/audit/we-gate-proving.json merge-coverage=exempt
 data/audit/alert-digest-queue.json merge-coverage=exempt
 
+# Churn-coverage sweep #2 (BRO-3065, audit-churn-merge-coverage.js, 2026-10-13):
+# 13 more files flagged high-churn/no-driver. Classified per-file by reading
+# each writer, using the two rules of the task #1213 block above:
+#   - a writer that ALWAYS writes a fresh full snapshot (reading its own prior
+#     output at most to compare, never to carry rows forward) is safe under
+#     `ours`: the next run regenerates it anyway. Dated collection reports are
+#     covered by one glob (collect-review-texts.js writes one per UTC day).
+#   - read-modify-write accumulate-state (guard-escalation-state.json: several
+#     guards each own one top-level key, check-rebuild-staleness.js
+#     saveGuardState; its per-key union lives in core-data-merge-registry.js
+#     for the API push path, not as a git driver) and human-edited source or
+#     config needing a real 3-way merge (code, workflows, outlet-registry.json,
+#     whose per-outlet merge land.yml checks) get `merge-coverage=exempt`.
+data/audit/skipped-alias-collisions.json merge=ours
+data/audit/lane-rehearsal.json merge=ours
+data/audit/pipeline-health/test.last-success merge=ours
+data/audit/orphaned-duplicate-pointer-heal.json merge=ours
+data/audit/tour-sweep.json merge=ours
+data/audit/validation-baseline.json merge=ours
+data/audit/validation/collection-report-*.json merge=ours
+data/audit/main-streak-failing-jobs.json merge=ours
+data/audit/uncollected-live-reviews.json merge=ours
+
+data/audit/guard-escalation-state.json merge-coverage=exempt
+data/outlet-registry.json merge-coverage=exempt
+.github/workflows/test.yml merge-coverage=exempt
+scripts/collect-review-texts.js merge-coverage=exempt
+
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
 # GitHub collapse it in the diff view.
