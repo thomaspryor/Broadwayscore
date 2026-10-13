@@ -71,5 +71,35 @@
       }
     ],
     "queuedAt": "2026-10-13T09:33:30.864Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2556-memory-search",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2556-memory-search",
+    "description": "land.yml did not land land/bro-2556-memory-search: the unit-tests-node gate went red at b65a16b5ce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38373452417",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2556-memory-search"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b65a16b5ce1d030c294ea823292dcc216a0e003c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38373452417"
+      }
+    ],
+    "queuedAt": "2026-10-13T09:35:27.633Z"
   }
 ]
