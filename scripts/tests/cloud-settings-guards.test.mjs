@@ -10,6 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOKS = path.join(REPO_ROOT, '.claude', 'hooks');
@@ -19,7 +20,7 @@ fs.mkdirSync(fakeHome);
 test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
 function runHook(name, payload, { home = fakeHome, env = {} } = {}) {
-  const r = spawnSync('bash', [path.join(HOOKS, name)], {
+  const r = spawnSyncStdinFile('bash', [path.join(HOOKS, name)], {
     input: JSON.stringify(payload), encoding: 'utf8', timeout: 30000,
     env: { ...process.env, HOME: home, LAND_ENFORCE_OFF: '', ...env },
   });
@@ -74,7 +75,7 @@ test('github-main-guard: emergency override (env or ~/.claude/LAND_ENFORCE_OFF f
   fs.mkdirSync(path.join(home, '.claude'), { recursive: true });
   fs.writeFileSync(path.join(home, '.claude', 'LAND_ENFORCE_OFF'), '');
   assert.equal(runHook('github-main-guard.sh', blocked, { home }).status, 0);
-  const r = spawnSync('bash', [path.join(HOOKS, 'github-main-guard.sh')], { input: 'not json', encoding: 'utf8', env: { ...process.env, HOME: fakeHome } });
+  const r = spawnSyncStdinFile('bash', [path.join(HOOKS, 'github-main-guard.sh')], { input: 'not json', encoding: 'utf8', env: { ...process.env, HOME: fakeHome } });
   assert.equal(r.status, 0);
 });
 

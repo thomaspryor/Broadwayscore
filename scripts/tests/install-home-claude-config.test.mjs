@@ -11,6 +11,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const require = createRequire(import.meta.url);
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -106,7 +107,7 @@ test('tool hooks skip work in another repo (the app keeps its main-only workflow
   assert.equal(run(['--target', target]).status, 0);
   const s = JSON.parse(fs.readFileSync(path.join(target, '.claude', 'settings.json'), 'utf8'));
   // worktree-enforce blocks a scripts/ edit on a main checkout; the other repo is one.
-  const direct = spawnSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'worktree-enforce.sh')], {
+  const direct = spawnSyncStdinFile('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'worktree-enforce.sh')], {
     cwd: other, encoding: 'utf8',
     input: JSON.stringify({ tool_name: 'Write', tool_input: { file_path: path.join(other, 'scripts', 'x.js') } }),
     env: { ...process.env, HOME: fakeHome },

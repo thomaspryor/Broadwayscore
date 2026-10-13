@@ -11,6 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOKS = path.join(REPO_ROOT, '.claude', 'hooks');
@@ -31,7 +32,7 @@ test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 
 let n = 0;
 function runGate(name, toolName, toolInput, { sessionId = `sid-${++n}`, home = fakeHome, env = {} } = {}) {
   const tmp = fs.mkdtempSync(path.join(scratch, 'tmp-'));   // fresh repeat-block counter per case
-  const r = spawnSync('bash', [path.join(HOOKS, name)], {
+  const r = spawnSyncStdinFile('bash', [path.join(HOOKS, name)], {
     cwd: repo,
     input: JSON.stringify({ session_id: sessionId, tool_name: toolName, tool_input: toolInput }),
     encoding: 'utf8', timeout: 30000,
@@ -76,7 +77,7 @@ test('infra gate (cloud): ordinary files, NO-PLAN-REVIEW and the kill switch pas
 
 test('infra gate: fails open after two blocks on the same edit, so a session with no human cannot spin', () => {
   const tmp = fs.mkdtempSync(path.join(scratch, 'tmp-'));
-  const call = () => spawnSync('bash', [path.join(HOOKS, 'infra-plan-review-gate.sh')], {
+  const call = () => spawnSyncStdinFile('bash', [path.join(HOOKS, 'infra-plan-review-gate.sh')], {
     cwd: repo, encoding: 'utf8', timeout: 30000,
     input: JSON.stringify({ session_id: 'sid-spin', tool_name: 'Edit', tool_input: edit('scripts/lib/review-gate.mjs') }),
     env: { ...process.env, HOME: fakeHome, TMPDIR: tmp },

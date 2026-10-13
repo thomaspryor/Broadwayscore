@@ -32,6 +32,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(fileURLToPath(import.meta.url), '..', '..', '..');
 const require = createRequire(import.meta.url);
@@ -152,7 +153,7 @@ function runGate(lastAssistantMessage, extraEnv = {}) {
     cwd: CHECKER_REPO,
   });
   try {
-    const result = spawnSync('bash', [HOOK_PATH], {
+    const result = spawnSyncStdinFile('bash', [HOOK_PATH], {
       input, encoding: 'utf8',
       env: { ...HOOK_ENV, ...extraEnv },
     });

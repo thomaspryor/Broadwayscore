@@ -47,6 +47,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { canonicalRoot } from '../lib/review-gate.mjs';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const REAL_HOME = os.homedir();
@@ -226,7 +227,7 @@ function runHook(hookPath, { command, cwd = REPO_ROOT, transcript = TRANSCRIPT_P
     return { status: 124, stdout: '', stderr: `skipped: ${subprocTimeout}` };
   }
   const r = noteTimeout(
-    spawnSync('bash', [hookPath], {
+    spawnSyncStdinFile('bash', [hookPath], {
       cwd,
       input: stdin,
       encoding: 'utf8',
@@ -448,7 +449,7 @@ test('merge-gate fails open: missing transcript file (no escape hatch available)
 });
 
 test('merge-gate fails open: malformed stdin never blocks', skipNoGates, () => {
-  const r = noteTimeout(spawnSync('bash', [MERGE_HOOK], { input: 'not json at all', encoding: 'utf8', timeout: HOOK_TIMEOUT_MS, killSignal: 'SIGKILL' }), 'merge hook (malformed stdin)', HOOK_TIMEOUT_MS);
+  const r = noteTimeout(spawnSyncStdinFile('bash', [MERGE_HOOK], { input: 'not json at all', encoding: 'utf8', timeout: HOOK_TIMEOUT_MS, killSignal: 'SIGKILL' }), 'merge hook (malformed stdin)', HOOK_TIMEOUT_MS);
   assertAllowed(r, 'malformed stdin');
 });
 
@@ -589,7 +590,7 @@ test('push-gate fails open: missing transcript file never blocks', skipNoProbe, 
 });
 
 test('push-gate fails open: malformed stdin never blocks', skipNoGates, () => {
-  const r = noteTimeout(spawnSync('bash', [PUSH_HOOK], { input: 'not json at all', encoding: 'utf8', timeout: HOOK_TIMEOUT_MS, killSignal: 'SIGKILL' }), 'push hook (malformed stdin)', HOOK_TIMEOUT_MS);
+  const r = noteTimeout(spawnSyncStdinFile('bash', [PUSH_HOOK], { input: 'not json at all', encoding: 'utf8', timeout: HOOK_TIMEOUT_MS, killSignal: 'SIGKILL' }), 'push hook (malformed stdin)', HOOK_TIMEOUT_MS);
   assertAllowed(r, 'malformed stdin');
 });
 

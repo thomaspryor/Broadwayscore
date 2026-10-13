@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { parsePushCommand, landPushTargets } from '../../scripts/lib/push-command.mjs';
 import { previewRebase, checkTestRegistration, runHook, blockMessage } from '../../scripts/lib/land-preflight.mjs';
 import collection from '../../scripts/lib/unit-test-collection.js';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 const HEADER = collection.RETIRED_HEADER.join('\n') + '\n';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -360,7 +361,7 @@ function landFixture() {
 }
 function hook(command, cwd, extraEnv = {}) {
   const input = JSON.stringify({ tool_name: 'Bash', tool_input: { command }, cwd });
-  return spawnSync('bash', [HOOK], { input, cwd, env: { ...ENV, ...extraEnv }, encoding: 'utf8' });
+  return spawnSyncStdinFile('bash', [HOOK], { input, cwd, env: { ...ENV, ...extraEnv }, encoding: 'utf8' });
 }
 
 test('hook: blocks a conflicting land push from a worktree, allows others, honours the bypass, logs', () => {
@@ -386,7 +387,7 @@ test('hook: a squashed branch passes; a non-repo cwd and garbage input fail open
   const r = hook('git push origin HEAD:refs/heads/land/feat', wt);
   assert.equal(r.status, 0, r.stderr);
   assert.equal(hook('git push origin HEAD:land/x', os.tmpdir()).status, 0);
-  const g = spawnSync('bash', [HOOK], { input: 'not json push land/', env: ENV, encoding: 'utf8' });
+  const g = spawnSyncStdinFile('bash', [HOOK], { input: 'not json push land/', env: ENV, encoding: 'utf8' });
   assert.equal(g.status, 0);
   assert.equal(runHook({ command: 'git status', cwd: wt }).decision, 'skip');
 });

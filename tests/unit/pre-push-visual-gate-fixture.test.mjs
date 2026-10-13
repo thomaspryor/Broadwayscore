@@ -29,6 +29,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOK = join(REPO_ROOT, '.claude', 'hooks', 'pre-push-visual-gate.sh');
@@ -163,7 +164,7 @@ function runHook(fx, transcript, { home = fx.home, command = PUSH_CMD } = {}) {
     transcript_path: transcript,
     tool_use_id: TOOL_USE_ID,
   });
-  const r = spawnSync('bash', [HOOK], {
+  const r = spawnSyncStdinFile('bash', [HOOK], {
     cwd: fx.repo,
     input,
     encoding: 'utf8',

@@ -32,6 +32,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const REAL_HOME = os.homedir();
@@ -78,7 +79,7 @@ function runHook(hookPath, transcriptPath, env = {}) {
     session_id: `veh-test-${randomUUID()}`,
     stop_hook_active: false,
   });
-  const r = spawnSync('bash', [hookPath], {
+  const r = spawnSyncStdinFile('bash', [hookPath], {
     input: stdin,
     encoding: 'utf8',
     env: { ...process.env, ...env },

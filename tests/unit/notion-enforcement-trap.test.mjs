@@ -10,6 +10,7 @@ import { existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync
 import { tmpdir, homedir } from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const HOOKS = path.join(homedir(), '.claude/hooks');
 const have = existsSync(path.join(HOOKS, 'notion-create-block.sh'));
@@ -28,7 +29,7 @@ function world() {
 }
 const sid = () => `nzt-${process.pid}-${Math.random().toString(36).slice(2)}`;
 function run(w, hook, payload) {
-  const r = spawnSync('bash', [path.join(HOOKS, hook)], {
+  const r = spawnSyncStdinFile('bash', [path.join(HOOKS, hook)], {
     input: JSON.stringify(payload),
     env: { PATH: process.env.PATH, HOME: w, BROADWAYSCORE_REPO: path.join(w, 'repo') },
     encoding: 'utf8', timeout: 30000,
@@ -85,7 +86,7 @@ test('failed linear-brain create: retry commands pass the block, other commands 
 function stop(w, s, lines) {
   const t = path.join(w, 't.jsonl');
   writeFileSync(t, lines.map((l) => JSON.stringify(l)).join('\n') + '\n');
-  const r = spawnSync('bash', [path.join(HOOKS, 'session-stop.sh')], {
+  const r = spawnSyncStdinFile('bash', [path.join(HOOKS, 'session-stop.sh')], {
     input: JSON.stringify({ session_id: s, transcript_path: t }),
     env: { PATH: process.env.PATH, HOME: w, CLAUDE_CODE_ENTRYPOINT: 'sdk-cli' }, cwd: w, encoding: 'utf8', timeout: 30000,
   });

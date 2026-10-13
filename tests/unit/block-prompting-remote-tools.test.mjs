@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const HOOK = path.join(REPO_ROOT, '.claude', 'hooks', 'block-prompting-remote-tools.sh');
@@ -33,7 +34,7 @@ const LOOKALIKE_SSH = repoWithOrigin('git@github.com:thomaspryor/Broadwayscore-f
 
 function run(payload, { cwd = BSC, projectDir = cwd, env = {} } = {}) {
   const input = typeof payload === 'string' ? payload : JSON.stringify(payload);
-  const res = spawnSync('bash', [HOOK], {
+  const res = spawnSyncStdinFile('bash', [HOOK], {
     cwd,
     input,
     encoding: 'utf8',

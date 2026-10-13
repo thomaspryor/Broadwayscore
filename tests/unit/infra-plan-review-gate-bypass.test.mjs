@@ -13,6 +13,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOKS = path.join(REPO_ROOT, '.claude', 'hooks');
@@ -48,7 +49,7 @@ fs.writeFileSync(patcher, `import pathlib\np = pathlib.Path(${JSON.stringify(pat
 
 function run(hook, sessionId, command) {
   const tmp = fs.mkdtempSync(path.join(scratch, 'tmp-'));
-  const r = spawnSync('bash', [path.join(HOOKS, hook)], {
+  const r = spawnSyncStdinFile('bash', [path.join(HOOKS, hook)], {
     cwd: repo, encoding: 'utf8', timeout: 30000,
     input: JSON.stringify({ session_id: sessionId, tool_name: 'Bash', tool_input: { command } }),
     env: { ...process.env, HOME: fakeHome, TMPDIR: tmp, INFRA_REVIEW_GATE_DISABLE: '', INFRA_POST_AUDIT_DISABLE: '' },

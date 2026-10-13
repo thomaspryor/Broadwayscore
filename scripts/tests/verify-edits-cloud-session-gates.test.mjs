@@ -28,6 +28,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const REAL_HOME = os.homedir();
@@ -151,7 +152,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
   // (the one this PR changed), regardless of what's on the host machine.
   const fakeHomeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-fakehome-'));
   try {
-    const r = spawnSync('bash', [REPO_HOOK], {
+    const r = spawnSyncStdinFile('bash', [REPO_HOOK], {
       input: stdin,
       encoding: 'utf8',
       env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', ...env, HOME: fakeHomeDir },

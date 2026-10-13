@@ -56,6 +56,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REAL_HOME = os.homedir();
 const COMMIT_HOOK = path.join(REAL_HOME, '.claude', 'hooks', 'notion-card-required-commit.sh');
@@ -153,7 +154,7 @@ function defaultEnv(overrides = {}) {
 
 function runCommitHook({ sessionId, env = {} }) {
   const stdin = JSON.stringify({ tool_input: { command: 'git commit -m "test"' }, session_id: sessionId });
-  const r = spawnSync('bash', [COMMIT_HOOK], {
+  const r = spawnSyncStdinFile('bash', [COMMIT_HOOK], {
     input: stdin,
     encoding: 'utf8',
     env: { ...process.env, ...defaultEnv(env) },
@@ -165,7 +166,7 @@ function runCommitHook({ sessionId, env = {} }) {
 
 function runStopHook({ sessionId, transcriptPath = '/nonexistent/transcript.jsonl', env = {} }) {
   const stdin = JSON.stringify({ session_id: sessionId, transcript_path: transcriptPath, stop_hook_active: false });
-  const r = spawnSync('bash', [STOP_HOOK], {
+  const r = spawnSyncStdinFile('bash', [STOP_HOOK], {
     input: stdin,
     encoding: 'utf8',
     env: { ...process.env, ...defaultEnv(env) },

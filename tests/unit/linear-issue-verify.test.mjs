@@ -18,6 +18,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, rmSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const HOOK = path.join(homedir(), '.claude/hooks/linear-issue-verify.sh');
 const TERMINAL_NAMES = ['Done', 'Paused', 'Canceled', 'Duplicate'];
@@ -36,7 +37,7 @@ function runHook(sessionId, state) {
     tool_response: { stdout: '{}', stderr: `ISSUE-UPDATED: BRO-9999 — state=${state} — commented` },
   });
   try {
-    const r = spawnSync('bash', [HOOK], { input, encoding: 'utf8' });
+    const r = spawnSyncStdinFile('bash', [HOOK], { input, encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);
     const wrote = existsSync(sentinel);
     return { wrote, body: wrote ? readFileSync(sentinel, 'utf8').trim() : null };

@@ -7,6 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOK = path.join(REPO_ROOT, '.claude', 'hooks', 'pre-push-review-gate.sh');
@@ -45,7 +46,7 @@ fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(bwsRepo, 'scripts', 
 test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
 function run(command, { cwd = REPO_ROOT, env = {} } = {}) {
-  const r = spawnSync('bash', [HOOK], {
+  const r = spawnSyncStdinFile('bash', [HOOK], {
     cwd,
     input: JSON.stringify({ tool_input: { command }, session_id: 'bro-4238-test', transcript_path: transcript, tool_use_id: 'tu-1' }),
     encoding: 'utf8',
