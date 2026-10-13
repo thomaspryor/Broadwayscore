@@ -171,13 +171,16 @@ for (const c of KNOWN_BAD_QUOTES) {
 
 // BRO-5236: BRO-4251 deleted the files but the core-data shows.json kept
 // pointing at them, so the image archiver re-downloaded the same rejected
-// bytes and main went red. The source of truth must drop the field too.
+// bytes and main went red. A field that was rejected may come back only with
+// NEW bytes: the auto-fetch re-sourced the Snowman hero/poster from the
+// Peacock Theatre's own artwork on 2026-10-13 (c244e810acf), which is correct.
+// So the guard is on the bytes the field serves, not on the field being set.
 const REJECTED_IMAGE_FIELDS = [
   ['hangmen-2022', 'hero'],
   ['the-snowman-west-end-2026', 'hero'],
   ['the-snowman-west-end-2026', 'poster'],
 ];
-test('shows.json no longer points at the rejected hero/poster fields', (t) => {
+test('shows.json no longer points rejected hero/poster fields at missing or rejected bytes', (t) => {
   const file = path.join(ROOT, 'data', 'shows.json');
   if (!fs.existsSync(file)) return t.skip('data/shows.json not present (no-data job)');
   const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -186,7 +189,12 @@ test('shows.json no longer points at the rejected hero/poster fields', (t) => {
   for (const [id, field] of REJECTED_IMAGE_FIELDS) {
     const s = shows.find((x) => x.id === id);
     assert.ok(s, `${id} missing from shows.json (renamed? update this guard)`);
-    if (s.images && s.images[field]) bad.push(`${id}.images.${field} = ${s.images[field]}`);
+    const ref = s.images && s.images[field];
+    if (!ref) continue;
+    if (/^https?:/.test(ref)) { bad.push(`${id}.images.${field} = ${ref} (remote, not archived)`); continue; }
+    const local = path.join(ROOT, 'public', ref.replace(/^\//, ''));
+    if (!fs.existsSync(local)) bad.push(`${id}.images.${field} = ${ref} (file missing)`);
+    else if (REJECTED_IMAGE_MD5[md5(local)]) bad.push(`${id}.images.${field} = ${ref} (rejected bytes)`);
   }
   assert.deepEqual(bad, []);
 });
