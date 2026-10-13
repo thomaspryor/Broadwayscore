@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-13T05:07:53.973Z",
+  "generatedAt": "2026-10-13T09:35:40.995Z",
   "shadow": true,
-  "checkoutSha": "ac934e5892f24090b6885b5967d77aebf0dc4d4e",
-  "totalCandidates": 673,
-  "eligibleCandidates": 147,
+  "checkoutSha": "96d96004bdec18b6022f09c4df1a4e2700b3a2b7",
+  "totalCandidates": 645,
+  "eligibleCandidates": 122,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 24,
+    "pass": 23,
     "fail": 1,
-    "unverifiable": 5
+    "unverifiable": 6
   },
   "alreadyDone": [
     {
@@ -86,12 +86,6 @@
       "detail": null
     },
     {
-      "id": "BRO-4877",
-      "name": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
-      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-4869",
       "name": "Critics' Take: Wicked tour refused by the model; audit drift false positives on text-light shows",
       "verifyCmd": "node --test tests/unit/critic-consensus-eligibility.test.mjs",
@@ -163,21 +157,27 @@
       "id": "BRO-5166",
       "name": "Major-outlet reviews not counted in scores: Data: T1/T2 silent review gaps (11 reviews, 3 T1)",
       "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
-      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-13T05:05:40.485Z health snapshot\n"
+      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-13T09:28:34.882Z health snapshot\n"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-5231",
-      "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
-      "verifyCmd": "node --test tests/unit/url-corrected-refetch-drain.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/url-corrected-refetch-drain.test.mjs"
+      "id": "BRO-5236",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no image file carries a hash rejected by eye\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 145507ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4960",
       "name": "Critics' Take blurb outlives its reviews for up to 7 days after a wrongShow/removal (prune only runs weekly)",
       "verifyCmd": "node --test tests/unit/critic-consensus-prune-only.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
+    },
+    {
+      "id": "BRO-4891",
+      "name": "Older musicals and missing prior-production pages for revival promo (Dreamgirls 2016, Sound of Music tour, Full Monty, JP, Paddington, director data)",
+      "verifyCmd": "node --test tests/unit/revival-promo-musicals-and-missing-pages.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-musicals-and-missing-pages.test.mjs"
     },
     {
       "id": "BRO-4889",
