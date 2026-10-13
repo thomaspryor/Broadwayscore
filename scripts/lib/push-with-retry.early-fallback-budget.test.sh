@@ -220,7 +220,7 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
     # real hang, i.e. it would certify hang coverage it never exercised
     # (adversarial review finding, BRO-3663). Same line as deadline.test.sh:72.
     git -C "$W3" config protocol.ext.allow always
-    git -C "$W3" remote set-url origin "ext::sh -c 'sleep 120'"
+    git -C "$W3" remote set-url origin "ext::sleep 120"
   fi
 
   if [ -n "$W3" ]; then

@@ -24,7 +24,7 @@ setup_repo() {
 
 # --- Case 1: deadline=0 → break before any attempt, exit 1, warning present ---
 TMP1=$(mktemp -d)
-trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}" "${TMP4:-}" "${TMP5:-}" "${TMP6:-}"' EXIT
+trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}" "${TMP4:-}" "${TMP5:-}" "${TMP6:-}" "${TMP7:-}" "${TMP8:-}"' EXIT
 setup_repo "$TMP1"
 # A staged (clean) change so there is real work queued; no remote is configured,
 # so a push WOULD fail — but deadline=0 must short-circuit before that.
@@ -70,7 +70,7 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
   TMP3=$(mktemp -d)
   setup_repo "$TMP3"
   git -C "$TMP3" config protocol.ext.allow always   # ext:: is user-gated by default
-  git -C "$TMP3" remote add origin "ext::sh -c 'sleep 120'"
+  git -C "$TMP3" remote add origin "ext::sleep 120"
   printf '{ "ok": 3 }\n' > "$TMP3/state.json"
   git -C "$TMP3" add state.json
   start=$SECONDS
@@ -237,6 +237,65 @@ elif [[ "$r6_reason" != retries-exhausted\(early-fallback\) && "$r6_reason" != a
   echo "FAIL[6]: unexpected reason '$r6_reason' — wanted retries-exhausted(early-fallback) or an api-fallback-* row"; fail=1
 else
   echo "PASS[6]: early break records attempt=1 on all $r6_rows post-loop row(s), reason '$r6_reason'"
+fi
+
+# --- Cases 7-8 (BRO-2800): the deadline used to be checked only at the loop top,
+# so an iteration starting just before it ran every op at the full
+# GIT_NET_TIMEOUT_SEC. Hung (ext:: sleep) remote, GIT_NET_TIMEOUT_SEC=30.
+if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; then
+  # Case 7: deadline 4s, PUSH_OP_MIN_TIMEOUT_SEC=2. The first push must be
+  # killed at its CLAMPED cap (~4s, not 30s), and the in-iteration check must
+  # break before the fetch. Old behaviour: >=60s (30s push + 30s fetch + ...).
+  TMP7=$(mktemp -d)
+  setup_repo "$TMP7"
+  git -C "$TMP7" config protocol.ext.allow always
+  git -C "$TMP7" remote add origin "ext::sleep 120"
+  printf '{ "ok": 7 }\n' > "$TMP7/state.json"
+  git -C "$TMP7" add state.json
+  start=$SECONDS
+  out7=$( cd "$TMP7" && GIT_NET_TIMEOUT_SEC=30 PUSH_DEADLINE_SEC=4 PUSH_OP_MIN_TIMEOUT_SEC=2 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP7/f.jsonl" bash "$PUSH_SCRIPT" 5 main 2>&1 ); code7=$?
+  elapsed=$(( SECONDS - start ))
+  push_secs=$(grep -o 'Pre-resolution push (attempt 1) FAILED in [0-9]*s' <<<"$out7" | grep -o '[0-9]*s$' | tr -d s)
+  if [ "$code7" -eq 0 ]; then
+    echo "FAIL[7]: expected a failed push, got exit 0"; fail=1
+  elif [ -z "$push_secs" ] || [ "$push_secs" -ge 20 ]; then
+    echo "FAIL[7]: first push not clamped (took '${push_secs:-?}'s, GIT_NET_TIMEOUT_SEC=30). Output:"; echo "$out7"; fail=1
+  elif ! grep -q "deadline 4s exceeded during attempt 1 (after its push, before fetch)" <<<"$out7"; then
+    echo "FAIL[7]: in-iteration deadline check did not fire. Output:"; echo "$out7"; fail=1
+  elif grep -q "fetch(explicit-refspec)" <<<"$out7"; then
+    echo "FAIL[7]: a fetch ran after the deadline. Output:"; echo "$out7"; fail=1
+  elif ! grep -q "killed mid-transport at the [0-9]s cap\|past the [0-9]s cap\|HANG at the [0-9]s cap" <<<"$out7"; then
+    echo "FAIL[7]: rc description should name the clamped cap, not 30s. Output:"; echo "$out7"; fail=1
+  elif [ "$elapsed" -ge 30 ]; then
+    echo "FAIL[7]: took ${elapsed}s (>=30s) — overshoot not bounded"; fail=1
+  else
+    echo "PASS[7]: push clamped to ${push_secs}s, broke before fetch, total ${elapsed}s (was >=60s)"
+  fi
+
+  # Case 8: far from the deadline the clamp must NOT raise or lower the cap:
+  # GIT_NET_TIMEOUT_SEC=3 with PUSH_OP_MIN_TIMEOUT_SEC=50 (> the cap) and a
+  # 600s deadline → each op still killed at ~3s, never 50s.
+  TMP8=$(mktemp -d)
+  setup_repo "$TMP8"
+  git -C "$TMP8" config protocol.ext.allow always
+  git -C "$TMP8" remote add origin "ext::sleep 120"
+  printf '{ "ok": 8 }\n' > "$TMP8/state.json"
+  git -C "$TMP8" add state.json
+  start=$SECONDS
+  out8=$( cd "$TMP8" && GIT_NET_TIMEOUT_SEC=3 PUSH_DEADLINE_SEC=600 PUSH_OP_MIN_TIMEOUT_SEC=50 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP8/f.jsonl" bash "$PUSH_SCRIPT" 1 main 2>&1 ); code8=$?
+  elapsed=$(( SECONDS - start ))
+  push_secs=$(grep -o 'Pre-resolution push (attempt 1) FAILED in [0-9]*s' <<<"$out8" | grep -o '[0-9]*s$' | tr -d s)
+  if [ "$code8" -eq 0 ]; then
+    echo "FAIL[8]: expected a failed push, got exit 0"; fail=1
+  elif [ -z "$push_secs" ] || [ "$push_secs" -ge 10 ]; then
+    echo "FAIL[8]: push not killed at GIT_NET_TIMEOUT_SEC=3 (took '${push_secs:-?}'s). Output:"; echo "$out8"; fail=1
+  elif grep -q "deadline 600s exceeded" <<<"$out8"; then
+    echo "FAIL[8]: deadline fired on a 600s budget"; fail=1
+  else
+    echo "PASS[8]: far from the deadline the cap stays GIT_NET_TIMEOUT_SEC (push ${push_secs}s, total ${elapsed}s)"
+  fi
+else
+  echo "SKIP[7-8]: no timeout/gtimeout binary"
 fi
 
 if [ "$fail" -ne 0 ]; then

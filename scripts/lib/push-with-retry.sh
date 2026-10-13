@@ -140,6 +140,38 @@ GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}   # hard cap per fetch/push op
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}     # git aborts if <1KB/s this long
 PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min); override per-caller for measured high-churn cost
 
+# BRO-2800: in-iteration deadline bound. The deadline above used to be checked
+# only at the TOP of each retry-loop iteration, so an iteration that began just
+# before it could run every network op it contains at the full
+# GIT_NET_TIMEOUT_SEC (+10s kill) — pre-resolution push, explicit fetch, bare
+# fallback / widen fetches, post-resolution push, content-survival fetches —
+# and overshoot by several minutes. Callers kept raising their own job
+# timeout-minutes instead (BRO-2370, BRO-2799). Now, INSIDE the retry loop
+# only (_PWR_IN_LOOP), each fetch/push gets min(GIT_NET_TIMEOUT_SEC,
+# max(PUSH_OP_MIN_TIMEOUT_SEC, time left)) — so far from the deadline nothing
+# changes, and past it each op is capped at PUSH_OP_MIN_TIMEOUT_SEC — and the
+# loop also re-checks the deadline after the pre-resolution push and again
+# after the fetch phase (both points where nothing has been resolved yet, so
+# breaking abandons no resolved commit). The post-resolution push is never
+# skipped (it publishes a resolution; see task #183 below), only clamped.
+# Honest residual bound past the deadline: one in-flight op that started just
+# before it (<= GIT_NET_TIMEOUT_SEC+10), local rebase/merge CPU (not a network
+# op, not clamped; measured ~3 min worst case, task #458), then at most the
+# post-resolution push and its content-survival fetches at
+# PUSH_OP_MIN_TIMEOUT_SEC+10 each, plus the Git Data API fallback, which
+# BRO-2824 already bounds by the remaining deadline. A legitimately slow
+# deepen/unshallow fetch is only clamped when less than GIT_NET_TIMEOUT_SEC
+# remains; if it then times out, the loop-top check breaks as before.
+# Pre-loop and post-loop network ops (entry ls-remote, API fallback, its
+# post-success fetch) keep the full GIT_NET_TIMEOUT_SEC.
+PUSH_OP_MIN_TIMEOUT_SEC=${PUSH_OP_MIN_TIMEOUT_SEC:-20}
+case "$PUSH_OP_MIN_TIMEOUT_SEC" in ''|*[!0-9]*) PUSH_OP_MIN_TIMEOUT_SEC=20 ;; esac
+_PWR_IN_LOOP=0
+# The cap the most recent fetch/push actually ran under, for log lines (a
+# clamped op dies at its own cap, not GIT_NET_TIMEOUT_SEC — printing the wrong
+# number would reintroduce the misattribution BRO-2732/BRO-2373 fixed).
+_LAST_NET_TIMEOUT="$GIT_NET_TIMEOUT_SEC"
+
 # Task #1792: how many failed local fetch+rebase+push attempts to tolerate
 # before trying the Git Data API fallback (below), instead of waiting for the
 # full $MAX_RETRIES/deadline exhaustion. Default floors at 3 — the backoff
@@ -165,13 +197,26 @@ _timeout() {  # _timeout <secs> <cmd...> — fail-open (run directly) if no bina
 # Network-op wrappers: hard timeout + git-native low-speed abort. The lowSpeed
 # config is HTTP-only (no-op on SSH remotes); the timeout wraps ALL transports
 # (intended — a hung SSH push should die too, and 90s is generous for a real one).
+# Sets _LAST_NET_TIMEOUT (no subshell, so the value is visible to the log lines
+# afterwards). Any oddity (non-numeric GIT_NET_TIMEOUT_SEC/PUSH_DEADLINE_SEC)
+# falls back to GIT_NET_TIMEOUT_SEC unchanged.
+_set_net_op_timeout() {
+  _LAST_NET_TIMEOUT="$GIT_NET_TIMEOUT_SEC"
+  [ "$_PWR_IN_LOOP" = "1" ] || return 0
+  case "$GIT_NET_TIMEOUT_SEC$PUSH_DEADLINE_SEC" in ''|*[!0-9]*) return 0 ;; esac
+  local left=$(( PUSH_DEADLINE_SEC - SECONDS ))
+  [ "$left" -lt "$PUSH_OP_MIN_TIMEOUT_SEC" ] && left="$PUSH_OP_MIN_TIMEOUT_SEC"
+  [ "$left" -lt "$GIT_NET_TIMEOUT_SEC" ] && _LAST_NET_TIMEOUT="$left"
+  return 0
+}
 git_fetch() {
   # unbounded-fetch-ok: this is the transport WRAPPER, not a call site. Every
   # invocation passes its own depth bound through "$@" (FETCH_DEPTH_ARGS below,
   # computed by scripts/lib/shallow-fetch-args.js whenever the checkout is
   # shallow). scripts/audit-unbounded-fetch.js cannot see through "$@", so the
   # waiver lives here rather than as a fake flag on the git line.
-  _timeout "$GIT_NET_TIMEOUT_SEC" \
+  _set_net_op_timeout
+  _timeout "$_LAST_NET_TIMEOUT" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
 }
 git_push() {
@@ -220,13 +265,14 @@ git_push() {
   _PUSH_LAST_HOOK_TEXT=""
   local _perr _prc=0 _hook_path
   _perr=$(mktemp 2>/dev/null) || _perr=""
+  _set_net_op_timeout
   if [ -z "$_perr" ]; then
-    _timeout "$GIT_NET_TIMEOUT_SEC" \
+    _timeout "$_LAST_NET_TIMEOUT" \
       git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
     return $?
   fi
   chmod 600 "$_perr" 2>/dev/null || true
-  _timeout "$GIT_NET_TIMEOUT_SEC" \
+  _timeout "$_LAST_NET_TIMEOUT" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@" >"$_perr" 2>&1 || _prc=$?
   _redact_creds <"$_perr" >&2 || true
   case "$_prc" in
@@ -503,9 +549,9 @@ git_push_traced() {
 # scripts/lib/push-retry-deadman.js would surface healthy runs as failures.
 describe_push_rc() {
   case "$1" in
-    124) echo "timeout: killed mid-transport at the ${GIT_NET_TIMEOUT_SEC}s cap (rc=124, SIGTERM), so git printed no error of its own — a transport HANG, not a rejection" ;;
-    137) echo "rc=137 (SIGKILL) with no git error of its own — almost always _timeout escalating past the ${GIT_NET_TIMEOUT_SEC}s cap via -k 10, i.e. a transport HANG; an external SIGKILL (OOM killer) produces the same code, so check runner memory before ruling out a rejection" ;;
-    143) echo "rc=143 (SIGTERM) with no git error of its own — busybox timeout reports the signal rather than 124; treat as a transport HANG at the ${GIT_NET_TIMEOUT_SEC}s cap" ;;
+    124) echo "timeout: killed mid-transport at the ${_LAST_NET_TIMEOUT}s cap (rc=124, SIGTERM), so git printed no error of its own — a transport HANG, not a rejection" ;;
+    137) echo "rc=137 (SIGKILL) with no git error of its own — almost always _timeout escalating past the ${_LAST_NET_TIMEOUT}s cap via -k 10, i.e. a transport HANG; an external SIGKILL (OOM killer) produces the same code, so check runner memory before ruling out a rejection" ;;
+    143) echo "rc=143 (SIGTERM) with no git error of its own — busybox timeout reports the signal rather than 124; treat as a transport HANG at the ${_LAST_NET_TIMEOUT}s cap" ;;
     *)   echo "rc=$1 — git's own stderr above carries the rejection reason" ;;
   esac
 }
@@ -1258,7 +1304,8 @@ refine_entry_base() {
 # instead), ls-remote failure or timeout: no-op.
 refine_entry_base_from_remote_tip() {
   local tip ls_timeout=10
-  [ "$GIT_NET_TIMEOUT_SEC" -lt "$ls_timeout" ] && ls_timeout="$GIT_NET_TIMEOUT_SEC"
+  _set_net_op_timeout  # BRO-2800: called inside the loop (attempt 1)
+  [ "$_LAST_NET_TIMEOUT" -lt "$ls_timeout" ] && ls_timeout="$_LAST_NET_TIMEOUT"
   tip="$(_timeout "$ls_timeout" git -c http.lowSpeedLimit=1000 -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" \
     ls-remote origin "refs/heads/$PULL_BRANCH" 2>/dev/null | awk 'NR==1{print $1}')" || tip=""
   [ -n "$tip" ] && git cat-file -e "${tip}^{commit}" 2>/dev/null || return 0
@@ -2016,6 +2063,7 @@ _ABORT_QUALIFIER=""
 # qualifier, so an api-fallback row reads api-fallback-exhausted(timeout,deadline)
 # rather than losing which loop exit preceded it. Empty on true exhaustion.
 _abort_inner() { printf '%s' "${_ABORT_QUALIFIER:+,$_ABORT_QUALIFIER}"; }
+_PWR_IN_LOOP=1  # BRO-2800: clamps per-op network timeouts (see _set_net_op_timeout)
 for i in $(seq 1 "$MAX_RETRIES"); do
   # Overall wall-clock deadline (hang guard, task #183). $SECONDS counts from this
   # script's start. If a prior attempt's git op stalled up to its per-op timeout,
@@ -2101,6 +2149,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     pre_push_rc=$?
     echo "  Pre-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$pre_push_rc")"
     abort_if_hook_rejected "$i"
+  fi
+
+  # BRO-2800: mid-iteration deadline check #1. Reached by BOTH failure shapes
+  # above (push failed, or push "succeeded" but our content was dropped and
+  # HEAD was reset). Nothing has been fetched or resolved in this iteration
+  # yet, so leaving here abandons no resolved commit.
+  if [ "$SECONDS" -ge "$PUSH_DEADLINE_SEC" ]; then
+    echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded during attempt $i (after its push, before fetch); giving up to avoid hanging the job"
+    _LOCAL_ATTEMPTS_MADE="$i"
+    _ABORT_QUALIFIER="deadline"
+    break
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
@@ -2314,7 +2373,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     explicit_fetch_rc=$?
     echo "  fetch(explicit-refspec) FAILED in $((SECONDS - fetch_start))s (rc=$explicit_fetch_rc)"
     if [ "$explicit_fetch_rc" -eq 124 ]; then
-      echo "  Skipping bare-form fallback fetch: explicit form timed out (rc=124) — retrying the identical fetch under the same slow network condition would likely also burn the full ${GIT_NET_TIMEOUT_SEC}s for nothing (task #464). Backing off to next retry attempt instead."
+      echo "  Skipping bare-form fallback fetch: explicit form timed out (rc=124) — retrying the identical fetch under the same slow network condition would likely also burn the full ${_LAST_NET_TIMEOUT}s for nothing (task #464). Backing off to next retry attempt instead."
     else
       # The explicit form failed FAST (not a timeout). When we passed a shallow
       # bound, the BOUND may be exactly what the remote rejected — e.g. git
@@ -2466,6 +2525,16 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       git update-ref "refs/remotes/origin/$PULL_BRANCH" "$FETCHED_REMOTE_SHA" 2>/dev/null || true
       refine_entry_base
     fi
+  fi
+
+  # BRO-2800: mid-iteration deadline check #2, after the fetch phase (explicit,
+  # bare-fallback and widen fetches) and before any rebase/merge — still
+  # nothing resolved in this iteration, so breaking abandons nothing.
+  if [ "$SECONDS" -ge "$PUSH_DEADLINE_SEC" ]; then
+    echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded during attempt $i (after fetch, before rebase); giving up to avoid hanging the job"
+    _LOCAL_ATTEMPTS_MADE="$i"
+    _ABORT_QUALIFIER="deadline"
+    break
   fi
 
   # Capture pre-rebase HEAD so the post-rebase survival check (Sprint 5)
@@ -2855,12 +2924,19 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # branch fixed under BRO-2951).
   if [ "$i" -lt "$MAX_RETRIES" ]; then
     WAIT=$(( 3 + i * 2 + RANDOM % 5 ))
-    echo "  Waiting ${WAIT}s before retry..."
-    sleep "$WAIT"
+    if [ $(( SECONDS + WAIT )) -ge "$PUSH_DEADLINE_SEC" ]; then
+      # BRO-2800: the loop-top deadline check would break right after this
+      # sleep anyway — sleeping first is pure latency past the deadline.
+      echo "  Skipping ${WAIT}s backoff: it would end past the ${PUSH_DEADLINE_SEC}s deadline"
+    else
+      echo "  Waiting ${WAIT}s before retry..."
+      sleep "$WAIT"
+    fi
   else
     echo "  No local attempts remain (attempt $i of $MAX_RETRIES) — skipping backoff"
   fi
 done
+_PWR_IN_LOOP=0
 
 # ── Git Data API fallback (task #707, generalizes the task #698 live fix) ───
 # The local flow above (git fetch + rebase/merge replay + push) has a floor
