@@ -186,8 +186,6 @@ const EXEMPT_NEVER_CI = {
   // real `npm audit` against the registry advisory feed and the calendar, so
   // their answer changes without a code change. Card acceptance commands only.
   'tests/live/audit-dependencies-clean.test.mjs': 'BRO-4434',
-  // BRO-3038 VERIFY of auto-filed readiness cards: reads the CI alert ledger on origin/main.
-  'tests/live/opening-readiness-clear.test.mjs': 'BRO-3038',
   'tests/live/audit-dependencies-no-expiring.test.mjs': 'BRO-4434',
 };
 

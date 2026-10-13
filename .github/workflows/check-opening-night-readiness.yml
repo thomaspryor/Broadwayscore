@@ -78,22 +78,26 @@ jobs:
       # right for a run someone dispatched and is watching, but too late for
       # update-show-status.yml's unattended run the day before opening. That
       # one files a High Linear card for the board workers instead (not an
-      # email: BRO-4603, a worker can fix this). Any passing run resolves the
-      # condition so the card closes itself. Gated on the check step's own
-      # outcome so a failed checkout never files a "readiness failed" card.
+      # email: BRO-4603, a worker can fix this). A passing run that covered the
+      # show's own market resolves the condition; the card's VERIFY reads that,
+      # and the Mac-side red-first follow-up acts on the card. Gated on
+      # the check step's own outcome so a failed checkout never files a
+      # "readiness failed" card. A filing failure is an ::error:: annotation
+      # plus a step-summary line (the step stays continue-on-error).
       - name: Route unattended failure / resolve on pass
         if: always() && (steps.readiness.outcome == 'success' || steps.readiness.outcome == 'failure')
         continue-on-error: true
         env:
           SHOW_ID: ${{ inputs.show_id }}
           TRIGGERED_BY: ${{ inputs.triggered_by }}
+          MARKET: ${{ inputs.market }}
           OUTCOME: ${{ steps.readiness.outcome }}
           RUN_ID: ${{ github.run_id }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           node scripts/route-readiness-failure.js --show="$SHOW_ID" --outcome="$OUTCOME" \
-            --triggered-by="$TRIGGERED_BY" --run-id="$RUN_ID" --run-url="$RUN_URL"
+            --triggered-by="$TRIGGERED_BY" --market="$MARKET" --run-id="$RUN_ID" --run-url="$RUN_URL"
 
       # The router's cooldown ledger + attempt log must be committed by the
       # job that wrote them (same shape as audit-imageless-scored-shows.yml).

@@ -41,7 +41,8 @@
  *   Reads the TRACKED ledger read-only from origin/main (bounded fetch, `git
  *   show origin/main:...` — never a checkout, never a write: bsc-reconcile's
  *   own rule is that a Mac-local writer must never touch the tracked alert
- *   ledger). For each red condition resolved within FOLLOW_UP_WINDOW_MS whose
+ *   ledger). For each DISPATCH_AT_FILING_PREFIXES condition (test-yml:red:,
+ *   and since BRO-5261 opening-readiness:failed:) resolved within FOLLOW_UP_WINDOW_MS whose
  *   card is still open: decideCardFollowUp() — a LIVE job leaves the card
  *   alone; a dispatched-but-finished card gets one comment and is left to its
  *   job's outcome path; a never-dispatched card is canceled with the reason
@@ -81,8 +82,15 @@ const FOLLOW_UP_MARKER = '[red-first follow-up]';
 const TRACKED_LEDGER_REL = 'data/audit/alert-ledger.json';
 const JOURNAL_PATH = process.env.RED_FIRST_JOURNAL_PATH
   || path.join(os.homedir(), '.broadwayscore-state', 'red-first-dispatch.jsonl');
+// BRO-5261: every conditionKey family the router files for dispatch-at-filing.
+// The follow-up phase below closes their cards once the condition resolves,
+// under one set of safety rules (live job, dispatch stamp, attended work).
+// Literal, not required from route-readiness-failure.js; its unit test pins
+// that the two agree.
+const DISPATCH_AT_FILING_PREFIXES = Object.freeze([RED_SIGNATURE_PREFIX, 'opening-readiness:failed:']);
+const isDispatchAtFilingKey = (key) => DISPATCH_AT_FILING_PREFIXES.some((p) => String(key || '').startsWith(p));
 // Job names carry spaces ("E2E Tests"), so the key runs to the closing paren.
-const CONDITION_KEY_RE = /condition:\s*(test-yml:red:[^)]+)\)/;
+const CONDITION_KEY_RE = new RegExp(`condition:\\s*((?:${DISPATCH_AT_FILING_PREFIXES.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})[^)]+)\\)`);
 
 // ── pure helpers ────────────────────────────────────────────────────────────
 
@@ -190,7 +198,8 @@ function followUpCommentBody({ action, conditionKey, resolvedAt, resolveReason }
   const tail = action === 'cancel'
     ? 'This card was never dispatched, so it is canceled; a recurrence of the signature re-files automatically.'
     : 'This card was dispatched; leaving its outcome to that job.';
-  return `${FOLLOW_UP_MARKER} Condition \`${conditionKey}\` resolved on main at ${resolvedAt} (${resolveReason || 'job-green'}): the failing signature no longer appears. ${tail}`;
+  const what = String(conditionKey || '').startsWith(RED_SIGNATURE_PREFIX) ? 'the failing signature no longer appears' : 'the condition no longer fires';
+  return `${FOLLOW_UP_MARKER} Condition \`${conditionKey}\` resolved on main at ${resolvedAt} (${resolveReason || 'job-green'}): ${what}. ${tail}`;
 }
 
 // ── I/O helpers (all injectable through runRedFirstPass deps) ───────────────
@@ -354,7 +363,7 @@ async function runRedFirstPass({ dryRun = false, log = console.log, now = Date.n
   let applied = 0;
   for (const [key, cond] of Object.entries(tracked.conditions || {})) {
     if (applied >= MAX_FOLLOW_UPS_PER_TICK) break;
-    if (!key.startsWith(RED_SIGNATURE_PREFIX) || !cond || cond.status !== 'resolved' || !cond.linearIdentifier) continue;
+    if (!isDispatchAtFilingKey(key) || !cond || cond.status !== 'resolved' || !cond.linearIdentifier) continue;
     const resolvedMs = Date.parse(cond.resolvedAt || '');
     if (!Number.isFinite(resolvedMs) || now - resolvedMs > FOLLOW_UP_WINDOW_MS) continue;
     const id = cond.linearIdentifier;
@@ -392,7 +401,7 @@ async function runRedFirstPass({ dryRun = false, log = console.log, now = Date.n
     const args = ['--comment', body];
     if (action === 'cancel') {
       args.push('--state', 'Canceled', '--cancel-reason',
-        `BRO-4054 red-signature follow-up: condition ${key} resolved on main (${cond.resolveReason || 'job-green'}) and this card was never dispatched.`);
+        `BRO-4054 dispatch-at-filing follow-up: condition ${key} resolved on main (${cond.resolveReason || 'job-green'}) and this card was never dispatched.`);
     }
     try {
       d.updateIssue(id, args);
@@ -409,6 +418,7 @@ async function runRedFirstPass({ dryRun = false, log = console.log, now = Date.n
 }
 
 module.exports = {
+  DISPATCH_AT_FILING_PREFIXES, isDispatchAtFilingKey,
   DAILY_CAP, ATTEMPT_COOLDOWN_MS, FOLLOW_UP_WINDOW_MS, MAX_FOLLOW_UPS_PER_TICK, FOLLOW_UP_MARKER, JOURNAL_PATH,
   utcDay, countDispatchesToday, conditionKeyFromIssue, isRedFirstCandidateIssue, isSilentSkipReason,
   selectRedFirstCandidates, decideCardFollowUp, followUpCommentBody,

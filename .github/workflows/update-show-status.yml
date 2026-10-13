@@ -1914,8 +1914,11 @@ jobs:
           fi
 
           echo "$SHOWS" | while IFS='|' read -r SHOW_ID MARKET; do
-            echo "Triggering readiness check for: $SHOW_ID (market: $MARKET)"
-            gh workflow run check-opening-night-readiness.yml -f show_id="$SHOW_ID" -f market="$MARKET" -f triggered_by=update-show-status || echo "::warning::Failed to trigger readiness check for $SHOW_ID"
+            echo "Triggering readiness check for: $SHOW_ID (category: $MARKET)"
+            # market=auto: the input is a choice (auto|broadway|west-end), so a raw
+            # category like off-broadway was rejected at dispatch; the check
+            # reads the same category from shows.json itself (BRO-5261).
+            gh workflow run check-opening-night-readiness.yml -f show_id="$SHOW_ID" -f market=auto -f triggered_by=update-show-status || echo "::warning::Failed to trigger readiness check for $SHOW_ID"
           done
 
   # Alert on consecutive failures

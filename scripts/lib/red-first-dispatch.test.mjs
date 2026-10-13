@@ -207,3 +207,55 @@ test('runRedFirstPass honors the kill switches without touching Linear', async (
     }
   }
 });
+
+// BRO-5261: opening-readiness:failed:* cards are dispatch-at-filing too
+// (route-readiness-failure.js), so their follow-up runs under the same rules.
+test('follow-up covers opening-readiness:failed:* cards with the red-card safety rules (BRO-5261)', async () => {
+  const { DISPATCH_AT_FILING_PREFIXES, isDispatchAtFilingKey } = require('./red-first-dispatch.js');
+  const { CONDITION_PREFIX } = require('../route-readiness-failure.js');
+  assert.ok(DISPATCH_AT_FILING_PREFIXES.includes(CONDITION_PREFIX), 'prefix list matches the readiness filer');
+  assert.equal(isDispatchAtFilingKey('opening-readiness:failed:x-2026'), true);
+  assert.equal(isDispatchAtFilingKey('health-check:Cookies'), false);
+  assert.equal(conditionKeyFromIssue(redCard(1, { key: 'opening-readiness:failed:x-2026' })), 'opening-readiness:failed:x-2026');
+
+  const resolvedAt = ago(60 * 60 * 1000);
+  const card = (n) => ({ ...redCard(n, { key: `opening-readiness:failed:show-${n}` }), comments: { nodes: [] } });
+  const open = [card(5001), card(5002), card(5003), card(5004)];
+  const byId = new Map(open.map((i) => [i.identifier, i]));
+  const tracked = { conditions: {
+    // live job on the card: leave it, even though the condition resolved
+    'opening-readiness:failed:show-5001': { status: 'resolved', resolvedAt, linearIdentifier: 'BRO-5001', dispatch: { requestedAt: ago(7200000) } },
+    // resolved, untouched, no live job, never dispatched: cancel
+    'opening-readiness:failed:show-5002': { status: 'resolved', resolvedAt, linearIdentifier: 'BRO-5002' },
+    // dispatch requested at filing, job finished: one comment, outcome path closes
+    'opening-readiness:failed:show-5003': { status: 'resolved', resolvedAt, linearIdentifier: 'BRO-5003', dispatch: { requestedAt: ago(7200000) } },
+    // still open: nothing
+    'opening-readiness:failed:show-5004': { status: 'open', linearIdentifier: 'BRO-5004' },
+  } };
+  const updates = [];
+  const journal = [];
+  const summary = await runRedFirstPass({ now: NOW, log: () => {}, deps: {
+    listOpenIssues: async () => [], getIssue: async (id) => byId.get(id) || null,
+    openJobTaskIds: () => new Set(['linear:BRO-5001']),
+    readJournal: () => journal.slice(), appendJournal: (r) => journal.push({ ts: new Date(NOW).toISOString(), ...r }),
+    readTrackedLedger: () => tracked, dispatch: () => {}, updateIssue: (id, args) => updates.push({ id, args }),
+  } });
+  // listOpenIssues returned nothing, so every card reads as not-open: none.
+  assert.deepEqual(summary.followUps, []);
+
+  const updates2 = [];
+  const summary2 = await runRedFirstPass({ now: NOW, log: () => {}, deps: {
+    listOpenIssues: async () => open, getIssue: async (id) => byId.get(id) || null,
+    openJobTaskIds: () => new Set(['linear:BRO-5001']),
+    readJournal: () => [], appendJournal: () => {},
+    readTrackedLedger: () => tracked, dispatch: () => {}, updateIssue: (id, args) => updates2.push({ id, args }),
+  } });
+  const actions = Object.fromEntries(summary2.followUps.map((f) => [f.identifier, f.action]));
+  assert.deepEqual(actions, { 'BRO-5001': 'leave', 'BRO-5002': 'cancel', 'BRO-5003': 'comment' });
+  const cancel = updates2.find((u) => u.id === 'BRO-5002');
+  assert.ok(cancel.args.includes('Canceled'));
+  assert.match(cancel.args[cancel.args.indexOf('--comment') + 1], /the condition no longer fires/);
+  const comment = updates2.find((u) => u.id === 'BRO-5003');
+  assert.equal(comment.args.includes('--state'), false);
+  assert.equal(updates2.some((u) => u.id === 'BRO-5001' || u.id === 'BRO-5004'), false);
+});

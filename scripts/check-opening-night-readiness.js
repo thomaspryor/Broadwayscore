@@ -20,6 +20,7 @@ const https = require('https');
 const { imagePresent } = require('./lib/show-image-presence');
 const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
 const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
+const { readinessMarket, isWestEndReadinessMarket } = require('./lib/readiness-market');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -82,9 +83,10 @@ if (!show) {
   process.exit(1);
 }
 
-market = MARKET || show.category || 'broadway';
-const isBroadway = !market.includes('west-end') && !market.includes('off-west-end');
-const isWestEnd = market.includes('west-end') || market.includes('off-west-end');
+market = readinessMarket(MARKET, show.category);
+// Shared with route-readiness-failure.js's resolve check (BRO-5261).
+const isWestEnd = isWestEndReadinessMarket(market);
+const isBroadway = !isWestEnd;
 
 console.log(`\n${'═'.repeat(60)}`);
 console.log(`  Opening Night Readiness: ${show.title}`);
