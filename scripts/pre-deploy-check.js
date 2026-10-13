@@ -354,8 +354,15 @@ if (errors > 0) {
   // the shared baseline; a local `node scripts/pre-deploy-check.js` run against this
   // machine's core-data clone would otherwise stamp a count the published corpus
   // never had (observed 19626 vs the real 19368 on 2026-08-02T17:54Z).
-  const { shouldWriteDeployWatermark } = require('./lib/corpus-determinism.js');
-  const watermarkGate = shouldWriteDeployWatermark(process.env);
+  const { evaluateWatermarkWrite } = require('./lib/corpus-determinism.js');
+  // BRO-3581: a deploy that passes the 3% check must not also ratchet the
+  // baseline down by a catastrophic amount.
+  const watermarkGate = evaluateWatermarkWrite({
+    env: process.env,
+    existingWatermarkCount: watermark?.reviewCount,
+    newCount: reviewCount,
+  });
+  if (watermarkGate.advisory) console.log(`📌 Deploy watermark advisory — ${watermarkGate.advisory}`);
   const newWatermark = { showCount, reviewCount, updatedAt: new Date().toISOString() };
   if (!watermarkGate.write) {
     console.log(`📌 Deploy watermark NOT written — ${watermarkGate.reason}`);

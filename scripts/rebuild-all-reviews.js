@@ -6253,7 +6253,17 @@ if (!isRunningInCI()) {
   // watermark of 19626 while every core-data reviews.json around it held 19368.
   // That poisons pre-deploy-check.js's regression baseline and the corpus-
   // determinism series. Override locally with ALLOW_LOCAL_WATERMARK=1.
-  const watermarkGate = require('./lib/corpus-determinism.js').shouldWriteDeployWatermark(process.env);
+  // BRO-3581: also refuses to lower the baseline by a catastrophic amount (see
+  // evaluateWatermarkWrite); --force-write is the intentional-reset escape hatch.
+  let existingWatermarkCount;
+  try { existingWatermarkCount = JSON.parse(fs.readFileSync(watermarkPath, 'utf8')).reviewCount; } catch { /* first run */ }
+  const watermarkGate = require('./lib/corpus-determinism.js').evaluateWatermarkWrite({
+    env: process.env,
+    forceWrite: process.argv.includes('--force-write'),
+    existingWatermarkCount,
+    newCount: allReviews.length,
+  });
+  if (watermarkGate.advisory) console.log(`\n📌 Deploy watermark advisory — ${watermarkGate.advisory}`);
   if (!watermarkGate.write) {
     console.log(`\n📌 Deploy watermark NOT written — ${watermarkGate.reason}`);
   } else {
