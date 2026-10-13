@@ -4819,6 +4819,9 @@ jobs:
         # data repo; the committed gold list lags. Regenerating here ensures the
         # test always sees a gold list consistent with the current reviews.json.
         run: node scripts/compute-gold-lists.js
+      - name: Snapshot data/audit before tests (BRO-2664)
+        # Pairs with "Ledger isolation check" at the end of this job.
+        run: git status --porcelain -- data/audit > "$RUNNER_TEMP/audit-before.txt"
       - name: Run unit tests (no-data-dependency)
         # BSC_STAGE_LATENCY_MUTE: review-file-writer's saveReview emits the
         # review-first-seen stage-latency event unconditionally. Unit fixtures
@@ -5588,6 +5591,26 @@ jobs:
             cat "$RUNNER_TEMP/bt.md"
             grep -v '^::' "$RUNNER_TEMP/bt.md" >> "$GITHUB_STEP_SUMMARY" || true
           done
+
+      - name: Ledger isolation check (BRO-2664, advisory)
+        # A test that drives a real chokepoint can append synthetic rows to a
+        # tracked production ledger (BRO-2644, BRO-2656). Any data/audit change
+        # made during this job's tests means one of them did. Advisory first
+        # (CLAUDE.md §19): warns, never fails. Promote after green main runs.
+        if: always()
+        continue-on-error: true
+        run: |
+          before="$RUNNER_TEMP/audit-before.txt"
+          [ -f "$before" ] || { echo "No snapshot; skipping."; exit 0; }
+          git status --porcelain -- data/audit > "$RUNNER_TEMP/audit-after.txt"
+          new=$(comm -13 <(sort "$before") <(sort "$RUNNER_TEMP/audit-after.txt"))
+          if [ -n "$new" ]; then
+            echo "::warning::Unit tests wrote to production ledgers under data/audit:"
+            echo "$new"
+            echo "Isolate the test: redirect the ledger path to a tmp dir (see BRO-2656)."
+          else
+            echo "OK: no test wrote to data/audit."
+          fi
 
   data-safety-guards:
     name: Data Safety Guards
