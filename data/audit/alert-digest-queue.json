@@ -2186,5 +2186,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-13T20:08:54.363Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5254-strip-fixes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5254-strip-fixes",
+    "description": "land.yml did not land land/bro-5254-strip-fixes: the unit-tests-node gate went red at 0d5394f4f8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38460757694",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5254-strip-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0d5394f4f8adffdaa0ddcff0346e52e18cedec46"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38460757694"
+      }
+    ],
+    "queuedAt": "2026-10-13T20:47:37.789Z"
   }
 ]
