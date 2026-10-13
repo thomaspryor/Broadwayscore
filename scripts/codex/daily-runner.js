@@ -551,7 +551,7 @@ async function workCard(pick, stats, inFlight) {
       const base = git(['rev-parse', 'HEAD']);
       for (let retry = 0; ; retry++) {
         keepLock();
-        const cx = runCodex(id, text, `codex${++execs}`, timeoutMs);
+        const cx = runCodex(id, text, `codex${++execs}`, retry ? Math.min(timeoutMs, fixExecMs()) : timeoutMs);
         const transient = cx.code !== 0 ? R.codexExitTransient(cx.out) : null;
         if (!transient || retry >= 2 || cardDeadline - Date.now() < 15 * 60_000) return cx;
         log(`${id}: Codex exited ${cx.code} on a provider error (${transient}); retry ${retry + 1} in 4 min`);
@@ -751,7 +751,7 @@ function readLock() {
   const sha = lockRemoteTip();
   if (sha === null) return { error: 'ls-remote failed' };
   if (!sha) return { sha: '' };
-  const f = sh('git', ['fetch', '-q', 'origin', LOCK_REF], { cwd: ROOT, timeoutMs: LOCK_GIT_MS });
+  const f = sh('git', ['fetch', '-q', 'origin', LOCK_REF], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless (commit-tree), so this is always one commit
   if (f.code !== 0) return { error: `fetching the lock timed out or failed: ${tail(f.out.trim(), 200)}` };
   const meta = sh('git', ['log', '-1', '--format=%ct%n%s%n%b', 'FETCH_HEAD'], { cwd: ROOT });
   const [ct, subject, ...body] = meta.stdout.split('\n');
