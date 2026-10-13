@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+require('./lib/cli-help').exitOnHelp(module);
 
 const PERMANENCE = /\b(permanent(ly)?|indefinite(ly)?|stays? (in (the )?)?baselined?|deliberate(ly)? (exception|stays?|exempt|kept|retained)|forever|never (migrate|fix)|won'?t fix)\b|permanent_/i;
 // Show ids / slugs / URLs ("on-a-clear-day-you-can-see-forever-2011") are data, not prose.
