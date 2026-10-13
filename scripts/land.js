@@ -176,7 +176,7 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
     let v = markerCheck({ tip: args['expect-tip'], repoDir });
     // The mutex step saw the marker: a git hiccup here must not turn a real
     // train landing into a refusal (and an owner alert).
-    for (let i = 0; i < 3 && !v.landed && args['train-landed-only'] === true; i += 1) {
+    for (let i = 0; i < 3 && !v.landed && (args['train-landed-only'] === true || v.markerSha); i += 1) {
       execFileSync('sleep', [String(5 * (i + 1))]);
       v = markerCheck({ tip: args['expect-tip'], repoDir });
     }
@@ -184,7 +184,8 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
       console.error(`[land] ${v.reason} — nothing to push`);
       return writeResult({ landed: true, sha: v.markerSha, attempts: 0, wallMs: Date.now() - t0, failedCheck: null, reason: v.reason, pushed: false, files: [], verified: 'LANDED', contentNote: null, baseSha: null, verifiedBase: args['verified-base'] || null, churnSkips: 0, riders: [], trainDropped: [], train: 'rider' });
     }
-    if (args['train-landed-only'] === true) {
+    // A marker that exists but will not confirm on main: never land around it.
+    if (args['train-landed-only'] === true || v.markerSha) {
       return writeResult({ landed: false, sha: null, attempts: 0, wallMs: Date.now() - t0, failedCheck: 'train-marker', reason: `the landing mutex step saw a merge-train marker for ${args['expect-tip'].slice(0, 10)} but it does not confirm now (${v.reason}); refusing to land without the lock`, pushed: false, files: [] });
     }
   }
