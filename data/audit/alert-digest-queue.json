@@ -1550,6 +1550,36 @@
     "queuedAt": "2026-10-13T14:48:21.807Z"
   },
   {
+    "conditionKey": "land:land/bro-5261-s1-tracker-release",
+    "title": "Landing blocked: race red on land/bro-5261-s1-tracker-release",
+    "description": "land.yml did not land land/bro-5261-s1-tracker-release: the race gate went red at bb3234dd78. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5261-s1-tracker-release @ bb3234dd78 (origin/land/bro-5261-s1-tracker-release) → origin/main @ d6fa94194f [land] attempt 1/3: rebased onto d6fa94194f, 5 file(s) changed — running checks [land] verified-base: main moved c14d98ad16 → d6fa94194f across 222 file(s), substantive — re-checking on the merged tree (+34 test file(s) changed on main since the verified base) [land] linked 21  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38413103793",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5261-s1-tracker-release"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "bb3234dd78f82fb5eead2af6c28664b3d0affa24"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38413103793"
+      }
+    ],
+    "queuedAt": "2026-10-13T16:31:00.954Z"
+  },
+  {
     "conditionKey": "corpus-drift:sibling-title-misroute",
     "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
     "description": "check-corpus-drift.js audit \"sibling-title-misroute\" (node scripts/audit-sibling-title-misroute.js --strict) has been drifting. Latest output:\n\n    the-phantom-of-the-opera-west-end-1986  variety--unknown.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-play-that-goes-wrong-west-end-2021  chicagotribune--chris-jones.json  (cross-market: US-only outlet \"chicagotribune\" reviewing WE show)\n    the-play-that-goes-wrong-west-end-2021  variety--frank-rizzo.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-producers-west-end-2025  deadline--unknown.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-whos-tommy-tour-2026  deadline--greg-evans.json  (tour: review date is outside every tour of this title)\n    titanique-west-end-2024  cititour--brian-scott-lipton.json  (cross-market: US-only outlet \"cititour\" reviewing WE show)\n    titanique-west-end-2024  nypost--johnny-oleksinski.json  (cross-market: US-only outlet \"nypost\" reviewing WE show)\n    titanique-west-end-2024  the-queer-review--james-kleinmann.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    titanique-west-end-2024  thewrap--robert-hofler.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    titanique-west-end-2024  wsj--charles-isherwood.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  dailybeast--tim-teeman.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  hollywood-reporter--david-rooney.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  latimes--charles-mcnulty.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  newsday--elisabeth-vincentelli.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  newsday--elysa-gardner.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  nydailynews--chris-jones.json  (cross-market: US-only outlet \"nydailynews\" reviewing WE show)\n    to-kill-a-mockingbird-west-end-2026  thewrap--thom-geier.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    two-strangers-carry-a-cake-across-new-york-west-end-2024  daily-mail--patrick-marmion.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    water-for-elephants-tour-2025  broadwayworld--jonathan-netek.json  (tour: review date is outside every tour of this title)\n    water-for-elephants-tour-2025  observer--david-cote.json  (tour: review date is outside every tour of this title)\n    wicked-west-end-2021  timeout--david-cote.json  (cross-market: Broadway URL pattern: /newyork\\.timeout\\.com/i)\n\n✗ STRICT: 16 sibling-title misroute(s) NOT in baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/sibling-title-misroute-baseline.json):\n    [reroute] school-pictures-off-broadway-2026 -> school-pictures-off-broadway-2023  theatermania--zachary-stewart.json  (sibling opening 2d from publishDate vs current 1061d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  london-theatre--aliya-al-hassan.json  (sibling opening 7d from publishDate vs current 450d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  london-theatre--aliya-al-hussan.json  (sibling opening 7d from publishDate vs current 450d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  lovelondonloveculture--emma.json  (sibling opening 15d from publishDate vs current 442d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  westendtheatre--west-end-theatre-editorial.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] titanique-west-end-2024 -> titanique-2026  britishtheatrecom--susan-novak.json  (sibling opening 37d from publishDate vs current 496d)\n    [ambiguous] cruise-west-end-2022  standard--nick-curtis.json  (ambiguous-production)\n    [ambiguous] cruise-west-end-2022  telegraph--dominic-cavendish.json  (ambiguous-production)\n    [ambiguous] for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024  a-youngish-perspective--beatriz-do.json  (ambiguous-production)\n    [ambiguous] for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024  nytimes--houman-barekat.json  (ambiguous-production)\n    [ambiguous] inter-alia-west-end-2025  nytimes--houman-barekat.json  (ambiguous-production)\n    [ambiguous] much-ado-about-nothing-west-end-2022  artsdesk--rachel-halliburton.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  broadwayworld--senior-franco-milazzo.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  noelcowardtheatre--unknown.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  thestage--unknown.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  writewatchwork--abbybathurst.json  (ambiguous-production)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
@@ -1561,36 +1591,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-13T15:32:14.476Z"
-  },
-  {
-    "conditionKey": "land:land/bro-2463-reconcile-ledgers",
-    "title": "Landing blocked: unit-tests-node red on land/bro-2463-reconcile-ledgers",
-    "description": "land.yml did not land land/bro-2463-reconcile-ledgers: the unit-tests-node gate went red at 3470701eef. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38419555765",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-2463-reconcile-ledgers"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "3470701eef03e33504ec1f60d37bbae9a3d91b8c"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38419555765"
-      }
-    ],
-    "queuedAt": "2026-10-13T16:16:56.577Z"
   },
   {
     "conditionKey": "opening-night-placeholder-synopsis-unconditional-a-new-musical-memoir-off-broadway-2026",
