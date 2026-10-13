@@ -112,13 +112,26 @@ function sumBbMinutesOnDay(json, dayIso) {
   return ms / 60000;
 }
 
+/**
+ * The ONE place that knows ScrapingBee's /usage field names (BRO-3010).
+ * Values pass through untouched (undefined when absent) so every caller keeps
+ * its own existing default/coercion — `fields.used || 0`, `Number(fields.max)`
+ * — and nothing about its behaviour changes; only the field names moved here.
+ * renewalAt is the raw timestamp (health-check.js needs the time of day).
+ */
+function sbUsageFields(json) {
+  const j = json && typeof json === 'object' ? json : {};
+  return { used: j.used_api_credit, max: j.max_api_credit, renewalAt: j.renewal_subscription_date };
+}
+
 /** ScrapingBee /usage → {cycleUsed, cap, renewalDate}|null */
 function parseSbUsage(json) {
-  if (!json || typeof json.used_api_credit !== 'number') return null;
+  const f = sbUsageFields(json);
+  if (typeof f.used !== 'number') return null;
   return {
-    cycleUsed: json.used_api_credit,
-    cap: json.max_api_credit ?? null,
-    renewalDate: (json.renewal_subscription_date || '').slice(0, 10) || null,
+    cycleUsed: f.used,
+    cap: f.max ?? null,
+    renewalDate: (f.renewalAt || '').slice(0, 10) || null,
   };
 }
 
@@ -184,6 +197,7 @@ module.exports = {
   parseBdBalance,
   countBbSessionsOnDay,
   sumBbMinutesOnDay,
+  sbUsageFields,
   parseSbUsage,
   parseSdAccount,
   fetchBdZoneCostDay,

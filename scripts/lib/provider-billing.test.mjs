@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  parseBdZoneCost, parseBdBalance, countBbSessionsOnDay, sumBbMinutesOnDay, parseSbUsage, parseSdAccount,
+  parseBdZoneCost, parseBdBalance, countBbSessionsOnDay, sumBbMinutesOnDay, parseSbUsage, parseSdAccount, sbUsageFields,
 } = require('./provider-billing.js');
 
 test('parseBdZoneCost sums cost and reqs_* across customers', () => {
@@ -71,6 +71,19 @@ test('parseSbUsage (real 2026-07-30 exhausted-cycle fixture)', () => {
   };
   assert.deepEqual(parseSbUsage(fixture), { cycleUsed: 1000012, cap: 1000000, renewalDate: '2026-08-05' });
   assert.equal(parseSbUsage({}), null);
+});
+
+test('sbUsageFields passes values through untouched so callers keep their own defaults (BRO-3010)', () => {
+  const fixture = { max_api_credit: 1000000, used_api_credit: 1000012, renewal_subscription_date: '2026-08-05T18:40:36.521772' };
+  const f = sbUsageFields(fixture);
+  assert.equal(f.used, fixture.used_api_credit);
+  assert.equal(f.max, fixture.max_api_credit);
+  assert.equal(f.renewalAt, fixture.renewal_subscription_date);
+  // absent fields stay undefined (not 0/null), so `x || 0` / `Number(x) || 0`
+  // at each call site behaves exactly as it did on the raw payload
+  assert.deepEqual(sbUsageFields({}), { used: undefined, max: undefined, renewalAt: undefined });
+  assert.deepEqual(sbUsageFields(null), { used: undefined, max: undefined, renewalAt: undefined });
+  assert.deepEqual(sbUsageFields({ used_api_credit: '12' }), { used: '12', max: undefined, renewalAt: undefined });
 });
 
 test('parseSdAccount', () => {

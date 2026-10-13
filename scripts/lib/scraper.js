@@ -55,6 +55,7 @@ const _RUN_MEMO_RECORDERS = { scrapingdog: recordSdCall, brightdata: recordBdCal
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
 const { getSkippedTiers } = require('./domain-tier-skip');
+const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 let _domainTierSkip = null;
 function _getDomainSkips(url) {
   if (!_domainTierSkip) {
@@ -349,9 +350,9 @@ async function checkScrapingBeeCredits() {
         res.on('data', chunk => body += chunk);
         res.on('end', () => {
           try {
-            const data = JSON.parse(body);
-            const used = data.used_api_credit || 0;
-            const max = data.max_api_credit || 1;
+            const sbFields = sbUsageFields(JSON.parse(body));
+            const used = sbFields.used || 0;
+            const max = sbFields.max || 1;
             const remaining = max - used;
             const pctRemaining = (remaining / max) * 100;
 

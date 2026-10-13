@@ -186,6 +186,7 @@ async function checkOpenRouter() {
 
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
+const { sbUsageFields } = require('./lib/provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 async function checkScrapingBee() {
   const key = process.env.SCRAPINGBEE_API_KEY;
@@ -196,9 +197,9 @@ async function checkScrapingBee() {
 
   if (res.status === 200) {
     try {
-      const data = JSON.parse(res.body);
-      const used = data.used_api_credit || 0;
-      const max = data.max_api_credit || 0;
+      const sbFields = sbUsageFields(JSON.parse(res.body));
+      const used = sbFields.used || 0;
+      const max = sbFields.max || 0;
       const remaining = max - used;
       const pctUsed = max > 0 ? Math.round((used / max) * 100) : 0;
 

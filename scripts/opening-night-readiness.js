@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { sbUsageFields } = require('./lib/provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -71,9 +72,9 @@ function checkScrapingBeeCredits() {
       `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${key}"`,
       { timeout: 10000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
     );
-    const data = JSON.parse(result);
-    const used = data.used_api_credit || 0;
-    const max = data.max_api_credit || 1;
+    const sbFields = sbUsageFields(JSON.parse(result));
+    const used = sbFields.used || 0;
+    const max = sbFields.max || 1;
     const pctUsed = Math.round((used / max) * 100);
     const pctRemaining = 100 - pctUsed;
 

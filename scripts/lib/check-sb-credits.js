@@ -13,6 +13,7 @@
 
 // secret-optional: SCRAPINGBEE_API_KEY fetchSBCreditStatus returns { ok: false, reason: 'no-key' } without it (BRO-3602).
 const https = require('https');
+const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 function httpsGetJson(url, timeoutMs = 8000) {
   return new Promise((resolve) => {
@@ -44,8 +45,9 @@ async function fetchSBCreditStatus() {
   if (status !== 200 || !data) {
     return { ok: false, reason: 'api-error', status, error, message: `usage endpoint returned ${status}` };
   }
-  const maxCredits = Number(data.max_api_credit) || 0;
-  const usedCredits = Number(data.used_api_credit) || 0;
+  const sbFields = sbUsageFields(data);
+  const maxCredits = Number(sbFields.max) || 0;
+  const usedCredits = Number(sbFields.used) || 0;
   if (maxCredits <= 0) {
     return { ok: false, reason: 'no-max', message: 'max_api_credit missing from response', raw: data };
   }

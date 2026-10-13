@@ -14,6 +14,7 @@
  */
 
 const https = require('https');
+const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 function httpsGet(url, headers = {}) {
   return new Promise((resolve, reject) => {
@@ -52,8 +53,9 @@ async function checkScrapingBee({ minPct = 25 } = {}) {
   } catch (e) {
     return { provider: 'ScrapingBee', ok: false, reason: 'SB credit check failed: unparseable usage response' };
   }
-  const used = data.used_api_credit || 0;
-  const max = data.max_api_credit || 0;
+  const sbFields = sbUsageFields(data);
+  const used = sbFields.used || 0;
+  const max = sbFields.max || 0;
   if (max <= 0) {
     return { provider: 'ScrapingBee', ok: false, reason: 'SB credit check failed: max_api_credit reported as 0' };
   }

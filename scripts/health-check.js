@@ -184,6 +184,7 @@ function generateApproveUrl(workflowFile, alertTitle) {
 // env, or cycles at require time (verified, ship-check/Codex).
 const { ledgerFreshnessHours, lastLedgerDay, STALE_HOURS_THRESHOLD: PROVIDER_SPEND_STALE_HOURS } = require('./lib/provider-spend-core');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { sbUsageFields } = require('./lib/provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
@@ -3620,16 +3621,18 @@ function checkAPICredits() {
         `curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=${apiKey}"`,
         { encoding: 'utf8', timeout: 10000, stdio: ['pipe', 'pipe', 'pipe'] }
       ).trim();
-      const usage = JSON.parse(result);
-      const remaining = usage.max_api_credit - usage.used_api_credit;
-      const pctUsed = Math.round((usage.used_api_credit / usage.max_api_credit) * 100);
+      // Field names live in provider-billing.sbUsageFields (BRO-3010); values
+      // pass through untouched, so this check's maths are unchanged.
+      const usage = sbUsageFields(JSON.parse(result));
+      const remaining = usage.max - usage.used;
+      const pctUsed = Math.round((usage.used / usage.max) * 100);
       const pctRemaining = 100 - pctUsed;
       const remainingK = Math.round(remaining / 1000);
 
       // Project exhaustion date from burn rate
       let exhaustionMsg = '';
-      if (usage.renewal_subscription_date && usage.used_api_credit > 0) {
-        const renewalDate = new Date(usage.renewal_subscription_date);
+      if (usage.renewalAt && usage.used > 0) {
+        const renewalDate = new Date(usage.renewalAt);
         const renewalStr = renewalDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         const daysUntilRenewal = Math.max(0, (renewalDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
         // Estimate cycle length from renewal date (assume ~30 day cycles)
@@ -3643,7 +3646,7 @@ function checkAPICredits() {
           // Too early in cycle for a reliable daily rate — denominator is too small
           exhaustionMsg = ` · renews ${renewalStr} (burn rate unavailable — <5 days into cycle)`;
         } else {
-          const dailyBurnRate = Math.round(usage.used_api_credit / daysIntoCycle);
+          const dailyBurnRate = Math.round(usage.used / daysIntoCycle);
           const daysUntilExhaustion = remaining / dailyBurnRate;
           exhaustionMsg = ` · ${Math.round(dailyBurnRate / 1000)}k/day burn · `;
           if (daysUntilExhaustion < daysUntilRenewal) {
