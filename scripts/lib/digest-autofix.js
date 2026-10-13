@@ -1400,13 +1400,20 @@ const ROLLUP_ROW_NAMES = {
   freshness: 'Data freshness: shows missing poster/synopsis/tickets',
   stuck: 'Stuck pipeline items',
 };
-function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0 } = {}) {
+// BRO-269 (task #689): name WHICH shows are affected so the fix session is not blind.
+function freshnessShowDetail(items) {
+  const rows = (Array.isArray(items) ? items : []).filter((r) => r && r.id)
+    .map((r) => `${r.id}${Array.isArray(r.highTypes) && r.highTypes.length ? ` (${r.highTypes.join(', ')})` : ''}`);
+  return rows.length ? ` Shows: ${rows.join('; ')}.` : '';
+}
+
+function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshnessItems = [] } = {}) {
   const present = new Set([...(health?.errors || []), ...(health?.warns || [])]
     .filter(Boolean).map((e) => (typeof e === 'string' ? e : e.name)));
   const out = [];
   if (freshnessCount > 0 && !present.has(ROLLUP_ROW_NAMES.freshness)) {
     out.push({ name: ROLLUP_ROW_NAMES.freshness,
-      message: `${freshnessCount} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.` });
+      message: `${freshnessCount} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.${freshnessShowDetail(freshnessItems)}` });
   }
   if (stuckCount > 0 && !present.has(ROLLUP_ROW_NAMES.stuck)) {
     out.push({ name: ROLLUP_ROW_NAMES.stuck,

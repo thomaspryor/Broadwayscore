@@ -1457,3 +1457,21 @@ test('planAutofix: a queued router line that repeats a health row yields one pla
   assert.deepEqual(plan.map((r) => r.title), ['BSC Daily: Data: stale rows']);
   assert.equal(plan[0].fromHealth, true);
 });
+
+// BRO-269: the freshness rollup card must name the affected shows, not just a count.
+import { createRequire as _cr269 } from 'node:module';
+{
+  const { localRollupIssues: _lri } = _cr269(import.meta.url)('./digest-autofix.js');
+  const _t = (await import('node:test')).default;
+  const _a = (await import('node:assert/strict')).default;
+  _t('BRO-269 freshness rollup names show ids from freshness items', () => {
+    const out = _lri({ health: {}, freshnessCount: 2, freshnessItems: [{ id: 'hamilton', title: 'Hamilton', highTypes: ['tickets'] }, { id: 'wicked', title: 'Wicked', highTypes: ['poster', 'synopsis'] }] });
+    _a.equal(out.length, 1);
+    _a.match(out[0].message, /hamilton \(tickets\)/);
+    _a.match(out[0].message, /wicked \(poster, synopsis\)/);
+  });
+  _t('BRO-269 freshness rollup without items keeps the count-only message', () => {
+    const out = _lri({ health: {}, freshnessCount: 1 });
+    _a.doesNotMatch(out[0].message, /Shows:/);
+  });
+}

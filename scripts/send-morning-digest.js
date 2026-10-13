@@ -1259,7 +1259,7 @@ async function main() {
     // that machine, so 3 here means at most 5 concurrent headless sessions.
     // Raise it further only against a fresh `sysctl vm.swapusage` reading.
     const DIGEST_CONCURRENCY_CAP = 3;
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely
