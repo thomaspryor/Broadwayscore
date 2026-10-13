@@ -123,7 +123,41 @@ DEADLINE_HIT=0
 # file's mutex/trap/EXIT-handler side effects. Same env var names/defaults
 # so a caller tuning one tunes both consistently.
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
+case "$GIT_NET_TIMEOUT_SEC" in ''|*[!0-9]*) GIT_NET_TIMEOUT_SEC=90 ;; esac
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}
+
+# BRO-3125: PUSH_API_DEADLINE_SEC used to be checked only BETWEEN attempts, so
+# one in-flight attempt (ls-remote + fetch + push at GIT_NET_TIMEOUT_SEC each,
+# REST calls, backoff sleeps) could run ~5 min past the caller's deadline and
+# turn a clean job failure into a job-timeout cancel. Every timed op now takes
+# min(its cap, max(time left, PUSH_OP_MIN_TIMEOUT_SEC)) and every sleep stops
+# at the deadline, mirroring push-with-retry.sh's _set_net_op_timeout
+# (BRO-2800); same floor variable so one knob tunes both. With no deadline set
+# (direct callers) every cap is unchanged. Worst case past the deadline is now
+# the ops of the one attempt that always runs, each at the floor (+10s kill).
+PUSH_OP_MIN_TIMEOUT_SEC=${PUSH_OP_MIN_TIMEOUT_SEC:-20}
+case "$PUSH_OP_MIN_TIMEOUT_SEC" in ''|0|0*|*[!0-9]*) PUSH_OP_MIN_TIMEOUT_SEC=20 ;; esac
+_deadline_passed() {
+  [ -n "$PUSH_API_DEADLINE_SEC" ] && [ "$SECONDS" -ge "$PUSH_API_DEADLINE_SEC" ]
+}
+# Sets _API_OP_TIMEOUT (no subshell, so log lines can print the cap used).
+_set_api_op_timeout() {
+  _API_OP_TIMEOUT="$1"
+  [ -n "$PUSH_API_DEADLINE_SEC" ] || return 0
+  local left=$(( PUSH_API_DEADLINE_SEC - SECONDS ))
+  [ "$left" -lt "$PUSH_OP_MIN_TIMEOUT_SEC" ] && left="$PUSH_OP_MIN_TIMEOUT_SEC"
+  [ "$left" -lt "$1" ] && _API_OP_TIMEOUT="$left"
+  return 0
+}
+_api_sleep() {  # sleep, but never past the deadline
+  local secs="$1" left
+  if [ -n "$PUSH_API_DEADLINE_SEC" ]; then
+    left=$(( PUSH_API_DEADLINE_SEC - SECONDS ))
+    [ "$left" -le 0 ] && return 0
+    [ "$secs" -gt "$left" ] && secs="$left"
+  fi
+  sleep "$secs"
+}
 
 # BRO-2233/BRO-2951 Phase 2: opt-in REST ref-update path. The `git push`
 # ref update above times out at GIT_NET_TIMEOUT_SEC on EVERY attempt under
@@ -234,7 +268,8 @@ _timeout() {  # fail-open (run directly) if no timeout binary on this box
   fi
 }
 _git_net() {
-  _timeout "$GIT_NET_TIMEOUT_SEC" \
+  _set_api_op_timeout "$GIT_NET_TIMEOUT_SEC"
+  _timeout "$_API_OP_TIMEOUT" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" "$@"
 }
 
@@ -599,7 +634,8 @@ upload_non_merge_blobs_once() {
 
     ok=false
     for attempt in 1 2 3 4 5; do
-      result="$(GH_TOKEN="$REST_TOKEN" _timeout 20 node "$REST_MODULE_PATH" create-blob "$content_file" "$REST_SLUG" 2>/dev/null || true)"
+      _set_api_op_timeout 20
+      result="$(GH_TOKEN="$REST_TOKEN" _timeout "$_API_OP_TIMEOUT" node "$REST_MODULE_PATH" create-blob "$content_file" "$REST_SLUG" 2>/dev/null || true)"
       [ -z "$result" ] && result='{"outcome":"timeout","reason":"CLI produced no output within its timeout"}'
       ok="$(_rest_json_get "$result" ok)"
       if [ "$ok" = "true" ]; then
@@ -608,7 +644,7 @@ upload_non_merge_blobs_once() {
         break
       fi
       outcome="$(_rest_json_get "$result" outcome)"
-      if [ "$outcome" = "fatal" ] || [ "$attempt" = "5" ]; then
+      if [ "$outcome" = "fatal" ] || [ "$attempt" = "5" ] || _deadline_passed; then
         echo "::error::push-via-git-api: REST blob upload failed for '$path' after $attempt attempt(s), outcome=$outcome: $(_rest_json_get "$result" reason)" >&2
         rm -f "$content_file"
         return 1
@@ -626,9 +662,9 @@ upload_non_merge_blobs_once() {
           _blob_retry_after=15
         fi
         [ "$_blob_retry_after" -lt 1 ] && _blob_retry_after=1
-        sleep "$_blob_retry_after"
+        _api_sleep "$_blob_retry_after"
       else
-        sleep $((2 * attempt))
+        _api_sleep $((2 * attempt))
       fi
     done
     rm -f "$content_file"
@@ -723,7 +759,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ -z "$CURRENT_TIP" ]; then
     echo "  push-via-git-api: could not resolve $REMOTE/$BRANCH tip (attempt $i/$MAX_RETRIES)" >&2
     FAIL_OTHER=$((FAIL_OTHER + 1))
-    sleep $((1 + i))
+    _api_sleep $((1 + i))
     continue
   fi
 
@@ -768,7 +804,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if ! git cat-file -e "${CURRENT_TIP}^{commit}" 2>/dev/null; then
     echo "  push-via-git-api: failed to fetch remote tip $CURRENT_TIP (attempt $i/$MAX_RETRIES)" >&2
     FAIL_OTHER=$((FAIL_OTHER + 1))
-    sleep $((1 + i))
+    _api_sleep $((1 + i))
     continue
   fi
 
@@ -944,7 +980,8 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         git cat-file blob "$_merge_blob_sha" | base64 > "$_merge_content_file"
         _merge_upload_ok=false
         for _merge_attempt in 1 2 3; do
-          _merge_result="$(GH_TOKEN="$REST_TOKEN" _timeout 20 node "$REST_MODULE_PATH" create-blob "$_merge_content_file" "$REST_SLUG" 2>/dev/null || true)"
+          _set_api_op_timeout 20
+          _merge_result="$(GH_TOKEN="$REST_TOKEN" _timeout "$_API_OP_TIMEOUT" node "$REST_MODULE_PATH" create-blob "$_merge_content_file" "$REST_SLUG" 2>/dev/null || true)"
           [ -z "$_merge_result" ] && _merge_result='{"outcome":"timeout","reason":"CLI produced no output within its timeout"}'
           if [ "$(_rest_json_get "$_merge_result" ok)" = "true" ]; then
             _merge_rest_sha="$(_rest_json_get "$_merge_result" sha)"
@@ -952,7 +989,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
             break
           fi
           _merge_outcome="$(_rest_json_get "$_merge_result" outcome)"
-          [ "$_merge_outcome" = "fatal" ] || [ "$_merge_attempt" = "3" ] && break
+          { [ "$_merge_outcome" = "fatal" ] || [ "$_merge_attempt" = "3" ] || _deadline_passed; } && break
           # Same ship-check fix as upload_non_merge_blobs_once above: honor
           # retryAfter (capped) for a throttled outcome instead of a flat
           # guessed backoff.
@@ -962,9 +999,9 @@ for i in $(seq 1 "$MAX_RETRIES"); do
               _merge_retry_after=15
             fi
             [ "$_merge_retry_after" -lt 1 ] && _merge_retry_after=1
-            sleep "$_merge_retry_after"
+            _api_sleep "$_merge_retry_after"
           else
-            sleep $((2 * _merge_attempt))
+            _api_sleep $((2 * _merge_attempt))
           fi
         done
         rm -f "$_merge_content_file"
@@ -1016,7 +1053,8 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     rm -f "$REST_ENTRIES_FILE"
 
     push_start=$SECONDS
-    REST_RESULT="$(GH_TOKEN="$REST_TOKEN" _timeout 60 node "$REST_MODULE_PATH" attempt-push "$REST_REQUEST_FILE" 2>/dev/null || true)"
+    _set_api_op_timeout 60
+    REST_RESULT="$(GH_TOKEN="$REST_TOKEN" _timeout "$_API_OP_TIMEOUT" node "$REST_MODULE_PATH" attempt-push "$REST_REQUEST_FILE" 2>/dev/null || true)"
     rm -f "$REST_REQUEST_FILE"
     [ -z "$REST_RESULT" ] && REST_RESULT='{"outcome":"timeout","reason":"CLI produced no output within its timeout"}'
     REST_OUTCOME="$(_rest_json_get "$REST_RESULT" outcome)"
@@ -1031,7 +1069,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       race)
         echo "  push-via-git-api: ref moved during attempt $i/$MAX_RETRIES (REST path, remote tip advanced past $CURRENT_TIP) — retrying" >&2
         FAIL_RACE=$((FAIL_RACE + 1))
-        sleep $((1 + RANDOM % 3))
+        _api_sleep $((1 + RANDOM % 3))
         continue
         ;;
       throttled)
@@ -1045,17 +1083,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         [ "$_retry_after" -lt 1 ] && _retry_after=1
         if [ "$i" -lt "$MAX_RETRIES" ]; then
           echo "  push-via-git-api: REST path throttled on attempt $i/$MAX_RETRIES — backing off ${_retry_after}s (BRO-2233/BRO-2951): $(_rest_json_get "$REST_RESULT" reason)" >&2
-          sleep "$_retry_after"
+          _api_sleep "$_retry_after"
         fi
         continue
         ;;
       timeout)
-        FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
+        FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1)); _LAST_TIMEOUT_CAP="$_API_OP_TIMEOUT"
         echo "  push-via-git-api: push-api-probe ref_update {\"ok\":false,\"sec\":$((SECONDS - push_start)),\"attempt\":$i,\"branch\":\"$(_json_safe "$BRANCH")\",\"path\":\"rest\"}" >&2 || true
         if [ "$i" -lt "$MAX_RETRIES" ]; then
           _backoff="$(escalating_backoff_sec "$FAIL_TIMEOUT")"
           echo "  push-via-git-api: REST path timed out on attempt $i/$MAX_RETRIES — backing off ${_backoff}s: $(_rest_json_get "$REST_RESULT" reason)" >&2
-          sleep "$_backoff"
+          _api_sleep "$_backoff"
         fi
         continue
         ;;
@@ -1074,6 +1112,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # condition with no else branch leaves the compound statement's own status at
   # 0, so the rc of the push is gone by `fi`. Capture it in the else branch,
   # matching push-with-retry.sh:1373-1381's shape for the same problem.
+  # _git_net sets _API_OP_TIMEOUT in this shell: the cap THIS push ran under.
   if _git_net push "$REMOTE" "${NEW_COMMIT}:refs/heads/${BRANCH}" >/dev/null 2>"$PUSH_ERR"; then
     rm -f "$PUSH_ERR"
     # BRO-2951: report the wall-time of a push that WORKED, not only of one
@@ -1106,7 +1145,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # lost race. Bounded by MAX_RETRIES, which push-with-retry.sh already scales
   # to 2/4/6 by remaining PUSH_DEADLINE_SEC.
   if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
-    FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
+    FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1)); _LAST_TIMEOUT_CAP="$_API_OP_TIMEOUT"
     rm -f "$PUSH_ERR"
     echo "  push-via-git-api: push-api-probe ref_update {\"ok\":false,\"sec\":$((SECONDS - push_start)),\"rc\":$push_rc,\"attempt\":$i,\"branch\":\"$(_json_safe "$BRANCH")\"}" >&2 || true
     # BRO-2951: no point computing or sleeping a backoff on the LAST budgeted
@@ -1118,10 +1157,10 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # waste far more noticeable).
     if [ "$i" -lt "$MAX_RETRIES" ]; then
       _backoff="$(escalating_backoff_sec "$FAIL_TIMEOUT")"
-      echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — backing off ${_backoff}s before retrying (BRO-2951, see comment above GIT_NET_TIMEOUT_SEC)" >&2
-      sleep "$_backoff"
+      echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${_API_OP_TIMEOUT}s) on attempt $i/$MAX_RETRIES — backing off ${_backoff}s before retrying (BRO-2951, see comment above GIT_NET_TIMEOUT_SEC)" >&2
+      _api_sleep "$_backoff"
     else
-      echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — no attempts remain, skipping backoff" >&2
+      echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${_API_OP_TIMEOUT}s) on attempt $i/$MAX_RETRIES — no attempts remain, skipping backoff" >&2
     fi
     continue
   fi
@@ -1135,7 +1174,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     echo "  push-via-git-api: ref moved during attempt $i/$MAX_RETRIES (remote tip advanced past $CURRENT_TIP) — retrying" >&2
     FAIL_RACE=$((FAIL_RACE + 1))
     rm -f "$PUSH_ERR"
-    sleep $((1 + RANDOM % 3))
+    _api_sleep $((1 + RANDOM % 3))
     continue
   fi
 
@@ -1178,11 +1217,13 @@ done
 # REST write that is ALSO slow proves the opposite and redirects this work to
 # BRO-2983. `|| true` because a diagnostic must never change this script's
 # exit code.
-if [ "$FAIL_TIMEOUT" -gt 0 ]; then
+# Skipped once the caller's deadline stopped the loop (BRO-3125): the probe
+# is diagnostic only and must not spend time the caller no longer has.
+if [ "$FAIL_TIMEOUT" -gt 0 ] && [ "$DEADLINE_HIT" != "1" ]; then
   _rest_write_probe || true
 fi
 
-EXHAUSTION_BREAKDOWN="$FAIL_TIMEOUT timed out at the ${GIT_NET_TIMEOUT_SEC}s cap, $FAIL_RACE lost the ref race"
+EXHAUSTION_BREAKDOWN="$FAIL_TIMEOUT timed out at the ${_LAST_TIMEOUT_CAP:-$GIT_NET_TIMEOUT_SEC}s cap, $FAIL_RACE lost the ref race"
 if [ "$FAIL_OTHER" -gt 0 ]; then
   # Without this bucket the message can read "0 timed out, 0 lost the ref race"
   # on a run where every attempt died resolving or fetching the tip — a new

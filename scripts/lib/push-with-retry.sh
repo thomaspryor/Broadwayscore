@@ -158,8 +158,11 @@ PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4
 # before it (<= GIT_NET_TIMEOUT_SEC+10), local rebase/merge CPU (not a network
 # op, not clamped; measured ~3 min worst case, task #458), then at most the
 # post-resolution push and its content-survival fetches at
-# PUSH_OP_MIN_TIMEOUT_SEC+10 each, plus the Git Data API fallback, which
-# BRO-2824 already bounds by the remaining deadline. A legitimately slow
+# PUSH_OP_MIN_TIMEOUT_SEC+10 each, plus the Git Data API fallback. BRO-2824
+# stops its retries at the remaining deadline and BRO-3125 clamps each of its
+# ops and sleeps the same way, so a fallback started past the deadline runs
+# one attempt whose ops (ls-remote, fetch, push, or the REST calls) each get
+# PUSH_OP_MIN_TIMEOUT_SEC+10: about 2 min with the defaults. A legitimately slow
 # deepen/unshallow fetch is only clamped when less than GIT_NET_TIMEOUT_SEC
 # remains; if it then times out, the loop-top check breaks as before.
 # Pre-loop and post-loop network ops (entry ls-remote, API fallback, its
@@ -3196,7 +3199,9 @@ if [ "$_api_fallback_ok" = "true" ]; then
   # loop stops at the caller's deadline instead of running MAX_RETRIES *
   # ~400s/attempt. A caller-set PUSH_API_DEADLINE_SEC wins. push-via-git-api.sh
   # always runs at least one attempt, so a spent budget (0) is not a no-op.
-  if API_NEW_SHA=$(PUSH_API_DEADLINE_SEC="${PUSH_API_DEADLINE_SEC:-$_api_remaining_sec}" bash "$SCRIPT_DIR/push-via-git-api.sh" "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE" "${PUSH_API_MAX_RETRIES:-$_api_max_retries_default}"); then
+  # PUSH_OP_MIN_TIMEOUT_SEC is passed explicitly (it is not exported) so the
+  # fallback clamps its ops to the same floor as this script's (BRO-3125).
+  if API_NEW_SHA=$(PUSH_API_DEADLINE_SEC="${PUSH_API_DEADLINE_SEC:-$_api_remaining_sec}" PUSH_OP_MIN_TIMEOUT_SEC="$PUSH_OP_MIN_TIMEOUT_SEC" bash "$SCRIPT_DIR/push-via-git-api.sh" "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE" "${PUSH_API_MAX_RETRIES:-$_api_max_retries_default}"); then
     echo "  Git Data API fallback succeeded: $API_NEW_SHA"
     git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 || true
     # HEAD was reset to SCRIPT_ENTRY_HEAD above and the API commit never moved
