@@ -182,7 +182,7 @@ const sc = require('./lib/watchdog-stale-code.js');
 
 function spawnOrphanSleeper() {
   const r = spawnSync('bash', ['-c',
-    `nohup node -e "process.on('SIGTERM',()=>process.exit(0));setInterval(()=>{},1000)" >/dev/null 2>&1 & echo $!`],
+    `nohup node -e "process.on('SIGTERM',()=>process.exit(0));setInterval(()=>{},1000)" dispatch-watchdog.js --dashboard >/dev/null 2>&1 & echo $!`],
   { encoding: 'utf8' });
   return parseInt(r.stdout.trim(), 10);
 }
@@ -276,6 +276,30 @@ test('BRO-3904: fresh heartbeat + live pid + code unchanged => ensureTab leaves 
     assert.deepEqual(calls.runs.filter(a => a[0] === 'new-workspace'), []);
   } finally {
     try { process.kill(pid, 'SIGKILL'); } catch { /* gone */ }
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('BRO-3904: an OLD heartbeat (pid may be recycled) or a pid not running the watchdog is never signalled', async () => {
+  const root = codeTree();
+  const pid = spawnOrphanSleeper();
+  const plain = parseInt(spawnSync('bash', ['-c',
+    `nohup node -e "setInterval(()=>{},1000)" >/dev/null 2>&1 & echo $!`], { encoding: 'utf8' }).stdout.trim(), 10);
+  try {
+    const id = sc.computeCodeIdentity(root, ['dispatch-watchdog.js', 'lib/core.js']);
+    fs.writeFileSync(path.join(root, 'lib', 'core.js'), 'v2');
+    const old = Date.now() / 1000 - 3600;
+    fs.utimesSync(path.join(root, 'lib', 'core.js'), old, old);
+    const code = sc.heartbeatCodeFields(id, root);
+    const r1 = await runEnsureTab({ hb: { ts: new Date(Date.now() - 3600e3).toISOString(), mode: 'dashboard', pid, ...code } });
+    assert.equal(r1.code, 0);
+    assert.equal(alive(pid), true, 'old heartbeat + live pid keeps the pre-existing leave-alone rule');
+    assert.deepEqual(r1.calls.closed, []);
+    const r2 = await runEnsureTab({ hb: { ts: new Date().toISOString(), mode: 'dashboard', pid: plain, ...code } });
+    assert.equal(r2.code, 0);
+    assert.equal(alive(plain), true, 'a pid that is not running dispatch-watchdog.js must never be killed');
+  } finally {
+    for (const p of [pid, plain]) { try { process.kill(p, 'SIGKILL'); } catch { /* gone */ } }
     fs.rmSync(root, { recursive: true, force: true });
   }
 });

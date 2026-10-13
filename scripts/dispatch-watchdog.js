@@ -755,6 +755,10 @@ function createTab() {
 function sleepSync(ms) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
+function pidRunsWatchdog(pid) {
+  const r = spawnSync('ps', ['-o', 'command=', '-p', String(pid)], { encoding: 'utf8', timeout: 5000 });
+  return r.status === 0 && /dispatch-watchdog\.js/.test(String(r.stdout || ''));
+}
 function waitForPidExit(pid, timeoutMs) {
   const deadline = Date.now() + timeoutMs;
   while (pidAlive(pid)) {
@@ -785,8 +789,12 @@ function ensureTab() {
     // stale no matter how fresh its heartbeat. Never our own pid (a test or a
     // health() run in-process), never a 'starting' stamp.
     const codeVerdict = staleCode.heartbeatCodeVerdict(hb);
+    // Only a FRESH heartbeat's pid is trusted enough to signal: an old one
+    // may name a recycled pid (after a reboot), and the pid must still be
+    // running this very script — never SIGTERM an unrelated process.
     const staleCodePid = existing && codeVerdict.stale && hb && hb.pid && hb.pid !== process.pid
-      && hb.mode !== 'starting' && pidAlive(hb.pid) ? hb.pid : null;
+      && hb.mode !== 'starting' && age !== null && age < HEARTBEAT_STALE_MS
+      && pidAlive(hb.pid) && pidRunsWatchdog(hb.pid) ? hb.pid : null;
     if (staleCodePid) {
       // We hold the lock, so the dashboard is not inside executeSweep (it only
       // sweeps under this lock): no dispatch or claim is in flight. SIGTERM
