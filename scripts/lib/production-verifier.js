@@ -208,7 +208,7 @@ function findOtherTourLegVenue(text, showVenue) {
       const sentence = sentenceAt(folded, m.index);
       if (TOUR_FRAMING_RE.test(sentence)) continue;
       if (!currentRunAt(sentence, lower)) continue;
-      return { venue: name, context: sentence.trim() };
+      return { otherVenue: name, context: sentence.trim() };
     }
   }
   return null;
@@ -434,7 +434,7 @@ function verifyProduction({ showId, url, publishDate, text, fullText, showData, 
     if (otherLeg) {
       issues.push({
         type: 'uk_tour_leg_venue_mismatch',
-        message: `Review places the production at "${otherLeg.venue}", not this show's venue "${showData.venue}" (another tour leg)`,
+        message: `Review places the production at "${otherLeg.otherVenue}", not this show's venue "${showData.venue}" (another tour leg)`,
         severity: 'high'
       });
       confidence = 'high';
