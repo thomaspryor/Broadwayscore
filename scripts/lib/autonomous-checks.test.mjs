@@ -462,6 +462,21 @@ test('staleNestedDeps: a matching hidden lockfile, absent optional entries and l
   fs.rmSync(root, { recursive: true, force: true });
 });
 
+test('staleNestedDeps: dev entries absent from an --omit=dev root and registry-URL-only differences are not drift; a moved git dep is', () => {
+  const { root, repo, wt } = depsFixture({ installed: { next: '15.5.27' }, pinned: { next: '15.5.27' } });
+  const lock = JSON.parse(fs.readFileSync(path.join(wt, 'package-lock.json'), 'utf8'));
+  lock.packages['node_modules/next'].resolved = 'https://registry.npmjs.org/next/-/next-15.5.27.tgz';
+  lock.packages['node_modules/eslint'] = { version: '9.0.0', dev: true };
+  lock.packages['node_modules/gitpkg'] = { version: '1.0.0', resolved: 'git+ssh://git@github.com/x/gitpkg.git#bbb' };
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
+  writeHiddenLock(repo, {
+    'node_modules/next': { version: '15.5.27', resolved: 'https://mirror.example/next/-/next-15.5.27.tgz' },
+    'node_modules/gitpkg': { version: '1.0.0', resolved: 'git+ssh://git@github.com/x/gitpkg.git#aaa' },
+  });
+  assert.deepEqual(staleNestedDeps(wt, repo), ['gitpkg 1.0.0->1.0.0']);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
 test('prepareCheckWorkdir: a top-level drift seen by both checks is counted once', () => {
   const { root, repo, wt } = depsFixture({ installed: { next: '14.2.35' }, pinned: { next: '15.5.27' } });
   writeHiddenLock(repo, { 'node_modules/next': { version: '14.2.35' } });

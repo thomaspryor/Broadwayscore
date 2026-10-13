@@ -362,10 +362,15 @@ function staleNestedDeps(workdir, installRoot) {
     if (!key.startsWith('node_modules/') || !w || w.link) continue;
     const h = have[key];
     if (!h) {
-      if (!w.optional && !w.devOptional) stale.push(`${key.slice(13)} missing->${w.version}`);
+      // dev entries are absent from an --omit=dev install root; a missing
+      // top-level dev dep is still caught by staleTopLevelDeps.
+      if (!w.optional && !w.devOptional && !w.dev) stale.push(`${key.slice(13)} missing->${w.version}`);
       continue;
     }
-    if (h.version !== w.version || (w.resolved && h.resolved && h.resolved !== w.resolved)) {
+    // resolved is compared for git deps only (same version, new commit);
+    // registry tarball URLs differ harmlessly across mirrors.
+    const gitDep = typeof w.resolved === 'string' && w.resolved.startsWith('git');
+    if (h.version !== w.version || (gitDep && h.resolved && h.resolved !== w.resolved)) {
       stale.push(`${key.slice(13)} ${h.version}->${w.version}`);
     }
   }
@@ -391,17 +396,22 @@ function npmCiInto(workdir) {
   for (const [k, v] of Object.entries(process.env)) {
     if (/^npm_config_(https?_proxy|proxy|noproxy|registry|cafile|ca|strict_ssl)$/i.test(k)) env[k] = v;
   }
-  const logPath = path.join(os.tmpdir(), `npm-ci-${path.basename(workdir)}-${process.pid}.log`);
+  // A private mkdtemp dir, not a guessable name in the shared tmpdir.
+  let logDir = null;
+  let logPath = null;
   let fd = null;
   try {
-    fd = fs.openSync(logPath, 'w');
+    logDir = fs.mkdtempSync(path.join(os.tmpdir(), 'npm-ci-log-'));
+    fd = fs.openSync(path.join(logDir, 'npm-ci.log'), 'wx');
+    logPath = path.join(logDir, 'npm-ci.log');
     execFileSync('npm', ['ci', '--prefer-offline', '--no-audit', '--no-fund'],
       { cwd: workdir, env, stdio: ['ignore', fd, fd], timeout: NPM_CI_TIMEOUT_MS });
     fs.closeSync(fd); fd = null;
-    try { fs.unlinkSync(logPath); } catch { /* best effort */ }
+    try { fs.rmSync(logDir, { recursive: true, force: true }); } catch { /* best effort */ }
     return { ok: true };
   } catch {
-    return { ok: false, logPath };
+    // logPath is set only once the log file really exists.
+    return logPath ? { ok: false, logPath } : { ok: false };
   } finally {
     if (fd !== null) try { fs.closeSync(fd); } catch { /* already closed */ }
     try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* temp dir */ }

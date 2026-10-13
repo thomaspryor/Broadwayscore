@@ -302,6 +302,7 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // autonomous-checks.js.
       const linked = prepare(cwd, repoDir);
       if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
+      for (const l of linked) if (l.startsWith('node_modules (')) log(`[land] ${l}`);
     }
     log(`[land] verified-base: ${decision.reason} — reusing the upstream verdict, gauntlet skipped`);
     return [{ name: 'verified-upstream', pass: true, detail: decision.reason }];
