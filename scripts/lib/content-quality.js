@@ -3539,7 +3539,10 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   if (html && typeof html === 'string') {
     const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
     if (m) {
-      htmlTitle = m[1].replace(/\s+/g, ' ').trim();
+      // Decode entities: THR's "&#039;The Motherf—ker With the Hat&#039; Theater
+      // Review" never led with the title until the quote entity was decoded (BRO-5222).
+      const { decodeHtmlEntities } = require('./text-cleaning');
+      htmlTitle = decodeHtmlEntities(m[1]).replace(/\s+/g, ' ').trim();
       // An empty/blank <title> carries NO signal — leave htmlTitleMatch=null
       // (unknown), never false. Wix/SPA pages (e.g. allthatdazzles.co.uk) ship an
       // empty raw <title> that JS fills after load. Setting htmlTitleMatch=false

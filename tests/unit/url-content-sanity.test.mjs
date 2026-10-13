@@ -541,3 +541,32 @@ describe('validateContentMentionsShow — BRO-4058 feature-headline backstop rel
     assert.match(r.reason, /undiscounted/);
   });
 });
+
+describe('validateContentMentionsShow — censored title + entity-encoded <title> (BRO-5222)', () => {
+  const { normalizeForMention } = require('../../scripts/lib/show-title-variants.js');
+  // Synthetic prose (not review text): a long page naming the show once, censored,
+  // like THR's 2011 review whose headline is "'The Motherf—ker With the Hat'".
+  const filler = 'The playwright builds the evening from a series of tense apartment scenes, and the cast keeps the rhythm sharp from start to finish. '.repeat(14);
+  const body = `${filler} By the end, Motherf—ker With the Hat earns its noise.`;
+  const html = '<html><head><title>&#039;The Motherf—ker With the Hat&#039; Theater Review</title></head><body></body></html>';
+
+  test('censored spellings normalize to the full word, other words untouched', () => {
+    assert.strictEqual(normalizeForMention('The Motherf—ker With the Hat'), 'the motherfucker with the hat');
+    assert.strictEqual(normalizeForMention("What's the F**king Point?"), "what's the fucking point");
+    assert.strictEqual(normalizeForMention('f*cker'), 'fucker');
+    assert.strictEqual(normalizeForMention('f-16 jets'), 'f-16 jets');
+    assert.strictEqual(normalizeForMention('Fifth-Avenue'), 'fifth-avenue');
+  });
+
+  test('right show passes on the entity-decoded leading <title>', () => {
+    const r = validateContentMentionsShow(body, html, 'The Motherfucker with the Hat', 'the-motherfucker-with-the-hat-2011');
+    assert.strictEqual(r.valid, true, r.reason);
+    assert.strictEqual(r.htmlTitleMatch, true);
+    assert.match(r.htmlTitle, /^'The Motherf—ker/);
+  });
+
+  test('a different show on the same page is still rejected', () => {
+    const r = validateContentMentionsShow(body, html, 'God of Carnage', 'god-of-carnage-2009');
+    assert.strictEqual(r.valid, false);
+  });
+});
