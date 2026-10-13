@@ -4,7 +4,8 @@
  * Opening-night draft deadline (BRO-4417).
  *
  * Why this exists: a Resend draft used to be created only by the daily 12:30
- * UTC cron (which GitHub fires 4-7h late) or a manual send_to_all dispatch.
+ * UTC cron (which GitHub fires 4-7h late) or a manual create_draft (formerly
+ * send_to_all) dispatch.
  * If that one run hit a gate (checklist / drift / orphan-unscored), nothing
  * retried until the next day, and the 2-day lookback could drop the show
  * entirely (School Girls, 2026-09-29: the owner had to ask).

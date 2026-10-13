@@ -6,8 +6,8 @@ name: Opening Night Broadcast
 
 on:
   # Triggers:
-  #   1. Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) — self-dispatched with
-  #      send_to_all=true. Creates the Resend draft AND emails the owner a preview so
+  #   1. Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) — same path as a
+  #      create_draft=true dispatch. Creates the Resend draft AND emails the owner a preview so
   #      they can review and hit Send from Resend. All existing gates still apply
   #      (time ≥ 7 AM ET, readiness ≥ 15 reviews + aggregator, checklist clean).
   #   2. update-show-status.yml dispatches when a show transitions to open (preview only)
@@ -36,8 +36,16 @@ on:
         required: false
         type: string
         default: ''
+      create_draft:
+        description: 'Create a Resend DRAFT for owner review, plus an owner-only preview email. Does NOT send to subscribers; the owner sends the draft from Resend. Skips the preview dedup check.'
+        required: false
+        type: boolean
+        default: false
+      # BRO-2440: the old name read like "blast the audience" and misled two
+      # sessions into a handoff that guaranteed no draft. Kept as an alias so
+      # saved commands and old handoff notes that name it still work.
       send_to_all:
-        description: 'Approval dispatch: send to all subscribers (skips preview dedup check)'
+        description: 'DEPRECATED alias of create_draft (same behaviour). Does NOT send to subscribers.'
         required: false
         type: boolean
         default: false
@@ -285,14 +293,14 @@ jobs:
             try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
 
             const shows = '$SHOWS'.split(',');
-            // When send_to_all=true (approval dispatch) OR this is the scheduled
+            // When create_draft (or its old alias send_to_all) is true OR this is the scheduled
             // 12:30 UTC daily run, skip the preview dedup check. In both cases an
             // earlier preview may have already gone out (5 AM auto-dispatch after
             // scoring), and we still want to create the owner-review draft.
             // Only the 12:30 daily cron has approval semantics; the hourly
             // redundancy cron (BRO-4417) is preview-only unless a show is past
             // its draft deadline (handled per show below).
-            const sendToAll = '${{ inputs.send_to_all }}' === 'true'
+            const createDraft = '${{ inputs.create_draft || inputs.send_to_all }}' === 'true'
               || ('${{ github.event_name }}' === 'schedule' && '${{ github.event.schedule }}' === '30 12 * * *');
 
             // BRO-4417: shows past their draft deadline (10am ET the day after
@@ -326,7 +334,7 @@ jobs:
               // and without this guard the failed attempt triggers gather → rebuild → score →
               // broadcast again (infinite feedback loop). Re-evaluated each scoring run.
               // Exception: approval dispatch always proceeds regardless of review count.
-              if (!sendToAll) {
+              if (!createDraft) {
                 const scoredCount = allReviews.filter(r => r.showId === id && r.assignedScore != null).length;
                 if (scoredCount === 0) {
                   process.stderr.write('Skipping ' + id + ' — 0 scored reviews, not ready\n');
@@ -334,11 +342,11 @@ jobs:
                 }
               }
               // Skip if a preview for this show went out within the rolling 24h window —
-              // but NOT in approval/send_to_all mode. Previously used sentAt.startsWith(today),
+              // but NOT in create_draft mode. Previously used sentAt.startsWith(today),
               // which silently double-sent at UTC rollover (2026-04-11 incident had a 14h gap
               // between duplicate sends — UTC-day check and short windows both missed it).
               // Rolling window + prefix scan lives in scripts/lib/preview-dedup.js.
-              if (!sendToAll && !deadlineIds.has(id) && hasRecentPreviewForShow(sent, id)) {
+              if (!createDraft && !deadlineIds.has(id) && hasRecentPreviewForShow(sent, id)) {
                 process.stderr.write('Skipping ' + id + ' — preview sent within the last 24h\n');
                 return false;
               }
@@ -825,7 +833,7 @@ jobs:
         run: |
           # Modes:
           #   - send_to=<email>: transactional preview to that address only (no draft)
-          #   - send_to_all=true OR scheduled run: send preview to owner AND create Resend draft
+          #   - create_draft=true (alias send_to_all) OR scheduled run: preview to owner AND create Resend draft (never a subscriber send)
           #   - default (workflow_run auto-retry / update-show-status dispatch): preview to owner only
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
@@ -834,7 +842,7 @@ jobs:
           if [ -n "${{ inputs.send_to }}" ]; then
             SEND_TO_FLAG="--send-to=${{ inputs.send_to }}"
             echo "** PREVIEW MODE — sending test email to ${{ inputs.send_to }} only **"
-          elif [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event.schedule }}" = "30 12 * * *" ]; then
+          elif [ "${{ inputs.create_draft }}" = "true" ] || [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event.schedule }}" = "30 12 * * *" ]; then
             # Approval dispatch or scheduled 12:30 UTC run: preview to owner + Resend draft
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
             CREATE_DRAFT="true"

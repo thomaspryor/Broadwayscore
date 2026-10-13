@@ -1722,7 +1722,8 @@ jobs:
         with:
           script: |
             // Dispatch the broadcast — defaults to preview-to-owner only.
-            // Owner must manually re-dispatch with send_to_all=true to send to subscribers.
+            // A Resend draft for the owner comes from a create_draft=true dispatch or the
+            // 12:30 UTC cron; subscribers only get it when the owner sends it from Resend.
             try {
               await github.rest.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
