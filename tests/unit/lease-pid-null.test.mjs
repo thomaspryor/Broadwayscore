@@ -33,10 +33,13 @@ test('no script re-derives lease liveness with a bare pidLooksLikeClaude(lease.p
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
       const p = path.join(dir, e.name);
       if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
-      if (!/\.(js|mjs)$/.test(e.name) || /\.test\.mjs$/.test(e.name)) continue;
+      if (!/\.(js|mjs)$/.test(e.name) || /\.test\.m?js$/.test(e.name)) continue;
       if (p.endsWith(path.join('lib', 'bsc-runner.js'))) continue;
-      fs.readFileSync(p, 'utf8').split('\n').forEach((line, i) => {
-        if (/pidLooksLikeClaude(Fn)?\(\s*\w+\.pid\s*\)/.test(line)) offenders.push(`${path.relative(ROOT, p)}:${i + 1}`);
+      const lines = fs.readFileSync(p, 'utf8').split('\n');
+      lines.forEach((line, i) => {
+        // Sites that pair pid:null with their own GRACE_MS age check carry this marker on the line above.
+        if (i > 0 && lines[i - 1].includes('pid-null-grace-ok')) return;
+        if (/pidLooksLikeClaude(Fn)?\(\s*[\w.?]+\??\.pid\s*\)/.test(line)) offenders.push(`${path.relative(ROOT, p)}:${i + 1}`);
       });
     }
   };
@@ -49,4 +52,11 @@ test('every site named on BRO-2954 uses leaseLooksLive', () => {
     'scripts/audit-archived-in-progress.js', 'scripts/bsc-reconcile.js']) {
     assert.match(fs.readFileSync(path.join(ROOT, f), 'utf8'), /leaseLooksLive\(/, f);
   }
+});
+
+test('grace-judged sweep sites keep pid:null as not-alive (crashed-at-startup leases must still be reclaimed)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/bsc-reconcile.js'), 'utf8');
+  assert.equal((src.match(/pid-null-grace-ok/g) || []).length, 2);
+  assert.match(src, /pidLooksLikeClaudeFn\(lease\.pid\)/);
+  assert.match(src, /if \(lease && pidLooksLikeClaude\(lease\.pid\)\) continue; \/\/ live process/);
 });

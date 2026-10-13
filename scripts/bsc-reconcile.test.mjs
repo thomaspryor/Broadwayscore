@@ -824,6 +824,14 @@ test('sweepOrphanedJobs: a freshly-acquired lease (pid:null, inside GRACE_MS) is
   assert.deepEqual(h.appended, []);
 });
 
+test('sweepOrphanedJobs: a lease stuck at pid:null PAST GRACE_MS is not alive — becomes orphan-suspect (BRO-2954 guard)', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: null, acquiredAt: new Date(ORPHAN_NOW - GRACE_MS - 60e3).toISOString() }, alive: false });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+});
+
 test('sweepOrphanedJobs: FIRST negative glance writes an ORPHAN_SUSPECT row, not job-orphaned — the live BRO-2565 shape', () => {
   const h = orphanHarness({ lease: null, alive: false });
   const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' }];

@@ -1356,7 +1356,8 @@ function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
     // Anything younger than the grace window is presumed starting.
     const leaseAgeMs = lease && lease.acquiredAt ? now - Date.parse(lease.acquiredAt) : Infinity;
     const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
-    const alive = lease && lease.jobId === job.jobId && leaseLooksLive(lease, pidLooksLikeClaudeFn);
+    // pid-null-grace-ok: pid:null is judged by the GRACE_MS `starting` check above; a lease stuck at pid:null past grace must read dead so it is orphaned.
+    const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaudeFn(lease.pid);
     if (alive || starting) {
       // Clear a pending suspicion the moment the job is observed alive again
       // (Codex adversarial ship-check catch): without this, a one-off `ps`
@@ -1491,7 +1492,8 @@ async function main() {
   for (const dir of leaseDirs) {
     if (openTasks.has(dir)) continue;
     const lease = readLease(dir);
-    if (leaseLooksLive(lease)) continue; // live process, not ours to sweep
+    // pid-null-grace-ok: pid:null is judged by the GRACE_MS age check below, so a crashed-at-startup lease is still reclaimed.
+    if (lease && pidLooksLikeClaude(lease.pid)) continue; // live process, not ours to sweep
     // Same startup grace as the orphan loop (Opus ship-check P0): runJob
     // acquires the lease BEFORE provisioning the worktree and appending
     // job-spawned, so a young pid:null lease with no open job is a healthy
