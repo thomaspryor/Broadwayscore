@@ -38,6 +38,7 @@ const { normalizeOutlet } = require('./lib/review-normalization');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/critic-outlets-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { isVerifiedRow, reviewYear, findTenureFlags } = require('./lib/critic-tenure');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_OUTPUT = path.join(__dirname, '..', 'data', 'critic-registry.json');
@@ -242,6 +243,8 @@ function scanReviewTexts() {
           showId,
           outlet: normalizedOutlet,
           file,
+          year: reviewYear(showId, data),
+          verified: isVerifiedRow(data),
         });
       } catch (e) {
         // Skip unparseable files
@@ -379,6 +382,19 @@ function main() {
     }
   }
 
+  // Tenure check (BRO-5222): advisory only, never affects the exit code or
+  // the baseline (CLAUDE.md 19). Unknown critics never reach `critics`.
+  const tenureFlags = findTenureFlags(critics);
+  console.log(`\nTenure flags (advisory): ${tenureFlags.length}`);
+  if (!jsonOutput) {
+    for (const f of tenureFlags) {
+      const detail = f.kind === 'outside_tenure'
+        ? `${f.year} outside ${f.tenure.first}-${f.tenure.last} (${f.tenure.count} verified); verified at ${f.verifiedElsewhereThatYear.join(', ')} that year`
+        : `no verified row at this outlet; verified at ${Object.keys(f.verifiedOutlets).join(', ')}`;
+      console.log(`  [${f.kind}] ${f.critic} at ${f.outlet} for ${f.showId}: ${detail}`);
+    }
+  }
+
   // --update-baseline: regenerate the baseline from the current scan and exit,
   // bypassing registry/audit file output (mirrors audit-outlet-registry.js).
   if (UPDATE_BASELINE) {
@@ -417,6 +433,7 @@ function main() {
       flaggedReviews: flaggedReviews.length,
     },
     flaggedReviews,
+    tenureFlags,
     freelancers: Object.entries(registry)
       .filter(([, c]) => c.isFreelancer)
       .map(([slug, c]) => ({
