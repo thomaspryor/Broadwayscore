@@ -1192,6 +1192,14 @@ const CLEAR_BREADCRUMBS = {
  *   (restore — that's legitimate data-loss healing).
  * @returns {boolean}
  */
+// Fields one approved clear covers. A rating is three fields (BRO-5295): clearing originalScore on an already
+// cleared record must also drop its normalized value and source, or the guard restores them and the rating is
+// left half-written. Every other field covers only itself.
+const APPROVED_CLEAR_SCOPE = { originalScore: ['originalScore', 'originalScoreNormalized', 'originalScoreSource'] };
+function approvedClearScope(field) {
+  return field ? (APPROVED_CLEAR_SCOPE[field] || [field]) : [];
+}
+
 function isIntentionalClear(field, localData, committedData) {
   if (!localData) return false;
   if (_deliberateTextTrim(field, localData, committedData)) return true;
@@ -1891,7 +1899,7 @@ function safeWriteReview(filePath, newData, options = {}) {
           // executeReviewFieldEditIn has compared the on-disk value with the
           // approved plan. A previously stored breadcrumb does not make that
           // explicit, field-scoped null stale. Locks and collisions still win.
-          || (options.approvedFieldClear === field && incomingSnapshot[field] === null));
+          || (approvedClearScope(options.approvedFieldClear).includes(field) && incomingSnapshot[field] === null));
 
       const effectiveFields = getEffectiveProtectedFields(existing);
       for (const field of effectiveFields) {

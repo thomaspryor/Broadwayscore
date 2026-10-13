@@ -563,3 +563,28 @@ test('url repair: allowed when another show folder already holds the current url
   assert.equal(ok.ok, true, ok.reason);
   assert.equal(ok.record.url, good);
 });
+
+// BRO-5295: the write guard honours a clear only when it is NEW (incoming carries the
+// breadcrumb, disk does not). A rating re-added to an already-cleared file (Her Campus:
+// "1992 starring" read as 2/5 the day after BRO-305 cleared it) therefore could not be
+// removed by a plan: "write guard kept 2/5".
+test('originalScore -> null removes a rating that was re-added to an already-cleared record', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-oc-'));
+  const show = 'death-becomes-her-tour-2026';
+  fs.mkdirSync(path.join(root, show));
+  const file = path.join(root, show, 'hercampus--jessica-sprague.json');
+  const base = { showId: show, outlet: 'Hercampus', outletId: 'hercampus', criticName: 'Jessica Sprague', url: 'https://www.hercampus.com/school/youngstown/death-becomes-her-review/', fullText: 'x'.repeat(400), contentTier: 'complete', originalScore: '2/5', originalScoreNormalized: 40, originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars', originalScoreCleared: true, originalScoreClearedReason: 'approved fix earlier: rating verified against the outlet page' };
+  fs.writeFileSync(file, JSON.stringify(base, null, 2));
+  const r = executeReviewFieldEditIn(root, { file: `${show}/hercampus--jessica-sprague.json`, field: 'originalScore', oldValue: '2/5', newValue: null }, stamp);
+  assert.equal(r.ok, true, r.reason);
+  const after = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(after.originalScore, null);
+  assert.equal(after.originalScoreNormalized, null);
+  assert.equal(after.originalScoreSource, null);
+  assert.equal(after.originalScoreCleared, true);
+  assert.equal(after.fullText.length, 400, 'nothing else on the record changes');
+});

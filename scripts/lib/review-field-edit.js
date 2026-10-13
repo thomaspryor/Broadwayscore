@@ -412,6 +412,11 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   if (action.field === 'duplicateOf' && action.newValue === null) {
     writeOptions.approvedFieldClear = action.field;
   }
+  // BRO-5295: a rating re-added to a record that was ALREADY cleared (the Her Campus 2/5 came back the day after
+  // its clear) is removed the same way. The guard widens the scope to the derived rating fields.
+  if (action.field === 'originalScore' && action.newValue === null && record.originalScoreCleared === true) {
+    writeOptions.approvedFieldClear = action.field;
+  }
   require('./review-write-guard').safeWriteReview(abs, { ...res.record }, writeOptions);
   // The write guard can legitimately refuse a change (a protected field with
   // no clear breadcrumb). Report that instead of claiming success.
