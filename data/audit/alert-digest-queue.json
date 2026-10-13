@@ -607,5 +607,35 @@
       }
     ],
     "queuedAt": "2026-10-13T08:05:07.614Z"
+  },
+  {
+    "conditionKey": "land:land/bro-77-hover-rate-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-77-hover-rate-gate",
+    "description": "land.yml did not land land/bro-77-hover-rate-gate: the unit-tests-node gate went red at a2b3b6e173. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38363316443",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-77-hover-rate-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a2b3b6e173c68e54690485cdc51a45546a981141"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38363316443"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:08:50.962Z"
   }
 ]
