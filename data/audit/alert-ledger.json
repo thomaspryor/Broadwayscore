@@ -164,9 +164,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-13T18:27:17.789Z",
-      "lastSeen": "2026-10-13T18:27:17.789Z",
-      "lastNotifiedAt": "2026-10-13T18:27:17.789Z",
+      "incidentOpenedAt": "2026-10-13T18:28:49.845Z",
+      "lastSeen": "2026-10-13T18:28:49.845Z",
+      "lastNotifiedAt": "2026-10-13T18:28:49.845Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 139,
       "cardId": null,
@@ -15949,13 +15949,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5281",
-      "dispatch": {
-        "requestedAt": "2026-10-13T14:59:32.419Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38406423041",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38406423041"
-      },
-      "silentRefires": 1
+      "resolvedAt": "2026-10-13T18:28:49.197Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-3444-digest-recheck": {
       "status": "open",
@@ -15981,46 +15976,21 @@
       "lastSurfacedAt": "2026-10-13T17:16:40.320Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
-    "land:land/bro-3919-body-bylines": {
+    "test-yml:red:Lint Workflows:688d32b5": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-3919-body-bylines",
-      "firstSeen": "2026-10-13T14:18:27.617Z",
-      "incidentOpenedAt": "2026-10-13T14:18:27.617Z",
-      "lastSeen": "2026-10-13T14:18:27.617Z",
-      "lastNotifiedAt": "2026-10-13T14:18:27.617Z",
-      "lastSurfacedAt": "2026-10-13T14:18:27.617Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Lint Workflows / Audit — no API route dispatches a workflow from GET (BRO-5262)",
+      "firstSeen": "2026-10-13T18:28:49.213Z",
+      "incidentOpenedAt": "2026-10-13T18:28:49.213Z",
+      "lastSeen": "2026-10-13T18:28:49.213Z",
+      "lastNotifiedAt": "2026-10-13T18:28:49.213Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-5261-s3-2609": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-5261-s3-2609",
-      "firstSeen": "2026-10-13T14:29:27.598Z",
-      "incidentOpenedAt": "2026-10-13T14:29:27.598Z",
-      "lastSeen": "2026-10-13T14:29:27.598Z",
-      "lastNotifiedAt": "2026-10-13T14:29:27.598Z",
-      "lastSurfacedAt": "2026-10-13T14:29:27.598Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-5261-s3-3208": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-5261-s3-3208",
-      "firstSeen": "2026-10-13T14:41:12.067Z",
-      "incidentOpenedAt": "2026-10-13T14:41:12.067Z",
-      "lastSeen": "2026-10-13T14:41:12.067Z",
-      "lastNotifiedAt": "2026-10-13T14:41:12.067Z",
-      "lastSurfacedAt": "2026-10-13T14:41:12.067Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-5286"
     }
   }
 }
