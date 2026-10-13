@@ -51,6 +51,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'isNonReview', 'isNonReviewReason', 'nonReviewManualClear', 'wrongArticleManualClear',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
+  // cross-outlet duplicate flag (BRO-3870): CLEAR ONLY, with its breadcrumb.
+  // For a hand-adjudicated dangling crossOutletPrimaryFile the audit's --fix
+  // leaves report-only (the surviving copy is excluded for its own reasons).
+  'crossOutletDuplicate', 'crossOutletClearReason',
   // score override (BRO-4275): humanReviewScore is the one score the rebuild
   // always honours (rebuild-helpers.js P0), so a cloud session can correct an
   // LLM misread without touching llmScore/ensemble bookkeeping.
@@ -77,6 +81,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  crossOutletDuplicate: (v) => (v === false ? null : 'crossOutletDuplicate may only be cleared (false)'),
+  crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0
+    ? null : 'crossOutletClearReason must be a non-empty string'),
   showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder
     ? null : 'showId may only be set to the folder the file lives in'),
   originalScore: (v, record) => require('./verified-original-score').verifiedRatingError(record, v),

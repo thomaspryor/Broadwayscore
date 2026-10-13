@@ -61,23 +61,73 @@ test('cross-dir primary that is missing, self-pointer, and missing pointer are f
   assert.deepEqual(m, { 'a.json': 'sibling-missing', 'self.json': 'self-reference', 'np.json': 'pointer-missing' });
 });
 
-test('renamed primary (same-URL twin or same critic under another outlet) is report-only and --fix leaves it flagged', () => {
+const live = (url, extra = {}) => ({ url, fullText: 'x'.repeat(3000), assignedScore: 70, criticName: 'Some Critic', publishDate: '2020-01-01', ...extra });
+
+test('renamed primary with a LIVE twin is repointed (stays excluded); a dead twin stays report-only', () => {
   const root = mkFixture({
     s1: {
       'amny--matt-windman.json': xo('s1/newsday--linda-winer.json', { url: 'https://amny.com/a' }),
-      'newsday--matt-windman.json': { url: 'https://newsday.com/b' },
+      'newsday--matt-windman.json': live('https://newsday.com/b'),
       'x--unknown.json': xo('s1/gone.json', { url: 'https://same.com/p' }),
-      'y--unknown.json': { url: 'https://same.com/p' },
-      'self.json': xo('s1/self.json'),
+      'y--unknown.json': live('https://same.com/p'),
+      'd--unknown.json': xo('s1/gone2.json', { url: 'https://dead.com/p' }),
+      'e--unknown.json': { url: 'https://dead.com/p', wrongProduction: true },
     },
   });
   const { audit } = load(root);
-  const m = Object.fromEntries(audit().mismatches.map(x => [x.file, x.reason]));
-  assert.equal(m['amny--matt-windman.json'], 'primary-renamed');
-  assert.equal(m['x--unknown.json'], 'primary-renamed');
-  assert.equal(m['self.json'], 'self-reference');
+  const m = Object.fromEntries(audit().mismatches.map(x => [x.file, [x.reason, x.action || null]]));
+  assert.deepEqual(m['amny--matt-windman.json'], ['primary-renamed', 'repoint']);
+  assert.deepEqual(m['x--unknown.json'], ['primary-renamed', 'repoint']);
+  assert.deepEqual(m['d--unknown.json'], ['primary-renamed', null]);
   assert.equal(run(root, '--fix').status, 0);
-  for (const f of ['amny--matt-windman.json', 'x--unknown.json', 'self.json']) assert.equal(read(root, 's1', f).crossOutletDuplicate, true, f);
+  const a = read(root, 's1', 'amny--matt-windman.json');
+  assert.equal(a.crossOutletDuplicate, true);
+  assert.equal(a.crossOutletPrimaryFile, 's1/newsday--matt-windman.json');
+  assert.match(a.crossOutletRepointReason, /newsday--linda-winer\.json no longer exists/);
+  assert.equal(read(root, 's1', 'x--unknown.json').crossOutletPrimaryFile, 's1/y--unknown.json');
+  assert.equal(read(root, 's1', 'd--unknown.json').crossOutletPrimaryFile, 's1/gone2.json');
+  // repointed refs are no longer dangling
+  const after = load(root).audit().mismatches.map(x => x.file);
+  assert.deepEqual(after, ['d--unknown.json']);
+});
+
+test('BRO-3870: renamed primary whose twin points back at us is cleared (the pair excluded each other)', () => {
+  const root = mkFixture({
+    s1: {
+      'nytimes--ben-brantley.json': xo('s1/about--unknown.json', { url: 'https://www.nytimes.com/r' }),
+      'nytimes--unknown.json': xo('s1/nytimes--ben-brantley.json', { url: 'http://theater.nytimes.com/r' }),
+    },
+  });
+  const r = run(root, '--fix');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const a = read(root, 's1', 'nytimes--ben-brantley.json');
+  assert.equal(a.crossOutletDuplicate, false);
+  assert.match(a.crossOutletClearReason, /names this file as its primary/);
+  assert.equal(read(root, 's1', 'nytimes--unknown.json').crossOutletDuplicate, true, 'twin stays the duplicate');
+  assert.equal(load(root).audit().mismatches.length, 0);
+});
+
+test('self-reference with no other copy is cleared; with a same-URL copy it stays report-only', () => {
+  const root = mkFixture({
+    s1: {
+      'self.json': xo('s1/self.json'),
+      'self2.json': xo('s1/self2.json', { url: 'https://dup.com/1' }),
+      'other.json': live('https://dup.com/1'),
+    },
+  });
+  assert.equal(run(root, '--fix').status, 0);
+  assert.equal(read(root, 's1', 'self.json').crossOutletDuplicate, false);
+  assert.match(read(root, 's1', 'self.json').crossOutletClearReason, /pointed at this file itself/);
+  assert.equal(read(root, 's1', 'self2.json').crossOutletDuplicate, true);
+});
+
+test('crossOutletRenamedAction decides clear / repoint / report', async () => {
+  const { crossOutletRenamedAction } = load(mkFixture({ s1: {} }));
+  assert.equal(crossOutletRenamedAction('a.json', { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/a.json' }, false), 'clear');
+  assert.equal(crossOutletRenamedAction('a.json', { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/c.json' }, false), null);
+  assert.equal(crossOutletRenamedAction('a.json', {}, true), 'repoint');
+  assert.equal(crossOutletRenamedAction('a.json', {}, false), null);
+  assert.equal(crossOutletRenamedAction('a.json', null, true), null);
 });
 
 test('--fix clears crossOutlet fields, leaves duplicateTextOf untouched, skips pointer-missing', () => {

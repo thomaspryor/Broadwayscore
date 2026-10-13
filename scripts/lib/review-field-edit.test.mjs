@@ -466,3 +466,15 @@ test('a verdict fix on a phantom row survives the guard stripping its cloned exc
   const { unexpectedChanges } = require('./review-field-edit.js');
   assert.deepEqual(unexpectedChanges({ dtliExcerpt: 'q', wrongAttribution: null }, { dtliExcerpt: null, wrongAttribution: true }, 'wrongAttribution'), ['dtliExcerpt']);
 });
+
+test('crossOutletDuplicate: clear-only, with a non-empty breadcrumb (BRO-3870)', () => {
+  const rec = { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/gone.json' };
+  assert.equal(applyReviewFieldEdit({ ...rec }, { field: 'crossOutletDuplicate', oldValue: false, newValue: true }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ crossOutletDuplicate: false }, { field: 'crossOutletDuplicate', oldValue: false, newValue: true }, stamp).ok, false);
+  const why = applyReviewFieldEdit({ ...rec }, { field: 'crossOutletClearReason', oldValue: null, newValue: 'primary gone, twin wrongProduction' }, stamp);
+  assert.equal(why.ok, true, why.reason);
+  assert.equal(applyReviewFieldEdit({ ...rec }, { field: 'crossOutletClearReason', oldValue: null, newValue: ' ' }, stamp).ok, false);
+  const res = applyReviewFieldEdit({ ...rec }, { field: 'crossOutletDuplicate', oldValue: true, newValue: false }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.crossOutletDuplicate, false);
+});

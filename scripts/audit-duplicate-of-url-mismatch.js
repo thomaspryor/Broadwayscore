@@ -169,6 +169,67 @@ function sameCriticSlug(a, b) {
   return !!ca && ca !== 'unknown' && ca === crit(b) && a !== b;
 }
 
+// The copy a dangling crossOutletPrimaryFile most likely meant: same canonical
+// URL, a known syndication pair, or the same named critic under another outlet.
+// Searches this show dir and the pointer's show dir. Returns {ref, data, showId,
+// file} or null.
+function findCrossOutletTwin(data, showDir, file, targetShow, load) {
+  const mine = canonUrl(data.url);
+  const dirs = new Set([showDir, path.join(REVIEW_TEXTS_DIR, targetShow)]);
+  for (const dir of dirs) {
+    if (!fs.existsSync(dir)) continue;
+    for (const f of fs.readdirSync(dir)) {
+      if (!f.endsWith('.json') || f === 'failed-fetches.json' || (dir === showDir && f === file)) continue;
+      let o;
+      try { o = dir === showDir ? load(f) : JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); } catch { o = null; }
+      if (o && ((o.url && mine && canonUrl(o.url) === mine) || isCrossOutletSyndicationPair(data, o, normalizeOutlet) || sameCriticSlug(file, f))) {
+        return { ref: `${path.basename(dir)}/${f}`, data: o, showId: path.basename(dir), file: f };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * BRO-3870: what --fix does with a crossOutletDuplicate whose primary was renamed
+ * (a twin copy survives). Pure.
+ *   'clear'   — the twin is itself crossOutletDuplicate pointing at US: the pair
+ *               excludes each other and the review vanishes. The twin's own
+ *               verdict names us the primary, so clearing us scores exactly one copy.
+ *   'repoint' — the twin is live in the rebuild: point at it. Score-neutral (we
+ *               stay excluded), and the ref stops dangling.
+ *   null      — anything else (the twin is excluded for its own reasons, or is a
+ *               duplicate of a third file): report-only, a person decides.
+ */
+function crossOutletRenamedAction(file, twinData, twinLive) {
+  if (!twinData) return null;
+  if (twinData.crossOutletDuplicate === true && typeof twinData.crossOutletPrimaryFile === 'string'
+    && path.basename(twinData.crossOutletPrimaryFile) === file) return 'clear';
+  if (twinLive) return 'repoint';
+  return null;
+}
+
+let _showsById = null;
+function showById(showId) {
+  if (!_showsById) {
+    _showsById = new Map();
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf-8'));
+      for (const s of (Array.isArray(raw) ? raw : raw.shows || [])) _showsById.set(s.id, s);
+    } catch { /* no shows.json: show-aware guards see undefined, as in fixtures */ }
+  }
+  return _showsById.get(showId);
+}
+
+function isTwinLive(twin) {
+  const { isIncludableForRebuild } = require('./lib/review-guards');
+  try {
+    return !!isIncludableForRebuild(twin.data, showById(twin.showId), path.join(REVIEW_TEXTS_DIR, twin.showId, twin.file));
+  } catch {
+    return false;
+  }
+}
+
 function audit() {
   const mismatches = [];
   const showDirs = walkShowDirs(REVIEW_TEXTS_DIR);
@@ -244,30 +305,27 @@ function audit() {
             : fs.existsSync(path.join(REVIEW_TEXTS_DIR, targetShow, targetFile));
           const base = { showId, file, field: 'crossOutletDuplicate', duplicateOf: ptr, url: data.url || null, siblingUrl: null };
           if (sameDir && targetFile === file) {
-            // Renamed onto its own pointer target: which file is the real primary
-            // is a judgment call, so report only (never auto-cleared).
-            mismatches.push({ ...base, reason: 'self-reference' });
+            // Renamed onto its own pointer target (safeRenameReview carries the
+            // pointer along), so the old primary's text now lives in THIS file.
+            // With no other copy left it is the only one and must score (BRO-3870);
+            // a surviving same-URL/syndication/same-critic copy keeps it report-only.
+            const twin = findCrossOutletTwin(data, showDir, file, targetShow, load);
+            mismatches.push(twin
+              ? { ...base, reason: 'self-reference', siblingUrl: twin.ref }
+              : { ...base, reason: 'self-reference', action: 'clear' });
           } else if (!exists) {
             // A missing primary is not proof the review is unique: the primary is
             // often just RENAMED (outlet--unknown -> outlet--critic, show-dir rename)
             // and a same-URL or syndication-pair twin still sits next to us. Clearing then would score
-            // the same article twice, so that case is report-only.
-            const mine = canonUrl(data.url);
-            const dirs = new Set([showDir, path.join(REVIEW_TEXTS_DIR, targetShow)]);
-            let twin = null;
-            {
-              for (const dir of dirs) {
-                if (!fs.existsSync(dir)) continue;
-                for (const f of fs.readdirSync(dir)) {
-                  if (!f.endsWith('.json') || f === 'failed-fetches.json' || (dir === showDir && f === file)) continue;
-                  let o;
-                  try { o = dir === showDir ? load(f) : JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); } catch { o = null; }
-                  if (o && ((o.url && mine && canonUrl(o.url) === mine) || isCrossOutletSyndicationPair(data, o, normalizeOutlet) || sameCriticSlug(file, f))) { twin = `${path.basename(dir)}/${f}`; break; }
-                }
-                if (twin) break;
-              }
+            // the same article twice, so that case never clears unless the twin itself
+            // defers to us (see crossOutletRenamedAction).
+            const twin = findCrossOutletTwin(data, showDir, file, targetShow, load);
+            if (twin) {
+              const action = crossOutletRenamedAction(file, twin.data, isTwinLive(twin));
+              mismatches.push({ ...base, reason: 'primary-renamed', siblingUrl: twin.ref, ...(action ? { action } : {}) });
+            } else {
+              mismatches.push({ ...base, reason: 'sibling-missing', action: 'clear' });
             }
-            mismatches.push(twin ? { ...base, reason: 'primary-renamed', siblingUrl: twin } : { ...base, reason: 'sibling-missing' });
           }
         }
       }
@@ -383,9 +441,23 @@ function fix(mismatches) {
     const filePath = path.join(REVIEW_TEXTS_DIR, m.showId, m.file);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     if (m.field === 'crossOutletDuplicate') {
-      // pointer-missing has no unambiguous target to verify — report only.
-      if (m.reason !== 'sibling-missing') continue;
-      clearCrossOutletFields(data, `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: crossOutletPrimaryFile ${m.duplicateOf} no longer exists`);
+      // pointer-missing and undecided renamed primaries have no unambiguous
+      // action (m.action unset) — report only.
+      const today = new Date().toISOString().slice(0, 10);
+      if (m.action === 'repoint') {
+        // Score-neutral: stays excluded, now against the surviving copy.
+        data.crossOutletPrimaryFile = m.siblingUrl;
+        data.crossOutletRepointReason = `audit-duplicate-of-url-mismatch.js (--fix) on ${today}: ${m.duplicateOf} no longer exists; repointed to surviving copy ${m.siblingUrl}`;
+        safeWriteReview(filePath, data);
+        continue;
+      }
+      if (m.action !== 'clear') continue;
+      const why = m.reason === 'self-reference'
+        ? `crossOutletPrimaryFile pointed at this file itself and no other copy exists`
+        : m.reason === 'primary-renamed'
+          ? `crossOutletPrimaryFile ${m.duplicateOf} no longer exists and its surviving copy ${m.siblingUrl} names this file as its primary`
+          : `crossOutletPrimaryFile ${m.duplicateOf} no longer exists`;
+      clearCrossOutletFields(data, `audit-duplicate-of-url-mismatch.js (--fix) on ${today}: ${why}`);
       safeWriteReview(filePath, data);
       cleared++;
       continue;
@@ -447,9 +519,10 @@ function main() {
   }
 
   const crossOutlet = mismatches.filter(m => m.field === 'crossOutletDuplicate');
-  const crossOutletHealable = crossOutlet.filter(m => m.reason === 'sibling-missing');
+  const crossOutletHealable = crossOutlet.filter(m => m.action === 'clear');
+  const crossOutletRepoint = crossOutlet.filter(m => m.action === 'repoint');
   if (crossOutlet.length > 0) {
-    console.log(`crossOutletDuplicate: ${crossOutlet.length} dangling primary pointer(s) (${crossOutletHealable.length} auto-healable, ${crossOutlet.length - crossOutletHealable.length} report-only: renamed primary / self-reference / pointer-missing):\n`);
+    console.log(`crossOutletDuplicate: ${crossOutlet.length} dangling primary pointer(s) (${crossOutletHealable.length} auto-healable, ${crossOutletRepoint.length} repointable to a live copy, ${crossOutlet.length - crossOutletHealable.length - crossOutletRepoint.length} report-only: undecided renamed primary / self-reference with a twin / pointer-missing):\n`);
     // Capped: the drift digest keeps only the last 40 output lines; --json has the full list.
     for (const m of crossOutlet.slice(0, 10)) console.log(`  ${m.showId}/${m.file}  → crossOutletPrimaryFile: ${m.duplicateOf}  (${m.reason}${m.reason === 'primary-renamed' ? `: ${m.siblingUrl}` : ''})`);
     if (crossOutlet.length > 10) console.log(`  … ${crossOutlet.length - 10} more (use --json)`);
@@ -478,7 +551,9 @@ function main() {
     let toFix = mismatches.filter(m => m.field !== 'crossOutletDuplicate');
     if (crossOutletHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
       // Skip (exit 0), never fail: rebuild-reviews/rebuild-fast run --fix inline.
-      console.warn(`::warning::Skipping ${crossOutletHealable.length} crossOutletDuplicate sibling-missing clears (> ${FIX_SURGE_THRESHOLD}) — pre-existing backlog (BRO-3870) or a producer regression; re-run with --force-bulk once reviewed.`);
+      console.warn(`::warning::Skipping ${crossOutletHealable.length} crossOutletDuplicate clears (> ${FIX_SURGE_THRESHOLD}) — a producer regression or a mass primary deletion; re-run with --force-bulk once reviewed.`);
+      // Repoints re-admit nothing, so the surge guard does not hold them back.
+      toFix = toFix.concat(crossOutletRepoint);
     } else {
       toFix = mismatches;
     }
@@ -512,4 +587,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { stripTrivial, canonicalizeHost, audit, fix };
+module.exports = { stripTrivial, canonicalizeHost, audit, fix, crossOutletRenamedAction };
