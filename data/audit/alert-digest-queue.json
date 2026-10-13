@@ -221,5 +221,575 @@
       }
     ],
     "queuedAt": "2026-10-13T10:13:20.406Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2937-core-data-canary",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2937-core-data-canary",
+    "description": "land.yml did not land land/bro-2937-core-data-canary: the unit-tests-node gate went red at d19a3d1bec. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348823917",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2937-core-data-canary"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d19a3d1bec7bb2e6dec5f8ea8a8f094ea1afc9d5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38348823917"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:29:20.910Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5221-home-hooks-v2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5221-home-hooks-v2",
+    "description": "land.yml did not land land/bro-5221-home-hooks-v2: the unit-tests-node gate went red at d89e3d80f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38349607718",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5221-home-hooks-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d89e3d80f9f0cf36e3f3cad8b51a2efa57337c3d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38349607718"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:36:46.178Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5137-sunday-times",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5137-sunday-times",
+    "description": "land.yml did not land land/bro-5137-sunday-times: the scripts-lib-tests gate went red at 5d543f2a7e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38350516544",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5137-sunday-times"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "5d543f2a7e400100214b153a124ecd207cf1e7c0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38350516544"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:49:52.534Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2770-review-pipeline-fixes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2770-review-pipeline-fixes",
+    "description": "land.yml did not land land/bro-2770-review-pipeline-fixes: the unit-tests-node gate went red at 04dffa2746. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38350883908",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2770-review-pipeline-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "04dffa274691b46a6d5ebdcb5b35432bb2052cef"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38350883908"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:54:10.181Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5222-tenure-6",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5222-tenure-6",
+    "description": "land.yml did not land land/bro-5222-tenure-6: the unit-tests-node gate went red at d2613e6f84. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38358328668",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5222-tenure-6"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d2613e6f84196fac220079a6abb99bbf3af97b5c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38358328668"
+      }
+    ],
+    "queuedAt": "2026-10-13T07:09:02.857Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2463-reconcile-ledgers",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2463-reconcile-ledgers",
+    "description": "land.yml did not land land/bro-2463-reconcile-ledgers: the unit-tests-node gate went red at e17f119314. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38360272272",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2463-reconcile-ledgers"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e17f119314632e94991eae3e2aef78baf1be337e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38360272272"
+      }
+    ],
+    "queuedAt": "2026-10-13T07:35:29.302Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2555-set-u-empty-arrays",
+    "title": "Landing blocked: rebase red on land/bro-2555-set-u-empty-arrays",
+    "description": "land.yml did not land land/bro-2555-set-u-empty-arrays: the rebase gate went red at 7aa1fe11ae. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366081483",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2555-set-u-empty-arrays"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7aa1fe11ae89c65d1e03b90dc4fc5df7f3df0af8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366081483"
+      }
+    ],
+    "queuedAt": "2026-10-13T07:59:45.706Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2556-memory-index",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2556-memory-index",
+    "description": "land.yml did not land land/bro-2556-memory-index: the unit-tests-node gate went red at 3f027393f6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38363209932",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2556-memory-index"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3f027393f6bb9da9941a36c5c06d771456be99d6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38363209932"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:06:18.582Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4317-ws-clear",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4317-ws-clear",
+    "description": "land.yml did not land land/bro-4317-ws-clear: the unit-tests-node gate went red at 638f4f2cc7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38363966423",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4317-ws-clear"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "638f4f2cc73e5ec199c0e03b8839afeb64046e80"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38363966423"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:05:07.614Z"
+  },
+  {
+    "conditionKey": "land:land/bro-77-hover-rate-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-77-hover-rate-gate",
+    "description": "land.yml did not land land/bro-77-hover-rate-gate: the unit-tests-node gate went red at a2b3b6e173. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38363316443",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-77-hover-rate-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a2b3b6e173c68e54690485cdc51a45546a981141"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38363316443"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:08:50.962Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3034-system-health",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3034-system-health",
+    "description": "land.yml did not land land/bro-3034-system-health: the unit-tests-node gate went red at eba21df016. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38364638054",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3034-system-health"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "eba21df016615d272a317c81e64ab1fb398b35bd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38364638054"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:10:31.894Z"
+  },
+  {
+    "conditionKey": "land:land/bro-901-stale-banner",
+    "title": "Landing blocked: unit-tests-node red on land/bro-901-stale-banner",
+    "description": "land.yml did not land land/bro-901-stale-banner: the unit-tests-node gate went red at 70a100e68e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38364408012",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-901-stale-banner"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "70a100e68ed62e355786015890fe2156c7e286b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38364408012"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:13:19.306Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5222-jsonld-7",
+    "title": "Landing blocked: colocated-tests red on land/bro-5222-jsonld-7",
+    "description": "land.yml did not land land/bro-5222-jsonld-7: the colocated-tests gate went red at 37e94cab11. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5222-jsonld-7 @ 37e94cab11 (origin/land/bro-5222-jsonld-7) → origin/main @ c98330c958 [land] attempt 1/3: rebased onto c98330c958, 13 file(s) changed — running checks [land] verified-base: main moved 63b8555e31 → c98330c958 across 111 file(s), substantive — re-checking on the merged tree (+20 test file(s) changed on main since the verified base) [land] linked 21 gitignored path(s)  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38364071440",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5222-jsonld-7"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "37e94cab1111ac702a7410c088debefdc82d1752"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38364071440"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:28:31.316Z"
+  },
+  {
+    "conditionKey": "land:land/bro-340-fix",
+    "title": "Landing blocked: unit-tests-node red on land/bro-340-fix",
+    "description": "land.yml did not land land/bro-340-fix: the unit-tests-node gate went red at 02d34e85a8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38365951914",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-340-fix"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "02d34e85a8c4d9dd1c23f5fee5ebff7883321a33"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38365951914"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:25:13.849Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2440-fix",
+    "title": "Landing blocked: rebase red on land/bro-2440-fix",
+    "description": "land.yml did not land land/bro-2440-fix: the rebase gate went red at 5c0cd1d28c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2440-fix"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5c0cd1d28c02304340315d92dabf2fb0a89560f5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:29:10.642Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3014-push-lane-audits",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3014-push-lane-audits",
+    "description": "land.yml did not land land/bro-3014-push-lane-audits: the scripts-lib-tests gate went red at 0113c5e70f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366085010",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3014-push-lane-audits"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "0113c5e70fb476b92aaf6082b4cb933561ecc208"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366085010"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:32:35.286Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2800-deadline-overshoot",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-2800-deadline-overshoot",
+    "description": "land.yml did not land land/bro-2800-deadline-overshoot: the scripts-lib-tests gate went red at 4bd1409ced. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366445322",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2800-deadline-overshoot"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "4bd1409ced55a91b5363568a999c26fd9390abb8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366445322"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:31:03.896Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2394-mcp-visual-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2394-mcp-visual-gate",
+    "description": "land.yml did not land land/bro-2394-mcp-visual-gate: the unit-tests-node gate went red at 03874461d6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366092888",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2394-mcp-visual-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "03874461d6ec1a5d7a210846ff56a83f99c4c05d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366092888"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:32:28.937Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2969-drop-literals-2",
+    "title": "Landing blocked: race red on land/bro-2969-drop-literals-2",
+    "description": "land.yml did not land land/bro-2969-drop-literals-2: the race gate went red at 8d3774a6c7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2969-drop-literals-2 @ 8d3774a6c7 (origin/land/bro-2969-drop-literals-2) → origin/main @ bff75a9c3e [land] attempt 1/3: rebased onto ce56a1954b, 1 file(s) changed — running checks [land] verified-base: main moved b2b685a829 → ce56a1954b across 282 file(s), substantive — re-checking on the merged tree (+44 test file(s) changed on main since the verified base) [land] linked 21 gitign Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38367928891",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2969-drop-literals-2"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "8d3774a6c7a849d59a77e0a64c80db568157da26"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38367928891"
+      }
+    ],
+    "queuedAt": "2026-10-13T10:18:58.685Z"
   }
 ]
