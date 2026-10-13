@@ -1967,6 +1967,8 @@ on:
       # class). Root-level scripts/*.js and *.test.mjs are NOT covered by any
       # broad glob, so both need their own entry or a solo edit gets ZERO CI.
       - 'scripts/audit-alert-reachability.js'
+      # Core-data single-writer claims guard (BRO-3514), advisory.
+      - 'scripts/audit-core-data-writers.js'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
@@ -3551,6 +3553,16 @@ jobs:
         # blocks), non-blocking — always exits 0. Exempt a workflow with
         # # audit-alert-reachability-ok: <reason>.
         run: node scripts/audit-alert-reachability.js
+
+      - name: Audit — core-data single-writer claims vs real writers (advisory, BRO-3514)
+        if: always() && steps.deps.outcome == 'success'
+        # Re-derives which workflows write each private-core-data
+        # 'single-writer' file (run a writer script + use push-core-data) and
+        # compares it to the registry entry's hand-verified `writers`. A drift
+        # line means a second writer appeared that push-core-data will not
+        # reconcile. Heuristic static scan, so advisory: always exits 0
+        # (CLAUDE.md §19); drift prints as ::warning::.
+        run: node scripts/audit-core-data-writers.js
 
       - name: Audit — push-core-data audit-persistence gap (advisory)
         if: always() && steps.deps.outcome == 'success'

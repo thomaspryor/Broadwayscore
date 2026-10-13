@@ -32,4 +32,53 @@ function conditionIsFailClosed(cond) {
   return ACCEPTED_CONDITIONS.some((re) => re.test(c));
 }
 
-module.exports = { ACCEPTED_CONDITIONS, conditionIsFailClosed };
+
+// BRO-3224: the POSITION rule tests/unit/workflow-audit-steps-always.test.mjs
+// enforces for test.yml's lint-workflows job, generalised to every job in
+// every workflow that adopted the same anchor. A job "adopts" it when 3+
+// steps open their condition with `always() && steps.<X>.outcome ==
+// 'success'` for the same X: the author has declared that the steps after X
+// must survive unrelated failures. Fewer than 3 is an incidental condition,
+// not a declaration (scrape-dtli-show-score.yml has a one-off).
+const ANCHOR_PREFIX = /^\s*(?:\$\{\{\s*)?always\(\)\s*&&\s*steps\.([A-Za-z0-9_-]+)\.outcome\s*==\s*'success'/;
+const STATUS_FUNCTION = /\b(?:always|cancelled|failure|success)\s*\(\s*\)/;
+const MIN_ANCHORED_STEPS = 3;
+
+/** Anchor step ids a job has adopted (see above), in step order. */
+function anchorIdsOf(job) {
+  const counts = new Map();
+  for (const step of (job && job.steps) || []) {
+    const m = ANCHOR_PREFIX.exec(String(step.if ?? ''));
+    if (m) counts.set(m[1], (counts.get(m[1]) || 0) + 1);
+  }
+  const steps = (job && job.steps) || [];
+  return [...counts.entries()]
+    .filter(([, n]) => n >= MIN_ANCHORED_STEPS)
+    .map(([id]) => id)
+    .filter((id) => steps.some((s) => s.id === id))
+    .sort((a, b) => steps.findIndex((s) => s.id === a) - steps.findIndex((s) => s.id === b));
+}
+
+/**
+ * Steps after a job's (earliest) anchor that an unrelated earlier failure
+ * would still skip: no `if:` at all, or an `if:` with no status function
+ * (GitHub wraps those in an implicit success()). continue-on-error does not
+ * help: it only stops the step's OWN failure from failing the job.
+ * @returns {{index:number, name:string, if:(string|undefined)}[]}
+ */
+function findAnchorGaps(job) {
+  const [anchorId] = anchorIdsOf(job);
+  if (!anchorId) return [];
+  const steps = job.steps || [];
+  const start = steps.findIndex((s) => s.id === anchorId);
+  const gaps = [];
+  for (let i = start + 1; i < steps.length; i++) {
+    const cond = steps[i].if;
+    if (cond === undefined || cond === null || !STATUS_FUNCTION.test(String(cond))) {
+      gaps.push({ index: i, name: steps[i].name || steps[i].uses || `(step ${i})`, if: cond });
+    }
+  }
+  return gaps;
+}
+
+module.exports = { ACCEPTED_CONDITIONS, conditionIsFailClosed, anchorIdsOf, findAnchorGaps, MIN_ANCHORED_STEPS };

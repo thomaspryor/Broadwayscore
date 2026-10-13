@@ -394,6 +394,9 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from scrape-dtli-show-score'
       - name: Auto-trigger text collection if needed
+        # BRO-3224: an earlier failed push must not skip the dispatch that
+        # collects the reviews this run found.
+        if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

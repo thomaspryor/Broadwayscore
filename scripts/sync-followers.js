@@ -37,14 +37,14 @@ function loadFollowers() {
   }
 }
 
-function saveFollowers(data) {
+function saveFollowers(data, lastSynced) {
   // Count total unique emails
   const allEmails = new Set();
   for (const emails of Object.values(data.followers)) {
     for (const e of emails) allEmails.add(e);
   }
   data._meta.totalFollowers = allEmails.size;
-  data._meta.lastSynced = new Date().toISOString();
+  data._meta.lastSynced = lastSynced;
 
   fs.writeFileSync(FOLLOWERS_PATH, JSON.stringify(data, null, 2));
   console.log(`Saved ${allEmails.size} unique followers across ${Object.keys(data.followers).length} shows`);
@@ -98,8 +98,16 @@ function isTestEmail(email) {
   return false;
 }
 
+/**
+ * Every submission since `sinceDate`, newest first, as { items, complete }, or
+ * null when the very first page failed. `complete` is false when a later page
+ * failed: Formspree pages newest-first, so a partial result is missing the
+ * OLDEST submissions, and the sync watermark must not move past them
+ * (nextSyncWatermark).
+ */
 async function fetchAllSubmissions(formId, token, sinceDate) {
   const submissions = [];
+  let complete = true;
   let offset = 0;
   const limit = 100;
 
@@ -115,7 +123,8 @@ async function fetchAllSubmissions(formId, token, sinceDate) {
     } catch (err) {
       console.error(`  Error fetching from ${formId}: ${err.message}`);
       if (offset === 0) return null; // Total failure
-      console.error('  Aborting pagination — retaining partial results');
+      console.error('  Aborting pagination — retaining partial results (watermark will not advance)');
+      complete = false;
       break;
     }
 
@@ -129,7 +138,26 @@ async function fetchAllSubmissions(formId, token, sinceDate) {
     offset += limit;
   }
 
-  return submissions;
+  return { items: submissions, complete };
+}
+
+// BRO-3514: the sync watermark (`_meta.lastSynced`, the next run's `since`)
+// used to be stamped at SAVE time. A signup that arrived between this run's
+// fetch and its save was never fetched by anyone again, and when two
+// workflows (sync-followers, send-follow-notifications, opening-night-
+// broadcast; separate concurrency groups) raced, the losing run's file could
+// carry a lastSynced later than signups only it had fetched. Stamping the
+// fetch START, minus an overlap, makes any lost window re-fetch next run.
+// The overlap covers Formspree's `since` inclusivity and runner/server clock
+// skew (neither is documented); re-processing it is idempotent because
+// follow/unfollow and subscribe/unsubscribe replay in order onto sets.
+const SYNC_WATERMARK_OVERLAP_MS = 10 * 60_000;
+
+/** Next `lastSynced`: fetch start minus the overlap, or `prev` unchanged when
+ * the fetch failed or was partial (its missing pages are the oldest ones). */
+function nextSyncWatermark(prev, fetchStartedAtMs, fetched) {
+  if (!fetched || fetched.complete !== true) return prev || null;
+  return new Date(fetchStartedAtMs - SYNC_WATERMARK_OVERLAP_MS).toISOString();
 }
 
 function httpJSON(method, url, body, headers) {
@@ -357,12 +385,16 @@ async function main() {
   let removed = 0;
   let skippedDuplicate = 0;
   let skippedInvalid = 0;
+  let followersWatermark = data._meta.lastSynced || null;
 
   if (followFormId && followToken) {
     console.log(`\nSyncing follows from form ${followFormId}...`);
-    const followSubs = await fetchAllSubmissions(followFormId, followToken, FULL_RESYNC ? null : data._meta.lastSynced);
+    const followFetchStartedAt = Date.now();
+    const followFetch = await fetchAllSubmissions(followFormId, followToken, FULL_RESYNC ? null : data._meta.lastSynced);
+    followersWatermark = nextSyncWatermark(followersWatermark, followFetchStartedAt, followFetch);
+    const followSubs = followFetch && followFetch.items;
 
-    if (followSubs === null) {
+    if (!followSubs) {
       console.log('Could not fetch follow form. If this is the first run, this is normal.');
     } else {
       // Formspree returns newest-first — reverse to process chronologically
@@ -407,7 +439,7 @@ async function main() {
   console.log(`\nFollow results: ${added} added, ${removed} removed, ${skippedDuplicate} duplicates, ${skippedInvalid} invalid`);
 
   if (!DRY_RUN && (added > 0 || removed > 0)) {
-    saveFollowers(data);
+    saveFollowers(data, followersWatermark);
   } else if (added === 0 && removed === 0) {
     console.log('No follow changes to save');
   }
@@ -423,6 +455,8 @@ async function main() {
 
   let subscribersAdded = 0;
   let subscribersRemoved = 0;
+  let subscribersWatermark = null;
+  try { subscribersWatermark = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'))._meta?.lastSynced || null; } catch { /* first run */ }
 
   if (subscriberFormId && subscriberToken) {
     console.log(`\nSyncing subscribers from form ${subscriberFormId}...`);
@@ -434,9 +468,12 @@ async function main() {
       subscriberLastSynced = existing._meta?.lastSynced || null;
     } catch { /* first run */ }
 
-    const subSubs = await fetchAllSubmissions(subscriberFormId, subscriberToken, FULL_RESYNC ? null : subscriberLastSynced);
+    const subFetchStartedAt = Date.now();
+    const subFetch = await fetchAllSubmissions(subscriberFormId, subscriberToken, FULL_RESYNC ? null : subscriberLastSynced);
+    subscribersWatermark = nextSyncWatermark(subscriberLastSynced, subFetchStartedAt, subFetch);
+    const subSubs = subFetch && subFetch.items;
 
-    if (subSubs === null) {
+    if (!subSubs) {
       console.log('Could not fetch subscriber form. If this is the first run, this is normal.');
     } else {
       // Formspree returns newest-first — reverse to process chronologically
@@ -473,7 +510,7 @@ async function main() {
   if (!DRY_RUN) {
     const subscribersData = {
       _meta: {
-        lastSynced: new Date().toISOString(),
+        lastSynced: subscribersWatermark,
         totalSubscribers: subscribersList.length,
       },
       subscribers: subscribersList,
@@ -510,9 +547,12 @@ async function main() {
       weLastSynced = existing._meta?.lastSynced || null;
     } catch { /* first run */ }
 
-    const weSubs = await fetchAllSubmissions(weFormId, weToken, FULL_RESYNC ? null : weLastSynced);
+    const weFetchStartedAt = Date.now();
+    const weFetch = await fetchAllSubmissions(weFormId, weToken, FULL_RESYNC ? null : weLastSynced);
+    const weWatermark = nextSyncWatermark(weLastSynced, weFetchStartedAt, weFetch);
+    const weSubs = weFetch && weFetch.items;
 
-    if (weSubs === null) {
+    if (!weSubs) {
       console.log('Could not fetch WE subscriber form. If this is the first run, this is normal.');
     } else {
       weSubs.reverse();
@@ -547,7 +587,7 @@ async function main() {
     if (!DRY_RUN) {
       const weData = {
         _meta: {
-          lastSynced: new Date().toISOString(),
+          lastSynced: weWatermark,
           totalSubscribers: weList.length,
         },
         subscribers: weList,
@@ -600,4 +640,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { syncResendAudience, isTestEmail };
+module.exports = { syncResendAudience, isTestEmail, fetchAllSubmissions, nextSyncWatermark, SYNC_WATERMARK_OVERLAP_MS };

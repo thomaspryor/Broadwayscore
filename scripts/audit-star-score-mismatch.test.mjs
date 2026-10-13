@@ -205,3 +205,30 @@ test('isIntentionallyClearedRating: true only when originalScoreCleared === true
   assert.equal(isIntentionallyClearedRating(null), false);
   assert.equal(isIntentionallyClearedRating({ originalScoreCleared: 'true' }), false, 'must be the boolean, not a truthy string');
 });
+
+test('BRO-3364: an ack older than its ttl re-alerts; --write-baseline keeps the old date, --renew-baseline re-acks', () => {
+  const fixture = makeFixture();
+  try {
+    runAudit(fixture, ['--write-baseline']);
+    const key = 'fixture-mis-extracted-2026/theater-life--critic.json#2/5 stars';
+    const aged = JSON.parse(fs.readFileSync(fixture.baselinePath, 'utf8'));
+    assert.equal(aged.entries[key].ttlDays, 90, 'the writer stamps an expiry entry');
+    aged.entries[key].timestamp = '2020-01-01T00:00:00.000Z';
+    fs.writeFileSync(fixture.baselinePath, JSON.stringify(aged));
+
+    const expired = runAudit(fixture);
+    assert.equal(expired.status, 1, 'an expired ack must alert again');
+    assert.match(expired.out, /1 flagged/);
+
+    runAudit(fixture, ['--write-baseline']);
+    assert.equal(JSON.parse(fs.readFileSync(fixture.baselinePath, 'utf8')).entries[key].timestamp, '2020-01-01T00:00:00.000Z',
+      'a plain --write-baseline must not silently renew an expired ack');
+    assert.equal(runAudit(fixture).status, 1);
+
+    const renewed = runAudit(fixture, ['--renew-baseline']);
+    assert.match(renewed.out, /1 renewed/);
+    assert.equal(runAudit(fixture).status, 0);
+  } finally {
+    fs.rmSync(fixture.tmp, { recursive: true, force: true });
+  }
+});

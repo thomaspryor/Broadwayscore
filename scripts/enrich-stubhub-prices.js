@@ -34,6 +34,11 @@ const LIMIT = (() => {
   return idx > -1 ? parseInt(process.argv[idx + 1], 10) : Infinity;
 })();
 const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
+// BRO-3340: update-show-status.yml caps this step at 5 min with
+// --time-budget-min=4 (1 min slack). Each show is one fetchPage(); a
+// fetchPage() chain can take ~2.5 min (provider timeouts + the 90s Playwright
+// tier deadline).
+const MIN_REMAINING_MS_TO_START = 2.5 * 60_000;
 
 function extractMinPrice(html) {
   // StubHub embeds lowPrice in JSON-LD and page state across event listings
@@ -66,7 +71,7 @@ async function main() {
   const toProcess = candidates.slice(0, LIMIT);
 
   for (let i = 0; i < toProcess.length; i++) {
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${toProcess.length - i} show(s) deferred to next run.`);
       break;
     }

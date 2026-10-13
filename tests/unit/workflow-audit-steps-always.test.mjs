@@ -61,6 +61,10 @@ const EXEMPT = new Map([
  * rule is unwritable for the reason tests/unit/commercial-publish-gate.test.mjs
  * documents — most equivalent enforcement lives inside scripts, not in YAML a
  * parser can see. Recorded so the next reader knows it is a known edge.
+ * BRO-3224 narrowed it: tests/unit/workflow-anchored-jobs-fail-closed.test.mjs
+ * applies the position rule below to every job in every workflow that adopted
+ * an `always() && steps.<X>.outcome == 'success'` anchor. A job with no anchor
+ * is still not covered.
  */
 const SCOPED_JOBS = new Set(['data-validation', 'lint-workflows']);
 

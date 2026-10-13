@@ -368,9 +368,11 @@ test('classifyPushFallbackSafety: an unregistered data/audit/ path disqualifies 
 test('classifyPushFallbackSafety: a MANAGED (multi-writer, active) file disqualifies even though it is not data/audit/', () => {
   // Not commercial-pending-review.json — BRO-2795 gave that one real
   // apiFallbackMerge coverage (mergePendingReview), so it no longer
-  // disqualifies. commercial-research-queue.json is the same family
-  // (MANAGED, 'active', no apiFallbackMerge) and still does.
-  const r = classifyPushFallbackSafety('data/commercial-research-queue.json');
+  // disqualifies. diary-shows.json is the same family (MANAGED, 'active', no
+  // apiFallbackMerge — its registry entry says why) and still does.
+  // (commercial-research-queue.json used to be the example here; BRO-3333
+  // gave it apiFallbackMerge.)
+  const r = classifyPushFallbackSafety('data/diary-shows.json');
   assert.equal(r.isApiFallbackSafe, false);
   assert.equal(r.disqualifiesFallback, true);
 });
@@ -456,7 +458,7 @@ jobs:
         run: |
           git add data/audit/some-totally-unregistered-file.json
           git add data/audit/imageless-scored-shows.json
-          git add data/commercial-research-queue.json
+          git add data/diary-shows.json
           git commit -m "data: update"
           bash scripts/lib/push-with-retry.sh 14 main
 `;
@@ -470,7 +472,7 @@ test('auditWorkflowText: a single push call bundling an apiFallbackSafe file wit
   assert.deepEqual(r.mixedSafetyBundleSafeFiles, ['data/audit/imageless-scored-shows.json']);
   assert.deepEqual(r.mixedSafetyBundleDisqualifyingFiles.sort(), [
     'data/audit/some-totally-unregistered-file.json',
-    'data/commercial-research-queue.json',
+    'data/diary-shows.json',
   ]);
 });
 
@@ -602,7 +604,7 @@ jobs:
         run: |
           git add data/audit/some-totally-unregistered-file.json
           git add data/audit/imageless-scored-shows.json
-          git add data/commercial-research-queue.json
+          git add data/diary-shows.json
           git commit -m "data: update (bundled)"
           bash scripts/lib/push-with-retry.sh 14 main
           bash scripts/lib/git-add-existing.sh data/audit/some-totally-unregistered-file.json

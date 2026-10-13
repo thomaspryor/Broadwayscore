@@ -53,6 +53,12 @@ const {
 } = require('./lib/we-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+// BRO-3340: promote-we-aggregator.yml gives the job 30 min and the script
+// --time-budget-min=25; setup and the commit/email after it leave ~2 min.
+// Both loops below start a fetchPage() per item (WET post venue, then the
+// article date); a fetchPage() chain can take ~2.5 min (provider timeouts + the
+// 90s Playwright tier deadline), so neither starts an item with less left.
+const MIN_REMAINING_MS_TO_START = 2.5 * 60_000;
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const {
   loadRejectedCandidates,
@@ -297,7 +303,7 @@ async function collectCandidates(opts) {
       log(`  [limit] reached --limit=${limit}; skipping remaining WET posts this run`);
       break;
     }
-    if (timeBudget && timeBudget.exceeded()) {
+    if (timeBudget && !timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — skipping remaining WET posts this run`);
       break;
     }
@@ -383,7 +389,7 @@ async function evaluateCandidates(candidates, ctx) {
   };
 
   for (const c of candidates) {
-    if (timeBudget && timeBudget.exceeded()) {
+    if (timeBudget && !timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
       break;
     }

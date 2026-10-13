@@ -54,3 +54,27 @@ test('createRunBudget with 0/negative/NaN minutes is disabled', () => {
     assert.equal(budget.remainingMs(), Infinity, `minutes=${minutes}`);
   }
 });
+
+test('canStartItem refuses an item that cannot finish inside the budget (BRO-3340)', () => {
+  let t = 0;
+  const budget = createRunBudget(10, () => t);
+  assert.equal(budget.canStartItem(150_000), true); // 10 min left
+  t += 7 * 60_000; // 3 min left
+  assert.equal(budget.canStartItem(150_000), true);
+  t += 31_000; // 2m29s left: a 2.5 min item would overrun
+  assert.equal(budget.exceeded(), false, 'exceeded() alone would still start it');
+  assert.equal(budget.canStartItem(150_000), false);
+  assert.equal(budget.canStartItem(), true, 'no reserve = same as !exceeded()');
+  t += 3 * 60_000; // past budget
+  assert.equal(budget.canStartItem(), false);
+  assert.equal(budget.canStartItem(0), false);
+});
+
+test('canStartItem never stops a disabled budget, and ignores a bad reserve', () => {
+  let t = 0;
+  const off = createRunBudget(0, () => t);
+  t += 100 * 60_000;
+  assert.equal(off.canStartItem(150_000), true);
+  const on = createRunBudget(1, () => t);
+  for (const bad of [NaN, -5, undefined, Infinity]) assert.equal(on.canStartItem(bad), true, String(bad));
+});

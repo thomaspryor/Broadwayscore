@@ -79,7 +79,22 @@ const { mergeRetiredRecords } = require('./merge-retired-ids');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
-  { file: 'commercial.json', surface: 'public-repo', status: 'active', merge: mergeCommercialJson, format: 'json', newline: true },
+  // BRO-3333: every public-repo 'active' entry carries EITHER
+  // `apiFallbackMerge: true` OR `notApiFallbackMerge: '<reason>'`
+  // (core-data-merge-registry.test.mjs enforces it), so the next sweep for
+  // "active merge fn but no apiFallbackMerge" does not have to re-derive why.
+  // Remember when choosing: push-via-git-api.sh runs the merge on EVERY
+  // fallback push, even when remote never touched the file (remote == base),
+  // so a 2-arg union re-adds anything ours deliberately deleted.
+  {
+    file: 'commercial.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeCommercialJson,
+    format: 'json',
+    newline: true,
+    notApiFallbackMerge: 'gitignored in the public repo (.gitignore data/commercial.json); private core-data owns it, so no push-with-retry.sh commit ever stages it and the flag would be inert',
+  },
   {
     file: 'commercial-pending-review.json',
     surface: 'public-repo',
@@ -108,9 +123,42 @@ const CORE_DATA_MERGE_REGISTRY = [
     // defends against the resurrection bug that class of merge is prone to.
     apiFallbackMerge: true,
   },
-  { file: 'commercial-research-queue.json', surface: 'public-repo', status: 'active', merge: mergeResearchQueue, format: 'json', newline: true },
-  { file: 'diary-shows.json', surface: 'public-repo', status: 'active', merge: mergeDiaryShows, format: 'json', newline: false },
-  { file: 'social-post-history.json', surface: 'public-repo', status: 'active', merge: mergeSocialPostHistory, format: 'json', newline: true },
+  {
+    file: 'commercial-research-queue.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeResearchQueue,
+    format: 'json',
+    newline: true,
+    // BRO-3333 (2026-10-13): same merge fn the local rebase path already
+    // uses. Safe per push: the only deletion is deep-research-commercial.js
+    // clearing the whole queue to {shows: [], updatedAt: now}, and
+    // mergeResearchQueue lets an empty, strictly-newer side win outright, so
+    // a fallback push against an untouched remote keeps the clear.
+    apiFallbackMerge: true,
+  },
+  {
+    file: 'diary-shows.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeDiaryShows,
+    format: 'json',
+    newline: false,
+    notApiFallbackMerge: 'gitignored in the public repo (.gitignore data/diary-shows.json); private core-data owns it, so no push-with-retry.sh commit ever stages it and the flag would be inert',
+  },
+  {
+    file: 'social-post-history.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeSocialPostHistory,
+    format: 'json',
+    newline: true,
+    // BRO-3333 (2026-10-13): append-only (generate-social-post.js never
+    // prunes posts), per-post key union, so running it on every fallback
+    // push loses nothing and resurrects nothing. social-post.yml uses a
+    // per-run concurrency group, so this is the file most likely to race.
+    apiFallbackMerge: true,
+  },
   {
     file: 'audit/feedback-request-ledger.json',
     surface: 'public-repo',
@@ -169,6 +217,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     // post-rebase reconcile pass since the case-arm fires unconditionally on
     // an actual conflict, which two near-simultaneous appends reliably cause.
     optInReconcile: false,
+    notApiFallbackMerge: 'BRO-3333: mergeExpressRetryQueue is a 2-arg union with no base, and express-retry-queue.js pruneStale() deletes entries; the API fallback runs the merge on every push even when remote is unchanged, so it would resurrect every pruned entry. Needs a base-aware merge first.',
   },
 
   // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
@@ -1847,6 +1896,13 @@ const CORE_DATA_MERGE_REGISTRY = [
     // and opts into reconcile_merged_json for). Second-opinion review finding
     // (2026-08-26): case-arm-only would have left this, the LIKELY-common
     // race shape for this file, uncovered.
+    // BRO-3333 (2026-10-13): apiFallbackMerge. mergeObVenueCandidates is
+    // three-way and `requiresTrueBase`; push-via-git-api.sh hands it
+    // `git show <SCRIPT_ENTRY_BASE>:path`, the pre-rebase merge-base (a true
+    // base), so the promoter's prunes survive a fallback push against an
+    // untouched remote. A missing/unreadable base parses to null and falls
+    // back to the documented two-way union (one-cycle resurrection, self-heals).
+    apiFallbackMerge: true,
   },
   // BRO-2296: `apiFallbackMerge: true` added to these two — audit-census-
   // recall.yml's single commit step also stages census-recall-status.json/
@@ -1902,12 +1958,19 @@ const CORE_DATA_MERGE_REGISTRY = [
     // fires when git actually reports a conflict, and a nearby non-
     // overlapping hunk can rebase clean while still discarding one side's
     // edit.
+    // BRO-3333 (2026-10-13): apiFallbackMerge. mergeAwardsJson is a 2-arg
+    // slug/ceremony deep-union, identical to the local rebase path. Known
+    // caveat: run on every fallback push, it re-adds a ceremony block ours
+    // deleted (fix-tony-attribution.js deletes `tony` blocks) if that deletion
+    // rides a fallback push; that script is manual-only today, and the next
+    // manual run removes the block again.
+    apiFallbackMerge: true,
   },
   {
     file: 'outlet-registry.json',
     surface: 'public-repo',
     status: 'single-writer',
-    note: 'BRO-1084: moved from private-core-data to public-repo — the private copy was routinely stale because the only real writer is a human running scripts/audit-outlet-registry.js --update/--auto locally (CI only ever runs --json/--update-baseline/--strict, never the write branch), and every new outlet addition depended on a manual gh api PUT to the private repo before the next checkout-core-data run silently overwrote it. No CI workflow writes this file, so there is no concurrency group to declare.',
+    note: 'BRO-1084: moved from private-core-data to public-repo — the private copy was routinely stale because the only real writer is a human running scripts/audit-outlet-registry.js --update/--auto locally (CI only ever runs --json/--update-baseline/--strict, never the write branch), and every new outlet addition depended on a manual gh api PUT to the private repo before the next checkout-core-data run silently overwrote it. No CI workflow writes this file, so there is no concurrency group to declare.' + ' CORRECTION (BRO-3514, BRO-1084 follow-up): CI DOES write it: rebuild-all-reviews.js\'s AUTO-REGISTER NEW OUTLETS block rewrites it whenever an included review names an unregistered outlet, and workflows that stage with a bare scripts/lib/stage-data-changes.sh sweep commit that rewrite. Concurrent rebuilds can therefore race on it; a registration lost to the race is re-made by the next rebuild (the outlet is still unregistered), and human edits go through the normal rebase.',
   },
 
   // ── private-core-data surface (push-core-data/action.yml, CORE_FILES) ────
@@ -1966,16 +2029,66 @@ const CORE_DATA_MERGE_REGISTRY = [
     // scripts/test-temporal-override-regression.js before flipping to
     // 'active'.
   },
-  { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race' },
-  { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'written by generate-critic-consensus.js only, run from update-critic-consensus.yml and opening-night-broadcast.yml (not concurrent in practice; every run rewrites _meta and, since BRO-4852, prunes stale takes globally, so a lost race self-heals on the next run)' },
-  { file: 'audience-reviews-lbo.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, update-lbo.yml' },
-  { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
-  { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
-  { file: 'subscribers-westend.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
+  // BRO-3514: every private-core-data 'single-writer' entry declares its
+  // hand-verified `writers` (workflows that run a writer AND push core data).
+  // scripts/audit-core-data-writers.js re-derives writers with
+  // findCoreDataWriters() (api-fallback-writer-drift.js) and reports one it
+  // did not expect; more than one writer without a shared serializing
+  // concurrency group needs `multiWriterMitigation`; an entry the scan cannot
+  // see carries `writersUnverifiable`. push-core-data's rebase does not
+  // reconcile these files, so two concurrent writers lose one side's update.
+  { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race', writers: ['scrape-alltime-grosses.yml', 'weekly-grosses.yml'] },
+  {
+    file: 'critic-consensus.json',
+    surface: 'private-core-data',
+    status: 'single-writer',
+    note: 'written by generate-critic-consensus.js only, from THREE workflows (BRO-3514 found the third, recreate-broadcast-draft.yml) with separate concurrency groups',
+    writers: ['opening-night-broadcast.yml', 'recreate-broadcast-draft.yml', 'update-critic-consensus.yml'],
+    // BRO-3514: risk accepted rather than a new merge fn. A take lost to a
+    // race is regenerated: shouldRegenerate() re-creates a missing take and
+    // one whose review count moved by 3+, update-critic-consensus.yml runs
+    // weekly and is dispatched by rebuild-reviews.yml and the opening-night
+    // poller. Cost of a loss: one repeated LLM call. Caveat: an opening-night
+    // broadcast already sent with a take that later lost the race is not
+    // corrected (the email is out); recreate-broadcast-draft.yml is manual.
+    multiWriterMitigation: 'lost take regenerated on the next update-critic-consensus run (shouldRegenerate: missing or 3+ review delta); sent broadcasts are not corrected',
+  },
+  {
+    file: 'audience-reviews-lbo.json',
+    surface: 'private-core-data',
+    status: 'single-writer',
+    note: 'single writer, update-lbo.yml — but its concurrency group is per-run (lbo-${{ github.run_id }}), so two runs can overlap',
+    writers: ['update-lbo.yml'],
+    multiWriterMitigation: 'scrape-lbo-audience.js rewrites each show\'s entry with a fresh full scrape of its review page, so an update lost to an overlapping run is re-scraped on the next one (BRO-3514)',
+  },
+  {
+    file: 'followers.json',
+    surface: 'private-core-data',
+    status: 'single-writer',
+    note: 'written by scripts/sync-followers.js from three workflows with separate concurrency groups (BRO-3514; this note used to name one)',
+    writers: ['opening-night-broadcast.yml', 'send-follow-notifications.yml', 'sync-followers.yml'],
+    multiWriterMitigation: 'sync-followers.js is an incremental Formspree accumulator whose watermark is the fetch START minus 10 min and does not advance on a failed/partial fetch (BRO-3514), so signups lost with an overwritten file are re-fetched by the next run',
+  },
+  {
+    file: 'subscribers.json',
+    surface: 'private-core-data',
+    status: 'single-writer',
+    note: 'written by scripts/sync-followers.js from three workflows with separate concurrency groups (BRO-3514; this note used to name one)',
+    writers: ['opening-night-broadcast.yml', 'send-follow-notifications.yml', 'sync-followers.yml'],
+    multiWriterMitigation: 'sync-followers.js is an incremental Formspree accumulator whose watermark is the fetch START minus 10 min and does not advance on a failed/partial fetch (BRO-3514), so signups lost with an overwritten file are re-fetched by the next run',
+  },
+  {
+    file: 'subscribers-westend.json',
+    surface: 'private-core-data',
+    status: 'single-writer',
+    note: 'written by scripts/sync-followers.js from three workflows with separate concurrency groups (BRO-3514; this note used to name one)',
+    writers: ['opening-night-broadcast.yml', 'send-follow-notifications.yml', 'sync-followers.yml'],
+    multiWriterMitigation: 'sync-followers.js is an incremental Formspree accumulator whose watermark is the fetch START minus 10 min and does not advance on a failed/partial fetch (BRO-3514), so signups lost with an overwritten file are re-fetched by the next run',
+  },
   // BRO-4453: reader name/email/message for feedback reports, keyed by
   // submission id. Kept out of the public repo's GitHub issues. Every job
   // that checks out core data clones it, same as subscribers.json.
-  { file: 'feedback-submitters.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, process-feedback.yml (concurrency group process-feedback); readers: auto-fix-feedback-bug, execute-approved-fix' },
+  { file: 'feedback-submitters.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, process-feedback.yml (concurrency group process-feedback); readers: auto-fix-feedback-bug, execute-approved-fix', writers: ['process-feedback.yml'], writersUnverifiable: 'written through feedback-submitter-store.js with the path passed in as a parameter, which the static scan cannot follow; verified by reading process-feedback.js (BRO-3514)' },
   // 2026 data audit (S0-T2/S0-T4): the retired-id registry and its archive of
   // deleted shows.json rows, append-only arrays written by retireId() in
   // scripts/lib/retired-show-ids.js. BRO-4398 added the first CI writer
@@ -1990,7 +2103,7 @@ const CORE_DATA_MERGE_REGISTRY = [
   // prebuild (scripts/build-slug-redirects.js). Hand-edited from human
   // sessions only; S7-T3 (diacritic fold) may add a script writer — promote
   // to 'active' with a keyed union merge before any CI writer lands.
-  { file: 'critic-slug-aliases.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, human sessions editing the core-data repo; read-only for scripts/lib/critic-slug-aliases.js; no workflow writer yet (2026 data audit S5-T9)' },
+  { file: 'critic-slug-aliases.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, human sessions editing the core-data repo; read-only for scripts/lib/critic-slug-aliases.js; no workflow writer yet (2026 data audit S5-T9)', writers: [] },
 ];
 
 /**

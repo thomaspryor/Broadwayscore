@@ -165,4 +165,98 @@ function checkEntry(entry, workflowTexts) {
   };
 }
 
-module.exports = { findWritingWorkflows, extractConcurrencyGroup, checkEntry };
+// ── BRO-3514: private-core-data writers ────────────────────────────────────
+// findWritingWorkflows() above finds PUBLIC-repo writers by their `git add`.
+// A private-core-data file never gets a `git add`: a workflow writes it with
+// some script and the push-core-data action syncs every CORE_FILES entry that
+// changed. So a writer here is a workflow that (a) uses
+// ./.github/actions/push-core-data and (b) runs a scripts/ .js/.ts file whose source,
+// or a ./lib module it requires (2 levels), calls a write function on a line
+// naming the file, or on a line using a const bound to a path naming it.
+// Same posture as above: a HINT. It misses writes through helpers that build
+// the path elsewhere (registry entries say so with writersUnverifiable) and
+// is reported by an advisory audit, never a blocking gate.
+const WRITE_CALL = /\b(?:writeFileSync|writeJsonAtomic|atomicWrite\w*|writeJson\w*|safeWrite\w*|renameSync)\s*\(/;
+const USES_PUSH_CORE_DATA = /uses:\s*\.\/\.github\/actions\/push-core-data\b/;
+
+function sourceWritesBasename(file, basename, readFile, seen = new Set(), depth = 0) {
+  if (seen.has(file) || depth > 2) return false;
+  seen.add(file);
+  const src = readFile(file);
+  if (!src) return false;
+  const lit = new RegExp(`['"\`/]${escapeRegExp(basename)}['"\`]`);
+  const lines = src.split('\n');
+  const bound = new Set();
+  for (const line of lines) {
+    // Only a PATH binding (`= path.join(...)`, `= path.resolve(...)` or a
+    // string literal), never `= JSON.parse(readFileSync('...x.json'))`, which
+    // binds the file's CONTENT and would make every later write a "writer".
+    const m = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:path\.(?:join|resolve)\(|['"`])/.exec(line);
+    if (m && lit.test(line)) bound.add(m[1]);
+  }
+  for (const line of lines) {
+    if (!WRITE_CALL.test(line)) continue;
+    if (lit.test(line)) return true;
+    for (const name of bound) if (new RegExp(`\\b${escapeRegExp(name)}\\b`).test(line)) return true;
+  }
+  const dir = file.includes('/') ? file.slice(0, file.lastIndexOf('/')) : '.';
+  for (const m of src.matchAll(/require\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*\)/g)) {
+    let rel = normalizePath(`${dir}/${m[1]}`);
+    if (!/\.(?:(?:c|m)?js|ts)$/.test(rel)) rel += '.js';
+    if (sourceWritesBasename(rel, basename, readFile, seen, depth + 1)) return true;
+  }
+  return false;
+}
+
+function normalizePath(p) {
+  const out = [];
+  for (const part of p.split('/')) {
+    if (part === '.' || part === '') continue;
+    if (part === '..') out.pop(); else out.push(part);
+  }
+  return out.join('/');
+}
+
+/**
+ * Workflows that write a private-core-data file (see above).
+ * @param {string} basename registry `file`, e.g. 'critic-consensus.json'
+ * @param {Record<string,string>} workflowTexts {filename: raw yaml text}
+ * @param {(repoRelPath:string)=>string|null} readFile source reader (null if absent)
+ * @returns {Record<string,string[]>} workflow -> the scripts that write it
+ */
+function findCoreDataWriters(basename, workflowTexts, readFile) {
+  const out = {};
+  for (const [wf, text] of Object.entries(workflowTexts || {})) {
+    if (!USES_PUSH_CORE_DATA.test(text)) continue;
+    const scripts = [...new Set([...String(text).matchAll(/\bscripts\/[\w./-]+\.(?:(?:c|m)?js|ts)\b/g)].map((m) => m[0]))];
+    const hits = scripts.filter((sp) => sourceWritesBasename(sp, basename, readFile));
+    if (hits.length) out[wf] = hits;
+  }
+  return out;
+}
+
+/**
+ * Compare derived writers to a private-core-data single-writer entry's claim.
+ * @returns {{status:'ok'|'drift'|'unverifiable'|'undeclared', derived:string[], undeclared:string[], reason?:string}}
+ */
+function checkCoreDataEntry(entry, derivedWriters, workflowTexts) {
+  const derived = Object.keys(derivedWriters).sort();
+  if (!Array.isArray(entry.writers)) {
+    return { status: 'undeclared', derived, undeclared: derived, reason: 'entry has no `writers: [...]` list to check against' };
+  }
+  const undeclared = derived.filter((w) => !entry.writers.includes(w));
+  if (undeclared.length) {
+    return { status: 'drift', derived, undeclared, reason: `writes found in ${undeclared.join(', ')}, not in the entry's writers list` };
+  }
+  const groups = entry.writers.map((w) => extractConcurrencyGroup((workflowTexts || {})[w] || ''));
+  const serialized = entry.writers.length === 1 ? groups[0] !== null : groups.every((g) => g && g === groups[0]);
+  if (!serialized && !entry.multiWriterMitigation) {
+    return { status: 'drift', derived, undeclared, reason: 'writers can run concurrently (no shared serializing concurrency group) and the entry documents no multiWriterMitigation' };
+  }
+  if (derived.length === 0 && entry.writers.length > 0) {
+    return { status: 'unverifiable', derived, undeclared, reason: entry.writersUnverifiable || 'scan found none of the declared writers' };
+  }
+  return { status: 'ok', derived, undeclared };
+}
+
+module.exports = { findWritingWorkflows, extractConcurrencyGroup, checkEntry, findCoreDataWriters, checkCoreDataEntry };

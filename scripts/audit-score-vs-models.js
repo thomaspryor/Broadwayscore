@@ -33,6 +33,7 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { hasHelpFlag } = require('./lib/cli-help');
 const { evaluateScoreVsModels, keyOf, DEFAULT_GAP } = require('./lib/score-vs-models');
 
+const { activeBaselineKeys, buildBaseline } = require('./lib/baseline-ttl');
 const ROOT = path.resolve(__dirname, '..');
 const reviewTextsRoot = () => process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
 const baselinePath = () => process.env.SCORE_VS_MODELS_BASELINE || path.join(ROOT, 'data', 'audit', 'score-vs-models-baseline.json');
@@ -40,7 +41,7 @@ const baselinePath = () => process.env.SCORE_VS_MODELS_BASELINE || path.join(ROO
 function loadBaselineKeys() {
   try {
     const d = JSON.parse(fs.readFileSync(baselinePath(), 'utf8'));
-    return { present: true, keys: new Set(Array.isArray(d.keys) ? d.keys : []) };
+    return { present: true, keys: activeBaselineKeys(d) }; // BRO-3364: expired acks count as new
   } catch (e) {
     if (e && e.code === 'ENOENT') return { present: false, keys: new Set() };
     // A corrupt baseline must not read as "no baseline" (everything new, silently).
@@ -72,7 +73,7 @@ function scan(root, { gap = DEFAULT_GAP, shows } = {}) {
 function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/audit-score-vs-models.js [--write-baseline] [--json] [--show=<id>] [--gap=N]\nReports published review scores that disagree with the model reading (read-only except --write-baseline).');
+    console.log('Usage: node scripts/audit-score-vs-models.js [--write-baseline|--renew-baseline] [--json] [--show=<id>] [--gap=N]\nReports published review scores that disagree with the model reading (read-only except --write-baseline).');
     return;
   }
   const get = (p) => (argv.find((a) => a.startsWith(p)) || '').slice(p.length);
@@ -93,14 +94,17 @@ function main() {
   }
   const { scanned, findings } = result;
 
-  if (argv.includes('--write-baseline')) {
+  if (argv.includes('--write-baseline') || argv.includes('--renew-baseline')) {
     const p = baselinePath();
     fs.mkdirSync(path.dirname(p), { recursive: true });
-    fs.writeFileSync(p, JSON.stringify({
-      _meta: { description: 'Known/triaged published-score-vs-model gaps (BRO-4596). Regenerate after triage: node scripts/audit-score-vs-models.js --write-baseline', gap, count: findings.length },
-      keys: findings.map(keyOf).sort(),
-    }, null, 2) + '\n');
-    console.log(`Wrote baseline: ${findings.length} findings → ${p}`);
+    let prev = null;
+    try { prev = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { /* first write */ }
+    const { doc, stats } = buildBaseline(findings.map(keyOf), prev, {
+      renew: argv.includes('--renew-baseline'),
+      meta: { description: 'Known/triaged published-score-vs-model gaps (BRO-4596). Regenerate after triage: node scripts/audit-score-vs-models.js --write-baseline (keeps existing acks\' dates; acks expire after ttlDays, BRO-3364; --renew-baseline re-acks every listed key)', gap },
+    });
+    fs.writeFileSync(p, JSON.stringify(doc, null, 2) + '\n');
+    console.log(`Wrote baseline: ${findings.length} findings → ${p} (${stats.added} new, ${stats.kept} kept their ack date, ${stats.renewed} renewed, ${stats.dropped} dropped)`);
     return;
   }
 

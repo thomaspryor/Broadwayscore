@@ -127,9 +127,15 @@ async function main() {
 
   // Stop cleanly before the workflow's timeout; the rest waits for tomorrow.
   const budget = createRunBudget(parseTimeBudgetMin(argv));
+  // BRO-3340: update-show-status.yml caps this step at 8 min with
+  // --time-budget-min=6 (2 min slack). One tour fetches its schedule page
+  // (a fetchPage() chain can take ~2.5 min (provider timeouts + the 90s
+  // Playwright tier deadline)) and a Wikipedia article, so stop starting new
+  // tours at 3 min.
+  const MIN_REMAINING_MS_TO_START = 3 * 60_000;
   const results = [];
   for (const tour of targets) {
-    if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - results.length} tour(s) left for the next run`); break; }
+    if (!budget.canStartItem(MIN_REMAINING_MS_TO_START)) { console.log(`Time budget reached; ${targets.length - results.length} tour(s) left for the next run`); break; }
     console.log(`\n${tour.id}`);
     const { url, html } = await fetchSchedule(tour, fetchPage, { budget });
     let wiki = '';
@@ -185,7 +191,8 @@ async function main() {
 }
 
 if (require.main === module) {
-  // cleanup() closes any browser fetchPage opened; without it the success path hangs.
+  // cleanup() closes any browser fetchPage opened; without it the success path
+  // hangs.
   main()
     .catch((e) => { console.error(e); process.exitCode = 1; })
     .finally(() => require('./lib/scraper').cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0)));

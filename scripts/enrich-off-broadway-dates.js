@@ -138,6 +138,12 @@ const missingOnly = !force && !fixUnconfirmed;
 const showArg = args.find(a => a.startsWith('--show='));
 const showFilter = showArg ? showArg.split('=')[1] : null;
 const timeBudget = createRunBudget(parseTimeBudgetMin(args));
+// BRO-3340: enrich-off-broadway-dates.yml gives the job 20 min and the
+// script --time-budget-min=16; setup and the commit leave ~2 min. One show can
+// discover a Playbill URL (SERP), fetch it (a fetchPage() chain can take ~2.5
+// min (provider timeouts + the 90s Playwright tier deadline)), and on a miss
+// rediscover and refetch, so do not start one with less than 3 min left.
+const MIN_REMAINING_MS_TO_START = 3 * 60_000;
 
 // =========================================================
 // PARSE HELPERS
@@ -582,7 +588,7 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
   };
 
   for (const show of queue) {
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — ${queue.length - queue.indexOf(show)} shows deferred to next run.`);
       break;
     }

@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getActionableOutletRows } = require('./outlet-heartbeat-state');
+const { activeBaselineKeys, describeExpiry } = require('./baseline-ttl');
 
 function hoursAgo(dateStr, nowMs) {
   const d = new Date(dateStr);
@@ -50,21 +51,26 @@ function evaluateOutletHeartbeat(opts = {}) {
   const rows = Array.isArray(data?.rows) ? data.rows : [];
   const stateFile = path.join(auditDir, 'outlet-heartbeat-state.json');
   const state = fs.existsSync(stateFile) ? readJSON(stateFile) : {};
+  // BRO-3364: acks expire (scripts/lib/baseline-ttl.js); an expired key is
+  // "new" again and re-enters the normal redStreak>=2 logic below.
+  const nowMs = opts.nowMs ?? Date.now();
   let baselineKeys = new Set();
+  let baselineDoc = null;
   try {
-    const b = readJSON(path.join(auditDir, 'outlet-heartbeat-baseline.json'));
-    if (b && Array.isArray(b.keys)) baselineKeys = new Set(b.keys);
+    baselineDoc = readJSON(path.join(auditDir, 'outlet-heartbeat-baseline.json'));
+    if (baselineDoc && Array.isArray(baselineDoc.keys)) baselineKeys = activeBaselineKeys(baselineDoc, nowMs);
   } catch { /* no baseline yet — everything is "new" */ }
+  const expiryNote = baselineDoc ? describeExpiry(baselineDoc, nowMs, { renewCommand: '`node scripts/monitor-outlet-recency.js --renew-baseline`' }) : '';
   const { actionable, baselinedCount } = getActionableOutletRows(rows, state, baselineKeys);
   if (actionable.length === 0) {
-    return { name, status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${formatAge(age)} ago)` };
+    return { name, status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${formatAge(age)} ago)${expiryNote}` };
   }
   const worst = actionable[0];
   return {
     name,
     status: 'warn',
-    message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)`,
-    hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged.',
+    message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)${expiryNote}`,
+    hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged. Acks expire after 90 days; --write-baseline keeps existing acks\' dates, `--renew-baseline` re-acks everything listed (BRO-3364).',
     actionable,
   };
 }
