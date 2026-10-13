@@ -1,15 +1,5 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-10-13T03:22:08.642Z",
-  "staged": [
-    {
-      "outletId": "fortworthbusiness",
-      "reason": "domain-collision",
-      "domainHint": "fortworthbusiness.com",
-      "reviewCount": 1,
-      "exampleShowId": "spamalot-tour-2025",
-      "firstSeenAt": "2026-10-13T03:21:11.290Z",
-      "lastSeenAt": "2026-10-13T03:22:08.642Z"
-    }
-  ]
+  "updatedAt": "2026-10-13T03:35:10.304Z",
+  "staged": []
 }
