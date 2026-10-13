@@ -99,6 +99,7 @@ test('dashboardLauncherScript relaunches on RESTART_EXIT_CODE only', () => {
   assert.match(s, /^#!\/bin\/bash/);
   assert.match(s, /while :; do/);
   assert.match(s, /node \/repo\/scripts\/dispatch-watchdog\.js --dashboard/);
+  assert.ok(s.includes('WATCHDOG_LAUNCHER=1 node '), 'the dashboard only self-restarts (exit 75) under this loop');
   assert.ok(s.includes(`-eq ${sc.RESTART_EXIT_CODE} ] || exit`));
   assert.ok(!/\bexec node\b/.test(s), 'exec would replace bash and lose the relaunch loop');
 });

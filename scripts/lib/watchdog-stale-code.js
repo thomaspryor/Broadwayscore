@@ -144,7 +144,7 @@ function dashboardLauncherScript(scriptPath) {
     '#!/bin/bash',
     '# BRO-3904: the dashboard exits ' + RESTART_EXIT_CODE + ' when its code changed on disk; relaunch it.',
     'while :; do',
-    `  node ${scriptPath} --dashboard`,
+    `  WATCHDOG_LAUNCHER=1 node ${scriptPath} --dashboard`,
     '  rc=$?',
     `  [ "$rc" -eq ${RESTART_EXIT_CODE} ] || exit "$rc"`,
     '  sleep 2',

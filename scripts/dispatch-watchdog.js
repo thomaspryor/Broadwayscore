@@ -976,7 +976,9 @@ async function dashboardLoop() {
     // BRO-3904: the tick is complete and the lock is released — the only
     // safe point to swap code. The launcher loop relaunches on this code.
     let restart = false;
-    try { restart = codeChangedOnDisk(); } catch (e) { console.error(`[watchdog] code-identity check failed: ${e.message}`); }
+    // Only under the tab launcher (it sets WATCHDOG_LAUNCHER=1): a dashboard run
+    // by hand has no loop to relaunch it, so exiting 75 would just kill it.
+    try { restart = process.env.WATCHDOG_LAUNCHER === '1' && codeChangedOnDisk(); } catch (e) { console.error(`[watchdog] code-identity check failed: ${e.message}`); }
     if (restart) {
       try { writeHeartbeat({ mode: 'restarting', reason: 'code-changed' }); } catch { /* best effort */ }
       releaseLock();
