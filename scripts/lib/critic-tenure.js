@@ -94,9 +94,13 @@ function findTenureFlags(critics, opts = {}) {
   return flags.sort((a, b) => (a.criticSlug + a.showId).localeCompare(b.criticSlug + b.showId));
 }
 
-/** Key for one flagged row: `<showId>/<file>`. */
+/**
+ * Key for one flagged row: `<showId>/<file>#<kind>:<criticSlug>`. Kind and
+ * critic are part of it so a reviewed entry stops matching once the row's
+ * byline or flag kind changes.
+ */
 function tenureFlagKey(flag) {
-  return `${flag.showId}/${flag.file}`;
+  return `${flag.showId}/${flag.file}#${flag.kind}:${flag.criticSlug}`;
 }
 
 /**
