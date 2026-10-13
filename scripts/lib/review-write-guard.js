@@ -1882,12 +1882,16 @@ function safeWriteReview(filePath, newData, options = {}) {
       // one PERFORMING it: if `existing` ALREADY satisfies the same clear
       // breadcrumb, the flag on disk was re-set deliberately over a prior
       // clear (or the caller is replaying a stale read) — preserving wins.
-      // Re-clearing such a file goes through the canonical clear scripts
-      // (direct write) or force=true.
+      // Re-clearing such a file goes through a compare-and-set approved edit,
+      // the canonical clear scripts (direct write), or force=true.
       const incomingSnapshot = { ...newData };
       const clearHonored = (field) =>
         _isBreadcrumbClear(field, incomingSnapshot, existing)
-        && !_isBreadcrumbClear(field, existing, existing);
+        && (!_isBreadcrumbClear(field, existing, existing)
+          // executeReviewFieldEditIn has compared the on-disk value with the
+          // approved plan. A previously stored breadcrumb does not make that
+          // explicit, field-scoped null stale. Locks and collisions still win.
+          || (options.approvedFieldClear === field && incomingSnapshot[field] === null));
 
       const effectiveFields = getEffectiveProtectedFields(existing);
       for (const field of effectiveFields) {

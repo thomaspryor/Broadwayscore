@@ -340,6 +340,11 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
   if (field === 'duplicateOf' && after && after[field] != null) {
     if (after.duplicateReason === 'url-collision-detected-at-write') expected.add('duplicateReason');
     if (after.duplicateClearReason == null) expected.add('duplicateClearReason');
+    // An explicit new duplicate verdict retracts the legacy collision clear.
+    // The guard already performs this when that sibling owns the same URL.
+    if (before.duplicateOf !== after.duplicateOf && after._duplicateOfCleared == null) {
+      expected.add('_duplicateOfCleared');
+    }
   }
   for (const k of keys) {
     if (k === field || k === 'approvedFixes' || expectedKeys.includes(k) || expected.has(k)) continue;
@@ -400,7 +405,14 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const res = applyReviewFieldEdit(record, action, stamp, ctx);
   if (!res.ok) return res;
   // A copy: the guard restores protected fields by mutating what it is handed, which would hide a revert below.
-  require('./review-write-guard').safeWriteReview(abs, { ...res.record }, action.field === 'url' ? { approvedUrlRepair: true } : {});
+  // The compare-and-set above proves this clear is fresh, even when a prior
+  // attempt already stamped its breadcrumb. Only the requested field may
+  // bypass that stale-payload check; collision and lock guards still run.
+  const writeOptions = action.field === 'url' ? { approvedUrlRepair: true } : {};
+  if (action.field === 'duplicateOf' && action.newValue === null) {
+    writeOptions.approvedFieldClear = action.field;
+  }
+  require('./review-write-guard').safeWriteReview(abs, { ...res.record }, writeOptions);
   // The write guard can legitimately refuse a change (a protected field with
   // no clear breadcrumb). Report that instead of claiming success.
   const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
