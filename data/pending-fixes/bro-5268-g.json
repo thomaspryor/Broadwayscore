@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5268-g",
   "planId": "f0a046ce-2447-41a7-8f15-aa663f05e52f",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -55,5 +55,28 @@
         "description": "death-becomes-her: closed Jun 28, 2026 with a reported total loss to investors (Broadway Journal): Flop (0% returned is under the 30% Fizzle line), loss evidence now cited"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T19:51:45.008Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-becomes-her"
+    }
+  ]
 }
