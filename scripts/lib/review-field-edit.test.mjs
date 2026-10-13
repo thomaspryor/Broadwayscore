@@ -435,3 +435,34 @@ test('aggregator excerpts are clear-only (BRO-4251: Fat Ham text on Shucked\'s V
   const stale = applyReviewFieldEdit(rec, { field: 'nycTheatreExcerpt', oldValue: 'something else', newValue: null }, stamp);
   assert.equal(stale.ok, false);
 });
+
+// BRO-5232: king-lear-2019 guardian--jesse-green.json (a web-search phantom
+// carrying the real Guardian review's aggregator excerpt) could not be fixed by
+// any plan: the write guard strips the cloned excerpt on every write and the
+// executor refused the edit as an unexpected change. Driven through the real
+// write guard on disk.
+test('a verdict fix on a phantom row survives the guard stripping its cloned excerpt', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-ce-'));
+  const show = 'king-lear-2019';
+  fs.mkdirSync(path.join(root, show));
+  const excerpt = 'Jackson’s Lear is magnificent in its specificity, a performance that feels both ancient and startlingly contemporary.';
+  const body = `Glenda Jackson returns to Broadway as Lear. ${excerpt} `.repeat(30);
+  const write = (f, d) => fs.writeFileSync(path.join(root, show, f), JSON.stringify(d, null, 2));
+  const read = (f) => JSON.parse(fs.readFileSync(path.join(root, show, f), 'utf8'));
+  write('guardian--alexis-soloski.json', { showId: show, outlet: 'The Guardian', outletId: 'guardian', criticName: 'Alexis Soloski', url: 'https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway', fullText: body, contentTier: 'complete', dtliExcerpt: excerpt, showScoreExcerpt: excerpt });
+  write('guardian--jesse-green.json', { showId: show, outlet: 'The Guardian', outletId: 'guardian', criticName: 'Jesse Green', source: 'web-search', sources: ['web-search'], url: 'https://www.theguardian.com/stage/2019/apr/04/king-lear-review-glenda-jackson-cort-theatre-broadway', contentTier: 'excerpt', dtliExcerpt: excerpt, showScoreExcerpt: excerpt });
+  const a = executeReviewFieldEditIn(root, { file: `${show}/guardian--jesse-green.json`, field: 'wrongAttribution', oldValue: null, newValue: true }, stamp);
+  assert.equal(a.ok, true, a.reason);
+  assert.match(a.msg, /stripped cloned dtliExcerpt, showScoreExcerpt/);
+  const ghost = read('guardian--jesse-green.json');
+  assert.equal(ghost.wrongAttribution, true);
+  assert.equal(ghost.dtliExcerpt, null);
+  assert.equal(read('guardian--alexis-soloski.json').dtliExcerpt, excerpt, 'the owner keeps its excerpt');
+  // An excerpt nulled without the guard's rule naming it is still reported.
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  assert.deepEqual(unexpectedChanges({ dtliExcerpt: 'q', wrongAttribution: null }, { dtliExcerpt: null, wrongAttribution: true }, 'wrongAttribution'), ['dtliExcerpt']);
+});
