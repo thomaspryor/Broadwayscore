@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T15:02:38.400Z",
+  "timestamp": "2026-10-13T15:20:37.941Z",
   "stats": {
     "totalReviews": 56322,
-    "alreadyFlagged": 21027,
+    "alreadyFlagged": 21011,
     "dateGuardCatches": 216,
-    "directorMismatch": 1862,
-    "tvFilmSignals": 1639,
-    "londonSignals": 2237,
+    "directorMismatch": 1871,
+    "tvFilmSignals": 1640,
+    "londonSignals": 2238,
     "offBroadwaySignals": 508,
     "yearMismatch": 139,
-    "noPublishDate": 5241
+    "noPublishDate": 5242
   },
   "findings": [
     {
@@ -4533,7 +4533,7 @@
     {
       "showId": "betrayal-2019",
       "file": "nysr--steven-suskin.json",
-      "score": 83,
+      "score": 85,
       "publishDate": "2019-09-05T20:15:22",
       "url": "https://nystagereview.com/2019/09/05/betrayal-pinters-web-of-deception-returns-to-broadway-incisively/",
       "findings": [
@@ -4590,7 +4590,7 @@
     {
       "showId": "betrayal-2019",
       "file": "theater-life--david-sheward.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2019-10-18T09:00:16",
       "url": "https://theaterlife.com/betrayal-1-2/",
       "findings": [
@@ -20094,6 +20094,20 @@
     },
     {
       "showId": "inter-alia-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 83,
+      "publishDate": "2025-07-24",
+      "url": "https://www.standard.co.uk/culture/theatre/rosamund-pike-inter-alia-review-national-theatre-lyttelton-b1239772.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
       "score": 76,
       "publishDate": "2025-07-24",
@@ -20202,6 +20216,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 82,
+      "publishDate": "2026-04-07",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/amp/PATRICK-MARMION-reviews-Inter-Alia.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
         }
       ]
     },
@@ -21346,6 +21374,19 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "counselmagazine--daniel-barnett.json",
+      "publishDate": "2026-04-13",
+      "url": "https://www.counselmagazine.co.uk/articles/into-the-woods",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "daily-mail--mark-cook.json",
       "score": 82,
       "publishDate": "2025-12-21",
@@ -21532,6 +21573,19 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "mildconcern--tim-brandon.json",
+      "publishDate": "2026-03-30",
+      "url": "https://mildconcern.substack.com/p/theatre-reviews-into-the-woods-broken",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "musical-theatre-review--ian-bowkett.json",
       "score": 91,
       "publishDate": "2025-12-12",
@@ -21611,6 +21665,19 @@
       "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "plays-to-see--wilder-gutterson.json",
+      "publishDate": "2026-03-05",
+      "url": "https://playstosee.com/reviews/uk-reviews/london/into-the-woods-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27040,6 +27107,34 @@
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "artsdesk--rachel-halliburton.json",
+      "score": 63,
+      "publishDate": "2026-06-23",
+      "url": "https://theartsdesk.com/theatre/much-ado-about-nothing-shakespeares-globe-conceptually-fascinating-production-leaves-bitter-taste",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 63,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/much-ado-about-nothing-shakespeares-globe-conceptually-fascinating-production-leaves-bitter-taste",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 64,
       "publishDate": "June 21st, 2026",
@@ -27058,6 +27153,38 @@
       "score": 63,
       "publishDate": "2026-06-21",
       "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 76,
+      "publishDate": "2026-06-20",
+      "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2026-06-20",
+      "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-2026",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29771,6 +29898,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"eric tucker\" from othello-bedlam-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 57,
+      "publishDate": "2022-12-01",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/othello-nationals-lyttelton-theatre-review-fleet-potent-giles/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
         }
       ]
     },
