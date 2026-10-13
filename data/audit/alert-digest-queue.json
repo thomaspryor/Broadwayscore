@@ -73,6 +73,36 @@
     "queuedAt": "2026-10-13T09:33:30.864Z"
   },
   {
+    "conditionKey": "land:land/bro-2555-set-u-audit",
+    "title": "Landing blocked: rebase red on land/bro-2555-set-u-audit",
+    "description": "land.yml did not land land/bro-2555-set-u-audit: the rebase gate went red at e0e3483ea2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2555-set-u-audit @ e0e3483ea2 (origin/land/bro-2555-set-u-audit) → origin/main @ 54794ff234 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 54794ff234: Rebasing (1/1) error: could not apply e0e3483ea2f... BRO-2555: audit + fix unguarded empty-array expansions in set -u scripts (bash 3.2) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38373182964",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2555-set-u-audit"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e0e3483ea2f1a7a0d88fae4eb697f25ec654a9a5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38373182964"
+      }
+    ],
+    "queuedAt": "2026-10-13T10:26:07.613Z"
+  },
+  {
     "conditionKey": "land:land/bro-2556-memory-search",
     "title": "Landing blocked: unit-tests-node red on land/bro-2556-memory-search",
     "description": "land.yml did not land land/bro-2556-memory-search: the unit-tests-node gate went red at b65a16b5ce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38373452417",
