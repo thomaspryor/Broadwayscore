@@ -63,6 +63,7 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 ## Worktrees and branches in cloud
 
 - Make worktrees with `git worktree add`; `EnterWorktree` can stall on an approval nobody answers (BRO-5033).
+- **Never write through the `data/` symlinks** (`data/*.json` point into the private core-data clone): data changes go through approved-fix plans (`data/pending-fixes/`, below). Reads and scratch copies (`cp data/shows.json <scratchpad>/`) are fine (BRO-5217).
 - **Data in a new worktree:** `./scripts/setup-local-data.sh --link-only` links `data/*.json` and `data/review-texts` without fetching. Without it `tsc` and data tests fail for unrelated reasons.
 - **Never `git checkout -B <branch>` for a branch another checkout has checked out** (git moves it silently). Push to `land/<name>` from your own branch or a detached HEAD.
 
