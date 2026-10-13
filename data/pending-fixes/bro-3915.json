@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3915",
   "planId": "71b5e9d6-6a6c-42f4-b75a-c59597b9329b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T19:30:00.000Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,18 @@
         "reason": "leading whitespace in the title (BRO-3915)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T21:21:26.008Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled vivat-vivat-regina-1972: \"Vivat!  Vivat Regina!\" -> \"Vivat! Vivat Regina!\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled doll-day-afternoon-off-broadway-2026: \"  Doll Day Afternoon\" -> \"Doll Day Afternoon\""
+    }
+  ]
 }
