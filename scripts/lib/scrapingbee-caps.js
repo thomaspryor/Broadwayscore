@@ -29,9 +29,9 @@
  * does not enforce at all. Note the median can therefore override the
  * opening-window reserve on a normal-demand day — intended: the reserve only
  * bites when the plan ceiling is ABOVE normal demand. The same floor is
- * applied in SHADOW, so the shadow record is what enforcement would do: with
- * many shows in the opening window the per-show reserve can push the plan
- * ceiling to 0, which shouldTripBreaker reads as "no ceiling". Exhausted-pack days
+ * applied in SHADOW, so the shadow record is what enforcement would do. (The
+ * opening-window reserve itself is capped at half the ceiling since BRO-5247,
+ * so it can no longer zero the ceiling.) Exhausted-pack days
  * (cycleUsed >= cap) are excluded from the median, and they never count as a
  * would-trip (SB lets a few credits through past the cap, which is not a
  * runaway).

@@ -77,10 +77,10 @@ test('effectiveCeilingForOpeningWindow: N shows carve out N * SD reservePerShow 
   );
 });
 
-test('effectiveCeilingForOpeningWindow: never goes negative even if the SD reserve exceeds the ceiling', () => {
+test('effectiveCeilingForOpeningWindow: reserve is capped at half the ceiling (never 0 = breaker off, BRO-5247) even if the SD reserve exceeds the ceiling', () => {
   assert.equal(
     effectiveCeilingForOpeningWindow({ ceiling: 2000, openingWindowShows: 5, reservePerShow: DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS }),
-    0,
+    1000, // BRO-5247: the reserve is capped at half the ceiling, so the breaker can never be switched off (0 = no ceiling)
   );
 });
 

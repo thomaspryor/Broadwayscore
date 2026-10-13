@@ -194,14 +194,23 @@ function shouldTripBreaker({ billedReqs, ceiling }) {
  * DEFAULT_PER_SHOW.brightdata estimate) — this mirrors it rather than
  * inventing a second sizing scheme.
  *
+ * The reserve is capped at MAX_RESERVE_SHARE of the ceiling (BRO-5247, owner
+ * decision 2026-10-13, option B). Uncapped, enough shows in the window drove
+ * the ceiling to 0, which shouldTripBreaker reads as 'no-ceiling', so the
+ * breaker switched itself OFF on exactly the busiest weeks (23 shows x 250
+ * against Bright Data's 3,500, seen live 2026-10-09/10). Bulk callers now
+ * always keep at least half the normal daily ceiling and the cap stays on.
+ *
  * @param {{ceiling: number, openingWindowShows: number, reservePerShow?: number}} params
  * @returns {number} the ceiling to feed into shouldTripBreaker
  */
+const MAX_RESERVE_SHARE = 0.5;
 function effectiveCeilingForOpeningWindow({ ceiling, openingWindowShows, reservePerShow = DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW }) {
   if (!Number.isFinite(ceiling) || ceiling <= 0) return ceiling;
   if (!Number.isFinite(openingWindowShows) || openingWindowShows <= 0) return ceiling;
   if (!Number.isFinite(reservePerShow) || reservePerShow <= 0) return ceiling;
-  return Math.max(0, ceiling - openingWindowShows * reservePerShow);
+  const reserve = Math.min(openingWindowShows * reservePerShow, Math.floor(ceiling * MAX_RESERVE_SHARE));
+  return Math.max(1, ceiling - reserve);
 }
 
 /**
@@ -421,6 +430,7 @@ module.exports = {
   resolveOpeningWindowReservePerShow,
   shouldTripBreaker,
   effectiveCeilingForOpeningWindow,
+  MAX_RESERVE_SHARE,
   isExemptCaller,
   checkPerRunBudget,
   isBreakerActiveForZone,

@@ -187,10 +187,10 @@ test('effectiveCeilingForOpeningWindow: defaults reservePerShow to DEFAULT_OPENI
   );
 });
 
-test('effectiveCeilingForOpeningWindow: never goes negative even if the reserve exceeds the ceiling', () => {
+test('effectiveCeilingForOpeningWindow: reserve is capped at half the ceiling (never 0 = breaker off, BRO-5247) even if the reserve exceeds the ceiling', () => {
   assert.equal(
     effectiveCeilingForOpeningWindow({ ceiling: 500, openingWindowShows: 10, reservePerShow: 250 }),
-    0,
+    250, // BRO-5247: the reserve is capped at half the ceiling, so the breaker can never be switched off (0 = no ceiling)
   );
 });
 
@@ -198,4 +198,16 @@ test('effectiveCeilingForOpeningWindow: invalid ceiling/reservePerShow pass thro
   assert.equal(effectiveCeilingForOpeningWindow({ ceiling: 0, openingWindowShows: 2 }), 0);
   assert.equal(effectiveCeilingForOpeningWindow({ ceiling: 3500, openingWindowShows: 2, reservePerShow: 0 }), 3500);
   assert.equal(effectiveCeilingForOpeningWindow({ ceiling: 3500, openingWindowShows: NaN }), 3500);
+});
+
+// BRO-5247 (owner decision, option B): the live busy-week case — 23 shows x
+// 250 against Bright Data's 3,500 — used to give 0 = breaker OFF.
+test('effectiveCeilingForOpeningWindow: 23 shows never switch the BD breaker off; bulk keeps half the ceiling', () => {
+  const c = effectiveCeilingForOpeningWindow({ ceiling: 3500, openingWindowShows: 23, reservePerShow: 250 });
+  assert.equal(c, 1750);
+  assert.ok(c > 0);
+  // below the cap, the per-show reserve is unchanged
+  assert.equal(effectiveCeilingForOpeningWindow({ ceiling: 3500, openingWindowShows: 4, reservePerShow: 250 }), 2500);
+  // smallest ceiling still keeps a real cap
+  assert.equal(effectiveCeilingForOpeningWindow({ ceiling: 1, openingWindowShows: 9, reservePerShow: 250 }), 1);
 });
