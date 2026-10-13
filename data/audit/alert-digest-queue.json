@@ -2074,5 +2074,35 @@
       }
     ],
     "queuedAt": "2026-10-13T19:39:05.494Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5287-codex-runner-lock",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5287-codex-runner-lock",
+    "description": "land.yml did not land land/bro-5287-codex-runner-lock: the scripts-lib-tests gate went red at bb37843ced. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38453197295",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5287-codex-runner-lock"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "bb37843ced489d33ecf718cd67350a8b31f064d1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38453197295"
+      }
+    ],
+    "queuedAt": "2026-10-13T19:49:19.982Z"
   }
 ]
