@@ -119,10 +119,18 @@ function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null
  * collector's own pre-check records (BRO-5222). Kill switch is not a cap.
  *
  * @param {string} message - error message from fetchWithBrowserbase
- * @returns {'day'|null}
+ * @param {string|null} [localBlockReason] - browserbaseBlockReason() after the failure
+ * @returns {'day'|'run'|'domain'|null}
  */
-function routeCapFromBrowserbaseError(message) {
-  return /Browserbase daily cap reached/.test(String(message || '')) ? 'day' : null;
+function routeCapFromBrowserbaseError(message, localBlockReason) {
+  const msg = String(message || '');
+  if (/Browserbase daily cap reached/.test(msg)) return 'day';
+  // The collector's own limit check (tripped by a mid-run live resync) throws
+  // a generic message; the local block reason says whether it was a cap.
+  if (/^Browserbase unavailable/.test(msg) && localBlockReason && localBlockReason !== 'disabled') {
+    return localBlockReason;
+  }
+  return null;
 }
 
 /**

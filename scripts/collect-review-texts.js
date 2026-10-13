@@ -3612,11 +3612,15 @@ function buildTierChain(ctx, review) {
         ctx.anyTierFailed = true;
         // The session-create chokepoint can refuse even after the pre-check
         // passed (live account count, opening-window reserve): still a cap.
-        const capped = routeCapFromBrowserbaseError(error && error.message);
+        // The mid-run live resync can also trip the local cap after shouldRun().
+        const message = error && error.message;
+        if (routeCapFromBrowserbaseError(message) === 'day') browserbaseChokepointCapped = true;
+        let urlDomain;
+        try { urlDomain = new URL(ctx.url).hostname.replace('www.', ''); } catch {}
+        const capped = routeCapFromBrowserbaseError(message, browserbaseBlockReason(urlDomain));
         if (capped) {
           ctx.browserbaseCapSkipped = capped;
           review._browserbaseCapSkipped = capped;
-          browserbaseChokepointCapped = true;
         }
       },
     },
@@ -3747,6 +3751,9 @@ function buildTierChain(ctx, review) {
 }
 
 async function fetchReviewText(review) {
+  // A cap mark from an earlier attempt (e.g. before a discovered-URL retry)
+  // must not label this attempt's failure as a deferral.
+  delete review._browserbaseCapSkipped;
   const ctx = buildTierContext(review);
   const url = ctx.url;
 
