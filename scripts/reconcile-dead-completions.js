@@ -274,7 +274,8 @@ function partitionLandedCompletions(flagged, tasks, entries, git) {
   const landed = [];
   for (const f of flagged || []) {
     const task = byId.get(String(f.id)) || {};
-    const verdict = checkWorkLanded({ taskId: f.id, texts: [task.subject, task.description], entries }, git);
+    const ownIds = [task.linearIdentifier, task.linearId].filter(Boolean);
+    const verdict = checkWorkLanded({ taskId: f.id, texts: [task.subject, task.description], entries, ownIds }, git);
     if (verdict.landed) landed.push({ ...f, landedReason: verdict.reason });
     else reopen.push(f);
   }

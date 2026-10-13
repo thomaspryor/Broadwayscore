@@ -41,7 +41,7 @@ const MAIN = fakeGit({
 });
 
 const TASKS = [
-  { id: '1834', status: 'completed', subject: 'BRO-76: merge reconcile JSON via registry', description: '[notion:aaa] P1 · Done · Infra\nKey file: scripts/lib/reconcile-merged-json.js' },
+  { id: '1834', status: 'completed', subject: 'BRO-76: merge reconcile JSON via registry', description: '[notion:aaa] [linear:BRO-76] P1 · Done · Infra\nKey file: scripts/lib/reconcile-merged-json.js' },
   { id: '1896', status: 'completed', subject: 'bsc-next dispatch claim race', description: '[notion:bbb] P1 · Done · Infra\nTouches scripts/linear-next.js (linear-dispatch-claims)' },
   { id: '1898', status: 'completed', subject: 'linear-next fresh-dispatch claim parity', description: '[notion:ccc] P1 · Done · Infra\nscripts/linear-next.js' },
   { id: '1999', status: 'completed', subject: 'add a thing that never landed', description: '[notion:ddd] P1 · Done · Infra\nKey file: scripts/lib/never-landed-thing.js' },
@@ -76,8 +76,8 @@ test('no evidence at all, or no git probe => still reopenable', () => {
   assert.equal(decideWorkLanded(extractLandedEvidence({ taskId: '1834', texts: [TASKS[0].subject, TASKS[0].description] }), null).landed, false);
 });
 
-test('linked commit: a ledger sha that is an ancestor of origin/main => landed; non-ancestor => not', () => {
-  const entries = [{ event: 'job-stranded', taskId: 'linear:BRO-500', sha: 'abc1234def5678' }];
+test('linked commit: a landed-acked ledger sha that is an ancestor of origin/main => landed; non-ancestor => not', () => {
+  const entries = [{ event: 'landed-acked', taskId: 'linear:BRO-500', sha: 'abc1234def5678' }];
   assert.equal(checkWorkLanded({ taskId: 'linear:BRO-500', entries }, fakeGit({ ancestors: ['abc1234def5678'] })).landed, true);
   assert.equal(checkWorkLanded({ taskId: 'linear:BRO-500', entries }, fakeGit()).landed, false);
   // Another task's sha row is never this task's evidence.
@@ -177,4 +177,58 @@ test('makeGitProbe against a real temp repo: ancestor, key file, missing file', 
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
+});
+
+// --- Independent review of 5bb32ee4 ---
+
+test('review #1: a job-stranded sha (job worktree HEAD, often the base commit) is never evidence', () => {
+  const entries = [{ event: 'job-stranded', taskId: 'linear:BRO-500', sha: 'abc1234def5678' }];
+  assert.deepEqual(extractLandedEvidence({ taskId: 'linear:BRO-500', entries }).shas, []);
+  assert.equal(checkWorkLanded({ taskId: 'linear:BRO-500', entries }, fakeGit({ ancestors: ['abc1234def5678'] })).landed, false);
+});
+
+test('review #2: a sha cited as a cause is not evidence; landed/merged/fixed-in phrasing is', () => {
+  const main = fakeGit({ ancestors: ['abc1234def5678'] });
+  for (const text of ['Regressed by commit abc1234def5678', 'commit abc1234def5678', 'sha abc1234def5678',
+    'broke in landed abc1234def5678', 'introduced by merged abc1234def5678']) {
+    assert.equal(checkWorkLanded({ taskId: '5', texts: [text] }, main).landed, false, text);
+  }
+  for (const text of ['landed in abc1234def5678', 'merged as abc1234def5678', 'fixed in commit abc1234def5678', 'fix commit: abc1234def5678']) {
+    assert.equal(checkWorkLanded({ taskId: '5', texts: [text] }, main).landed, true, text);
+  }
+});
+
+test('review #3: a BRO-N merely mentioned in the text is not a ref; own id / marker / linearIdentifier is', () => {
+  assert.deepEqual(extractLandedEvidence({ taskId: '1834', texts: ['follow-up to BRO-76'] }).refs, ['#1834']);
+  assert.equal(checkWorkLanded({ taskId: '1834', texts: ['follow-up to BRO-76; scripts/lib/reconcile-merged-json.js'] }, MAIN).landed, false);
+  assert.equal(checkWorkLanded({ taskId: '1834', texts: ['scripts/lib/reconcile-merged-json.js'], ownIds: ['BRO-76'] }, MAIN).landed, true);
+  assert.ok(extractLandedEvidence({ taskId: '1834', texts: ['[linear:BRO-76] x'] }).refs.includes('BRO-76'));
+});
+
+test('review #3: this script\'s own auto-reopen notes are ignored as evidence', () => {
+  const main = fakeGit({ ancestors: ['abc1234def5678'] });
+  const own = 'Auto-corrected 2026-10-01 by reconcile-dead-completions: merged as abc1234def5678 scripts/linear-next.js';
+  assert.equal(checkWorkLanded({ taskId: 'linear:BRO-9', texts: [own] }, main).landed, false);
+  const local = '[reconcile-dead-completions 2026-10-01] reopened — landed in abc1234def5678';
+  assert.equal(checkWorkLanded({ taskId: '9', texts: [local] }, main).landed, false);
+});
+
+test('review #4: a reference on a TODO / known-issue / not-yet line does not count', () => {
+  for (const line of ['// TODO(task #4242): wire this up', '// known issue, task #4242', '// task #4242 not yet fixed', '// FIXME card #4242', '// task #4242 is still open']) {
+    const git = fakeGit({ files: { 'scripts/x.js': `const a = 1;\n${line}\n` } });
+    assert.equal(checkWorkLanded({ taskId: '4242', texts: ['scripts/x.js'] }, git).landed, false, line);
+  }
+  const ok = fakeGit({ files: { 'scripts/x.js': '// TODO: unrelated\n// task #4242: claim fix\n' } });
+  assert.equal(checkWorkLanded({ taskId: '4242', texts: ['scripts/x.js'] }, ok).landed, true);
+});
+
+test('review #5: PR probe skips Revert commits that name the PR', () => {
+  const run = (args) => (args[0] === 'log'
+    ? { status: 0, stdout: 'aaaaaaa1111111\tRevert "add thing (#77)"\n' }
+    : { status: 1, stdout: '' });
+  assert.equal(makeGitProbe({ run }).prMerged(77), null);
+  const run2 = (args) => (args[0] === 'log'
+    ? { status: 0, stdout: 'aaaaaaa1111111\tRevert "add thing (#77)"\nbbbbbbb2222222\tadd thing (#77)\n' }
+    : { status: 1, stdout: '' });
+  assert.equal(makeGitProbe({ run: run2 }).prMerged(77), 'bbbbbbb2222222');
 });
