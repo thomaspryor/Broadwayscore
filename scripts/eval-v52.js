@@ -183,6 +183,7 @@ async function scoreWithClaude(reviewText, context) {
 async function scoreWithOpenAI(reviewText, context) {
   const prompt = buildPromptV5(reviewText, context);
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

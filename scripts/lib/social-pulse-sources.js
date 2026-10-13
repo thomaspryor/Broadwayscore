@@ -187,6 +187,7 @@ async function fetchXTweetCount({ showTitle, marketQualifier, logger = console }
 
   try {
     const res = await fetch(url, {
+      signal: AbortSignal.timeout(60000),
       headers: { Authorization: `Bearer ${bearerToken}` },
     });
     if (!res.ok) {

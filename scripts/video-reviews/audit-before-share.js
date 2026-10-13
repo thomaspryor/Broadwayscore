@@ -69,6 +69,7 @@ Output JSON: {"verdict": "KEEP" | "REMOVE" | "REVIEW_MANUALLY", "confidence": "h
 
 async function callAnthropic(user) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model: MODEL, max_tokens: 400, system: AUDIT_PROMPT, messages: [{ role: 'user', content: user }] })
@@ -80,6 +81,7 @@ async function callAnthropic(user) {
 
 async function callOpenAI(user) {
   const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
     body: JSON.stringify({

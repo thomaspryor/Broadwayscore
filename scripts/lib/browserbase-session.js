@@ -289,6 +289,7 @@ async function createBbSession(opts) {
   let status = null;
   try {
     res = await fetch(SESSIONS_URL, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'X-BB-API-Key': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

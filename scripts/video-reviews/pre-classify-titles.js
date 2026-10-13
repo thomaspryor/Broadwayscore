@@ -32,6 +32,7 @@ async function classifyTitleBatch(titles, creatorName, platform) {
   const list = titles.map((t, i) => `${i + 1}. [${t.duration || '?'}] ${t.title}`).join('\n');
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({

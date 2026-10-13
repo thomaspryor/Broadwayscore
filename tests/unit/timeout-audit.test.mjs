@@ -43,3 +43,34 @@ test('every https.get()/http.get() call site under scripts/ has timeout protecti
       `Genuine exception? Add  // hygiene-fetch-timeout-ok: <reason>  to the file.`
   );
 });
+
+// BRO-3603 / BRO-3840: the fetch() (143 sites) and https.request()/
+// http.request() (55 sites) gaps are fixed too, so the same hard gate now
+// covers every call class the scanner knows. A new unprotected call fails
+// here with its file:line.
+for (const call of ['fetch()', 'https.request()/http.request()']) {
+  test(`every ${call} call site under scripts/ has timeout protection (BRO-3603/BRO-3840)`, () => {
+    const files = listScannableFiles(path.join(REPO_ROOT, 'scripts'));
+    const findings = files.flatMap((f) => checkFile(f)).filter((f) => f.call === call);
+    assert.deepEqual(
+      findings.map((f) => `${path.relative(REPO_ROOT, f.file)}:${f.line}`),
+      [],
+      `Found ${findings.length} ${call} call site(s) without timeout protection.\n` +
+        (call === 'fetch()'
+          ? 'Fix: pass signal: AbortSignal.timeout(N) in the fetch options.'
+          : "Fix: req.setTimeout(N, () => req.destroy(new Error('...'))) next to the request's .on('error') handler.") +
+        '\nGenuine exception? Add  // hygiene-fetch-timeout-ok: <reason>  to the file.'
+    );
+  });
+}
+
+test('scanner: a fetch() call bound to a local `const fetch = ...` helper is not the global fetch (BRO-3603)', async () => {
+  const { checkSource } = require('../../scripts/audit-fetch-timeouts.js');
+  const local = 'function resolve(deps) {\n  const fetch = deps.fetchOriginMain || fetchOriginMain;\n  if (!fetch(repoOpts)) return null;\n}\n';
+  assert.deepEqual(checkSource('x.js', local), []);
+  // The binding is scoped: a global fetch() in a sibling function is still checked.
+  const sibling = local + 'async function load(url) {\n  return fetch(url);\n}\n';
+  assert.equal(checkSource('x.js', sibling).length, 1);
+  const fixedSibling = local + 'async function load(url) {\n  return fetch(url, { signal: AbortSignal.timeout(60000) });\n}\n';
+  assert.deepEqual(checkSource('x.js', fixedSibling), []);
+});

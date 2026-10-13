@@ -160,7 +160,7 @@ async function getJson<T>(url: string): Promise<T> {
   // Retry on 429 with exponential backoff (max 4 tries, 16s total).
   for (let attempt = 0; attempt < 4; attempt += 1) {
     lastRequestAt = Date.now();
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': UA } });
     if (res.status === 429) {
       const backoff = 1000 * Math.pow(2, attempt); // 1s, 2s, 4s, 8s
       console.warn(`[kalshi-tony-history] 429 from ${url}; backoff ${backoff}ms (attempt ${attempt + 1}/4)`);

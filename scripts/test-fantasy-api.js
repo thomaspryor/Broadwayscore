@@ -59,6 +59,7 @@ function assertEqual(actual, expected, label) {
 
 async function post(path, body) {
   const res = await fetch(`${BASE_URL}${path}`, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -67,7 +68,7 @@ async function post(path, body) {
 }
 
 async function get(path) {
-  const res = await fetch(`${BASE_URL}${path}`);
+  const res = await fetch(`${BASE_URL}${path}`, { signal: AbortSignal.timeout(60000) });
   return { status: res.status, data: await res.json() };
 }
 

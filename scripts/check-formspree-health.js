@@ -58,6 +58,7 @@ async function checkForm(form) {
 
   const apiUrl = `https://formspree.io/api/0/forms/${id}/submissions?limit=5`;
   const res = await fetch(apiUrl, {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${token}` },
   });
 

@@ -97,6 +97,7 @@ function isEvidencedMismatch(v, t) {
 async function ask(user) {
   if (PROVIDER === 'openai') {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      signal: AbortSignal.timeout(300000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
       body: JSON.stringify({ model: MODEL, temperature: 0, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: PROMPT }, { role: 'user', content: user }] }),
@@ -105,6 +106,7 @@ async function ask(user) {
     return (await resp.json()).choices[0].message.content;
   }
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model: MODEL, max_tokens: 300, system: PROMPT, messages: [{ role: 'user', content: user }] }),
@@ -150,6 +152,7 @@ Transcript excerpt:
 ${String(t.transcript || '').substring(0, 3000)}
 ---`;
   const resp = await fetch(url, {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: user }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } }),

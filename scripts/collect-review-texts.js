@@ -3795,7 +3795,7 @@ async function fetchReviewText(review) {
     try {
       const articlePath = url.replace(/^https?:\/\/(www\.)?theguardian\.com\//, '').replace(/\/$/, '');
       const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=body,starRating,bodyText`;
-      const resp = await fetch(apiUrl);
+      const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const json = await resp.json();
         const fields = json.response?.content?.fields;

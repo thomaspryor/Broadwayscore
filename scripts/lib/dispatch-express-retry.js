@@ -34,6 +34,7 @@ async function dispatchExpressRetry(showId, market) {
   try {
     const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/opening-night-express.yml/dispatches`;
     const res = await fetch(url, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: {
         Accept: 'application/vnd.github+json',

@@ -130,6 +130,7 @@ Question: Is this an individual critic review of "${c.show.title}" — the produ
 Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"medium"|"low", "reason": "<one sentence>"}`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       'content-type': 'application/json',

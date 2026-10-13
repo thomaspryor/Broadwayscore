@@ -80,6 +80,7 @@ const OUR_DOMAIN_PATTERNS = [
 
 async function sentryGet(path) {
   const res = await fetch(`${SENTRY_BASE}${path}`, {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${SENTRY_TOKEN}` },
   });
   if (!res.ok) {
@@ -90,6 +91,7 @@ async function sentryGet(path) {
 
 async function sentryPut(path, body) {
   const res = await fetch(`${SENTRY_BASE}${path}`, {
+    signal: AbortSignal.timeout(60000),
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${SENTRY_TOKEN}`,
@@ -164,7 +166,7 @@ async function findExistingGithubIssue(sentryIssueId) {
   const [owner, repo] = REPO.split('/');
   const res = await fetch(
     `https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue+"sentry-${sentryIssueId}"+in:body`,
-    { headers: { Authorization: `token ${GITHUB_TOKEN}` } }
+    { signal: AbortSignal.timeout(60000), headers: { Authorization: `token ${GITHUB_TOKEN}` } }
   );
   if (!res.ok) return null;
   const data = await res.json();
@@ -190,6 +192,7 @@ async function createGithubIssue(issue, classification) {
 *Auto-created by Sentry triage. Classification: ${classification.reason}*`;
 
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues`, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: {
       Authorization: `token ${GITHUB_TOKEN}`,

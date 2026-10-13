@@ -69,6 +69,7 @@ Respond in JSON format:
 }`;
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -52,7 +52,7 @@ const readJson = p => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
 async function fetchText(url, tries = 3) {
   for (let i = 0; i < tries; i++) {
     try {
-      const res = await fetch(url, { redirect: 'manual', headers: { 'user-agent': 'BroadwayScorecard-tour-audit/1.0' } });
+      const res = await fetch(url, { signal: AbortSignal.timeout(60000), redirect: 'manual', headers: { 'user-agent': 'BroadwayScorecard-tour-audit/1.0' } });
       // A 5xx or 429 is usually a blip: retry before it becomes a finding.
       if ((res.status >= 500 || res.status === 429) && i < tries - 1) {
         await new Promise(r => setTimeout(r, 2000 * (i + 1)));
@@ -240,7 +240,7 @@ async function main() {
           let ir = { status: 0 };
           for (let n = 0; n < 3 && (ir.status === 0 || ir.status >= 500 || ir.status === 429); n++) {
             if (n) await new Promise(r => setTimeout(r, 2000 * n));
-            ir = await fetch(`${BASE}${src}`, { method: 'HEAD' }).catch(() => ({ status: 0 }));
+            ir = await fetch(`${BASE}${src}`, { signal: AbortSignal.timeout(60000), method: 'HEAD' }).catch(() => ({ status: 0 }));
           }
           if (ir.status !== 200) findings.push({ severity: 'error', code: 'image-broken', where: url, message: `${k} ${src} returns ${ir.status}` });
         }

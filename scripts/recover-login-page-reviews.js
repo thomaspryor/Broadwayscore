@@ -263,7 +263,7 @@ async function fetchFromArchiveOrg(url) {
   // Check CDX API for snapshots
   const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&fl=timestamp,statuscode&filter=statuscode:200&sort=reverse`;
 
-  const cdxResp = await fetch(cdxUrl);
+  const cdxResp = await fetch(cdxUrl, { signal: AbortSignal.timeout(60000) });
   if (!cdxResp.ok) throw new Error('Archive.org CDX failed');
 
   const cdxData = await cdxResp.json();
@@ -274,6 +274,7 @@ async function fetchFromArchiveOrg(url) {
   const archiveUrl = `https://web.archive.org/web/${timestamp}id_/${url}`;
 
   const resp = await fetch(archiveUrl, {
+    signal: AbortSignal.timeout(60000),
     headers: {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
     },

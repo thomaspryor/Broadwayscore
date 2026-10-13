@@ -34,6 +34,7 @@ function prompt(q) {
 
 async function bb(method, endpoint, body) {
   const res = await fetch(`${API}${endpoint}`, {
+    signal: AbortSignal.timeout(60000),
     method,
     headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': process.env.BROWSERBASE_API_KEY },
     ...(body ? { body: JSON.stringify(body) } : {}),

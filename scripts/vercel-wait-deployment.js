@@ -26,6 +26,7 @@ const id = urlLine.replace(/^https?:\/\//, '');
 
 async function fetchState() {
   const res = await fetch(`https://api.vercel.com/v13/deployments/${encodeURIComponent(id)}`, {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
@@ -43,6 +44,7 @@ let meta = {};
 async function newerLiveExists() {
   if (!meta.createdAt || !meta.projectId) return false;
   const res = await fetch(`https://api.vercel.com/v6/deployments?projectId=${meta.projectId}&target=production&limit=10`, {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) return false;
