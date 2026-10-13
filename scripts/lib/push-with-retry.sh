@@ -161,8 +161,9 @@ PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4
 # PUSH_OP_MIN_TIMEOUT_SEC+10 each, plus the Git Data API fallback. BRO-2824
 # stops its retries at the remaining deadline and BRO-3125 clamps each of its
 # ops and sleeps the same way, so a fallback started past the deadline runs
-# one attempt whose ops (ls-remote, fetch, push, or the REST calls) each get
-# PUSH_OP_MIN_TIMEOUT_SEC+10: about 2 min with the defaults. A legitimately slow
+# one attempt: tip lookups at PUSH_OP_MIN_TIMEOUT_SEC+10 each, the ref update
+# at its full cap (~3 min total with the defaults, plus REST blob uploads on
+# that path; see push-via-git-api.sh's BRO-3125 comment). A legitimately slow
 # deepen/unshallow fetch is only clamped when less than GIT_NET_TIMEOUT_SEC
 # remains; if it then times out, the loop-top check breaks as before.
 # Pre-loop and post-loop network ops (entry ls-remote, API fallback, its
