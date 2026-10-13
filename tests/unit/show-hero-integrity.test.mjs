@@ -1,4 +1,5 @@
 // Show hero integrity (BRO-4251).
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural guard that rejected-by-eye image fields stay null in shows.json; pins no facts about a show.
 //
 // Found 2026-09-28: unrelated shows served byte-identical hero files
 // (hangmen-2022 = the-cripple-of-inishmaan-2014; here-lies-love-2023 =
