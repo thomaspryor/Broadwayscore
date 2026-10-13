@@ -1953,32 +1953,6 @@
     "queuedAt": "2026-10-12T23:33:06.454Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
-    "title": "Review gap — \"King Lear\" missing 16 cited review(s)",
-    "description": "King Lear (king-lear-royal-exchange-regional-2026): 16 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T23:33:06.497Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 4 cited review(s)",
-    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T23:33:06.557Z"
-  },
-  {
     "conditionKey": "land:land/bro-4889-print-tool",
     "title": "Landing blocked: unit-tests-node red on land/bro-4889-print-tool",
     "description": "land.yml did not land land/bro-4889-print-tool: the unit-tests-node gate went red at d30db93ac9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38318593177",
@@ -2337,6 +2311,58 @@
       }
     ],
     "queuedAt": "2026-10-13T02:29:42.712Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-ghost-in-your-ear-off-broadway-2026",
+    "title": "Review gap — \"A Ghost In Your Ear\" missing 1 cited review(s)",
+    "description": "A Ghost In Your Ear (a-ghost-in-your-ear-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-ghost-in-your-ear-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T02:56:00.087Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:hay-fever-west-end-2026",
+    "title": "Review gap — \"Hay Fever\" missing 3 cited review(s)",
+    "description": "Hay Fever (hay-fever-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=hay-fever-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T02:56:00.172Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jena-friedman-motherfucker-off-broadway-2026",
+    "title": "Review gap — \"Jena Friedman: Motherfucker\" missing 4 cited review(s)",
+    "description": "Jena Friedman: Motherfucker (jena-friedman-motherfucker-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jena-friedman-motherfucker-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T02:56:00.196Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:three-men-in-a-boat-off-west-end-2026",
+    "title": "Review gap — \"Three Men in a Boat\" missing 2 cited review(s) — escalated after 15 notifications",
+    "description": "Filed BRO-5219 for owner triage after 15 repeats with no tracker.\n\nThree Men in a Boat (three-men-in-a-boat-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=three-men-in-a-boat-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5219",
+    "fields": [],
+    "queuedAt": "2026-10-13T02:56:03.853Z"
   },
   {
     "conditionKey": "land:land/bro-scoring-batch",

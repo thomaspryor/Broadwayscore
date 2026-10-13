@@ -1,27 +1,8 @@
 {
-  "generatedAt": "2026-10-12T23:33:09.290Z",
+  "generatedAt": "2026-10-13T02:58:06.243Z",
   "windowDays": 45,
-  "showsScanned": 161,
+  "showsScanned": 164,
   "gaps": [
-    {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "openingDate": "2026-09-03",
-      "file": "hollywood-reporter--erin-lassner.json",
-      "outletId": "hollywood-reporter",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.hollywoodreporter.com/tv/tv-news/watch-american-horror-story-season-13-free-streaming-2026-1236709672/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
-      "firstSeen": "2026-10-12T08:22:49.711Z",
-      "fileAgeHours": 15.171586666666666,
-      "gapSeenAt": "2026-10-12T21:04:10.700Z",
-      "nonTerminalAgeHours": 2.4829416666666666
-    },
     {
       "showId": "good-time-charlie-off-broadway-2026",
       "title": "Good Time Charlie",
@@ -33,15 +14,15 @@
       "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html",
       "recovery": {
         "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "reason": "circuit-breaker:per-file-cap"
       },
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=good-time-charlie-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/10_09_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-12T20:09:47.097Z",
-      "fileAgeHours": 3.3890025,
+      "fileAgeHours": 6.771735,
       "gapSeenAt": "2026-10-12T21:04:10.700Z",
-      "nonTerminalAgeHours": 2.4829416666666666
+      "nonTerminalAgeHours": 5.898761944444445
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -52,14 +33,18 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389",
-      "recovery": null,
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": "a... | [BD Call] {\"ts\":\"2026-10-13T02:58:00.863Z\",\"provider\":\"brightdata\",\"script\":\"recover-talkinbroadway-forum-links.js\",\"workflow\":\"Audit Aggregator Review Gap\",\"host\":\"talkinbroadway.com\",\"fn\":\"web-unlocker\",\"success\":true,\"status\":200,\"credits\":null,\"fallback_from\":null,\"purpose\":null,\"category\":null,\"showId\":null} |   ✅ Success (Bright Data, html) |  | Done. 0 succeeded, 0 failed, 1 skipped."
+      },
       "recoveryCount": 3,
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 101.80544916666666,
+      "fileAgeHours": 105.22024944444445,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 96.77357694444444
+      "nonTerminalAgeHours": 100.18939722222223
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -76,50 +61,30 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 486.8769022222222,
+      "fileAgeHours": 490.29187,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 37.89619111111111
+      "nonTerminalAgeHours": 41.31201138888889
     },
     {
-      "showId": "the-humanities-regional-2026",
-      "title": "The Humanities",
-      "openingDate": "2026-09-13",
-      "file": "broadwayworld--unknown.json",
-      "outletId": "broadwayworld",
+      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "title": "The Prime of Miss Jean Brodie",
+      "openingDate": "2026-10-11",
+      "file": "times-uk--allan-radcliffe.json",
+      "outletId": "times-uk",
       "tier": 2,
       "type": "empty-body",
-      "url": "https://www.broadwayworld.com/chicago/regional/The-Humanities",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-humanities-regional-2026 --url=https://www.broadwayworld.com/chicago/regional/The-Humanities --outlet=broadwayworld   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-12T22:37:29.921Z",
-      "fileAgeHours": 0.9275780555555555,
-      "gapSeenAt": "2026-10-12T23:33:09.290Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "king-lear-royal-exchange-regional-2026",
-      "title": "King Lear",
-      "openingDate": "2026-10-10",
-      "file": "hollywood-reporter--david-rooney.json",
-      "outletId": "hollywood-reporter",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=king-lear-royal-exchange-regional-2026 --url=http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652 --outlet=hollywood-reporter --critic=\"David Rooney\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-12T22:03:53.607Z",
-      "fileAgeHours": 1.487681111111111,
-      "gapSeenAt": "2026-10-12T23:33:09.290Z",
+      "fix": "node scripts/ingest-review-from-url.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz --outlet=times-uk --critic=\"Allan Radcliffe\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-13T01:09:35.973Z",
+      "fileAgeHours": 1.8084072222222223,
+      "gapSeenAt": "2026-10-13T02:58:06.243Z",
       "nonTerminalAgeHours": 0
     }
   ],
