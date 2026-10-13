@@ -87,14 +87,13 @@
     "public-charge-off-broadway-2026/one-minute-critic--jerry-portwood.json",
     "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-    "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "gobstopper-off-broadway-2026/front-row-center--david-walters.json",
-    "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-reservoir-off-broadway-2026/playbill--unknown.json",
-    "the-dinosaurs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "to-kill-a-mockingbird-2018/wsj--terry-teachout.json",
+    "the-lifespan-of-a-fact-2018/wsj--terry-teachout.json",
+    "the-parisian-woman-2017/wsj--terry-teachout.json",
+    "prince-of-broadway-2017/wsj--terry-teachout.json",
+    "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+    "baby-its-you-2011/wsj--terry-teachout.json"
   ],
   "failed": [
     "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -150,8 +149,11 @@
     "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
     "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "antigone-this-play-i-read-in-high-school-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
-    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+    "the-price-2017/wsj--terry-teachout.json",
+    "something-rotten-2015/wsj--terry-teachout.json",
+    "annie-2012/wsj--terry-teachout.json",
+    "anything-goes-2011/wsj--unknown.json",
+    "lend-me-a-tenor-2010/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -225,7 +227,16 @@
       "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "data/review-texts/to-kill-a-mockingbird-2018/wsj--terry-teachout.json",
+      "to-kill-a-mockingbird-2018/wsj--terry-teachout.json",
+      "data/review-texts/the-lifespan-of-a-fact-2018/wsj--terry-teachout.json",
+      "the-lifespan-of-a-fact-2018/wsj--terry-teachout.json",
+      "data/review-texts/the-parisian-woman-2017/wsj--terry-teachout.json",
+      "the-parisian-woman-2017/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
@@ -238,7 +249,9 @@
       "brooklyns-bridge-off-broadway-2026/amny--matt-windman.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "public-charge-off-broadway-2026/theater-life--david-sheward.json",
-      "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json"
+      "prince-of-broadway-2017/wsj--terry-teachout.json",
+      "the-price-2017/wsj--terry-teachout.json",
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/new-york-sun--unknown.json",
@@ -264,14 +277,231 @@
       "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
       "gotta-dance-off-broadway-2026/playbill--unknown.json",
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-      "chinese-republicans-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-reservoir-off-broadway-2026/playbill--unknown.json",
-      "the-dinosaurs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "baby-its-you-2011/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-  "log": []
+  "lastProcessed": "lend-me-a-tenor-2010/wsj--terry-teachout.json",
+  "log": [
+    {
+      "t": "2026-10-13T19:44:44.248Z",
+      "event": "bb-session",
+      "session": "bc71ba15",
+      "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-br"
+    },
+    {
+      "t": "2026-10-13T19:44:44.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:45:02.126Z",
+      "event": "bb-session",
+      "session": "306268b6",
+      "url": "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aar"
+    },
+    {
+      "t": "2026-10-13T19:45:02.488Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:45:22.639Z",
+      "event": "bb-session",
+      "session": "cadea110",
+      "url": "https://www.wsj.com/articles/the-lifespan-of-a-fact-review-true-false-and-everyt"
+    },
+    {
+      "t": "2026-10-13T19:45:23.012Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:46:23.337Z",
+      "event": "bb-session",
+      "session": "d6610878",
+      "url": "https://www.wsj.com/articles/the-parisian-woman-review-a-broadway-debut-lacking-"
+    },
+    {
+      "t": "2026-10-13T19:46:23.693Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:47:25.555Z",
+      "event": "bb-session",
+      "session": "409be3fa",
+      "url": "https://www.wsj.com/articles/prince-of-broadway-and-company-reviews-a-broadway-i"
+    },
+    {
+      "t": "2026-10-13T19:47:25.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:47:51.048Z",
+      "event": "bb-session",
+      "session": "19b3a2ba",
+      "url": "https://www.wsj.com/articles/prince-of-broadway-and-company-reviews-a-broadway-i"
+    },
+    {
+      "t": "2026-10-13T19:47:51.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:48:51.101Z",
+      "event": "bb-session",
+      "session": "3ec31531",
+      "url": "https://www.wsj.com/articles/the-price-review-a-major-miller-back-on-broadway-14"
+    },
+    {
+      "t": "2026-10-13T19:48:51.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:49:08.576Z",
+      "event": "bb-session",
+      "session": "6e181282",
+      "url": "https://www.wsj.com/articles/the-price-review-a-major-miller-back-on-broadway-14"
+    },
+    {
+      "t": "2026-10-13T19:49:08.941Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:50:21.857Z",
+      "event": "bb-session",
+      "session": "f5434100",
+      "url": "https://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1"
+    },
+    {
+      "t": "2026-10-13T19:50:22.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:50:39.485Z",
+      "event": "bb-session",
+      "session": "4f5a377b",
+      "url": "https://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1"
+    },
+    {
+      "t": "2026-10-13T19:50:39.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:51:37.646Z",
+      "event": "bb-session",
+      "session": "e2a0a316",
+      "url": "http://www.wsj.com/articles/something-rotten-review-throw-out-your-shakespeare-1"
+    },
+    {
+      "t": "2026-10-13T19:51:38.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:51:55.066Z",
+      "event": "bb-session",
+      "session": "173198fd",
+      "url": "http://www.wsj.com/articles/something-rotten-review-throw-out-your-shakespeare-1"
+    },
+    {
+      "t": "2026-10-13T19:51:55.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:53:02.604Z",
+      "event": "bb-session",
+      "session": "3a528288",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-13T19:53:03.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:53:20.009Z",
+      "event": "bb-session",
+      "session": "54211bc3",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-13T19:53:20.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:54:33.313Z",
+      "event": "bb-session",
+      "session": "f8a81ca3",
+      "url": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876"
+    },
+    {
+      "t": "2026-10-13T19:54:33.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:54:51.846Z",
+      "event": "bb-session",
+      "session": "f604dd97",
+      "url": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876"
+    },
+    {
+      "t": "2026-10-13T19:54:52.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:55:35.065Z",
+      "event": "bb-session",
+      "session": "0f863410",
+      "url": "https://online.wsj.com/article/SB10001424052748703806304576241223565148298.html"
+    },
+    {
+      "t": "2026-10-13T19:55:35.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:55:52.645Z",
+      "event": "bb-session",
+      "session": "2b33b919",
+      "url": "https://online.wsj.com/article/SB10001424052748703806304576241223565148298.html"
+    },
+    {
+      "t": "2026-10-13T19:55:53.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:57:05.695Z",
+      "event": "bb-session",
+      "session": "0107c34f",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html"
+    },
+    {
+      "t": "2026-10-13T19:57:06.056Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T19:57:23.247Z",
+      "event": "bb-session",
+      "session": "dcad3dfa",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html"
+    },
+    {
+      "t": "2026-10-13T19:57:23.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
