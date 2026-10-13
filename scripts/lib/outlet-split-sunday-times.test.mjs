@@ -22,7 +22,7 @@ const quiet = (fn) => {
   console.warn = () => {}; console.log = () => {};
   try { return fn(); } finally { console.warn = warn; console.log = log; }
 };
-const { normalizeOutlet, resolveOutletFromUrl, loadOutletRegistry, validateCriticOutlet, editionFamily } = quiet(() => require('./review-normalization.js'));
+const { normalizeOutlet, resolveOutletFromUrl, loadOutletRegistry, validateCriticOutlet, editionFamily, editionGroupKey } = quiet(() => require('./review-normalization.js'));
 const { splitOutletCorrection, isGenericLabel, applyUrlEditionCorrection } = require('./outlet-mismatch-heal.js');
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 const { OUTLET_EXTRACTORS, KNOWN_STAR_OUTLETS, HOST_GATED_STAR_OUTLETS } = require('./score-extractors.js');
@@ -110,6 +110,18 @@ test('critic-outlet guard treats an edition split as one family, and a cross-dom
   assert.equal(validateCriticOutlet('Quentin Letts', 'The Sunday Times').isSuspicious, false);
   assert.equal(validateCriticOutlet('Dominic Maxwell', 'The Sunday Times').isSuspicious, false);
   assert.equal(validateCriticOutlet('Clive Davis', 'Variety').isSuspicious, true, 'real misattribution still flagged');
+});
+
+test('cleanup-phantom-outlets groups edition siblings as one outlet (never merges one into the other)', () => {
+  // The 2026-10-13 rebuild ran cleanup-phantom-outlets keyed on the raw
+  // outlet label: a "The Sunday Times"-labelled file sharing a url with a
+  // times-uk file read as a phantom of it and was merged + deleted (6 files).
+  assert.equal(editionGroupKey('sunday-times'), editionGroupKey('times-uk'));
+  assert.notEqual(editionGroupKey('britishtheatrecom'), editionGroupKey('british-theatre'));
+  assert.equal(editionGroupKey('guardian'), 'guardian');
+  const src = fs.readFileSync(new URL('../cleanup-phantom-outlets.js', import.meta.url), 'utf8');
+  assert.match(src, /editionGroupKey\(normalizeOutlet\(entry\.data\.outlet \|\| entry\.data\.outletId\)\)/,
+    'cleanup-phantom-outlets groups by editionGroupKey');
 });
 
 test('write chokepoint: a Sunday Times label files under sunday-times, and a re-send as "The Times" merges into it', () => {

@@ -26,6 +26,7 @@ const {
   getOutletTier,
   loadOutletRegistry,
   levenshteinDistance,
+  editionGroupKey,
 } = require('./lib/review-normalization');
 const { safeWriteReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -89,7 +90,11 @@ function run() {
       // Group by normalized outlet ID to find cross-outlet duplicates
       const byOutlet = new Map();
       for (const entry of group) {
-        const outletId = normalizeOutlet(entry.data.outlet || entry.data.outletId);
+        // Edition siblings (The Times / The Sunday Times, BRO-5137) are one
+        // masthead on one domain, not a phantom name for each other: group
+        // them as one outlet so a same-URL pair stays with the ordinary
+        // duplicateOf handling instead of being merged and deleted here.
+        const outletId = editionGroupKey(normalizeOutlet(entry.data.outlet || entry.data.outletId));
         if (!byOutlet.has(outletId)) byOutlet.set(outletId, []);
         byOutlet.get(outletId).push(entry);
       }

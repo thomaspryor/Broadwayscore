@@ -1397,6 +1397,11 @@ function editionFamily(outletId) {
   return family;
 }
 
+/** One stable key per edition family, for grouping files by outlet (BRO-5137). */
+function editionGroupKey(outletId) {
+  return [...editionFamily(outletId)].sort()[0];
+}
+
 /**
  * Validate whether a critic is expected at a given outlet.
  * Uses the auto-generated critic registry for data-driven detection.
@@ -2819,6 +2824,7 @@ module.exports = {
   loadOutletRegistry,
   splitChildrenOf,
   editionFamily,
+  editionGroupKey,
   levenshteinDistance,
   findExistingReviewFile,
   isFlaggedMergeTarget,
