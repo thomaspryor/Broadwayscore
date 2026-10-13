@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-13T06:10:18.296Z",
+  "timestamp": "2026-10-13T06:20:19.157Z",
   "stats": {
     "totalReviews": 56295,
-    "alreadyFlagged": 21002,
-    "dateGuardCatches": 218,
+    "alreadyFlagged": 21003,
+    "dateGuardCatches": 217,
     "directorMismatch": 1859,
     "tvFilmSignals": 1638,
     "londonSignals": 2232,
@@ -1010,6 +1010,7 @@
     {
       "showId": "a-tale-of-two-cities-2008",
       "file": "variety--david-rooney.json",
+      "score": 43,
       "publishDate": "2008-09-19",
       "url": "https://variety.com/2008/film/awards/a-tale-of-two-cities-6-1200470437/",
       "findings": [
@@ -15839,6 +15840,7 @@
     {
       "showId": "god-of-carnage-2009",
       "file": "variety--charles-isherwood.json",
+      "score": 86,
       "publishDate": "2009-03-23",
       "url": "https://variety.com/2009/film/awards/god-of-carnage-1200474074/",
       "findings": [
@@ -22788,6 +22790,7 @@
     {
       "showId": "journeys-end-2007",
       "file": "variety--david-rooney.json",
+      "score": 78,
       "publishDate": "2007-02-23",
       "url": "https://variety.com/2007/film/awards/journey-s-end-1200510125/",
       "findings": [
@@ -25574,6 +25577,7 @@
     {
       "showId": "mary-stuart-2009",
       "file": "variety--marilyn-stasio.json",
+      "score": 86,
       "publishDate": "2009-04-20",
       "url": "https://variety.com/2009/film/awards/mary-stuart-4-1200474491/",
       "findings": [
@@ -32479,6 +32483,7 @@
     {
       "showId": "pygmalion-2007",
       "file": "variety--david-rooney.json",
+      "score": 41,
       "publishDate": "2007-10-19",
       "url": "https://variety.com/2007/legit/markets-festivals/pygmalion-4-1200555250/",
       "findings": [
@@ -38961,6 +38966,7 @@
     {
       "showId": "the-constant-wife-2005",
       "file": "variety--charles-isherwood.json",
+      "score": 77,
       "publishDate": "2005-06-17",
       "url": "https://variety.com/2005/legit/markets-festivals/the-constant-wife-3-1200525090/",
       "findings": [
@@ -42230,6 +42236,7 @@
     {
       "showId": "the-norman-conquests-2009",
       "file": "variety--charles-isherwood.json",
+      "score": 91,
       "publishDate": "2009-04-24",
       "url": "https://variety.com/2009/film/awards/the-norman-conquests-2-1200474437/",
       "findings": [
@@ -46464,20 +46471,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -50578,6 +50571,7 @@
     {
       "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
       "file": "variety--charles-isherwood.json",
+      "score": 62,
       "publishDate": "2010-11-05",
       "url": "https://variety.com/2010/legit/news/women-on-the-verge-of-a-nervous-breakdown-1117943995/",
       "findings": [
@@ -80122,6 +80116,7 @@
     {
       "showId": "the-little-mermaid-2008",
       "file": "variety--david-rooney.json",
+      "score": 45,
       "publishDate": "2008-01-10",
       "url": "https://variety.com/2008/film/awards/the-little-mermaid-2-1200553677/",
       "findings": [
