@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-13T03:54:25.408Z",
-  "totalScanned": 56363,
-  "totalExcluded": 26955,
+  "generatedAt": "2026-10-13T04:20:02.251Z",
+  "totalScanned": 56379,
+  "totalExcluded": 26949,
   "ruleCounts": {
-    "wrongProduction": 18061,
-    "wrongShow": 1853,
+    "wrongProduction": 18052,
+    "wrongShow": 1854,
     "duplicateOf": 1766,
     "unverifiableWebSearchRow": 983,
-    "noTextOrScoreSignal": 762,
+    "noTextOrScoreSignal": 761,
     "rejectionReason": 754,
-    "nonReview": 459,
+    "nonReview": 460,
     "bodylessAggregatorScoreUncorroborated": 336,
     "blockedReviewUrl": 260,
-    "wrongAttribution": 253,
+    "wrongAttribution": 254,
     "isRoundupArticle": 228,
     "isSyndicatedDuplicate": 170,
     "scoreStatusToBeCalculated": 170,
@@ -23,7 +23,7 @@
     "knownSyndicationSecondary": 69,
     "rejectedAt": 64,
     "directorMismatch": 63,
-    "contentTierInvalid": 60,
+    "contentTierInvalid": 61,
     "roundupPageAsReview": 53,
     "namedNonReviewUrl": 34,
     "cancelledBeforeOpening": 30,
@@ -41,24 +41,23 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 15,
-    "wrongShow": -5,
+    "wrongProduction": -9,
+    "wrongShow": 1,
+    "noTextOrScoreSignal": -1,
     "nonReview": 1,
     "wrongAttribution": 1,
-    "cvWrongArticleHighConfidence": -1,
-    "knownSyndicationSecondary": -1,
-    "fabricatedEntry": -1
+    "contentTierInvalid": 1
   },
-  "previousGeneratedAt": "2026-10-13T03:28:24.780Z",
+  "previousGeneratedAt": "2026-10-13T03:54:25.408Z",
   "mirror": {
     "comparedShows": 2504,
-    "comparedFiles": 55826,
-    "agreeExcluded": 26184,
-    "agreeIncluded": 28371,
+    "comparedFiles": 55842,
+    "agreeExcluded": 26178,
+    "agreeIncluded": 28380,
     "mirrorOnly": 241,
-    "rebuildOnly": 1030,
-    "disagreements": 1271,
-    "disagreementRate": 0.0228,
+    "rebuildOnly": 1043,
+    "disagreements": 1284,
+    "disagreementRate": 0.023,
     "mirrorOnlyByRule": {
       "duplicateOf": 82,
       "cvWrongArticleHighConfidence": 54,
@@ -73,8 +72,8 @@
     "rebuildOnlyByReason": {
       "skippedDuplicateText": 314,
       "skippedUnknownCriticDedup": 228,
-      "skippedNoScore": 144,
-      "skippedCrossMarket": 77,
+      "skippedNoScore": 156,
+      "skippedCrossMarket": 78,
       "skippedInvalidUrl": 72,
       "skippedPreOpening": 46,
       "skippedListingPage": 33,
@@ -100,5 +99,5 @@
     "notComparedShows": 82,
     "notComparedFiles": 537
   },
-  "previousDisagreementRate": 0.0229
+  "previousDisagreementRate": 0.0228
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T03:54:34.388Z",
+  "timestamp": "2026-10-13T04:20:15.764Z",
   "stats": {
-    "totalReviews": 56279,
-    "alreadyFlagged": 21006,
+    "totalReviews": 56295,
+    "alreadyFlagged": 20998,
     "dateGuardCatches": 217,
-    "directorMismatch": 1853,
+    "directorMismatch": 1855,
     "tvFilmSignals": 1626,
-    "londonSignals": 2214,
+    "londonSignals": 2218,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5257
+    "noPublishDate": 5266
   },
   "findings": [
     {
@@ -12665,6 +12665,20 @@
     },
     {
       "showId": "evita-2012",
+      "file": "backstage--david-sheward.json",
+      "score": 65,
+      "publishDate": null,
+      "url": "https://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-evita-1006686952.story",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 78,
       "publishDate": "April 5, 2012",
@@ -22574,6 +22588,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-23",
+      "url": "https://www.theupcoming.co.uk/2026/04/23/john-proctor-is-the-villain-at-wyndhams-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -59635,6 +59668,20 @@
     },
     {
       "showId": "evita-2012",
+      "file": "amny--matt-windman.json",
+      "score": 40,
+      "publishDate": null,
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-evita-2-5-stars-1.3645206",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 42,
       "publishDate": "2012-04-07",
@@ -63287,6 +63334,19 @@
       "file": "kidify--unknown.json",
       "publishDate": null,
       "url": "https://kidify.co.uk/day-out/high-school-musical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-10-12",
+      "url": "https://theatreweekly.com/first-look-production-images-released-for-london-run-of-disneys-high-school-musical/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -84888,6 +84948,19 @@
       "score": 39,
       "publishDate": "2026-09-28",
       "url": "https://liamodell.com/2026/10/01/whos-afraid-of-virginia-woolf-review-soho-place-london-about-cast-running-time-gillian-anderson-billy-crudup-josh-dylan-phoebe-horn/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "londontheatregeek--unknown.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.londontheatregeek.co.uk/shows/whos-afraid-of-virginia-woolf",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
