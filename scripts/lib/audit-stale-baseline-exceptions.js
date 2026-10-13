@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-require('./lib/cli-help').exitOnHelp(module);
+require('./cli-help').exitOnHelp(module);
 
 const PERMANENCE = /\b(permanent(ly)?|indefinite(ly)?|stays? (in (the )?)?baselined?|deliberate(ly)? (exception|stays?|exempt|kept|retained)|forever|never (migrate|fix)|won'?t fix)\b|permanent_/i;
 // Show ids / slugs / URLs ("on-a-clear-day-you-can-see-forever-2011") are data, not prose.
@@ -64,7 +64,7 @@ function audit(root) {
 module.exports = { audit, findPermanentLabels, PERMANENCE };
 
 if (require.main === module) {
-  const { files, findings, skipped } = audit(path.join(__dirname, '..'));
+  const { files, findings, skipped } = audit(path.join(__dirname, '..', '..'));
   console.log(`Scanned ${files.length - skipped.length} of ${files.length} baseline files.`);
   for (const f of skipped) console.log(`  warning: ${f} is not parseable JSON, skipped`);
   for (const f of findings) console.log(`  ${f.file} ${f.path}: ${f.text}`);

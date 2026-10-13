@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
-const { audit, findPermanentLabels } = require('../../scripts/audit-stale-baseline-exceptions.js');
+const { audit, findPermanentLabels } = require('../../scripts/lib/audit-stale-baseline-exceptions.js');
 
 test('flags permanence language in baseline entry strings', () => {
   const hits = findPermanentLabels({ entries: [{ file: 'a.js', note: 'permanent real-time-critical sender' }], n: 3 });
