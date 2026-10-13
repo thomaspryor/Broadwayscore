@@ -109,7 +109,9 @@ const FIELD_VALUE_CHECKS = {
   // A url edit is allowed only when the CURRENT url is provably wrong for this
   // file: an aggregator/round-up page, a non-review page (show page, cast
   // announcement), or another named critic's review a sibling file already
-  // holds (ctx.currentUrlOwnedByOtherCritic, computed by the executor).
+  // holds (ctx.currentUrlOwnedByOtherCritic, computed by the executor), or a
+  // url naming another show whose folder already holds it
+  // (ctx.currentUrlOwnedByOtherShow, BRO-3065).
   // The new value must be a review-candidate url on this outlet's own domain,
   // or '' (only when the current url is an aggregator page: a Theatre Record
   // text is stored with no url, and '' restores that shape without clearing
@@ -128,8 +130,9 @@ const FIELD_VALUE_CHECKS = {
     const currentWrong = currentAggregator
       || (current && classifyReviewUrl(current).ok === false)
       || ctx.currentUrlOwnedByOtherCritic === true
+      || ctx.currentUrlOwnedByOtherShow === true
       || unverifiedSearchUrl;
-    if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, or an unverified legacy web-search url)';
+    if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, another show\'s review, or an unverified legacy web-search url)';
     if (v === '') return currentAggregator ? null : 'url: clearing to "" is only for an aggregator-page url';
     if (typeof v !== 'string' || !/^https?:\/\//i.test(v)) return 'url must be an http(s) url or ""';
     if (!classifyReviewUrl(v).ok || isAggregatorPageUrl(v)) return 'url: new value is not a review-candidate url';
@@ -387,6 +390,12 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
       showDir: path.dirname(abs), url: record.url,
       selfFilename: path.basename(abs), selfCriticName: record.criticName,
     });
+    if (!ctx.currentUrlOwnedByOtherCritic) {
+      const { urlOwnedByOtherShow } = require('./review-slot-guards');
+      ctx.currentUrlOwnedByOtherShow = !!urlOwnedByOtherShow({
+        reviewTextsDir, folder: ctx.folder, url: record.url, publishDate: record.publishDate,
+      });
+    }
   }
   const res = applyReviewFieldEdit(record, action, stamp, ctx);
   if (!res.ok) return res;

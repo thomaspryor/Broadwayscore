@@ -532,3 +532,34 @@ test('crossOutletDuplicate: clear-only, with a non-empty breadcrumb (BRO-3870)',
   assert.equal(res.ok, true, res.reason);
   assert.equal(res.record.crossOutletDuplicate, false);
 });
+
+// BRO-3065: a url naming another show, already held in that show's folder, is
+// provably wrong for this file (Here There Are Blueberries held WhatsOnStage's
+// Here We Are review url).
+test('url repair: allowed when another show folder already holds the current url', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { urlOwnedByOtherShow } = require('./review-slot-guards.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-oos-'));
+  const wrong = 'https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review_1676732/';
+  fs.mkdirSync(path.join(root, 'here-we-are-west-end-2025'));
+  fs.writeFileSync(path.join(root, 'here-we-are-west-end-2025', 'whatsonstage--sarah-crompton.json'),
+    JSON.stringify({ outletId: 'whatsonstage', criticName: 'Sarah Crompton', url: wrong }));
+  const detect = (folder, url) => (url.includes('here-we-are') ? { matchedShowId: 'here-we-are-west-end-2025' } : null);
+  const args = { reviewTextsDir: root, folder: 'here-there-are-blueberries-west-end-2026', url: wrong, detect };
+  assert.deepEqual(urlOwnedByOtherShow(args), { showId: 'here-we-are-west-end-2025', filename: 'whatsonstage--sarah-crompton.json' });
+  // url not held there, or detector silent, or the holder already flagged: no proof
+  assert.equal(urlOwnedByOtherShow({ ...args, url: wrong.replace('1676732', '1') }), null);
+  assert.equal(urlOwnedByOtherShow({ ...args, detect: () => null }), null);
+  fs.writeFileSync(path.join(root, 'here-we-are-west-end-2025', 'whatsonstage--sarah-crompton.json'),
+    JSON.stringify({ outletId: 'whatsonstage', url: wrong, wrongShow: true }));
+  assert.equal(urlOwnedByOtherShow(args), null);
+
+  const rec = { outletId: 'whatsonstage', url: wrong };
+  const good = 'https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/';
+  const action = { field: 'url', oldValue: wrong, newValue: good };
+  assert.match(applyReviewFieldEdit(rec, action, stamp).reason, /not provably wrong/);
+  const ok = applyReviewFieldEdit(rec, action, stamp, { currentUrlOwnedByOtherShow: true });
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record.url, good);
+});

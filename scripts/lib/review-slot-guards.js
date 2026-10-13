@@ -139,6 +139,44 @@ function urlOwnedByOtherCritic({ showDir, url, selfFilename, selfCriticName, fs:
 }
 
 /**
+ * The file in ANOTHER show's folder that already holds `url`, when the url
+ * itself names that show (cross-show-url detector): {showId, filename} or
+ * null. Proves the url belongs to that show's review, not this file's
+ * (BRO-3065: Here There Are Blueberries carried WhatsOnStage's Here We Are
+ * review url, which here-we-are-west-end-2025 already holds). Siblings
+ * already flagged wrong or duplicate never count.
+ * @param {object} args
+ * @param {string} args.reviewTextsDir  data/review-texts
+ * @param {string} args.folder          this file's show folder
+ * @param {string} args.url             this file's current url
+ * @param {string} [args.publishDate]   this file's publishDate
+ * @param {Function} [args.detect]      injected detector for tests
+ * @param {object} [args.fs]            injected fs for tests
+ * @returns {{showId: string, filename: string}|null}
+ */
+function urlOwnedByOtherShow({ reviewTextsDir, folder, url, publishDate, detect, fs: fsImpl } = {}) {
+  if (!reviewTextsDir || !folder || !url) return null;
+  const detectFn = detect || require('./cross-show-url').detectCrossShowUrlMismatch;
+  const m = detectFn(folder, url, { publishDate });
+  if (!m || !m.matchedShowId || m.matchedShowId === folder) return null;
+  const fs = fsImpl || require('fs');
+  const path = require('path');
+  const dir = path.join(reviewTextsDir, m.matchedShowId);
+  let files;
+  try { files = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  catch { return null; }
+  for (const file of files) {
+    let data;
+    try { data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); }
+    catch { continue; }
+    if (!data || !data.url || !_sameUrl(data.url, url)) continue;
+    if (data.duplicateOf || data.wrongAttribution === true || data.wrongShow === true) continue;
+    return { showId: m.matchedShowId, filename: file };
+  }
+  return null;
+}
+
+/**
  * True when the record is held by the rebuild's dateless-revival guard
  * (rebuild-all-reviews.js, reason 'dateless-revival').
  * @param {object} d
@@ -283,6 +321,7 @@ module.exports = {
   isStaleNonReviewSlot,
   flaggedSlotSupersededBy,
   urlOwnedByOtherCritic,
+  urlOwnedByOtherShow,
   isDatelessRevivalHold,
   shouldRetryDatelessHoldFetch,
   DATELESS_HOLD_RETRY_COOLDOWN_MS,
