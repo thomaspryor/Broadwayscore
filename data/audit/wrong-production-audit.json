@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T02:11:48.298Z",
+  "timestamp": "2026-10-13T02:54:49.008Z",
   "stats": {
-    "totalReviews": 56205,
-    "alreadyFlagged": 20979,
-    "dateGuardCatches": 217,
+    "totalReviews": 56238,
+    "alreadyFlagged": 20984,
+    "dateGuardCatches": 218,
     "directorMismatch": 1852,
     "tvFilmSignals": 1624,
     "londonSignals": 2217,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
-    "noPublishDate": 5261
+    "noPublishDate": 5262
   },
   "findings": [
     {
@@ -22399,7 +22399,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -22549,7 +22549,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "standard--the-standard.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-03-27",
       "url": "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
       "findings": [
@@ -46214,6 +46214,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -65384,7 +65398,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "indiependent--lucy-curtis.json",
-      "score": 86,
+      "score": 90,
       "publishDate": "2026-03-29",
       "url": "https://www.indiependent.co.uk/explosive-entertainment-john-proctor-is-the-villain-review/",
       "findings": [
