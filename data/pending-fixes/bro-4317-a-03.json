@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-a-03",
   "planId": "12ae5ce6-2dce-4385-bbd4-09a52a34c29b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T00:58:15.177Z",
   "submitter": {
     "name": null,
@@ -195,5 +195,133 @@
         "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/theatermania--david-gordon.json: same url, publishDate February 11, 2022 inside the-music-man-2022's run; the kept copy is complete 5995 chars vs this invalid 0."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T01:48:53.870Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/socal-thrills--cori-graham.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/the-moderate-voice--doug-bursch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted take-me-out/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tammy-faye/new-york-sun--elysa-gardner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-cottage/theater-life--david-sheward.json → the-cottage-2023/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-disappear-off-broadway/theater-life--david-sheward.json → the-disappear-off-broadway-2026/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-fear-of-13/theater-life--patrick-christiano.json → the-fear-of-13-2026/theater-life--patrick-christiano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-great-gatsby/theater-life--paulanne-simmons.json → the-great-gatsby-2024/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-monsters-off-broadway/theater-life--isa-goldberg.json → the-monsters-off-broadway-2026/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-monsters-off-broadway/theater-life--paulanne-simmons.json → the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/ap--mark-kennedy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/broadwaynews--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/dailybeast--tim-teeman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/dtli--christian-lewis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nytg--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/theatermania--david-gordon.json"
+    }
+  ]
 }
