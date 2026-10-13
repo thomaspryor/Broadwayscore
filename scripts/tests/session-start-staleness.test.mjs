@@ -16,6 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   formatCodeCheckoutStaleMessage,
   runCodeCheckoutStalenessCheck,
+  UNPUSHED_BACKLOG_THRESHOLD,
 } = require('../lib/code-checkout-staleness.js');
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -132,6 +133,64 @@ test('runCodeCheckoutStalenessCheck: diverged when the clone has local commits A
     assert.equal(behind, 1);
     assert.equal(ahead, 1);
     assert.match(message, /DIVERGED/);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// ── BRO-3006: local main AHEAD of origin/main (unpushed backlog) ─────────
+
+test('formatCodeCheckoutStaleMessage: local main ahead past the threshold warns UNPUSHED BACKLOG with the count', () => {
+  const msg = formatCodeCheckoutStaleMessage({ behind: 0, ahead: 86, branch: 'main' }, '/repo');
+  assert.match(msg, /UNPUSHED BACKLOG/);
+  assert.match(msg, /86 commit\(s\) ahead of origin\/main/);
+  assert.match(msg, /git log --oneline origin\/main\.\.main/);
+});
+
+test('formatCodeCheckoutStaleMessage: no backlog warning at or under the threshold, or off main', () => {
+  assert.equal(formatCodeCheckoutStaleMessage({ behind: 0, ahead: UNPUSHED_BACKLOG_THRESHOLD, branch: 'main' }, '/repo'), null);
+  assert.equal(formatCodeCheckoutStaleMessage({ behind: 0, ahead: 40, branch: 'claude/feature-x' }, '/repo'), null,
+    'a feature or harness branch is ahead by design');
+  assert.equal(formatCodeCheckoutStaleMessage({ behind: 0, ahead: 40 }, '/repo'), null, 'unknown branch stays silent');
+});
+
+function commitLocally(cloneDir, count, tag = 'a') {
+  for (let i = 0; i < count; i++) {
+    fs.writeFileSync(path.join(cloneDir, `local-${tag}-${i}.txt`), String(i));
+    git(cloneDir, ['add', '.']);
+    git(cloneDir, ['commit', '-q', '-m', `local ${i}`]);
+  }
+}
+
+test('runCodeCheckoutStalenessCheck: real repo, local main 6 ahead of origin/main warns UNPUSHED BACKLOG', () => {
+  const { root, cloneDir } = makeScratchRepoTrio();
+  try {
+    commitLocally(cloneDir, UNPUSHED_BACKLOG_THRESHOLD + 1);
+    const { behind, ahead, branch, message } = runCodeCheckoutStalenessCheck({ repoDir: cloneDir });
+    assert.equal(behind, 0);
+    assert.equal(ahead, 6);
+    assert.equal(branch, 'main');
+    assert.match(message, /UNPUSHED BACKLOG: local main .* is 6 commit\(s\) ahead/);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('runCodeCheckoutStalenessCheck: real repo, 5 ahead / even / behind print no backlog warning', () => {
+  const { root, seedDir, cloneDir } = makeScratchRepoTrio();
+  try {
+    assert.equal(runCodeCheckoutStalenessCheck({ repoDir: cloneDir }).message, null, 'even with origin/main');
+    pushMoreCommits(seedDir, 1);
+    const behindOnly = runCodeCheckoutStalenessCheck({ repoDir: cloneDir });
+    assert.doesNotMatch(behindOnly.message, /UNPUSHED BACKLOG/);
+    git(cloneDir, ['merge', '--ff-only', '-q', 'origin/main']);
+    commitLocally(cloneDir, UNPUSHED_BACKLOG_THRESHOLD);
+    const atThreshold = runCodeCheckoutStalenessCheck({ repoDir: cloneDir });
+    assert.equal(atThreshold.ahead, 5);
+    assert.equal(atThreshold.message, null);
+    commitLocally(cloneDir, 1, 'b');
+    git(cloneDir, ['checkout', '-q', '-b', 'feature']);
+    assert.equal(runCodeCheckoutStalenessCheck({ repoDir: cloneDir }).message, null, 'same commits on a feature branch');
   } finally {
     fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }

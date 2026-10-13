@@ -62,11 +62,26 @@ function getBehindAheadCounts(repoDir, remoteRef = 'refs/remotes/origin/main', e
   };
 }
 
+// BRO-3006: local main more than this many commits ahead of origin/main is an
+// unpushed backlog. A few is a session mid-push; 86 (BRO-2955) sat unnoticed.
+const UNPUSHED_BACKLOG_THRESHOLD = 5;
+
+/** Current branch name, or '' when detached / not a repo. Fail-open. */
+function getCurrentBranch(repoDir, execFn = execFileSync) {
+  try {
+    return String(execFn('git', ['-C', repoDir, 'symbolic-ref', '--short', '-q', 'HEAD'], { encoding: 'utf8' })).trim();
+  } catch {
+    return '';
+  }
+}
+
 /**
  * Pure — no fs/git. Behind-only is the incident's shape: the shared main
  * checkout drifted with nothing local to lose, so ff-only is always safe.
+ * Ahead-only warns only when the checked-out branch is `main` (BRO-3006): a
+ * feature or harness branch is ahead by design, local main is not.
  */
-function formatCodeCheckoutStaleMessage({ behind, ahead }, repoDir) {
+function formatCodeCheckoutStaleMessage({ behind, ahead, branch = '' }, repoDir) {
   if (behind > 0 && ahead === 0) {
     return [
       `🔶 STALE CODE CHECKOUT: ${repoDir} is ${behind} commit(s) behind origin/main.`,
@@ -88,6 +103,15 @@ function formatCodeCheckoutStaleMessage({ behind, ahead }, repoDir) {
       `     git merge origin/main`,
     ].join('\n');
   }
+  if (behind === 0 && branch === 'main' && ahead > UNPUSHED_BACKLOG_THRESHOLD) {
+    return [
+      `🔶 UNPUSHED BACKLOG: local main in ${repoDir} is ${ahead} commit(s) ahead of origin/main.`,
+      `   Work merged here has not reached origin, so CI, deploys and every other checkout`,
+      `   cannot see it (86 commits once sat unpushed this way, BRO-2955). See what is waiting:`,
+      `     git log --oneline origin/main..main`,
+      `   Land it (sessions cannot push main directly): git push origin main:refs/heads/land/<name>`,
+    ].join('\n');
+  }
   return null;
 }
 
@@ -95,7 +119,8 @@ function formatCodeCheckoutStaleMessage({ behind, ahead }, repoDir) {
 function runCodeCheckoutStalenessCheck({ repoDir, execFn = execFileSync, skipFetch = false } = {}) {
   if (!skipFetch) fetchOriginMain(repoDir, execFn);
   const { behind, ahead } = getBehindAheadCounts(repoDir, 'refs/remotes/origin/main', execFn);
-  return { behind, ahead, message: formatCodeCheckoutStaleMessage({ behind, ahead }, repoDir) };
+  const branch = getCurrentBranch(repoDir, execFn);
+  return { behind, ahead, branch, message: formatCodeCheckoutStaleMessage({ behind, ahead, branch }, repoDir) };
 }
 
 // ── Auto-sync (BRO-4229, CLOUD ONLY) ────────────────────────────────────────
@@ -207,7 +232,9 @@ module.exports = {
   FETCH_TIMEOUT_MS,
   SYNC_TIMEOUT_MS,
   fetchOriginMain,
+  UNPUSHED_BACKLOG_THRESHOLD,
   getBehindAheadCounts,
+  getCurrentBranch,
   formatCodeCheckoutStaleMessage,
   runCodeCheckoutStalenessCheck,
   registeredHookScripts,
