@@ -633,6 +633,14 @@ function resolveCheckPaths(checkableDone, opts = {}) {
   return { ok: true, checkableDone: corrected, corrected: anyCorrection, newPaths };
 }
 
+// Default existence oracle for triageCard's vacuous-check (BRO-3396): the
+// same local-disk file test resolveCheckPaths uses, so no git fetch happens
+// during triage. Callers that want origin/main pass opts.checkPathExists.
+function localFileExists(opts = {}) {
+  const repoRoot = opts.repoRoot || REPO_ROOT;
+  return (p) => { try { return fs.statSync(path.join(repoRoot, p)).isFile(); } catch { return false; } };
+}
+
 const SCHEMA_PATH = path.join(__dirname, 'triage-schema.json');
 const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
 const SIZE_VALUES = schema.properties.size.enum;
@@ -651,7 +659,7 @@ JSON contract:
   "size": "S" | "M" | "L",
   "eligible": boolean,             // can the loop do this UNATTENDED within Tier-${tier} paths?
   "reason": "one sentence (≥${MIN_REASON} chars) justifying size + eligibility",
-  "checkableDone": "the runnable command that proves completion — MUST be exactly one of these forms: ${SAFE_CHECK_DESCRIPTION}. The named test file MAY be one that does not exist yet and that the work will CREATE (this repo's convention is that a fix ships with its own colocated test) — in that case name the conventional location: tests/unit/<name>.test.mjs for app/site logic, scripts/lib/<name>.test.mjs or scripts/<name>.test.mjs next to the file under test. Do NOT set eligible to false merely because no test exists today; only set it false when no runnable command could prove the work even after writing one.",
+  "checkableDone": "the runnable command that proves completion — MUST be exactly one of these forms: ${SAFE_CHECK_DESCRIPTION}. The named test file MAY be one that does not exist yet and that the work will CREATE (this repo's convention is that a fix ships with its own colocated test) — in that case name the conventional location: tests/unit/<name>.test.mjs for app/site logic, scripts/lib/<name>.test.mjs or scripts/<name>.test.mjs next to the file under test. Do NOT set eligible to false merely because no test exists today; only set it false when no runnable command could prove the work even after writing one. A "test -f" check must name a file the work will CREATE, never one already in the repo (it would pass before any work is done).",
   "splitProposal": [               // REQUIRED non-empty iff size "L" AND eligible true, else omit
     { "title": "child card title", "notes": "≥${MIN_SPLIT_NOTES} chars with ## Problem, ## Suggested approach, ## Acceptance criteria sections" }
   ]
@@ -923,6 +931,31 @@ async function triageCard(card, callLLM, opts = {}) {
           };
         }
         if (pathCheck.corrected) parsed = { ...parsed, checkableDone: pathCheck.checkableDone };
+        // BRO-3396: resolveCheckPaths asks "can this ever PASS?"; this asks
+        // "can it ever FAIL?" — the enricher's guardrail 2b and dispatch-
+        // guards' vacuousCheckGuard (BRO-3394) use the same classifier. A
+        // `test -f <file already in the repo>` is green before the work
+        // starts, so it proves nothing at Done time. Judged on the FINAL
+        // string (after the near-match correction above, which can turn an
+        // absent path into an existing one). Lazy require: card-premises-
+        // auditor.js requires this module at load time.
+        const { classifyVacuousCheck, VACUOUS_TEST_F_UNRESOLVED } = require('./card-premises-auditor.js');
+        const vacuous = classifyVacuousCheck(parsed.checkableDone, opts.checkPathExists || localFileExists(opts));
+        if (vacuous) {
+          // An unresolved oracle (only possible with an injected one) is not
+          // a validated command either: defer to the next night's triage
+          // rather than accept on faith. A vacuous or arity verdict gets the
+          // model's one re-prompt; after that, skip (not 'failed', which
+          // would park the card until the owner clears it).
+          if (vacuous.kind !== VACUOUS_TEST_F_UNRESOLVED && attempt < 2) {
+            lastErrors = [`checkableDone is vacuous: ${vacuous.reason}. Name a file the work will CREATE or a test whose contents the work changes.`];
+            continue;
+          }
+          return {
+            preFilter,
+            triage: { ...parsed, eligible: false, reason: `${parsed.reason} [check-vacuous: ${vacuous.reason}]` },
+          };
+        }
         // Carried on the entry (NOT inside `parsed`, which validateTriageResult
         // holds to additionalProperties:false) so the queue and the implementer
         // prompt can tell the model which check targets it has to create.
