@@ -95,7 +95,11 @@ const SHARED_INFRA_RULES = [
     id: 'dispatch',
     tier: 'critical',
     label: 'session dispatch layer',
-    re: /^scripts\/(?:lib\/)?(?:bsc-(?:next|conductor|prune|reconcile|status|needs-you)|backlog-drain|digest-autofix|notion-tasks-sync|dispatch-[a-z-]+|duplicate-dispatch-guard|headless-dispatchability|reroute-backlog)\.(?:js|mjs|cjs|sh)$/,
+    // BRO-2808: the Linear-side twins (linear-next launches the session,
+    // linear-drain-parked spawns it, linear-reclaim-abandoned and
+    // reconcile-landed-but-open move cards the dispatcher reads) were written
+    // after this list and sat outside every rule, not even the WARN tier.
+    re: /^scripts\/(?:lib\/)?(?:bsc-(?:next|conductor|prune|reconcile|status|needs-you)|backlog-drain|digest-autofix|notion-tasks-sync|dispatch-[a-z-]+|duplicate-dispatch-guard|headless-dispatchability|reroute-backlog|linear-(?:next|drain-parked|reclaim-abandoned)|reconcile-landed-but-open)\.(?:js|mjs|cjs|sh)$/,
     why: 'every auto-dispatched session is launched through this; a defect here stalls or storms the whole fleet',
   },
   {

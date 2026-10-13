@@ -64,6 +64,12 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     ['scripts/bsc-next.js', 'dispatch', 'critical'],
     ['scripts/digest-autofix.js', 'dispatch', 'critical'],
     ['scripts/lib/dispatch-ledger.js', 'dispatch', 'critical'],
+    // BRO-2808: the Linear-side dispatch layer had zero review-scope coverage.
+    ['scripts/linear-next.js', 'dispatch', 'critical'],
+    ['scripts/linear-drain-parked.js', 'dispatch', 'critical'],
+    ['scripts/linear-reclaim-abandoned.js', 'dispatch', 'critical'],
+    ['scripts/lib/linear-reclaim-abandoned.js', 'dispatch', 'critical'],
+    ['scripts/reconcile-landed-but-open.js', 'dispatch', 'critical'],
     ['scripts/lib/provider-spend-core.js', 'spend', 'critical'],
     ['scripts/lib/outlet-circuit-breaker.js', 'spend', 'critical'],
     ['scripts/lib/run-budget.js', 'spend', 'critical'],
