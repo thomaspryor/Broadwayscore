@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-12T09:32:16.988Z",
-  "scanned": 2699,
-  "showsWithViolations": 15,
-  "totalViolations": 49,
+  "updatedAt": "2026-10-13T05:21:01.921Z",
+  "scanned": 2588,
+  "showsWithViolations": 14,
+  "totalViolations": 39,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "violationKeys": [
@@ -39,16 +39,6 @@
     "oliver-west-end-2024::daily-mail--georgina-brown.json",
     "oliver-west-end-2024::daily-mail--quentin-letts.json",
     "oliver-west-end-2024::guardian--michael-billington.json",
-    "les-miserables-west-end-2021::artsdesk--aleks-sierz.json",
-    "les-miserables-west-end-2021::broadwayworld--marianka-swain.json",
-    "les-miserables-west-end-2021::daily-mail--patrick-marmion.json",
-    "les-miserables-west-end-2021::guardian--miriam-gillinson.json",
-    "les-miserables-west-end-2021::london-theatre--mark-shenton.json",
-    "les-miserables-west-end-2021::telegraph--dominic-cavendish.json",
-    "les-miserables-west-end-2021::the-sun--thea-jacobs.json",
-    "les-miserables-west-end-2021::thestage--tim-bano.json",
-    "les-miserables-west-end-2021::timeout-london--andrzej-lukowski.json",
-    "les-miserables-west-end-2021::times-uk--clive-davis.json",
     "what-happened-was-off-broadway-2026::nysr--frank-scheck.json",
     "42-balloons-regional-2025::chicagotribune--chris-jones.json",
     "the-47th-west-end-2022::guardian--arifa-akbar.json",
@@ -344,74 +334,6 @@
       ]
     },
     {
-      "showId": "les-miserables-west-end-2021",
-      "title": "Les Misérables",
-      "openingDate": "1985-12-04",
-      "message": "[excluded] artsdesk--aleks-sierz.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[excluded] broadwayworld--marianka-swain.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[SHIPPED] daily-mail--patrick-marmion.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[excluded] guardian--miriam-gillinson.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[excluded] london-theatre--mark-shenton.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[excluded] telegraph--dominic-cavendish.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[SHIPPED] the-sun--thea-jacobs.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[excluded] thestage--tim-bano.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[SHIPPED] timeout-london--andrzej-lukowski.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117\n[excluded] times-uk--clive-davis.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-      "violations": [
-        {
-          "filename": "artsdesk--aleks-sierz.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://theartsdesk.com/theatre/les-mis%C3%A9rables-sondheim-theatre-review-join-our-crusade",
-          "shipped": false
-        },
-        {
-          "filename": "broadwayworld--marianka-swain.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "/article/BWW-Review-LES-MISERABLES-Sondheim-Theatre-20200116",
-          "shipped": false
-        },
-        {
-          "filename": "daily-mail--patrick-marmion.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-7897433/The-mighty-Mis-revolutionary-PATRICK-MARMION-reviews-Les-Miserables.html",
-          "shipped": true
-        },
-        {
-          "filename": "guardian--miriam-gillinson.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.theguardian.com/stage/2020/jan/17/les-miserables-review-sondheim-theatre-musical-west-end",
-          "shipped": false
-        },
-        {
-          "filename": "london-theatre--mark-shenton.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.londontheatre.co.uk/reviews/review-les-miserables-at-the-sondheim-theatre",
-          "shipped": false
-        },
-        {
-          "filename": "telegraph--dominic-cavendish.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/les-miserables-sondheim-theatre-review-perfect-theatre-perfect/",
-          "shipped": false
-        },
-        {
-          "filename": "the-sun--thea-jacobs.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.thesun.co.uk/tvandshowbiz/10758678/les-miserables-theatre-review-returns-sondheim-mesmerising/",
-          "shipped": true
-        },
-        {
-          "filename": "thestage--tim-bano.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.thestage.co.uk/reviews/2020/les-miserables-cameron-mackintosh-jon-robyns-carrie-hope-fletcher-review-at-the-sondheim-theatre-london/",
-          "shipped": false
-        },
-        {
-          "filename": "timeout-london--andrzej-lukowski.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.timeout.com/london/theatre/les-miserables-review-1",
-          "shipped": true
-        },
-        {
-          "filename": "times-uk--clive-davis.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Re-Opens-in-London-20200117",
-          "url": "https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5",
-          "shipped": false
-        }
-      ]
-    },
-    {
       "showId": "what-happened-was-off-broadway-2026",
       "title": "What Happened Was",
       "openingDate": "2026-04-14",
@@ -443,7 +365,7 @@
       "showId": "the-47th-west-end-2022",
       "title": "The 47th",
       "openingDate": "2022-04-08",
-      "message": "[excluded] guardian--arifa-akbar.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[excluded] hollywood-reporter--demetrios-matheou.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] open-letters-review--christopher-day.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] standard--nick-curtis.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+      "message": "[excluded] guardian--arifa-akbar.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] hollywood-reporter--demetrios-matheou.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] open-letters-review--christopher-day.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] standard--nick-curtis.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -455,7 +377,7 @@
           "filename": "hollywood-reporter--demetrios-matheou.json",
           "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-47th-theater-review-donald-trump-election-play-1235127763/",
-          "shipped": false
+          "shipped": true
         },
         {
           "filename": "open-letters-review--christopher-day.json",

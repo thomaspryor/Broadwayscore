@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-10-12T09:32:17.974Z",
-  "scanned": 2699,
-  "showsWithViolations": 68,
-  "totalViolations": 68,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-13T05:21:02.944Z",
+  "scanned": 2588,
+  "showsWithViolations": 70,
+  "totalViolations": 70,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "high-school-musical-off-west-end-2026",
+    "the-whos-tommy-tour-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -47,6 +50,7 @@
     "cosi-fan-tutte-off-broadway-2026",
     "macbeth-off-broadway-2026",
     "tosca-off-broadway-2026",
+    "high-school-musical-off-west-end-2026",
     "the-smile-of-her-off-west-end-2026",
     "what-the-animals-say-off-west-end-2026",
     "the-standard-of-living-west-end-2026",
@@ -73,7 +77,8 @@
     "the-music-man-tour-2026",
     "mamma-mia-tour-2026",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-    "shucked-tour-2027"
+    "shucked-tour-2027",
+    "the-whos-tommy-tour-2026"
   ],
   "hits": [
     {
@@ -331,7 +336,7 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "title": "Cabaret at the Kit Kat Club",
-      "openingDate": "2021-12-16",
+      "openingDate": "2021-12-12",
       "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
@@ -341,7 +346,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "operation-mincemeat-west-end-2024 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "operation-mincemeat-west-end-2024 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -446,6 +451,15 @@
       ]
     },
     {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": null,
+      "message": "high-school-musical-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "the-smile-of-her-off-west-end-2026",
       "title": "The Smile Of Her",
       "openingDate": "2026-07-16",
@@ -503,7 +517,7 @@
       "showId": "affluenza-off-west-end-2026",
       "title": "Affluenza",
       "openingDate": "2026-10-05",
-      "message": "affluenza-off-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "affluenza-off-west-end-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -584,7 +598,7 @@
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 40x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 48x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -647,7 +661,7 @@
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 32x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 33x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -656,7 +670,7 @@
       "showId": "the-music-man-tour-2026",
       "title": "The Music Man",
       "openingDate": "2026-01-12",
-      "message": "the-music-man-tour-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-music-man-tour-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -684,6 +698,15 @@
       "title": "Shucked",
       "openingDate": "2027-01-12",
       "message": "shucked-tour-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-tour-2026",
+      "title": "The Who's Tommy",
+      "openingDate": "2026-10-06",
+      "message": "the-whos-tommy-tour-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
