@@ -3,8 +3,10 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { getWestEndShows, getMarketStats } from '@/lib/data-core';
+import { getWestEndShows, getUkRegionalShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
+import { pickRegionalShelf } from '@/lib/regional-shelf';
+import { getUkRegionalVenueCity } from '@/lib/market-utils';
 import { createShowSerializer } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -96,6 +98,19 @@ export default function WestEndPage() {
   );
   const serializedShows = allRelevantShows.map(serializeShow);
 
+  // Beyond London (BRO-5103): scored productions at flagship UK houses outside
+  // London (RSC, Chichester, ...). Live ones first, then most recent. Gated on
+  // the regional flag because their detail pages are.
+  const beyondLondonShows = featureFlags.regional
+    ? pickRegionalShelf(getUkRegionalShows(), { requireEnoughReviews: true })
+        .map(s => ({
+          ...(serialize(s, { isOffWestEnd: false, category: 'regional' }) as WestEndShow),
+          // The card has no market pill, so name the city under the title.
+          subtitle: getUkRegionalVenueCity(s.category, s.venue),
+          subtitleColor: 'text-gray-400',
+        }))
+    : [];
+
   // WE Lottery/Rush shelves
   const lotteryShowsList = shows
     .filter(s => (s.status === 'open' || s.status === 'previews') && lrShows[s.id]?.lottery)
@@ -182,6 +197,7 @@ export default function WestEndPage() {
           scoredShows={scoredShows.length}
           lotteryShows={lotteryShowsList}
           rushShows={rushShowsList}
+          beyondLondonShows={beyondLondonShows}
           marketOpenCounts={marketOpenCounts}
           awardWinnerSets={getAwardWinnerSets()}
           skipAboveFold

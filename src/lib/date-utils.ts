@@ -1,3 +1,5 @@
+import { getUkRegionalVenueCity } from './market-utils';
+
 /**
  * Today (YYYY-MM-DD) in the viewer's own device timezone — for personal data
  * (watchlist planned dates, diary date_seen) where "today" means the user's
@@ -197,12 +199,19 @@ export function formatShowDate(
   return date.toLocaleDateString('en-US', { ...options, timeZone: 'UTC' });
 }
 
-/** Get the duration suffix for a market category */
-export function getDurationSuffix(category?: string): string {
+/**
+ * Get the duration suffix for a market category. `venue` lets a UK regional
+ * show (RSC, Chichester, ...) say where it plays instead of "in tryout": it is
+ * not a Broadway tryout (BRO-5103).
+ */
+export function getDurationSuffix(category?: string, venue?: string): string {
   if (category === 'west-end' || category === 'off-west-end') return 'in London';
   if (category === 'off-broadway') return 'Off-Broadway';
   // Regional tryouts are emphatically NOT "on Broadway" — that's the point.
-  if (category === 'regional') return 'in tryout';
+  if (category === 'regional') {
+    const ukCity = getUkRegionalVenueCity(category, venue);
+    return ukCity ? `in ${ukCity}` : 'in tryout';
+  }
   if (category === 'tour') return 'on tour';
   return 'on Broadway';
 }

@@ -17,6 +17,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
+import { isUkRegionalShow } from './market-utils';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { isCategoryEnabled } from './markets';
 import { isTourScored, isTourBrowsable, isTourIndexable } from './tour-listing';
@@ -198,10 +199,18 @@ export function getOffBroadwayShows(): ComputedShow[] {
 /**
  * Regional (Broadway-feeder) tryout productions — Arena Stage, Goodman,
  * A.R.T., etc. Auto-promoted from aggregator roundups; mostly closed limited
- * engagements whose value is the pre-Broadway critic signal.
+ * engagements whose value is the pre-Broadway critic signal. UK houses (RSC,
+ * Chichester, ...) are NOT tryouts: they come from getUkRegionalShows() and
+ * appear under "Beyond London" on the West End page (BRO-5103, owner decision
+ * 2026-10-13).
  */
 export function getRegionalShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'regional');
+  return getAllShows().filter(show => show.category === 'regional' && !isUkRegionalShow(show));
+}
+
+/** Regional productions at flagship UK houses outside London (RSC, Chichester, Royal Exchange, ...). */
+export function getUkRegionalShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'regional' && isUkRegionalShow(show));
 }
 
 /** North American national tours (category 'tour', BRO-4211). */

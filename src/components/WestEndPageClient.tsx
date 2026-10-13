@@ -52,6 +52,8 @@ interface WestEndPageClientProps {
   scoredShows: number;
   lotteryShows?: WestEndShow[];
   rushShows?: WestEndShow[];
+  /** Scored productions at flagship UK houses outside London (BRO-5103). */
+  beyondLondonShows?: WestEndShow[];
   /** Open-show counts for the market pills */
   marketOpenCounts: { westEnd: number; offWestEnd: number };
   awardWinnerSets?: AwardWinnerSets;
@@ -110,8 +112,8 @@ function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; 
 }
 
 // Featured row with horizontal scroll
-function FeaturedRow({ title, subtitle, shows }: { title: string; subtitle?: string; shows: WestEndShow[] }) {
-  if (shows.length <= 3) return null;
+function FeaturedRow({ title, subtitle, shows, minShows = 4 }: { title: string; subtitle?: string; shows: WestEndShow[]; minShows?: number }) {
+  if (shows.length < minShows) return null;
 
   return (
     <section className="mb-6">
@@ -151,7 +153,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], marketOpenCounts, awardWinnerSets, skipAboveFold = false }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, skipAboveFold = false }: WestEndPageClientProps) {
 
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
 
@@ -770,6 +772,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
+        <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital, like the RSC at Stratford" shows={beyondLondonShows} minShows={1} />
         <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
         <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />
         <FeaturedRow title="Rush Tickets Available" subtitle="Same-day discount tickets — first come, first served" shows={rushShows} />

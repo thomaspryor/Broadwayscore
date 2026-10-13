@@ -77,6 +77,15 @@ function isUkRegionalVenue(category?: string, venue?: string): boolean {
   return (ukRegionalVenues as { match: string }[]).some((entry) => v.includes(entry.match));
 }
 
+/**
+ * A `regional` show at a UK flagship house (RSC, Chichester, ...). These are not
+ * Broadway-bound tryouts, so they stay off the Pre-Broadway shelf and page and
+ * surface under "Beyond London" on the West End page instead (BRO-5103).
+ */
+export function isUkRegionalShow(show: { category?: string; venue?: string }): boolean {
+  return isUkRegionalVenue(show.category, show.venue);
+}
+
 /** City for a UK-regional venue (e.g. 'Stratford-upon-Avon' for RSC), from data/uk-regional-venues.json. Undefined for non-UK-regional venues. */
 export function getUkRegionalVenueCity(category?: string, venue?: string): string | undefined {
   if (category !== 'regional' || !venue) return undefined;

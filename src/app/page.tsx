@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { featureFlags } from '@/config/feature-flags';
+import { pickRegionalShelf } from '@/lib/regional-shelf';
 import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats, getTourShows } from '@/lib/data-core';
 import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
 import { shortCity } from '@/lib/tour-schedule';
@@ -111,15 +112,7 @@ export default function HomePage() {
   // from aggregator roundups). Small universe like opera; tryouts are limited
   // runs so CLOSED shows stay on the shelf (the score is the point — it's the
   // pre-Broadway signal), running productions first, then most recent.
-  const regionalShelfShows = getRegionalShows()
-    .filter(s => s.criticScore?.score)
-    .sort((a, b) => {
-      const aOpen = a.status === 'open' || a.status === 'previews' ? 0 : 1;
-      const bOpen = b.status === 'open' || b.status === 'previews' ? 0 : 1;
-      if (aOpen !== bOpen) return aOpen - bOpen;
-      return (b.openingDate || '').localeCompare(a.openingDate || '');
-    })
-    .slice(0, 10);
+  const regionalShelfShows = pickRegionalShelf(getRegionalShows());
 
   // Precompute "Best Recent Shows" server-side for both preload links and SSR featured row
   const twelveMonthsAgo = new Date();
