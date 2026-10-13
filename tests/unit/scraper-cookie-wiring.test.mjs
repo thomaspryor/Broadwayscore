@@ -29,6 +29,17 @@ import { EventEmitter } from 'node:events';
 import { createRequire } from 'module';
 import { MockAgent, setGlobalDispatcher, getGlobalDispatcher } from 'undici';
 
+// BRO-2664: CI runs this file directly (`node <file>`, no --test), so
+// provider-telemetry's NODE_TEST_CONTEXT guard does not apply and every
+// recorded provider call appended to the real data/audit/scraper-spend-ledger.jsonl.
+// _ledgerPath() reads this at call time, so setting it here is early enough.
+if (!process.env.SCRAPER_SPEND_LEDGER_PATH) {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cookie-wiring-spend-'));
+  process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(dir, 'scraper-spend-ledger.jsonl');
+  process.on('exit', () => fs.rmSync(dir, { recursive: true, force: true }));
+}
+
 // IMPORTANT: scraper.js caches BRIGHTDATA_TOKEN / SCRAPINGBEE_API_KEY at module
 // load time. Set placeholders here BEFORE requiring the module so each backend
 // will attempt an https call (which our monkey-patched stubs then capture).

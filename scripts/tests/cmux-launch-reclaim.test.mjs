@@ -47,6 +47,15 @@ const {
 } = cmuxLaunch;
 const { CAPACITY_PROBE_MAX_ATTEMPTS } = require(path.join(REPO_ROOT, 'scripts/lib/cmux-launch-state.js'));
 
+// BRO-2664: a crown/succession launch writes a 'launch' row through
+// dispatch-ledger.appendEntry, whose path is the MAIN checkout's live ledger
+// (MAIN_REPO_ROOT, shared by every worktree). Every run of this file appended a
+// synthetic 'Crown v45' row there. recordSuccessionLaunchRow looks the export up
+// at call time, so stubbing it keeps the rows in memory.
+const dispatchLedger = require(path.join(REPO_ROOT, 'scripts/lib/dispatch-ledger.js'));
+const ledgerRows = [];
+mock.method(dispatchLedger, 'appendEntry', (row) => { ledgerRows.push(row); return row; });
+
 function tmpJournalPath() {
   return path.join(os.tmpdir(), `bsc-cmux-launch-journal-test-${process.pid}-${Math.random().toString(36).slice(2)}.json`);
 }
@@ -872,3 +881,8 @@ for (const [label, listed, expectState, expectDead] of [
     }
   });
 }
+
+test('BRO-2664: crown launches never reach the real dispatch ledger', () => {
+  assert.ok(ledgerRows.some((r) => r.event === 'launch' && /Crown v45/.test(r.subject)),
+    'the crown launch row is still produced, just kept in memory');
+});
