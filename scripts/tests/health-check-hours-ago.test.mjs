@@ -76,9 +76,20 @@ test('BRO-3349: every day-shaped FRESHNESS_CHECKS field in the REAL data reads a
     checked++;
     const age = hoursAgo(value, NOW);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) continue;
-    const latestPossible = (NOW - new Date(`${value}T00:00:00Z`).getTime()) / 3600000;
+    // Clamped at 0 (BRO-2476): real data can post-date this test's fixed NOW.
+    const latestPossible = Math.max(0, (NOW - new Date(`${value}T00:00:00Z`).getTime()) / 3600000);
     assert.ok(age <= latestPossible,
       `${file}:${keyPath.join('.')} = "${value}" reported ${age.toFixed(1)}h old, but it cannot be older than ${latestPossible.toFixed(1)}h`);
   }
   assert.ok(checked > 0, 'expected at least one real data file to be present to check');
+});
+
+test('BRO-2476: a bare day equal to TODAY (not yet ended) reads 0h, never a negative age', () => {
+  // 2026-09-22's end-of-day anchor is ~12h in the future of NOW; the
+  // pre-fix value was -12.3h ("Freshness: cast-changes.json: -19h old").
+  assert.equal(hoursAgo('2026-09-22', NOW), 0);
+  // A future full timestamp (clock skew) is also clamped.
+  assert.equal(hoursAgo('2026-09-22T12:00:00Z', NOW), 0);
+  // Past values are unaffected by the clamp.
+  assert.ok(hoursAgo('2026-09-21', NOW) > 0);
 });

@@ -264,6 +264,10 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'NYT Critics Picks list is out of date. Runs Mon/Wed/Fri — stale >3 days means the workflow is failing.' },
   { match: /^Freshness: video-reviews\.json$/, urgency: 'this-week', workflow: 'weekly-video-reviews.yml',
     humanFallback: 'Video reviews data is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
+  // BRO-2476: one entry per data/audit freshness row ("Freshness: audit/<file>"),
+  // generated from AUDIT_FRESHNESS_CHECKS so a new row can never ship without
+  // its playbook entry (asserted in tests/unit/audit-freshness-checks.test.mjs).
+  ...require('./lib/audit-freshness-checks').auditFreshnessPlaybookEntries(),
   // No `workflow` — there's no automated fix, this just needs a human to look
   // at the scoring workflow's polling. 'this-week' (not fix-now): a batch
   // between 12-48h in flight is within the vendor's normal turnaround, not an
@@ -455,36 +459,10 @@ async function tryAutoFix(checkResult) {
 
 // --- Helpers ---
 
-// BRO-3349 (prevent-class): a BARE "YYYY-MM-DD" is a whole UTC day, not the
-// instant of its midnight. `new Date('2026-09-20')` is that day's START, so
-// treating it as a write timestamp inflates every reported age by up to 24h —
-// which is exactly how "Data quality: provider spend ledger" spent five days
-// reporting a perfectly fresh ledger as ">48h stale". Two live FRESHNESS_CHECKS
-// fields are day-shaped today (data/cast-changes.json's `lastUpdated`, warn at
-// 72h with a Wed+Sat writer — a Saturday write read 83h on Tuesday against a
-// true 59h; and data/commercial.json's `_meta.lastUpdated`), and nothing stops
-// a future producer from emitting another. Anchoring on the day's END is the
-// only reading that cannot over-report: a file written at ANY point during day
-// D is at most as old as D's end. Full timestamps are untouched — they do not
-// match the bare-day shape. Covered by scripts/tests/health-check-hours-ago.test.mjs.
-const BARE_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
-
-function hoursAgo(dateStr, now = Date.now()) {
-  // `new Date(null)` is epoch 0, i.e. a FINITE ~497,000h — a plausible-looking
-  // number rather than the Infinity every caller's "no usable value" branch
-  // expects. Numeric epoch inputs stay supported (some snapshots store
-  // `timestamp` as a number); only null is special-cased.
-  if (dateStr === null) return Infinity;
-  const d = new Date(BARE_DAY_RE.test(dateStr) ? `${dateStr}T23:59:59.999Z` : dateStr);
-  if (isNaN(d.getTime())) return Infinity;
-  return (now - d.getTime()) / (1000 * 60 * 60);
-}
-
-function formatAge(hours) {
-  if (hours === Infinity) return 'unknown';
-  if (hours < 24) return `${Math.round(hours)}h`;
-  return `${Math.round(hours / 24)}d`;
-}
+// hoursAgo()/formatAge() live in scripts/lib/hours-ago.js (BRO-2476) so the
+// data/audit freshness module shares the exact same age math (BRO-3349
+// bare-day rule, clamp at 0). Covered by scripts/tests/health-check-hours-ago.test.mjs.
+const { hoursAgo, formatAge } = require('./lib/hours-ago');
 
 function readJSON(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -547,6 +525,38 @@ function checkFreshness() {
       return { name: `Freshness: ${file}`, status: 'pass', message: `${formatAge(age)} old` };
     })
   );
+}
+
+// --- Category A1b: data/audit detector freshness (BRO-2476) ---
+// Same row shape and `Freshness:` category as checkFreshness() above (so the
+// rows share its triage file and digest treatment), for the cron-written
+// data/audit/*.json reports FRESHNESS_CHECKS never covered. Rows, cadence
+// evidence and the pure decision live in scripts/lib/audit-freshness-checks.js.
+// Missing file / missing field / unparseable date / unparseable JSON are all
+// `error`, matching checkFreshness() (whose readJSON throw becomes an error
+// via runCheck).
+function checkAuditFreshness({ auditDir = AUDIT_DIR, now = Date.now() } = {}) {
+  const { AUDIT_FRESHNESS_CHECKS, evaluateAuditFreshness, auditFreshnessRowName } = require('./lib/audit-freshness-checks');
+  return AUDIT_FRESHNESS_CHECKS.map((row) => {
+    const name = auditFreshnessRowName(row);
+    return runCheck(name, () => {
+      const filePath = path.join(auditDir, row.file);
+      let data = null;
+      if (fs.existsSync(filePath)) {
+        try {
+          data = readJSON(filePath);
+        } catch (err) {
+          // Only a parse failure is a data finding; anything else (EACCES,
+          // EISDIR, ...) propagates to runCheck's "Check crashed" path.
+          if (!(err instanceof SyntaxError)) throw err;
+          return { name, status: 'error', message: `Unparseable JSON: ${err.message.split('\n')[0].slice(0, 80)}`, hint: row.hint };
+        }
+      }
+      const { status, message } = evaluateAuditFreshness(row, data, now);
+      if (status === 'ok') return { name, status: 'pass', message };
+      return { name, status, message, hint: row.hint };
+    });
+  });
 }
 
 // --- Category A2: Push Verification ---
@@ -5557,6 +5567,15 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
   return true;
 }
 
+// Console line for one result. 'ok' is a pass-equivalent status a few checks
+// return (off-season Tony freshness rows, audience coverage, ...); it printed
+// an `undefined` icon before BRO-2476. Unknown statuses get a '?' rather than
+// the literal string "undefined".
+const RESULT_ICONS = { pass: '\u2705', ok: '\u2705', warn: '\u26A0\uFE0F', error: '\u274C' };
+function formatResultLine(r) {
+  return `  ${RESULT_ICONS[r.status] || '?'} ${r.name}: ${r.message}`;
+}
+
 // --- Triage State (per-system files) ---
 
 function writeTriageState(allResults) {
@@ -5672,6 +5691,7 @@ function saveHistory(history) {
 async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
   return [
     ...checkFreshness(),
+    ...checkAuditFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
@@ -5862,9 +5882,8 @@ async function main() {
   }
 
   // Print console summary
-  const icons = { pass: '\u2705', warn: '\u26A0\uFE0F', error: '\u274C' };
   for (const r of allResults) {
-    console.log(`  ${icons[r.status]} ${r.name}: ${r.message}`);
+    console.log(formatResultLine(r));
   }
 
   const totalPassed = allResults.filter(r => r.status === 'pass').length;
@@ -5953,4 +5972,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { checkAuditFreshness, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
