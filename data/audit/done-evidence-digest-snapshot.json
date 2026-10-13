@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-12T09:20:14.221Z",
-  "bannerText": "265/290 Done(14d) verified on main · 11 FAILED · 1 vacuous · 12 stuck-but-done — PARTIAL RUN: 8 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-13T05:08:04.566Z",
+  "bannerText": "248/470 Done(14d) verified on main · 13 FAILED · 1 vacuous · 16 stuck-but-done — PARTIAL RUN: 193 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
+    {
+      "title": "FAILED BRO-3145 — P1: rebuild-reviews.yml cannot push — 30s per-attempt push timeout kills every attempt, API fallback disqualified",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/push-with-retry-timeout.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3145/p1-rebuild-reviewsyml-cannot-push-30s-per-attempt-push-timeout-kills"
+    },
+    {
+      "title": "FAILED BRO-2883 — P1: rebuild-reviews push-core-data retry loop cannot converge (5 identical failed attempts, silent data loss)",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2883/p1-rebuild-reviews-push-core-data-retry-loop-cannot-converge-5"
+    },
+    {
+      "title": "FAILED BRO-2257 — Audit all --update-baseline CI gates for stale 'permanent exception' entries",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-stale-baseline-exceptions.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2257/audit-all-update-baseline-ci-gates-for-stale-permanent-exception"
+    },
+    {
+      "title": "FAILED BRO-447 — BSC Daily: Workflow repeat-failure: Check Corpus Drift",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/checkCorpusDrift.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-447/bsc-daily-workflow-repeat-failure-check-corpus-drift"
+    },
+    {
+      "title": "FAILED BRO-5170 — Digest 'Dispatch a fix' button fails: LINEAR_API_KEY missing from Vercel production env (BRO-4718 follow-up)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-vercel-required-env.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5170/digest-dispatch-a-fix-button-fails-linear-api-key-missing-from-vercel"
+    },
+    {
+      "title": "FAILED BRO-5096 — P1: main-red fixes starve in the one-pending landing queue (BRO-5079 evicted 3x, main red 3h)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-admit.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5096/p1-main-red-fixes-starve-in-the-one-pending-landing-queue-bro-5079"
+    },
+    {
+      "title": "FAILED BRO-5063 — Synopses: 29 live rows show pitch copy, billing or broken wiki text",
+      "detail": "TAP version 13 # Subtest: no card or plan row still holds wikitext debris or audience pitch ok 1 - no card or plan row still holds wikitext debris or audience pitch --- duration_m…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5063/synopses-29-live-rows-show-pitch-copy-billing-or-broken-wiki-text"
+    },
     {
       "title": "FAILED BRO-5020 — Review held commercial research rows (BRO-4990 46 + BRO-5017) by truth-class rule before release",
       "detail": "TAP version 13 # ⚠️ Rejected non-canonical designation \"bogus\" (valid: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit, Tour Stop) # ⚠️ Rejected non-canonica…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
-    },
-    {
-      "title": "FAILED BRO-4947 — Untangle mixed and duplicate outlet ids: dctheatrescene, observer, dc-metro/dc-theater-arts, gotham-playgoer/bobs-theater-blog, medium, zeal-nyc",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-outlet-tiers.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4947/untangle-mixed-and-duplicate-outlet-ids-dctheatrescene-observer-dc"
-    },
-    {
-      "title": "FAILED BRO-4884 — WE historical Phase C: 2023-24 to 2018-19",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-we-historical-season.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4884/we-historical-phase-c-2023-24-to-2018-19"
-    },
-    {
-      "title": "FAILED BRO-4838 — P1: 1-2 star and space-separated star ratings never captured (Affluenza Theatre and Tonic 1-star scored 42)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/capture-published-stars.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4838/p1-1-2-star-and-space-separated-star-ratings-never-captured-affluenza"
-    },
-    {
-      "title": "FAILED BRO-4167 — BSC Daily: Workflow repeat-failure: Land",
-      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Land\" still listed in the 2026-10-12T09:14:10.994Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4167/bsc-daily-workflow-repeat-failure-land"
-    },
-    {
-      "title": "FAILED BRO-3674 — Rage clicks on '$40' element on /discount-tickets page",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: src/components/DiscountTicketFilter.jsx",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3674/rage-clicks-on-dollar40-element-on-discount-tickets-page"
-    },
-    {
-      "title": "FAILED BRO-3626 — Rage clicks on 'All' filter on Off-Broadway page",
-      "detail": "TAP version 13 # node:internal/modules/esm/get_format:189 # throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath); # ^ # TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extensi…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3626/rage-clicks-on-all-filter-on-off-broadway-page"
-    },
-    {
-      "title": "FAILED BRO-3366 — P2: duplicate-fold discards the loser's URL, leaving scored review rows unlinkable on prod",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/duplicate-fold-url-inheritance.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3366/p2-duplicate-fold-discards-the-losers-url-leaving-scored-review-rows"
     }
   ],
-  "moreCount": 16
+  "moreCount": 22
 }
