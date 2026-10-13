@@ -53,7 +53,7 @@ const { findCrossShowOwners } = require('./lib/url-ownership');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
-const { recoverScoreFromHtml, existingHasScoreSignal } = require('./lib/ingest-html-score');
+const { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared } = require('./lib/ingest-html-score');
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
 // (checked 2026-09-28); see the refusal below.
 const INGEST_REFUSED_URL_REASONS = new Set([
@@ -539,6 +539,10 @@ if (!show) {
   // BRO-4764: on the with-body path, never merge a freshly recovered rating onto
   // a file that already has a score signal (field-by-field merge would pair the
   // old score with the new normalized value/source).
+  if (recoveredScore && !recoveredFromHtmlWithBody && existingRatingCleared(preExisting && preExisting.data)) {
+    console.error(`Refusing score-only ingest: the existing file's rating was deliberately cleared (originalScoreCleared), and this page yields no article body to re-score from. Re-ingest with the article body, or un-clear the rating first.`);
+    process.exit(1);
+  }
   if (recoveredFromHtmlWithBody && existingHasScoreSignal(preExisting && preExisting.data)) {
     console.log(`  → Existing file already has a score signal — not merging the HTML-recovered rating (${recoveredScore.originalScore})`);
     recoveredScore = null;

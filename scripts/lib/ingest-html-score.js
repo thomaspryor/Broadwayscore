@@ -47,4 +47,17 @@ function existingHasScoreSignal(existingData) {
     || existingData.originalScoreCleared === true;
 }
 
-module.exports = { recoverScoreFromHtml, existingHasScoreSignal };
+/**
+ * True when a person or fix script deliberately cleared the existing file's
+ * rating (originalScoreCleared). A score-only ingest (no article body) must not
+ * put a recovered rating back on such a file: the with-body path already skips
+ * via existingHasScoreSignal, the score-only path did not (BRO-5295).
+ *
+ * @param {object|null|undefined} existingData
+ * @returns {boolean}
+ */
+function existingRatingCleared(existingData) {
+  return !!existingData && typeof existingData === 'object' && existingData.originalScoreCleared === true;
+}
+
+module.exports = { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared };

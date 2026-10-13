@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { recoverScoreFromHtml, existingHasScoreSignal } = require('../../scripts/lib/ingest-html-score.js');
+const { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared } = require('../../scripts/lib/ingest-html-score.js');
 
 const OMC_HTML = '<article><p>Review body.</p><img data-src="https://1minutecritic.com/wp-content/uploads/2026/04/4-stars.png" alt="4 star review" class="lazyload"></article>';
 
@@ -46,4 +46,11 @@ test('blank or missing existing file does not block the merge', () => {
   assert.equal(existingHasScoreSignal(undefined), false);
   assert.equal(existingHasScoreSignal({}), false);
   assert.equal(existingHasScoreSignal({ originalScore: null, aggregatorStars: '' }), false);
+});
+
+test('existingRatingCleared: only an explicit originalScoreCleared counts (BRO-5295 score-only ingest guard)', () => {
+  assert.equal(existingRatingCleared({ originalScore: null, originalScoreCleared: true }), true);
+  assert.equal(existingRatingCleared({ originalScore: '4/5' }), false);
+  assert.equal(existingRatingCleared({ originalScoreCleared: false }), false);
+  assert.equal(existingRatingCleared(null), false);
 });

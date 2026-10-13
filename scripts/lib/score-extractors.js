@@ -1083,7 +1083,7 @@ function extractGenericStarRating(html, text) {
     // number or the denominator of a fraction/"out of" (handled above), and
     // needs a word boundary after "star(s)" so "1992 starring ..." and
     // "© 2014 StarTribune" are not "2 stars" / "4 stars" (BRO-5295).
-    /(?<!\d|\d\.|\d\s*\/\s*|\bof\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
+    /(?<!\d|\d\.|\d\s*\/\s*|\bout\s+of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
     // Unicode stars — visual, unambiguous
     /([★☆]{3,5})/
   ];

@@ -49,3 +49,9 @@ test('real ratings still extract', () => {
   // Time Out glues the next word onto "stars"
   assert.equal(score('A Streetcar Named Desire Review\n\n3 out of 5 starsPatsy Ferran and Paul').originalScore, '3/5');
 });
+
+test('"of N stars" in ordinary prose still reads as a rating; only "out of N stars" is the denominator', () => {
+  assert.equal(score('A show worthy of 4 stars, easily.').originalScore, '4/5');
+  assert.equal(score('In 1992, the show earned 4 stars from the Times.').originalScore, '4/5');
+  assert.equal(score('Verdict: 2 out of 5 stars').originalScore, '2/5');
+});
