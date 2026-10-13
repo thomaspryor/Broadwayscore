@@ -584,7 +584,7 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
   if [ -f "$REPO_ROOT/scripts/lib/job-log-retention.js" ]; then
     node -e '
       const { pruneJobLogsIfDue } = require(process.argv[1]);
-      const r = pruneJobLogsIfDue({});
+      const r = pruneJobLogsIfDue({}); try { require(process.argv[1].replace("job-log", "scratchpad")).pruneScratchpadsIfDue({}); } catch {} // BRO-2572
       if (r && r.deleted.length > 0) {
         const mb = (r.bytesFreed / 1024 / 1024).toFixed(1);
         console.log(`🔶 JOB-LOG RETENTION: pruned ${r.deleted.length} log(s) older than 14 days from ${r.dir} (freed ~${mb}MB).`);
