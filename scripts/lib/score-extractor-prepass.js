@@ -34,6 +34,21 @@
  * OUTLET_VERIFIED_SOURCES from the canonical extractor module keeps both
  * call-sites in sync as new outlet extractors are added.
  *
+ * No humanReviewScore (BRO-2882)
+ * ------------------------------
+ * This pass used to also return humanReviewScore = normalizedScore, which the
+ * caller wrote to the file. humanReviewScore is the P0 "a person decided"
+ * slot in getBestScore; a machine read written there outranks adjudication
+ * and every later re-score, and nothing can tell it apart from a real human
+ * call. originalScore alone already renders the review (getBestScore's
+ * originalScore-priority0 rung), which is all the Lost Boys fix needed.
+ *
+ * Excluded records (BRO-2882)
+ * ---------------------------
+ * Records flagged wrongProduction / wrongShow / isRoundupArticle, or with
+ * contentTier 'invalid', are skipped: a star read off a page about another
+ * show or a roundup is not this review's rating.
+ *
  * Pure / no side effects — caller mutates `data` using the returned values.
  *
  * Returns null when the gate declines or the extractor returns nothing
@@ -52,6 +67,11 @@ function isTrustedExtractorSource(source) {
   return false;
 }
 
+function isExcludedRecord(data) {
+  return !!(data.wrongProduction || data.wrongShow || data.isRoundupArticle ||
+    data.contentTier === 'invalid');
+}
+
 /**
  * @param {object} data
  *     The review-text JSON object (read-only here — caller mutates).
@@ -67,7 +87,6 @@ function isTrustedExtractorSource(source) {
  *   originalScore: string,
  *   originalScoreSource: string,
  *   originalScoreNormalized: number,
- *   humanReviewScore: number,
  *   sourceLabel: string,
  * } | null}
  */
@@ -85,6 +104,7 @@ function runScoreExtractorPrePass(data, opts) {
     typeof data.originalScore === 'string' &&
     data.originalScore.trim().length > 0;
   if (hasHuman || hasOriginal) return null;
+  if (isExcludedRecord(data)) return null;
 
   let extracted;
   try {
@@ -108,7 +128,6 @@ function runScoreExtractorPrePass(data, opts) {
     originalScore: extracted.originalScore,
     originalScoreSource: extracted.source,
     originalScoreNormalized: extracted.normalizedScore,
-    humanReviewScore: extracted.normalizedScore,
     sourceLabel: extracted.source,
   };
 }

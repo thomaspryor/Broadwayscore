@@ -10,15 +10,17 @@
  * Sets needsRescore=true, rescoreReason='false-truncation-warning', clears
  * rescoreCompletedAt. Newest shows first by opening date.
  *
- * Usage: node scripts/flag-false-truncation.js [--apply] [--within-days=N]
- *          [--sample=N] [--limit=N] [--show=ID] [--json=PATH]
+ * BRO-2610: --kind=bot-stub flags scores whose input carried the NYT bot-wall
+ * stub instead (isBotStubContaminatedScore), with rescoreReason='bot-stub-text'.
+ * Usage: node scripts/flag-false-truncation.js [--apply] [--kind=footer|bot-stub]
+ *          [--within-days=N] [--sample=N] [--limit=N] [--show=ID] [--json=PATH]
  *   --within-days  only shows opened within N days (30 / 90 / 365 waves)
  *   --sample       deterministic spread of N files (the section-13 A/B sample)
  */
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const { isFalseTruncationScore } = require('./lib/rescore-flagging');
+const { isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_RESCORE_REASON } = require('./lib/rescore-flagging');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -27,7 +29,7 @@ const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 const USAGE = `flag-false-truncation.js — flag scored reviews that a page footer made the scorer call truncated.
 
 Usage:
-  node scripts/flag-false-truncation.js [--apply] [--within-days=N] [--sample=N] [--limit=N] [--show=ID] [--json=PATH]
+  node scripts/flag-false-truncation.js [--apply] [--kind=footer|bot-stub] [--within-days=N] [--sample=N] [--limit=N] [--show=ID] [--json=PATH]
   node scripts/flag-false-truncation.js --help, -h    print this usage and exit
 `;
 
@@ -43,7 +45,13 @@ const LIMIT = arg('limit') ? parseInt(arg('limit'), 10) : 0;
 const ONLY = arg('show');
 const JSON_OUT = arg('json');
 const ROOT = path.join(__dirname, '..');
-const REASON = 'false-truncation-warning';
+const KINDS = {
+  footer: { predicate: isFalseTruncationScore, reason: 'false-truncation-warning', label: 'false-truncation' },
+  'bot-stub': { predicate: isBotStubContaminatedScore, reason: BOT_STUB_RESCORE_REASON, label: 'bot-stub-contaminated' },
+};
+const KIND = KINDS[arg('kind') || 'footer'];
+if (!KIND) { console.error(`--kind must be one of ${Object.keys(KINDS).join(', ')}`); process.exit(2); }
+const REASON = KIND.reason;
 
 const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
 const shows = (Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || []).filter(s => s && s.id);
@@ -60,7 +68,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', ONLY || '*', '
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
   scanned++;
-  if (!isFalseTruncationScore(d, show, f)) continue;
+  if (!KIND.predicate(d, show, f)) continue;
   hits.push({ f, showId, d, opened: openedMs(show) });
 }
 hits.sort((a, b) => b.opened - a.opened || a.f.localeCompare(b.f));
@@ -83,8 +91,8 @@ for (const h of picked) {
     safeWriteReview(h.f, h.d, { force: true });
   }
 }
-console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${picked.length} of ${hits.length} false-truncation scores (scanned ${scanned} files) across ${Object.keys(byShow).length} shows, reason=${REASON}`);
+console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${picked.length} of ${hits.length} ${KIND.label} scores (scanned ${scanned} files) across ${Object.keys(byShow).length} shows, reason=${REASON}`);
 for (const [s, n] of Object.entries(byShow).slice(0, 15)) console.log(`  ${n}  ${s}`);
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify(picked.map(h => ({ file: path.relative(ROOT, h.f), showId: h.showId, score: h.d.assignedScore })), null, 1));
-if (!APPLY) for (const h of picked.slice(0, 15)) console.log(`  file ${path.relative(ROOT, h.f)} status=${h.d.llmMetadata.textSource.status} scoredAt=${h.d.llmMetadata.scoredAt} src=${h.d.scoreSource}`);
+if (!APPLY) for (const h of picked.slice(0, 15)) console.log(`  file ${path.relative(ROOT, h.f)} status=${(h.d.llmMetadata.textSource || {}).status} scoredAt=${h.d.llmMetadata.scoredAt} src=${h.d.scoreSource}`);
 if (!APPLY) console.log('\n(dry run, pass --apply to write needsRescore flags)');

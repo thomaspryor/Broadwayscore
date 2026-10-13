@@ -147,10 +147,17 @@ function extractShowScoreReviews(html, showId) {
 }
 
 /**
- * Find matching review file for an extracted review
+ * Find matching review file for an extracted review.
+ *
+ * BRO-2619: never pick by directory order. A same-critic match wins only when
+ * it is the ONLY one; a match that leans on a missing byline (outlet alone)
+ * likewise only when exactly one file is in play. Two candidates means we can't
+ * tell which review the excerpt belongs to, so nothing is written.
  */
 function findMatchingReviewFile(showDir, extractedReview) {
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const byCritic = [];
+  const outletOnly = [];
 
   for (const file of files) {
     try {
@@ -166,18 +173,18 @@ function findMatchingReviewFile(showDir, extractedReview) {
       const extractedCritic = extractedReview.criticName || '';
 
       if (fileCritic && extractedCritic) {
-        if (areCriticsSimilar(fileCritic, extractedCritic)) {
-          return { filePath, data };
-        }
-      } else if (!fileCritic || !extractedCritic) {
+        if (areCriticsSimilar(fileCritic, extractedCritic)) byCritic.push({ filePath, data });
+      } else {
         // If either is missing critic, match on outlet alone
-        return { filePath, data };
+        outletOnly.push({ filePath, data });
       }
     } catch (e) {
       // Skip invalid files
     }
   }
 
+  if (byCritic.length === 1) return byCritic[0];
+  if (byCritic.length === 0 && outletOnly.length === 1) return outletOnly[0];
   return null;
 }
 
@@ -277,21 +284,27 @@ function processShowScoreArchives() {
   }
 }
 
-// Main
-console.log('Merging aggregator excerpts into review files...');
+module.exports = { findMatchingReviewFile };
 
-processBWWArchives();
-processShowScoreArchives();
+function main() {
+  // Main
+  console.log('Merging aggregator excerpts into review files...');
 
-console.log('\n=== Summary ===\n');
-console.log('BWW Review Roundups:');
-console.log(`  Extracted: ${stats.bww.processed}`);
-console.log(`  Matched to files: ${stats.bww.matched}`);
-console.log(`  New excerpts added: ${stats.bww.added}`);
+  processBWWArchives();
+  processShowScoreArchives();
 
-console.log('\nShow Score:');
-console.log(`  Extracted: ${stats.ss.processed}`);
-console.log(`  Matched to files: ${stats.ss.matched}`);
-console.log(`  New excerpts added: ${stats.ss.added}`);
+  console.log('\n=== Summary ===\n');
+  console.log('BWW Review Roundups:');
+  console.log(`  Extracted: ${stats.bww.processed}`);
+  console.log(`  Matched to files: ${stats.bww.matched}`);
+  console.log(`  New excerpts added: ${stats.bww.added}`);
 
-console.log('\nDone!');
+  console.log('\nShow Score:');
+  console.log(`  Extracted: ${stats.ss.processed}`);
+  console.log(`  Matched to files: ${stats.ss.matched}`);
+  console.log(`  New excerpts added: ${stats.ss.added}`);
+
+  console.log('\nDone!');
+}
+
+if (require.main === module) main();

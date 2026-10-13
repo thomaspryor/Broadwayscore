@@ -5031,13 +5031,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         normalizedValue: prepass.originalScoreNormalized,
         source: prepass.originalScoreSource,
       });
-      // Only set humanReviewScore when routed to the outlet slot. When the
-      // file's source is an aggregator, the rating is a third-party relay;
-      // letting it claim P0 priority would bypass the WE aggregator-trust
-      // downgrade that getBestScore applies at P3b (rebuild-helpers.js:391).
-      if (!routed.wasAggregator) {
-        data.humanReviewScore = prepass.humanReviewScore;
-      }
+      // No humanReviewScore here (BRO-2882): that slot means a person
+      // decided the score. originalScore already renders the review.
       delete data.scoreExtractionPending;
       console.log(
         `    → [TEXT-ONLY PRE-PASS] ${outletIdForPrepass}: ${prepass.originalScore} (${prepass.originalScoreNormalized}/100) via ${prepass.sourceLabel}` +

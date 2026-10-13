@@ -23,6 +23,11 @@ on:
         required: false
         default: '0'
         type: string
+      kind:
+        description: 'footer (BRO-4804) | bot-stub (BRO-2610, rescoreReason bot-stub-text)'
+        required: false
+        default: 'footer'
+        type: string
 
 permissions:
   contents: read
@@ -61,8 +66,10 @@ jobs:
           MODE: ${{ inputs.mode }}
           WITHIN: ${{ inputs.within_days }}
           SAMPLE: ${{ inputs.sample }}
+          KIND: ${{ inputs.kind }}
         run: |
           case "$MODE" in dry|apply) ;; *) echo "::error::mode must be dry|apply"; exit 1 ;; esac
+          case "$KIND" in footer|bot-stub) ;; *) echo "::error::kind must be footer|bot-stub"; exit 1 ;; esac
           case "$WITHIN" in ''|*[!0-9]*) echo "::error::within_days must be a number"; exit 1 ;; esac
           case "$SAMPLE" in ''|*[!0-9]*) echo "::error::sample must be a number"; exit 1 ;; esac
 
@@ -71,18 +78,19 @@ jobs:
           MODE: ${{ inputs.mode }}
           WITHIN: ${{ inputs.within_days }}
           SAMPLE: ${{ inputs.sample }}
+          KIND: ${{ inputs.kind }}
         shell: bash
         run: |
           APPLY=""
           [ "$MODE" = "apply" ] && APPLY="--apply"
-          node scripts/flag-false-truncation.js $APPLY --within-days="$WITHIN" --sample="$SAMPLE" | tee -a "$GITHUB_STEP_SUMMARY"
+          node scripts/flag-false-truncation.js $APPLY --kind="$KIND" --within-days="$WITHIN" --sample="$SAMPLE" | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Push to private repo
         if: inputs.mode == 'apply'
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'chore: flag false-truncation scores for rescore [BRO-4804]'
+          message: 'chore: flag ${{ inputs.kind }} scores for rescore [BRO-4804/BRO-2610]'
 
       - name: Notify on failure
         if: failure()

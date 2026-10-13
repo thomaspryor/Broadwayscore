@@ -12,7 +12,8 @@
  *   Phase B (score-source): replays getBestScore() on every review under both
  *   HEAD's and the working-tree's rebuild-helpers and surfaces reviews whose
  *   assignedScore or scoreSource would change. Watchlist: rebuild-helpers.js,
- *   score-extractors.js, score-parsers.js, review-normalization.js, score-routing.js.
+ *   score-extractors.js, score-parsers.js, review-normalization.js, score-routing.js,
+ *   text-quality.js (LLM input text; flagged, not measurable by the replay).
  *   Added 2026-04-22 after the NY Post stars fix (f6cb1e3266) silently skipped
  *   this gate because the original watchlist was inclusion-only. See
  *   memory/feedback_outlet_star_authoritative_set.md for the underlying fix
@@ -222,6 +223,21 @@ const INCLUSION_FILES = [
   'scripts/lib/excerpt-validation.js',
 ];
 
+// Files that shape the TEXT handed to the LLM scorer. Phase B replays
+// getBestScore over stored scores, so it cannot see what a re-score would
+// return: when one of these changes, main() says so instead of implying the
+// replay measured it.
+const LLM_INPUT_FILES = [
+  'scripts/lib/text-quality.js',
+  // BRO-2610: text-quality.js strips and judges text with content-quality.js's
+  // TRUNCATION_SIGNALS; a loose pattern there cut real reviews short before
+  // scoring. input-builder.ts assembles the prompt; text-cleaning.js is the
+  // shared HTML/entity cleanup text-quality.js calls.
+  'scripts/lib/content-quality.js',
+  'scripts/lib/text-cleaning.js',
+  'scripts/llm-scoring/input-builder.ts',
+];
+
 // Phase B — score-source files. Changes here can keep a review included but
 // change its assignedScore or scoreSource — silently moving a composite.
 // Historical miss: scripts/lib/rebuild-helpers.js (getBestScore) wasn't in
@@ -232,6 +248,11 @@ const SCORE_VALUE_FILES = [
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',
   'scripts/lib/score-routing.js',
+  // BRO-2609: getBestTextForScoring() here builds the text the LLM scorer
+  // receives (scripts/llm-scoring/input-builder.ts). An edit changes every
+  // future llmScore, yet BRO-36's two edits here ran this gate to "nothing to
+  // check". Watching it forces the replay and the LLM-input note below.
+  ...LLM_INPUT_FILES,
 ];
 
 // Inclusion-relevant flag fields in review-texts JSON files.
@@ -363,11 +384,11 @@ function detectDataFlagChanges() {
   return result;
 }
 
-function gitDiffHasChanges(files) {
+function gitDiffHasChanges(files, { cwd = REPO_ROOT, baseRef = BASE_REF } = {}) {
   try {
     const out = execSync(
-      `git diff ${BASE_REF} -- ${files.map(f => `'${f}'`).join(' ')}`,
-      { cwd: REPO_ROOT, encoding: 'utf8' }
+      `git diff ${baseRef} -- ${files.map(f => `'${f}'`).join(' ')}`,
+      { cwd, encoding: 'utf8' }
     );
     return out.trim().length > 0;
   } catch (e) {
@@ -1469,6 +1490,9 @@ function main() {
 
   log(`[scoring-delta] Phase A (inclusion): ${inclusionDiff ? 'code diff detected' : 'no code diff'}${dataFlagDiff ? `, ${changedReviewFiles.size} review-texts flag-field changes` : ''}`);
   log(`[scoring-delta] Phase B (score-source): ${scoreValueDiff ? 'diff detected' : 'no diff'}`);
+  if (scoreValueDiff && gitDiffHasChanges(LLM_INPUT_FILES)) {
+    log('[scoring-delta] ⚠️  LLM scoring input changed (' + LLM_INPUT_FILES.join(', ') + '). The replay below uses stored scores and cannot measure this: spot-check getBestTextForScoring() output on affected reviews, and re-score through the A/B check (CLAUDE.md §13) before trusting new scores.');
+  }
 
   // ── Phase A prep: load inclusion guards if needed ──
   let baseline = null;
@@ -2041,7 +2065,7 @@ function main() {
   process.exit((cannotAutoVerify || dataInputDrift || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
 }
 
-module.exports = { ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
+module.exports = { SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
 
 if (require.main === module) {
   try {

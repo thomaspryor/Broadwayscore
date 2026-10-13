@@ -1622,7 +1622,11 @@ const TRUNCATION_SIGNALS = {
     // credit immediately precedes the stub) while leaving this middle sentence intact,
     // so this file's own severeAnywhere-derived stripping needs it as an independent
     // anchor rather than relying on the first pattern always being present verbatim.
-    /please\s+enable\s+javascript/i,
+    // BRO-2610: anchored on NYT's exact "in your browser settings" wording. The bare
+    // "please enable javascript" matched comment-form and video-player chrome on
+    // Queerty, TheaterMania, Bloomberg and others, and text-quality.js then cut the
+    // real review text off at that point before scoring.
+    /please\s+enable\s+javascript\s+in\s+your\s+browser\s+settings/i,
   ],
   // Moderate signals - likely truncated
   moderate: [

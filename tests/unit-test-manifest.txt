@@ -1,5 +1,6 @@
 scripts/V1-V3-dispatch-status.test.mjs
 scripts/add-verified-tours.test.mjs
+scripts/apply-human-review-fixes.test.mjs
 scripts/audit-alert-reachability.test.mjs
 scripts/audit-alert-senders.test.mjs
 scripts/audit-audience-buzz-contamination.test.mjs
@@ -207,6 +208,7 @@ scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/cost-recording.test.mjs
 scripts/llm-scoring/mixed-batch-cost.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
+scripts/merge-aggregator-excerpts.test.mjs
 scripts/newsletter/badge-render.test.mjs
 scripts/newsletter/bw-quiet-week-fallback.test.mjs
 scripts/newsletter/featured-state-persist-order.test.mjs

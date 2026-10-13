@@ -84,6 +84,49 @@ function isFalseTruncationScore(data, show, filePath) {
 }
 
 /**
+ * BRO-2610: scores whose LLM input was contaminated by the NYT bot-wall stub.
+ *  - Before BOT_STUB_FIX_AT (BRO-36, commit 827599e4) text-quality.js did not
+ *    strip the stub, so a file whose fullText carries it was scored with
+ *    "We are having trouble retrieving the article content..." in the input.
+ *  - From BOT_STUB_FIX_AT until BRO-2610 tightened the pattern, the bare
+ *    "please enable javascript" anchor also matched comment-form / player
+ *    chrome on other outlets, and text-quality.js cut the review off there,
+ *    so a file matching only that loose pattern was scored on a stub of itself.
+ *    Scores from BOT_STUB_TIGHTENED_AT on used the tight pattern, so that
+ *    window is closed (set a little after BRO-2610 landed; an overshoot only
+ *    re-scores a file once, an undershoot would miss a cut-off score).
+ * A file already re-scored for this reason is never picked again
+ * (rescoreReason survives markRescoreComplete).
+ */
+const BOT_STUB_FIX_AT = '2026-08-31T15:01:32Z';
+const BOT_STUB_TIGHTENED_AT = '2026-10-14T00:00:00Z';
+const BOT_STUB_RESCORE_REASON = 'bot-stub-text';
+const LOOSE_BOT_STUB_PATTERN = /please\s+enable\s+javascript/i;
+
+function isBotStubContaminatedScore(data, show, filePath) {
+  if (!data || typeof data !== 'object') return false;
+  if (typeof data.assignedScore !== 'number' || !data.fullText) return false;
+  const scoredAt = data.llmMetadata && data.llmMetadata.scoredAt;
+  if (!scoredAt) return false;
+  if (data.rescoreReason === BOT_STUB_RESCORE_REASON) return false;
+  if (data.needsRescore === true) return false;
+  if (data.humanReviewScore != null) return false;
+  if (data._locked === true) return false;
+  if (data.scoreSource && !isLlmScoreSource(data.scoreSource)) return false;
+  const { TRUNCATION_SIGNALS } = require('./content-quality');
+  const realStub = TRUNCATION_SIGNALS.severeAnywhere.some(p => p.test(data.fullText));
+  const scoredMs = Date.parse(scoredAt);
+  if (Number.isNaN(scoredMs)) return false;
+  const preFix = scoredMs < Date.parse(BOT_STUB_FIX_AT);
+  const looseWindow = !preFix && scoredMs < Date.parse(BOT_STUB_TIGHTENED_AT);
+  const contaminated = realStub
+    ? preFix
+    : (looseWindow && LOOSE_BOT_STUB_PATTERN.test(data.fullText));
+  if (!contaminated) return false;
+  return isScoreable(data, show, filePath);
+}
+
+/**
  * True iff `data` currently carries a score that was computed on less than
  * the best available text, AND is safe to requeue (isScoreable would accept
  * it — the 278-file guard against permanent stuck flags).
@@ -167,4 +210,4 @@ function markRescoreNeeded(fileData, reason, flaggedAt) {
   return fileData;
 }
 
-module.exports = { isFalseTruncationScore, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded };
+module.exports = { isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded };

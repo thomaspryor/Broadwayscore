@@ -40,7 +40,7 @@ The Lost Boys: The Musical kicks off at the Palace Theatre with a vampire-pop sp
   const result = runScoreExtractorPrePass(data, { fullText, outletId: 'nysr' });
   assert.ok(result, 'expected extraction to succeed');
   assert.equal(result.originalScoreNormalized, 60);
-  assert.equal(result.humanReviewScore, 60);
+  assert.equal('humanReviewScore' in result, false, 'BRO-2882: never a machine score in the human slot');
   assert.match(result.originalScore, /3\/5/);
   // NYSR has its own outlet extractor (extractNYSRScore) — source is unicode-stars.
   assert.ok(
@@ -58,7 +58,7 @@ Adam Feldman writes: The Lost Boys arrives on Broadway as a brash, funny, very l
   const result = runScoreExtractorPrePass(data, { fullText, outletId: 'timeout' });
   assert.ok(result, 'expected extraction to succeed');
   assert.equal(result.originalScoreNormalized, 80);
-  assert.equal(result.humanReviewScore, 80);
+  assert.equal('humanReviewScore' in result, false, 'BRO-2882: never a machine score in the human slot');
   // Source can be word-stars / unicode-stars / star-rating / etc — must be trusted.
   assert.ok(
     isTrustedExtractorSource(result.originalScoreSource),
@@ -75,7 +75,7 @@ Dalton Ross says The Lost Boys may not reinvent the vampire genre, but it pumps 
   const result = runScoreExtractorPrePass(data, { fullText, outletId: 'ew' });
   assert.ok(result, 'expected extraction to succeed');
   assert.equal(result.originalScoreNormalized, 80);
-  assert.equal(result.humanReviewScore, 80);
+  assert.equal('humanReviewScore' in result, false, 'BRO-2882: never a machine score in the human slot');
   assert.equal(result.originalScoreSource, 'letter-grade');
 });
 
@@ -88,7 +88,7 @@ Johnny Oleksinski raves: This is the most fun I've had at a Broadway musical in 
   const result = runScoreExtractorPrePass(data, { fullText, outletId: 'nypost' });
   assert.ok(result, 'expected extraction to succeed');
   assert.equal(result.originalScoreNormalized, 80);
-  assert.equal(result.humanReviewScore, 80);
+  assert.equal('humanReviewScore' in result, false, 'BRO-2882: never a machine score in the human slot');
   assert.ok(isTrustedExtractorSource(result.originalScoreSource));
 });
 
@@ -141,4 +141,15 @@ test('isTrustedExtractorSource accepts OUTLET_VERIFIED_SOURCES + unicode-stars-f
   assert.equal(isTrustedExtractorSource(''), false);
   assert.equal(isTrustedExtractorSource(null), false);
   assert.equal(isTrustedExtractorSource(undefined), false);
+});
+
+// ─── BRO-2882: excluded records never get a machine rating ──────────────
+test('flagged wrongShow / wrongProduction / roundup / invalid records are skipped', () => {
+  const fullText = `★★★★
+
+Johnny Oleksinski raves: This is the most fun I've had at a Broadway musical in years.`.padEnd(800, ' ');
+  for (const flags of [{ wrongShow: true }, { wrongProduction: true }, { isRoundupArticle: true }, { contentTier: 'invalid' }]) {
+    assert.equal(runScoreExtractorPrePass({ ...flags }, { fullText, outletId: 'nypost' }), null, JSON.stringify(flags));
+  }
+  assert.ok(runScoreExtractorPrePass({ contentTier: 'complete' }, { fullText, outletId: 'nypost' }));
 });

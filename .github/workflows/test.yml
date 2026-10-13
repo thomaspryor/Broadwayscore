@@ -383,6 +383,11 @@ on:
       - 'scripts/test-new-show-venue-validation.test.mjs'
       - 'scripts/triage-review-gap.js'
       - 'scripts/triage-review-gap.test.mjs'
+      # BRO-2619 colocated tests, manifest-registered
+      - 'scripts/apply-human-review-fixes.js'
+      - 'scripts/apply-human-review-fixes.test.mjs'
+      - 'scripts/merge-aggregator-excerpts.js'
+      - 'scripts/merge-aggregator-excerpts.test.mjs'
       - 'scripts/opening-night-tools-data-dir.test.mjs'
       - 'scripts/lib/review-texts-dir.js'
       - 'scripts/check-opening-night-drift.js'

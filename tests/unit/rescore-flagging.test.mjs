@@ -23,7 +23,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
 
-const { isStaleScoreInput, markRescoreNeeded, isFalseTruncationScore, isTruncatedScoreNowComplete } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
+const { isStaleScoreInput, markRescoreNeeded, isFalseTruncationScore, isTruncatedScoreNowComplete, isBotStubContaminatedScore } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
 
 test('fullText added to a previously excerpt-scored, isScoreable file → flag set + stamped', () => {
   const data = {
@@ -287,4 +287,42 @@ test('BRO-4804: isTruncatedScoreNowComplete reads a footer-ended complete file a
     textFetchedAt: '2026-10-02T00:00:00Z',
   });
   assert.equal(isTruncatedScoreNowComplete(d), true);
+});
+
+// ─── BRO-2610: scores whose input carried the NYT bot-wall stub ──────────
+const NYT_STUB_2610 = ' We are having trouble retrieving the article content. Please enable JavaScript in your browser settings. Thank you for your patience while we verify access.';
+const COMMENT_FORM_2610 = ' Please enable JavaScript in your browser to complete this form. ';
+const stubScored = (over = {}) => ({
+  assignedScore: 70,
+  contentTier: 'truncated',
+  fullText: BODY_4804 + NYT_STUB_2610,
+  scoreSource: 'llm-v6',
+  llmMetadata: { scoredAt: '2026-07-22T14:27:02.316Z' },
+  ...over,
+});
+
+test('BRO-2610: a real NYT stub scored before the BRO-36 fix is contaminated', () => {
+  assert.equal(isBotStubContaminatedScore(stubScored()), true);
+});
+
+test('BRO-2610: a real NYT stub scored after the fix is clean (the scorer stripped it)', () => {
+  assert.equal(isBotStubContaminatedScore(stubScored({ llmMetadata: { scoredAt: '2026-09-02T00:00:00Z' } })), false);
+});
+
+test('BRO-2610: comment-form "enable JavaScript" chrome is contaminated only when scored after the fix', () => {
+  const chrome = { fullText: BODY_4804 + COMMENT_FORM_2610 + BODY_4804, contentTier: 'complete' };
+  assert.equal(isBotStubContaminatedScore(stubScored({ ...chrome, llmMetadata: { scoredAt: '2026-09-05T09:00:40Z' } })), true);
+  assert.equal(isBotStubContaminatedScore(stubScored({ ...chrome, llmMetadata: { scoredAt: '2026-10-20T00:00:00Z' } })), false, 'scored after the tightened pattern shipped');
+  assert.equal(isBotStubContaminatedScore(stubScored({ ...chrome })), false, 'pre-fix scoring read the whole text');
+});
+
+test('BRO-2610: never re-picked once re-scored for this reason, and the usual guards hold', () => {
+  assert.equal(isBotStubContaminatedScore(stubScored({ rescoreReason: 'bot-stub-text', rescoreCompletedAt: '2026-10-14T00:00:00Z' })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ needsRescore: true })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ humanReviewScore: 70 })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ _locked: true })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ scoreSource: 'explicit-rating' })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ wrongProduction: true })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ llmMetadata: {} })), false);
+  assert.equal(isBotStubContaminatedScore(stubScored({ fullText: BODY_4804 + COMMENT_FORM_2610, llmMetadata: { scoredAt: 'not-a-date' } })), false);
 });
