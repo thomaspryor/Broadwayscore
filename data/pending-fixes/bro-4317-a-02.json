@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-a-02",
   "planId": "daed6604-1458-4d35-9cce-ceac7892391d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T00:58:15.176Z",
   "submitter": {
     "name": null,
@@ -195,5 +195,133 @@
         "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/san-jose-mercury-news--jim-harrington.json: same url, publishDate 2026-03-07 inside spamalot-tour-2025's run; the kept copy is complete 5876 chars vs this invalid 0."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T01:48:49.662Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved once-upon-a-one-more-time/theater-life--david-sheward.json → once-upon-a-one-more-time-2023/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted our-sinatra-a-musical-celebration-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved our-town/theater-life--carol-rocamora.json → our-town-2024/theater-life--carol-rocamora.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved our-town/theater-life--isa-goldberg.json → our-town-2024/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted queen-of-versailles/nysr--bob-verini.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted queen-of-versailles/nysr--david-finkle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved ragtime/theater-life--david-sheward.json → ragtime-2025/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved ragtime/theater-life--isa-goldberg.json → ragtime-2025/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved redwood/theater-life--patrick-christiano.json → redwood-2025/theater-life--patrick-christiano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-juliet/washpost--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted schmigadoon/nysr--michael-sommers.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwaynews--brittani-samuel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/dailybeast--tim-teeman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/hartford-courant--christopher-arnott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nydailynews--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nysr--melissa-rose-bernardo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nysr--sandy-macdonald.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nytg--gillian-russo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/oc-register--christopher-smith.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/roc-city-mag--david-andreatta.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/san-jose-mercury-news--jim-harrington.json"
+    }
+  ]
 }
