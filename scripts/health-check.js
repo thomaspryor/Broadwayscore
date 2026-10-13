@@ -4585,9 +4585,20 @@ function uncollectedStrandResults(report) {
 // CRITICAL email only fires for gaps on near-opening shows; everything else
 // lands here so the back-catalogue backlog is visible once a day instead of
 // one email per discovery (2026-07-19 alert-volume fix).
+// A gap the hourly audit first saw under UNSCORED_GRACE_HOURS ago is still in
+// flight (discovered minutes ago, fetch or scoring cron not yet run), not
+// silent: BRO-5166 found the row firing on files 0-30 minutes old. Fail open
+// when the audit stamped no time.
 function silentGapBacklogResults(report, now = new Date()) {
   if (!report || !Array.isArray(report.gaps) || report.gaps.length === 0) return [];
-  const gaps = report.gaps;
+  const { UNSCORED_GRACE_HOURS } = require('./lib/t1-silent-gap');
+  const graceMs = UNSCORED_GRACE_HOURS * 3600000;
+  const gaps = report.gaps.filter((g) => {
+    const seen = Date.parse(g.gapSeenAt || g.firstSeen || '');
+    return Number.isNaN(seen) || now.getTime() - seen >= graceMs;
+  });
+  if (gaps.length === 0) return [];
+  const inFlight = report.gaps.length - gaps.length;
   const t1 = gaps.filter((g) => g.tier === 1).length;
   // Rank by firstSeen (how long the gap has gone unactioned), not openingDate:
   // most back-catalogue shows opened long ago, so show age would page on day one.
@@ -4595,7 +4606,7 @@ function silentGapBacklogResults(report, now = new Date()) {
   return [{
     name: 'Data: T1/T2 silent review gaps',
     status,
-    message: `${gaps.length} discovered review(s) not reaching the composite score (${t1} T1). Oldest: ${oldest.showId} — ${oldest.outletId} (${oldest.type})`,
+    message: `${gaps.length} discovered review(s) not reaching the composite score (${t1} T1). Oldest: ${oldest.showId} — ${oldest.outletId} (${oldest.type})${inFlight ? `; ${inFlight} newer still in flight` : ''}`,
     hint: 'Each entry in data/audit/t1-silent-gaps.json carries its fix command (run locally — cookie jar). Sweep card: Silent-gap 120d sweep remainder.',
   }];
 }
