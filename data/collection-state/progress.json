@@ -43,7 +43,13 @@
     "the-real-ivanov-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "marlise-off-broadway-2026/broadwayworld--unknown.json",
     "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-    "an-american-daughter-off-broadway-2026/playbill--unknown.json"
+    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
+    "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
   ],
   "failed": [
     "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -72,7 +78,19 @@
     "the-invention-of-love-off-broadway-2026/whatsonstage--miriam-sallon.json",
     "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
     "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json"
+    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -104,7 +122,12 @@
       "the-real-ivanov-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "an-american-daughter-off-broadway-2026/playbill--unknown.json"
+      "an-american-daughter-off-broadway-2026/playbill--unknown.json",
+      "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -127,10 +150,40 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "an-american-daughter-off-broadway-2026/playbill--unknown.json",
-  "log": []
+  "lastProcessed": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
+  "log": [
+    {
+      "t": "2026-10-13T19:14:54.011Z",
+      "event": "bb-session",
+      "session": "966a89dc",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T19:18:48.066Z",
+      "event": "bb-session",
+      "session": "82df454a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T19:18:48.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T19:22:06.011Z",
+      "event": "bb-session",
+      "session": "e6e8f567",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    }
+  ]
 }

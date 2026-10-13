@@ -1,19 +1,43 @@
 {
-  "updatedAt": "2026-10-13T19:05:00.422Z",
-  "processed": 43,
-  "failed": 27,
-  "successRate": "61.4%",
+  "updatedAt": "2026-10-13T19:24:34.328Z",
+  "processed": 50,
+  "failed": 39,
+  "successRate": "56.2%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 7,
     "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-13T19:14:54.011Z",
+      "event": "bb-session",
+      "session": "966a89dc",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T19:18:48.066Z",
+      "event": "bb-session",
+      "session": "82df454a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T19:18:48.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T19:22:06.011Z",
+      "event": "bb-session",
+      "session": "e6e8f567",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    }
+  ]
 }
