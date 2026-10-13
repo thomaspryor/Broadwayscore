@@ -6,7 +6,7 @@
     "name": null,
     "email": null
   },
-  "status": "pending",
+  "status": "applied",
   "plan": {
     "summary": "BRO-5232 n: name Charles Isherwood on the Broadway News Betrayal row the ingest created with an unknown critic.",
     "steps": [
@@ -23,5 +23,13 @@
         "description": "Byline is Charles Isherwood. Evidence: http://web.archive.org/web/20191121190530/https://broadwaynews.com/2019/09/05/review-a-love-triangle-turns-inward-in-betrayal/ (byline By Charles Isherwood, author meta charles-isherwood) and live https://www.broadwaynews.com/review-a-love-triangle-turns-inward-in-betrayal/ (JSON-LD author Charles Isherwood); Playbill Betrayal roundup credits Isherwood, Broadway News."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T17:55:28.248Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2019/broadwaynews--unknown.json criticName: \"Unknown\" -> \"Charles Isherwood\""
+    }
+  ]
 }
