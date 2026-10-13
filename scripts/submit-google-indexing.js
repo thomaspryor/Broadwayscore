@@ -114,6 +114,7 @@ async function getAccessToken(serviceAccount, scope = SCOPE_INDEXING) {
   const jwt = `${signInput}.${signature}`;
 
   const response = await fetch(TOKEN_URL, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
@@ -133,6 +134,7 @@ async function getAccessToken(serviceAccount, scope = SCOPE_INDEXING) {
  */
 async function submitUrl(accessToken, url, type) {
   const response = await fetch(INDEXING_API_URL, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -206,6 +208,7 @@ async function submitSitemapToGSC(serviceAccount) {
     const response = await fetch(
       `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/sitemaps/${feedpath}`,
       {
+        signal: AbortSignal.timeout(60000),
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       }
@@ -243,7 +246,7 @@ async function runAuthTest(serviceAccount) {
     const siteUrl = encodeURIComponent(SITE_URL_GSC);
     const response = await fetch(
       `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/sitemaps`,
-      { headers: { Authorization: `Bearer ${wmToken}` } }
+      { signal: AbortSignal.timeout(60000), headers: { Authorization: `Bearer ${wmToken}` } }
     );
     if (response.ok) {
       console.log(`  Webmasters scope: OK (sitemaps accessible)`);

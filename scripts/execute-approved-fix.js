@@ -267,6 +267,7 @@ async function sendEmail(to, from, subject, html) {
         else reject(new Error(`Email ${res.statusCode}: ${body.slice(0, 200)}`));
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.write(data);
     req.end();
@@ -854,6 +855,7 @@ async function fetchDiagnosisFromIssue(issueNumber) {
       res.on('data', c => data += c);
       res.on('end', () => resolve(res.statusCode === 200 ? data : null));
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', () => resolve(null));
     req.end();
   });

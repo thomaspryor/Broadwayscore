@@ -70,6 +70,7 @@ async function classifyBatch(transcripts, showList) {
   ).join('\n\n');
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'advisor-tool-2026-03-01' },
     body: JSON.stringify({

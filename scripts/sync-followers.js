@@ -75,6 +75,7 @@ function fetchJSON(url, headers) {
         }
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.end();
   });
@@ -154,6 +155,7 @@ function httpJSON(method, url, body, headers) {
         }
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.write(data);
     req.end();

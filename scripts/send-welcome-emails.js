@@ -100,6 +100,7 @@ async function resendSend(user, apiKey) {
 async function captureSent(userId) {
   try {
     const res = await fetch(POSTHOG_CAPTURE_URL, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

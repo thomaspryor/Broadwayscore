@@ -157,6 +157,7 @@ export class OpenAIReviewScorer {
         }
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          signal: AbortSignal.timeout(300000),
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -314,6 +315,7 @@ export class OpenAIReviewScorer {
         }
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          signal: AbortSignal.timeout(300000),
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -43,6 +43,7 @@ function planUpsert(existing, key, value) {
 
 async function vercel(token, method, url, body) {
   const res = await fetch(`${API}${url}`, {
+    signal: AbortSignal.timeout(60000),
     method,
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,

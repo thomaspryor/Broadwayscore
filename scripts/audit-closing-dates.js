@@ -205,6 +205,7 @@ async function notifyDiscord(message) {
   if (!webhook) return;
   try {
     await fetch(webhook, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: message.slice(0, 1900) }),

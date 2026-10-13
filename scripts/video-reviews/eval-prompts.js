@@ -80,6 +80,7 @@ const SCORE_MODEL = process.env.SCORE_MODEL || SCORING_SONNET;
 
 async function callClaude(prompt, model) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model, max_tokens: 2048, messages: [{ role: 'user', content: prompt }] })

@@ -21,7 +21,7 @@ const LIMIT = (() => {
 })();
 
 async function fetchJson(url) {
-  const resp = await fetch(url);
+  const resp = await fetch(url, { signal: AbortSignal.timeout(60000) });
   if (!resp.ok) throw new Error(`HTTP ${resp.status} from ${url}`);
   return resp.json();
 }

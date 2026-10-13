@@ -60,6 +60,7 @@ function writeGithubOutput(summary) {
 /** GoTrue admin call with the service-role key. */
 async function adminFetch(method, path, body) {
   const res = await fetch(`${URL}/auth/v1/${path}`, {
+    signal: AbortSignal.timeout(60000),
     method,
     headers: { apikey: SERVICE, Authorization: `Bearer ${SERVICE}`, 'Content-Type': 'application/json' },
     ...(body ? { body: JSON.stringify(body) } : {}),
@@ -87,6 +88,7 @@ async function mintToken(email) {
   const hashed = link.json?.hashed_token ?? link.json?.properties?.hashed_token;
   if (!link.ok || !hashed) throw new Error(`generateLink: HTTP ${link.status} ${link.text.slice(0, 200)}`);
   const res = await fetch(`${URL}/auth/v1/verify`, {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: { apikey: ANON, 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'magiclink', token_hash: hashed }),
@@ -146,6 +148,7 @@ async function sweepOrphanedTestUsers() {
 /** One PostgREST call with a user JWT — mirrors supabase-rest.ts exactly. */
 async function rest(method, path, token, body, prefer = 'return=representation') {
   const res = await fetch(`${URL}/rest/v1/${path}`, {
+    signal: AbortSignal.timeout(60000),
     method,
     headers: {
       apikey: ANON,
@@ -170,7 +173,7 @@ async function main() {
   // HTTP error) means the URL is dead/wrong — a hard NOT-ready signal, since the
   // live site talks to this exact host for auth.
   try {
-    const health = await fetch(`${URL}/auth/v1/health`, { headers: { apikey: ANON } });
+    const health = await fetch(`${URL}/auth/v1/health`, { signal: AbortSignal.timeout(60000), headers: { apikey: ANON } });
     console.log(`preflight /auth/v1/health → HTTP ${health.status}`);
   } catch (e) {
     const code = e.cause?.code || '';
@@ -179,6 +182,7 @@ async function main() {
     if (code === 'ENOTFOUND' && process.env.SUPABASE_ACCESS_TOKEN) {
       try {
         const r = await fetch('https://api.supabase.com/v1/projects', {
+          signal: AbortSignal.timeout(60000),
           headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` },
         });
         const list = await r.json();
@@ -214,7 +218,7 @@ async function main() {
     try {
       const cfg = await (await fetch(
         `https://api.supabase.com/v1/projects/${projectRef}/config/auth`,
-        { headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` } },
+        { signal: AbortSignal.timeout(60000), headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` } },
       )).json();
       const allow = cfg.uri_allow_list || '';
       const providers = ['google', 'apple'].filter(p => cfg[`external_${p}_enabled`]);
@@ -241,7 +245,7 @@ async function main() {
     for (const [p, okHost] of [['google', 'accounts.google.com'], ['apple', 'appleid.apple.com']]) {
       try {
         const authUrl = `${URL}/auth/v1/authorize?provider=${p}&redirect_to=${encodeURIComponent(redirectTo)}`;
-        const res = await fetch(authUrl, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0' } });
+        const res = await fetch(authUrl, { signal: AbortSignal.timeout(60000), redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0' } });
         const finalUrl = res.url || '';
         const body = (await res.text()).slice(0, 4000).toLowerCase();
         const reachedProvider = finalUrl.includes(okHost);

@@ -46,7 +46,7 @@ async function run() {
 
   // ── 1. Landing page renders ──────────────────────────────────────────────
   {
-    const res = await fetch(`${BASE_URL}/beat-the-critics`);
+    const res = await fetch(`${BASE_URL}/beat-the-critics`, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) fail('GET /beat-the-critics returns 200', `HTTP ${res.status}`);
     const html = await res.text();
     if (!html.includes('Beat the Critics')) fail('GET /beat-the-critics contains "Beat the Critics"', 'text not found in HTML');
@@ -55,7 +55,7 @@ async function run() {
 
   // ── 2. Rules page renders ────────────────────────────────────────────────
   {
-    const res = await fetch(`${BASE_URL}/beat-the-critics/rules`);
+    const res = await fetch(`${BASE_URL}/beat-the-critics/rules`, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) fail('GET /beat-the-critics/rules returns 200', `HTTP ${res.status}`);
     const html = await res.text();
     if (!html.includes('Official Rules')) fail('GET /beat-the-critics/rules contains "Official Rules"', 'text not found in HTML');
@@ -65,6 +65,7 @@ async function run() {
   // ── 3. POST with invalid email returns 400 ───────────────────────────────
   {
     const res = await fetch(`${BASE_URL}/api/beat-the-critics/send-picks`, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'not-an-email', picks: {}, ceremonyYear: 2026 }),
@@ -76,6 +77,7 @@ async function run() {
   // ── 4. POST with valid test payload returns {success:true} ───────────────
   {
     const res = await fetch(`${BASE_URL}/api/beat-the-critics/send-picks`, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -175,7 +177,7 @@ async function run() {
 
     let got429 = false;
     for (let i = 1; i <= 4; i++) {
-      const res = await fetch(`${BASE_URL}/api/beat-the-critics/send-picks`, { method: 'POST', headers, body });
+      const res = await fetch(`${BASE_URL}/api/beat-the-critics/send-picks`, { signal: AbortSignal.timeout(60000), method: 'POST', headers, body });
       if (res.status === 429) { got429 = true; break; }
     }
     if (!got429) fail('Rate limit: 4th rapid POST returns 429', 'no 429 received after 4 requests from same IP');

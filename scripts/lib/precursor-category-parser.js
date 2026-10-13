@@ -31,7 +31,7 @@ const HIGHLIGHT_COLORS = [
 ];
 
 async function fetchHtml(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': USER_AGENT } });
   if (!res.ok) throw new Error(`HTTP ${res.status} on ${url}`);
   return res.text();
 }

@@ -455,6 +455,7 @@ async function fetchViaRedditRSS(url) {
   await enforceRateLimit();
   const rssUrl = toRssUrl(url);
   const res = await fetch(rssUrl, {
+    signal: AbortSignal.timeout(60000),
     headers: {
       'User-Agent': USER_AGENT,
       'Accept': 'application/atom+xml, application/rss+xml, text/xml',
@@ -573,6 +574,7 @@ function brightDataRequest(token, zone, url) {
         }
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();
@@ -586,6 +588,7 @@ function brightDataRequest(token, zone, url) {
  */
 async function fetchRedditDirect(url) {
   const res = await fetch(url, {
+    signal: AbortSignal.timeout(60000),
     headers: {
       'User-Agent': USER_AGENT,
       'Accept': 'application/json'

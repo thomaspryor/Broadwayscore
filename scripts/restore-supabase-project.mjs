@@ -27,7 +27,7 @@ const API = 'https://api.supabase.com/v1';
 const H = { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' };
 
 async function status() {
-  const r = await fetch(`${API}/projects`, { headers: H });
+  const r = await fetch(`${API}/projects`, { signal: AbortSignal.timeout(60000), headers: H });
   const list = await r.json();
   return (Array.isArray(list) ? list : []).find(p => p.id === REF)?.status ?? 'UNKNOWN';
 }
@@ -43,7 +43,7 @@ async function main() {
   }
 
   console.log('Requesting restore…');
-  const res = await fetch(`${API}/projects/${REF}/restore`, { method: 'POST', headers: H, body: '{}' });
+  const res = await fetch(`${API}/projects/${REF}/restore`, { signal: AbortSignal.timeout(60000), method: 'POST', headers: H, body: '{}' });
   if (!res.ok && res.status !== 409) { // 409 = already restoring
     console.error(`❌ Restore request failed: HTTP ${res.status} ${(await res.text()).slice(0, 300)}`);
     process.exit(1);

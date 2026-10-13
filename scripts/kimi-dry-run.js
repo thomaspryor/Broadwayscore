@@ -124,6 +124,7 @@ async function scoreWithKimi(reviewText, context) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const response = await fetch(OPENROUTER_BASE_URL, {
+        signal: AbortSignal.timeout(300000),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
