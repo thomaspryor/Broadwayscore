@@ -18,7 +18,11 @@ process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(fs.mkdtempSync(path.join(os.tm
 process.env.BROWSERBASE_RECOVERY_RESERVE = '0';
 
 const require = createRequire(import.meta.url);
-const { sanitizeMetadataValue, createBbSession, BB_CATEGORIES, _resetDayCapCacheForTests } = require('./browserbase-session.js');
+const { sanitizeMetadataValue, createBbSession, BB_CATEGORIES, _resetDayCapCacheForTests, _setNowForTests } = require('./browserbase-session.js');
+// Pin the clock after the BRO-5243 Tier-1 boost expired, so every test sees the
+// unboosted limits unless it opts into a boosted date.
+const AFTER_BOOST = '2026-11-01T12:00:00Z';
+_setNowForTests(AFTER_BOOST);
 const browserbaseLiveUsage = require('./browserbase-live-usage.js');
 const openingNightSelection = require('./opening-night-selection.js');
 
@@ -343,9 +347,11 @@ test('createBbSession (BRO-3097) leaves host null when a caller passes category 
 // ---------- BRO-5243: allocation (deny list, recovery reserve, capped opening-window reserve) ----------
 
 // Ambient settings that would shift the expected limits if set in the shell.
-const AMBIENT_ENV = ['BROWSERBASE_DENY_HOSTS', 'BROWSERBASE_OPENING_WINDOW_RESERVE_MAX', 'BROWSERBASE_OPENING_WINDOW_RESERVE_PER_SHOW', 'BROWSERBASE_EXEMPT_SCRIPTS', 'BD_OPENING_NIGHT', 'GITHUB_WORKFLOW'];
-async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0, live, host, expectFetch = true }, fn) {
+const AMBIENT_ENV = ['BROWSERBASE_DENY_HOSTS', 'BROWSERBASE_OPENING_WINDOW_RESERVE_MAX', 'BROWSERBASE_OPENING_WINDOW_RESERVE_PER_SHOW', 'BROWSERBASE_EXEMPT_SCRIPTS', 'BD_OPENING_NIGHT', 'GITHUB_WORKFLOW', 'BROWSERBASE_TIER1_BOOST_DISABLED'];
+// now defaults to after the Tier-1 boost expired, so these tests pin the unboosted limits.
+async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0, live, host, expectFetch = true, now = AFTER_BOOST, exemptWorkflow }, fn) {
   _resetDayCapCacheForTests();
+  _setNowForTests(now);
   const prev = {
     max: process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY,
     reserve: process.env.BROWSERBASE_RECOVERY_RESERVE,
@@ -356,6 +362,7 @@ async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0
   process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = max;
   process.env.BROWSERBASE_RECOVERY_RESERVE = reserve;
   if (useReserve) process.env.BROWSERBASE_USE_RESERVE = 'true'; else delete process.env.BROWSERBASE_USE_RESERVE;
+  if (exemptWorkflow) process.env.BD_OPENING_NIGHT = 'true';
   const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => windowShows);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => live);
   const fetchMock = mock.method(globalThis, 'fetch', async () => ({
@@ -365,6 +372,7 @@ async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0
     await fn(() => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'review-text', host }), { liveMock, fetchMock });
   } finally {
     fetchMock.mock.restore(); windowMock.mock.restore(); liveMock.mock.restore();
+    _setNowForTests(AFTER_BOOST);
     for (const [k, v] of [['BROWSERBASE_MAX_SESSIONS_PER_DAY', prev.max], ['BROWSERBASE_RECOVERY_RESERVE', prev.reserve], ['BROWSERBASE_USE_RESERVE', prev.use], ...AMBIENT_ENV.map(k => [k, prev.ambient[k]])]) {
       if (v === undefined) delete process.env[k]; else process.env[k] = v;
     }
@@ -422,4 +430,52 @@ test('BRO-5243: a quiet week keeps the per-show reserve below the cap', async ()
   await withBb({ windowShows: 3, live: 235, host: 'nytimes.com' }, async (call) => {
     await assert.rejects(call, /daily cap reached \(235\/235/);
   });
+});
+
+// ---------- BRO-5243 Option B: time-boxed Tier-1 boost (+100 through 2026-10-27 UTC) ----------
+const BOOSTED = '2026-10-20T12:00:00Z';
+
+test('BRO-5243 boost: Tier-1 hosts may run 100 past their ceiling while the boost is active', async () => {
+  await withBb({ windowShows: 23, live: 274, host: 'www.wsj.com', now: BOOSTED }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 23, live: 275, host: 'wsj.com', now: BOOSTED }, async (call) => {
+    await assert.rejects(call, /Browserbase daily cap reached \(275\/275/);
+  });
+});
+
+test('BRO-5243 boost: it ends at 2026-10-28T00:00Z with nothing to revert', async () => {
+  await withBb({ windowShows: 23, live: 175, host: 'wsj.com', now: '2026-10-27T23:59:00Z' }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 23, live: 175, host: 'wsj.com', now: '2026-10-28T00:00:00Z' }, async (call) => {
+    await assert.rejects(call, /Browserbase daily cap reached \(175\/175/);
+  });
+});
+
+test('BRO-5243 boost: non-Tier-1 hosts at the bulk ceiling get the non-latching refusal, never the day cap', async () => {
+  const { routeCapFromBrowserbaseError } = require('./failed-fetch-policy.js');
+  for (const host of ['deadline.com', null]) {
+    await withBb({ windowShows: 23, live: 200, host, useReserve: true, now: BOOSTED }, async (call) => {
+      const err = await call().then(() => null, (e) => e);
+      assert.match(err.message, /recovery reserve held \(200\/175, the rest held for the Tier-1 boost/);
+      assert.equal(routeCapFromBrowserbaseError(err.message), 'reserve');
+    });
+  }
+});
+
+test('BRO-5243 boost: opening-night callers keep their slots (raw ceiling rises by the boost too)', async () => {
+  await withBb({ windowShows: 23, live: 340, host: 'deadline.com', exemptWorkflow: true, now: BOOSTED }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 23, live: 350, host: 'deadline.com', exemptWorkflow: true, now: BOOSTED }, async (call) => {
+    await assert.rejects(call, /Browserbase daily cap reached \(350\/350/);
+  });
+});
+
+test('BRO-5243 boost: BROWSERBASE_TIER1_BOOST_DISABLED=true turns it off', async () => {
+  const caps = require('./browserbase-caps.js');
+  assert.equal(caps.tier1RecoveryBoost('wsj.com', { now: new Date(BOOSTED), env: { BROWSERBASE_TIER1_BOOST_DISABLED: 'true' } }), 0);
+  assert.equal(caps.tier1RecoveryBoost('wsj.com', { now: new Date(BOOSTED), env: {} }), 100);
+  assert.equal(caps.tier1RecoveryBoost('deadline.com', { now: new Date(BOOSTED), env: {} }), 0);
 });

@@ -82,6 +82,8 @@ const openingNightSelection = require('./opening-night-selection');
 const path = require('path');
 const {
   resolveMaxSessionsPerDay,
+  activeTier1Boost,
+  tier1BoostForCaller,
   resolveOpeningWindowReservePerShow,
   resolveOpeningWindowReserveMax,
   OPENING_WINDOW_RESERVE_OPTS,
@@ -222,8 +224,12 @@ async function createBbSession(opts) {
   // BRO-5243: the reserve is capped (resolveOpeningWindowReserveMax) and counts
   // a -1..+2 day window, so a crowded week of cold opens can't hold back
   // sessions opening night never uses.
+  // BRO-5243 Option B: while the time-boxed Tier-1 boost is active, exempt
+  // (opening-night) callers' raw ceiling rises by the same amount, so boosted
+  // WSJ/NYT sessions can never eat the slots opening night is promised.
+  const boostNow = { now: _now() };
   const effectiveMaxPerDay = exempt
-    ? maxPerDay
+    ? maxPerDay + tier1BoostForCaller(opts.host, { exempt, ...boostNow })
     : Math.max(0, maxPerDay - openingWindowReserve({
       openingWindowShows: getCachedOpeningWindowShows(),
       reservePerShow: resolveOpeningWindowReservePerShow(),
@@ -235,21 +241,30 @@ async function createBbSession(opts) {
   // the bulk ceiling; Tier-1 paywalled hosts (WSJ, NYT, New Yorker) and
   // explicit recovery runs (BROWSERBASE_USE_RESERVE=true) may spend it.
   const mayUseRecoveryReserve = exempt || resolveUseReserve() || isTier1RecoveryHost(opts.host);
+  // Tier-1 hosts get the boost on top of their ceiling (0 once it expires).
+  const hostCeiling = exempt ? effectiveMaxPerDay : effectiveMaxPerDay + tier1BoostForCaller(opts.host, boostNow);
   const hostLimit = mayUseRecoveryReserve
-    ? effectiveMaxPerDay
+    ? hostCeiling
     : Math.max(0, effectiveMaxPerDay - resolveRecoveryReserve());
 
   const liveSessionsToday = await getCachedLiveSessionsToday(apiKey, projectId);
-  if (liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay) {
+  // A non-Tier-1 host at the bulk ceiling while the boost is active: refuse
+  // with the non-latching message, so a mixed run keeps serving Tier-1 rows.
+  if (!exempt && liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay
+    && hostCeiling === effectiveMaxPerDay && activeTier1Boost(boostNow) > 0) {
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
+    throw new Error(`Browserbase recovery reserve held (${liveSessionsToday}/${effectiveMaxPerDay}, the rest held for the Tier-1 boost) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+  }
+  if (liveSessionsToday !== null && liveSessionsToday >= hostCeiling) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'day-cap-reached' });
-    const reserveNote = effectiveMaxPerDay !== maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
-    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${effectiveMaxPerDay}${reserveNote}) — session create blocked for ${opts.caller}`);
+    const reserveNote = hostCeiling < maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
+    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${hostCeiling}${reserveNote}) — session create blocked for ${opts.caller}`);
   }
   // A distinct message: this refusal holds only non-Tier-1 hosts, so callers
   // must not latch the whole run shut on it (collect-review-texts.js).
   if (liveSessionsToday !== null && liveSessionsToday >= hostLimit) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
-    throw new Error(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${effectiveMaxPerDay - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+    throw new Error(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${hostCeiling - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
   }
 
   const rawUserMetadata = { ...(opts.body && opts.body.userMetadata) };
@@ -307,9 +322,14 @@ async function createBbSession(opts) {
 // that stub fetchLiveBrowserbaseSessionsToday with different return values
 // back-to-back need to clear it between cases or they'll read a stale value
 // cached by the previous test's mock.
+// Clock seam for the time-boxed Tier-1 boost (tests set it; production uses real time).
+let _nowOverride = null;
+function _now() { return _nowOverride ? new Date(_nowOverride) : new Date(); }
+function _setNowForTests(iso) { _nowOverride = iso || null; }
+
 function _resetDayCapCacheForTests() {
   _dayCapCache = { key: null, count: null, ts: 0 };
   _openingWindowCache = { count: null, ts: 0 };
 }
 
-module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, BB_CATEGORIES, _resetDayCapCacheForTests };
+module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, BB_CATEGORIES, _resetDayCapCacheForTests, _setNowForTests };

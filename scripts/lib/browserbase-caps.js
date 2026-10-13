@@ -197,6 +197,36 @@ function isTier1RecoveryHost(host) {
 }
 
 /**
+ * BRO-5243 Option B (owner decision, Linear BRO-5243 comment 2026-10-13T13:15Z):
+ * a time-boxed raise of the daily ceiling for Tier-1 recovery hosts only, so
+ * the WSJ/NYT/New Yorker backlog can drain. It switches itself off at `until`
+ * (through 2026-10-27 UTC); nothing needs reverting. Kill switch:
+ * BROWSERBASE_TIER1_BOOST_DISABLED=true. Delete this block, its two call sites
+ * (browserbase-session.js, collect-review-texts.js) and its tests after expiry.
+ */
+const TIER1_RECOVERY_BOOST = Object.freeze({ sessions: 100, until: '2026-10-28T00:00:00Z' });
+
+/** Extra sessions the boost adds today, for any host (0 once expired or disabled). */
+function activeTier1Boost({ now = new Date(), env = process.env } = {}) {
+  if (env.BROWSERBASE_TIER1_BOOST_DISABLED === 'true') return 0;
+  return now.getTime() < Date.parse(TIER1_RECOVERY_BOOST.until) ? TIER1_RECOVERY_BOOST.sessions : 0;
+}
+
+/** Extra sessions the boost adds for this host: activeTier1Boost on Tier-1 hosts, else 0. */
+function tier1RecoveryBoost(host, opts = {}) {
+  return isTier1RecoveryHost(host) ? activeTier1Boost(opts) : 0;
+}
+
+/**
+ * The boost a caller's day ceiling gets: exempt (opening-night) callers get it
+ * for any host, so boosted Tier-1 spend never squeezes them; others only on
+ * Tier-1 hosts. The chokepoint and the collector's local check both use this.
+ */
+function tier1BoostForCaller(host, { exempt = false, ...opts } = {}) {
+  return exempt ? activeTier1Boost(opts) : tier1RecoveryBoost(host, opts);
+}
+
+/**
  * @param {object} params
  * @param {number} params.sessionsToday - Sessions consumed across all runs today
  * @param {number} params.sessionsThisRun - Sessions consumed in the current run
@@ -247,6 +277,10 @@ module.exports = {
   OPENING_WINDOW_RESERVE_OPTS,
   openingWindowReserve,
   TIER1_RECOVERY_HOSTS,
+  TIER1_RECOVERY_BOOST,
+  activeTier1Boost,
+  tier1RecoveryBoost,
+  tier1BoostForCaller,
   DEFAULT_DENY_HOSTS,
   resolveDenyHosts,
   hostMatchesAny,

@@ -233,3 +233,26 @@ test('BRO-5243 openingWindowReserve: per-show below the cap, capped above it, ga
   assert.equal(caps.resolveOpeningWindowReserveMax({ BROWSERBASE_OPENING_WINDOW_RESERVE_MAX: '40' }), 40);
   assert.deepEqual({ ...caps.OPENING_WINDOW_RESERVE_OPTS }, { lookbackDays: 1, lookAheadHours: 48 });
 });
+
+// BRO-5243 Option B: the time-boxed Tier-1 boost switches itself off.
+test('tier1RecoveryBoost: +100 for Tier-1 hosts through 2026-10-27 UTC, 0 after, 0 elsewhere', () => {
+  const { tier1RecoveryBoost, activeTier1Boost, TIER1_RECOVERY_BOOST } = require('../../scripts/lib/browserbase-caps.js');
+  const at = (iso) => ({ now: new Date(iso), env: {} });
+  assert.equal(TIER1_RECOVERY_BOOST.until, '2026-10-28T00:00:00Z');
+  assert.equal(tier1RecoveryBoost('www.wsj.com', at('2026-10-13T16:00:00Z')), 100);
+  assert.equal(tier1RecoveryBoost('nytimes.com', at('2026-10-27T23:59:59Z')), 100);
+  assert.equal(tier1RecoveryBoost('wsj.com', at('2026-10-28T00:00:00Z')), 0);
+  assert.equal(tier1RecoveryBoost('deadline.com', at('2026-10-13T16:00:00Z')), 0);
+  assert.equal(tier1RecoveryBoost(null, at('2026-10-13T16:00:00Z')), 0);
+  assert.equal(activeTier1Boost({ now: new Date('2026-10-13T16:00:00Z'), env: { BROWSERBASE_TIER1_BOOST_DISABLED: 'true' } }), 0);
+});
+
+test('tier1BoostForCaller: exempt callers get the boost for any host, others only on Tier-1', () => {
+  const { tier1BoostForCaller } = require('../../scripts/lib/browserbase-caps.js');
+  const on = { now: new Date('2026-10-20T12:00:00Z'), env: {} };
+  const off = { now: new Date('2026-10-28T00:00:00Z'), env: {} };
+  assert.equal(tier1BoostForCaller('deadline.com', { exempt: true, ...on }), 100);
+  assert.equal(tier1BoostForCaller('deadline.com', { exempt: false, ...on }), 0);
+  assert.equal(tier1BoostForCaller('wsj.com', { exempt: false, ...on }), 100);
+  assert.equal(tier1BoostForCaller('deadline.com', { exempt: true, ...off }), 0);
+});

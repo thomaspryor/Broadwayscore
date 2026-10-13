@@ -166,7 +166,8 @@ const {
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
-const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost } = require('./lib/browserbase-caps');
+const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
+const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
 /** BRO-5243: true when the URL's host is on the Browserbase deny list (never a review). */
 function isDeniedBrowserbaseHost(url) {
@@ -2231,6 +2232,11 @@ function canUseBrowserbase(urlDomain) {
  * ('day' | 'run' | 'domain'). Only cap reasons make a failure a deferral
  * (route_not_attempted_cap, BRO-5222); 'disabled' is not a spend decision.
  */
+/** True when this run is exempt from the opening-window reserve, judged as the chokepoint judges it. */
+function browserbaseRunIsExempt() {
+  return isBbExemptCaller(process.argv[1] || null, resolveBbExemptScripts(), process.env.GITHUB_WORKFLOW || null, process.env.BD_OPENING_NIGHT || null);
+}
+
 function browserbaseBlockReason(urlDomain) {
   if (CONFIG.browserbaseKillSwitch) return 'disabled';
   if (!CONFIG.browserbaseEnabled) return 'disabled';
@@ -2246,7 +2252,10 @@ function browserbaseBlockReason(urlDomain) {
     sessionsPerDomain: browserbaseUsage.sessionsPerDomain || {},
     urlDomain,
     config: {
-      maxPerDay: CONFIG.browserbaseMaxSessionsPerDay,
+      // Time-boxed Tier-1 boost (BRO-5243 Option B), mirroring the chokepoint:
+      // Tier-1 hosts get it, and opening-night (exempt) runs get it for every
+      // host so boosted Tier-1 spend never squeezes them.
+      maxPerDay: CONFIG.browserbaseMaxSessionsPerDay + tier1BoostForCaller(urlDomain, { exempt: browserbaseRunIsExempt() }),
       maxPerRun: CONFIG.browserbaseMaxSessionsPerRun,
       maxPerDomain: CONFIG.browserbaseMaxSessionsPerDomain,
       reserve: CONFIG.browserbaseRecoveryReserve,
