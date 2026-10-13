@@ -1778,9 +1778,9 @@
     "queuedAt": "2026-10-13T16:31:06.668Z"
   },
   {
-    "conditionKey": "land:land/bro-3444-digest-recheck",
-    "title": "Landing blocked: rebase red on land/bro-3444-digest-recheck",
-    "description": "land.yml did not land land/bro-3444-digest-recheck: the rebase gate went red at 752583a080. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38428419337",
+    "conditionKey": "land:land/bro-5261-s2-retro-fixes",
+    "title": "Landing blocked: rebase red on land/bro-5261-s2-retro-fixes",
+    "description": "land.yml did not land land/bro-5261-s2-retro-fixes: the rebase gate went red at 9157c3816a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5261-s2-retro-fixes @ 9157c3816a (origin/land/bro-5261-s2-retro-fixes) → origin/main @ 9ca8531c19 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9ca8531c19: Rebasing (1/1) error: could not apply 9157c3816ac... BRO-5261: retro-review fixes for BRO-5137, BRO-2770, BRO-2716 hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflic Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38417354255",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1790,7 +1790,7 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/bro-3444-digest-recheck"
+        "value": "land/bro-5261-s2-retro-fixes"
       },
       {
         "name": "gate",
@@ -1798,14 +1798,14 @@
       },
       {
         "name": "tip",
-        "value": "752583a0809bdfb25ebab67c327282b89273a677"
+        "value": "9157c3816ac9e1cc0e266508e84047a599ba2db9"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38428419337"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38417354255"
       }
     ],
-    "queuedAt": "2026-10-13T16:52:01.487Z"
+    "queuedAt": "2026-10-13T17:47:30.793Z"
   },
   {
     "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
