@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T20:50:02.998Z",
+  "generatedAt": "2026-10-13T22:35:01.884Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -523,6 +523,138 @@
       ]
     },
     {
+      "id": "nina-off-west-end-2026",
+      "title": "Nina",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-12",
+      "status": "open",
+      "slug": "nina-off-west-end",
+      "thumbnail": null,
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ]
+    },
+    {
       "id": "fish-off-broadway-2026",
       "title": "Fish",
       "market": "broadway",
@@ -941,25 +1073,23 @@
       "status": "open",
       "slug": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
       "thumbnail": "/images/shows/the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thumbnail.jpg",
-      "siteScore": 81.86,
-      "liveScore": 82,
-      "scoreDrift": 0.14000000000000057,
+      "siteScore": 82.73,
+      "liveScore": 83,
+      "scoreDrift": 0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 17,
       "t1": 4,
       "t2": 3,
-      "t3": 7,
-      "positive": 12,
-      "mixed": 1,
+      "t3": 10,
+      "positive": 14,
+      "mixed": 2,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:7/8"
-        ],
-        "highConfidence": 7,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -969,7 +1099,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1415,6 +1545,18 @@
           "m": 1,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-13T22:35:01.884Z",
+          "rc": 17,
+          "s": 82.73,
+          "t1": 4,
+          "t2": 3,
+          "t3": 10,
+          "p": 14,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1428,23 +1570,23 @@
       "status": "open",
       "slug": "king-lear-royal-exchange-regional-2026",
       "thumbnail": "/images/shows/king-lear-royal-exchange-regional-2026/thumbnail.jpg",
-      "siteScore": 71.12,
-      "liveScore": 71,
-      "scoreDrift": -0.12000000000000455,
+      "siteScore": 70.35,
+      "liveScore": 70,
+      "scoreDrift": -0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 10,
       "t1": 2,
       "t2": 3,
-      "t3": 4,
+      "t3": 5,
       "positive": 4,
-      "mixed": 4,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "10/12 total",
           "T1:2/3",
           "hi-conf:7/8"
         ],
@@ -1864,6 +2006,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-13T22:35:01.884Z",
+          "rc": 10,
+          "s": 70.35,
+          "t1": 2,
+          "t2": 3,
+          "t3": 5,
+          "p": 4,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     }
@@ -2091,7 +2245,7 @@
     },
     {
       "id": "doll-day-afternoon-off-broadway-2026",
-      "title": "  Doll Day Afternoon",
+      "title": "Doll Day Afternoon",
       "market": "broadway",
       "category": "off-broadway",
       "type": "play",

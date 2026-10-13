@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T20:49:50.723Z",
+  "timestamp": "2026-10-13T22:34:49.216Z",
   "stats": {
-    "totalReviews": 56437,
-    "alreadyFlagged": 21038,
+    "totalReviews": 56444,
+    "alreadyFlagged": 21037,
     "dateGuardCatches": 212,
     "directorMismatch": 1874,
     "tvFilmSignals": 1643,
-    "londonSignals": 2237,
+    "londonSignals": 2238,
     "offBroadwaySignals": 510,
     "yearMismatch": 139,
-    "noPublishDate": 5291
+    "noPublishDate": 5290
   },
   "findings": [
     {
@@ -22110,7 +22110,7 @@
     },
     {
       "showId": "jeeves-takes-charge-west-end-2026",
-      "file": "readaboutstuff--unknown.json",
+      "file": "readaboutstuff--dan-english.json",
       "score": 66,
       "publishDate": "2026-08-21",
       "url": "https://readaboutstuff.com/2026/08/21/review-jeeves-takes-charge-charing-cross-theatre-london/",
@@ -64586,6 +64586,19 @@
       ]
     },
     {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-10-13",
+      "url": "https://monstagigz.com/2026/10/13/theatre-review-ilford-boy-starring-leo-whitfield-harris-craig-steen-ria-zmitrowicz-lindsey-coulson-at-the-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "illinoise-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 91,
@@ -65565,7 +65578,7 @@
     },
     {
       "showId": "jeeves-takes-charge-west-end-2026",
-      "file": "theatreandtonic--unknown.json",
+      "file": "theatreandtonic--emmie-newitt.json",
       "score": 97,
       "publishDate": "2026-08-19",
       "url": "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
@@ -79462,7 +79475,7 @@
     {
       "showId": "the-hot-wing-king-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 57,
       "publishDate": "2024-07-19",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-hot-wing-king-review-dorfman-national-theatre-cmp663bfr",
       "findings": [
