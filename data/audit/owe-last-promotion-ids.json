@@ -1,6 +1,12 @@
 {
-  "generatedAt": "2026-10-12T22:33:04.966Z",
-  "promoted": [],
+  "generatedAt": "2026-10-13T20:45:27.814Z",
+  "promoted": [
+    {
+      "id": "nina-off-west-end-2026",
+      "source": "guardian-review",
+      "sourceUrl": "https://www.theguardian.com/stage/2026/oct/12/nina-review-chekhov-seagull-battersea-arts-centre-london"
+    }
+  ],
   "rejected": [
     {
       "title": "Triumph",
@@ -1241,6 +1247,22 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Shakespeare Up Close: Macbeth",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-29))"
+    },
+    {
+      "title": "Shakespeare Up Close: Romeo and Juliet",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-29))"
     }
   ]
 }
