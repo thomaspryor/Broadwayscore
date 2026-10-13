@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2618",
   "planId": "bbf5022e-e864-4420-8b59-5d4dec2e969d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T05:00:00.000Z",
   "submitter": {
     "name": null,
@@ -57,5 +57,33 @@
         "description": "Provenance for the score override."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T06:20:12.924Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json url: \"https://www.westendtheatre.com/352874/news/reviews/a-midsummer-nights-dream-globe-reviews/\" -> \"https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-shakespeares-globe/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json criticName: \"Julianna Barnaby\" -> \"Dominic Cavendish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json humanReviewNote: null -> \"Telegraph 3/5 by Dominic Cavendish (Shakespeare's Globe, until Aug 29), read in full 2026-10-13. The file held a westendtheatre.com round-up digest scored 65 off an excerpt; a misfiled copy under the Regent's Park show carried 93 from that show's 5/5 stars. BRO-2618.\""
+    }
+  ]
 }
