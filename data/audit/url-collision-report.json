@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-13T13:04:54.610Z",
+  "generatedAt": "2026-10-13T13:27:55.488Z",
   "summary": {
-    "total": 9,
-    "high": 4,
+    "total": 13,
+    "high": 8,
     "medium": 4,
     "low": 1
   },
@@ -143,6 +143,87 @@
       "confidence": "medium"
     },
     {
+      "url": "https://theartsdesk.com/theatre/leopoldstadt-wyndhams-theatre-review-stoppard-once-personal-and-accessible",
+      "normalizedUrl": "https://theartsdesk.com/theatre/leopoldstadt-wyndhams-theatre-review-stoppard-once-personal-and-accessible",
+      "candidates": [
+        {
+          "showId": "leopoldstadt-west-end-2020",
+          "file": "artsdesk--matt-wolf.json",
+          "publishDate": "2020-02-13",
+          "openingDate": "2020-02-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        },
+        {
+          "showId": "leopoldstadt-west-end-2021",
+          "file": "artsdesk--matt-wolf.json",
+          "publishDate": null,
+          "openingDate": "2021-08-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        }
+      ],
+      "suggestedWinner": "leopoldstadt-west-end-2020",
+      "reason": "publishDate 2020-02-13 is 1 days from leopoldstadt-west-end-2020 opening (2020-02-12)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.standard.co.uk/culture/theatre/leopoldstadt-review-tom-stoppards-new-masterwork-is-an-early-contender-for-play-of-the-year-a4360871.html",
+      "normalizedUrl": "https://standard.co.uk/culture/theatre/leopoldstadt-review-tom-stoppards-new-masterwork-is-an-early-contender-for-play-of-the-year-a4360871.html",
+      "candidates": [
+        {
+          "showId": "leopoldstadt-west-end-2020",
+          "file": "standard--nick-curtis.json",
+          "publishDate": "2020-02-13",
+          "openingDate": "2020-02-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "standard"
+        },
+        {
+          "showId": "leopoldstadt-west-end-2021",
+          "file": "standard--nick-curtis.json",
+          "publishDate": null,
+          "openingDate": "2021-08-07",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "standard"
+        }
+      ],
+      "suggestedWinner": "leopoldstadt-west-end-2020",
+      "reason": "publishDate 2020-02-13 is 1 days from leopoldstadt-west-end-2020 opening (2020-02-12)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thetimes.co.uk/article/theatre-review-leopoldstadt-wyndhams-theatre-g7nzn7tcv",
+      "normalizedUrl": "https://thetimes.co.uk/article/theatre-review-leopoldstadt-wyndhams-theatre-g7nzn7tcv",
+      "candidates": [
+        {
+          "showId": "leopoldstadt-west-end-2020",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": "2020-02-13",
+          "openingDate": "2020-02-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "leopoldstadt-west-end-2021",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": null,
+          "openingDate": "2021-08-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "times-uk"
+        }
+      ],
+      "suggestedWinner": "leopoldstadt-west-end-2020",
+      "reason": "publishDate 2020-02-13 is 1 days from leopoldstadt-west-end-2020 opening (2020-02-12)",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -248,6 +329,33 @@
       ],
       "suggestedWinner": "the-comedy-about-spies-west-end-2025",
       "reason": "publishDate May 14th, 2025 is 8 days from the-comedy-about-spies-west-end-2025 opening (2025-05-06)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-02-07",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
       "confidence": "high"
     }
   ]
