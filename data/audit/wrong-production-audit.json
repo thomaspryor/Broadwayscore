@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T12:30:50.548Z",
+  "timestamp": "2026-10-13T12:42:11.631Z",
   "stats": {
-    "totalReviews": 56291,
-    "alreadyFlagged": 21014,
-    "dateGuardCatches": 216,
-    "directorMismatch": 1862,
+    "totalReviews": 56308,
+    "alreadyFlagged": 21018,
+    "dateGuardCatches": 217,
+    "directorMismatch": 1863,
     "tvFilmSignals": 1639,
-    "londonSignals": 2235,
+    "londonSignals": 2236,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5237
+    "noPublishDate": 5239
   },
   "findings": [
     {
@@ -46501,6 +46501,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -47440,6 +47454,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "west-end-best-friend--sarah-brown.json",
+      "publishDate": "2026-09-27",
+      "url": "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
         }
       ]
     },
@@ -63074,6 +63101,19 @@
       "score": 93,
       "publishDate": null,
       "url": "https://www.jonathanbaz.com/2026/10/hay-fever-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "littlelondonwhispers--little-london-whispers.json",
+      "publishDate": "2026-10-11",
+      "url": "https://littlelondonwhispers.substack.com/p/london-theatre-review-hay-fever",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
