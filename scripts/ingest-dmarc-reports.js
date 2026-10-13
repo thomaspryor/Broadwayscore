@@ -165,6 +165,7 @@ function stripForPersistence(report) {
 // --- Gmail API source (lazy-required so --from-dir needs no googleapis dep) ---
 async function fetchGmailReports(days) {
   const { google } = require('googleapis'); // eslint-disable-line
+  const { withGmailRetry } = require('./lib/gmail-quota-retry');
   const { GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN } = process.env;
   if (!GMAIL_CLIENT_ID || !GMAIL_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN) {
     throw new Error('Gmail source needs GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / GMAIL_REFRESH_TOKEN (or use --from-dir).');
@@ -177,15 +178,15 @@ async function fetchGmailReports(days) {
   const payloads = [];
   let pageToken;
   do {
-    const list = await gmail.users.messages.list({ userId: 'me', q, maxResults: 100, pageToken });
+    const list = await withGmailRetry(() => gmail.users.messages.list({ userId: 'me', q, maxResults: 100, pageToken }));
     for (const { id } of list.data.messages || []) {
-      const msg = await gmail.users.messages.get({ userId: 'me', id, format: 'full' });
+      const msg = await withGmailRetry(() => gmail.users.messages.get({ userId: 'me', id, format: 'full' }));
       for (const part of walkParts(msg.data.payload)) {
         const filename = part.filename || '';
         if (!/\.(zip|gz|xml)$/i.test(filename)) continue;
         const attachmentId = part.body && part.body.attachmentId;
         if (!attachmentId) continue;
-        const att = await gmail.users.messages.attachments.get({ userId: 'me', messageId: id, id: attachmentId });
+        const att = await withGmailRetry(() => gmail.users.messages.attachments.get({ userId: 'me', messageId: id, id: attachmentId }));
         payloads.push({ filename, buffer: Buffer.from(att.data.data, 'base64url') });
       }
     }
