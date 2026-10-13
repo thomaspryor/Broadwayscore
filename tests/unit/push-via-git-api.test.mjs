@@ -707,6 +707,80 @@ test('BRO-2824: a spent deadline (0) still runs one attempt, and an unset/garbag
   }
 });
 
+// BRO-3125: PUSH_API_DEADLINE_SEC was checked only BETWEEN attempts, so the
+// one in-flight attempt still ran every op at the full GIT_NET_TIMEOUT_SEC and
+// could overrun the caller's deadline by ~5 min. Each op's cap is now clamped
+// to max(time left, PUSH_OP_MIN_TIMEOUT_SEC). This shim records the seconds
+// argument every timed op receives (`timeout -k 10 <secs> git <sub> ...`),
+// then fails pushes at once as a timeout, so the test reads the clamp directly
+// instead of waiting on wall-clock time.
+function recordingTimeoutShim(tmp, logFile) {
+  return installTimeoutShim(tmp, `#!/bin/bash
+secs="$3"; shift 3
+sub=""
+for a in "$@"; do
+  case "$a" in ls-remote|fetch|push) sub="$a"; break ;; esac
+done
+echo "$secs $sub" >> "${logFile}"
+[ "$sub" = "push" ] && exit 124
+exec "$@"
+`);
+}
+
+async function runRecorded(extraEnv) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-clamp-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+    const logFile = path.join(tmp, 'timeouts.log');
+    const res = await spawnScriptWithEnv(['main', baseSha, '1'], runnerDir, {
+      PATH: `${recordingTimeoutShim(tmp, logFile)}:${process.env.PATH}`,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
+      ...extraEnv,
+    });
+    const ops = fs.existsSync(logFile)
+      ? fs.readFileSync(logFile, 'utf8').trim().split('\n').filter(Boolean).map((l) => { const [secs, sub] = l.split(' '); return { secs: Number(secs), sub }; })
+      : [];
+    return { res, ops };
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}
+
+test('BRO-3125: with the deadline spent, every network op of the one attempt is clamped to the floor', async () => {
+  const { res, ops } = await runRecorded({ PUSH_API_DEADLINE_SEC: '0', GIT_NET_TIMEOUT_SEC: '90', PUSH_OP_MIN_TIMEOUT_SEC: '7' });
+  const gitOps = ops.filter((o) => o.sub);
+  assert.ok(gitOps.some((o) => o.sub === 'push'), `the push must have run under the shim\n${res.stderr}`);
+  assert.ok(gitOps.some((o) => o.sub === 'ls-remote'), `ls-remote must have run under the shim\n${res.stderr}`);
+  assert.deepEqual(gitOps.filter((o) => o.secs !== 7), [], `every op must get the 7s floor, not 90s: ${JSON.stringify(gitOps)}`);
+  assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124, cap 7s\)/, 'the log must name the cap the push actually ran under');
+  assert.match(res.stderr, /1 timed out at the 7s cap/);
+});
+
+test('BRO-3125: no deadline keeps the full GIT_NET_TIMEOUT_SEC cap (direct callers unchanged)', async () => {
+  const { res, ops } = await runRecorded({ GIT_NET_TIMEOUT_SEC: '90', PUSH_OP_MIN_TIMEOUT_SEC: '7' });
+  const gitOps = ops.filter((o) => o.sub);
+  assert.ok(gitOps.length >= 2, `expected ls-remote and push under the shim\n${res.stderr}`);
+  assert.deepEqual(gitOps.filter((o) => o.secs !== 90), [], JSON.stringify(gitOps));
+  assert.match(res.stderr, /cap 90s/);
+});
+
+test('BRO-3125: a floor above the cap leaves the cap, and garbage values fall back to defaults', async () => {
+  const high = await runRecorded({ PUSH_API_DEADLINE_SEC: '0', GIT_NET_TIMEOUT_SEC: '30', PUSH_OP_MIN_TIMEOUT_SEC: '200' });
+  assert.deepEqual(high.ops.filter((o) => o.sub && o.secs !== 30), [], JSON.stringify(high.ops));
+  const garbage = await runRecorded({ PUSH_API_DEADLINE_SEC: '0', GIT_NET_TIMEOUT_SEC: 'abc', PUSH_OP_MIN_TIMEOUT_SEC: '0' });
+  const gitOps = garbage.ops.filter((o) => o.sub);
+  assert.ok(gitOps.length >= 2, garbage.res.stderr);
+  // GIT_NET_TIMEOUT_SEC=abc -> 90, floor 0 -> 20, deadline spent -> 20.
+  assert.deepEqual(gitOps.filter((o) => o.secs !== 20), [], JSON.stringify(gitOps));
+});
+
 // BRO-2951: a TIMEOUT-classified retry used to sleep a near-flat 1-3s
 // regardless of how many times it had already timed out — hammering straight
 // back into an active GitHub-side throttle window (confirmed live: 4/4
