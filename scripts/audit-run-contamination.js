@@ -386,8 +386,10 @@ function main() {
   // Advisory gate for check-corpus-drift: new contamination (a recent pre-window row,
   // a counted republished page, a human flag beaten by a clear) above the agreed ceiling.
   const max = argVal('max-actionable');
-  if (max !== undefined && max !== null && c.preWindow && c.republished && c.flagVsClear) {
-    const actionable = c.preWindow.recentUnexplained + c.republished.count + c.flagVsClear.flaggedAfterClear;
+  // Sums the classes that ran, so `--class=2 --max-actionable=0` gates class 2 alone (before BRO-5239 it
+  // needed classes 2, 3 and 4 together and silently passed otherwise).
+  if (max !== undefined && max !== null && (c.preWindow || c.republished || c.flagVsClear)) {
+    const actionable = (c.preWindow ? c.preWindow.recentUnexplained : 0) + (c.republished ? c.republished.count : 0) + (c.flagVsClear ? c.flagVsClear.flaggedAfterClear : 0);
     console.log(`ACTIONABLE ${actionable} (ceiling ${max}): recent unexplained pre-window + counted republished + human flag beaten by clear`);
     if (actionable > Number(max)) process.exitCode = 1;
   }

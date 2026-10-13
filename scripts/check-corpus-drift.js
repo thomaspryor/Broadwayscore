@@ -141,7 +141,7 @@ const AUDITS = [
     name: 'run-contamination',
     label: 'reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear)',
     script: 'audit-run-contamination.js',
-    args: ['--max-actionable=44'],
+    args: ['--max-actionable=0'], // measured 0 on 2026-10-13 after the BRO-5239 sweep (was 44)
     crashCodes: [3],           // 0 under ceiling / 1 above (drift) / 3 = corpus unreadable
   },
   {
