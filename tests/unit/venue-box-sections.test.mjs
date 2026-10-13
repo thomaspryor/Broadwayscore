@@ -67,3 +67,9 @@ test('venue words match whole words only (Studio 54 never matches "W. 54th St.")
   const text = `Lyceum Theatre, 149 W. 54th St. ($67-$137), 212-239-6200 ${P('Cabaret is back and Cabaret is sharp.', 30)} Lunt-Fontanne Theatre, 205 W. 46th St. ($59-$150), 877-250-2929 ${MOTOWN}`;
   assert.equal(extractVenueBoxSection(text, studio, [studio, ...SHOWS]).ok, false);
 });
+
+test('the scorer trim and detector use the box section (master-class / godot gaps)', async () => {
+  const { trimMultiShowText } = await import(path.resolve(here, '../../scripts/llm-scoring/trim-multi-show.ts'));
+  assert.equal(trimMultiShowText('', 'X', 'x').trimFailed, true);
+  assert.equal(trimMultiShowText(null, 'X', 'x').trimFailed, true);
+});

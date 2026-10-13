@@ -98,8 +98,14 @@ export function trimMultiShowText(
   targetShowTitle: string,
   targetShowId: string,
 ): TrimResult {
+  if (!fullText) {
+    return { text: fullText, trimmed: false, trimFailed: true, method: 'none', originalLength: 0, trimmedLength: 0 };
+  }
   const byHeading = trimByHeading(fullText, targetShowTitle);
-  if (!byHeading.trimFailed || !fullText || !targetShowId) return byHeading;
+  // A heading "trim" that keeps (nearly) the whole text removed nothing
+  // (master-class-2011: 5693 -> 5693); let the box method try.
+  const headingRemovedText = byHeading.trimmed && byHeading.trimmedLength < byHeading.originalLength * 0.95;
+  if (headingRemovedText || !targetShowId) return byHeading;
   // WSJ-style columns carry no headings; each review has a production box (BRO-5294).
   const box = extractVenueBoxSectionForShowId(fullText, targetShowId);
   if (!box.ok || !box.text) return byHeading;

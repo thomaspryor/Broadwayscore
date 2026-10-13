@@ -198,7 +198,12 @@ export function detectMultiShow(
     };
   }
 
-  // 1 other show with 5-6 mentions — just warn
+  // 1 other show with 5-6 mentions: a review column if its production boxes
+  // say so (waiting-for-godot-2009 named another show 5 times), else just warn.
+  const boxColumn = extractVenueBoxSectionForShowId(text, targetShowId);
+  if (boxColumn.ok) {
+    return { isMultiShowReview: true, otherShows, recommendation: 'warn', reason: `Review column: ${boxColumn.reason}` };
+  }
   return {
     isMultiShowReview: false,
     otherShows,
