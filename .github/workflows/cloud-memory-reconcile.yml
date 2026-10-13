@@ -90,6 +90,8 @@ jobs:
             else
               node scripts/lib/cloud-memory-reconcile.js --error="$SOURCE_ERROR" || rc=$?
             fi
+            # BRO-2556: refresh the uncapped note index cloud sessions grep.
+            node scripts/lib/cloud-memory-index.js cloud-memory || echo "::warning::cloud-memory INDEX.txt regeneration failed"
             git add cloud-memory/ data/audit/cloud-memory-drift.json
             if git diff --staged --quiet; then
               echo "Nothing to commit"

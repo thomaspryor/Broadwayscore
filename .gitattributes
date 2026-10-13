@@ -393,3 +393,8 @@ data/audit/alert-digest-queue.json merge-coverage=exempt
 # GitHub collapse it in the diff view.
 cloud-memory/** linguist-vendored=true
 cloud-memory/** linguist-generated=true
+
+# BRO-2556: generated note index with several writers (Mac session-stop sync,
+# cloud-memory-reconcile.yml). Union keeps a land rebase from conflicting; the
+# next regeneration rewrites it sorted and de-duplicated.
+cloud-memory/INDEX.txt merge=union

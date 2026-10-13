@@ -101,6 +101,15 @@ elif ! node "$MERGE_LIB" "$SRC" "$DEST" --repo="$REPO" $VERBOSE $DRY_RUN; then
   _copy_without_deleting
 fi
 
+# BRO-2556: regenerate the uncapped note index cloud sessions grep
+# (cloud-memory/INDEX.txt). Its own step, after the merge AND both no-delete
+# fallbacks, so every path refreshes it. Not .md, so the merge never sees it.
+# A failure only costs a stale index; it never fails the sync.
+if [ -z "$DRY_RUN" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/cloud-memory-index.js" ]; then
+  node "$SCRIPT_DIR/lib/cloud-memory-index.js" "$DEST" \
+    || echo "sync-memory-to-repo: INDEX.txt regeneration failed — index left as is" >&2
+fi
+
 # NOTE ON LOCKING: the merge deliberately runs outside the $LOCK below (which
 # only guards the git commit/push). Two session-stops racing here cannot lose
 # data: a mirror-side file is only ever deleted when the manifest proves we
