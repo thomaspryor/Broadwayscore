@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5243-b",
   "planId": "be209a28-0ba6-4106-b358-729d0f32646c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T11:27:49.000Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,18 @@
         "description": "Reason for the flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T13:02:27.375Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/wsj--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/wsj--charles-isherwood.json isNonReviewReason: null -> \"BRO-5243: no such review by this critic at this outlet (fabricated WSJ URL); real review is broadwaynews--charles-isherwood.json\""
+    }
+  ]
 }
