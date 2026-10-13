@@ -210,9 +210,11 @@ test('BRO-923: a rejected candidate does not donate the next critic\'s URL to th
   assert.ok(scheck, 'expected a Frank Scheck NYSR entry');
   assert.ok(finkle, 'expected a David Finkle NYSR entry');
 
-  // Scheck's own candidate (the /tag/ page) is rejected, so he should retry
-  // the next candidate in the queue rather than stealing Finkle's real URL.
-  assert.strictEqual(scheck.url, finkleUrl);
-  assert.strictEqual(finkle.url, null,
-    'the queue is exhausted after Scheck retries into it — Finkle stays null, not duplicated');
+  // Scheck's own candidate (the /tag/ page) is rejected. BRO-3504: the
+  // remaining anchor is named for Finkle ("David Finkle, <a ...>"), so Scheck
+  // must NOT retry into it (pre-BRO-3504 positional retry handed Scheck
+  // Finkle's URL and left Finkle null). Scheck stays null; Finkle keeps his.
+  assert.strictEqual(scheck.url, null,
+    'Scheck\'s only own anchor was rejected; he must not take Finkle\'s named anchor');
+  assert.strictEqual(finkle.url, finkleUrl);
 });

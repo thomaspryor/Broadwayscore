@@ -93,7 +93,7 @@ const { resolveWriteTarget, buildSiblingIndex, tourDecision } = require('./lib/m
 const { recordMarketMisroute: _recordMarketMisroute } = require('./lib/market-misroute-ledger');
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
-const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 // 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
@@ -2356,24 +2356,25 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   // dedup silently dropped Finkle's review. Sharing one queue/index across
   // both passes means each href on the page is consumable exactly once,
   // however many extraction passes run.
+  //
+  // BRO-3504: each anchor also carries the critic name written right before it
+  // ("<p>Frank Scheck, <a ...>"), and assignment picks by that name first
+  // (orderAnchorCandidates), so an outlet whose anchors are in a different
+  // order from critic discovery no longer swaps links between its critics.
+  // Positional order is only the fallback when there is no name signal.
+  let sharedAnchorsByOutlet = null;
   let sharedUrlsByOutlet = null;
-  let sharedUrlIdxByOutlet = null;
+  let sharedConsumedByOutlet = null;
   function getSharedUrlQueues() {
-    if (sharedUrlsByOutlet) return { urlsByOutlet: sharedUrlsByOutlet, urlIdxByOutlet: sharedUrlIdxByOutlet };
+    if (sharedUrlsByOutlet) return { urlsByOutlet: sharedUrlsByOutlet };
+    sharedAnchorsByOutlet = scanRoundupOutletAnchors(html, normalizeOutlet);
     sharedUrlsByOutlet = {};
-    sharedUrlIdxByOutlet = {};
-    const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
-    let aMatch;
-    while ((aMatch = anchorRe.exec(html)) !== null) {
-      const href = aMatch[1];
-      const text = aMatch[2].replace(/:$/, '').trim();
-      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
-      const oid = normalizeOutlet(text);
-      if (!oid) continue;
-      if (!sharedUrlsByOutlet[oid]) sharedUrlsByOutlet[oid] = [];
-      if (!sharedUrlsByOutlet[oid].includes(href)) sharedUrlsByOutlet[oid].push(href);
+    sharedConsumedByOutlet = {};
+    for (const [oid, entries] of Object.entries(sharedAnchorsByOutlet)) {
+      sharedUrlsByOutlet[oid] = entries.map((e) => e.href);
+      sharedConsumedByOutlet[oid] = new Set();
     }
-    return { urlsByOutlet: sharedUrlsByOutlet, urlIdxByOutlet: sharedUrlIdxByOutlet };
+    return { urlsByOutlet: sharedUrlsByOutlet };
   }
 
   // Assign `review` the next unconsumed queue slot for its outlet, skipping
@@ -2384,15 +2385,23 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   // without trying the next one, so once both passes shared one index, a
   // rejected candidate for critic A could silently donate critic B's real URL
   // to A (B then gets null) instead of A just trying the next candidate.
+  // BRO-3504: candidates come from orderAnchorCandidates (name match first,
+  // positional fallback), not strictly the next index.
   function assignUrlFromSharedQueue(review) {
     getSharedUrlQueues();
-    const queue = sharedUrlsByOutlet[review.outletId];
-    if (!queue || queue.length === 0) return { assigned: false, rejected: 0 };
-    let idx = sharedUrlIdxByOutlet[review.outletId] || 0;
+    const entries = sharedAnchorsByOutlet[review.outletId];
+    if (!entries || entries.length === 0) return { assigned: false, rejected: 0 };
+    const consumed = sharedConsumedByOutlet[review.outletId];
+    const rosterNames = reviews
+      .filter((r) => r !== review && r.outletId === review.outletId && r.criticName)
+      .map((r) => r.criticName);
+    const order = orderAnchorCandidates(entries, consumed, review.criticName || null, rosterNames);
     let rejected = 0;
-    while (idx < queue.length) {
-      const candidateUrl = queue[idx];
-      idx++;
+    for (const idx of order) {
+      const candidateUrl = entries[idx].href;
+      // Consumed whether accepted or rejected: validation does not depend on
+      // the critic, so a rejected href is no good for anyone (BRO-923).
+      consumed.add(idx);
       // BWW Review Roundup is manually curated by BWW editors — trust the
       // outlet→URL mapping. The cross-show URL slug guard at line 2357
       // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
@@ -2419,10 +2428,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         continue;
       }
       review.url = candidateUrl;
-      sharedUrlIdxByOutlet[review.outletId] = idx;
       return { assigned: true, rejected };
     }
-    sharedUrlIdxByOutlet[review.outletId] = idx;
     return { assigned: false, rejected };
   }
 

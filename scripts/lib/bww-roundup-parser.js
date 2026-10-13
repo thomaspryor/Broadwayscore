@@ -16,6 +16,7 @@
  */
 
 const { normalizeBylineCapture } = require('./byline-normalization');
+const { foldDiacritics } = require('./url-slug');
 
 // Latin-1 accented letters are allowed so "José Solís" / "Zoë Wanamaker" parse;
 // an ASCII-only class dropped the whole entry and merged its quote into the
@@ -176,7 +177,154 @@ function parseArticleBodyReviews(articleBody) {
   return out;
 }
 
+// ---------------------------------------------------------------------------
+// BRO-3504: anchor -> critic matching for the roundup page's outlet links.
+//
+// extractBWWRoundupReviews used to hand out each outlet's anchor hrefs in
+// plain document order. For a multi-critic outlet (NYSR, NYT, TimeOut) whose
+// anchors appear in a different order from the order the critics were
+// discovered (JSON-LD first, then articleBody), critic A silently received
+// critic B's link. BWW writes each entry as `<p>Critic Name, <a href>Outlet:</a>
+// quote</p>`, so the name sitting immediately before the anchor tells us whose
+// link it is. The functions below capture that name and pick candidates by it,
+// falling back to document order only when there is no name signal.
+// ---------------------------------------------------------------------------
+
+// Tags that start a new roundup entry; text before the last one in the window
+// belongs to a different entry. A closing </a> is NOT a boundary: BWW often
+// links the critic's name itself ("<p><a href=/people/Jesse-Oxfeld/>Jesse
+// Oxfeld</a>, <a href=...>New York Stage Review:</a>"), and that name counts.
+const ENTRY_BOUNDARY_TAG = /<(?:\/?p|br|\/?li|\/?div|\/?h[1-6]|\/?td|\/?tr)\b[^>]*>/gi;
+// Leading "Critic Name," with nothing else in the entry before the anchor.
+const NAME_BEFORE_ANCHOR = new RegExp(`^(${NAME_CAPTURE})\\s*,\\s*$`);
+
+function decodeBasicEntities(s) {
+  return s
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&#39;|&#x27;|&apos;|&rsquo;|&#8217;/gi, "'");
+}
+
+/**
+ * The critic name written immediately before an anchor in the roundup HTML
+ * ("<p>Frank Scheck, <a ...>"), or null when the entry text before the anchor
+ * is not exactly a "Name," lead-in.
+ *
+ * @param {string} html
+ * @param {number} anchorIndex - offset of the anchor's `<a` in html
+ * @returns {string|null}
+ */
+function criticNameBeforeAnchor(html, anchorIndex) {
+  if (!html || !(anchorIndex > 0)) return null;
+  let windowText = html.slice(Math.max(0, anchorIndex - 400), anchorIndex);
+  let cut = 0;
+  ENTRY_BOUNDARY_TAG.lastIndex = 0;
+  let m;
+  while ((m = ENTRY_BOUNDARY_TAG.exec(windowText)) !== null) cut = m.index + m[0].length;
+  windowText = windowText.slice(cut);
+  const text = decodeBasicEntities(windowText.replace(/<[^>]*>/g, ' '))
+    .replace(/\s+/g, ' ')
+    .trim();
+  const nm = text.match(NAME_BEFORE_ANCHOR);
+  if (!nm) return null;
+  const name = normalizeBylineCapture(nm[1]);
+  return name || null;
+}
+
+/**
+ * Scan the roundup HTML for outlet anchors, in document order, deduped per
+ * outlet by href. Same filters the inline scan in gather-reviews.js used
+ * (external links only, anchor text 3-60 chars that resolves to an outlet).
+ *
+ * @param {string} html
+ * @param {(text: string) => (string|null)} outletIdFor - outlet normalizer
+ * @returns {Record<string, Array<{href: string, criticName: string|null}>>}
+ */
+function scanRoundupOutletAnchors(html, outletIdFor) {
+  const byOutlet = {};
+  if (!html) return byOutlet;
+  const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
+  let aMatch;
+  while ((aMatch = anchorRe.exec(html)) !== null) {
+    const href = aMatch[1];
+    const text = aMatch[2].replace(/:$/, '').trim();
+    if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
+    const oid = outletIdFor(text);
+    if (!oid) continue;
+    if (!byOutlet[oid]) byOutlet[oid] = [];
+    const existing = byOutlet[oid].find((e) => e.href === href);
+    const criticName = criticNameBeforeAnchor(html, aMatch.index);
+    if (existing) {
+      if (!existing.criticName && criticName) existing.criticName = criticName;
+      continue;
+    }
+    byOutlet[oid].push({ href, criticName });
+  }
+  return byOutlet;
+}
+
+function nameTokens(name) {
+  if (!name || typeof name !== 'string') return [];
+  return foldDiacritics(normalizeBylineCapture(name) || '')
+    .toLowerCase()
+    .replace(/[^a-z]+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean);
+}
+
+/**
+ * Loose same-person check for two critic names: identical after folding, or
+ * same surname with the same first initial ("Bob Verini" / "Robert Verini"
+ * does NOT match; "J. Kelly Nestruck" / "Kelly Nestruck" does not either --
+ * both then fall back to positional order).
+ */
+function criticNamesMatch(a, b) {
+  const ta = nameTokens(a);
+  const tb = nameTokens(b);
+  if (ta.length < 2 || tb.length < 2) return false;
+  if (ta.join(' ') === tb.join(' ')) return true;
+  return ta[ta.length - 1] === tb[tb.length - 1] && ta[0][0] === tb[0][0];
+}
+
+/**
+ * Decide which of an outlet's roundup anchors a review may take, in try order.
+ * Pure: the caller validates each candidate and marks consumed indices.
+ *
+ *  1. Anchors whose lead-in name matches this critic. When any exist, ONLY
+ *     these are returned: the critic's own link is known, so a rejected one
+ *     must leave the critic url-less rather than take someone else's link.
+ *  2. Otherwise, anchors with no name signal, in document order.
+ *  3. Then anchors named for someone not in `rosterNames` (the outlet's other
+ *     known critics), in document order -- the pre-BRO-3504 positional
+ *     fallback, kept for name-spelling variants. Anchors named for another
+ *     roster critic are never offered.
+ *
+ * @param {Array<{href: string, criticName: string|null}>} entries - outlet anchors, doc order
+ * @param {Set<number>} consumed - indices already handed out or rejected
+ * @param {string|null} criticName - the review's critic, if known
+ * @param {Array<string|null>} [rosterNames] - other critics at this outlet
+ * @returns {number[]} indices into entries
+ */
+function orderAnchorCandidates(entries, consumed, criticName, rosterNames = []) {
+  const open = [];
+  (entries || []).forEach((e, i) => { if (!consumed || !consumed.has(i)) open.push(i); });
+  if (criticName) {
+    const own = open.filter((i) => entries[i].criticName && criticNamesMatch(entries[i].criticName, criticName));
+    if (own.length > 0) return own;
+  }
+  const others = (rosterNames || []).filter((n) => n && !(criticName && criticNamesMatch(n, criticName)));
+  const unnamed = open.filter((i) => !entries[i].criticName);
+  const strangers = open.filter((i) => entries[i].criticName
+    && !others.some((n) => criticNamesMatch(entries[i].criticName, n)));
+  return unnamed.concat(strangers);
+}
+
 module.exports = {
   parseArticleBodyReviews,
+  criticNameBeforeAnchor,
+  scanRoundupOutletAnchors,
+  criticNamesMatch,
+  orderAnchorCandidates,
   CRITIC_OUTLET_PATTERN,
 };
