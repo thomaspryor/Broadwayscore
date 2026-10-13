@@ -35,7 +35,6 @@ scripts/audit-serp-census-recall.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-postponed.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
-scripts/audit-stale-baseline-exceptions.test.mjs
 scripts/audit-stale-open-premises.test.mjs
 scripts/audit-stale-review-texts.test.mjs
 scripts/audit-standing-coverage.test.mjs
@@ -406,6 +405,7 @@ tests/unit/audit-pre2005-reviews-locked.test.mjs
 tests/unit/audit-push-retry-budgets.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-show-review-gap.test.mjs
+tests/unit/audit-stale-baseline-exceptions.test.mjs
 tests/unit/audit-time-bomb-test-exemption.test.mjs
 tests/unit/audit-url-collisions.test.mjs
 tests/unit/audit-verifiability-linear.test.mjs
