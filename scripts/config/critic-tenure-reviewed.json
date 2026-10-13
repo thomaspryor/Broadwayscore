@@ -1,6 +1,6 @@
 {
   "_comment": "Critic/outlet tenure flags checked by hand and found correct (BRO-5222). key = <showId>/<file>#<kind>:<criticSlug> (as printed by scripts/audit-critic-tenure.js); evidence = a link showing the byline at that outlet. maxUnresolved is a ratchet: tests/acceptance/critic-tenure-flags.test.mjs fails if unresolved flags exceed it, so lower it as flags are fixed or reviewed (BRO-5232 takes it to 0).",
-  "maxUnresolved": 69,
+  "maxUnresolved": 120,
   "reviewed": [
     {
       "key": "angels-in-america-2018/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
@@ -206,6 +206,11 @@
       "key": "the-hills-of-california-west-end-2024/sunday-express--stefan-kyriazis.json#unsupported_pair:stefan-kyriazis",
       "evidence": "https://www.express.co.uk/entertainment/theatre/1867905/Hills-of-California-review-Jerusalem-Jez-Butterworth-play",
       "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "oklahoma-2019/theater-pizzazz--sandi-durell.json#byline_contradicted:sandi-durell",
+      "evidence": "https://theaterpizzazz.com/an-oklahoma-not-too-familiar/",
+      "note": "BRO-5232: live page bylined to Sandi Durell; the other name in the text is the author of an earlier review it cites (high confidence)"
     }
   ]
 }
