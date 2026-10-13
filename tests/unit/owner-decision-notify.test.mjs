@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  extractDecisionQuestion, findOwnerDecisions, planNotification, formatEmail, MAX_LISTED,
+  collapseSelfLinks, extractDecisionQuestion, findOwnerDecisions, planNotification, formatEmail, MAX_LISTED,
 } = require('../../scripts/lib/owner-decision-notify.js');
 const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
 const { CONDITION_KEY } = require('../../scripts/notify-owner-decisions.js');
@@ -129,4 +129,18 @@ test('buildDecisionsSection: DECISION NEEDED cards in, awaiting-owner cards out'
   const merged = mergeNeedsYouSections({ bannerText: '1 tab', items: [{ title: 'tab' }] }, section);
   assert.equal(merged.items.length, 2);
   assert.match(buildSubject({ needsYou: section }), /1 decision for you/);
+});
+
+// BRO-5235: Linear stores a bare URL as [url](<url>); the doubled link pushed
+// a signed owner link past the 220-char cap and clipped it mid-signature.
+test('Linear-autolinked URLs and addresses collapse before the cap', () => {
+  const url = 'https://broadwayscorecard.com/api/admin/mezzanine-token?e=1794510194&s=d4fc690014caf92653cf5004cefe80e8';
+  const raw = `DECISION NEEDED: Reconnect Mezzanine ratings: when you have 10 minutes on your iPhone, tap ${url} and follow the steps there.`;
+  const stored = raw.replace(url, `[${url}](<${url}>)`);
+  const q = extractDecisionQuestion(`${stored}\n\nMore.`);
+  assert.equal(q, raw.replace('DECISION NEEDED: ', ''));
+  assert.equal(q.split(url).length - 1, 1, 'the link appears once');
+  assert.equal(collapseSelfLinks(`[${url}](${url})`), url);
+  assert.equal(collapseSelfLinks('mail [a@b.com](<mailto:a@b.com>) now'), 'mail a@b.com now');
+  assert.equal(collapseSelfLinks('[the docs](<https://x.example/>)'), '[the docs](<https://x.example/>)', 'real link text stays');
 });
