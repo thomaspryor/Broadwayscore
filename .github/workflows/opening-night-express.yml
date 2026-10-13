@@ -207,8 +207,10 @@ jobs:
 
       - name: Verify show exists and get opening date
         id: show_meta
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
-          SHOW_ID="${{ inputs.show_id }}"
+          SHOW_ID="${INPUT_SHOW_ID}"
           SHOW=$(node -e "
             const s = require('./data/shows.json').shows.find(s => s.id === '$SHOW_ID');
             if (!s) { console.error('Show not found: $SHOW_ID'); process.exit(1); }
@@ -234,12 +236,14 @@ jobs:
 
       - name: Clear stale pre-opening scores
         if: inputs.clear_stale_scores && steps.show_meta.outputs.opening_date != ''
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           echo "=== Clearing scores from prior-production reviews (30+ days before opening) ==="
           OPENING="${{ steps.show_meta.outputs.opening_date }}"
           node scripts/strip-stale-single-model-scores.js \
             --before-opening="$OPENING" \
-            --show="${{ inputs.show_id }}" \
+            --show="${INPUT_SHOW_ID}" \
             --apply
           echo "Score clearing complete."
 
@@ -258,15 +262,17 @@ jobs:
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           BROWSERBASE_USE_RESERVE: 'true' # opening night may use the recovery reserve (BRO-5222)
           BROWSERBASE_ENABLED: 'true'
+          INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           echo "=== Gathering review URLs (aggregator-first: BWW RR → DTLI → Playbill → SERP) ==="
           BWW_FLAG=""
-          if [ -n "${{ inputs.bww_roundup_url }}" ]; then
-            BWW_FLAG="--bww-roundup-url=${{ inputs.bww_roundup_url }}"
-            echo "  Using provided BWW RR URL: ${{ inputs.bww_roundup_url }}"
+          if [ -n "${INPUT_BWW_ROUNDUP_URL}" ]; then
+            BWW_FLAG="--bww-roundup-url=${INPUT_BWW_ROUNDUP_URL}"
+            echo "  Using provided BWW RR URL: ${INPUT_BWW_ROUNDUP_URL}"
           fi
           node scripts/gather-reviews.js \
-            --shows="${{ inputs.show_id }}" \
+            --shows="${INPUT_SHOW_ID}" \
             --from-post-opening \
             --opening-night \
             $BWW_FLAG
@@ -316,8 +322,9 @@ jobs:
           # so the mid-run checkpoint is the only safety net for an opening-
           # night run that runs long.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
-          echo "=== Collecting review texts for ${{ inputs.show_id }} ==="
+          echo "=== Collecting review texts for ${INPUT_SHOW_ID} ==="
           node scripts/collect-review-texts.js \
             --aggressive \
             --max-reviews=50
@@ -336,13 +343,15 @@ jobs:
       - name: Evaluate full-text coverage for same-night retry
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_RETRY_DELAY_HOURS: ${{ inputs.retry_delay_hours }}
         if: inputs.dry_run != true
         run: |
           node scripts/express-retry-queue.js evaluate \
-            --show="${{ inputs.show_id }}" \
+            --show="${INPUT_SHOW_ID}" \
             --market="${{ inputs.market }}" \
             --is-retry="${{ inputs.is_retry }}" \
-            --retry-delay-hours="${{ inputs.retry_delay_hours }}"
+            --retry-delay-hours="${INPUT_RETRY_DELAY_HOURS}"
 
       - name: Push review texts to private repo
         if: inputs.dry_run != true
@@ -358,11 +367,12 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           echo "=== Scoring reviews (all 3 models) ==="
           # Score only this show's unscored reviews
           npx ts-node scripts/llm-scoring/index.ts \
-            --show="${{ inputs.show_id }}" \
+            --show="${INPUT_SHOW_ID}" \
             --ensemble \
             --unscored-only \
             --limit=30
@@ -394,8 +404,10 @@ jobs:
 
       - name: Get review count before rebuild
         id: before
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
-          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${{ inputs.show_id }}\").length)" 2>/dev/null || echo "0")
+          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${INPUT_SHOW_ID}\").length)" 2>/dev/null || echo "0")
           echo "count=$COUNT" >> $GITHUB_OUTPUT
           echo "Reviews for show before rebuild: $COUNT"
 
@@ -438,8 +450,10 @@ jobs:
 
       - name: Get review count after rebuild
         id: after
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
-          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${{ inputs.show_id }}\").length)" 2>/dev/null || echo "0")
+          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${INPUT_SHOW_ID}\").length)" 2>/dev/null || echo "0")
           echo "count=$COUNT" >> $GITHUB_OUTPUT
           echo "Reviews for show after rebuild: $COUNT"
 
@@ -448,6 +462,8 @@ jobs:
       # log accordingly. Staged by the existing `git add data/audit/*.json` line.
       - name: Write Express completion record
         if: inputs.dry_run != true
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           node -e "
             const fs = require('fs');
@@ -458,8 +474,8 @@ jobs:
             const rawReviews = require('./data/reviews.json');
             const allReviews = Array.isArray(rawReviews.reviews) ? rawReviews.reviews
               : Array.isArray(rawReviews) ? rawReviews : [];
-            const showReviews = allReviews.filter(r => r.showId === '${{ inputs.show_id }}');
-            existing.shows['${{ inputs.show_id }}'] = {
+            const showReviews = allReviews.filter(r => r.showId === '${INPUT_SHOW_ID}');
+            existing.shows['${INPUT_SHOW_ID}'] = {
               completedAt: new Date().toISOString(),
               runId: '${{ github.run_id }}',
               reviewCount: showReviews.length,
@@ -514,6 +530,7 @@ jobs:
           # inside the 900s deadline above. 30s roughly triples realized
           # attempts in the same budget. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -546,7 +563,7 @@ jobs:
 
           git commit -m "data: Opening Night Express$RETRY_TAG — ${{ steps.show_meta.outputs.show_name }} ($DIFF_STR reviews)
 
-          Show: ${{ inputs.show_id }}
+          Show: ${INPUT_SHOW_ID}
           Reviews: $BEFORE → $AFTER
           Market: ${{ inputs.market }}
 
@@ -590,12 +607,14 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           PUSH_DEADLINE_SEC: '120'
           GIT_NET_TIMEOUT_SEC: '30'
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_RETRY_DELAY_HOURS: ${{ inputs.retry_delay_hours }}
         run: |
           node scripts/express-retry-queue.js evaluate \
-            --show="${{ inputs.show_id }}" \
+            --show="${INPUT_SHOW_ID}" \
             --market="${{ inputs.market }}" \
             --is-retry="${{ inputs.is_retry }}" \
-            --retry-delay-hours="${{ inputs.retry_delay_hours }}" \
+            --retry-delay-hours="${INPUT_RETRY_DELAY_HOURS}" \
             || echo "::warning::BRO-2402 failure-path retry evaluate failed — no same-night retry queued"
           if git status --porcelain data/audit/express-retry-queue.json | grep -q .; then
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -603,7 +622,7 @@ jobs:
             git add data/audit/express-retry-queue.json
             # retry runs route a still-thin digest alert; persist its ledger too
             git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
-            git commit -m "data: Express retry queued after failed run — ${{ inputs.show_id }} [skip ci]"
+            git commit -m "data: Express retry queued after failed run — ${INPUT_SHOW_ID} [skip ci]"
             bash scripts/lib/push-with-retry.sh
           fi
 
@@ -625,12 +644,14 @@ jobs:
 
       - name: Step summary
         if: always()
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           echo "## Opening Night Express — ${{ steps.show_meta.outputs.show_name }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| | |" >> $GITHUB_STEP_SUMMARY
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-          echo "| Show | ${{ inputs.show_id }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Show | ${INPUT_SHOW_ID} |" >> $GITHUB_STEP_SUMMARY
           echo "| Market | ${{ inputs.market }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Reviews (this show) | ${{ steps.before.outputs.count }} → ${{ steps.after.outputs.count }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Dry run | ${{ inputs.dry_run }} |" >> $GITHUB_STEP_SUMMARY
@@ -638,7 +659,7 @@ jobs:
           if [ -f "data/audit/opening-night-express-completed.json" ]; then
             RECORD=$(node -e "
               const d = require('./data/audit/opening-night-express-completed.json');
-              const s = d.shows && d.shows['${{ inputs.show_id }}'];
+              const s = d.shows && d.shows['${INPUT_SHOW_ID}'];
               if (s) console.log('✅ ' + s.scoredCount + '/' + s.reviewCount + ' scored at ' + s.completedAt);
               else console.log('—');
             " 2>/dev/null || echo "—")

@@ -102,15 +102,17 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
+          INPUT_SEASONS: ${{ inputs.seasons }}
         run: |
           # Exit the IBDB enrichment loop cleanly before the 30-min job
           # timeout; unenriched shows are still added, just without
           # IBDB-sourced dates. Default in bash, not a GHA || expression —
           # the expression coerces a literal 0 (= unlimited) to falsy.
-          TB="${{ inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=22
 
-          ARGS="--seasons=${{ inputs.seasons }} --time-budget-min=$TB"
+          ARGS="--seasons=${INPUT_SEASONS} --time-budget-min=$TB"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
@@ -211,6 +213,8 @@ jobs:
 
       - name: Commit and push changes
         if: always() && steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
+        env:
+          INPUT_SEASONS: ${{ inputs.seasons }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -230,7 +234,7 @@ jobs:
 
           # Create commit message
           if [ "${{ steps.discover.outputs.historical_shows_count }}" != "" ] && [ "${{ steps.discover.outputs.historical_shows_count }}" != "0" ]; then
-            git commit -m "chore: Add ${{ steps.discover.outputs.historical_shows_count }} historical shows from seasons: ${{ inputs.seasons }}"
+            git commit -m "chore: Add ${{ steps.discover.outputs.historical_shows_count }} historical shows from seasons: ${INPUT_SEASONS}"
           else
             git commit -m "chore: Historical show discovery (no new shows)"
           fi

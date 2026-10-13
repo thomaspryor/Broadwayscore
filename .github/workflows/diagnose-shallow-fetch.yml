@@ -50,4 +50,5 @@ jobs:
       - name: Time each fetch form against live main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash scripts/diagnose-shallow-fetch.sh "${{ inputs.base_age_minutes || '20' }}"
+          INPUT_BASE_AGE_MINUTES: ${{ inputs.base_age_minutes || '20' }}
+        run: bash scripts/diagnose-shallow-fetch.sh "${INPUT_BASE_AGE_MINUTES}"

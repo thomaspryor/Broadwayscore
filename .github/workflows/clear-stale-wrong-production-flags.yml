@@ -93,13 +93,16 @@ jobs:
         id: sweep
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_REDISPATCHED: ${{ inputs.redispatched }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
           set +e
           SCOPE=""
-          if [ "${{ github.event.schedule }}" = "43 13 * * *" ] || [ "${{ inputs.redispatched }}" = "true" ]; then SCOPE="--opened-within-days=21"; fi
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${{ github.event.schedule }}" = "43 13 * * *" ] || [ "${INPUT_REDISPATCHED}" = "true" ]; then SCOPE="--opened-within-days=21"; fi
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm $SCOPE 2>&1)
-          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+          elif [ "${INPUT_FORCE_BULK}" = "true" ]; then
             OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply --force-bulk $SCOPE 2>&1)
           else
             OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply $SCOPE 2>&1)
@@ -124,13 +127,15 @@ jobs:
             fix: auto-clear ${{ steps.sweep.outputs.count }} stale wrongProduction flags [audit-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## wrongProduction Stale-Flag Sweep"
             echo ""
             echo "**Would clear:** ${{ steps.sweep.outputs.would }}"
             echo "**Cleared:** ${{ steps.sweep.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
               echo "**Mode:** script exited non-zero (surge guard refusal, or a total LLM-verification outage) — see the sweep step log above, then investigate before re-running with force_bulk=true"

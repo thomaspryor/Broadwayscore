@@ -195,9 +195,11 @@ jobs:
 
       - name: Compute week-start (Monday in America/New_York)
         id: week
+        env:
+          INPUT_WEEKSTART: ${{ github.event.inputs.weekStart }}
         run: |
-          if [ -n "${{ github.event.inputs.weekStart }}" ]; then
-            ws="${{ github.event.inputs.weekStart }}"
+          if [ -n "${INPUT_WEEKSTART}" ]; then
+            ws="${INPUT_WEEKSTART}"
           else
             # "Last Monday" in NY tz — handles DST transitions correctly.
             ws=$(TZ=America/New_York date -d 'last monday' +%Y-%m-%d 2>/dev/null \

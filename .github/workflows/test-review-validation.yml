@@ -44,12 +44,16 @@ jobs:
       - name: Run test validation
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_REVIEW_URL: ${{ inputs.review_url }}
+          INPUT_SHOW_NAME: ${{ inputs.show_name }}
+          INPUT_OUTLET_NAME: ${{ inputs.outlet_name }}
+          INPUT_CRITIC_NAME: ${{ inputs.critic_name }}
         run: |
           node scripts/test-review-submission.js \
-            "${{ inputs.review_url }}" \
-            "${{ inputs.show_name }}" \
-            "${{ inputs.outlet_name }}" \
-            "${{ inputs.critic_name }}"
+            "${INPUT_REVIEW_URL}" \
+            "${INPUT_SHOW_NAME}" \
+            "${INPUT_OUTLET_NAME}" \
+            "${INPUT_CRITIC_NAME}"
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

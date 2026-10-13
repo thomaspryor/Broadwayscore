@@ -62,8 +62,9 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             node scripts/audit-opening-dates.js --dry-run --time-budget-min=20
           else
             node scripts/audit-opening-dates.js --time-budget-min=20

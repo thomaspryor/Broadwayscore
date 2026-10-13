@@ -315,6 +315,9 @@ jobs:
         env:
           DOMAIN_FILTER: ${{ inputs.domain }}
           GH_TOKEN: ${{ github.token }}
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
+          INPUT_MAX_ROUNDS: ${{ inputs.max_rounds }}
+          INPUT_MAX_REVIEWS: ${{ inputs.max_reviews }}
         run: |
           REMAINING=$(node -e "
             const fs = require('fs'), path = require('path');
@@ -359,15 +362,15 @@ jobs:
             console.log(n);
           ")
           echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
-          CURRENT=${{ inputs.current_round }}
-          MAX=${{ inputs.max_rounds }}
+          CURRENT=${INPUT_CURRENT_ROUND}
+          MAX=${INPUT_MAX_ROUNDS}
           echo "Remaining: $REMAINING reviews for ${{ inputs.domain }}, round $CURRENT of $MAX"
           if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
             NEXT=$((CURRENT + 1))
             echo "Chaining round $NEXT..."
             gh workflow run collect-soft-paywall.yml \
               -f domain=${{ inputs.domain }} \
-              -f max_reviews=${{ inputs.max_reviews }} \
+              -f max_reviews=${INPUT_MAX_REVIEWS} \
               -f retry_failed=${{ inputs.retry_failed }} \
               -f archive_first=${{ inputs.archive_first }} \
               -f max_rounds=$MAX \
@@ -399,11 +402,14 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
+          INPUT_MAX_REVIEWS: ${{ inputs.max_reviews }}
         run: |
-          echo "## Soft-Paywall Collection Round ${{ inputs.current_round }}: ${{ inputs.domain }}" >> $GITHUB_STEP_SUMMARY
+          echo "## Soft-Paywall Collection Round ${INPUT_CURRENT_ROUND}: ${{ inputs.domain }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Eligible reviews:** ${{ steps.count.outputs.eligible }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Max reviews:** ${{ inputs.max_reviews }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Max reviews:** ${INPUT_MAX_REVIEWS}" >> $GITHUB_STEP_SUMMARY
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Chained next round:** ${{ steps.chain.outputs.chained || 'false' }}" >> $GITHUB_STEP_SUMMARY
 
@@ -757,6 +763,9 @@ jobs:
         env:
           DOMAIN_LIST: ${{ env.SOFT_PAYWALL_DOMAINS }}
           GH_TOKEN: ${{ github.token }}
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
+          INPUT_MAX_ROUNDS: ${{ inputs.max_rounds }}
+          INPUT_MAX_REVIEWS: ${{ inputs.max_reviews }}
         run: |
           REMAINING=$(node -e "
             const fs = require('fs'), path = require('path');
@@ -801,15 +810,15 @@ jobs:
             console.log(n);
           ")
           echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
-          CURRENT=${{ inputs.current_round }}
-          MAX=${{ inputs.max_rounds }}
+          CURRENT=${INPUT_CURRENT_ROUND}
+          MAX=${INPUT_MAX_ROUNDS}
           echo "Remaining: $REMAINING soft-paywall reviews, round $CURRENT of $MAX"
           if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
             NEXT=$((CURRENT + 1))
             echo "Chaining round $NEXT..."
             gh workflow run collect-soft-paywall.yml \
               -f domain=all \
-              -f max_reviews=${{ inputs.max_reviews }} \
+              -f max_reviews=${INPUT_MAX_REVIEWS} \
               -f retry_failed=${{ inputs.retry_failed }} \
               -f archive_first=${{ inputs.archive_first }} \
               -f max_rounds=$MAX \
@@ -830,8 +839,10 @@ jobs:
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
       - name: Summary
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
-          echo "## Soft-Paywall Collection Round ${{ inputs.current_round }}: All Domains" >> $GITHUB_STEP_SUMMARY
+          echo "## Soft-Paywall Collection Round ${INPUT_CURRENT_ROUND}: All Domains" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Collected review texts from 6 soft-paywall domains." >> $GITHUB_STEP_SUMMARY
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY

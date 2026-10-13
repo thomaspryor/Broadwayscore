@@ -64,9 +64,10 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SHOWS: ${{ inputs.shows }}
+          INPUT_LIMIT: ${{ inputs.limit || '100' }}
         run: |
           ARGS="--backfill-historical"
-          LIMIT="${{ inputs.limit || '100' }}"
+          LIMIT="${INPUT_LIMIT}"
           if [ "$LIMIT" != "0" ]; then
             ARGS="$ARGS --limit=$LIMIT"
           fi

@@ -99,8 +99,10 @@ jobs:
 
       - name: Determine outlets to process
         id: outlets
+        env:
+          INPUT_OUTLETS: ${{ inputs.outlets || 'all-free' }}
         run: |
-          OUTLETS_INPUT="${{ inputs.outlets || 'all-free' }}"
+          OUTLETS_INPUT="${INPUT_OUTLETS}"
           if [ "$OUTLETS_INPUT" = "all-free" ]; then
             # Free outlets with dedicated score extractors (not noScoreExtractor)
             # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
@@ -138,11 +140,14 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+          INPUT_LIMIT: ${{ inputs.limit || '100' }}
+          INPUT_DELAY: ${{ inputs.delay || '2000' }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           IFS=',' read -ra OUTLET_ARRAY <<< "${{ steps.outlets.outputs.list }}"
-          LIMIT="${{ inputs.limit || '100' }}"
-          DELAY="${{ inputs.delay || '2000' }}"
-          DRY_RUN="${{ inputs.dry_run || 'false' }}"
+          LIMIT="${INPUT_LIMIT}"
+          DELAY="${INPUT_DELAY}"
+          DRY_RUN="${INPUT_DRY_RUN}"
           TOTAL_EXTRACTED=0
           TOTAL_FAILED=0
           TOTAL_ERRORS=0

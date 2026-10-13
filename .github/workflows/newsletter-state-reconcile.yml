@@ -61,10 +61,11 @@ jobs:
       - name: Reconcile
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          INPUT_EDITION: ${{ inputs.edition }}
         run: |
           ARGS=(--fix)
-          if [ -n "${{ inputs.edition }}" ]; then
-            ARGS+=(--edition="${{ inputs.edition }}")
+          if [ -n "${INPUT_EDITION}" ]; then
+            ARGS+=(--edition="${INPUT_EDITION}")
           fi
           node scripts/newsletter/verify-sent-vs-state.mjs "${ARGS[@]}"
 

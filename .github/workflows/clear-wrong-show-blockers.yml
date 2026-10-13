@@ -65,11 +65,14 @@ jobs:
 
       - name: Run cleanup
         id: cleanup
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
           set +e
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             OUT=$(node scripts/clear-wrong-show-blockers.js 2>&1)
-          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+          elif [ "${INPUT_FORCE_BULK}" = "true" ]; then
             OUT=$(node scripts/clear-wrong-show-blockers.js --apply --force-bulk 2>&1)
           else
             OUT=$(node scripts/clear-wrong-show-blockers.js --apply 2>&1)
@@ -91,12 +94,14 @@ jobs:
             fix: auto-clear ${{ steps.cleanup.outputs.count }} wrongShow blocker files [audit-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## wrongShow Blocker Cleanup"
             echo ""
             echo "**Deleted:** ${{ steps.cleanup.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.cleanup.outputs.status }}" != "0" ]; then
               echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"

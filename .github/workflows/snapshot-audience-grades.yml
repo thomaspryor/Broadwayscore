@@ -45,10 +45,13 @@ jobs:
           node-version: '20'
 
       - name: Take audience-grade snapshot
+        env:
+          INPUT_SEASON: ${{ inputs.season }}
+          INPUT_TAG: ${{ inputs.tag }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
-          if [ -n "${{ inputs.tag }}" ]; then ARGS="$ARGS --tag=${{ inputs.tag }}"; fi
+          if [ -n "${INPUT_SEASON}" ]; then ARGS="$ARGS --season=${INPUT_SEASON}"; fi
+          if [ -n "${INPUT_TAG}" ]; then ARGS="$ARGS --tag=${INPUT_TAG}"; fi
           if [ "${{ inputs.include_eligible }}" != "false" ]; then ARGS="$ARGS --include-eligible"; fi
           echo "Running: node scripts/snapshot-audience-grades.js $ARGS"
           node scripts/snapshot-audience-grades.js $ARGS

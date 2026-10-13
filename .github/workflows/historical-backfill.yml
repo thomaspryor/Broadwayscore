@@ -51,8 +51,10 @@ jobs:
 
       - name: Pick next slice
         id: pick
+        env:
+          INPUT_COUNT: ${{ github.event.inputs.count || '24' }}
         run: |
-          COUNT="${{ github.event.inputs.count || '24' }}"
+          COUNT="${INPUT_COUNT}"
           [[ "$COUNT" =~ ^[1-9][0-9]*$ ]] || COUNT=24
           FORCE=""
           [ "${{ github.event.inputs.force }}" = "true" ] && FORCE="--force"

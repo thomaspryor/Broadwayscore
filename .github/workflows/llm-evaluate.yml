@@ -41,8 +41,10 @@ jobs:
         run: npm ci
 
       - name: Run evaluation
+        env:
+          INPUT_TEST_SIZE: ${{ github.event.inputs.test_size }}
         run: |
-          ARGS="--test-size=${{ github.event.inputs.test_size }} --save-results --verbose"
+          ARGS="--test-size=${INPUT_TEST_SIZE} --save-results --verbose"
           if [ "${{ github.event.inputs.stratify }}" == "true" ]; then
             ARGS="$ARGS --by-outlet"
           fi
@@ -56,6 +58,8 @@ jobs:
 
       - name: Commit results
         if: always()
+        env:
+          INPUT_TEST_SIZE: ${{ github.event.inputs.test_size }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -63,7 +67,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: LLM evaluation results (n=${{ github.event.inputs.test_size }})
+            git commit -m "chore: LLM evaluation results (n=${INPUT_TEST_SIZE})
 
             Co-Authored-By: Claude <noreply@anthropic.com>"
             bash scripts/lib/push-with-retry.sh

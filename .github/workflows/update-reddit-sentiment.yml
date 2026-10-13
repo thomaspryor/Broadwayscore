@@ -124,6 +124,9 @@ jobs:
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
+          INPUT_SHOWS: ${{ github.event.inputs.shows }}
+          INPUT_SKIP_FRESH_HOURS: ${{ github.event.inputs.skip_fresh_hours || '20' }}
         run: |
           ARGS=""
           # refresh-stale: manual flag, or the 8th-of-month schedule tick. Drains
@@ -143,13 +146,13 @@ jobs:
             # timeout) on a manual refresh_stale=true run — ignore it here.
             ARGS="--refresh-stale --limit=25"
             echo "refresh-stale mode: draining up to 25 stale score-eligible shows (oldest first)"
-          elif [ -n "${{ github.event.inputs.show_id }}" ]; then
-            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
-          elif [ -n "${{ github.event.inputs.shows }}" ]; then
-            SKIP_FRESH_HOURS="${{ github.event.inputs.skip_fresh_hours || '20' }}"
+          elif [ -n "${INPUT_SHOW_ID}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW_ID}"
+          elif [ -n "${INPUT_SHOWS}" ]; then
+            SKIP_FRESH_HOURS="${INPUT_SKIP_FRESH_HOURS}"
             # Numeric only (free-text dispatch input); anything else falls back to 20.
             [[ "$SKIP_FRESH_HOURS" =~ ^[0-9]+(\.[0-9]+)?$ ]] || SKIP_FRESH_HOURS=20
-            ARGS="$ARGS --shows=${{ github.event.inputs.shows }} --skip-fresh-hours=$SKIP_FRESH_HOURS"
+            ARGS="$ARGS --shows=${INPUT_SHOWS} --skip-fresh-hours=$SKIP_FRESH_HOURS"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             # Manual/API trigger without filter: default to recently opened shows (≤14 days)
             # Prevents accidentally processing all open shows when only one is needed

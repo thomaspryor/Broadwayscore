@@ -58,13 +58,16 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Run audit
+        env:
+          INPUT_STATUS: ${{ inputs.status }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.status }}" ]; then
-            ARGS="$ARGS --status=${{ inputs.status }}"
+          if [ -n "${INPUT_STATUS}" ]; then
+            ARGS="$ARGS --status=${INPUT_STATUS}"
           fi
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
           node scripts/audit-aggregator-coverage.js $ARGS
 
@@ -123,6 +126,9 @@ jobs:
 
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_STATUS: ${{ inputs.status }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -136,10 +142,10 @@ jobs:
 
           git add data/audit/aggregator-coverage.json
 
-          if [ -n "${{ inputs.show }}" ]; then
-            MSG="audit: Aggregator coverage for ${{ inputs.show }}"
-          elif [ -n "${{ inputs.status }}" ]; then
-            MSG="audit: Aggregator coverage (${{ inputs.status }} shows)"
+          if [ -n "${INPUT_SHOW}" ]; then
+            MSG="audit: Aggregator coverage for ${INPUT_SHOW}"
+          elif [ -n "${INPUT_STATUS}" ]; then
+            MSG="audit: Aggregator coverage (${INPUT_STATUS} shows)"
           elif [ "${{ github.event_name }}" == "schedule" ]; then
             MSG="audit: Weekly aggregator coverage audit"
           else

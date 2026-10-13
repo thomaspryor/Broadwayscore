@@ -56,9 +56,11 @@ jobs:
 
       - name: Determine shows to process
         id: shows
+        env:
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
-          if [ -n "${{ inputs.shows }}" ]; then
-            echo "list=${{ inputs.shows }}" >> $GITHUB_OUTPUT
+          if [ -n "${INPUT_SHOWS}" ]; then
+            echo "list=${INPUT_SHOWS}" >> $GITHUB_OUTPUT
           else
             # Find shows with most reviews needing full text
             SHOWS=$(node -e "
@@ -116,6 +118,7 @@ jobs:
           # repo" step still catches a normal completion, but a timeout/
           # cancellation mid-loop loses everything since the last checkpoint.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_MAX_PER_SHOW: ${{ inputs.max_per_show }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -136,7 +139,7 @@ jobs:
 
             node scripts/collect-review-texts.js \
               --show="$show" \
-              --max=${{ inputs.max_per_show }} \
+              --max=${INPUT_MAX_PER_SHOW} \
               --batch-size=10 \
               --priority=all || true
 

@@ -40,10 +40,11 @@ jobs:
       - name: Dispatch newsletter-draft (west-end edition)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_WEEKSTART: ${{ github.event.inputs.weekStart }}
         run: |
           gh workflow run newsletter-draft.yml \
             --ref main \
             -f edition=west-end \
             -f audience=west-end \
-            -f weekStart="${{ github.event.inputs.weekStart }}"
+            -f weekStart="${INPUT_WEEKSTART}"
           echo "Dispatched newsletter-draft.yml with edition=west-end → West End audience."

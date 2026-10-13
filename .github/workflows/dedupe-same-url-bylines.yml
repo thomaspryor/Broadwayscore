@@ -81,12 +81,14 @@ jobs:
             chore: collapse ${{ steps.audit.outputs.count }} same-URL byline double-counts [same-url-dedup]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## Same-URL Byline Double-count Sweep"
             echo ""
             echo "**Cohesive (collapsible) groups detected:** ${{ steps.audit.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.audit.outputs.status }}" = "0" ]; then
               echo "**Mode:** no fix needed"

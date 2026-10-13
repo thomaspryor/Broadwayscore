@@ -52,10 +52,12 @@ jobs:
 
       - name: Write snapshot into the core-data checkout
         id: snap
+        env:
+          INPUT_DATE: ${{ inputs.date }}
         run: |
           set -euo pipefail
 
-          SNAP_DATE="${{ inputs.date }}"
+          SNAP_DATE="${INPUT_DATE}"
           if [ -z "$SNAP_DATE" ]; then SNAP_DATE="$(date -u +%Y-%m-%d)"; fi
 
           # checkout-core-data cloned the private repo to /tmp/core-data-checkout.
@@ -71,7 +73,7 @@ jobs:
           mkdir -p "$CHECKOUT/audience-history"
 
           DATE_ARG=""
-          if [ -n "${{ inputs.date }}" ]; then DATE_ARG="--date=${{ inputs.date }}"; fi
+          if [ -n "${INPUT_DATE}" ]; then DATE_ARG="--date=${INPUT_DATE}"; fi
           # Reads data/audience-buzz.json (the private copy materialised by
           # checkout-core-data); freshness-guarded inside the script.
           node scripts/snapshot-audience-full.js $DATE_ARG --out="$CHECKOUT/audience-history/${SNAP_DATE}.json"

@@ -174,15 +174,18 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOWS: ${{ github.event.inputs.shows }}
+          INPUT_SHOW_FILTER: ${{ github.event.inputs.show_filter }}
+          INPUT_MAX_SEARCHES: ${{ github.event.inputs.max_searches }}
         run: |
-          if [ -n "${{ github.event.inputs.shows }}" ]; then
-            ARGS="--shows ${{ github.event.inputs.shows }}"
-          elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
-            ARGS="--shows ${{ github.event.inputs.show_filter }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            ARGS="--shows ${INPUT_SHOWS}"
+          elif [ -n "${INPUT_SHOW_FILTER}" ]; then
+            ARGS="--shows ${INPUT_SHOW_FILTER}"
           else
             ARGS="--market ${{ github.event.inputs.market }}"
           fi
-          ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
+          ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${INPUT_MAX_SEARCHES}"
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi

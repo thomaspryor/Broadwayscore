@@ -77,6 +77,9 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHARD: ${{ inputs.shard }}
+          INPUT_TOTAL_SHARDS: ${{ inputs.total_shards }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
         run: |
           FLAGS=""
 
@@ -86,13 +89,13 @@ jobs:
             echo "Scheduled run: refreshing current cast for open shows"
           else
             # Shard flags
-            if [ -n "${{ inputs.shard }}" ]; then
-              FLAGS="$FLAGS --shard ${{ inputs.shard }} --total-shards ${{ inputs.total_shards }}"
+            if [ -n "${INPUT_SHARD}" ]; then
+              FLAGS="$FLAGS --shard ${INPUT_SHARD} --total-shards ${INPUT_TOTAL_SHARDS}"
             fi
 
             # Show filter
-            if [ -n "${{ inputs.show_filter }}" ]; then
-              FLAGS="$FLAGS --show-filter ${{ inputs.show_filter }}"
+            if [ -n "${INPUT_SHOW_FILTER}" ]; then
+              FLAGS="$FLAGS --show-filter ${INPUT_SHOW_FILTER}"
             fi
 
             # Force flag
@@ -126,19 +129,23 @@ jobs:
 
       - name: Commit and push
         if: always() && steps.git-check.outputs.changes == 'true'
+        env:
+          INPUT_SHARD: ${{ inputs.shard }}
+          INPUT_TOTAL_SHARDS: ${{ inputs.total_shards }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/cast/
 
           SHARD_MSG=""
-          if [ -n "${{ inputs.shard }}" ]; then
-            SHARD_MSG=" (shard ${{ inputs.shard }}/${{ inputs.total_shards }})"
+          if [ -n "${INPUT_SHARD}" ]; then
+            SHARD_MSG=" (shard ${INPUT_SHARD}/${INPUT_TOTAL_SHARDS})"
           fi
 
           SHOW_MSG=""
-          if [ -n "${{ inputs.show_filter }}" ]; then
-            SHOW_MSG=" for ${{ inputs.show_filter }}"
+          if [ -n "${INPUT_SHOW_FILTER}" ]; then
+            SHOW_MSG=" for ${INPUT_SHOW_FILTER}"
           fi
 
           if [ "${{ github.event_name }}" = "schedule" ]; then

@@ -218,13 +218,14 @@ jobs:
         if: always() && fromJSON(steps.remaining.outputs.remaining) > 5
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_REMAINING_CHAINS: ${{ inputs.remaining_chains }}
         run: |
           MARKET="${{ steps.market.outputs.market }}"
           # Scheduled runs get 2 chains (450 total). Manual runs chain if remaining_chains > 0.
           if [ "${{ github.event_name }}" == "schedule" ]; then
             CHAINS_LEFT=2
           else
-            CHAINS_LEFT="${{ inputs.remaining_chains }}"
+            CHAINS_LEFT="${INPUT_REMAINING_CHAINS}"
             CHAINS_LEFT="${CHAINS_LEFT:-0}"
           fi
 

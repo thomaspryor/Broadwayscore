@@ -44,9 +44,10 @@ jobs:
           WASHPOST_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          INPUT_SITE: ${{ github.event.inputs.site }}
         run: |
-          if [ -n "${{ github.event.inputs.site }}" ]; then
-            node scripts/test-paywalled-access.js --site=${{ github.event.inputs.site }}
+          if [ -n "${INPUT_SITE}" ]; then
+            node scripts/test-paywalled-access.js --site=${INPUT_SITE}
           else
             node scripts/test-paywalled-access.js
           fi

@@ -103,12 +103,14 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_WINDOW_DAYS: ${{ inputs.window_days || '7' }}
         run: |
           SHOW_ARG=""
-          if [ -n "${{ inputs.show_id }}" ]; then
-            SHOW_ARG="--show=${{ inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            SHOW_ARG="--show=${INPUT_SHOW_ID}"
           fi
-          WINDOW=$(echo "${{ inputs.window_days || '7' }}" | grep -oE '^[0-9]+$' || echo "7")
+          WINDOW=$(echo "${INPUT_WINDOW_DAYS}" | grep -oE '^[0-9]+$' || echo "7")
           FORCE_ARG=""
           if [ "${{ inputs.force || 'false' }}" = "true" ]; then
             FORCE_ARG="--force"
@@ -121,14 +123,16 @@ jobs:
         continue-on-error: true   # a verify hiccup must not fail the drop-detector job
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_WINDOW_DAYS: ${{ inputs.window_days || '7' }}
         run: |
           # Reconciles local SCORED count vs the live prod `rv` count per in-window
           # show. Staleness-gated (only alerts when a show stays behind past a normal
           # deploy cycle) so it can't false-alarm on deploy lag. Reads only the public
           # prod JSON — no Vercel token, no GitHub API.
           SHOW_ARG=""
-          if [ -n "${{ inputs.show_id }}" ]; then SHOW_ARG="--show=${{ inputs.show_id }}"; fi
-          WINDOW=$(echo "${{ inputs.window_days || '7' }}" | grep -oE '^[0-9]+$' || echo "7")
+          if [ -n "${INPUT_SHOW_ID}" ]; then SHOW_ARG="--show=${INPUT_SHOW_ID}"; fi
+          WINDOW=$(echo "${INPUT_WINDOW_DAYS}" | grep -oE '^[0-9]+$' || echo "7")
           node scripts/verify-opening-night-live.js $SHOW_ARG --window-days="$WINDOW" --alert
 
       # NOTE: snapshot-copy step removed 2026-07-19. /tmp/core-data-snapshot is

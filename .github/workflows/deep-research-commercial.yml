@@ -93,9 +93,11 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_MODEL: ${{ inputs.model }}
         run: |
           ARGS=""
-          INPUT_SHOWS="${{ inputs.shows }}"
+          INPUT_SHOWS="${INPUT_SHOWS}"
           if [ "$INPUT_SHOWS" = "all-tbd" ]; then
             ARGS="$ARGS --all-tbd"
           else
@@ -103,7 +105,7 @@ jobs:
           fi
 
           # Empty model = the script's DEFAULT_MODEL (single source, BRO-4990)
-          INPUT_MODEL="${{ inputs.model }}"
+          INPUT_MODEL="${INPUT_MODEL}"
           if [ -n "$INPUT_MODEL" ]; then
             ARGS="$ARGS --model=$INPUT_MODEL"
           fi
@@ -130,6 +132,8 @@ jobs:
         # commercial-research-queue.json (union-merged managed files).
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
+          INPUT_MODEL: ${{ inputs.model || 'script default' }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
@@ -139,8 +143,8 @@ jobs:
           else
             git commit -m "data: Deep Research commercial results (pending review)
 
-          Model: ${{ inputs.model || 'script default' }}
-          Shows: ${{ inputs.shows }}
+          Model: ${INPUT_MODEL}
+          Shows: ${INPUT_SHOWS}
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
@@ -185,10 +189,12 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          INPUT_MODEL: ${{ inputs.model || 'script default' }}
         run: |
           echo "## Deep Research Commercial Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Model:** ${{ inputs.model || 'script default' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Model:** ${INPUT_MODEL}" >> $GITHUB_STEP_SUMMARY
           echo "**Budget:** \$${{ inputs.budget || '50' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f data/commercial-pending-review.json ]; then

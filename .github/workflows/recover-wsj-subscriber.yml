@@ -133,10 +133,11 @@ jobs:
         if: always() && env.SKIP != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           if [ ! -f data/audit/wsj-subscriber-recovery-report.json ]; then exit 0; fi
           RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
-          DRY_RUN="${{ inputs.dry_run || 'false' }}"
+          DRY_RUN="${INPUT_DRY_RUN}"
           if [ "$RECOVERED" -gt "0" ] && [ "$DRY_RUN" != "true" ]; then
             echo "Triggering rebuild for ${RECOVERED} recovered reviews..."
             gh workflow run rebuild-reviews.yml --repo ${{ github.repository }} || true

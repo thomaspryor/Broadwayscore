@@ -53,6 +53,8 @@ jobs:
       - name: Poll LouReviews
         id: poll
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
+        env:
+          INPUT_DAYS: ${{ inputs.days || '400' }}
         run: |
           # BRO-4157 triage: NOT adding pipefail here on purpose. poll-loureviews.js's
           # own docstring is explicit — "Exit 0 always (a poller failure must
@@ -71,7 +73,7 @@ jobs:
           # so a narrow window permanently blinds the poller to it. Re-scanning the
           # full recent feed daily is cheap: matching is in-memory and dedup skips
           # existing files, so only genuinely-new matches trigger extraction/scoring.
-          DAYS="${{ inputs.days || '400' }}"
+          DAYS="${INPUT_DAYS}"
           echo "Polling loureviews.blog (last $DAYS days)..."
           node scripts/poll-loureviews.js --days="$DAYS" | tee /tmp/poll.out
           NEW=$(grep -oE '__LOUREVIEWS_NEW__=[0-9]+' /tmp/poll.out | tail -1 | cut -d= -f2 || true)

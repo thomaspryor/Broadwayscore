@@ -72,10 +72,11 @@ jobs:
           # SERP_SB_MAX_CALLS_PER_RUN is what actually caps the batch-wide SERP cost.
           SERP_SB_MAX_CALLS_PER_RUN: '7'
           SB_CREDIT_BUDGET: '50'
+          INPUT_SHOW: ${{ github.event.inputs.show }}
         run: |
           ARGS=""
-          if [ -n "${{ github.event.inputs.show }}" ]; then
-            ARGS="--show=${{ github.event.inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="--show=${INPUT_SHOW}"
           fi
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

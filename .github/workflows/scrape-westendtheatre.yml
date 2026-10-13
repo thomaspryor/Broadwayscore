@@ -81,11 +81,13 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
         run: |
           ARGS=""
 
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
 
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -105,7 +107,7 @@ jobs:
           # their own before the post-loop's check ever ran).
           # Default in bash, not a GHA || expression — the expression coerces
           # a literal 0 (= unlimited) to falsy.
-          TB="${{ inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=22
           ARGS="$ARGS --time-budget-min=$TB"
 

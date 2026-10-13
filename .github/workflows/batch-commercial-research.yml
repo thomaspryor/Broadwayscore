@@ -72,11 +72,12 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOWS: ${{ github.event.inputs.shows }}
         run: |
           ARGS=""
 
           # Parse shows input (empty = auto-discover uncovered shows)
-          INPUT_SHOWS="${{ github.event.inputs.shows }}"
+          INPUT_SHOWS="${INPUT_SHOWS}"
           if [ -z "$INPUT_SHOWS" ]; then
             echo "No shows specified — script will auto-discover uncovered shows"
           elif [ "$INPUT_SHOWS" = "top-historical-30" ]; then

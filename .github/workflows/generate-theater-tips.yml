@@ -72,10 +72,11 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_THEATER: ${{ inputs.theater }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.theater }}" ]; then
-            ARGS="$ARGS --theater \"${{ inputs.theater }}\""
+          if [ -n "${INPUT_THEATER}" ]; then
+            ARGS="$ARGS --theater \"${INPUT_THEATER}\""
           fi
           if [ "${{ inputs.limit }}" != "0" ]; then
             ARGS="$ARGS --limit ${{ inputs.limit }}"
@@ -86,10 +87,11 @@ jobs:
       - name: Generate structured tips via Gemini Flash
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INPUT_THEATER: ${{ inputs.theater }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.theater }}" ]; then
-            ARGS="$ARGS --theater \"${{ inputs.theater }}\""
+          if [ -n "${INPUT_THEATER}" ]; then
+            ARGS="$ARGS --theater \"${INPUT_THEATER}\""
           fi
           if [ "${{ inputs.limit }}" != "0" ]; then
             ARGS="$ARGS --limit ${{ inputs.limit }}"

@@ -160,10 +160,12 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_AGGREGATOR: ${{ inputs.aggregator }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.shows }}" ]; then
-            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            ARGS="$ARGS --shows=${INPUT_SHOWS}"
           fi
           if [ "${{ inputs.force }}" = "true" ]; then
             ARGS="$ARGS --force"
@@ -171,8 +173,8 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          if [ -n "${{ inputs.aggregator }}" ]; then
-            ARGS="$ARGS --aggregator=${{ inputs.aggregator }}"
+          if [ -n "${INPUT_AGGREGATOR}" ]; then
+            ARGS="$ARGS --aggregator=${INPUT_AGGREGATOR}"
           fi
           if [ -n "${{ inputs.mode }}" ]; then
             ARGS="$ARGS --mode=${{ inputs.mode }}"

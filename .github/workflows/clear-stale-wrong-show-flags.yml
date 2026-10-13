@@ -76,11 +76,13 @@ jobs:
         id: sweep
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
           set +e
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             OUT=$(node scripts/clear-stale-wrong-show-flags.js --llm 2>&1)
-          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+          elif [ "${INPUT_FORCE_BULK}" = "true" ]; then
             OUT=$(node scripts/clear-stale-wrong-show-flags.js --llm --apply --force-bulk 2>&1)
           else
             OUT=$(node scripts/clear-stale-wrong-show-flags.js --llm --apply 2>&1)
@@ -105,6 +107,8 @@ jobs:
             fix: auto-clear ${{ steps.sweep.outputs.count }} stale wrongShow flags [audit-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## wrongShow Stale-Flag Sweep"
@@ -114,7 +118,7 @@ jobs:
             if [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
               # BRO-2432: nonzero is either the surge guard or a total LLM outage; the sweep logs which.
               echo "**Mode:** sweep FAILED (exit ${{ steps.sweep.outputs.status }}) — surge guard refusal (re-run with force_bulk=true only after investigating) or total LLM outage (check ANTHROPIC_API_KEY / API status); see the sweep step log"
-            elif [ "${{ inputs.dry_run }}" = "true" ]; then
+            elif [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
               echo "**Mode:** no fix needed"

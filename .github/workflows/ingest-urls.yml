@@ -106,6 +106,7 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           FLAGS=""
           if [ "${{ inputs.no_fetch }}" = "true" ]; then
@@ -119,7 +120,7 @@ jobs:
           fi
 
           node scripts/ingest-urls.js \
-            --show="${{ inputs.show_id }}" \
+            --show="${INPUT_SHOW_ID}" \
             --urls=/tmp/ingest-urls.txt \
             --verbose \
             $FLAGS
@@ -129,6 +130,8 @@ jobs:
         # there is nothing to commit — and skipping keeps the smoke test
         # provably incapable of pushing even if a future edit changed that.
         if: always() && inputs.dry_run != true
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           cd data/review-texts
           if git diff --quiet && git diff --cached --quiet; then
@@ -137,7 +140,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add -A
-            git commit -m "data: Ingest URLs for ${{ inputs.show_id }}"
+            git commit -m "data: Ingest URLs for ${INPUT_SHOW_ID}"
             bash ../../scripts/lib/push-with-retry.sh 5 main
           fi
 

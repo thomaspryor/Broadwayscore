@@ -173,16 +173,20 @@ jobs:
           # dispatch deadman" check sees the failed attempt (see owner-alert-router.js
           # dispatchCard()'s GITHUB_ACTIONS+LINEAR_API_KEY annotation).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          INPUT_DISPATCH_GATHER: ${{ github.event.inputs.dispatch_gather || 'false' }}
+          INPUT_INGEST_MISSING: ${{ github.event.inputs.ingest_missing || 'true' }}
+          INPUT_FAIL_ON_GAP: ${{ github.event.inputs.fail_on_gap || 'false' }}
+          INPUT_INCLUDE_CLOSED: ${{ github.event.inputs.include_closed || 'true' }}
         run: |
           # Default window widened to 3y + include-closed so the cron grinds the
           # whole back-catalogue, not just the last 21d. Checkpointing + the soft
           # time budget keep each 25-min run from timing out (every run was being
           # cancelled at the cap before, so the sweep never finished — 2026-06-06).
           WINDOW="${{ github.event.inputs.redispatched != 'true' && github.event.inputs.window_days || '1095' }}"
-          DISPATCH="${{ github.event.inputs.dispatch_gather || 'false' }}"
-          INGEST="${{ github.event.inputs.ingest_missing || 'true' }}"
-          FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
-          INCLUDE_CLOSED="${{ github.event.inputs.include_closed || 'true' }}"
+          DISPATCH="${INPUT_DISPATCH_GATHER}"
+          INGEST="${INPUT_INGEST_MISSING}"
+          FAIL="${INPUT_FAIL_ON_GAP}"
+          INCLUDE_CLOSED="${INPUT_INCLUDE_CLOSED}"
           # Always checkpoint so consecutive hourly runs resume from where the last
           # one stopped rather than re-auditing the same first shows forever.
           # Budget 18 (not 25): a single deep show can overshoot the between-show

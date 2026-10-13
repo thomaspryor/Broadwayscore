@@ -89,8 +89,9 @@ jobs:
         id: audit
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          INPUT_DAYS: ${{ github.event.inputs.days || '45' }}
         run: |
-          DAYS="${{ github.event.inputs.days || '45' }}"
+          DAYS="${INPUT_DAYS}"
           ALERT_FLAG=""
           if [ "${{ github.event.inputs.alert || 'true' }}" = "true" ]; then
             ALERT_FLAG="--alert"

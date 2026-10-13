@@ -182,6 +182,9 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Check Sunday backlog (early exit if empty)
         id: sched
+        env:
+          INPUT_MAX_REVIEWS: ${{ inputs.max_reviews }}
+          INPUT_REASON_FILTER: ${{ inputs.reason_filter }}
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             DAY=$(date -u +%u)  # 7 = Sunday
@@ -227,8 +230,8 @@ jobs:
               echo "skip=false" >> $GITHUB_OUTPUT
             fi
           else
-            echo "max_reviews=${{ inputs.max_reviews }}" >> $GITHUB_OUTPUT
-            echo "reason_filter=${{ inputs.reason_filter }}" >> $GITHUB_OUTPUT
+            echo "max_reviews=${INPUT_MAX_REVIEWS}" >> $GITHUB_OUTPUT
+            echo "reason_filter=${INPUT_REASON_FILTER}" >> $GITHUB_OUTPUT
             echo "market_filter=" >> $GITHUB_OUTPUT
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
@@ -333,12 +336,14 @@ jobs:
           REVIEW_FILTER: ${{ inputs.review_filter }}
           URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '300' }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_AGGRESSIVE: ${{ inputs.aggressive }}
+          INPUT_STEALTH_PROXY: ${{ inputs.stealth_proxy }}
         run: |
           ARGS=""
-          if [ "${{ inputs.aggressive }}" = "true" ]; then
+          if [ "${INPUT_AGGRESSIVE}" = "true" ]; then
             ARGS="$ARGS --aggressive"
           fi
-          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+          if [ "${INPUT_STEALTH_PROXY}" = "true" ]; then
             ARGS="$ARGS --stealth-proxy"
           fi
           node scripts/collect-review-texts.js $ARGS
@@ -393,13 +398,14 @@ jobs:
           # be silently dropped instead of unioned. Opts into the same
           # post-rebase reconcile pass #698 built for bww-roundup-miss-ledger.jsonl.
           PUSH_RECONCILE_MERGED_JSON: '1'
+          INPUT_CONTENT_TIER: ${{ inputs.content_tier }}
         run: |
           git add data/audit/ data/collection-state/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            TIER_LABEL="${{ inputs.content_tier }}"
+            TIER_LABEL="${INPUT_CONTENT_TIER}"
             JOB_LABEL="single job${TIER_LABEL:+ — $TIER_LABEL}"
             git commit -m "feat: Collect review texts ($JOB_LABEL)
 
@@ -501,8 +507,20 @@ jobs:
         if: always() && (inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_REMAINING_BATCHES: ${{ inputs.remaining_batches }}
+          INPUT_CHAIN_BROWSERBASE_BUDGET: ${{ inputs.chain_browserbase_budget }}
+          INPUT_BROWSERBASE_MAX_SESSIONS: ${{ inputs.browserbase_max_sessions }}
+          INPUT_CONTENT_TIER: ${{ inputs.content_tier }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
+          INPUT_AGGRESSIVE: ${{ inputs.aggressive }}
+          INPUT_STEALTH_PROXY: ${{ inputs.stealth_proxy }}
+          INPUT_DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          INPUT_EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
+          INPUT_BATCH_SIZE: ${{ inputs.batch_size || '10' }}
+          INPUT_RETRY_FAILED: ${{ inputs.retry_failed }}
+          INPUT_ARCHIVE_FIRST: ${{ inputs.archive_first }}
         run: |
-          BATCHES_LEFT="${{ inputs.remaining_batches }}"
+          BATCHES_LEFT="${INPUT_REMAINING_BATCHES}"
           if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
             if [ "${{ github.event_name }}" == "schedule" ]; then
               # Weekly backlog sweep (Sunday) gets more chains to clear the backlog faster
@@ -525,9 +543,9 @@ jobs:
           NEXT_BATCHES=$((BATCHES_LEFT - 1))
 
           # Browserbase budget tracking across chain
-          BB_BUDGET="${{ inputs.chain_browserbase_budget }}"
+          BB_BUDGET="${INPUT_CHAIN_BROWSERBASE_BUDGET}"
           BB_BUDGET="${BB_BUDGET:-30}"
-          BB_PER_RUN="${{ inputs.browserbase_max_sessions }}"
+          BB_PER_RUN="${INPUT_BROWSERBASE_MAX_SESSIONS}"
           BB_PER_RUN="${BB_PER_RUN:-20}"
           NEXT_BB_BUDGET=$((BB_BUDGET - BB_PER_RUN))
 
@@ -553,26 +571,26 @@ jobs:
           echo "  Browserbase this run: $NEXT_BB_ENABLED ($NEXT_BB_SESSIONS sessions)"
           echo "  Reviews still needing text: ${{ steps.count-remaining.outputs.remaining }}"
 
-          TIER_FILTER="${{ inputs.content_tier }}"
+          TIER_FILTER="${INPUT_CONTENT_TIER}"
 
-          SHOW_FILTER="${{ inputs.show_filter }}"
-          AGGRESSIVE="${{ inputs.aggressive }}"
-          STEALTH="${{ inputs.stealth_proxy }}"
-          DOMAIN_FILTER="${{ inputs.domain_filter }}"
-          EXCLUDE_DOMAINS="${{ inputs.exclude_domains }}"
+          SHOW_FILTER="${INPUT_SHOW_FILTER}"
+          AGGRESSIVE="${INPUT_AGGRESSIVE}"
+          STEALTH="${INPUT_STEALTH_PROXY}"
+          DOMAIN_FILTER="${INPUT_DOMAIN_FILTER}"
+          EXCLUDE_DOMAINS="${INPUT_EXCLUDE_DOMAINS}"
           REASON_FILTER="${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}"
           MARKET_FILTER="${{ steps.sched.outputs.market_filter || inputs.market_filter }}"
 
           gh workflow run collect-review-texts.yml \
             -f max_reviews=${{ steps.sched.outputs.max_reviews || '300' }} \
-            -f batch_size=${{ inputs.batch_size || '10' }} \
+            -f batch_size=${INPUT_BATCH_SIZE} \
             -f show_filter="$SHOW_FILTER" \
             -f aggressive="$AGGRESSIVE" \
             -f stealth_proxy="$STEALTH" \
             -f browserbase_enabled="$NEXT_BB_ENABLED" \
             -f browserbase_max_sessions="$NEXT_BB_SESSIONS" \
-            -f retry_failed=${{ inputs.retry_failed }} \
-            -f archive_first=${{ inputs.archive_first }} \
+            -f retry_failed=${INPUT_RETRY_FAILED} \
+            -f archive_first=${INPUT_ARCHIVE_FIRST} \
             -f content_tier="$TIER_FILTER" \
             -f domain_filter="$DOMAIN_FILTER" \
             -f exclude_domains="$EXCLUDE_DOMAINS" \
@@ -739,12 +757,14 @@ jobs:
           REVIEW_FILTER: ${{ inputs.review_filter }}
           URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '300' }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_AGGRESSIVE: ${{ inputs.aggressive }}
+          INPUT_STEALTH_PROXY: ${{ inputs.stealth_proxy }}
         run: |
           ARGS=""
-          if [ "${{ inputs.aggressive }}" = "true" ]; then
+          if [ "${INPUT_AGGRESSIVE}" = "true" ]; then
             ARGS="$ARGS --aggressive"
           fi
-          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+          if [ "${INPUT_STEALTH_PROXY}" = "true" ]; then
             ARGS="$ARGS --stealth-proxy"
           fi
           node scripts/collect-review-texts.js $ARGS

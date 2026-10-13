@@ -62,6 +62,9 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           DRY_RUN_FLAG=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -71,12 +74,12 @@ jobs:
           # Exit cleanly before the 30-min job timeout; deferred shows are
           # picked up next run. Default in bash, not a GHA || expression — the
           # expression coerces a literal 0 (= unlimited) to falsy.
-          TB="${{ inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=22
           TB_FLAG="--time-budget-min=$TB"
 
-          if [ -n "${{ inputs.shows }}" ]; then
-            IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            IFS=',' read -ra SHOW_IDS <<< "${INPUT_SHOWS}"
             # Each show runs in its own subprocess, so a flat TB_FLAG would be
             # applied N times (createRunBudget starts fresh per subprocess) —
             # re-derate the total budget across the show count so the loop
@@ -99,8 +102,8 @@ jobs:
           fi
 
           ARGS=""
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
           ARGS="$ARGS $DRY_RUN_FLAG $TB_FLAG"
 

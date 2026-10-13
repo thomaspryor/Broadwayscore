@@ -73,10 +73,11 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_FEED: ${{ inputs.feed }}
         run: |
           ARGS="--window-hours=${{ inputs.window_hours || '24' }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ -n "${{ inputs.feed }}" ]; then ARGS="$ARGS --feed=${{ inputs.feed }}"; fi
+          if [ -n "${INPUT_FEED}" ]; then ARGS="$ARGS --feed=${INPUT_FEED}"; fi
           set -o pipefail
           node scripts/poll-trade-press-rss.js $ARGS
 

@@ -74,6 +74,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           FLAGS=""
           MODE="${{ inputs.mode || 'enrich' }}"
@@ -99,8 +100,8 @@ jobs:
           fi
 
           # Show filter
-          if [ -n "${{ inputs.show }}" ]; then
-            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            FLAGS="$FLAGS --show=${INPUT_SHOW}"
           fi
 
           echo "Running: node scripts/enrich-ibdb-dates.js $FLAGS"

@@ -356,6 +356,8 @@ jobs:
           message: "data: Bulk Collect Review Texts — Final commit and push"
       - name: Final commit and push
         if: always()
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
           git add data/archives/reviews/ data/collection-state/ || true
           if git diff --staged --quiet; then
@@ -363,7 +365,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "feat: Bulk collect review texts (round ${{ inputs.current_round }}, batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
+          git commit -m "feat: Bulk collect review texts (round ${INPUT_CURRENT_ROUND}, batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
 
@@ -428,6 +430,7 @@ jobs:
       - name: Trigger rebuild (concurrency-gated)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
           # Don't rebuild inline — trigger the centralized rebuild workflow which has
           # a concurrency group to prevent races with scoring shards and other collection runs.
@@ -440,7 +443,7 @@ jobs:
             echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
           else
             gh workflow run rebuild-reviews.yml \
-              -f reason="Auto-triggered after bulk collection (round ${{ inputs.current_round }})"
+              -f reason="Auto-triggered after bulk collection (round ${INPUT_CURRENT_ROUND})"
             echo "Rebuild triggered."
           fi
 
@@ -506,10 +509,18 @@ jobs:
         if: always() && inputs.max_rounds != '0' && inputs.test_mode != true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
+          INPUT_MAX_ROUNDS: ${{ inputs.max_rounds }}
+          INPUT_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
+          INPUT_MAX_PER_JOB: ${{ inputs.max_per_job }}
+          INPUT_BATCH_SIZE: ${{ inputs.batch_size }}
+          INPUT_BROWSERBASE_PER_JOB: ${{ inputs.browserbase_per_job }}
+          INPUT_CONTENT_TIER: ${{ inputs.content_tier }}
+          INPUT_EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
         run: |
           REMAINING=${{ steps.count-remaining.outputs.remaining }}
-          CURRENT_ROUND=${{ inputs.current_round }}
-          MAX_ROUNDS=${{ inputs.max_rounds }}
+          CURRENT_ROUND=${INPUT_CURRENT_ROUND}
+          MAX_ROUNDS=${INPUT_MAX_ROUNDS}
 
           INITIAL=${{ needs.prepare.outputs.total_reviews }}
 
@@ -542,15 +553,15 @@ jobs:
           echo "  Rounds remaining: $((MAX_ROUNDS - NEXT_ROUND + 1))"
 
           gh workflow run bulk-collect-review-texts.yml \
-            -f parallel_jobs=${{ inputs.parallel_jobs }} \
-            -f max_per_job=${{ inputs.max_per_job }} \
-            -f batch_size=${{ inputs.batch_size }} \
+            -f parallel_jobs=${INPUT_PARALLEL_JOBS} \
+            -f max_per_job=${INPUT_MAX_PER_JOB} \
+            -f batch_size=${INPUT_BATCH_SIZE} \
             -f browserbase_enabled=${{ inputs.browserbase_enabled }} \
-            -f browserbase_per_job=${{ inputs.browserbase_per_job }} \
+            -f browserbase_per_job=${INPUT_BROWSERBASE_PER_JOB} \
             -f retry_failed=${{ inputs.retry_failed }} \
             -f archive_first=${{ inputs.archive_first }} \
-            -f content_tier="${{ inputs.content_tier }}" \
-            -f exclude_domains="${{ inputs.exclude_domains }}" \
+            -f content_tier="${INPUT_CONTENT_TIER}" \
+            -f exclude_domains="${INPUT_EXCLUDE_DOMAINS}" \
             -f aggressive=${{ inputs.aggressive }} \
             -f test_mode=false \
             -f max_rounds="$MAX_ROUNDS" \

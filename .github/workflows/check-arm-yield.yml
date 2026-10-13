@@ -76,7 +76,8 @@ jobs:
       - name: Record today's per-arm yield
         env:
           GH_TOKEN: ${{ github.token }}
-        run: node scripts/record-arm-yield.js --backfill-days=${{ inputs.backfill_days || '1' }}
+          INPUT_BACKFILL_DAYS: ${{ inputs.backfill_days || '1' }}
+        run: node scripts/record-arm-yield.js --backfill-days=${INPUT_BACKFILL_DAYS}
 
       # always(): judging must not be hostage to recording. The recorder writes
       # the ledger; the judge is what actually alerts — including the

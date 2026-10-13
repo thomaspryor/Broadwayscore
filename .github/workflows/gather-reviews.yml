@@ -115,9 +115,12 @@ jobs:
         run: node scripts/wait-for-gather-slot.js --run-id=${{ github.run_id }} --slots=2 --poll-sec=120 --max-wait-min=180
       - name: Split shows into parallel batches
         id: split
+        env:
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
         run: |
-          SHOWS="${{ inputs.shows }}"
-          JOBS=${{ inputs.parallel_jobs }}
+          SHOWS="${INPUT_SHOWS}"
+          JOBS=${INPUT_PARALLEL_JOBS}
 
           # Validate parallel_jobs is 1-10
           if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
@@ -248,13 +251,15 @@ jobs:
           SERP_NO_SB: ${{ inputs.no_sb_serp == true && '1' || '' }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_MAX_TIER: ${{ inputs.max_tier }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
-          MAX_TIER="${{ inputs.max_tier }}"
+          MAX_TIER="${INPUT_MAX_TIER}"
           MAX_TIER="${MAX_TIER:-2}"
           # Opening night (max_tier=3): 80 searches — empirically T1+T2 outlets resolve in <50; remaining
           # gaps are picked up by the orchestrator polling loop. Routine: 30 (weekly run handles the rest).
           MAX_SEARCHES=$([ "$MAX_TIER" = "3" ] && echo "80" || echo "30")
-          echo "Running outlet-first SERP discovery for: ${{ inputs.shows }} (max tier: $MAX_TIER, max searches: $MAX_SEARCHES)"
+          echo "Running outlet-first SERP discovery for: ${INPUT_SHOWS} (max tier: $MAX_TIER, max searches: $MAX_SEARCHES)"
           # --time-budget-min MUST use the equals form: scripts/lib/run-budget.js
           # parseTimeBudgetMin() only matches `--flag=N`, so the space-separated
           # style the rest of this script's flags use would parse as 0 and
@@ -263,7 +268,7 @@ jobs:
           # 16 under the 25min cap: ~2min setup + 16min budget + at most one
           # in-flight SERP call of overshoot + ~1.5min push.
           node scripts/collect-outlet-reviews.js \
-            --shows "${{ inputs.shows }}" \
+            --shows "${INPUT_SHOWS}" \
             --max-tier "$MAX_TIER" \
             --max-searches "$MAX_SEARCHES" \
             --time-budget-min=16
@@ -660,7 +665,8 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: node scripts/scrape-playbill-verdict.js --shows=${{ inputs.shows }}
+          INPUT_SHOWS: ${{ inputs.shows }}
+        run: node scripts/scrape-playbill-verdict.js --shows=${INPUT_SHOWS}
 
       - name: Scrape NYC Theatre roundups for target shows
         env:
@@ -669,7 +675,8 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }} --time-budget-min=20
+          INPUT_SHOWS: ${{ inputs.shows }}
+        run: node scripts/scrape-nyc-theatre-roundups.js --shows=${INPUT_SHOWS} --time-budget-min=20
 
       - name: Scrape BWW Review Roundups for target shows
         env:
@@ -678,7 +685,8 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/scrape-bww-reviews.js --type=roundup --shows=${{ inputs.shows }}
+          INPUT_SHOWS: ${{ inputs.shows }}
+        run: node scripts/scrape-bww-reviews.js --type=roundup --shows=${INPUT_SHOWS}
 
       - name: Scrape LBO roundups for West End target shows
         continue-on-error: true
@@ -686,11 +694,12 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           # Only run if any target shows are West End
           WE_SHOWS=$(node -e "
             const shows = require('./data/shows.json').shows;
-            const targets = '${{ inputs.shows }}'.split(',');
+            const targets = '${INPUT_SHOWS}'.split(',');
             const we = targets.filter(id => {
               const s = shows.find(x => x.id === id);
               return s && s.category === 'west-end';
@@ -837,6 +846,7 @@ jobs:
           # #698 built for bww-roundup-miss-ledger.jsonl.
           PUSH_RECONCILE_MERGED_JSON: '1'
           PUSH_DEADLINE_SEC: '900'
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -845,7 +855,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to reviews.json"
           else
-            git commit -m "data: Auto-rebuild reviews.json after gather (${{ inputs.shows }})"
+            git commit -m "data: Auto-rebuild reviews.json after gather (${INPUT_SHOWS})"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 
@@ -913,6 +923,7 @@ jobs:
       - name: Auto-trigger text collection if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           # Count review stubs needing fullText
           NEEDS_COLLECTION=$(node -e '
@@ -938,7 +949,7 @@ jobs:
 
           # For targeted show runs, always trigger collection (even 1 review)
           # For broad runs, use higher threshold to avoid noise
-          SHOW_INPUT="${{ inputs.shows }}"
+          SHOW_INPUT="${INPUT_SHOWS}"
           if [ -n "$SHOW_INPUT" ]; then
             THRESHOLD=1
           else
@@ -971,7 +982,7 @@ jobs:
           fi
 
           # Target the specific gathered shows first for fast turnaround
-          SHOWS="${{ inputs.shows }}"
+          SHOWS="${INPUT_SHOWS}"
           echo "Triggering targeted text collection for shows: $SHOWS"
           gh workflow run collect-review-texts.yml \
             -f show_filter="$SHOWS" \
@@ -987,9 +998,10 @@ jobs:
       - name: Auto-trigger LLM scoring if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           # Count unscored reviews for the gathered shows
-          SHOWS="${{ inputs.shows }}"
+          SHOWS="${INPUT_SHOWS}"
           UNSCORED=$(node -e '
             const fs = require("fs"), path = require("path");
             const base = "data/review-texts";

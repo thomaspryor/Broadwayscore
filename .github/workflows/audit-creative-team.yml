@@ -69,19 +69,21 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
           FLAGS="--checkpoint"
 
-          if [ -n "${{ inputs.show }}" ]; then
-            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            FLAGS="$FLAGS --show=${INPUT_SHOW}"
           fi
 
           if [ -n "${{ inputs.status }}" ] && [ "${{ inputs.status }}" != "all" ]; then
             FLAGS="$FLAGS --status=${{ inputs.status }}"
           fi
 
-          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
-            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          if [ "${INPUT_LIMIT}" != "0" ] && [ -n "${INPUT_LIMIT}" ]; then
+            FLAGS="$FLAGS --limit=${INPUT_LIMIT}"
           fi
 
           echo "Running: node scripts/audit-creative-team.js $FLAGS"

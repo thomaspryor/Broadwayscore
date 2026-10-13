@@ -154,8 +154,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows || 'missing' }}
         run: |
-          SHOWS_ARG="${{ inputs.shows || 'missing' }}"
+          SHOWS_ARG="${INPUT_SHOWS}"
           FORCE_FLAG=""
           if [ "${{ inputs.force }}" = "true" ]; then
             FORCE_FLAG="--force"
@@ -212,8 +213,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows || 'missing' }}
         run: |
-          SHOWS_ARG="${{ inputs.shows || 'missing' }}"
+          SHOWS_ARG="${INPUT_SHOWS}"
           FORCE_FLAG=""
           if [ "${{ inputs.force }}" = "true" ]; then
             FORCE_FLAG="--force"
@@ -399,6 +401,7 @@ jobs:
         if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           NEEDS_COLLECTION=$(node -e '
             const fs = require("fs"), path = require("path");
@@ -439,7 +442,7 @@ jobs:
           fi
 
           # Pass show_filter for targeted collection (skip "missing"/"all" defaults)
-          SHOWS="${{ inputs.shows }}"
+          SHOWS="${INPUT_SHOWS}"
           if [ -n "$SHOWS" ] && [ "$SHOWS" != "missing" ] && [ "$SHOWS" != "all" ]; then
             echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
             gh workflow run collect-review-texts.yml \
