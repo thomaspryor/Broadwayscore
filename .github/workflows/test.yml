@@ -5256,7 +5256,9 @@ jobs:
           [ -f "$before" ] || { echo "No snapshot; skipping."; exit 0; }
           after="$RUNNER_TEMP/audit-after.txt"
           find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$after" || true
-          new=$(comm -13 <(sort "$before") <(sort "$after") | awk '{print $2}')
+          # comm -3: changed, created AND deleted files; strip the hash, keep
+          # the whole path (spaces included).
+          new=$(comm -3 <(sort "$before") <(sort "$after") | sed -E 's/^\t?[0-9a-f]{64}  //' | sort -u)
           if [ -n "$new" ]; then
             echo "::warning::Unit tests wrote to production ledgers under data/audit:"
             echo "$new"
