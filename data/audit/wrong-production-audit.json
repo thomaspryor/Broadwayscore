@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T13:17:44.514Z",
+  "timestamp": "2026-10-13T13:39:00.569Z",
   "stats": {
-    "totalReviews": 56308,
-    "alreadyFlagged": 21021,
-    "dateGuardCatches": 216,
+    "totalReviews": 56312,
+    "alreadyFlagged": 21025,
+    "dateGuardCatches": 217,
     "directorMismatch": 1863,
     "tvFilmSignals": 1639,
-    "londonSignals": 2238,
+    "londonSignals": 2237,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5235
+    "noPublishDate": 5234
   },
   "findings": [
     {
@@ -27894,7 +27894,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "sunday-times--quentin-letts.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2022-10-22",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
       "findings": [
@@ -27908,7 +27908,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "telegraph--unknown.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2022-10-18",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/neighbour-totoro-barbican-review-vital-power-surge-anglo-japanese/",
       "findings": [
@@ -46497,6 +46497,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -69148,20 +69162,6 @@
       "score": 90,
       "publishDate": "2026-09-16",
       "url": "https://www.adventuresintheatreland.com/post/million-dollar-quartet-the-arts-at-marble-arch",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "file": "broadwayworld--michael-major.json",
-      "score": null,
-      "publishDate": "2026-09-09",
-      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
