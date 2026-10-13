@@ -24,7 +24,8 @@ const { isIncludableForRebuild } = require('../lib/review-guards');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
 
 export function isScoreable(data: Record<string, any>, show?: Record<string, any>, filePath?: string): boolean {
-  if (!isIncludableForRebuild(data, show, filePath)) return false;
+  // forScoring: a legacy web-search row awaiting a page-based rescore is scoreable (BRO-5222).
+  if (!isIncludableForRebuild(data, show, filePath, { forScoring: true })) return false;
 
   // LLM-only extras — files rebuild includes (because aggregator/originalScore
   // signal exists) but LLM cannot score (because LLM scores from text):

@@ -78,3 +78,37 @@ test('no verifyContent caller builds its excerpt from the raw excerpt fields', (
   walk(path.join(ROOT, 'scripts'));
   assert.deepEqual(offenders, [], 'use excerpt-fields verifierExcerpt(data)');
 });
+
+// BRO-5222: the provenance clause above is for rebuild. The scorer is how such a
+// row gets a page-based score, so it must not hold the scorer out (deadlock:
+// the recovered Farnsworth Variety row could never be rescored, and
+// audit-stuck-rescore-flags --fix then cleared flags like its own).
+const { isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
+const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
+const { isStuckRescoreFlag } = require('../../scripts/lib/stuck-rescore-flag.js');
+const { selectScorableText } = require('../../scripts/lib/scorable-text.js');
+const PROSE = Array.from({ length: 14 }, (_, i) =>
+  `In the revival of A Doll's House, Part 2, the actors find new shades in scene ${i + 1}; the direction keeps the argument taut and the design is spare, and the evening earns its laughs without cheating the drama.`).join(' ');
+
+test('the scorer may rescore a legacy row on its recovered page text (BRO-5222)', () => {
+  assert.equal(selectScorableText({ ...ROW, fullText: PROSE }, {}).isExcerpt, false, 'fixture page text is scoreable');
+  for (const row of [
+    { ...ROW, fullText: PROSE },
+    { ...ROW, fullText: PROSE, needsRescore: true, llmScore: undefined, assignedScore: undefined, llmMetadata: undefined },
+  ]) {
+    assert.equal(isUnverifiableWebSearchRow(row), true, 'rebuild still holds it out');
+    assert.equal(isIncludableForRebuild(row), false);
+    assert.equal(isUnverifiableWebSearchRow(row, { forScoring: true }), false, 'scorer may take it');
+    assert.equal(isScoreable(row), true);
+  }
+  const flagged = { ...ROW, fullText: PROSE, needsRescore: true };
+  assert.equal(isStuckRescoreFlag(flagged), false, 'the stuck-flag sweep leaves a recovered, flagged row queued');
+});
+
+test('the scorer stays out when it would fall back to the invented excerpt (BRO-5222)', () => {
+  const garbage = { ...ROW, fullText: PAGE, dtliExcerpt: 'An invented summary of the revival that reads like a verdict but came from the search step itself, not the page. '.repeat(3) };
+  assert.equal(selectScorableText(garbage, {}).isExcerpt, true, 'fixture page text is rejected, excerpt fallback');
+  assert.equal(isUnverifiableWebSearchRow(garbage, { forScoring: true }), true);
+  assert.equal(isScoreable(garbage), false);
+  assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: 'short stub text', url: ROW.url }, { forScoring: true }), true, 'text-proof clauses still apply');
+});
