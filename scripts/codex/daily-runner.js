@@ -74,8 +74,8 @@ const OPTS = {
   // each review stops at --check-max-usd, the run stops picking cards at --check-budget-usd.
   checkMaxUsd: Number(arg('check-max-usd', 4)),
   checkBudgetUsd: Number(arg('check-budget-usd', 30)),
-  // One card's wall clock: a new Codex exec starts only if a whole exec (its 45-min
-  // timeout) still fits, so a card cannot run past the job's timeout on fix rounds.
+  // One card's wall clock: a fix-round exec starts only with 15+ min of exec plus the
+  // review still inside it, and is cut to fit, so fix rounds cannot run past the budget.
   cardMaxMinutes: Number(arg('card-max-minutes', 120)),
 };
 const CODEX_TIMEOUT_MS = 45 * 60_000;
@@ -229,12 +229,12 @@ function saveLogin() {
   if (r.code !== 0) log(`login save failed: ${tail(r.out, 300)}`);
 }
 
-function runCodex(id, prompt, tag) {
+function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   const last = path.join(LOG_DIR, `${id}-${tag}-last.md`);
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}-prompt.md`), prompt);
   const r = sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', 'workspace-write', '--color', 'never',
     '-c', 'model_reasoning_effort=high', '-o', last, '-C', WT, prompt],
-  { cwd: WT, timeoutMs: CODEX_TIMEOUT_MS, env: scrubbedEnv(), input: '' });
+  { cwd: WT, timeoutMs, env: scrubbedEnv(), input: '' });
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}.log`), r.out);
   saveLogin(); // refresh tokens rotate: persist the newest login after every exec
   let report = '';
@@ -524,11 +524,17 @@ async function workCard(pick, stats, inFlight) {
     }
     const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8');
     const prompt = (extra) => R.fillPrompt(tpl, { id, title: card.title, body, extra, data: data.lines.join('\n') });
-    // A new Codex exec starts only while a whole one (its timeout) plus the review after it
-    // still fits the card budget. The land checks and review after the last exec still run, so
+    // A fix-round exec starts only while 15 min of exec plus the review after it still fit the
+    // card budget. The land checks and review after the last exec still run, so
     // a card can overrun the budget by those (bounded by their own timeouts).
     const cardDeadline = claimedMs + OPTS.cardMaxMinutes * 60_000;
-    const execFits = () => cardDeadline - Date.now() >= CODEX_TIMEOUT_MS + 30 * 60_000;
+    // A fix round's exec gets what is left after the review (down to 15 min), not a fixed 45:
+    // reserving a whole 45-min exec + 30-min review never fit the routine's 60-min card budget,
+    // so no card ever got a second attempt (BRO-5287).
+    const REVIEW_RESERVE_MS = 30 * 60_000;
+    const MIN_FIX_EXEC_MS = 15 * 60_000;
+    const execFits = () => cardDeadline - Date.now() >= MIN_FIX_EXEC_MS + REVIEW_RESERVE_MS;
+    const fixExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, cardDeadline - Date.now() - REVIEW_RESERVE_MS));
     let report = '';
     let check = null;
     let attempt = 1;
@@ -541,11 +547,11 @@ async function workCard(pick, stats, inFlight) {
     // One Codex exec, retried (from the same commit) when it failed for a provider reason such as
     // "Selected model is at capacity" (BRO-5287, 2026-10-13 06:55), at most twice, while it fits.
     // A provider error fails within seconds, so a retry needs only the time left, not a whole exec.
-    const exec = async (text) => {
+    const exec = async (text, timeoutMs = fixExecMs()) => {
       const base = git(['rev-parse', 'HEAD']);
       for (let retry = 0; ; retry++) {
         keepLock();
-        const cx = runCodex(id, text, `codex${++execs}`);
+        const cx = runCodex(id, text, `codex${++execs}`, timeoutMs);
         const transient = cx.code !== 0 ? R.codexExitTransient(cx.out) : null;
         if (!transient || retry >= 2 || cardDeadline - Date.now() < 15 * 60_000) return cx;
         log(`${id}: Codex exited ${cx.code} on a provider error (${transient}); retry ${retry + 1} in 4 min`);
@@ -557,7 +563,8 @@ async function workCard(pick, stats, inFlight) {
     };
     const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
     for (;;) {
-      const cx = await exec(prompt(extra));
+      // The first exec always gets the full timeout; fix rounds fit the card budget.
+      const cx = await exec(prompt(extra), execs === 0 ? CODEX_TIMEOUT_MS : fixExecMs());
       report = cx.report;
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
       if (cx.code !== 0) { abort = failed(cx); break; }
