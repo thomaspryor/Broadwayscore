@@ -498,14 +498,14 @@ test('silentGapBacklogResults: real audit report shape', async t => {
   const file = new URL('../../data/audit/t1-silent-gaps.json', import.meta.url);
   if (!existsSync(file)) return t.skip('Audit report unavailable');
   const report = JSON.parse(readFileSync(file, 'utf8'));
-  // Far-future clock: every gap is past the in-flight grace window.
-  const rows = silentGapBacklogResults(report, new Date('2100-01-01T00:00:00Z'));
+  // Clock one day after the report: every gap is past the in-flight window.
+  const rows = silentGapBacklogResults(report, new Date(Date.parse(report.generatedAt) + 86400000 * 2));
   assert.equal(rows.length, report.gaps.length ? 1 : 0);
   if (rows.length) assert.match(rows[0].message, /Oldest:/);
 });
 
-// BRO-5166: a gap the audit first saw minutes ago is in flight, not silent.
-test('silentGapBacklogResults: gaps inside the grace window are not counted', () => {
+// BRO-5166: a review discovered minutes ago is in flight, not silent.
+test('silentGapBacklogResults: files discovered under 24h ago are not counted', () => {
   const now = new Date('2026-10-13T02:00:00Z');
   const fresh = { showId: 'fresh', tier: 1, outletId: 'vulture', type: 'empty-body', firstSeen: '2026-10-13T01:09:00Z', gapSeenAt: '2026-10-13T01:40:00Z' };
   const old = { showId: 'old', tier: 1, outletId: 'daily-mail', type: 'unscored', firstSeen: '2026-09-22T16:40:00Z', gapSeenAt: '2026-10-11T09:39:00Z' };
@@ -513,8 +513,11 @@ test('silentGapBacklogResults: gaps inside the grace window are not counted', ()
   assert.deepEqual(silentGapBacklogResults({ gaps: [fresh] }, now), []);
   const [row] = silentGapBacklogResults({ gaps: [fresh, old] }, now);
   assert.match(row.message, /^1 discovered review\(s\).*Oldest: old.*; 1 newer still in flight$/);
-  // Old firstSeen but gap re-opened minutes ago: gapSeenAt wins.
-  assert.deepEqual(silentGapBacklogResults({ gaps: [{ ...old, gapSeenAt: '2026-10-13T01:50:00Z' }] }, now), []);
+  // Old file whose gap clock restarted minutes ago (flapping): still counted.
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...old, gapSeenAt: '2026-10-13T01:50:00Z' }] }, now).length, 1);
+  // Boundary: exactly 24h old counts, one minute younger does not.
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...fresh, firstSeen: '2026-10-12T02:00:00Z' }] }, now).length, 1);
+  assert.deepEqual(silentGapBacklogResults({ gaps: [{ ...fresh, firstSeen: '2026-10-12T02:01:00Z' }] }, now), []);
   // No stamp at all: fail open, still counted.
   assert.equal(silentGapBacklogResults({ gaps: [unstamped] }, now).length, 1);
 });

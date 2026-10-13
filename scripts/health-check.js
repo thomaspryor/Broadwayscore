@@ -4585,17 +4585,18 @@ function uncollectedStrandResults(report) {
 // CRITICAL email only fires for gaps on near-opening shows; everything else
 // lands here so the back-catalogue backlog is visible once a day instead of
 // one email per discovery (2026-07-19 alert-volume fix).
-// A gap the hourly audit first saw under UNSCORED_GRACE_HOURS ago is still in
-// flight (discovered minutes ago, fetch or scoring cron not yet run), not
-// silent: BRO-5166 found the row firing on files 0-30 minutes old. Fail open
-// when the audit stamped no time.
+// A review file discovered under SILENT_GAP_IN_FLIGHT_HOURS ago is still in
+// flight (fetch, then the audit's own 12h scoring grace), not silent: BRO-5166
+// found the row firing on files 0-30 minutes old. Ages from firstSeen, the
+// immutable file-creation stamp, never gapSeenAt: that clock restarts whenever
+// a gap clears for one audit run, so a flapping gap would hide forever.
+// Fail open when unstamped.
+const SILENT_GAP_IN_FLIGHT_HOURS = 24;
 function silentGapBacklogResults(report, now = new Date()) {
   if (!report || !Array.isArray(report.gaps) || report.gaps.length === 0) return [];
-  const { UNSCORED_GRACE_HOURS } = require('./lib/t1-silent-gap');
-  const graceMs = UNSCORED_GRACE_HOURS * 3600000;
   const gaps = report.gaps.filter((g) => {
-    const seen = Date.parse(g.gapSeenAt || g.firstSeen || '');
-    return Number.isNaN(seen) || now.getTime() - seen >= graceMs;
+    const seen = Date.parse(g.firstSeen || '');
+    return Number.isNaN(seen) || now.getTime() - seen >= SILENT_GAP_IN_FLIGHT_HOURS * 3600000;
   });
   if (gaps.length === 0) return [];
   const inFlight = report.gaps.length - gaps.length;
