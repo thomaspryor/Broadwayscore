@@ -51,6 +51,12 @@ const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
 const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
+// BRO-3340: audit-opening-dates.yml gives the job 25 min and the script
+// --time-budget-min=20; checkout/setup before it and the commit after it
+// leave ~2 min of slack. One candidate runs press-cluster discovery (SERP +
+// a fetchPage() chain can take ~2.5 min (provider timeouts + the 90s
+// Playwright tier deadline)), so do not START one with less than 3 min left.
+const MIN_REMAINING_MS_TO_START = 3 * 60_000;
 
 // Cap discovery attempts per run to bound cost. Each show needing both
 // opening + previews-start checks costs up to 2 SERP + ~10 article fetches +
@@ -190,7 +196,7 @@ async function main() {
   let audited = 0;
 
   for (const show of candidates) {
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — ${candidates.length - audited} candidate(s) deferred to next run.`);
       break;
     }

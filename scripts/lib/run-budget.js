@@ -17,6 +17,19 @@
  *     if (budget.exceeded()) break;  // log remaining, then break
  *     ...
  *   }
+ *
+ * Near-deadline overrun (BRO-2303, BRO-3340): exceeded() only says the
+ * budget is ALREADY gone. An item that starts with 30s left still runs its
+ * full worst case (a fetchPage() chain can take ~2.5 min: Scrapingdog/Bright
+ * Data/ScrapingBee timeouts plus the 90s Playwright tier deadline), which can
+ * carry the step past its timeout-minutes when the gap between
+ * --time-budget-min and that timeout is smaller than one item. Where it is,
+ * check at the loop head with the item's worst case instead:
+ *
+ *   if (!budget.canStartItem(MIN_REMAINING_MS_TO_START)) break;
+ *
+ * and justify MIN_REMAINING_MS_TO_START next to its definition (worst item
+ * cost minus the slack the workflow leaves).
  */
 
 /**
@@ -45,6 +58,14 @@ function createRunBudget(minutes, now = Date.now) {
     elapsedMin: () => Math.round((now() - startedAt) / 60_000),
     remainingMs: () => (enabled ? Math.max(0, budgetMs - (now() - startedAt)) : Infinity),
     exceeded: () => enabled && now() - startedAt >= budgetMs,
+    // False once the budget is spent OR less than `minRemainingMs` is left.
+    // A disabled budget always allows the next item (same as exceeded()).
+    canStartItem: (minRemainingMs = 0) => {
+      if (!enabled) return true;
+      const remaining = Math.max(0, budgetMs - (now() - startedAt));
+      if (remaining <= 0) return false;
+      return remaining >= (Number.isFinite(minRemainingMs) && minRemainingMs > 0 ? minRemainingMs : 0);
+    },
   };
 }
 

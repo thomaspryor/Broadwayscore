@@ -108,7 +108,7 @@ function main() {
     let baselineKeys = new Set();
     try {
       const b = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'star-score-mismatch-baseline.json'), 'utf8'));
-      baselineKeys = new Set(b.keys || []);
+      baselineKeys = require('./lib/baseline-ttl').activeBaselineKeys(b); // BRO-3364: expired acks count as new
     } catch { /* no baseline: everything is new */ }
     const { findings } = scanReviewTexts(ROOT, { baselineKeys });
     keys = keys.concat(findings.map(f => `${f.showId}/${f.file}`));

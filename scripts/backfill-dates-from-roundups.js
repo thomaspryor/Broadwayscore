@@ -63,6 +63,12 @@ async function main(argv = process.argv.slice(2)) {
   const limit = parseInt((argv.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '10', 10);
   const onlyShow = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
   const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
+  // BRO-3340: audit-reverse-discovery.yml runs this as a late step of a
+  // 15-min job with --time-budget-min=12, so slack is under 3 min and shrinks
+  // with the steps before it. Each item is one fetchPage(); a fetchPage()
+  // chain can take ~2.5 min (provider timeouts + the 90s Playwright tier
+  // deadline).
+  const MIN_REMAINING_MS_TO_START = 2.5 * 60_000;
 
   const showsData = loadShows();
   const shows = showsData.shows || showsData;
@@ -92,7 +98,7 @@ async function main(argv = process.argv.slice(2)) {
 
   let backfilled = 0;
   for (const { show, item } of targets.slice(0, limit)) {
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`⏱ Time budget (${timeBudget.minutes} min) reached — stopping early. Next run resumes.`);
       break;
     }

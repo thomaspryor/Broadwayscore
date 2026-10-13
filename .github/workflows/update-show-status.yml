@@ -792,7 +792,9 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 
       - name: Queue new Broadway shows for commercial research
-        if: steps.discover.outputs.new_shows_count != '' && steps.discover.outputs.new_shows_count != '0'
+        # BRO-3224: run after an unrelated earlier failure, but only on top of a
+        # clean public commit (commit-public), never on a half-staged tree.
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success' && steps.discover.outputs.new_shows_count != '' && steps.discover.outputs.new_shows_count != '0'
         # Task #574: commits commercial-research-queue.json (union-merged
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
         env:
@@ -830,6 +832,7 @@ jobs:
           fi
 
       - name: Queue pre-opening shows for commercial research
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'  # BRO-3224, see above
         continue-on-error: true
         # Task #574: commits commercial-research-queue.json (union-merged
         # managed file) — see push-with-retry.sh's reconcile_merged_json().
@@ -845,6 +848,7 @@ jobs:
           fi
 
       - name: Queue closing TBD shows for commercial research
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'  # BRO-3224, see above
         continue-on-error: true
         # Task #574: commits commercial-research-queue.json (union-merged
         # managed file) — see push-with-retry.sh's reconcile_merged_json().

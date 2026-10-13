@@ -19,6 +19,7 @@
  *   node scripts/monitor-outlet-recency.js --dry-run      # print only, always exit 0
  *   node scripts/monitor-outlet-recency.js --json         # machine-readable output
  *   node scripts/monitor-outlet-recency.js --write-baseline  # ack current backlog (card #643)
+ *   node scripts/monitor-outlet-recency.js --renew-baseline  # same, re-acking listed pairs from today (BRO-3364: acks expire after 90d)
  *
  * --write-baseline snapshots the currently-flagged outlet×market pairs into
  * data/audit/outlet-heartbeat-baseline.json. The "Quality: outlet-heartbeat
@@ -32,6 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildCadenceReport } = require('./lib/outlet-cadence');
 const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
+const { buildBaseline } = require('./lib/baseline-ttl');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -72,7 +74,8 @@ function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const jsonOut = args.includes('--json');
-  const writeBaseline = args.includes('--write-baseline');
+  const renewBaseline = args.includes('--renew-baseline');
+  const writeBaseline = renewBaseline || args.includes('--write-baseline');
 
   const reviewsData = JSON.parse(fs.readFileSync(resolveDataFile('data/reviews.json'), 'utf8'));
   const outletsData = JSON.parse(fs.readFileSync(resolveDataFile('data/outlet-registry.json'), 'utf8'));
@@ -99,16 +102,17 @@ function main() {
     const state = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile, 'utf8')) : {};
     const { actionable } = getActionableOutletRows(flagged, state, new Set());
     const p = baselinePath();
-    const payload = {
-      _meta: {
-        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline',
-        count: actionable.length,
+    let prev = null;
+    try { prev = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { /* first write */ }
+    const { doc: payload, stats } = buildBaseline(actionable.map((r) => `${r.outletId}::${r.market}`), prev, {
+      renew: renewBaseline,
+      meta: {
+        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Each ack expires after ttlDays (BRO-3364) and the pair re-enters the normal 2-week streak. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline (keeps existing acks\' dates); --renew-baseline re-acks every listed pair from today.',
       },
-      keys: actionable.map((r) => `${r.outletId}::${r.market}`).sort(),
-    };
+    });
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, JSON.stringify(payload, null, 2) + '\n');
-    console.error(`Wrote baseline: ${actionable.length} known silent outlet×market pair(s) (redStreak>=2) → ${p}`);
+    console.error(`Wrote baseline: ${actionable.length} known silent outlet×market pair(s) (redStreak>=2) → ${p} (${stats.added} new, ${stats.kept} kept their ack date, ${stats.renewed} renewed, ${stats.dropped} dropped)`);
     process.exit(0);
   }
 

@@ -97,6 +97,10 @@ async function main() {
   // Stop cleanly before the workflow's timeout; unprocessed candidates stay open.
   const budgetMin = parseTimeBudgetMin(argv);
   const budget = createRunBudget(budgetMin);
+  // BRO-3340: no loop-head reserve here. Discovery below takes 6 of the 8
+  // minutes, so a 3-min reserve would stop every run before its first
+  // candidate; scrape-new-aggregators.yml gives the step 12 min instead, more
+  // than the 8-min budget plus one candidate's worst case (~3 min).
   // Discovery gets three quarters, so open candidates still get their turn;
   // pages it doesn't reach are read first next run (BRO-4725).
   const discoveryBudget = createRunBudget(budgetMin * 0.75);

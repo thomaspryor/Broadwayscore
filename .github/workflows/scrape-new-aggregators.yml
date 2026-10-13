@@ -621,7 +621,11 @@ jobs:
         id: create_tours
         if: always()
         continue-on-error: true
-        timeout-minutes: 10
+        # BRO-3340: 4 min past the 8-min budget, more than one candidate's
+        # worst case (~3 min: a fetchPage() chain + two Wikipedia reads), so
+        # the last candidate started inside the budget always finishes. A
+        # loop-head reserve would not fit: discovery takes 6 of the 8 minutes.
+        timeout-minutes: 12
         env:
           TOUR_AUTOCREATE: ${{ vars.TOUR_AUTOCREATE }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}

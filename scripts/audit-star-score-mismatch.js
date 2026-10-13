@@ -20,6 +20,7 @@
  * USAGE:
  *   node scripts/audit-star-score-mismatch.js                 # NEW mismatches (not baselined); exit 1 if any
  *   node scripts/audit-star-score-mismatch.js --all           # whole corpus, ignore baseline (audit mode, exit 0)
+ *   node scripts/audit-star-score-mismatch.js --renew-baseline# same, but re-ack every listed key from today (BRO-3364 expiry)
  *   node scripts/audit-star-score-mismatch.js --write-baseline# snapshot current findings into the baseline file
  *   node scripts/audit-star-score-mismatch.js --threshold=40  # override gap threshold
  *   node scripts/audit-star-score-mismatch.js --json          # machine-readable output
@@ -32,14 +33,16 @@
 const fs = require('fs');
 const path = require('path');
 const { scanReviewTexts, keyOf, DEFAULT_THRESHOLD } = require('./lib/star-score-mismatch');
+const { activeBaselineKeys, buildBaseline } = require('./lib/baseline-ttl');
 
 function parseArgs(argv) {
-  const args = { all: false, json: false, threshold: DEFAULT_THRESHOLD, show: null, writeBaseline: false };
+  const args = { all: false, json: false, threshold: DEFAULT_THRESHOLD, show: null, writeBaseline: false, renewBaseline: false };
   for (const a of argv) {
     if (a === '--help' || a === '-h') { args.help = true; }
     else if (a === '--all') { args.all = true; }
     else if (a === '--json') { args.json = true; }
     else if (a === '--write-baseline') { args.writeBaseline = true; }
+    else if (a === '--renew-baseline') { args.writeBaseline = true; args.renewBaseline = true; }
     else if (a.startsWith('--threshold=')) { args.threshold = parseFloat(a.slice(12)); }
     else if (a.startsWith('--show=')) { args.show = a.slice(7); }
   }
@@ -51,7 +54,9 @@ function usage() {
 
   (default)          list NEW mismatches (not in the baseline); exit 1 if any
   --all              whole corpus, ignore baseline (audit mode; always exit 0)
-  --write-baseline   snapshot ALL current findings into the baseline file (one-time / after triage)
+  --write-baseline   snapshot ALL current findings into the baseline file (one-time / after triage);
+                     keys already listed keep their ack date, so expired acks stay expired
+  --renew-baseline   same, but re-acks every key from today (after re-triaging them; BRO-3364)
   --show=<id>        scan a single show directory
   --threshold=<n>    gap threshold in points (default ${DEFAULT_THRESHOLD})
   --json             machine-readable output
@@ -75,7 +80,7 @@ function loadBaselineKeys() {
   const p = baselinePath();
   try {
     const data = JSON.parse(fs.readFileSync(p, 'utf8'));
-    return new Set(Array.isArray(data.keys) ? data.keys : []);
+    return activeBaselineKeys(data); // BRO-3364: expired acks count as new
   } catch { return new Set(); }
 }
 
@@ -103,16 +108,17 @@ function main() {
   if (args.writeBaseline) {
     const p = baselinePath();
     fs.mkdirSync(path.dirname(p), { recursive: true });
-    const payload = {
-      _meta: {
-        description: 'Known/triaged star-vs-score mismatches (card #396). The daily health check alerts only on findings NOT listed here. Regenerate after triaging with: node scripts/audit-star-score-mismatch.js --write-baseline',
+    let prev = null;
+    try { prev = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { /* first write */ }
+    const { doc: payload, stats } = buildBaseline(findings.map(keyOf), prev, {
+      renew: args.renewBaseline,
+      meta: {
+        description: 'Known/triaged star-vs-score mismatches (card #396). The daily health check alerts only on findings NOT listed here. Regenerate after triaging with: node scripts/audit-star-score-mismatch.js --write-baseline (keeps existing acks\' dates; acks expire after ttlDays, BRO-3364; --renew-baseline re-acks every listed key)',
         threshold: args.threshold,
-        count: findings.length,
       },
-      keys: findings.map(keyOf).sort(),
-    };
+    });
     fs.writeFileSync(p, JSON.stringify(payload, null, 2) + '\n');
-    console.log(`Wrote baseline: ${findings.length} known mismatches → ${p}`);
+    console.log(`Wrote baseline: ${findings.length} known mismatches → ${p} (${stats.added} new, ${stats.kept} kept their ack date, ${stats.renewed} renewed, ${stats.dropped} dropped)`);
     process.exit(0);
   }
 

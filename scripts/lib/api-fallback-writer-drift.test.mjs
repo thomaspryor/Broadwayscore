@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { findWritingWorkflows, extractConcurrencyGroup, checkEntry } from './api-fallback-writer-drift.js';
+import { findWritingWorkflows, extractConcurrencyGroup, checkEntry, findCoreDataWriters as findCDW, checkCoreDataEntry as checkCDE } from './api-fallback-writer-drift.js';
 import { CORE_DATA_MERGE_REGISTRY, apiFallbackSafeEntriesFor } from './core-data-merge-registry.js';
 
 test('findWritingWorkflows matches an inline git add', () => {
@@ -283,3 +283,57 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'recoupment-calibration-anchors.json',
   ]);
 });
+
+// ── BRO-3514: private-core-data writer scan (fixtures only; the live-repo
+// comparison is the advisory scripts/audit-core-data-writers.js) ───────────
+{
+  const SRC = {
+    'scripts/generate-critic-consensus.js': "const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');\nfs.writeFileSync(CONSENSUS_FILE, out);\n",
+    'scripts/reads-consensus.js': "const x = JSON.parse(fs.readFileSync('data/critic-consensus.json'));\nfs.writeFileSync(OTHER_OUT, x);\n",
+    'scripts/via-lib.js': "const store = require('./lib/store');\nstore.save();\n",
+    'scripts/lib/store.js': "fs.writeFileSync(path.join(DATA, 'subscribers.json'), body);\n",
+    'scripts/scrape-grosses.ts': "const GROSSES_PATH = path.join(DATA_DIR, 'grosses.json');\nfs.writeFileSync(GROSSES_PATH, s);\n",
+  };
+  const readFile = (p) => SRC[p] ?? null;
+  const wf = (run, group = 'g') => `name: x\nconcurrency:\n  group: ${group}\njobs:\n  j:\n    steps:\n      - run: ${run}\n      - uses: ./.github/actions/push-core-data\n`;
+
+  test('findCoreDataWriters: a workflow that runs a writer AND pushes core data is a writer; readers and non-pushers are not', () => {
+    const workflows = {
+      'update-critic-consensus.yml': wf('node scripts/generate-critic-consensus.js'),
+      'recreate-broadcast-draft.yml': wf('node scripts/generate-critic-consensus.js --show=x'),
+      'reader.yml': wf('node scripts/reads-consensus.js'),
+      'no-push.yml': 'jobs:\n  j:\n    steps:\n      - run: node scripts/generate-critic-consensus.js\n',
+    };
+    assert.deepEqual(Object.keys(findCDW('critic-consensus.json', workflows, readFile)).sort(), ['recreate-broadcast-draft.yml', 'update-critic-consensus.yml']);
+  });
+
+  test('findCoreDataWriters follows a ./lib require and reads .ts scripts', () => {
+    assert.deepEqual(findCDW('subscribers.json', { 'a.yml': wf('node scripts/via-lib.js') }, readFile), { 'a.yml': ['scripts/via-lib.js'] });
+    assert.deepEqual(findCDW('grosses.json', { 'g.yml': wf('npx tsx scripts/scrape-grosses.ts') }, readFile), { 'g.yml': ['scripts/scrape-grosses.ts'] });
+  });
+
+  test('checkCoreDataEntry: an undocumented extra writer is drift (the critic-consensus.json shape BRO-3514 found)', () => {
+    const workflows = { 'update-critic-consensus.yml': wf('node scripts/generate-critic-consensus.js', 'a'), 'recreate-broadcast-draft.yml': wf('node scripts/generate-critic-consensus.js', 'b') };
+    const derived = findCDW('critic-consensus.json', workflows, readFile);
+    const r = checkCDE({ file: 'critic-consensus.json', writers: ['update-critic-consensus.yml'] }, derived, workflows);
+    assert.equal(r.status, 'drift');
+    assert.deepEqual(r.undeclared, ['recreate-broadcast-draft.yml']);
+  });
+
+  test('checkCoreDataEntry: concurrent declared writers need a documented mitigation; a shared group does not', () => {
+    const two = { 'a.yml': wf('node scripts/generate-critic-consensus.js', 'a'), 'b.yml': wf('node scripts/generate-critic-consensus.js', 'b') };
+    const derived = findCDW('critic-consensus.json', two, readFile);
+    assert.equal(checkCDE({ writers: ['a.yml', 'b.yml'] }, derived, two).status, 'drift');
+    assert.equal(checkCDE({ writers: ['a.yml', 'b.yml'], multiWriterMitigation: 'lost take regenerates' }, derived, two).status, 'ok');
+    const shared = { 'a.yml': wf('node scripts/generate-critic-consensus.js', 'same'), 'b.yml': wf('node scripts/generate-critic-consensus.js', 'same') };
+    assert.equal(checkCDE({ writers: ['a.yml', 'b.yml'] }, findCDW('critic-consensus.json', shared, readFile), shared).status, 'ok');
+  });
+
+  test('checkCoreDataEntry: a single writer on a per-run group needs a mitigation (update-lbo shape); no list is "undeclared"; nothing found is "unverifiable"', () => {
+    const perRun = { 'lbo.yml': wf('node scripts/generate-critic-consensus.js', 'lbo-${{ github.run_id }}') };
+    assert.equal(checkCDE({ writers: ['lbo.yml'] }, findCDW('critic-consensus.json', perRun, readFile), perRun).status, 'drift');
+    assert.equal(checkCDE({}, {}, {}).status, 'undeclared');
+    const helperOnly = { 'p.yml': wf('node scripts/unknown.js') };
+    assert.equal(checkCDE({ writers: ['p.yml'], writersUnverifiable: 'path passed as a parameter' }, {}, helperOnly).status, 'unverifiable');
+  });
+}

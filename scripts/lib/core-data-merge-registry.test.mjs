@@ -126,3 +126,51 @@ test('apiFallbackSafeEntriesFor(public-repo) is disjoint from activeEntriesFor(p
     assert.ok(!activeFiles.has(e.file), `${e.file} is in both MANAGED and apiFallbackSafe — should be impossible`);
   }
 });
+
+// BRO-3333: "active with a real merge fn but no apiFallbackMerge" used to be
+// discoverable only by a human sweep (BRO-3071 found 9, fixed 2). Every
+// public-repo 'active' entry now has to say which way it went, so a new
+// entry cannot silently disqualify push-with-retry.sh's Git Data API
+// fallback for every commit that stages it.
+test('every public-repo active entry decides apiFallbackMerge explicitly', () => {
+  const active = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.status === 'active');
+  assert.ok(active.length >= 10, `expected 10+ public-repo active entries, found ${active.length}`);
+  const undecided = active.filter((e) => {
+    const flagged = e.apiFallbackMerge === true;
+    const excluded = typeof e.notApiFallbackMerge === 'string' && e.notApiFallbackMerge.trim().length > 0;
+    return flagged === excluded; // neither, or (contradictory) both
+  });
+  assert.deepEqual(
+    undecided.map((e) => e.file),
+    [],
+    'add `apiFallbackMerge: true` (merge fn is safe to run on EVERY fallback push, even against an untouched remote) ' +
+      'or `notApiFallbackMerge: "<why not>"` to these entries',
+  );
+});
+
+test('a "gitignored" notApiFallbackMerge reason is true: git really ignores the file', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const path = await import('node:path');
+  const { fileURLToPath } = await import('node:url');
+  const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const claimed = CORE_DATA_MERGE_REGISTRY.filter((e) => /gitignored/.test(e.notApiFallbackMerge || ''));
+  assert.ok(claimed.length >= 2, 'expected commercial.json and diary-shows.json to claim gitignored');
+  for (const e of claimed) {
+    // `git check-ignore` exits 0 when the path is ignored, 1 when not.
+    assert.doesNotThrow(
+      () => execFileSync('git', ['check-ignore', '-q', `data/${e.file}`], { cwd: repoRoot }),
+      `data/${e.file} claims to be gitignored but git does not ignore it — the apiFallbackMerge exclusion reason is stale`,
+    );
+  }
+});
+
+test('every json apiFallbackMerge fn survives an absent side or base (the fallback passes null for an empty blob)', () => {
+  for (const e of apiFallbackMergeEntriesFor('public-repo')) {
+    const empty = e.format === 'jsonl' ? [] : null;
+    const sample = e.format === 'jsonl' ? [] : {};
+    for (const [ours, remote, base] of [[sample, empty, empty], [empty, sample, undefined], [sample, sample, empty]]) {
+      const r = e.merge(ours, remote, base);
+      assert.ok(r && typeof r === 'object' && 'merged' in r, `${e.file}: merge(${JSON.stringify([ours, remote, base])}) returned no {merged}`);
+    }
+  }
+});

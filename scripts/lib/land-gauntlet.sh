@@ -355,6 +355,7 @@ lint_workflows() {
     audit-toplevel-script-test-yml-coverage \
     audit-run-budget-coverage \
     audit-alert-reachability \
+    audit-core-data-writers \
     audit-push-core-data-audit-gap \
     audit-errexit-unguarded-substitution \
     audit-same-job-breadcrumb-coverage \

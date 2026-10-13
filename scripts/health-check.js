@@ -1203,22 +1203,28 @@ function checkQuality() {
       if (!fs.existsSync(rtDir)) {
         return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: 'Skipped (review-texts not checked out)' };
       }
+      // BRO-3364: acks expire after 90 days (scripts/lib/baseline-ttl.js).
+      const { activeBaselineKeys, describeExpiry } = require('./lib/baseline-ttl');
       let baselineKeys = new Set();
+      let expiryNote = '';
       try {
         const b = readJSON(path.join(AUDIT_DIR, 'star-score-mismatch-baseline.json'));
-        if (b && Array.isArray(b.keys)) baselineKeys = new Set(b.keys);
+        if (b && Array.isArray(b.keys)) {
+          baselineKeys = activeBaselineKeys(b);
+          expiryNote = describeExpiry(b, Date.now(), { renewCommand: '`node scripts/audit-star-score-mismatch.js --renew-baseline`' });
+        }
       } catch { /* no baseline yet — everything is "new" */ }
       const { findings, baselinedCount } = scanReviewTexts(rtDir, { baselineKeys });
       if (findings.length === 0) {
-        return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: `No new star/score contradictions (${baselinedCount} known/baselined)` };
+        return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: `No new star/score contradictions (${baselinedCount} known/baselined)${expiryNote}` };
       }
       const worst = findings[0];
       const hidden = findings.filter(f => f.starWonHidingContradiction).length;
       return {
         name: 'Quality: star-vs-score mismatch',
         status: 'warn',
-        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}`,
-        hint: 'Run `node scripts/audit-star-score-mismatch.js` — likely a mis-extracted star (wrong show in a combined review column). Fix originalScore in review-texts + rescore, then `--write-baseline` to ack.',
+        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}${expiryNote}`,
+        hint: 'Run `node scripts/audit-star-score-mismatch.js` — likely a mis-extracted star (wrong show in a combined review column). Fix originalScore in review-texts + rescore, then `--write-baseline` to ack (acks expire after 90 days; `--renew-baseline` re-acks keys already listed).',
       };
     }),
 

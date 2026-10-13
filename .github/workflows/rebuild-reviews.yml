@@ -702,7 +702,9 @@ jobs:
           fi
 
       - name: Check for large files
-        if: steps.changes.outputs.has_changes == 'true'
+        # BRO-3224: always() so an earlier failure cannot skip this guard while
+        # the always()-gated commit below still runs.
+        if: always() && steps.changes.outputs.has_changes == 'true'
         uses: ./.github/actions/check-file-sizes
 
 
@@ -855,6 +857,9 @@ jobs:
 
       - name: Auto-trigger LLM scoring if needed
         id: scoring-trigger
+        # BRO-3224: unscored reviews need the dispatch even when a later step
+        # (a push, an audit) failed; plain job anchor, not the staleness output.
+        if: always() && steps.rebuild.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
