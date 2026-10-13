@@ -2860,13 +2860,6 @@ on:
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/bsc-reconcile.js'
-      - 'scripts/bsc-reconcile.test.mjs'
-      # Card #1796: reopen-idempotency fix for sweepUntrackedInProgress's
-      # UNTRACKED_MARKER/OUTCOME_PARK_MARKER guards (same bug class as
-      # #1795). Registered explicitly in tests/unit-test-manifest.txt
-      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
-      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
-      - 'scripts/bsc-reconcile-reopen-idempotency.test.mjs'
       # BRO-3925 (backlog-drain R4): Linear-'started' zombie sweep. Pure
       # logic lives in scripts/lib/linear-started-zombie-sweep.js (already
       # covered by the scripts/lib/** glob above); this test lives in
@@ -2886,14 +2879,12 @@ on:
       # its baseline must still trigger CI — path-listed per
       # feedback_test_yml_push_path_allowlist.
       - 'scripts/audit-help-flag-safety.js'
-      - 'scripts/audit-help-flag-safety.test.mjs'
       - 'scripts/.help-flag-safety-baseline.json'
       # Fetch/https.get timeout audit (#1862, BRO-108 follow-up) — same
       # solo-edit-must-trigger-CI reasoning as the guard above. Informational
       # only (exit 0 on the repo-wide scan) — not --gate-wired, so no
       # baseline JSON entry needed here.
       - 'scripts/audit-fetch-timeouts.js'
-      - 'scripts/audit-fetch-timeouts.test.mjs'
       # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
       # names it as THE single edit site for the 250->100->60 step-down, so a
       # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).
@@ -2905,11 +2896,8 @@ on:
       - 'scripts/audit-alert-senders.js'
       - 'scripts/.alert-sender-baseline.json'
       - 'scripts/.human-caller-digest-baseline.json'
-      - 'scripts/audit-alert-senders.test.mjs'
       # BRO-2221: pins time-bomb fixes under the +45d clock shift
       - 'scripts/audit-time-bomb-tests.js'
-      - 'scripts/audit-time-bomb-tests.test.mjs'
-      - 'scripts/byline-attribution.test.mjs'
       # Outlet stub-rate monitor (card #100): detects a broken article
       # extractor (site redesign silently breaking extraction, e.g.
       # TheaterMania's 2026 Bootstrap redesign) via a spike in the stub-tier
@@ -2919,14 +2907,12 @@ on:
       # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
       # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-outlet-stub-rate.js'
-      - 'scripts/audit-outlet-stub-rate.test.mjs'
       # Dead-dispatch completion guard (card #1144): a task whose latest
       # dispatch is journaled dead must not be marked completed. Colocated
       # test is registered explicitly in tests/unit-test-manifest.txt
       # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/reconcile-dead-completions.js'
-      - 'scripts/reconcile-dead-completions.test.mjs'
       # reconcile-broadcast-state.js was missing from this list entirely (task
       # #1853 follow-up finding) — a solo push touching it triggered ZERO CI.
       # Colocated test is registered explicitly in tests/unit-test-manifest.txt
@@ -2934,7 +2920,6 @@ on:
       # edit to either side triggers CI (feedback_test_yml_push_path_allowlist).
       # tests/unit/reconcile-broadcast-state.test.mjs already rides 'tests/**'.
       - 'scripts/reconcile-broadcast-state.js'
-      - 'scripts/reconcile-broadcast-state.test.mjs'
       # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
       # renders a terminal surface, so the injected command never runs. The
       # retry layer hides it from every individual session, so only the
@@ -2949,7 +2934,6 @@ on:
       - 'scripts/dispatch-watchdog.js'
       # BRO-3437: class-level "no watchdog-park source names a retired-board
       # id" test (top-level scripts/*.test.mjs are NOT globbed).
-      - 'scripts/dispatch-watchdog.test.mjs'
       - 'scripts/tests/dispatch-watchdog-core.test.mjs'
       - 'scripts/tests/dispatch-outcome.test.mjs'
       # BRO-3923: digest-autofix never files a "BSC Daily: Watchdog parked
@@ -3002,7 +2986,6 @@ on:
       # in the Lint Workflows job's colocated *.js glob, but path-listed for
       # the same reason as everything else in this block.
       - 'scripts/audit-digest-clip-safety.js'
-      - 'scripts/audit-digest-clip-safety.test.mjs'
       # Cross-run dead-arm detector (card #647) — the class behind all three
       # arms the 2026-07-30 pipeline audit found dead with zero alarms.
       # Colocated *.test.mjs run via the scripts/lib/*.test.mjs glob;
@@ -3019,8 +3002,6 @@ on:
       # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a solo
       # edit to either triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/cron-health-chronic-orchestrator.js'
-      - 'scripts/cron-health-chronic.test.mjs'
-      - 'scripts/check-cron-health-config.test.mjs'
       # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
       # for the same reason (feedback_test_yml_push_path_allowlist); it has no
       # colocated unit test (it deliberately exercises the REAL Notion API,
@@ -3050,22 +3031,15 @@ on:
       # is NOT globbed); the fallback-specific test lives in scripts/tests/
       # (also not globbed) — both path-listed here so a solo edit triggers CI.
       - 'scripts/enrich-card-acceptance.js'
-      - 'scripts/enrich-card-acceptance.test.mjs'
       - 'scripts/tests/enrich-card-acceptance-fallback.test.mjs'
       # BRO-2170: stale owner-judgment marker recheck.
       - 'scripts/tests/enrich-card-recheck-markers.test.mjs'
       - 'scripts/audit-card-verifiability.js'
-      - 'scripts/audit-card-verifiability.test.mjs'
       - 'scripts/lib/triage-schema.json'
       - 'scripts/autonomous-triage.js'
       - 'scripts/autonomous-calibrate.js'
       - 'scripts/autonomous-run.js'
       - 'scripts/autonomous-probe.js'
-      # --help/-h guards (card #260, cousin of the bsc-conductor/bsc-prune
-      # #185 incident). Top-level *.test.mjs is NOT globbed — explicitly
-      # listed here and in the tests/unit node --test invocation below.
-      - 'scripts/autonomous-run.test.mjs'
-      - 'scripts/autonomous-probe.test.mjs'
       # Attempt-memory park logic + spend circuit breaker (owner mandate
       # 2026-07-30, task #635 — loop stays PAUSED per #599 until the owner
       # reviews this). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs
@@ -3092,23 +3066,6 @@ on:
       # scripts/*.js is outside every glob, so without this line a solo edit to
       # the CLI would trigger ZERO CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/land.js'
-      # Autonomous nightly loop (Sprint 4: Tier-2 data-pipeline card classes +
-      # branch mechanics in the private repos + verifier harness). Colocated
-      # scripts/lib/*.test.mjs run in the lib-test glob; the top-level
-      # scripts/autonomous-triage.test.mjs is explicitly listed in the
-      # tests/unit node --test invocation (that batch is NOT globbed).
-      - 'scripts/autonomous-triage.test.mjs'
-      # card #171 (2026-07-14): checkableDone path-existence validation
-      # (autonomous-triage-core.js) + shared-task stale-claim release on card
-      # failure (autonomous-run.js). Colocated top-level test is NOT globbed —
-      # explicitly listed in the tests/unit node --test invocation below.
-      - 'scripts/autonomous-run-release-claim.test.mjs'
-      # Tier-3 Sprint 2 (2026-07-25): the ONE shared check gauntlet + the
-      # parity test that keeps the CI approve tap from re-verifying with a
-      # weaker set than the overnight run. autonomous-checks.test.mjs runs in
-      # the scripts/lib/*.test.mjs glob; the top-level parity test is NOT
-      # globbed, so it is also listed in the tests/unit node --test invocation.
-      - 'scripts/autonomous-merge-core-data-guard.test.mjs'
       # Task #1759 — prevention lint for the ROOT accident behind the
       # 2026-08-17 outage (autonomous-merge-core-data-guard.test.mjs above is
       # the tactical fix): a data/*.json file that's BOTH git-tracked AND
@@ -3125,12 +3082,10 @@ on:
       - 'scripts/pr-supervisor.js'
       - 'scripts/lib/pr-supervisor-core.js'
       - 'tests/unit/pr-supervisor-core.test.mjs'
-      - 'scripts/autonomous-merge-parity.test.mjs'
       # RECHECK-AFTER stamp parser leaf (2026-08-02), shared by the recheck
       # and the stuck-work digest check. Colocated test runs in the lib-test
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/autonomous-acceptance-recheck.js'
-      - 'scripts/autonomous-acceptance-recheck.test.mjs'
       # BRO-3551: the open-backlog acceptance sweep (report-only — never
       # closes/comments/mutates a Linear issue). scripts/lib/autonomous-
       # recheck-core.js's selectOpenBacklogSweepCandidates and scripts/lib/
@@ -3138,14 +3093,12 @@ on:
       # above; this top-level orchestrator + its colocated test do not, so
       # they're path-listed here so a solo edit triggers CI (task #1745 gap).
       - 'scripts/sweep-open-backlog-acceptance.js'
-      - 'scripts/sweep-open-backlog-acceptance.test.mjs'
       # BRO-4135: the BRO-3913 RECHECK command. Reads scripts/lib/linear-
       # drain-throughput.js (rides the 'scripts/lib/**' glob above) plus
       # scripts/lib/backlog-inflow-ratio.js and scripts/lib/linear-client.js
       # (same glob); this top-level CLI + its colocated test do not ride
       # that glob, so path-listed here so a solo edit triggers CI.
       - 'scripts/check-linear-drain-throughput.js'
-      - 'scripts/check-linear-drain-throughput.test.mjs'
       # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
       # bulk health-check commit in data-health-check.yml (a lost bulk-commit
       # push race was silently discarding every RECHECK-AFTER verdict for the
@@ -3191,7 +3144,6 @@ on:
       # path-listing rationale as the entries directly above.
       - 'scripts/tests/health-check-unmeasurable-rows.test.mjs'
       - 'scripts/bsc-prune.js'
-      - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
       - 'scripts/verify-review-recovery.js'
       # Telegraph reviews-index card parser (task #720) — the editorial-slug /
@@ -3199,7 +3151,6 @@ on:
       # lives in scripts/ (NOT covered by the scripts/lib/*.test.mjs glob), so it
       # is registered explicitly in the tests/unit node --test invocation below
       # AND path-listed here so a solo edit triggers CI.
-      - 'scripts/telegraph-reviews-index.test.mjs'
       - 'tests/fixtures/telegraph-theatre-reviews-index.html'
       # scripts/lib/site-search-discovery.js, found-outlet-ids.js,
       # url-discovery.js, domain-filters.js, domainless-outlet-guard.test.mjs,
@@ -3219,17 +3170,11 @@ on:
       # auditor or its unit test triggers CI.
       - 'scripts/audit-self-contradictory-clears.js'
       - 'tests/unit/self-contradictory-clear.test.mjs'
-      # BRO-2283 — root-level scripts/*.test.mjs is NOT globbed (same gap as
-      # the drain acceptance test below); registered in
-      # tests/unit-test-manifest.txt so it RUNS in CI but needs its own path
-      # entry or a solo edit gets ZERO CI.
-      - 'scripts/audit-self-contradictory-clears.test.mjs'
       # BRO-185 drain acceptance test — root-level scripts/*.test.mjs is NOT
       # globbed, and it's registered in tests/unit-test-manifest.txt, so it
       # RUNS in CI but needs its own path entry or a solo edit gets ZERO CI.
       # Baseline JSON needs the same treatment as its cv-flag-contradiction
       # sibling above — a solo baseline edit must still trigger the gate.
-      - 'scripts/audit-self-contradictory-clear-drained.test.mjs'
       - 'data/audit/self-contradictory-clears-baseline.json'
       # Vacuous-gate class fix (#1063) — shared corpus-scan guard used by all 4
       # audits above plus these two, which aren't covered by any other
@@ -3251,10 +3196,6 @@ on:
       # needsOverflowHydration (2026-08-14). Colocated test runs in the
       # lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/audit-t1-silent-gaps.js'
-      # BRO-71: root-level scripts/*.test.mjs is NOT globbed (see the note near
-      # the top of this file) — a solo edit to this test needs its own entry
-      # or CI never runs it.
-      - 'scripts/audit-t1-silent-gaps.test.mjs'
       # ST-1 (2026-07-22): manual-entry merge-path force-override fix — a merge
       # onto an existing wrongProduction:true file now clears it instead of
       # silently preserving the stale flag (Grace Pervades). Colocated tests
@@ -3267,22 +3208,15 @@ on:
       # deleted review-text-scoreable mirror onto review-guards canonical
       # predicates. Path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/check-review-count-drift.js'
-      # BRO-58: colocated test, registered in tests/unit-test-manifest.txt
-      # (tests/** already globbed above). Root-level scripts/*.test.mjs is NOT
-      # globbed, so a solo edit to just this file needs its own entry.
-      - 'scripts/check-review-count-drift.test.mjs'
       # BRO-4767: end-to-end baseline tests, and the tracked baseline they validate
-      - 'scripts/check-review-count-drift-baseline.test.mjs'
       - 'data/audit/review-suppression-baseline.json'
       - 'scripts/clear-stale-wrong-production-flags.js'
       # BRO-2323: root-level scripts/*.test.mjs is NOT globbed — a solo edit to
       # either the script or its colocated test needs its own entry, or the
       # test that would catch a predicate/surge-guard regression never runs.
       - 'scripts/clear-stale-roundup-flags.js'
-      - 'scripts/clear-stale-roundup-flags.test.mjs'
       # BRO-2432: fail-loud-on-LLM-outage fix + colocated test (not globbed).
       - 'scripts/clear-stale-wrong-show-flags.js'
-      - 'scripts/clear-stale-wrong-show-flags.test.mjs'
       - 'scripts/triage-unknown-critic-stubs.js'
       # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
       # verify-all-scored) and the rebuild-drop analyzer it de-noises
@@ -3295,13 +3229,6 @@ on:
       # edit to either file, or the CLI wrapper that does the I/O/dispatch/
       # alert-routing, still triggers CI.
       - 'scripts/dispatch-orphan-rescore-requeue.js'
-      # Sprint 4, S4-T4: autonomous-merge.yml/.js 'data' action (Tier-2 CI
-      # merge/revert against the private repos). scripts/autonomous-merge.js
-      # is already path-listed above (and .github/workflows/** is globbed at
-      # line ~396); this file's top-level test.mjs is NOT globbed (same
-      # reason as autonomous-triage.test.mjs above) so it's explicitly listed
-      # here AND in the tests/unit node --test invocation.
-      - 'scripts/autonomous-merge.test.mjs'
       # S2-T1/S2-T3: commercial-model drift-detection gets a colocated
       # scripts/lib/*.test.mjs (auto-run by the lib-test glob step, no
       # explicit registration needed there); path-listed here so a solo edit
@@ -3389,12 +3316,6 @@ on:
       # globbed) — path-listed so a solo edit still triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/claim-ci-red.js'
-      # CI-red claim auto-invocation (task #598): bsc-next.js now calls
-      # appendClaim() itself at dispatch time via this heuristic, instead of
-      # relying on a human running claim-ci-red.js by hand. Colocated test
-      # runs in the main unit batch; path-listed so a solo edit triggers CI
-      # (feedback_test_yml_push_path_allowlist).
-      - 'scripts/bsc-next-ci-red-claim.test.mjs'
       # TR wrong-show guard corroboration (card #1227): the title-mention-count
       # and film/TV guards in extract-theatre-record.js false-rejected 6 real
       # T1/T2 Barcelona reviews on a common-word single-word title. Predicates
@@ -3489,14 +3410,6 @@ on:
       # covered by any glob, so it needs explicit listing
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-linear-drain-health.js'
-      # Its colocated CLI test needs its OWN entry, not just the source's:
-      # audit-toplevel-script-test-yml-coverage.js flags a manifest-registered
-      # top-level test whose own path is absent here, because a solo push
-      # touching only the test file would otherwise trigger ZERO CI
-      # (feedback_test_yml_push_path_allowlist). These are CLI-level tests that
-      # spawn the real binary — exactly the class that caught the stdin bug the
-      # pure-function tests could not see — so they must run on their own edits.
-      - 'scripts/check-linear-drain-health.test.mjs'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
@@ -3545,7 +3458,6 @@ on:
       # path_allowlist; same script+test pairing convention as BRO-848/BRO-141
       # above).
       - 'scripts/score-reviews-calibrated.js'
-      - 'scripts/score-reviews-calibrated.test.mjs'
       # BRO-3507: lint-workflows ratchet CLI. Its decision logic
       # (scripts/lib/data-gate-heal-paths.js, colocated-tested) is covered by
       # the scripts/lib/** glob above, but this thin CLI wrapper is a
