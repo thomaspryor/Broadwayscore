@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-13T01:00:29.055Z",
+    "lastUpdated": "2026-10-13T06:49:11.663Z",
     "version": "2.1.0",
     "lastChange": "BRO-4898: aliases therevieshub-com -> thereviewshub, time-outs -> timeout-london (typo outlet ids on genuine reviews); add Islington Gazette"
   },
@@ -12603,6 +12603,17 @@
       "region": "london",
       "accessModel": "free",
       "starScale": 5
+    },
+    "littlelondonwhispers": {
+      "displayName": "Littlelondonwhispers",
+      "tier": 3,
+      "aliases": [
+        "littlelondonwhispers"
+      ],
+      "domain": "littlelondonwhispers.substack.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-13T06:49:11.663Z"
     }
   },
   "_aliasIndex": {
