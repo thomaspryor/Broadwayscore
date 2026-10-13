@@ -112,3 +112,34 @@ test('the scorer stays out when it would fall back to the invented excerpt (BRO-
   assert.equal(isScoreable(garbage), false);
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: 'short stub text', url: ROW.url }, { forScoring: true }), true, 'text-proof clauses still apply');
 });
+
+// The guard must ask the scorer's own text picker (input-builder.ts ->
+// getBestTextForScoring), which can rank a verdict-bearing excerpt above a
+// truncated page and appends excerpts to a short page (ship-check, BRO-5222).
+const { getBestTextForScoring } = require('../../scripts/lib/text-quality.js');
+const VERDICT_EXCERPT = 'A triumphant, must-see revival; highly recommended and the best production of the season by far, a stunning evening.';
+
+test('the scorer stays out when its picker would choose the invented excerpt over the page (BRO-5222)', () => {
+  const cut = PROSE.slice(0, 1800) + ' and then the second act turns on';
+  const row = { ...ROW, fullText: cut, dtliExcerpt: VERDICT_EXCERPT };
+  assert.equal(getBestTextForScoring(row).type, 'excerpt', 'fixture: the picker prefers the excerpt');
+  assert.equal(isUnverifiableWebSearchRow(row, { forScoring: true }), true);
+  assert.equal(isScoreable(row), false);
+});
+
+test('the scorer stays out when the picker would append the invented excerpt to a short page (BRO-5222)', () => {
+  const row = { ...ROW, fullText: PROSE.slice(0, 1200) + '.', dtliExcerpt: VERDICT_EXCERPT };
+  const best = getBestTextForScoring(row);
+  if (best.type === 'fullText') assert.ok(best.text.includes(require('../../scripts/lib/text-quality.js').EXCERPT_APPENDIX_MARKER), 'fixture: excerpt appended');
+  assert.equal(isUnverifiableWebSearchRow(row, { forScoring: true }), true);
+  assert.equal(isScoreable(row), false);
+});
+
+test('whenever the scorer takes a legacy row, it reads only the page (BRO-5222)', () => {
+  for (const row of [{ ...ROW, fullText: PROSE }, { ...ROW, fullText: PROSE, dtliExcerpt: VERDICT_EXCERPT }]) {
+    if (!isScoreable(row)) continue;
+    const best = getBestTextForScoring(row);
+    assert.equal(best.type, 'fullText');
+    assert.ok(!best.text.includes(require('../../scripts/lib/text-quality.js').EXCERPT_APPENDIX_MARKER));
+  }
+});

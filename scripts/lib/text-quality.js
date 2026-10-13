@@ -421,6 +421,9 @@ function scoreSource(source) {
  * @param {Object} review - Review object with fullText and excerpt fields
  * @returns {{text: string, type: string, status: string, confidence: string, reasoning: string}}
  */
+// Marks excerpts appended to a short fullText (review-guards.js checks for it).
+const EXCERPT_APPENDIX_MARKER = '--- Additional context from this review ---';
+
 function getBestTextForScoring(review) {
   // 2B: Skip scoring of flagged text — treat fullText as null so excerpt fallback is used
   const hasDataQualityFlag = review.misattributedFullText || review.wrongShow ||
@@ -497,7 +500,7 @@ function getBestTextForScoring(review) {
         additionalExcerpts.push(excerptSource.text);
       }
       if (additionalExcerpts.length > 0) {
-        const separator = '\n\n--- Additional context from this review ---\n';
+        const separator = '\n\n' + EXCERPT_APPENDIX_MARKER + '\n';
         const combined = best.text + separator + additionalExcerpts.join('\n\n');
         // Cap at 3000 chars total
         best.text = combined.substring(0, 3000);
@@ -633,6 +636,7 @@ function cleanText(text) {
 }
 
 module.exports = {
+  EXCERPT_APPENDIX_MARKER,
   EXCERPT_FIELDS,
   hasVerdict,
   checkTruncation,

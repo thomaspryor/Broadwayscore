@@ -4300,11 +4300,15 @@ function isUnverifiableWebSearchRow(data, opts) {
     // so this clause cannot hold the scorer out (it deadlocked the recovered
     // Farnsworth Variety row, and audit-stuck-rescore-flags --fix then cleared
     // the flag of rows like it). The scorer is still held out when it would
-    // fall back to excerpts, which for these rows are the invented ones.
+    // fall back to excerpts, which for these rows are the invented ones. Ask
+    // the scorer's own text picker (input-builder.ts uses it): it can prefer
+    // an excerpt over a truncated page, and appends excerpts to a short page.
     if (scoreFromExcerpt) {
       if (!(opts && opts.forScoring)) return true;
-      const sel = require('./scorable-text').selectScorableText(data, {});
-      if (!sel || sel.isExcerpt) return true;
+      const tq = require('./text-quality');
+      const best = tq.getBestTextForScoring(data);
+      if (!best || best.type !== 'fullText' || !best.text ||
+          best.text.includes(tq.EXCERPT_APPENDIX_MARKER)) return true;
     }
   }
   return false;
