@@ -13,6 +13,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bb-session-test-')), 'ledger.jsonl');
+// The day-cap tests below use a 10-session ceiling; the BRO-5243 recovery
+// reserve (default 30) would swallow it. The reserve has its own tests at the end.
+process.env.BROWSERBASE_RECOVERY_RESERVE = '0';
 
 const require = createRequire(import.meta.url);
 const { sanitizeMetadataValue, createBbSession, BB_CATEGORIES, _resetDayCapCacheForTests } = require('./browserbase-session.js');
@@ -335,4 +338,88 @@ test('createBbSession (BRO-3097) leaves host null when a caller passes category 
     windowMock.mock.restore();
     liveMock.mock.restore();
   }
+});
+
+// ---------- BRO-5243: allocation (deny list, recovery reserve, capped opening-window reserve) ----------
+
+// Ambient settings that would shift the expected limits if set in the shell.
+const AMBIENT_ENV = ['BROWSERBASE_DENY_HOSTS', 'BROWSERBASE_OPENING_WINDOW_RESERVE_MAX', 'BROWSERBASE_OPENING_WINDOW_RESERVE_PER_SHOW', 'BROWSERBASE_EXEMPT_SCRIPTS', 'BD_OPENING_NIGHT', 'GITHUB_WORKFLOW'];
+async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0, live, host, expectFetch = true }, fn) {
+  _resetDayCapCacheForTests();
+  const prev = {
+    max: process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY,
+    reserve: process.env.BROWSERBASE_RECOVERY_RESERVE,
+    use: process.env.BROWSERBASE_USE_RESERVE,
+    ambient: Object.fromEntries(AMBIENT_ENV.map(k => [k, process.env[k]])),
+  };
+  for (const k of AMBIENT_ENV) delete process.env[k];
+  process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = max;
+  process.env.BROWSERBASE_RECOVERY_RESERVE = reserve;
+  if (useReserve) process.env.BROWSERBASE_USE_RESERVE = 'true'; else delete process.env.BROWSERBASE_USE_RESERVE;
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => windowShows);
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => live);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true, status: 200, json: async () => ({ id: 'sess_ok', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    await fn(() => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'review-text', host }), { liveMock, fetchMock });
+  } finally {
+    fetchMock.mock.restore(); windowMock.mock.restore(); liveMock.mock.restore();
+    for (const [k, v] of [['BROWSERBASE_MAX_SESSIONS_PER_DAY', prev.max], ['BROWSERBASE_RECOVERY_RESERVE', prev.reserve], ['BROWSERBASE_USE_RESERVE', prev.use], ...AMBIENT_ENV.map(k => [k, prev.ambient[k]])]) {
+      if (v === undefined) delete process.env[k]; else process.env[k] = v;
+    }
+  }
+}
+
+test('BRO-5243: a denied host is refused before the live count and before any fetch', async () => {
+  await withBb({ live: 0, host: 'uk.trustpilot.com' }, async (call, { liveMock, fetchMock }) => {
+    await assert.rejects(call, /Browserbase host denied \(uk\.trustpilot\.com\)/);
+    assert.equal(liveMock.mock.callCount(), 0);
+    assert.equal(fetchMock.mock.callCount(), 0);
+  });
+});
+
+test('BRO-5243: the host-denied message is not a cap deferral', () => {
+  const { routeCapFromBrowserbaseError } = require('./failed-fetch-policy.js');
+  assert.equal(routeCapFromBrowserbaseError('Browserbase host denied (facebook.com): not a review host'), null);
+  assert.equal(routeCapFromBrowserbaseError('Browserbase recovery reserve held (150/145)'), 'reserve');
+});
+
+test('BRO-5243: 23 shows in window reserve at most 75, so the bulk ceiling is 175 not 135', async () => {
+  // Tier-1 host may use the recovery reserve: 174 < 175 proceeds.
+  await withBb({ windowShows: 23, live: 174, host: 'wsj.com' }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 23, live: 175, host: 'www.wsj.com' }, async (call) => {
+    await assert.rejects(call, /Browserbase daily cap reached \(175\/175/);
+  });
+});
+
+test('BRO-5243: non-Tier-1 hosts stop the recovery reserve short of the bulk ceiling', async () => {
+  await withBb({ windowShows: 23, live: 144, host: 'talkinbroadway.com' }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 23, live: 145, host: 'talkinbroadway.com' }, async (call) => {
+    await assert.rejects(call, /Browserbase recovery reserve held \(145\/145/);
+  });
+  // No host at all is treated as non-Tier-1.
+  await withBb({ windowShows: 23, live: 145, host: null }, async (call) => {
+    await assert.rejects(call, /recovery reserve held/);
+  });
+});
+
+test('BRO-5243: an explicit recovery run (BROWSERBASE_USE_RESERVE) may spend the reserve for any host', async () => {
+  await withBb({ windowShows: 23, live: 160, host: 'deadline.com', useReserve: true }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+});
+
+test('BRO-5243: a quiet week keeps the per-show reserve below the cap', async () => {
+  // 3 shows * 5 = 15 reserved: bulk ceiling 235, non-Tier-1 limit 205.
+  await withBb({ windowShows: 3, live: 204, host: 'deadline.com' }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 3, live: 235, host: 'nytimes.com' }, async (call) => {
+    await assert.rejects(call, /daily cap reached \(235\/235/);
+  });
 });

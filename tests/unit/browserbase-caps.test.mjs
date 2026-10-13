@@ -199,3 +199,37 @@ test('both enforcement points resolve the SAME ceiling from one env read', () =>
   assert.equal(r.reason, 'day');
   assert.equal(r.limit, 60);
 });
+
+// ---------- BRO-5243 helpers ----------
+test('BRO-5243 hostMatchesAny: exact, subdomain, www, null-safe, no suffix false positives', () => {
+  const caps = require('../../scripts/lib/browserbase-caps.js');
+  assert.equal(caps.hostMatchesAny('wsj.com', ['wsj.com']), true);
+  assert.equal(caps.hostMatchesAny('www.WSJ.com', ['wsj.com']), true);
+  assert.equal(caps.hostMatchesAny('m.facebook.com', ['facebook.com']), true);
+  assert.equal(caps.hostMatchesAny('notwsj.com', ['wsj.com']), false);
+  assert.equal(caps.hostMatchesAny(null, ['wsj.com']), false);
+  assert.equal(caps.hostMatchesAny('', ['wsj.com']), false);
+});
+
+test('BRO-5243 deny list: defaults plus env extras; review outlets are never denied', () => {
+  const caps = require('../../scripts/lib/browserbase-caps.js');
+  assert.equal(caps.isDeniedHost('www.ticketline.co.uk', {}), true);
+  assert.equal(caps.isDeniedHost('example.org', { BROWSERBASE_DENY_HOSTS: ' example.org , ' }), true);
+  for (const h of ['wsj.com', 'nytimes.com', 'talkinbroadway.com', 'deadline.com', 'thestage.co.uk']) {
+    assert.equal(caps.isDeniedHost(h, {}), false, h);
+  }
+  assert.equal(caps.isTier1RecoveryHost('www.newyorker.com'), true);
+  assert.equal(caps.isTier1RecoveryHost('deadline.com'), false);
+});
+
+test('BRO-5243 openingWindowReserve: per-show below the cap, capped above it, garbage-safe', () => {
+  const caps = require('../../scripts/lib/browserbase-caps.js');
+  assert.equal(caps.openingWindowReserve({ openingWindowShows: 3, reservePerShow: 5, reserveMax: 75 }), 15);
+  assert.equal(caps.openingWindowReserve({ openingWindowShows: 23, reservePerShow: 5, reserveMax: 75 }), 75);
+  assert.equal(caps.openingWindowReserve({ openingWindowShows: 0, reservePerShow: 5, reserveMax: 75 }), 0);
+  assert.equal(caps.openingWindowReserve({ openingWindowShows: NaN, reservePerShow: 5, reserveMax: 75 }), 0);
+  assert.equal(caps.resolveOpeningWindowReserveMax({}), 75);
+  assert.equal(caps.resolveOpeningWindowReserveMax({ BROWSERBASE_OPENING_WINDOW_RESERVE_MAX: 'x' }), 75);
+  assert.equal(caps.resolveOpeningWindowReserveMax({ BROWSERBASE_OPENING_WINDOW_RESERVE_MAX: '40' }), 40);
+  assert.deepEqual({ ...caps.OPENING_WINDOW_RESERVE_OPTS }, { lookbackDays: 1, lookAheadHours: 48 });
+});

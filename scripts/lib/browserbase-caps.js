@@ -127,6 +127,75 @@ function resolveUseReserve(env = process.env) {
   return String(env.BROWSERBASE_USE_RESERVE || '').trim().toLowerCase() === 'true';
 }
 
+// BRO-5243: the opening-window reserve is 5 sessions per show in the window,
+// but on 2026-10-13 that window held 23 shows (mostly off-West-End and
+// off-Broadway cold opens) and reserved 115 of 250 sessions, while exempt
+// opening-night callers never used more than 74 in a day (Sept 29 to Oct 12).
+// The unused slice starved WSJ recovery. Cap the reserve near the observed
+// exempt peak; the per-show rate still applies below the cap.
+const DEFAULT_OPENING_WINDOW_RESERVE_MAX = 75;
+
+function resolveOpeningWindowReserveMax(env = process.env) {
+  const raw = parseInt(env.BROWSERBASE_OPENING_WINDOW_RESERVE_MAX, 10);
+  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_OPENING_WINDOW_RESERVE_MAX;
+}
+
+/** Window the opening-window reserve counts shows in: opened yesterday to two days ahead. */
+const OPENING_WINDOW_RESERVE_OPTS = Object.freeze({ lookbackDays: 1, lookAheadHours: 48 });
+
+/**
+ * Sessions held back for opening-window shows: reservePerShow per show,
+ * never more than reserveMax.
+ */
+function openingWindowReserve({ openingWindowShows, reservePerShow, reserveMax }) {
+  if (!Number.isFinite(openingWindowShows) || openingWindowShows <= 0) return 0;
+  if (!Number.isFinite(reservePerShow) || reservePerShow <= 0) return 0;
+  const reserve = openingWindowShows * reservePerShow;
+  return Number.isFinite(reserveMax) && reserveMax > 0 ? Math.min(reserve, reserveMax) : reserve;
+}
+
+// BRO-5243: Tier-1 paywalled outlets with no other CI route. These hosts may
+// spend the recovery reserve that every other bulk host must leave alone, so a
+// day of blog and trade-site fetches can no longer lock WSJ out.
+const TIER1_RECOVERY_HOSTS = Object.freeze(['wsj.com', 'nytimes.com', 'newyorker.com']);
+
+// BRO-5243: hosts that are never reviews (ticket sellers, event listings,
+// social, consumer ratings). ~280 Browserbase sessions went to these in the
+// two weeks to 2026-10-12. Browserbase is never spent on them.
+const DEFAULT_DENY_HOSTS = Object.freeze([
+  'trustpilot.com',
+  'facebook.com',
+  'oklahomatickets.com',
+  'londontheatredirect.com',
+  'ticketline.co.uk',
+  'donyc.com',
+  'events.newyorkfamily.com',
+  'talkclassical.com',
+]);
+
+/** Defaults plus any extra hosts in BROWSERBASE_DENY_HOSTS (comma-separated). */
+function resolveDenyHosts(env = process.env) {
+  const extra = String(env.BROWSERBASE_DENY_HOSTS || '')
+    .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+  return [...new Set([...DEFAULT_DENY_HOSTS, ...extra])];
+}
+
+/** host equals a listed domain or is a subdomain of one; null-safe, ignores a leading www. */
+function hostMatchesAny(host, domains) {
+  if (!host || typeof host !== 'string') return false;
+  const h = host.trim().toLowerCase().replace(/^www\./, '');
+  if (!h) return false;
+  return (domains || []).some((d) => h === d || h.endsWith(`.${d}`));
+}
+
+function isDeniedHost(host, env = process.env) {
+  return hostMatchesAny(host, resolveDenyHosts(env));
+}
+
+function isTier1RecoveryHost(host) {
+  return hostMatchesAny(host, TIER1_RECOVERY_HOSTS);
+}
+
 /**
  * @param {object} params
  * @param {number} params.sessionsToday - Sessions consumed across all runs today
@@ -173,4 +242,14 @@ module.exports = {
   DEFAULT_RECOVERY_RESERVE,
   DEFAULT_MAX_SESSIONS_PER_DAY,
   DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW,
+  DEFAULT_OPENING_WINDOW_RESERVE_MAX,
+  resolveOpeningWindowReserveMax,
+  OPENING_WINDOW_RESERVE_OPTS,
+  openingWindowReserve,
+  TIER1_RECOVERY_HOSTS,
+  DEFAULT_DENY_HOSTS,
+  resolveDenyHosts,
+  hostMatchesAny,
+  isDeniedHost,
+  isTier1RecoveryHost,
 };
