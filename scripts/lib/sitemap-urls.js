@@ -36,7 +36,7 @@ function parseSitemapLines(robotsText) {
 async function fetchSitemapIndexUrls(siteUrl = DEFAULT_SITE) {
   const base = siteUrl.replace(/\/+$/, '');
   try {
-    const res = await fetch(`${base}/robots.txt`);
+    const res = await fetch(`${base}/robots.txt`, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) return [];
     return parseSitemapLines(await res.text());
   } catch {

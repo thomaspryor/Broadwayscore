@@ -101,7 +101,7 @@ function countLocalFiles(showId) {
 
 async function fetchLiveRc(showId) {
   try {
-    const r = await fetch(`https://broadwayscorecard.com/data/shows/${showId}.json`, { headers: { 'cache-control': 'no-cache' } });
+    const r = await fetch(`https://broadwayscorecard.com/data/shows/${showId}.json`, { signal: AbortSignal.timeout(60000), headers: { 'cache-control': 'no-cache' } });
     if (!r.ok) return { rc: null, err: `HTTP ${r.status}` };
     const j = await r.json();
     return { rc: j.rc ?? null, cs: j.cs ?? null };

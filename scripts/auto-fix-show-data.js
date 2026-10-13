@@ -403,6 +403,7 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_HAIKU) {
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
 
     req.on('error', (e) => { console.log(`    · Claude API ${model} request error: ${e.message}`); resolve(null); });
     req.write(postData);

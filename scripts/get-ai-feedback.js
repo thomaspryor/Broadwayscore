@@ -43,6 +43,7 @@ async function askClaude() {
   console.log('🔵 Asking Claude...\n');
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -76,6 +77,7 @@ async function askGPT() {
   console.log('🟢 Asking GPT-4...\n');
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

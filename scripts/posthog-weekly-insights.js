@@ -96,6 +96,7 @@ async function main() {
   if (GITHUB_TOKEN) {
     const title = `PostHog Weekly Insights — ${now.toISOString().slice(0, 10)}`;
     const res = await fetch(`https://api.github.com/repos/${REPO}/issues`, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${GITHUB_TOKEN}`,

@@ -56,6 +56,7 @@ async function gdGet(pathSuffix, opts = {}) {
   }
 
   const res = await fetch(url, {
+    signal: AbortSignal.timeout(60000),
     headers: {
       'User-Agent': UA,
       'Accept': 'application/json, text/javascript, */*; q=0.01',

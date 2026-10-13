@@ -45,6 +45,7 @@ function getApiKey() {
 
 async function fetchFlagById(apiKey, id) {
   const res = await fetch(buildFlagUrl(PROJECT_ID, id), {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) throw new Error(`PostHog feature_flags API ${res.status} for id '${id}': ${(await res.text()).slice(0, 200)}`);
@@ -53,6 +54,7 @@ async function fetchFlagById(apiKey, id) {
 
 async function findFlagByKey(apiKey, key) {
   const res = await fetch(buildSearchUrl(PROJECT_ID, key), {
+    signal: AbortSignal.timeout(60000),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) throw new Error(`PostHog feature_flags API ${res.status} for key '${key}': ${(await res.text()).slice(0, 200)}`);
@@ -71,6 +73,7 @@ async function findFlagByKey(apiKey, key) {
 async function patchFlagActive(apiKey, id, active) {
   const { url, method, body } = buildPatchRequest(PROJECT_ID, id, active);
   const res = await fetch(url, {
+    signal: AbortSignal.timeout(60000),
     method,
     headers: {
       Authorization: `Bearer ${apiKey}`,

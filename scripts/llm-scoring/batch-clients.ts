@@ -81,6 +81,7 @@ export async function submitOpenAIBatch(
   form.append('file', new Blob([jsonl], { type: 'application/jsonl' }), 'batch-input.jsonl');
 
   const uploadRes = await fetch(`${OPENAI_BASE}/files`, {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}` },
     body: form,
@@ -91,6 +92,7 @@ export async function submitOpenAIBatch(
   const uploaded = (await uploadRes.json()) as { id: string };
 
   const batchRes = await fetch(`${OPENAI_BASE}/batches`, {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -120,6 +122,7 @@ export async function getOpenAIBatchStatus(
   apiKey: string
 ): Promise<{ status: VendorBatchStatus; outputFileId?: string; errorFileId?: string }> {
   const res = await fetch(`${OPENAI_BASE}/batches/${batchId}`, {
+    signal: AbortSignal.timeout(300000),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) {
@@ -143,6 +146,7 @@ export async function getOpenAIBatchStatus(
  */
 export async function fetchOpenAIBatchErrors(errorFileId: string, apiKey: string): Promise<VendorResult[]> {
   const res = await fetch(`${OPENAI_BASE}/files/${errorFileId}/content`, {
+    signal: AbortSignal.timeout(300000),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) {
@@ -159,6 +163,7 @@ export async function fetchOpenAIBatchErrors(errorFileId: string, apiKey: string
 
 export async function fetchOpenAIBatchResults(outputFileId: string, apiKey: string): Promise<VendorResult[]> {
   const res = await fetch(`${OPENAI_BASE}/files/${outputFileId}/content`, {
+    signal: AbortSignal.timeout(300000),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) {
@@ -186,6 +191,7 @@ export async function submitGeminiBatch(
   model: string
 ): Promise<{ name: string }> {
   const res = await fetch(`${GEMINI_BASE}/models/${model}:batchGenerateContent?key=${apiKey}`, {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -207,6 +213,7 @@ export async function getGeminiBatchStatus(
   apiKey: string
 ): Promise<{ status: VendorBatchStatus; response?: any }> {
   const res = await fetch(`${GEMINI_BASE}/${operationName}?key=${apiKey}`, {
+    signal: AbortSignal.timeout(300000),
     headers: { 'Content-Type': 'application/json' },
   });
   if (!res.ok) {

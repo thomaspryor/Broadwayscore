@@ -45,7 +45,7 @@ const PROBES = [
 ];
 
 async function gdGet(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': UA } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': UA } });
   if (!res.ok) throw new Error(`GET ${url} → HTTP ${res.status}`);
   return res.json();
 }

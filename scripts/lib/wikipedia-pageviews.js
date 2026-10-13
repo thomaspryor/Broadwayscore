@@ -43,7 +43,7 @@ async function fetchWeeklyPageviews(articleTitle, { now = Date.now(), logger = c
   const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/${article}/daily/${start}00/${end}00`;
 
   try {
-    const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+    const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': USER_AGENT } });
     if (!res.ok) {
       // 404 = article has no pageview data (new/renamed) — not an error worth noise
       if (res.status !== 404) {

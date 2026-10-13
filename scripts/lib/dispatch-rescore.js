@@ -44,6 +44,7 @@ async function dispatchRescore(showId, { reason = 'auto-rescore' } = {}) {
   try {
     const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/llm-ensemble-score.yml/dispatches`;
     const res = await fetch(url, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: {
         Accept: 'application/vnd.github+json',

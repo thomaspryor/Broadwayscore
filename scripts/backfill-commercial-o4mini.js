@@ -207,6 +207,7 @@ Respond with ONLY valid JSON (no markdown, no explanation):
         }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();

@@ -176,6 +176,7 @@ function buildResultsHtml({ submission, score, criticScores, criticPicks, winner
 
 async function sendEmail({ to, subject, html }) {
   const res = await fetch('https://api.resend.com/emails', {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: {
       Authorization: `Bearer ${RESEND_API_KEY}`,

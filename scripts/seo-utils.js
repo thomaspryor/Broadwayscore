@@ -55,7 +55,7 @@ async function pingSitemap() {
 
   for (const endpoint of endpoints) {
     try {
-      const response = await fetch(endpoint.url);
+      const response = await fetch(endpoint.url, { signal: AbortSignal.timeout(60000) });
       if (response.ok) {
         log(colors.green, '✓', `${endpoint.name}: Sitemap ping successful`);
       } else {

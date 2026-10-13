@@ -22,7 +22,7 @@ function check(name, passed, detail) {
 async function checkTodayTix() {
   console.log('\n--- TodayTix API (location=2, London) ---');
   try {
-    const res = await fetch('https://api.todaytix.com/api/v2/shows?location=2&limit=5');
+    const res = await fetch('https://api.todaytix.com/api/v2/shows?location=2&limit=5', { signal: AbortSignal.timeout(60000) });
     const data = await res.json();
 
     check('Returns data array', Array.isArray(data.data) && data.data.length > 0,
@@ -48,7 +48,7 @@ async function checkTodayTix() {
 async function checkTodayTixNYC() {
   console.log('\n--- TodayTix API (location=1, NYC) ---');
   try {
-    const res = await fetch('https://api.todaytix.com/api/v2/shows?location=1&limit=5');
+    const res = await fetch('https://api.todaytix.com/api/v2/shows?location=1&limit=5', { signal: AbortSignal.timeout(60000) });
     const data = await res.json();
 
     check('Returns data array', Array.isArray(data.data) && data.data.length > 0,
@@ -73,6 +73,7 @@ async function checkTheatremonkey() {
   console.log('\n--- Theatremonkey (shows index) ---');
   try {
     const res = await fetch('https://www.theatremonkey.com/shows/', {
+      signal: AbortSignal.timeout(60000),
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' }
     });
     const html = await res.text();
@@ -90,6 +91,7 @@ async function checkPlaybill() {
   console.log('\n--- Playbill London Schedule ---');
   try {
     const res = await fetch('https://playbill.com/article/schedule-of-upcoming-london-shows', {
+      signal: AbortSignal.timeout(60000),
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' }
     });
     const html = await res.text();
@@ -107,6 +109,7 @@ async function checkReddit() {
   console.log('\n--- Reddit JSON API ---');
   try {
     const res = await fetch('https://www.reddit.com/r/Broadway/hot.json?limit=3', {
+      signal: AbortSignal.timeout(60000),
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' }
     });
     const data = await res.json();

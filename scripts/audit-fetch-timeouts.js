@@ -385,6 +385,12 @@ function blankStringsAndComments(src) {
 // advice (the fix moves to the file's own https.get() call, already
 // separately scanned by HTTP_GET_RE).
 const LOCAL_FETCH_SHADOW_RE = /(?:^|\n)[ \t]*(?:async\s+)?function\s+fetch\s*\(/;
+// Same idea one scope down (BRO-3603): `const fetch = deps.fetchOriginMain ||
+// fetchOriginMain` (dispatch-guards.js) or `const fetch = services.fetchPageText
+// || fetchPageText` (backfill-cast-web.js) binds a non-network helper to the
+// name inside one function. A call in that function is the helper, not the
+// global fetch(); adding a signal there would be passed to the wrong thing.
+const SCOPED_FETCH_BINDING_RE = /\b(?:const|let|var)\s+fetch\s*=/;
 
 // Span of a call's own argument list, e.g. `fetch(` at callOpenParenIdx-1 →
 // returns [callOpenParenIdx, matching close paren]. Used to check patterns
@@ -498,6 +504,11 @@ function checkSource(file, source) {
 
   for (const match of (shadowsFetch ? [] : scanSrc.matchAll(FETCH_RE))) {
     if (isCommentLine(scanSrc, match.index)) continue;
+    {
+      const best = extents.filter((e) => e.start <= match.index && match.index < e.end)
+        .sort((a, b) => (a.end - a.start) - (b.end - b.start))[0];
+      if (best && SCOPED_FETCH_BINDING_RE.test(scanSrc.slice(best.start, best.end))) continue;
+    }
     const openParenIdx = match.index + match[0].length - 1; // bracket-matching runs on scanSrc — strings are blanked there, so a User-Agent string containing literal "(" can't desync the depth count
     const ownArgs = callArgSpan(scanSrc, openParenIdx);
     const ownArgsText = scopeSrc.slice(ownArgs.start, ownArgs.end); // strings intact — a signal variable name is real code, not string content, but kept consistent with the rest of the scan

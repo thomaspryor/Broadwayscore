@@ -238,6 +238,7 @@ Also: is this an individual critic's review (an evaluation of the production), a
 Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "confidence": "high"|"medium"|"low", "reason": "<one sentence>"}`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
+    signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: {
       'content-type': 'application/json',
