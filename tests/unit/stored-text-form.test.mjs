@@ -30,3 +30,20 @@ test('textAsStored passes empty and non-string input through', () => {
   assert.equal(textAsStored(null), null);
   assert.equal(textAsStored(undefined), undefined);
 });
+
+test('textAsStored keeps only this show\'s section of a multi-show post, like the save path', () => {
+  const { isolateMultiShowSection } = require('../../scripts/lib/multi-show-section-extract.js');
+  const url = 'https://theinterestedbystander.com/2026/03/01/an-ark-pen-pals/';
+  // Synthetic post in the interestedbystander shape (invented text).
+  const post = 'An Ark (c) A. PhotographerTheater: An Ark At the Shed The view is surreal and the seats are odd. '
+    + 'Pen Pals (c) B. PhotographerTheater: Pen Pals At Theatre at St. Clement’s Two strangers write letters. The end of pen pals.';
+  const out = textAsStored(post, { url, showTitle: 'Pen Pals' });
+  assert.match(out, /^Pen Pals \(c\)/);
+  assert.doesNotMatch(out, /surreal/);
+  const pre = preCleanForStorage(post);
+  assert.equal(out, stripTrailingJunk(isolateMultiShowSection(url, pre, 'Pen Pals').text));
+  // a refusal stores nothing on the save path; the un-isolated body is returned
+  assert.equal(textAsStored(post, { url, showTitle: 'Stereophonic' }), textAsStored(post));
+  // a single-review host is untouched
+  assert.equal(textAsStored(post, { url: 'https://www.wsj.com/articles/x', showTitle: 'Pen Pals' }), textAsStored(post));
+});

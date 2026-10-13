@@ -7107,9 +7107,10 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
       } catch (e) { /* shows.json unavailable */ }
 
       contentVerification = await verifyContent({
-        // The body as stored (junk/chrome stripped), not the raw fetch: a verdict
-        // on text we then strip described a different body (BRO-5243).
-        scrapedText: textAsStored(result.text) || result.text,
+        // The body as stored (junk/chrome stripped, multi-show section isolated
+        // with the same url and title the save path uses), not the raw fetch: a
+        // verdict on text we then strip described a different body (BRO-5243).
+        scrapedText: textAsStored(result.text, { url: reviewData.url || review.url, showTitle: showMeta ? showMeta.title : '' }) || result.text,
         excerpt: excerpt,
         showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
         outletName: review.outlet,
