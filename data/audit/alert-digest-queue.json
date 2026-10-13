@@ -549,6 +549,36 @@
     "queuedAt": "2026-10-13T07:59:45.706Z"
   },
   {
+    "conditionKey": "land:land/bro-2556-memory-index",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2556-memory-index",
+    "description": "land.yml did not land land/bro-2556-memory-index: the unit-tests-node gate went red at 3f027393f6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38363209932",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2556-memory-index"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3f027393f6bb9da9941a36c5c06d771456be99d6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38363209932"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:06:18.582Z"
+  },
+  {
     "conditionKey": "land:land/bro-4317-ws-clear",
     "title": "Landing blocked: unit-tests-node red on land/bro-4317-ws-clear",
     "description": "land.yml did not land land/bro-4317-ws-clear: the unit-tests-node gate went red at 638f4f2cc7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38363966423",
