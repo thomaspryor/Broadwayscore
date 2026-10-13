@@ -98,6 +98,95 @@ const WEST_END_VENUES = [
   'Sadler\'s Wells', 'Peacock Theatre', 'Ovalhouse', 'Camden People\'s Theatre'
 ];
 
+// UK touring houses outside London (BRO-2278). A UK tour plays one city a week
+// with the same cast, so SERP discovery for the London leg turns up reviews of
+// other legs ("runs until 18 April at the Lowry, Salford" on the Queen
+// Elizabeth Hall page, BRO-749). Merged with data/uk-regional-venues.json's
+// producing houses below. London venues are deliberately NOT in this list:
+// a West End review naming another London house is usually transfer history.
+const UK_TOURING_VENUES = [
+  'The Lowry', 'Lowry Theatre', 'Alhambra Theatre', 'Bradford Alhambra',
+  'Wales Millennium Centre', 'Mayflower Theatre', 'Bristol Hippodrome',
+  'Birmingham Hippodrome', 'Palace Theatre Manchester', 'Opera House Manchester',
+  'Manchester Opera House', 'Edinburgh Playhouse', 'Festival Theatre Edinburgh',
+  "King's Theatre Glasgow", 'Theatre Royal Glasgow', 'Liverpool Empire',
+  'Sunderland Empire', 'Milton Keynes Theatre', 'New Victoria Theatre',
+  'Grand Opera House Belfast', 'Leeds Grand Theatre', 'Grand Theatre Leeds',
+  'Lyceum Theatre Sheffield', 'Sheffield Lyceum', 'Theatre Royal Nottingham',
+  'Belgrade Theatre', 'Rose Theatre Kingston', 'Hall for Cornwall',
+  'Winter Gardens Blackpool', 'Blackpool Grand', 'Congress Theatre',
+  'Theatre Royal Plymouth', 'Theatre Royal Brighton', 'Theatre Royal Bath',
+  'Theatre Royal Newcastle', 'Newcastle Theatre Royal', 'Theatre Royal Norwich',
+  'Norwich Theatre Royal', 'Curve Leicester', 'Leicester Curve',
+  'Marlowe Theatre', 'Cliffs Pavilion', 'Regent Theatre Stoke',
+  'Hull New Theatre', 'Bord Gáis Energy Theatre', 'Aberdeen His Majesty',
+  'Eden Court', 'Venue Cymru', 'Swansea Grand', 'Oxford Playhouse',
+  'New Theatre Oxford', 'Cambridge Arts Theatre', 'Northern Stage',
+  'Nuffield Southampton', 'Octagon Theatre Bolton', 'Storyhouse',
+];
+
+let _otherLegVenues = null;
+function otherLegVenueNames() {
+  if (_otherLegVenues) return _otherLegVenues;
+  const names = new Set(UK_TOURING_VENUES);
+  try {
+    const regional = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'uk-regional-venues.json'), 'utf8'));
+    for (const v of regional) {
+      if (v.venue) names.add(v.venue);
+      for (const a of v.aliases || []) names.add(a);
+    }
+  } catch { /* the hardcoded touring list still applies */ }
+  _otherLegVenues = [...names];
+  return _otherLegVenues;
+}
+
+const VENUE_FILLER_RE = /\b(the|theatre|theater|playhouse|hall|centre|center|main|stage|house)\b/g;
+function venueCore(v) {
+  return String(v || '').toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\(.*?\)/g, ' ').replace(/[^a-z0-9' ]+/g, ' ')
+    .replace(VENUE_FILLER_RE, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// "runs until 18 April at the Lowry", "at the Lowry, Salford until Saturday",
+// "plays the Alhambra this week": present-tense run language tying the review
+// to THAT venue's leg. A bare mention ("the tour visits the Lowry later") is
+// not enough.
+const CURRENT_RUN_RE = /\buntil\b|\bthis week\b|\b(?:runs|running|plays|playing|continues) (?:at|in)\b/;
+// Tour framing around the OTHER venue: the review is of this leg and names
+// where the tour goes next or came from.
+const TOUR_FRAMING_RE = /\b(then tours?|tour continues|touring to|tours to|next stop|before touring|before heading|heads? to|moves? to|transfers? to|after (?:its|a) run|following (?:its|a) run|previously|last year|originally|first seen|premiered|on tour)\b/;
+
+/**
+ * BRO-2278: on a West End / Off-West End show, find a review that names a
+ * DIFFERENT UK touring/regional venue as where the production is running now,
+ * without ever naming the show's own venue. Returns the matched venue and its
+ * context, or null. Pure; exported for the corpus audit and tests.
+ */
+function findOtherTourLegVenue(text, showVenue) {
+  if (!text || !showVenue) return null;
+  const textLower = text.toLowerCase();
+  const ownCore = venueCore(showVenue);
+  if (!ownCore) return null;
+  // The show's own venue anywhere in the text: this review covers this leg
+  // (it may also name the next stop). Every word of the core must appear.
+  const ownWords = ownCore.split(' ').filter((w) => w.length > 2);
+  if (ownWords.length && ownWords.every((w) => textLower.includes(w))) return null;
+
+  for (const name of otherLegVenueNames()) {
+    const lower = name.toLowerCase();
+    const idx = textLower.indexOf(lower);
+    if (idx === -1) continue;
+    const otherCore = venueCore(name);
+    if (!otherCore || ownCore.includes(otherCore) || otherCore.includes(ownCore)) continue;
+    const context = textLower.substring(Math.max(0, idx - 120), Math.min(textLower.length, idx + lower.length + 120));
+    if (TOUR_FRAMING_RE.test(context)) continue;
+    if (!CURRENT_RUN_RE.test(context)) continue;
+    return { venue: name, context };
+  }
+  return null;
+}
+
 // UK publication indicators
 const UK_PUBLICATIONS = [
   'guardian', 'telegraph', 'independent.co.uk', 'standard.co.uk',
@@ -112,7 +201,7 @@ const UK_PUBLICATIONS = [
  * @param {string} params.publishDate - Publish date string
  * @param {string} params.text - Review text content (fullText or excerpt)
  * @param {Object} params.showData - Show metadata from shows.json (optional)
- * @param {string} params.category - Show category ('broadway' or 'off-broadway')
+ * @param {string} params.category - Show category ('broadway', 'off-broadway', 'west-end', 'off-west-end')
  * @returns {Object} { isValid, issues, confidence, shouldReject }
  */
 function verifyProduction({ showId, url, publishDate, text, showData, category }) {
@@ -262,6 +351,10 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
         // Following / after language (broader)
         'following a run', 'following its run', 'following a successful',
         'after its run', 'after a run',
+        // Arrival language (BRO-2278 review: "comes to the Booth Theatre after
+        // starting at the Donmar Warehouse" was rejected as a London review).
+        'after starting at', 'after starting in', 'fresh from', 'arrives from',
+        'arriving from', 'comes from',
       ];
       // Also check with regex for "after a [year/adjective] run" patterns
       const transferRegexes = [
@@ -288,6 +381,21 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
         });
         confidence = 'high';
       }
+    }
+  }
+
+  // 6. Wrong tour leg (BRO-2278): a West End / Off-West End show page getting
+  // a review of another UK leg of the same tour. Only when the caller passes
+  // the show's category AND declared venue; Broadway/off-Broadway are untouched.
+  if (text && (category === 'west-end' || category === 'off-west-end') && showData && showData.venue) {
+    const otherLeg = findOtherTourLegVenue(text, showData.venue);
+    if (otherLeg) {
+      issues.push({
+        type: 'uk_tour_leg_venue_mismatch',
+        message: `Review places the production at "${otherLeg.venue}", not this show's venue "${showData.venue}" (another tour leg)`,
+        severity: 'high'
+      });
+      confidence = 'high';
     }
   }
 
@@ -359,6 +467,8 @@ function getShowData(showId) {
 
 module.exports = {
   verifyProduction,
+  findOtherTourLegVenue,
+  UK_TOURING_VENUES,
   quickDateCheck,
   getShowData,
   KNOWN_WRONG_INDICATORS,
