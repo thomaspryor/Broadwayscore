@@ -145,4 +145,67 @@ function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources, serpCensusG
   return null;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow };
+/**
+ * BRO-4190: a review the pipeline already fetched and dated, and that the write
+ * guard parked in _pending/ as date-implausible, is proof of production identity
+ * the census otherwise ignores (Met Macbeth: a 2008 classicalsource review held
+ * the 2026 run's gap open for weeks). True when that stored publishDate is more
+ * than `graceDays` before this run's first date (previews, else opening) and not
+ * inside a declared prior run (a transfer keeps its earlier run's reviews).
+ * @param {string} publishDate ISO date from the stored review file
+ * @param {object} show shows.json record ({previewsStartDate, openingDate, priorRuns})
+ * @param {number} [graceDays=90]
+ * @returns {boolean}
+ */
+function isPublishDateBeforeRun(publishDate, show, graceDays = 90) {
+  const pub = Date.parse(publishDate);
+  if (!Number.isFinite(pub)) return false;
+  const start = Date.parse((show && (show.previewsStartDate || show.openingDate)) || '');
+  if (!Number.isFinite(start)) return false;
+  if (pub >= start - graceDays * 86400000) return false;
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  return !findMatchingPriorRun(publishDate, show.priorRuns);
+}
+
+/**
+ * The gap URLs a show's _pending/ files prove are a prior production
+ * (isPublishDateBeforeRun), except a press-night cluster: 3+ hosts dated within
+ * 14 days of each other is an opening this show record does not know about
+ * (Grease immersive: seven 2025-08-05/06 reviews against a 2026-07-22 start),
+ * which may be this very production on wrong dates, so it stays a gap.
+ * @param {Array<{url:string, publishDate:string}>} pending stored review files
+ * @param {object} show shows.json record
+ * @returns {Map<string,string>} url -> publishDate for URLs to tag prior-run
+ */
+function pendingPriorRunUrls(pending, show) {
+  const early = (pending || []).filter((p) => p && p.url && isPublishDateBeforeRun(p.publishDate, show));
+  const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
+  const out = new Map();
+  for (const p of early) {
+    const t = Date.parse(p.publishDate);
+    const hosts = new Set(early.filter((q) => Math.abs(Date.parse(q.publishDate) - t) <= 14 * 86400000).map((q) => hostOf(q.url)));
+    if (hosts.size < 3) out.set(p.url, p.publishDate);
+  }
+  return out;
+}
+
+// Roundup sources whose id differs from the outlet id they print for themselves.
+const ROUNDUP_SOURCE_OUTLET = { 'lbo-roundup': 'london-box-office' };
+
+/**
+ * BRO-4790: a URL-less row where a roundup cites ITS OWN verdict (WestEndTheatre.com's
+ * stars inside its own review round-up) has no review page to collect: the verdict
+ * lives only on the roundup, which the write guard rejects as roundup-page. Counting
+ * it as a missing review kept 6 of the 9 open citedNoUrl rows on 2026-10-13 open forever.
+ * @param {{outletId?:string, outletName?:string, source?:string}} row
+ * @returns {boolean}
+ */
+function isRoundupSelfCitation(row) {
+  if (!row || !row.source) return false;
+  const { normalizeOutlet } = require('./review-normalization');
+  const src = normalizeOutlet(row.source);
+  const own = ROUNDUP_SOURCE_OUTLET[src] || src;
+  return !!own && normalizeOutlet(row.outletId || row.outletName || '') === own;
+}
+
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isPublishDateBeforeRun, pendingPriorRunUrls, isRoundupSelfCitation };

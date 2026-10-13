@@ -198,7 +198,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
@@ -1239,6 +1239,30 @@ async function auditShow(show, opts = {}) {
     }
   }
 
+  // BRO-4190: a missing URL whose review the pipeline already fetched, dated and
+  // parked in _pending/ (write guard: date-implausible) is a prior production
+  // when that stored date predates this run. Report-only, like every prior-run row.
+  try {
+    const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
+    if (fs.existsSync(pendingDir) && (result.missing.length || result.flaggedMisses.length)) {
+      const pending = [];
+      for (const f of fs.readdirSync(pendingDir)) {
+        if (!f.endsWith('.json')) continue;
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(pendingDir, f), 'utf8'));
+          if (d && d.url && d.publishDate) pending.push({ url: normalizeReviewUrl(d.url), publishDate: d.publishDate });
+        } catch { /* unreadable pending file: no evidence */ }
+      }
+      const priorByUrl = pendingPriorRunUrls(pending, show);
+      for (const m of [...result.missing, ...result.flaggedMisses]) {
+        const date = priorByUrl.get(normalizeReviewUrl(m.url));
+        if (m.priorRun || !date) continue;
+        m.priorRun = true;
+        m.priorRunSource = `pending-file-date:${date}`;
+      }
+    }
+  } catch { /* pending scan is best-effort */ }
+
   // Tag WE-reference-derived missing URLs. Ingest for these is gated by
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
@@ -1315,6 +1339,7 @@ async function auditShow(show, opts = {}) {
       const oid = outletKey(rawOid);
       if (!oid || seenOutlets.has(oid)) continue;
       seenOutlets.add(oid);
+      if (isRoundupSelfCitation(row)) continue; // the roundup's own verdict: no page to collect
       const files = dirByOutlet.get(oid) || [];
       if (files.some(d => isCoveredFile(d, show))) {
         if (!row.priorRun) { _weCoveredNoUrl++; bumpPerSource(row.source, true); }
