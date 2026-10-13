@@ -91,20 +91,61 @@ function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) 
   return stale;
 }
 
-module.exports = { getLocalCopyFiles, getLocalSymlinkFiles, planCoreDataCopy, publicTrackedDataFiles, findStaleCopies };
+/**
+ * BRO-2937: the canary after checkout-core-data's copy. It used to check only
+ * shows.json and reviews.json, so a private repo that lost any other core file
+ * (opening-night-sent.json, subscribers*.json, ...) passed and every consumer
+ * silently read a default (BRO-2934: check-missed-broadcasts would have claimed
+ * no show was ever emailed). Pure apart from reading dataDir.
+ *
+ * @param {{checkoutNames: string[], plannedCopy: string[], coreFiles?: string[], dataDir: string}} opts
+ * @returns {string[]} one message per problem; [] when the copy is sound
+ */
+function verifyCoreDataCopy({ checkoutNames, plannedCopy, coreFiles = getShippedCoreFiles(), dataDir }) {
+  const problems = [];
+  const inCheckout = new Set(checkoutNames);
+  for (const f of coreFiles) {
+    if (!inCheckout.has(f)) {
+      problems.push(`${f} is in push-core-data CORE_FILES but missing from the private core-data repo. Seed it there ({} or []) or drop it from CORE_FILES.`);
+    }
+  }
+  for (const f of plannedCopy) {
+    if (!fs.existsSync(path.join(dataDir, f))) problems.push(`${f} was planned for copy but is not in data/ after the copy.`);
+  }
+  for (const f of coreFiles) {
+    const p = path.join(dataDir, f);
+    if (!inCheckout.has(f) || !fs.existsSync(p)) continue;
+    try {
+      JSON.parse(fs.readFileSync(p, 'utf8'));
+    } catch (e) {
+      problems.push(`data/${f} is not valid JSON (${e.message}).`);
+    }
+  }
+  return problems;
+}
+
+module.exports = { getLocalCopyFiles, getLocalSymlinkFiles, planCoreDataCopy, publicTrackedDataFiles, findStaleCopies, verifyCoreDataCopy };
 
 // CLI:
 //   node scripts/lib/core-data-files.js plan <privateCheckoutDir> [repoDir]
 //     prints one basename per line to copy; ::warning:: per skipped file (stderr)
+//   node scripts/lib/core-data-files.js verify <privateCheckoutDir> [repoDir]
+//     after the copy: ::error:: per problem from verifyCoreDataCopy, exit 1
 //   node scripts/lib/core-data-files.js stale-copies <dataDir> <coreDataDir> [--warn]
 //     prints one stale basename per line; --warn prints session-start.sh's
 //     warning instead (nothing when clean or the clone is absent)
 if (require.main === module) {
   const [cmd, a, b, flag] = process.argv.slice(2);
-  if (cmd === 'plan' && a) {
-    const tracked = publicTrackedDataFiles(b || process.cwd());
+  if ((cmd === 'plan' || cmd === 'verify') && a) {
+    const repoDir = b || process.cwd();
+    const tracked = publicTrackedDataFiles(repoDir);
     const names = fs.readdirSync(a).filter((f) => f.endsWith('.json')).sort();
     const { copy, skipped } = planCoreDataCopy(names, { isPublicTracked: (n) => tracked.has(n) });
+    if (cmd === 'verify') {
+      const problems = verifyCoreDataCopy({ checkoutNames: names, plannedCopy: copy, dataDir: path.join(repoDir, 'data') });
+      for (const p of problems) console.error(`::error::Core data checkout FAILED: ${p}`);
+      process.exit(problems.length ? 1 : 0);
+    }
     for (const s of skipped) {
       console.error(`::warning::core-data: not copying ${s} from the private repo; data/${s} is tracked in the public repo and is not in CORE_FILES (BRO-3521)`);
     }
@@ -124,7 +165,7 @@ if (require.main === module) {
       process.stdout.write(stale.join('\n') + '\n');
     }
   } else {
-    console.error('usage: core-data-files.js plan <privateCheckoutDir> [repoDir] | stale-copies <dataDir> <coreDataDir>');
+    console.error('usage: core-data-files.js plan|verify <privateCheckoutDir> [repoDir] | stale-copies <dataDir> <coreDataDir>');
     process.exit(2);
   }
 }

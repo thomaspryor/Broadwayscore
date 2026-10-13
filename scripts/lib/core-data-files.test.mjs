@@ -95,3 +95,51 @@ test('stale-copies --warn prints session-start.sh\'s warning only when a copy is
   assert.match(out, /setup-local-data\.sh/);
   fs.rmSync(tmp, { recursive: true, force: true });
 });
+
+// BRO-2937: verifyCoreDataCopy — the checkout-core-data canary.
+const { verifyCoreDataCopy } = require(LIB);
+
+function coreDataDir(files) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-core-'));
+  for (const [name, body] of Object.entries(files)) fs.writeFileSync(path.join(dir, name), body);
+  return dir;
+}
+
+test('verifyCoreDataCopy: a complete copy has no problems', (t) => {
+  const core = ['shows.json', 'opening-night-sent.json'];
+  const dir = coreDataDir({ 'shows.json': '{"shows":[]}', 'opening-night-sent.json': '{"shows":{}}', 'extra.json': '[]' });
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  assert.deepEqual(verifyCoreDataCopy({ checkoutNames: [...core, 'extra.json'], plannedCopy: [...core, 'extra.json'], coreFiles: core, dataDir: dir }), []);
+});
+
+test('verifyCoreDataCopy: a core file missing from the clone is named with the seed-or-drop fix', (t) => {
+  const core = ['shows.json', 'opening-night-sent.json'];
+  const dir = coreDataDir({ 'shows.json': '{}' });
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const problems = verifyCoreDataCopy({ checkoutNames: ['shows.json'], plannedCopy: ['shows.json'], coreFiles: core, dataDir: dir });
+  assert.equal(problems.length, 1);
+  assert.match(problems[0], /opening-night-sent\.json .*missing from the private core-data repo.*Seed it there/);
+});
+
+test('verifyCoreDataCopy: a planned file absent from data/ after the copy is a problem', (t) => {
+  const dir = coreDataDir({ 'shows.json': '{}' });
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const problems = verifyCoreDataCopy({ checkoutNames: ['shows.json', 'extra.json'], plannedCopy: ['shows.json', 'extra.json'], coreFiles: ['shows.json'], dataDir: dir });
+  assert.deepEqual(problems, ['extra.json was planned for copy but is not in data/ after the copy.']);
+});
+
+test('verifyCoreDataCopy: a truncated core file fails the JSON parse', (t) => {
+  const dir = coreDataDir({ 'shows.json': '{"shows": [' });
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const problems = verifyCoreDataCopy({ checkoutNames: ['shows.json'], plannedCopy: ['shows.json'], coreFiles: ['shows.json'], dataDir: dir });
+  assert.equal(problems.length, 1);
+  assert.match(problems[0], /data\/shows\.json is not valid JSON/);
+});
+
+test('verifyCoreDataCopy defaults to the live push-core-data CORE_FILES (19+ names, incl. opening-night-sent.json)', (t) => {
+  const dir = coreDataDir({});
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const problems = verifyCoreDataCopy({ checkoutNames: [], plannedCopy: [], dataDir: dir });
+  assert.ok(problems.length >= 19, `expected one problem per CORE_FILES name, got ${problems.length}`);
+  assert.ok(problems.some((p) => p.startsWith('opening-night-sent.json ')));
+});

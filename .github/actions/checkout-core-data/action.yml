@@ -159,11 +159,13 @@ runs:
         for basename in $COPY_PLAN; do
           cp -f "/tmp/core-data-checkout/$basename" data/
         done
-        # Canary check — fail fast if key files missing
-        if [ ! -f "data/shows.json" ] || [ ! -f "data/reviews.json" ]; then
-          echo "::error::Core data checkout FAILED — shows.json or reviews.json missing"
-          exit 1
-        fi
+        # Canary check — fail fast if ANY core file is missing or unparseable
+        # (BRO-2937). It used to test only shows.json + reviews.json, so a
+        # private repo that lost e.g. opening-night-sent.json passed and the
+        # consumers silently read a default. verifyCoreDataCopy checks every
+        # push-core-data CORE_FILES name is in the clone, every planned file
+        # landed in data/, and every core file parses. bash -e fails the step.
+        node "${GITHUB_WORKSPACE}/scripts/lib/core-data-files.js" verify /tmp/core-data-checkout "$PWD"
         echo "Core data restored from private repo ($(ls /tmp/core-data-checkout/*.json | wc -l) files)"
 
         # Save a snapshot of the private core data outside the worktree, for steps that
