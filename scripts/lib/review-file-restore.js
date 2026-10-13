@@ -60,6 +60,10 @@ function restoreReviewFileFromCommit(reviewTextsDir, action, deps = {}) {
   if (!record || typeof record !== 'object' || !record.url) {
     return { ok: false, reason: `${sourcePath} at ${fromCommit} has no url` };
   }
+  // A restore into another show's folder carries that show's id, as a rename
+  // does (safeRenameReview); the rebuild groups by folder but audits read showId.
+  const destShow = path.basename(path.dirname(absDest));
+  if (record.showId && record.showId !== destShow) record.showId = destShow;
   fs.mkdirSync(path.dirname(absDest), { recursive: true });
   const written = require('./review-write-guard').safeWriteReview(absDest, record);
   if (written && written.wrote === false) {

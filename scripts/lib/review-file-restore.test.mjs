@@ -15,7 +15,7 @@ function repoWithDeletedFile() {
   const g = (...a) => execFileSync('git', ['-C', dir, ...a], { encoding: 'utf8' }).trim();
   g('init', '-q'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
   fs.mkdirSync(path.join(dir, 'show-a'));
-  const rec = { url: 'https://example.com/review', outletId: 'vulture', criticName: 'A B', fullText: 'text '.repeat(50) };
+  const rec = { showId: 'show-a', url: 'https://example.com/review', outletId: 'vulture', criticName: 'A B', fullText: 'text '.repeat(50) };
   fs.writeFileSync(path.join(dir, 'show-a', 'vulture--a-b.json'), JSON.stringify(rec));
   g('add', '-A'); g('commit', '-qm', 'add');
   fs.unlinkSync(path.join(dir, 'show-a', 'vulture--a-b.json'));
@@ -33,6 +33,16 @@ test('restores a deleted file from <sha>^ with its text intact', () => {
   const back = JSON.parse(fs.readFileSync(path.join(dir, 'show-a', 'vulture--a-b.json'), 'utf8'));
   assert.equal(back.fullText, rec.fullText);
   assert.equal(back.url, rec.url);
+});
+
+test('a restore into another show folder carries that show id (BRO-5285)', () => {
+  const { dir, head, rec, git } = repoWithDeletedFile();
+  const r = restoreReviewFileFromCommit(dir, { sourcePath: 'show-a/vulture--a-b.json', fromCommit: `${head}^`, destPath: 'show-b/vulture--a-b.json' }, { git });
+  assert.equal(r.ok, true, r.reason);
+  const back = JSON.parse(fs.readFileSync(path.join(dir, 'show-b', 'vulture--a-b.json'), 'utf8'));
+  assert.equal(back.showId, 'show-b');
+  assert.equal(back.fullText, rec.fullText);
+  assert.equal(fs.existsSync(path.join(dir, 'show-a', 'vulture--a-b.json')), false);
 });
 
 test('refuses short shas, existing destinations and path escapes', () => {

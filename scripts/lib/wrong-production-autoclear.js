@@ -69,6 +69,17 @@ function isWithinPriorRun(reviewDate, priorRuns) {
 }
 
 /**
+ * True when the prior run a date falls in says `inheritReviews: false`: that
+ * run's reviews are not this entry's (prior-run-sibling.js carryReviews), so its
+ * window is no reason to un-flag one filed here (BRO-5285). Every auto-clear that
+ * leans on a priorRuns window checks this.
+ */
+function isWithinOptOutPriorRun(reviewDate, priorRuns) {
+  const run = findMatchingPriorRun(reviewDate, priorRuns);
+  return !!run && typeof run === 'object' && run.inheritReviews === false;
+}
+
+/**
  * Same window logic as isWithinPriorRun, but returns the MATCHED priorRun
  * entry (not just a boolean) — callers that need to know which run a review
  * belongs to (e.g. to judge the review's market against that run's OWN venue
@@ -378,6 +389,11 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
   if (!isDateOnlyAutoFlag && !isAutoReason) return false;
   const effDate = effectiveFlagDate(data);
   if (!effDate || !isWithinPriorRun(effDate, show.priorRuns)) return false;
+  // `inheritReviews: false` says that run's reviews are not this entry's
+  // (prior-run-sibling.js carryReviews): its window must not un-flag them
+  // either (BRO-5285: the 2025 Comedy About Spies Stage review sat unflagged on
+  // the 2026 entry and failed the class-A contamination gate).
+  if (isWithinOptOutPriorRun(effDate, show.priorRuns)) return false;
   // A tour verdict only yields to a window that is itself a tour run: a
   // sit-down prior run (earlier West End engagement) is not evidence for it.
   if (isAdjudicatedTourVerdict(data)
@@ -1199,6 +1215,7 @@ module.exports = {
   shouldAutoClearWrongShowUkUrl,
   isTextStaleRelativeToUrlRewrite,
   isWithinPriorRun,
+  isWithinOptOutPriorRun,
   findMatchingPriorRun,
   hasDeclaredPriorRuns,
   isWithinTourLeg,

@@ -91,6 +91,7 @@ const {
   isTextStaleRelativeToUrlRewrite,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
+  isWithinOptOutPriorRun,
   isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearWrongProductionTourLeg,
@@ -1689,7 +1690,10 @@ const crossShowFingerprints = new Map();
             !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
             !d.allowEarlyDate) {
           const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId });
-          if (shouldAutoClearStaleDateGuard(d, { nowInWindow: dgDecision.flag === false })) {
+          // evaluateDateGuard exempts every priorRuns window; one marked
+          // inheritReviews:false is not a reason to clear (BRO-5285).
+          const nowInWindow = dgDecision.flag === false && !isWithinOptOutPriorRun(reviewDate, showRecord?.priorRuns);
+          if (shouldAutoClearStaleDateGuard(d, { nowInWindow })) {
             const wasNote = d.wrongProductionNote;
             d.wrongProduction = false;
             d.wrongProductionAutoCleared = `rebuild: dated pre-opening guard re-evaluated in-window (was: ${wasNote})`;

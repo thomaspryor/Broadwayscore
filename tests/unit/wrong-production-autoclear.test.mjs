@@ -615,6 +615,34 @@ describe('shouldAutoClearWrongProductionPriorRun', () => {
     );
   });
 
+  it('returns false when the matching prior run opts out with inheritReviews:false (BRO-5285)', () => {
+    const flagged = {
+      wrongProduction: true,
+      wrongProductionNote: 'Pre-opening guard: review dated 2025-05-14 is 90+ days before show starts 2026-08-01',
+      publishDate: '2025-05-14',
+    };
+    const optOut = { priorRuns: [{ openingDate: '2025-04-14', closingDate: '2025-08-03', venue: 'Noël Coward Theatre', inheritReviews: false }] };
+    assert.strictEqual(shouldAutoClearWrongProductionPriorRun(flagged, optOut), false);
+    // inheritReviews:true / unset still clears (same window).
+    assert.strictEqual(shouldAutoClearWrongProductionPriorRun(flagged, { priorRuns: [{ ...optOut.priorRuns[0], inheritReviews: true }] }), true);
+    // An opted-out run elsewhere does not block a clear by the run that matches.
+    assert.strictEqual(shouldAutoClearWrongProductionPriorRun(flagged, {
+      priorRuns: [{ openingDate: '2022-03-01', closingDate: '2023-05-31', inheritReviews: false }, { openingDate: '2025-04-14', closingDate: '2025-08-03' }],
+    }), true);
+  });
+
+  it('isWithinOptOutPriorRun: only the matched run decides (BRO-5285)', () => {
+    const { isWithinOptOutPriorRun } = require('../../scripts/lib/wrong-production-autoclear.js');
+    const runs = [
+      { openingDate: '2022-03-01', closingDate: '2023-05-31', inheritReviews: false },
+      { openingDate: '2025-04-14', closingDate: '2025-08-03' },
+    ];
+    assert.strictEqual(isWithinOptOutPriorRun('2022-06-01', runs), true);
+    assert.strictEqual(isWithinOptOutPriorRun('2025-05-14', runs), false);
+    assert.strictEqual(isWithinOptOutPriorRun('2024-01-01', runs), false);
+    assert.strictEqual(isWithinOptOutPriorRun('2022-06-01', undefined), false);
+  });
+
   it('returns true for Date guard flag when priorRuns covers', () => {
     assert.strictEqual(
       shouldAutoClearWrongProductionPriorRun(
