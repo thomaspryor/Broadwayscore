@@ -6,10 +6,15 @@
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "parade-2023/wsj--charles-isherwood.json",
+    "burn-this-2019/wsj--terry-teachout.json"
   ],
   "failed": [
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
+    "the-music-man-2022/wsj--charles-isherwood.json",
+    "fun-home-2015/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,7 +24,14 @@
       "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/parade-2023/wsj--charles-isherwood.json",
+      "parade-2023/wsj--charles-isherwood.json",
+      "data/review-texts/burn-this-2019/wsj--terry-teachout.json",
+      "burn-this-2019/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json"
@@ -34,7 +46,7 @@
     ]
   },
   "startTime": "2026-10-12T20:59:55.801Z",
-  "lastProcessed": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
+  "lastProcessed": "fun-home-2015/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-10-12T21:42:33.858Z",
@@ -163,6 +175,72 @@
       "event": "bb-session",
       "session": "ee131ab0",
       "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-13T09:57:26.858Z",
+      "event": "bb-session",
+      "session": "cf0df71f",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-10-13T09:57:27.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T09:57:45.899Z",
+      "event": "bb-session",
+      "session": "9565500f",
+      "url": "https://www.wsj.com/articles/parade-review-a-broadway-musical-of-american-bigotr"
+    },
+    {
+      "t": "2026-10-13T09:57:46.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T09:58:06.401Z",
+      "event": "bb-session",
+      "session": "d458f064",
+      "url": "https://www.wsj.com/articles/the-music-man-review-hugh-jackman-and-sutton-foster"
+    },
+    {
+      "t": "2026-10-13T09:58:06.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T09:58:16.339Z",
+      "event": "bb-session",
+      "session": "8f635a30",
+      "url": "https://www.wsj.com/articles/the-music-man-review-hugh-jackman-and-sutton-foster"
+    },
+    {
+      "t": "2026-10-13T09:58:16.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T09:59:37.029Z",
+      "event": "bb-session",
+      "session": "9243d186",
+      "url": "https://www.wsj.com/articles/burn-this-review-red-hot-romance-fizzles-1155561505"
+    },
+    {
+      "t": "2026-10-13T09:59:37.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T10:00:44.764Z",
+      "event": "bb-session",
+      "session": "3aee677e",
+      "url": "https://www.wsj.com/articles/fun-home-review-a-musical-both-heartbreaking-and-he"
+    },
+    {
+      "t": "2026-10-13T10:00:45.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ],
   "recoveredAfterFailure": [
