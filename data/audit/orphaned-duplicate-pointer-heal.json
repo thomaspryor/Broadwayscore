@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-13T04:26:40.736Z",
+  "generated": "2026-10-13T04:41:32.087Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 27,
+  "count": 24,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -36,13 +36,6 @@
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
       "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "death-of-england-closing-time-west-end-2023",
-      "loserFile": "whatsonstage--unknown.json",
-      "targetFile": "whatsonstage--alun-hood.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--alun-hood.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -116,13 +109,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
-      "loserFile": "timeout-london--unknown.json",
-      "targetFile": "timeout-london--alice-saville.json",
-      "reason": "orphaned-duplicate-heal: timeout-london--alice-saville.json was flagged invalid after timeout-london--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-car-man-west-end-2026",
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
@@ -183,13 +169,6 @@
       "loserFile": "daily-mail--georgina-brown.json",
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "what-if-if-only-west-end-2021",
-      "loserFile": "london-theatre--unknown.json",
-      "targetFile": "london-theatre--marianka-swain.json",
-      "reason": "orphaned-duplicate-heal: london-theatre--marianka-swain.json was flagged invalid after london-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]
