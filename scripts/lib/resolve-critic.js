@@ -17,12 +17,27 @@ const isUnknown = (s) => !s || /^unknown$/i.test(String(s).trim());
  *          outletEntry?: {defaultCritic?: string, multiAuthor?: boolean, standingCoverage?: boolean}}} p
  * @returns {string}
  */
+/**
+ * An author-page URL ("https://www.broadwayworld.com/author/Gary-Naylor") is a
+ * link to the critic, not their name: take the last path segment and
+ * de-slugify it (BRO-4001). Anything else is returned unchanged.
+ */
+function nameFromAuthorUrl(s) {
+  const m = /^(?:https?:)?\/\/[^/\s]+\/(?:[^\s?#]*\/)?authors?\/([^/\s?#]+)\/?(?:[?#]\S*)?$/i.exec(String(s || '').trim());
+  if (!m) return s;
+  let seg = m[1];
+  try { seg = decodeURIComponent(seg); } catch { /* keep raw segment */ }
+  const name = seg.split(/[-_+\s]+/).filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  return name || s;
+}
+
 function resolveCritic({ criticArg, lsaCritic, byline, stageCritic, outletEntry } = {}) {
-  if (criticArg) return criticArg;
+  if (criticArg) return nameFromAuthorUrl(criticArg);
   if (lsaCritic) return lsaCritic;
   const canFill = shouldFillDefaultCritic(outletEntry);
   const dc = canFill ? String(outletEntry.defaultCritic).trim() : '';
-  const b = byline ? String(byline).trim() : '';
+  const b = byline ? String(nameFromAuthorUrl(byline)).trim() : '';
   if (b && !isUnknown(b)) {
     const tokens = b.split(/\s+/);
     if (dc && tokens.length === 1 && dc.split(/\s+/).length > 1 &&
@@ -34,4 +49,4 @@ function resolveCritic({ criticArg, lsaCritic, byline, stageCritic, outletEntry 
   return 'Unknown';
 }
 
-module.exports = { resolveCritic };
+module.exports = { resolveCritic, nameFromAuthorUrl };
