@@ -22,6 +22,7 @@ const {
   getOutletDisplayName,
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { bucketWriteResult } = require('./lib/ingest-rejection-cache');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
@@ -90,7 +91,13 @@ function writeReviewFile(review) {
     },
   }, { dryRun });
 
-  // Map shared writer actions to legacy return values
+  // Map shared writer actions to legacy return values. BRO-2926: a refused
+  // write is not 'exists' (no file landed); say which kind of refusal it was.
+  const bucket = bucketWriteResult(result);
+  if (bucket === 'durable' || bucket === 'refused') {
+    console.log(`    ${bucket === 'durable' ? 'rejected (permanent)' : 'refused'} ${review.showId}/${filename}: ${result.reason}`);
+    return { action: bucket === 'durable' ? 'rejected' : 'refused', reason: result.reason, filename };
+  }
   const actionMap = { 'new': 'created', 'updated': 'merged', 'skipped': 'exists' };
   return { action: actionMap[result.action] || result.action, filename };
 }

@@ -14,6 +14,7 @@
  *        node scripts/cleanup-known-issues.js --apply
  */
 
+const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit, shouldSkipRoundupAudit } = require('./lib/review-guards');
@@ -92,8 +93,7 @@ function fixWrongContent() {
       console.log(`  ${DRY_RUN ? 'WOULD NULL' : 'NULLING'}: ${relPath} (${data.fullText.length} chars)`);
 
       if (APPLY) {
-        data.wrongFullText = data.fullText;
-        data.fullText = null;
+        quarantineBody(data); // BRO-2788: records quarantinedWordCount
         data.isFullReview = false;
         data.contentTier = 'needs-rescrape';
         data.contentMismatchNote = 'Wrong content detected by audit - fullText is about different show';

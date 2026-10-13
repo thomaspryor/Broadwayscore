@@ -34,6 +34,10 @@
  *     prior-run reviews — sweep: ~75% of excerpt-only contradictions were
  *     still correct flags. Callers should flag as usual but WARN for human
  *     review; never auto-clear on this signal alone.
+ *   - 'body-byline-date' (STRONG, BRO-2770): the byline date in the first
+ *     500 chars of fullText is inside the run window and more than 3 days from
+ *     publishDate (body-date-mismatch.js). Same handling as theatre-record-month:
+ *     hold at any gap, exclude until publishDate/url are repaired.
  *   - aggregatorStars is deliberately NOT a signal: it is scraped from the
  *     article page itself (aggregatorStarsSource: stage-star-svg etc.) and
  *     exists on prior-run reviews too (1789 stars-only false corroborations
@@ -107,7 +111,25 @@ function evaluateCurrentRunCorroboration({ review, show }) {
     signals.push('cv-affirms-production');
   }
 
-  const strength = signals.some(s => s.startsWith('theatre-record-month:') || s === 'cv-affirms-production')
+  // (d) BRO-2770: the body's own byline date sits inside the run window and
+  // disagrees with publishDate by more than 3 days. The article dates itself,
+  // so publishDate is stale metadata (typically a body replaced in place
+  // while url/publishDate kept describing the old article): hold and route to
+  // repair, never flag wrongProduction off the stale date. Same window as (a).
+  const bodyMismatch = require('./body-date-mismatch').detectBodyDateMismatch(review);
+  if (bodyMismatch && earliestStr) {
+    const DAY = 86400000;
+    const t = Date.parse(bodyMismatch.bodyDate + 'T00:00:00Z');
+    const windowStart = Date.parse(earliestStr) - UK_DAYS_BEFORE_PREVIEW * DAY;
+    const windowEnd = show.closingDate ? Date.parse(show.closingDate) + DAYS_AFTER_CLOSE * DAY : null;
+    // Malformed dates give no signal, as in (a): fewer holds, guard flags as usual.
+    if (!Number.isNaN(windowStart) && !(windowEnd !== null && Number.isNaN(windowEnd))
+        && t >= windowStart && (windowEnd === null || t <= windowEnd)) {
+      signals.push(`body-byline-date:${bodyMismatch.bodyDate}`);
+    }
+  }
+
+  const strength = signals.some(s => s.startsWith('theatre-record-month:') || s.startsWith('body-byline-date:') || s === 'cv-affirms-production')
     ? 'strong'
     : (signals.length ? 'weak' : null);
   return { strength, signals };
@@ -162,7 +184,7 @@ function bucketDateGuardCandidate({ corrob, isBeforePreview }) {
  */
 function shouldHoldDateGuardFlag({ corrob, implausible }) {
   if (!corrob || corrob.strength !== 'strong') return false;
-  if (corrob.signals.some((s) => s.startsWith('theatre-record-month:'))) return true;
+  if (corrob.signals.some((s) => s.startsWith('theatre-record-month:') || s.startsWith('body-byline-date:'))) return true;
   return !implausible;
 }
 

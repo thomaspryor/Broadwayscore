@@ -761,3 +761,40 @@ test('mergeReviewsJson with base: a remote row edited since base, or a manualEnt
   assert.equal(stats.droppedByOurs, 0);
   assert.equal(mergeReviewsJson.requiresTrueBase, true);
 });
+
+// BRO-2944: orphan rows (no review-text file behind them) used to survive every
+// rebuild through the two-way union, and rebuild-all-reviews.js then
+// auto-registered their outletId, so a deleted outlet came back (suntimes,
+// after BRO-2921 merged it into chicago-sun-times). With a base, a pipeline row
+// our rebuild no longer emits is dropped, so the outlet id leaves the merged
+// set the auto-register reads. Hand-entered rows (manualEntry, e.g. the
+// Berkeley Rep Galileo regional reviews, which have no review-text files by
+// design) are deliberate and stay.
+test('mergeReviewsJson with base: orphan rows naming a deleted outlet are dropped; manualEntry rows stay (BRO-2944)', () => {
+  const orphanA = { showId: 'paranormal-activity-chicago-regional-2025', outlet: 'Chicago Sun-Times', outletId: 'suntimes', criticName: 'Steven Oxman', url: 'https://chicago.suntimes.com/x', contentTier: 'excerpt' };
+  const orphanB = { ...orphanA, showId: 'paranormal-activity-national-tour-regional-2025' };
+  const manual = { showId: 'galileo-berkeley-rep-regional-2024', outlet: 'KQED', outletId: 'kqed', criticName: 'David John Chávez', assignedScore: 56, manualEntry: true, url: 'https://www.kqed.org/arts/13958082/galileo-review-theater-berkeley-rep' };
+  // Same display outlet and critic as orphanA, so the same merge key: the relabelled row.
+  const relabelled = { ...orphanA, outletId: 'chicago-sun-times' };
+  const base = { _meta: { lastUpdated: '2026-09-07T21:50:00Z' }, reviews: [orphanA, orphanB, manual] };
+  const ours = { _meta: { lastUpdated: '2026-09-07T21:53:41Z' }, reviews: [relabelled] }; // rebuild emits only file-backed rows
+  // The other writer pushed later without touching these rows: its snapshot is newer.
+  const remote = { _meta: { lastUpdated: '2026-09-07T22:01:52Z' }, reviews: [orphanA, orphanB, manual] };
+  const { merged, stats } = mergeReviewsJson(ours, remote, base);
+  const outletIds = new Set(merged.reviews.map((r) => r.outletId));
+  assert.equal(outletIds.has('suntimes'), false, 'deleted outlet must not survive in the merged rows');
+  assert.ok(outletIds.has('chicago-sun-times'), 'our relabel wins the same-key conflict: remote never changed it');
+  assert.ok(outletIds.has('kqed'), 'hand-entered regional row is kept');
+  assert.equal(stats.conflictsRemoteUnchanged, 1);
+  assert.equal(stats.droppedByOurs, 1);
+
+  // A remote row the other writer DID change since base still goes through the normal rules.
+  const remoteEdited = { _meta: remote._meta, reviews: [{ ...orphanA, assignedScore: 66 }, orphanB, manual] };
+  const r2 = mergeReviewsJson(ours, remoteEdited, base);
+  assert.equal(r2.stats.conflictsRemoteUnchanged, 0);
+  assert.equal(r2.merged.reviews.find((r) => r.showId === orphanA.showId).outletId, 'suntimes', 'newer remote edit wins as before');
+  // A manual remote row unchanged since base still beats a pipeline row.
+  const manualRemote = { ...orphanA, manualEntry: true };
+  const r3 = mergeReviewsJson(ours, { _meta: remote._meta, reviews: [manualRemote] }, { reviews: [manualRemote] });
+  assert.equal(r3.merged.reviews[0].manualEntry, true);
+});

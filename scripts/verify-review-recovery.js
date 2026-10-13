@@ -42,6 +42,7 @@
  *       skipped in CI and under --pre-merge.
  */
 
+const { describeTextState } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -218,7 +219,14 @@ for (const [file, data] of parsed) {
   const hasText = data.fullText && data.fullText.length > 50;
   const words = data.textWordCount || (data.fullText ? data.fullText.split(/\s+/).length : 0);
 
-  if (!hasText) {
+  const textState = describeTextState(data);
+  if (!hasText && textState.state === 'quarantined') {
+    // BRO-2788: the body is on disk, set aside by a wrong-content verdict.
+    // Not "never scraped": re-fetching it changes nothing until the verdict
+    // (wrongProduction / wrongShow / non_review / content mismatch) is resolved.
+    warn(`${file} — body quarantined in wrongFullText (${textState.words} words), suppressed by a wrong-content verdict; not unscraped, don't re-fetch`);
+    noTextCount++;
+  } else if (!hasText) {
     if (data.textStatus === 'not_collected') {
       fail(`${file} — not collected yet (textStatus=not_collected)`);
     } else {

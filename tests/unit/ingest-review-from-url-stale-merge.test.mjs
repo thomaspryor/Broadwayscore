@@ -181,7 +181,7 @@ describe('BRO-3790: post-write stale-merge verification against the real writer'
       fields: {},
     }, { reviewTextsDir: dir });
 
-    assert.deepEqual(res, { action: 'skipped', reason: 'no-changes', filepath: showDir },
+    assert.deepEqual(res, { action: 'skipped', reason: 'no-changes', filepath: showDir, durable: false },
       'sanity: the writer reports a benign no-op, not a refusal — this is the case the old action==="updated" gate missed');
 
     const landed = JSON.parse(fs.readFileSync(showDir, 'utf8'));

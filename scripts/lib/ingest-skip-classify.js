@@ -207,6 +207,29 @@ const EXPECTED_REJECTION_REASONS = [
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
+// BRO-2926: the EXPECTED rejections that are a property of the url or byline
+// itself, so retrying can never change them. A poller may remember these and
+// stop fetching (scripts/lib/ingest-rejection-cache.js). Left out on purpose:
+// unknown-show-id (the show row can be added), onmerge-aborted (a per-run
+// caller decision), empty-unknown (an extractor that came back empty once),
+// blocklisted-url (an operator can lift the block).
+const DURABLE_REJECTION_REASONS = [
+  'cross-market',
+  'listing-page-url',
+  'unresolvable-redirect-url',
+  'tour-review',
+  'named-non-review-url',
+  'submitted-non-review-url',
+  'unregistered-outlet-non-review-url',
+  'credited-person-as-critic',
+];
+
+/** True when a writer skip reason is a permanent refusal (see DURABLE_REJECTION_REASONS). */
+function isDurableRejection(rawReason) {
+  const c = classifyReason(rawReason);
+  return c.kind === 'expected' && DURABLE_REJECTION_REASONS.includes(c.reason);
+}
+
 const BENIGN_REASONS = [
   'no-changes',                     // identical content already on disk
   'junk-outlet',                    // ticket sellers / listing pages
@@ -372,6 +395,8 @@ function describeSkip(showId, url, { reason, detail }) {
 module.exports = {
   classifyIngestSkip,
   classifyReason,
+  isDurableRejection,
+  DURABLE_REJECTION_REASONS,
   describeSkip,
   CONFLICT_REASONS,
   EXPECTED_REJECTION_REASONS,

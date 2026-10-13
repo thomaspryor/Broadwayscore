@@ -327,9 +327,21 @@ function _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, cr
  * @param {boolean} [options.dryRun=false] - Don't write files
  * @param {function} [options.onMerge] - (existing, input) => mutate existing; return false to abort write
  * @param {string} [options.reviewTextsDir] - Override default review-texts directory
- * @returns {{ action: 'new'|'updated'|'skipped', reason?: string, filepath?: string }}
+ * @returns {{ action: 'new'|'updated'|'skipped', reason?: string, durable?: boolean, filepath?: string }}
+ *   `durable` (skips only, BRO-2926): true when the refusal is permanent
+ *   (ingest-skip-classify.js DURABLE_REJECTION_REASONS), so a poller can stop
+ *   retrying it (scripts/lib/ingest-rejection-cache.js) instead of re-deriving
+ *   durability from the reason string.
  */
 function createOrMergeReviewFile(showId, input, options = {}) {
+  const result = _createOrMergeReviewFile(showId, input, options);
+  if (result && result.action === 'skipped' && result.durable === undefined) {
+    result.durable = require('./ingest-skip-classify').isDurableRejection(result.reason);
+  }
+  return result;
+}
+
+function _createOrMergeReviewFile(showId, input, options = {}) {
   const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR, _rerouteVisited } = options;
   const fields = input.fields || {};
   // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an

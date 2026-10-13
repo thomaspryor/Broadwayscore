@@ -1239,6 +1239,8 @@ function _differentArticleAtSamePath(field, localData, committedData) {
   if (/^wrongProduction/.test(field) && typeof committedData.wrongProductionNote === 'string'
       && MANUAL_WP_PREFIXES.some((p) => committedData.wrongProductionNote.startsWith(p))) return false;
   if (_replacedFlaggedText(localData, committedData)) return true;
+  // BRO-2770: a recorded in-place body swap cleared this field on purpose.
+  if (require('./body-date-mismatch').bodySwapClearsField(field, localData, committedData)) return true;
   if (!localData.url || !committedData.url) return false;
   return urlCanonicallyChanged(committedData.url, localData.url);
 }
@@ -2035,6 +2037,29 @@ function safeWriteReview(filePath, newData, options = {}) {
           if (inv.cleared.includes('llmScore')) {
             const { removeLlmScoreSidecar } = require('./url-change-invariant');
             removeLlmScoreSidecar(filePath);
+          }
+        }
+      }
+
+      // BRO-2770: same url, different article. A body swapped in place with a
+      // byline dated days away from the old body's keeps the old article's
+      // publishDate/stars/scores unless they are cleared here, after the
+      // preserve+merge passes carried them over. The date guards then flag the
+      // real review off the stale date, or a cleared flag ships the old page's
+      // stars as its score.
+      if (!lockedOverride && typeof newData.fullText === 'string' && typeof existing.fullText === 'string'
+          && !require('./url-change-invariant').urlCanonicallyChanged(existing.url, newData.url)) {
+        const bodyDates = require('./body-date-mismatch');
+        const swap = bodyDates.isDifferentDatedArticle(existing.fullText, newData.fullText);
+        if (swap) {
+          const cleared = bodyDates.invalidateStaleArticleFields(newData, existing, swap);
+          console.warn(`[review-write-guard] ${path.basename(filePath)}: body replaced in place (byline ${swap.oldBodyDate} -> ${swap.newBodyDate}); cleared stale ${cleared.join(', ') || '(nothing carried over)'}; url marked for repair`);
+          for (const f of cleared) {
+            const i = preserved.indexOf(f);
+            if (i !== -1) preserved.splice(i, 1);
+          }
+          if (cleared.includes('llmScore')) {
+            require('./url-change-invariant').removeLlmScoreSidecar(filePath);
           }
         }
       }

@@ -52,6 +52,7 @@
  *   --test-url="URL" - Test single URL with all tiers
  */
 
+const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -4596,43 +4597,9 @@ function extractPublishDateFromHtml(html) {
 // collect path gains every pattern (Guardian, BWW-compact, blogspot, Talkin'
 // Broadway /ob/) instead of maintaining a second, narrower copy.
 
-// Extract publishDate from review text byline (first 500 chars).
-// Only fires when exactly ONE date is found. Rejects run/closing dates.
-const TEXT_DATE_PATTERNS = [
-  /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b/gi,
-  /\b(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December),?\s+(\d{4})\b/gi,
-];
-const TEXT_DATE_RUN_WORDS = /\b(through|until|closing|effective|expires|ends|extended|running|booking|playing|performances?)\b/i;
-const TEXT_DATE_MONTHS = { january:1, february:2, march:3, april:4, may:5, june:6, july:7, august:8, september:9, october:10, november:11, december:12 };
-
-function extractDateFromText(fullText) {
-  const header = fullText.substring(0, 500);
-  const allMatches = [];
-  for (const pat of TEXT_DATE_PATTERNS) {
-    pat.lastIndex = 0;
-    let m;
-    while ((m = pat.exec(header)) !== null) {
-      const before = header.substring(Math.max(0, m.index - 50), m.index).toLowerCase();
-      if (TEXT_DATE_RUN_WORDS.test(before)) continue;
-      allMatches.push(m[0]);
-    }
-  }
-  if (allMatches.length !== 1) return null;
-
-  const match = allMatches[0];
-  const m1 = match.match(/^([A-Za-z]+)\s+(\d+)(?:st|nd|rd|th)?,?\s+(\d{4})$/);
-  const m2 = match.match(/^(\d+)(?:st|nd|rd|th)?\s+([A-Za-z]+),?\s+(\d{4})$/);
-  let monthStr, day, year;
-  if (m1) { monthStr = m1[1].toLowerCase(); day = parseInt(m1[2], 10); year = parseInt(m1[3], 10); }
-  else if (m2) { day = parseInt(m2[1], 10); monthStr = m2[2].toLowerCase(); year = parseInt(m2[3], 10); }
-  else return null;
-
-  const month = TEXT_DATE_MONTHS[monthStr];
-  if (!month || day < 1 || day > 31 || year < 1970 || year > 2027) return null;
-  const d = new Date(year, month - 1, day);
-  if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-}
+// Byline-date extraction lives in scripts/lib/body-date-mismatch.js (BRO-2770)
+// so the date guards, the shared writer and the corpus audit use one parser.
+const { extractDateFromText, detectBodyDateMismatch } = require('./lib/body-date-mismatch');
 
 // Normalize extracted date string to YYYY-MM-DD format
 // Extracts date components directly from string to avoid timezone shift issues
@@ -4894,8 +4861,20 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
             category: showCategory,
           }
         );
+    // BRO-2770: the body's own byline disagrees with publishDate and is NOT
+    // anticipatory. publishDate is stale metadata from another article; the
+    // rebuild's corroboration hold routes the file to repair. Flagging here
+    // would null the real review's text off a date that isn't its own.
+    const bodyMismatch = anticip.rejected ? detectBodyDateMismatch(data) : null;
+    const bodyDateClears = bodyMismatch && !isAnticipatoryPreviewPost(
+      bodyMismatch.bodyDate, showOpeningDate, data.outletId || review.outletId,
+      { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true, category: showCategory }
+    ).rejected;
+    if (bodyDateClears) {
+      console.log(`  ⚠ STALE publishDate ${bodyMismatch.publishDate}: body byline says ${bodyMismatch.bodyDate} — not flagging anticipatory; held for date/url repair`);
+    }
     // allowEarlyDate: operator approved the early date (BRO-720) — flagging again would re-loop with the rebuild auto-clear
-    if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !laneHeld(data, 'wrongProduction')) {
+    if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !bodyDateClears && !laneHeld(data, 'wrongProduction')) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;
       data.wrongProduction = true;
@@ -5182,8 +5161,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // LLM said isValid:true but no show keyword in fullText — high-confidence hallucination.
       console.log(`    ⚠ LLM-verified but no show keyword in text — quarantining as suspected hallucination`);
       console.log(`       keywords checked: ${llmKwCheck.keywordsChecked.slice(0, 8).join(', ')}${llmKwCheck.keywordsChecked.length > 8 ? '…' : ''}`);
-      data.wrongFullText = data.fullText;
-      data.fullText = null;
+      quarantineBody(data); // BRO-2788: records quarantinedWordCount
       data.showNotMentioned = true;
       data.suspectedLlmHallucination = true;
       data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
@@ -5244,8 +5222,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     } else if (guard.action === 'null-text') {
       // Unscored review with substantive text that doesn't mention the show.
       data.showNotMentioned = true;
-      data.wrongFullText = data.fullText;
-      data.fullText = null;
+      quarantineBody(data); // BRO-2788: records quarantinedWordCount
       data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
       console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${guard.reason}`);
     } else if (guard.action === 'skip' && guard.reason) {
@@ -5462,8 +5439,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           console.log(`    ⚠ Heuristic: content mismatch — but already scored, flagging for review instead of nulling`);
         } else {
           const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-          data.wrongFullText = data.fullText;
-          data.fullText = null;
+          quarantineBody(data); // BRO-2788: records quarantinedWordCount
           data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
           data.contentMismatchScore = contentMatch.score;
           data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
@@ -5549,8 +5525,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           data.needsReviewReason = `Collector LLM: not a review (${artType}, ${artConf} conf) but already scored — needs human verification`;
           console.log(`    ⚠ LLM: Not a review (${artType}, ${artConf} conf) — but already scored, flagging for review instead of nulling`);
         } else {
-          data.wrongFullText = data.fullText;
-          data.fullText = null;
+          quarantineBody(data); // BRO-2788: records quarantinedWordCount
           data.contentTier = 'invalid';
           data.incompleteReason = 'non_review';
           data.wrongShowReason = `Collector LLM: not a review (${artType}, confidence: ${artConf}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
@@ -5584,8 +5559,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       } else {
         const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
         if (data.fullText) {
-          data.wrongFullText = data.fullText;
-          data.fullText = null;
+          quarantineBody(data); // BRO-2788: records quarantinedWordCount
         }
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
@@ -5611,8 +5585,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         console.log(`    ⚠ LLM: Film/TV content (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
       } else if (!wrongShowCleared(data)) {
         const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-        data.wrongFullText = data.fullText;
-        data.fullText = null;
+        quarantineBody(data); // BRO-2788: records quarantinedWordCount
         data.wrongShow = true;
         data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
         data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';

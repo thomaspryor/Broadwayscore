@@ -157,6 +157,16 @@ const AUDITS = [
     args: ['--strict', '--max=60'],
     crashCodes: [2],           // 0 under baseline / 1 grew above baseline / 2 = corpus missing
   },
+  // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
+  // still ships. Body and metadata describe different articles, or publishDate
+  // is wrong, so the date guards judge the review on a date that isn't its own.
+  {
+    name: 'body-date-mismatch',
+    label: 'review byline date disagrees with publishDate by >3 days on a shipping review',
+    script: 'audit-body-date-mismatch.js',
+    args: ['--max-unexplained=0'],
+    crashCodes: [3],           // 0 clean / 1 = unexplained mismatch (drift) / 3 = corpus missing
+  },
   {
     name: 'unknown-outlets',
     label: 'resolvable unknown outlets (in reviews, not yet in registry)',

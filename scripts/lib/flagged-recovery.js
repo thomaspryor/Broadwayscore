@@ -32,6 +32,7 @@
 // file on EVERY attempt — including fetch failure — or this cap can never bite.
 const FLAGGED_RECOVERY_CAP = 3;
 
+const { quarantineBody } = require('./quarantine-body');
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
 // A dir file is "empty body" when the rebuild would drop it for lack of usable
@@ -243,8 +244,7 @@ const WRONG_PAGE_SCORE_FIELDS = ['originalScore', 'originalRating', 'originalSco
   'originalScoreType', 'scoreSource', 'assignedScore', 'llmScore', 'llmMetadata', 'ensembleData'];
 function discardWrongPageFill(rec) {
   const servedDate = rec.publishDate;
-  rec.wrongFullText = rec.fullText;
-  rec.fullText = null;
+  quarantineBody(rec); // BRO-2788: records quarantinedWordCount
   delete rec.publishDate;
   for (const f of WRONG_PAGE_SCORE_FIELDS) delete rec[f];
   rec.needsRefetch = true;

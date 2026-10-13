@@ -305,11 +305,22 @@ function mergeReviewsJson(ours, remote, base) {
   const oursDeduped = dedupeByKey(oursReviews);
   const remoteDeduped = dedupeByKey(remoteReviews);
 
+  // Base rows by key, for the three-way rules below (BRO-4852 remote-only rows,
+  // BRO-2944 same-key conflicts).
+  const baseByKey = new Map();
+  if (base && typeof base === 'object' && Array.isArray(base.reviews)) {
+    for (const r of base.reviews) {
+      const k = keyOf(r);
+      if (k && !baseByKey.has(k)) baseByKey.set(k, r);
+    }
+  }
+
   const oursSnapshotNewer = snapshotIsNewer(ours, remote);
   const consumedRemote = new Set();
   const mergedReviews = [];
   let conflicts = 0;
   let conflictsResolvedToRemote = 0;
+  let conflictsRemoteUnchanged = 0;
 
   for (const r of oursDeduped.canonical) {
     const k = keyOf(r);
@@ -320,6 +331,23 @@ function mergeReviewsJson(ours, remote, base) {
     }
     consumedRemote.add(remoteMatch);
     conflicts++;
+    // BRO-2944: with a base, a remote row identical to its base twin is a row
+    // the other writer never touched, so only OUR side changed this identity
+    // and ours wins (a manual remote row still beats a pipeline one). Without
+    // this a stale row beat our rebuilt one whenever the remote snapshot was
+    // newer: an outlet relabel (suntimes -> chicago-sun-times, same display
+    // name, same key) came back on every contended push and rebuild
+    // re-registered the deleted outlet from it.
+    const baseTwinOfRemote = baseByKey.size ? baseByKey.get(k) : undefined;
+    const remoteUnchanged = baseTwinOfRemote !== undefined
+      && JSON.stringify(baseTwinOfRemote) === JSON.stringify(remoteMatch)
+      && JSON.stringify(baseTwinOfRemote) !== JSON.stringify(r)
+      && !(remoteMatch.manualEntry === true && r.manualEntry !== true);
+    if (remoteUnchanged) {
+      mergedReviews.push(r);
+      conflictsRemoteUnchanged++;
+      continue;
+    }
     if (resolveConflict(r, remoteMatch, oursSnapshotNewer) === 'remote') {
       mergedReviews.push(remoteMatch);
       conflictsResolvedToRemote++;
@@ -335,13 +363,6 @@ function mergeReviewsJson(ours, remote, base) {
   // "added":8). Same rule as mergeCommercialJson: a row the other side
   // edited since base is kept (a delete racing an edit keeps the edit), and
   // a manualEntry row is never dropped here. No base = legacy union.
-  const baseByKey = new Map();
-  if (base && typeof base === 'object' && Array.isArray(base.reviews)) {
-    for (const r of base.reviews) {
-      const k = keyOf(r);
-      if (k && !baseByKey.has(k)) baseByKey.set(k, r);
-    }
-  }
   let droppedByOurs = 0;
   const droppedByOursKeys = [];
 
@@ -606,6 +627,7 @@ function mergeReviewsJson(ours, remote, base) {
       added,
       conflicts,
       conflictsResolvedToRemote,
+      conflictsRemoteUnchanged,
       oursDuplicateKeysSkipped: oursDeduped.duplicateKeysSkipped,
       remoteDuplicateKeysSkipped: remoteDeduped.duplicateKeysSkipped,
       urlRescueConflicts,

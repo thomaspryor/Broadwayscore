@@ -100,6 +100,10 @@ const ALLOWED_SCRIPTS = [
   // a news item an aggregator cites) so ingest and the gap audit both skip it.
   // execSync splits args on spaces: pass --reason without spaces.
   'block-review.js',
+  // BRO-2851: put a quarantined review body back after its wrong-content flag
+  // was released by a human or override (refuses anything else; the plan
+  // author must have read the text). One --file per action.
+  'restore-released-quarantined-body.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',

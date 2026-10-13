@@ -363,6 +363,11 @@ on:
       - 'scripts/plan-we-historical-opening-repair.js'
       - 'scripts/plan-we-historical-opening-repair.test.mjs'
       - 'scripts/fact-check-historical-sample.js'
+      # scripts/poll-loureviews.test.mjs (BRO-2926)
+      - 'scripts/poll-loureviews.js'
+      - 'scripts/poll-loureviews.test.mjs'
+      # tests/unit/review-texts-date-mismatch.test.mjs (BRO-2770)
+      - 'scripts/audit-body-date-mismatch.js'
       # scripts/lib/we-review-led-candidates.test.mjs (BRO-5031)
       - 'scripts/resolve-we-unlisted-tr.js'
       # tests/unit/landed-but-open-merge-direction.test.mjs

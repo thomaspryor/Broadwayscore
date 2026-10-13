@@ -26,6 +26,7 @@
  * The dry run always runs first and prints exactly which files would change.
  */
 
+const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 
@@ -103,8 +104,7 @@ for (const change of plannedChanges) {
   }
   console.log(`  QUARANT  ${change.rel} (fullText ${data.fullText.length} chars, score=${data.assignedScore})`);
   if (APPLY) {
-    data.wrongFullText = data.fullText;
-    data.fullText = null;
+    quarantineBody(data); // BRO-2788: records quarantinedWordCount
     data.showNotMentioned = true;
     data.needsReview = true;
     data.suspectedLlmHallucination = true;

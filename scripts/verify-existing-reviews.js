@@ -22,6 +22,7 @@
  *   COMMIT_EVERY — checkpoint interval (default 25)
  */
 
+const { quarantineBody } = require('./lib/quarantine-body');
 const { OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const fs = require('fs');
@@ -241,8 +242,7 @@ async function processVerify(items) {
 
           // Preserve fullText in wrongFullText before nulling
           if (data.fullText) {
-            data.wrongFullText = data.fullText;
-            data.fullText = null;
+            quarantineBody(data); // BRO-2788: records quarantinedWordCount
           }
 
           fs.writeFileSync(item.filePath, JSON.stringify(data, null, 2) + '\n');

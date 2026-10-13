@@ -28,6 +28,7 @@ const { parseReviewPost, matchPostToShow } = require('./lib/loureviews-match');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { isDurablyRejected, recordDurableRejection, bucketWriteResult } = require('./lib/ingest-rejection-cache');
 
 const WP_BASE = 'https://loureviews.blog/wp-json/wp/v2/posts';
 const REPO_ROOT = path.join(__dirname, '..');
@@ -84,7 +85,7 @@ async function main() {
   }
   console.log(`Fetched ${posts.length} posts since ${after.slice(0, 10)}`);
 
-  const summary = { matched: 0, ingested: 0, skippedExisting: 0, collisions: 0, weak: 0, errors: 0 };
+  const summary = { matched: 0, ingested: 0, skippedExisting: 0, rejected: 0, refused: 0, collisions: 0, weak: 0, errors: 0 };
   for (const p of posts) {
     if (summary.ingested >= limit) break;
     const parsed = parseReviewPost(p.title && p.title.rendered);
@@ -95,6 +96,9 @@ async function main() {
     const showDir = path.join(REVIEW_TEXTS_DIR, m.showId);
     const target = path.join(showDir, 'loureviews--louise-penn.json');
     if (fs.existsSync(target)) { summary.skippedExisting++; continue; }
+    // BRO-2926: a permanently refused post never lands a file, so the exists
+    // check above never skips it; without this it is re-fetched every poll.
+    if (isDurablyRejected(showDir, p.link)) { summary.rejected++; continue; }
     try {
       const html = await fetchHtml(p.link);
       const text = extractArticleTextFromUrl(html, p.link);
@@ -110,9 +114,17 @@ async function main() {
         outletId: 'loureviews', outlet: 'LouReviews', criticName: 'Louise Penn',
         url: p.link, source: 'loureviews-poller', fields,
       }, { dryRun: false });
-      if (result.action === 'new' || result.action === 'updated') {
+      const bucket = bucketWriteResult(result);
+      if (bucket === 'written') {
         summary.ingested++;
         console.log(`  ${result.action} ${m.showId} <- ${parsed.showTitle} (${text.length}c, ${publishDate})`);
+      } else if (bucket === 'durable') {
+        summary.rejected++;
+        recordDurableRejection(showDir, { url: p.link, outletId: 'loureviews', reason: result.reason, source: 'loureviews-poller' });
+        console.log(`  rejected ${m.showId}: ${result.reason} (permanent; recorded, not retried)`);
+      } else if (bucket === 'refused') {
+        summary.refused++;
+        console.log(`  refused ${m.showId}: ${result.reason}`);
       } else { summary.skippedExisting++; }
     } catch (e) {
       summary.errors++;
@@ -120,7 +132,7 @@ async function main() {
     }
   }
 
-  console.log(`\nLouReviews poll: matched=${summary.matched} ingested=${summary.ingested} existing=${summary.skippedExisting} collisions=${summary.collisions} weak=${summary.weak} errors=${summary.errors}`);
+  console.log(`\nLouReviews poll: matched=${summary.matched} ingested=${summary.ingested} existing=${summary.skippedExisting} rejected=${summary.rejected} refused=${summary.refused} collisions=${summary.collisions} weak=${summary.weak} errors=${summary.errors}`);
   console.log(`__LOUREVIEWS_NEW__=${summary.ingested}`);
 }
 

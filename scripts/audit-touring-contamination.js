@@ -61,6 +61,7 @@
  *   data/audit/.touring-contamination-checkpoint.{market}.json (cleaned on completion)
  */
 
+const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -864,8 +865,7 @@ function applyFlag(item, parsed) {
 
   // Preserve fullText (matching verify-existing-reviews.js convention)
   if (data.fullText) {
-    data.wrongFullText = data.fullText;
-    data.fullText = null;
+    quarantineBody(data); // BRO-2788: records quarantinedWordCount
   }
 
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');

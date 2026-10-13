@@ -20,6 +20,7 @@
  *   node scripts/audit-data-integrity.js --fix  (apply auto-fixes for confident mismatches)
  */
 
+const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { verifyFullTextContent } = require('./lib/content-quality');
@@ -161,8 +162,7 @@ for (const showDir of showDirs) {
 
           // Auto-fix: null fullText for confident mismatches with 2+ negative signals
           if (FIX_MODE && result.negativeSignalCount >= 2) {
-            data.wrongFullText = data.fullText;
-            data.fullText = null;
+            quarantineBody(data); // BRO-2788: records quarantinedWordCount
             data.contentMismatchNote = result.negativeSignals.join('; ');
             data.contentMismatchScore = result.score;
             data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
