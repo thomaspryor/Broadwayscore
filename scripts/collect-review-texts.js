@@ -57,7 +57,7 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement } = require('./lib/review-filter');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated } = require('./lib/review-filter');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -4726,6 +4726,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // fetch just filled/replaced the body" apart from an unrelated metadata-only
   // update. See scripts/lib/stale-flag-neutralization.js.
   const fullTextBeforeUpdate = data.fullText || '';
+  const contentTierBeforeUpdate = data.contentTier || null;
 
   // EMPTY-WRITE GUARD (Joe Turner postmortem A #1, A #16) — never overwrite
   // an existing non-empty fullText with empty/whitespace, and never modify a
@@ -4832,6 +4833,17 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     markRescoreFlagged(data);
     data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
     console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
+  }
+  if (!data.needsRescore && shouldRescoreCompletedTruncated({
+    tierBefore: contentTierBeforeUpdate,
+    hasScore: !!(data.llmScore && data.llmScore.score),
+    textBefore: fullTextBeforeUpdate,
+    textAfter: cleanedText,
+  })) {
+    data.needsRescore = true;
+    markRescoreFlagged(data);
+    data.rescoreReason = 'fullText completed after truncated-text scoring';
+    console.log(`    → Flagged for rescore: truncated text (${fullTextBeforeUpdate.length} chars) replaced by ${cleanedText.length}`);
   }
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;

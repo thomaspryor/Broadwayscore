@@ -53,4 +53,17 @@ function shouldRescoreForcedReplacement(review, textBefore, textAfter) {
   return before.length > 0 && after.length >= 300 && before !== after;
 }
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement };
+/**
+ * A truncated row's score was read from partial text. When a fetch replaces that
+ * text with a substantially longer body, the score must be redone (BRO-5243:
+ * truncated WSJ rows completed by the backfill were never rescored, because the
+ * excerpt trigger only fires when there was no fullText before).
+ */
+function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, textAfter }) {
+  if (!hasScore || tierBefore !== 'truncated') return false;
+  const before = String(textBefore || '').replace(/\s+/g, ' ').trim().length;
+  const after = String(textAfter || '').replace(/\s+/g, ' ').trim().length;
+  return before > 0 && after >= before + 500 && after >= before * 1.25;
+}
+
+module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated };
