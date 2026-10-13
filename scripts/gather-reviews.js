@@ -164,6 +164,7 @@ function saveAggregatorStub(filePath, stub) {
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
+const { isArchiveIdentityMismatch: isStagedoorArchiveMismatch } = require('./lib/stagedoor-identity');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const {
@@ -4764,17 +4765,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         //      this WE-only branch never is). A missing/empty title fails
         //      CLOSED (quarantined), not open — an untitled archive is exactly
         //      as unverifiable as a mismatched one.
-        //   CAVEAT: for 2 of scrape-stagedoor-critics.js's 3 write paths
-        //   (the "known missing shows" fast path and the SERP-discovery
-        //   path — lines ~214 and ~439), `title` is stamped from OUR OWN
-        //   show.title, not read off the fetched Stagedoor page, so check 2
-        //   passes by construction there and only check 1 does real work.
-        //   Only the listing-scan path's title is independently scraped.
-        //   Tracked as a write-side follow-up (BRO-3610 review) — the writer
-        //   would need to persist a genuinely page-scraped signal on all 3
-        //   paths for this read-time guard to fully close the gap.
-        const sdIdentityMismatch = (data.ourShowId && data.ourShowId !== showId)
-          || !pageTitleConfirmsShow(data.title || '', show.title);
+        //   3. (BRO-3615) data.pageTitle, the heading scraped off the fetched
+        //      page and persisted on every write path, must also confirm the
+        //      show when present. `title` alone is stamped from OUR OWN
+        //      show.title on 2 of 3 write paths, so it passes by construction;
+        //      archives predating pageTitle fall back to checks 1 and 2.
+        const sdIdentityMismatch = isStagedoorArchiveMismatch(data, showId, show.title);
         if (sdIdentityMismatch) {
           console.log(`    ✗ SD archive identity mismatch (title "${data.title}" vs "${show.title}"${data.ourShowId ? `, ourShowId "${data.ourShowId}" vs "${showId}"` : ''}) — quarantining`);
           try { fs.renameSync(sdArchive, sdArchive + '.mismatch'); } catch (e) {}

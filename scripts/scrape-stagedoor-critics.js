@@ -27,6 +27,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { buildArchiveData } = require('./lib/stagedoor-identity');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { londonAggregatorCandidates } = require('./lib/other-production-signal');
@@ -281,13 +282,15 @@ async function extractCriticReviews(page, show) {
         }
       }
 
-      return { reviews };
+      const h1 = document.querySelector('h1');
+      const pageTitle = (h1 && h1.textContent ? h1.textContent : document.title || '').trim() || null;
+      return { reviews, pageTitle };
     });
 
-    return data.reviews;
+    return { reviews: data.reviews, pageTitle: data.pageTitle };
   } catch (e) {
     console.error(`    ⚠️  Failed to load critic reviews: ${e.message}`);
-    return [];
+    return { reviews: [], pageTitle: null };
   }
 }
 
@@ -490,7 +493,7 @@ async function main() {
 
       console.log(`[${i + 1}/${toProcess.length}] ${show.title} (${show.ourShowId})`);
 
-      const reviews = await extractCriticReviews(page, show);
+      const { reviews, pageTitle } = await extractCriticReviews(page, show);
 
       if (reviews.length === 0) {
         console.log(`  ⏭️  No critic reviews`);
@@ -504,14 +507,7 @@ async function main() {
         stats.totalReviews += reviews.length;
 
         if (!dryRun) {
-          const archiveData = {
-            stagedoorId: show.id,
-            stagedoorUrl: `/${show.category}/${show.id}-${show.slug}/critic-reviews`,
-            title: show.title,
-            ourShowId: show.ourShowId,
-            criticReviews: reviews,
-            fetchedAt: new Date().toISOString().slice(0, 10),
-          };
+          const archiveData = buildArchiveData({ show, reviews, pageTitle, today: new Date().toISOString().slice(0, 10) });
 
           const archivePath = path.join(ARCHIVE_DIR, `${show.ourShowId}.json`);
           fs.writeFileSync(archivePath, JSON.stringify(archiveData, null, 2) + '\n');
