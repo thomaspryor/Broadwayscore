@@ -234,7 +234,8 @@ test('push-core-data/action.yml runs the drop check before the shows.json amend'
   const yml = fs.readFileSync(ACTION, 'utf8');
   const check = yml.indexOf('scripts/lib/push-core-data-rebase-drop-detection.js');
   assert.ok(check > 0, 'action.yml must invoke the drop check');
-  const rebase = yml.indexOf('git pull --rebase -X ours origin main');
+  // BRO-4966: the pull became a timed fetch plus a local `git rebase -X ours FETCH_HEAD`.
+  const rebase = yml.indexOf('git rebase -X ours FETCH_HEAD');
   const amend = yml.indexOf('Amended commit with reconciled shows.json');
   assert.ok(rebase > 0 && amend > 0);
   assert.ok(check > rebase && check < amend, 'check must run after the rebase and before the shows.json amend');

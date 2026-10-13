@@ -211,16 +211,31 @@ runs:
           cp -f shows.json /tmp/push-core-data-ours/shows.json
         fi
 
+        # BRO-4966: every network op in the loop below is bounded, so a
+        # transport hang (push/fetch that never returns, 2026-09-08) counts as
+        # a failed attempt instead of blocking until the job timeout. A hung
+        # push that did reach the remote recovers on the next attempt: the
+        # fetch sees our commit, the rebase is a no-op and the push is
+        # up to date. Dedicated knob (not GIT_NET_TIMEOUT_SEC, which some
+        # workflows tune to 30s for push-with-retry.sh's small pushes).
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+        NET_SEC="${PUSH_CORE_DATA_NET_TIMEOUT_SEC:-60}"
+
         UPSTREAM_TIP=""
         for i in 1 2 3 4 5; do
           PUSH_STDERR_FILE=$(mktemp)
-          if git push origin main 2>"$PUSH_STDERR_FILE"; then
+          PUSH_RC=0
+          git_net "$NET_SEC" push origin main 2>"$PUSH_STDERR_FILE" || PUSH_RC=$?
+          if [ "$PUSH_RC" -eq 0 ]; then
             cat "$PUSH_STDERR_FILE" >&2
             echo "Core data pushed successfully (attempt $i)"
             rm -f "$PUSH_STDERR_FILE"
             exit 0
           fi
           cat "$PUSH_STDERR_FILE" >&2
+          if [ "$PUSH_RC" -eq 124 ] || [ "$PUSH_RC" -eq 137 ]; then
+            echo "::warning::Core data push hung and was killed after ${NET_SEC}s (attempt $i/5, rc=$PUSH_RC); retrying"
+          fi
 
           # BRO-66 sibling (card #1850): a rate-limited push means the GitHub
           # API itself is throttling REVIEW_TEXTS_TOKEN, not "another workflow
@@ -272,7 +287,14 @@ runs:
 
           # Push failed — another workflow pushed first. Fetch their version
           # before rebasing so we can reconcile JSON data.
-          git fetch origin main 2>/dev/null || true
+          # BRO-4966: a failed or hung fetch leaves nothing fresh to reconcile
+          # against, so back off and spend the attempt rather than rebasing
+          # onto a stale origin/main.
+          if ! git_net "$NET_SEC" fetch origin main 2>/dev/null; then
+            echo "::warning::Core data fetch failed or hung (attempt $i/5); retrying"
+            sleep $((RANDOM % 10 + 5))
+            continue
+          fi
 
           # Save remote's audience-buzz.json before rebase overwrites it
           git show origin/main:audience-buzz.json > /tmp/remote-audience-buzz.json 2>/dev/null || true
@@ -417,7 +439,10 @@ runs:
           # dropped and HEAD == the remote tip. The per-file merges below work
           # from pre-rebase copies, and the shows.json drop check re-applies
           # this job's own field edits the rebase threw away.
-          if ! git pull --rebase -X ours origin main; then
+          # BRO-4966: rebase onto the FETCH_HEAD fetched (time-bounded) above
+          # instead of `git pull --rebase`, so no network op runs inside the
+          # rebase and a timeout kill can never leave a half-done rebase.
+          if ! git rebase -X ours FETCH_HEAD; then
             git rebase --abort 2>/dev/null || true
             sleep $((RANDOM % 10 + 5))
             continue

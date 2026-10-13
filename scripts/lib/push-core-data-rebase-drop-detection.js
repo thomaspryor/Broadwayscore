@@ -6,7 +6,7 @@
  * rebase in .github/actions/push-core-data/action.yml silently dropped
  * (BRO-4972).
  *
- * Why: the retry loop runs `git pull --rebase -X ours origin main`. In a
+ * Why: the retry loop runs `git rebase -X ours FETCH_HEAD` (a timed fetch plus a local rebase since BRO-4966; formerly `git pull --rebase -X ours origin main`). In a
  * rebase the sides are swapped, so "ours" is the upstream being rebased onto
  * and "theirs" is our local commit being replayed. Every conflicting hunk
  * therefore resolves to the REMOTE, and when every hunk conflicts the whole
