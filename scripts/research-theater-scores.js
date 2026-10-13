@@ -101,6 +101,7 @@ async function callGPT4o(theaterName, sourceText) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        signal: AbortSignal.timeout(300000),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

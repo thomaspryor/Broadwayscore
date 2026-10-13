@@ -133,6 +133,7 @@ async function callClaudeWithRetry(prompt) {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
+        signal: AbortSignal.timeout(300000),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

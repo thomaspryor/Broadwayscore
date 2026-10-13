@@ -87,6 +87,7 @@ async function withTimeout(promise) {
   finally { clearTimeout(t); }
 }
 
+// hygiene-fetch-timeout-ok: every fetch() here takes its signal from withTimeout()'s AbortController + setTimeout(TIMEOUT_MS)
 async function fetchBrightData(url) {
   const start = Date.now();
   try {

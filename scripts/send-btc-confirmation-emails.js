@@ -129,6 +129,7 @@ function commitSentLog(dataDir, sentLogPath) {
 
 async function sendEmail({ to, subject, html }) {
   const res = await fetch('https://api.resend.com/emails', {
+    signal: AbortSignal.timeout(60000),
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),

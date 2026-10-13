@@ -276,6 +276,7 @@ Title 2: "${ibdbTitle}"`;
             } else { reject(new Error(`Gemini HTTP ${res.statusCode}`)); }
           });
         });
+        req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
         req.on('error', reject);
         req.write(body);
         req.end();
@@ -313,6 +314,7 @@ Title 2: "${ibdbTitle}"`;
             } else { reject(new Error(`OpenAI HTTP ${res.statusCode}`)); }
           });
         });
+        req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
         req.on('error', reject);
         req.write(body);
         req.end();

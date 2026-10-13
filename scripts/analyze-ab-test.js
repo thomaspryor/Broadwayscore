@@ -109,7 +109,7 @@ const { computeAbSignificance } = require('./lib/significance');
 
 async function fetchPostHog(url) {
   const key = process.env.POSTHOG_PERSONAL_API_KEY;
-  const res = await fetch(url, { headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' } });
   if (!res.ok) throw new Error(`PostHog API ${res.status}: ${(await res.text()).slice(0, 200)}`);
   return res.json();
 }
@@ -118,7 +118,7 @@ async function fetchImpact(url) {
   const sid = process.env.IMPACT_ACCOUNT_SID;
   const token = process.env.IMPACT_AUTH_TOKEN;
   const auth = Buffer.from(`${sid}:${token}`).toString('base64');
-  const res = await fetch(url, { headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' } });
   if (!res.ok) throw new Error(`Impact API ${res.status}: ${(await res.text()).slice(0, 200)}`);
   return res.json();
 }

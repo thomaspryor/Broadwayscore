@@ -60,6 +60,7 @@ async function queryWikipediaBatch(names) {
     `&prop=pageimages&format=json&pithumbsize=400&redirects=1`;
 
   const resp = await fetch(url, {
+    signal: AbortSignal.timeout(60000),
     headers: { 'User-Agent': 'BroadwayScorecard/1.0 (broadwayscorecard.com)' }
   });
 
@@ -191,6 +192,7 @@ async function fetchBWWImage(name) {
 
   try {
     const resp = await fetch(url, {
+      signal: AbortSignal.timeout(60000),
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
       },

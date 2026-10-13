@@ -186,6 +186,7 @@ function postResendEmail(apiKey, data, idempotencyKey) {
         res.on('data', (chunk) => body += chunk);
         res.on('end', () => resolve({ statusCode: res.statusCode, body }));
       });
+      req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
       req.on('error', (err) => resolve({ statusCode: 0, body: `request error: ${err.message}` }));
       req.write(data);
       req.end();

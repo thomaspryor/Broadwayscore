@@ -71,7 +71,7 @@ async function main(argv = process.argv.slice(2)) {
     secret,
     baseUrl,
   });
-  const res = await fetch(url, { method: 'POST', redirect: 'manual' });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), method: 'POST', redirect: 'manual' });
   const title = pageTitle(await res.text());
   console.log(`POST /api/autonomous-action -> HTTP ${res.status}, page title "${title}"`);
   // Invalid Link means this job's secret differs from the site's, so the probe

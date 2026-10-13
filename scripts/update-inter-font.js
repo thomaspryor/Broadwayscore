@@ -56,7 +56,7 @@ const SUBSETS = ['latin', 'latin-ext'];
 const OUT_DIR = path.join(process.cwd(), 'public', 'fonts');
 
 async function get(url, headers = {}) {
-  const res = await fetch(url, { headers: { 'User-Agent': UA, ...headers } });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': UA, ...headers } });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
   return res;
 }

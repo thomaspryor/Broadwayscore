@@ -83,7 +83,7 @@ function shouldAlert(gap, prevEntry, nowMs, staleMinutes) {
 
 async function fetchProdCount(showId) {
   try {
-    const res = await fetch(`${PROD_BASE}/${showId}.json`);
+    const res = await fetch(`${PROD_BASE}/${showId}.json`, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) return null; // 404 = page not built yet; treat as unknown, skip
     return decodeSlimShow(await res.json()).reviews.length;
   } catch (_) { return null; }

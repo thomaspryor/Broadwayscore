@@ -52,6 +52,7 @@ function testTable(table) {
         resolve();
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
 
     req.on('error', (e) => {
       console.error(`  ✗ ${table} — network error: ${e.message}`);

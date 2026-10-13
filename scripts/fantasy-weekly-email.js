@@ -227,6 +227,7 @@ async function main() {
   if (isPreview) {
     console.error(`Sending preview to: ${OWNER_EMAIL}`);
     const res = await fetch('https://api.resend.com/emails', {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
@@ -402,6 +403,7 @@ function fetchJSON(url, headers) {
         }
       });
     });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.end();
   });

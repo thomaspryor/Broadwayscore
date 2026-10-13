@@ -112,6 +112,7 @@ async function callOpenAI(prompt, { model = GPT4O, maxTokens = 500 } = {}) {
         } catch (e) { reject(e); }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();
@@ -141,6 +142,7 @@ async function callGemini(prompt) {
         } catch (e) { reject(e); }
       });
     });
+    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();

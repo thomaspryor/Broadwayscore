@@ -43,12 +43,12 @@ function arg(name, dflt) {
 const hasFlag = (n) => process.argv.slice(2).includes(`--${n}`);
 
 async function fetchJson(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json' }, redirect: 'follow' });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': UA, Accept: 'application/json' }, redirect: 'follow' });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
 async function fetchHtml(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': UA }, redirect: 'follow' });
+  const res = await fetch(url, { signal: AbortSignal.timeout(60000), headers: { 'User-Agent': UA }, redirect: 'follow' });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.text();
 }

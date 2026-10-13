@@ -70,7 +70,7 @@ function extractLocs(xml) {
 
 async function fetchSitemapXml(url) {
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) return null;
     return await res.text();
   } catch {
@@ -272,6 +272,7 @@ async function submitToIndexNow(urls) {
 
     try {
       const response = await fetch(INDEXNOW_ENDPOINT, {
+        signal: AbortSignal.timeout(60000),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json; charset=utf-8'

@@ -354,6 +354,7 @@ Output exactly NONE if this slice has no such review — in particular, return N
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        signal: AbortSignal.timeout(300000),
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + process.env.OPENAI_API_KEY }, body: JSON.stringify(body),
       });
       if (r.status === 429 || r.status >= 500) { await new Promise(res => setTimeout(res, 3000 * attempt)); continue; }
@@ -423,7 +424,7 @@ async function extractOcrFromImage(page, imageId, verbose) {
       if (verbose) console.log('    No passive intercept — calling article API directly...');
       try {
         const direct = await page.evaluate(async (id) => {
-          const res = await fetch(`/api/article/page/${id}/articles`, { headers: { accept: 'application/json' } });
+          const res = await fetch(`/api/article/page/${id}/articles`, { signal: AbortSignal.timeout(300000), headers: { accept: 'application/json' } });
           if (!res.ok) return { status: res.status, body: (await res.text()).slice(0, 120) };
           return { status: 200, json: await res.json() };
         }, imageId);
