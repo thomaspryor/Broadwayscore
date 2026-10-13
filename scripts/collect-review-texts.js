@@ -65,7 +65,7 @@ const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { buildCollectSummary, writeCollectSummary } = require('./lib/collect-run-summary.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard.js');
-const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
+const { shouldPushReviewTextsCheckpoint, countUnpushedCommits, decideCheckpointAction } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
@@ -6182,17 +6182,27 @@ function pushReviewTextsCheckpoint(processed) {
     }
 
     // Check if there are changes
+    let hasStagedChanges = false;
     try {
       execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' });
-      // No changes
-      return;
     } catch (e) {
-      // Has changes — continue
+      hasStagedChanges = true;
     }
 
-    // Commit
-    const msg = `chore: Checkpoint review texts (${processed} collected)`;
-    execSync(`git commit -m "${msg}"`, { cwd: rtDir, stdio: 'pipe' });
+    // BRO-3599: a clean index is not "nothing to push". An earlier
+    // checkpoint whose push failed left its commit local-only; push it now.
+    const action = decideCheckpointAction({
+      hasStagedChanges,
+      unpushedCommits: hasStagedChanges ? null : countUnpushedCommits(rtDir, 'main'),
+    });
+    if (action === 'skip') return;
+
+    if (action === 'commit-and-push') {
+      const msg = `chore: Checkpoint review texts (${processed} collected)`;
+      execSync(`git commit -m "${msg}"`, { cwd: rtDir, stdio: 'pipe' });
+    } else {
+      console.log('  ↻ Retrying push of an earlier unpushed review-texts checkpoint commit');
+    }
 
     // Push through the shared helper (task #420). This block used to hand-roll
     // `git pull --rebase -X theirs` + protected-field restore + modify/delete
