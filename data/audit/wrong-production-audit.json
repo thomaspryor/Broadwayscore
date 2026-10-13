@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T17:03:13.800Z",
+  "timestamp": "2026-10-13T17:27:09.897Z",
   "stats": {
-    "totalReviews": 56379,
-    "alreadyFlagged": 21013,
-    "dateGuardCatches": 214,
-    "directorMismatch": 1871,
-    "tvFilmSignals": 1641,
-    "londonSignals": 2235,
+    "totalReviews": 56402,
+    "alreadyFlagged": 21028,
+    "dateGuardCatches": 213,
+    "directorMismatch": 1872,
+    "tvFilmSignals": 1642,
+    "londonSignals": 2236,
     "offBroadwaySignals": 510,
     "yearMismatch": 139,
-    "noPublishDate": 5294
+    "noPublishDate": 5292
   },
   "findings": [
     {
@@ -21284,6 +21284,19 @@
       ]
     },
     {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "whatsonstage--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-10-08",
+      "url": "https://www.westendtheatre.com/371151/news/reviews/into-the-woods-reviews/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 93,
@@ -36095,6 +36108,19 @@
       ]
     },
     {
+      "showId": "stuffed-off-west-end-2026",
+      "file": "redbuslondinium--red-bus-londinium.json",
+      "publishDate": "2026-10-07",
+      "url": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "suffs-2024",
       "file": "variety--frank-rizzo.json",
       "score": 86,
@@ -39017,20 +39043,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "london-theatre--aliya-al-hassan.json",
-      "score": 90,
-      "publishDate": "2025-05-13",
-      "url": "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
         }
       ]
     },
@@ -56041,6 +56053,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2026-10-08",
+      "url": "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
