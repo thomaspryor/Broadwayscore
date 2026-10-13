@@ -11699,20 +11699,18 @@
       "silentRefires": 1
     },
     "mezzanine:session-token-expired": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Mezzanine Scraper Failed — Session Token Expired",
       "firstSeen": "2026-10-07T13:48:53.393Z",
-      "incidentOpenedAt": "2026-10-12T22:04:57.949Z",
-      "lastSeen": "2026-10-13T16:34:37.079Z",
-      "lastNotifiedAt": "2026-10-12T22:04:57.949Z",
-      "lastSurfacedAt": "2026-10-12T22:04:57.949Z",
-      "notifyCount": 8,
+      "incidentOpenedAt": "2026-10-13T17:29:32.334Z",
+      "lastSeen": "2026-10-13T17:29:32.334Z",
+      "lastNotifiedAt": "2026-10-13T17:29:32.334Z",
+      "lastSurfacedAt": "2026-10-13T17:29:32.334Z",
+      "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-10-13T16:35:50.816Z"
+      "linearIdentifier": null
     },
     "gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json": {
       "status": "resolved",
@@ -15944,10 +15942,10 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
-      "firstSeen": "2026-10-13T17:12:55.368Z",
-      "incidentOpenedAt": "2026-10-13T17:12:55.368Z",
-      "lastSeen": "2026-10-13T17:12:55.368Z",
-      "lastNotifiedAt": "2026-10-13T17:12:55.368Z",
+      "firstSeen": "2026-10-13T17:21:40.371Z",
+      "incidentOpenedAt": "2026-10-13T17:21:40.371Z",
+      "lastSeen": "2026-10-13T17:21:40.371Z",
+      "lastNotifiedAt": "2026-10-13T17:21:40.371Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
@@ -15978,32 +15976,6 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
-    },
-    "test-yml:red:Unit Tests:c9be3b4a": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
-      "firstSeen": "2026-10-13T17:21:40.371Z",
-      "incidentOpenedAt": "2026-10-13T17:21:40.371Z",
-      "lastSeen": "2026-10-13T17:21:40.371Z",
-      "lastNotifiedAt": "2026-10-13T17:21:40.371Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "test-yml:red:Unit Tests:c9be3b4a": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
-      "firstSeen": "2026-10-13T17:28:25.756Z",
-      "incidentOpenedAt": "2026-10-13T17:28:25.756Z",
-      "lastSeen": "2026-10-13T17:28:25.756Z",
-      "lastNotifiedAt": "2026-10-13T17:28:25.756Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-5281"
     }
   }
 }
