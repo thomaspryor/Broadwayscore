@@ -51,6 +51,7 @@ const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const flowHealth = require('./lib/dispatch-flow-health.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const staleCode = require('./lib/watchdog-stale-code.js');
 
 // Hardcoded canonical repo (same rationale as dispatch-ledger.js: this tool
 // is routinely run from worktrees, and the ledger/dispatcher must be the one
@@ -102,6 +103,12 @@ function dispatchEnabled() {
 
 // ── atomic state ───────────────────────────────────────────────────────────
 
+// BRO-3904: the dashboard's recorded code identity (content hashes of every
+// scripts/ file it loaded). Null outside --dashboard, so --sweep runs and
+// ensureTab's 'starting' stamp carry no identity.
+let codeIdentity = null;
+const SCRIPTS_DIR = __dirname;
+
 function writeHeartbeat(fields) {
   // tmp+rename: the exit-status gate and --health read this file — a torn
   // read must be impossible (plan-review consensus). Tmp name is pid-unique
@@ -109,7 +116,8 @@ function writeHeartbeat(fields) {
   // each other's half-written file).
   fs.mkdirSync(STATE_DIR, { recursive: true });
   const tmp = `${HEARTBEAT_PATH}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify({ ts: new Date().toISOString(), pid: process.pid, ...fields }, null, 2));
+  const code = codeIdentity ? staleCode.heartbeatCodeFields(codeIdentity, SCRIPTS_DIR) : {};
+  fs.writeFileSync(tmp, JSON.stringify({ ts: new Date().toISOString(), pid: process.pid, ...code, ...fields }, null, 2));
   fs.renameSync(tmp, HEARTBEAT_PATH);
 }
 
@@ -697,7 +705,10 @@ function renameTab(ref, title) {
 
 function createTab() {
   const cmdFile = path.join(os.tmpdir(), `bsc-watchdog-dashboard-${Date.now()}.sh`);
-  fs.writeFileSync(cmdFile, `#!/bin/bash\nexec node ${REPO}/scripts/dispatch-watchdog.js --dashboard\n`);
+  // BRO-3904: a relaunch loop, not `exec node` — the dashboard exits
+  // RESTART_EXIT_CODE when its own code changed on disk and comes straight
+  // back on the new code in the same tab.
+  fs.writeFileSync(cmdFile, staleCode.dashboardLauncherScript(`${REPO}/scripts/dispatch-watchdog.js`));
   // Through cmuxws.run(), NOT a raw spawnSync (BRO-3001). This is a
   // launchd→cmux call: health() below reaches it every 900s whenever the
   // heartbeat is stale, which is precisely when nothing else is going to
@@ -741,6 +752,18 @@ function createTab() {
   return ref;
 }
 
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+function waitForPidExit(pid, timeoutMs) {
+  const deadline = Date.now() + timeoutMs;
+  while (pidAlive(pid)) {
+    if (Date.now() >= deadline) return false;
+    sleepSync(100);
+  }
+  return true;
+}
+
 function ensureTab() {
   if (watchdogOff()) { console.log('watchdog: disabled (kill switch) — not ensuring tab'); return 0; }
   if (!acquireLock()) { console.log('watchdog: another watchdog process holds the lock — skipping'); return 0; }
@@ -754,8 +777,37 @@ function ensureTab() {
     // 'starting' heartbeats get a much shorter bar: the dashboard writes its
     // first real heartbeat within seconds of boot, so a starting-stamp older
     // than 3 min means the boot died (ship-check P1).
-    const staleBar = hb && hb.mode === 'starting' ? 3 * 60 * 1000 : HEARTBEAT_STALE_MS;
+    // BRO-3904: a 'restarting' stamp gets the same bar — the launcher loop
+    // relaunches within seconds, so an old one means the relaunch died.
+    const staleBar = hb && (hb.mode === 'starting' || hb.mode === 'restarting') ? 3 * 60 * 1000 : HEARTBEAT_STALE_MS;
     const existing = findWatchdogTab(titles);
+    // BRO-3904: a live dashboard running code that no longer matches disk is
+    // stale no matter how fresh its heartbeat. Never our own pid (a test or a
+    // health() run in-process), never a 'starting' stamp.
+    const codeVerdict = staleCode.heartbeatCodeVerdict(hb);
+    const staleCodePid = existing && codeVerdict.stale && hb && hb.pid && hb.pid !== process.pid
+      && hb.mode !== 'starting' && pidAlive(hb.pid) ? hb.pid : null;
+    if (staleCodePid) {
+      // We hold the lock, so the dashboard is not inside executeSweep (it only
+      // sweeps under this lock): no dispatch or claim is in flight. SIGTERM
+      // takes its graceful handler (release lock, exit); wait for it to go so
+      // it cannot overwrite the new tab's 'starting' heartbeat.
+      console.log(`watchdog: ${existing.ref} runs stale code (${codeVerdict.reason}${codeVerdict.changed.length ? `: ${codeVerdict.changed.slice(0, 5).join(', ')}` : ''}) — restarting`);
+      try { process.kill(staleCodePid, 'SIGTERM'); } catch { /* already gone */ }
+      if (!waitForPidExit(staleCodePid, 10 * 1000)) {
+        console.log(`watchdog: stale-code pid ${staleCodePid} did not exit within 10s — leaving ${existing.ref} alone`);
+        return 0;
+      }
+      try { cmuxws.closeWorkspace(existing.ref); } catch { /* already gone */ }
+      const ref = createTab();
+      if (ref) {
+        dispatchLedger.appendEntry({ event: 'watchdog-resurrect', taskId: 'watchdog', workspaceRef: ref, gapMs: age, reason: 'stale-code' });
+        console.log(`watchdog: crowned tab recreated on current code — ${ref}`);
+        return 0;
+      }
+      console.log('watchdog: tab creation failed');
+      return 1;
+    }
     if (existing && age !== null && age < staleBar) {
       console.log(`watchdog: healthy — ${existing.ref} ("${existing.title}"), heartbeat ${Math.round(age / 1000)}s old`);
       return 0;
@@ -764,7 +816,7 @@ function ensureTab() {
       // Tab exists but the loop is stale/dead. Never close on age alone
       // (plan-review P0) — only when the recorded pid is provably gone; a
       // live pid means a long dispatch is in progress, leave it be.
-      if (hb && hb.pid && pidAlive(hb.pid) && hb.mode !== 'starting') {
+      if (hb && hb.pid && pidAlive(hb.pid) && hb.mode !== 'starting' && hb.mode !== 'restarting') {
         console.log(`watchdog: heartbeat stale but pid ${hb.pid} alive (long dispatch?) — leaving ${existing.ref} alone`);
         return 0;
       }
@@ -821,8 +873,41 @@ async function sweepOnce({ dryRun }) {
   return 0;
 }
 
+// BRO-3904: (re)record the code identity. Files first loaded since the last
+// call (lazy requires) join the baseline at their current content: they were
+// just read from disk, so that IS the code this process runs.
+function refreshCodeBaseline() {
+  const rels = staleCode.selectWatchedFiles(Object.keys(require.cache), SCRIPTS_DIR);
+  const known = codeIdentity ? codeIdentity.files : {};
+  const fresh = rels.filter(r => !(r in known));
+  if (!codeIdentity || fresh.length) {
+    const added = staleCode.computeCodeIdentity(SCRIPTS_DIR, fresh).files;
+    const files = { ...known, ...added };
+    codeIdentity = { hash: staleCode.combineHashes(files), files };
+  }
+  return codeIdentity;
+}
+
+// Checked once per tick, AFTER the sweep finished and the lock was released
+// (no claim or dispatch in flight). Returns true when the caller must exit
+// with RESTART_EXIT_CODE.
+let pendingCodeHash = null;
+function codeChangedOnDisk() {
+  const baseline = refreshCodeBaseline();
+  const current = staleCode.computeCodeIdentity(SCRIPTS_DIR, Object.keys(baseline.files));
+  const d = staleCode.decideSelfRestart({ startupHash: baseline.hash, currentHash: current.hash, pendingHash: pendingCodeHash });
+  pendingCodeHash = d.pendingHash;
+  if (d.action === 'restart') {
+    const changed = staleCode.changedFiles(baseline.files, current.files);
+    console.log(`[watchdog] code changed on disk (${changed.slice(0, 5).join(', ')}${changed.length > 5 ? ', …' : ''}) — restarting on the new code`);
+    return true;
+  }
+  return false;
+}
+
 async function dashboardLoop() {
   let lastTitle = '';
+  refreshCodeBaseline();
   process.on('SIGTERM', () => { releaseLock(); process.exit(0); });
   process.on('SIGINT', () => { releaseLock(); process.exit(0); });
   for (;;) {
@@ -872,6 +957,15 @@ async function dashboardLoop() {
       // the "durable runner silently down" pre-mortem scenario.
       console.error(`[watchdog] tick failed: ${e.message}`);
       try { writeHeartbeat({ mode: 'dashboard-error', error: String(e.message).slice(0, 200) }); } catch { /* disk? next tick */ }
+    }
+    // BRO-3904: the tick is complete and the lock is released — the only
+    // safe point to swap code. The launcher loop relaunches on this code.
+    let restart = false;
+    try { restart = codeChangedOnDisk(); } catch (e) { console.error(`[watchdog] code-identity check failed: ${e.message}`); }
+    if (restart) {
+      try { writeHeartbeat({ mode: 'restarting', reason: 'code-changed' }); } catch { /* best effort */ }
+      releaseLock();
+      process.exit(staleCode.RESTART_EXIT_CODE);
     }
     await new Promise(r => setTimeout(r, DASHBOARD_INTERVAL_MS));
   }
@@ -1001,6 +1095,15 @@ async function health() {
   const age = heartbeatAgeMs();
   const stale = age === null || age > HEALTH_STALE_MS;
   if (!stale) {
+    // BRO-3904: a fresh heartbeat from stale code is not healthy for long —
+    // hand it to ensureTab (which re-checks under the lock and restarts it).
+    try {
+      const v = staleCode.heartbeatCodeVerdict(readJson(HEARTBEAT_PATH));
+      if (v.stale) {
+        hlog(`watchdog: heartbeat fresh but dashboard runs stale code (${v.reason}) — ensuring tab`);
+        try { ensureTab(); } catch { /* best effort, same as the stale path below */ }
+      }
+    } catch (e) { hlog(`[watchdog] stale-code check skipped: ${e.message}`, 'error'); }
     // Heartbeat-healthy is exactly the blind spot task #1915 closes: the
     // watchdog can heartbeat forever while dispatching ZERO work. cmux
     // calls are best-effort here (same rationale as ensureTab() below —
@@ -1198,4 +1301,6 @@ module.exports = {
   // BRO-3924 (R3): exported (with an injectable path param) so the staleness
   // check is tested against the real function, not a copy.
   loadAlreadyPassesReport, OPEN_BACKLOG_SWEEP_REPORT_PATH, OPEN_BACKLOG_SWEEP_MAX_AGE_MS,
+  // BRO-3904: exported so the self-restart wiring is tested on the real code.
+  codeChangedOnDisk, refreshCodeBaseline, writeHeartbeat,
 };

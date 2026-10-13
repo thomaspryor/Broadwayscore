@@ -170,3 +170,133 @@ test('BRO-2412: fresh heartbeat + dispatch flowing (live auto tabs + recent laun
   assert.equal(code, 0);
   assert.equal(pages.length, 0);
 });
+
+// BRO-3904: a healthy (fresh-heartbeat) dashboard whose code changed on disk
+// must be restarted by ensureTab — before this, a fresh heartbeat + live pid
+// was always "healthy", so stale code ran for hours. Drives the REAL
+// ensureTab() with cmux + ledger stubbed, a tmp HOME (shared HEALTH_HOME) and
+// a tmp code tree; the "dashboard" is an orphaned sleeper process (not our
+// child, so it is reaped like the real one is).
+import { spawnSync } from 'node:child_process';
+const sc = require('./lib/watchdog-stale-code.js');
+
+function spawnOrphanSleeper() {
+  const r = spawnSync('bash', ['-c',
+    `nohup node -e "process.on('SIGTERM',()=>process.exit(0));setInterval(()=>{},1000)" >/dev/null 2>&1 & echo $!`],
+  { encoding: 'utf8' });
+  return parseInt(r.stdout.trim(), 10);
+}
+function alive(pid) { try { process.kill(pid, 0); return true; } catch { return false; } }
+
+async function runEnsureTab({ hb }) {
+  const stateDir = path.join(HEALTH_HOME, '.claude', 'state');
+  fs.mkdirSync(stateDir, { recursive: true });
+  fs.writeFileSync(path.join(stateDir, 'dispatch-watchdog.json'), JSON.stringify(hb));
+  const prevHome = process.env.HOME;
+  const prevDisabled = process.env.DISPATCH_WATCHDOG_DISABLED;
+  process.env.HOME = HEALTH_HOME;
+  delete process.env.DISPATCH_WATCHDOG_DISABLED;
+  const wd = require('./dispatch-watchdog.js');
+  const cmuxws = require('./lib/cmux-workspaces.js');
+  const ledger = require('./lib/dispatch-ledger.js');
+  const saved = { ca: cmuxws.cmuxAvailable, lw: cmuxws.listWorkspaces, cw: cmuxws.closeWorkspace, run: cmuxws.run,
+    ae: ledger.appendEntry, log: console.log, err: console.error };
+  const calls = { closed: [], runs: [], ledger: [] };
+  const title = `${core.WATCHDOG_TAB_PREFIX} ${core.WATCHDOG_TAB_MARKER} — 3 live`;
+  cmuxws.cmuxAvailable = () => true;
+  cmuxws.listWorkspaces = () => [{ ref: 'workspace:7', title }];
+  cmuxws.closeWorkspace = (ref) => { calls.closed.push(ref); };
+  cmuxws.run = (args) => { calls.runs.push(args); return 'OK workspace:8'; };
+  ledger.appendEntry = (e) => { calls.ledger.push(e); };
+  console.log = () => {}; console.error = () => {};
+  try {
+    const code = wd.ensureTab();
+    return { code, calls, hbAfter: JSON.parse(fs.readFileSync(wd.HEARTBEAT_PATH, 'utf8')) };
+  } finally {
+    Object.assign(console, { log: saved.log, error: saved.err });
+    Object.assign(cmuxws, { cmuxAvailable: saved.ca, listWorkspaces: saved.lw, closeWorkspace: saved.cw, run: saved.run });
+    ledger.appendEntry = saved.ae;
+    process.env.HOME = prevHome;
+    if (prevDisabled === undefined) delete process.env.DISPATCH_WATCHDOG_DISABLED;
+    else process.env.DISPATCH_WATCHDOG_DISABLED = prevDisabled;
+    for (const args of calls.runs) {
+      const cmd = args[args.indexOf('--command') + 1] || '';
+      const f = cmd.trim().split(/\s+/)[1];
+      if (f && f.includes('bsc-watchdog-dashboard-')) fs.rmSync(f, { force: true });
+    }
+  }
+}
+
+function codeTree() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'wd-code-'));
+  fs.mkdirSync(path.join(root, 'lib'));
+  fs.writeFileSync(path.join(root, 'dispatch-watchdog.js'), 'v1');
+  fs.writeFileSync(path.join(root, 'lib', 'core.js'), 'v1');
+  const old = Date.now() / 1000 - 3600;
+  for (const f of ['dispatch-watchdog.js', 'lib/core.js']) fs.utimesSync(path.join(root, f), old, old);
+  return root;
+}
+
+test('BRO-3904: fresh heartbeat + live pid + code changed on disk => ensureTab restarts the dashboard', async () => {
+  const root = codeTree();
+  const pid = spawnOrphanSleeper();
+  try {
+    assert.ok(alive(pid), 'sleeper must be running');
+    const id = sc.computeCodeIdentity(root, ['dispatch-watchdog.js', 'lib/core.js']);
+    fs.writeFileSync(path.join(root, 'lib', 'core.js'), 'v2, the merged fix');
+    const old = Date.now() / 1000 - 3600;
+    fs.utimesSync(path.join(root, 'lib', 'core.js'), old, old);
+    const { code, calls, hbAfter } = await runEnsureTab({
+      hb: { ts: new Date().toISOString(), mode: 'dashboard', pid, ...sc.heartbeatCodeFields(id, root) },
+    });
+    assert.equal(code, 0);
+    assert.equal(alive(pid), false, 'stale-code dashboard must have been stopped');
+    assert.deepEqual(calls.closed, ['workspace:7']);
+    assert.equal(calls.runs.filter(a => a[0] === 'new-workspace').length, 1, 'a fresh crowned tab must be created');
+    assert.equal(calls.ledger.length, 1);
+    assert.equal(calls.ledger[0].reason, 'stale-code');
+    assert.equal(hbAfter.mode, 'starting');
+  } finally {
+    try { process.kill(pid, 'SIGKILL'); } catch { /* gone */ }
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('BRO-3904: fresh heartbeat + live pid + code unchanged => ensureTab leaves it alone', async () => {
+  const root = codeTree();
+  const pid = spawnOrphanSleeper();
+  try {
+    const id = sc.computeCodeIdentity(root, ['dispatch-watchdog.js', 'lib/core.js']);
+    const { code, calls } = await runEnsureTab({
+      hb: { ts: new Date().toISOString(), mode: 'dashboard', pid, ...sc.heartbeatCodeFields(id, root) },
+    });
+    assert.equal(code, 0);
+    assert.equal(alive(pid), true);
+    assert.deepEqual(calls.closed, []);
+    assert.deepEqual(calls.runs.filter(a => a[0] === 'new-workspace'), []);
+  } finally {
+    try { process.kill(pid, 'SIGKILL'); } catch { /* gone */ }
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('BRO-3904: the dashboard heartbeat records a code identity covering itself and its libs', () => {
+  const prevHome = process.env.HOME;
+  process.env.HOME = HEALTH_HOME;
+  try {
+    const wd = require('./dispatch-watchdog.js');
+    const id = wd.refreshCodeBaseline();
+    assert.ok('dispatch-watchdog.js' in id.files);
+    assert.ok(path.join('lib', 'dispatch-watchdog-core.js') in id.files);
+    assert.ok(path.join('lib', 'watchdog-stale-code.js') in id.files);
+    assert.ok(!Object.keys(id.files).some(f => f.includes('node_modules')));
+    wd.writeHeartbeat({ mode: 'dashboard' });
+    const hb = JSON.parse(fs.readFileSync(wd.HEARTBEAT_PATH, 'utf8'));
+    assert.equal(hb.codeHash, id.hash);
+    assert.equal(hb.codeRoot, path.dirname(new URL('./dispatch-watchdog.js', import.meta.url).pathname));
+    // Nothing changed on disk since load: the outside verdict and the
+    // in-process self-check both say "current".
+    assert.equal(sc.heartbeatCodeVerdict(hb).reason, 'current');
+    assert.equal(wd.codeChangedOnDisk(), false);
+  } finally { process.env.HOME = prevHome; }
+});
