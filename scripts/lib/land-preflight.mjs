@@ -473,6 +473,14 @@ export const WORKFLOW_CHECKS = [
   { name: 'audit-workflow-hygiene.js', cmd: 'node', args: ['scripts/audit-workflow-hygiene.js'], fix: 'fix the lines it prints (or the exemption comment it names)' },
   { name: 'generate-workflow-dependencies.js --check', cmd: 'node', args: ['scripts/generate-workflow-dependencies.js', '--check'], fix: 'node scripts/generate-workflow-dependencies.js, then commit .github/workflows/DEPENDENCIES.md' },
 ];
+/** Nearest node_modules at or above dir (a worktree under .claude/worktrees has none of its own). */
+function findNodeModules(dir) {
+  for (let d = dir; ; d = path.dirname(d)) {
+    const nm = path.join(d, 'node_modules');
+    if (fs.existsSync(nm)) return nm;
+    if (path.dirname(d) === d) return null;
+  }
+}
 /** -> { status: 'clean' | 'fail' | 'skip', problems?, reason? }. Fails open: a check that cannot run is not a block. */
 export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync }) {
   const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
@@ -483,16 +491,32 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
   if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
   try {
     const problems = [];
-    // js-yaml and friends live in the checkout's node_modules, not in the exported tree.
-    const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [path.join(root, 'node_modules'), process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
-    for (const c of WORKFLOW_CHECKS) {
-      if (!fs.existsSync(path.join(judgeRoot, c.args[0]))) continue;
-      const r = run(c.cmd, c.args, { cwd: judgeRoot, env, encoding: 'utf8', timeout: 90000, maxBuffer: 16 * 1024 * 1024 });
-      if (r.error || r.signal || (r.status !== 0 && r.status !== 1)) continue; // could not run: fail open
-      if (r.status === 1) {
-        const tail = `${r.stdout || ''}\n${r.stderr || ''}`.split('\n').map((l) => l.trim()).filter(Boolean).slice(-6).join(' | ').slice(0, 600);
+    // js-yaml, acorn and friends live in the checkout's node_modules, not in the exported tree.
+    try {
+      const nm = findNodeModules(root);
+      if (nm) fs.symlinkSync(nm, path.join(judgeRoot, 'node_modules'), 'dir');
+    } catch { /* NODE_PATH below still covers plain require() */ }
+    const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [findNodeModules(root), process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
+    // The checks are independent and the guard script alone takes ~45s, so they
+    // run concurrently (one bash, `wait`) to stay inside the hook's 90s budget.
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'land-preflight-wf-'));
+    try {
+      const runnable = WORKFLOW_CHECKS.map((c, i) => ({ ...c, i })).filter((c) => fs.existsSync(path.join(judgeRoot, c.args[0])));
+      const script = runnable
+        .map((c) => `( timeout 55 ${[c.cmd, ...c.args].join(' ')} >"${outDir}/${c.i}.out" 2>&1; echo $? >"${outDir}/${c.i}.rc" ) &`)
+        .join('\n') + '\nwait\n';
+      run('bash', ['-c', script], { cwd: judgeRoot, env, encoding: 'utf8', timeout: 58000 });
+      for (const c of runnable) {
+        let rc;
+        try { rc = fs.readFileSync(path.join(outDir, `${c.i}.rc`), 'utf8').trim(); } catch { continue; } // never finished: fail open
+        if (rc !== '1') continue; // 0 = pass; anything else (124 timeout, 127, crash) = could not judge: fail open
+        let text = '';
+        try { text = fs.readFileSync(path.join(outDir, `${c.i}.out`), 'utf8'); } catch { /* no output */ }
+        const tail = text.split('\n').map((l) => l.trim()).filter(Boolean).slice(-6).join(' | ').slice(0, 600);
         problems.push(`${c.name} fails on the landing tree (${c.fix}): ${tail}`);
       }
+    } finally {
+      fs.rmSync(outDir, { recursive: true, force: true, maxRetries: 5 });
     }
     return problems.length ? { status: 'fail', problems } : { status: 'clean' };
   } finally {
