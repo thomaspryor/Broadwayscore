@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2851",
   "planId": "f77367e7-fcb9-42a5-afb5-86a1e18951a7",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T06:00:00.000Z",
   "submitter": {
     "name": null,
@@ -35,5 +35,23 @@
         "description": "Restore the britishtheatre.com Sylvia review body"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T07:06:43.485Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script restore-released-quarantined-body.js failed: Command failed: node scripts/restore-released-quarantined-body.js --file=john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json --apply"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script restore-released-quarantined-body.js failed: Command failed: node scripts/restore-released-quarantined-body.js --file=data-off-broadway-2026/nytimes--tim-teeman.json --apply"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    }
+  ]
 }
