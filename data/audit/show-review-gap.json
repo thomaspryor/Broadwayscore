@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-13T06:41:07.802Z",
+  "generatedAt": "2026-10-13T06:51:16.690Z",
   "windowDays": 21,
-  "targets": 2,
-  "auditedThisRun": 2,
-  "carriedForward": 726,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 727,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 405,
-    "missingCurrentRun": 858,
+    "missingCurrentRun": 855,
     "totalCitedNoUrl": 8,
-    "totalFlaggedMisses": 929,
-    "totalRecoverable": 4,
-    "totalRecovered": 13,
+    "totalFlaggedMisses": 931,
+    "totalRecoverable": 5,
+    "totalRecovered": 14,
     "humanExcluded": 0,
-    "automatedExcluded": 73,
-    "automatedExcludedListed": 73,
-    "priorProductionCitations": 4996
+    "automatedExcluded": 78,
+    "automatedExcludedListed": 78,
+    "priorProductionCitations": 4998
   },
   "results": [
     {
@@ -97373,14 +97373,16 @@
         "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
         "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
         "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
+        "https://parterre.com/broadcast/109261/la-boheme/",
         "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
         "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/",
-        "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
         "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-        "https://www.britishtheatreguide.info/reviews/la-boheme-the-metropolita-12445",
+        "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+        "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+        "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
         "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
       ],
-      "dirFiles": 19,
+      "dirFiles": 20,
       "dirClean": 3,
       "inReviewsJson": 3,
       "missing": [
@@ -97392,33 +97394,31 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
-          "host": "buzzmag.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "serpCensus": true
-        },
-        {
-          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-          "host": "operamylove.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
           "host": "newcriterion.com",
           "knownOutletId": "the-new-criterion",
           "serpCensus": true
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-the-metropolita-12445",
+          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+          "host": "operamylove.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2014-12-28",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
           "host": "britishtheatreguide.info",
           "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2010-02-24",
           "serpCensus": true
         },
         {
@@ -97455,8 +97455,13 @@
               "urlInDir": "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "show-score-url-year"
+          "priorRunSource": "show-score-url-year",
+          "reverify": false
         },
         {
           "url": "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/",
@@ -97474,8 +97479,13 @@
               "urlInDir": "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "show-score-url-year"
+          "priorRunSource": "show-score-url-year",
+          "reverify": false
         },
         {
           "url": "https://asiw.co.uk/reviews/la-boheme-puccini-welsh-national-opera-wales-millennium-centre",
@@ -97493,7 +97503,12 @@
               "urlInDir": "https://asiw.co.uk/reviews/la-boheme-puccini-welsh-national-opera-wales-millennium-centre"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
@@ -97511,7 +97526,58 @@
               "urlInDir": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
+          "host": "buzzmag.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "buzzmag--james-ellis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://parterre.com/broadcast/109261/la-boheme/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "recoverable": true,
+          "recoverableFile": "parterre-box--unknown.json",
+          "recoverableOutletId": "parterre-box",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "parterre-box--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://parterre.com/broadcast/104107/la-boheme/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/",
@@ -97529,7 +97595,12 @@
               "urlInDir": "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -97556,7 +97627,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -97576,7 +97647,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -97586,7 +97657,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -97596,50 +97667,59 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 33,
         "byReason": {
+          "ticketing-listing": 2,
           "non-review-host": 26,
           "aggregator-internal-nav": 1,
-          "census-junk-host": 3,
           "show-listing-page": 1,
-          "ticketing-listing": 3,
-          "ticketing-reseller": 2
+          "census-junk-host": 1,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
-      "unextractable": [],
+      "automatedExcludedListed": 5,
+      "unextractable": [
+        {
+          "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true,
+          "zeroCharAttempts": 3
+        }
+      ],
       "weIngestBlocked": [
         {
           "url": "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
           "host": "nytimes.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+          "host": "operamylove.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
+          "host": "classicalsource.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
-          "host": "buzzmag.co.uk",
-          "outletId": "buzzmag",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
           "host": "thetimes.com",
@@ -97652,19 +97732,6 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-          "host": "operamylove.com",
-          "outletId": "operamylove",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"operamylove\" (not in registry) — onboard to outlet-registry.json after revie"
         },
         {
           "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
@@ -97680,7 +97747,7 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-the-metropolita-12445",
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
           "host": "britishtheatreguide.info",
           "outletId": "british-theatre",
           "provisional": false,
@@ -97691,39 +97758,38 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "[review-write-guard] date-implausible: la-boheme-off-broadway-2026/british-theatre--philip-fisher.js"
-        }
-      ],
-      "ingestSkippedByCap": [
+        },
         {
           "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
           "host": "wsj.com",
-          "outletId": "wsj"
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Cross-market reroute: la-boheme-off-broadway-2026 → la-boheme-off-broadway-2025 (sibling opening"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://parterre.com/broadcast/109261/la-boheme/",
+          "host": "parterre.com",
+          "file": "parterre-box--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "buzzmag.co.uk",
-            "outlet": "buzzmag.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/"
-          },
-          {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90"
-          },
-          {
-            "outletId": "operamylove.com",
-            "outlet": "operamylove.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/"
-          },
           {
             "outletId": "the-new-criterion",
             "outlet": "the-new-criterion",
@@ -97736,7 +97802,7 @@
             "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-the-metropolita-12445"
+            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976"
           },
           {
             "outletId": "asiw.co.uk",
@@ -97751,6 +97817,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
+          },
+          {
+            "outletId": "buzzmag.co.uk",
+            "outlet": "buzzmag.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/"
+          },
+          {
+            "outletId": "parterre-box",
+            "outlet": "parterre-box",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://parterre.com/broadcast/109261/la-boheme/"
           },
           {
             "outletId": "operascene.co.uk",
@@ -97777,27 +97857,6 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
-            "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
-            "outletId": "buzzmag.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/classical-opera/article/la-boheme-review-death-stalks-puccinis-bohemians-hfkrqjm90",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
-          },
-          {
-            "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-            "outletId": "operamylove.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T00:42:40.641Z"
-          },
-          {
             "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
             "outletId": "the-new-criterion",
             "state": "GAP",
@@ -97805,11 +97864,11 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-the-metropolita-12445",
+            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
             "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
+            "firstSeenAt": "2026-10-13T06:51:16.690Z"
           },
           {
             "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
@@ -97833,6 +97892,20 @@
             "firstSeenAt": "2026-10-12T06:01:12.911Z"
           },
           {
+            "url": "https://www.buzzmag.co.uk/la-boheme-2026-stage-review-welsh-national-opera-wales-millennium-centre-cardiff/",
+            "outletId": "buzzmag.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T06:01:12.911Z"
+          },
+          {
+            "url": "https://parterre.com/broadcast/109261/la-boheme/",
+            "outletId": "parterre-box",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-13T06:51:16.690Z"
+          },
+          {
             "url": "https://operascene.co.uk/reviews/a-new-and-different-la-boheme-welsh-national-opera/",
             "outletId": "operascene.co.uk",
             "state": "GAP",
@@ -97842,9 +97915,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 10
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-13T06:51:16.690Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
