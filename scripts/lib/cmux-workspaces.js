@@ -491,8 +491,18 @@ function closeWorkspace(ref) {
 // the ref and calling this function is routine drift, not evidence of a
 // wrong tab, and treating it as a mismatch would make this guard misfire on
 // the common case instead of the rare one it exists to catch.
+// BRO-3013: the single-line invariant above is enforced, not just documented.
+// cmux submits on a real newline/CR and on the literal two-character "\\n".
+function assertSingleLine(text) {
+  const t = String(text);
+  if (/[\r\n]/.test(t) || t.includes('\\n')) {
+    throw new Error('sendToWorkspace: refusing to send — text is not a single line (contains a newline, CR or literal "\\n"); cmux would submit it half-typed. Flatten it first (see dispatch-card-drift.formatAmendMessage).');
+  }
+}
+
 function sendToWorkspace(ref, text, opts = {}) {
   assertValidWorkspaceRef(ref);
+  assertSingleLine(text);
   // runFn/listWorkspacesFn are test-only seams (same idiom as listWorkspaces's
   // own runFn above) — real callers get the module's real run()/listWorkspaces().
   const { expectedTitle, listWorkspacesFn = listWorkspaces, runFn = run } = opts;

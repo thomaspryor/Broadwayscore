@@ -1003,3 +1003,17 @@ test('claudeAliveIn routes through anyAgentAliveInTsv (BRO-3044: not hasLiveClau
   assert.match(src, /anyAgentAliveInTsv\(/);
   assert.doesNotMatch(src, /return hasLiveClaude\(/);
 });
+
+// BRO-3013: the single-line invariant is enforced, not just a comment.
+test('sendToWorkspace: refuses multi-line text (LF, CR, literal \\n) before touching cmux', () => {
+  const cw = require('./cmux-workspaces.js');
+  for (const bad of ['a\nb', 'a\r\nb', 'a\rb', 'a\\nb']) {
+    const calls = [];
+    assert.throws(
+      () => cw.sendToWorkspace('workspace:15', bad, { runFn: (a) => { calls.push(a); return ''; } }),
+      /not a single line/,
+      JSON.stringify(bad),
+    );
+    assert.deepEqual(calls, []);
+  }
+});
