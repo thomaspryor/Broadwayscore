@@ -50,7 +50,7 @@ const OTHER_RUNNER_MANIFESTS = [TSX_MANIFEST_REL, E2E_MANIFEST_REL];
 // Floor for the real repo's node batch (~1,360 files when BRO-2483 landed).
 // test.yml and land-gauntlet.sh enforce it via the CLI's --min; fixtures, which
 // legitimately collect a handful, simply omit the flag.
-const MIN_NODE_BATCH = 1000;
+const MIN_NODE_BATCH = 1300; // ~1390 collected on 2026-10-13; 1000 let a whole dropped directory (262 files) through (BRO-2483 ship-check)
 
 // Scanned non-recursively. scripts/lib is special-cased below.
 const NODE_TEST_DIRS = ['tests/unit', 'tests/smoke', 'scripts', 'scripts/tests', 'scripts/newsletter', 'scripts/llm-scoring'];

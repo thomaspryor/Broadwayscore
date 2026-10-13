@@ -241,7 +241,10 @@ function exemptionFor(map, f) {
 // (star-rating-extractors.test.js), tests/smoke/ and tests/live/: a test there
 // was invisible to every orphan check (stage-latency-wiring.test.mjs sat in
 // tests/smoke/ referenced by nothing).
-const SCANNED_DIRS = ['tests', 'tests/unit', 'tests/smoke', 'tests/live', 'scripts', 'scripts/tests'];
+// scripts/newsletter and scripts/llm-scoring joined with the BRO-2483
+// collector, which runs them: without a scan, dropping either from its
+// NODE_TEST_DIRS would silently stop 18 tests (BRO-2483 ship-check).
+const SCANNED_DIRS = ['tests', 'tests/unit', 'tests/smoke', 'tests/live', 'scripts', 'scripts/tests', 'scripts/newsletter', 'scripts/llm-scoring'];
 
 // Returns { name, rel } for each test file: name is the bare filename (used for
 // the exemption-map lookups), rel is the repo-relative path (what coverage is

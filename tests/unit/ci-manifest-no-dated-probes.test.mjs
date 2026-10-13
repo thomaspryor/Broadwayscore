@@ -32,7 +32,12 @@ function datedProbesIn(repoRoot) {
   const found = [];
   for (const rel of MANIFEST_FILES) {
     let entries;
-    try { entries = manifestEntriesFor(repoRoot, rel); } catch { continue; }
+    try { entries = manifestEntriesFor(repoRoot, rel); } catch (e) {
+      // A fixture tree may lack a manifest; anything else (a broken collector)
+      // must fail rather than let this check pass with nothing scanned.
+      if (e && e.code === 'ENOENT') continue;
+      throw e;
+    }
     for (const entry of entries) {
       if (entry === SELF) continue;
       const file = path.join(repoRoot, entry);
