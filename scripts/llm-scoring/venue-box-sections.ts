@@ -50,6 +50,7 @@ export function findPriceBoxes(text: string): Box[] {
   return out;
 }
 
+// venue-write-guard-ok: reads a show's venue to match it against a review's production box; never writes a venue.
 function venueWords(venue: string | null | undefined): string[] {
   return String(venue || '').toLowerCase()
     .replace(/\b(the|theat(?:re|er))\b/g, ' ')
