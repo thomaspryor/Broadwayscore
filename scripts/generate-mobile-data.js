@@ -20,6 +20,7 @@ const { computeCriticScore } = require('./lib/compute-critic-score');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
+const { isUpcomingTag } = require('./lib/opening-night-completeness');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -216,7 +217,8 @@ const mobileShows = visibleShows.map(show => {
   if (audienceGrade) entry.ag = audienceGrade;
 
   // Metadata (omit if empty/null to save bytes)
-  const tags = [...(show.tags || [])];
+  // 'upcoming' is status (already in `st`), never a genre tag (BRO-3208)
+  const tags = (show.tags || []).filter(t => !isUpcomingTag(t));
   if (nytPickShowIds.has(show.id)) tags.push('nyt-pick');
   if (tags.length > 0) entry.tg = tags;
   if (show.synopsis) entry.syn = show.synopsis;

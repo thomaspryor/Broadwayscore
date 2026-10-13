@@ -1307,6 +1307,10 @@ on:
       # scripts/lib/** glob above. Test lives in tests/unit/ (node --test
       # batch); path-listed so a solo edit to this top-level driver triggers CI.
       - 'scripts/fix-unflagged-same-url-clusters.js'
+      # Stale 'upcoming' tag fixer (BRO-3208, BRO-5261). Test lives in
+      # tests/unit/fix-stale-upcoming-tags.test.mjs; path-listed so a solo edit
+      # to this top-level driver triggers CI.
+      - 'scripts/fix-stale-upcoming-tags.js'
       # Byline-attestation tiebreak (BRO-3247): decides which of two same-URL
       # bylines is real by checking which one the article actually prints.
       # Test lives in tests/unit/ (node --test batch via unit-test-manifest.txt);

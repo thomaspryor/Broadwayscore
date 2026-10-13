@@ -31,8 +31,10 @@ function run(show, context) {
       // the alert backlog itself became the cost: 14 rows were 16% of the
       // daily digest queue, ~$84/day in auto-dispatched sessions re-doing what
       // one cron step now does for free. update-show-status.yml now runs the
-      // bulk `fix-stale-upcoming-tags.js --apply` daily, immediately after the
-      // previews->open transition that causes this — kind stays 'alert' here
+      // bulk `fix-stale-upcoming-tags.js --apply` daily (all open, previews
+      // and closed rows, BRO-3208), right after the status transitions that
+      // cause this, and validate-data.js strips the tag on its own
+      // previews/upcoming->open flips (BRO-5261). kind stays 'alert' here
       // (not 'workflow') because that cron already covers it; this check's
       // remaining job is a staleness detector — a persistent alert past 24h
       // now means the automated fixer itself broke, not that it never ran.

@@ -24,7 +24,7 @@ const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross
 const { findSharedSources } = require('./lib/shared-image-source');
 const { loadImageSources } = require('./lib/image-sources-store');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
-const { hasStoredStaleUpcomingTag } = require('./lib/opening-night-completeness');
+const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./lib/opening-night-completeness');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
 const { checkIdYearDrift } = require('./lib/id-year-drift');
 
@@ -726,6 +726,7 @@ function validateDates(shows) {
   const today = new Date().toISOString().split('T')[0];
   let issues = 0;
   let staleStatusFixes = 0;
+  const flippedIds = new Set();
 
   // Same-title groups for the inherited-date check (distinct productions of one title).
   const sameTitleGroups = new Map();
@@ -781,6 +782,10 @@ function validateDates(shows) {
 
     if (show.status === 'previews' && show.openingDate && show.openingDate < today) {
       show.status = 'open';
+      // The flip moves it past 'upcoming'; drop the tag now so this same run
+      // does not warn about a stale tag it just created (BRO-3208).
+      stripUpcomingTag(show);
+      flippedIds.add(show.id);
       staleStatusFixes++;
       info(`Auto-fixed "${show.title}": previews → open (openingDate ${show.openingDate} has passed)`);
     }
@@ -794,6 +799,8 @@ function validateDates(shows) {
     // past, since 'upcoming' is only legitimate before opening.
     if (show.status === 'upcoming' && show.openingDate && show.openingDate < today) {
       show.status = 'open';
+      stripUpcomingTag(show);
+      flippedIds.add(show.id);
       staleStatusFixes++;
       info(`Auto-fixed "${show.title}": upcoming → open (openingDate ${show.openingDate} has passed)`);
     }
@@ -935,7 +942,9 @@ function validateDates(shows) {
     const showsData = loadShows();
     for (const show of shows) {
       const match = showsData.shows.find(s => s.id === show.id);
-      if (match) match.status = show.status;
+      if (!match) continue;
+      match.status = show.status;
+      if (flippedIds.has(show.id)) stripUpcomingTag(match);
     }
     saveShows(showsData, { reason: 'validateDates (stale previews/upcoming → open)' });
     ok(`${autoFixVerb()} ${staleStatusFixes} stale previews → open`);

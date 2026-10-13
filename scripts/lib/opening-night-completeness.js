@@ -70,7 +70,29 @@ const PAST_UPCOMING_STATUSES = Object.freeze(['open', 'previews', 'closed']);
 function hasStoredStaleUpcomingTag(show) {
   if (!show || !Array.isArray(show.tags)) return false;
   if (!PAST_UPCOMING_STATUSES.includes(show.status)) return false;
-  return show.tags.some(t => typeof t === 'string' && t.toLowerCase() === 'upcoming');
+  return show.tags.some(isUpcomingTag);
+}
+
+/**
+ * The one tag matcher for 'upcoming' (any case). Shared by the fixer,
+ * validate-data's status flips and generate-mobile-data so they never drift.
+ * @param {unknown} tag
+ * @returns {boolean}
+ */
+function isUpcomingTag(tag) {
+  return typeof tag === 'string' && tag.toLowerCase() === 'upcoming';
+}
+
+/**
+ * Removes every 'upcoming' tag (any case) from show.tags in place. Call it on
+ * any write that moves a show into PAST_UPCOMING_STATUSES.
+ * @param {Object} show
+ * @returns {boolean} true if a tag was removed
+ */
+function stripUpcomingTag(show) {
+  if (!show || !Array.isArray(show.tags) || !show.tags.some(isUpcomingTag)) return false;
+  show.tags = show.tags.filter(t => !isUpcomingTag(t));
+  return true;
 }
 
 /**
@@ -128,6 +150,8 @@ module.exports = {
   hasStaleUpcomingTag,
   PAST_UPCOMING_STATUSES,
   hasStoredStaleUpcomingTag,
+  isUpcomingTag,
+  stripUpcomingTag,
   hasSameMarketTitleMatch,
   countRevivalMentions,
 };

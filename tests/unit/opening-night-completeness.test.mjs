@@ -8,6 +8,8 @@ const {
   isPlaceholderSynopsis,
   hasStaleUpcomingTag,
   hasStoredStaleUpcomingTag,
+  isUpcomingTag,
+  stripUpcomingTag,
   hasSameMarketTitleMatch,
   countRevivalMentions,
   MIN_SYNOPSIS_LENGTH,
@@ -120,5 +122,35 @@ describe('hasStoredStaleUpcomingTag (BRO-3208)', () => {
     assert.equal(hasStoredStaleUpcomingTag({ status: 'announced', tags: ['upcoming'] }), false);
     assert.equal(hasStoredStaleUpcomingTag({ status: 'closed', tags: ['new'] }), false);
     assert.equal(hasStoredStaleUpcomingTag({ status: 'closed' }), false);
+  });
+});
+
+describe('isUpcomingTag / stripUpcomingTag (BRO-5261)', () => {
+  it('matches any case, only strings', () => {
+    assert.equal(isUpcomingTag('upcoming'), true);
+    assert.equal(isUpcomingTag('Upcoming'), true);
+    assert.equal(isUpcomingTag('UPCOMING'), true);
+    assert.equal(isUpcomingTag('upcoming-soon'), false);
+    assert.equal(isUpcomingTag(null), false);
+    assert.equal(isUpcomingTag(1), false);
+  });
+  it('strips every case variant in place and reports it', () => {
+    const show = { tags: ['Upcoming', 'musical', 'upcoming'] };
+    assert.equal(stripUpcomingTag(show), true);
+    assert.deepEqual(show.tags, ['musical']);
+  });
+  it('is a no-op (false) with no tag or no tags array', () => {
+    const show = { tags: ['musical'] };
+    const before = show.tags;
+    assert.equal(stripUpcomingTag(show), false);
+    assert.equal(show.tags, before);
+    assert.equal(stripUpcomingTag({}), false);
+    assert.equal(stripUpcomingTag(null), false);
+  });
+  it('after stripping, hasStoredStaleUpcomingTag is false', () => {
+    const show = { status: 'open', tags: ['UPCOMING'] };
+    assert.equal(hasStoredStaleUpcomingTag(show), true);
+    stripUpcomingTag(show);
+    assert.equal(hasStoredStaleUpcomingTag(show), false);
   });
 });
