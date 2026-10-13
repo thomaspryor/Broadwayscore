@@ -56,6 +56,7 @@ export function BlendedTrioDisplay({
 }: BlendedTrioDisplayProps) {
   const showTier =
     blendedScore != null &&
+    // display-gate-ok: blended critic+audience tier, its own fixed floor
     reviewCount >= 5 &&
     status !== 'previews' &&
     status !== 'upcoming';

@@ -21,6 +21,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { showFormatTitle } from '@/lib/show-format';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 
 export function generateStaticParams() {
   return getAllComparisonSlugs().map((shows) => ({ shows }));
@@ -371,7 +372,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                     </h2>
                   </Link>
                   <div className="flex flex-col items-center mb-3">
-                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} />
+                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={CURATED_HISTORICAL_SHOWS.has(show.id)} />
                     {(() => {
                       const tier = score != null ? getScoreTier(Math.round(score), show.category) : null;
                       return tier ? (

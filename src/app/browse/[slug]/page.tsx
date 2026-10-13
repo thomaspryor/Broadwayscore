@@ -165,6 +165,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
   const faqSchema = generateBrowseFAQSchema(
     config.title,
     shows.map(show => ({
+      id: show.id,
       title: show.title,
       slug: show.slug,
       venue: show.venue,

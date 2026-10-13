@@ -10,6 +10,7 @@ import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 // Serialized show type — pre-computed by server component
 export interface NVPShow {
@@ -361,7 +362,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                     ) : null
                   ) : (
                     <>
-                      {tier && show.status !== 'previews' && show.status !== 'upcoming' && (show.criticScore?.reviewCount ?? 0) >= 5 && (
+                      {tier && show.status !== 'previews' && show.status !== 'upcoming' && displaysCriticScore(show) && (
                         <span
                           className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
                           style={{ color: tier.color }}

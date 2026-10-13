@@ -23,6 +23,7 @@ import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY, PANEL_PARAM_KEYS
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import ScrollRow from '@/components/ScrollRow';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export interface FeaturedRowData {
   title: string;
@@ -508,7 +509,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       } else {
         // Show all open shows + closed-today shows (TBD badge for <5 reviews) + scored closed shows
         if (isEffectivelyOpen(show)) return true;
-        return show.criticScore && show.criticScore.reviewCount !== undefined && show.criticScore.reviewCount >= 5;
+        return displaysCriticScore(show);
       }
     });
 

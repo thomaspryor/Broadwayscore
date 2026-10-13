@@ -5,6 +5,8 @@
 import { ComputedShow } from '@/lib/engine';
 import { isAnnouncedCurrent } from '@/config/browse-pages';
 import { getVisibleTicketLinks } from '@/lib/ticket-utils';
+// "Best …" guides rank by CriticScore: include only shows that display one (BRO-4312).
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export interface GuidePageConfig {
   slug: string;
@@ -55,7 +57,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaTitleTemplate: 'Best Broadway Shows {monthYear} | Broadway Scorecard',
     metaDescriptionTemplate: 'Discover the {count} best Broadway shows playing right now in {monthYear}. Expert CriticScore ratings, reviews, and ticket info for the top shows on Broadway.',
     introFallback: 'Broadway is currently home to {count} productions spanning musicals, plays, revivals, and world premieres. Our rankings combine scores from top critics including The New York Times, Vulture, and Variety to identify the very best shows playing right now.',
-    filter: (show) => show.status === 'open' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
+    filter: (show) => show.status === 'open' && (show.criticScore?.score ?? 0) > 0 && displaysCriticScore(show),
     sort: 'score',
     relatedGuides: ['best-broadway-musicals', 'best-broadway-plays', 'best-new-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['tony-winners-on-broadway', 'broadway-shows-for-tourists'],
@@ -69,7 +71,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaTitleTemplate: 'Best Broadway Musicals {monthYear} | Top-Rated Shows',
     metaDescriptionTemplate: 'The {count} highest-rated Broadway musicals playing now in {monthYear}. See which musicals critics love most, with scores and ticket info.',
     introFallback: 'Broadway musicals represent the pinnacle of theatrical entertainment. These {count} productions are the highest-rated musicals currently playing, ranked by aggregated critic reviews from major outlets.',
-    filter: (show) => show.status === 'open' && show.type === 'musical' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
+    filter: (show) => show.status === 'open' && show.type === 'musical' && (show.criticScore?.score ?? 0) > 0 && displaysCriticScore(show),
     sort: 'score',
     relatedGuides: ['best-broadway-shows', 'best-broadway-plays', 'cheap-broadway-tickets'],
     relatedBrowse: ['jukebox-musicals-on-broadway', 'best-broadway-revivals'],
@@ -83,7 +85,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaTitleTemplate: 'Best Broadway Plays {monthYear} | Top Dramatic Theater',
     metaDescriptionTemplate: 'The {count} best Broadway plays to see in {monthYear}. Top-rated dramas and comedies ranked by professional critic reviews.',
     introFallback: 'Broadway plays offer powerful dramatic experiences. These {count} productions are the highest-rated plays currently running, from gripping dramas to sharp comedies.',
-    filter: (show) => show.status === 'open' && show.type === 'play' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
+    filter: (show) => show.status === 'open' && show.type === 'play' && (show.criticScore?.score ?? 0) > 0 && displaysCriticScore(show),
     sort: 'score',
     relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-closing-soon', 'cheap-broadway-tickets'],
     relatedBrowse: ['best-broadway-dramas', 'best-broadway-comedies'],
@@ -99,7 +101,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: 'Looking for the perfect Broadway show for your family? These {count} productions are age-appropriate, engaging, and perfect for introducing children to live theater.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      if ((show.criticScore?.score ?? 0) <= 0 || (show.criticScore?.reviewCount ?? 0) < 3) return false;
+      if ((show.criticScore?.score ?? 0) <= 0 || !displaysCriticScore(show)) return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       const ageRec = show.ageRecommendation?.toLowerCase() || '';
       return tags.includes('family') ||
@@ -370,7 +372,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: 'Finding a Broadway show that appeals to teenagers can be tricky — too young and they\'ll roll their eyes, too mature and it\'s awkward. These {count} shows hit the sweet spot for teen audiences.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      if ((show.criticScore?.score ?? 0) <= 0 || (show.criticScore?.reviewCount ?? 0) < 3) return false;
+      if ((show.criticScore?.score ?? 0) <= 0 || !displaysCriticScore(show)) return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
       const ageRec = show.ageRecommendation?.toLowerCase() || '';
       // Teen-appropriate: either tagged for teens, or high-scoring musicals that aren't strictly for young kids
@@ -535,7 +537,7 @@ export function getGuideConfig(slug: string): GuidePageConfig | null {
       const openDate = new Date(show.openingDate);
       if (openDate.getFullYear() !== year) return false;
       if ((show.criticScore?.score ?? 0) <= 0) return false;
-      if ((show.criticScore?.reviewCount ?? 0) < 5) return false;
+      if (!displaysCriticScore(show)) return false;
       if (baseSlug === 'best-broadway-musicals' && show.type !== 'musical') return false;
       if (baseSlug === 'best-broadway-plays' && show.type !== 'play') return false;
       return true;

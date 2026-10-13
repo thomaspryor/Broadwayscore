@@ -24,6 +24,7 @@ import criticPicksRawData from '../../data/tony-critic-picks.json';
 import tonyLosoStatsData from '../../data/tony-loso-stats.json';
 import gdComparisonData from '../../data/analysis/gd-vs-broadwayscore.json';
 import frozenAudienceData from '../../data/tony-frozen-audience-grades.json';
+import { displaysCriticScore } from './critic-score-display';
 
 type CriticPicksFile = { picks: Record<string, Record<string, string>>; shouldPicks?: Record<string, Record<string, string>> };
 
@@ -1420,7 +1421,7 @@ export function groupIntoCategories(
     }
 
     const scored = matching
-      .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
+      .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && displaysCriticScore(s))
       .map(s => serializeShow(s, cat.key, { tier: effectiveTier, seasonLabel: options?.season?.label }))
       .sort((a, b) => (b.blendedScore ?? -Infinity) - (a.blendedScore ?? -Infinity));
 
@@ -1429,7 +1430,7 @@ export function groupIntoCategories(
     const upcoming = nomineeMap
       ? []
       : matching
-          .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
+          .filter(s => s.status === 'previews' || s.status === 'upcoming' || !displaysCriticScore(s))
           .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
           .map(s => serializeShow(s, cat.key, { tier: effectiveTier, seasonLabel: options?.season?.label }));
 

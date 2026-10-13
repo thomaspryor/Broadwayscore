@@ -4,6 +4,7 @@ import PartnersPageClient from './PartnersPageClient';
 import { getAllShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { isCategoryEnabled } from '@/lib/markets';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export const metadata: Metadata = {
   title: 'Partner Embeds — Broadway Scorecard',
@@ -47,7 +48,7 @@ export default function PartnersPage() {
       category: s.category,
       score: s.criticScore?.score != null ? Math.round(s.criticScore.score) : null,
       reviewCount: s.criticScore?.reviewCount ?? 0,
-      hasEnoughReviews: (s.criticScore?.reviewCount ?? 0) >= 5,
+      hasEnoughReviews: displaysCriticScore(s),
     }))
     .sort((a, b) => a.title.localeCompare(b.title));
 

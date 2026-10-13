@@ -46,6 +46,7 @@ import theaterMetaData from '../../data/theater-metadata.json';
 // Curated multi-stage venue complexes (e.g. Atlantic Theater Company -> Atlantic Stage 2)
 import venueComplexesData from '../../data/venue-complexes.json';
 import venueComplexesWestEndData from '../../data/venue-complexes-west-end.json';
+import { displaysCriticScore } from './critic-score-display';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -1456,7 +1457,7 @@ export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, status
   const showCity = getCity(show);
   const scored = allShows
     .filter(s => {
-      if (isSameShow(s, show) || (s.criticScore?.reviewCount ?? 0) < 5 || getCity(s) !== showCity) return false;
+      if (isSameShow(s, show) || !displaysCriticScore(s) || getCity(s) !== showCity) return false;
       const isActive = s.status === 'open' || s.status === 'previews' || s.status === 'upcoming';
       if (statusFilter === 'open' && !isActive) return false;
       if (statusFilter === 'closed') {

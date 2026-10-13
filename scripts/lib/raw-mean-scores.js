@@ -50,7 +50,7 @@ const ALLOWLIST = {
   'scripts/fix-scores.js': 'manual per-review calibration fixer; average is a sanity print, not a published score',
   'scripts/reconcile-scores.js': 'manual per-review reconciliation diagnostic; average is a sanity print',
   'scripts/tune-stereophonic.js': 'historical one-off tuning script (Stereophonic calibration); not run by any workflow',
-  'scripts/newsletter/generate.mjs': 'show scores come from the slim cs (loadCompositeScore); the raw mean is the documented no-slim-file fallback and tierWeightedAverage() only compares review subsets (biggest mover, outlier peer average)',
+  'scripts/newsletter/generate.mjs': 'show scores come from the slim cs (loadCompositeScore); the raw mean is the documented no-slim-file fallback when no slim file exists (review-subset averages use the canonical scorer since BRO-4313)',
   'scripts/ob-expansion-final-report.js': 'one-off 2026 Off-Broadway expansion report, not run by any workflow; its composite is a report column',
 };
 

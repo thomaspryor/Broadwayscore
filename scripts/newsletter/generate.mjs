@@ -496,9 +496,7 @@ function loadOutletReg() {
 }
 
 // Outlet → tier map, also from data/outlet-registry.json. Used by the
-// tier-weighted average helper below. Canonical weights per
-// src/config/scoring.ts: T1=1.0, T2=0.75, T3=0.40, T4=0.20.
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.40, 4: 0.20 };
+// fresh-run gate below (subset scores use the canonical scorer instead).
 const DEFAULT_TIER = 3;
 let _outletTierMap = null;
 function loadOutletTierMap() {
@@ -551,23 +549,22 @@ function hasFreshRunCoverage(show) {
   return hasFreshRunReview(show, reviewsForShow(show.id), tierOf);
 }
 
-// Tier-weighted mean — matches src/lib/scoring.ts calculateCriticScore().
-// CLAUDE.md rule: never use arithmetic means for score aggregation. Every
-// call site that compares review subsets (biggest mover before/after,
-// outlier peer-avg) routes through this.
+// Critic Score of a review subset (biggest mover before/after, outlier peer
+// average), from the canonical scorer (scripts/lib/compute-critic-score.js):
+// critic dedup, outlet share, designation floors, region tiers. A hand-rolled
+// tier mean here was compared against the canonical composite, so part of a
+// "moved N points" delta was the method gap, not movement (BRO-4313).
+const { computeCriticScore: canonicalCriticScore } = cjsRequire('../lib/compute-critic-score');
+let _outletRegistryRaw = null;
 function tierWeightedAverage(reviewList) {
   if (!reviewList || reviewList.length === 0) return null;
-  const tierMap = loadOutletTierMap();
-  let weightedSum = 0;
-  let totalWeight = 0;
-  for (const r of reviewList) {
-    if (r.assignedScore == null) continue;
-    const tier = tierMap.get(r.outletId) || tierMap.get((r.outlet || '').toLowerCase()) || DEFAULT_TIER;
-    const w = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
-    weightedSum += r.assignedScore * w;
-    totalWeight += w;
+  if (!_outletRegistryRaw) {
+    try { _outletRegistryRaw = JSON.parse(fs.readFileSync(path.join(repo, 'data/outlet-registry.json'), 'utf8')).outlets || {}; }
+    catch { _outletRegistryRaw = {}; }
   }
-  return totalWeight > 0 ? weightedSum / totalWeight : null;
+  const show = shows.find(s => s.id === reviewList[0].showId) || {};
+  const result = canonicalCriticScore(reviewList, _outletRegistryRaw, show.category, show.type);
+  return result ? result.s : null;
 }
 function criticLink(name, inner) {
   if (!name || name === 'Unknown') return inner;

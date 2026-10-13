@@ -84,3 +84,50 @@ describe('Critic Score: methodology constants == computing constants', () => {
     assert.deepStrictEqual([...shared.TOP_CRITICS].sort(), [...TOP_CRITICS].sort());
   });
 });
+
+// Website code must not re-derive the display gate from the bare market minimum
+// (it drops the +2 T3-only rule and the curated carve-out). ScoreBadge, browse
+// lists and the SEO schema all did (BRO-4312); use displaysCriticScore()
+// (src/lib/critic-score-display.ts) or hasEnoughReviews().
+export function findBareMinimumGates(source: string): number[] {
+  const lines = source.split('\n');
+  const hits: number[] = [];
+  lines.forEach((line, i) => {
+    if (/^\s*(\/\/|\*)/.test(line)) return;
+    if (/getMarketMinReviews\(/.test(line) && /reviewCount/.test(line)) { hits.push(i + 1); return; }
+    // Hard-coded 3/4/5 thresholds on reviewCount, unless the line (or the one
+    // above) carries `display-gate-ok:` naming why it is not the badge gate.
+    if (/reviewCount[^;\n]*(?:>=|<|>|<=)\s*[345]\b/.test(line)
+      && !/display-gate-ok:/.test(line) && !/display-gate-ok:/.test(lines[i - 1] || '')) { hits.push(i + 1); return; }
+    const m = line.match(/\b(?:const|let)\s+([\w$]+)\s*=\s*getMarketMinReviews\(/);
+    if (!m) return;
+    const v = m[1];
+    const use = new RegExp(`reviewCount[^;\\n]*(?:>=|<)\\s*${v}\\b|\\b${v}\\b\\s*(?:<=|>)[^;\\n]*reviewCount`);
+    if (lines.slice(i, i + 8).some((l) => use.test(l))) hits.push(i + 1);
+  });
+  return hits;
+}
+
+describe('Critic Score: no bare-minimum display gates in src/', () => {
+  // tour-listing.ts applies the tour rule (+2 with no T1/T2) on purpose and is
+  // covered by its own parity tests; og/route.tsx's show mode has no callers.
+  const ALLOW = new Set(['src/lib/tour-listing.ts', 'src/app/api/og/route.tsx']);
+  it('flags the shapes that shipped', () => {
+    assert.deepStrictEqual(findBareMinimumGates('if (show.criticScore?.reviewCount >= getMarketMinReviews(cat)) x();'), [1]);
+    assert.deepStrictEqual(findBareMinimumGates('let minReviews = getMarketMinReviews(category);\nif (tier === 0) minReviews += 2;\nif (reviewCount < minReviews) tbd();'), [1]);
+    assert.deepStrictEqual(findBareMinimumGates('const n = getMarketMinReviews(c);\nconst text = `needs ${n} reviews`;'), []);
+    assert.deepStrictEqual(findBareMinimumGates('if ((show.criticScore?.reviewCount ?? 0) < 3) return false;'), [1]);
+    assert.deepStrictEqual(findBareMinimumGates('// display-gate-ok: lists every new show, TBD included\nif ((show.criticScore?.reviewCount ?? 0) < 3) return false;'), []);
+  });
+  it('src/ uses the shared gate', () => {
+    const { readdirSync, statSync } = require('fs') as typeof import('fs');
+    const walk = (d: string): string[] => readdirSync(d).flatMap((f: string) => {
+      const p = `${d}/${f}`;
+      return statSync(p).isDirectory() ? walk(p) : (/\.(ts|tsx)$/.test(f) && !/\.test\./.test(f) ? [p] : []);
+    });
+    const bad = walk('src')
+      .filter((p) => !ALLOW.has(p))
+      .flatMap((p) => findBareMinimumGates(readFileSync(p, 'utf8')).map((l) => `${p}:${l}`));
+    assert.deepStrictEqual(bad, [], 'compare reviewCount through displaysCriticScore()/hasEnoughReviews(), not getMarketMinReviews()');
+  });
+});

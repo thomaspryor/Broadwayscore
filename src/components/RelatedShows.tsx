@@ -7,6 +7,7 @@ import ShowImage from '@/components/ShowImage';
 import { ScoreBadge } from '@/components/show-cards';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import ScrollRow from '@/components/ScrollRow';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 
 export default function RelatedShows({ shows, title = 'You Might Also Like' }: { shows: ShowCardShow[]; title?: string }) {
   if (shows.length === 0) return null;
@@ -47,6 +48,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                   reviewCount={show.criticScore?.reviewCount}
                   category={show.category}
                   tier1And2Count={show.criticScore ? (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0) : undefined}
+                  isCuratedHistorical={CURATED_HISTORICAL_SHOWS.has(show.id)}
                 />
               </div>
             </div>

@@ -10,6 +10,7 @@ import { AUTHOR } from '@/config/author';
 import { formatShowDate } from './date-utils';
 import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
 import { isTourScored, isTourScoreHidden } from './tour-listing';
+import { displaysCriticScore } from './critic-score-display';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -266,11 +267,11 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
 
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
-  const minReviewsForSchema = getMarketMinReviews(show.category);
   // A tour follows the page's own TBD rule (isTourScoreHidden: +2 reviews with
   // no T1/T2, no rating in previews or upcoming, the coverage floor), so an
   // indexed tour never claims a rating its page hides.
-  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema && (!isTour || !isTourScoreHidden(show))) {
+  // Same review-count gate as the page's badge (displaysCriticScore, BRO-4312).
+  if (show.criticScore?.score && displaysCriticScore(show) && (!isTour || !isTourScoreHidden(show))) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: toFiveStarScale(show.criticScore.score),
@@ -560,6 +561,7 @@ export function generateItemListSchema(items: {
 
       // Aggregate rating (with required reviewCount, minimum 3)
       // Uses 1-5 star scale for Google rich snippet compatibility
+      // display-gate-ok: Google ItemList rating floor; list items are already display-gated
       if (item.score && item.reviewCount && item.reviewCount >= 3) {
         event.aggregateRating = {
           '@type': 'AggregateRating',
@@ -641,13 +643,13 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
 
   const faqs: { question: string; answer: string }[] = [];
 
-  const minReviewsForFAQ = getMarketMinReviews(show.category);
+  const scoreDisplayed = displaysCriticScore(show);
 
   // Q: What do critics say? — the exact review-intent query ("[show] reviews").
   // Surfaces our unique consensus prose into the FAQ/People-Also-Ask slot, which is
   // where an aggregator can win SERP real estate even when outlet pages outrank the
   // blue link. Falls back to a score-derived summary when no consensus exists yet.
-  if (score && reviewCount >= minReviewsForFAQ) {
+  if (score && scoreDisplayed) {
     const consensusAnswer = consensusText && consensusText.trim().length > 0
       ? `${consensusText.trim()} (CriticScore ${score}/100 from ${reviewCount} reviews.)`
       : `Critics give ${show.title} a CriticScore of ${score}/100 based on ${reviewCount} professional reviews aggregated from leading theater critics.`;
@@ -658,7 +660,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
   }
 
   // Q: Is it worth seeing? (highest-intent query — placed first for AI Overview targeting)
-  if (score && reviewCount >= minReviewsForFAQ) {
+  if (score && scoreDisplayed) {
     const goldMin = getGoldThreshold(show.category);
     const worthSeeingAnswer =
       score >= goldMin
@@ -679,7 +681,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
   }
 
   // Q: What is the score?
-  if (score && reviewCount >= minReviewsForFAQ) {
+  if (score && scoreDisplayed) {
     const goldMin = getGoldThreshold(show.category);
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
@@ -790,7 +792,7 @@ export function generateShowFAQSchema(show: ComputedShow, consensusText?: string
 // FAQPage Schema for browse/category pages
 export function generateBrowseFAQSchema(
   pageTitle: string,
-  shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number; tier1Count?: number; tier2Count?: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
+  shows: { id?: string; title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number; tier1Count?: number; tier2Count?: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
 ) {
   const isLondon = shows.length > 0 && isLondonMarket(shows[0].category);
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
@@ -807,12 +809,10 @@ export function generateBrowseFAQSchema(
   const faqs: { question: string; answer: string }[] = [];
 
   // Q: What are the best shows in this category?
-  const firstCategory = shows.length > 0 ? shows[0].category : undefined;
-  const minReviewsForBrowse = getMarketMinReviews(firstCategory);
   // The tours page also lists tours still waiting on a score; a tour counts as
   // scored by the badge rule (extra reviews needed with no T1/T2), not the bare minimum.
   const hasScore = (s: typeof shows[number]) => !!s.criticScore?.score
-    && s.criticScore.reviewCount >= minReviewsForBrowse
+    && displaysCriticScore(s)
     && (s.category !== 'tour' || isTourScored({ category: 'tour', criticScore: s.criticScore } as Parameters<typeof isTourScored>[0]));
   const topShows = shows
     .filter(hasScore)

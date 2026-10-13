@@ -21,6 +21,7 @@ import FeaturedRowServer from '@/components/FeaturedRowServer';
 import FeaturedSpotSlim from '@/components/FeaturedSpotSlim';
 import { getTonyTrackRecord, isTonyPromoActive, isBtcPromoActive } from '@/lib/data-tony-predictions';
 import { formatShowDate } from '@/lib/date-utils';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
 const currentYear = new Date().getFullYear();
@@ -87,7 +88,7 @@ export default function HomePage() {
   const obShows = getOffBroadwayShows().filter(s =>
     (s.status === 'open' || s.status === 'previews') &&
     s.type !== 'opera' && // opera gets its own "At the Met" shelf
-    s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
+    displaysCriticScore(s)
   );
   // Active West End shows only. These feed homepage search alone, and closed
   // ones come from the lazy public/data/west-end-archive.json

@@ -357,8 +357,10 @@ export function assessConfidence(
   // Critic data quality
   if (criticScore) {
     const tier1Count = criticScore.reviews.filter(r => r.tier === 1).length;
+    // display-gate-ok: confidence bonus tiers, not the score-display gate
     if (criticScore.reviewCount >= 10 && tier1Count >= 3) {
       score += 3;
+    // display-gate-ok: confidence bonus tiers, not the score-display gate
     } else if (criticScore.reviewCount >= 5) {
       score += 2;
       reasons.push(`${criticScore.reviewCount} critic reviews (10+ preferred)`);

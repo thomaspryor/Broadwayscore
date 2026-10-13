@@ -390,6 +390,7 @@ const ShowListCard = memo(function ShowListCard({
             showCrown
             category={category}
             tier1And2Count={t1t2}
+            isCuratedHistorical={CURATED_HISTORICAL_SHOWS.has(show.id)}
           />
           {showReviewCount && reviewCount > 0 && (
             <span className="text-[10px] text-gray-400 whitespace-nowrap" data-testid="card-review-count">

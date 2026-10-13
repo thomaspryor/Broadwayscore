@@ -1,5 +1,4 @@
-import { getMarketMinReviews } from '@/lib/market-utils';
-import { getGoldThreshold, isCriticalGold } from '@/config/score-buckets';
+import { getGoldThreshold, isCriticalGold, reviewsRemainingForScore } from '@/config/score-buckets';
 
 // Score tier labels and tooltips
 export const SCORE_TIERS = {
@@ -103,6 +102,8 @@ export interface ScoreBadgeProps {
   showCrown?: boolean;
   category?: string;
   tier1And2Count?: number;
+  /** Show is in data/curated-historical-shows.json (lower Broadway minimum). */
+  isCuratedHistorical?: boolean;
   /** Render a "Not Yet Rated" caption under TBD badges — for pages (guides)
    *  that don't already label the badge the way ShowListCard does. */
   labelTbd?: boolean;
@@ -125,7 +126,7 @@ function TbdBadge({ sizeClass, labelTbd, caption }: { sizeClass: string; labelTb
   );
 }
 
-export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category, tier1And2Count, labelTbd }: ScoreBadgeProps) {
+export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown, category, tier1And2Count, isCuratedHistorical, labelTbd }: ScoreBadgeProps) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg',
     md: 'w-14 h-14 text-2xl lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-xl',
@@ -137,10 +138,11 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     return <TbdBadge sizeClass={sizeClass} labelTbd={labelTbd} caption="Score arrives once critics review this show after opening night" />;
   }
 
-  // Show TBD if fewer than minimum reviews (5 for Broadway, 3 for off-Broadway/London; +2 if all T3)
-  let minReviews = getMarketMinReviews(category);
-  if (tier1And2Count !== undefined && tier1And2Count === 0) minReviews += 2;
-  if (reviewCount !== undefined && reviewCount < minReviews) {
+  // Show TBD below the site-wide display gate (scripts/lib/min-reviews.js via
+  // score-buckets: market minimum, +2 if all T3, curated-historical carve-out).
+  // An inline copy here lacked the curated carve-out, so curated shows' own
+  // pages said "Not enough critic reviews" while lists showed a score (BRO-4312).
+  if (reviewCount !== undefined && reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCuratedHistorical) > 0) {
     return <TbdBadge sizeClass={sizeClass} labelTbd={labelTbd} caption="Not enough critic reviews yet to calculate a score" />;
   }
 
