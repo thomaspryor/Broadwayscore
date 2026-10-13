@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T22:34:49.216Z",
+  "timestamp": "2026-10-13T23:04:14.104Z",
   "stats": {
-    "totalReviews": 56444,
-    "alreadyFlagged": 21037,
+    "totalReviews": 56451,
+    "alreadyFlagged": 21038,
     "dateGuardCatches": 212,
     "directorMismatch": 1874,
     "tvFilmSignals": 1643,
-    "londonSignals": 2238,
+    "londonSignals": 2239,
     "offBroadwaySignals": 510,
     "yearMismatch": 139,
-    "noPublishDate": 5290
+    "noPublishDate": 5291
   },
   "findings": [
     {
@@ -54958,7 +54958,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -54972,7 +54972,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-unattached--mike-stone.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-10-08",
       "url": "https://www.london-unattached.com/blood-of-my-blood-royal-court-theatre/",
       "findings": [
@@ -70451,6 +70451,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "nina-off-west-end-2026",
+      "file": "bestoftheatre--erica-bond.json",
+      "publishDate": "2026-10-08",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/nina-first-look-battersea-arts-centre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
