@@ -20,7 +20,7 @@ const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
-const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, GRACE_HOURS } = require('./lib/t1-ledger');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
@@ -246,9 +246,9 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   // purposes, but unionCensus() dedupes only exact ids — if two census sources
   // ever emit both spellings as separate entries, an ungapped count here would
   // double-count one logical outlet in the denominator (adversarial review finding).
-  const canonicalTierId = (id) => (id.endsWith('-london') ? id.slice(0, -'-london'.length) : id);
+  // canonicalTierId is shared with computeDispatchDecision (BRO-2486).
   const totalTier = new Set(
-    census.entries.filter((e) => isDispatchTierOutlet(outlets, e.outletId)).map((e) => canonicalTierId(e.outletId))
+    census.entries.filter((e) => isDispatchTierOutlet(outlets, e.outletId)).map((e) => canonicalTierId(outlets, e.outletId))
   ).size;
 
   // Clock start: max(openingDate, showCreatedAt) is the S2-T6 refinement; here we

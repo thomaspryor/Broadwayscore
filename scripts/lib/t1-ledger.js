@@ -78,6 +78,23 @@ function isDispatchTierOutlet(outlets, outletId) {
 }
 
 /**
+ * Canonical identity for an outlet id in dispatch/coverage decisions (BRO-2486).
+ * review-census.js's censusVerdict treats 'timeout' and 'timeout-london' as one
+ * logical outlet, so anything that COUNTS outlets (severity, breaker lookups,
+ * the scoreboard denominator) must fold the '-london' spelling onto its base id.
+ * Only folds when the base id is itself registered: 'south-london' or
+ * 'visit-london' have no base outlet and stay as they are.
+ * @param {object} outlets  outlet-registry map
+ * @param {string} outletId
+ * @returns {string}
+ */
+function canonicalTierId(outlets, outletId) {
+  if (typeof outletId !== 'string' || !outletId.endsWith('-london')) return outletId;
+  const base = outletId.slice(0, -'-london'.length);
+  return outlets && outlets[base] ? base : outletId;
+}
+
+/**
  * Classify a single missing (show, outlet) cell. Pure.
  * @param {object} c
  *   { noReviewExpected:boolean, suppressed:boolean, clockAgeHours:number|null,
@@ -161,9 +178,25 @@ function computeDispatchDecision({ censusMissing, outlets, censusExtractorBroken
   if (typeof isTripped !== 'function') {
     throw new TypeError('computeDispatchDecision: isTripped is required (pass () => false when there is no breaker)');
   }
+  // Alias pairs ('timeout' + 'timeout-london') act as ONE outlet (BRO-2486).
+  // censusMissingT12 / circuitOpenIds keep every raw spelling (they feed the
+  // alert text, which derives the T3 list as censusMissing minus T12), but the
+  // breaker check and the actionable list work per canonical group: a breaker
+  // open on ANY spelling suppresses the whole group, and the group counts once
+  // toward the >=3 major threshold, represented by its first-seen spelling.
   const censusMissingT12 = censusMissing.filter((id) => isDispatchTierOutlet(outlets, id));
-  const circuitOpenIds = censusMissingT12.filter((id) => isTripped(id));
-  const censusMissingActionable = censusMissingT12.filter((id) => !circuitOpenIds.includes(id));
+  const groups = new Map();
+  for (const id of censusMissingT12) {
+    const canon = canonicalTierId(outlets, id);
+    if (!groups.has(canon)) groups.set(canon, []);
+    groups.get(canon).push(id);
+  }
+  const circuitOpenIds = [];
+  const censusMissingActionable = [];
+  for (const [canon, ids] of groups) {
+    if (isTripped(canon) || ids.some((id) => isTripped(id))) circuitOpenIds.push(...ids);
+    else censusMissingActionable.push(ids[0]);
+  }
   const dispatchable = censusMissingActionable.length > 0;
   const severity = (censusMissingActionable.length >= 3 || censusExtractorBroken) ? 'major' : 'minor';
   return { censusMissingT12, circuitOpenIds, censusMissingActionable, dispatchable, severity };
@@ -225,6 +258,6 @@ function serializeLedger(ledger) {
 
 module.exports = {
   classifyCell, classifyCellDetailed, isActionableState,
-  mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision,
+  mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId,
   GRACE_HOURS, CELL_DISPOSITION, CELL_REASON,
 };

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision } = require('./t1-ledger.js');
+const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId } = require('./t1-ledger.js');
 
 test('isDispatchTierOutlet: T1/T2 only, unregistered/junk excluded', () => {
   const outlets = {
@@ -228,4 +228,47 @@ test('dispatch storm: a broken census extractor escalates to major even with zer
   });
   assert.equal(dispatchable, false, 'no actionable outlet to fetch -- extractor breakage alone must not storm-dispatch');
   assert.equal(severity, 'major', 'a broken extractor is still alert-worthy at major severity');
+});
+
+// --- BRO-2486: 'timeout' / 'timeout-london' alias pair counts once ---
+const ALIAS_OUTLETS = {
+  nytimes: { tier: 1 },
+  variety: { tier: 1 },
+  timeout: { tier: 1 },
+  'timeout-london': { tier: 1 },
+  'south-london': { tier: 2 }, // no 'south' outlet: must NOT fold
+};
+
+test('canonicalTierId: folds -london only onto a registered base id', () => {
+  assert.equal(canonicalTierId(ALIAS_OUTLETS, 'timeout-london'), 'timeout');
+  assert.equal(canonicalTierId(ALIAS_OUTLETS, 'timeout'), 'timeout');
+  assert.equal(canonicalTierId(ALIAS_OUTLETS, 'south-london'), 'south-london');
+  assert.equal(canonicalTierId(ALIAS_OUTLETS, 'nytimes'), 'nytimes');
+});
+
+test('computeDispatchDecision: timeout + timeout-london missing together count as ONE outlet toward severity', () => {
+  const { censusMissingT12, censusMissingActionable, severity } = computeDispatchDecision({
+    censusMissing: ['timeout', 'timeout-london', 'nytimes'], outlets: ALIAS_OUTLETS, isTripped: () => false,
+  });
+  assert.deepEqual(censusMissingT12, ['timeout', 'timeout-london', 'nytimes'], 'display list keeps both spellings');
+  assert.deepEqual(censusMissingActionable, ['timeout', 'nytimes'], 'actionable list dedupes the pair, first spelling kept');
+  assert.equal(severity, 'minor', 'two logical outlets must not reach the >=3 major threshold');
+});
+
+test('computeDispatchDecision: a breaker open on one spelling suppresses the alias too', () => {
+  for (const trippedId of ['timeout', 'timeout-london']) {
+    const { circuitOpenIds, censusMissingActionable, dispatchable } = computeDispatchDecision({
+      censusMissing: ['timeout-london', 'timeout'], outlets: ALIAS_OUTLETS, isTripped: (id) => id === trippedId,
+    });
+    assert.deepEqual(circuitOpenIds, ['timeout-london', 'timeout'], `breaker on ${trippedId} covers the pair`);
+    assert.deepEqual(censusMissingActionable, [], `no spelling stays actionable when ${trippedId} is open`);
+    assert.equal(dispatchable, false);
+  }
+});
+
+test('computeDispatchDecision: unrelated -london ids are not merged', () => {
+  const { censusMissingT12 } = computeDispatchDecision({
+    censusMissing: ['south-london', 'nytimes', 'variety'], outlets: ALIAS_OUTLETS, isTripped: () => false,
+  });
+  assert.deepEqual(censusMissingT12, ['south-london', 'nytimes', 'variety']);
 });
