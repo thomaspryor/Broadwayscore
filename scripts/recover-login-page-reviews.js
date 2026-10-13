@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { chooseArticleBody } = require('./lib/jsonld-body-choice');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const COOKIES_DIR = path.join(__dirname, '..', 'data', 'cookies');
@@ -97,10 +98,17 @@ function extractFromJsonLd(html) {
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
-  // Try JSON-LD first
+  // Try JSON-LD first. A short body can be a teaser of the page prose
+  // (Variety, BRO-5222): chooseArticleBody prefers the page text only when
+  // it is the same article, clearly longer.
   const jsonLdText = extractFromJsonLd(html);
-  if (jsonLdText && jsonLdText.length > 500) return jsonLdText;
+  if (jsonLdText && jsonLdText.length > 500) {
+    return chooseArticleBody(jsonLdText, extractPageText(html, url)).text;
+  }
+  return extractPageText(html, url);
+}
 
+function extractPageText(html, url) {
   // Strip scripts, styles, nav, header, footer, aside
   let text = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
