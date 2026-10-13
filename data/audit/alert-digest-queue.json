@@ -789,6 +789,36 @@
     "queuedAt": "2026-10-13T08:29:10.642Z"
   },
   {
+    "conditionKey": "land:land/bro-3014-push-lane-audits",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3014-push-lane-audits",
+    "description": "land.yml did not land land/bro-3014-push-lane-audits: the scripts-lib-tests gate went red at 0113c5e70f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366085010",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3014-push-lane-audits"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "0113c5e70fb476b92aaf6082b4cb933561ecc208"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38366085010"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:32:35.286Z"
+  },
+  {
     "conditionKey": "land:land/bro-2800-deadline-overshoot",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-2800-deadline-overshoot",
     "description": "land.yml did not land land/bro-2800-deadline-overshoot: the scripts-lib-tests gate went red at 4bd1409ced. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38366445322",
