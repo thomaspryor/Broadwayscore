@@ -475,7 +475,7 @@ function Inner({
             {userFeaturesEnabled && <ShowPageBookmark showId={show.id} size="compact" />}
             <div className="absolute inset-0 rounded-xl overflow-hidden">
               {userFeaturesEnabled && (
-                <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} starSize="sm" onPick={handlePosterStarsPick} />
+                <HoverRateStars showId={show.id} show={show} showHref={`/show/${show.slug}`} starSize="sm" onPick={handlePosterStarsPick} />
               )}
               <ShowImage
                 sources={[

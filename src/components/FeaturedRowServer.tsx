@@ -25,6 +25,9 @@ export interface ServerShelfShow {
   title: string;
   type: string;
   category?: string;
+  status?: string;
+  previewsStartDate?: string | null;
+  openingDate?: string | null;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
 }
@@ -54,7 +57,7 @@ function ServerMiniShowCard({ show, priority }: { show: ServerShelfShow; priorit
       <div className="relative mb-1.5">
         <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
           <ShowPageBookmark showId={show.id} size="sm" />
-          <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} />
+          <HoverRateStars showId={show.id} show={show} showHref={`/show/${show.slug}`} />
           {imgSrc ? (
             <img
               src={imgSrc}

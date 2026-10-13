@@ -5,9 +5,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useMyRating } from '@/hooks/useMyRating';
 import StarRating from './StarRating';
 import { featureFlags } from '@/config/feature-flags';
+import { couldHaveSeenShow, type RateabilitySource } from '@/lib/show-rateability';
 
 interface HoverRateStarsProps {
   showId: string;
+  /** Status + start dates. Required so every card gates on them: no rate
+   *  control for a show nobody could have seen yet (BRO-77). */
+  show: RateabilitySource;
   /** Show page URL — the click deep-links to `?rate=1&stars=N`. */
   showHref: string;
   /** 'xs' (default) for card thumbnails; 'sm' for the large show-page poster. */
@@ -26,16 +30,19 @@ interface HoverRateStarsProps {
  * Reuses the To-Be-Rated deep-link flow (`?rate=1&stars=N`) rather than saving
  * inline: the show page's RatingEditor owns sanitising, auth-gating for anon
  * users, and watchlist-removal side effects. Hidden when the user already
- * rated the show (the ★ chip owns that state) and on mobile (no hover).
+ * rated the show (the ★ chip owns that state), on mobile (no hover), and for
+ * shows nobody could have seen yet: announced, or upcoming before the first
+ * preview (BRO-77, see couldHaveSeenShow).
  *
  * Place inside a `relative` container that carries the card's `group` class.
  */
-export default function HoverRateStars({ showId, showHref, starSize = 'xs', className = '', onPick }: HoverRateStarsProps) {
+export default function HoverRateStars({ showId, show, showHref, starSize = 'xs', className = '', onPick }: HoverRateStarsProps) {
   const router = useRouter();
   const { user } = useAuth();
   const myRating = useMyRating(user?.id || null, showId);
 
   if (!featureFlags.userAccounts) return null;
+  if (!couldHaveSeenShow(show)) return null;
   if (myRating !== null) return null;
 
   return (

@@ -62,7 +62,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
       <div className="relative mb-1.5">
         <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
           <ShowPageBookmark showId={show.id} size="sm" />
-          <HoverRateStars showId={show.id} showHref={`/show/${show.slug}`} />
+          <HoverRateStars showId={show.id} show={show} showHref={`/show/${show.slug}`} />
           <ShowImage
             sources={[
               show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,

@@ -417,7 +417,7 @@ const ShowListCard = memo(function ShowListCard({
   const thumbnail = (
     <div className={`relative flex-shrink-0 ${thumbnailSize} rounded-lg overflow-hidden bg-surface-overlay`}>
       <ShowPageBookmark showId={show.id} size="sm" />
-      <HoverRateStars showId={show.id} showHref={cardHref} />
+      <HoverRateStars showId={show.id} show={show} showHref={cardHref} />
       <ShowImage
         sources={preferPoster ? [
           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
