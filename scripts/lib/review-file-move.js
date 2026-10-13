@@ -66,6 +66,11 @@ function moveReviewFile(reviewTextsDir, sourcePath, destPath, { overwrite = fals
   const crossFolder = srcFolder !== path.basename(path.dirname(absDest));
   const { next, cleared } = crossFolder ? clearStaleLocationFlags(data, srcFolder) : { next: data, cleared: [] };
 
+  if (destExists) {
+    let destData = null;
+    try { destData = JSON.parse(fs.readFileSync(absDest, 'utf8')); } catch { /* unreadable: replaceable */ }
+    if (destData && destData._locked === true) return { ok: false, reason: `Destination is _locked: ${destPath}` };
+  }
   // Overwrite: park the old destination so a refused rename can put it back.
   const parked = destExists ? `${absDest}.move-backup` : null;
   if (parked) fs.renameSync(absDest, parked);
@@ -76,7 +81,8 @@ function moveReviewFile(reviewTextsDir, sourcePath, destPath, { overwrite = fals
     res = { wrote: false, skipped: `error: ${e.message}` };
   }
   if (!res.wrote) {
-    if (parked) fs.renameSync(parked, absDest);
+    // Restore only when the source is still there; a throw after the write leaves the moved review in place.
+    if (parked && fs.existsSync(absSource) && !fs.existsSync(absDest)) fs.renameSync(parked, absDest);
     return { ok: false, reason: `Move refused (${res.skipped || 'not written'}): ${sourcePath} → ${destPath}` };
   }
   if (parked) fs.unlinkSync(parked);

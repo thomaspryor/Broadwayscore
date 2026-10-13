@@ -1,0 +1,99 @@
+{
+  "issueNumber": "bro-4317-g-03",
+  "planId": "4a73c9a7-7cff-443a-bf1b-9af76909d9dd",
+  "status": "pending",
+  "createdAt": "2026-10-13T03:41:03.697Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 3/3: restamp showId to the folder on review files rehomed by publish date",
+    "steps": [
+      "set showId on uncle-vanya-2024/nysr--melissa-rose-bernardo.json",
+      "set showId on the-story-west-end-2026/times-uk--trevor-phillips.json",
+      "set showId on the-whos-tommy-2024/theater-life--david-sheward.json",
+      "set showId on water-for-elephants-2024/theater-life--paulanne-simmons.json",
+      "set showId on back-to-the-future-2023/nysr--elysa-gardner.json",
+      "set showId on operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+      "set showId on paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+      "set showId on punch-2025/theater-life--isa-goldberg.json",
+      "set showId on stranger-things-2024/theater-life--samuel-l-leiter.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "uncle-vanya-2024/nysr--melissa-rose-bernardo.json",
+        "field": "showId",
+        "oldValue": "uncle-vanya",
+        "newValue": "uncle-vanya-2024",
+        "description": "BRO-4317: file was moved here from uncle-vanya by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/times-uk--trevor-phillips.json",
+        "field": "showId",
+        "oldValue": "the-story-olivier-west-end-2026",
+        "newValue": "the-story-west-end-2026",
+        "description": "BRO-4317: file was moved here from the-story-olivier-west-end-2026 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/theater-life--david-sheward.json",
+        "field": "showId",
+        "oldValue": "the-whos-tommy",
+        "newValue": "the-whos-tommy-2024",
+        "description": "BRO-4317: file was moved here from the-whos-tommy by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-2024/theater-life--paulanne-simmons.json",
+        "field": "showId",
+        "oldValue": "water-for-elephants",
+        "newValue": "water-for-elephants-2024",
+        "description": "BRO-4317: file was moved here from water-for-elephants by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "back-to-the-future-2023/nysr--elysa-gardner.json",
+        "field": "showId",
+        "oldValue": "back-to-the-future-west-end",
+        "newValue": "back-to-the-future-2023",
+        "description": "BRO-4317: file was moved here from back-to-the-future-west-end by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+        "field": "showId",
+        "oldValue": "operation-mincemeat",
+        "newValue": "operation-mincemeat-2025",
+        "description": "BRO-4317: file was moved here from operation-mincemeat by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+        "field": "showId",
+        "oldValue": "paranormal-activity",
+        "newValue": "paranormal-activity-2026",
+        "description": "BRO-4317: file was moved here from paranormal-activity by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theater-life--isa-goldberg.json",
+        "field": "showId",
+        "oldValue": "punch",
+        "newValue": "punch-2025",
+        "description": "BRO-4317: file was moved here from punch by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-2024/theater-life--samuel-l-leiter.json",
+        "field": "showId",
+        "oldValue": "stranger-things",
+        "newValue": "stranger-things-2024",
+        "description": "BRO-4317: file was moved here from stranger-things by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      }
+    ]
+  }
+}

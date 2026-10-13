@@ -879,6 +879,10 @@ function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
 // and every LLM/content reason.
 const WRONG_SHOW_MANUAL_COLLISION_PREFIX = 'Cross-show URL collision (manual resolution): review belongs to ';
 const WRONG_SHOW_ORPHAN_DIR_PREFIX = 'Orphaned generic directory ';
+// audit-cross-show-url-collisions Pre-pass 1 note; shared so locationFlagsStaleAfterMove matches what the audit writes.
+const showIdDirMismatchNote = (fileShowId, dir) =>
+  `File showId "${fileShowId}" doesn't match directory "${dir}" — placed in wrong production directory`;
+const SHOWID_DIR_MISMATCH_MARK = (dir) => `doesn't match directory "${dir}"`;
 const WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES = Object.freeze([
   WRONG_SHOW_MANUAL_COLLISION_PREFIX,
   WRONG_SHOW_ORPHAN_DIR_PREFIX,
@@ -906,7 +910,7 @@ function locationFlagsStaleAfterMove(data, srcFolder) {
     && !(cvHigh && (cv.wrongArticle === true || cv.wrongShow === true));
   out.wrongProduction = data.wrongProduction === true
     && typeof data.wrongProductionNote === 'string'
-    && data.wrongProductionNote.includes(`doesn't match directory "${srcFolder}"`)
+    && data.wrongProductionNote.includes(SHOWID_DIR_MISMATCH_MARK(srcFolder))
     && !data.wrongProductionReason
     && data.wrongProductionProvenance !== 'content'
     && !data.llmClassified
@@ -1175,6 +1179,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 
 module.exports = {
   locationFlagsStaleAfterMove,
+  showIdDirMismatchNote,
   isWrongProductionHeld,
   isWrongShowHeld,
   isDateOnlyAutoReason,

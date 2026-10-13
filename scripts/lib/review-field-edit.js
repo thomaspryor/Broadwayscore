@@ -38,6 +38,13 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'wrongAttribution', 'wrongAttributionReason',
   'wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear',
   'wrongShow', 'wrongShowManualClear',
+  // showId (BRO-4317): only to repair a stale id left by a move, and only to the
+  // folder the file lives in (FIELD_VALUE_CHECKS.showId). A mismatch can also
+  // mean the FILE is misfiled with a correct id; the plan author must confirm
+  // the review is about the folder's show. Rebuild keys on the folder, so this
+  // edit alone changes no score: it stops audit-cross-show-url-collisions
+  // Pre-pass 1 from flagging wrongProduction, and does not clear one it set.
+  'showId',
   'isNotReviewManualClear',
   // Gemini/CV non-review verdict (BRO-4429): the isNonReview family is what
   // classify-non-reviews.js stamps; isNotReview* above is the write-guard's.
@@ -70,6 +77,8 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder
+    ? null : 'showId may only be set to the folder the file lives in'),
   originalScore: (v, record) => require('./verified-original-score').verifiedRatingError(record, v),
   // No null: both are write-guard PROTECTED_FIELDS with no clear breadcrumb,
   // so a clear would be silently restored on write.
@@ -314,7 +323,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
   // url edits (BRO-4430) may repair a url that a sibling file holds for a
   // different named critic; that needs the show dir, so it is computed here.
-  const ctx = {};
+  const ctx = { folder: path.basename(path.dirname(abs)) };
   if (action.field === 'url' && record.url) {
     const { urlOwnedByOtherCritic } = require('./review-slot-guards');
     ctx.currentUrlOwnedByOtherCritic = !!urlOwnedByOtherCritic({

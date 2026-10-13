@@ -30,7 +30,7 @@ const REPORT_PATH = process.env.REPORT_PATH
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
 const { wrongShowSkipDecision } = require('./lib/cross-show-collision-skip');
-const { WRONG_SHOW_ORPHAN_DIR_PREFIX } = require('./lib/wrong-production-autoclear');
+const { WRONG_SHOW_ORPHAN_DIR_PREFIX, showIdDirMismatchNote } = require('./lib/wrong-production-autoclear');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, wrongShowCleared } = require('./lib/review-guards');
 const { shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 
@@ -170,7 +170,7 @@ for (const showId of showDirs) {
 
     if (APPLY) {
       data.wrongProduction = true;
-      data.wrongProductionNote = `File showId "${data.showId}" doesn't match directory "${showId}" — placed in wrong production directory`;
+      data.wrongProductionNote = showIdDirMismatchNote(data.showId, showId);
       atomicWriteJSON(filePath, data);
       showIdMismatchFlagged++;
       log(`  [SHOWID MISMATCH] ${showId}/${file}: showId=${data.showId}`);

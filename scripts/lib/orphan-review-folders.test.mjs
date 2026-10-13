@@ -228,6 +228,31 @@ describe('moveReviewFile retags a cross-folder move (BRO-4317: 29 of 69 rehomed 
   });
 });
 
+describe('review-field-edit showId repairs a stale id only to the file\'s own folder', () => {
+  const { applyReviewFieldEdit, executeReviewFieldEditIn } = require('./review-field-edit');
+  const act = (v) => ({ type: 'review-field-edit', file: 'punch-2025/a--b.json', field: 'showId', oldValue: 'punch', newValue: v });
+
+  test('matching folder is accepted and written; another id or no folder context is refused', () => {
+    const dir = tmpCorpus({ 'punch-2025': [] });
+    fs.writeFileSync(path.join(dir, 'punch-2025', 'a--b.json'), JSON.stringify({ showId: 'punch', url: 'https://x.com/p' }));
+    assert.equal(executeReviewFieldEditIn(dir, act('punch-2026'), 'test').ok, false);
+    assert.equal(applyReviewFieldEdit({ showId: 'punch' }, act('punch-2025'), 'test').ok, false, 'no ctx.folder fails closed');
+    const r = executeReviewFieldEditIn(dir, act('punch-2025'), 'test');
+    assert.equal(r.ok, true, r.reason);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(dir, 'punch-2025', 'a--b.json'), 'utf8')).showId, 'punch-2025');
+  });
+
+  test('moveReviewFile refuses to overwrite a _locked destination', () => {
+    const dir = tmpCorpus({ old: [], 'show-2023': [] });
+    fs.writeFileSync(path.join(dir, 'old', 'x.json'), JSON.stringify({ showId: 'old', url: 'https://x.com/1' }));
+    fs.writeFileSync(path.join(dir, 'show-2023', 'x.json'), JSON.stringify({ showId: 'show-2023', _locked: true }));
+    const r = moveReviewFile(dir, 'old/x.json', 'show-2023/x.json', { overwrite: true });
+    assert.equal(r.ok, false);
+    assert.match(r.reason, /_locked/);
+    assert.ok(fs.existsSync(path.join(dir, 'old', 'x.json')));
+  });
+});
+
 describe('idTwin: a folder that is a show id with the market dropped or swapped', () => {
   const shows = [
     { id: 'data-off-broadway-2026' }, { id: 'the-choir-of-man-off-west-end-2026' },
