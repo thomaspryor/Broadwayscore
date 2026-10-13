@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { CONFIRM_FIELD_HTML, isConfirmedPost } from '@/lib/confirm-post';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -64,8 +65,11 @@ function validateToken(token: string): TokenPayload {
   return payload;
 }
 
-export async function GET(request: NextRequest) {
-  const token = request.nextUrl.searchParams.get('token');
+type Approved = { payload: TokenPayload; fix: { workflow: string; inputs?: Record<string, string> } };
+
+// Shared by GET and POST so the confirm page only ever shows a button for a
+// token that would actually work when tapped.
+function checkToken(token: string | null): Approved | NextResponse {
   if (!token) {
     return htmlResponse(errorHtml('Missing token'), 400);
   }
@@ -82,6 +86,28 @@ export async function GET(request: NextRequest) {
   if (!fix) {
     return htmlResponse(errorHtml(`Unknown fix: ${payload.fixId}`), 400);
   }
+  return { payload, fix };
+}
+
+// GET never mutates (BRO-5262): mail-security link scanners and preview
+// fetchers open every URL in an email (scripts/health-check.js mints these),
+// so a dispatching GET let a robot start a workflow with nobody tapping. GET
+// renders a one-button confirm form; only the POST it submits dispatches.
+// The emailed link format is unchanged, so links already sent keep working.
+export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get('token');
+  const checked = checkToken(token);
+  if (checked instanceof NextResponse) return checked;
+  return htmlResponse(confirmHtml(checked.payload.alertTitle, checked.fix.workflow, token as string), 200);
+}
+
+export async function POST(request: NextRequest) {
+  const checked = checkToken(request.nextUrl.searchParams.get('token'));
+  if (checked instanceof NextResponse) return checked;
+  if (!(await isConfirmedPost(request))) {
+    return htmlResponse(errorHtml('Not confirmed. Open the link from your email and press the button on that page. Nothing was changed.'), 400);
+  }
+  const { payload, fix } = checked;
 
   const ghToken = process.env.REVIEW_TEXTS_TOKEN;
   if (!ghToken) {
@@ -141,6 +167,36 @@ function successHtml(alertTitle: string, workflow: string, runUrl: string) {
   <p class="detail">Running: <strong>${escapeHtml(workflow)}</strong></p>
   <p class="detail">You'll receive a confirmation email when complete.</p>
   <p style="margin-top:24px;"><a href="${escapeHtml(runUrl)}">View workflow run &rarr;</a></p>
+</body>
+</html>`;
+}
+
+function confirmHtml(alertTitle: string, workflow: string, token: string) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Confirm Fix — Broadway Scorecard</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 80px auto; padding: 0 24px; text-align: center; }
+    h1 { font-size: 22px; margin-bottom: 8px; }
+    p { color: #555; line-height: 1.6; margin: 6px 0; }
+    .detail { color: #888; font-size: 13px; }
+    a { color: #3498db; }
+    button { background: #27ae60; color: #fff; border: 0; font-size: 17px; font-weight: 700; padding: 14px 36px; border-radius: 10px; cursor: pointer; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Run this fix?</h1>
+  <p>${escapeHtml(alertTitle)}</p>
+  <p class="detail">Will run: <strong>${escapeHtml(workflow)}</strong></p>
+  <form method="POST" action="/api/dispatch-alert-fix?token=${escapeHtml(encodeURIComponent(token))}" onsubmit="var b=this.querySelector('button');b.disabled=true;b.textContent='Working…';">
+    ${CONFIRM_FIELD_HTML}
+    <button type="submit">Run fix</button>
+  </form>
+  <p class="detail" style="margin-top:20px;">Nothing has happened yet. To do nothing, just close this page.</p>
+  <p class="detail"><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>
 </body>
 </html>`;
 }

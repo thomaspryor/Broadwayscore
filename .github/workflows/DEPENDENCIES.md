@@ -314,85 +314,85 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 | Secret | Used by (cross-repo writers) |
 |---|---|
-| `ANTHROPIC_API_KEY` | 42 workflows |
-| `APPROVAL_HMAC_SECRET` | 2 workflows: `auto-fix-feedback-bug.yml`, `process-review-submission.yml` |
-| `BLOOMBERG_EMAIL` | 3 workflows: `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `BLOOMBERG_PASSWORD` | 3 workflows: `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `BRIGHTDATA_SERP_ZONE` | 1 workflows: `commercial-rss-poll.yml` |
-| `BRIGHTDATA_TOKEN` | 69 workflows |
-| `BRIGHTDATA_ZONE` | 63 workflows |
-| `BROWSERBASE_API_KEY` | 15 workflows |
-| `BROWSERBASE_PROJECT_ID` | 15 workflows |
-| `COOKIES_BUNDLE_1` | 16 workflows |
-| `COOKIES_BUNDLE_10` | 16 workflows |
-| `COOKIES_BUNDLE_11` | 15 workflows |
-| `COOKIES_BUNDLE_2` | 16 workflows |
-| `COOKIES_BUNDLE_3` | 16 workflows |
-| `COOKIES_BUNDLE_4` | 16 workflows |
-| `COOKIES_BUNDLE_5` | 16 workflows |
-| `COOKIES_BUNDLE_6` | 16 workflows |
-| `COOKIES_BUNDLE_7` | 16 workflows |
-| `COOKIES_BUNDLE_8` | 16 workflows |
-| `COOKIES_BUNDLE_9` | 16 workflows |
-| `DISCORD_WEBHOOK_ALERTS` | 105 workflows |
-| `FORMSPREE_FOLLOW_API_KEY` | 3 workflows: `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_FOLLOW_FORM_ID` | 3 workflows: `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_SUBSCRIBER_API_KEY` | 3 workflows: `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_SUBSCRIBER_FORM_ID` | 3 workflows: `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_TOKEN` | 1 workflows: `process-feedback.yml` |
-| `FORMSPREE_WESTEND_SUBSCRIBER_API_KEY` | 2 workflows: `opening-night-broadcast.yml`, `sync-followers.yml` |
-| `FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID` | 2 workflows: `opening-night-broadcast.yml`, `sync-followers.yml` |
-| `FT_EMAIL` | 4 workflows |
-| `FT_PASSWORD` | 4 workflows |
-| `GEMINI_API_KEY` | 31 workflows |
-| `GHA_BILLING_PAT` | 1 workflows: `opening-night-orchestrator.yml` |
-| `GH_DISPATCH_TOKEN` | 3 workflows: `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
-| `GITHUB_TOKEN` | 91 workflows |
-| `GOOGLE_INDEXING_KEY` | 2 workflows: `opening-night-broadcast.yml`, `update-show-status.yml` |
-| `GUARDIAN_API_KEY` | 4 workflows |
-| `LINEAR_API_KEY` | 24 workflows |
-| `MEZZANINE_APP_ID` | 2 workflows: `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
-| `MEZZANINE_SESSION_TOKEN` | 2 workflows: `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
-| `NEW_YORKER_EMAIL` | 4 workflows |
-| `NEW_YORKER_PASSWORD` | 4 workflows |
-| `NEXT_PUBLIC_SUPABASE_URL` | 1 workflows: `update-mezzanine.yml` |
-| `NORTHJERSEY_EMAIL` | 3 workflows: `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `NORTHJERSEY_PASSWORD` | 3 workflows: `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `NOTION_API_KEY` | 3 workflows: `audit-aggregator-gap.yml`, `rebuild-reviews.yml`, `test.yml` |
-| `NYDAILYNEWS_EMAIL` | 3 workflows: `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `NYDAILYNEWS_PASSWORD` | 3 workflows: `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `NYTIMES_PASSWORD` | 7 workflows |
-| `NYT_COOKIES` | 1 workflows: `opening-night-express.yml` |
-| `NYT_COOKIES_META` | 1 workflows: `opening-night-express.yml` |
-| `NYT_EMAIL` | 8 workflows |
-| `NYT_PASSWORD` | 1 workflows: `process-review-submission.yml` |
-| `OPENAI_API_KEY` | 31 workflows |
-| `OPENROUTER_API_KEY` | 12 workflows |
-| `OWNER_EMAIL` | 65 workflows |
-| `REDDIT_CLIENT_ID` | 2 workflows: `bulk-reddit-sentiment.yml`, `update-reddit-sentiment.yml` |
-| `REDDIT_CLIENT_SECRET` | 2 workflows: `bulk-reddit-sentiment.yml`, `update-reddit-sentiment.yml` |
-| `RESEND_API_KEY` | 68 workflows |
-| `RESEND_WE_AUDIENCE_ID` | 2 workflows: `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
-| `REVIEW_TEXTS_TOKEN` | 132 workflows |
-| `SCRAPINGBEE_API_KEY` | 73 workflows |
-| `SCRAPINGDOG_API_KEY` | 76 workflows |
-| `SUPABASE_SERVICE_ROLE_KEY` | 1 workflows: `update-mezzanine.yml` |
-| `THEATR_REFRESH_TOKEN` | 1 workflows: `update-theatr.yml` |
-| `TR_EMAIL` | 1 workflows: `review-refresh.yml` |
-| `TR_PASSWORD` | 1 workflows: `review-refresh.yml` |
-| `VERCEL_TOKEN` | 2 workflows: `opening-night-poller.yml`, `test.yml` |
-| `VULTURE_COOKIES` | 1 workflows: `opening-night-express.yml` |
-| `VULTURE_COOKIES_META` | 1 workflows: `opening-night-express.yml` |
-| `VULTURE_EMAIL` | 8 workflows |
-| `VULTURE_PASSWORD` | 8 workflows |
-| `WAPO_COOKIES` | 1 workflows: `opening-night-express.yml` |
-| `WAPO_COOKIES_META` | 1 workflows: `opening-night-express.yml` |
-| `WAPO_EMAIL` | 4 workflows |
-| `WASHPOST_PASSWORD` | 4 workflows |
-| `WSJ_COOKIES` | 15 workflows |
-| `WSJ_COOKIES_META` | 15 workflows |
-| `WSJ_EMAIL` | 4 workflows |
-| `WSJ_PASSWORD` | 4 workflows |
+| `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 67 workflows using it) |
+| `APPROVAL_HMAC_SECRET` | 2 cross-repo writers (of 4 workflows using it): `auto-fix-feedback-bug.yml`, `process-review-submission.yml` |
+| `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
+| `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
+| `BRIGHTDATA_SERP_ZONE` | 1 cross-repo writers (of 2 workflows using it): `commercial-rss-poll.yml` |
+| `BRIGHTDATA_TOKEN` | 69 cross-repo writers (of 93 workflows using it) |
+| `BRIGHTDATA_ZONE` | 63 cross-repo writers (of 85 workflows using it) |
+| `BROWSERBASE_API_KEY` | 15 cross-repo writers (of 19 workflows using it) |
+| `BROWSERBASE_PROJECT_ID` | 15 cross-repo writers (of 19 workflows using it) |
+| `COOKIES_BUNDLE_1` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_10` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_11` | 15 cross-repo writers (of 17 workflows using it) |
+| `COOKIES_BUNDLE_2` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_3` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_4` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_5` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_6` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_7` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_8` | 16 cross-repo writers (of 18 workflows using it) |
+| `COOKIES_BUNDLE_9` | 16 cross-repo writers (of 18 workflows using it) |
+| `DISCORD_WEBHOOK_ALERTS` | 105 cross-repo writers (of 188 workflows using it) |
+| `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
+| `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
+| `FORMSPREE_SUBSCRIBER_API_KEY` | 3 cross-repo writers (of 5 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
+| `FORMSPREE_SUBSCRIBER_FORM_ID` | 3 cross-repo writers (of 5 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
+| `FORMSPREE_TOKEN` | 1 cross-repo writers (of 2 workflows using it): `process-feedback.yml` |
+| `FORMSPREE_WESTEND_SUBSCRIBER_API_KEY` | 2 cross-repo writers (of 3 workflows using it): `opening-night-broadcast.yml`, `sync-followers.yml` |
+| `FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID` | 2 cross-repo writers (of 3 workflows using it): `opening-night-broadcast.yml`, `sync-followers.yml` |
+| `FT_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
+| `FT_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
+| `GEMINI_API_KEY` | 31 cross-repo writers (of 43 workflows using it) |
+| `GHA_BILLING_PAT` | 1 cross-repo writers (of 1 workflows using it): `opening-night-orchestrator.yml` |
+| `GH_DISPATCH_TOKEN` | 3 cross-repo writers (of 4 workflows using it): `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
+| `GITHUB_TOKEN` | 91 cross-repo writers (of 143 workflows using it) |
+| `GOOGLE_INDEXING_KEY` | 2 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `update-show-status.yml` |
+| `GUARDIAN_API_KEY` | 4 cross-repo writers (of 5 workflows using it) |
+| `LINEAR_API_KEY` | 24 cross-repo writers (of 59 workflows using it) |
+| `MEZZANINE_APP_ID` | 2 cross-repo writers (of 2 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
+| `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 2 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
+| `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
+| `NEW_YORKER_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
+| `NEXT_PUBLIC_SUPABASE_URL` | 1 cross-repo writers (of 8 workflows using it): `update-mezzanine.yml` |
+| `NORTHJERSEY_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
+| `NORTHJERSEY_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
+| `NOTION_API_KEY` | 3 cross-repo writers (of 8 workflows using it): `audit-aggregator-gap.yml`, `rebuild-reviews.yml`, `test.yml` |
+| `NYDAILYNEWS_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
+| `NYDAILYNEWS_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
+| `NYTIMES_PASSWORD` | 7 cross-repo writers (of 8 workflows using it) |
+| `NYT_COOKIES` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
+| `NYT_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
+| `NYT_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
+| `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
+| `OPENAI_API_KEY` | 31 cross-repo writers (of 47 workflows using it) |
+| `OPENROUTER_API_KEY` | 12 cross-repo writers (of 15 workflows using it) |
+| `OWNER_EMAIL` | 65 cross-repo writers (of 117 workflows using it) |
+| `REDDIT_CLIENT_ID` | 2 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `update-reddit-sentiment.yml` |
+| `REDDIT_CLIENT_SECRET` | 2 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `update-reddit-sentiment.yml` |
+| `RESEND_API_KEY` | 68 cross-repo writers (of 125 workflows using it) |
+| `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
+| `REVIEW_TEXTS_TOKEN` | 132 cross-repo writers (of 228 workflows using it) |
+| `SCRAPINGBEE_API_KEY` | 73 cross-repo writers (of 98 workflows using it) |
+| `SCRAPINGDOG_API_KEY` | 76 cross-repo writers (of 100 workflows using it) |
+| `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 6 workflows using it): `update-mezzanine.yml` |
+| `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
+| `TR_EMAIL` | 1 cross-repo writers (of 2 workflows using it): `review-refresh.yml` |
+| `TR_PASSWORD` | 1 cross-repo writers (of 2 workflows using it): `review-refresh.yml` |
+| `VERCEL_TOKEN` | 2 cross-repo writers (of 11 workflows using it): `opening-night-poller.yml`, `test.yml` |
+| `VULTURE_COOKIES` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
+| `VULTURE_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
+| `VULTURE_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
+| `VULTURE_PASSWORD` | 8 cross-repo writers (of 9 workflows using it) |
+| `WAPO_COOKIES` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
+| `WAPO_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
+| `WAPO_EMAIL` | 4 cross-repo writers (of 5 workflows using it) |
+| `WASHPOST_PASSWORD` | 4 cross-repo writers (of 5 workflows using it) |
+| `WSJ_COOKIES` | 15 cross-repo writers (of 17 workflows using it) |
+| `WSJ_COOKIES_META` | 15 cross-repo writers (of 17 workflows using it) |
+| `WSJ_EMAIL` | 4 cross-repo writers (of 5 workflows using it) |
+| `WSJ_PASSWORD` | 4 cross-repo writers (of 5 workflows using it) |
 
 Cross-repo auth is `CORE_DATA_TOKEN` / `REVIEW_TEXTS_TOKEN` / `REPO_TOKEN` passed to the composite actions. Full per-workflow secret audit: `node scripts/audit-workflow-secret-gaps.js`.
 

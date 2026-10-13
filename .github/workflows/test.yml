@@ -3200,6 +3200,10 @@ on:
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-data-gate-heal-paths.js'
       - 'scripts/audit-new-gate-arming.js'
+      # BRO-5262: GET-route dispatch audit. Logic (scripts/lib/get-route-dispatch.js,
+      # colocated-tested) is under scripts/lib/**; this thin CLI wrapper is
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/audit-get-route-dispatch.js'
       # BRO-3507: self-heal-orphan-show-files.yml's deletion CLI. Its decision
       # logic (scripts/lib/orphan-grace-period.js, colocated-tested) is
       # covered by the scripts/lib/** glob above, but this thin CLI wrapper is
@@ -3403,6 +3407,17 @@ jobs:
         # rest with heal-exempt annotations). Decision logic + tests:
         # scripts/lib/data-gate-heal-paths.{js,test.mjs}.
         run: node scripts/audit-data-gate-heal-paths.js
+
+      - name: Audit — no API route dispatches a workflow from GET (BRO-5262)
+        if: always() && steps.deps.outcome == 'success'
+        # Mail-security scanners open every emailed link, so a GET handler that
+        # dispatches a workflow lets a robot approve work (approve-fix,
+        # dispatch-alert-fix did). GET must render a confirm page; only POST
+        # acts. Allowlist with a reason in scripts/lib/get-route-dispatch.js.
+        # Blocking from day one: §19's advisory rule covers --strict/--gate steps,
+        # this job bans continue-on-error (workflow-audit-steps-always.test.mjs),
+        # and the scan exits 0 on the tree it lands with.
+        run: node scripts/audit-get-route-dispatch.js
 
       - name: Audit — new blocking gates land advisory or baselined (BRO-2123)
         if: always() && steps.deps.outcome == 'success'

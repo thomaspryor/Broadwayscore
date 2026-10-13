@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import crypto from 'crypto';
+import { CONFIRM_FIELD_HTML, isConfirmedPost } from '@/lib/confirm-post';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -32,7 +33,24 @@ async function githubApi(path: string, method: string, body: object, token: stri
   return text ? JSON.parse(text) : {};
 }
 
-export async function GET(req: NextRequest): Promise<Response> {
+/** Strip HTML-significant characters and cap length for safe echoing into pages. */
+function sanitize(input: string, maxLen = 200): string {
+  return input.replace(/[<>&"]/g, '').slice(0, maxLen);
+}
+
+type HtmlFn = (title: string, body: string, status?: number) => Response;
+
+interface ApprovalLink {
+  issue: string;
+  token: string;
+  expires: string;
+  planId: string;
+  actionType: 'approve' | 'reject';
+}
+
+// Shared by GET and POST so the confirm page only ever shows a button for a
+// link that would actually work when tapped.
+function validateLink(req: NextRequest, html: HtmlFn): ApprovalLink | Response {
   const searchParams = req.nextUrl.searchParams;
   const issue = searchParams.get('issue');
   const token = searchParams.get('token');
@@ -41,9 +59,6 @@ export async function GET(req: NextRequest): Promise<Response> {
   // planId binds this link to the exact generated plan. Without it, a
   // regenerated plan for the same issue would execute under an old link.
   const planId = searchParams.get('plan');
-
-  const html = (title: string, body: string, status = 200) =>
-    new Response(htmlPage(title, body), { status, headers: { 'Content-Type': 'text/html' } });
 
   if (!issue || !token || !expires || !planId) {
     return html('Invalid Link',
@@ -63,6 +78,7 @@ export async function GET(req: NextRequest): Promise<Response> {
       '<h1>Server Error</h1><p>Approval system is not configured. Please contact the admin.</p>', 500);
   }
 
+  // HMAC message must match scripts/lib/approval-link.js generateApprovalUrl.
   const actionType = action === 'reject' ? 'reject' : 'approve';
   const expected = crypto
     .createHmac('sha256', secret)
@@ -70,16 +86,72 @@ export async function GET(req: NextRequest): Promise<Response> {
     .digest('hex');
 
   let tokenValid = false;
-  try {
-    tokenValid = token.length === expected.length &&
-      crypto.timingSafeEqual(Buffer.from(token, 'hex'), Buffer.from(expected, 'hex'));
-  } catch {
-    // invalid hex
+  // Require exactly 64 lowercase hex chars: Buffer.from(_, 'hex') silently
+  // truncates at the first non-hex char (same guard as autonomous-action).
+  // Lowercased first: the signer emits lowercase, but a mail client that
+  // changes case must not break a link the old check accepted.
+  const tokenHex = token.toLowerCase();
+  if (/^[0-9a-f]{64}$/.test(tokenHex)) {
+    try {
+      tokenValid = crypto.timingSafeEqual(Buffer.from(tokenHex, 'hex'), Buffer.from(expected, 'hex'));
+    } catch {
+      // invalid hex
+    }
   }
   if (!tokenValid) {
     return html('Invalid Token',
       '<h1>Invalid Link</h1><p>This approval link could not be verified.</p>', 403);
   }
+
+  return { issue, token, expires, planId, actionType };
+}
+
+function makeHtml(): HtmlFn {
+  return (title, body, status = 200) =>
+    new Response(htmlPage(title, body), { status, headers: { 'Content-Type': 'text/html' } });
+}
+
+// GET never mutates (BRO-5262): mail-security link scanners and preview
+// fetchers open every URL in an email, so a state-changing GET let a robot
+// approve or reject a fix with nobody tapping. GET renders a one-button
+// confirm form; only the POST it submits acts. The emailed link format is
+// unchanged, so links already sent keep working (one extra tap).
+export async function GET(req: NextRequest): Promise<Response> {
+  const html = makeHtml();
+  const link = validateLink(req, html);
+  if (link instanceof Response) return link;
+
+  const qs = new URLSearchParams({
+    issue: link.issue, token: link.token, expires: link.expires, action: link.actionType, plan: link.planId,
+  });
+  const isSystematic = link.issue.includes('-systematic');
+  const issueLabel = `issue #${sanitize(String(parseInt(link.issue)), 20)}`;
+  const isReject = link.actionType === 'reject';
+  const heading = isReject ? 'Reject this fix?' : 'Approve this fix?';
+  const detail = isReject
+    ? `Pressing the button cancels the proposed ${isSystematic ? 'systematic ' : ''}fix for ${issueLabel}. The issue stays open for manual review.`
+    : `Pressing the button applies the proposed ${isSystematic ? 'systematic ' : ''}fix for ${issueLabel}. You'll get a confirmation email once it's done.`;
+  const color = isReject ? '#dc2626' : '#16a34a';
+  return html(isReject ? 'Confirm Reject' : 'Confirm Fix',
+    `<h1>${heading}</h1><p>${detail}</p>` +
+    // Disable on submit so a double tap cannot dispatch twice.
+    `<form method="POST" action="/api/approve-fix?${qs.toString()}" onsubmit="var b=this.querySelector('button');b.disabled=true;b.textContent='Working…';">` +
+    CONFIRM_FIELD_HTML +
+    `<button type="submit" style="background:${color};color:#fff;border:0;font-size:17px;font-weight:700;padding:14px 36px;border-radius:10px;cursor:pointer;">${isReject ? 'Reject fix' : 'Approve fix'}</button>` +
+    '</form>' +
+    '<p style="margin-top:24px;font-size:14px;">Nothing has happened yet. To do nothing, just close this page.</p>' +
+    '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>');
+}
+
+export async function POST(req: NextRequest): Promise<Response> {
+  const html = makeHtml();
+  const link = validateLink(req, html);
+  if (link instanceof Response) return link;
+  if (!(await isConfirmedPost(req))) {
+    return html('Not Confirmed',
+      '<h1>Nothing Was Changed</h1><p>Open the link from your email and press the button on that page.</p>', 400);
+  }
+  const { issue, planId, actionType } = link;
 
   const ghToken = process.env.GH_DISPATCH_TOKEN;
   const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
@@ -130,7 +202,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     const msg = (err as Error).message;
     console.error('Workflow dispatch failed:', msg);
     return html('Dispatch Failed',
-      `<h1>Something Went Wrong</h1><p>Could not trigger the fix workflow. Error: ${msg}</p>` +
+      `<h1>Something Went Wrong</h1><p>Could not trigger the fix workflow. Error: ${sanitize(msg)}</p>` +
       `<p>You can try again or manually trigger the workflow from <a href="https://github.com/${repo}/actions">GitHub Actions</a>.</p>`, 502);
   }
 
