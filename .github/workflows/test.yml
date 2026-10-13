@@ -31,6 +31,17 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      # scripts/*.test.mjs — same fix one level up (BRO-2969). Every top-level
+      # colocated test used to need its own hand-written entry here, and
+      # forgetting one was a recurring bug (#1737, #1745, BRO-2603, BRO-2647).
+      # `*` does not cross `/`, so this matches top-level test files only. It
+      # decides whether a push TRIGGERS CI; whether a test RUNS is decided by
+      # the unit-test collection. New top-level tests need no entry below; the
+      # sibling scripts/<name>.js entries still do (top-level .js is not
+      # globbed). Literal scripts/<name>.test.mjs entries below are redundant
+      # and are being removed (tests/unit/test-yml-toplevel-test-glob.test.mjs
+      # refuses NEW ones).
+      - 'scripts/*.test.mjs'
       # scripts/lib/check-orphan-commits.test.mjs requires ../check-orphan-commits.js
       # (a top-level scripts/ file, outside the glob above) and
       # scripts/lib/owner-accounts.test.mjs requires ../../vercel.json (a root
