@@ -83,9 +83,13 @@ function truthClassOf(comm, kind, sourceText) {
  * @returns {null | { kind: 'reported-pct'|'recouped'|'failed', lo: number, hi: number, source: string, asOf?: string,
  *   truthClass: 'reported'|'inference', truthClassFrom: string }}
  */
+// A record can hold more than one outcome claim (a Reddit % returned and a
+// trade-announced recoupment, Just in Time). The first reported claim wins;
+// with none, the first claim stands, as before (BRO-5264).
 function groundTruth(comm, show, now = new Date()) {
-  const t = rawGroundTruth(comm, show, now);
-  return t && { ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source, t.kind) };
+  const all = truthCandidates(comm, show, now)
+    .map((t) => ({ ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source, t.kind) }));
+  return all.find((t) => t.truthClass === 'reported') || all[0] || null;
 }
 
 // Pre- or post-NY-tax-credit basis of a truth figure (BRO-5073). Post only
@@ -135,25 +139,27 @@ function recoupedFromTour(comm, show) {
     && TOUR_CREDIT.test(String(comm.recoupedSource) + ' ' + String(comm.notes || ''));
 }
 
-function rawGroundTruth(comm, show, now) {
-  if (!comm) return null;
+/** Outcome claims in priority order: a % returned, then recouped, then failed. */
+function truthCandidates(comm, show, now) {
+  if (!comm) return [];
+  const out = [];
   const est = comm.estimatedRecoupmentPct;
   // Older records keep the range's basis in notes, not estimatedRecoupmentSource.
   const basis = comm.estimatedRecoupmentSource || comm.notes;
   if (Array.isArray(est) && est.length === 2 && est.every((v) => typeof v === 'number')
     && basis && !OWN_INFERENCE.test(basis)) {
     const asOf = /^\d{4}-\d{2}-\d{2}$/.test(comm.estimatedRecoupmentDate || '') ? comm.estimatedRecoupmentDate : null;
-    return { kind: 'reported-pct', lo: Math.min(...est), hi: Math.max(...est), source: String(basis), ...(asOf ? { asOf } : {}) };
+    out.push({ kind: 'reported-pct', lo: Math.min(...est), hi: Math.max(...est), source: String(basis), ...(asOf ? { asOf } : {}) });
   }
-  if (comm.recouped === true && comm.recoupedSource) {
-    if (recoupedFromTour(comm, show)) return null;
-    return { kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) };
+  // A recoupment the source credits to a tour is no test of the Broadway model.
+  if (comm.recouped === true && comm.recoupedSource && !recoupedFromTour(comm, show)) {
+    out.push({ kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) });
   }
   const closed = show && show.closingDate && new Date(show.closingDate) <= now;
   if (closed && comm.recouped === false && (comm.designation === 'Fizzle' || comm.designation === 'Flop')) {
-    return { kind: 'failed', lo: -Infinity, hi: 99.99, source: `designation ${comm.designation}` };
+    out.push({ kind: 'failed', lo: -Infinity, hi: 99.99, source: `designation ${comm.designation}` });
   }
-  return null;
+  return out;
 }
 
 /** Points outside the truth range; 0 when inside. */

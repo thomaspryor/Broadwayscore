@@ -231,3 +231,14 @@ test('a silence-basis loss label on a show closed under LOSS_LABEL_MIN_DAYS wait
   // A bare status string skipped this rule silently, so it is refused.
   assert.throws(() => sanitizeForPublicRecord(row, 'closed'), /shows.json record/);
 });
+
+test('a homepage source URL warns; an article or filing URL does not (BRO-5264)', () => {
+  const rec = (url) => ({ designation: 'TBD', sources: [{ type: 'trade', url, date: '2026-01-18' }] });
+  for (const url of ['https://www.amny.com', 'https://www.sec.gov/', 'http://broadwaynews.com']) {
+    assert.ok(commercialRecordWarnings('x', rec(url)).some((m) => /sources\[0\]\.url .* is a homepage/.test(m)), url);
+  }
+  for (const url of ['https://www.amny.com/entertainment/theater/broadway-hells-kitchen-to-close/', 'https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm', 'https://deadline.com/?p=1236684055']) {
+    assert.ok(!commercialRecordWarnings('x', rec(url)).some((m) => /homepage/.test(m)), url);
+  }
+  assert.ok(commercialRecordWarnings('x', rec('https://broadwayscorecard.com/show/hells-kitchen')).some((m) => /this site/.test(m)));
+});

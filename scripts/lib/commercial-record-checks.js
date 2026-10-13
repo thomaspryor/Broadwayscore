@@ -329,6 +329,9 @@ function commercialRecordErrors(showId, show, ctx = {}) {
  * writers that DO write the record (plan runner, add-commercial-entry) treat
  * them as errors for that record.
  */
+// Scheme and host with at most a slash: no path, query or fragment.
+const HOMEPAGE_URL = /^https?:\/\/[^/?#\s]+\/?$/i;
+const OWN_SITE_URL = /^https?:\/\/(?:www\.)?broadwayscorecard\.com(?:[/?#]|$)/i;
 function commercialRecordWarnings(showId, show, ctx = {}) {
   const out = [];
   // A loss designation is a final outcome ("closed without recouping"). On a
@@ -358,6 +361,21 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // read the text guess instead of a checked tag.
   if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && show.weeklyRunningCostBasis == null && BASIS_CUE_TEXT.test(String(show.weeklyRunningCostSource || '').replace(URL_RE, ' '))) {
     out.push(`commercial.json: "${showId}" has a ${show.costMethodology} weeklyRunningCost whose source mentions all-in or breakeven but no weeklyRunningCostBasis (tag it running, breakeven or all-in)`);
+  }
+  // A source that links a site's homepage cites nothing (BRO-5264: Hell's
+  // Kitchen's amNY and Broadway Journal entries, Cabaret, two bare sec.gov
+  // links). Ground truth and the reviewers could not check them. Advisory
+  // (§19); the plan runner refuses a record it writes until each is the
+  // article or filing itself.
+  if (Array.isArray(show.sources)) {
+    show.sources.forEach((src, idx) => {
+      if (src && typeof src.url === 'string' && HOMEPAGE_URL.test(src.url.trim())) {
+        out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is a homepage, not an article or filing (link the page that states it)`);
+      } else if (src && typeof src.url === 'string' && OWN_SITE_URL.test(src.url.trim())) {
+        // A plan cited broadwayscorecard.com itself for four stubs (bro-5006).
+        out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is this site, which cannot source its own figures`);
+      }
+    });
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);

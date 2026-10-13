@@ -59,6 +59,21 @@ describe('truthClass', () => {
 });
 
 describe('groundTruth', () => {
+  // BRO-5264: Just in Time held a Reddit % and a Broadway News recoupment; the Reddit % won.
+  test('a reported claim beats an earlier inference claim; with none reported the first stands', () => {
+    const show = { closingDate: '2026-02-22', openingDate: '2025-04-01', type: 'musical' };
+    const reddit = { estimatedRecoupmentPct: [60, 60], estimatedRecoupmentSource: 'Reddit Grosses Analysis post states recoup=60%' };
+    const t = groundTruth({ ...reddit, recouped: true, recoupedSource: 'Broadway News (May 18, 2026): the show has officially recouped its $12.5 million capitalization' }, show);
+    assert.equal(t.kind, 'recouped');
+    assert.equal(t.truthClass, 'reported');
+    const failed = groundTruth({ ...reddit, recouped: false, designation: 'Fizzle', notes: 'Variety reported the show closed without recouping.' }, show);
+    assert.equal(failed.kind, 'failed');
+    assert.equal(failed.truthClass, 'reported');
+    // No reported claim: the Reddit % stays, as inference.
+    const only = groundTruth({ ...reddit, recouped: false, designation: 'Fizzle', notes: 'Closed early.' }, show);
+    assert.equal(only.kind, 'reported-pct');
+    assert.equal(only.truthClass, 'inference');
+  });
   test('recouped after closing with tour profits is not a test of the Broadway model (BRO-5073)', () => {
     const show = { closingDate: '2024-04-28' };
     const comm = { recouped: true, recoupedDate: '2026-04', recoupedSource: 'Playbill (Apr 23, 2026): "Both the Broadway production and the national tour have now recouped their investments"' };

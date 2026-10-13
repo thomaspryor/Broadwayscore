@@ -54,6 +54,10 @@ test('refuses unsourced entries, bad source types, unknown fields, bad numbers',
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'TBD', sources: [{ type: 'website', url: 'https://a.b' }] } }).ok, false);
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'TBD', sources: src, modelRecouped: true } }).ok, false);
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'TBD', sources: src, capitalization: '5M' } }).ok, false);
+  // BRO-5264: bro-5006 cited broadwayscorecard.com for four stubs; a homepage or this site cites nothing.
+  for (const url of ['https://broadwayscorecard.com', 'https://www.playbill.com/', 'https://broadwayscorecard.com/show/grey-house']) {
+    assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'TBD', sources: [{ type: 'trade', url, date: '2026-10-10' }] } }).ok, false, url);
+  }
 });
 
 test('a TBD entry is left unlocked so recoupment auto-apply and closure classification still reach it', () => {
