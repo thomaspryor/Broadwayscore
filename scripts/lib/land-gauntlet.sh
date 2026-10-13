@@ -129,11 +129,32 @@ gate next-lint npx next lint
 # Same manifests and per-test timeout as test.yml's "Run unit tests
 # (no-data-dependency)". --test-reporter=tap pinned so land-gate-delta.js can
 # key failures by file::name regardless of the Node default reporter.
+#
+# BRO-2483: the node batch comes from the TREE UNDER TEST. land.yml runs this
+# (the branch's) harness against the base tree too, so the source is picked by
+# whether that tree carries scripts/lib/unit-test-collection.js: present ->
+# collect; absent (a pre-BRO-2483 base) -> read tests/unit-test-manifest.txt.
+# Never by manifest presence: after BRO-2483 that file is a tombstone.
+unit_tests_node_source() {
+  if [ -f scripts/lib/unit-test-collection.js ]; then echo collector; else echo manifest; fi
+}
+# The collector's --min enforces its MIN_NODE_BATCH floor (exit 1, no output).
+unit_tests_node_list() {
+  if [ "$(unit_tests_node_source)" = collector ]; then
+    node scripts/lib/unit-test-collection.js --min
+  else
+    grep -v -e '^[[:space:]]*#' -e '^[[:space:]]*$' tests/unit-test-manifest.txt 2>/dev/null
+  fi
+}
 unit_tests_node() {
   local -a tests
-  mapfile -t tests < tests/unit-test-manifest.txt 2>/dev/null
-  if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/unit-test-manifest.txt is empty or missing"; return 1; fi
-  echo "# node batch: ${#tests[@]} files"
+  local src
+  src=$(unit_tests_node_source)
+  local list
+  list=$(unit_tests_node_list) || { echo "::error::node unit batch ($src) could not be listed (collector --min failed: empty, under MIN_NODE_BATCH, or crashed)"; return 1; }
+  mapfile -t tests <<< "$list"
+  if [ -z "$list" ] || [ ${#tests[@]} -eq 0 ]; then echo "::error::node unit batch ($src) is empty or missing"; return 1; fi
+  echo "# node batch ($src): ${#tests[@]} files"
   node --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
 }
 gate unit-tests-node unit_tests_node

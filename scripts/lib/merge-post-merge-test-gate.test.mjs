@@ -561,6 +561,7 @@ const {
   listCorrespondingUnitTestFiles,
   correspondingTestPaths,
   listManifestTestFiles,
+  NodeBatchUnavailableError,
   mentionsWorkflowsDir,
   listWorkflowGuardTestFiles,
   selectTestFiles,
@@ -691,6 +692,44 @@ test('listWorkflowGuardTestFiles: discovers manifest-listed guards outside tests
     path.join('scripts', 'tests', 'joined.test.mjs'),
     path.join('scripts', 'validate-x.test.mjs'),
   ]);
+});
+
+// BRO-2483: a tree carrying scripts/lib/unit-test-collection.js is read through
+// it (the manifest file is a tombstone there and is ignored).
+function makeCollectorRepo() {
+  const dir = makeScratchRepo();
+  fs.copyFileSync(path.join(REPO_ROOT, 'scripts', 'lib', 'unit-test-collection.js'), path.join(dir, 'scripts', 'lib', 'unit-test-collection.js'));
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'scripts', 'tests'), { recursive: true });
+  return dir;
+}
+
+test('listManifestTestFiles: a collector tree uses the collected batch, never the tombstone (BRO-2483)', () => {
+  const dir = makeCollectorRepo();
+  fs.writeFileSync(path.join(dir, 'scripts', 'validate-x.test.mjs'), "// reads .github/workflows\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'tests', 'joined.test.mjs'), "path.join('.github', 'workflows')\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'verify-live.test.mjs'), '// .github/workflows\n'); // default-excluded probe
+  // A line an old branch union-merged into the tombstone: ignored.
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest.txt'), '# RETIRED\nscripts/ghost.test.mjs\n');
+  fs.writeFileSync(path.join(dir, 'scripts', 'ghost.test.mjs'), '// .github/workflows\n');
+  assert.deepEqual(listManifestTestFiles(dir), [
+    path.join('scripts', 'ghost.test.mjs'), // collected because it exists in scripts/, not because the tombstone names it
+    path.join('scripts', 'tests', 'joined.test.mjs'),
+    path.join('scripts', 'validate-x.test.mjs'),
+  ]);
+  fs.rmSync(path.join(dir, 'tests', 'unit-test-manifest.txt'));
+  assert.equal(listManifestTestFiles(dir).length, 3, 'the tombstone has no effect on the list');
+});
+
+test('listManifestTestFiles + runTestGate: an EMPTY collection fails closed on a workflow change (BRO-2483)', () => {
+  const dir = makeCollectorRepo();
+  assert.throws(() => listManifestTestFiles(dir), NodeBatchUnavailableError);
+  // REQUIRED guard present, so only the empty collection can refuse here.
+  fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'x.js'), '');
+  const r = runTestGate({ cwd: dir, changedFiles: ['.github/workflows/a.yml'], execFn: () => { throw new Error('must not run'); } });
+  assert.equal(r.passed, false);
+  assert.equal(r.ran, false);
+  assert.match(r.reason, /ZERO node unit tests/);
 });
 
 test('listManifestTestFiles: [] without a manifest; skips blanks, comments and non-tests', () => {

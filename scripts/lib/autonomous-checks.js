@@ -173,7 +173,7 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   // here at the auto-derivation call site instead. Plain node's ESM resolver
   // isn't TS-aware, so it can neither run a `.test.ts` file's own TS syntax
   // nor resolve a `.ts` module's extensionless internal imports. Two separate
-  // batches (mirrors test.yml's own unit-test-manifest.txt vs
+  // batches (mirrors test.yml's own collected node batch vs
   // unit-test-manifest-tsx.txt split) so a diff mixing `.test.mjs` and
   // `.test.ts` colocated tests runs each under the loader that understands it.
   // BRO-4525: a `.test.mjs` that imports a `.ts` module is listed in

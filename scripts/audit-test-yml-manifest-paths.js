@@ -4,7 +4,10 @@
  * reachable by test.yml's `on.push.paths` allow-list.
  *
  * THE GAP THIS CLOSES. Two independent lists decide a test's fate:
- *   - tests/unit-test-manifest*.txt decides whether the test RUNS once CI fires.
+ *   - the unit-test lists decide whether the test RUNS once CI fires: the
+ *     collected node batch (scripts/lib/unit-test-collection.js, BRO-2483; it
+ *     replaced tests/unit-test-manifest.txt, now a tombstone) plus the
+ *     hand-kept tests/unit-test-manifest-tsx.txt and e2e manifest.
  *   - test.yml's on.push.paths decides whether CI fires AT ALL.
  * A test in the first but not the second is the worst of both worlds: it looks
  * fully wired, it passes in every run you happen to see, and a push that edits
@@ -96,14 +99,14 @@ function main() {
     }
     for (const t of unregistered.staleQuarantine) {
       console.log(
-        `audit-test-yml-manifest-paths: stale quarantine entry — ${t} is now registered or gone; drop it from UNREGISTERED_TEST_QUARANTINE.`
+        `audit-test-yml-manifest-paths: stale quarantine entry — ${t} is now registered or gone; drop it from EXCLUDED in scripts/lib/unit-test-collection.js.`
       );
     }
     for (const t of unregistered.brokenExemptions) {
       console.error(
         `::error::audit-test-yml-manifest-paths: ${t} is exempted on the grounds that it runs at its own ` +
           `${WORKFLOW_REL} step, but no step in that file mentions it any more. It is now registered nowhere ` +
-          'and runs NOWHERE. Restore the step, or register it in a manifest, or replace the quarantine reason.'
+          'and runs NOWHERE. Restore the step, or drop it from EXCLUDED in scripts/lib/unit-test-collection.js so the node batch collects it, or replace the reason.'
       );
     }
     if (unregistered.orphans.length === 0 && unregistered.brokenExemptions.length === 0) {
@@ -122,9 +125,10 @@ function main() {
       );
       for (const t of unregistered.orphans) console.error(`  ${t}`);
       console.error(
-        `\nFix: add each to ${MANIFEST_FILES[0]} (or the tsx/e2e manifest if that is where it belongs). ` +
-          'If it genuinely must not run in CI, add it to UNREGISTERED_TEST_QUARANTINE in ' +
-          'scripts/lib/test-yml-manifest-paths.js with the issue that will end the exemption.'
+        '\nFix: a .test.{mjs,js,cjs} file is collected automatically (scripts/lib/unit-test-collection.js); a .ts/.tsx ' +
+          'test belongs in tests/unit-test-manifest-tsx.txt (or the e2e manifest). ' +
+          'If it genuinely must not run in CI, add it to EXCLUDED in ' +
+          'scripts/lib/unit-test-collection.js with the issue that will end the exemption.'
       );
     }
   }

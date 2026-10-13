@@ -379,7 +379,23 @@ function parseCheckOutput(stdout) {
   return { text: s, costUsd: 0, error: null };
 }
 
+/**
+ * BRO-2483: what a land batch with NO files means. The node unit batch can
+ * never legitimately be empty (an empty collection means the collector or the
+ * tree is broken), so it fails closed; the other file batches (scripts/lib)
+ * read as clean, as before. null = the batch has files (or none are listed
+ * because the gate is not file-based): run it.
+ */
+function emptyBatchVerdict(gate, files) {
+  if (!Array.isArray(files) || files.length > 0) return null;
+  if (gate === 'unit-tests-node') {
+    return { exit: 1, text: '::error::the node unit batch is empty: scripts/lib/unit-test-collection.js (or, in a pre-BRO-2483 tree, tests/unit-test-manifest.txt) returned no files\n' };
+  }
+  return { exit: 0, text: '' };
+}
+
 module.exports = {
+  emptyBatchVerdict,
   parseCheckOutput,
   lockMessage,
   lockCards,

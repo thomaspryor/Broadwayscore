@@ -50,7 +50,7 @@ jobs:
         run: node scripts/test-temporal-override-regression.js
       - name: Run unit tests (no-data-dependency)
         run: |
-          mapfile -t node_tests < tests/unit-test-manifest.txt
+          mapfile -t node_tests < <(node scripts/lib/unit-test-collection.js)
           run_batch node /tmp/unit-node-batch.log node --test "\${node_tests[@]}"
 
   data-validation:

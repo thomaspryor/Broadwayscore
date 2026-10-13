@@ -8,7 +8,10 @@
 //      (land run 37182544195).
 //   B. a tests/unit (or scripts/) test file the branch added is in no
 //      manifest, or a file the branch deleted is still listed
-//      (land run 37184867156).
+//      (land run 37184867156). Since BRO-2483 the node batch is COLLECTED
+//      (scripts/lib/unit-test-collection.js), so a new test is registered
+//      unless that module excludes it; an edit to the retired
+//      tests/unit-test-manifest.txt only WARNS ("ignored, drop it").
 //
 // Both checks only ever block on what THIS branch changed (land.yml judges new
 // failures vs base, so a red that is already on main must not block here), and
@@ -27,6 +30,7 @@
 
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -35,6 +39,12 @@ import { landPushTargets } from './push-command.mjs';
 const require = createRequire(import.meta.url);
 const { isPromisorFetchFailure } = require('./promisor-fetch-failure.js');
 const { manifestOrderProblem } = require('./test-manifest.js');
+const {
+  NODE_MANIFEST_REL: NODE_MANIFEST,
+  TSX_MANIFEST_REL: TSX_MANIFEST,
+  E2E_MANIFEST_REL: E2E_MANIFEST,
+  COLLECTION_MODULE_REL: COLLECTOR,
+} = require('./unit-test-collection.js');
 
 export const MAX_COMMITS = 200;
 const BYPASS_RE = /#\s*NO-LAND-PREFLIGHT:\s*(\S.{14,})/;
@@ -121,14 +131,170 @@ export function previewRebase({ base, tip, cwd, maxCommits = MAX_COMMITS }) {
 }
 
 const TEST_FILE_RE = /^(tests\/unit|scripts|scripts\/tests)\/[^/]+\.test\.(mjs|ts|tsx|js|cjs|sh)$/;
-const MANIFEST_RE = /^tests\/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$/;
+const MANIFEST_PATHS = [NODE_MANIFEST, TSX_MANIFEST, E2E_MANIFEST];
+const isManifest = (p) => MANIFEST_PATHS.includes(p);
+// BRO-2483: the node batch is collected; NODE_MANIFEST is a tombstone in any
+// tree that carries COLLECTOR (both paths come from unit-test-collection.js).
+
+/** Does `rev`'s tree carry the collector (i.e. ignore the node manifest)? */
+function revHasCollector(cwd, rev) {
+  return ok(git(cwd, ['cat-file', '-e', `${rev}:${COLLECTOR}`]));
+}
+
+/**
+ * Non-blocking advice: the branch edits the retired node manifest while the
+ * tree it pushes collects the node batch, so the edit does nothing.
+ * -> string[] (empty when nothing to say or the check cannot judge)
+ */
+export function retiredManifestWarnings({ base, src, cwd }) {
+  const d = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${src}`]);
+  if (!ok(d) || !out(d).split('\n').includes(NODE_MANIFEST) || !revHasCollector(cwd, src)) return [];
+  return [
+    `${NODE_MANIFEST} is retired (BRO-2483): this edit is ignored: nothing reads this file; new tests need no registration (${COLLECTOR} collects them; opt a file out via its EXCLUDED map). You can drop the edit.`,
+  ];
+}
+
+/**
+ * Extract the paths the registration audit reads (tests/, scripts/, .github/)
+ * of `rev` into a temp dir, so a tree that is not checked out (the base, or
+ * the simulated rebased tip) can be judged. -> dir, or null when it fails.
+ */
+function materializeTree(cwd, rev) {
+  const top = git(cwd, ['ls-tree', '--name-only', rev]);
+  if (!ok(top)) return null;
+  const want = ['tests', 'scripts', '.github'].filter((p) => out(top).split('\n').includes(p));
+  if (want.length === 0) return null;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'land-preflight-tree-'));
+  const r = spawnSync('bash', ['-c', 'git archive --format=tar "$1" -- "${@:3}" | tar -x -C "$2"', '_', rev, dir, ...want], {
+    cwd,
+    encoding: 'utf8',
+    timeout: 120000,
+  });
+  if (r.status !== 0) {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 });
+    return null;
+  }
+  return dir;
+}
+
+/** require() a module from a tree under judgement, never a cached copy. */
+function requireFrom(root, rel) {
+  const file = path.join(root, rel);
+  delete require.cache[require.resolve(file)];
+  return require(file);
+}
+
+/**
+ * Step 1: the judged tree's own copy of the CI audit, scoped to `scope`.
+ * -> { problems } or { skip: reason }
+ */
+function auditProblems(judgeRoot, scope) {
+  const audit = path.join(judgeRoot, 'scripts', 'audit-orphan-tests.js');
+  if (!fs.existsSync(audit)) return { problems: [] };
+  const collects = fs.existsSync(path.join(judgeRoot, COLLECTOR));
+  const r = spawnSync('node', [audit, '--scope-stdin', '--json'], {
+    cwd: judgeRoot,
+    input: scope.join('\n') + '\n',
+    encoding: 'utf8',
+    timeout: 45000,
+  });
+  if (r.status === 0) return { problems: [] };
+  if (r.status !== 1) return { skip: `audit-orphan-tests.js exit ${r.status}` };
+  // exit 1 is also what a crash looks like: only parseable JSON blocks.
+  let report;
+  try {
+    report = JSON.parse(r.stdout);
+  } catch {
+    return { skip: 'audit-orphan-tests.js exited 1 without JSON (crashed)' };
+  }
+  const problems = [];
+  for (const x of report.blocking || []) {
+    const f = typeof x === 'string' ? x : x.file;
+    problems.push(
+      collects
+        ? `${f} runs in no CI job: ${COLLECTOR} does not collect it (excluded, a verify-* probe, or outside the collected dirs) and no manifest or workflow run: step names it (a .ts test goes in ${TSX_MANIFEST}; a never-CI probe goes in EXEMPT_NEVER_CI in scripts/audit-orphan-tests.js)`
+        : `${f} runs in no CI job: no test manifest lists it and no workflow run: step names it`,
+    );
+  }
+  // The audit also exits 1 on manifest problems (unsorted, duplicates, the
+  // a collector failure) in manifests this branch touched.
+  for (const m of report.manifestProblems || []) {
+    // Collected-batch problems (collector failure, .ts import) carry their own fix; only order/duplicate problems get the sorter.
+    const ownFix = m.manifest === NODE_MANIFEST && collects;
+    problems.push(ownFix ? `${m.manifest}: ${m.error}` : `${m.manifest}: ${m.error} (fix: node scripts/lib/test-manifest.js --fix)`);
+  }
+  return { problems };
+}
+
+/** Step 2: manifest entries in the judged tree pointing at files this branch deleted. */
+function deletedEntryProblems(judgeRoot, deleted) {
+  const problems = [];
+  for (const m of MANIFEST_PATHS) {
+    const mp = path.join(judgeRoot, m);
+    if (!fs.existsSync(mp)) continue;
+    // Not the node manifest in a collector tree: nothing reads its lines (and
+    // in-flight branches keep union-merging lines into the frozen list).
+    if (m === NODE_MANIFEST && fs.existsSync(path.join(judgeRoot, COLLECTOR))) continue;
+    for (const entry of fs.readFileSync(mp, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'))) {
+      if (deleted.has(entry)) problems.push(`${m} still lists ${entry}, which this branch deletes (remove the line)`);
+    }
+  }
+  return problems;
+}
+
+/** Step 3 (BRO-2483): a deleted file the judged tree's collector still names in OPT_IN / EXCLUDED. */
+function staleCollectorListProblems(judgeRoot, deleted) {
+  if (deleted.size === 0 || !fs.existsSync(path.join(judgeRoot, COLLECTOR))) return [];
+  const C = requireFrom(judgeRoot, COLLECTOR);
+  const problems = [];
+  for (const [list, entries] of [['OPT_IN', [...C.OPT_IN]], ['EXCLUDED', [...C.EXCLUDED.keys()]]]) {
+    for (const rel of entries) {
+      if (deleted.has(rel)) problems.push(`${COLLECTOR} ${list} still lists ${rel}, which this branch deletes (remove the entry; glob-based-manifest.test.mjs fails on a stale one)`);
+    }
+  }
+  return problems;
+}
+
+/**
+ * Step 4 (BRO-2483): an edit to the collector that drops tests from the node
+ * batch. Every test collected on `base` but not by the judged tree, and still
+ * present there, must be EXCLUDED with a reason or named in a workflow run:
+ * step (or another manifest). -> { problems, newlyExcluded } or { skip }
+ */
+function collectorEditProblems(cwd, base, judgeRoot) {
+  if (!fs.existsSync(path.join(judgeRoot, COLLECTOR))) return { problems: [], newlyExcluded: [] };
+  const baseDir = materializeTree(cwd, base);
+  if (!baseDir) return { skip: `could not extract ${base} to compare the collector edit` };
+  try {
+    const before = fs.existsSync(path.join(baseDir, COLLECTOR))
+      ? requireFrom(baseDir, COLLECTOR).collectNodeUnitTests(baseDir)
+      : requireFrom(judgeRoot, COLLECTOR).nodeUnitTestsForTree(baseDir); // pre-BRO-2483 base: its manifest
+    const C = requireFrom(judgeRoot, COLLECTOR);
+    const after = new Set(C.collectNodeUnitTests(judgeRoot));
+    const newlyExcluded = before.filter((rel) => !after.has(rel) && fs.existsSync(path.join(judgeRoot, rel)));
+    if (newlyExcluded.length === 0) return { problems: [], newlyExcluded };
+    const { coverageOf } = requireFrom(judgeRoot, 'scripts/audit-orphan-tests.js').collectCiCoverage(judgeRoot);
+    const problems = [];
+    for (const rel of newlyExcluded) {
+      const reason = C.EXCLUDED.get(rel);
+      if (typeof reason === 'string' && reason.trim()) continue;
+      if (coverageOf(rel)) continue;
+      problems.push(`${rel} no longer runs in the node batch after this edit of ${COLLECTOR}, and it runs nowhere else: add it to EXCLUDED with a reason (and where it runs instead), or undo the change that drops it`);
+    }
+    return { problems, newlyExcluded };
+  } finally {
+    fs.rmSync(baseDir, { recursive: true, force: true, maxRetries: 5 });
+  }
+}
 
 /**
  * Branch-scoped test registration check, run against the working tree at
  * `cwd` (the caller guarantees it equals the pushed commit for these paths).
- * -> { status: 'clean' | 'fail' | 'skip', problems?: string[], reason? }
+ * `landedTip` is the simulated rebased commit (what land would put on main),
+ * used when the base and the branch disagree about the collector.
+ * -> { status: 'clean' | 'fail' | 'skip', problems?: string[], warnings?: string[], reason? }
  */
-export function checkTestRegistration({ base, tip, cwd }) {
+export function checkTestRegistration({ base, tip, cwd, landedTip = null }) {
   const diff = git(cwd, ['diff', '--name-status', '--no-renames', `${base}...${tip}`]);
   if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
   const changed = [];
@@ -138,51 +304,61 @@ export function checkTestRegistration({ base, tip, cwd }) {
     changed.push(p);
     if (st === 'D') deleted.add(p);
   }
-  const relevant = changed.filter((p) => TEST_FILE_RE.test(p) || MANIFEST_RE.test(p));
+  const editsCollector = changed.includes(COLLECTOR);
+  const relevant = changed.filter((p) => TEST_FILE_RE.test(p) || isManifest(p) || p === COLLECTOR);
   if (relevant.length === 0) return { status: 'clean', reason: 'no test files or manifests changed' };
   const root = out(git(cwd, ['rev-parse', '--show-toplevel']));
   const problems = [];
+  const warnings = [];
+  let scope = changed.filter((p) => !deleted.has(p));
 
-  // 1. Added/changed test files that no manifest or workflow registers —
-  //    the pushed tree's own copy of the CI audit, scoped to this branch.
-  const audit = path.join(root, 'scripts', 'audit-orphan-tests.js');
-  if (fs.existsSync(audit)) {
-    const r = spawnSync('node', [audit, '--scope-stdin', '--json'], {
-      cwd: root,
-      input: changed.filter((p) => !deleted.has(p)).join('\n') + '\n',
-      encoding: 'utf8',
-      timeout: 45000,
-    });
-    if (r.status === 1) {
-      // exit 1 is also what a crash looks like: only parseable JSON blocks.
-      let report;
-      try {
-        report = JSON.parse(r.stdout);
-      } catch {
-        return { status: 'skip', reason: 'audit-orphan-tests.js exited 1 without JSON (crashed)' };
-      }
-      for (const x of report.blocking || []) {
-        const f = typeof x === 'string' ? x : x.file;
-        problems.push(`${f} is not listed in any test manifest or workflow (add it to tests/unit-test-manifest.txt, sorted)`);
-      }
-      // The audit also exits 1 on manifest problems (unsorted, duplicates) in manifests this branch touched.
-      for (const m of report.manifestProblems || []) {
-        problems.push(`${m.manifest}: ${m.error} (fix: node scripts/lib/test-manifest.js --fix)`);
-      }
-    } else if (r.status !== 0) {
-      return { status: 'skip', reason: `audit-orphan-tests.js exit ${r.status}` };
+  // BRO-2483 transition: judge against the tree that will actually land. When
+  // the base collects node tests but this branch's tree predates the
+  // collector, the branch's own audit would hand out pre-BRO-2483 advice
+  // ("register it in the manifest"), which is wrong for the landed tree. So
+  // the checks below run on the simulated rebased tree instead.
+  let judgeRoot = root;
+  let tempRoot = null;
+  if (revHasCollector(cwd, base) && !revHasCollector(cwd, tip)) {
+    const msg =
+      `this branch predates BRO-2483 (${base} collects node unit tests with ${COLLECTOR}; this branch's tree does not): ` +
+      `merge origin/main first (git fetch origin main && git merge origin/main); ${NODE_MANIFEST} is retired, do not edit it; new tests need no registration`;
+    warnings.push(
+      changed.includes(NODE_MANIFEST)
+        ? `${msg}. This branch's edit to ${NODE_MANIFEST} is ignored: nothing reads that file; you can drop the edit.`
+        : msg,
+    );
+    tempRoot = landedTip ? materializeTree(cwd, landedTip) : null;
+    if (!tempRoot) {
+      // No rebased tree to judge (conflict / skip upstream): the predates verdict is all we can say.
+      return problems.length
+        ? { status: 'fail', problems, warnings }
+        : { status: 'clean', reason: 'branch predates BRO-2483 and no rebased tree to judge', warnings };
     }
+    judgeRoot = tempRoot;
   }
 
-  // 2. Manifest entries pointing at files this branch deleted.
-  for (const m of ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt']) {
-    const mp = path.join(root, m);
-    if (!fs.existsSync(mp)) continue;
-    for (const entry of fs.readFileSync(mp, 'utf8').split('\n').map((l) => l.trim()).filter(Boolean)) {
-      if (deleted.has(entry)) problems.push(`${m} still lists ${entry}, which this branch deletes (remove the line)`);
+  try {
+    // 4. A collector edit: its newly excluded tests join the audit scope and
+    //    must have an EXCLUDED reason or another CI home.
+    if (editsCollector) {
+      const ce = collectorEditProblems(cwd, base, judgeRoot);
+      if (ce.skip) return { status: 'skip', reason: ce.skip, warnings };
+      problems.push(...ce.problems);
+      scope = [...new Set([...scope, ...ce.newlyExcluded])];
     }
+    // 1. Added/changed (or newly excluded) test files nothing registers.
+    const a = auditProblems(judgeRoot, scope);
+    if (a.skip) return { status: 'skip', reason: a.skip, warnings };
+    problems.push(...a.problems);
+    // 2. Manifest entries pointing at files this branch deleted.
+    problems.push(...deletedEntryProblems(judgeRoot, deleted));
+    // 3. OPT_IN / EXCLUDED entries pointing at files this branch deleted.
+    problems.push(...staleCollectorListProblems(judgeRoot, deleted));
+  } finally {
+    if (tempRoot) fs.rmSync(tempRoot, { recursive: true, force: true, maxRetries: 5 });
   }
-  return problems.length ? { status: 'fail', problems } : { status: 'clean' };
+  return problems.length ? { status: 'fail', problems, warnings } : { status: 'clean', warnings };
 }
 
 // Paths only the pipeline bots write. A land commit that rewrites many of them is
@@ -275,9 +451,12 @@ export function checkRebasedManifests({ base, src, tip, cwd }) {
   const d = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${src}`]);
   if (!ok(d)) return { status: 'skip', reason: 'diff vs base failed' };
   const problems = [];
-  for (const m of out(d).split('\n').filter((p) => MANIFEST_RE.test(p))) {
+  for (const m of out(d).split('\n').filter((p) => isManifest(p))) {
     const r = git(cwd, ['show', `${tip}:${m}`]);
     if (!ok(r)) continue; // deleted on the branch
+    // BRO-2483: the node manifest is an ignored tombstone in a collector tree
+    // (its frozen list keeps absorbing in-flight appends); order is irrelevant.
+    if (m === NODE_MANIFEST && revHasCollector(cwd, tip)) continue;
     const p = manifestOrderProblem(r.stdout);
     if (p) problems.push(`${m} ${p} after the land rebase onto ${base}`);
   }
@@ -301,7 +480,7 @@ function testTreeDirty(cwd) {
     paths.push(e.slice(3));
     if (e[0] === 'R' || e[0] === 'C') paths.push(entries[++i]); // -z: rename source follows as its own entry
   }
-  return paths.filter((p) => TEST_FILE_RE.test(p) || MANIFEST_RE.test(p) || p.startsWith('.github/workflows/'));
+  return paths.filter((p) => TEST_FILE_RE.test(p) || isManifest(p) || p.startsWith('.github/workflows/'));
 }
 
 export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests }) {
@@ -379,7 +558,7 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   const rebase = (seams.preview || previewRebase)({ base, tip: src, cwd });
   detail.rebase = rebase;
   let tests = { status: 'skip', reason: 'not requested' };
-  if (checkTests) tests = (seams.checkTests || checkTestRegistration)({ base, tip: src, cwd });
+  if (checkTests) tests = (seams.checkTests || checkTestRegistration)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.tests = tests;
   const botOwned = (seams.checkBotOwned || checkBotOwnedRewrite)({ base, tip: src, cwd });
   detail.botOwned = botOwned;
@@ -393,10 +572,13 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
     ? (seams.checkRebasedManifests || checkRebasedManifests)({ base, src, tip: rebase.tip, cwd })
     : { status: 'skip' };
   detail.manifests = manifests;
+  const warnings = [...(tests.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
+  detail.warnings = warnings;
   if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status].some((x) => x === true || x === 'fail')) {
-    return { decision: 'block', message: blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests }), detail };
+    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests });
+    return { decision: 'block', message: warnings.length ? `${message}\n\nAlso: ${warnings.join('\n')}` : message, warnings, detail };
   }
-  return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', detail };
+  return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
 }
 
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
@@ -447,8 +629,9 @@ export function runHook({ command, cwd, env = process.env, seams = {} }) {
     results.push(v);
   }
   const blocked = results.filter((r) => r.decision === 'block');
-  if (blocked.length) return { decision: 'block', message: blocked.map((b) => b.message).join('\n\n'), results };
-  return { decision: results.some((r) => r.decision === 'allow') ? 'allow' : 'skip', results };
+  const warnings = [...new Set(results.flatMap((r) => r.warnings || []))];
+  if (blocked.length) return { decision: 'block', message: blocked.map((b) => b.message).join('\n\n'), warnings, results };
+  return { decision: results.some((r) => r.decision === 'allow') ? 'allow' : 'skip', warnings, results };
 }
 
 function main(argv) {
@@ -466,6 +649,8 @@ function main(argv) {
       process.stderr.write(v.message + '\n');
       return 2;
     }
+    // Warnings never block (exit 0); stderr is shown to the session.
+    for (const w of v.warnings || []) process.stderr.write(`land preflight warning: ${w}\n`);
     return 0;
   }
   const arg = (name, dflt) => {
@@ -478,7 +663,10 @@ function main(argv) {
   const v = judgeLand({ cwd, src: tip, target: arg('--target', `land/(${tip})`), base, fetch: !argv.includes('--no-fetch'), checkTests: !argv.includes('--no-tests') });
   if (argv.includes('--json')) process.stdout.write(JSON.stringify(v, null, 2) + '\n');
   else if (v.decision === 'block') process.stderr.write(v.message + '\n');
-  else process.stdout.write(`land preflight: ${v.decision} (rebase ${v.detail.rebase.status}${v.detail.rebase.reason ? `: ${v.detail.rebase.reason}` : ''}; tests ${v.detail.tests.status}${v.detail.tests.reason ? `: ${v.detail.tests.reason}` : ''})\n`);
+  else {
+    for (const w of v.warnings || []) process.stderr.write(`land preflight warning: ${w}\n`);
+    process.stdout.write(`land preflight: ${v.decision} (rebase ${v.detail.rebase.status}${v.detail.rebase.reason ? `: ${v.detail.rebase.reason}` : ''}; tests ${v.detail.tests.status}${v.detail.tests.reason ? `: ${v.detail.tests.reason}` : ''})\n`);
+  }
   return v.decision === 'block' ? 3 : 0; // 3, not 1: a crash on load also exits 1
 }
 

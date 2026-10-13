@@ -167,7 +167,9 @@ fi
 # (TEST_FILE_EXTENSIONS, MANIFESTS, push-path glob translation), so editing
 # either alone must still re-run the audits that depend on it, or a broken
 # change to the canonical list ships without its own gate firing.
-if grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/(test-yml-manifest-paths|test-manifest|test-yml-push-paths)\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" <<<"$CHANGED_FILES"; then
+# BRO-2483: scripts/lib/unit-test-collection.js joined it (it now decides the
+# node unit batch, which test-manifest.js resolves through).
+if grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/(test-yml-manifest-paths|test-manifest|test-yml-push-paths|unit-test-collection)\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" <<<"$CHANGED_FILES"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
   # scripts/lib/ colocated-test coverage (BRO-2749/BRO-3239): is every
   # scripts/lib/*.test.* file actually invoked by a workflow run: body?

@@ -92,8 +92,12 @@ function severityOf(v) {
  * escalating even after this fix, since the exemption is pairwise, not
  * unconditional.
  */
+// BRO-2483: tests/unit-test-manifest.txt is now a RETIRED tombstone (the node
+// batch is collected by scripts/lib/unit-test-collection.js, so new PRs no
+// longer edit it). It stays listed while branches cut before BRO-2483 still
+// carry an append to it, which is ignored and must not escalate as a collision.
 const ADDITIVE_REGISTRY_FILES = new Set([
-  'tests/unit-test-manifest.txt',
+  require('./unit-test-collection.js').NODE_MANIFEST_REL,
   '.gitignore',
   '.github/workflows/test.yml',
 ]);

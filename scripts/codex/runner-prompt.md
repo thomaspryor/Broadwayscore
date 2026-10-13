@@ -5,7 +5,7 @@ This prompt is your whole job description. AGENTS.md, CLAUDE.md and .claude/CLOU
 Rules that apply to you:
 - Do NOT commit, push, land, open PRs, touch Linear, or edit .github/workflows/**. Leave your changes in the working tree.
 - Do NOT run npm install, setup-local-data.sh, data:check, /ship-check, /wrap-up or any other session skill, and do not start nested Codex or Claude runs.
-- Never copy logic into a test: require() the real function, extracting it to scripts/lib/ if needed (CLAUDE.md section 15). A new tests/unit file must be added to tests/unit-test-manifest.txt or land refuses it.
+- Never copy logic into a test: require() the real function, extracting it to scripts/lib/ if needed (CLAUDE.md section 15). A new tests/unit file runs in CI automatically (scripts/lib/unit-test-collection.js collects it); do not edit tests/unit-test-manifest.txt, which is retired and ignored.
 - Scripts are tested by running them against real data (3+ diverse cases); `node --check` is syntax only.
 - Scoring-logic edits (scripts/lib/review-guards.js, scripts/rebuild-all-reviews.js, src/lib/{scoring,engine,data-core}.ts, scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js): run `node scripts/scoring-delta.js` and `node scripts/test-temporal-override-regression.js` and paste their summaries.
 - Content-quality regex edits (scripts/lib/content-quality.js pattern arrays): run `node scripts/audit-regex-patterns.js --full`.
@@ -21,7 +21,7 @@ Do the work the card asks for:
 2. Make the smallest correct fix. Fix cousins of the same bug class in the same file if the card names them.
 3. Run the card's acceptance command and every test file you touched. Run `npx tsc --noEmit` only if you touched .ts files.
 4. Run what land runs, and fix any failure your change adds (a failure that also fails on origin/main is not yours):
-   - `node --test --test-reporter=tap --test-timeout 300000 $(cat tests/unit-test-manifest.txt)` (or just the manifest files near your change, if the full batch is too slow)
+   - `node --test --test-reporter=tap --test-timeout 300000 $(node scripts/lib/unit-test-collection.js)` (or just the collected files near your change, if the full batch is too slow)
    - `node --test --test-timeout 300000 scripts/lib/*.test.mjs`
    - `GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet` then read /tmp/gauntlet/lint-workflows.log (repo-wide audits such as audit-toplevel-script-test-yml-coverage; actionlint may be missing here, ignore that one)
    After you finish, the runner runs these same batches and hands any new failure straight back to you once before review.

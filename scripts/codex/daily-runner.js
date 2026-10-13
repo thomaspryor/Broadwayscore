@@ -46,6 +46,7 @@ const linear = require(path.join(ROOT, 'scripts/lib/linear-client.js'));
 const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-parked.js'));
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
+const { nodeUnitTestsForTree } = require(path.join(ROOT, 'scripts/lib/unit-test-collection.js'));
 
 const RUNNER_CARD = process.env.CODEX_RUNNER_CARD || 'BRO-4745';
 const WT = path.join(ROOT, '.claude/worktrees/codex-runner');
@@ -289,14 +290,14 @@ function commitAttempt(card, attempt) {
 }
 
 // The land checks a Codex change can break without noticing (BRO-4745 follow-up): the node
-// unit batch (tests/unit-test-manifest.txt), the scripts/lib/*.test.mjs batch, and the
+// unit batch (collected by scripts/lib/unit-test-collection.js, BRO-2483), the scripts/lib/*.test.mjs batch, and the
 // lint-workflows audit list (land-gauntlet.sh, GAUNTLET_GATES=lint-workflows), each judged the
 // way land.yml judges it: failures the branch adds over fresh main (land-gate-delta.js). Only
 // what fails on the branch re-runs on main, so the base side is cheap. Run without the review
 // texts, like land.yml. Returns null when clean, else the failure text.
 const BASE_WT = path.join(ROOT, '.claude/worktrees/codex-runner-base');
 function unitBatch(cwd, files) {
-  // Same scrubbed env as Codex: the manifest and tests come from Codex's branch.
+  // Same scrubbed env as Codex: the file list and tests come from Codex's branch.
   const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000, env: scrubbedEnv() });
   return { exit: r.code, text: r.out, root: cwd };
 }
@@ -330,17 +331,22 @@ function newLandFailures() {
 }
 function landFailuresWith(D, gauntlet) {
   for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // the link, or a dir a test made
-  const read = (f) => { try { return fs.readFileSync(path.join(WT, f), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean); } catch { return []; } };
+  const nodeFiles = (() => { try { return nodeUnitTestsForTree(WT); } catch { return []; } })();
   const libTests = fs.readdirSync(path.join(WT, 'scripts/lib')).filter((f) => f.endsWith('.test.mjs')).map((f) => `scripts/lib/${f}`);
   const batches = [
-    { gate: 'unit-tests-node', run: (cwd, files) => unitBatch(cwd, files), files: read('tests/unit-test-manifest.txt') },
+    // BRO-2483: the tree's own collector (or, in a pre-BRO-2483 tree, its manifest). Empty fails closed below.
+    { gate: 'unit-tests-node', run: (cwd, files) => unitBatch(cwd, files), files: nodeFiles },
     { gate: 'scripts-lib-tests', run: (cwd, files) => unitBatch(cwd, files), files: libTests },
     { gate: 'lint-workflows', run: (cwd) => lintWorkflows(cwd, gauntlet), files: null },
   ];
   const branch = new Map();
   // Re-stamp before every batch: each one blocks up to 40 min and the keep-alive interval
   // cannot fire during spawnSync, so without this a live run outlives LOCK_STALE_MS here.
-  for (const b of batches) { keepLock(); branch.set(b.gate, b.files && !b.files.length ? { exit: 0, text: '', root: WT } : b.run(WT, b.files)); }
+  for (const b of batches) {
+    keepLock();
+    const empty = R.emptyBatchVerdict(b.gate, b.files);
+    branch.set(b.gate, empty ? { ...empty, root: WT } : b.run(WT, b.files));
+  }
   // Some tests rewrite tracked files (data/audit/*.json). The attempt is already committed,
   // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
   // dirty-tree guard throws its verdict away.

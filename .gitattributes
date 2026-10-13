@@ -73,6 +73,11 @@ data/audit/we-historical-promotion-log.jsonl merge=union
 # append-only-registry shape as the ledgers above, not audit churn — the audit
 # state files in this PR's sibling (636) are deliberately merge-coverage=exempt
 # and are NOT given a driver here.
+# BRO-2483: the file is now a RETIRED tombstone: a header prepended to the
+# frozen old list. Node unit tests are collected by
+# scripts/lib/unit-test-collection.js and nothing reads this file. merge=union
+# stays so branches cut before BRO-2483 (and land rebases onto a main that still
+# receives their appends) merge cleanly into the ignored list.
 tests/unit-test-manifest.txt merge=union
 data/audit/deploy-watermark.json merge=ours
 data/audit/needs-human-review.json merge=ours

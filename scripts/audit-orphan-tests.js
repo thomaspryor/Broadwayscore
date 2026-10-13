@@ -16,7 +16,8 @@
  * by this script, because it never looked in that directory. Two of the six
  * were legitimately unregistrable (a future-state Linear-backlog probe and a
  * per-machine-ledger recheck-after probe) and moved to EXEMPT_NEVER_CI below;
- * the rest were wired into tests/unit-test-manifest.txt.
+ * the rest were wired into tests/unit-test-manifest.txt (since BRO-2483 the
+ * node batch is collected by scripts/lib/unit-test-collection.js instead).
  *
  * BRO-2778 (2026-10-12): coverage is decided per repo-relative PATH
  * (scripts/lib/ci-test-coverage.js): the exact path in a manifest, matched by a
@@ -54,7 +55,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
-const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex, validateManifest } = require('./lib/test-manifest.js');
+const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex, validateManifest, readManifest, COLLECTOR_FAILURE } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
 // test.yml's main runner reads file lists from MANIFESTS (task #763 —
@@ -318,14 +319,26 @@ function collectCiCoverage(root = ROOT) {
   const { ciCoverageOf } = require('./lib/ci-test-coverage.js');
   const { executableWorkflowText } = require('./lib/bash-integration-test-list.js');
   const runText = executableWorkflowText(path.join(root, '.github', 'workflows'));
+  // BRO-2483: MANIFESTS[0] names the collected node batch; readManifest()
+  // resolves it (scripts/lib/unit-test-collection.js) whenever the tree carries
+  // the collector, and reads the file only in a pre-BRO-2483 tree. A test the
+  // collector leaves out (its EXCLUDED map, the verify-* default) needs a run:
+  // step or an exemption below, exactly as an unregistered file did before.
   const manifestEntries = new Set();
   for (const manifest of MANIFESTS) {
     const abs = path.join(root, manifest);
-    if (!fs.existsSync(abs)) continue;
-    for (const line of fs.readFileSync(abs, 'utf8').split('\n')) {
-      const entry = line.trim();
-      if (entry && !entry.startsWith('#')) manifestEntries.add(entry);
+    let entries;
+    try {
+      entries = readManifest(abs, root);
+    } catch (e) {
+      if (e.code === 'ENOENT') continue;
+      // A collector failure must not crash the audit (land-preflight reads a
+      // crash as "skip"): checkManifests() reports it as a blocking
+      // COLLECTOR FAILURE, so the run fails closed with parseable output.
+      if (manifest === MANIFESTS[0]) continue;
+      throw e;
     }
+    for (const entry of entries) manifestEntries.add(entry);
   }
   const ci = { manifestEntries, runText };
   return { ...ci, coverageOf: (rel) => ciCoverageOf(rel, ci) };
@@ -350,8 +363,12 @@ function checkManifests(root = ROOT, changedFiles) {
   const informational = [];
   for (const manifest of MANIFESTS) {
     const { errors } = validateManifest(path.join(root, manifest), root);
-    const inScope = !changedFiles || changedFiles.includes(manifest);
-    for (const error of errors) (inScope ? blocking : informational).push({ manifest, error });
+    // BRO-2483: a collected-batch problem names the test file, not a manifest
+    // anyone edits, so it is in scope when that file is part of the push.
+    // A COLLECTOR FAILURE (collector threw, or collected nothing) is never
+    // somebody else's red: it blocks every scoped run (fail closed).
+    const inScope = (error) => !changedFiles || error.startsWith(COLLECTOR_FAILURE) || changedFiles.includes(manifest) || changedFiles.some((f) => error.includes(f));
+    for (const error of errors) (inScope(error) ? blocking : informational).push({ manifest, error });
   }
   return { blocking, informational };
 }
@@ -419,6 +436,21 @@ function main() {
   // apart from "this push touched test.yml for any other reason" without a
   // content diff, so this stays a real, informational-only gap covered by
   // CI's unscoped full check as the safety net (test.yml:2566/2600).
+  // BRO-2483: a collector failure (it threw, or collected nothing) makes every
+  // collected test look orphaned. Report ONLY the failure, never ~1,350 bogus
+  // orphans, and fail closed (exit 1 with parseable JSON for land-preflight).
+  const earlyGate = checkManifests(ROOT, scope);
+  const collectorFailures = earlyGate.blocking.filter((p) => p.error.startsWith(COLLECTOR_FAILURE));
+  if (collectorFailures.length > 0) {
+    if (json) {
+      console.log(JSON.stringify({ collectorFailure: true, total: 0, registered: 0, orphans: [], blocking: [], informational: [], exemptKnownBroken: [], exemptNeverCi: [], manifestProblems: collectorFailures, manifestInformational: [] }, null, 2));
+    } else {
+      console.error('❌ the node unit-test batch could not be collected, so registration cannot be judged:');
+      for (const p of collectorFailures) console.error(`  ${p.error}`);
+      console.error(`Fix scripts/lib/unit-test-collection.js (\`node scripts/lib/unit-test-collection.js --min\` reproduces the error).`);
+    }
+    process.exit(1);
+  }
   const { files, rawOrphans } = findRawOrphans(ROOT);
   const isExempt = f => exemptionFor(EXEMPT_KNOWN_BROKEN, f) || exemptionFor(EXEMPT_NEVER_CI, f);
   const orphans = rawOrphans.filter(f => !isExempt(f));
@@ -429,7 +461,7 @@ function main() {
     .filter(f => exemptionFor(EXEMPT_NEVER_CI, f))
     .map(f => ({ file: f.rel, notion: exemptionFor(EXEMPT_NEVER_CI, f) }));
   const { blocking, informational } = decideOrphanGate({ orphans, changedFiles: scope });
-  const manifestGate = checkManifests(ROOT, scope);
+  const manifestGate = earlyGate;
 
   if (json) {
     console.log(JSON.stringify({
@@ -452,7 +484,7 @@ function main() {
       for (const f of informational) console.error(`  ${f.rel}`);
     }
     console.error('');
-    console.error('Fix: add its repo-relative path to tests/unit-test-manifest.txt (sorted), or name that exact path in a workflow run: step. A same-named file elsewhere, or an on.push.paths entry, does not count (BRO-2778).');
+    console.error('Fix: a *.test.{mjs,js,cjs} in tests/unit, tests/smoke, scripts, scripts/tests, scripts/newsletter or scripts/llm-scoring is collected automatically (scripts/lib/unit-test-collection.js, BRO-2483) unless its EXCLUDED map or the scripts/verify-* default leaves it out; a .ts test goes in tests/unit-test-manifest-tsx.txt; otherwise name that exact path in a workflow run: step. A same-named file elsewhere, or an on.push.paths entry, does not count (BRO-2778).');
     console.error('Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Linear issue (BRO-N).');
     console.error('Opt-out (deferred-effect acceptance probe, run only by autonomous-acceptance-recheck.js): add to EXEMPT_NEVER_CI in scripts/audit-orphan-tests.js — do this in the SAME commit that adds the test file (BRO-445: this was missed 2x in one day and blocked every repo-wide push for 3 days).');
     console.error('Opt-out (intentional): rename to `_skip-${name}.test.mjs`.');
@@ -465,7 +497,11 @@ function main() {
   if (!json && manifestGate.blocking.length > 0) {
     console.error(`❌ ${manifestGate.blocking.length} test manifest problem(s):`);
     for (const p of manifestGate.blocking) console.error(`  ${p.manifest}: ${p.error}`);
-    console.error('Fix ordering and duplicates: node scripts/lib/test-manifest.js --fix');
+    // The sorter only fixes order/duplicate problems; other problems (a .ts
+    // import, a missing file) carry their own fix in the text above.
+    if (manifestGate.blocking.some((p) => /not sorted|more than once/.test(p.error))) {
+      console.error('Fix ordering and duplicates: node scripts/lib/test-manifest.js --fix');
+    }
   }
   if (!json && manifestGate.informational.length > 0) {
     console.log(`(${manifestGate.informational.length} manifest problem(s) in manifests this push doesn't touch, not blocking:)`);

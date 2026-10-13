@@ -42,8 +42,9 @@ const { explainUnsafeCheckCommand } = require('./autonomous-triage-core.js');
 // fails loudly in CI instead of silently degrading every card in that job to
 // owner-judgment.
 const JOB_PROXY_COMMANDS = {
-  // scripts/run-unit-tests.js runs the identical two manifests
-  // (tests/unit-test-manifest.txt / -tsx.txt) this job's own multi-line `run:`
+  // scripts/run-unit-tests.js runs the identical two batches (the node batch
+  // collected by scripts/lib/unit-test-collection.js, BRO-2483, and
+  // tests/unit-test-manifest-tsx.txt) this job's own multi-line `run:`
   // block runs — see that script's header. The workflow step itself can't be
   // named directly: it's a bash block, not a single command.
   'Unit Tests': 'node scripts/run-unit-tests.js',

@@ -15,29 +15,35 @@
 // passing `npm run test:unit` means the same thing locally as a passing CI
 // unit-tests job. Slower than a tests/unit/-only glob, by design: local/CI
 // parity matters more than speed here.
+//
+// BRO-2483: the node batch is collected by scripts/lib/unit-test-collection.js
+// (the same list test.yml feeds node --test). validateManifest() resolves the
+// 'tests/unit-test-manifest.txt' path name to that collected list; the file
+// itself is a retired tombstone.
 
 const { spawnSync } = require('node:child_process');
 const path = require('node:path');
 const { validateManifest } = require('./lib/test-manifest.js');
+const { NODE_MANIFEST_REL, TSX_MANIFEST_REL, COLLECTION_MODULE_REL } = require('./lib/unit-test-collection.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const repoRoot = path.join(__dirname, '..');
 const TEST_TIMEOUT_MS = '300000';
 
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/run-unit-tests.js\n\nRuns the same two manifests as CI\'s "unit-tests" job (tests/unit-test-manifest.txt under node --test, tests/unit-test-manifest-tsx.txt under npx tsx --test). Takes no arguments.');
+  console.log('Usage: node scripts/run-unit-tests.js\n\nRuns the same two batches as CI\'s "unit-tests" job (the collected node batch from scripts/lib/unit-test-collection.js under node --test, tests/unit-test-manifest-tsx.txt under npx tsx --test). Takes no arguments.');
   process.exit(0);
 }
 
 const BATCHES = [
   {
-    manifest: 'tests/unit-test-manifest.txt',
+    manifest: NODE_MANIFEST_REL,
     label: 'node',
     command: 'node',
     baseArgs: ['--test', '--test-timeout', TEST_TIMEOUT_MS],
   },
   {
-    manifest: 'tests/unit-test-manifest-tsx.txt',
+    manifest: TSX_MANIFEST_REL,
     label: 'tsx',
     command: 'npx',
     baseArgs: ['tsx', '--test', '--test-timeout', TEST_TIMEOUT_MS],
@@ -56,7 +62,8 @@ function main() {
       continue;
     }
 
-    console.log(`\n── ${label} batch: ${entries.length} files from ${manifest} ──`);
+    const source = label === 'node' ? COLLECTION_MODULE_REL : manifest;
+    console.log(`\n── ${label} batch: ${entries.length} files from ${source} ──`);
     const result = spawnSync(command, [...baseArgs, ...entries], {
       cwd: repoRoot,
       stdio: 'inherit',

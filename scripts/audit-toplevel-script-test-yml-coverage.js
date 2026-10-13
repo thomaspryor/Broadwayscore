@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Advisory guard (BRO-172 follow-up): flag top-level scripts/*.js files that
- * (a) are registered in tests/unit-test-manifest.txt or
+ * (a) are in the collected node batch (scripts/lib/unit-test-collection.js,
+ * BRO-2483; formerly tests/unit-test-manifest.txt) or
  * tests/unit-test-manifest-tsx.txt (so CI DOES run their test — this is not
  * about untested scripts, most of the 900+ top-level scripts have no test at
  * all by design) but (b) have no matching entry in test.yml's `on.push.paths`
@@ -39,12 +40,14 @@ const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers } = require('./audit-test-yml-lib-deps.js');
+const { readManifest } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const WORKFLOW = path.join(ROOT, '.github', 'workflows', 'test.yml');
+const { NODE_MANIFEST_REL, TSX_MANIFEST_REL, treeUsesCollector } = require('./lib/unit-test-collection.js');
 const MANIFESTS = [
-  path.join(ROOT, 'tests', 'unit-test-manifest.txt'),
-  path.join(ROOT, 'tests', 'unit-test-manifest-tsx.txt'),
+  path.join(ROOT, NODE_MANIFEST_REL),
+  path.join(ROOT, TSX_MANIFEST_REL),
 ];
 
 // scripts/*.test.(mjs|ts) directly under scripts/ (not scripts/lib/, not
@@ -90,11 +93,16 @@ function filterTestsDirEntries(lines) {
   return lines.map((l) => l.trim()).filter((t) => t && TESTS_DIR_TEST_RE.test(t));
 }
 
+// BRO-2483: the node-batch path resolves to the collected list (readManifest
+// special-cases it by name); the tombstone file is never parsed as a list.
 function readManifestLines() {
   const lines = [];
   for (const manifestPath of MANIFESTS) {
-    if (!fs.existsSync(manifestPath)) continue;
-    lines.push(...fs.readFileSync(manifestPath, 'utf8').split('\n'));
+    // Skip a missing file as before, unless it is the node manifest path in a
+    // tree that collects (then the path names the collected batch, file or not).
+    const collected = manifestPath === path.join(ROOT, NODE_MANIFEST_REL) && treeUsesCollector(ROOT);
+    if (!collected && !fs.existsSync(manifestPath)) continue;
+    lines.push(...readManifest(manifestPath, ROOT));
   }
   return lines;
 }

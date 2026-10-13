@@ -308,3 +308,17 @@ test('dropDataDir: unlinks the symlink (target untouched), removes a test-made d
     assert.ok(fs.existsSync(shared));
   } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 3 }); }
 });
+
+test('emptyBatchVerdict: an empty node unit batch fails closed; empty scripts/lib batch reads clean (BRO-2483)', () => {
+  const v = r.emptyBatchVerdict('unit-tests-node', []);
+  assert.equal(v.exit, 1);
+  assert.match(v.text, /node unit batch is empty/);
+  assert.deepEqual(r.emptyBatchVerdict('scripts-lib-tests', []), { exit: 0, text: '' });
+  assert.equal(r.emptyBatchVerdict('unit-tests-node', ['tests/unit/a.test.mjs']), null);
+  assert.equal(r.emptyBatchVerdict('lint-workflows', null), null);
+  // daily-runner wires it in and lists the node batch through the tree's collector, not the manifest file.
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /R\.emptyBatchVerdict\(b\.gate, b\.files\)/);
+  assert.match(src, /nodeUnitTestsForTree\(WT\)/);
+  assert.doesNotMatch(src, /read\('tests\/unit-test-manifest\.txt'\)/);
+});

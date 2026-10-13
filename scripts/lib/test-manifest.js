@@ -3,6 +3,31 @@
 const fs = require('fs');
 const path = require('path');
 
+// BRO-2483: the node batch is collected by scripts/lib/unit-test-collection.js,
+// which owns the paths and the tree-under-test logic (treeUsesCollector /
+// nodeUnitTestsForTree: a tree's OWN collector copy, else its manifest file).
+// The require is guarded for one case only: a fixture tree that copies just
+// this file into scripts/lib/ has no collector, so it reads the manifest file
+// exactly as a pre-BRO-2483 tree does.
+let collection = null;
+try {
+  collection = require('./unit-test-collection.js');
+} catch (e) {
+  if (e.code !== 'MODULE_NOT_FOUND') throw e;
+}
+// The literal fallback exists only for a fixture tree holding this file alone.
+const PATHS = collection || {
+  NODE_MANIFEST_REL: 'tests/unit-test-manifest.txt',
+  TSX_MANIFEST_REL: 'tests/unit-test-manifest-tsx.txt',
+  E2E_MANIFEST_REL: 'tests/e2e-unit-test-manifest.txt',
+};
+const NODE_MANIFEST_REL = PATHS.NODE_MANIFEST_REL;
+const treeUsesCollector = (root) => (collection ? collection.treeUsesCollector(root) : false);
+const nodeUnitTestsForTree = (root) => collection.nodeUnitTestsForTree(root);
+// Prefix of every validateManifest error that means "the collected batch could
+// not be produced" (not a problem in any particular file).
+const COLLECTOR_FAILURE = 'COLLECTOR FAILURE:';
+
 // The 3 manifests test.yml actually runs tests from (repo-relative paths).
 // Single source of truth for consumers that need to know "every manifest
 // that exists" — scripts/audit-orphan-tests.js's MANIFEST_FILES,
@@ -10,14 +35,20 @@ const path = require('path');
 // scripts/audit-time-bomb-tests.js's SUITES all derive from this instead of
 // each hardcoding the same 3 paths independently (card #1657: a 4th
 // independent copy is how a manifest gets silently missed again).
-const MANIFESTS = ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt'];
+//
+// BRO-2483: the first entry names the plain-node BATCH, not a file anyone
+// edits. tests/unit-test-manifest.txt is a tombstone (RETIRED header over the frozen old list);
+// readManifest()/validateManifest() resolve that path to
+// scripts/lib/unit-test-collection.js's collected list whenever the tree
+// carries the collector, and only read the file in a pre-BRO-2483 tree.
+const MANIFESTS = [PATHS.NODE_MANIFEST_REL, PATHS.TSX_MANIFEST_REL, PATHS.E2E_MANIFEST_REL];
 
 // The manifests test.yml runs under `npx tsx --test`: every one except the
 // plain-node unit-test-manifest.txt (the tsx batch, and the E2E batch at
 // test.yml's e2e-unit-test-manifest step). A test listed only here may import
 // .ts modules, so anything that re-runs it must use tsx too (BRO-4930: Land
 // ran the e2e-listed outlet-id-mapper.test.mjs under plain node and refused).
-const TSX_MANIFESTS = MANIFESTS.filter((m) => !m.endsWith('/unit-test-manifest.txt'));
+const TSX_MANIFESTS = MANIFESTS.filter((m) => m !== NODE_MANIFEST_REL);
 
 // Every extension this repo writes a test file in. Single source of truth for
 // the two "is this test actually executed by CI?" guards, which had DIVERGENT
@@ -56,12 +87,31 @@ function testReferenceRegex() {
   return new RegExp(`[a-zA-Z0-9_.-]+\\.test\\.(${TEST_FILE_EXTENSIONS.join('|')})`, 'g');
 }
 
-function readManifest(manifestPath) {
-  const raw = fs.readFileSync(manifestPath, 'utf8');
-  return raw
+// The tree root whose node batch this path names, or null. Matched by path
+// NAME (<root>/tests/unit-test-manifest.txt) and only when <root> carries the
+// collector: the tombstone is always present, so file presence never selects.
+function collectedBatchRoot(manifestPath, repoRoot) {
+  const abs = path.resolve(manifestPath);
+  const root = repoRoot ? path.resolve(repoRoot) : path.dirname(path.dirname(abs));
+  if (abs !== path.join(root, NODE_MANIFEST_REL)) return null;
+  return treeUsesCollector(root) ? root : null;
+}
+
+/** Non-blank, non-`#` lines of a manifest file, read literally. */
+function readManifestFileLines(manifestPath) {
+  return fs
+    .readFileSync(manifestPath, 'utf8')
     .split('\n')
     .map((line) => line.trim())
-    .filter(Boolean);
+    .filter((line) => line && !line.startsWith('#'));
+}
+
+// The node batch path resolves to the collected list (BRO-2483); every other
+// manifest is read from its file.
+function readManifest(manifestPath, repoRoot) {
+  const root = collectedBatchRoot(manifestPath, repoRoot);
+  if (root) return nodeUnitTestsForTree(root);
+  return readManifestFileLines(manifestPath);
 }
 
 // `node --test` with zero file args does NOT fail — it falls back to its own
@@ -77,14 +127,32 @@ function readManifest(manifestPath) {
 // two sessions only collide when their new test names are adjacent.
 function validateManifest(manifestPath, repoRoot) {
   const errors = [];
-  if (!fs.existsSync(manifestPath)) {
+  const collectedRoot = collectedBatchRoot(manifestPath, repoRoot);
+  if (!collectedRoot && !fs.existsSync(manifestPath)) {
     errors.push(`manifest not found: ${manifestPath}`);
     return { entries: [], errors };
   }
 
-  const entries = readManifest(manifestPath);
-  if (entries.length === 0) {
-    errors.push(`manifest is empty: ${manifestPath}`);
+  // BRO-2483: in a collector tree the node batch is the collected list; the
+  // tombstone file (RETIRED header over the frozen old list, plus whatever
+  // in-flight branches union-merge in) is never parsed as a list here.
+  let entries;
+  if (collectedRoot) {
+    // A collector failure or an empty batch is a COLLECTOR_FAILURE: callers
+    // with a push scope must block on it regardless of which files changed
+    // (fail closed — node --test with no files runs its own discovery glob).
+    try {
+      entries = nodeUnitTestsForTree(collectedRoot);
+    } catch (e) {
+      errors.push(`${COLLECTOR_FAILURE} scripts/lib/unit-test-collection.js threw under ${collectedRoot}: ${e.message}`);
+      return { entries: [], errors };
+    }
+    if (entries.length === 0) errors.push(`${COLLECTOR_FAILURE} collected node unit-test batch is empty under ${collectedRoot}`);
+    // The tombstone file itself (RETIRED header + the frozen old list, which
+    // in-flight branches keep union-merging into) is never parsed or judged.
+  } else {
+    entries = readManifestFileLines(manifestPath);
+    if (entries.length === 0) errors.push(`manifest is empty: ${manifestPath}`);
   }
 
   const sorted = [...entries].sort();
@@ -122,7 +190,7 @@ function validateManifest(manifestPath, repoRoot) {
     const fullPath = path.join(repoRoot, entry);
     if (!fs.existsSync(fullPath)) {
       errors.push(`listed test file does not exist: ${entry}`);
-    } else if (path.basename(manifestPath) === 'unit-test-manifest.txt') {
+    } else if (path.basename(manifestPath) === path.basename(NODE_MANIFEST_REL)) {
       // BRO-4647: only the plain-node batch (the tsx and e2e manifests run under
       // other runners). It runs on CI's Node 20, which cannot load
       // .ts modules (ERR_UNKNOWN_FILE_EXTENSION). A test that imports `.ts`
@@ -158,7 +226,7 @@ function validateManifest(manifestPath, repoRoot) {
 // text rather than a file (land-preflight reads it from the simulated rebased
 // tree, BRO-5086). Returns null when the text is canonical.
 function manifestOrderProblem(text) {
-  const entries = String(text).split('\n').map((l) => l.trim()).filter(Boolean);
+  const entries = String(text).split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
   const sorted = [...new Set(entries)].sort();
   if (entries.length !== sorted.length) return 'has duplicate entries';
   const i = entries.findIndex((e, k) => e !== sorted[k]);
@@ -166,7 +234,10 @@ function manifestOrderProblem(text) {
 }
 
 function sortManifestFile(manifestPath) {
-  const entries = readManifest(manifestPath);
+  // BRO-2483: never rewrite the node-batch tombstone. Reading it through
+  // readManifest() would write the whole collected list back into it.
+  if (collectedBatchRoot(manifestPath)) return false;
+  const entries = readManifestFileLines(manifestPath);
   const sorted = [...new Set(entries)].sort();
   if (!manifestOrderProblem(entries.join('\n'))) return false;
   fs.writeFileSync(manifestPath, sorted.join('\n') + '\n');
@@ -174,6 +245,7 @@ function sortManifestFile(manifestPath) {
 }
 
 module.exports = {
+  COLLECTOR_FAILURE,
   MANIFESTS,
   TSX_MANIFESTS,
   TEST_FILE_EXTENSIONS,

@@ -1,3 +1,10 @@
+# RETIRED (BRO-2483): this file is IGNORED. Nothing reads it; edits here change nothing.
+# Node unit tests are collected by scripts/lib/unit-test-collection.js (every
+# *.test.{mjs,js,cjs} in tests/unit, tests/smoke, scripts, scripts/tests, scripts/newsletter,
+# scripts/llm-scoring, plus scripts/lib/*.test.{js,cjs}, minus the tsx/e2e manifests and its
+# EXCLUDED map; top-level scripts/verify-* and scripts/_skip-* need an OPT_IN entry).
+# Adding a test needs no edit here. The list below is frozen so branches cut before
+# BRO-2483 still merge (merge=union); a follow-up card deletes this file.
 scripts/V1-V3-dispatch-status.test.mjs
 scripts/add-verified-tours.test.mjs
 scripts/apply-human-review-fixes.test.mjs

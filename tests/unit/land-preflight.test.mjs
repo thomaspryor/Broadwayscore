@@ -10,6 +10,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parsePushCommand, landPushTargets } from '../../scripts/lib/push-command.mjs';
 import { previewRebase, checkTestRegistration, runHook, blockMessage } from '../../scripts/lib/land-preflight.mjs';
+import collection from '../../scripts/lib/unit-test-collection.js';
+const HEADER = collection.RETIRED_HEADER.join('\n') + '\n';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOK = path.join(ROOT, '.claude', 'hooks', 'pre-push-land-preflight.sh');
@@ -149,17 +151,21 @@ test('preview: no shared history (shallow boundary) is a skip, never a block', (
 });
 
 // ── test registration (branch-scoped) ──────────────────────────────────────
-function auditRepo() {
+function auditRepo({ collector = false } = {}) {
   const d = baseRepo();
+  // BRO-2483: a tree carrying the collector reads its node batch from it.
+  if (collector) write(d, 'scripts/lib/unit-test-collection.js', fs.readFileSync(path.join(ROOT, 'scripts/lib/unit-test-collection.js'), 'utf8'));
   // ci-test-coverage.js + bash-integration-test-list.js: the audit's coverage rule (BRO-2778).
   for (const f of ['scripts/audit-orphan-tests.js', 'scripts/lib/orphan-test-gate.js', 'scripts/lib/test-manifest.js', 'scripts/lib/ci-test-coverage.js', 'scripts/lib/bash-integration-test-list.js']) {
     write(d, f, fs.readFileSync(path.join(ROOT, f), 'utf8'));
   }
   write(d, '.github/workflows/test.yml', 'name: t\n');
+  write(d, '.gitattributes', 'tests/unit-test-manifest.txt merge=union\n'); // as in the real repo
   write(d, 'scripts/tests/.gitkeep', ''); // the audit scans this dir unconditionally
   write(d, 'tests/unit/old.test.mjs', '');
   write(d, 'tests/unit/gone.test.mjs', '');
-  write(d, 'tests/unit-test-manifest.txt', 'tests/unit/gone.test.mjs\ntests/unit/old.test.mjs\n');
+  // A collector tree carries the RETIRED header (BRO-2483); its list lines are ignored.
+  write(d, 'tests/unit-test-manifest.txt', `${collector ? HEADER : ''}tests/unit/gone.test.mjs\ntests/unit/old.test.mjs\n`);
   write(d, 'tests/unit/preexisting-orphan.test.mjs', ''); // someone else's red, already on main
   sh(d, 'git add -A && git commit -qm tests && git checkout -qb feat');
   return d;
@@ -172,7 +178,7 @@ test('tests: a new unregistered test and a deleted-but-listed test block; a pre-
   const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
   assert.equal(r.status, 'fail');
   assert.equal(r.problems.length, 2, r.problems.join('\n'));
-  assert.match(r.problems.join('\n'), /tests\/unit\/new\.test\.mjs is not listed/);
+  assert.match(r.problems.join('\n'), /tests\/unit\/new\.test\.mjs runs in no CI job/);
   assert.match(r.problems.join('\n'), /still lists tests\/unit\/gone\.test\.mjs/);
   assert.doesNotMatch(r.problems.join('\n'), /preexisting-orphan/);
 });
@@ -186,6 +192,156 @@ test('tests: registering both fixes it; a branch with no test changes is clean',
   const e = auditRepo();
   sh(e, 'echo x >> g.txt && git commit -qam feat');
   assert.equal(checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: e }).status, 'clean');
+});
+
+// ── BRO-2483: collector tree — no registration step, manifest edits only warn ──
+test('tests (collector tree): a new tests/unit file needs no registration; a tombstone line for a deleted file is not a problem', () => {
+  const d = auditRepo({ collector: true });
+  write(d, 'tests/unit/new.test.mjs', '');
+  sh(d, 'git rm -q tests/unit/gone.test.mjs && git add -A && git commit -qm feat');
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(r.status, 'clean', (r.problems || []).join('\n'));
+});
+
+test('tests (collector tree): a default-excluded scripts/verify-* probe with no run: step or exemption still blocks', () => {
+  const d = auditRepo({ collector: true });
+  write(d, 'scripts/verify-something-live.test.mjs', '');
+  sh(d, 'git add -A && git commit -qm feat');
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(r.status, 'fail');
+  assert.match(r.problems.join('\n'), /verify-something-live\.test\.mjs runs in no CI job: scripts\/lib\/unit-test-collection\.js does not collect it/);
+});
+
+test('collector tree: any edit to the retired manifest only WARNS ("ignored: nothing reads this file"), never blocks', async () => {
+  const { judgeLand, retiredManifestWarnings } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = auditRepo({ collector: true });
+  // The old habit: register a new test with an (unsorted) list line.
+  write(d, 'tests/unit-test-manifest.txt', `${HEADER}tests/unit/gone.test.mjs\ntests/unit/old.test.mjs\ntests/unit/aaa-new.test.mjs\n`);
+  write(d, 'tests/unit/aaa-new.test.mjs', '');
+  sh(d, 'git add -A && git commit -qm "old habit: register in the manifest"');
+  const w = retiredManifestWarnings({ base: 'main', src: 'HEAD', cwd: d });
+  assert.equal(w.length, 1);
+  assert.match(w[0], /tests\/unit-test-manifest\.txt is retired \(BRO-2483\): this edit is ignored: nothing reads this file; new tests need no registration/);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false });
+  assert.equal(v.decision, 'allow', v.message);
+  assert.deepEqual(v.warnings, w);
+  assert.equal(v.detail.tests.status, 'clean', JSON.stringify(v.detail.tests));
+  assert.equal(v.detail.manifests.status, 'pass', JSON.stringify(v.detail.manifests));
+  // The CLI prints the warning and still exits 0.
+  const cli = spawnSync(process.execPath, [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--tip', 'HEAD', '--base', 'main', '--no-fetch', '--cwd', d], { encoding: 'utf8' });
+  assert.equal(cli.status, 0, cli.stderr);
+  assert.match(cli.stderr, /land preflight warning: tests\/unit-test-manifest\.txt is retired/);
+  // Without the collector (a pre-BRO-2483 tree) the same edit warns nothing.
+  const e = auditRepo();
+  write(e, 'tests/unit-test-manifest.txt', 'tests/unit/gone.test.mjs\ntests/unit/new.test.mjs\ntests/unit/old.test.mjs\n');
+  write(e, 'tests/unit/new.test.mjs', '');
+  sh(e, 'git add -A && git commit -qm feat');
+  assert.deepEqual(retiredManifestWarnings({ base: 'main', src: 'HEAD', cwd: e }), []);
+});
+
+// A branch cut BEFORE BRO-2483, judged after main gained the collector: the
+// advice must describe the tree that will land, never "edit the manifest".
+function predatingBranch() {
+  const d = auditRepo(); // pre-BRO-2483 tree, on branch feat
+  sh(d, 'git checkout -q main');
+  write(d, 'scripts/lib/unit-test-collection.js', fs.readFileSync(path.join(ROOT, 'scripts/lib/unit-test-collection.js'), 'utf8'));
+  write(d, 'tests/unit-test-manifest.txt', `${HEADER}tests/unit/gone.test.mjs\ntests/unit/old.test.mjs\n`); // header prepended, list frozen
+  sh(d, 'git add -A && git commit -qm "BRO-2483 lands on main" && git checkout -q feat');
+  return d;
+}
+
+test('predating branch: a new test with no manifest edit is clean, with "merge origin/main first" advice, never "edit the manifest"', async () => {
+  const { judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = predatingBranch();
+  write(d, 'tests/unit/new.test.mjs', '');
+  sh(d, 'git add -A && git commit -qm feat');
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(r.status, 'clean', JSON.stringify(r));
+  assert.match(r.warnings.join('\n'), /this branch predates BRO-2483: merge origin\/main first|this branch predates BRO-2483 \(main collects/);
+  assert.match(r.warnings.join('\n'), /do not edit it; new tests need no registration/);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false });
+  assert.equal(v.decision, 'allow', v.message);
+  assert.doesNotMatch(JSON.stringify(v), /add it to tests\/unit-test-manifest/);
+});
+
+test('predating branch: editing the old manifest only warns; the land rebase is clean and keeps the header on top', async () => {
+  const { judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = predatingBranch();
+  write(d, 'tests/unit/new.test.mjs', '');
+  write(d, 'tests/unit-test-manifest.txt', 'tests/unit/gone.test.mjs\ntests/unit/new.test.mjs\ntests/unit/old.test.mjs\n');
+  sh(d, 'git add -A && git commit -qm "register the old way"');
+  const p = previewRebase({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(p.status, 'clean', JSON.stringify(p));
+  const merged = sh(d, `git show ${p.tip}:tests/unit-test-manifest.txt`);
+  assert.ok(collection.hasRetiredHeader(merged), 'the union merge keeps the RETIRED header on top');
+  assert.match(merged, /tests\/unit\/new\.test\.mjs/, 'the in-flight line merges into the ignored list');
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d, landedTip: p.tip });
+  assert.equal(r.status, 'clean', JSON.stringify(r));
+  assert.match(r.warnings.join('\n'), /this branch predates BRO-2483/);
+  assert.match(r.warnings.join('\n'), /edit to tests\/unit-test-manifest\.txt is ignored: nothing reads that file/);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false });
+  assert.equal(v.decision, 'allow', v.message);
+  assert.equal(v.detail.manifests.status, 'pass', JSON.stringify(v.detail.manifests));
+  assert.doesNotMatch(JSON.stringify(v), /add it to tests\/unit-test-manifest/);
+});
+
+test('predating branch: the landed tree is still judged — a deleted file left in its tsx manifest blocks', () => {
+  const d = auditRepo();
+  sh(d, 'git checkout -q main');
+  write(d, 'scripts/lib/unit-test-collection.js', fs.readFileSync(path.join(ROOT, 'scripts/lib/unit-test-collection.js'), 'utf8'));
+  write(d, 'tests/unit-test-manifest.txt', `${HEADER}tests/unit/gone.test.mjs\ntests/unit/old.test.mjs\n`);
+  write(d, 'tests/unit-test-manifest-tsx.txt', 'tests/unit/old.test.mjs\n'); // only main's tree lists it
+  sh(d, 'git add -A && git commit -qm "BRO-2483 lands on main" && git checkout -q feat');
+  sh(d, 'git rm -q tests/unit/old.test.mjs && git commit -qm "drop old"');
+  const p = previewRebase({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(p.status, 'clean');
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d, landedTip: p.tip });
+  assert.equal(r.status, 'fail', JSON.stringify(r));
+  assert.match(r.problems.join('\n'), /tests\/unit-test-manifest-tsx\.txt still lists tests\/unit\/old\.test\.mjs/);
+  assert.match(r.warnings.join('\n'), /this branch predates BRO-2483/);
+});
+
+test('collector tree: deleting a file still named in EXCLUDED blocks (stale-list check against the deleted set)', () => {
+  const d = auditRepo({ collector: true });
+  const excludedRel = 'tests/unit/dmarc-deliverability.test.mjs'; // a real EXCLUDED entry
+  sh(d, 'git checkout -q main');
+  write(d, excludedRel, '');
+  sh(d, 'git add -A && git commit -qm "add excluded test" && git checkout -q feat && git merge -q main');
+  sh(d, `git rm -q ${excludedRel} && git commit -qm "delete it"`);
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(r.status, 'fail', JSON.stringify(r));
+  assert.match(r.problems.join('\n'), /unit-test-collection\.js EXCLUDED still lists tests\/unit\/dmarc-deliverability\.test\.mjs, which this branch deletes/);
+});
+
+test('collector edit: tests it newly drops from the node batch block unless EXCLUDED with a reason or run by a workflow step', () => {
+  const COL = 'scripts/lib/unit-test-collection.js';
+  const d = auditRepo({ collector: true });
+  const src = fs.readFileSync(path.join(d, COL), 'utf8');
+  assert.ok(src.includes("const NODE_TEST_DIRS = ['tests/unit', "));
+  write(d, COL, src.replace("const NODE_TEST_DIRS = ['tests/unit', ", 'const NODE_TEST_DIRS = ['));
+  write(d, 'scripts/kept.test.mjs', ''); // keeps the collection non-empty (an empty one is a COLLECTOR FAILURE)
+  sh(d, 'git add -A && git commit -qm "stop collecting tests/unit"');
+  let r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(r.status, 'fail', JSON.stringify(r));
+  const text = r.problems.join('\n');
+  assert.match(text, /tests\/unit\/old\.test\.mjs no longer runs in the node batch after this edit/);
+  // The audit judges the newly excluded files too, even though the push never touched them.
+  assert.match(text, /tests\/unit\/old\.test\.mjs runs in no CI job/);
+
+  // Excluding ONE file with a reason and giving it a run: step is fine.
+  const e = auditRepo({ collector: true });
+  const esrc = fs.readFileSync(path.join(e, COL), 'utf8');
+  write(e, COL, esrc.replace('const EXCLUDED = new Map([\n', "const EXCLUDED = new Map([\n  ['tests/unit/old.test.mjs', 'runs at its own step'],\n"));
+  write(e, '.github/workflows/test.yml', 'name: t\njobs:\n  t:\n    steps:\n      - name: old\n        run: node --test tests/unit/old.test.mjs\n');
+  sh(e, 'git commit -qam "exclude old, run it at its own step"');
+  r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: e });
+  assert.equal(r.status, 'clean', JSON.stringify(r));
+  // ...but without the run: step it runs nowhere, and the scoped audit blocks it.
+  write(e, '.github/workflows/test.yml', 'name: t\n');
+  sh(e, 'git commit -qam "lose the step"');
+  r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: e });
+  assert.equal(r.status, 'fail', JSON.stringify(r));
+  assert.match(r.problems.join('\n'), /tests\/unit\/old\.test\.mjs runs in no CI job/);
 });
 
 // ── hook, end to end, pushing from a git worktree like a real session ──────

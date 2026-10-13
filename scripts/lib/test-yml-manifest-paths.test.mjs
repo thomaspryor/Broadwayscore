@@ -419,3 +419,29 @@ test('the success line never claims every test file is registered while a quaran
   assert.equal(res.status, 0);
   assert.match(res.stdout, /explicitly quarantined above/);
 });
+
+// BRO-2483: in a tree that carries scripts/lib/unit-test-collection.js the node
+// "manifest" is the collected batch; the file there is a tombstone.
+function withCollector(dir) {
+  fs.mkdirSync(path.join(dir, 'scripts', 'lib'), { recursive: true });
+  fs.copyFileSync(path.join(REPO, 'scripts', 'lib', 'unit-test-collection.js'), path.join(dir, 'scripts', 'lib', 'unit-test-collection.js'));
+  return dir;
+}
+
+test('collector tree: a new tests/unit test is registered with no manifest line; the tombstone is ignored', () => {
+  const dir = withCollector(fixture({
+    pushPaths: ['tests/**'],
+    manifestEntries: ['# RETIRED (BRO-2483)', 'scripts/ghost.test.mjs'],
+    onDisk: ['tests/unit/brand-new.test.mjs', 'tests/unit/types.test.ts'],
+  }));
+  const r = findUnregisteredTests(dir);
+  // The .ts test is still an orphan (it needs the tsx manifest); the .mjs one is collected.
+  assert.deepEqual(r.orphans, ['tests/unit/types.test.ts']);
+  // The tombstone's stray line names no file and is never treated as a registered test.
+  assert.deepEqual(findManifestPathGaps(dir), []);
+});
+
+test('collector tree: a collected scripts/ test outside every push path IS a gap (the rule still applies to the collected batch)', () => {
+  const dir = withCollector(fixture({ pushPaths: ['tests/**'], manifestEntries: [], onDisk: ['scripts/foo.test.mjs'] }));
+  assert.deepEqual(findManifestPathGaps(dir), [{ test: 'scripts/foo.test.mjs', manifest: 'tests/unit-test-manifest.txt' }]);
+});

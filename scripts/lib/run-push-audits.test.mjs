@@ -70,7 +70,8 @@ test('a non-test scripts/lib/*.js file does not select the test-registration aud
 // the same push, must still re-trigger the block — otherwise a broken change
 // to the canonical list ships without its own gate ever firing.
 test('editing a canonical dependency (test-manifest.js / test-yml-push-paths.js) alone still selects the test-registration audits', () => {
-  for (const dep of ['scripts/lib/test-manifest.js', 'scripts/lib/test-yml-push-paths.js']) {
+  // BRO-2483: unit-test-collection.js decides the node unit batch, so it is a canonical dependency too.
+  for (const dep of ['scripts/lib/test-manifest.js', 'scripts/lib/test-yml-push-paths.js', 'scripts/lib/unit-test-collection.js']) {
     const labels = listAudits([dep]);
     assert.ok(
       labels.includes('colocated-test-ci-coverage'),

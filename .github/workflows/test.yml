@@ -4903,8 +4903,12 @@ jobs:
             return "$rc"
           }
 
-          mapfile -t node_tests < tests/unit-test-manifest.txt
-          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
+          # BRO-2483: the node batch is collected (scripts/lib/unit-test-collection.js),
+          # not read from the retired tests/unit-test-manifest.txt tombstone. --min
+          # exits 1 on an empty list or one under its MIN_NODE_BATCH floor.
+          node_list=$(node scripts/lib/unit-test-collection.js --min) || { echo "::error::scripts/lib/unit-test-collection.js --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
+          mapfile -t node_tests <<< "$node_list"
+          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
           run_batch node /tmp/unit-node-batch.log \
             node --test --test-timeout 300000 "${node_tests[@]}"
           node_rc=$?; node_pass=$BATCH_PASS; node_fail=$BATCH_FAIL

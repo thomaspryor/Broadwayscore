@@ -12,6 +12,15 @@
 const fs = require('fs');
 const path = require('path');
 const { readPushPathsFrom, isCovered } = require('./test-yml-push-paths.js');
+const {
+  NODE_MANIFEST_REL,
+  TSX_MANIFEST_REL,
+  E2E_MANIFEST_REL,
+  nodeUnitTestsForTree,
+  treeUsesCollector,
+  TESTS_UNIT_QUARANTINE,
+  RUNS_AT_OWN_STEP: COLLECTION_RUNS_AT_OWN_STEP,
+} = require('./unit-test-collection.js');
 
 // All THREE manifests test.yml actually consumes. The e2e one was missed on the
 // first pass and caught in pre-merge review: test.yml:4996 reads it exactly the
@@ -20,11 +29,7 @@ const { readPushPathsFrom, isCovered } = require('./test-yml-push-paths.js');
 // precisely the bug this gate blocks. All 75 of its entries sit under tests/**
 // today, so there was no live gap — but an invisible blind spot in a blocking
 // gate is the thing that lets the bug class come back a fifth time.
-const MANIFEST_FILES = [
-  'tests/unit-test-manifest.txt',
-  'tests/unit-test-manifest-tsx.txt',
-  'tests/e2e-unit-test-manifest.txt',
-];
+const MANIFEST_FILES = [NODE_MANIFEST_REL, TSX_MANIFEST_REL, E2E_MANIFEST_REL]; // single source: unit-test-collection.js
 const WORKFLOW_REL = '.github/workflows/test.yml';
 
 /** Manifest lines are one repo-relative path each; `#` comments and blanks skipped. */
@@ -34,6 +39,19 @@ function readManifestEntries(absPath) {
     .split('\n')
     .map((l) => l.trim())
     .filter((l) => l && !l.startsWith('#'));
+}
+
+/**
+ * Entries one of MANIFEST_FILES contributes for the tree at repoRoot. BRO-2483:
+ * the node manifest path names the collected batch whenever the tree carries
+ * scripts/lib/unit-test-collection.js (the file is a tombstone); a
+ * pre-BRO-2483 tree (or a fixture without the collector) is read from disk.
+ */
+function manifestEntriesFor(repoRoot, manifest) {
+  if (manifest === NODE_MANIFEST_REL && treeUsesCollector(repoRoot)) return nodeUnitTestsForTree(repoRoot);
+  const abs = path.join(repoRoot, manifest);
+  if (!fs.existsSync(abs)) throw new Error(`manifest not found: ${manifest}`);
+  return readManifestEntries(abs);
 }
 
 /**
@@ -50,9 +68,7 @@ function findManifestPathGaps(repoRoot) {
 
   const gaps = [];
   for (const manifest of MANIFEST_FILES) {
-    const abs = path.join(repoRoot, manifest);
-    if (!fs.existsSync(abs)) throw new Error(`manifest not found: ${manifest}`);
-    for (const entry of readManifestEntries(abs)) {
+    for (const entry of manifestEntriesFor(repoRoot, manifest)) {
       if (!isCovered(entry, pathEntries)) gaps.push({ test: entry, manifest });
     }
   }
@@ -67,6 +83,11 @@ function findManifestPathGaps(repoRoot) {
 // looks wired, and is in NO manifest at all. test.yml:3575 runs only what the
 // manifest lists (`mapfile -t node_tests < tests/unit-test-manifest.txt`), so
 // such a file never executes in CI — in any run, on any push, ever.
+// (BRO-2483: test.yml now collects the node batch with
+// scripts/lib/unit-test-collection.js, so a tests/unit file is "registered"
+// unless that module's EXCLUDED map leaves it out. The quarantine below IS that
+// map's tests/unit part; the gap this guards is now a .ts/.tsx test missing
+// from the tsx manifest, or an exclusion whose own-step claim went stale.)
 //
 // Found with 4 unregistered files on 2026-09-04. Being unregistered does NOT by
 // itself mean a test never runs — two of the four have their own dedicated
@@ -124,50 +145,12 @@ const TEST_FILE_RE = /\.test\.(c?js|mjs|tsx?)$/;
  * whose premise has failed is reported as a blocking finding, because it means
  * a test now runs nowhere at all.
  */
-const RUNS_AT_OWN_STEP = 'DOES run';
-const UNREGISTERED_TEST_QUARANTINE = new Map([
-  [
-    'tests/unit/scraper-cookie-wiring.test.mjs',
-    'BRO-2778 — DOES run in CI, by design, at its own test.yml step ("Run scraper-cookie-wiring tests (direct exec, no --test wrapper)"). It monkey-patches https.get/https.request globally, which under `node --test` trips a worker-IPC "Unable to deserialize cloned data" error on Node 20 EVERY run (regression noted 2026-04-30). Adding it to the manifest would put it back in the `node --test` batch, which has no continue-on-error. Must stay unregistered.',
-  ],
-  [
-    'tests/unit/opening-night-checks-skeleton.test.mjs',
-    'BRO-2778 — DOES run in CI at its own serial test.yml step. It writes _stub-passes.check.js and _stub-throws.check.js into scripts/lib/opening-night-checks/, which loadChecks() in that directory\'s index.js discovers by globbing *.check.js. Manifest files run in parallel `node --test` workers alongside opening-night-bypass-corpus.test.mjs, which calls that loader, so registering it would make main red nondeterministically. Must stay unregistered.',
-  ],
-  [
-    'tests/unit/dmarc-deliverability.test.mjs',
-    'BRO-2600 — DOES run in CI at its own advisory step ("Run slow network-dependent unit tests", continue-on-error: true). It does a live dns.resolveTxt() of _dmarc.broadwayscorecard.com; registering it in the main manifest would put a real network call in the no-continue-on-error batch, gating unrelated PRs on a resolver hiccup. Must stay unregistered.',
-  ],
-  // BRO-3425 (2026-09-24): live-DATA assertions, moved out of test.yml's
-  // no-data unit batch because they reddened main with no code change (test.yml
-  // run 36077865497). They run in check-corpus-drift.yml's "Live-data
-  // assertions" step (the data-health workflow) — scripts/audit-orphan-tests.js
-  // verifies that run: line exists.
-  [
-    'tests/unit/cast-changes-real-data.test.mjs',
-    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts on data/cast-changes.json state (stale [AUTO-FLAGGED] > 30 d), which bots rewrite daily. In the unit batch it turned main red with no code change.',
-  ],
-  [
-    'tests/unit/bro3887-cache-fix-acceptance.test.mjs',
-    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: a live probe of the repo Actions cache usage via the GitHub API (BRO-447; was gather-reviews credits/day) plus a credits diagnostic from data/audit/scraper-spend-ledger.jsonl. Live readings are not code facts; in the unit batch it turned main red on 2026-09-24 (7,054 credits).',
-  ],
-  [
-    'tests/unit/image-presence.test.mjs',
-    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts no scored show in the live catalog is imageless past the self-heal threshold (Date.now()), which turns true whenever a newly scored show still lacks a poster. In the unit batch it turned main red on 2026-09-29 (5 West End shows) with no code change.',
-  ],
-  [
-    'tests/unit/venue-complex-live-data.test.mjs',
-    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: venue-complex orphan + candidate-gap checks over data/shows.json, which bots add to and retire from many times a day. In the unit batch it turned main red 2026-09-29 (orphans) and 2026-09-30 ("box" candidate gap) with no code change. Orphans stay gated at write time by validate-data.js.',
-  ],
-  [
-    'tests/unit/tour-runtime-coverage.test.mjs',
-    'BRO-4750 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts every national tour in data/shows.json carries a runtime and synopsis (unless a documented gap). shows.json is rewritten daily and new tours appear, so in the unit batch it would redden main with no code change.',
-  ],
-  [
-    'tests/unit/outlet-registry-live-data.test.mjs',
-    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: null-domain ceiling + domain collisions over data/outlet-registry.json, which the rebuild auto-registers into and commits to main many times a day. In the unit batch it turned main red on 2026-09-29 (51 > 50) with no code change.',
-  ],
-]);
+// BRO-2483: the quarantine now lives in scripts/lib/unit-test-collection.js
+// (its EXCLUDED map is the single source of truth for files the collected node
+// batch leaves out). Re-exported here under the old names for compatibility;
+// the RUNS_AT_OWN_STEP verification below is unchanged.
+const RUNS_AT_OWN_STEP = COLLECTION_RUNS_AT_OWN_STEP;
+const UNREGISTERED_TEST_QUARANTINE = TESTS_UNIT_QUARANTINE;
 
 /** Repo-relative paths of every test file under SCANNED_TEST_DIRS. */
 function listTestFilesOnDisk(repoRoot) {
@@ -215,9 +198,7 @@ function listTestFilesOnDisk(repoRoot) {
 function findUnregisteredTests(repoRoot, quarantine = UNREGISTERED_TEST_QUARANTINE) {
   const registered = new Set();
   for (const manifest of MANIFEST_FILES) {
-    const abs = path.join(repoRoot, manifest);
-    if (!fs.existsSync(abs)) throw new Error(`manifest not found: ${manifest}`);
-    for (const entry of readManifestEntries(abs)) registered.add(entry);
+    for (const entry of manifestEntriesFor(repoRoot, manifest)) registered.add(entry);
   }
 
   // Fail CLOSED on a moved layout. The signal is the DIRECTORY being gone, not
@@ -275,6 +256,7 @@ module.exports = {
   findUnregisteredTests,
   listTestFilesOnDisk,
   readManifestEntries,
+  manifestEntriesFor,
   MANIFEST_FILES,
   WORKFLOW_REL,
   SCANNED_TEST_DIRS,

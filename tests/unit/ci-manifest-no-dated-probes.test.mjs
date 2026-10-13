@@ -16,7 +16,10 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { readManifestEntries, MANIFEST_FILES } = require('../../scripts/lib/test-yml-manifest-paths.js');
+// BRO-2483: manifestEntriesFor() resolves the node manifest path to the
+// COLLECTED batch (scripts/lib/unit-test-collection.js); reading the tombstone
+// file literally would make both checks below vacuous for the node batch.
+const { manifestEntriesFor, MANIFEST_FILES } = require('../../scripts/lib/test-yml-manifest-paths.js');
 const { EXEMPT_NEVER_CI } = require('../../scripts/audit-orphan-tests.js');
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -28,9 +31,9 @@ const DATED_GATE = /Date\.now\(\)\s*<=?\s*Date\.parse\(\s*['"`]\d{4}-|Date\.pars
 function datedProbesIn(repoRoot) {
   const found = [];
   for (const rel of MANIFEST_FILES) {
-    const abs = path.join(repoRoot, rel);
-    if (!fs.existsSync(abs)) continue;
-    for (const entry of readManifestEntries(abs)) {
+    let entries;
+    try { entries = manifestEntriesFor(repoRoot, rel); } catch { continue; }
+    for (const entry of entries) {
       if (entry === SELF) continue;
       const file = path.join(repoRoot, entry);
       if (fs.existsSync(file) && DATED_GATE.test(fs.readFileSync(file, 'utf8'))) found.push(`${rel}: ${entry}`);
@@ -49,9 +52,9 @@ test('no test.yml manifest registers a date-gated live-data probe', () => {
 test('no test.yml manifest registers a file audit-orphan-tests.js declares never-CI', () => {
   const clash = [];
   for (const rel of MANIFEST_FILES) {
-    const abs = path.join(REPO, rel);
-    if (!fs.existsSync(abs)) continue;
-    for (const entry of readManifestEntries(abs)) {
+    let entries;
+    try { entries = manifestEntriesFor(REPO, rel); } catch { continue; }
+    for (const entry of entries) {
       // Older keys are bare names of scripts/*.test.mjs probes and shims;
       // tests/unit holds same-named real tests that CI is meant to run. Newer
       // keys (BRO-2778) are repo-relative paths and match exactly.
@@ -60,6 +63,11 @@ test('no test.yml manifest registers a file audit-orphan-tests.js declares never
     }
   }
   assert.deepEqual(clash, []);
+});
+
+test('the node batch is actually scanned: the collected list is what the checks read (BRO-2483)', () => {
+  const node = manifestEntriesFor(REPO, 'tests/unit-test-manifest.txt');
+  assert.ok(node.length >= require('../../scripts/lib/unit-test-collection.js').MIN_NODE_BATCH, `expected the collected node batch, got ${node.length} entries`);
 });
 
 test('the gate pattern catches the probe shape in both operand orders, and not ordinary date math', () => {

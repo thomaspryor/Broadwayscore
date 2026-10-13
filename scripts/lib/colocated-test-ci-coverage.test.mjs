@@ -48,6 +48,7 @@ const { MANIFESTS, TEST_FILE_EXTENSIONS, NODE_RUNNABLE_TEST_EXTENSIONS, testFile
 // second hand-maintained copy. Guarded by `if (require.main === module)`, so
 // requiring it does not run either file's CLI.
 const { stripShellComments, executableWorkflowText, isInvokedIn } = require('./bash-integration-test-list.js');
+const { collectNodeUnitTests, COLLECTION_MODULE_REL } = require('./unit-test-collection.js');
 
 const LIB_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(LIB_DIR, '..', '..');
@@ -130,8 +131,16 @@ test('every scripts/lib/*.test.* file is executed by CI (glob, consumed manifest
     if (!fs.existsSync(p)) continue;
     for (const line of fs.readFileSync(p, 'utf8').split('\n')) {
       const entry = line.trim();
-      if (entry) manifestEntries.add(entry);
+      if (entry && !entry.startsWith('#')) manifestEntries.add(entry);
     }
+  }
+  // BRO-2483: the node batch is COLLECTED (scripts/lib/unit-test-collection.js
+  // picks up scripts/lib/*.test.{js,cjs}, e.g. title-match.test.js). Same
+  // earn-your-trust rule as a manifest: it counts only when a run: line
+  // actually consumes the collector's output.
+  // `x=$(node scripts/lib/unit-test-collection.js --min)` consumes it too.
+  if (runText.split('\n').some((line) => line.includes(COLLECTION_MODULE_REL) && (CONSUMES_RE.test(line) || line.includes('$(')))) {
+    for (const entry of collectNodeUnitTests(ROOT)) manifestEntries.add(entry);
   }
 
   // RECURSIVE on purpose. test.yml's glob is `scripts/lib/*.test.mjs` — one
@@ -172,7 +181,8 @@ test('every scripts/lib/*.test.* file is executed by CI (glob, consumed manifest
   if (nodeUncovered.length) {
     remedies.push(
       "  node tests — either add the extension to test.yml's scripts/lib glob, or list the " +
-        'file in tests/unit-test-manifest.txt (the glob is ONE level deep, so ' +
+        'file in a consumed manifest or name it in a run: step (the glob is ONE level deep, and the ' +
+        'collected node batch takes only top-level scripts/lib/*.test.{js,cjs}, so ' +
         'scripts/lib/<subdir>/ tests always need an explicit entry):\n    ' +
         nodeUncovered.join('\n    ')
     );

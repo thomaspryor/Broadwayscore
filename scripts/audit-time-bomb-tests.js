@@ -22,7 +22,8 @@
  *   3. Report (shifted \ baseline) — tests that ONLY fail once time moves.
  *
  * Covers all three manifests test.yml runs, each with the runner test.yml
- * actually uses for it: tests/unit-test-manifest.txt (node --test),
+ * actually uses for it: the collected node batch (scripts/lib/unit-test-
+ * collection.js, BRO-2483; formerly tests/unit-test-manifest.txt) (node --test),
  * tests/unit-test-manifest-tsx.txt and tests/e2e-unit-test-manifest.txt (both
  * tsx's --test, invoked via its resolved CLI entry point rather than `npx
  * tsx` — see resolveTsxCli() — since plain node fails to load files that
@@ -215,12 +216,25 @@ function parseArgs(argv) {
 // Thin wrapper over the shared lib readManifest(): adds the "fail loud on a
 // missing manifest" guard this script wants (the lib version, shared with the
 // CI integrity test which checks existence itself, doesn't do this).
+// BRO-2483: MANIFESTS[0] names the node BATCH; readManifest() resolves it to
+// scripts/lib/unit-test-collection.js's collected list (the file is a
+// tombstone). An empty list fails loud too: node --test with no files falls
+// back to its own discovery glob.
 function readManifestOrExit(manifestPath) {
-  if (!fs.existsSync(manifestPath)) {
-    console.error(`Manifest not found: ${manifestPath}`);
+  let entries;
+  try {
+    entries = readManifest(manifestPath, REPO_ROOT);
+  } catch (e) {
+    // The real cause: a missing manifest file (ENOENT), or the collector
+    // itself failing for the node batch. Never relabel the latter "not found".
+    console.error(e.code === 'ENOENT' ? `Manifest not found: ${manifestPath}` : `Could not list tests for ${manifestPath}: ${e.message}`);
     process.exit(2);
   }
-  return readManifest(manifestPath);
+  if (entries.length === 0) {
+    console.error(`No test files listed for ${manifestPath}`);
+    process.exit(2);
+  }
+  return entries;
 }
 
 /**

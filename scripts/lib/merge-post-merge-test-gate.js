@@ -136,6 +136,7 @@ const path = require('node:path');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 const { execErrorDetail } = require('./exec-error-detail.js');
 const { readTsxManifest } = require('./autonomous-checks.js');
+const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('./unit-test-collection.js');
 
 // Matches acceptance-check-core.js's own CHECK_TIMEOUT_MS convention — "a
 // hang is worse than a failure" applies equally to this gate's two spawns.
@@ -297,9 +298,29 @@ const EXCLUDED_WORKFLOW_GUARDS = new Set([
 // workflow guard CI runs, wherever it lives — BRO-4812: scanning tests/unit
 // alone never ran scripts/validate-workflow-dependencies.test.mjs, so a
 // landing whose main moved under it pushed a stale DEPENDENCIES.md and
-// turned main red. Missing/unreadable manifest → [] (tests/unit scan still runs).
-const UNIT_TEST_MANIFEST = path.join('tests', 'unit-test-manifest.txt');
+// turned main red.
+//
+// BRO-2483: CI's list is now COLLECTED (scripts/lib/unit-test-collection.js);
+// tests/unit-test-manifest.txt is a tombstone. A tree that carries the
+// collector is read through it, and an empty or failing collection FAILS
+// CLOSED (throws NodeBatchUnavailableError, which runTestGate turns into a
+// refusal): a silently empty list would quietly drop every scripts/ workflow
+// guard from the floor. Only a pre-BRO-2483 tree (an old baseline checkout)
+// still reads the manifest file, where missing/unreadable → [] as before
+// (the tests/unit scan and REQUIRED_WORKFLOW_GUARDS still run).
+const UNIT_TEST_MANIFEST = path.normalize(NODE_MANIFEST_REL);
+class NodeBatchUnavailableError extends Error {}
 function listManifestTestFiles(cwd) {
+  if (treeUsesCollector(cwd)) {
+    let list;
+    try {
+      list = nodeUnitTestsForTree(cwd);
+    } catch (e) {
+      throw new NodeBatchUnavailableError(`scripts/lib/unit-test-collection.js failed in ${cwd}: ${e.message}`);
+    }
+    if (!list.length) throw new NodeBatchUnavailableError(`scripts/lib/unit-test-collection.js collected ZERO node unit tests in ${cwd}`);
+    return list.filter((l) => l.endsWith('.test.mjs')).map((l) => path.normalize(l));
+  }
   let body;
   try {
     body = fs.readFileSync(path.join(cwd, UNIT_TEST_MANIFEST), 'utf8');
@@ -586,7 +607,15 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
-  const testFiles = selectTestFiles(cwd, changedFiles);
+  let testFiles;
+  try {
+    testFiles = selectTestFiles(cwd, changedFiles);
+  } catch (e) {
+    if (!(e instanceof NodeBatchUnavailableError)) throw e;
+    // BRO-2483: fail closed — the node batch CI runs could not be listed, so
+    // the workflow-guard floor would validate an unknown subset.
+    return { ran: false, passed: false, output: '', reason: `${e.message} — refusing to report a pass from an unknown test selection` };
+  }
   if (testFiles.length === 0) {
     // A workflow change that selects ZERO guards is a DISCOVERY failure, not
     // an "all clear": the repo carries workflow guards, so finding none means
@@ -812,6 +841,7 @@ module.exports = {
   correspondingUnitTestPath,
   correspondingTestPaths,
   listManifestTestFiles,
+  NodeBatchUnavailableError,
   mentionsWorkflowsDir,
   listCorrespondingUnitTestFiles,
   listColocatedTestFiles,

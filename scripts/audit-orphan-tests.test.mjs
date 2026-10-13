@@ -9,9 +9,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { extractRunBlocks, REFERENCE_REGEX, checkManifests, findRawOrphans, exemptionFor } = require('./audit-orphan-tests.js');
@@ -134,6 +136,51 @@ test('a sorted manifest of existing files reports nothing', () => {
   assert.deepEqual(forManifest(informational), []);
 });
 
+// BRO-2483: in a tree carrying scripts/lib/unit-test-collection.js the node
+// batch is collected, so a new tests/unit or scripts/ test is covered with no
+// manifest line, a default-excluded scripts/verify-* probe is not, and the
+// tombstone's lines are never parsed (an unsorted stray line is no problem).
+test('collector tree: collected tests are covered without a manifest line; verify-* probes are not; the tombstone is ignored', () => {
+  const root = tempRepo();
+  fs.mkdirSync(path.join(root, 'scripts/lib'), { recursive: true });
+  fs.mkdirSync(path.join(root, '.github/workflows'), { recursive: true });
+  fs.writeFileSync(path.join(root, '.github/workflows/test.yml'), 'jobs: {}\n');
+  fs.copyFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'lib', 'unit-test-collection.js'), path.join(root, 'scripts/lib/unit-test-collection.js'));
+  fs.writeFileSync(path.join(root, 'scripts/new.test.mjs'), '');
+  fs.writeFileSync(path.join(root, 'scripts/verify-live-probe.test.mjs'), '');
+  fs.writeFileSync(path.join(root, NODE_MANIFEST), '# RETIRED\ntests/unit/b.test.mjs\ntests/unit/a.test.mjs\n');
+  const orphans = findRawOrphans(root).rawOrphans.map((f) => f.rel);
+  assert.deepEqual(orphans, ['scripts/verify-live-probe.test.mjs'], 'tombstone lines never count as registration');
+  // ...and they are never judged either (unsorted list lines in the ignored tombstone are fine).
+  const { blocking, informational } = checkManifests(root);
+  assert.deepEqual(forManifest(blocking), []);
+  assert.deepEqual(forManifest(informational), []);
+});
+
+// Fail closed: a collector that throws or collects nothing blocks even a
+// scoped run whose push touches none of the test files (land-preflight must
+// never read it as a skip).
+test('collector tree: a throwing or empty collection is a blocking COLLECTOR FAILURE in scoped mode', () => {
+  const mk = (collectorSrc, withTests) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-collector-fail-'));
+    fs.mkdirSync(path.join(root, 'scripts/lib'), { recursive: true });
+    fs.mkdirSync(path.join(root, 'tests/unit'), { recursive: true });
+    fs.mkdirSync(path.join(root, '.github/workflows'), { recursive: true });
+    fs.writeFileSync(path.join(root, '.github/workflows/test.yml'), 'jobs: {}\n');
+    if (withTests) fs.writeFileSync(path.join(root, 'tests/unit/a.test.mjs'), '');
+    fs.writeFileSync(path.join(root, 'scripts/lib/unit-test-collection.js'), collectorSrc);
+    fs.writeFileSync(path.join(root, NODE_MANIFEST), '# RETIRED\n');
+    return root;
+  };
+  const real = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'lib', 'unit-test-collection.js'), 'utf8');
+  const throwing = mk("module.exports = { collectNodeUnitTests() { throw new Error('boom'); } };\n", true);
+  assert.doesNotThrow(() => findRawOrphans(throwing), 'a collector failure must not crash the audit');
+  let r = checkManifests(throwing, ['src/unrelated.ts']);
+  assert.match(forManifest(r.blocking).map((p) => p.error).join('\n'), /COLLECTOR FAILURE: .*threw.*boom/);
+  r = checkManifests(mk(real, false), ['src/unrelated.ts']);
+  assert.match(forManifest(r.blocking).map((p) => p.error).join('\n'), /COLLECTOR FAILURE: collected node unit-test batch is empty/);
+});
+
 // BRO-2778: coverage used to be a Set of BARE FILENAMES, so a test was "covered"
 // whenever ANY file with the same basename was in a manifest or a run: step.
 // scripts/cast-backfill-year-validation.test.mjs and
@@ -214,5 +261,40 @@ test('exemption keys are repo-relative paths to files that exist', () => {
   for (const key of [...Object.keys(EXEMPT_KNOWN_BROKEN), ...Object.keys(EXEMPT_NEVER_CI)]) {
     assert.ok(key.includes('/'), `exemption key "${key}" must be a path, not a bare filename`);
     assert.ok(fs.existsSync(new URL(key, root)), `exemption key "${key}" names no file`);
+  }
+});
+
+// BRO-2483 review: the CLI on a broken collector prints ONLY the collector
+// failure (no ~1,350 bogus orphans) and exits 1 with JSON, scoped or not.
+test('CLI: a collector failure is the only finding, exit 1, JSON parseable (fail closed for land-preflight)', () => {
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-cli-collector-'));
+  try {
+    for (const f of ['audit-orphan-tests.js', 'lib/orphan-test-gate.js', 'lib/test-manifest.js', 'lib/ci-test-coverage.js', 'lib/bash-integration-test-list.js']) {
+      fs.mkdirSync(path.dirname(path.join(root, 'scripts', f)), { recursive: true });
+      fs.copyFileSync(path.join(here, f), path.join(root, 'scripts', f));
+    }
+    fs.writeFileSync(path.join(root, 'scripts/lib/unit-test-collection.js'),
+      "const real = { NODE_MANIFEST_REL: 'tests/unit-test-manifest.txt', TSX_MANIFEST_REL: 'tests/unit-test-manifest-tsx.txt', E2E_MANIFEST_REL: 'tests/e2e-unit-test-manifest.txt', TOMBSTONE_FIX: 'x' };\n" +
+      "module.exports = { ...real, treeUsesCollector: () => true, nodeUnitTestsForTree() { throw new Error('boom'); }, collectNodeUnitTests() { throw new Error('boom'); }, tombstoneProblem: () => null };\n");
+    fs.mkdirSync(path.join(root, '.github/workflows'), { recursive: true });
+    fs.writeFileSync(path.join(root, '.github/workflows/test.yml'), 'jobs: {}\n');
+    fs.mkdirSync(path.join(root, 'tests/unit'), { recursive: true });
+    for (let i = 0; i < 5; i++) fs.writeFileSync(path.join(root, `tests/unit/t${i}.test.mjs`), '');
+    fs.writeFileSync(path.join(root, 'tests/unit-test-manifest.txt'), '# RETIRED\n');
+    const audit = path.join(root, 'scripts/audit-orphan-tests.js');
+    const j = spawnSync(process.execPath, [audit, '--scope-stdin', '--json'], { input: 'src/unrelated.ts\n', encoding: 'utf8' });
+    assert.equal(j.status, 1, j.stderr);
+    const report = JSON.parse(j.stdout);
+    assert.equal(report.collectorFailure, true);
+    assert.deepEqual(report.orphans, []);
+    assert.match(report.manifestProblems.map((p) => p.error).join('\n'), /COLLECTOR FAILURE: .*boom/);
+    const h = spawnSync(process.execPath, [audit], { encoding: 'utf8' });
+    assert.equal(h.status, 1);
+    assert.match(h.stderr, /could not be collected/);
+    assert.doesNotMatch(h.stderr, /t0\.test\.mjs/, 'no bogus orphans listed');
+    assert.doesNotMatch(h.stderr, /test-manifest\.js --fix/, 'no sorter advice for a collector failure');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 5 });
   }
 });
