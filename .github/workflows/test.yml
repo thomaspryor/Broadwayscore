@@ -1852,33 +1852,16 @@ on:
       # (root-level scripts/*.test.mjs is NOT globbed) — needs its own entry
       # so a solo edit triggers CI. (create-broadcast-draft.mjs itself is
       # already covered by the 'scripts/newsletter/**' glob below.)
-      - 'scripts/pre-send-check.test.mjs'
       - 'scripts/audit-show-review-gap.js'
-      - 'scripts/audit-show-review-gap.test.mjs'
       # BRO-2211: hook-budget guard (hook count/line ceiling, every hook wired). The hooks glob keeps the
       # orphan check live when a hook is pushed alone.
-      - 'scripts/V1-V3-dispatch-status.test.mjs'
       - '.claude/hooks/**'
-      # BRO-3092: regression guard for the-addams-family-2010's WSJ same-URL
-      # duplicate. The deleted paywall-boilerplate record was resurrected by a
-      # stale-checkout race 29 minutes after the delete; this asserts it stays
-      # deleted. Same corpus-presence gating as the frankie guard below.
-      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
-      # BRO-4724: live-data recheck of the first tour auto-create write run.
-      # Skips until 2026-10-07 09:00 UTC.
-      - 'scripts/verify-bro-4724-recheck.test.mjs'
-      # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
-      # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
-      # (skips in unit-tests, which never checks out data/review-texts; enforced for
-      # real by the data-validation job's re-run below, after checkout-review-texts).
-      - 'scripts/verify-frankie-2002-cleanup.test.mjs'
       # BRO-1397: corpus-wide regression guard for excerptMentionsFormerCast
       # (scripts/lib/excerpt-validation.js, covered by the scripts/lib/**
       # glob above already, but this test file itself is a root scripts/
       # file so it needs its own entry, same pattern as frankie above).
       # Corpus-presence-gated: skips locally without review-texts, enforced
       # for real by the data-validation job's re-run below.
-      - 'scripts/verify-prior-run-former-cast-sweep.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
       # must never silently override a unanimous LLM ensemble rejection.
@@ -1895,7 +1878,6 @@ on:
       # care-west-end-2026 incident 2026-07-11). Decides flag/exclusion behavior
       # in the rebuild + standalone flagger — solo edits need CI.
       - 'scripts/flag-wrong-production-by-date.js'
-      - 'scripts/flag-wrong-production-by-date.test.mjs'
       # BRO-916: per-review URL-date guard for BWW Review Roundup entries
       # (getWrongProductionReasonForBwwRoundup, scripts/lib/review-guards.js —
       # already covered by the 'scripts/lib/**' glob above). Root scripts/
@@ -1905,14 +1887,7 @@ on:
       # by this fix — path-listed anyway so audit-toplevel-script-test-yml-
       # coverage.js's sibling-source heuristic stays satisfied.
       - 'scripts/flag-wrong-production-by-url-date.js'
-      - 'scripts/flag-wrong-production-by-url-date.test.mjs'
       - 'scripts/rebuild-all-reviews.js'
-      # BRO-925: per-file exclusion logging. Root-level scripts/*.test.mjs is
-      # NOT covered by any broad glob (only scripts/lib/*.test.mjs is — see the
-      # BRO-3127 comment on check-rebuild-staleness.test.mjs below) — path-listed
-      # so a solo edit to just the test file triggers CI. Registered in
-      # tests/unit-test-manifest.txt so it actually runs.
-      - 'scripts/rebuild-all-reviews.test.mjs'
       # Time-to-publish SLA (task #388): how long a review takes to go from
       # published by the outlet to live on the site, and the 90%-within-15-min
       # target. stage-latency.js gained readTrackedShowIds(), which decides
@@ -1930,7 +1905,6 @@ on:
       # scripts/opening-night-checklist.test.mjs runs in the tests/unit-test-
       # manifest.txt batch; these source entries make a solo edit trigger it.
       - 'scripts/opening-night-checklist.js'
-      - 'scripts/opening-night-checklist.test.mjs'
       - 'scripts/lib/opening-night-checks/**'
       # The Critics' Take floor, shared by generate-critic-consensus.js and
       # critics-take-present.check.js (#389). Editing either side without the
@@ -1948,7 +1922,6 @@ on:
       # these source entries make a solo edit trigger it.
       - 'scripts/lib/wrong-production-exclusion-analysis.js'
       - 'scripts/wrong-production-exclusion-analysis.js'
-      - 'scripts/wrong-production-exclusion-analysis.test.mjs'
       # Pull-quote guards decide the excerpt shown on every review card. The
       # 2026-08-01 owner report (listing chrome / tag cloud / mid-word
       # truncation / hedge-guard starvation) added hard + soft guards here and
@@ -1956,11 +1929,6 @@ on:
       # either got ZERO CI. Colocated coverage is
       # tests/unit/pull-quote-guards.test.mjs (tests/** trigger).
       - 'scripts/audit-pull-quotes.js'
-      # BRO-180: fileForReview's duplicate-criticName ambiguous-match fix.
-      # Root-level scripts/*.test.mjs is NOT globbed — registered in
-      # tests/unit-test-manifest.txt and path-listed here so a solo edit
-      # triggers CI.
-      - 'scripts/audit-pull-quotes.test.mjs'
       # BRO-767: scoped pullQuote backfill (touches only the pullQuote field,
       # not a full rebuild). Exercised by tests/unit/review-pullquotes.test.mjs
       # (tests/** already globbed) but this source file itself wasn't listed —
@@ -1986,51 +1954,26 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
-      # BRO-2381: colocated test (pushReviewTextsCheckpoint() env-var gating —
-      # REVIEW_TEXTS_TOKEN/GITHUB_ACTIONS). Root-level scripts/*.test.mjs is
-      # NOT globbed — registered in tests/unit-test-manifest.txt and
-      # path-listed here so a solo edit to the test triggers CI. Its
-      # dependency scripts/lib/review-texts-checkpoint-gate.js needs no entry
-      # of its own — already covered by the scripts/lib/** glob above (same
-      # pattern as scripts/audit-stale-announced-shows.js above, which lists
-      # only the top-level file and not its scripts/lib/ dependency).
-      - 'scripts/collect-review-texts.test.mjs'
       # BRO-1431: colocated test (stale-flag neutralization on body
       # replacement — wrongProduction/contentVerification/contentTier).
       # Root-level scripts/*.test.mjs files are NOT globbed — registered in
       # tests/unit-test-manifest.txt and path-listed here so a solo edit
       # triggers CI.
       - 'scripts/ingest-urls.js'
-      - 'scripts/ingest-urls.test.mjs'
       - 'scripts/scoring-delta.js'
-      # Colocated test (task #1163: mandated inclusion replay had zero coverage
-      # of the wrongShow/wrongProduction auto-clear predicates). Root-level
-      # scripts/*.test.mjs files are NOT globbed — registered in
-      # tests/unit-test-manifest.txt and path-listed here so a solo edit
-      # triggers CI.
-      - 'scripts/scoring-delta-autoclear-coverage.test.mjs'
-      # task #1929: rebuild-all-reviews.js exclusion-loop-touch detector added
-      # to scoring-delta.js — same root-level scripts/*.test.mjs registration
-      # requirement as the entry above.
-      - 'scripts/scoring-delta-rebuild-loop-touch.test.mjs'
-      # BRO-2833: registry-drift guard (no green exit while a scoring data input differs).
-      - 'scripts/scoring-delta-data-inputs.test.mjs'
       # BRO-3512: scoring-delta mirrors rebuild's cvLowButStrong carve-out.
-      - 'scripts/scoring-delta-cv-low-strong.test.mjs'
       - 'scripts/lib/scoring-delta-data-inputs.js'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
       - 'scripts/backfill-cast-web.js'
       - 'scripts/audit-review-pair-anomalies.js'
-      - 'scripts/backfill-cast-web.test.mjs'
       - 'data/cast/**'
       # Wikipedia synopsis matcher (task #68: was 0/51 due to a silent 429
       # rate-limit failure mode, plus no wrong-show gate). Test registered in
       # tests/unit-test-manifest.txt (root-level scripts/*.test.mjs files are
       # NOT globbed) — path-listed so a solo edit triggers CI.
       - 'scripts/enrich-wikipedia-synopsis.js'
-      - 'scripts/enrich-wikipedia-synopsis.test.mjs'
       # Nightly self-heal resolver (#170) + card 174 (live Mezzanine lookup)
       # stub-drain step + the shared service-role REST client it uses. Neither
       # has ever been path-listed — a solo edit triggered ZERO CI since #170
@@ -2042,26 +1985,21 @@ on:
       # scripts/lib/*.test.mjs step covers the test; audit-show-review-gap.js
       # is path-listed so a solo edit still triggers CI.
       - 'scripts/audit-show-review-gap.js'
-      - 'scripts/audit-show-review-gap.test.mjs'
       # T1-retrieval Sprint B (v2 reconciler plan): standingOutlets pseudo-source
       # + coverage-scoreboard math in computeShowCells (audit-opening-night-
       # coverage.js is already path-listed above, #297 block). Colocated
       # node --test step covers audit-opening-night-coverage.test.mjs;
       # path-listed here so it's not orphaned, and so a solo lib edit triggers CI.
-      - 'scripts/audit-opening-night-coverage.test.mjs'
       - 'scripts/audit-late-add-corpus-wide.js'
-      - 'scripts/audit-late-add-corpus-wide.test.mjs'
       # Card #627: standingCoverage membership is derived from measured Broadway
       # coverage, not asserted by tier — this audit reports registry drift in
       # both directions. Run in the node --test step below.
       - 'scripts/audit-standing-coverage.js'
-      - 'scripts/audit-standing-coverage.test.mjs'
       # Task #1475: off-Broadway venue-complexes.json audit (cousin of the West
       # End National Theatre bare-form-slug bug, e0a63053ec6). Colocated test
       # in the tests/unit-test-manifest.txt node --test batch (root-level
       # scripts/*.test.mjs is not globbed) — path-listed so a solo edit to
       # the lib, the test, or the data file it guards triggers CI.
-      - 'scripts/audit-venue-complex-slugs.test.mjs'
       - 'data/venue-complexes.json'
       - 'data/venue-complexes-west-end.json'
       # BRO-2544: canonical-venue-consumers.test.mjs asserts venue-classification.js's
@@ -2114,7 +2052,6 @@ on:
       - 'scripts/score-commercial-blind-test.js'
       - 'scripts/sweep-pending-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
-      - 'scripts/sweep-we-aggregators-outlet-edition.test.mjs'
       # BRO-3887: outlet-serp's --time-budget-min guard + the run-id-keyed-cache
       # hygiene rule. Without these entries a solo edit triggers ZERO CI
       # (memory/feedback_test_yml_push_path_allowlist.md).
@@ -2126,20 +2063,11 @@ on:
       # which is exactly how BRO-3887 shipped.
       - '.github/actions/**'
       - 'scripts/gather-reviews.js'
-      # Colocated regression test for quickDateCheck/verifyProduction (date-range +
-      # venue filters that gather-reviews.js relies on via production-verifier.js) —
-      # registered in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
-      # isn't globbed there), but ALSO needs this push-path entry since this job
-      # only fires on paths matching this allow-list; a solo edit to just the test
-      # file would otherwise ship with zero CI (same class as scripts/discover-new-shows.js
-      # + .test.mjs above).
-      - 'scripts/gather-reviews.test.mjs'
       # Colocated test for createReviewFile's BRO-4101 named-non-review-url
       # guard — same allow-list reasoning as gather-reviews.test.mjs directly
       # above (root-level scripts/*.test.mjs isn't globbed; registered in
       # tests/unit-test-manifest.txt but ALSO needs a push-path entry or a
       # solo edit ships with zero CI).
-      - 'scripts/gather-reviews-named-non-review.test.mjs'
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'
@@ -2165,18 +2093,11 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
-      # Run-budget coverage guard (#425, extended BRO-109 for script->lib-helper
-      # budget-threading gaps). Colocated test registered in
-      # tests/unit-test-manifest.txt — root-level scripts/*.test.mjs is NOT
-      # covered by any broad glob, so this needs its own entry or a solo edit
-      # to the test gets zero CI.
-      - 'scripts/audit-run-budget-coverage.test.mjs'
       # Alert-reachability guard (BRO-2817) — advisory scan for page-worthy
       # alert steps unreachable after an earlier hard-fail gate (BRO-2815
       # class). Root-level scripts/*.js and *.test.mjs are NOT covered by any
       # broad glob, so both need their own entry or a solo edit gets ZERO CI.
       - 'scripts/audit-alert-reachability.js'
-      - 'scripts/audit-alert-reachability.test.mjs'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
@@ -2184,7 +2105,6 @@ on:
       # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
       # solo edit to either file still triggers CI.
       - 'scripts/audit-push-core-data-audit-gap.js'
-      - 'scripts/audit-push-core-data-audit-gap.test.mjs'
       # Same-job breadcrumb coverage guard (BRO-250 / Notion 3b9637c5) —
       # advisory scan for scripts that force:true-clear a PROTECTED field in a
       # job that also calls push-review-texts, with no scripts/lib/review-
@@ -2256,7 +2176,6 @@ on:
       # already covered by the scripts/lib/** glob. Without these 2 entries a
       # solo edit to the audit script or its baseline gets ZERO CI.
       - 'scripts/audit-venue-write-guard.js'
-      - 'scripts/audit-venue-write-guard.test.mjs'
       - 'data/audit/venue-write-guard-baseline.json'
       # BRO-2472: scripts/triage-unopened-shows.mjs (BRO-80 prior-run triage
       # CLI) lives at scripts/ root, outside the scripts/lib/** glob, and had
@@ -2303,10 +2222,8 @@ on:
       # otherwise trigger zero CI.
       - 'scripts/route-main-streak-signatures.js'
       - 'scripts/red-first-dispatch.js'
-      - 'scripts/red-first-dispatch.test.mjs'
       # NYT Critic's Picks refresh: write guard + accumulate (PR #946).
       - 'scripts/refresh-nyt-critics-picks.js'
-      - 'scripts/refresh-nyt-critics-picks.test.mjs'
       # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
       # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
       # scripts/lib/" gap as the block above: without these entries a push
@@ -2329,7 +2246,6 @@ on:
       # not scripts/lib/" gap: without these entries a push touching only them
       # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
       - 'scripts/tests/infra-review-gate.test.mjs'
-      - 'scripts/infra-review-scope.test.mjs'
       - 'scripts/dispatch-drift-watch.js'
       # Infra-review gate registration + liveness probe (task #1094) — the
       # vacuous-gate class (#1063/#1066-#1069) applied to the #1079 gate
@@ -2517,9 +2433,7 @@ on:
       # shape as scripts/backlog-drain.test.mjs and scripts/trace-connect-
       # phase.test.mjs below.
       - 'scripts/backfill-judged-dispatch-ts.js'
-      - 'scripts/backfill-judged-dispatch-ts.test.mjs'
       - 'scripts/backlog-drain.js'
-      - 'scripts/backlog-drain.test.mjs'
       # BRO-2839 push-stall connect-phase breakdown. The logic lives in
       # scripts/lib/push-diagnostics.js and its colocated
       # scripts/lib/push-diagnostics.test.mjs runs in the scripts/lib/*.test.mjs
@@ -2529,7 +2443,6 @@ on:
       # tests/unit-test-manifest.txt AND path-listed here. Without this entry a
       # solo edit to it runs ZERO CI (the #1745 bug class). Same shape as
       # scripts/backlog-drain.test.mjs directly above.
-      - 'scripts/trace-connect-phase.test.mjs'
       - 'scripts/push-diagnostics-cli.js'
       # The captured CI trace that test asserts against, byte-for-byte (it
       # checks bytes === 2000 to prove the old redact-tail cap was a keyhole).
@@ -2571,7 +2484,6 @@ on:
       # glob step; produce-coverage-digest-snapshot.test.mjs is scripts-root
       # so it's also registered in tests/unit-test-manifest.txt.
       - 'scripts/produce-coverage-digest-snapshot.js'
-      - 'scripts/produce-coverage-digest-snapshot.test.mjs'
       # Coverage Verdict S5 (task #903) — the seeded weekly adversarial probe.
       # Never added a path entry when it shipped (task #907 day-one triage
       # found this gap): none of these were path-listed, so a push touching
@@ -2602,13 +2514,6 @@ on:
       - 'scripts/opening-night-prompts/**'
       - 'scripts/local-triggers/weekly-retro.sh'
       - 'scripts/send-opening-night-broadcast.js'
-      # Its colocated test needs its OWN entry: it sits at the top level of
-      # scripts/ (outside the scripts/lib/** glob) and is registered in
-      # tests/unit-test-manifest.txt, so it RUNS in CI but a solo edit to the
-      # test alone triggered ZERO CI. Same gap class as
-      # scripts/check-orphan-commits.js above; found while wiring BRO-2647's
-      # process-exit guard, and now ratcheted by audit-test-yml-manifest-paths.js.
-      - 'scripts/send-opening-night-broadcast.test.mjs'
       # BRO-3057: scripts/config/provider-pricing.json (BRO-3009 spend-guards
       # slice) sits outside every glob — scripts/lib/** covers provider-pricing.js
       # itself plus chain-escalation.test.mjs/provider-pricing.test.mjs, but not
@@ -2628,12 +2533,7 @@ on:
       # or only the code it is the sole test for — triggered ZERO CI. Found with
       # 18 live instances while wiring BRO-2647. scripts/audit-test-yml-manifest-paths.js
       # is now a BLOCKING gate so this list can never silently drift again.
-      - 'scripts/audit-cross-outlet-attributions.test.mjs'
-      - 'scripts/audit-errexit-unguarded-substitution.test.mjs'
-      - 'scripts/check-cross-outlet-attribution-drift.test.mjs'
-      - 'scripts/fetch-show-images-auto.test.mjs'
       - 'scripts/llm-scoring/openai-leg-model.test.mjs'
-      - 'scripts/notion-action-poll-retired.test.mjs'
       - 'scripts/tests/alert-sender-bypass.test.mjs'
       - 'scripts/tests/dispatch-claim-requires-workspace.test.mjs'
       - 'scripts/tests/dispatch-watchdog-staleness.test.mjs'
@@ -2643,7 +2543,6 @@ on:
       - 'scripts/tests/stale-wrongproduction-adjudication.test.mjs'
       - 'scripts/tests/stuck-work-linear-reconcile.test.mjs'
       - 'scripts/tests/verify-gate-ts-runner.test.mjs'
-      - 'scripts/verify-contamination-gate.test.mjs'
       - 'scripts/tests/fix-platform-ticket-links.test.mjs'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
@@ -2669,7 +2568,6 @@ on:
       # scripts/lib/** glob above, but the top-level script + test need
       # their own entry so a solo edit triggers CI.
       - 'scripts/send-btc-confirmation-emails.js'
-      - 'scripts/send-btc-confirmation-emails.test.mjs'
       - 'scripts/scrape-drama-desk.js'
       - 'scripts/scrape-outer-critics.js'
       - 'scripts/scrape-drama-league.js'
@@ -2678,31 +2576,21 @@ on:
       # lib-test step, but only if this job fires — these paths trigger it on push).
       - 'scripts/enrich-ibdb-dates.js'
       - 'scripts/discover-new-shows.js'
-      # task #1863 (BRO-102 follow-up): IBDB creativeTeam consumers now route
-      # through verifyCreativeTeamViaSerp(). Colocated *.test.mjs files
-      # (root-level scripts/*.test.mjs is NOT globbed, registered in
-      # tests/unit-test-manifest.txt) — path-listed so a solo edit to either
-      # side triggers CI.
-      - 'scripts/enrich-ibdb-dates.test.mjs'
       # BRO-626: WE todaytix-collapsed press-night enrichment. scripts/lib/
       # counterpart is covered by the scripts/lib/**.test.mjs glob; this
       # root-level pair is NOT globbed, so it's path-listed here too.
       - 'scripts/enrich-todaytix-press-nights.js'
-      - 'scripts/enrich-todaytix-press-nights.test.mjs'
       # BRO-1108: OB sibling of enrich-west-end-dates.js. Root-level
       # scripts/*.test.mjs is NOT globbed, registered in
       # tests/unit-test-manifest.txt — path-listed so a solo edit to either
       # side triggers CI.
       - 'scripts/enrich-off-broadway-dates.js'
-      - 'scripts/enrich-off-broadway-dates.test.mjs'
       # BRO-3527: WE sibling test coverage (cousin of BRO-1108 above). Root-level
       # scripts/*.test.mjs is NOT globbed, registered in tests/unit-test-manifest.txt
       # — path-listed here so a solo edit to the test file triggers CI. The
       # existing 'scripts/enrich-west-end-dates.js' entry near line 1084 is
       # unrelated (min-reviews/press-night parity gate), not this reason.
-      - 'scripts/enrich-west-end-dates.test.mjs'
       - 'scripts/backfill-playwright-credits.js'
-      - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery
       # commit gate and enrich-ibdb-dates.js's date-enrichment gate. Test
       # lives in tests/unit/ (node --test batch, not globbed) — path-listed
@@ -2721,7 +2609,6 @@ on:
       # scripts/*.test.mjs is NOT globbed, registered in tests/unit-test-
       # manifest.txt for execution; path-listed here so a solo edit to
       # the test file itself still triggers CI.
-      - 'scripts/outlet-registry.test.mjs'
       - 'tests/fixtures/classify-category-baseline.json'
       - 'public/data/mobile-shows.json'
       # OB closing-date detector (alert-only) — colocated scripts/lib/*.test.mjs
@@ -2737,14 +2624,6 @@ on:
       # driver script and workflow, both already covered by other entries in
       # this list) so a solo edit to just the lib file triggers CI.
       - 'scripts/check-rebuild-staleness.js'
-      # BRO-3127 ship-check finding: check-rebuild-staleness.js above is a
-      # root-level scripts/ file (outside the scripts/lib/** glob), and its
-      # *.test.mjs sibling is ALSO root-level — scripts/*.test.mjs is NOT
-      # covered by any broad glob (only scripts/lib/*.test.mjs is), so
-      # without this entry a solo edit to the test file alone triggered ZERO
-      # CI. scripts/lib/test-yml-manifest-paths.test.mjs caught this the
-      # moment the test file was registered in tests/unit-test-manifest.txt.
-      - 'scripts/check-rebuild-staleness.test.mjs'
       # BRO-3162: pre-rebuild drift sync behind
       # .github/actions/sync-review-texts-drift (tested by
       # tests/unit/sync-review-texts-drift.test.mjs); root-level script.
@@ -2752,15 +2631,12 @@ on:
       # BRO-3162: report-only post-rebuild check (tested by
       # tests/unit/check-rebuild-staleness-advisory.test.mjs); root-level.
       - 'scripts/check-rebuild-staleness-advisory.js'
-      # BRO-4575: header-breakpoint pin (root-level scripts test, same shape).
-      - 'scripts/check-header-overflow.test.mjs'
       # Same shape, one day later (BRO-3219 landed the test; caught by the
       # BRO-2647 gate in Lint Workflows, which names the fix verbatim).
       # scripts/audit-flagged-file-contamination.test.mjs is registered in
       # tests/unit-test-manifest.txt, so it RUNS once CI fires — but it is a
       # root-level scripts/ file, outside the scripts/lib/** glob, so a push
       # touching only it triggered zero CI.
-      - 'scripts/audit-flagged-file-contamination.test.mjs'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
@@ -2771,19 +2647,9 @@ on:
       # lint-workflows relies on it, and the file is otherwise unguarded.
       - 'CLAUDE.md'
       - 'scripts/lib/claude-md-anchors.json'
-      # BRO-124: scripts/lib/check-claude-md-byte-cap.js + claude-md-byte-cap-
-      # gate.sh (already covered by the scripts/lib/** glob) are the byte-cap
-      # decision fn + git wrapper scripts/hooks/pre-push now calls locally —
-      # the same cap this job's Lint Workflows step enforces, previously
-      # CI-only. Their test is root-level scripts/pre-push.test.mjs, which is
-      # NOT globbed (root-level scripts/*.test.mjs never is) — path-listed so
-      # a solo edit to any of the three triggers CI. Registered in
-      # tests/unit-test-manifest.txt.
-      - 'scripts/pre-push.test.mjs'
       # Personal orchestration tooling — colocated tests run in the main unit batch;
       # path-listed so a solo edit triggers CI.
       - 'scripts/notion-tasks-sync.js'
-      - 'scripts/notion-tasks-sync.test.mjs'
       # BRO-2215 acceptance regression — lives in scripts/tests/ (registered in
       # tests/unit-test-manifest.txt, not globbed); path-listed so a solo edit
       # triggers CI.
@@ -2794,7 +2660,6 @@ on:
       # Path-listed here too so a solo edit to just this test triggers CI.
       - 'tests/unit/notion-tasks-sync-dedup.test.mjs'
       - 'scripts/bsc-next.js'
-      - 'scripts/bsc-next.test.mjs'
       # Card #854: task-store archiver — moves completed tasks >48h old to
       # archive/ so the harness's injected task-list reminder stops scaling
       # with all-time task count. Colocated test runs in the lib-test glob;
@@ -2818,12 +2683,9 @@ on:
       # registered in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs is NOT globbed). Path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
-      - 'scripts/audit-orphan-inprogress.test.mjs'
       - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
-      - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
-      - 'scripts/bsc-conductor.test.mjs'
       # bsc-status (owner request 2026-07-22: one-glance tab verdicts +
       # wrap-ups of vanished tabs). Pure logic lives in scripts/lib/ so the
       # colocated test runs in the lib-test glob; path-listed so a solo edit
