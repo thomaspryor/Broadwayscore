@@ -1905,5 +1905,18 @@
       }
     ],
     "queuedAt": "2026-10-13T17:49:32.737Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-review-folders",
+    "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
+    "description": "check-corpus-drift.js audit \"orphan-review-folders\" (node scripts/report-orphan-review-folders.js --strict) has been drifting. Latest output:\n\nOrphan review-text folders: 15 (45 files)\n  dup-same-url: 22\n  no-window-match: 12\n  no-candidate: 4\n  dup-diff-url: 4\n  multi-match: 3\n  animal-wisdom-2022 (1)\n  doubt-a-parable (12)\n  harry-potter-and-the-cursed-child (3)\n  harry-potter-and-the-cursed-child-parts-one-and-two (4)\n  heathers-the-musical-2025 (7)\n  little-shop-of-horrors-2019 (1)\n  moulin-rouge-the-musical-review (4)\n  purpose (2)\n  romeo-juliet (2)\n  take-me-out (1)\n  tammy-faye (1)\n  the-music-man-off-broadway-2026 (1)\n  the-other-place-2026 (2)\n  the-unknown-2026 (1)\n  you-got-older-2026 (3)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T18:12:08.277Z"
   }
 ]
