@@ -19,6 +19,7 @@
 const https = require('https');
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { consultScrapingdog } = require('./scrapingdog-caps');
+const { consultBrightData } = require('./brightdata-caps');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
 const MAX_RETRIES = 3;
@@ -485,10 +486,22 @@ async function fetchViaBrightData(url) {
   const token = process.env.BRIGHTDATA_TOKEN;
   if (!token) return null; // Not available
 
+  // Daily breaker / per-run budget (BRO-3067) — mirrors scraper.js
+  // fetchWithBrightData. Soft-fails (throws, doesn't latch brightDataDown) so
+  // the caller falls through to Scrapingdog/ScrapingBee like a normal BD miss.
+  const zone0 = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
+  const bdVerdict = consultBrightData({ zone: zone0 });
+  if (!bdVerdict.allowed) {
+    if (bdVerdict.firstBlock) {
+      try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
+    }
+    throw new Error(`Bright Data ${bdVerdict.reason} cap reached — skipping for this call`);
+  }
+
   stats.brightData++;
 
   // Try zone from env (default: web_unlocker2)
-  const zones = [process.env.BRIGHTDATA_ZONE || 'web_unlocker2'];
+  const zones = [zone0];
 
   for (const zone of zones) {
     try {
@@ -1020,6 +1033,7 @@ module.exports = {
   fetchWithFallback,
   fetchViaScrapingBee,
   fetchViaScrapingDog,
+  fetchViaBrightData,
   shouldAttemptScrapingdog,
   fetchViaRedditRSS,
   toRssUrl,
