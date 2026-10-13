@@ -75,6 +75,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # BRO-4651: fallback when GITHUB_TOKEN's quota is exhausted mid-burst.
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-5196: same park settings as land.yml's admit step, or a
+          # non-default depth re-parks resumed runs in a loop.
+          LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
+          LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
         run: node scripts/land-retry-cancelled.js --sweep
 
       - name: Notify on failure

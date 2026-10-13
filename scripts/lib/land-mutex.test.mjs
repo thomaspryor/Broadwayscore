@@ -252,6 +252,21 @@ test('liveTicketCount ignores leaked tickets; parkDepth reads the repo variable'
   assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: '7' }), 7);
   assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: '0' }), 0);
   assert.equal(m.parkDepth({ LAND_MUTEX_PARK_DEPTH: 'abc' }), m.PARK_DEPTH);
+  assert.equal(m.parkDepth({ LAND_MUTEX_DISABLED: 'true', LAND_MUTEX_PARK_DEPTH: '7' }), 0);
+});
+
+// Review P1 (2026-10-13): the sweep read parkDepth() without the repo variables,
+// so a non-default depth made admit and sweep disagree and re-park in a loop.
+test('the sweep step gets the same park-depth variables as the admit step', () => {
+  const read = (f) => readFileSync(new URL(`../../.github/workflows/${f}`, import.meta.url), 'utf8');
+  const land = read('land.yml');
+  const sweep = read('land-retry-cancelled.yml');
+  for (const v of ['LAND_MUTEX_PARK_DEPTH', 'LAND_MUTEX_DISABLED']) {
+    const line = `${v}: \${{ vars.${v} }}`;
+    assert.ok(land.includes(line), `land.yml passes ${v}`);
+    const step = sweep.slice(sweep.indexOf('- name: Sweep for a stranded Land run'));
+    assert.ok(step.slice(0, step.indexOf('run:')).includes(line), `sweep step passes ${v}`);
+  }
 });
 
 test('the client-side cancel budget covers a parked run (no false REFUSED while the server still resumes it)', () => {

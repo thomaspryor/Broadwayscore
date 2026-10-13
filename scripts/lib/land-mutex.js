@@ -168,8 +168,13 @@ function nextPollMs(poll, { rand = Math.random } = {}) {
   return Math.round(base * (0.8 + 0.4 * rand()));
 }
 
-/** Park depth from the repo variable (LAND_MUTEX_PARK_DEPTH), default PARK_DEPTH; 0 disables. */
+/**
+ * Park depth from the repo variable (LAND_MUTEX_PARK_DEPTH), default PARK_DEPTH;
+ * 0 disables, as does LAND_MUTEX_DISABLED=true (same kill switches as land.yml's
+ * admit step, so the sweep never holds back a run the admit step would let in).
+ */
 function parkDepth(env = process.env) {
+  if (env.LAND_MUTEX_DISABLED === 'true') return 0;
   const n = Number(env.LAND_MUTEX_PARK_DEPTH);
   return env.LAND_MUTEX_PARK_DEPTH !== undefined && env.LAND_MUTEX_PARK_DEPTH !== '' && Number.isInteger(n) && n >= 0 ? n : PARK_DEPTH;
 }
