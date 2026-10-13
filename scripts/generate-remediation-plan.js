@@ -36,6 +36,7 @@ const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
+const { generateApprovalUrl } = require('./lib/approval-link.js');
 const { buildEntry, mergeEntries } = require('./lib/feedback-request-ledger.js');
 const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
 
@@ -68,19 +69,6 @@ function output(key, value) {
   if (process.env.GITHUB_OUTPUT) {
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
   }
-}
-
-function generateApprovalUrl(action, issueNumber, secret, planId) {
-  // 7-day expiry. planId binds the link to THIS generated plan: a rerun for
-  // the same issue overwrites {issue}.json, and without the binding an
-  // unexpired link for plan A would silently execute plan B. The executor
-  // refuses on planId mismatch.
-  const expires = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60);
-  const token = crypto
-    .createHmac('sha256', secret)
-    .update(`${action}:${issueNumber}:${expires}:${planId}`)
-    .digest('hex');
-  return `https://broadwayscorecard.com/api/approve-fix?issue=${issueNumber}&token=${token}&expires=${expires}&action=${action}&plan=${planId}`;
 }
 
 async function sendEmail(to, from, subject, html) {

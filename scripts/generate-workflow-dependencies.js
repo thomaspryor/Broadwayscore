@@ -146,7 +146,11 @@ function render(workflows) {
   L.push('|---|---|');
   const sec = new Map();
   for (const w of workflows.filter((x) => x.pushesCrossRepo)) for (const s of w.secrets) sec.set(s, [...(sec.get(s) || []), w.file]);
-  for (const [s, fs_] of [...sec].sort()) L.push(`| \`${s}\` | ${fs_.length} workflows${fs_.length <= 3 ? ': ' + fs_.map((f) => `\`${f}\``).join(', ') : ''} |`);
+  // Show the all-workflow total too: a bare "2 workflows" read as a stale
+  // total when the secret is used by more non-cross-repo workflows (BRO-5262).
+  const allUses = new Map();
+  for (const w of workflows) for (const s of w.secrets) allUses.set(s, (allUses.get(s) || 0) + 1);
+  for (const [s, fs_] of [...sec].sort()) L.push(`| \`${s}\` | ${fs_.length} cross-repo writers (of ${allUses.get(s)} workflows using it)${fs_.length <= 3 ? ': ' + fs_.map((f) => `\`${f}\``).join(', ') : ''} |`);
   L.push('');
   L.push('Cross-repo auth is `CORE_DATA_TOKEN` / `REVIEW_TEXTS_TOKEN` / `REPO_TOKEN` passed to the composite actions. Full per-workflow secret audit: `node scripts/audit-workflow-secret-gaps.js`.');
   L.push('');
