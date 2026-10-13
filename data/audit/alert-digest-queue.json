@@ -637,5 +637,35 @@
       }
     ],
     "queuedAt": "2026-10-13T08:08:50.962Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3034-system-health",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3034-system-health",
+    "description": "land.yml did not land land/bro-3034-system-health: the unit-tests-node gate went red at eba21df016. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38364638054",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3034-system-health"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "eba21df016615d272a317c81e64ab1fb398b35bd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38364638054"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:10:31.894Z"
   }
 ]
