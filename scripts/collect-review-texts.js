@@ -111,7 +111,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -4162,7 +4162,22 @@ function extractFromJsonLd(html) {
   }
 }
 
+// BRO-3499: only TB and Variety delegated to article-extractor.js; the other
+// DEDICATED_EXTRACTOR_HOSTS (WSJ, La Voce, The Stage, The Times, LSA, Theatre
+// Weekly) ran on the generic extraction alone, leaving their tested dedicated
+// patterns unused. Generic stays first (no behavior change when it already
+// found a full body); the dedicated extractor is the fallback when the generic
+// result is short, and wins only if it recovers more text.
+const DEDICATED_FALLBACK_MIN_CHARS = 500;
 function extractTextFromHtml(html, url) {
+  const generic = extractTextFromHtmlGeneric(html, url);
+  if (!url || generic.length >= DEDICATED_FALLBACK_MIN_CHARS || !isDedicatedExtractorHost(url)) return generic;
+  let dedicated = null;
+  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
+  return dedicated && dedicated.length > generic.length ? dedicated : generic;
+}
+
+function extractTextFromHtmlGeneric(html, url) {
   if (!html || typeof html !== 'string') return '';
 
   // Talkin' Broadway (BRO-912): checked FIRST (ahead of JSON-LD/generic

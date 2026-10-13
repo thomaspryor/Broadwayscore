@@ -1145,4 +1145,10 @@ function extractWsjNextData(html) {
   return text.trim() || null;
 }
 
-module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody };
+/** True when `urlOrHost` belongs to a DEDICATED_EXTRACTOR_HOSTS outlet (BRO-3499). */
+function isDedicatedExtractorHost(urlOrHost) {
+  const h = String(urlOrHost || '').toLowerCase();
+  return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
+}
+
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody };
