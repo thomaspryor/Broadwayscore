@@ -1,109 +1,132 @@
 {
-  "updatedAt": "2026-10-13T13:43:23.700Z",
-  "processed": 165,
-  "failed": 68,
-  "successRate": "70.8%",
+  "updatedAt": "2026-10-13T14:13:08.817Z",
+  "processed": 183,
+  "failed": 120,
+  "successRate": "60.4%",
   "tierBreakdown": {
-    "playwright": 89,
+    "playwright": 101,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 14,
+    "scrapingdog": 18,
+    "scrapingbee": 16,
     "brightdata": 8,
     "archiveToday": 0,
-    "archive": 35
+    "archive": 38
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 15,
   "recentActivity": [
     {
-      "t": "2026-10-13T12:25:21.784Z",
+      "t": "2026-10-13T12:38:35.089Z",
       "event": "bb-session",
-      "session": "bf5eede2",
-      "url": "https://littlelondonwhispers.substack.com/p/whos-afraid-of-virginia-woolf"
+      "session": "e5fb07ba",
+      "url": "https://www.talkinbroadway.com/page/ob/09_25_26.html"
     },
     {
-      "t": "2026-10-13T12:35:26.720Z",
-      "event": "bb-session",
-      "session": "85b1d5a6",
-      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
-    },
-    {
-      "t": "2026-10-13T12:35:27.114Z",
+      "t": "2026-10-13T12:38:35.500Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-13T13:14:13.028Z",
+      "t": "2026-10-13T12:43:16.882Z",
       "event": "bb-session",
-      "session": "ad19f366",
-      "url": "https://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1"
+      "session": "fa3c34f8",
+      "url": "https://www.nytimes.com/2026/10/12/theater/joey-arias-basil-twist-arias-with-a-t"
     },
     {
-      "t": "2026-10-13T13:14:13.708Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T13:14:34.812Z",
-      "event": "bb-session",
-      "session": "5332e3e7",
-      "url": "https://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1"
-    },
-    {
-      "t": "2026-10-13T13:14:35.444Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T13:15:43.891Z",
-      "event": "bb-session",
-      "session": "42c1ea4e",
-      "url": "http://www.wsj.com/articles/something-rotten-review-throw-out-your-shakespeare-1"
-    },
-    {
-      "t": "2026-10-13T13:15:44.556Z",
+      "t": "2026-10-13T12:43:17.210Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-13T13:16:02.359Z",
+      "t": "2026-10-13T12:44:02.540Z",
       "event": "bb-session",
-      "session": "1da3aa15",
-      "url": "http://www.wsj.com/articles/something-rotten-review-throw-out-your-shakespeare-1"
+      "session": "a962bb65",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
     },
     {
-      "t": "2026-10-13T13:16:02.997Z",
+      "t": "2026-10-13T12:44:10.276Z",
+      "event": "bb-session",
+      "session": "7e731058",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-13T13:01:25.344Z",
+      "event": "bb-session",
+      "session": "2cbb17a1",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-13T13:04:35.184Z",
+      "event": "bb-session",
+      "session": "6db6d87f",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-13T13:04:35.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-13T13:08:33.988Z",
+      "event": "bb-session",
+      "session": "4e14bcf3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-13T13:09:18.994Z",
+      "event": "bb-session",
+      "session": "5b3ee941",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-13T13:09:19.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-13T14:03:16.916Z",
+      "event": "bb-session",
+      "session": "ad7bf789",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-13T14:03:17.352Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-13T13:17:14.551Z",
+      "t": "2026-10-13T14:03:34.554Z",
       "event": "bb-session",
-      "session": "49e12904",
-      "url": "https://www.wsj.com/articles/review-of-wolf-hall-now-on-broadway-1428631502"
+      "session": "13c40fd8",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-13T13:17:15.266Z",
+      "t": "2026-10-13T14:03:34.924Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-13T13:17:44.553Z",
+      "t": "2026-10-13T14:09:04.088Z",
       "event": "bb-session",
-      "session": "51259ac2",
-      "url": "https://www.wsj.com/articles/review-of-wolf-hall-now-on-broadway-1428631502"
+      "session": "c2adf18b",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
     },
     {
-      "t": "2026-10-13T13:17:45.149Z",
+      "t": "2026-10-13T14:09:04.519Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-13T13:36:18.978Z",
+      "t": "2026-10-13T14:09:13.401Z",
       "event": "bb-session",
-      "session": "19776633",
-      "url": "https://www.hollywoodreporter.com/news/general-news/cherry-orchard-review-938659"
+      "session": "dfe5df23",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-13T14:09:13.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
