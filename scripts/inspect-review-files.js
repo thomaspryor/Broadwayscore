@@ -3,7 +3,7 @@
 /**
  * inspect-review-files.js — read-only: print the metadata of review-text files
  * for one or more shows (file, outlet, critic, publishDate, dateSource, url,
- * verdict flags, 160 chars of text). Built for cloud sessions that have no
+ * verdict flags, tier, length, content-verifier verdict, 160 chars of text). Built for cloud sessions that have no
  * data/review-texts clone and read it through cloud-run-script.js (BRO-5239).
  *
  *   node scripts/inspect-review-files.js --show=a,b [--outlet=x,y] [--file=sub]
@@ -45,7 +45,11 @@ for (const show of shows) {
     for (const k of FLAGS) if (r[k] !== undefined && r[k] !== null && r[k] !== false) flags[k] = r[k];
     console.log(JSON.stringify({
       show, file: f, outletId: r.outletId, critic: r.criticName, pub: r.publishDate,
-      url: r.url, flags, text: String(r.fullText || '').replace(/\s+/g, ' ').slice(0, 160),
+      url: r.url, flags,
+      // BRO-5243: a recovered row is only good when the verifier passed it.
+      tier: r.contentTier || null, chars: String(r.fullText || '').length, sourceMethod: r.sourceMethod || null,
+      cv: r.contentVerification ? { isValid: r.contentVerification.isValid, confidence: r.contentVerification.confidence, truncated: !!r.contentVerification.truncated, verifiedAt: r.contentVerification.verifiedAt || null } : null,
+      text: String(r.fullText || '').replace(/\s+/g, ' ').slice(0, 160),
     }));
   }
 }
