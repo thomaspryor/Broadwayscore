@@ -558,7 +558,17 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   write(d, '.github/workflows/a.yml', 'name: a\n');
   sh(d, 'git add -A && git commit -qm wf && git checkout -qb feat');
   const calls = [];
-  const stub = (code) => (cmd, args) => { calls.push([cmd, ...args].join(' ')); return { status: code, stdout: 'DEPENDENCIES.md is stale', stderr: '' }; };
+  // The checks run as one concurrent bash batch; the stub plays that batch by
+  // writing the <i>.rc / <i>.out files the script names (rc taken per check index).
+  const stub = (rcs) => (cmd, args) => {
+    calls.push(args[1]);
+    const dirs = [...args[1].matchAll(/>"([^"]+)\/(\d+)\.out"/g)];
+    for (const [, dir, i] of dirs) {
+      fs.writeFileSync(path.join(dir, `${i}.out`), 'DEPENDENCIES.md is stale\n');
+      fs.writeFileSync(path.join(dir, `${i}.rc`), `${typeof rcs === 'function' ? rcs(Number(i)) : rcs}\n`);
+    }
+    return { status: 0 };
+  };
   // unrelated change: nothing runs
   write(d, 'g2.txt', 'x\n');
   sh(d, 'git add -A && git commit -qm unrelated');
@@ -568,14 +578,15 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   write(d, '.github/workflows/a.yml', 'name: b\n');
   sh(d, 'git commit -qam wfchange');
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(0) }).status, 'clean');
-  assert.equal(calls.length, WORKFLOW_CHECKS.length);
+  assert.equal(calls.length, 1);
+  for (const c of WORKFLOW_CHECKS) assert.ok(calls[0].includes(c.args[0]), `batch runs ${c.args[0]}`);
   // exit 1 blocks and the message names the fix
   const bad = checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) });
   assert.equal(bad.status, 'fail');
   assert.match(blockMessage({ target: 'land/x', base: 'main', workflows: bad }), /generate-workflow-dependencies\.js --check fails on the landing tree/);
   // a check that crashes (exit 2) or times out never blocks
-  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(2) }).status, 'clean');
-  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: () => ({ error: new Error('ETIMEDOUT'), status: null }) }).status, 'clean');
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(124) }).status, 'clean');
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: () => ({ error: new Error('ETIMEDOUT'), status: null }) }).status, 'clean'); // no rc files written
   // judgeLand wires it in: a failing check blocks the land push
   const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false, seams: { checkWorkflowChecks: () => bad } });
   assert.equal(v.decision, 'block');
