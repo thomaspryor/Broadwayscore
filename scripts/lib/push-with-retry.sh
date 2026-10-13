@@ -210,12 +210,12 @@ _set_net_op_timeout() {
   return 0
 }
 git_fetch() {
+  _set_net_op_timeout  # BRO-2800: kept above the waiver comment, which must stay adjacent to the fetch
   # unbounded-fetch-ok: this is the transport WRAPPER, not a call site. Every
   # invocation passes its own depth bound through "$@" (FETCH_DEPTH_ARGS below,
   # computed by scripts/lib/shallow-fetch-args.js whenever the checkout is
   # shallow). scripts/audit-unbounded-fetch.js cannot see through "$@", so the
   # waiver lives here rather than as a fake flag on the git line.
-  _set_net_op_timeout
   _timeout "$_LAST_NET_TIMEOUT" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" fetch "$@"
 }
