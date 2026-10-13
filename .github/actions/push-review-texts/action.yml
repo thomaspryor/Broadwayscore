@@ -55,7 +55,15 @@ runs:
           git rebase --abort 2>/dev/null || true
         fi
         if [ -n "$(git ls-files -u)" ]; then
-          echo "::warning::push-review-texts: autostash pop conflicted — keeping this workflow's writes; protected fields restored below"
+          echo "::warning::push-review-texts: autostash pop conflicted — merging review JSON field-wise; other paths keep this workflow's writes"
+          # BRO-5211: merge each conflicted review JSON per field against the
+          # common base (stage 1/2/3) and git-add it. The whole-file
+          # `checkout --theirs` below then only touches paths still unmerged
+          # (it leaves resolved paths alone). Before this, a stale rebuild
+          # stash replaced a fresh collector file wholesale and the protected
+          # restore could not bring back publishDate/fetchMethod/needsRefetch.
+          node "$GITHUB_WORKSPACE/scripts/lib/review-json-three-way-merge.js" --tie=workflow >/dev/null \
+            || echo "::warning::push-review-texts: review JSON three-way merge crashed (falling back to whole-file)"
           git checkout --theirs -- . 2>/dev/null || true
           git add -A
         fi
@@ -361,7 +369,15 @@ runs:
             KEPT_OURS=0
             KEPT_THEIRS=0
 
+            # BRO-5211: field-wise three-way merge for review JSON first (the
+            # whole-file fullText-length pick below drops every field the
+            # losing side alone changed). It git-adds what it merges; the loop
+            # skips those and handles the rest (delete/modify, bad JSON).
+            node ../../scripts/lib/review-json-three-way-merge.js --tie=upstream >/dev/null \
+              || echo "::warning::push-review-texts: review JSON three-way merge crashed (falling back to whole-file)"
+
             while IFS= read -r f; do
+              [ -n "$(git ls-files -u -- "$f")" ] || continue
               # Handle delete/modify conflicts
               if [ ! -f "$f" ]; then
                 git rm "$f" 2>/dev/null || true
