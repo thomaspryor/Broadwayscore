@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  findVarietyPromoBleed, hasVarietyPromoBleed, stripVarietyPromoBleed, applyVarietyPromoStrip, isProseLine, RESCORE_REASON,
+  findVarietyPromoBleed, hasVarietyPromoBleed, stripVarietyPromoBleed, applyVarietyPromoStrip, isProseLine, isExcludedRow, RESCORE_REASON,
 } = require('../../scripts/lib/variety-promo-bleed.js');
 
 const para = (tag, n = 8) => Array.from({ length: n }, (_, i) => `The ${tag} production keeps its nerve in scene ${i}, and the cast plays it straight.`).join(' ');
@@ -87,4 +87,17 @@ test('a second strip keeps the first pre-strip baseline', () => {
   const first = { at: 't1', previousLength: 9, newLength: 5, previousScore: 70, previousBucket: 'Positive', previousScoredAt: 't0' };
   const out = applyVarietyPromoStrip({ fullText: 'abc', assignedScore: 50, varietyPromoStrip: first }, 'ab', { at: 't2' });
   assert.deepEqual(out.varietyPromoStrip, first);
+});
+
+test('isExcludedRow skips every flag the scorer skips (no live score, nothing to strip or A/B)', () => {
+  // Same flags scripts/llm-scoring/index.ts logs as dataQualitySkipped; wrongAttribution was missed once (BRO-5254 sample).
+  for (const f of ['wrongShow', 'wrongProduction', 'wrongAttribution', 'isNonReview', 'isRoundupArticle', 'fabricatedEntry']) {
+    assert.equal(isExcludedRow({ [f]: true }), true, f);
+  }
+  assert.equal(isExcludedRow({ duplicateOf: 'x/y.json' }), true);
+  assert.equal(isExcludedRow({ rejectionReason: 'paywall' }), true);
+  assert.equal(isExcludedRow({ contentTier: 'invalid' }), true);
+  assert.equal(isExcludedRow({ contentTier: 'complete' }), false);
+  assert.equal(isExcludedRow({ wrongAttribution: false }), false);
+  assert.equal(isExcludedRow(null), false);
 });

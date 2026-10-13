@@ -165,9 +165,13 @@ function applyVarietyPromoStrip(record, newText, { at } = {}) {
   return out;
 }
 
-/** Rows the rebuild leaves out anyway: not worth a strip or a rescore. */
+/** Rows the rebuild leaves out anyway (no live score): not worth a strip, a rescore or a place in the A/B. */
 function isExcludedRow(d) {
-  return !!(d && (d.wrongShow || d.wrongProduction || d.duplicateOf || d.isNonReview || d.isRoundupArticle));
+  if (!d) return false;
+  // Mirrors the scorer's dataQualitySkipped reasons (scripts/llm-scoring/index.ts), stale roundup flags included.
+  const roundup = d.isRoundupArticle && !require('./review-guards').isLikelyStaleRoundupFlag(d);
+  return !!(d.wrongShow || d.wrongProduction || d.wrongAttribution || d.duplicateOf || d.isNonReview || roundup
+    || d.rejectionReason || d.fabricatedEntry || d.contentTier === 'invalid');
 }
 
 module.exports = {

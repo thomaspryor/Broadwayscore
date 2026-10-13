@@ -248,6 +248,8 @@ function ab() {
     const s = d.varietyPromoStrip;
     // Unscored before the strip: nothing to compare, and a null bucket would skew the shares.
     if (!s || s.previousScore == null) continue;
+    // Not on the live site (e.g. stripped before wrongAttribution joined isExcludedRow): tells the A/B nothing.
+    if (isExcludedRow(d)) continue;
     before.push({ file: rel, score: s.previousScore, bucket: s.previousBucket, scoredAt: s.previousScoredAt, confidence: null, textStatus: null });
     current.set(rel, d);
   }
