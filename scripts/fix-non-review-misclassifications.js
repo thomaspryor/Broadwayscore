@@ -60,7 +60,7 @@ const REVIEW_OUTLETS = new Set([
   'rollingstone', 'paste-magazine', 'billboard', 'talkinbroadway',
   'theater-scene', 'amny', 'broadwayworld', 'theatrely',
   'thestage', 'whatsonstage', 'standard', 'telegraph',
-  'times-uk', 'timeout-london',
+  'times-uk', 'sunday-times', 'timeout-london',
 ]);
 
 const results = { fixed: [], skipped: [], errors: [] };

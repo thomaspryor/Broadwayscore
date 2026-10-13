@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-10-13T06:49:11.663Z",
     "version": "2.1.0",
-    "lastChange": "BRO-4898: aliases therevieshub-com -> thereviewshub, time-outs -> timeout-london (typo outlet ids on genuine reviews); add Islington Gazette"
+    "lastChange": "BRO-5137: split The Sunday Times (sunday-times, splitFrom times-uk) out of times-uk"
   },
   "outlets": {
     "westendtheatre": {
@@ -7631,17 +7631,13 @@
         "times uk",
         "times-london",
         "times-uk",
-        "the sunday times",
-        "sunday-times",
-        "sundaytimes",
         "the-times-barbican",
         "the times (barbican)",
         "the-times-garrick",
         "the times (garrick)",
         "the-times-menier-chocolate-factory",
         "the times (menier chocolate factory)",
-        "The Times",
-        "The Sunday Times"
+        "The Times"
       ],
       "domain": "thetimes.co.uk",
       "region": "london",
@@ -7650,6 +7646,44 @@
         "thetimes.com"
       ],
       "starScale": 5
+    },
+    "sunday-times": {
+      "displayName": "The Sunday Times",
+      "tier": 1,
+      "isDualMarket": true,
+      "aliases": [
+        "sunday-times",
+        "sundaytimes",
+        "the sunday times",
+        "sunday times",
+        "the-sunday-times",
+        "thesundaytimes",
+        "the sunday times (uk)",
+        "sunday times (uk)",
+        "The Sunday Times"
+      ],
+      "domain": "thetimes.co.uk",
+      "domainAliases": [
+        "thetimes.com"
+      ],
+      "region": "london",
+      "accessModel": "paywalled",
+      "starScale": 5,
+      "splitFrom": "times-uk",
+      "splitCritics": [
+        "Quentin Letts",
+        "Christopher Hart",
+        "John Peter",
+        "David Jays",
+        "Victoria Segal",
+        "Jane Edwardes",
+        "Maxie Szalwinska",
+        "Patricia Nicol",
+        "Louise Wise",
+        "Louis Wise",
+        "AA Gill"
+      ],
+      "splitNote": "BRO-5137 (owner decision 2026-10-13): The Sunday Times counts as its own critic vote, separate from The Times. Both publish on thetimes.co.uk/thetimes.com, so the url never names the paper (times-uk keeps the domain; edition pair). A times-uk file moves here when its stored outlet label names the Sunday Times, or when the label is only the generic display name and the critic is in splitCritics: critics whose explicitly labelled times-uk files were all Sunday Times (>=3, none labelled The Times) in the 2026-10-13 corpus."
     },
     "standard": {
       "displayName": "Evening Standard",
@@ -13295,7 +13329,15 @@
     "dc metro theater arts": "dc-theater-arts",
     "therevieshub-com": "thereviewshub",
     "time-outs": "timeout-london",
-    "islington gazette": "islington-gazette"
+    "islington gazette": "islington-gazette",
+    "sunday-times": "sunday-times",
+    "sundaytimes": "sunday-times",
+    "the sunday times": "sunday-times",
+    "sunday times": "sunday-times",
+    "the-sunday-times": "sunday-times",
+    "thesundaytimes": "sunday-times",
+    "the sunday times (uk)": "sunday-times",
+    "sunday times (uk)": "sunday-times"
   },
   "lastUpdated": "2026-09-30T04:38:59.859Z",
   "lastChange": "BRO-4947: DC Metro Theater Arts (dcmetrotheaterarts.com) is DC Theater Arts, not DC Theatre Scene; dc-metro-theater-arts merged into dc-theater-arts; gotham-playgoer merged into bobs-theater-blog"

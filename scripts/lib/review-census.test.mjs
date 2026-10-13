@@ -175,11 +175,12 @@ test('WET rich row with a STALE baked outletId is re-normalized from the outlet 
   }));
   const c = buildCensusFromArchives('show-n', { archiveDir: dir });
   const ids = c.entries.map((e) => e.outletId).sort();
-  // normalizeOutlet collapses these to the canonical ids reviews.json uses.
-  assert.deepEqual(ids, ['express-uk', 'times-uk'], 'stale baked ids re-normalized, not trusted');
+  // normalizeOutlet collapses these to the canonical ids reviews.json uses
+  // (The Sunday Times is its own outlet since BRO-5137).
+  assert.deepEqual(ids, ['express-uk', 'sunday-times'], 'stale baked ids re-normalized, not trusted');
   assert.ok(!ids.includes('the-express') && !ids.includes('the-sun'), 'no stale id leaks into the census');
   // Now a show whose reviews.json HAS express-uk scored reads as complete, not missing.
-  assert.equal(censusVerdict(c, new Set(['express-uk', 'times-uk'])).verdict, 'complete');
+  assert.equal(censusVerdict(c, new Set(['express-uk', 'sunday-times'])).verdict, 'complete');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

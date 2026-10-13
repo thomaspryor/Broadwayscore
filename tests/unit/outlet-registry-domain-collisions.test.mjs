@@ -71,10 +71,11 @@ describe('findUndeclaredDomainCollisions', () => {
     }), []);
   });
 
-  test('EDITION_PAIRS is exactly the three known masthead splits', () => {
+  test('EDITION_PAIRS is exactly the four known masthead splits', () => {
     assert.deepStrictEqual(EDITION_PAIRS.map((p) => [...p].sort()), [
       ['sunday-telegraph', 'telegraph'],
       ['express-uk', 'sunday-express'],
+      ['sunday-times', 'times-uk'], // BRO-5137
       ['timeout', 'timeout-london'],
     ]);
   });

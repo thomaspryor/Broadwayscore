@@ -3111,7 +3111,7 @@ function validateP0ScoreCoverage() {
   // These SHOULD have high P0 rates when HTML is available
   const extractorOutlets = new Set([
     'timeout', 'ew', 'usatoday', 'guardian', 'standard', 'independent',
-    'culturesauce', 'whatsonstage', 'telegraph', 'thestage', 'times-uk',
+    'culturesauce', 'whatsonstage', 'telegraph', 'thestage', 'times-uk', 'sunday-times',
     'nysr', 'theater-pizzazz', 'theater-life', 'uk-theatre-web',
     'londontheatre', 'broadwayworld'
   ]);

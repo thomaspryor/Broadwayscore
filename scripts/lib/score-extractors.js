@@ -1785,7 +1785,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
 // DO NOT add new outlets here without verifying they actually publish ratings.
 // Changes here affect aggregator-relayed score treatment in getBestScore() P0.5.
 const KNOWN_STAR_OUTLETS = new Set([
-  'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
+  'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'sunday-times', 'standard',
   // NOTE: nysr (New York Stage Review) publishes unicode stars ★★★☆☆ at start of each review.
   'nysr',
   'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',

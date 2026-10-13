@@ -1484,7 +1484,7 @@ function shouldUpgradeUnknownByline(filepath, existing, ctx) {
 // Outlets whose pages carry other critics' bylines in recirc widgets, so the
 // first byline match on a fetch can be someone else's (review-normalization
 // findExistingReviewFile pass 0: one WhatsOnStage URL produced 9 bylines).
-const ROTATING_BYLINE_OUTLETS = new Set(['whatsonstage', 'times-uk']);
+const ROTATING_BYLINE_OUTLETS = new Set(['whatsonstage', 'times-uk', 'sunday-times']);
 
 /**
  * Why a byline read off a file's own page may NOT be written onto that

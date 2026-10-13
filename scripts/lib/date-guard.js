@@ -67,7 +67,7 @@ function evaluateDateGuard({ pubDate, show, outletId, priorRuns, tourLegs }) {
   // in the wrong direction for the US-side reviews. Dual-market routing
   // handles them separately.
   const UK_TRUSTED_OUTLETS = new Set([
-    'thestage', 'financialtimes', 'guardian', 'times-uk', 'telegraph',
+    'thestage', 'financialtimes', 'guardian', 'times-uk', 'sunday-times', 'telegraph',
     'standard', 'bbc', 'whatsonstage', 'independent',
   ]);
   const UK_MARKETS = new Set(['west-end', 'off-west-end']);

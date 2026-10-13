@@ -93,32 +93,77 @@ function criticOutletCount(criticName, outletId) {
 }
 
 /**
- * Outlet split (BRO-5128): registry outlet B declares `splitFrom: A` when A's
- * one outletId used to cover two publications. A file still labelled A whose
- * URL is on B's own domain is B's, whatever else it carries: the relabel moves
- * the file with every flag, override and score intact, so the exclusion,
- * operator-assertion and critic-record checks of publisherDomainCorrection
- * (all there to stop a relabel from overruling a decision about THIS file)
- * do not apply. A critic's record at A was built while both publications
- * shared the id. Applied by applyUrlEditionCorrection only: misfileHealPlan's
- * pointer-dropping and folding paths never see a split (it returns null).
+ * Outlet split (BRO-5128, BRO-5137): registry outlet B declares `splitFrom: A`
+ * when A's one outletId used to cover two publications. A file still labelled
+ * A belongs to B, whatever else it carries, when:
+ *  - its URL is on B's own domain (BritishTheatre.com split out of
+ *    british-theatre), or
+ *  - its stored `outlet` label names B (an aggregator wrote "The Sunday Times"
+ *    while the alias still routed to times-uk), or
+ *  - its label is only A's generic display name (no edition signal) and its
+ *    critic is in B's `splitCritics`: critics whose explicitly labelled A files
+ *    were all B. Used where both papers share one domain, so the URL can't say.
+ * The relabel moves the file with every flag, override and score intact, so
+ * the exclusion, operator-assertion and critic-record checks of
+ * publisherDomainCorrection (all there to stop a relabel from overruling a
+ * decision about THIS file) do not apply. A critic's record at A was built
+ * while both publications shared the id. Applied by applyUrlEditionCorrection
+ * only: misfileHealPlan's pointer-dropping and folding paths never see a split
+ * (it returns null).
  * @returns {{ outletId: string, outlet: string, from: string|null, reason: string } | null}
  */
 function splitOutletCorrection(data) {
-  if (!data || typeof data.url !== 'string' || !data.url || data._locked) return null;
+  if (!data || data._locked) return null;
   const { resolveOutletFromUrl, getOutletFromRegistry } = require('./review-normalization');
   const current = normalizeOutlet(data.outletId || data.outlet || '');
   if (!current) return null;
-  const owner = resolveOutletFromUrl(data.url);
-  if (!owner || !owner.outletId || owner.outletId === current) return null;
-  const entry = getOutletFromRegistry(owner.outletId);
-  if (!entry || entry.splitFrom !== current) return null;
-  return {
-    outletId: owner.outletId,
-    outlet: getOutletDisplayName(owner.outletId) || owner.displayName || owner.outletId,
+  const fix = (outletId, reason, detail, displayName) => ({
+    outletId,
+    outlet: getOutletDisplayName(outletId) || displayName || outletId,
     from: data.outletId || null,
-    reason: 'outlet-split',
-  };
+    reason,
+    detail,
+  });
+  if (typeof data.url === 'string' && data.url) {
+    const owner = resolveOutletFromUrl(data.url);
+    if (owner && owner.outletId && owner.outletId !== current) {
+      const entry = getOutletFromRegistry(owner.outletId);
+      if (entry && entry.splitFrom === current) {
+        return fix(owner.outletId, 'outlet-split', `${data.url} resolves to ${owner.outletId}`, owner.displayName);
+      }
+    }
+  }
+  const children = require('./review-normalization').splitChildrenOf(current);
+  if (!children.length) return null;
+  const label = typeof data.outlet === 'string' ? data.outlet.trim() : '';
+  const labelId = label ? normalizeOutlet(label) : null;
+  const named = children.find((c) => c.id === labelId);
+  if (named) return fix(named.id, 'outlet-split-label', `outlet label "${label}" names ${named.id}`);
+  if (!isGenericLabel(label, current)) return null;
+  const critic = compactId(data.criticName);
+  if (!critic) return null;
+  const byCritic = children.find((c) => (c.entry.splitCritics || []).some((n) => compactId(n) === critic));
+  return byCritic
+    ? fix(byCritic.id, 'outlet-split-critic', `generic label, ${data.criticName} is a ${byCritic.id} splitCritics critic`)
+    : null;
+}
+
+/**
+ * A label carrying no edition signal: empty, or any spelling that normalizes
+ * to the parent except its bare masthead name. Our own writers stamp the
+ * display name ("The Times (UK)"); slug and punctuation variants
+ * ("the-times-uk", "The Times U.K.") and scraped venue tags ("The Times
+ * (Barbican)") say nothing about the edition. A bare "The Times" / "Times",
+ * written by an aggregator, is a signal for the parent and never moves by
+ * critic.
+ */
+function isGenericLabel(label, parentId) {
+  if (!label) return true;
+  if (normalizeOutlet(label) !== parentId) return false;
+  const display = getOutletDisplayName(parentId) || '';
+  const masthead = compactId(display.replace(/\([^)]*\)\s*$/, ''));
+  const bare = [masthead, masthead.replace(/^the/, '')].filter(Boolean);
+  return !bare.includes(compactId(label));
 }
 
 /**
@@ -276,7 +321,7 @@ function applyUrlEditionCorrection(data, today = new Date().toISOString().slice(
   const fix = edition ? { ...edition, reason: 'url-edition' } : (splitOutletCorrection(data) || publisherDomainCorrection(data, opts));
   if (!fix) return null;
   data.outletIdCorrectedFrom = fix.from;
-  data.outletIdCorrectedReason = `${fix.reason}: ${data.url} resolves to ${fix.outletId} (${today})`;
+  data.outletIdCorrectedReason = `${fix.reason}: ${fix.detail || `${data.url} resolves to ${fix.outletId}`} (${today})`;
   data.outletId = fix.outletId;
   data.outlet = fix.outlet;
   return fix;
@@ -557,7 +602,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         // A publisher-domain relabel is only persisted once the rename/merge
         // it needs lands (BRO-4402): a kept tombstone must stay untouched, not
         // become a mislabelled file that re-reports every run.
-        const deferWrite = !!editionFix && (editionFix.reason === 'publisher-domain' || editionFix.reason === 'outlet-split');
+        const deferWrite = !!editionFix && (editionFix.reason === 'publisher-domain' || editionFix.reason.startsWith('outlet-split'));
         const announceFix = () => {
           out.editionFixedCount++;
           act(`${sid}/${f}: outletId ${editionFix.from} -> ${editionFix.outletId} (${editionFix.reason})`);
@@ -691,6 +736,7 @@ module.exports = {
   urlEditionCorrection,
   publisherDomainCorrection,
   splitOutletCorrection,
+  isGenericLabel,
   misfileHealPlan,
   excludedTargetSwapAllowed,
   sameArticlePath,

@@ -1362,6 +1362,41 @@ function loadCriticRegistry() {
   }
 }
 
+let _splitChildren = null;
+/**
+ * Registry outlets declaring `splitFrom: parentId` (BRO-5128/BRO-5137), as
+ * [{ id, entry }]. One cache for every split consumer (outlet-mismatch-heal's
+ * relabel, validateCriticOutlet's edition family).
+ */
+function splitChildrenOf(parentId) {
+  if (!_splitChildren) {
+    _splitChildren = new Map();
+    const registry = loadOutletRegistry();
+    for (const [id, entry] of Object.entries((registry && registry.outlets) || {})) {
+      if (!entry || !entry.splitFrom) continue;
+      if (!_splitChildren.has(entry.splitFrom)) _splitChildren.set(entry.splitFrom, []);
+      _splitChildren.get(entry.splitFrom).push({ id, entry });
+    }
+  }
+  return _splitChildren.get(parentId) || [];
+}
+
+/**
+ * The outlet plus its edition siblings: a split child that shares its
+ * parent's domain is the same masthead (The Times / The Sunday Times), so a
+ * critic known at one is not a misattribution at the other. A split onto a
+ * different domain (British Theatre Guide / BritishTheatre.com) is two
+ * publications and is not a family.
+ */
+function editionFamily(outletId) {
+  const family = new Set([outletId]);
+  const self = getOutletFromRegistry(outletId);
+  const sameMasthead = (a, b) => a && b && a.domain && a.domain === b.domain;
+  if (self && self.splitFrom && sameMasthead(self, getOutletFromRegistry(self.splitFrom))) family.add(self.splitFrom);
+  for (const { id, entry } of splitChildrenOf(outletId)) if (sameMasthead(entry, self)) family.add(id);
+  return family;
+}
+
 /**
  * Validate whether a critic is expected at a given outlet.
  * Uses the auto-generated critic registry for data-driven detection.
@@ -1400,12 +1435,16 @@ function validateCriticOutlet(critic, outlet) {
     return { isSuspicious: false, confidence: 'low', reason: 'Critic is a known freelancer' };
   }
 
-  if (knownOutlets.includes(normalizedOutlet)) {
+  // An edition split (BRO-5137) is one family: the critic registry was built
+  // from reviews filed under the parent id until the split, so a Sunday Times
+  // review by a critic known at times-uk is not a misattribution.
+  const family = editionFamily(normalizedOutlet);
+  if (knownOutlets.some((o) => family.has(o))) {
     return { isSuspicious: false, confidence: 'high' };
   }
 
   const totalReviews = criticEntry.totalReviews || 0;
-  const outletCount = criticEntry.outletCounts?.[normalizedOutlet] || 0;
+  const outletCount = [...family].reduce((n, o) => n + (criticEntry.outletCounts?.[o] || 0), 0);
 
   // High confidence: 10+ reviews, 0 at this outlet, not a freelancer
   if (totalReviews >= 10 && outletCount === 0) {
@@ -2778,6 +2817,8 @@ module.exports = {
   getOutletFromRegistry,
   getOutletTier,
   loadOutletRegistry,
+  splitChildrenOf,
+  editionFamily,
   levenshteinDistance,
   findExistingReviewFile,
   isFlaggedMergeTarget,

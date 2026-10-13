@@ -15,6 +15,7 @@ const RATING_SCHEMA_OUTLETS = {
   'timeout': '5-star',         // Time Out New York
   'timeout-london': '5-star',  // Time Out London
   'times-uk': '5-star',        // The Times (UK)
+  'sunday-times': '5-star',    // The Sunday Times (BRO-5137)
   'standard': '5-star',        // Evening Standard
 };
 

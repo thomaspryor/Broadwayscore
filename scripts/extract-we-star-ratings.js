@@ -17,7 +17,7 @@ const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'archives', 'reviews');
 
 // Outlets that DON'T use star ratings — skip them
 const NO_STARS = new Set([
-  'times-uk', 'financialtimes', 'variety', 'nytimes', 'nytg', 'observer',
+  'times-uk', 'sunday-times', 'financialtimes', 'variety', 'nytimes', 'nytg', 'observer',
   'washpost', 'latimes', 'hollywoodreporter', 'ap', 'deadline',
   'british-theatre', 'britishtheatreguide',  // BTG doesn't publish star ratings
 ]);

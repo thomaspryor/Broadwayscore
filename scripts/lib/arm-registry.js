@@ -113,7 +113,7 @@ const ARMS = [
   { id: 'outlet:theatermania', label: 'TheaterMania (reviews collected)', kind: 'outlet', outletIds: ['theatermania'] },
   { id: 'outlet:whatsonstage', label: 'WhatsOnStage (reviews collected)', kind: 'outlet', outletIds: ['whatsonstage'] },
   { id: 'outlet:guardian', label: 'The Guardian (reviews collected)', kind: 'outlet', outletIds: ['guardian'] },
-  { id: 'outlet:times-uk', label: 'The Times UK (reviews collected)', kind: 'outlet', outletIds: ['times-uk'] },
+  { id: 'outlet:times-uk', label: 'The Times UK (reviews collected)', kind: 'outlet', outletIds: ['times-uk', 'sunday-times'] }, // BRO-5137 split
   // Deliberately included as the sparse-arm control: nysr published nothing for
   // 8 consecutive days in July 2026 while perfectly healthy. Any detector that
   // pages on this arm's normal rhythm is mis-tuned, and having it registered
