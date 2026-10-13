@@ -2277,5 +2277,35 @@
       }
     ],
     "queuedAt": "2026-10-13T01:54:54.625Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2910-playbill-cache-cards",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2910-playbill-cache-cards",
+    "description": "land.yml did not land land/bro-2910-playbill-cache-cards: the unit-tests-node gate went red at df9887d710. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38334608581",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2910-playbill-cache-cards"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "df9887d710fa553fb71d54e7e35df62653efcd29"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38334608581"
+      }
+    ],
+    "queuedAt": "2026-10-13T02:26:46.186Z"
   }
 ]
