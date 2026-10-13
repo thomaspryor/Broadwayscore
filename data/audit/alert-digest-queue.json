@@ -2423,5 +2423,18 @@
       }
     ],
     "queuedAt": "2026-10-13T03:11:58.159Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-review-folders",
+    "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
+    "description": "check-corpus-drift.js audit \"orphan-review-folders\" (node scripts/report-orphan-review-folders.js --strict) has been drifting. Latest output:\n\nOrphan review-text folders: 8 (22 files)\n  no-candidate: 8\n  dup-diff-url: 8\n  multi-match: 6\n  can-i-be-frank-off-broadway-2026 (8)\n  kinky-boots-2026 (8)\n  little-bear-ridge-road (1)\n  maybe-happy-ending (1)\n  punch (1)\n  the-outsiders (1)\n  the-play-that-goes-wrong-2019 (1)\n  two-strangers (1)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T03:27:49.765Z"
   }
 ]
