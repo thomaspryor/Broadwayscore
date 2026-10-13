@@ -21,6 +21,7 @@ const path = require('path');
 const { checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { syncRevivalTags } = require('./lib/revival-tags');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 const { shouldAcceptIbdbRevival } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -83,9 +84,10 @@ async function main() {
       process.exit(1);
     }
   } else {
-    // Filter to target category (Broadway shows have no category field)
+    // Filter to target category. Broadway entries now carry category 'broadway'
+    // (legacy ones have none), so `!s.category` alone matched almost nothing.
     if (categoryFilter === 'broadway') {
-      shows = shows.filter(s => !s.category);
+      shows = shows.filter(isBroadwayCategory);
     } else {
       shows = shows.filter(s => s.category === categoryFilter);
     }
