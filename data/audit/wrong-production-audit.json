@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-13T17:27:09.897Z",
+  "timestamp": "2026-10-13T17:42:03.099Z",
   "stats": {
-    "totalReviews": 56402,
-    "alreadyFlagged": 21028,
+    "totalReviews": 56406,
+    "alreadyFlagged": 21029,
     "dateGuardCatches": 213,
-    "directorMismatch": 1872,
+    "directorMismatch": 1873,
     "tvFilmSignals": 1642,
     "londonSignals": 2236,
     "offBroadwaySignals": 510,
@@ -1537,7 +1537,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 39,
+      "score": 38,
       "publishDate": "2026-10-07",
       "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
       "findings": [
@@ -20868,7 +20868,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "broadwayworld--cheryl-markosky.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-10-08",
       "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Nol-Coward-Theatre-20261008",
       "findings": [
@@ -20962,7 +20962,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "london-theatre--julia-rank.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-noel-coward-theatre",
       "findings": [
@@ -21117,7 +21117,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "the-spy-in-the-stalls--unknown.json",
-      "score": 100,
+      "score": 95,
       "publishDate": "2026-10-08",
       "url": "https://thespyinthestalls.com/2026/10/into-the-woods/",
       "findings": [
@@ -21131,7 +21131,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 99,
+      "score": 100,
       "publishDate": "2026-10-07",
       "url": "https://www.theatreweekly.com/review-into-the-woods-at-noel-coward-theatre/",
       "findings": [
@@ -21192,7 +21192,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2026-10-08",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-noel-coward-theatre-london-stephen-sondheim-jordan-fein",
       "findings": [
@@ -21206,7 +21206,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "timeout-london--reviewer.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "2026-10-07",
       "url": "https://www.timeout.com/london/theatre/into-the-woods-5-review",
       "findings": [
@@ -21388,6 +21388,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "counselmagazine--daniel-barnett.json",
+      "score": 75,
       "publishDate": "2026-04-13",
       "url": "https://www.counselmagazine.co.uk/articles/into-the-woods",
       "findings": [
@@ -21587,6 +21588,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "mildconcern--tim-brandon.json",
+      "score": 79,
       "publishDate": "2026-03-30",
       "url": "https://mildconcern.substack.com/p/theatre-reviews-into-the-woods-broken",
       "findings": [
@@ -21689,6 +21691,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-to-see--wilder-gutterson.json",
+      "score": 74,
       "publishDate": "2026-03-05",
       "url": "https://playstosee.com/reviews/uk-reviews/london/into-the-woods-2/",
       "findings": [
@@ -31522,6 +31525,20 @@
       "score": 77,
       "publishDate": "April 25, 2013",
       "url": "http://www.vulture.com/2013/04/theater-review-pippin.html?mid=googlenews",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-2013",
+      "file": "wsj--associated-press.json",
+      "score": 81,
+      "publishDate": "April 25, 2013",
+      "url": "https://online.wsj.com/article/APfaedcde8df674391ae1edbf18ea9ac33.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45555,7 +45572,7 @@
     {
       "showId": "the-standard-of-living-west-end-2026",
       "file": "london-unattached--dr-adrian-york.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-09-30",
       "url": "https://www.london-unattached.com/the-standard-of-living-theatre-royal/",
       "findings": [
@@ -47181,7 +47198,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 57,
+      "score": 64,
       "publishDate": "2026-09-28",
       "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2?syn-25a6b1a6=1",
       "findings": [
@@ -47269,7 +47286,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "london-theatre--aliya-al-hassan.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-09-27",
       "url": "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
       "findings": [
@@ -47302,7 +47319,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "plays-international--jeremy-malies.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-28",
       "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
       "findings": [
@@ -47326,7 +47343,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-28",
       "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
       "findings": [
@@ -47350,7 +47367,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "readaboutstuff--unknown.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2026-09-28",
       "url": "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
       "findings": [
@@ -47402,7 +47419,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 57,
+      "score": 60,
       "publishDate": "2026-09-28",
       "url": "https://www.standard.co.uk/culture/theatre/tru-at-menier-chocolate-factory-review-b1298631.html",
       "findings": [
@@ -47440,7 +47457,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "theatre-weekly--katie-shaw.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2026-09-27",
       "url": "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
       "findings": [
@@ -47510,7 +47527,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
-      "score": 53,
+      "score": 54,
       "publishDate": "2026-09-28",
       "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
       "findings": [
@@ -47553,7 +47570,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 62,
+      "score": 64,
       "publishDate": "2026-09-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
       "findings": [
@@ -47604,7 +47621,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "whatsonstage--sonny-waheed.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-09-27",
       "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
       "findings": [
@@ -50202,7 +50219,7 @@
     {
       "showId": "what-the-animals-say-off-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-10-06",
       "url": "https://theartsdispatch.substack.com/p/what-the-animals-say-review-finborough",
       "findings": [
@@ -54928,7 +54945,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -54942,7 +54959,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-unattached--mike-stone.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-10-08",
       "url": "https://www.london-unattached.com/blood-of-my-blood-royal-court-theatre/",
       "findings": [
@@ -63141,7 +63158,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2026-10-02",
       "url": "https://www.allthatdazzles.co.uk/post/review-hay-fever-wyndham-s-theatre",
       "findings": [
@@ -63183,7 +63200,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "everything-theatre--owen-thomas-james.json",
-      "score": 55,
+      "score": 56,
       "publishDate": "2026-10-04",
       "url": "https://everything-theatre.co.uk/2026/10/review-hay-fever-wyndhams-theatre/",
       "findings": [
@@ -63197,7 +63214,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 58,
+      "score": 62,
       "publishDate": "2026-10-02",
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -63224,7 +63241,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2026-10-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hay-fever-review-richard-e-grant-christine-baranski-b3060249.html",
       "findings": [
@@ -63322,7 +63339,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 59,
+      "score": 66,
       "publishDate": "2026-10-01",
       "url": "https://theatreweekly.com/review-hay-fever-at-wyndhams-theatre/",
       "findings": [
@@ -63363,7 +63380,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-10-02",
       "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
       "findings": [
@@ -63377,7 +63394,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 62,
+      "score": 64,
       "publishDate": "2026-10-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "findings": [
@@ -73213,7 +73230,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-10-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/rent-tom-stoppard-theatre-review",
       "findings": [
@@ -79528,7 +79545,7 @@
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-10-06",
       "url": "https://revstanstheatreblog.co.uk/2026/10/06/review-the-hungry-ghost-bush-theatre/",
       "findings": [
@@ -85180,7 +85197,7 @@
     {
       "showId": "what-the-animals-say-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "2026-10-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-WHAT-THE-ANIMALS-SAY-Finborough-Theatre-20261003",
       "findings": [
