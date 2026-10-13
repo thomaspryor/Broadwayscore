@@ -1,26 +1,21 @@
 {
-  "updatedAt": "2026-10-13T14:41:19.961Z",
-  "processed": 184,
-  "failed": 132,
-  "successRate": "58.2%",
+  "updatedAt": "2026-10-13T14:55:38.455Z",
+  "processed": 188,
+  "failed": 130,
+  "successRate": "59.1%",
   "tierBreakdown": {
     "playwright": 102,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 18,
+    "scrapingdog": 19,
     "scrapingbee": 17,
-    "brightdata": 8,
+    "brightdata": 9,
     "archiveToday": 0,
-    "archive": 38
+    "archive": 40
   },
   "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-10-13T12:43:17.210Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-13T12:44:02.540Z",
       "event": "bb-session",
@@ -112,22 +107,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-13T14:38:15.816Z",
+      "t": "2026-10-13T14:36:38.843Z",
       "event": "bb-session",
-      "session": "c6731621",
-      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
+      "session": "542468fb",
+      "url": "https://www.nytimes.com/2026/09/09/theater/liberation-purpose-oh-mary-mexodus-sh"
     },
     {
-      "t": "2026-10-13T14:40:22.066Z",
-      "event": "bb-session",
-      "session": "65369876",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "t": "2026-10-13T14:36:39.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-13T14:40:30.837Z",
+      "t": "2026-10-13T14:50:20.426Z",
       "event": "bb-session",
-      "session": "3fbc6ccd",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "session": "70e64af0",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-10-13T14:50:21.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
