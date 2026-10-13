@@ -28,6 +28,7 @@
 
 const crypto = require('crypto');
 const { seal, open } = require('./hkdf-seal');
+const { createSignedLink } = require('./owner-signed-link');
 
 const SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
 // The mailbox finance-ingest.yml reads (receipts + DMARC rua). A grant for any
@@ -45,32 +46,17 @@ const LINK_TTL_DAYS = 30;
 // Google authorization codes live ~10 minutes; a sealed grant older than this
 // cannot be exchanged anyway, so fail early with a clear message.
 const GRANT_MAX_AGE_MS = 10 * 60 * 1000;
-const SIG_HEX_CHARS = 32; // 128 bits; hex so Linear/markdown never escapes it
 const GRANT_SEAL = { info: 'bsc/gmail-reauth/grant/v1', prefix: 'g1.' };
 
-function linkSignature(exp, secret) {
-  if (!secret) throw new Error('gmail-reauth: no signing secret');
-  return crypto.createHmac('sha256', String(secret)).update(`gmail-reauth-start:${exp}`).digest('hex').slice(0, SIG_HEX_CHARS);
-}
-
-/** The owner's one-tap link, valid for `ttlDays`. */
-function buildStartLink(secret, nowMs = Date.now(), ttlDays = LINK_TTL_DAYS) {
-  const exp = Math.floor(nowMs / 1000) + Math.round(ttlDays * 86400);
-  return { url: `${SITE_ORIGIN}${START_PATH}?e=${exp}&s=${linkSignature(exp, secret)}`, exp };
-}
-
-/** { ok: true } or { ok: false, reason: 'malformed' | 'expired' | 'bad-signature' | 'no-secret' }. */
-function verifyStartLink(e, s, secret, nowMs = Date.now()) {
-  if (!secret) return { ok: false, reason: 'no-secret' };
-  if (!/^\d{9,11}$/.test(String(e || '')) || !/^[0-9a-f]+$/.test(String(s || ''))) return { ok: false, reason: 'malformed' };
-  const expected = linkSignature(e, secret);
-  const given = String(s);
-  if (given.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(given), Buffer.from(expected))) {
-    return { ok: false, reason: 'bad-signature' };
-  }
-  if (nowMs > Number(e) * 1000) return { ok: false, reason: 'expired' };
-  return { ok: true };
-}
+// Signed start link + card block helpers, shared with BRO-5235 (owner-signed-link.js).
+const LINK = createSignedLink({
+  domain: 'gmail-reauth-start',
+  path: START_PATH,
+  ttlDays: LINK_TTL_DAYS,
+  origin: SITE_ORIGIN,
+  extraLine: /^\(Gmail renewal link\b/,
+});
+const { buildStartLink, verifyStartLink, existingLinkExp, stripDecisionBlock, withDecisionBlock } = LINK;
 
 /** Fresh CSRF state plus PKCE verifier/challenge (S256). */
 function makeAuthRequest() {
@@ -184,22 +170,6 @@ function classifyAuthProbe({ status, location }) {
   return { ok: false, error: `unexpected-response-${status}` };
 }
 
-/** Expiry (unix seconds) of the renewal link already on the card, or null. */
-function existingLinkExp(description) {
-  const m = new RegExp(`${(SITE_ORIGIN + START_PATH).replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')}\\?e=(\\d{9,11})&`).exec(String(description || ''));
-  return m ? Number(m[1]) : null;
-}
-
-// Lines this flow owns on the Linear card. Matched by the start path so a
-// re-minted link replaces the old one instead of stacking a second decision.
-function isDecisionBlockLine(line) {
-  return line.includes(`${SITE_ORIGIN}${START_PATH}?e=`) || /^\(Gmail renewal link\b/.test(line.trim());
-}
-
-function stripDecisionBlock(description) {
-  return String(description || '').split('\n').filter((l) => !isDecisionBlockLine(l)).join('\n').replace(/^\n+/, '');
-}
-
 /**
  * The plain-English DECISION NEEDED lines (scripts/lib/owner-decision-notify.js
  * emails the first one, capped at 220 chars, so the link sits inside it).
@@ -217,12 +187,8 @@ function decisionBlock({ url, exp, problem, setup = false }) {
   ].join('\n');
 }
 
-function withDecisionBlock(description, block) {
-  const rest = stripDecisionBlock(description);
-  return rest ? `${block}\n\n${rest}` : block;
-}
-
 module.exports = {
+  LINK,
   SCOPE,
   OWNER_ACCOUNT,
   SITE_ORIGIN,

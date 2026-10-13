@@ -42,6 +42,11 @@ const RUNTIME_ENV = {
     required: ['APPROVAL_HMAC_SECRET', 'GH_DISPATCH_TOKEN'],
     optional: ['GMAIL_REAUTH_DISABLED'],
   },
+  // BRO-5235 Mezzanine token renewal: the owner pastes the token here.
+  'src/app/api/admin/mezzanine-token/route.ts': {
+    required: ['APPROVAL_HMAC_SECRET', 'GH_DISPATCH_TOKEN'],
+    optional: ['MEZZANINE_TOKEN_FORM_DISABLED'],
+  },
 };
 
 function requiredNames(runtimeEnv = RUNTIME_ENV) {

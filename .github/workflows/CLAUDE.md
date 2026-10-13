@@ -402,7 +402,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Technical:** Direct Parse Server REST API calls, no web scraping needed. Fetches all productions with ratings, filters to NYC/Broadway, matches via normalized title + year. 15-minute timeout.
 - **Script:** `scripts/scrape-mezzanine-audience.js`
 - **Requires:** `MEZZANINE_APP_ID`, `MEZZANINE_SESSION_TOKEN`
-- **Note:** Session token may expire. To refresh, intercept Mezzanine iOS app traffic via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.
+- **Token renewal (BRO-5235):** the session token lasts about a year (Parse error 209 when it expires). Before each weekly scrape `mezzanine-token.js check-expiry` reads `/parse/sessions/me`; within 30 days of expiry, or on an auth failure in any of the three jobs, the owner gets a signed link on BRO-5235 (DECISION NEEDED, emailed). The page (`/api/admin/mezzanine-token`) walks them through copying the token with Proxyman on the iPhone and pasting it; `mezzanine-token.yml` checks it, saves `MEZZANINE_SESSION_TOKEN`, re-runs this workflow and reports on the card. Post a link by hand: `gh workflow run mezzanine-token.yml -f mode=link`. Optional `MEZZANINE_OWNER_USER_ID` secret pins the Parse user.
 
 ## `update-lottery-rush.yml`
 - **Runs:** Twice-weekly (Mondays + Thursdays 10 AM UTC / 5 AM EST), or manually
