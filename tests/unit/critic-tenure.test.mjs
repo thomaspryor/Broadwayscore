@@ -49,6 +49,18 @@ test('unsupported_pair only for an unverified row at an outlet with no verified 
   assert.deepEqual(findTenureFlags(critics), []);
 });
 
+test('isNonReview rows are neither flagged nor tenure evidence (BRO-5232)', () => {
+  const critics = {
+    d: { displayName: 'D', reviews: [...rows('x', [2010, 2011, 2012, 2013, 2014]), { showId: 'z', file: 'billboard--d.json', outlet: 'billboard', year: 2012, verified: false, nonReview: true }] },
+  };
+  assert.deepEqual(findTenureFlags(critics), []);
+  critics.d.reviews[5].nonReview = false;
+  assert.equal(findTenureFlags(critics).length, 1);
+  // A verified non-review page does not build tenure at its outlet either.
+  const e = { displayName: 'E', reviews: [...rows('x', [2010, 2011, 2012, 2013, 2014]), { ...rows('y', [2012])[0], nonReview: true }, { showId: 'w', file: 'y--e.json', outlet: 'y', year: 2013, verified: false }] };
+  assert.equal(findTenureFlags({ e }).length, 1);
+});
+
 test('Unknown critics are never flagged', () => {
   const critics = { unknown: { displayName: 'Unknown', reviews: [...rows('x', [2020, 2020, 2020]), ...rows('y', [2010, 2010, 2010, 2010])] } };
   assert.deepEqual(findTenureFlags(critics), []);

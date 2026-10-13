@@ -60,7 +60,10 @@ function findTenureFlags(critics, opts = {}) {
   const flags = [];
   for (const [criticSlug, c] of Object.entries(critics)) {
     if (skip.has(criticSlug) || UNNAMED_CRITIC.test(String(c.displayName || criticSlug).trim())) continue;
-    const verified = c.reviews.filter(r => r.verified && Number.isFinite(r.year));
+    // isNonReview rows (closing notices, listings, reviews that never ran,
+    // BRO-5232) carry no review byline: neither flagged nor tenure evidence.
+    const reviews = c.reviews.filter(r => !r.nonReview);
+    const verified = reviews.filter(r => r.verified && Number.isFinite(r.year));
     if (verified.length === 0) continue;
     const tenure = {};
     const yearCounts = {}; // outlet -> year -> verified rows
@@ -75,7 +78,7 @@ function findTenureFlags(critics, opts = {}) {
     const elsewhereIn = (outlet, year) => Object.entries(yearCounts)
       .filter(([o, yc]) => o !== outlet && (yc[year] || 0) >= MIN_ELSEWHERE_VERIFIED)
       .map(([o, yc]) => `${o} (${yc[year]})`);
-    for (const r of c.reviews) {
+    for (const r of reviews) {
       const t = tenure[r.outlet];
       const base = { critic: c.displayName, criticSlug, outlet: r.outlet, showId: r.showId, file: r.file, year: r.year };
       if (t && t.count >= MIN_PAIR_VERIFIED && Number.isFinite(r.year)

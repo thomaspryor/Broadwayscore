@@ -125,6 +125,9 @@ function scanReviewTexts(REVIEW_TEXTS_DIR = DEFAULT_REVIEW_TEXTS_DIR) {
           file,
           year: reviewYear(showId, data),
           verified: isVerifiedRow(data),
+          // Kept in the registry counts (a news story still shows where a
+          // critic writes), but the tenure check neither flags nor trusts it.
+          nonReview: data.isNonReview === true,
         });
       } catch (e) {
         // Skip unparseable files
