@@ -80,6 +80,14 @@ describe('candidateShows + inWindow (publish date picks the production, never th
     assert.deepEqual(cands.filter((s) => inWindow(pd2, s)).map((s) => s.id), ['spamalot-2005']);
   });
 
+  test('show-score ordinal dates ("November 17th, 2023") parse and pick the right production', () => {
+    assert.equal(toMs('November 17th, 2023'), toMs('November 17, 2023'));
+    assert.notEqual(toMs('January 27th, 2026'), null);
+    const pd = toMs('November 17th, 2023');
+    assert.deepEqual(candidateShows('spamalot', SHOWS).filter((s) => inWindow(pd, s)).map((s) => s.id), ['spamalot-2023']);
+    assert.equal(toMs('not a date'), null);
+  });
+
   test('preview-period reviews (up to 45 days before opening) and an open-ended run both count', () => {
     const doubt = SHOWS.find((s) => s.id === 'doubt-2024');
     assert.equal(inWindow(toMs('2024-02-01'), doubt), true);

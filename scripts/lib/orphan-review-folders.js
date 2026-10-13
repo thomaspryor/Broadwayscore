@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { stripIdSuffix } = require('./market-slug');
+const { toDateMs } = require('./date-utils');
 
 const DAY = 86400000;
 // Window around a run: reviews of previews land before opening, late reviews after closing.
@@ -42,9 +43,10 @@ function findOrphanReviewFolders(reviewTextsDir, showIds) {
   return out.sort((a, b) => a.folder.localeCompare(b.folder));
 }
 
+// Shared parser: show-score files carry "January 27th, 2026", which Date.parse rejects.
 function toMs(d) {
   if (!d || typeof d !== 'string') return null;
-  const t = Date.parse(d.length === 10 ? `${d}T00:00:00Z` : d);
+  const t = toDateMs(d.length === 10 ? `${d}T00:00:00Z` : d);
   return Number.isFinite(t) ? t : null;
 }
 
