@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-c",
   "planId": "484b0ffb-5680-4671-a72b-09e01064c519",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T08:13:56.193Z",
   "submitter": {
     "name": null,
@@ -216,5 +216,133 @@
         "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T10:05:29.397Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "present-laughter-2010/hollywood-reporter--david-rooney.json wrongProductionReason: null -> \"Hollywood Reporter review of the 2017 Kevin Kline revival, counted on present-laughter-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/timeout-london--andrzej-lukowski.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/timeout-london--andrzej-lukowski.json wrongProductionReason: null -> \"Time Out review of Kyoto, counted on kyoto-west-end-2025\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/telegraph--claire-allfree.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/telegraph--claire-allfree.json wrongProductionReason: null -> \"Telegraph review of Kyoto, counted on kyoto-west-end-2025\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-score-regional-2026/artsdesk--rachel-halliburton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-score-regional-2026/artsdesk--rachel-halliburton.json wrongProductionReason: null -> \"Arts Desk review of The Score at the Theatre Royal Haymarket (2025), counted on the-score-west-end-2025\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2022/timeout-london--andrzej-lukowski.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2022/timeout-london--andrzej-lukowski.json wrongProductionReason: null -> \"Time Out review of the 2025 Haymarket Othello (Harewood, Jones), counted on othello-west-end-2025\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-fine-idea-off-west-end-2026/a-youngish-perspective--diana-miranda.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-ghost-in-your-ear-off-west-end-2026/liamodell--liam-odell.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "abigails-party-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-miss-julie-off-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"4.5/5\" -> \"4.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "age-is-a-feeling-off-west-end-2026/a-youngish-perspective--jimena-batres.json originalScore: \"3.5/5\" -> \"3.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "age-is-a-feeling-off-west-end-2026/liamodell--liam-odell.json originalScore: \"2/5\" -> \"2/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-too-proud-west-end-2023/a-youngish-perspective--unknown.json originalScore: \"4.5/5\" -> \"4.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ancient-grease-off-west-end-2026/a-youngish-perspective--meg-ward.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-west-end-2026/readaboutstuff--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "archduke-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "archduke-west-end-2026/readaboutstuff--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/the-daniels-review--daniel-hunt.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/firstnightmagazine--unknown.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ballad-lines-off-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ballad-lines-off-west-end-2026/liamodell--liam-odell.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    }
+  ]
 }
