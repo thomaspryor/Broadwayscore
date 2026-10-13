@@ -24,8 +24,8 @@
  *
  * ENFORCED (SB_BREAKER_SHADOW=0), LOOSEN-ONLY: the breaker is never allowed to
  * be tighter than normal demand. The effective ceiling is
- * max(plan ceiling after the opening-window reserve, trailing 14-day median of
- * SB dayCredits); with no usable demand history (fewer than 7 clean days) it
+ * max(plan ceiling after the opening-window reserve, 1.5 x the trailing 14-day
+ * median of SB dayCredits); with no usable demand history (fewer than 7 clean days) it
  * does not enforce at all. Note the median can therefore override the
  * opening-window reserve on a normal-demand day — intended: the reserve only
  * bites when the plan ceiling is ABOVE normal demand. The same floor is
@@ -63,6 +63,14 @@ const DEFAULT_FAIR_SHARE_BURST_FACTOR = 1.5;
 const DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS = 3000;
 const MEDIAN_WINDOW_DAYS = 14;
 const MEDIAN_MIN_SAMPLES = 7;
+/**
+ * The loosen-only floor is this multiple of the 14-day median (BRO-3010
+ * review). A floor AT the median would trip on roughly half of all normal
+ * days by definition; the spend-guard audit (BRO-3011, guard-audit-core
+ * DRIFT_FACTOR) calls a ceiling under 1.5x median demand cap drift and more
+ * than 2 trip days a week a defect, so the two rules use the same 1.5.
+ */
+const MEDIAN_FLOOR_FACTOR = 1.5;
 const DEFAULT_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'sb-circuit-breaker.json');
 const STATE_CACHE_MS = 60_000;
 
@@ -156,8 +164,9 @@ function enforcementDecision({ shadow, ceiling, ceilingSource, median }) {
   // The loosen-only floor applies in SHADOW too, so the shadow record shows
   // exactly what enforcement would do (a reserve-zeroed ceiling of 0 would
   // otherwise read as "no ceiling" and make the shadow week useless).
-  const floored = Number.isFinite(median) && !(ceiling >= median);
-  const effectiveCeiling = floored ? median : ceiling;
+  const floor = Number.isFinite(median) ? Math.round(median * MEDIAN_FLOOR_FACTOR) : null;
+  const floored = floor != null && !(ceiling >= floor);
+  const effectiveCeiling = floored ? floor : ceiling;
   const source = floored ? `${ceilingSource}+median-floor` : ceilingSource;
   if (!Number.isFinite(median)) {
     return { enforce: false, effectiveCeiling, ceilingSource: source, reason: shadow ? 'shadow' : 'no-demand-history (fewer than 7 clean days)' };
@@ -165,7 +174,7 @@ function enforcementDecision({ shadow, ceiling, ceilingSource, median }) {
   if (shadow) return { enforce: false, effectiveCeiling, ceilingSource: source, reason: 'shadow' };
   return {
     enforce: true, effectiveCeiling, ceilingSource: source,
-    reason: floored ? `loosen-only: ceiling ${ceiling} < 14d median ${median}, enforcing the median` : 'enforced',
+    reason: floored ? `loosen-only: ceiling ${ceiling} < ${MEDIAN_FLOOR_FACTOR}x 14d median ${median}, enforcing ${floor}` : 'enforced',
   };
 }
 
@@ -251,6 +260,7 @@ module.exports = {
   DEFAULT_STATE_PATH,
   MEDIAN_WINDOW_DAYS,
   MEDIAN_MIN_SAMPLES,
+  MEDIAN_FLOOR_FACTOR,
   resolveShadow,
   resolveOpeningWindowReservePerShowCredits,
   resolveExemptScripts,

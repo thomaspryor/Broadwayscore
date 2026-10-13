@@ -118,15 +118,18 @@ async function main() {
   const wouldTrip = verdict.tripped && !exhausted;
   console.log(`  ${verdict.reason}${wouldTrip ? (decision.enforce ? ' → TRIPPED' : ' → would trip (shadow)') : ''}${verdict.tripped && exhausted ? ' (pack exhausted — not counted)' : ''}`);
 
-  const enforcedTrip = wouldTrip && decision.enforce;
   const wasEnforced = caps.isBreakerActive(prevState, day);
   const wasShadow = caps.isShadowActive(prevState, day);
+  // A trip already recorded today stays tripped if the pack then runs out:
+  // exhaustion suppresses NEW trips (not a runaway), it must not clear one.
+  const enforcedTrip = decision.enforce && (wouldTrip || (exhausted && wasEnforced));
+  const shadowTrip = wouldTrip || (exhausted && wasShadow);
   const nowIso = new Date().toISOString();
 
   const state = {
     ...newState,
     trippedAt: enforcedTrip ? ((wasEnforced && prevState.trippedAt) || nowIso) : null,
-    wouldTripAt: wouldTrip ? ((wasShadow && prevState.wouldTripAt) || nowIso) : null,
+    wouldTripAt: shadowTrip ? ((wasShadow && prevState.wouldTripAt) || nowIso) : null,
     ceiling: decision.effectiveCeiling,
     ceilingSource: decision.ceilingSource,
     planCeiling: ceiling,
@@ -157,7 +160,7 @@ async function main() {
   const conditionKey = decision.enforce ? 'sb-circuit-breaker' : 'sb-circuit-breaker-shadow';
   recordTransitionSafely({
     conditionKey,
-    tripped: decision.enforce ? enforcedTrip : wouldTrip,
+    tripped: decision.enforce ? enforcedTrip : shadowTrip,
     wasActive: decision.enforce ? wasEnforced : wasShadow,
     day,
     units: dayCredits,
@@ -165,8 +168,16 @@ async function main() {
     ceilingSource: decision.ceilingSource,
   });
 
-  // Shadow never alerts. Enforced: alert only on a state change.
-  if (!decision.enforce) return;
+  // Shadow never alerts. Switched back to shadow while an enforced trip was
+  // open: resolve that incident so it does not sit open forever.
+  if (!decision.enforce) {
+    if (wasEnforced) {
+      const { resolveCondition } = require('./lib/owner-alert-router');
+      resolveCondition('sb-circuit-breaker');
+      console.log('Enforcement off (shadow) — open sb-circuit-breaker incident resolved.');
+    }
+    return;
+  }
   if (enforcedTrip === wasEnforced) {
     console.log('No breaker state change — no alert.');
     return;

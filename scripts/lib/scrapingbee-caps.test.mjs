@@ -58,16 +58,20 @@ test('trailingMedianDayCredits: null below 7 clean samples', () => {
   assert.equal(caps.trailingMedianDayCredits([row('2026-10-12', 1), row('2026-10-11', 2)], DAY), null);
 });
 
-test('enforcementDecision: shadow never enforces; no history never enforces; loosen-only floors at the median', () => {
+test('enforcementDecision: shadow never enforces; no history never enforces; loosen-only floors at 1.5x the median', () => {
   const sh = caps.enforcementDecision({ shadow: true, ceiling: 0, ceilingSource: 'plan+opening-window-reserve', median: 30000 });
-  assert.deepEqual([sh.enforce, sh.effectiveCeiling], [false, 30000], 'shadow records the same floored ceiling enforcement would use');
+  assert.deepEqual([sh.enforce, sh.effectiveCeiling], [false, 45000], 'shadow records the same floored ceiling enforcement would use');
   const noHist = caps.enforcementDecision({ shadow: false, ceiling: 50000, ceilingSource: 'plan', median: null });
   assert.equal(noHist.enforce, false);
   const ok = caps.enforcementDecision({ shadow: false, ceiling: 50000, ceilingSource: 'plan', median: 30000 });
   assert.deepEqual([ok.enforce, ok.effectiveCeiling, ok.ceilingSource], [true, 50000, 'plan']);
+  // between 1x and 1.5x the median is still lifted (a floor AT the median would trip on ~half of normal days)
+  const mid = caps.enforcementDecision({ shadow: false, ceiling: 40000, ceilingSource: 'plan', median: 30000 });
+  assert.equal(mid.effectiveCeiling, 45000);
+  assert.equal(caps.MEDIAN_FLOOR_FACTOR, 1.5);
   // a reserved/plan ceiling below normal demand is lifted to the median
   const floored = caps.enforcementDecision({ shadow: false, ceiling: 9000, ceilingSource: 'plan+opening-window-reserve', median: 30000 });
-  assert.deepEqual([floored.enforce, floored.effectiveCeiling, floored.ceilingSource], [true, 30000, 'plan+opening-window-reserve+median-floor']);
+  assert.deepEqual([floored.enforce, floored.effectiveCeiling, floored.ceilingSource], [true, 45000, 'plan+opening-window-reserve+median-floor']);
 });
 
 test('isPackExhausted and isShadowActive (day-scoped like isBreakerActive)', () => {

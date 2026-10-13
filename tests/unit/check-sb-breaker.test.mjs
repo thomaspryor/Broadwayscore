@@ -103,12 +103,29 @@ test('ENFORCED without 7 days of demand history does not enforce (stays a would-
 });
 
 test('ENFORCED loosen-only: a pinned ceiling below the 14d median is lifted to the median', () => {
-  // today 20k < median 30k; pin 10k would trip, the median floor must not
-  const r = run({ usage: usage(120000), prevState: prev(110000), history, env: { SB_BREAKER_SHADOW: '0', SB_BREAKER_CEILING: '10000' } });
+  // today 20k < 1.5x median 45k; pin 10k would trip, the floor must not
+  const r = run({ usage: usage(120000), prevState: prev(100000), history, env: { SB_BREAKER_SHADOW: '0', SB_BREAKER_CEILING: '10000' } });
   assert.equal(r.code, 0, r.out);
-  assert.equal(r.state.ceiling, 30000);
+  assert.equal(r.state.ceiling, 45000);
   assert.match(r.state.ceilingSource, /median-floor/);
   assert.equal(r.state.trippedAt, null);
+});
+
+test('ENFORCED: a trip recorded today stays tripped when the pack then runs out (BRO-3010 review)', () => {
+  const tripped = prev(900000, { dayBaseline: 100000, trippedAt: new Date().toISOString() });
+  const r = run({ usage: usage(1000005), prevState: tripped, history, env: { SB_BREAKER_SHADOW: '0' } });
+  assert.equal(r.code, 0, r.out);
+  assert.equal(r.state.packExhausted, true);
+  assert.ok(r.state.trippedAt, 'exhaustion must not clear an existing trip');
+  assert.equal(r.alerts.length, 0, 'no state change, no alert');
+});
+
+test('switching back to SHADOW resolves an open enforced incident (BRO-3010 review)', () => {
+  const tripped = prev(250000, { trippedAt: new Date().toISOString() });
+  const r = run({ usage: usage(260000), prevState: tripped, history });
+  assert.equal(r.code, 0, r.out);
+  assert.equal(r.state.trippedAt, null);
+  assert.match(r.out, /open sb-circuit-breaker incident resolved/);
 });
 
 test('--dry-run writes nothing', () => {
