@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-13T19:30:30.814Z",
+    "generatedAt": "2026-10-13T19:46:25.403Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -30,7 +30,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 988
+      "churn": 991
     },
     {
       "path": "data/audit/alert-digest-queue.json",
@@ -50,7 +50,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 257
+      "churn": 258
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -78,7 +78,7 @@
     },
     {
       "path": "public/data/shows/good-time-charlie-off-broadway-2026.json",
-      "churn": 60
+      "churn": 59
     },
     {
       "path": "public/data/shows/a-ghost-in-your-ear-off-broadway-2026.json",
@@ -149,11 +149,11 @@
       "churn": 36
     },
     {
-      "path": "public/data/shows/leopoldstadt-west-end-2020.json",
+      "path": "public/data/shows/when-we-have-sufficiently-tortured-each-other-west-end-2019.json",
       "churn": 36
     },
     {
-      "path": "public/data/shows/when-we-have-sufficiently-tortured-each-other-west-end-2019.json",
+      "path": "scripts/collect-review-texts.js",
       "churn": 36
     },
     {
@@ -169,11 +169,11 @@
       "churn": 35
     },
     {
-      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
+      "path": "public/data/shows/leopoldstadt-west-end-2020.json",
       "churn": 35
     },
     {
-      "path": "scripts/collect-review-texts.js",
+      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
       "churn": 35
     },
     {
@@ -209,10 +209,6 @@
       "churn": 32
     },
     {
-      "path": "public/data/shows/uncle-vanya-west-end-2020.json",
-      "churn": 32
-    },
-    {
       "path": "public/data/shows/cock-west-end-2022.json",
       "churn": 31
     },
@@ -241,6 +237,10 @@
       "churn": 31
     },
     {
+      "path": "public/data/shows/uncle-vanya-west-end-2020.json",
+      "churn": 31
+    },
+    {
       "path": "data/audit/t1-outlet-breaker.json",
       "churn": 30
     },
@@ -256,47 +256,47 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 777,
+      "churn": 780,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 635,
+      "churn": 636,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 600,
+      "churn": 598,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 484,
+      "churn": 485,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 463,
+      "churn": 464,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 463,
+      "churn": 464,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 463,
+      "churn": 464,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 463,
+      "churn": 464,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 381,
+      "churn": 379,
       "mergeAttr": "ours"
     },
     {
@@ -311,12 +311,12 @@
     },
     {
       "path": "data/audit/alert-router-attempts.jsonl",
-      "churn": 295,
+      "churn": 292,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 282,
+      "churn": 283,
       "mergeAttr": "ours"
     },
     {
@@ -331,12 +331,12 @@
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 236,
+      "churn": 238,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 227,
+      "churn": 229,
       "mergeAttr": "ours"
     },
     {
@@ -346,7 +346,7 @@
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 202,
+      "churn": 204,
       "mergeAttr": "ours"
     },
     {
@@ -376,7 +376,7 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 143,
+      "churn": 142,
       "mergeAttr": "union"
     },
     {
@@ -386,7 +386,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 109,
+      "churn": 110,
       "mergeAttr": "ours"
     },
     {
@@ -416,12 +416,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 64,
+      "churn": 65,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 64,
+      "churn": 65,
       "mergeAttr": "ours"
     },
     {
@@ -436,7 +436,7 @@
     },
     {
       "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 34,
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
