@@ -28,6 +28,9 @@ test('(s) flags node|tee without pipefail, accepts shell: bash / PIPESTATUS / pi
   assert.equal(findNodeTeeWithoutPipefail(wf('      - name: A\n        shell: bash\n        run: node x.js | tee o\n')).length, 0);
   assert.equal(findNodeTeeWithoutPipefail(wf('      - name: A\n        run: |\n          set -o pipefail\n          node x.js | tee o\n')).length, 0);
   assert.equal(findNodeTeeWithoutPipefail(wf('      - name: A\n        run: |\n          node x.js | tee o\n          echo ${PIPESTATUS[0]}\n')).length, 0);
+  // a `\\` continuation before the tee is still one pipeline (found by the ship-check review)
+  assert.equal(findNodeTeeWithoutPipefail(wf('      - name: A\n        run: |\n          node x.js \\\n            --a 2>&1 | tee o\n')).length, 1);
+  assert.equal(findNodeTeeWithoutPipefail(wf('      - name: A\n        run: |\n          npx tsx x.ts | tee o\n')).length, 1);
   // a comment mentioning pipefail is not a pipefail
   assert.equal(findNodeTeeWithoutPipefail(wf('      - name: A\n        run: |\n          # pipefail makes this work\n          node x.js | tee o\n')).length, 1);
 });

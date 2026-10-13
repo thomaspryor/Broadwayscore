@@ -911,12 +911,13 @@ function findNodeTeeWithoutPipefail(raw) {
   const out = [];
   for (const step of splitWorkflowSteps(raw)) {
     const body = stripComments(step.lines);
-    const text = body.join('\n');
+    // Join `\` continuations so `node a.js \ --x | tee` is one logical line.
+    const text = body.join('\n').replace(/\\\n\s*/g, ' ');
     if (!NODE_TEE_RE.test(text)) continue;
     if (/pipefail|PIPESTATUS/.test(text)) continue;
     if (body.some((l) => /^\s*(?:- )?shell:\s*bash\b/.test(l))) continue;
-    const idx = body.findIndex((l) => NODE_TEE_RE.test(l));
-    out.push({ name: step.name, lineNum: step.startLine + 1 + step.lines.indexOf(body[idx]) });
+    const idx = body.findIndex((l) => /\|\s*tee\b/.test(l));
+    out.push({ name: step.name, lineNum: step.startLine + 1 + step.lines.indexOf(body[Math.max(idx, 0)]) });
   }
   return out;
 }
