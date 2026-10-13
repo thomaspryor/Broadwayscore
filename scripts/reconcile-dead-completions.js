@@ -33,6 +33,10 @@ const { loadTasksWithMtime } = require('./lib/task-store-archive.js');
 const { readEntries } = require('./lib/dispatch-ledger.js');
 const { reconcileDeadCompletions, shouldCorrectNotionStatus, attachCompletedAtEstimates } = require('./lib/dispatch-dead-launch-guard.js');
 const { acquireLock, readMap, writeMap } = require('./notion-tasks-sync.js');
+// BRO-2313: a dead ledger row says the JOB died, not that the WORK is missing.
+// Every reopen (local/Notion pass and Linear pass, dry-run and --fix) is
+// first checked against origin/main for the task's direct effect.
+const { checkWorkLanded, makeGitProbe } = require('./lib/dead-completion-landed-check.js');
 
 const USAGE = `reconcile-dead-completions — reopen tasks marked 'completed' whose latest dispatch never ran.
 
@@ -225,16 +229,30 @@ function pageNotionCorrectionFailure(taskId, notionId, err) {
 // already applies to the Linear side of this same decision. opts.entries is
 // an injection point for tests only — production always re-reads live
 // (opts.entries defaults to undefined, which falls through to readEntries()).
+//
+// BRO-2313: returns 'landed' (never mutating Linear) when the live issue's own
+// text (description, comments: Key Files, PR links, commit shas) or the
+// ledger's sha rows show the work is on origin/main. opts.git / opts.getIssue
+// are test injection points; production uses a real git probe and Linear.
 async function correctLinearIssue(identifier, taskId, opts = {}) {
-  const linearClient = require('./lib/linear-client.js');
   const { shouldReopenLinearIssue } = require('./lib/linear-dead-completion-source.js');
+  let freshEntries = [];
   if (taskId) {
     const { isLatestDispatchDead } = require('./lib/dispatch-ledger.js');
-    const freshEntries = opts.entries || readEntries();
+    freshEntries = opts.entries || readEntries();
     if (!isLatestDispatchDead(taskId, freshEntries)) return false;
   }
-  const issue = await linearClient.getIssue(identifier);
+  const getIssue = opts.getIssue || require('./lib/linear-client.js').getIssue;
+  const issue = await getIssue(identifier);
   if (!shouldReopenLinearIssue(issue)) return false;
+  const texts = [issue.title, issue.description,
+    ...(((issue.comments && issue.comments.nodes) || []).map((c) => c && c.body))];
+  const landed = checkWorkLanded({ taskId: taskId || `linear:${identifier}`, texts, entries: freshEntries }, opts.git || makeGitProbe());
+  if (landed.landed) {
+    if (typeof opts.onLanded === 'function') opts.onLanded(landed);
+    return 'landed';
+  }
+  if (opts.dryMutation) return true; // test-only: stop before spawning linear-brain.js
   const today = new Date().toISOString().slice(0, 10);
   const res = spawnSync('node', [path.join(__dirname, 'linear-brain.js'), 'update', identifier,
     '--state', 'Todo',
@@ -246,6 +264,23 @@ async function correctLinearIssue(identifier, taskId, opts = {}) {
   return true;
 }
 
+// BRO-2313: split reconcileDeadCompletions()'s flagged rows into ones to
+// reopen and ones whose work demonstrably landed on origin/main anyway
+// (linked commit/PR ancestor, or a named key file that exists there and
+// references the task). Missing evidence => stays in `reopen`.
+function partitionLandedCompletions(flagged, tasks, entries, git) {
+  const byId = new Map((tasks || []).map((t) => [String(t && t.id), t]));
+  const reopen = [];
+  const landed = [];
+  for (const f of flagged || []) {
+    const task = byId.get(String(f.id)) || {};
+    const verdict = checkWorkLanded({ taskId: f.id, texts: [task.subject, task.description], entries }, git);
+    if (verdict.landed) landed.push({ ...f, landedReason: verdict.reason });
+    else reopen.push(f);
+  }
+  return { reopen, landed };
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const fix = argv.includes('--fix');
@@ -255,7 +290,14 @@ async function main(argv = process.argv.slice(2)) {
   // try/catch needed here; it can't throw.
   const entries = readEntries();
 
-  const flagged = reconcileDeadCompletions(tasks, entries);
+  const git = makeGitProbe();
+  const { reopen: flagged, landed: landedLocal } = partitionLandedCompletions(
+    reconcileDeadCompletions(tasks, entries), tasks, entries, git);
+  if (landedLocal.length) {
+    console.log(`Dead dispatch, work landed anyway: ${landedLocal.length} task(s) left completed (not reopened):`);
+    for (const t of landedLocal) console.log(`  #${t.id}  ${t.subject || '(no subject)'}  [${t.landedReason}]`);
+    console.log('');
+  }
   if (!flagged.length) {
     console.log('[reconcile-dead-completions] no false completions found (Notion mirror).');
   } else {
@@ -292,9 +334,20 @@ async function main(argv = process.argv.slice(2)) {
   }
   console.log(`\nChecking ${linearCandidates.length} Linear dead-launch candidate(s) live:`);
   for (const c of linearCandidates) {
+    // BRO-2313: ledger-sha evidence is checkable offline, so it gates the
+    // dry-run report too; --fix re-checks with the live issue's text inside
+    // correctLinearIssue before any mutation.
+    const offline = checkWorkLanded({ taskId: c.taskId, entries }, git);
+    if (offline.landed) {
+      console.log(`  ${c.identifier}  dead dispatch, work landed anyway — not reopening [${offline.reason}]`);
+      continue;
+    }
     try {
-      const corrected = fix ? await correctLinearIssue(c.identifier, c.taskId) : false;
-      if (fix && corrected) {
+      let landedReason = null;
+      const corrected = fix ? await correctLinearIssue(c.identifier, c.taskId, { git, onLanded: (r) => { landedReason = r.reason; } }) : false;
+      if (corrected === 'landed') {
+        console.log(`  ${c.identifier}  dead dispatch, work landed anyway — not reopening [${landedReason}]`);
+      } else if (fix && corrected) {
         console.log(`  ${c.identifier}  reopened Todo -> was Done while its dispatch was journaled dead`);
       } else if (!fix) {
         console.log(`  ${c.identifier}  dead-launch candidate — re-run with --fix to check live and reopen if still Done`);
@@ -312,4 +365,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, USAGE, reopenTask, correctNotionCard, correctLinearIssue, resetPushedFlag };
+module.exports = { main, USAGE, reopenTask, correctNotionCard, correctLinearIssue, resetPushedFlag, partitionLandedCompletions };
