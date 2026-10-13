@@ -5,8 +5,8 @@
  * source (IBDB, Theatremonkey, Playbill schedule article) can supply a real
  * press night, we can sometimes infer the press night from the cluster of
  * earliest critic-review publish dates. Critics attend the press performance
- * the evening before they publish; a tight cluster of reviews on date X
- * implies press night was X−1.
+ * and UK embargoes usually lift that same evening, so a tight cluster of
+ * reviews on date X implies press night was X (see PRESS_NIGHT_OFFSET_DAYS).
  *
  * History: this logic was inline in scripts/enrich-west-end-dates.js Phase 4
  * (lines 595-646). Lifted to lib/ on 2026-04-28 so the new off-Broadway date
@@ -63,7 +63,7 @@ function dayPrecisionDate(raw) {
 // a few days, so their press night always lands inside the default 8-day floor —
 // which is why 32 collapsed WE shows sat uncorrected. The ≥2-reviews-in-3-days
 // cluster check still guards against a single early outlier. (gap < 2 is a
-// no-op: press night = earliest review − 1 ≈ the stored date already.)
+// no-op: a cluster the day after the stored date is the normal embargo lag.)
 const DEFAULT_MIN_GAP_DAYS = 8;
 const COLLAPSED_MIN_GAP_DAYS = 2;
 
@@ -96,26 +96,20 @@ const REVERSE_SOURCE = 'inferred-from-reviews-reverse';
 const MAX_GAP_DAYS = 90;
 
 // Days to subtract from the earliest clustered review date to get press night.
-//
-// FORWARD (1): the original rule — "critics attend the press performance the
-// evening before they publish".
-//
-// REVERSE (0): measured against the 46 West End / Off-West End shows that have
-// a TRUSTED openingDate (theatremonkey / playbill / ibdb) and >=3 reviews, the
-// offset between press night and the earliest clustered review date is
-// 0 days in 32 cases, +1 in 8, and the rest scattered — i.e. UK press-night
-// embargoes usually lift the same evening, so the earliest cluster date IS
-// press night. The reverse branch is new logic with no back-compat debt, so it
-// uses the empirically modal offset.
-//
-// The forward branch keeps its -1, which that same measurement says is the
-// modally WRONG answer — but changing it re-dates every show already stamped
-// 'inferred-from-reviews' (175 in a forced-collapse sweep of all shows), which
-// is an owner call, not a side effect of this fix. Shipping two offsets for the
-// same physics is a known trap: BRO-2489 tracks collapsing them into one.
-// https://linear.app/broadway-scorecard/issue/BRO-2489
-const FORWARD_OFFSET_DAYS = 1;
-const REVERSE_OFFSET_DAYS = 0;
+// ONE constant for both directions (BRO-2489). The original forward rule used 1
+// ("critics publish the morning after"), but measured against the West End /
+// Off-West End shows with a TRUSTED openingDate (theatremonkey / playbill /
+// ibdb) and a review cluster, the offset between press night and the earliest
+// clustered review date is 0 days in 35 of 53 shows and +1 in 9 (re-measured
+// 2026-10-13; BRO-2280's first pass: 32 of 46 and 8). UK press-night embargoes
+// usually lift the same evening, so the earliest cluster date IS press night.
+// The only caller is enrich-west-end-dates.js Phase 4 (WE/OWE). Shows already
+// stamped 'inferred-from-reviews' under the old -1 are NOT re-dated: that
+// source is confirmed, so this function never revisits them, and spot checks
+// show the minority +1 case among them (the-devil-wears-prada-west-end-2024:
+// press night 2024-12-05, every review dated 12-06), so a blanket shift would
+// break correct rows. Phase 3's authoritative sources still overwrite them.
+const PRESS_NIGHT_OFFSET_DAYS = 0;
 
 /**
  * Cluster probe used by both directions: given ascending review publish dates,
@@ -220,7 +214,7 @@ function findDominantCluster(entries) {
  *   - Show must have ≥3 valid review publish dates AFTER the current openingDate.
  *   - The earliest publish date must have ≥2 reviews within a 3-day window
  *     (clustering check — single early outlier doesn't qualify).
- *   - Inferred press night = earliest review date − 1 day.
+ *   - Inferred press night = earliest review date (PRESS_NIGHT_OFFSET_DAYS = 0).
  *   - Gap between current openingDate and the earliest review must be within
  *     [minGap, 90] days, where minGap is 8 by default but 2 for COLLAPSED shows
  *     (openingDate === previewsStartDate — see the floor docs above). Below
@@ -237,7 +231,7 @@ function findDominantCluster(entries) {
  *     outweigh both the rest of the pre-date reviews and everything published
  *     on or after the stored date.
  *   - Inferred press night = that cluster's anchor date (offset 0 — see
- *     REVERSE_OFFSET_DAYS), gap in [2, 90] days.
+ *     PRESS_NIGHT_OFFSET_DAYS), gap in [2, 90] days.
  *   - previewsStartDate is set to null, not fabricated, and the source is
  *     stamped 'inferred-from-reviews-reverse' (deliberately off the
  *     press-night-trust.js whitelist).
@@ -288,9 +282,12 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     const isCollapsed = !!show.previewsStartDate && show.openingDate === show.previewsStartDate;
 
     const showReviews = reviews.filter(r => r.showId === show.id);
+    // dayPrecisionDate (see above): month-only values ('2015-07') cannot anchor
+    // a press night in either direction, and timezone offsets cannot shift the
+    // day (BRO-2489; the forward branch used raw new Date() before).
     const showDates = showReviews
-      .map(r => r.publishDate)
-      .filter(d => d && !Number.isNaN(new Date(d).getTime()));
+      .map(r => dayPrecisionDate(r.publishDate))
+      .filter(Boolean);
 
     // --- Direction 1 (original): review cluster AFTER the stored date ---
     const afterDates = showDates.filter(d => new Date(d).getTime() > openingMs).sort();
@@ -301,7 +298,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
       const minGapDays = isCollapsed ? COLLAPSED_MIN_GAP_DAYS : DEFAULT_MIN_GAP_DAYS;
 
       if (gapDays >= minGapDays && gapDays <= MAX_GAP_DAYS) {
-        const pressNightIso = new Date(afterCluster.earliestMs - FORWARD_OFFSET_DAYS * DAY_MS)
+        const pressNightIso = new Date(afterCluster.earliestMs - PRESS_NIGHT_OFFSET_DAYS * DAY_MS)
           .toISOString().split('T')[0];
 
         inferred.push({
@@ -341,10 +338,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // the show is open either way, so the downside collapses to a wrong date.
     if (openingMs > now) continue;
 
-    // dayPrecisionDate (see above) instead of raw new Date(): month-only values
-    // cannot anchor a press night and timezone offsets cannot shift the day.
-    // The forward branch predates this and is left byte-identical on purpose
-    // (see FORWARD_OFFSET_DAYS); BRO-2489 tracks applying it to both directions.
+    // dayPrecisionDate (see above), same as the forward branch.
     //
     // Reviews inside a declared priorRuns / tourLegs window are dropped up
     // front: those legitimately predate this run's press night and are NOT
@@ -390,7 +384,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     if (gapDays < REVERSE_MIN_GAP_DAYS) continue;
     if (gapDays > MAX_GAP_DAYS) continue;
 
-    const pressNightIso = new Date(cluster.anchorMs - REVERSE_OFFSET_DAYS * DAY_MS)
+    const pressNightIso = new Date(cluster.anchorMs - PRESS_NIGHT_OFFSET_DAYS * DAY_MS)
       .toISOString().split('T')[0];
 
     // The old openingDate was the collapsed first-performance date, which is
@@ -440,6 +434,7 @@ module.exports = {
   REVERSE_MIN_CLUSTER,
   REVERSE_SOURCE,
   MAX_GAP_DAYS,
+  PRESS_NIGHT_OFFSET_DAYS,
   // Exported for tests / debug only — call sites use inferPressNightFromReviews.
   findEarliestCluster,
   findDominantCluster,

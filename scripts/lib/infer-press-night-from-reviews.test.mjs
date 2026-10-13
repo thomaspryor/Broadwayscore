@@ -41,7 +41,7 @@ test('collapsed WE show with a 5-day review cluster IS corrected (floor lowered 
   assert.equal(out.length, 1, 'should infer one correction');
   assert.equal(out[0].isCollapsed, true);
   const opening = out[0].changes.find(c => c.field === 'openingDate');
-  assert.equal(opening.new, '2026-03-05', 'press night = earliest review − 1 day');
+  assert.equal(opening.new, '2026-03-06', 'press night = earliest clustered review date (offset 0, BRO-2489)');
   const prev = out[0].changes.find(c => c.field === 'previewsStartDate');
   assert.equal(prev.new, '2026-03-01', 'preview start preserved as the old opening date');
 });
@@ -308,7 +308,7 @@ test('forward wins when both a before- and an after-cluster qualify', () => {
   assert.equal(out.length, 1, 'exactly one correction, never two for the same show');
   assert.equal(out[0].direction, 'forward');
   const opening = out[0].changes.find(c => c.field === 'openingDate');
-  assert.equal(opening.new, '2025-12-04', 'forward rule keeps its earliest−1 offset');
+  assert.equal(opening.new, '2025-12-05', 'forward rule uses the shared offset 0 (BRO-2489)');
   const prev = out[0].changes.find(c => c.field === 'previewsStartDate');
   assert.equal(prev.new, '2025-11-28', 'forward rule still preserves the old opening as previews');
 });
@@ -538,4 +538,24 @@ test('reverse: the default `now` is the real clock (no injection needed)', () =>
   const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
   assert.equal(out.length, 1, 'omitting `now` must not disable the branch');
   assert.equal(out[0].changes.find(c => c.field === 'openingDate').new, '2025-11-12');
+});
+
+// --- BRO-2489: one offset, and month-only dates cannot anchor the forward branch ---
+test('BRO-2489: a single PRESS_NIGHT_OFFSET_DAYS constant, value 0', () => {
+  const mod = require('./infer-press-night-from-reviews.js');
+  assert.equal(mod.PRESS_NIGHT_OFFSET_DAYS, 0);
+  const src = require('fs').readFileSync(require.resolve('./infer-press-night-from-reviews.js'), 'utf8');
+  assert.ok(!/FORWARD_OFFSET_DAYS|REVERSE_OFFSET_DAYS/.test(src), 'the two per-direction offsets are gone');
+});
+
+test('BRO-2489: forward: month-only publishDates never fabricate a press night', () => {
+  const show = {
+    id: 'we-forward-partial-2025', title: 'Forward Partial', slug: 'we-forward-partial-2025',
+    category: 'west-end', openingDate: '2025-10-20', previewsStartDate: '2025-10-20', openingDateSource: 'todaytix',
+  };
+  // new Date('2025-11') resolves to 2025-11-01, 12 days after the stored date:
+  // the old forward branch inferred a 2025-10-31 press night nobody published on.
+  const reviews = reviewsOn('we-forward-partial-2025', '2025-11', 5);
+  const out = inferPressNightFromReviews({ candidateShows: [show], reviews, now: NOW });
+  assert.equal(out.length, 0, 'month-only dates are not evidence of a press night');
 });
