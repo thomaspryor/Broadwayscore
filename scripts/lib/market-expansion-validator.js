@@ -62,11 +62,18 @@ function findStaleOpenShows(marketShows, now = new Date(), graceDays = CLOSING_G
   );
 }
 
-// Missing title/category/status, or type once status≠announced (production
-// type is often unknown until previews are dated; 2026-05-26 discovery fix).
+// Missing title/category/status, or type once a show is past the stub stage.
+// Production type is often unknown until previews are dated (2026-05-26
+// discovery fix): exempt while status='announced', and while a provisional
+// venue-page stub is 'upcoming' because the venue listed dates but no genre
+// (BRO-4396 gives dated stubs the status their dates imply; knownShowType()
+// leaves type null rather than guess). Enrichment fills it before previews.
+function typeExempt(s) {
+  return s.status === 'announced' || (s.status === 'upcoming' && s.provisional === true);
+}
 function findMissingRequiredFields(marketShows) {
   return marketShows.filter(
-    (s) => !s.title || !s.category || !s.status || (s.status !== 'announced' && !s.type),
+    (s) => !s.title || !s.category || !s.status || (!typeExempt(s) && !s.type),
   );
 }
 

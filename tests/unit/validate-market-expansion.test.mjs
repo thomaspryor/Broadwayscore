@@ -107,18 +107,21 @@ test('findStaleOpenShows respects the 7+1 day auto-close grace window', () => {
   assert.deepEqual(findStaleOpenShows(shows, now).map(s => s.id), ['stale']);
 });
 
-test('findMissingRequiredFields: type is exempt only while status=announced', () => {
+test('findMissingRequiredFields: type is exempt while announced, or upcoming as a provisional stub', () => {
   const shows = [
     { id: 'ok', title: 'T', category: 'off-broadway', status: 'open', type: 'play' },
     { id: 'announced-no-type', title: 'T', category: 'off-broadway', status: 'announced' },
     { id: 'upcoming-no-type', title: 'T', category: 'off-broadway', status: 'upcoming', type: null },
+    // A dated venue-page stub (BRO-4396): genre not listed yet, so type stays null.
+    { id: 'provisional-upcoming-no-type', title: 'T', category: 'off-broadway', status: 'upcoming', type: null, provisional: true },
+    { id: 'provisional-previews-no-type', title: 'T', category: 'off-broadway', status: 'previews', type: null, provisional: true },
     { id: 'no-title', category: 'off-broadway', status: 'open', type: 'musical' },
     { id: 'no-status', title: 'T', category: 'off-broadway', type: 'musical' },
     { id: 'no-category', title: 'T', status: 'open', type: 'musical' },
   ];
   assert.deepEqual(
     findMissingRequiredFields(shows).map(s => s.id),
-    ['upcoming-no-type', 'no-title', 'no-status', 'no-category'],
+    ['upcoming-no-type', 'provisional-previews-no-type', 'no-title', 'no-status', 'no-category'],
   );
 });
 

@@ -156,10 +156,10 @@ for (const market of marketsToCheck) {
     ok(`No ${market} shows with open status and past closingDate`);
   }
 
-  // Required fields (type exempt while status='announced'; see the lib).
+  // Required fields (type exempt while announced or a provisional upcoming stub; see the lib).
   const missingFields = findMissingRequiredFields(marketShows);
   if (missingFields.length > 0) {
-    error(`${missingFields.length} ${market} shows missing required fields (title/category/status, or type once status≠announced)`);
+    error(`${missingFields.length} ${market} shows missing required fields (title/category/status, or type once past announced / provisional-upcoming)`);
   } else {
     ok(`All ${market} shows have required fields`);
   }
