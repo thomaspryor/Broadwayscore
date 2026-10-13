@@ -1269,12 +1269,13 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
     const evidence = f.deterministic
       ? `Flagged by the automated ${f.models[0]} detector in the nightly signed-in UX walkthrough's interactive pass (deterministic — not a model opinion).`
       : `Flagged by ${f.agreementCount} of ${respondingCount} responding review models (${f.models.join(', ')}) in the nightly signed-in UX walkthrough.`;
-    const notes = `## Problem\n${f.summary}\n\n## Evidence\n${evidence} Reference screenshot: ${f.screenshot}.\n\n## Suggested approach\nReproduce on demo.broadwayscorecard.com signed in, compare grid/list + mobile/desktop, fix per design-system tokens (memory/design-system.md).\n\n## Acceptance criteria\nFix verified in the next nightly walkthrough run (no repeat finding) + /visual-qa pass.`;
+    const notes = `## Problem\n${f.summary}\n\nSeverity: ${f.severity || 'unrated'} (all UX cards file at normal priority, BRO-340; this line is how the owner's sweep ranks them).\n\n## Evidence\n${evidence} Reference screenshot: ${f.screenshot}.\n\n## Suggested approach\nReproduce on demo.broadwayscorecard.com signed in, compare grid/list + mobile/desktop, fix per design-system tokens (memory/design-system.md).\n\n## Acceptance criteria\nFix verified in the next nightly walkthrough run (no repeat finding) + /visual-qa pass.`;
     try {
       // linear-brain.js, NOT notion-brain.js: Notion has been read-only since
       // 2026-08-30 and its create exits 6, so every finding this walkthrough
       // produced was logged as a one-line failure and dropped. Linear priority
-      // is numeric 0-4 (2 high, 3 normal); there is no
+      // is numeric 0-4 (3 normal: priorityFor files every UX card there,
+      // BRO-340); there is no
       // --status/--category/--type/--tags.
       //
       // An earlier version of this comment claimed linear-brain's create
@@ -1294,7 +1295,7 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
         '--notes', notes,
         // Filing is not dispatching: there is no cmux/bsc-next on this
         // runner, so say why it is parked rather than leaving it ambiguous.
-        '--park', 'Auto-filed by the nightly UX walkthrough (CI, no cmux/bsc-next here); the priority auto-dispatch loop picks it up on its next pull.',
+        '--park', 'Auto-filed by the nightly UX walkthrough. UX-audit card: needs owner visual-QA approval before any push, so the headless lane refuses it (headless-dispatchability.js UI_CARD_CLASS_RE). Filed at normal priority for a deliberate owner sweep (BRO-340).',
       ], { encoding: 'utf8' });
       filed.push(title);
       console.error(`[ux-walkthrough] filed: ${title}`);

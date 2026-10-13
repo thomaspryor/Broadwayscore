@@ -116,11 +116,14 @@ async function getTrafficSummary() {
   `);
 }
 
+// Real Users lens like getRageClickDetails: the owner's own visual-QA
+// clicking and bot geos are not user friction (BRO-340).
 async function getRageClicks() {
   return phQuery(`
     SELECT properties.$pathname AS page, count() AS rage_clicks
     FROM events
     WHERE event = '$rageclick' AND timestamp > now() - interval 7 day
+      AND ${REAL_USERS_WHERE}
     GROUP BY page ORDER BY rage_clicks DESC LIMIT 10
   `);
 }

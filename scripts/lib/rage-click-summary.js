@@ -36,9 +36,14 @@ function describeElement(tag, href, nearestId, elementText) {
   return parts.join(' ');
 }
 
-/** Rows that clear the visitor floor, normalised to objects. */
+/**
+ * Rows that clear the visitor floor, normalised to objects. Element-less rows
+ * (no tag, text, link or id) are dropped: a card for "(unknown element)" names
+ * nothing any session can act on (BRO-340; #229, #1203, #1204 were all this).
+ */
 function qualifyingRageRows(rows, minUsers = MIN_RAGE_USERS) {
   return (rows || [])
+    .filter((row) => row.slice(1, 5).some((v) => String(v ?? '').trim() !== ''))
     .map(([page, elementText, tag, href, nearestId, n, users]) => ({
       page: page || '',
       pageKey: pageKeyForPath(page),

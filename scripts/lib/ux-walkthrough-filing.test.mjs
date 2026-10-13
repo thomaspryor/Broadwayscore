@@ -12,7 +12,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  PRIORITY_HIGH,
   PRIORITY_NORMAL,
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
@@ -85,15 +84,16 @@ test('a single-model finding is dropped, a deterministic one is not', () => {
 test('priority is a Linear NUMBER, never a Notion priority string', () => {
   // notion-brain took "P1 Next"/"P2 Later"; linear-brain takes 0-4. Passing
   // the old strings through would be a silent no-op on the wrong field.
-  assert.equal(priorityFor({ severity: 'high' }), PRIORITY_HIGH);
+  // High severity no longer means the P1 lane (BRO-340): UI cards need owner visual QA.
+  assert.equal(priorityFor({ severity: 'high' }), PRIORITY_NORMAL);
   assert.equal(priorityFor({ severity: 'medium' }), PRIORITY_NORMAL);
   assert.equal(priorityFor({}), PRIORITY_NORMAL);
-  for (const p of [PRIORITY_HIGH, PRIORITY_NORMAL]) {
+  for (const p of [PRIORITY_NORMAL]) {
     assert.equal(typeof p, 'number');
     assert.ok(p >= 0 && p <= 4, `Linear priority out of range: ${p}`);
   }
   const plan = planFilings({ findings: [model('x y z alpha beta', { severity: 'high' })], existing: okBoard([]) });
-  assert.equal(plan.toFile[0].priority, PRIORITY_HIGH);
+  assert.equal(plan.toFile[0].priority, PRIORITY_NORMAL);
 });
 
 test('titles are prefixed and length-capped', () => {

@@ -37,7 +37,6 @@
 // passing those strings through is a silent no-op on the wrong field.
 const { foldDiacritics } = require('./title-match.js');
 
-const PRIORITY_HIGH = 2;
 const PRIORITY_NORMAL = 3;
 
 // Two independent models agreeing is the bar for a model opinion. Findings
@@ -78,8 +77,14 @@ function titleFor(finding) {
   return `UX audit: ${finding && finding.summary ? finding.summary : ''}`.slice(0, 120);
 }
 
-function priorityFor(finding) {
-  return finding && finding.severity === 'high' ? PRIORITY_HIGH : PRIORITY_NORMAL;
+// Every walkthrough card is a "UX audit:" UI card, the class the headless
+// dispatcher refuses (headless-dispatchability.js UI_CARD_CLASS_RE: the fix
+// needs owner visual QA). Filing high-severity ones at 2 put them in the P1
+// lane where nothing unattended can move them: 18 piled up, 1 real (BRO-340).
+// linear-issue-create.js already clamps parked creates to 3 (BRO-4487); this
+// says so at the source instead of relying on the clamp's warning.
+function priorityFor(_finding) {
+  return PRIORITY_NORMAL;
 }
 
 /**
@@ -132,7 +137,6 @@ function planFilings({ findings = [], existing = null } = {}) {
 }
 
 module.exports = {
-  PRIORITY_HIGH,
   PRIORITY_NORMAL,
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
