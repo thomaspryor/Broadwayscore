@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-10-13T18:39:20.233Z",
-  "processed": 216,
-  "failed": 148,
-  "successRate": "59.3%",
+  "updatedAt": "2026-10-13T18:55:43.022Z",
+  "processed": 245,
+  "failed": 171,
+  "successRate": "58.9%",
   "tierBreakdown": {
-    "playwright": 129,
+    "playwright": 142,
     "amp": 7,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 29,
-    "scrapingbee": 21,
+    "scrapingdog": 31,
+    "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 65
+    "archive": 69
   },
-  "browserbaseSessions": 1,
-  "recentActivity": []
+  "browserbaseSessions": 0,
+  "recentActivity": [
+    {
+      "t": "2026-10-13T16:03:55.343Z",
+      "event": "bb-session",
+      "session": "3e3eb892",
+      "url": "https://www.nytimes.com/2026/10/12/theater/joey-arias-basil-twist-arias-with-a-t"
+    },
+    {
+      "t": "2026-10-13T16:03:56.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
