@@ -1,3 +1,4 @@
+import { extractVenueBoxSectionForShowId } from './venue-box-sections';
 /**
  * Multi-Show Text Trimmer
  *
@@ -10,7 +11,7 @@ export interface TrimResult {
   text: string;
   trimmed: boolean;
   trimFailed: boolean;
-  method: 'heading' | 'none';
+  method: 'heading' | 'venue-box' | 'none';
   originalLength: number;
   trimmedLength: number;
 }
@@ -95,7 +96,26 @@ function headingContainsTitle(heading: string, titleVariants: string[]): boolean
 export function trimMultiShowText(
   fullText: string,
   targetShowTitle: string,
-  _targetShowId: string,
+  targetShowId: string,
+): TrimResult {
+  const byHeading = trimByHeading(fullText, targetShowTitle);
+  if (!byHeading.trimFailed || !fullText || !targetShowId) return byHeading;
+  // WSJ-style columns carry no headings; each review has a production box (BRO-5294).
+  const box = extractVenueBoxSectionForShowId(fullText, targetShowId);
+  if (!box.ok || !box.text) return byHeading;
+  return {
+    text: box.text,
+    trimmed: true,
+    trimFailed: false,
+    method: 'venue-box',
+    originalLength: fullText.length,
+    trimmedLength: box.text.length,
+  };
+}
+
+function trimByHeading(
+  fullText: string,
+  targetShowTitle: string,
 ): TrimResult {
   const originalLength = fullText.length;
   const fail = { text: fullText, trimmed: false, trimFailed: true, method: 'none' as const, originalLength, trimmedLength: originalLength };

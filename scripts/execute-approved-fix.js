@@ -107,6 +107,9 @@ const ALLOWED_SCRIPTS = [
   // was released by a human or override (refuses anything else; the plan
   // author must have read the text). One --file per action.
   'restore-released-quarantined-body.js',
+  // BRO-5294: queue named multi-review-column rows for a rescore that reads
+  // only the target show's section (llm-scoring/venue-box-sections.ts).
+  'flag-multishow-column-rescore.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
