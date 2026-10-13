@@ -72,6 +72,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-4993 live-data check of hand-verified director credits; reads data/shows.json.
+  'scripts/verify-directors.test.mjs': 'BRO-4993',
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
   'scripts/ccusage-baseline.test.mjs': 'BRO-4491',
   // BRO-2136 acceptance-command shim; re-imports the CI-registered tests/unit copy.
