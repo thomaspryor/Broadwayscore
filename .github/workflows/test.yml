@@ -4820,8 +4820,11 @@ jobs:
         # test always sees a gold list consistent with the current reviews.json.
         run: node scripts/compute-gold-lists.js
       - name: Snapshot data/audit before tests (BRO-2664)
-        # Pairs with "Ledger isolation check" at the end of this job.
-        run: git status --porcelain -- data/audit > "$RUNNER_TEMP/audit-before.txt"
+        # Pairs with "Ledger isolation check" at the end of this job. Content
+        # hashes, not git status: an already-modified or gitignored ledger
+        # would hide further appends from a status diff.
+        if: always()
+        run: find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$RUNNER_TEMP/audit-before.txt" || true
       - name: Run unit tests (no-data-dependency)
         # BSC_STAGE_LATENCY_MUTE: review-file-writer's saveReview emits the
         # review-first-seen stage-latency event unconditionally. Unit fixtures
@@ -5602,8 +5605,9 @@ jobs:
         run: |
           before="$RUNNER_TEMP/audit-before.txt"
           [ -f "$before" ] || { echo "No snapshot; skipping."; exit 0; }
-          git status --porcelain -- data/audit > "$RUNNER_TEMP/audit-after.txt"
-          new=$(comm -13 <(sort "$before") <(sort "$RUNNER_TEMP/audit-after.txt"))
+          after="$RUNNER_TEMP/audit-after.txt"
+          find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$after" || true
+          new=$(comm -13 <(sort "$before") <(sort "$after") | awk '{print $2}')
           if [ -n "$new" ]; then
             echo "::warning::Unit tests wrote to production ledgers under data/audit:"
             echo "$new"
