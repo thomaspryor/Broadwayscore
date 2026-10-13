@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5222-d",
   "planId": "18846fbe-aa19-4f80-8a73-f4d042470afe",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T04:40:50.608Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,38 @@
         "description": "Reason for the flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T05:48:41.599Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-stands-still-2010/hollywood-reporter--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-2009/ap--ben-brantley.json criticName: \"Ben Brantley\" -> \"Michael Kuchwara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disgraced-2014/forward--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disgraced-2014/forward--jesse-green.json wrongAttributionReason: null -> \"BRO-5222: excerpt matches Jesse Green’s Vulture review (vulture--jesse-green.json); not a Forward review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/billboard--greg-evans.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/billboard--greg-evans.json wrongAttributionReason: null -> \"BRO-5222: text matches Greg Evans’s Deadline review (deadline--greg-evans.json); Billboard url 404\""
+    }
+  ]
 }
