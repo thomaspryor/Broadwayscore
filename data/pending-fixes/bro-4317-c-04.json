@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-c-04",
   "planId": "19b4a855-aad0-4a1a-9fb3-9fb07c7c93dc",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T01:59:32.271Z",
   "submitter": {
     "name": null,
@@ -190,5 +190,133 @@
         "description": "review of an earlier production (2015-02-05T02:31:00) than the only same-name show texas-in-paris-off-broadway-2027, which has not opened or has no opening date; nothing tracked to attach it to"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T02:49:03.840Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: two-strangers-bway-2025/theater-life--samuel-l-leiter.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/theatermania--hayley-levitt.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted days-of-wine-and-roses/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted days-of-wine-and-roses/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamilton/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hells-kitchen/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted merrily-we-roll-along/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted table-17-off-west-end/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted table-17-off-west-end/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-harder-they-come-off-west-end/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-imaginary-invalid/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-porch-on-windy-hill-off-broadway/theater-life--alix-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-winters-tale-off-broadway/theater-life--iris-wiener.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted uncle-vanya/theater-life--mark-rifkin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted we-had-a-world-off-west-end/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted well-ill-let-you-go-off-broadway/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted well-ill-let-you-go-off-broadway/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-hunger-artist-off-west-end/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted counting-and-cracking-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stage-kiss-off-west-end/theater-life--eric-march.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json"
+    }
+  ]
 }
