@@ -5405,8 +5405,12 @@ for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
 // returning entry scores on a handful of minor outlets. Runs before the dedup passes
 // and the --show= exit below so both see the inherited reviews.
 {
+  const leasedReviews = leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)
+    ? (JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || []).filter(r => leasedShowIds.has(r.showId))
+    : [];
   const { inherited, links } = inheritPriorRunReviews(allReviews, showsData.shows, {
     canonicalizeUrl: canonicalizeUrlForDedup,
+    leasedReviews,
   });
   for (const r of inherited) allReviews.push(r);
   stats.priorRunInherited = inherited.length;

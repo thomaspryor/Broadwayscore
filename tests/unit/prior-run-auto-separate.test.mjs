@@ -23,3 +23,17 @@ test('explicit inheritReviews:true overrides the auto-separation', () => {
   const r = inheritPriorRunReviews([...oldReviews, ...fresh(RERUN_SEPARATE_MIN_OUTLETS + 3)], [older, newer({ inheritReviews: true })]);
   assert.equal(r.inherited.length, 3);
 });
+
+test('leased show: its not-rebuilt rows count toward the outlet tally (no flip during the lease)', () => {
+  const r = inheritPriorRunReviews(oldReviews, [older, newer()], { leasedReviews: fresh(RERUN_SEPARATE_MIN_OUTLETS) });
+  assert.equal(r.inherited.length, 0);
+});
+
+test('collectCarriedFiles applies the same separation (gap audit agrees with the rebuild)', () => {
+  const { collectCarriedFiles } = require('../../scripts/lib/prior-run-sibling.js');
+  const files = (id) => (id === 'x-2025' ? oldReviews : fresh(RERUN_SEPARATE_MIN_OUTLETS));
+  const deps = { loadFiles: files, isCovered: () => true };
+  assert.equal(collectCarriedFiles(newer(), [older, newer()], deps).length, 0);
+  const few = { loadFiles: (id) => (id === 'x-2025' ? oldReviews : fresh(2)), isCovered: () => true };
+  assert.equal(collectCarriedFiles(newer(), [older, newer()], few).length, 3);
+});

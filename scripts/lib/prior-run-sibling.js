@@ -251,7 +251,10 @@ function inheritPriorRunReviews(reviews, shows, opts = {}) {
     for (const { sibling, window, run, carryReviews } of findPriorRunSiblings(show, shows)) {
       if (!carryReviews) continue;
       const existing = byShow.get(show.id) || [];
-      if (!(run && typeof run === 'object' && run.inheritReviews === true) && reReviewedByManyOutlets(show, shows, existing)) continue;
+      // A leased show's own folders are not rebuilt, so its rows arrive as opts.leasedReviews.
+      // Counting them keeps the 5-outlet decision the same before and after the lease.
+      const tally = (opts.leasedReviews || []).length ? existing.concat(opts.leasedReviews.filter(r => r.showId === show.id)) : existing;
+      if (!(run && typeof run === 'object' && run.inheritReviews === true) && reReviewedByManyOutlets(show, shows, tally)) continue;
       const haveUrl = new Set(existing.map(r => canonicalizeUrl(r.url)).filter(Boolean));
       const havePerson = new Set(existing.map(personKey));
       let count = 0;
@@ -293,8 +296,10 @@ function inheritPriorRunReviews(reviews, shows, opts = {}) {
 function collectCarriedFiles(show, shows, deps) {
   const out = [];
   if (!Array.isArray(shows)) return out;
-  for (const { sibling, window, carryReviews } of findPriorRunSiblings(show, shows)) {
+  for (const { sibling, window, run, carryReviews } of findPriorRunSiblings(show, shows)) {
     if (!carryReviews) continue;
+    // Same 5-outlet separation the rebuild applies, so the gap audit agrees with what is published.
+    if (!(run && typeof run === 'object' && run.inheritReviews === true) && reReviewedByManyOutlets(show, shows, deps.loadFiles(show.id) || [])) continue;
     for (const d of deps.loadFiles(sibling.id) || []) {
       if (!findMatchingPriorRun(d.publishDate, [window])) continue;
       if (!deps.isCovered(d, sibling)) continue;

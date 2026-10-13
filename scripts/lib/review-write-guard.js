@@ -601,7 +601,7 @@ const WRONG_PRODUCTION_CLEAR_MARKERS = [
 function isScriptWrongProductionClear(d) {
   if (!d) return false;
   const by = typeof d.wrongProductionOverrideSetBy === 'string' ? d.wrongProductionOverrideSetBy.trim() : '';
-  if (by) return /\.js$/.test(by);
+  if (by) return /\.js\b/.test(by);
   return d.wrongProductionManualClear !== true;
 }
 
