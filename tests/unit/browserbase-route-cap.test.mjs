@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  ROUTE_CAPPED_REASON, MAX_ROUTE_CAPPED_DEFERRALS, classifyFetchFailure, applyRouteCapDeferralLimit,
+  ROUTE_CAPPED_REASON, MAX_ROUTE_CAPPED_DEFERRALS, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit,
   isRouteCapCooldownActive, shouldCountFailure, isPermanentlyFailed,
 } = require('../../scripts/lib/failed-fetch-policy.js');
 const { checkBrowserbaseCaps, resolveRecoveryReserve, resolveUseReserve } = require('../../scripts/lib/browserbase-caps.js');
@@ -107,4 +107,27 @@ test('incompleteReason for a capped route is route_capped, never bot_blocked', (
   const r = classifyIncompleteReason(review, { failureReason: ROUTE_CAPPED_REASON, failureCount: 0, routeCapped: 'day' });
   assert.equal(r.incompleteReason, 'route_capped');
   assert.match(r.incompleteDetail, /day cap/);
+});
+
+test('session-create chokepoint refusal (opening-window reserve) is a day route cap, not a fetch failure', async () => {
+  // Drive the real chokepoint to its refusal and use the message it throws
+  // (BRO-5222 run 38349583783: "Browserbase daily cap reached (150/135 (raw
+  // ceiling 250, reduced for opening-window reserve))" landed as bot_blocked).
+  const realMsg = 'Browserbase daily cap reached (150/135 (raw ceiling 250, reduced for opening-window reserve)) — session create blocked for collect-review-texts.js';
+  assert.equal(routeCapFromBrowserbaseError(realMsg), 'day');
+  assert.equal(routeCapFromBrowserbaseError('Browserbase daily cap reached (250/250) — session create blocked for x'), 'day');
+  assert.equal(classifyFetchFailure({ message: 'All tiers failed: [...]', routeCapped: routeCapFromBrowserbaseError(realMsg) }), ROUTE_CAPPED_REASON);
+  // Not caps: kill switch, a real fetch error, a 404 still wins.
+  assert.equal(routeCapFromBrowserbaseError('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)'), null);
+  assert.equal(routeCapFromBrowserbaseError('Insufficient text: 429 chars'), null);
+  assert.equal(routeCapFromBrowserbaseError(undefined), null);
+  assert.equal(classifyFetchFailure({ message: 'HTTP 404', routeCapped: 'day' }), 'url_dead_404');
+});
+
+test('chokepoint message format still matches what browserbase-session.js throws', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/lib/browserbase-session.js', import.meta.url), 'utf8');
+  const m = src.match(/throw new Error\(`(Browserbase daily cap reached[^`]*)`\)/);
+  assert.ok(m, 'browserbase-session.js no longer throws the day-cap message this mapping keys on');
+  assert.equal(routeCapFromBrowserbaseError(m[1]), 'day');
 });

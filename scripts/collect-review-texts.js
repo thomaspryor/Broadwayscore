@@ -597,7 +597,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
-const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, applyRouteCapDeferralLimit, isRouteCapCooldownActive } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
@@ -770,6 +770,9 @@ let state = {
 };
 
 // Browserbase usage tracking (persisted to disk)
+// In-memory only (never saved with browserbaseUsage): set when the session-
+// create chokepoint refuses for the day, so later rows in this run skip it.
+let browserbaseChokepointCapped = false;
 let browserbaseUsage = {
   date: new Date().toISOString().split('T')[0],
   sessionsToday: 0,
@@ -2219,6 +2222,9 @@ function browserbaseBlockReason(urlDomain) {
   if (CONFIG.browserbaseKillSwitch) return 'disabled';
   if (!CONFIG.browserbaseEnabled) return 'disabled';
   if (!CONFIG.browserbaseApiKey) return 'disabled';
+  // The session-create chokepoint already refused this run (account-wide day
+  // cap or opening-window reserve); the count only grows, so skip the rest.
+  if (browserbaseChokepointCapped) return 'day';
 
   const decision = checkBrowserbaseCaps({
     sessionsToday: browserbaseUsage.sessionsToday,
@@ -3602,7 +3608,17 @@ function buildTierChain(ctx, review) {
       onSuccess: (review, result) => {
         state.tierBreakdown.browserbase.push(review.filePath);
       },
-      onFailure: (error) => { ctx.anyTierFailed = true; },
+      onFailure: (error) => {
+        ctx.anyTierFailed = true;
+        // The session-create chokepoint can refuse even after the pre-check
+        // passed (live account count, opening-window reserve): still a cap.
+        const capped = routeCapFromBrowserbaseError(error && error.message);
+        if (capped) {
+          ctx.browserbaseCapSkipped = capped;
+          review._browserbaseCapSkipped = capped;
+          browserbaseChokepointCapped = true;
+        }
+      },
     },
 
     // TIER 1.8: Direct HTTP fetch with subscriber cookies (free, no proxy)
