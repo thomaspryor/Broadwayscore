@@ -80,28 +80,22 @@ function classify(html, status, url) {
 
 function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } }
 
-async function withTimeout(promise) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
-  try { return await promise(ctrl.signal); }
-  finally { clearTimeout(t); }
-}
-
-// hygiene-fetch-timeout-ok: every fetch() here takes its signal from withTimeout()'s AbortController + setTimeout(TIMEOUT_MS)
 async function fetchBrightData(url) {
   const start = Date.now();
   try {
-    const res = await withTimeout((signal) => fetch('https://api.brightdata.com/request', {
+    // AbortSignal.timeout also bounds res.text() below; the old withTimeout()
+    // cleared its timer once headers arrived, leaving the body unbounded.
+    const res = await fetch('https://api.brightdata.com/request', {
       method: 'POST',
       headers: { Authorization: `Bearer ${BRIGHTDATA_TOKEN}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ zone: BRIGHTDATA_ZONE, url, format: 'raw' }),
-      signal,
-    }));
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
     const body = await res.text();
     const c = classify(body, res.status, url);
     return { ok: c.ok, reason: c.reason, status: res.status, len: body.length, ms: Date.now() - start };
   } catch (e) {
-    return { ok: false, reason: 'fetch_error', status: e.name === 'AbortError' ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start };
+    return { ok: false, reason: 'fetch_error', status: (e.name === 'AbortError' || e.name === 'TimeoutError') ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start };
   }
 }
 
@@ -114,12 +108,12 @@ async function fetchScrapingdog(url, mode) {
   if (mode === 'render') params.set('dynamic', 'true'); else params.set('dynamic', 'false');
   if (mode === 'premium') { params.set('premium', 'true'); params.set('dynamic', 'false'); }
   try {
-    const res = await withTimeout((signal) => fetch(`https://api.scrapingdog.com/scrape?${params}`, { signal }));
+    const res = await fetch(`https://api.scrapingdog.com/scrape?${params}`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
     const body = await res.text();
     const c = classify(body, res.status, url);
     return { ok: c.ok, reason: c.reason, status: res.status, len: body.length, ms: Date.now() - start, mode, credits: SD_CREDITS[mode] };
   } catch (e) {
-    return { ok: false, reason: 'fetch_error', status: e.name === 'AbortError' ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start, mode, credits: SD_CREDITS[mode] };
+    return { ok: false, reason: 'fetch_error', status: (e.name === 'AbortError' || e.name === 'TimeoutError') ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start, mode, credits: SD_CREDITS[mode] };
   }
 }
 
