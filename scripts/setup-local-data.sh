@@ -241,6 +241,10 @@ for f in "${COPY_FILES[@]}"; do
   src="$CORE_DATA_DIR/$f"
   [ -f "$src" ] || continue
   [ "$LINK_ONLY" = 1 ] && [ "$CLOUD_COPY" != 1 ] && [ -e "$DATA_DIR/$f" ] && continue
+  # BRO-5261: a file this repo tracks (audience-reviews-lbo.json, awards.json)
+  # keeps its committed copy. Overwriting it left every session's checkout dirty,
+  # and 9b495d640 swept 782 lines of it into an unrelated fix.
+  git -C "$PROJECT_DIR" ls-files --error-unmatch "data/$f" >/dev/null 2>&1 && continue
   cp -f "$src" "$DATA_DIR/"
   COPY_COUNT=$((COPY_COUNT + 1))
 done
