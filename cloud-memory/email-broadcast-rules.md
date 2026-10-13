@@ -50,10 +50,11 @@ never appear.
   /broadcasts/{id}` under `--recreate-draft`. There is no `/broadcasts/{id}/send`
   call anywhere in it; both greps matching it are comments.
 
-Renamed in BRO-2440. `src/app/api/approve-broadcast/route.ts` is orphaned: nothing
-mints its signed links, and it passes two undeclared inputs that GitHub rejects
-(HTTP 422), so it never dispatches. Do not "fix" its inputs without retiring or
-hardening it first: it is a public GET with no confirmation step.
+Renamed in BRO-2440. The old one-click `/api/approve-broadcast` page was removed
+in BRO-5256 (owner decision 2026-10-13): nothing minted its signed links, it never
+dispatched (GitHub rejected its inputs), and it was a public GET with no
+confirmation step. Any future one-click approval must be rebuilt with an explicit
+confirmation step, not revived from git history.
 
 ## Policy: unsent opening-night drafts (BRO-2935, owner decision 2026-10-11)
 
