@@ -76,6 +76,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GH_TOKEN: ${{ github.token }}
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           if [ ! -f data/shows.json ]; then
             echo "::warning::core data missing — skipping WE discovery this run"

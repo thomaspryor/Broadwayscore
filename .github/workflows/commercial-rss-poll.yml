@@ -241,6 +241,7 @@ jobs:
         run: node scripts/check-sb-breaker.js
 
       - name: Commit breaker state
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         # BRO-2960: this job's "Commit data changes" step below (the big
         # commercial-pending-review.json/commercial-rss-state.json commit)
         # was losing its push race ~9 of the last 12 runs (2026-09-06/07),
@@ -326,7 +327,7 @@ jobs:
             git commit -m "data: hourly poll — BD/SD/SB breaker state
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Breaker-state push failed after retries — next run re-derives BD/SD/SB verdicts from billing APIs; alert-ledger/breaker-transitions state persists to main on the next successful push."
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Commit data changes

@@ -146,6 +146,7 @@ jobs:
           echo "- routed: routeAlert(direct-push:${SHA:0:10}) → owner digest" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit alert-router ledger changes
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: steps.classify.outputs.verdict == 'direct'
         # routeAlert()'s ledger, digest queue and attempts log only exist on
         # this runner until committed. Non-blocking by rule (ledger-step-guard).
@@ -155,7 +156,7 @@ jobs:
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git commit -m "data: alert-router ledger update (check-direct-push-to-main.yml) [skip ci]"
-            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+            bash scripts/lib/push-with-retry.sh 5 main
           else
             echo "No ledger changes to commit."
           fi

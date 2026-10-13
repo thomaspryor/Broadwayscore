@@ -859,7 +859,156 @@ function findShortCoreDataJobTimeouts(raw) {
   return hits;
 }
 
+// ── Rules (s)/(t)/(u): step-scoped shell-safety rules (BRO-5046/4730/4621) ──────
+
+/**
+ * Split a workflow's raw YAML into its job steps (list items at indent 6).
+ * Returns [{ name, startLine (0-based), endLine (exclusive), lines }]. A step
+ * ends at the next step start or at the first non-blank line indented <= 4.
+ */
+function splitWorkflowSteps(raw) {
+  const lines = raw.split('\n');
+  const steps = [];
+  let cur = null;
+  const close = (end) => {
+    if (!cur) return;
+    cur.endLine = end;
+    cur.lines = lines.slice(cur.startLine, end);
+    const m = cur.lines.join('\n').match(/^\s*(?:- )?name:\s*(.+?)\s*$/m);
+    cur.name = m ? m[1].replace(/^['"]|['"]$/g, '') : '(unnamed)';
+    steps.push(cur);
+    cur = null;
+  };
+  let inSteps = false; // only list items under a job's `steps:` key (indent 4) are steps
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+    if (l.trim() === '') continue;
+    const ind = indentOf(l);
+    if (ind <= 4 && !l.trimStart().startsWith('#')) {
+      close(i);
+      inSteps = ind === 4 && /^ {4}steps\s*:\s*$/.test(l);
+      continue;
+    }
+    if (inSteps && /^ {6}- /.test(l)) { close(i); cur = { startLine: i }; }
+  }
+  close(lines.length);
+  return steps;
+}
+
+const stripComments = (lines) => lines.filter((l) => !l.trimStart().startsWith('#'));
+
+/**
+ * Rule (s) (BRO-5046): `node … | tee` in a step whose shell has no pipefail.
+ * A `run:` with no `shell:` executes as `bash -e {0}` (NO pipefail), so the
+ * pipeline's status is tee's and a failing node script exits 0. Explicit
+ * `shell: bash` runs `-eo pipefail`. Exempt: the step (or the workflow's
+ * defaults) sets shell: bash, the block mentions pipefail, or it reads
+ * PIPESTATUS. Fix: add `shell: bash` to the step.
+ */
+const NODE_TEE_RE = /\bnode\b[^\n|]*\|\s*tee\b/;
+function findNodeTeeWithoutPipefail(raw) {
+  if (/^\s*defaults:\s*\n\s*run:\s*\n\s*shell:\s*bash\b/m.test(raw)) return [];
+  const out = [];
+  for (const step of splitWorkflowSteps(raw)) {
+    const body = stripComments(step.lines);
+    const text = body.join('\n');
+    if (!NODE_TEE_RE.test(text)) continue;
+    if (/pipefail|PIPESTATUS/.test(text)) continue;
+    if (body.some((l) => /^\s*(?:- )?shell:\s*bash\b/.test(l))) continue;
+    const idx = body.findIndex((l) => NODE_TEE_RE.test(l));
+    out.push({ name: step.name, lineNum: step.startLine + 1 + step.lines.indexOf(body[idx]) });
+  }
+  return out;
+}
+
+/**
+ * Rule (t) (BRO-4730, BRO-3342 cousins): push-with-retry.sh followed by a
+ * `|| echo …` / `|| true` / `|| :` handler swallows a terminal push failure.
+ * Re-raising (`|| { …; exit 1; }`) is fine; a deliberately non-blocking push
+ * uses step-level `continue-on-error: true` instead. Logical lines are joined
+ * across `\` continuations.
+ */
+function maskedPushHandler(line) {
+  const m = line.match(/push-with-retry\.sh(?:\s+[^|\s]\S*)*\s*(?:\|\|\s*(.*))?$/);
+  if (!m || line.trim().startsWith('#') || !m[1]) return null;
+  const handler = m[1].trim();
+  return /\bexit\s+[1-9]/.test(handler) || /\breturn\s+[1-9]/.test(handler) ? null : handler;
+}
+function findMaskedPushFailures(raw) {
+  const out = [];
+  for (const step of splitWorkflowSteps(raw)) {
+    for (let i = 0; i < step.lines.length; i++) {
+      let logical = step.lines[i];
+      if (!/push-with-retry\.sh/.test(logical)) continue;
+      let j = i;
+      while (/\\\s*$/.test(logical) && j + 1 < step.lines.length) logical = logical.replace(/\\\s*$/, ' ') + step.lines[++j].trim();
+      const h = maskedPushHandler(logical);
+      if (h) out.push({ name: step.name, lineNum: step.startLine + i + 1, handler: h });
+    }
+  }
+  return out;
+}
+
+/**
+ * Rule (u) (BRO-4621): a STRING workflow_dispatch/workflow_call input
+ * interpolated straight into a `run:` script (`${{ inputs.x }}`) is a shell
+ * injection sink: the value is pasted into the script before bash parses it.
+ * boolean/choice/number inputs cannot carry shell metacharacters and are
+ * ignored. Fix: pass it through the step's `env:` and use "$VAR".
+ */
+function declaredInputTypes(raw) {
+  const types = {};
+  const lines = raw.split('\n');
+  const onIdx = lines.findIndex((l) => /^(?:on|'on'|"on")\s*:/.test(l));
+  if (onIdx === -1) return types;
+  let inInputs = false;
+  let inputsIndent = -1;
+  let cur = null;
+  for (let i = onIdx + 1; i < lines.length; i++) {
+    const l = lines[i];
+    if (l.trim() === '' || l.trimStart().startsWith('#')) continue;
+    if (indentOf(l) === 0) break;
+    const ind = indentOf(l);
+    if (/^\s*inputs\s*:\s*$/.test(l)) { inInputs = true; inputsIndent = ind; cur = null; continue; }
+    if (inInputs && ind <= inputsIndent) inInputs = false;
+    if (!inInputs) continue;
+    const k = l.match(/^(\s*)([\w-]+)\s*:\s*$/);
+    if (k && ind === inputsIndent + 2) { cur = k[2]; types[cur] = 'string'; continue; }
+    const t = l.match(/^\s*type\s*:\s*['"]?(\w+)['"]?/);
+    if (t && cur && ind === inputsIndent + 4) types[cur] = t[1];
+  }
+  return types;
+}
+const INPUT_EXPR_RE = /\$\{\{\s*(?:github\.event\.)?inputs\.([\w-]+)\s*\}\}/g;
+function findStringInputInterpolation(raw) {
+  const types = declaredInputTypes(raw);
+  const out = [];
+  for (const step of splitWorkflowSteps(raw)) {
+    const lines = step.lines;
+    const runIdx = lines.findIndex((l) => RUN_LINE_RE.test(l.trim()));
+    if (runIdx === -1) continue;
+    const runIndent = indentOf(lines[runIdx]) + (/^\s*-\s/.test(lines[runIdx]) ? 2 : 0);
+    for (let i = runIdx; i < lines.length; i++) {
+      const l = lines[i];
+      if (i > runIdx && l.trim() !== '' && indentOf(l) <= runIndent && /^\s*[\w-]+\s*:/.test(l)) break;
+      if (l.trimStart().startsWith('#')) continue;
+      let m;
+      INPUT_EXPR_RE.lastIndex = 0;
+      while ((m = INPUT_EXPR_RE.exec(l))) {
+        if ((types[m[1]] || 'string') === 'string') out.push({ name: step.name, lineNum: step.startLine + i + 1, input: m[1] });
+      }
+    }
+  }
+  return out;
+}
+
 module.exports = {
+  splitWorkflowSteps,
+  findNodeTeeWithoutPipefail,
+  maskedPushHandler,
+  findMaskedPushFailures,
+  declaredInputTypes,
+  findStringInputInterpolation,
   CORE_DATA_JOB_MIN_TIMEOUT,
   findShortCoreDataJobTimeouts,
   findGitDiffOnIgnoredPaths,

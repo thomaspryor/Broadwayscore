@@ -119,6 +119,7 @@ jobs:
       # Both are deterministic + bounded (duplicateOf has a >25 surge guard;
       # gc only rewrites URL-shaped critic names) so auto-running is safe.
       - name: Sweep stale duplicateOf flags
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 

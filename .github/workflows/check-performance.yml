@@ -70,13 +70,14 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 
       - name: Commit size history
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always() && inputs.update_baseline != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/bundle-size-history.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "perf: Record bundle size snapshot [skip ci]"
-          bash scripts/lib/push-with-retry.sh || true
+          bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()

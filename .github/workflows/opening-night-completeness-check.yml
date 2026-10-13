@@ -138,6 +138,7 @@ jobs:
       # code since the 2026-07-12 push-core-data change.
 
       - name: Commit state file
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: steps.rebuild_check.outputs.skip != 'true'
         env:
           # 120s, not the 240s default (BRO-345 what-else, 2026-09-08):
@@ -178,7 +179,7 @@ jobs:
             # pushers, dropping the snapshot file entirely.
             # If push still fails after 5: emit warning and continue. Next cron tick (≤15 min)
             # will re-snapshot — drop detection is degraded for that window but not broken.
-            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::State push failed after 5 attempts — snapshot lost; next cron will re-snapshot. Drop detection skipped for this 15-min window."
+            bash scripts/lib/push-with-retry.sh 5 main
           fi
 
       - name: Notify on failure

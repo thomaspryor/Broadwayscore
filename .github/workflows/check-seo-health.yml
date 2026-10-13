@@ -56,6 +56,7 @@ jobs:
           fi
 
       - name: Push audit data
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
         run: |
           # Non-blocking: this push races main's commit churn (task #353 —
@@ -65,7 +66,7 @@ jobs:
           # burns CI time on an unwinnable race rather than fixing it). The
           # audit snapshot isn't time-sensitive — next week's cron re-derives
           # it — so a lost race must not redden this run.
-          bash scripts/lib/push-with-retry.sh || echo "::warning::SEO audit data push failed — next scheduled run will recommit"
+          bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()

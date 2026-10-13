@@ -546,7 +546,7 @@ jobs:
           { [ -f data/audit/alert-ledger.json ] && git add data/audit/alert-ledger.json; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
-          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
+          bash scripts/lib/push-with-retry.sh 5 main
 
       # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
       # this is one of only 2 genuinely hard-fail push steps in this job (the
@@ -815,7 +815,7 @@ jobs:
           bash scripts/lib/git-add-existing.sh data/nyt-critics-picks.json data/audit/nyt-spotlight-check.json data/audit/scraper-spend-ledger.jsonl
           if ! git diff --cached --quiet; then
             git commit -m "data: NYT Critic's Picks opening-night check [skip ci]"
-            GIT_NET_TIMEOUT_SEC=30 bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::NYT picks check commit did not push; the fast-path commit retries it"
+            GIT_NET_TIMEOUT_SEC=30 bash scripts/lib/push-with-retry.sh 5 main
           fi
 
       - name: Cancel competing rebuilds (fast_path)

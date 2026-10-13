@@ -1339,6 +1339,7 @@ jobs:
       # silently keep charging the step-level 300s against this job's
       # margin math for a call that's actually smaller.
       - name: Commit orphan-rescore-requeue state (late — defense-in-depth for a stranded early push)
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always() && steps.find.outputs.has_shows == 'true'
         env:
           PUSH_DEADLINE_SEC: '60'
@@ -1432,7 +1433,7 @@ jobs:
           # authority for stranded commits — it runs immediately after this,
           # is gated `always()`, and carries the same origin/main..HEAD gate,
           # so nothing is lost by letting this one warn instead of fail.
-          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::late orphan-state push failed (60s/5 budget) — the stranded commit is still on local HEAD; 'Commit data' below retries it with the 300s/14 budget and hard-fails if it too cannot land"
+          bash scripts/lib/push-with-retry.sh 5 main
 
       # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
       # 2026-08-26): see "Commit orphan-rescore-requeue state" (early) above
@@ -1599,7 +1600,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Record indexing API quota usage [skip ci]"
-          bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
+          bash scripts/lib/push-with-retry.sh
 
       # Skipped when a broadcast gate (checklist/drift/orphan-unscored) already
       # blocked and alerted above — that alert is specific (which gate, which

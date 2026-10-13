@@ -139,31 +139,37 @@ jobs:
 
       - name: Flag wrong-production reviews by date window
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/flag-wrong-production-by-date.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Audit pre-2005 wrong-production reviews
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/audit-pre2005-reviews.js 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Backfill unknown outlets (local, free)
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/backfill-unknown-critics.js --outlets-only 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Cleanup phantom outlet duplicates
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/cleanup-phantom-outlets.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Strip stale single-model scores from flagged reviews
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/strip-stale-single-model-scores.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Detect syndicated duplicates and author mismatches
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/detect-syndicated-duplicates.js 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -180,6 +186,7 @@ jobs:
       # --fix here clears them on each rebuild; push-review-texts ships the result.
       - name: Sweep stale duplicateOf flags
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -192,6 +199,7 @@ jobs:
       # (moulin-rouge-2019 WSJ Terry Teachout, confirmed missing).
       - name: Sweep orphaned duplicateOf pointers (stale target invalidation)
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/heal-orphaned-duplicate-pointers.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -206,6 +214,7 @@ jobs:
       # notice hours later. Confirmed live on 22 real same-URL clusters.
       - name: Sweep fully-unsuppressed same-URL clusters (post cycle-clear)
         if: inputs.skip_enrichment != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/fix-unflagged-same-url-clusters.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -235,6 +244,7 @@ jobs:
         if: inputs.skip_enrichment != 'true'
         env:
           TOUR_SWEEP: ${{ vars.TOUR_SWEEP }}
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/sweep-tour-reviews.js --auto 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -426,6 +436,7 @@ jobs:
         # which is the write-only-signal anti-pattern this repo keeps hitting
         # (#641/#689). The findings go to the job log AND the run summary, where
         # they are read. Use `--json=` locally when you want the full report.
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           node scripts/audit-pull-quotes.js | tee /tmp/pull-quote-audit.txt
           {
@@ -1030,6 +1041,7 @@ jobs:
           fi
 
       - name: Record pipeline success
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -1037,4 +1049,5 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/rebuild-reviews.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record rebuild-reviews success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record rebuild-reviews success"
+          bash scripts/lib/push-with-retry.sh

@@ -52,6 +52,7 @@ jobs:
 
       - name: Poll LouReviews
         id: poll
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           # BRO-4157 triage: NOT adding pipefail here on purpose. poll-loureviews.js's
           # own docstring is explicit — "Exit 0 always (a poller failure must
@@ -73,7 +74,7 @@ jobs:
           DAYS="${{ inputs.days || '400' }}"
           echo "Polling loureviews.blog (last $DAYS days)..."
           node scripts/poll-loureviews.js --days="$DAYS" | tee /tmp/poll.out
-          NEW=$(grep -oE '__LOUREVIEWS_NEW__=[0-9]+' /tmp/poll.out | tail -1 | cut -d= -f2)
+          NEW=$(grep -oE '__LOUREVIEWS_NEW__=[0-9]+' /tmp/poll.out | tail -1 | cut -d= -f2 || true)
           echo "new=${NEW:-0}" >> "$GITHUB_OUTPUT"
 
       - name: Push review-texts to private repo
