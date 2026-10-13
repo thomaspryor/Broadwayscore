@@ -7,7 +7,7 @@
  *   node scripts/flag-multishow-column-rescore.js --file=<show>/<file>.json[,...] [--dry-run]
  *
  * Then: llm-ensemble-score.yml with needs_rescore=true and
- * rescore_reason="multi-show column".
+ * rescore_reason=multi-show (no spaces: the workflow passes it unquoted).
  */
 const fs = require('fs');
 const path = require('path');

@@ -54,3 +54,16 @@ test('a single-review page with one box is untouched', () => {
   assert.equal(r.ok, false);
   assert.match(r.reason, /fewer than 2/);
 });
+
+test('a bare price in the prose is not a box: a single review is never cut to a fragment', () => {
+  const text = `${BOX_N} ${NANCE} Premium seats ($299) sell fast. ${P('The cast is excellent and The Nance is moving.', 12)}`;
+  const r = extractVenueBoxSection(text, SHOWS[0], SHOWS);
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /fewer than 2/);
+});
+
+test('venue words match whole words only (Studio 54 never matches "W. 54th St.")', () => {
+  const studio = { id: 'cabaret-2014', title: 'Cabaret', venue: 'Studio 54', openingDate: '2014-04-24' };
+  const text = `Lyceum Theatre, 149 W. 54th St. ($67-$137), 212-239-6200 ${P('Cabaret is back and Cabaret is sharp.', 30)} Lunt-Fontanne Theatre, 205 W. 46th St. ($59-$150), 877-250-2929 ${MOTOWN}`;
+  assert.equal(extractVenueBoxSection(text, studio, [studio, ...SHOWS]).ok, false);
+});
