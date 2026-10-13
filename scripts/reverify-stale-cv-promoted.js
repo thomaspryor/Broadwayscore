@@ -44,6 +44,7 @@ const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { assessClearSafety } = require('./lib/reverify-clear-guards');
 const { selectCvPromotedNonReview, planClear } = require('./lib/cv-promoted-nonreview-selector');
+const { parseFileSpecs, holdFileModeVerdict } = require('./lib/reverify-file-mode');
 
 const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
@@ -60,6 +61,8 @@ Usage:
                                                          on shows opened since the date instead of stale-hash findings
   node scripts/reverify-stale-cv-promoted.js --file=<show-id>/<file>.json[,...] --dry-run
                                                          re-verify just these files' stored text (any flag state)
+                                                         an unclean verdict is printed, never written,
+                                                         unless --allow-new-exclusion
   node scripts/reverify-stale-cv-promoted.js --help, -h  print this usage and exit
 
 Makes live LLM verification calls and writes review files — never blind-clears.
@@ -121,14 +124,12 @@ async function main() {
   if (fileArg) {
     // BRO-5243: re-verify named files against their stored text, whatever their
     // flags (a stale verdict on an unflagged row, e.g. one judged on a raw fetch).
-    findings = fileArg.slice('--file='.length).split(',').filter(Boolean).map(spec => {
-      const [showId, file] = spec.split('/');
-      if (!showId || !file || !file.endsWith('.json') || showId.includes('..') || file.includes('..')) {
-        console.error(`--file expects <show-id>/<file>.json, got "${spec}"`);
-        process.exit(1);
-      }
-      return { showId, file };
-    });
+    try {
+      findings = parseFileSpecs(fileArg.slice('--file='.length));
+    } catch (e) {
+      console.error(e.message);
+      process.exit(1);
+    }
   } else if (args.includes('--cv-promoted-nonreview')) {
     const sinceArg = args.find(a => a.startsWith('--opened-since='));
     const openedSince = sinceArg ? sinceArg.split('=')[1] : undefined;
@@ -214,6 +215,16 @@ async function main() {
         }
       }
       let didClear = false;
+
+      // --file rows are picked by hand, not by an exclusion flag, so an unclean
+      // verdict here could newly exclude a row that is live today (the rebuild
+      // promotes high-confidence wrongArticle/wrongProduction). Print it, write
+      // nothing, unless the operator passes --allow-new-exclusion.
+      if (holdFileModeVerdict({ fileMode: !!fileArg, clean, allowNewExclusion: args.includes('--allow-new-exclusion') })) {
+        console.log('  Not written: unclean verdict on a hand-picked row (pass --allow-new-exclusion to store it)');
+        stats.refused++;
+        continue;
+      }
 
       if (!dryRun) {
         data.contentVerification = {
@@ -305,7 +316,7 @@ async function main() {
       }
 
       if (didClear) { console.log('  >>> CLEARED'); stats.cleared++; }
-      else { console.log('  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
+      else { console.log(fileArg ? '  Verdict stored (row was not flagged)' : '  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
       console.log('');
 
       await new Promise(r => setTimeout(r, 300));
