@@ -2,7 +2,7 @@
   "createdAt": "2026-10-13T17:47:41Z",
   "issueNumber": "bro-5285",
   "planId": "335068e5-8cbb-4207-b5d1-dac997ec6581",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -37,5 +37,23 @@
         "destPath": "the-comedy-about-spies-west-end-2025/thestage--holly-omahony.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T18:45:48.635Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/thestage--holly-o.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json@89d8617d81d1ba93f8c62ce215bf80c096ed29ed -> the-comedy-about-spies-west-end-2025/thestage--holly-omahony.json"
+    }
+  ]
 }
