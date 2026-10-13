@@ -55,3 +55,9 @@ test('"of N stars" in ordinary prose still reads as a rating; only "out of N sta
   assert.equal(score('In 1992, the show earned 4 stars from the Times.').originalScore, '4/5');
   assert.equal(score('Verdict: 2 out of 5 stars').originalScore, '2/5');
 });
+
+test('"N out of 50" is not a rating, and "N of 5 stars" is not read as 5/5', () => {
+  assert.equal(score('4 stars. Only 1 out of 50 shows manage this.').originalScore, '4/5');
+  assert.equal(score('Verdict: 4 of 5 stars'), null);
+  assert.equal(score('Rating: 4.0 out of 5.0 stars').originalScore, '4/5');
+});

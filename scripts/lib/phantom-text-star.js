@@ -38,7 +38,9 @@ function phantomRatings(text) {
     const before = t.slice(Math.max(0, m.index - 12), m.index);
     const after = t.charAt(m.index + m[0].length);
     const glued = /\d$/.test(before) || /\d\.$/.test(before);          // 1992 starring / 14 stars
-    const word = /[A-Za-z]/.test(after) && !/(?:out\s+of|\/)\s*$/i.test(before); // starring / StarTribune
+    // starring / StarTribune. "4 starsMegan" (m[0] ends in s) is scraped text glued at a tag
+    // boundary, a real rating the extractor no longer reads: not a phantom.
+    const word = /[A-Za-z]/.test(after) && !/s$/i.test(m[0]) && !/(?:out\s+of|\/)\s*$/i.test(before);
     if (!glued && !word) continue;
     const value = parseFloat(m[1]);
     if (value >= 1 && value <= 5) out.push(`${value}/5`);

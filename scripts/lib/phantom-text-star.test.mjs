@@ -40,3 +40,8 @@ test('ratingKey normalises the stored spellings', () => {
   assert.equal(ratingKey('4 stars'), '4/5');
   assert.equal(ratingKey('B+'), null);
 });
+
+test('a rating glued to the next word ("4 starsMegan") is not a phantom candidate', () => {
+  assert.deepEqual(phantomRatings('Hamilton 4 starsMegan Hilty is superb'), []);
+  assert.deepEqual(phantomRatings('film from 1992 starring X'), ['2/5']);
+});

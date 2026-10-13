@@ -1078,12 +1078,12 @@ function extractGenericStarRating(html, text) {
     // "4 out of 5" — explicit wording, safe. Tried BEFORE the bare "N stars"
     // form: in "4.0 out of 5.0 stars" the bare form would read the trailing
     // "5.0 stars" as the rating (shinylife served 5/5 for a 4.0 review).
-    /(?<!\d|\d\.)(\d(?:\.\d)?)\s*out\s*of\s*5/i,
+    /(?<!\d|\d\.)(\d(?:\.\d)?)\s*out\s*of\s*5(?!\d)/i,
     // "4 stars" or "4.5 stars". Rejects a digit that is the tail of a longer
     // number or the denominator of a fraction/"out of" (handled above), and
     // needs a word boundary after "star(s)" so "1992 starring ..." and
     // "© 2014 StarTribune" are not "2 stars" / "4 stars" (BRO-5295).
-    /(?<!\d|\d\.|\d\s*\/\s*|\bout\s+of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
+    /(?<!\d|\d\.|\d\s*\/\s*|\d\s*(?:out\s+)?of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
     // Unicode stars — visual, unambiguous
     /([★☆]{3,5})/
   ];
