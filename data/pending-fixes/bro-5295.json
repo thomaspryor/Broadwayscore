@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5295",
   "planId": "2f70b6f4-c9c7-425a-b5e2-96c6db1fd9c8",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T21:40:00Z",
   "submitter": {
     "name": null,
@@ -98,5 +98,58 @@
         "description": "BRO-5295: a review round-up ('one five-star, three four-star') carries no single rating of its own."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T22:18:06.957Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json originalScore: write guard kept \"2/5\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json humanReviewScore: 40 -> 87"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aladdin-2014/minneapolis-star-tribune--mark-kennedy.json originalScore: \"4/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-west-end-2024/amyleighchandler--unknown.json originalScore: \"4/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mousetrap-west-end-2021/manchester-evening-news--steve-howarth.json originalScore: \"2/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-of-music-tour-2025/thesuburban--alexandra-cohen-the-suburban.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-tour-2025/maryland-theatre-guide--herb-merrick.json originalScore: \"1/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-importance-of-being-oscar-off-west-end-2026/shinylife--unknown.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--alan-ingram.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
 }
