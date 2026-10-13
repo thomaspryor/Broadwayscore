@@ -112,6 +112,20 @@ function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null
 }
 
 /**
+ * The Browserbase session-create chokepoint (browserbase-session.js) refuses a
+ * session once the account's live daily count passes the ceiling, which it
+ * lowers to keep a reserve for shows in their opening window. That refusal is
+ * a cap, not evidence against the URL: map it to the same 'day' route-cap the
+ * collector's own pre-check records (BRO-5222). Kill switch is not a cap.
+ *
+ * @param {string} message - error message from fetchWithBrowserbase
+ * @returns {'day'|null}
+ */
+function routeCapFromBrowserbaseError(message) {
+  return /Browserbase daily cap reached/.test(String(message || '')) ? 'day' : null;
+}
+
+/**
  * Apply the capped-route deferral limit before a failure is written.
  * Returns the reason to record and the new cappedDeferrals tally. Past
  * MAX_ROUTE_CAPPED_DEFERRALS the row is recorded as all_tiers_failed (counts).
@@ -167,6 +181,7 @@ module.exports = {
   ROUTE_CAPPED_REASON,
   MAX_ROUTE_CAPPED_DEFERRALS,
   classifyFetchFailure,
+  routeCapFromBrowserbaseError,
   applyRouteCapDeferralLimit,
   isRouteCapCooldownActive,
   shouldReopenStaleContentMismatch,
