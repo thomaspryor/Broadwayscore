@@ -252,6 +252,8 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)artsatmarblearch\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
   // BRO-5133: Soho Theatre (London) event pages, filed as "reviews" for Elf Lyons, Hit Machine, Spellbound.
   { host: /(^|\.)sohotheatre\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
+  // BRO-309: huddlepin.com /events/ pages are what's-on listings, surfaced as a probe gap for Savage & Simon Says.
+  { host: /(^|\.)huddlepin\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
   // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
   // first live exercise of #1073): ticketing/listing hosts that reached the
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a

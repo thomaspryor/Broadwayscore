@@ -102,6 +102,7 @@ describe('Alt 2 — admin UI ingest form (auth-gated, commits via GitHub API)', 
     assert.match(src, /submissionNonReviewReason\(url\)/);
     const { submissionNonReviewReason } = require('../../scripts/lib/non-review-url-patterns.js');
     assert.equal(submissionNonReviewReason('https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/'), 'venue-production-page');
+    assert.equal(submissionNonReviewReason('https://huddlepin.com/events/lyric-hammersmith-theatre/savage-and-simon-says-a-double-bill-2026'), 'venue-production-page');
     assert.equal(submissionNonReviewReason('https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle'), 'venue-production-page');
     assert.equal(submissionNonReviewReason('https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/'), null);
   });
