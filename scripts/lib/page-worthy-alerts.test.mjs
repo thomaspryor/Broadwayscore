@@ -12,3 +12,8 @@ test('per-pass monitor noise stays off the page list', () => {
   assert.equal(isPageWorthy('on-monitor-attempts-exhausted-2026-09-04'), false);
   assert.equal(isPageWorthy('on-monitor-auth-starved-2026-09-04'), false);
 });
+
+test('real substituted key shape pages (NIGHT_KEY is itself on-monitor-<date>)', () => {
+  assert.equal(isPageWorthy('on-monitor-report-on-monitor-2026-09-04'), true);
+  assert.equal(isPageWorthy('on-monitor-report-on-monitor-forced-some-show'), true);
+});
