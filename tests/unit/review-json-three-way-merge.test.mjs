@@ -178,7 +178,7 @@ test('CLI: autostash-pop conflict (the incident path) merges field-wise and surv
     assert.ok(!('incompleteReason' in merged));
     // The non-conflicting file keeps this workflow's write.
     assert.equal(read(rb, 'other-show/outlet--critic.json').contentTier, 'stub');
-  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+  } finally { fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('CLI: rebase conflict in the push loop merges field-wise (stage 3 = replayed commit)', () => {
@@ -196,7 +196,7 @@ test('CLI: rebase conflict in the push loop merges field-wise (stage 3 = replaye
     assert.equal(merged.publishDate, '2017-04-03');
     assert.equal(merged.needsRefetch, false);
     assert.ok(!('incompleteReason' in merged));
-  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+  } finally { fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('CLI: delete/modify and non-JSON conflicts are left for the caller', () => {
@@ -208,5 +208,5 @@ test('CLI: delete/modify and non-JSON conflicts are left for the caller', () => 
     assert.ok(git(rb, 'ls-files', '-u').includes(F));
     assert.equal(runCli(rb, 'upstream').trim(), '');
     assert.ok(git(rb, 'ls-files', '-u').includes(F), 'still unmerged for the action fallback');
-  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+  } finally { fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
