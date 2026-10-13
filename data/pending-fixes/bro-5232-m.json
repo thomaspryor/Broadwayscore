@@ -6,7 +6,7 @@
     "name": null,
     "email": null
   },
-  "status": "pending",
+  "status": "applied",
   "plan": {
     "summary": "BRO-5232 m: restore real reviews left uncounted after a-l: four wrong automatic flags on the real copy, and the Trouble in Mind AP row cleared for re-collection.",
     "steps": [
@@ -97,5 +97,58 @@
         "description": "BRO-5232: the live AP page (https://apnews.com/article/entertainment-music-arts-and-entertainment-theater-race-and-ethnicity-4abb53c1f9816696c2b889a8800aa20c) is Mark Kennedy's review \"Trouble in Mind makes its Broadway debut, finally\" (JSON-LD author Mark Kennedy, cloud fetch 2026-10-13); the stored text was a bad scrape of photo captions, not another show. Clearing so the text can be re-collected; Kennedy's review counts nowhere since the Bloomberg copy was marked wrongAttribution."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T16:54:36.928Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/wsj--charles-isherwood.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/wsj--charles-isherwood.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/new-york-sun--elysa-gardner.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/new-york-sun--elysa-gardner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/nytimes--ben-brantley.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/nytimes--ben-brantley.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/ap--mark-kennedy.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/ap--mark-kennedy.json wrongShowManualClear: null -> true"
+    }
+  ]
 }
