@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5222-c",
   "planId": "2ab21f30-ac5f-4ccf-9dc5-30322bb921e5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T04:38:29.380Z",
   "submitter": {
     "name": null,
@@ -144,5 +144,88 @@
         "description": "Stored url is not this review (fetched 2026-10-13: https://www.hollywoodreporter.com/news/general-news/motherfucker-hat-theater-review-180350/ returns 404 or an unrelated article). The outlet review is at the new url (page byline David Rooney, datePublished 2011-04-11, matching the opening). Found via the outlet sitemap/author archive; the collector refetches and verifies it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T05:48:29.194Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-tale-of-two-cities-2008/variety--david-rooney.json url: \"https://variety.com/2008/legit/reviews/a-tale-of-two-cities-1200472041/\" -> \"https://variety.com/2008/film/awards/a-tale-of-two-cities-6-1200470437/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-carnage-2009/variety--charles-isherwood.json url: \"https://variety.com/2009/legit/reviews/god-of-carnage-1200475776/\" -> \"https://variety.com/2009/film/awards/god-of-carnage-1200474074/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-carnage-2009/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-stuart-2009/variety--marilyn-stasio.json url: \"https://variety.com/2009/legit/reviews/mary-stuart-1117999944/\" -> \"https://variety.com/2009/film/awards/mary-stuart-4-1200474491/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-stuart-2009/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-2007/variety--david-rooney.json url: \"https://variety.com/2007/film/reviews/the-invasion-1200557158/\" -> \"https://variety.com/2007/legit/markets-festivals/pygmalion-4-1200555250/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-constant-wife-2005/variety--charles-isherwood.json url: \"https://variety.com/2005/legit/reviews/the-constant-wife-1200520826/\" -> \"https://variety.com/2005/legit/markets-festivals/the-constant-wife-3-1200525090/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-constant-wife-2005/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-farnsworth-invention-2007/variety--charles-isherwood.json url: \"https://variety.com/2007/legit/reviews/the-farnsworth-invention-1200558354/\" -> \"https://variety.com/2007/film/awards/the-farnsworth-invention-1200554203/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-farnsworth-invention-2007/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-little-mermaid-2008/variety--david-rooney.json url: \"https://variety.com/2008/legit/reviews/the-little-mermaid-1200472087/\" -> \"https://variety.com/2008/film/awards/the-little-mermaid-2-1200553677/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-norman-conquests-2009/variety--charles-isherwood.json url: \"https://variety.com/2009/legit/reviews/the-norman-conquests-table-manners-1200474901/\" -> \"https://variety.com/2009/film/awards/the-norman-conquests-2-1200474437/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-norman-conquests-2009/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "journeys-end-2007/variety--david-rooney.json url: \"http://www.variety.com/review/VE1117932884.html\" -> \"https://variety.com/2007/film/awards/journey-s-end-1200510125/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json url: \"http://www.variety.com/review/VE1117943995.html\" -> \"https://variety.com/2010/legit/news/women-on-the-verge-of-a-nervous-breakdown-1117943995/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json url: \"https://www.hollywoodreporter.com/news/general-news/motherfucker-hat-theater-review-180350/\" -> \"https://www.hollywoodreporter.com/news/general-news/motherfucker-with-the-hat-theater-177024/\""
+    }
+  ]
 }
