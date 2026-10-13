@@ -697,5 +697,35 @@
       }
     ],
     "queuedAt": "2026-10-13T08:13:19.306Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2440-fix",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2440-fix",
+    "description": "land.yml did not land land/bro-2440-fix: the unit-tests-node gate went red at 5c0cd1d28c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2440-fix"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5c0cd1d28c02304340315d92dabf2fb0a89560f5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:25:09.666Z"
   }
 ]
