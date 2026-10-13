@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-13T07:00:36.692Z",
+  "timestamp": "2026-10-13T07:09:51.087Z",
   "stats": {
-    "totalReviews": 56295,
-    "alreadyFlagged": 21006,
-    "dateGuardCatches": 217,
-    "directorMismatch": 1860,
+    "totalReviews": 56288,
+    "alreadyFlagged": 21003,
+    "dateGuardCatches": 218,
+    "directorMismatch": 1859,
     "tvFilmSignals": 1638,
     "londonSignals": 2233,
     "offBroadwaySignals": 507,
@@ -2717,6 +2717,20 @@
     },
     {
       "showId": "an-enemy-of-the-people-2024",
+      "file": "sunday-times--dominic-maxwell.json",
+      "score": 78,
+      "publishDate": "2024-02-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/an-enemy-of-the-people-review-jeremy-strong-strikes-sparks-in-ibsen-rjqh0hdm3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
       "file": "telegraph--diane-snyder.json",
       "score": 78,
       "publishDate": "2024-03-19",
@@ -2745,20 +2759,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 78,
-      "publishDate": "2024-02-25",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/an-enemy-of-the-people-review-jeremy-strong-strikes-sparks-in-ibsen-rjqh0hdm3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -17743,6 +17743,20 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "sunday-times--maxie-szalwinska.json",
+      "score": 88,
+      "publishDate": "2016-07-31",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-harry-potter-and-the-cursed-child-parts-one-and-two-tvg33p33g",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 25,
       "publishDate": "2016-08-06",
@@ -17771,20 +17785,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 3720d before show (2016-08-02 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "times-uk--maxie-szalwinska.json",
-      "score": 88,
-      "publishDate": "2016-07-31",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-harry-potter-and-the-cursed-child-parts-one-and-two-tvg33p33g",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
         }
       ]
     },
@@ -24349,6 +24349,20 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 89,
+      "publishDate": "2020-01-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "theatre-weekly--unknown.json",
       "score": null,
       "publishDate": "2019-12-20",
@@ -24484,20 +24498,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
-      "file": "times-uk--quentin-letts.json",
-      "score": 89,
-      "publishDate": "2020-01-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
         }
       ]
     },
@@ -26656,20 +26656,6 @@
       ]
     },
     {
-      "showId": "mj-the-musical-west-end-2024",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 56,
-      "publishDate": "2024-03-28",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
-        }
-      ]
-    },
-    {
       "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -27900,6 +27886,20 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 75,
+      "publishDate": "2022-10-22",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 573d before show (2022-10-22 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "telegraph--unknown.json",
       "score": 88,
       "publishDate": "2022-10-18",
@@ -27979,20 +27979,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 576d before show (October 19th, 2022 vs 2024-05-17)"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "times-uk--quentin-letts.json",
-      "score": 75,
-      "publishDate": "2022-10-22",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 573d before show (2022-10-22 vs 2024-05-17)"
         }
       ]
     },
@@ -29478,6 +29464,20 @@
     },
     {
       "showId": "only-fools-and-horses-west-end-2019",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 87,
+      "publishDate": "2019-03-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "only-fools-and-horses-west-end-2019",
       "file": "timeout-london--tom-wicker.json",
       "score": 59,
       "publishDate": "October 1st, 2021",
@@ -29487,20 +29487,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "only-fools-and-horses-west-end-2019",
-      "file": "times-uk--quentin-letts.json",
-      "score": 87,
-      "publishDate": "2019-03-03",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -45874,6 +45860,20 @@
     },
     {
       "showId": "the-upstart-crow-west-end-2020",
+      "file": "sunday-times--david-jays.json",
+      "score": 63,
+      "publishDate": "2020-02-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 74,
       "publishDate": "2020-02-18",
@@ -45883,20 +45883,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"pilot episode\""
-        }
-      ]
-    },
-    {
-      "showId": "the-upstart-crow-west-end-2020",
-      "file": "times-uk--david-jays.json",
-      "score": 63,
-      "publishDate": "2020-02-23",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -46485,6 +46471,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -51672,9 +51672,9 @@
     },
     {
       "showId": "a-number-west-end-2022",
-      "file": "thereviewshub--scott-matthewman.json",
-      "score": 90,
-      "publishDate": "2022-02-02",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 34,
+      "publishDate": "2022-02-06",
       "url": null,
       "findings": [
         {
@@ -51686,9 +51686,9 @@
     },
     {
       "showId": "a-number-west-end-2022",
-      "file": "times-uk--quentin-letts.json",
-      "score": 34,
-      "publishDate": "2022-02-06",
+      "file": "thereviewshub--scott-matthewman.json",
+      "score": 90,
+      "publishDate": "2022-02-02",
       "url": null,
       "findings": [
         {
@@ -52045,6 +52045,20 @@
     },
     {
       "showId": "after-life-west-end-2021",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 76,
+      "publishDate": "2021-06-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
       "file": "theatrecat--libby-purves.json",
       "score": 77,
       "publishDate": "2021-07-07",
@@ -52077,20 +52091,6 @@
       "score": 87,
       "publishDate": "2021-06-11",
       "url": "https://www.thestage.co.uk/long-reviews/after-life",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "after-life-west-end-2021",
-      "file": "times-uk--quentin-letts.json",
-      "score": 76,
-      "publishDate": "2021-06-20",
-      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -55852,7 +55852,7 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--quentin-letts.json",
+      "file": "sunday-times--quentin-letts.json",
       "score": 73,
       "publishDate": "2021-12-19",
       "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
@@ -62755,10 +62755,10 @@
     },
     {
       "showId": "hansard-west-end-2019",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 63,
-      "publishDate": "2019-09-04",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/hansard-review-nationals-lyttelton-theatre-tantalisingly-topical/",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 71,
+      "publishDate": "2019-09-08",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -62769,10 +62769,10 @@
     },
     {
       "showId": "hansard-west-end-2019",
-      "file": "times-uk--quentin-letts.json",
-      "score": 71,
-      "publishDate": "2019-09-08",
-      "url": null,
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 63,
+      "publishDate": "2019-09-04",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/hansard-review-nationals-lyttelton-theatre-tantalisingly-topical/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71127,6 +71127,20 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "sunday-times--unknown.json",
+      "score": 82,
+      "publishDate": "2025-01-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "telegraph--unknown.json",
       "score": 91,
       "publishDate": "January 14th, 2025",
@@ -71145,20 +71159,6 @@
       "score": 97,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "times-uk--unknown.json",
-      "score": 82,
-      "publishDate": "2025-01-14",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73359,7 +73359,7 @@
     },
     {
       "showId": "rutherford-and-son-west-end-2019",
-      "file": "times-uk--quentin-letts.json",
+      "file": "sunday-times--quentin-letts.json",
       "score": 56,
       "publishDate": "2019-06-02",
       "url": null,
@@ -76077,6 +76077,20 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
+      "file": "sunday-times--dominic-maxwell.json",
+      "score": 66,
+      "publishDate": "2026-03-28",
+      "url": "https://www.thetimes.com/article/e3368f7f-d81b-46f9-8bde-85e8b63e3285",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
       "file": "telegraph--fiona-mountford.json",
       "score": 55,
       "publishDate": "2026-03-26",
@@ -76086,20 +76100,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "teeth-n-smiles-west-end-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 66,
-      "publishDate": "2026-03-28",
-      "url": "https://www.thetimes.com/article/e3368f7f-d81b-46f9-8bde-85e8b63e3285",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -77870,7 +77870,7 @@
     },
     {
       "showId": "the-crown-jewels-west-end-2023",
-      "file": "times-uk--quentin-letts.json",
+      "file": "sunday-times--quentin-letts.json",
       "score": 37,
       "publishDate": "2023-07-30",
       "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
@@ -78136,6 +78136,20 @@
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "sunday-times--dominic-maxwell.json",
+      "score": 64,
+      "publishDate": "2024-12-08",
+      "url": "https://www.thetimes.com/article/e28fca36-bbfd-44b0-862d-865f15a5a53c",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 79,
       "publishDate": "2024-12-09",
@@ -78154,20 +78168,6 @@
       "score": 25,
       "publishDate": "2024-12-06",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-devil-wears-prada-review-more-john-lewis-than-valentino-8jn7bgc76",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 64,
-      "publishDate": "2024-12-08",
-      "url": "https://www.thetimes.com/article/e28fca36-bbfd-44b0-862d-865f15a5a53c",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -85211,6 +85211,20 @@
     },
     {
       "showId": "white-pearl-west-end-2019",
+      "file": "sunday-times--quentin-letts.json",
+      "score": 43,
+      "publishDate": "2019-05-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "white-pearl-west-end-2019",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 12,
       "publishDate": "2019-05-25",
@@ -85229,20 +85243,6 @@
       "score": 60,
       "publishDate": "May 20th, 2019",
       "url": "https://www.thestage.co.uk/reviews/white-pearl-review-at-royal-court-london--a-scathing-gleefully-nasty-corporate-satire",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "white-pearl-west-end-2019",
-      "file": "times-uk--quentin-letts.json",
-      "score": 43,
-      "publishDate": "2019-05-26",
-      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -85612,7 +85612,7 @@
     },
     {
       "showId": "woman-in-mind-west-end-2025",
-      "file": "times-uk--dominic-maxwell.json",
+      "file": "sunday-times--dominic-maxwell.json",
       "score": 41,
       "publishDate": "2026-01-10",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/woman-in-mind-review-a-once-daring-play-doesnt-give-sheridan-smith-enough-to-do-3ch2pjvxm",
