@@ -467,7 +467,7 @@ export function checkRebasedManifests({ base, src, tip, cwd }) {
 // lints and the DEPENDENCIES.md freshness check; running them here saves the
 // ~30 minute land cycle they would otherwise cost (a stale DEPENDENCIES.md
 // reddened main's land runs this way). Judged on the tree that will land.
-export const WORKFLOW_PATH_RE = /^\.github\/workflows\/|^scripts\/(lint-workflow-guards\.sh|audit-workflow-hygiene\.js|generate-workflow-dependencies\.js)$|^scripts\/lib\/(audit-workflow-hygiene-rules|workflow-dependency-graph)\.js$/;
+export const WORKFLOW_PATH_RE = /^\.github\/(workflows|actions)\/|^scripts\/lib\/push-with-retry\.sh$|^scripts\/(lint-workflow-guards\.sh|audit-workflow-hygiene\.js|generate-workflow-dependencies\.js)$|^scripts\/lib\/(audit-workflow-hygiene-rules|workflow-dependency-graph)\.js$/;
 export const WORKFLOW_CHECKS = [
   { name: 'lint-workflow-guards.sh workflows', cmd: 'bash', args: ['scripts/lint-workflow-guards.sh', 'workflows'], fix: 'fix the lines it prints' },
   { name: 'audit-workflow-hygiene.js', cmd: 'node', args: ['scripts/audit-workflow-hygiene.js'], fix: 'fix the lines it prints (or the exemption comment it names)' },
@@ -487,38 +487,58 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
   if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
   if (!out(diff).split('\n').some((f) => WORKFLOW_PATH_RE.test(f))) return { status: 'clean', reason: 'no workflow files changed' };
   const root = out(git(cwd, ['rev-parse', '--show-toplevel']));
-  const judgeRoot = materializeTree(cwd, landedTip || tip);
-  if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
-  try {
-    const problems = [];
-    // js-yaml, acorn and friends live in the checkout's node_modules, not in the exported tree.
+  const nm = findNodeModules(root);
+  // js-yaml, acorn and friends live in the checkout's node_modules, not in the exported tree.
+  const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [nm, process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
+
+  // Runs `specs` concurrently inside `treeRoot` (the guard script alone takes ~45s, so
+  // one bash with `wait` keeps the total inside the hook's 90s budget).
+  // -> [{ c, rc, text }]; rc is null when the check never finished.
+  const runBatch = (treeRoot, specs) => {
     try {
-      const nm = findNodeModules(root);
-      if (nm) fs.symlinkSync(nm, path.join(judgeRoot, 'node_modules'), 'dir');
-    } catch { /* NODE_PATH below still covers plain require() */ }
-    const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [findNodeModules(root), process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
-    // The checks are independent and the guard script alone takes ~45s, so they
-    // run concurrently (one bash, `wait`) to stay inside the hook's 90s budget.
+      if (nm) fs.symlinkSync(nm, path.join(treeRoot, 'node_modules'), 'dir');
+    } catch { /* NODE_PATH still covers plain require() */ }
     const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'land-preflight-wf-'));
     try {
-      const runnable = WORKFLOW_CHECKS.map((c, i) => ({ ...c, i })).filter((c) => fs.existsSync(path.join(judgeRoot, c.args[0])));
+      const runnable = specs.filter((c) => fs.existsSync(path.join(treeRoot, c.args[0])));
       const script = runnable
         .map((c) => `( timeout 55 ${[c.cmd, ...c.args].join(' ')} >"${outDir}/${c.i}.out" 2>&1; echo $? >"${outDir}/${c.i}.rc" ) &`)
         .join('\n') + '\nwait\n';
-      run('bash', ['-c', script], { cwd: judgeRoot, env, encoding: 'utf8', timeout: 58000 });
-      for (const c of runnable) {
-        let rc;
-        try { rc = fs.readFileSync(path.join(outDir, `${c.i}.rc`), 'utf8').trim(); } catch { continue; } // never finished: fail open
-        if (rc !== '1') continue; // 0 = pass; anything else (124 timeout, 127, crash) = could not judge: fail open
+      run('bash', ['-c', script], { cwd: treeRoot, env, encoding: 'utf8', timeout: 58000 });
+      return runnable.map((c) => {
+        let rc = null;
         let text = '';
+        try { rc = fs.readFileSync(path.join(outDir, `${c.i}.rc`), 'utf8').trim(); } catch { /* never finished: fail open */ }
         try { text = fs.readFileSync(path.join(outDir, `${c.i}.out`), 'utf8'); } catch { /* no output */ }
-        const tail = text.split('\n').map((l) => l.trim()).filter(Boolean).slice(-6).join(' | ').slice(0, 600);
-        problems.push(`${c.name} fails on the landing tree (${c.fix}): ${tail}`);
-      }
+        return { c, rc, text };
+      });
     } finally {
       fs.rmSync(outDir, { recursive: true, force: true, maxRetries: 5 });
     }
-    return problems.length ? { status: 'fail', problems } : { status: 'clean' };
+  };
+
+  const judgeRoot = materializeTree(cwd, landedTip || tip);
+  if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
+  try {
+    // rc 0 = pass; anything but 1 (124 timeout, 127, crash, never finished) = could not judge: fail open.
+    const failed = runBatch(judgeRoot, WORKFLOW_CHECKS.map((c, i) => ({ ...c, i }))).filter((r) => r.rc === '1');
+    if (failed.length === 0) return { status: 'clean' };
+    // A check already red on base is not this branch's fault (land.yml judges new failures only).
+    let newFailures = failed;
+    const baseRoot = materializeTree(cwd, base);
+    if (baseRoot) {
+      try {
+        const redOnBase = new Set(runBatch(baseRoot, failed.map((r) => r.c)).filter((r) => r.rc === '1').map((r) => r.c.i));
+        newFailures = failed.filter((r) => !redOnBase.has(r.c.i));
+      } finally {
+        fs.rmSync(baseRoot, { recursive: true, force: true, maxRetries: 5 });
+      }
+    }
+    const problems = newFailures.map(({ c, text }) => {
+      const tail = text.split('\n').map((l) => l.trim()).filter(Boolean).slice(-6).join(' | ').slice(0, 600);
+      return `${c.name} fails on the landing tree (${c.fix}): ${tail}`;
+    });
+    return problems.length ? { status: 'fail', problems } : { status: 'clean', reason: 'failures also present on base' };
   } finally {
     fs.rmSync(judgeRoot, { recursive: true, force: true, maxRetries: 5 });
   }

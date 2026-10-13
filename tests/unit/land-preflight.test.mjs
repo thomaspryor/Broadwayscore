@@ -550,7 +550,7 @@ test('manifest left unsorted on the rebased tree blocks; a sorted one passes (BR
 // BRO-4909: a push touching .github/workflows runs the workflow lints and the
 // DEPENDENCIES.md freshness check on the landing tree; others never pay for it.
 test('workflow checks: run only when workflows change, block on exit 1, fail open on anything else (BRO-4909)', async () => {
-  const { checkWorkflowChecks, judgeLand, blockMessage, WORKFLOW_CHECKS } = await import('../../scripts/lib/land-preflight.mjs');
+  const { checkWorkflowChecks, judgeLand, blockMessage, WORKFLOW_CHECKS, WORKFLOW_PATH_RE } = await import('../../scripts/lib/land-preflight.mjs');
   const d = baseRepo();
   write(d, 'scripts/lint-workflow-guards.sh', '#!/bin/sh\n');
   write(d, 'scripts/audit-workflow-hygiene.js', '\n');
@@ -562,10 +562,11 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   // writing the <i>.rc / <i>.out files the script names (rc taken per check index).
   const stub = (rcs) => (cmd, args) => {
     calls.push(args[1]);
+    const callNo = calls.length;
     const dirs = [...args[1].matchAll(/>"([^"]+)\/(\d+)\.out"/g)];
     for (const [, dir, i] of dirs) {
       fs.writeFileSync(path.join(dir, `${i}.out`), 'DEPENDENCIES.md is stale\n');
-      fs.writeFileSync(path.join(dir, `${i}.rc`), `${typeof rcs === 'function' ? rcs(Number(i)) : rcs}\n`);
+      fs.writeFileSync(path.join(dir, `${i}.rc`), `${typeof rcs === 'function' ? rcs(Number(i), callNo) : rcs}\n`);
     }
     return { status: 0 };
   };
@@ -581,8 +582,14 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   assert.equal(calls.length, 1);
   for (const c of WORKFLOW_CHECKS) assert.ok(calls[0].includes(c.args[0]), `batch runs ${c.args[0]}`);
   // exit 1 blocks and the message names the fix
-  const bad = checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) });
+  // red on the landing tree, green on base: this branch broke it
+  calls.length = 0;
+  const bad = checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub((i, call) => (call === 1 ? 1 : 0)) });
   assert.equal(bad.status, 'fail');
+  assert.equal(calls.length, 2, 'failed checks are re-run on base');
+  // red on base too: not this branch's fault, never blocks
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(1) }).status, 'clean');
+  assert.ok(WORKFLOW_PATH_RE.test('.github/actions/x/action.yml') && WORKFLOW_PATH_RE.test('scripts/lib/push-with-retry.sh'));
   assert.match(blockMessage({ target: 'land/x', base: 'main', workflows: bad }), /generate-workflow-dependencies\.js --check fails on the landing tree/);
   // a check that crashes (exit 2) or times out never blocks
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(124) }).status, 'clean');
