@@ -26,7 +26,8 @@ function isShowFolderName(name) {
 }
 
 /**
- * List folders under reviewTextsDir whose name is not in showIds, with their .json file names.
+ * List folders under reviewTextsDir whose name is not in showIds and that hold at least one
+ * review file, with their .json file names.
  * @returns {{ folder: string, files: string[] }[]}
  */
 function findOrphanReviewFolders(reviewTextsDir, showIds) {
@@ -38,7 +39,8 @@ function findOrphanReviewFolders(reviewTextsDir, showIds) {
     const files = fs.readdirSync(path.join(reviewTextsDir, ent.name))
       .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json')
       .sort();
-    out.push({ folder: ent.name, files });
+    // A folder left holding only failed-fetches.json (or nothing) has no review to lose.
+    if (files.length) out.push({ folder: ent.name, files });
   }
   return out.sort((a, b) => a.folder.localeCompare(b.folder));
 }

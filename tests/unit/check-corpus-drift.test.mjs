@@ -78,6 +78,8 @@ describe('BRO-3535: gates moved from test.yml', () => {
     'outlet-identity-hygiene',
     // BRO-2740: NEW digest-routed corpus audit (orphaned wrongProduction provenance).
     'orphaned-wrongprod-provenance',
+    // BRO-4317: NEW digest-routed corpus audit (review-text folders with no shows.json id).
+    'orphan-review-folders',
   ];
 
   test('every moved audit is present, marked healPathRequired, and either has healExempt or is baseline-diff/scheduled-fix', () => {

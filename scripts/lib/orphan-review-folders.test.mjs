@@ -48,6 +48,11 @@ describe('findOrphanReviewFolders', () => {
     assert.deepEqual(got, [{ folder: 'spamalot-off-broadway-2026', files: ['nytimes--a.json'] }]);
   });
 
+  test('a folder left with only failed-fetches.json or non-json files is not an orphan (nothing to lose)', () => {
+    const dir = tmpCorpus({ 'emptied-2026': ['failed-fetches.json', 'notes.txt'] });
+    assert.deepEqual(findOrphanReviewFolders(dir, []), []);
+  });
+
   test('missing corpus dir yields no orphans instead of throwing', () => {
     assert.deepEqual(findOrphanReviewFolders('/nonexistent/review-texts', []), []);
   });

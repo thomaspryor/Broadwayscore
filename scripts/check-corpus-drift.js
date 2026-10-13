@@ -501,6 +501,15 @@ const AUDITS = [
     crashCodes: [],            // 0 clean / 1 = orphan slim show file(s) found
   },
   {
+    name: 'orphan-review-folders',
+    healPathRequired: true, // BRO-4317: NEW digest-routed corpus audit
+    label: 'data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)',
+    script: 'report-orphan-review-folders.js',
+    args: ['--strict'],
+    healExempt: 'each file needs a per-review decision (move by publish date, delete a duplicate, or drop a review of an untracked production), executed as an approved-fix plan; no mechanical --fix.',
+    crashCodes: [2],           // 0 clean / 1 = orphan folder(s) found / 2 = shows.json or review-texts missing
+  },
+  {
     name: 'aggregator-url-latent',
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'aggregator LISTING urls stored under a real outletId (population must shrink, never grow)',
