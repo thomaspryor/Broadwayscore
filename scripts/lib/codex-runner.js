@@ -335,6 +335,88 @@ function lockCards(message) {
 }
 
 /**
+ * Who stamped a lock: the session (or host) plus pid, written as a `Run: <id>` line in the
+ * lock commit's body. The subject keeps its old shape so lockCards and older runners still
+ * read it (BRO-5287: a stamp with no owner could not be told apart from another run's).
+ */
+function runnerId(env = process.env, host = require('os').hostname(), pid = process.pid) {
+  const who = env.CLAUDE_CODE_REMOTE_SESSION_ID || (env.GITHUB_RUN_ID ? `gha-${env.GITHUB_RUN_ID}` : host);
+  return `${String(who || 'unknown').replace(/[^A-Za-z0-9_.-]/g, '').slice(0, 80)}/${pid}`;
+}
+/** -> the `Run: <id>` of a lock commit body, or '' for an older stamp without one. */
+function lockRun(body) {
+  const m = String(body || '').match(/^Run: (\S+)\s*$/m);
+  return m ? m[1] : '';
+}
+
+/**
+ * After a failed lock push, what the remote tip says. The runner made every lock commit it
+ * pushed (commit-tree), so a tip among ownShas is still this run's lock (its stamp landed
+ * with the reply lost, or the push failed and the old stamp stands). Unreadable or empty:
+ * 'retry'. Only a tip this run never made means another run moved it: 'lost'. Before
+ * BRO-5287 three failed pushes alone read as lost, and the 2026-10-13 runs stopped with
+ * "another run took the lock" while the tip was still their own stamp.
+ */
+function lockTipVerdict({ tip, ownShas }) {
+  if (!tip) return 'retry';
+  return ownShas && ownShas.has(tip) ? 'ours' : 'lost';
+}
+
+/**
+ * True when a lock this run could not re-stamp may go stale (another run may then take it)
+ * before the next blocking step ends: stop rather than run on unprotected. 5 min margin.
+ */
+function lockStampTooOld({ lastStampOkMs, nowMs, staleMs, nextBlockMs = 0 }) {
+  if (!Number.isFinite(lastStampOkMs)) return true;
+  return nowMs - lastStampOkMs + nextBlockMs >= staleMs - 5 * 60_000;
+}
+
+// A failed `codex exec` the next try may not hit: provider capacity, overload, rate limits,
+// 5xx, dropped streams (2026-10-13 06:55: "Selected model is at capacity" stopped a whole run).
+const CODEX_TRANSIENT_RE = /model is at capacity|\boverloaded\b|rate.?limit|\b(?:429|500|502|503|504)\b|stream (?:disconnected|error)|connection (?:reset|refused|closed)|ETIMEDOUT|ECONNRESET|temporarily unavailable|server_error/i;
+/** The capacity/transient line of a failed Codex exec's full output, or null. */
+function codexExitTransient(output) {
+  const line = String(output || '').split('\n').find((l) => /error/i.test(l) && CODEX_TRANSIENT_RE.test(l));
+  return line ? line.trim().slice(0, 200) : null;
+}
+
+/** Drop Codex's `hook: <Event>[ Completed]` progress lines, which crowd the real error out of a tail. */
+function stripHookNoise(text) {
+  return String(text || '').split('\n').filter((l) => !/^\s*hook: \w+(?: Completed| Failed)?\s*$/.test(l)).join('\n');
+}
+
+/**
+ * How well a card suits an unattended Codex run (BRO-5287: 18 cards bounced on 2026-10-12/13,
+ * most of them Mac-only, credential- or credit-bound, workflow wiring the runner never lands,
+ * private-data or live-site work, or multi-phase). -> { skip: reason|null, score } where a
+ * higher score goes first. Mac-only is a skip; the rest only lowers the score, and a score at
+ * or under CODEX_MIN_SCORE is a skip ('too-broad').
+ */
+const CODEX_MIN_SCORE = -6;
+const CODEX_MAC_RE = /\b(?:launchd|launchctl|LaunchAgents?|cmux|Keychain|Mac[- ]only|on the Mac|Mac launcher|~\/Library)\b/i;
+const CODEX_PENALTIES = [
+  [/\.github\/workflows\/|\b(?:new|weekly|daily|nightly) (?:cron|workflow)\b|\bwire\b[^.\n]{0,60}\b(?:cron|workflow)\b/i, 4, 'workflow'],
+  [/\bcredentials?\b|\bcredits\b|\bAPI key\b|\bsecrets?\b/i, 3, 'credentials'],
+  [/\bbackfill\b|corpus[- ]wide|\bevery (?:show|review)\b|\blifetime sweep\b|\bre-?scrape\b/i, 3, 'bulk-data'],
+  [/\blive (?:site|page|pages|scrape|fetch)\b|\bprivate (?:data|repo)\b|review-texts\b|core-data\b/i, 3, 'private-or-live-data'],
+  [/\bPhase \d\b|\bmulti-part\b|\bfollow-?ups?\b/i, 2, 'multi-phase'],
+];
+function codexCardFit({ title = '', description = '', verify = '' } = {}) {
+  const text = `${title}\n${description}`;
+  if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
+  let score = 0;
+  const why = [];
+  if (/^node --test (?:--\S+ )*\S+\.test\.m?js$/.test(String(verify || '').trim())) { score += 3; why.push('single-test-verify'); }
+  for (const [re, cost, name] of CODEX_PENALTIES) if (re.test(text)) { score -= cost; why.push(name); }
+  const extraK = Math.floor(Math.max(0, String(description).length - 1500) / 1000);
+  if (extraK) { score -= extraK; why.push(`long+${extraK}k`); }
+  const accept = String(description).split(/^##+ *Acceptance[^\n]*$/im)[1] || '';
+  const items = (accept.split(/^##+ /m)[0].match(/^\s*(?:[-*]|\d+\.)\s+/gm) || []).length;
+  if (items > 3) { score -= 2; why.push(`acceptance-items:${items}`); }
+  return { skip: score <= CODEX_MIN_SCORE ? 'too-broad' : null, score, why };
+}
+
+/**
  * What to do with a card a dead run's stale lock names. Only a card still In Progress from
  * a start no later than that lock stamp is the dead run's (Linear clears startedAt when a
  * card goes back to Todo, so a later re-claim by anyone moves startedAt past the stamp).
@@ -399,6 +481,14 @@ module.exports = {
   parseCheckOutput,
   lockMessage,
   lockCards,
+  runnerId,
+  lockRun,
+  lockTipVerdict,
+  lockStampTooOld,
+  codexExitTransient,
+  stripHookNoise,
+  codexCardFit,
+  CODEX_MIN_SCORE,
   orphanAction,
   keepEnvVar,
   scrubEnv,

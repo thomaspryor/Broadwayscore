@@ -2,12 +2,14 @@
 'use strict';
 /**
  * daily-runner.js — the unattended Codex card worker (BRO-4745). The
- * codex-runner.yml workflow runs it five times a day; no Claude session
- * supervises the work itself.
+ * "Board workers" cloud routine starts it every 2 hours
+ * (docs/cloud-routines/board-workers.md; codex-runner.yml can still run it by
+ * hand); no Claude session supervises the work itself.
  *
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
  *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
+ *   node scripts/codex/daily-runner.js --lock-status   (exit 0 free, 3 a live run holds it, 4 unreadable)
  *
  * Per card (same picker rules as the hourly Claude cloud worker, minus
  * resumes and cards Codex already bounced):
@@ -237,7 +239,7 @@ function runCodex(id, prompt, tag) {
   saveLogin(); // refresh tokens rotate: persist the newest login after every exec
   let report = '';
   try { report = fs.readFileSync(last, 'utf8'); } catch { report = tail(r.out, 4000); }
-  return { code: r.code, report };
+  return { code: r.code, report, out: r.out };
 }
 
 function runCheck(card, body, codexReport, tag, data) {
@@ -460,9 +462,20 @@ async function finishLanding(entry, stats) {
 
 async function pickCards() {
   if (OPTS.ids) return OPTS.ids.map((identifier) => ({ identifier }));
-  const r = sh('node', ['scripts/cloud-worker-pick.js', `--list=${OPTS.limit + 5}`], { timeoutMs: 1_800_000 });
+  // --list --codex: the picker drops cards unfit for Codex and puts the best-suited first (BRO-5287).
+  const r = sh('node', ['scripts/cloud-worker-pick.js', `--list=${OPTS.limit + 5}`, '--codex'], { timeoutMs: 1_800_000 });
   if (r.code !== 0) throw new Error(`picker failed: ${tail(r.out, 400)}`);
   return JSON.parse(r.stdout).picks || [];
+}
+
+const PICK_TIER = { p0p1: 'p0p1', 'p2-fallback': 'p2', 'p3-fallback': 'p3' };
+/** Why a picked card is no longer the picker's to give out (recent activity, a recent pause), or null. */
+async function pickedCardNowUnfit(id, card, comments, tier) {
+  const P = require(path.join(ROOT, 'scripts/lib/cloud-worker-pick.js'));
+  let updatedAt = null;
+  try { updatedAt = (await linear.graphql('query($id: String!) { issue(id: $id) { updatedAt } }', { id })).issue.updatedAt; } catch { return 'updatedAt unreadable'; }
+  const nowMs = Date.now();
+  return P.skipReason({ ...card, updatedAt }, nowMs, { tier: PICK_TIER[tier] || 'p0p1' }) || P.pausedHistorySkipReason(comments, nowMs);
 }
 
 async function workCard(pick, stats, inFlight) {
@@ -475,6 +488,13 @@ async function workCard(pick, stats, inFlight) {
   let comments;
   try { comments = (await linear.listIssueComments([id])).get(id) || []; } catch (e) { log(`${id}: comments unreadable (${e && e.message ? e.message.split('\n')[0] : e}), skipped`); return 'skip'; }
   if (R.codexBouncedRecently(comments, Date.now())) { log(`${id}: Codex bounced it recently, skipped`); return 'skip'; }
+  // The pick list is up to --max-minutes old by now: re-ask the picker's own rules on the card as
+  // it is now, so a card a Claude worker touched or paused since then is left alone (BRO-5287:
+  // BRO-3634 was paused by a Claude session at 17:09 and claimed by this runner at 17:52).
+  if (pick.tier) {
+    const why = await pickedCardNowUnfit(id, card, comments, pick.tier);
+    if (why) { log(`${id}: no longer pickable (${why}), skipped`); return 'skip'; }
+  }
   const body = R.cardBody(card.description, comments);
   if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}" (${body.length} chars with comments)`); return 'skip'; }
 
@@ -493,7 +513,7 @@ async function workCard(pick, stats, inFlight) {
   let handedBack = false;
   try {
     // Record the claim in the lock, so a run that dies from here on leaves this card named.
-    if (!refreshLock()) throw new Error('lost the run lock to another run');
+    if (!refreshLock(CODEX_TIMEOUT_MS)) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
     const branch = `codex/${id.toLowerCase()}`;
     const data = resetWorktree(branch);
     const cmd = verifyCommand(card);
@@ -518,12 +538,28 @@ async function workCard(pick, stats, inFlight) {
     let envRetryUsed = false;
     let envBlocked = null;
     let extra = onMain;
+    // One Codex exec, retried (from the same commit) when it failed for a provider reason such as
+    // "Selected model is at capacity" (BRO-5287, 2026-10-13 06:55), at most twice, while it fits.
+    const exec = (text) => {
+      const base = git(['rev-parse', 'HEAD']);
+      for (let retry = 0; ; retry++) {
+        keepLock();
+        const cx = runCodex(id, text, `codex${++execs}`);
+        const transient = cx.code !== 0 ? R.codexExitTransient(cx.out) : null;
+        if (!transient || retry >= 2 || !execFits()) return cx;
+        log(`${id}: Codex exited ${cx.code} on a provider error (${transient}); retry ${retry + 1} in 4 min`);
+        git(['reset', '-q', '--hard', base]);
+        git(['clean', '-qfd', '-e', 'node_modules']);
+        provideData(WT);
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 4 * 60_000);
+      }
+    };
+    const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
     for (;;) {
-      keepLock();
-      const cx = runCodex(id, prompt(extra), `codex${++execs}`);
+      const cx = exec(prompt(extra));
       report = cx.report;
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
-      if (cx.code !== 0) { abort = `Codex exited ${cx.code}: ${tail(R.redactSecrets(report, process.env), 400)}`; break; }
+      if (cx.code !== 0) { abort = failed(cx); break; }
       let c = commitAttempt(card, attempt);
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
@@ -532,9 +568,8 @@ async function workCard(pick, stats, inFlight) {
       let landFails = c.hasDiff ? newLandFailures() : null;
       if (landFails && execFits()) {
         log(`${id}: attempt ${attempt} land checks red, back to Codex`);
-        keepLock();
-        const fx = runCodex(id, prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`), `codex${++execs}`);
-        if (fx.code !== 0) { abort = `Codex exited ${fx.code}: ${tail(R.redactSecrets(fx.report, process.env), 400)}`; break; }
+        const fx = exec(prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`));
+        if (fx.code !== 0) { abort = failed(fx); break; }
         report = `${report}\n\n--- after fixing the land-check failures ---\n${fx.report}`;
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
@@ -653,6 +688,12 @@ const LOCK_REF = process.env.CODEX_RUNNER_LOCK_REF || 'refs/heads/codex-runner-l
 // mid-run (container reclaimed, no release) idled every Codex runner for 5 h on 2026-10-11.
 const LOCK_STALE_MS = 90 * 60_000;
 let lockSha = null;
+// Every lock commit this run made (commit-tree): a remote tip among them is still our lock.
+const ownLockShas = new Set();
+// When a stamp last reached the remote; a lock we cannot re-stamp goes stale from here.
+let lastStampOkMs = NaN;
+const RUN_ID = R.runnerId();
+const LOCK_GIT_MS = 120_000; // one lock push/read; the 600 s default let a hung push eat a card's budget
 // Cards this run claimed and has not finished (working or waiting on a landing); written
 // into every lock stamp. orphanCards: the ones a dead run left in the stale lock we took over.
 const openCards = new Set();
@@ -661,69 +702,105 @@ let orphanLockMs = NaN;
 const lockStamp = () => R.lockMessage(new Date().toISOString(), [...openCards]);
 function lockCommit(msg) {
   const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
-  return git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg], ROOT);
+  const sha = git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg, '-m', `Run: ${RUN_ID}`], ROOT);
+  ownLockShas.add(sha);
+  return sha;
 }
+/** Remote lock sha, '' when the ref is absent, null when unreadable. */
+function lockRemoteTip() {
+  const r = sh('git', ['ls-remote', 'origin', LOCK_REF], { timeoutMs: LOCK_GIT_MS });
+  return r.code === 0 ? (r.stdout.split(/\s/)[0] || '') : null;
+}
+/**
+ * Push a stamp with a lease on `expect`. -> { state, tip }: 'pushed'; 'kept' (the push failed
+ * but the remote tip is still one of our stamps, `tip`); 'unknown' (the tip stayed unreadable);
+ * 'lost' (a stamp this run never made, so another run moved the lock).
+ */
 function lockPush(sha, expect) {
+  let verdict = 'retry';
+  let tip = null;
   for (let i = 0; i < 3; i++) {
     if (i) sh('sleep', [String(5 * i)]);
-    if (sh('git', ['push', '-q', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`]).code === 0) return true;
-    // A lease rejection means another run moved the lock; retrying cannot win, so stop.
-    const now = sh('git', ['ls-remote', 'origin', LOCK_REF]);
-    const tip = now.code === 0 ? (now.stdout.split(/\s/)[0] || '') : null;
-    if (tip === sha) return true; // the push landed but its reply was lost
-    if (tip !== null && tip !== expect) return false;
+    const p = sh('git', ['push', '-q', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`], { timeoutMs: LOCK_GIT_MS });
+    if (p.code === 0) return { state: 'pushed', tip: sha };
+    tip = lockRemoteTip();
+    if (tip === sha) return { state: 'pushed', tip: sha }; // the push landed but its reply was lost
+    verdict = R.lockTipVerdict({ tip, ownShas: ownLockShas });
+    log(`lock push ${i + 1}/3 failed (exit ${p.code}; remote tip ${tip === null ? 'unreadable' : (tip.slice(0, 8) || 'absent')} -> ${verdict}): ${tail(p.out.trim(), 300)}`);
+    if (verdict === 'lost') return { state: 'lost', tip };
+    if (verdict === 'ours') expect = tip; // lease on what is really there
   }
-  return false;
+  if (verdict !== 'ours') {
+    const ps = sh('curl', ['-sS', '-m', '20', `${process.env.HTTPS_PROXY || ''}/__agentproxy/status`], { timeoutMs: 30_000 });
+    if (process.env.HTTPS_PROXY) log(`agent proxy status: ${tail(ps.out.trim(), 300)}`);
+  }
+  return { state: verdict === 'ours' ? 'kept' : 'unknown', tip };
 }
+/** The lock as the remote has it: { sha, subject, run, ms } ('' sha = no lock), or { error }. */
+function readLock() {
+  const sha = lockRemoteTip();
+  if (sha === null) return { error: 'ls-remote failed' };
+  if (!sha) return { sha: '' };
+  const f = sh('git', ['fetch', '-q', 'origin', LOCK_REF], { cwd: ROOT, timeoutMs: LOCK_GIT_MS });
+  if (f.code !== 0) return { error: `fetching the lock timed out or failed: ${tail(f.out.trim(), 200)}` };
+  const meta = sh('git', ['log', '-1', '--format=%ct%n%s%n%b', 'FETCH_HEAD'], { cwd: ROOT });
+  const [ct, subject, ...body] = meta.stdout.split('\n');
+  return { sha, subject: subject || '', run: R.lockRun(body.join('\n')), ms: Number(ct) * 1000 };
+}
+const lockHeld = (l) => !!l.sha && l.subject.startsWith('locked') && Date.now() - l.ms < LOCK_STALE_MS;
+const describeLock = (l) => (l.error ? `unreadable (${l.error})` : !l.sha ? 'free (no lock yet)'
+  : `${l.subject}${l.run ? ` by ${l.run}` : ''}, ${Math.round((Date.now() - l.ms) / 60_000)} min old${lockHeld(l) ? '' : ' (free)'}`);
 /** -> null when taken, else why not. */
 function takeLock() {
-  git(['fetch', '-q', 'origin', 'main'], ROOT);
-  const ls = sh('git', ['ls-remote', 'origin', LOCK_REF]);
-  if (ls.code !== 0) return `lock unreadable: ${tail(ls.out, 200)}`;
-  const cur = ls.stdout.split(/\s/)[0] || '';
-  let stale = [];
-  let staleMs = NaN;
-  if (cur) {
-    git(['fetch', '-q', 'origin', LOCK_REF], ROOT);
-    const [ct, ...msg] = git(['log', '-1', '--format=%ct %s', 'FETCH_HEAD'], ROOT).split(' ');
-    const age = Date.now() - Number(ct) * 1000;
-    if (msg.join(' ').startsWith('locked') && age < LOCK_STALE_MS) return `another run holds the lock (${msg.join(' ')}, ${Math.round(age / 60_000)} min old)`;
-    stale = R.lockCards(msg.join(' '));
-    staleMs = Number(ct) * 1000;
-  }
+  try { git(['fetch', '-q', 'origin', 'main'], ROOT); } catch (e) { return `cannot fetch main: ${e.message}`; }
+  const cur = readLock();
+  if (cur.error) return `lock unreadable: ${cur.error}`;
+  // A "locked" stamp inside LOCK_STALE_MS is never taken over; "released"/"unlocked" are free.
+  if (lockHeld(cur)) return `another run holds the lock (${describeLock(cur)})`;
+  const stale = cur.sha ? R.lockCards(cur.subject) : [];
   // Adopted orphans stay named in our stamps until handled, so dying again does not lose them.
   for (const id of stale) openCards.add(id);
   const sha = lockCommit(lockStamp());
-  if (!lockPush(sha, cur)) return 'another run took the lock first';
+  if (lockPush(sha, cur.sha).state !== 'pushed') { for (const id of stale) openCards.delete(id); return 'another run took the lock first'; }
   lockSha = sha;
+  lastStampOkMs = Date.now();
   orphanCards = stale;
-  orphanLockMs = staleMs;
+  orphanLockMs = cur.sha ? cur.ms : NaN;
+  log(`took the run lock as ${RUN_ID}${cur.sha ? ` (was: ${describeLock(cur)})` : ''}`);
   return null;
 }
-/** Re-stamp the lock so a long healthy run never looks stale. -> false if another run took it. */
-/** Re-stamp between blocking steps; a lost lock stops this card (the finally hands it back). */
-function keepLock() {
+/**
+ * Re-stamp between blocking steps; a lost lock stops this card (the finally hands it back).
+ * nextBlockMs: the longest the coming step can block without a stamp (Codex's exec timeout).
+ */
+function keepLock(nextBlockMs = CODEX_TIMEOUT_MS) {
   let held = true;
-  try { held = refreshLock(); } catch { /* transient: the next stamp retries */ }
-  if (!held) throw new Error('lost the run lock to another run');
+  try { held = refreshLock(nextBlockMs); } catch { /* transient: the next stamp retries */ }
+  if (!held) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
 }
 
-function refreshLock() {
+/** Re-stamp the lock so a long healthy run never looks stale. -> false if the lock is lost. */
+function refreshLock(nextBlockMs = 0) {
   if (!lockSha) return true;
   const sha = lockCommit(lockStamp());
-  if (!lockPush(sha, lockSha)) return false;
-  lockSha = sha;
-  return true;
+  const res = lockPush(sha, lockSha);
+  if (res.state === 'pushed') { lockSha = sha; lastStampOkMs = Date.now(); return true; }
+  if (res.state === 'lost') { log(`lock lost: the remote tip ${String(res.tip).slice(0, 8)} is not a stamp of this run (${RUN_ID})`); return false; }
+  if (res.state === 'kept') lockSha = res.tip;
+  // Push trouble, not another run: still ours until it could go stale under us.
+  const tooOld = R.lockStampTooOld({ lastStampOkMs, nowMs: Date.now(), staleMs: LOCK_STALE_MS, nextBlockMs });
+  log(`lock not re-stamped (${res.state}); last good stamp ${Math.round((Date.now() - lastStampOkMs) / 60_000)} min ago -> ${tooOld ? 'stopping' : 'still held'}`);
+  return !tooOld;
 }
 function releaseLock() {
   if (!lockSha) return;
   // Unfinished cards (landing still pending): keep the lock stamped with them, so the run
   // that takes it over once stale lands or hands them back (recoverOrphans).
   if (openCards.size) {
-    try { if (lockPush(lockCommit(R.lockMessage(new Date().toISOString(), [...openCards], 'released')), lockSha)) lockSha = null; } catch { /* stale stamp still names them */ }
+    try { if (lockPush(lockCommit(R.lockMessage(new Date().toISOString(), [...openCards], 'released')), lockSha).state === 'pushed') lockSha = null; } catch { /* stale stamp still names them */ }
     return;
   }
-  try { if (lockPush(lockCommit('unlocked'), lockSha)) lockSha = null; } catch { /* goes stale after LOCK_STALE_MS anyway */ }
+  try { if (lockPush(lockCommit('unlocked'), lockSha).state === 'pushed') lockSha = null; } catch { /* goes stale after LOCK_STALE_MS anyway */ }
 }
 
 // The card claimed right now, so a kill (routine timeout, container stop) can hand it back.
@@ -743,6 +820,13 @@ for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
 
 async function main() {
   const startedMs = Date.now();
+  // --lock-status: is a runner alive anywhere (any session or container)? The board-workers
+  // routine asks this before starting its Codex lane; pgrep only sees its own container.
+  if (process.argv.includes('--lock-status')) {
+    const l = readLock();
+    console.log(`codex runner lock: ${describeLock(l)}`);
+    process.exit(l.error ? 4 : lockHeld(l) ? 3 : 0);
+  }
   // Fresh cloud containers do not ship the Codex CLI; install the pinned version.
   if (sh('codex', ['--version'], { timeoutMs: 60_000 }).code !== 0) {
     const inst = sh('npm', ['install', '-g', `@openai/codex@${CODEX_VERSION}`], { timeoutMs: 600_000 });
@@ -835,8 +919,8 @@ async function runLocked(startedMs) {
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd });
     if (!stop && stats.aborted) stop = stats.aborted;
     let held = true;
-    try { held = refreshLock(); } catch { /* transient git error: the keep-alive retries */ }
-    if (!stop && !OPTS.dryRun && !held) stop = 'another run took the lock';
+    try { held = refreshLock(CODEX_TIMEOUT_MS); } catch { /* transient git error: the keep-alive retries */ }
+    if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';
     if (stop) { log(`stopping: ${stop}`); break; }
     try {
       if (await workCard(pick, stats, inFlight) === 'done') worked += 1;
@@ -868,5 +952,5 @@ async function runLocked(startedMs) {
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
 }
 
-module.exports = { newLandFailures, provideData, takeLock, releaseLock, weeklyPct, recoverOrphans };
+module.exports = { newLandFailures, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };
 if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });

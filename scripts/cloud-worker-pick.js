@@ -33,7 +33,7 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv)) {
-  console.log('Usage: node scripts/cloud-worker-pick.js [--list=N]\nPrints {pick, eligible, skipped} for the cloud worker routine, or {picks: [up to N]} with --list. Read-only.');
+  console.log('Usage: node scripts/cloud-worker-pick.js [--list=N]\nPrints {pick, eligible, skipped} for the cloud worker routine, or {picks: [up to N]} with --list (add --codex for the Codex runner filtered, best-suited-first list). Read-only.');
   process.exit(0);
 }
 
@@ -177,7 +177,18 @@ async function main() {
     // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
     // Cards Codex already bounced go to the Claude worker, never back to Codex.
     const { codexBouncedRecently } = require('./lib/codex-runner.js');
-    const rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
+    let rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
+    // --codex (the Codex runner, BRO-5287): drop cards an unattended Codex run cannot finish
+    // (Mac-only, too broad) and, within each tier, put the best-suited (small, one-test VERIFY) first.
+    if (process.argv.includes('--codex')) {
+      const { codexCardFit } = require('./lib/codex-runner.js');
+      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue) })]));
+      for (const [q, f] of fit) if (f.skip) console.error(`[cloud-worker-pick] codex skip ${q.issue.identifier}: ${f.skip} (${f.why.join(',')})`);
+      const tierRank = new Map(rest.map((q) => [q.tier, 0]));
+      [...tierRank.keys()].forEach((t, i) => tierRank.set(t, i)); // queue order already goes P0/P1, P2, P3
+      rest = rest.filter((q) => !fit.get(q).skip)
+        .sort((a, b) => tierRank.get(a.tier) - tierRank.get(b.tier) || fit.get(b).score - fit.get(a).score);
+    }
     const picks = [];
     while (picks.length < listN && rest.length) {
       const chosen = await firstUnpaused(rest, nowMs, historySkipped);

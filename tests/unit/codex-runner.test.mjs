@@ -322,3 +322,56 @@ test('emptyBatchVerdict: an empty node unit batch fails closed; empty scripts/li
   assert.match(src, /nodeUnitTestsForTree\(WT\)/);
   assert.doesNotMatch(src, /read\('tests\/unit-test-manifest\.txt'\)/);
 });
+
+// BRO-5287 (2026-10-13): runs stopped with "another run took the lock" while the remote tip was
+// still their own 17:52 stamp; Codex "exited 1" on a capacity error; Mac-only and too-broad
+// cards bounced off the Claude check.
+test('lockTipVerdict: only a stamp this run never made means the lock is lost', () => {
+  const ownShas = new Set(['aaa111', 'bbb222']);
+  assert.equal(r.lockTipVerdict({ tip: 'bbb222', ownShas }), 'ours', 'tip is our own earlier stamp (the 2026-10-13 case)');
+  assert.equal(r.lockTipVerdict({ tip: 'aaa111', ownShas }), 'ours', 'our push landed with the reply lost');
+  assert.equal(r.lockTipVerdict({ tip: '', ownShas }), 'retry', 'ls-remote exit 0 with empty output');
+  assert.equal(r.lockTipVerdict({ tip: null, ownShas }), 'retry', 'ls-remote failed');
+  assert.equal(r.lockTipVerdict({ tip: 'ccc333', ownShas }), 'lost');
+});
+
+test('lockStampTooOld: a lock we cannot re-stamp is held only while it cannot go stale', () => {
+  const staleMs = 90 * 60_000;
+  const t0 = Date.parse('2026-10-13T17:52:29Z');
+  const codex = 45 * 60_000;
+  assert.equal(r.lockStampTooOld({ lastStampOkMs: t0, nowMs: t0 + 10 * 60_000, staleMs, nextBlockMs: codex }), false, '18:02: 10 min since the stamp, a Codex exec still fits');
+  assert.equal(r.lockStampTooOld({ lastStampOkMs: t0, nowMs: t0 + 40 * 60_000, staleMs, nextBlockMs: codex }), true, 'another run could take it mid-exec');
+  assert.equal(r.lockStampTooOld({ lastStampOkMs: t0, nowMs: t0 + 86 * 60_000, staleMs }), true, 'inside the 5 min margin');
+  assert.equal(r.lockStampTooOld({ lastStampOkMs: NaN, nowMs: t0, staleMs }), true);
+});
+
+test('runnerId/lockRun: the stamp body names its run; old stamps read as unnamed', () => {
+  assert.equal(r.runnerId({ CLAUDE_CODE_REMOTE_SESSION_ID: 'cse_019c371pq' }, 'h', 42), 'cse_019c371pq/42');
+  assert.equal(r.runnerId({ GITHUB_RUN_ID: '123' }, 'h', 7), 'gha-123/7');
+  assert.equal(r.runnerId({}, 'my host;rm', 7), 'myhostrm/7');
+  assert.equal(r.lockRun('Run: cse_019c371pq/42\n'), 'cse_019c371pq/42');
+  assert.equal(r.lockRun(''), '');
+  // the subject keeps its shape, so lockCards still reads stamps written with a Run: body
+  assert.deepEqual(r.lockCards(r.lockMessage('2026-10-13T17:52:29.700Z', ['BRO-3634'])), ['BRO-3634']);
+});
+
+test('codexExitTransient/stripHookNoise: a capacity error is retried and quoted, hooks are not', () => {
+  const out = ['hook: PostToolUse', 'hook: PostToolUse Completed', 'ERROR: Selected model is at capacity. Please try a different model.', 'tokens used', '30,627'].join('\n');
+  assert.match(r.codexExitTransient(out), /at capacity/);
+  assert.equal(r.codexExitTransient('ERROR: unexpected argument --foo'), null);
+  assert.equal(r.codexExitTransient('the 503 test fixture passed'), null, 'needs an error line');
+  assert.match(r.codexExitTransient('error: stream disconnected before completion'), /stream disconnected/);
+  const s = r.stripHookNoise(out);
+  assert.ok(!s.includes('hook:') && s.includes('at capacity'));
+});
+
+test('codexCardFit: Mac-only and too-broad cards are skipped, one-test cards go first', () => {
+  assert.equal(r.codexCardFit({ title: 'P3: opening-night monitor harness: launchd env lacks .env keys', description: '' }).skip, 'mac-only');
+  assert.equal(r.codexCardFit({ title: 'cmux launcher reports ok:false on a launch that actually succeeded', description: '' }).skip, 'mac-only');
+  const broad = r.codexCardFit({ title: 'Wire scripts/audit-exclusion-flags.js into a report-only weekly cron', description: 'Add .github/workflows/x.yml. Reads review-texts. Phase 2 follow-ups.', verify: 'node --test tests/unit/x.test.mjs' });
+  assert.equal(broad.skip, 'too-broad');
+  const small = r.codexCardFit({ title: 'isUkOutletUrl calls US sites UK', description: 'Fix the regex.\n## Acceptance criteria\n- test passes', verify: 'node --test scripts/lib/venue-classification.test.mjs' });
+  assert.equal(small.skip, null);
+  const vague = r.codexCardFit({ title: 'Some fix', description: 'x'.repeat(4000), verify: 'npx tsc --noEmit' });
+  assert.ok(small.score > vague.score);
+});
