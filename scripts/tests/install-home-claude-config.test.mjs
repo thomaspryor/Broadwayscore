@@ -43,7 +43,7 @@ const run = (args, env = {}) => spawnSync('node', [INSTALLER, ...args], {
 function runGenerated(settings, event, hookName, payload, cwd) {
   const h = settings.hooks[event].flatMap((g) => g.hooks).find((x) => x.command.includes(` ${hookName};`));
   assert.ok(h, `${event}:${hookName} is wired`);
-  return spawnSync('bash', ['-c', h.command], {
+  return spawnSyncStdinFile('bash', ['-c', h.command], {
     cwd, input: JSON.stringify({ hook_event_name: event, cwd, ...payload }), encoding: 'utf8', timeout: 30000,
     env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: '' },
   });

@@ -1,4 +1,4 @@
-// spawnSync with `input` fed from a temp FILE instead of a pipe.
+// spawnSync / execFileSync with `input` fed from a temp FILE instead of a pipe.
 //
 // Why: spawnSync({ input }) writes stdin through a pipe. A hook that exits
 // before reading stdin (a self-skip or kill-switch prelude, e.g.
@@ -9,24 +9,31 @@
 // "negative control: HOME self-skip"). A file on stdin cannot EPIPE: the child
 // reads it or ignores it.
 //
-// Same signature and return value as spawnSync. Use it for any test that
-// pipes a payload into a hook or script that may exit without reading it.
+// Same signatures and return values as spawnSync / execFileSync. Use them for
+// any test that pipes a payload into a hook or script that may exit without
+// reading it. tests/unit/spawn-stdin-file.test.mjs fails on new pipe callers.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFileSync } from 'node:child_process';
 
-export function spawnSyncStdinFile(command, args, options = {}) {
+function withStdinFile(run, command, args, options = {}) {
   const { input, stdio, ...rest } = options;
-  if (input === undefined) return spawnSync(command, args, options);
+  if (input === undefined) return run(command, args, options);
+  // Only stdin changes; a caller's stdout/stderr choice is kept.
+  const out = Array.isArray(stdio) ? stdio.slice(1, 3) : [stdio || 'pipe', stdio || 'pipe'];
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stdin-'));
-  const file = path.join(dir, 'stdin');
-  fs.writeFileSync(file, input);
-  const fd = fs.openSync(file, 'r');
+  let fd;
   try {
-    return spawnSync(command, args, { ...rest, stdio: [fd, 'pipe', 'pipe'] });
+    const file = path.join(dir, 'stdin');
+    fs.writeFileSync(file, input);
+    fd = fs.openSync(file, 'r');
+    return run(command, args, { ...rest, stdio: [fd, out[0] ?? 'pipe', out[1] ?? 'pipe'] });
   } finally {
-    fs.closeSync(fd);
+    if (fd !== undefined) fs.closeSync(fd);
     fs.rmSync(dir, { recursive: true, force: true });
   }
 }
+
+export const spawnSyncStdinFile = (command, args, options) => withStdinFile(spawnSync, command, args, options);
+export const execFileSyncStdinFile = (command, args, options) => withStdinFile(execFileSync, command, args, options);

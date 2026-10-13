@@ -11,6 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { execFileSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const require = createRequire(import.meta.url);
 const {
@@ -359,7 +360,7 @@ test('session-start.sh: end-to-end in a cloud-like env, a resumed stale checkout
   pushMoreCommits(seedDir, 2);
   const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4229-home-'));
   try {
-    const out = execFileSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+    const out = execFileSyncStdinFile('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
       cwd: cloneDir, input: '{"source":"resume"}', encoding: 'utf8', timeout: 120000,
       env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true', CLAUDE_PROJECT_DIR: cloneDir, CODE_SYNC_DISABLED: '' },
       stdio: ['pipe', 'pipe', 'ignore'],
@@ -383,7 +384,7 @@ test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and 
     const env = { ...process.env, HOME: fakeHome };
     delete env.CLAUDE_CODE_REMOTE;
     delete env.CLAUDE_PROJECT_DIR;
-    const out = execFileSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+    const out = execFileSyncStdinFile('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
       cwd: cloneDir, input: '{"source":"resume"}', encoding: 'utf8', timeout: 120000, env, stdio: ['pipe', 'pipe', 'ignore'],
     });
     assert.match(out, /STALE CODE CHECKOUT/);

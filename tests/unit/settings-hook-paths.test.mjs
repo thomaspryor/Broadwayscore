@@ -29,6 +29,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const require = createRequire(import.meta.url);
 const { extractHookCommandPaths, resolveHookPath } = require('../../scripts/lib/infra-gate-registration-check.js');
@@ -78,7 +79,7 @@ function withEchoInsteadOfExec(command) {
 }
 
 function runResolver(command, { cwd, env }) {
-  return spawnSync('bash', ['-c', withEchoInsteadOfExec(command)], {
+  return spawnSyncStdinFile('bash', ['-c', withEchoInsteadOfExec(command)], {
     cwd,
     env,
     input: '{}',

@@ -10,6 +10,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { execFileSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const require = createRequire(import.meta.url);
 const { installForCloud, renderInstalled, stripMacOnly, MARKER, GLOBAL_FILES } = require('../lib/global-instructions.js');
@@ -117,7 +118,7 @@ function runHook(env, source = SOURCE) {
   try {
     const full = { ...process.env, HOME: home, CLAUDE_PROJECT_DIR: REPO_ROOT, CODE_SYNC_DISABLED: '1', GLOBAL_INSTRUCTIONS_FROM_DIR: src, ...env };
     for (const [k, v] of Object.entries(full)) if (v === undefined) delete full[k];
-    const out = execFileSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+    const out = execFileSyncStdinFile('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
       cwd: project, input: '{"source":"startup"}', encoding: 'utf8', timeout: 120000, env: full, stdio: ['pipe', 'pipe', 'ignore'],
     });
     const installed = fs.existsSync(path.join(home, '.claude', 'CLAUDE.md')) ? fs.readFileSync(path.join(home, '.claude', 'CLAUDE.md'), 'utf8') : null;

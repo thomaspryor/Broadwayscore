@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
+import { spawnSyncStdinFile, execFileSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 // Larger than a pipe buffer, so the pipe write reliably hits a closed pipe.
@@ -22,6 +22,17 @@ test('stdin from a file: child that exits unread returns its status, no error', 
   const r = spawnSyncStdinFile('bash', ['-c', 'exit 3'], { input: BIG, encoding: 'utf8' });
   assert.equal(r.error, undefined);
   assert.equal(r.status, 3);
+});
+
+test('a caller stdio choice for stdout/stderr is kept', () => {
+  const r = spawnSyncStdinFile('bash', ['-c', 'cat; echo err >&2'], { input: 'in', encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] });
+  assert.equal(r.stdout, 'in');
+  assert.equal(r.stderr, null);
+});
+
+test('execFileSync variant returns stdout and throws on non-zero exit', () => {
+  assert.equal(execFileSyncStdinFile('bash', ['-c', 'cat'], { input: 'abc', encoding: 'utf8' }), 'abc');
+  assert.throws(() => execFileSyncStdinFile('bash', ['-c', 'exit 4'], { input: BIG, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }), (e) => e.status === 4);
 });
 
 test('stdin from a file: child that reads gets the exact payload', () => {
@@ -43,9 +54,11 @@ test('no hook test pipes stdin into bash with plain spawnSync', () => {
       if (!/hooks/.test(src)) continue;
       const lines = src.split('\n');
       lines.forEach((line, i) => {
-        if (!/(^|[^\w])spawnSync\(\s*'bash'\s*,\s*\[(?!\s*'-c')/.test(line)) return;
-        const opts = lines.slice(i, i + 4).join('\n');
-        if (/\binput\b\s*[:,}]/.test(opts)) offenders.push(`${path.relative(ROOT, p)}:${i + 1}`);
+        if (!/(^|[^\w.])(spawnSync|execFileSync)\($/.test(line.trimEnd()) && !/(^|[^\w.])(spawnSync|execFileSync)\(\s*['"]bash['"]/.test(line)) return;
+        // Call may wrap; options may sit a few lines below.
+        const call = lines.slice(i, i + 8).join('\n');
+        if (!/(spawnSync|execFileSync)\(\s*['"]bash['"]/.test(call)) return;
+        if (/\binput\b\s*[:,}]/.test(call)) offenders.push(`${path.relative(ROOT, p)}:${i + 1}`);
       });
     }
   };
