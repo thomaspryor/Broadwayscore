@@ -99,6 +99,10 @@ test('decision block: emailed line carries the link, and re-minting replaces it'
   assert.ok(!/—/.test(b), 'no em dashes in owner copy');
   const card = m.LINK.withDecisionBlock('Findings.\n\nMore.', b);
   const q = extractDecisionQuestion(card);
+  // What Linear stores: every bare URL autolinked as [url](<url>).
+  const stored = card.replace(/https:\/\/\S+?(?=[\s)]|$)/g, (u) => `[${u}](<${u}>)`);
+  assert.equal(extractDecisionQuestion(stored), q, "Linear's autolinked form emails the same line");
+  assert.equal(m.LINK.existingLinkExp(stored), exp);
   assert.ok(q && q.includes(url), `emailed question lost the link: ${q}`);
   assert.ok(!q.endsWith('…'), `emailed question was clipped (${q.length} chars)`);
   assert.ok(b.includes('ratings are paused'), 'the reason still reaches the card');

@@ -47,12 +47,20 @@ function isPlaceholder(q) {
   return /^</.test(q) || /<(?:what|why|name|upside|downside|x|y)\b/i.test(q) || /^\.{3}$/.test(q);
 }
 
+// Linear stores a bare URL as [url](<url>) (an address as [a](<mailto:a>)).
+// Collapsed back so the 220-char cap never clips a signed owner link's second
+// copy mid-signature (BRO-5235), and the dedupe hash reads the same before and
+// after Linear's rewrite.
+function collapseSelfLinks(text) {
+  return String(text || '').replace(/\[([^\]\s]{1,2048})\]\(<?(?:mailto:)?\1>?\)/g, '$1');
+}
+
 // First real "DECISION NEEDED: <question>" line in a description, or null.
 function extractDecisionQuestion(description) {
   for (const line of stripCode(description)) {
     const m = MARKER_RE.exec(line);
     if (!m) continue;
-    const q = m[1].replace(/\*+$/, '').trim();
+    const q = collapseSelfLinks(m[1]).replace(/\*+$/, '').trim();
     if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
     return q.length > MAX_QUESTION_CHARS ? `${q.slice(0, MAX_QUESTION_CHARS - 1)}…` : q;
   }
@@ -174,6 +182,7 @@ function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
 module.exports = {
   MAX_LISTED,
   buildDecisionsSection,
+  collapseSelfLinks,
   extractDecisionQuestion,
   findOwnerDecisions,
   planNotification,

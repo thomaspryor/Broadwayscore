@@ -131,8 +131,12 @@ test('the card block fits the email cap, replaces itself, and strips cleanly', (
   const setup = g.decisionBlock({ url, exp, setup: true });
   assert.match(setup.split('\n')[0], /one setup step/);
   for (const b of [block, setup, g.decisionBlock({ url, exp, problem: longest })]) {
-    const q = extractDecisionQuestion(g.withDecisionBlock('Card body.', b));
+    const card = g.withDecisionBlock('Card body.', b);
+    const q = extractDecisionQuestion(card);
     assert.ok(q && q.includes(url), `emailed question lost the link: ${q}`);
+    // What Linear stores: bare URLs and addresses autolinked (BRO-5235).
+    const stored = card.replace(/https:\/\/\S+?(?=[\s)]|$)/g, (u) => `[${u}](<${u}>)`).replace(/thomas\.pryor@gmail\.com/g, (a) => `[${a}](<mailto:${a}>)`);
+    assert.equal(extractDecisionQuestion(stored), q, 'Linear form emails the same line');
   }
 
   const original = 'Problem: token revoked.\n\nDECISION NEEDED: something else entirely';
