@@ -2328,5 +2328,35 @@
       }
     ],
     "queuedAt": "2026-10-13T22:26:18.682Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5276-drift-batch",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5276-drift-batch",
+    "description": "land.yml did not land land/bro-5276-drift-batch: the unit-tests-node gate went red at 802bf45675. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38473760403",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5276-drift-batch"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "802bf45675ba7fb14f2831a043db9ccd13c08a37"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38473760403"
+      }
+    ],
+    "queuedAt": "2026-10-13T22:29:00.561Z"
   }
 ]
