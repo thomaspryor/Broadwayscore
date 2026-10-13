@@ -43,7 +43,7 @@ const SAFE_MARK_LOOKBACK = 3;
 /** True when the script enables nounset (set -u / -eu / -o nounset, or a -u shebang). */
 function usesSetU(src) {
   return /^\s*set\s+-[a-zA-Z]*u[a-zA-Z]*\b/m.test(src)
-    || /^\s*set\s+(?:-[a-zA-Z]+\s+)*-o\s+nounset\b/m.test(src)
+    || /^\s*set\s+(?:-[a-zA-Z]+\s+(?:[a-z]+\s+)?)*-o\s+nounset\b/m.test(src)
     || /^#!.*\bbash\b.*\s-[a-zA-Z]*u/.test(src);
 }
 
@@ -68,10 +68,21 @@ function stripComment(line) {
 function alwaysNonEmptyArrays(lines) {
   const verdict = new Map(); // name -> bool
   const mark = (name, ok) => verdict.set(name, (verdict.has(name) ? verdict.get(name) : true) && ok);
-  for (const raw of lines) {
+  lines.forEach((raw, idx) => {
     const line = stripComment(raw);
     for (const m of line.matchAll(/(?:^|[\s;(])(?:local\s+|declare\s+(?:-[a-zA-Z]+\s+)*|readonly\s+)?([A-Za-z_][A-Za-z0-9_]*)=\(([^)]*)\)?/g)) {
-      const body = (m[2] || '').trim();
+      let body = (m[2] || '').trim();
+      if (!m[0].endsWith(')')) {
+        // Multi-line literal: arr=(\n a\n b\n). Collect up to the closing paren.
+        const rest = [];
+        for (let j = idx + 1; j < lines.length; j++) {
+          const l = stripComment(lines[j]);
+          const close = l.indexOf(')');
+          rest.push(close === -1 ? l : l.slice(0, close));
+          if (close !== -1) break;
+        }
+        body = `${body} ${rest.join(' ')}`.trim();
+      }
       mark(m[1], body.length > 0 && !body.includes('$') && !body.includes('`'));
     }
     for (const m of line.matchAll(/\b(?:read\s+(?:-[a-zA-Z]+\s+)*-a\s+|mapfile\s+(?:-[a-zA-Z]+\s+(?:\S+\s+)?)*|readarray\s+(?:-[a-zA-Z]+\s+(?:\S+\s+)?)*)([A-Za-z_][A-Za-z0-9_]*)/g)) {
@@ -80,7 +91,7 @@ function alwaysNonEmptyArrays(lines) {
     for (const m of line.matchAll(/\b(?:local|declare(?:\s+-[a-zA-Z]+)*)\s+([A-Za-z_][A-Za-z0-9_]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)*)\s*(?:$|;)/g)) {
       for (const name of m[1].trim().split(/\s+/)) mark(name, false); // declared without a value
     }
-  }
+  });
   return new Set([...verdict].filter(([, ok]) => ok).map(([n]) => n));
 }
 
@@ -96,15 +107,19 @@ function findArrayFindings(src) {
   const lines = src.split('\n');
   const nonEmpty = alwaysNonEmptyArrays(lines);
   const out = [];
-  let heredocEnd = null;
+  let heredoc = null; // { end, quoted }
   lines.forEach((raw, idx) => {
-    if (heredocEnd) {
-      if (raw.trim() === heredocEnd) heredocEnd = null;
-      return;
+    let line;
+    if (heredoc) {
+      if (raw.trim() === heredoc.end) { heredoc = null; return; }
+      if (heredoc.quoted) return; // <<'EOF' bodies are literal
+      line = raw; // <<EOF bodies expand, and # is not a comment there
+    } else {
+      if (/^\s*#/.test(raw)) return;
+      line = stripComment(raw);
     }
-    const hd = raw.match(/<<-?\s*['"]?([A-Za-z_][A-Za-z0-9_]*)['"]?/);
-    if (/^\s*#/.test(raw)) return;
-    const line = stripComment(raw);
+    const hd = heredoc ? null : raw.match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
+    line = line.replace(/\\\$/g, ''); // \$ is a literal dollar, not an expansion
     // Mask guarded forms so only bare expansions remain.
     const masked = line
       .replace(/\$\{([A-Za-z_][A-Za-z0-9_]*)\[[@*]\]\+("?)\$\{\1\[[@*]\](?::[^}]*)?\}\2\}/g, '')
@@ -116,7 +131,7 @@ function findArrayFindings(src) {
       if (annotated(lines, idx)) continue;
       out.push({ line: idx + 1, kind: 'array', name, text: raw.trim() });
     }
-    if (hd && !/<<</.test(raw)) heredocEnd = hd[1];
+    if (hd && !/<<</.test(raw)) heredoc = { end: hd[2], quoted: hd[1] !== '' };
   });
   return out;
 }
@@ -127,7 +142,9 @@ function findArithmeticFindings(src) {
   const fed = new Set();
   for (const raw of lines) {
     const line = stripComment(raw);
-    const m = line.match(/^\s*(?:local\s+|readonly\s+)?([A-Za-z_][A-Za-z0-9_]*)=["']?\$\{?([1-9])\b/);
+    // `local x="$1"` is a function argument from internal callers; only a
+    // script-level assignment is CLI input (the BRO-2554 shape).
+    const m = line.match(/^\s*(?:readonly\s+)?([A-Za-z_][A-Za-z0-9_]*)=["']?\$\{?([1-9])\b/);
     if (m) fed.add(m[1]);
   }
   if (!fed.size) return [];
