@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T03:28:38.959Z",
+  "timestamp": "2026-10-13T03:54:34.388Z",
   "stats": {
     "totalReviews": 56279,
-    "alreadyFlagged": 20990,
+    "alreadyFlagged": 21006,
     "dateGuardCatches": 217,
-    "directorMismatch": 1859,
+    "directorMismatch": 1853,
     "tvFilmSignals": 1626,
-    "londonSignals": 2217,
+    "londonSignals": 2214,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5258
+    "noPublishDate": 5257
   },
   "findings": [
     {
@@ -2625,39 +2625,6 @@
     },
     {
       "showId": "an-enemy-of-the-people-2024",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 34,
-      "publishDate": "2024-02-22",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13107921/Matt-Smiths-Enemy-People-panned-critics-praise-actors-passable-performance-condemn-clumsy-conservative-revival-Ibsens-classic-play-fine-supporting-cast-stop-falling-apart.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 57,
-      "publishDate": "2024-02-25",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
       "file": "ew--dalton-ross.json",
       "score": 86,
       "publishDate": "March 18, 2024",
@@ -2667,53 +2634,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 79,
-      "publishDate": "2024-02-20",
-      "url": "https://www.ft.com/content/600cb796-8fe9-4821-beb8-2c26bd76c30c",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "guardian--arifa-akbar.json",
-      "score": 77,
-      "publishDate": "2024-02-21",
-      "url": "https://www.theguardian.com/stage/2024/feb/20/an-enemy-of-the-people-review-matt-smith-ibsen-duke-of-yorks-theatre-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "independent--alice-saville.json",
-      "score": 57,
-      "publishDate": "2024-02-21",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/an-enemy-of-the-people-review-matt-smith-b2499298.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -2775,20 +2695,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "times-uk--clive-davis.json",
-      "score": 38,
-      "publishDate": "2024-02-21",
-      "url": "https://www.thetimes.co.uk/article/an-enemy-of-the-people-review-matt-smith-stumbles-in-agitprop-ibsen-jkxnnmvjc",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -67899,20 +67805,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "marie-and-rosetta-west-end-2026",
-      "file": "whatsonstage--rachel-agyekum.json",
-      "score": 79,
-      "publishDate": "2025-05-12",
-      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
