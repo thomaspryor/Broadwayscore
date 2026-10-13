@@ -102,9 +102,11 @@ function demandSeries(dailyRows, guard) {
   return [...byDay.entries()].map(([day, x]) => ({ day, value: x.v }));
 }
 
+// Days strictly BEFORE untilDay (today is partial), matching
+// scrapingbee-caps.trailingMedianDayCredits.
 function medianOver(series, untilDay, days = DRIFT_WINDOW_DAYS) {
-  const since = dayAdd(untilDay, -(days - 1));
-  const vals = series.filter((s) => s.day >= since && s.day <= untilDay).map((s) => s.value).sort((a, b) => a - b);
+  const since = dayAdd(untilDay, -days);
+  const vals = series.filter((s) => s.day >= since && s.day < untilDay).map((s) => s.value).sort((a, b) => a - b);
   if (vals.length < MEDIAN_MIN_SAMPLES) return null;
   const mid = Math.floor(vals.length / 2);
   return vals.length % 2 ? vals[mid] : Math.round((vals[mid - 1] + vals[mid]) / 2);
@@ -134,6 +136,9 @@ function capDrift(key, { transitionRows, state, dailyRows, untilDay }) {
   const eff = effectiveCeiling(key, transitionRows, state, untilDay);
   const median = medianOver(demandSeries(dailyRows, key), untilDay);
   const out = { ...eff, median14d: median, drift: false, note: null };
+  // A breaker that is not enforcing (BRO-3010's shadow mode) blocks nothing,
+  // so its ceiling cannot be drift worth an alert.
+  if (state && (state.shadow === true || state.enforce === false)) { out.note = 'not enforcing (shadow)'; return out; }
   if (eff.ceiling == null || median == null) { out.note = 'n/a'; return out; }
   if (eff.source === 'env') { out.note = 'operator pin (not flagged)'; return out; }
   out.drift = eff.ceiling < DRIFT_FACTOR * median;
@@ -194,7 +199,15 @@ function mergeSpendHistory(prevByDay, freshByDay, { ledgerStartTs, nowIso, until
     if (!covered && !prev) continue;
     if (!covered) { merged[d] = prev; continue; }
     const cells = {};
-    for (const g of guards) if (freshByDay[d] && freshByDay[d][g]) cells[g] = freshByDay[d][g];
+    for (const g of guards) {
+      const fresh = freshByDay[d] && freshByDay[d][g];
+      const stored = prev && prev.guards && prev.guards[g];
+      // The spend ledger is trimmed by line count, so its start drifts later
+      // through the day: a recount of a partial day can see FEWER rows than
+      // the stored partial. Keep whichever saw more (review finding).
+      const pick = stored && (!fresh || stored.rows > fresh.rows) ? stored : fresh;
+      if (pick) cells[g] = pick;
+    }
     merged[d] = { partial: !coveredWhole, guards: cells };
   }
   return merged;

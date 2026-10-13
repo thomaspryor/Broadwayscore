@@ -52,9 +52,9 @@ async function main() {
   // One standing condition per guard. 168h cooldown: this is a weekly-cadence
   // finding re-evaluated daily, so it notifies at most once a week. The router
   // promotes a condition to an 'auto' Linear card after 14 notifies — ~14
-  // weeks of a standing, unaddressed defect — which is deliberate. Only a
-  // clean OK verdict resolves; UNCERTAIN (lower-bound count), NO DATA, SHADOW
-  // and ACCEPTED neither alert nor resolve.
+  // weeks of a standing, unaddressed defect — which is deliberate. OK and
+  // ACCEPTED resolve (ACCEPTED never alerts); UNCERTAIN (lower-bound count),
+  // NO DATA and SHADOW neither alert nor resolve.
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   for (const g of snapshot.guards) {
     if (g.shadow) continue;
@@ -71,7 +71,9 @@ async function main() {
         disposition: 'digest',
         cooldownHours: 168,
       });
-    } else if (g.verdict === 'OK') {
+    } else if (g.verdict === 'OK' || g.verdict === 'ACCEPTED') {
+      // ACCEPTED resolves too: a DEFECT the owner then accepts via
+      // acceptedDailyTrip must not stay open forever (review finding).
       resolveCondition(g.alertKey);
     }
   }

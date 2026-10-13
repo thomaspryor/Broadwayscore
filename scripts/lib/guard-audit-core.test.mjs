@@ -137,3 +137,31 @@ test('snapshot has the renderNamedDigestBlock shape and HTML escapes', () => {
   assert.ok(Array.isArray(snap.items) && snap.items.every((i) => typeof i.title === 'string' && typeof i.detail === 'string'));
   assert.doesNotMatch(core.renderGuardAuditHtml({ bannerText: '<x>', items: [{ title: 'a&b', detail: '"q"' }] }), /<x>|a&b|"q"/);
 });
+
+// ── post-land review fixes ──────────────────────────────────────────────────
+test('review: a partial day recounted after the ledger start moved later keeps the larger stored count', () => {
+  const guards = ['sd-circuit-breaker'];
+  const prev = { [day(1)]: { partial: true, guards: { 'sd-circuit-breaker': { usd: 2, rows: 40, unpriced: 0 } } } };
+  const fresh = { [day(1)]: { 'sd-circuit-breaker': { usd: 0.5, rows: 10, unpriced: 0 } } };
+  const merged = core.mergeSpendHistory(prev, fresh, { ledgerStartTs: `${day(1)}T20:00:00Z`, nowIso: NOW, untilDay: day(0), guards });
+  assert.equal(merged[day(1)].guards['sd-circuit-breaker'].rows, 40);
+  const bigger = core.mergeSpendHistory(prev, { [day(1)]: { 'sd-circuit-breaker': { usd: 3, rows: 60, unpriced: 0 } } }, { ledgerStartTs: `${day(1)}T01:00:00Z`, nowIso: NOW, untilDay: day(0), guards });
+  assert.equal(bigger[day(1)].guards['sd-circuit-breaker'].rows, 60);
+});
+
+test('review: a breaker in shadow mode (state.shadow / enforce:false) is never cap drift', () => {
+  const daily = Array.from({ length: 10 }, (_, k) => ({ day: day(k + 1), capturedAt: `${day(k + 1)}T23:00Z`, providers: { scrapingbee: { status: 'ok', dayCredits: 30000, cycleUsed: 1, cap: 9 } } }));
+  const d = core.capDrift('sb-circuit-breaker', { transitionRows: [], state: { ceiling: 31000, ceilingSource: 'plan', shadow: true, enforce: false }, dailyRows: daily, untilDay: day(0) });
+  assert.equal(d.drift, false);
+  assert.match(d.note, /shadow/);
+});
+
+test('review: the drift median excludes today (a partial day)', () => {
+  const daily = [
+    ...Array.from({ length: 7 }, (_, k) => ({ day: day(k + 1), capturedAt: 'x', providers: { scrapingdog: { status: 'ok', dayCredits: 10000, cycleUsed: 1, cap: 9 } } })),
+    { day: day(0), capturedAt: 'x', providers: { scrapingdog: { status: 'ok', dayCredits: 1, cycleUsed: 1, cap: 9 } } },
+  ];
+  const d = core.capDrift('sd-circuit-breaker', { transitionRows: [], state: { ceiling: 14000, ceilingSource: 'plan' }, dailyRows: daily, untilDay: day(0) });
+  assert.equal(d.median14d, 10000);
+  assert.equal(d.drift, true);
+});
