@@ -84,6 +84,26 @@ function candidateShows(folder, shows) {
   });
 }
 
+/**
+ * The one show whose id is this folder with a market infix restored or dropped:
+ * `data-2026` -> `data-off-broadway-2026` (show-score wrote ids without the market),
+ * `heathers-the-musical-off-broadway` -> `heathers-the-musical-off-broadway-2025` is NOT
+ * this (no year), nor is a different year. A retired id whose reason names
+ * "duplicate of <id>" resolves to that id. null when zero or several shows qualify.
+ */
+function idTwin(folder, shows, retiredReason) {
+  const ids = new Set(shows.map((s) => s.id));
+  const dup = /duplicate of ([a-z0-9-]+)/.exec(String(retiredReason || ''));
+  if (dup && ids.has(dup[1])) return dup[1];
+  const m = /^(.*?)(?:-(off-west-end|west-end|off-broadway))?-(\d{4})$/.exec(folder);
+  if (!m) return null;
+  const [, base, , year] = m;
+  const hits = ['off-broadway', 'west-end', 'off-west-end', null]
+    .map((mk) => (mk ? `${base}-${mk}-${year}` : `${base}-${year}`))
+    .filter((id) => id !== folder && ids.has(id));
+  return hits.length === 1 ? hits[0] : null;
+}
+
 function runWindow(show, nowMs = Date.now()) {
   const start = toMs(show.previewsStartDate) ?? toMs(show.openingDate);
   const open = toMs(show.openingDate) ?? start;
@@ -108,6 +128,7 @@ module.exports = {
   findOrphanReviewFolders,
   candidateShows,
   isExactCandidate,
+  idTwin,
   runWindow,
   inWindow,
   baseKey,

@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  findOrphanReviewFolders, candidateShows, isExactCandidate, inWindow, normalizeUrl, toMs,
+  findOrphanReviewFolders, candidateShows, isExactCandidate, idTwin, inWindow, normalizeUrl, toMs,
 } = require('./lib/orphan-review-folders');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
@@ -63,6 +63,7 @@ function main() {
   for (const { folder, files: names } of orphans) {
     const cands = candidateShows(folder, shows);
     const ret = retired.get(folder);
+    const twin = idTwin(folder, shows, ret && ret.reason);
     for (const file of names) {
       const r = readJson(path.join(DIR, folder, file)) || {};
       const pd = toMs(r.publishDate);
@@ -76,23 +77,30 @@ function main() {
         candidates: cands.map((s) => `${s.id} ${s.openingDate || '?'}..${s.closingDate || 'open'}`),
         hits: hits.map((s) => s.id),
       };
-      if (hits.length === 1) {
-        const target = hits[0].id;
+      // Where a same-named file already sits in the proposed target, describe it.
+      const target = hits.length === 1 ? hits[0].id : (pd == null && twin ? twin : null);
+      if (target) {
         const tp = path.join(DIR, target, file);
         if (fs.existsSync(tp)) {
           const t = readJson(tp) || {};
           rec.targetSameFile = {
+            target,
             sameUrl: normalizeUrl(t.url) === normalizeUrl(r.url),
             url: t.url || null, publishDate: t.publishDate || null,
             textLen: textLen(t), contentTier: t.contentTier || null,
             wrongProduction: t.wrongProduction === true,
+            wrongProductionReason: t.wrongProduction ? String(t.wrongProductionReason || '').slice(0, 200) : null,
           };
         }
       }
+      if (r.wrongProduction) rec.wrongProductionReason = String(r.wrongProductionReason || '').slice(0, 200);
+      rec.twin = twin;
       // A title/prefix pairing (not an id-base match) is never a clean move: it needs a human look.
       const loose = hits.length === 1 && !isExactCandidate(folder, hits[0]);
       rec.kind = hits.length === 1 ? (rec.targetSameFile ? (rec.targetSameFile.sameUrl ? 'dup-same-url' : 'dup-diff-url') : loose ? 'loose-move' : 'clean-move')
-        : hits.length > 1 ? 'multi-match' : pd == null ? 'no-date' : cands.length ? 'no-window-match' : 'no-candidate';
+        : hits.length > 1 ? 'multi-match'
+        : pd == null && twin ? (rec.targetSameFile ? (rec.targetSameFile.sameUrl ? 'twin-dup-same-url' : 'twin-dup-diff-url') : 'twin-move')
+        : pd == null ? 'no-date' : cands.length ? 'no-window-match' : 'no-candidate';
       files.push(rec);
     }
   }

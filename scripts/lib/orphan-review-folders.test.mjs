@@ -13,7 +13,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const {
-  findOrphanReviewFolders, candidateShows, isExactCandidate, inWindow, toMs, normalizeUrl,
+  findOrphanReviewFolders, candidateShows, isExactCandidate, idTwin, inWindow, toMs, normalizeUrl,
 } = require('./orphan-review-folders');
 const { createOrMergeReviewFile, unknownShowFolderRefused, WRITE_GUARD_REFUSED_REASONS } = require('./review-file-writer');
 const { moveReviewFile } = require('./review-file-move');
@@ -158,5 +158,26 @@ describe('moveReviewFile (approved-fix review-file-op move)', () => {
     assert.equal(moveReviewFile(dir, 'new-2026/a--b.json', '../x.json').ok, false);
     assert.equal(moveReviewFile(dir, '../etc.json', 'x/y.json').ok, false);
     assert.equal(moveReviewFile(dir, 'missing/a.json', 'x/y.json').ok, false);
+  });
+});
+
+describe('idTwin: a folder that is a show id with the market dropped or swapped', () => {
+  const shows = [
+    { id: 'data-off-broadway-2026' }, { id: 'the-choir-of-man-off-west-end-2026' },
+    { id: 'the-choir-of-man-west-end-2025' }, { id: 'jena-friedman-motherfucker-off-broadway-2026' },
+    { id: 'x-off-broadway-2026' }, { id: 'x-west-end-2026' },
+  ];
+  test('show-score style id without the market resolves to the one market-suffixed id', () => {
+    assert.equal(idTwin('data-2026', shows), 'data-off-broadway-2026');
+    assert.equal(idTwin('the-choir-of-man-west-end-2026', shows), 'the-choir-of-man-off-west-end-2026');
+  });
+  test('two qualifying ids, a different year, or no year give null', () => {
+    assert.equal(idTwin('x-2026', shows), null);
+    assert.equal(idTwin('data-2025', shows), null);
+    assert.equal(idTwin('data', shows), null);
+  });
+  test('a retired id whose reason names "duplicate of <id>" resolves to that id', () => {
+    assert.equal(idTwin('motherfucker-off-broadway-2026', shows,
+      'duplicate of jena-friedman-motherfucker-off-broadway-2026 (same venue/run)'), 'jena-friedman-motherfucker-off-broadway-2026');
   });
 });
