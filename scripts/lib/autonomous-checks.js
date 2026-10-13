@@ -343,11 +343,40 @@ function staleTopLevelDeps(workdir, installRoot) {
   return stale;
 }
 
+// Lockfile entries below the top level whose installed copy under
+// `installRoot` (per npm's hidden lockfile, node_modules/.package-lock.json,
+// which every install rewrites) differs in version or resolved source from
+// `workdir`'s lockfile (BRO-5216: an overrides-only or nested-only bump slips
+// past staleTopLevelDeps). Optional entries may legitimately be absent (other
+// platforms) and are skipped when missing; link entries are skipped. No
+// hidden lockfile, or an unreadable lockfile -> [] (top-level check still runs).
+function staleNestedDeps(workdir, installRoot) {
+  let lock, hidden;
+  try { lock = JSON.parse(fs.readFileSync(path.join(workdir, 'package-lock.json'), 'utf8')); } catch { return []; }
+  try { hidden = JSON.parse(fs.readFileSync(path.join(installRoot, 'node_modules', '.package-lock.json'), 'utf8')); } catch { return []; }
+  const want = lock && lock.packages;
+  const have = hidden && hidden.packages;
+  if (!want || !have) return [];
+  const stale = [];
+  for (const [key, w] of Object.entries(want)) {
+    if (!key.startsWith('node_modules/') || !w || w.link) continue;
+    const h = have[key];
+    if (!h) {
+      if (!w.optional && !w.devOptional) stale.push(`${key.slice(13)} missing->${w.version}`);
+      continue;
+    }
+    if (h.version !== w.version || (w.resolved && h.resolved && h.resolved !== w.resolved)) {
+      stale.push(`${key.slice(13)} ${h.version}->${w.version}`);
+    }
+  }
+  return stale;
+}
+
 // `npm ci` into `workdir` under the secret-free checksEnv (the lockfile may be
 // implementer-written, and npm runs dependency install scripts), with the real
 // npm cache so --prefer-offline does not re-download everything into the fresh
-// HOME. Output goes to a log file (piped stdio has hit ENOBUFS before). True on
-// success.
+// HOME. Output goes to a log file (piped stdio has hit ENOBUFS before), kept
+// only on failure. Returns { ok, logPath? }.
 function npmCiInto(workdir) {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
   const env = checksEnv({ home });
@@ -357,15 +386,22 @@ function npmCiInto(workdir) {
   for (const k of ['HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'https_proxy', 'http_proxy', 'no_proxy', 'NODE_EXTRA_CA_CERTS']) {
     if (process.env[k] !== undefined) env[k] = process.env[k];
   }
+  // npm's own routing config (proxy, registry, CA, userconfig) set as
+  // npm_config_* env, as cloud containers do (BRO-5216).
+  for (const [k, v] of Object.entries(process.env)) {
+    if (/^npm_config_(https?_proxy|proxy|noproxy|registry|cafile|ca|strict_ssl|userconfig)$/i.test(k)) env[k] = v;
+  }
   const logPath = path.join(os.tmpdir(), `npm-ci-${path.basename(workdir)}-${process.pid}.log`);
   let fd = null;
   try {
     fd = fs.openSync(logPath, 'w');
     execFileSync('npm', ['ci', '--prefer-offline', '--no-audit', '--no-fund'],
       { cwd: workdir, env, stdio: ['ignore', fd, fd], timeout: NPM_CI_TIMEOUT_MS });
-    return true;
+    fs.closeSync(fd); fd = null;
+    try { fs.unlinkSync(logPath); } catch { /* best effort */ }
+    return { ok: true };
   } catch {
-    return false;
+    return { ok: false, logPath };
   } finally {
     if (fd !== null) try { fs.closeSync(fd); } catch { /* already closed */ }
     try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* temp dir */ }
@@ -411,15 +447,19 @@ function prepareCheckWorkdir(workdir, repoRoot, { install = npmCiInto } = {}) {
   // type-check it against the old packages, so it gets its own `npm ci`.
   const installRoot = resolveInstallRoot(repoRoot);
   const wdModules = path.join(workdir, 'node_modules');
-  const stale = fs.existsSync(wdModules) ? [] : staleTopLevelDeps(workdir, installRoot);
+  const stale = fs.existsSync(wdModules) ? []
+    : [...staleTopLevelDeps(workdir, installRoot), ...staleNestedDeps(workdir, installRoot)];
   if (stale.length) {
-    const ok = install(workdir);
-    if (ok) linked.push(`node_modules (npm ci: ${stale.length} top-level version(s) differ from the install root, e.g. ${stale.slice(0, 3).join(', ')})`);
+    const result = install(workdir);
+    const ok = result === true || Boolean(result && result.ok);
+    const log = result && result.logPath ? `, log ${result.logPath}` : '';
+    if (ok) linked.push(`node_modules (npm ci: ${stale.length} package version(s) differ from the install root, e.g. ${stale.slice(0, 3).join(', ')})`);
     else {
       // A failed or timed-out install leaves a partial tree that link()
       // would skip over; remove it so the fallback symlink is made.
-      try { fs.rmSync(wdModules, { recursive: true, force: true }); } catch { /* link() below reports nothing; the marker does */ }
-      linked.push('node_modules (npm ci FAILED; linked the install root, checks may see old packages)');
+      try { fs.rmSync(wdModules, { recursive: true, force: true }); } catch { /* checked just below */ }
+      if (fs.existsSync(wdModules)) linked.push(`node_modules (npm ci FAILED and the partial install could not be removed; checks run on it${log})`);
+      else linked.push(`node_modules (npm ci FAILED; linked the install root, checks may see old packages${log})`);
     }
   }
   link(path.join(installRoot, 'node_modules'), wdModules);
@@ -577,6 +617,7 @@ module.exports = {
   UI_PATH_RES,
   checksEnv,
   staleTopLevelDeps,
+  staleNestedDeps,
   tierOf,
   decideChecks,
   readTsxManifest,

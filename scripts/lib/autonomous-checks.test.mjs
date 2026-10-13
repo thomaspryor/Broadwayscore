@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const checks = require('./autonomous-checks.js');
 const {
   decideChecks, cardCheckArgv, checksEnv, isUiDiff, hasSrcChange,
-  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, readTsxManifest, readTsxRunTests, BUILD_TIMEOUT_MS, BUILD_ENV,
+  prepareCheckWorkdir, staleNestedDeps, resolveInstallRoot, runSafeChecks, readTsxManifest, readTsxRunTests, BUILD_TIMEOUT_MS, BUILD_ENV,
 } = checks;
 
 const never = () => false;
@@ -427,6 +427,45 @@ test('prepareCheckWorkdir: an existing workdir node_modules or an unreadable loc
   fs.writeFileSync(path.join(wt, 'package-lock.json'), 'not json');
   const linked = prepareCheckWorkdir(wt, repo, never);
   assert.ok(linked.includes('node_modules'));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// Nested drift (BRO-5216): the hidden lockfile npm writes on every install
+// records what is really under the install root, below the top level too.
+function writeHiddenLock(repo, packages) {
+  fs.writeFileSync(path.join(repo, 'node_modules', '.package-lock.json'), JSON.stringify({ lockfileVersion: 3, packages }));
+}
+
+test('prepareCheckWorkdir: an override or nested-only bump (top level unchanged) still gets its own install', () => {
+  const { root, repo, wt } = depsFixture({ installed: { cheerio: '1.0.0' }, pinned: { cheerio: '1.0.0' } });
+  const lock = JSON.parse(fs.readFileSync(path.join(wt, 'package-lock.json'), 'utf8'));
+  lock.packages['node_modules/cheerio/node_modules/undici'] = { version: '6.24.1' };
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
+  writeHiddenLock(repo, { 'node_modules/cheerio': { version: '1.0.0' }, 'node_modules/cheerio/node_modules/undici': { version: '6.21.0' } });
+  const calls = [];
+  const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { calls.push(dir); fs.mkdirSync(path.join(dir, 'node_modules')); return { ok: true }; } });
+  assert.deepEqual(calls, [wt]);
+  assert.ok(linked.some(l => l.includes('cheerio/node_modules/undici 6.21.0->6.24.1')), linked.join(' | '));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('staleNestedDeps: a matching hidden lockfile, absent optional entries and link entries are not drift', () => {
+  const { root, repo, wt } = depsFixture({ installed: { next: '15.5.27' }, pinned: { next: '15.5.27' } });
+  const lock = JSON.parse(fs.readFileSync(path.join(wt, 'package-lock.json'), 'utf8'));
+  lock.packages['node_modules/@next/swc-win32-x64-msvc'] = { version: '15.5.27', optional: true };
+  lock.packages['node_modules/local-pkg'] = { resolved: 'packages/local', link: true };
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
+  writeHiddenLock(repo, { 'node_modules/next': { version: '15.5.27' } });
+  assert.deepEqual(staleNestedDeps(wt, repo), []);
+  const linked = prepareCheckWorkdir(wt, repo, { install: () => { throw new Error('must not install'); } });
+  assert.ok(linked.includes('node_modules'));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('prepareCheckWorkdir: a failed install names its kept log in the FAILED marker', () => {
+  const { root, repo, wt } = depsFixture({ installed: { react: '18.3.1' }, pinned: { react: '19.3.0' } });
+  const linked = prepareCheckWorkdir(wt, repo, { install: () => ({ ok: false, logPath: '/tmp/npm-ci-x.log' }) });
+  assert.ok(linked.some(l => l.includes('npm ci FAILED') && l.includes('log /tmp/npm-ci-x.log')), linked.join(' | '));
   fs.rmSync(root, { recursive: true, force: true });
 });
 
