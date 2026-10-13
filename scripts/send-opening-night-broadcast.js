@@ -39,6 +39,8 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
 const { checkPreviewDedup } = require('./lib/preview-dedup');
 const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
+const { upsertBroadcastDraft, makeResendRequest } = require('./lib/resend-draft-upsert');
+const { draftLockRecheckBlockReason } = require('./lib/broadcast-lock-recheck');
 const {
   syncTrackerToOrigin: syncTrackerToOriginShared,
   mergeTrackerEntries,
@@ -156,9 +158,11 @@ function syncTrackerToOrigin(localData) {
 function recordDraftCompletion(sentData, broadcastKey, showsForEmail, draftInfo) {
   const completionData = {
     draftCreatedAt: new Date().toISOString(),
+    // draftInfo may override draftStatus: adopting a broadcast Resend already
+    // shows as sent (BRO-3493) records its real status.
+    draftStatus: 'draft',
     ...draftInfo,
     completed: true,
-    draftStatus: 'draft',
     sentAt: null,
     recipientCount: null,
   };
@@ -169,6 +173,25 @@ function recordDraftCompletion(sentData, broadcastKey, showsForEmail, draftInfo)
   saveSentData(sentData);
   syncTrackerToOrigin(sentData);
   return completionData;
+}
+
+/**
+ * BRO-3493 gap 2: re-read the tracker from disk after the send lock is won and
+ * fold it into the in-memory copy, so (a) eligibility is re-checked against
+ * what a run that held the lock before us wrote, and (b) our own later
+ * saveSentData() does not overwrite that run's records with our stale copy.
+ * Scope: this sees writers on the SAME disk only. Across machines, CI runs
+ * are serialized by the workflow's broadcast-send concurrency group (a run
+ * starts after the previous one committed), and a duplicate draft from a CLI
+ * vs CI overlap is caught by the Resend name lookup in the draft path.
+ * Mutates and returns sentData.
+ */
+function refreshTrackerUnderLock(sentData) {
+  const fresh = loadJSON(SENT_PATH);
+  if (!fresh || !fresh.shows) return sentData;
+  const merged = mergeTrackerEntries(fresh, sentData);
+  sentData.shows = merged.shows;
+  return sentData;
 }
 
 /**
@@ -286,14 +309,24 @@ function filterShowsWithConsensus(showsForEmail) {
   return ready;
 }
 
+// A cancelled broadcast re-queues the show (broadcast-state.js), so the
+// Resend name lookup must neither reuse nor treat it as sent (BRO-3493).
+const OPENING_NIGHT_IGNORE_STATUSES = ['cancelled', 'canceled'];
+
 function buildBroadcastName(siteName, shows) {
   const titles = (shows || []).map(s => s.showTitle).filter(Boolean);
   const prefix = `${siteName} opening night`;
   const full = titles.length ? `${prefix} — ${titles.join(', ')}` : prefix;
   if (full.length <= RESEND_NAME_MAX) return full;
-  const summary = `${prefix} — ${titles.length} shows`;
-  // Last-resort guard: even the summary must fit (very long siteName).
-  return summary.length <= RESEND_NAME_MAX ? summary : summary.slice(0, RESEND_NAME_MAX);
+  // The count summary must still be unique per show combination: Resend's
+  // draft lookup dedups on this name (BRO-3493), and two different 6-show
+  // combos sharing "— 6 shows" would PATCH each other's draft.
+  const ids = (shows || []).map(s => s.showId || s.showTitle || '').sort().join('+');
+  const tag = require('crypto').createHash('sha1').update(ids).digest('hex').slice(0, 6);
+  const suffix = ` — ${titles.length} shows (${tag})`;
+  // Last-resort guard: even the summary must fit (very long siteName). Trim
+  // the prefix, never the tag that keeps the name unique.
+  return (prefix.slice(0, Math.max(0, RESEND_NAME_MAX - suffix.length)) + suffix).slice(-RESEND_NAME_MAX);
 }
 
 async function main() {
@@ -690,6 +723,17 @@ async function main() {
     }
     console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
 
+    // BRO-3493: the dedup above read the tracker before the lock. Re-check it
+    // against what a run that held the lock before us may have written.
+    refreshTrackerUnderLock(sentData);
+    const lockedDedup = checkPreviewDedup(sentData, broadcastKey, currentReviewCount);
+    if (lockedDedup.action === 'skip') {
+      console.log(`\nPreview was sent by another run while we waited for the lock (${lockedDedup.hoursSince.toFixed(1)}h ago) — skipping`);
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
+      process.exit(0);
+    }
+
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
@@ -775,28 +819,73 @@ async function main() {
     }
     console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
 
+    // BRO-3493 gap 2: pendingShows was filtered before the lock. Re-check
+    // against the tracker as it stands now that we hold it.
+    refreshTrackerUnderLock(sentData);
+    const lockBlock = draftLockRecheckBlockReason(
+      sentData.shows, showsForEmail.map(s => s.showId), { recreate: RECREATE_DRAFT });
+    if (lockBlock) {
+      console.log(`\nNot creating a draft: ${lockBlock} while we waited for the lock.`);
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
+      process.exit(0);
+    }
+
     try {
-      const result = await postJSON('https://api.resend.com/broadcasts', {
-        audience_id: audienceId,
-        // SITE_NAME is market-aware ('West End Scorecard' for WE) — never hardcode
-        // 'Broadway Scorecard' here or WE subscribers get a Broadway-branded sender.
-        from: `${SITE_NAME} <${FROM_EMAIL}>`,
-        reply_to: REPLY_TO,
-        subject,
-        html,
-        // Resend caps the broadcast `name` (internal label) at 70 chars. Listing
-        // every title overflows once several shows coalesce into one email (HTTP
-        // 422 when 6 WE shows were combined, 2026-06-29). Fall back to a count
-        // summary when the full list won't fit.
-        name: buildBroadcastName(SITE_NAME, showsForEmail),
-      }, {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      // BRO-3493 gap 1: Resend is the dedup record. Under GITHUB_ACTIONS the
+      // tracker write below only reaches the runner's disk until the
+      // workflow's later commit step, so a runner cancelled in between left a
+      // live draft that the next run could not see and drafted again. Looking
+      // the deterministic name up first PATCHes that orphan instead.
+      // 'cancelled' broadcasts re-queue the show (broadcast-state.js), so they
+      // neither block nor get reused.
+      const upsert = await upsertBroadcastDraft({
+        payload: {
+          audience_id: audienceId,
+          // SITE_NAME is market-aware ('West End Scorecard' for WE) — never hardcode
+          // 'Broadway Scorecard' here or WE subscribers get a Broadway-branded sender.
+          from: `${SITE_NAME} <${FROM_EMAIL}>`,
+          reply_to: REPLY_TO,
+          subject,
+          html,
+          // Resend caps the broadcast `name` (internal label) at 70 chars. Listing
+          // every title overflows once several shows coalesce into one email (HTTP
+          // 422 when 6 WE shows were combined, 2026-06-29). Fall back to a count
+          // summary when the full list won't fit.
+          name: buildBroadcastName(SITE_NAME, showsForEmail),
+        },
+        request: makeResendRequest(RESEND_API_KEY),
+        ignoreStatuses: OPENING_NIGHT_IGNORE_STATUSES,
       });
 
-      const draftId = result.id;
+      if (upsert.action === 'skipped-sent') {
+        // Resend already shows this exact broadcast as sent/queued but the
+        // tracker never heard (a run died before its commit). Adopt it so the
+        // show stops reading as pending; Resend reaps sent broadcasts within
+        // hours, after which a lookup could no longer catch the double send.
+        // Cancelled broadcasts never land here (OPENING_NIGHT_IGNORE_STATUSES),
+        // so a re-queued show gets a fresh draft.
+        console.log(`\nResend already has broadcast ${upsert.id} for these shows with status ${upsert.sentStatus}. Not creating a draft; recording it in the tracker.`);
+        recordDraftCompletion(sentData, broadcastKey, showsForEmail, {
+          draftId: upsert.id,
+          draftUrl: upsert.id ? `https://resend.com/broadcasts/${upsert.id}` : null,
+          method: 'resend-draft-adopted',
+          draftStatus: upsert.sentStatus,
+          reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
+        });
+        const rel = releaseSendLock(lock);
+        if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
+        process.exit(0);
+      }
+
+      const draftId = upsert.id;
       const draftUrl = `https://resend.com/broadcasts/${draftId}`;
 
-      console.log(`  Draft created: ${draftId}`);
+      if (upsert.action === 'updated') {
+        console.log(`  Existing untracked draft found (an earlier run died before recording it); updated in place: ${draftId}`);
+      } else {
+        console.log(`  Draft created: ${draftId}`);
+      }
       console.log(`  Review at: ${draftUrl}`);
 
       // BRO-886: record the tracker write IMMEDIATELY — before the owner
@@ -901,7 +990,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {

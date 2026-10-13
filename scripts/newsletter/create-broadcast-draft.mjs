@@ -149,16 +149,13 @@ async function apiJSON(method, url, payload) {
 // any already-SENT/scheduled broadcasts for the same week (so we can refuse to
 // re-draft an issue that already went out — relevant now that CI auto-creates a
 // draft every week). SENT broadcasts are never modified by this script.
+// Split logic and the paged list URL are shared with the fantasy and
+// opening-night wrappers (scripts/lib/resend-draft-upsert.js, BRO-3494):
+// the default page is 20, so a busy week could push this draft off it.
 async function lookupByName() {
-  const list = await apiJSON('GET', RESEND_BROADCASTS_URL);
-  const all = (list && list.data) || [];
-  const named = all.filter((b) => b && b.name === name);
-  const drafts = named.filter((b) => b.status === 'draft');
-  const sent = named.filter((b) => b.status !== 'draft');
-  if (drafts.length > 1) {
-    throw new Error(`${drafts.length} draft broadcasts named "${name}" exist — refusing to guess which to update. Resolve in the Resend UI.`);
-  }
-  return { draft: drafts[0] || null, sent };
+  const { splitBroadcastsByName, RESEND_BROADCASTS_LIST_URL } = cjsRequire('../lib/resend-draft-upsert.js');
+  const list = await apiJSON('GET', RESEND_BROADCASTS_LIST_URL);
+  return splitBroadcastsByName(list, name);
 }
 
 if (flags.status) {

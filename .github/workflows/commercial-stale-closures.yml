@@ -73,6 +73,9 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
+          # BRO-3490: judgment-call escalations go to a report the Linear
+          # step below files as cards.
+          ARGS="$ARGS --report-json=/tmp/stale-closure-report.json"
           node scripts/classify-stale-closures.js $ARGS
 
       - name: Refresh recoupment model
@@ -114,6 +117,23 @@ jobs:
       - name: Dispatch deploy
         if: inputs.dry_run != true
         uses: ./.github/actions/dispatch-deploy
+
+      - name: Linear — surface stale-closure reviews
+        # BRO-3490: one parked Linear issue per judgment-call escalation
+        # (enhancement deal, late recoupment signal), deduped by exact title.
+        # Never-researched shows are not filed: deep-research-commercial.js
+        # ranks them right after its queue. Runs after the data push with its
+        # own timeout so a slow Linear call can never cost the push.
+        if: always() && inputs.dry_run != true
+        timeout-minutes: 10
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          if [ -f /tmp/stale-closure-report.json ]; then
+            node scripts/notify-pending-commercial-linear.js \
+              --report-json=/tmp/stale-closure-report.json --cap=25
+          fi
 
       - name: Notify on failure
         if: failure()

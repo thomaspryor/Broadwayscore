@@ -146,11 +146,9 @@ function mapIssueToCard(issue) {
     // would make every Linear-sourced dispatch record unmatchable.
     id: issue.identifier,
     name: issue.title || '(untitled)',
-    // 'Done' only for Linear's completed-type state — dead via the live
-    // fetch today (fetchLinearRecheckCandidates excludes every terminal
-    // type, completed included; see that exclusion's own comment), but kept
-    // here so mapIssueToCard stays a complete, general-purpose mapping
-    // rather than one silently coupled to its one current caller's filter.
+    // 'Done' only for Linear's completed-type state, which reaches here via
+    // the stamped-done pass of fetchLinearRecheckCandidates and via
+    // fetchRecentlyCompletedLinearCandidates (both BRO-3469).
     // Every non-completed state name (Backlog, Todo, In Progress, In
     // Review, ...) fails doneWithinWindow's no-stamp Done-fallback check
     // exactly like a Notion non-Done status would, and is only ever picked
@@ -244,12 +242,120 @@ async function fetchCandidatePages(client, opts, mode) {
   return { cards, truncated: false, error: null };
 }
 
+// Page loop for the recently-completed query below (BRO-3469): own deadline,
+// partial results kept on failure, `truncated` when a cap stops it with pages
+// outstanding. Separate from fetchCandidatePages because this query takes a
+// $since variable and a smaller page cap.
+async function paginateCandidates(client, query, extraVars, maxPages, opts = {}) {
+  const cards = [];
+  const now = opts.now || Date.now;
+  const deadline = now() + (Number.isFinite(opts.deadlineMs) ? opts.deadlineMs : DEADLINE_MS);
+  const teamKey = opts.teamKey || require('./linear-client.js').TEAM_KEY;
+  const lc = client || require('./linear-client.js');
+  let after = null;
+  for (let page = 0; page < maxPages; page++) {
+    if (now() >= deadline) return { cards, truncated: true, error: null }; // partial — see contract above
+    let data;
+    try {
+      data = await lc.graphql(
+        query,
+        { teamKey, after, ...extraVars },
+        { timeoutMs: ATTEMPT_TIMEOUT_MS, maxAttempts: MAX_ATTEMPTS }
+      );
+    } catch (err) {
+      // Whatever was fetched on earlier pages is real and kept; the failure
+      // itself must not go silent — see fetchLinearRecheckCandidates' header.
+      return { cards, truncated: true, error: String((err && err.message) || err).slice(0, 300) };
+    }
+    const conn = data && data.issues;
+    if (!conn) break;
+    for (const node of conn.nodes || []) {
+      const card = mapIssueToCard(node);
+      if (card) cards.push(card);
+    }
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) break;
+    after = conn.pageInfo.endCursor;
+    if (page === maxPages - 1) return { cards, truncated: true, error: null }; // hit the page cap with more outstanding
+  }
+  return { cards, truncated: false, error: null };
+}
+
+// ── Recently completed issues (BRO-3469) ────────────────────────────────────
+// The non-terminal query above deliberately skips completed issues (unbounded
+// history; see EXCLUDED_STATE_TYPES). That left every Linear card marked Done
+// with zero recheck coverage once BRO-3488 removed the Notion Done leg. This
+// sibling query covers the ordinary "just completed, check within the window"
+// case with a completedAt lower bound, so it stays bounded. RECHECK-AFTER
+// stamped cards are unaffected: they sit in a non-terminal state and come
+// through the query above.
+//
+// On by default; RECHECK_INCLUDE_COMPLETED_LINEAR=0 turns it off with zero
+// network calls. The nightly run is report-only, and a Done card only becomes
+// a target when it has a dispatch launch or runnable acceptance criteria.
+const COMPLETED_MAX_PAGES = 10; // 1,000 issues; measured 369 completed in 48h (2026-10-13)
+const COMPLETED_DEADLINE_MS = 30000; // its own budget, separate from the main fetch
+// completedDate is date-only and doneWithinWindow pads it to end of day, so
+// fetch one extra day past the window or a card closed late yesterday that is
+// still in-window would never be fetched.
+const COMPLETED_SLACK_HOURS = 24;
+
+function completedLinearEnabled(env = process.env) {
+  return env.RECHECK_INCLUDE_COMPLETED_LINEAR !== '0';
+}
+
+function buildRecentlyCompletedQuery() {
+  return `query($teamKey: String!, $after: String, $since: DateTimeOrDuration!) {
+    issues(
+      first: ${PAGE_SIZE}
+      after: $after
+      filter: { team: { key: { eq: $teamKey } }, state: { type: { eq: "completed" } }, completedAt: { gte: $since } }
+    ) {
+      nodes {
+        identifier
+        title
+        description
+        updatedAt
+        completedAt
+        state { name type }
+        comments(first: 50, orderBy: createdAt) { nodes { body createdAt } }
+      }
+      pageInfo { hasNextPage endCursor }
+    }
+  }`;
+}
+
+/**
+ * Fetch issues completed within `windowHours` (+ a day of slack) as Done
+ * candidates. Same {cards, truncated, error} contract and never-throws rule
+ * as fetchLinearRecheckCandidates; `skipped: true` when switched off.
+ *
+ * @param {{graphql:Function}} [client] injectable for tests
+ * @param {{windowHours?:number, deadlineMs?:number, now?:Function, teamKey?:string, env?:object}} [opts]
+ */
+async function fetchRecentlyCompletedLinearCandidates(client, opts = {}) {
+  if (!completedLinearEnabled(opts.env)) return { cards: [], truncated: false, error: null, skipped: true };
+  const now = opts.now || Date.now;
+  const windowHours = Number.isFinite(opts.windowHours) ? opts.windowHours : 24;
+  // Frozen once per invocation so every page shares one cutoff.
+  const since = new Date(now() - (windowHours + COMPLETED_SLACK_HOURS) * 3600 * 1000).toISOString();
+  const res = await paginateCandidates(client, buildRecentlyCompletedQuery(), { since }, COMPLETED_MAX_PAGES, {
+    ...opts,
+    deadlineMs: Number.isFinite(opts.deadlineMs) ? opts.deadlineMs : COMPLETED_DEADLINE_MS,
+  });
+  return { ...res, skipped: false };
+}
+
 module.exports = {
   EXCLUDED_STATE_TYPES,
   STAMP_KEYWORD,
   ATTEMPT_TIMEOUT_MS,
   MAX_ATTEMPTS,
   DEADLINE_MS,
+  COMPLETED_MAX_PAGES,
+  COMPLETED_SLACK_HOURS,
+  completedLinearEnabled,
+  buildRecentlyCompletedQuery,
+  fetchRecentlyCompletedLinearCandidates,
   buildRecheckCandidatesQuery,
   mapIssueToCard,
   fetchLinearRecheckCandidates,

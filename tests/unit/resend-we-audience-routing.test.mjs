@@ -58,7 +58,19 @@ describe('buildBroadcastName — Resend 70-char name cap', () => {
   test('falls back to a count summary when many shows would overflow (the 6-WE-show bug)', () => {
     const name = buildBroadcastName('West End Scorecard', mk(6));
     assert.ok(name.length <= RESEND_NAME_MAX, `name too long for Resend: ${name.length} chars`);
-    assert.match(name, /6 shows$/);
+    assert.match(name, /6 shows \([0-9a-f]{6}\)$/);
+  });
+
+  test('the summary is unique per show combination (BRO-3493: Resend lookup dedups on the name)', () => {
+    const a = mk(6).map((s, i) => ({ ...s, showId: `a-${i}` }));
+    const b = mk(6).map((s, i) => ({ ...s, showId: `b-${i}` }));
+    assert.notEqual(buildBroadcastName('West End Scorecard', a), buildBroadcastName('West End Scorecard', b));
+    assert.equal(buildBroadcastName('West End Scorecard', a), buildBroadcastName('West End Scorecard', [...a].reverse()));
+    const longSite = 'X'.repeat(80);
+    const la = buildBroadcastName(longSite, a);
+    assert.ok(la.length <= RESEND_NAME_MAX);
+    assert.match(la, /6 shows \([0-9a-f]{6}\)$/, 'tag survives a very long site name');
+    assert.notEqual(la, buildBroadcastName(longSite, b));
   });
 
   test('never exceeds the cap regardless of show count', () => {

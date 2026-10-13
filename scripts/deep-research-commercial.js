@@ -32,7 +32,7 @@ const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
-const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR } = require('./lib/commercial-queue');
+const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR, staleClosuresNeedingResearch } = require('./lib/commercial-queue');
 const { holdForBackfill, carryHumanReviewHold, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
 const { rejectedClaimSource: rejectedClaimSourceIn } = require('./lib/commercial-claim-triage');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
@@ -659,11 +659,23 @@ async function main() {
       console.log(`Recoupment-window boost: ${recoupWindowSlugs.length} shows (opened 8-26 weeks ago)`);
     }
 
-    // Priority order: queued > 6-month re-research > recoupment-window boost >
-    // remaining TBDs (shuffled). Skip rules respect explicit --shows.
+    // BRO-3490: closed shows the stale-closure classifier is stuck on until
+    // deep research has tried them once.
+    // Limited to tbdSlugs (attempt cap, scope) and to shows not already
+    // waiting in pending review, same rule as the backfill tier.
+    const neverResearchedSlugs = staleClosuresNeedingResearch(allShows, commShows)
+      .filter(slug => tbdSlugs.includes(slug) && !pendingAtStart[slug]);
+    if (neverResearchedSlugs.length > 0) {
+      console.log(`Closed, never researched (stale-closure backlog): ${neverResearchedSlugs.length} shows`);
+    }
+
+    // Priority order: queued > closed never-researched > 6-month re-research >
+    // recoupment-window boost > remaining TBDs (shuffled). Skip rules respect
+    // explicit --shows.
     const remaining = [...new Set([...tbdSlugs, ...uncoveredSlugs])];
     targetSlugs = [
       ...queuedSlugs,
+      ...neverResearchedSlugs.filter(s => !queuedSlugs.includes(s)),
       ...sixMonthSlugs.filter(s => !queuedSlugs.includes(s)),
       ...recoupWindowSlugs.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s)),
       ...shuffle(remaining.filter(s =>

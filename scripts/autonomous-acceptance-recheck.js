@@ -50,7 +50,7 @@ const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify } = require(
 const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS } = require('./lib/autonomous-recheck-core.js');
 // Linear candidate source (BRO-3373), the only source since BRO-3488 removed
 // the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
-const { fetchLinearRecheckCandidates } = require('./lib/linear-recheck-source.js');
+const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates } = require('./lib/linear-recheck-source.js');
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
@@ -204,9 +204,10 @@ async function main(argv = process.argv.slice(2)) {
   // removed: the Notion mirror froze 2026-08-20 (CLAUDE.md section 6), so it
   // could only ever re-surface stale frozen cards, and it kept a live
   // schedule (data-health-check.yml) coupled to the retired board.
-  // `doneCards` stays as an (empty) bucket; with it empty the Paused share
-  // below widens to the whole limit so the nightly slots are not halved.
-  const doneCards = [];
+  // BRO-3469: `doneCards` is fed by a separate, completedAt-bounded Linear
+  // query (fetched after the non-terminal one below). When it is empty or
+  // switched off, the Paused share widens to the whole limit.
+  let doneCards = [];
   let pausedCards = [];
   // fetchLinearRecheckCandidates never throws; this try/catch is a backstop
   // for a genuinely unexpected bug, not the expected failure paths (auth,
@@ -231,6 +232,28 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
   console.error(`[recheck] ${pausedCards.length} Linear issue(s) fetched as recheck candidates`);
+
+  // BRO-3469: recently completed Linear cards. Isolated from the fetch above
+  // on purpose: a failure here is reported and leaves doneCards empty, it
+  // never discards the non-terminal candidates or ends the run.
+  try {
+    const completed = await fetchRecentlyCompletedLinearCandidates(null, { windowHours });
+    if (completed.skipped) {
+      console.error('[recheck] completed Linear cards skipped (RECHECK_INCLUDE_COMPLETED_LINEAR=0)');
+    } else {
+      doneCards = completed.cards;
+      if (completed.error) {
+        console.error(`[recheck] WARN completed-card fetch failed: ${completed.error} (keeping ${doneCards.length} fetched before the failure)`);
+        if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Linear completed listing failed: ${completed.error}` }, RECHECK_LEDGER_PATH);
+      } else if (completed.truncated) {
+        console.error('[recheck] WARN the completed-card listing was truncated (page/deadline cap) — some Done cards may be missing');
+        if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: 'Linear completed listing hit its page/deadline cap; coverage may be incomplete' }, RECHECK_LEDGER_PATH);
+      }
+      console.error(`[recheck] ${doneCards.length} Linear issue(s) completed in the last ${windowHours}h (+24h slack) fetched as Done candidates`);
+    }
+  } catch (err) {
+    console.error(`[recheck] WARN could not list completed Linear cards: ${String(err.message).slice(0, 200)}`);
+  }
 
   const cfg = (() => { try { return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch { return {}; } })();
   const enforcement = enforcementState(cfg, ledger.readEntries(RECHECK_LEDGER_PATH).entries || []);
@@ -281,8 +304,11 @@ async function main(argv = process.argv.slice(2)) {
   // still gets a meaningful, bounded share for its own regression-checking job.
   const pausedTargets = selectFrom(pausedCards);
   const doneTargets = selectFrom(doneCards);
-  // An empty Done bucket gives Paused every slot (BRO-3488 left Done empty).
-  const pausedShare = Math.min(pausedTargets.length, doneTargets.length ? Math.ceil(limit / 2) : limit);
+  // Paused is guaranteed half the slots, and also gets whatever Done does
+  // not use (one Done target must not leave four slots empty, BRO-3469).
+  const pausedIds = new Set(pausedTargets.map(t => t.cardId));
+  const doneOnly = doneTargets.filter(t => !pausedIds.has(t.cardId)).length;
+  const pausedShare = Math.min(pausedTargets.length, Math.max(Math.ceil(limit / 2), limit - doneOnly));
   const seen = new Set();
   const targets = [];
   for (const t of [...pausedTargets.slice(0, pausedShare), ...doneTargets]) {

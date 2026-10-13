@@ -229,8 +229,36 @@ function computeCoverageBySeason(shows, commercial, todayStr, opts = {}) {
   return [...bySeason.values()].sort((a, b) => a.season.localeCompare(b.season));
 }
 
+/**
+ * BRO-3490: closed shows still TBD in commercial.json that deep research
+ * never tried, closed within the classifier's age cap. These are exactly the
+ * rows classifyStaleClosure escalates with needsResearch (it sets that flag
+ * only for a TBD entry), so the classifier does not file Linear cards for
+ * them and deep-research ranks them right after its queue instead of in the
+ * shuffled tail behind the max-shows cap. No grace period here: researching
+ * a fresh closure early is fine. Same budget; ordering only.
+ * @param {object[]} shows shows.json entries
+ * @param {Record<string, object>} commShows commercial.json `.shows`
+ * @param {number} [nowMs]
+ * @returns {string[]}
+ */
+function staleClosuresNeedingResearch(shows, commShows, nowMs = Date.now()) {
+  const { hasBeenResearched, MAX_AGE_DAYS_DEFAULT } = require('./classify-stale-closure');
+  const comm = commShows || {};
+  return (shows || [])
+    .filter((s) => {
+      if (!s || !s.slug || s.status !== 'closed' || !isCommercialScope(s)) return false;
+      const entry = comm[s.slug];
+      if (!entry || entry.designation !== 'TBD' || hasBeenResearched(entry)) return false;
+      const closed = Date.parse(s.closingDate);
+      return Number.isFinite(closed) && (nowMs - closed) / 86_400_000 <= MAX_AGE_DAYS_DEFAULT;
+    })
+    .map((s) => s.slug);
+}
+
 module.exports = {
   COMMERCIAL_RESEARCH_FLOOR,
+  staleClosuresNeedingResearch,
   weeksRun,
   filterUncoveredClosedShows,
   computeCoverageBySeason,

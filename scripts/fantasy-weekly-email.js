@@ -28,6 +28,7 @@ const path = require('path');
 const { postJSON, buildReplyToAddress } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
+const { upsertBroadcastDraft, makeResendRequest } = require('./lib/resend-draft-upsert');
 const { fetchFantasyEntries, computeLeaderboard, computeWeeklyMovers } = require('./lib/fantasy-helpers');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -282,24 +283,34 @@ async function main() {
       }
       console.error(`  Audience sync: ${syncSummary}`);
 
-      // Step 2: create broadcast draft
+      // Step 2: create (or update) the broadcast draft. The name is
+      // deterministic per week, so Resend itself is the dedup record
+      // (BRO-3494): a retry or second dispatch the same week PATCHes the
+      // existing draft, and a week already sent is refused instead of
+      // getting a confusing post-send draft. The send-lock above only covers
+      // truly concurrent runs.
       // fantasy@ is a Resend-verified sender only (same shape as updates@ for the
       // weekly round-up, 2026-08-10 incident) — without reply_to, a fantasy-league
       // player hitting Reply would bounce instead of reaching the owner.
-      const result = await postJSON('https://api.resend.com/broadcasts', {
-        audience_id: RESEND_FANTASY_AUDIENCE_ID,
-        from: FROM_EMAIL,
-        reply_to: buildReplyToAddress(),
-        subject,
-        html,
-        name: `BFL weekly ${weekEnding}`,
-      }, {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      const upsert = await upsertBroadcastDraft({
+        payload: {
+          audience_id: RESEND_FANTASY_AUDIENCE_ID,
+          from: FROM_EMAIL,
+          reply_to: buildReplyToAddress(),
+          subject,
+          html,
+          name: `BFL weekly ${weekEnding}`,
+        },
+        request: makeResendRequest(RESEND_API_KEY),
       });
+      if (upsert.action === 'skipped-sent') {
+        console.error(`  Broadcast "BFL weekly ${weekEnding}" is already ${upsert.sentStatus} (not a draft). Skipping, refusing to re-draft a week that already went out.`);
+        return;
+      }
 
-      const draftId = result.id;
+      const draftId = upsert.id;
       const draftUrl = `https://resend.com/broadcasts/${draftId}`;
-      console.error(`  Draft created: ${draftId}`);
+      console.error(`  Draft ${upsert.action === 'updated' ? 'updated (existing draft for this week)' : 'created'}: ${draftId}`);
       console.error(`  Review at: ${draftUrl}`);
 
       // Step 3: notify owner via Resend transactional email. Scorer warnings

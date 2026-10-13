@@ -14,16 +14,15 @@
  *   - Updates data/commercial.json in place (labels, flags, undos).
  *     The merge-commercial-data.js reconciler ensures concurrent writers
  *     don't lose entries on push.
- *   - Logs human-review escalations to stdout JSON for downstream Linear
- *     surfacing (notify-pending-commercial-linear currently handles only
- *     recoupment claims; surfacing closure-review cases is follow-up work —
- *     log for now, surface manually).
+ *   - With --report-json, writes human-review escalations for
+ *     notify-pending-commercial-linear.js to file as Linear issues (BRO-3490).
  *
  * Usage:
  *   node scripts/classify-stale-closures.js --dry-run
  *   node scripts/classify-stale-closures.js --max-shows=50
  *   node scripts/classify-stale-closures.js --show=specific-slug
  *   node scripts/classify-stale-closures.js --grace-days=45 --max-age-days=180
+ *   node scripts/classify-stale-closures.js --report-json=/tmp/r.json   # human-review rows for Linear (BRO-3490)
  */
 
 require('./lib/cli-help').exitOnHelp(module);
@@ -33,6 +32,7 @@ const { classifyStaleClosure, undoAutoFizzleOnRunningShow } = require('./lib/cla
 const { isCommercialScope } = require('./lib/commercial-scope');
 const { LOSS_LABEL_MIN_DAYS } = require('./lib/commercial-designations');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { buildClosureReviewItems } = require('./lib/stale-closure-review-card');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -51,6 +51,9 @@ for (const a of args) {
 
 const DRY_RUN = flags['dry-run'] === true;
 const TARGET = flags['show'] || null;
+// BRO-3490: where to write the human-review bucket for
+// notify-pending-commercial-linear.js to file as Linear issues.
+const REPORT_JSON = typeof flags['report-json'] === 'string' ? flags['report-json'] : null;
 // intOr — avoid `parseInt(x) || default` so 0 is preserved as a real cap.
 const intOr = (k, def) => {
   if (flags[k] === undefined || flags[k] === true) return def;
@@ -133,6 +136,13 @@ function main() {
   console.log(`  no-change:         ${buckets['no-change'].length}`);
   console.log('');
 
+  if (REPORT_JSON) {
+    const staleClosureReviews = buildClosureReviewItems(buckets['human-review']);
+    fs.writeFileSync(REPORT_JSON, JSON.stringify({ generatedAt: new Date().toISOString(), staleClosureReviews }, null, 2));
+    const awaitingResearch = buckets['human-review'].length - staleClosureReviews.length;
+    console.log(`Report: ${staleClosureReviews.length} judgment row(s) -> ${REPORT_JSON} (${awaitingResearch} never-researched row(s) left to deep research's priority tier)\n`);
+  }
+
   if (DRY_RUN) {
     console.log('[dry-run] no writes. Sample of each bucket:');
     for (const k of ['classify-fizzle', 'flag-needs-loss-evidence', 'human-review', 'skip-carve-out']) {
@@ -203,16 +213,14 @@ function main() {
     console.log('\nNothing to write (no new loss label, flag or undo).');
   }
 
-  // Surface human-review cases as JSON for downstream Linear processing.
-  // notify-pending-commercial-linear currently only handles recoupment claims;
-  // wrapping closure-reviews into that contract is follow-up work (Codex
-  // CDX-P0-3). For now, just log them prominently for manual handling.
+  // Human-review cases reach Linear through --report-json +
+  // notify-pending-commercial-linear.js (BRO-3490); the workflow runs both.
   if (buckets['human-review'].length > 0) {
     console.log(`\n⚠ ${buckets['human-review'].length} shows need human review:`);
     for (const it of buckets['human-review']) {
       console.log(`  - ${it.show.slug}: ${it.result.reason}`);
     }
-    console.log('\n::warning::stale-closure escalations need Linear surfacing (follow-up)');
+    if (!REPORT_JSON) console.log('\n::warning::stale-closure escalations not written to a report (no --report-json); nothing files them on Linear');
   }
 }
 

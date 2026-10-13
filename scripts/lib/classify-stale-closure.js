@@ -167,9 +167,16 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   // an operator can backfill. This is the User Impact reviewer's
   // producer-reputation risk mitigation.
   if (!hasBeenResearched(entry)) {
+    const tbdEntry = entry?.designation === 'TBD';
     return {
       action: 'human-review',
       reason: `closed ${Math.floor(daysClosed)}d ago but deep-research never ran — needs operator backfill before any auto-classification`,
+      // BRO-3490: not a judgment call. deep-research-commercial.js ranks
+      // these right after the explicit queue (staleClosuresNeedingResearch), so
+      // the classifier does not file a Linear card for them.
+      // Only for a TBD entry: that is what the research tier selects. A show
+      // with no entry stays a judgment card so it cannot fall between both.
+      needsResearch: tbdEntry,
     };
   }
 
@@ -255,6 +262,7 @@ function closedTbdLossAction(entry, show, { now = Date.now(), lossLabelMinDays =
 }
 
 module.exports = {
+  hasBeenResearched,
   closedTbdLossAction,
   GRACE_DAYS_DEFAULT,
   MAX_AGE_DAYS_DEFAULT,
