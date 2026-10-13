@@ -159,6 +159,36 @@
     "queuedAt": "2026-10-13T05:21:47.495Z"
   },
   {
+    "conditionKey": "land:land/bro-4190-census-guard",
+    "title": "Landing blocked: toplevel-regression red on land/bro-4190-census-guard",
+    "description": "land.yml did not land land/bro-4190-census-guard: the toplevel-regression gate went red at 789ae33f90. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348609549",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4190-census-guard"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "789ae33f90048e9c88f14b95e972feade6ffd198"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38348609549"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:24:54.858Z"
+  },
+  {
     "conditionKey": "land:land/bro-2476-audit-freshness",
     "title": "Landing blocked: unit-tests-node red on land/bro-2476-audit-freshness",
     "description": "land.yml did not land land/bro-2476-audit-freshness: the unit-tests-node gate went red at 995971054c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348891865",
