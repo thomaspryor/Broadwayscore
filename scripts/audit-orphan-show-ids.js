@@ -55,7 +55,8 @@ const STRICT = args.includes('--strict');
 // "did the read throw?" is not the question — "does this look like the real
 // corpus?" is. This repo carries 2,800+ shows; a floor of 100 is far below any
 // legitimate state and far above any partial write.
-const MIN_PLAUSIBLE_SHOWS = 100;
+// Shared with the writers that filter on live ids (BRO-3248).
+const { MIN_PLAUSIBLE_SHOWS } = require('./lib/live-show-ids');
 
 function loadShowIds() {
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));

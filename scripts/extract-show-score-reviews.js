@@ -24,6 +24,7 @@ const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
+const { filterToLiveShowIds } = require('./lib/live-show-ids');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -288,8 +289,14 @@ function main() {
     : [];
   const showIdsFromArchives = new Set(archiveFiles);
 
-  // Merge: process everything that has either a URL or an archive
-  const allShowIds = new Set([...showIdsFromUrls, ...showIdsFromArchives]);
+  // Merge: process everything that has either a URL or an archive, minus ids
+  // that are no longer shows.json rows. show-score.json is rebuilt from
+  // scratch, so a stale archive file or URL key of a renamed/retired show
+  // re-created its orphan key on every run (BRO-3248).
+  const live = filterToLiveShowIds(new Set([...showIdsFromUrls, ...showIdsFromArchives]), new Set(Object.keys(showsById)));
+  if (live.dropped.length) console.log(`Skipping ${live.dropped.length} id(s) not in shows.json: ${live.dropped.join(', ')}`);
+  if (!live.filtered) console.warn('WARNING: shows.json is below the plausibility floor; not filtering orphan ids');
+  const allShowIds = new Set(live.kept);
   console.log(`Show IDs from URLs: ${showIdsFromUrls.size}, from archives: ${showIdsFromArchives.size}, total unique: ${allShowIds.size}\n`);
 
   let successCount = 0;

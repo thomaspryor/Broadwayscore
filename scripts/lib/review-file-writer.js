@@ -1227,6 +1227,18 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     } catch { /* unreadable — fall through to create */ }
   }
 
+  // --- Guard: site utility page, any source (NEW files only, BRO-3106) ---
+  // /submit/, /contact-us, /subscribe ... at a site's path root is never a
+  // review. outlet-listing-poller wrote The Spectator's /submit/ contact page
+  // as a review; every writer reaches this function, so one guard covers all.
+  if (input.url && fields.allowNonReviewUrl !== true) {
+    const utilityReason = require('./non-review-url-patterns').siteUtilityPathReason(input.url);
+    if (utilityReason) {
+      console.warn(`  ⛔ Refusing site utility page: ${input.url} (${utilityReason})`);
+      return { action: 'skipped', reason: `site-utility-url: ${utilityReason}`, guardRefused: true };
+    }
+  }
+
   // --- Guard: non-review page submitted through the review form (NEW files only) ---
   // validate-review-submission.js's LLM gate let through ticket resellers
   // (tickpick, eventticketscenter, stuborder), venue "what's on" pages,

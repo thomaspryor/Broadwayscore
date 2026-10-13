@@ -66,8 +66,11 @@ test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO
   // rejection then ends it; see the dispatchable assertion at the end). A
   // short text tiered anything else keeps the terminal block, which is what
   // this test pins.
+  // The live file's url was spectator.co.uk/submit/; since BRO-3106 that
+  // site-utility path is not a review url, so it is no gap at all (asserted
+  // at the end). An article-shaped url keeps this test on the dispatch block.
   const blocked = {
-    url: 'https://www.spectator.co.uk/submit/',
+    url: 'https://www.spectator.co.uk/article/the-story-review/',
     fullText: submitPageText,
     contentTier: 'complete',
     textFetchedAt: '2026-07-17T00:00:00Z',
@@ -90,6 +93,7 @@ test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO
   );
   // The same text tiered 'truncated' (the live file) is dispatchable since BRO-5227.
   assert.equal(classify({ ...blocked, contentTier: 'truncated' }, { tier: 2 }).dispatchable, true);
+  assert.equal(classify({ ...blocked, url: 'https://www.spectator.co.uk/submit/' }, { tier: 2 }), null, 'a site utility page is not a review gap');
 });
 
 test('content fetched within the 12h grace window is NOT yet a gap', () => {

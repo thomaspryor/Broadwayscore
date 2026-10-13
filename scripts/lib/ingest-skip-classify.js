@@ -193,6 +193,9 @@ const EXPECTED_REJECTION_REASONS = [
   // reseller (review-file-writer.js, 2026-09-25). Correct and permanent, same
   // footing as named-non-review-url.
   'submitted-non-review-url',
+  // A site's root utility page (/submit/, /contact-us, /subscribe ...), any
+  // source, NEW files only (review-file-writer.js, BRO-3106). Never a review.
+  'site-utility-url',
   // BRO-2717: unregistered outlet on a listing/ticketing/venue/PR URL. Correct and permanent.
   'unregistered-outlet-non-review-url',
   // The byline is a CREATIVE TEAM member of this same show
@@ -220,6 +223,7 @@ const DURABLE_REJECTION_REASONS = [
   'tour-review',
   'named-non-review-url',
   'submitted-non-review-url',
+  'site-utility-url',
   'unregistered-outlet-non-review-url',
   'credited-person-as-critic',
 ];
@@ -369,6 +373,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'submitted-non-review-url') {
     return `${showId}: ${url} was submitted through the review form but is a ticket, venue, listing or press-release page${detail ? ` (${detail})` : ''} — expected rejection, no action needed. If it really is a review, re-run scripts/ingest-review-from-url.js with --allow-non-review-url.`;
+  }
+  if (reason === 'site-utility-url') {
+    return `${showId}: ${url} is a site utility page (submit/contact/subscribe/login...), not a review${detail ? ` (${detail})` : ''} — expected rejection (BRO-3106), no action needed. If it really is a review, re-run scripts/ingest-review-from-url.js with --allow-non-review-url.`;
   }
   if (reason === 'unregistered-outlet-non-review-url') {
     return `${showId}: ${url} was refused because its outlet is not in outlet-registry.json and the URL is a listing, ticketing, venue or PR-firm page${detail ? ` (${detail})` : ''} — expected rejection (BRO-2717), no action needed. If the site really publishes reviews, register the outlet first, or re-run with --allow-non-review-url.`;

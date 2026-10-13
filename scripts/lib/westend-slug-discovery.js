@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const { foldDiacritics } = require('./title-match');
+const { titleMatchWords, textHasWord } = require('./title-word-match');
 
 const WET_URL_RE = /westendtheatre\.com\/\d+\/shows\/[a-z0-9-]+\/?/i;
 
@@ -58,15 +59,15 @@ function saveSlugMap(mapPath, map) {
  */
 function pickBestWetUrl(results, showTitle) {
   if (!Array.isArray(results) || results.length === 0) return null;
-  const titleNorm = foldDiacritics(showTitle).toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-  const titleWords = titleNorm.split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+  // Join-aware words: the result title is matched RAW, so a glued "preexisting" never hit "Pre-Existing" (BRO-3399)
+  const titleWords = titleMatchWords(foldDiacritics(showTitle));
 
   for (const r of results) {
     const url = r.url || '';
     if (!WET_URL_RE.test(url)) continue;
     if (/\/reviews?\//i.test(url)) continue; // review-roundup posts, not the booking page
     const resultTitle = foldDiacritics(r.title || '').toLowerCase();
-    const matchCount = titleWords.filter(w => resultTitle.includes(w)).length;
+    const matchCount = titleWords.filter(w => textHasWord(resultTitle, w)).length;
     if (titleWords.length > 0 && matchCount < Math.max(1, Math.ceil(titleWords.length * 0.5))) continue;
     const m = url.match(/(https?:\/\/(?:www\.)?westendtheatre\.com\/\d+\/shows\/[a-z0-9-]+\/?)/i);
     if (m) return m[1];

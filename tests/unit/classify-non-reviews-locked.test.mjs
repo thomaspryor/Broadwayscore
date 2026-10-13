@@ -54,8 +54,11 @@ describe('classify-non-reviews locked-file behavior (S1-T3i)', () => {
     assert.equal(written.assignedScore, 90);
     assert.equal(written.fullText, 'Critic-confirmed real review text');
     assert.equal(written.contentTier, 'complete');
-    // Non-PROTECTED flags can change (the audit's intent — correcting misclassification).
-    assert.equal(written.isNonReview, false);
+    // isNonReview is PROTECTED since BRO-3106, so on a _locked file the lock
+    // wins, as it does for wrongShow/isNotReview: the clear needs force=true,
+    // and classify-non-reviews.js counts it in lockedSkipCount.
+    assert.equal(written.isNonReview, true);
+    // Non-PROTECTED fields can still change.
     assert.equal(written.nonReviewType, null);
   });
 

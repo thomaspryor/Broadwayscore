@@ -119,8 +119,21 @@ function applyCanonicalPointerClear(target, plan) {
 // DUPLICATE_POINTER_FIELDS (Notion #1750 closed the duplicateTextOf-only gap), so
 // don't add a second competing walker here.
 
+/**
+ * True when `siblingData` already points at `fileName` through any duplicate
+ * pointer, i.e. fileName is that sibling's canonical. A writer about to mark
+ * fileName as a duplicate of that sibling would close a 2-node cycle
+ * (BRO-3102: collect-review-texts.js's fingerprint dedup re-set the canonical's
+ * duplicateTextOf back at its own loser on every refetch, and the daily
+ * dedupe-same-url-bylines heal cleared it again: 17 such groups on 2026-10-12).
+ */
+function pointsAtFile(siblingData, fileName) {
+  return !!siblingData && DUPLICATE_POINTER_FIELDS.some(f => siblingData[f] === fileName);
+}
+
 module.exports = {
   DUPLICATE_POINTER_FIELDS,
+  pointsAtFile,
   POINTER_CLEAR_MODE,
   planCanonicalPointerClear,
   applyCanonicalPointerClear,

@@ -12,6 +12,7 @@
  * picked up by SERP in the next layer.
  */
 
+const { titleMatchWords, textHasWord } = require('./title-word-match');
 const https = require('https');
 const http = require('http');
 const { URL } = require('url');
@@ -483,19 +484,7 @@ const SITE_SEARCH_ENDPOINTS = {
         const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
         const title = block.match(/<news:title>([^<]+)<\/news:title>/)?.[1];
         if (loc && title) {
-          // Match show title words against the headline
-          const titleLower = title.toLowerCase();
-          const showWords = showTitle.toLowerCase()
-            .replace(/[^a-z0-9\s]/g, '')
-            .split(/\s+/)
-            .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
-          const matchCount = showWords.filter(w => titleLower.includes(w)).length;
-          // BRO-2760: "The Story"-style titles need the full phrase, not substring "story".
-          if (passesGenericTitleIdentity(title, showTitle) &&
-              matchCount >= Math.ceil(showWords.length * 0.5) &&
-              (titleLower.includes('review') || titleLower.includes('theatre') || titleLower.includes('west end'))) {
-            urls.push(loc);
-          }
+          if (dailyMailHeadlineMatches(showTitle, title)) urls.push(loc);
         }
       }
       return urls;
@@ -1516,7 +1505,29 @@ function selectApplicableSiteSearchOutlets(market, show, alreadyFoundIds = new S
   });
 }
 
+/**
+ * Daily Mail Google News sitemap: does this <news:title> headline look like a
+ * review of showTitle? Half the title's significant words, the generic-title
+ * phrase rule (BRO-2760), and a review/theatre cue in the headline.
+ * @param {string} showTitle
+ * @param {string} headline  raw <news:title> text
+ * @returns {boolean}
+ */
+function dailyMailHeadlineMatches(showTitle, headline) {
+  if (!showTitle || !headline) return false;
+  const titleLower = headline.toLowerCase();
+  // Join-aware words (BRO-3399): the old strip glued "Pre-Existing" into
+  // "preexisting", which never matched a headline that keeps its hyphen.
+  const showWords = titleMatchWords(showTitle);
+  const matchCount = showWords.filter(w => textHasWord(titleLower, w)).length;
+  // BRO-2760: "The Story"-style titles need the full phrase, not substring "story".
+  return passesGenericTitleIdentity(headline, showTitle) &&
+    matchCount >= Math.ceil(showWords.length * 0.5) &&
+    (titleLower.includes('review') || titleLower.includes('theatre') || titleLower.includes('west end'));
+}
+
 module.exports = {
+  dailyMailHeadlineMatches,
   searchOutletSites,
   searchOutletSite,
   selectApplicableSiteSearchOutlets,

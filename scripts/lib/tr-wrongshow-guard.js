@@ -15,6 +15,7 @@
 
 const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
 const { foldDiacritics } = require('./title-match');
+const { titleMatchWords, wordPattern } = require('./title-word-match');
 
 const LONG_WORD_STOPWORDS = ['the', 'and', 'for', 'from', 'with'];
 const CORE_WORD_STOPWORDS = ['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to'];
@@ -23,18 +24,22 @@ const CORE_WORD_STOPWORDS = ['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at
 const FILM_TV_PATTERNS = [/\b(?:in cinemas|on screen|film adaptation|movie version|streaming on)\b/i];
 
 function computeMentionCounts(show, fullText) {
-  const reviewLower = (fullText || '').toLowerCase();
-  const showTitleLower = foldDiacritics(show.title || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-  const showWords = showTitleLower.split(/\s+/).filter(w => w.length > 3 && !LONG_WORD_STOPWORDS.includes(w));
-  const coreWords = showTitleLower.split(/\s+/).filter(w => w.length >= 2 && !CORE_WORD_STOPWORDS.includes(w));
+  const reviewLower = foldDiacritics(fullText || '').toLowerCase();
+  // Join-aware words (BRO-3399): the old strip glued "Spider-Man" into
+  // "spiderman", which never matched prose that keeps the hyphen. A word's
+  // joins are optional separators, so no short fragment ("man") is created.
+  const title = foldDiacritics(show.title || '');
+  const allWords = titleMatchWords(title, { minLength: 0, stopwords: [] });
+  const showWords = titleMatchWords(title, { minLength: 3, stopwords: LONG_WORD_STOPWORDS });
+  const coreWords = titleMatchWords(title, { minLength: 1, stopwords: CORE_WORD_STOPWORDS });
+  const count = (src) => (reviewLower.match(new RegExp(`\\b${src}\\b`, 'gi')) || []).length;
 
-  const titleRegex = new RegExp(`\\b${showTitleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
-  const titleMentions = (reviewLower.match(titleRegex) || []).length;
+  const titleMentions = allWords.length > 0 ? count(allWords.map(wordPattern).join('\\s+')) : 0;
   const wordMentions = showWords.length > 0
-    ? Math.max(...showWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
+    ? Math.max(...showWords.map(w => count(wordPattern(w))))
     : 0;
   const coreMentions = coreWords.length > 0
-    ? Math.max(...coreWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
+    ? Math.max(...coreWords.map(w => count(wordPattern(w))))
     : 0;
 
   const mentions = Math.max(titleMentions, wordMentions, coreMentions);

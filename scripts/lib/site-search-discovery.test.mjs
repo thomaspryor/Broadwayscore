@@ -91,3 +91,21 @@ test4899('BRO-4899: every WE T1/T2 press-night outlet has a non-JS (free-pass) d
     assert4899.ok(free.has(outlet), `${outlet} has no free-pass west-end discovery arm`);
   }
 });
+
+// BRO-3399: the Daily Mail sitemap matcher glued hyphenated titles into one
+// word ("spiderman") that could never be a substring of a real headline.
+test('dailyMailHeadlineMatches: hyphenated title matches a hyphenated review headline', () => {
+  const { dailyMailHeadlineMatches } = require('./site-search-discovery.js');
+  // Fails on the old glued tokenizer: 'spiderman' is not in this headline.
+  assert.equal(dailyMailHeadlineMatches('Spider-Man', 'Spider-Man: Turn Off the Dark review - web of woe'), true);
+  assert.equal(dailyMailHeadlineMatches('Pre-Existing Condition', 'Pre-Existing Condition review: Off-Broadway in 2026'), true);
+});
+
+test('dailyMailHeadlineMatches: unrelated or non-review headlines do not match', () => {
+  const { dailyMailHeadlineMatches } = require('./site-search-discovery.js');
+  assert.equal(dailyMailHeadlineMatches('Pre-Existing Condition', 'The Other Show review: a West End hit'), false);
+  // A hyphen split would have made 'man' a word, a substring of 'woman'.
+  assert.equal(dailyMailHeadlineMatches('Spider-Man', 'Woman in Mind review: a West End triumph'), false);
+  assert.equal(dailyMailHeadlineMatches('Spider-Man', 'Spider-Man crowds pack Times Square'), false, 'no review/theatre cue');
+  assert.equal(dailyMailHeadlineMatches('', 'anything review'), false);
+});

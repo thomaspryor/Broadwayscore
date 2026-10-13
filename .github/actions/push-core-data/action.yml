@@ -599,34 +599,26 @@ runs:
             node -e '
               const fs = require("fs");
               try {
-                const ours = JSON.parse(fs.readFileSync("/tmp/our-audience-buzz.json", "utf8"));
+                const path = require("path");
+                const { reconcileAudienceBuzz } = require(path.join(process.env.GITHUB_WORKSPACE, "scripts/lib/reconcile-audience-buzz"));
                 const remote = JSON.parse(fs.readFileSync("/tmp/remote-audience-buzz.json", "utf8"));
                 const current = JSON.parse(fs.readFileSync("audience-buzz.json", "utf8"));
-                const shows = current.shows || {};
-                const remoteShows = remote.shows || {};
-                let recovered = 0;
-                for (const [id, entry] of Object.entries(remoteShows)) {
-                  if (!shows[id]) {
-                    // Remote has a show we dont — keep it
-                    shows[id] = entry;
-                    recovered++;
-                  } else {
-                    // Both have this show — merge sources we are missing
-                    const ourSrc = shows[id].sources || {};
-                    const remoteSrc = entry.sources || {};
-                    for (const [src, data] of Object.entries(remoteSrc)) {
-                      if (data && data.score != null && (!ourSrc[src] || ourSrc[src].score == null)) {
-                        ourSrc[src] = data;
-                        recovered++;
-                      }
-                    }
-                    shows[id].sources = ourSrc;
-                  }
-                }
+                // BRO-3248: a remote-only key is copied back only for a live,
+                // non-retired show id, so a deliberately dropped orphan key stays
+                // dropped. Live = the post-rebase shows.json, which the shows
+                // reconcile above has already given any concurrently added row
+                // (not remote shows.json: it still lists a just-renamed old id).
+                let liveIds;
+                try { const d = JSON.parse(fs.readFileSync("shows.json", "utf8")); liveIds = new Set((d.shows || d).map((s) => s && s.id).filter(Boolean)); } catch (e) { console.log("::warning::shows.json unreadable for the audience-buzz orphan filter (" + e.message + "); recovering every remote key"); }
+                let retiredIds = new Set();
+                try { if (fs.existsSync("retired-show-ids.json")) retiredIds = new Set(require(path.join(process.env.GITHUB_WORKSPACE, "scripts/lib/retired-show-ids")).loadRetiredIds({ listPath: path.resolve("retired-show-ids.json") }).map((e) => e.id)); } catch (e) { console.log("::warning::retired-show-ids.json unreadable for the audience-buzz reconcile (" + e.message + "); no retired filter this run"); }
+                const { recovered, skippedOrphans } = reconcileAudienceBuzz(current, remote, { liveIds, retiredIds });
                 if (recovered > 0) {
-                  current.shows = shows;
                   fs.writeFileSync("audience-buzz.json", JSON.stringify(current, null, 2) + "\n");
                   console.log("Reconciled " + recovered + " entries from remote audience-buzz.json");
+                }
+                if (skippedOrphans.length > 0) {
+                  console.log("Did not re-add " + skippedOrphans.length + " remote audience-buzz key(s) that are not live shows: " + skippedOrphans.join(", "));
                 }
               } catch (e) {
                 console.error("Reconciliation failed (non-fatal):", e.message);

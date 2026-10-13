@@ -15,7 +15,13 @@
  *   }
  *
  * URL matching is normalization-aware: tracking params (utm_*, fbclid, ref,
- * mc_eid, triedRedirect) and trailing slashes are ignored.
+ * mc_eid, triedRedirect), trailing slashes and the http/https scheme are
+ * ignored (BRO-3403: an http entry must block the https twin a site migration
+ * produces). The rest of the query string is KEPT: outlets like Lighting &
+ * Sound America tell articles apart only by ?ID=, so dropping it would block a
+ * whole outlet. Path case and the #fragment are kept too (paths can be
+ * case-sensitive and hash-routed sites put the article id in the fragment;
+ * under-blocking is the safe direction).
  */
 
 const fs = require('fs');
@@ -74,6 +80,8 @@ function isBlocked(blocklist, url) {
   return !!findBlockedEntry(blocklist, url);
 }
 
+// Comparison key (block-review.js also prints it): http folds into https so
+// the two twins share one key. Every caller normalizes BOTH sides through this.
 function _normalize(url) {
   try {
     const u = new URL(url);
@@ -81,9 +89,10 @@ function _normalize(url) {
     for (const k of [...u.searchParams.keys()]) {
       if (/^utm_|^fbclid$|^triedRedirect$|^ref$|^mc_eid$/.test(k)) u.searchParams.delete(k);
     }
+    if (u.protocol === 'http:') u.protocol = 'https:';
     return u.toString().replace(/\/$/, '');
   } catch {
-    return String(url).toLowerCase().replace(/\/$/, '');
+    return String(url).toLowerCase().replace(/^http:/, 'https:').replace(/\/$/, '');
   }
 }
 

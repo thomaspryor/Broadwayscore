@@ -52,6 +52,7 @@
  *   --test-url="URL" - Test single URL with all tiers
  */
 
+const { pointsAtFile } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
@@ -5447,6 +5448,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         const siblingPath = path.join(showDir, sibling);
         try {
           const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf8'));
+          // This file is already that sibling's canonical: pointing back would
+          // close a cycle the daily dedupe heal then has to clear (BRO-3102).
+          if (pointsAtFile(siblingData, currentFile)) continue;
           if (siblingData.fullText) {
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {

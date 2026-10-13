@@ -129,3 +129,13 @@ test('canonical-duplicate-pointers — canonical pointer clearing', async (t) =>
     assert.equal(applyCanonicalPointerClear(null, { drop: ['duplicateOf'] }), false);
   });
 });
+
+// BRO-3102: the collector's fingerprint dedup must not point a canonical back
+// at the loser that already points at it (2-node cycle, re-set every refetch).
+test('pointsAtFile detects a sibling that already treats this file as canonical', () => {
+  const { pointsAtFile } = require('../../scripts/lib/canonical-duplicate-pointers.js');
+  assert.equal(pointsAtFile({ duplicateOf: 'a--wexler.json' }, 'a--wexler.json'), true);
+  assert.equal(pointsAtFile({ duplicateTextOf: 'a--wexler.json' }, 'a--wexler.json'), true);
+  assert.equal(pointsAtFile({ duplicateOf: 'other.json' }, 'a--wexler.json'), false);
+  assert.equal(pointsAtFile(null, 'a--wexler.json'), false);
+});

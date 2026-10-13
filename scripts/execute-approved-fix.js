@@ -21,6 +21,8 @@
  *   review-file-op — Move/delete/rename review files in data/review-texts/
  *   review-field-edit — Compare-and-set one allowlisted field on a review file
  *                       (scripts/lib/review-field-edit.js; BRO-4216)
+ *   drop-orphan-key — Remove or move one audience-buzz.json key that is not a
+ *                     shows.json id (scripts/lib/orphan-key-action.js; BRO-3248)
  *
  * Env vars:
  *   ISSUE_NUMBER       - GitHub issue number (reader feedback), or bro-N[-x] for
@@ -48,10 +50,11 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
+const { applyDropOrphanKey } = require('./lib/orphan-key-action.js');
 const { applyRetitleShow } = require('./lib/retitle-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./lib/commercial-record-checks.js');
-const { unretireId } = require('./lib/retired-show-ids.js');
+const { unretireId, loadRetiredIds } = require('./lib/retired-show-ids.js');
 const { executeReviewFieldEditIn } = require('./lib/review-field-edit.js');
 const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
 const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
@@ -424,6 +427,45 @@ function executeRetireShow(action) {
     const tail = reverted ? 'registry entry reverted' : `registry entry NOT reverted (${revertError || 'not found'}) — remove ${action.id} from data/retired-show-ids.json and data/deleted-shows.json by hand`;
     return { ok: false, reason: `retire-show ${action.id}: shows.json save failed (${e.message}); ${tail}` };
   }
+  // The retired id's audience-buzz key would be an orphan from now on
+  // (BRO-3248). A duplicate's data moves to the kept row when that row has
+  // none; otherwise it is dropped. Best-effort: the row is retired either way.
+  try {
+    const buzz = loadJsonFile('data/audience-buzz.json');
+    if (buzz && buzz.shows && Object.prototype.hasOwnProperty.call(buzz.shows, action.id)) {
+      const kept = action.duplicateOf;
+      if (kept && !Object.prototype.hasOwnProperty.call(buzz.shows, kept)) {
+        buzz.shows[kept] = buzz.shows[action.id];
+        result.msg = `${result.msg}; moved its audience-buzz.json entry to ${kept}`;
+      } else {
+        result.msg = `${result.msg}; dropped its audience-buzz.json key`;
+      }
+      delete buzz.shows[action.id];
+      saveJsonFile('data/audience-buzz.json', buzz);
+    }
+  } catch (e) {
+    result.msg = `${result.msg}; audience-buzz.json key NOT dropped (${e.message}), audit-orphan-show-ids.js will report it`;
+  }
+  return result;
+}
+
+// Cached across consecutive drop-orphan-key actions; any other action may
+// change shows.json or the retired registry, so it clears the cache.
+let _idSets = null;
+function _showIdSets() {
+  if (_idSets) return _idSets;
+  const data = loadJsonFile('data/shows.json');
+  const liveIds = new Set((data.shows || data).map(s => s && s.id).filter(Boolean));
+  const retiredIds = new Set(loadRetiredIds().map(e => e.id));
+  _idSets = { liveIds, retiredIds };
+  return _idSets;
+}
+
+function executeDropOrphanKey(action) {
+  const rel = `data/${action.file}`;
+  const data = loadJsonFile(rel);
+  const result = applyDropOrphanKey(data.shows, action, _showIdSets());
+  if (result.ok) saveJsonFile(rel, data);
   return result;
 }
 
@@ -633,6 +675,7 @@ async function main() {
     console.log(`\nExecuting: ${action.type} — ${action.description || action.field || action.script || action.operation}`);
 
     let result;
+    if (action.type !== 'drop-orphan-key') _idSets = null;
     switch (action.type) {
       case 'data-edit':
         result = executeDataEdit(action);
@@ -654,6 +697,9 @@ async function main() {
         break;
       case 'add-commercial-entry':
         result = executeAddCommercialEntry(action);
+        break;
+      case 'drop-orphan-key':
+        result = executeDropOrphanKey(action);
         break;
       case 'review-field-edit':
         result = executeReviewFieldEdit(action, { fixId: planData.planId || String(issueNumber), at: new Date().toISOString() });
@@ -678,12 +724,14 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry' || a.type === 'drop-orphan-key');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
     // add-show / retire-show / retitle-show / add-commercial-entry carry no `file`.
     const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
     const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
+    // retire-show also drops or moves the id's audience-buzz.json key (BRO-3248).
+    if (dataTouching.some(a => a.type === 'retire-show') && !changedFiles.includes('audience-buzz.json')) changedFiles.push('audience-buzz.json');
     console.log('\nRunning validation...');
     const touchedCommercialKeys = dataTouching
       .filter(a => a.type === 'add-commercial-entry' || a.file === 'commercial.json')

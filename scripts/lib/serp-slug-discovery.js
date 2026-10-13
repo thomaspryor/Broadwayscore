@@ -30,6 +30,7 @@ const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
  * @returns {Promise<string|null>} The discovered slug, or null
  */
 const { foldDiacritics } = require('./title-match');
+const { titleMatchWords, textHasWord } = require('./title-word-match');
 
 async function discoverSlug(siteDomain, showTitle, pathPrefix) {
   // Need at least one SERP provider — same gate as before the refactor.
@@ -62,15 +63,15 @@ async function discoverSlug(siteDomain, showTitle, pathPrefix) {
   // Title validation: SERP result title must contain at least half of the
   // show's meaningful words to prevent wrong-show matches (e.g., "Black Is
   // The Color" matching a Mary Poppins page).
-  const titleNorm = foldDiacritics(showTitle).toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-  const titleWords = titleNorm.split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+  // Join-aware words: the result title is matched RAW, so a glued "preexisting" never hit "Pre-Existing" (BRO-3399)
+  const titleWords = titleMatchWords(foldDiacritics(showTitle));
 
   for (const result of results) {
     const url = result.url || '';
     if (!url.includes(siteDomain)) continue;
 
     const resultTitle = foldDiacritics(result.title || '').toLowerCase();
-    const matchCount = titleWords.filter(w => resultTitle.includes(w)).length;
+    const matchCount = titleWords.filter(w => textHasWord(resultTitle, w)).length;
     if (titleWords.length > 0 && matchCount < Math.max(1, Math.ceil(titleWords.length * 0.5))) {
       continue; // Skip — result title doesn't match our show
     }
