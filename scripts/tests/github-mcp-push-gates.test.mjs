@@ -1,0 +1,161 @@
+// BRO-2394: GitHub MCP file writes skipped the Bash-only visual-QA push gate.
+// Drives the real .claude/hooks/mcp-push-visual-gate.sh, with a stub gate for
+// the adapter's own logic and the real pre-push-visual-gate.sh end to end
+// (CLAUDE.md §15).
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync, execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const HOOKS = path.join(REPO_ROOT, '.claude', 'hooks');
+const ADAPTER = path.join(HOOKS, 'mcp-push-visual-gate.sh');
+
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-2394-'));
+test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+const transcript = path.join(scratch, 'transcript.jsonl');
+fs.writeFileSync(transcript, '');
+let homeN = 0;
+const freshHome = () => { const h = path.join(scratch, `home-${homeN++}`); fs.mkdirSync(h); return h; };
+
+// Stub gate: records the input it was given, exits with $STUB_RC.
+const stub = path.join(scratch, 'stub-gate.sh');
+const stubSeen = path.join(scratch, 'stub-seen.json');
+fs.writeFileSync(stub, `#!/usr/bin/env bash\ncat > "${stubSeen}"\necho "stub gate says no" >&2\nexit "\${STUB_RC:-2}"\n`);
+
+const BWS = { owner: 'thomaspryor', repo: 'Broadwayscore' };
+const payload = (tool, input) => ({
+  tool_name: `mcp__github__${tool}`, tool_input: input,
+  session_id: 'bro-2394-test', transcript_path: transcript, tool_use_id: 'tu-1',
+});
+const ui = (extra = {}) => payload('push_files', {
+  ...BWS, branch: 'land/bro-1-x', message: 'm', files: [{ path: 'src/app/page.tsx', content: 'x' }], ...extra,
+});
+
+function run(input, { env = {}, home = freshHome(), cwd = REPO_ROOT } = {}) {
+  fs.rmSync(stubSeen, { force: true });
+  const r = spawnSync('bash', [ADAPTER], {
+    cwd, input: JSON.stringify(input), encoding: 'utf8', timeout: 60000,
+    env: { ...process.env, HOME: home, BSC_HOOK_TEST: '1', MCP_PUSH_VISUAL_GATE: stub, MCP_PUSH_GATES_ENFORCE: '', ...env },
+  });
+  const seen = fs.existsSync(stubSeen) ? JSON.parse(fs.readFileSync(stubSeen, 'utf8')) : null;
+  return { status: r.status, stdout: r.stdout || '', stderr: r.stderr || '', seen, home };
+}
+
+test('UI files in a Broadwayscore MCP push run the gate with a git-push-shaped input', () => {
+  const r = run(ui());
+  assert.equal(r.status, 0, 'advisory: never blocks');
+  assert.ok(r.seen, 'gate was invoked');
+  assert.equal(r.seen.tool_input.command, 'git push origin HEAD');
+  assert.equal(r.seen.transcript_path, transcript);
+  assert.equal(r.seen.session_id, 'bro-2394-test');
+});
+
+test('advisory: a would-block becomes model-visible additionalContext plus a log line', () => {
+  const r = run(ui());
+  const out = JSON.parse(r.stdout);
+  assert.equal(out.hookSpecificOutput.hookEventName, 'PreToolUse');
+  assert.match(out.hookSpecificOutput.additionalContext, /ADVISORY \(BRO-2394.*src\/app\/page\.tsx.*stub gate says no/);
+  assert.equal(out.hookSpecificOutput.permissionDecision, undefined, 'must never auto-allow past permission prompts');
+  const log = fs.readFileSync(path.join(r.home, '.claude', 'logs', 'mcp-push-visual-gate.log'), 'utf8');
+  assert.match(log, /mcp__github__push_files\tland\/bro-1-x\tsrc\/app\/page\.tsx/);
+});
+
+test('enforce mode (env or HOME file) passes the gate block through as exit 2', () => {
+  const r = run(ui(), { env: { MCP_PUSH_GATES_ENFORCE: '1' } });
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /stub gate says no/);
+  const home = freshHome();
+  fs.mkdirSync(path.join(home, '.claude'));
+  fs.writeFileSync(path.join(home, '.claude', 'MCP_PUSH_GATES_ENFORCE'), '');
+  assert.equal(run(ui(), { home }).status, 2);
+});
+
+test('gate passing means silence, in either mode', () => {
+  for (const env of [{ STUB_RC: '0' }, { STUB_RC: '0', MCP_PUSH_GATES_ENFORCE: '1' }]) {
+    const r = run(ui(), { env });
+    assert.equal(r.status, 0);
+    assert.equal(r.stdout, '');
+  }
+});
+
+test('no UI files, another repo, or a non-write tool: the gate is never invoked', () => {
+  const cases = [
+    payload('push_files', { ...BWS, branch: 'land/x', message: 'm', files: [{ path: 'scripts/x.js', content: '' }] }),
+    payload('push_files', { owner: 'thomaspryor', repo: 'broadway-review-texts', branch: 'main', message: 'm', files: [{ path: 'src/app/page.tsx' }] }),
+    payload('create_branch', { ...BWS, branch: 'land/x' }),
+  ];
+  for (const c of cases) {
+    const r = run(c, { env: { MCP_PUSH_GATES_ENFORCE: '1' } });
+    assert.equal(r.status, 0);
+    assert.equal(r.seen, null, `gate ran for ${JSON.stringify(c.tool_input).slice(0, 80)}`);
+  }
+});
+
+test('create_or_update_file and delete_file are covered; owner/repo spellings normalise', () => {
+  for (const [tool, input] of [
+    ['create_or_update_file', { ...BWS, branch: 'land/x', path: 'src/components/A.tsx', message: 'm', content: 'x' }],
+    ['delete_file', { ...BWS, branch: 'land/x', path: 'tailwind.config.js', message: 'm' }],
+    ['push_files', { owner: ' ThomasPryor ', repo: 'Broadwayscore.git', branch: 'refs/heads/land/x', message: 'm', files: [{ path: '/src/app/x.css' }] }],
+  ]) {
+    assert.ok(run(payload(tool, input)).seen, `${tool} did not reach the gate`);
+  }
+});
+
+test('NO-VERIFY in the commit message becomes the gate\'s in-command bypass comment', () => {
+  const r = run(ui({ message: 'fix header NO-VERIFY: copy-only change, no layout touched' }));
+  assert.equal(r.seen.tool_input.command, 'git push origin HEAD # NO-VERIFY: copy-only change, no layout touched');
+  assert.equal(run(ui({ message: 'NO-VERIFY: short' })).seen.tool_input.command, 'git push origin HEAD', 'under 15 chars is ignored');
+});
+
+test('the stub seam is ignored unless BSC_HOOK_TEST=1', () => {
+  const r = run(ui(), { env: { BSC_HOOK_TEST: '', MCP_PUSH_GATES_ENFORCE: '1' } });
+  assert.equal(r.seen, null);
+});
+
+test('UI_PATTERN is identical to pre-push-visual-gate.sh\'s (drift guard)', () => {
+  const pat = (f) => fs.readFileSync(path.join(HOOKS, f), 'utf8').match(/^UI_PATTERN='([^']+)'/m)?.[1];
+  assert.ok(pat('pre-push-visual-gate.sh'));
+  assert.equal(pat('mcp-push-visual-gate.sh'), pat('pre-push-visual-gate.sh'));
+});
+
+test('.claude/settings.json registers the adapter on the MCP file-write tools', () => {
+  const settings = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
+  const entry = settings.hooks.PreToolUse.find((h) => (h.hooks || []).some((x) => /mcp-push-visual-gate\.sh/.test(x.command)));
+  assert.ok(entry, 'not registered');
+  const re = new RegExp(`^(?:${entry.matcher})$`);
+  for (const t of ['push_files', 'create_or_update_file', 'delete_file']) assert.ok(re.test(`mcp__github__${t}`), t);
+  assert.ok(!re.test('mcp__github__create_branch'));
+});
+
+test('end to end with the REAL visual gate: an unverified UI commit is reported, a backend one is not', () => {
+  // Scratch repo: origin/main plus one local commit, with the gate's libs copied in.
+  const origin = path.join(scratch, 'origin.git');
+  const repo = path.join(scratch, 'repo');
+  execFileSync('git', ['init', '-q', '--bare', '-b', 'main', origin]);
+  execFileSync('git', ['init', '-q', '-b', 'main', repo]);
+  const git = (...a) => execFileSync('git', ['-C', repo, '-c', 'user.email=t@e', '-c', 'user.name=t', ...a], { encoding: 'utf8' });
+  fs.mkdirSync(path.join(repo, 'scripts'));
+  fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(repo, 'scripts', 'lib'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'README.md'), 'x');
+  git('add', '-A'); git('commit', '-q', '-m', 'base');
+  git('remote', 'add', 'origin', origin); git('push', '-q', 'origin', 'main');
+  git('checkout', '-q', '-b', 'work');
+  fs.mkdirSync(path.join(repo, 'src', 'app'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'src', 'app', 'page.tsx'), 'export default 1');
+  git('add', '-A'); git('commit', '-q', '-m', 'ui');
+
+  const env = { BSC_HOOK_TEST: '', MCP_PUSH_VISUAL_GATE: '' };
+  const blocked = run(ui(), { cwd: repo, env });
+  assert.equal(blocked.status, 0);
+  assert.match(blocked.stdout, /ADVISORY \(BRO-2394/, `real gate did not report: ${blocked.stdout}${blocked.stderr}`);
+  const enforced = run(ui(), { cwd: repo, env: { ...env, MCP_PUSH_GATES_ENFORCE: '1' } });
+  assert.equal(enforced.status, 2);
+  assert.match(enforced.stderr, /BLOCKED: push of UI changes without a visual-qa verdict/);
+
+  git('checkout', '-q', 'main');   // local diff vs origin/main has no UI files
+  assert.equal(run(ui(), { cwd: repo, env: { ...env, MCP_PUSH_GATES_ENFORCE: '1' } }).status, 0);
+});
