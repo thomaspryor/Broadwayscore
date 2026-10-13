@@ -524,7 +524,7 @@ function pathVerifiabilityGuard(task, pathCheck, opts) {
 // exposed to the same class; fixing the CAUSE means tests never need a live
 // mutating git op at all, which this seam makes possible.
 function resolveVacuousCheck(gate, repoOpts, deps = {}) {
-  const fetch = deps.fetchOriginMain || fetchOriginMain;
+  const fetchMain = deps.fetchOriginMain || fetchOriginMain;
   const exists = deps.pathExistsOnOriginMain || pathExistsOnOriginMain;
   if (!gate || !gate.cmd || !isTestFCommand(gate.cmd)) return null;
   // Arity errors (`test -f a b`) are decided WITHOUT ever consulting existsFn
@@ -541,7 +541,7 @@ function resolveVacuousCheck(gate, repoOpts, deps = {}) {
       throw new Error('unreachable: arity errors never consult existsFn');
     });
   }
-  if (!fetch(repoOpts)) return null;
+  if (!fetchMain(repoOpts)) return null;
   const cache = new Map();
   const existsFn = (p) => {
     if (!cache.has(p)) cache.set(p, exists(p, repoOpts));

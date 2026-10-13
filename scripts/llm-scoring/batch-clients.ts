@@ -14,6 +14,10 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 
+// AbortSignal.timeout bounds the whole request including the body, so batch
+// file transfers get a long ceiling; ordinary API calls use 5 min (BRO-3603).
+const BATCH_TRANSFER_TIMEOUT_MS = 30 * 60 * 1000;
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const {
   parseAnthropicBatchResult,
@@ -81,7 +85,8 @@ export async function submitOpenAIBatch(
   form.append('file', new Blob([jsonl], { type: 'application/jsonl' }), 'batch-input.jsonl');
 
   const uploadRes = await fetch(`${OPENAI_BASE}/files`, {
-    signal: AbortSignal.timeout(300000),
+    // Whole-body deadline: result/upload files and inline Gemini results can be large.
+    signal: AbortSignal.timeout(BATCH_TRANSFER_TIMEOUT_MS),
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}` },
     body: form,
@@ -146,7 +151,8 @@ export async function getOpenAIBatchStatus(
  */
 export async function fetchOpenAIBatchErrors(errorFileId: string, apiKey: string): Promise<VendorResult[]> {
   const res = await fetch(`${OPENAI_BASE}/files/${errorFileId}/content`, {
-    signal: AbortSignal.timeout(300000),
+    // Whole-body deadline: result/upload files and inline Gemini results can be large.
+    signal: AbortSignal.timeout(BATCH_TRANSFER_TIMEOUT_MS),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) {
@@ -163,7 +169,8 @@ export async function fetchOpenAIBatchErrors(errorFileId: string, apiKey: string
 
 export async function fetchOpenAIBatchResults(outputFileId: string, apiKey: string): Promise<VendorResult[]> {
   const res = await fetch(`${OPENAI_BASE}/files/${outputFileId}/content`, {
-    signal: AbortSignal.timeout(300000),
+    // Whole-body deadline: result/upload files and inline Gemini results can be large.
+    signal: AbortSignal.timeout(BATCH_TRANSFER_TIMEOUT_MS),
     headers: { Authorization: `Bearer ${apiKey}` },
   });
   if (!res.ok) {
@@ -213,7 +220,8 @@ export async function getGeminiBatchStatus(
   apiKey: string
 ): Promise<{ status: VendorBatchStatus; response?: any }> {
   const res = await fetch(`${GEMINI_BASE}/${operationName}?key=${apiKey}`, {
-    signal: AbortSignal.timeout(300000),
+    // Whole-body deadline: result/upload files and inline Gemini results can be large.
+    signal: AbortSignal.timeout(BATCH_TRANSFER_TIMEOUT_MS),
     headers: { 'Content-Type': 'application/json' },
   });
   if (!res.ok) {
