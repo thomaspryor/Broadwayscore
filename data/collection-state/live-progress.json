@@ -1,31 +1,37 @@
 {
-  "updatedAt": "2026-10-13T12:32:32.850Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-10-13T12:37:20.095Z",
+  "processed": 56,
+  "failed": 27,
+  "successRate": "67.5%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 31,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 8,
+    "scrapingbee": 2,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 12
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-13T12:31:39.519Z",
+      "t": "2026-10-13T12:25:21.784Z",
       "event": "bb-session",
-      "session": "ac8bab76",
-      "url": "https://www.wsj.com/articles/burn-this-review-red-hot-romance-fizzles-1155561505"
+      "session": "bf5eede2",
+      "url": "https://littlelondonwhispers.substack.com/p/whos-afraid-of-virginia-woolf"
     },
     {
-      "t": "2026-10-13T12:31:40.471Z",
+      "t": "2026-10-13T12:35:26.720Z",
+      "event": "bb-session",
+      "session": "85b1d5a6",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-13T12:35:27.114Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "talkinbroadway.com"
     }
   ]
 }
