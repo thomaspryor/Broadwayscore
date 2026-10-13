@@ -20,6 +20,7 @@ export interface VenueBoxResult { ok: boolean; text?: string; reason: string; bo
 
 const PRICE = /\(\$\s?\d[\d.,]*(?:\s?[-–]\s?\$?\d[\d.,]*)?\)/g;
 const TAIL = /^(?:,?\s*\d{3}[-.]\d{3}[-.]\d{4}(?:\s*\/\s*\d{3}[-.]\d{3}[-.]\d{4})*)?(?:,?\s*(?:closes|extended|open-ended|through)[^.]{0,30}?(?:\d{4}|\d{1,2}\b))?/;
+const ADDRESS = /\b\d{1,4}\s+(?:[NSEW]\.?\s+)?[\w.']+(?:\s+[\w.']+)?\s+(?:St|Street|Ave|Avenue|Blvd|Road|Rd|Place|Pl|Square|Broadway)\b\.?,?\s*(?:[A-Z][\w.' ]{0,40},?\s*)?$/;
 const CLUSTER_GAP = 300;
 const MIN_SECTION = 800;
 
@@ -32,6 +33,11 @@ export function findPriceBoxes(text: string): Box[] {
     let end = idx + m[0].length;
     const tail = TAIL.exec(text.slice(end));
     if (tail) end += tail[0].length;
+    // A production box carries a phone number / run dates after the price, or
+    // a street address before it; a bare "($299)" in the prose is not a box.
+    const hasTail = !!(tail && tail[0].trim().length >= 6);
+    const hasAddress = ADDRESS.test(text.slice(Math.max(0, idx - 60), idx));
+    if (!hasTail && !hasAddress) continue;
     // The box begins after the sentence before it ends; the 90 chars before
     // the price hold the theatre name either way (used for venue matching).
     const windowStart = Math.max(0, idx - 120);
@@ -51,10 +57,18 @@ function venueWords(venue: string | null | undefined): string[] {
     .split(/\s+/).filter(Boolean);
 }
 
+function hasWord(hay: string, w: string): boolean {
+  return new RegExp(`(?<![a-z0-9])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`).test(hay);
+}
+
 function boxNamesVenue(box: Box, words: string[]): boolean {
-  if (!words.length) return false;
+  // Whole words only ("54" must not match "W. 54th St."), and at least one
+  // word longer than 3 chars so a venue never matches on "in" or a number.
+  if (!words.length || !words.some(w => w.length > 3)) return false;
+  if (words.every(w => hasWord(box.lead, w))) return true;
   // "Golden Theatre" for "John Golden Theatre": allow dropping a first name.
-  return words.every(w => box.lead.includes(w)) || (words.length >= 2 && words.slice(1).every(w => box.lead.includes(w)));
+  const rest = words.slice(1);
+  return words.length >= 2 && rest.some(w => w.length > 3) && rest.every(w => hasWord(box.lead, w));
 }
 
 export function titleVariants(title: string): string[] {
