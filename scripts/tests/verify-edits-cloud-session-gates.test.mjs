@@ -1907,7 +1907,14 @@ test('BRO-5068: honest reasons that say "missing"/"unknown" pass; reworded "did 
   const calls = [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, unknownSkill('what-else'), unknownSkill('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE];
   const honest = 'Done.\nNO-WHAT-ELSE: what-else already ran on this branch today; nothing missing\nNO-WRAP-UP: doc-only commit, wrap-up outcome posted earlier, no unknowns\n\nSAFE TO EXIT';
   assertAllowed(chain('cmd-honest2', calls, honest), 'missing/unknown in an honest reason');
-  for (const ex of ['the slash commands did not load here', 'skills unavailable in this session', 'wrap-up isnt available', 'no such skill: what-else']) {
+  // BRO-5221 review: honest reasons near "command"/"skill" with not found/present/installed.
+  for (const ok of ['the command not present in diff', 'ship-check ran in parent session; secrets not found in diff', 'the hook command is not installed on CI']) {
+    assertAllowed(chain('cmd-honest3', calls, `Done.\nNO-WHAT-ELSE: ${ok}\nNO-WRAP-UP: ${ok}\n\nSAFE TO EXIT`), ok);
+  }
+  for (const ex of ['the slash commands did not load here', 'skills unavailable in this session', 'wrap-up isnt available', 'no such skill: what-else',
+    // BRO-5221 incident wording (session_01SBtqUQy2vUqYa7GK6mAnCU) and near variants.
+    "the /what-else and /wrap-up commands aren't loadable as skills in this cloud session",
+    'the skill could not be loaded', 'wrap-up command is not loadable here']) {
     const msg = `Done.\nNO-WHAT-ELSE: ${ex}\nNO-WRAP-UP: ${ex}\n\nSAFE TO EXIT`;
     assertBlocked(chain('cmd-excuse2', calls, msg), ex);
   }

@@ -1212,7 +1212,7 @@ CHAIN_FALLBACK_FILES = {
 # A bypass whose only reason is "the command did not load" is refused (fallback exists).
 _CHAIN_NOT_LOADED_RE = re.compile(
     r'(?:skill|command|/?(?:ship-check|what-else|wrap-up|second-opinion))[^\n]{0,40}?'
-    r'(?:not\s+(?:loaded|available|registered)|n\'?t\s+(?:loaded|available)|did\s*n[o\']?t\s+load'
+    r'(?:(?:not|n\'?t)\s+(?:be\s+)?(?:load\w*|availab\w*|registered)|did\s*n[o\']?t\s+load'
     r'|failed\s+to\s+load|unavailable|absent)'
     r'|unknown\s+skill|no\s+such\s+(?:skill|command)', re.IGNORECASE)
 
