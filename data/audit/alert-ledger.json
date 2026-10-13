@@ -164,9 +164,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-13T18:28:49.845Z",
-      "lastSeen": "2026-10-13T18:28:49.845Z",
-      "lastNotifiedAt": "2026-10-13T18:28:49.845Z",
+      "incidentOpenedAt": "2026-10-13T18:32:13.929Z",
+      "lastSeen": "2026-10-13T18:32:13.929Z",
+      "lastNotifiedAt": "2026-10-13T18:32:13.929Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 139,
       "cardId": null,
@@ -15942,21 +15942,16 @@
       "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
-      "firstSeen": "2026-10-13T14:59:32.419Z",
-      "incidentOpenedAt": "2026-10-13T14:59:32.419Z",
-      "lastSeen": "2026-10-13T18:03:50.046Z",
-      "lastNotifiedAt": "2026-10-13T14:59:32.419Z",
+      "firstSeen": "2026-10-13T17:40:32.493Z",
+      "incidentOpenedAt": "2026-10-13T17:40:32.493Z",
+      "lastSeen": "2026-10-13T17:40:32.493Z",
+      "lastNotifiedAt": "2026-10-13T17:40:32.493Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5281",
-      "dispatch": {
-        "requestedAt": "2026-10-13T14:59:32.419Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38406423041",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38406423041"
-      },
-      "silentRefires": 1
+      "resolvedAt": "2026-10-13T18:32:13.472Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-3444-digest-recheck": {
       "status": "open",
@@ -16010,18 +16005,18 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/bro-5261-s3-3208": {
+    "test-yml:red:Lint Workflows:688d32b5": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-5261-s3-3208",
-      "firstSeen": "2026-10-13T14:41:12.067Z",
-      "incidentOpenedAt": "2026-10-13T14:41:12.067Z",
-      "lastSeen": "2026-10-13T14:41:12.067Z",
-      "lastNotifiedAt": "2026-10-13T14:41:12.067Z",
-      "lastSurfacedAt": "2026-10-13T14:41:12.067Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Lint Workflows / Audit — no API route dispatches a workflow from GET (BRO-5262)",
+      "firstSeen": "2026-10-13T18:32:13.482Z",
+      "incidentOpenedAt": "2026-10-13T18:32:13.482Z",
+      "lastSeen": "2026-10-13T18:32:13.482Z",
+      "lastNotifiedAt": "2026-10-13T18:32:13.482Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-5286"
     }
   }
 }
