@@ -76,7 +76,11 @@ function classifyIncompleteReason(review, failedFetchEntry) {
   const failureReason = failedFetchEntry?.failureReason;
 
   // Priority 1: Wrong content
-  if (review.wrongShow || review.wrongProduction) {
+  // A wrongShow flag a person cleared (wrongShowExplicitlyCleared) is not wrong
+  // content; stamping it kept hand-cleared reviews out of scoring (BRO-4317).
+  // Lazy require: review-guards loads a large dependency graph.
+  const wrongShowLive = review.wrongShow && !require('./review-guards').wrongShowExplicitlyCleared(review);
+  if (wrongShowLive || review.wrongProduction) {
     const detail = review.wrongProductionReason
       || review.wrongShowReason
       || review.contentMismatchNote

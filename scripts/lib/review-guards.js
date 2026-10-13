@@ -1920,6 +1920,19 @@ function _rejectionWasWrongShow(data) {
   return data.rejectionReason == null && data.rejectedBy == null && data.rejectionReasoning == null;
 }
 
+/**
+ * A clear aimed at the wrongShow flag itself: wrongShowManualClear (a person,
+ * via an approved-fix plan) or wrongShowOverride (a person, or a script that
+ * verified a joint review, e.g. flag-combined-reviews.js). Narrower than
+ * wrongShowCleared, which also accepts production-level clears that never said
+ * "right show". The rebuild, explainExclusion, incomplete-reason and
+ * scoring-delta all gate wrongShow on this one predicate (BRO-4317: the
+ * rebuild ignored it, so 23 hand-cleared reviews stayed off the site).
+ */
+function wrongShowExplicitlyCleared(data) {
+  return !!data && (data.wrongShowManualClear === true || data.wrongShowOverride === true);
+}
+
 function rejectedAtHumanCleared(data) {
   if (!data) return false;
   if (
@@ -1927,8 +1940,7 @@ function rejectedAtHumanCleared(data) {
     data.wrongProductionOverride === true ||
     data.humanReviewedWrongProduction === false
   ) return true;
-  const wsHumanCleared = data.wrongShowManualClear === true || data.wrongShowOverride === true;
-  return wsHumanCleared && _rejectionWasWrongShow(data);
+  return wrongShowExplicitlyCleared(data) && _rejectionWasWrongShow(data);
 }
 
 const WRONG_SHOW_TITLE_STOPWORDS = new Set([
@@ -4630,12 +4642,12 @@ function explainExclusion(data, show, filePath) {
     if (!cleared && !cvFlagVetoedInWindow(data, show, 'wrongProduction')) return 'wrongProduction';
   }
 
-  // wrongShow — manual clears via wrongShowCleared() (5-flag check, single
-  // source of truth shared with the other gates). If a human has verified the
-  // correct production, that also means the correct show — the LLM ensemble's
-  // wrong_show rejection for Giant (Mark Rosenblatt play vs musical) on
-  // 2026-04-22 is exactly this case: LLM knew "Giant the musical" from
-  // training and mis-identified the Broadway play as the wrong show.
+  // wrongShow — cleared only by a clear aimed at this flag
+  // (wrongShowExplicitlyCleared), the same predicate the rebuild gate uses
+  // (BRO-4317). A production-level clear (wrongProductionManualClear etc.) no
+  // longer admits a wrongShow file here: the rebuild never honored it, so this
+  // branch disagreed with what shipped (titanique-2026 w42st was the one file
+  // affected). A Giant-style mis-rejection is fixed with wrongShowManualClear.
   //
   // Stale-flag override (Notion 34e637c5-416f-8121): when no manual clear is
   // set but the data + URL signals strongly indicate a real review of THIS
@@ -4645,7 +4657,7 @@ function explainExclusion(data, show, filePath) {
   // In-window + slug-match veto (audit S6-T4): same rule as the
   // wrongProduction branch above, for CV-promoted / classifier wrongShow.
   if (data.wrongShow === true && !laneOk('wrongProduction')) {
-    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)
+    if (!wrongShowExplicitlyCleared(data) && !isLikelyStaleWrongShow(data, show)
         && !cvFlagVetoedInWindow(data, show, 'wrongShow')) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
@@ -4986,7 +4998,7 @@ function explainExclusion(data, show, filePath) {
       data.humanReviewedWrongProduction === false ||
       isFreshWpAutoCleared(data);
     const wpBlocking = data.wrongProduction === true && !wpCleared;
-    if (data.wrongShow || wpBlocking) return 'wrongContentFlagsUncleared';
+    if ((data.wrongShow && !wrongShowExplicitlyCleared(data)) || wpBlocking) return 'wrongContentFlagsUncleared';
     // If no substantial text, also correct to exclude
     const hasText = !!(data.fullText && data.fullText.trim().length >= 200);
     const hasSignal = !!(data.aggregatorStars != null || data.originalScore != null || data.llmScore);
@@ -5820,6 +5832,7 @@ module.exports = {
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
   wrongShowCleared,
+  wrongShowExplicitlyCleared,
   invalidTierVerdict,
   invalidTierClearedByHuman,
   isGarbageTierReason,

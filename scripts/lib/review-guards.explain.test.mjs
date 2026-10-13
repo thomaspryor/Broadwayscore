@@ -104,9 +104,8 @@ test('each exclusion rule name fires for its own trigger', () => {
     ['namedNonReviewUrl', { fullText: text, source: 'serp-discovery', url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship' }],
     ['previewPlaceholder', { fullText: text, isPreviewPlaceholder: true }],
     ['previewPlaceholder', { aggregatorStars: 4, isPreviewPlaceholder: true }],
-    // wrongShow survives its own rule (manually cleared) but still blocks the
-    // stale wrong_content flag — the real live shape of this rule.
-    ['wrongContentFlagsUncleared', { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, wrongShowManualClear: true }],
+    // BRO-4317: a production-level clear does not clear wrongShow.
+    ['wrongShow', { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, wrongProductionManualClear: true }],
     ['wrongContentNoUsableSignal', { incompleteReason: 'wrong_content' }],
   ];
   for (const [expected, data] of cases) {
@@ -366,4 +365,20 @@ test('parity: explainExclusion()===null <=> isIncludableForRebuild()===true on e
     return;
   }
   assert.deepStrictEqual(mismatches, [], `explain/boolean disagreement on ${mismatches.length}+ of ${files} corpus files`);
+});
+
+test('BRO-4317: a clear aimed at wrongShow admits the file, including its stale wrong_content stamp', () => {
+  // >= 200 chars: a wrong_content file also needs usable text (wrongContentNoUsableSignal).
+  const text = 'A perfectly ordinary review body with more than enough words to pass the text gate. '.repeat(3);
+  const { explainExclusion, wrongShowExplicitlyCleared } = guards;
+  for (const clear of [{ wrongShowManualClear: true }, { wrongShowOverride: true }]) {
+    const data = { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, ...clear };
+    assert.strictEqual(wrongShowExplicitlyCleared(data), true);
+    assert.strictEqual(explainExclusion(data, null, undefined), null);
+  }
+  // A live wrongProduction still blocks even with wrongShow cleared.
+  assert.strictEqual(explainExclusion({ fullText: text, wrongShow: true, wrongShowManualClear: true, wrongProduction: true }, null, undefined), 'wrongProduction');
+  assert.strictEqual(wrongShowExplicitlyCleared({ wrongProductionManualClear: true }), false);
+  assert.strictEqual(wrongShowExplicitlyCleared({ wrongShowManualClear: 'true' }), false);
+  assert.strictEqual(wrongShowExplicitlyCleared(null), false);
 });

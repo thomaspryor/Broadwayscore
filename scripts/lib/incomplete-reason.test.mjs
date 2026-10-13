@@ -75,3 +75,10 @@ test('url_dead still surfaces on a verified review', () => {
   const r = classifyIncompleteReason(review, { failureReason: 'url_dead_404', failureCount: 3 });
   assert.equal(r.incompleteReason, 'url_dead');
 });
+
+test('BRO-4317: a wrongShow flag cleared by wrongShowManualClear/Override is not wrong content', () => {
+  assert.notEqual(classifyIncompleteReason({ ...base, wrongShow: true, wrongShowManualClear: true }, null)?.incompleteReason, 'wrong_content');
+  assert.notEqual(classifyIncompleteReason({ ...base, wrongShow: true, wrongShowOverride: true }, null)?.incompleteReason, 'wrong_content');
+  assert.equal(classifyIncompleteReason({ ...base, wrongShow: true }, null).incompleteReason, 'wrong_content');
+  assert.equal(classifyIncompleteReason({ ...base, wrongShow: true, wrongShowManualClear: true, wrongProduction: true }, null).incompleteReason, 'wrong_content');
+});

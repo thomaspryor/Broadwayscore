@@ -1216,7 +1216,10 @@ function decideInclusion(review, show, guards) {
   // The stamp fields are read here as a cheap pre-filter (and so FLAG_FIELDS coverage stays honest); the decision is laneBypasses.
   const laneOk = (guard) => !!review.openingNightLane && !!review.productionVerified
     && require('./lib/opening-night-lane/trust-model').laneBypasses(review, guard, { openingDate: show && show.openingDate });
-  if (review.wrongShow === true && !wrongShowCleared && !inWindowVetoed('wrongShow') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongShow' };
+  // BRO-4317: mirrors the rebuild — a clear aimed at wrongShow admits the file. Through guards (typeof) so the
+  // baseline side keeps the baseline's rule and the delta shows the flip.
+  const wsExplicitlyCleared = typeof guards.wrongShowExplicitlyCleared === 'function' && guards.wrongShowExplicitlyCleared(review);
+  if (review.wrongShow === true && !wsExplicitlyCleared && !wrongShowCleared && !inWindowVetoed('wrongShow') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongShow' };
   if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongProduction' };
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
   // rebuild-all-reviews.js:3305 — no auto-clear path exists for this field
@@ -1234,7 +1237,9 @@ function decideInclusion(review, show, guards) {
       : false;
     if (!isStale) return { included: false, reason: 'isRoundupArticle' };
   }
-  if (review.incompleteReason === 'wrong_content' && !laneOk('headlineBackstop')) return { included: false, reason: 'incompleteReason:wrong_content' };
+  // A wrong_content stamp left only by an explicitly cleared wrongShow is stale (incomplete-reason.js restamps it away).
+  const wrongContentStale = wsExplicitlyCleared && review.wrongProduction !== true;
+  if (review.incompleteReason === 'wrong_content' && !wrongContentStale && !laneOk('headlineBackstop')) return { included: false, reason: 'incompleteReason:wrong_content' };
   // Mirror rebuild-all-reviews.js:3570 — the ACTUAL scoring-corpus enforcement
   // for isNonReview (it does not delegate to isIncludableForRebuild, so it has
   // to be replayed here explicitly too). BRO-3862: this branch was missing
