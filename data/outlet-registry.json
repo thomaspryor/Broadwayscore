@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-13T00:21:33.665Z",
+    "lastUpdated": "2026-10-13T00:54:07.920Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5133: add New York Social Diary (newyorksocialdiary, newyorksocialdiary.com); its Lost in Del Valle review was filed under vulture and excluded as domain-unvalidated"
+    "lastChange": "BRO-4898: aliases therevieshub-com -> thereviewshub, time-outs -> timeout-london (typo outlet ids on genuine reviews); add Islington Gazette"
   },
   "outlets": {
     "westendtheatre": {
@@ -7733,7 +7733,8 @@
         "the-reviews-hub",
         "reviews-hub",
         "reviews hub",
-        "thereviewshub-com"
+        "thereviewshub-com",
+        "therevieshub-com"
       ],
       "domain": "thereviewshub.com",
       "region": "london",
@@ -8065,7 +8066,8 @@
         "time-out-garrick",
         "time out garrick",
         "time-out-menier-chocolate-factory",
-        "time out menier chocolate factory"
+        "time out menier chocolate factory",
+        "time-outs"
       ],
       "domain": "timeout.com",
       "accessModel": "free",
@@ -12564,6 +12566,19 @@
         "corrblimey"
       ],
       "domain": "corrblimey.uk"
+    },
+    "islington-gazette": {
+      "displayName": "Islington Gazette",
+      "tier": 3,
+      "aliases": [
+        "islington gazette",
+        "islingtongazette",
+        "islington-gazette"
+      ],
+      "domain": "islingtongazette.co.uk",
+      "region": "london",
+      "accessModel": "free",
+      "starScale": 5
     }
   },
   "_aliasIndex": {
@@ -13242,7 +13257,10 @@
     "gotham-playgoer": "bobs-theater-blog",
     "gotham playgoer": "bobs-theater-blog",
     "dc-metro-theater-arts": "dc-theater-arts",
-    "dc metro theater arts": "dc-theater-arts"
+    "dc metro theater arts": "dc-theater-arts",
+    "therevieshub-com": "thereviewshub",
+    "time-outs": "timeout-london",
+    "islington gazette": "islington-gazette"
   },
   "lastUpdated": "2026-09-30T04:38:59.859Z",
   "lastChange": "BRO-4947: DC Metro Theater Arts (dcmetrotheaterarts.com) is DC Theater Arts, not DC Theatre Scene; dc-metro-theater-arts merged into dc-theater-arts; gotham-playgoer merged into bobs-theater-blog"
