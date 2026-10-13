@@ -20,7 +20,8 @@ const path = require('path');
 const { pushReviewTexts, dispatchDownstream } = require('./lib/land-ingested-reviews');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
-const { resolveOutletFromUrl } = require('./lib/review-normalization');
+const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
+const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 
@@ -210,7 +211,31 @@ async function main() {
       input.fields.fetchMethod = fetchMethod;
     }
 
+    // BRO-3791: createOrMergeReviewFile's merge path only fills BLANK fields,
+    // so a re-ingest onto a file holding a non-blank-but-wrong url/body reports
+    // "updated" while the old value survives. Read the match BEFORE the write
+    // and verify the intended values landed after it (same check as
+    // ingest-manual-review.js / ingest-review-from-url.js).
+    let preExisting = null;
+    if (!dryRun) {
+      try { preExisting = findExistingReviewFile(path.join(__dirname, '..', 'data', 'review-texts', showId), outletId, criticName || 'Unknown', url); } catch { preExisting = null; }
+    }
     const writeResult = createOrMergeReviewFile(showId, input, { dryRun });
+    if (!dryRun && writeResult.action === 'updated' && writeResult.filepath) {
+      let staleFields = [];
+      try {
+        const landed = JSON.parse(fs.readFileSync(writeResult.filepath, 'utf8'));
+        staleFields = findStaleFieldsAfterUpdate({ preExisting, url, fullText, landed });
+      } catch { /* unreadable landed file: the writer's own result stands */ }
+      if (staleFields.length > 0) {
+        results.touchedPaths.push(writeResult.filepath);
+        results.failed++;
+        results.warnings.push(`Stale merge for ${url}: ${staleFields.join(', ')} still hold a pre-existing value at ${path.basename(writeResult.filepath)}; merge-into-existing only fills blank fields. Manual correction needed.`);
+        console.log(`    ✗ Stale merge (${staleFields.join(', ')}): ${path.basename(writeResult.filepath)}`);
+        console.log('');
+        continue;
+      }
+    }
 
     if (writeResult.action === 'new') {
       results.created++;

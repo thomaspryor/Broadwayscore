@@ -66,6 +66,20 @@ function isPreExistingContentBad(preExisting) {
     || !!data.needsRefetch;
 }
 
+/**
+ * BRO-3791: the post-write verification every bulk caller shares. Builds the
+ * intended-values map for an `action: 'updated'` write (url always; fullText
+ * only when the pre-existing file actually needed fixing) and diffs it against
+ * what landed. Returns the stale field names ([] = the write took).
+ * @param {{preExisting: object|null, url: string|null, fullText: string|null, landed: object}} p
+ */
+function findStaleFieldsAfterUpdate({ preExisting, url, fullText, landed }) {
+  const intended = {};
+  if (url) intended.url = url;
+  if (fullText && isPreExistingContentBad(preExisting)) intended.fullText = fullText;
+  return findStaleMergeFields(intended, landed);
+}
+
 function _words(text) {
   const { foldDiacritics } = require('./title-match');
   return foldDiacritics(String(text || '').toLowerCase()).replace(/[\u2018\u2019']/g, '')
@@ -121,4 +135,4 @@ function isSameArticleBodyUpgrade(existing, incomingText) {
   return shared / oldShingles.size >= 0.5;
 }
 
-module.exports = { findStaleMergeFields, isPreExistingContentBad, isSameArticleBodyUpgrade };
+module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, isPreExistingContentBad, isSameArticleBodyUpgrade };
