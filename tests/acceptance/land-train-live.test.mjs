@@ -16,7 +16,12 @@ const { parseLandings } = require('../../scripts/lib/landings-ledger.js');
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 1 << 28 }).trim();
 
-test('BRO-5282: a merge train has landed in production, and all of its commits are on main', () => {
+// Before the recheck date this is not yet a fair question (a quiet queue forms
+// no train), and a landing's own gate runs every changed test file: skip.
+const RECHECK_AFTER = '2026-10-15';
+const due = new Date().toISOString().slice(0, 10) >= RECHECK_AFTER;
+
+test('BRO-5282: a merge train has landed in production, and all of its commits are on main', { skip: due ? false : `not due before ${RECHECK_AFTER}` }, () => {
   git(['fetch', '-q', 'origin', 'main']);
   const rows = parseLandings(git(['show', 'origin/main:data/audit/landings.jsonl']));
   const trains = trainsFromLandings(rows, '2026-10-13T21:15');
