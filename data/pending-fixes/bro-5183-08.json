@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-08",
   "planId": "faaa4c59-98b5-46f5-adc8-b3421f16e996",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T02:10:30.545Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,43 @@
         "description": "Publish date read from the page by collect-review-texts on 2026-10-12 (HTML/text date, matches opening night); a stale Rebuild (Fast) push removed it minutes later (BRO-5211)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T02:58:16.406Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "something-rotten-2015/washpost--nelson-pressley.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "something-rotten-2015/washpost--nelson-pressley.json wrongProductionReason: null -> \"BRO-5183: 2018 Kennedy Center tour review stored on the 2015 Broadway row by url discovery\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-norman-conquests-2009/nytimes--ben-brantley.json publishDate: null -> \"2009-04-23\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/talkinbroadway--matthew-murray.json publishDate: null -> \"2017-06-22\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leap-of-faith-2012/variety--marilyn-stasio.json publishDate: null -> \"2012-04-27\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/vulture--jesse-green.json publishDate: null -> \"2017-04-03\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json publishDate: null -> \"2016-12-02\""
+    }
+  ]
 }
