@@ -507,6 +507,8 @@ jobs:
         if: always() && (inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHAIN_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
+          CHAIN_MARKET_FILTER: ${{ steps.sched.outputs.market_filter || inputs.market_filter }}
           INPUT_REMAINING_BATCHES: ${{ inputs.remaining_batches }}
           INPUT_CHAIN_BROWSERBASE_BUDGET: ${{ inputs.chain_browserbase_budget }}
           INPUT_BROWSERBASE_MAX_SESSIONS: ${{ inputs.browserbase_max_sessions }}
@@ -578,8 +580,8 @@ jobs:
           STEALTH="${INPUT_STEALTH_PROXY}"
           DOMAIN_FILTER="${INPUT_DOMAIN_FILTER}"
           EXCLUDE_DOMAINS="${INPUT_EXCLUDE_DOMAINS}"
-          REASON_FILTER="${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}"
-          MARKET_FILTER="${{ steps.sched.outputs.market_filter || inputs.market_filter }}"
+          REASON_FILTER="${CHAIN_REASON_FILTER}"
+          MARKET_FILTER="${CHAIN_MARKET_FILTER}"
 
           gh workflow run collect-review-texts.yml \
             -f max_reviews=${{ steps.sched.outputs.max_reviews || '300' }} \

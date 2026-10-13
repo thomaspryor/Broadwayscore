@@ -905,7 +905,7 @@ const stripComments = (lines) => lines.filter((l) => !l.trimStart().startsWith('
  * defaults) sets shell: bash, the block mentions pipefail, or it reads
  * PIPESTATUS. Fix: add `shell: bash` to the step.
  */
-const NODE_TEE_RE = /\bnode\b[^\n|]*\|\s*tee\b/;
+const NODE_TEE_RE = /\b(?:node|npx|tsx)\b[^\n|]*\|\s*tee\b/;
 function findNodeTeeWithoutPipefail(raw) {
   if (/^\s*defaults:\s*\n\s*run:\s*\n\s*shell:\s*bash\b/m.test(raw)) return [];
   const out = [];
@@ -979,7 +979,10 @@ function declaredInputTypes(raw) {
   }
   return types;
 }
-const INPUT_EXPR_RE = /\$\{\{\s*(?:github\.event\.)?inputs\.([\w-]+)(?:\s*\|\|\s*(?:'[^']*'|\"[^\"]*\"|[\w.-]+))?\s*\}\}/g;
+// Any ${{ ... }} that mentions inputs.<name>, narrowed in stringInputOf() below.
+const INPUT_EXPR_RE = /\$\{\{([^}]*(?<![\w.])(?:github\.event\.)?inputs\.([\w-]+)[^}]*)\}\}/g;
+// A bare comparison (`inputs.x == 'y'`) yields a boolean, never attacker text.
+const COMPARISON_ONLY_RE = /^\s*(?:github\.event\.)?inputs\.[\w-]+\s*[!=]=\s*(?:'[^']*'|"[^"]*"|true|false|\d+)\s*$/;
 function findStringInputInterpolation(raw) {
   const types = declaredInputTypes(raw);
   const out = [];
@@ -995,7 +998,7 @@ function findStringInputInterpolation(raw) {
       let m;
       INPUT_EXPR_RE.lastIndex = 0;
       while ((m = INPUT_EXPR_RE.exec(l))) {
-        if ((types[m[1]] || 'string') === 'string') out.push({ name: step.name, lineNum: step.startLine + i + 1, input: m[1] });
+        if (!COMPARISON_ONLY_RE.test(m[1]) && (types[m[2]] || 'string') === 'string') out.push({ name: step.name, lineNum: step.startLine + i + 1, input: m[2] });
       }
     }
   }
@@ -1020,7 +1023,7 @@ function findCompositeShellHazards(raw) {
         if (h) out.push({ kind: 'masked-push', lineNum: i + 1, detail: `|| ${h}` });
         INPUT_EXPR_RE.lastIndex = 0;
         let m;
-        while ((m = INPUT_EXPR_RE.exec(l))) out.push({ kind: 'string-input', lineNum: i + 1, detail: `inputs.${m[1]}` });
+        while ((m = INPUT_EXPR_RE.exec(l))) if (!COMPARISON_ONLY_RE.test(m[1])) out.push({ kind: 'string-input', lineNum: i + 1, detail: `inputs.${m[2]}` });
         continue;
       }
     }
