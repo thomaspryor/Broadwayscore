@@ -57,28 +57,8 @@ for (const [critic, config] of Object.entries(KNOWN_SYNDICATION)) {
 
 // --- AP wire syndication signals ---
 // STRICT: requires strong signals that this IS an AP article, not just quoting one.
-// Many reviews quote AP excerpts in roundup pages — those are NOT syndication.
-const AP_STRONG_SIGNALS = [
-  // AP byline at start: "By Mark Kennedy, AP" or "By Mark Kennedy\nAP Drama Writer"
-  { regex: /(?:^|\n)\s*(?:by\s+)?(?:Mark Kennedy|Jennifer Farrar|Michael Kuchwara|Jocelyn Noveck),?\s*(?:AP|Associated Press)/im, where: 'head' },
-  // "AP Drama/Theater Writer" byline near start
-  { regex: /(?:^|\n)\s*(?:by\s+)?\w+ \w+\s*\n\s*AP (?:Drama|Theater|Theatre|Entertainment) (?:Writer|Critic)/im, where: 'head' },
-  // AP credit at end: "Mark Kennedy is at twitter.com/KennedyTwits"
-  { regex: /Kennedy is at (?:http|twitter)/i, where: 'tail' },
-  // AP copyright at end
-  { regex: /(?:Copyright|©).*Associated Press/i, where: 'tail' },
-];
-
-function detectAPContent(fullText) {
-  if (!fullText || fullText.length < 100) return false;
-  const head = fullText.slice(0, 300);
-  const tail = fullText.slice(-300);
-  for (const sig of AP_STRONG_SIGNALS) {
-    const text = sig.where === 'head' ? head : tail;
-    if (sig.regex.test(text)) return true;
-  }
-  return false;
-}
+// AP wire detection (signals, partner-site AP ids): scripts/lib/ap-wire-detect.js
+const { detectAPContent } = require('./lib/ap-wire-detect');
 
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
@@ -374,7 +354,7 @@ for (const showId of showDirs) {
       if (data.isSyndicatedDuplicate || data.duplicateOf || data.crossOutletDuplicate) continue;
       if (data.wrongShow || data.wrongProduction) continue;
 
-      if (data.fullText && detectAPContent(data.fullText)) {
+      if (detectAPContent(data.fullText, data.url)) {
         // Find the AP file for this show
         const apFile = files.find(f => f.startsWith('ap--'));
         const apRef = apFile ? `${showId}/${apFile}` : null;
