@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "conditionKey": "priority-queue:overdue",
+    "title": "Overdue P0/P1 queue: 7 P0 older than 24h, 37 P1 older than 7d",
+    "description": "8 P0 open (7 older than 24h, oldest 42d); 56 P1 open (37 older than 7d); 673 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-2706 (42d): P1: Data Validation now TIMES OUT, which reports SUCCESS not failure — and BRO-2627's budget ratchet passes while it happens\n- BRO-3037 (35d): Systemic dispatch-fleet reliability gaps found during manual P0 triage (2026-08-26 to 2026-09-08)\n- BRO-4079 (20d): landedAckOverridesDeath misses multi-hop watchdog-redispatch shape: 5 real tasks still wrongly flagged dead after BRO-4075 fix\n- BRO-4189 (16d): CV-promoted isNonReview mislabels opening-night reviews as 'preview' (106 flags on 130 recent shows)\n- BRO-4312 (14d): Homepage + /rankings + 37 other pages may still use the known-divergent engine.ts compositeScore, not canonical cs\n- BRO-4719 (8d): Triage open P0/P1 queue: verify owner-decision holds, dedupe and close stale, notify owner of real decisions off-Mac\n- BRO-5000 (2d): Remove Bridge-run reviews from Noel Coward Into the Woods score (owner chose A) + pre-previews guard",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T05:05:57.855Z"
+  },
+  {
+    "conditionKey": "coverage-holes:franz-and-marie-west-end-2026",
+    "title": "franz-and-marie-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json (stored URL looks like another show: repair the URL)\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T05:06:24.014Z"
+  },
+  {
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget (still open — BRO-3030)",
+    "description": "Still firing after 33 notifications since it was filed. Tracked at BRO-3030.\n\nDay 2026-10-12. Over budget: brightdata $4.99 > $2.5 (220 serp + 3105 unlocker reqs). 2026-10-12 · Browserbase: $0.73 (140 sessions, 30.65min) · 2026-10-12 · Bright Data: $4.99 (220 serp / 3105 unlocker) · ScrapingBee: 19227 credits (195449 this cycle) · ScrapingDog: 43500 credits (736588 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 200 · Bright Data attribution: 100% attributed — top callers (covers 88% of billed calls): opening-night-poller.js 1018, collect-review-texts.js 726, sweep-web-search-bylines.js 566, backfill-html-only-ratings.js 364, gather-reviews.js 250 · ScrapingBee attribution: 82% attributed — top callers (covers 73% of billed credits): scrape-reddit-sentiment.js 7320cr, collect-review-texts.js 2762cr, gather-reviews.js 2274cr, opening-night-poller.js 1231cr, fetch-show-images-auto.js 426cr · ⚠️ ScrapingBee top-caller coverage low: 73% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 84% attributed — top callers (covers 62% of billed credits): gather-reviews.js 12561cr, collect-review-texts.js 4599cr, audit-show-review-gap.js 4155cr, collect-outlet-reviews.js 3894cr, scrape-nyc-theatre-roundups.js 1720cr · ⚠️ ScrapingDog top-caller coverage low: 62% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": "Scraping spend over budget: brightdata $4.99 > $2.5 (220 serp + 3105 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "model": null,
+    "tracked": "BRO-3030",
+    "fields": [],
+    "queuedAt": "2026-10-13T05:06:56.613Z"
+  }
+]
