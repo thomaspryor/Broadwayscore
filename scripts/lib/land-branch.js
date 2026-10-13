@@ -78,6 +78,7 @@ const { execFileSync } = require('child_process');
 const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
 const { isRunnableTestFile } = require('./merge-post-merge-test-gate.js');
+const { segmentHeads } = require('./land-train.js');
 
 const MAX_ATTEMPTS = 3;
 // Inert-churn re-rebases allowed per attempt before a full re-check is forced.
@@ -234,6 +235,7 @@ function formatLandLine(branch, result) {
     if (!result.pushed) notes.push('already on origin/main, no push');
     if (result.verified === 'UNKNOWN') notes.push('ancestry UNKNOWN — verify remotely');
     if (result.contentNote) notes.push(result.contentNote);
+    if (result.riders && result.riders.length) notes.push(`merge train: +${result.riders.length} rider(s) ${result.riders.map((r) => r.branch).join(', ')}`);
     const note = notes.length ? ` (${notes.join('; ')})` : '';
     return `LANDED: ${branch} → ${result.sha} in ${secs}s (attempts ${result.attempts})${note}`;
   }
@@ -471,6 +473,19 @@ function defaultPushMain({ cwd, log = () => {} }) {
  *                                 a newer push to the branch supersedes this
  *                                 landing rather than landing unverified code)
  * @param {boolean} [o.dryRun]     rebase + checks only, never push
+ * @param {Array<{branch:string,tip:string,base?:string|null}>} [o.riders]
+ *                                 BRO-5282 merge train: branches queued behind
+ *                                 this one, each at the tip ITS checks verified.
+ *                                 On attempt 1 only they are rebased after this
+ *                                 branch, the combined tree gets ONE re-check
+ *                                 (o.trainChecks, never the verified-base skip),
+ *                                 and one fast-forward lands them all. A red
+ *                                 train falls back to this branch alone. Ignored
+ *                                 with beforePush (its amend would hit a rider).
+ * @param {string[]} [o.trainBases] the bases the branch and riders were verified
+ *                                 at: test files main changed since then feed
+ *                                 the merged-tree floor (BRO-5180)
+ * @param {function} [o.trainChecks] checks seam for a train (default defaultChecks)
  * @returns {{landed:boolean, sha:string|null, attempts:number, wallMs:number, failedCheck:string|null, reason:string|null, pushed:boolean, files:string[], verified:'LANDED'|'UNKNOWN'|null, contentNote:string|null, baseSha:string|null}}
  */
 function landBranch(o) {
@@ -478,12 +493,14 @@ function landBranch(o) {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
+    riders = [], trainBases = [], trainChecks = defaultChecks,
   } = o || {};
   const t0 = Date.now();
+  const trainDropped = []; // BRO-5282: riders not landed by this run, and why
   const done = (patch) => ({
     landed: false, sha: null, attempts: 0, wallMs: Date.now() - t0,
     failedCheck: null, reason: null, pushed: false, files: [], verified: null, contentNote: null,
-    baseSha: null, verifiedBase: null, churnSkips: 0, ...patch,
+    baseSha: null, verifiedBase: null, churnSkips: 0, riders: [], trainDropped, ...patch,
   });
 
   if (!isPlausibleBranchName(branch)) return done({ failedCheck: 'args', reason: `not a usable branch name: ${JSON.stringify(branch)}` });
@@ -586,21 +603,23 @@ function landBranch(o) {
         return true;
       } catch { return false; }
     };
-    const prefetchForRebase = (onto) => {
-      const mb = gitOrNull(['merge-base', onto, sha], workdir);
+    const prefetchForRebase = (onto, tip = sha) => {
+      const mb = gitOrNull(['merge-base', onto, tip], workdir);
       if (!mb) return;
-      quiet(['log', '-p', '--binary', '--no-textconv', '--no-ext-diff', '--format=', `${mb}..${sha}`]);
-      const paths = [...new Set((gitOrNull(['log', '--no-renames', '--format=', '--name-only', `${mb}..${sha}`], workdir) || '')
+      quiet(['log', '-p', '--binary', '--no-textconv', '--no-ext-diff', '--format=', `${mb}..${tip}`]);
+      const paths = [...new Set((gitOrNull(['log', '--no-renames', '--format=', '--name-only', `${mb}..${tip}`], workdir) || '')
         .split('\n').filter(Boolean))];
       if (paths.length && paths.length <= PREFETCH_MAX_PATHS) {
         quiet(['diff', '--binary', '--no-textconv', '--no-ext-diff', mb, onto, '--', ...paths]);
       }
     };
-    const rebaseOnto = (onto) => {
-      prefetchForRebase(onto);
+    // rangeFrom/tip: rebase `rangeFrom..tip` onto `onto` instead of HEAD's own
+    // commits (a train rider; HEAD becomes the rebased rider).
+    const rebaseOnto = (onto, { rangeFrom = null, tip = null } = {}) => {
+      prefetchForRebase(onto, tip || sha);
       for (let retry = 0; ; retry++) {
         try {
-          git(['rebase', onto], workdir);
+          git(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto], workdir);
           return;
         } catch (err) {
           const errText = String(err.stderr || err.message || '');
@@ -611,6 +630,54 @@ function landBranch(o) {
           log(`[land] rebase onto ${onto.slice(0, 10)} hit a partial-clone lazy-fetch failure (${gitVersion}) — retry ${retry + 1}/${PROMISOR_REBASE_RETRIES}: ${errText.split('\n').find(l => /fatal|error/.test(l)) || errText.slice(0, 200)}`);
         }
       }
+    };
+
+    // BRO-5282: rebase each rider's verified range after the current HEAD.
+    // A conflict, an empty result or an unfetchable tip drops that rider (it
+    // lands on its own turn) and HEAD goes back to exactly where it was.
+    let train = [];
+    const assembleTrain = (list, baseSha) => {
+      const added = [];
+      for (const r of list) {
+        const drop = (reason) => { trainDropped.push({ branch: r.branch, reason }); log(`[land] train: ${r.branch} not taken — ${reason}`); };
+        if (!r || !/^[0-9a-f]{40}$/.test(String(r.tip || '')) || !isPlausibleBranchName(r.branch)) { drop('malformed rider'); continue; }
+        if (gitOrNull(['cat-file', '-e', `${r.tip}^{commit}`], workdir) === null) gitOrNull(['fetch', remote, r.tip], workdir);
+        if (gitOrNull(['cat-file', '-e', `${r.tip}^{commit}`], workdir) === null) { drop(`could not fetch ${r.tip.slice(0, 10)}`); continue; }
+        const prev = git(['rev-parse', 'HEAD'], workdir);
+        const mb = gitOrNull(['merge-base', r.tip, baseSha], workdir);
+        if (!mb) { drop('no merge-base with main'); continue; }
+        // No Land-Base on the ticket: the merge-base is at or before the base
+        // its checks rebased onto, so the intervening-test set only grows.
+        const base = /^[0-9a-f]{40}$/.test(String(r.base || '')) ? r.base : mb;
+        try {
+          rebaseOnto(prev, { rangeFrom: mb, tip: r.tip });
+        } catch (err) {
+          gitOrNull(['rebase', '--abort'], workdir);
+          // --abort returns to the rider's tip, not to the train: go back.
+          git(['checkout', '-q', '--detach', prev], workdir);
+          git(['reset', '-q', '--hard', prev], workdir);
+          discardResidue(`train rider ${r.branch} dropped`);
+          drop(`would not rebase onto the train: ${String(err.stderr || err.message).split('\n').find((l) => /CONFLICT|error|fatal/.test(l)) || 'rebase failed'}`.slice(0, 200));
+          continue;
+        }
+        const now = git(['rev-parse', 'HEAD'], workdir);
+        if (now === prev) { drop('nothing left to land after the rebase (already on main or in the train)'); continue; }
+        added.push({ ...r, base, count: Number(git(['rev-list', '--count', `${prev}..${now}`], workdir)) });
+        log(`[land] train: + ${r.branch} @ ${r.tip.slice(0, 10)} (${added[added.length - 1].count} commit(s))`);
+      }
+      return added;
+    };
+    // BRO-5180 for a train: test files main changed since ANY member's verified
+    // base (a base that is not an ancestor of main adds nothing).
+    const trainInterveningTests = (baseSha, bases) => {
+      const set = new Set();
+      for (const b of new Set((bases || []).filter((x) => /^[0-9a-f]{40}$/.test(String(x || ''))))) {
+        if (gitOrNull(['merge-base', '--is-ancestor', b, baseSha], workdir) === null) continue;
+        for (const f of (gitOrNull(['diff', '--name-only', `${b}..${baseSha}`], workdir) || '').split('\n').filter(Boolean)) {
+          if (isRunnableTestFile(f) && fs.existsSync(path.join(workdir, f))) set.add(f);
+        }
+      }
+      return [...set];
     };
 
     let lastReason = null;
@@ -635,10 +702,38 @@ function landBranch(o) {
         log(`[land] rebase onto ${targetRef} left nothing to land — the branch's changes are already on ${target}${contentNote ? ` (${contentNote})` : ''}`);
         return done({ landed: true, sha: baseSha, attempts: attempt, baseSha, pushed: false, verified: 'LANDED', contentNote, reason: `rebased to empty — changes already on ${targetRef}` });
       }
-      const files = git(['diff', '--name-only', `${baseSha}...HEAD`], workdir).split('\n').filter(Boolean);
-      log(`[land] attempt ${attempt}/${maxAttempts}: rebased onto ${baseSha.slice(0, 10)}, ${files.length} file(s) changed — running checks`);
+      // BRO-5282 merge train, attempt 1 only (a restart re-checks the holder
+      // alone, keeping the job inside its timeout).
+      const holderHead = head;
+      const holderCount = Number(git(['rev-list', '--count', `${baseSha}..${holderHead}`], workdir));
+      train = [];
+      if (attempt === 1 && riders.length && !beforePush && !dryRun) {
+        train = assembleTrain(riders, baseSha);
+        if (!train.length) log('[land] train: no rider could be added — landing this branch alone');
+      }
+      let files = git(['diff', '--name-only', `${baseSha}...HEAD`], workdir).split('\n').filter(Boolean);
+      log(`[land] attempt ${attempt}/${maxAttempts}: rebased onto ${baseSha.slice(0, 10)}, ${files.length} file(s) changed${train.length ? ` (train: ${branch} + ${train.map((r) => r.branch).join(', ')})` : ''} — running checks`);
 
-      const results = checks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log }) || [];
+      let results;
+      if (train.length) {
+        const interveningTests = trainInterveningTests(baseSha, [...trainBases, ...train.map((r) => r.base)]);
+        log(`[land] train: ONE merged-tree re-check for ${train.length + 1} branch(es) (+${interveningTests.length} test file(s) changed on main since their verified bases)`);
+        results = trainChecks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log, interveningTests }) || [];
+        const trainFailed = firstFailedCheck(results);
+        if (trainFailed) {
+          // Degenerate bisect: the holder alone, exactly as without a train.
+          // The riders stay queued and land on their own turn.
+          log(`[land] train: ${trainFailed.name} failed on the combined tree — dropping ${train.length} rider(s), re-checking ${branch} alone`);
+          for (const r of train) trainDropped.push({ branch: r.branch, reason: `train red (${trainFailed.name})` });
+          train = [];
+          discardResidue('train red');
+          git(['reset', '-q', '--hard', holderHead], workdir);
+          files = git(['diff', '--name-only', `${baseSha}...HEAD`], workdir).split('\n').filter(Boolean);
+          results = checks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log }) || [];
+        }
+      } else {
+        results = checks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log }) || [];
+      }
       const failed = firstFailedCheck(results);
       if (failed) {
         return done({ attempts: attempt, baseSha, failedCheck: failed.name, reason: String(failed.detail || 'check failed').slice(0, 500), files });
@@ -747,12 +842,32 @@ function landBranch(o) {
         return done({ attempts: attempt, baseSha: landBase, verifiedBase: baseSha, failedCheck: 'landing-verify', reason: `push reported success but ${head.slice(0, 10)} is not an ancestor of ${targetRef}`, files });
       }
       log(`[land] LANDED ${head.slice(0, 10)} on ${targetRef} (attempt ${attempt}, verified at ${baseSha.slice(0, 10)}${landBase !== baseSha ? `, fast-forwarded across inert churn to ${landBase.slice(0, 10)}` : ''}, verify=${verdict.verdict}${verdict.reason ? `: ${verdict.reason}` : ''})`);
+      // Train: each branch's own landed commit, by position in landBase..head.
+      // A re-rebase that changed the commit count leaves the riders unmarked
+      // (their own runs land them: rebased-to-empty) and names the pushed head.
+      let ownSha = head;
+      let landedRiders = [];
+      if (train.length) {
+        const commits = git(['rev-list', '--reverse', `${landBase}..${head}`], workdir).split('\n').filter(Boolean);
+        const heads = segmentHeads(commits, [holderCount, ...train.map((r) => r.count)]);
+        if (heads) {
+          ownSha = heads[0];
+          landedRiders = train.map((r, i) => ({ branch: r.branch, tip: r.tip, base: r.base || null, runId: r.runId || null, sha: heads[i + 1] }));
+        } else {
+          log(`[land] train: commit count changed in the re-rebase — riders landed in ${head.slice(0, 10)} but left unmarked; their own runs confirm them`);
+          landedRiders = train.map((r) => ({ branch: r.branch, tip: r.tip, base: r.base || null, runId: r.runId || null, sha: null }));
+        }
+        log(`[land] train: landed ${train.length + 1} branch(es) in one push → ${head.slice(0, 10)}: ${[branch, ...train.map((r) => r.branch)].join(', ')}`);
+      }
       return done({
-        landed: true, sha: head, attempts: attempt, baseSha: landBase, verifiedBase: baseSha, churnSkips, pushed: true, files, verified: verdict.verdict,
+        landed: true, sha: ownSha, pushedSha: head, riders: landedRiders, attempts: attempt, baseSha: landBase, verifiedBase: baseSha, churnSkips, pushed: true, files, verified: verdict.verdict,
         reason: verdict.verdict === 'UNKNOWN' ? `push succeeded; local ancestry check UNKNOWN (${verdict.reason}) — confirm via git ls-remote / the GitHub compare API` : null,
       });
       }
-      if (restart) continue;
+      if (restart) {
+        for (const r of train) trainDropped.push({ branch: r.branch, reason: 'main moved substantively: the retry re-checks the holder alone' });
+        continue;
+      }
     }
     return done({
       attempts: maxAttempts, failedCheck: 'race',

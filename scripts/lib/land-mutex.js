@@ -36,6 +36,8 @@
  * old race (a bounded re-attempt), never a bad push.
  */
 
+const { parseMarkers } = require('./land-train');
+
 const QUEUE_PREFIX = 'refs/land-mutex/queue/';
 const LOCK_REF = 'refs/land-mutex/lock';
 const GRACE_MS = 60 * 1000;
@@ -76,10 +78,14 @@ function parseTicket(ref, sha) {
   return { ref, sha, prio: Number(m[1]), enqueuedAt: Number(m[2]), runId: m[3], attempt: Number(m[4]) };
 }
 
-/** `git ls-remote origin 'refs/land-mutex/*'` output → {tickets (queue order), lock}. */
+/**
+ * `git ls-remote origin 'refs/land-mutex/*'` output → {tickets (queue order), lock, landed}.
+ * landed: BRO-5282 merge-train markers, {<rider tip>: <its commit on main>}.
+ */
 function parseLsRemote(text) {
   const tickets = [];
   let lock = null;
+  const landed = parseMarkers(text);
   for (const line of String(text || '').split('\n')) {
     const [sha, ref] = line.trim().split(/\s+/);
     if (!sha || !ref) continue;
@@ -90,7 +96,7 @@ function parseLsRemote(text) {
     }
   }
   tickets.sort((a, b) => (a.ref < b.ref ? -1 : a.ref > b.ref ? 1 : 0));
-  return { tickets, lock };
+  return { tickets, lock, landed };
 }
 
 const isSelf = (t, self) => Boolean(t && self) && t.runId === String(self.runId) && t.attempt === Number(self.attempt);
@@ -112,12 +118,14 @@ function ticketLiveness(ticket, run, { now = Date.now(), staleAgeMs = STALE_AGE_
 /**
  * One poll's decision.
  *   state    — parseLsRemote() of this poll
- *   self     — {runId, attempt}
+ *   self     — {runId, attempt, tip?} (tip: the land/** tip this run's checks verified)
  *   liveness — (ref) => 'live' | 'gone' | undefined (cached API verdicts)
  *   stuck    — {ref, since}: the blocker (holder ticket ref, or LOCK_REF for an
  *              orphaned lock, or the head ticket ref) and when it was first seen
  *              blocking; the caller keeps it across polls
  * Returns {action, ...}:
+ *   train-landed — BRO-5282: a merge train already landed self.tip (marker
+ *                 ref present): withdraw our ticket and stop waiting
  *   enqueue     — no ticket of ours on the remote (first poll, or it was dropped)
  *   held        — the lock points at our ticket
  *   acquire     — no lock and our ticket is the head of the queue
@@ -127,7 +135,8 @@ function ticketLiveness(ticket, run, { now = Date.now(), staleAgeMs = STALE_AGE_
  *   wait        — `blocker` is ahead and live (or inside its grace)
  */
 function decideStep({ state, self, liveness = () => undefined, stuck = null, now = Date.now(), graceMs = GRACE_MS } = {}) {
-  const { tickets = [], lock = null } = state || {};
+  const { tickets = [], lock = null, landed = {} } = state || {};
+  if (self && self.tip && landed && landed[self.tip]) return { action: 'train-landed', sha: landed[self.tip] };
   const mine = tickets.find((t) => isSelf(t, self));
   if (!mine) return { action: 'enqueue' };
   const stuckLongEnough = (ref) => Boolean(stuck && stuck.ref === ref && now - stuck.since >= graceMs);

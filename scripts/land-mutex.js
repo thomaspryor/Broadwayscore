@@ -15,7 +15,10 @@
  * is the old race, never a bad push.
  *
  * Env: LAND_MUTEX_DISABLED=true (kill switch: fail open at once), GITHUB_RUN_ID, GITHUB_RUN_ATTEMPT, GITHUB_REPOSITORY, LAND_BRANCH (a
- * main-red branch queues first), GH_TOKEN / GH_FALLBACK_TOKEN (holder
+ * main-red branch queues first), LAND_TIP / LAND_BASE (BRO-5282: the tip and
+ * base this run's checks verified, written into the ticket commit so a merge
+ * train can carry this landing; a marker for LAND_TIP ends the wait with
+ * `train_landed=true`), GH_TOKEN / GH_FALLBACK_TOKEN (holder
  * liveness lookups). Test knobs: LAND_MUTEX_REMOTE (default origin),
  * LAND_MUTEX_NO_API=1 (age-only liveness), LAND_MUTEX_DEADLINE_MIN,
  * LAND_MUTEX_POLL_SCALE (multiplies poll delays), LAND_MUTEX_GRACE_MS.
@@ -36,7 +39,7 @@ if (hasHelpFlag(process.argv.slice(2)) || !['acquire', 'release'].includes(cmd))
 
 const env = process.env;
 const remote = env.LAND_MUTEX_REMOTE || 'origin';
-const self = { runId: String(env.GITHUB_RUN_ID || '0'), attempt: Number(env.GITHUB_RUN_ATTEMPT || 1) };
+const self = { runId: String(env.GITHUB_RUN_ID || '0'), attempt: Number(env.GITHUB_RUN_ATTEMPT || 1), tip: /^[0-9a-f]{40}$/.test(env.LAND_TIP || '') ? env.LAND_TIP : null };
 const branch = env.LAND_BRANCH || env.GITHUB_REF_NAME || '';
 const repo = env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const pollScale = Number(env.LAND_MUTEX_POLL_SCALE || 1);
@@ -67,7 +70,10 @@ const pushLeased = (src, ref, expect) => git(['push', '--no-verify', remote, `${
 
 function newTicketCommit() {
   const tree = git(['hash-object', '-t', 'tree', '-w', '/dev/null']).out;
-  const r = spawnSync('git', ['commit-tree', tree, '-m', `land-mutex ticket run ${self.runId} attempt ${self.attempt} ${branch} ${new Date().toISOString()}`], {
+  const { ticketTrailers } = require('./lib/land-train');
+  const trailers = ticketTrailers({ branch, tip: self.tip, base: env.LAND_BASE });
+  const msg = `land-mutex ticket run ${self.runId} attempt ${self.attempt} ${branch} ${new Date().toISOString()}${trailers.length ? `\n\n${trailers.join('\n')}` : ''}`;
+  const r = spawnSync('git', ['commit-tree', tree, '-m', msg], {
     encoding: 'utf8',
     env: { ...env, GIT_AUTHOR_NAME: 'github-actions[bot]', GIT_AUTHOR_EMAIL: 'github-actions[bot]@users.noreply.github.com', GIT_COMMITTER_NAME: 'github-actions[bot]', GIT_COMMITTER_EMAIL: 'github-actions[bot]@users.noreply.github.com' },
   });
@@ -124,6 +130,13 @@ function acquire() {
     const d = m.decideStep({ state, self, liveness, stuck, graceMs });
     const ref = m.blockerRef(d);
     stuck = ref ? (stuck && stuck.ref === ref ? stuck : { ref, since: Date.now() }) : null;
+    if (d.action === 'train-landed') {
+      log(`a merge train already landed ${self.tip.slice(0, 10)} as ${d.sha.slice(0, 10)}: leaving the queue without the lock`);
+      deleteOwn(state);
+      output('held=false');
+      output('train_landed=true');
+      return;
+    }
     if (d.action === 'held') {
       log(`holding the landing lock (${d.ticket.ref})`);
       output('held=true');

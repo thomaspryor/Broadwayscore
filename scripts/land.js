@@ -26,6 +26,7 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const fs = require('fs');
 const { landBranch, formatLandLine, makeVerifiedBaseChecks, MAX_ATTEMPTS } = require('./lib/land-branch.js');
+const { markerRef, parseMarkers, decideFollower } = require('./lib/land-train.js');
 
 const USAGE = `land.js — land a branch on origin/main: rebase → checks → fast-forward push.
 
@@ -44,6 +45,12 @@ Usage:
                       this branch against (land.yml's checks job); the gauntlet
                       is skipped only while main is that sha or has moved past
                       it across inert paths, otherwise it runs in full
+  --riders-file PATH  BRO-5282 merge train: JSON [{branch, tip, base}] of queued
+                      landings to rebase after this one and land in the same
+                      push (scripts/land-train.js collect writes it)
+  --train-landed-only only confirm a merge-train marker for --expect-tip; refuse
+                      rather than land (the mutex step exited on that marker,
+                      so this run does not hold the lock)
   --result-file PATH  also write the full result object as JSON to PATH
   --help, -h          print this and exit — no git calls
 
@@ -74,7 +81,28 @@ function cwdRepo() {
   }
 }
 
-function main(argv = process.argv.slice(2), land = landBranch) {
+/**
+ * BRO-5282: was --expect-tip already landed by a merge train? The marker
+ * refs/land-mutex/landed/<tip> names its commit on main; it counts only once
+ * that commit is an ancestor of a freshly fetched origin/main.
+ */
+function trainMarkerVerdict({ tip, repoDir, remote = 'origin', git = null }) {
+  const run = git || ((args) => {
+    try {
+      return execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 90000 }).trim();
+    } catch { return null; }
+  });
+  const ls = run(['ls-remote', remote, markerRef(tip)]);
+  if (ls === null) return { landed: false, reason: 'could not read the train marker' };
+  const markerSha = parseMarkers(ls)[tip] || null;
+  if (!markerSha) return decideFollower({ markerSha: null });
+  run(['fetch', remote, 'main']);
+  if (run(['cat-file', '-e', `${markerSha}^{commit}`]) === null) run(['fetch', remote, markerSha]);
+  const anc = run(['merge-base', '--is-ancestor', markerSha, `${remote}/main`]);
+  return { ...decideFollower({ markerSha, ancestor: anc !== null ? true : null }), markerSha };
+}
+
+function main(argv = process.argv.slice(2), land = landBranch, markerCheck = trainMarkerVerdict) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const args = parseArgs(argv);
   if (!args.branch || args.branch === true) {
@@ -98,23 +126,50 @@ function main(argv = process.argv.slice(2), land = landBranch) {
     console.error(`--source must be auto|local|origin (got ${JSON.stringify(args.source)})`);
     return 2;
   }
+  let riders = [];
+  if (args['riders-file'] && args['riders-file'] !== true) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(String(args['riders-file']), 'utf8'));
+      riders = Array.isArray(parsed) ? parsed : [];
+    } catch (err) {
+      console.error(`[land] riders file unreadable (${String(err.message).split('\n')[0]}) — landing alone`);
+    }
+  }
+  const repoDir = args.repo ? path.resolve(String(args.repo)) : cwdRepo();
+  const t0 = Date.now();
+  const writeResult = (result) => {
+    if (args['result-file'] && args['result-file'] !== true) {
+      fs.writeFileSync(String(args['result-file']), `${JSON.stringify({ branch: args.branch, ...result }, null, 2)}\n`);
+    }
+    console.log(formatLandLine(args.branch, result));
+    return result.landed || result.dryRun ? 0 : 1;
+  };
+  // A rider of an earlier merge train: nothing to rebase, check or push.
+  if (args['expect-tip'] && args['dry-run'] !== true) {
+    const v = markerCheck({ tip: args['expect-tip'], repoDir });
+    if (v.landed) {
+      console.error(`[land] ${v.reason} — nothing to push`);
+      return writeResult({ landed: true, sha: v.markerSha, attempts: 0, wallMs: Date.now() - t0, failedCheck: null, reason: v.reason, pushed: false, files: [], verified: 'LANDED', contentNote: null, baseSha: null, verifiedBase: args['verified-base'] || null, churnSkips: 0, riders: [], trainDropped: [], train: 'rider' });
+    }
+    if (args['train-landed-only'] === true) {
+      return writeResult({ landed: false, sha: null, attempts: 0, wallMs: Date.now() - t0, failedCheck: 'train-marker', reason: `the landing mutex step saw a merge-train marker for ${args['expect-tip'].slice(0, 10)} but it does not confirm now (${v.reason}); refusing to land without the lock`, pushed: false, files: [] });
+    }
+  }
   const result = land({
     branch: args.branch,
-    repoDir: args.repo ? path.resolve(String(args.repo)) : cwdRepo(),
+    repoDir,
     dryRun: args['dry-run'] === true,
     maxAttempts,
     source,
     expectSha: args['expect-tip'] || null,
     ...(args['verified-base'] ? { checks: makeVerifiedBaseChecks({ verifiedBase: args['verified-base'] }) } : {}),
+    riders,
+    trainBases: args['verified-base'] ? [args['verified-base']] : [],
     log: (m) => console.error(m),
   });
-  if (args['result-file'] && args['result-file'] !== true) {
-    fs.writeFileSync(String(args['result-file']), `${JSON.stringify({ branch: args.branch, ...result }, null, 2)}\n`);
-  }
-  console.log(formatLandLine(args.branch, result));
   // A dry-run whose checks are green is a success for the caller asking
   // "would this land?" — only a real refusal (red check, conflict, lost race) is exit 1.
-  return result.landed || result.dryRun ? 0 : 1;
+  return writeResult(result);
 }
 
 if (require.main === module) {
@@ -126,4 +181,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { main, parseArgs, USAGE };
+module.exports = { main, parseArgs, trainMarkerVerdict, USAGE };

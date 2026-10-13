@@ -527,8 +527,10 @@ jobs:
     # unchecked against the moved main (BRO-4812). It can approach this
     # bound; re-measure from live runs before changing. BRO-5112: plus up to
     # 75 min waiting in the landing mutex queue (land-mutex DEADLINE_MINUTES,
-    # then it fails open), so 15 + 75 + setup headroom.
-    timeout-minutes: 110
+    # then it fails open), so 15 + 75 + setup headroom. BRO-5282: +15 for a
+    # merge train's combined re-check, which on a red train is followed by
+    # the holder's own re-check (attempt 1 only).
+    timeout-minutes: 125
     permissions:
       contents: write
       # actions: write — the admit step cancels THIS run to park it (BRO-5196).
@@ -625,17 +627,41 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           LAND_BRANCH: ${{ env.BRANCH }}
+          # BRO-5282: the verified tip/base ride in the queue ticket so a merge
+          # train can carry this landing; a train marker for LAND_TIP ends the
+          # wait with train_landed=true.
+          LAND_TIP: ${{ needs.checks.outputs.tip }}
+          LAND_BASE: ${{ needs.checks.outputs.base }}
           # Kill switch: repo variable LAND_MUTEX_DISABLED=true skips the wait.
           LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
         run: |
           if [ -f scripts/land-mutex.js ]; then node scripts/land-mutex.js acquire
           else echo "::warning::scripts/land-mutex.js not on main yet: landing without the mutex"; echo "held=false" >> "$GITHUB_OUTPUT"; fi
 
+      - name: Form the merge train
+        # BRO-5282: while holding the lock, take the landings WAITING in the
+        # queue (live tickets, never parked runs; each at the exact tip its own
+        # checks verified) to rebase after this branch, re-check ONCE on the
+        # combined tree and land in one fast-forward. Measured before: the
+        # mutex was ~95% busy with one ~3-9 min merged-tree re-check per
+        # landing (~10 landings/hour). Always writes the file; any error is
+        # `[]` (land alone). Kill switch: repo variable LAND_TRAIN_MAX=0.
+        if: steps.mutex.outputs.held == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LAND_BRANCH: ${{ env.BRANCH }}
+          LAND_TRAIN_MAX: ${{ vars.LAND_TRAIN_MAX }}
+        run: |
+          echo '[]' > /tmp/land-riders.json
+          if [ -f scripts/land-train.js ]; then node scripts/land-train.js collect --branch "$BRANCH" --out /tmp/land-riders.json; fi
+
       - name: Land the branch
         id: land
         env:
           TIP: ${{ needs.checks.outputs.tip }}
           BASE: ${{ needs.checks.outputs.base }}
+          TRAIN_LANDED: ${{ steps.mutex.outputs.train_landed }}
         # --expect-tip: land ONLY the tip `checks` verified — a newer push to
         #   the branch has its own run; this one refuses rather than landing
         #   an unverified tip.
@@ -644,10 +670,16 @@ jobs:
         #   it across inert paths only (bot data churn); any substantive move
         #   re-runs the full gauntlet, bounded by --max-attempts (3), and the
         #   attempt count lands in the summary below.
+        # --riders-file / --train-landed-only: BRO-5282 merge train (see the
+        #   step above). A run whose mutex wait ended on a train marker only
+        #   confirms that marker and never lands without the lock.
         run: |
           set +e
+          TRAIN_ARGS=()
+          if [ "$TRAIN_LANDED" = "true" ]; then TRAIN_ARGS+=(--train-landed-only)
+          elif [ -s /tmp/land-riders.json ]; then TRAIN_ARGS+=(--riders-file /tmp/land-riders.json); fi
           node scripts/land.js --branch "$BRANCH" --source origin \
-            --expect-tip "$TIP" --verified-base "$BASE" \
+            --expect-tip "$TIP" --verified-base "$BASE" "${TRAIN_ARGS[@]}" \
             --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
           rc=${PIPESTATUS[0]}
           set -e
@@ -679,9 +711,21 @@ jobs:
               `- wall: ${secs}s`,
               r.reason ? `- note: ${r.reason}` : "",
               r.contentNote ? `- content: ${r.contentNote}` : "",
+              (r.riders || []).length ? `- merge train: +${r.riders.length} rider(s) in one push \`${r.pushedSha || ""}\`: ${r.riders.map((x) => `${x.branch} → \`${x.sha || "?"}\``).join(", ")}` : "",
+              (r.trainDropped || []).length ? `- not taken: ${r.trainDropped.map((x) => `${x.branch} (${x.reason})`).join("; ")}` : "",
             ].filter(Boolean);
             require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n");
           '
+
+      - name: Mark the train's riders landed
+        # BRO-5282: before the lock is released, so a rider's own run sees its
+        # marker on its next queue poll and finishes without waiting. Also
+        # appends the riders' landings.jsonl rows (the ledger step commits them).
+        if: steps.land.outputs.landed == 'true'
+        env:
+          LAND_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -f scripts/land-train.js ]; then node scripts/land-train.js mark --result-file /tmp/land-result.json; fi
 
       - name: Verify ancestry, then delete the land/** ref
         if: steps.land.outputs.landed == 'true'
@@ -723,8 +767,12 @@ jobs:
               LAND_LIB="$LAND_LIB" LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
               LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" \
               node -e '
-                const { appendLanding } = require(require("path").resolve(process.env.LAND_LIB));
+                const { appendLanding, parseLandings } = require(require("path").resolve(process.env.LAND_LIB));
                 const e = process.env;
+                // A merge-train rider: the holder already committed this row to main (BRO-5282).
+                let onMain = "";
+                try { onMain = require("child_process").execFileSync("git", ["show", "origin/main:data/audit/landings.jsonl"], { encoding: "utf8", maxBuffer: 64 << 20 }); } catch { onMain = ""; }
+                if (parseLandings && parseLandings(onMain).some((x) => x.sha === e.LAND_SHA && x.branch === e.LAND_BRANCH)) { console.log("landings.jsonl on main already has this row (merge train)"); process.exit(0); }
                 const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null });
                 console.log(`landings.jsonl += ${JSON.stringify(row)}`);
               ' && echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY" \
@@ -744,6 +792,8 @@ jobs:
               echo "refs/heads/$BRANCH now points at ${NOW_AT:-<gone>} (this run verified ${TIP:0:10}) — left for its own run"
               echo "- ref: KEPT (moved to a newer tip since this run's checks)" >> "$GITHUB_STEP_SUMMARY"
             fi
+            # BRO-5282: this tip's merge-train marker (if any) has done its job.
+            if [ -f scripts/land-train.js ]; then node scripts/land-train.js unmark --tip "$TIP"; fi
             # A branch of this name that goes red later must notify fresh.
             node scripts/land-alert.js --branch "$BRANCH" --resolve
           else
