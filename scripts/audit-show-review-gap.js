@@ -301,8 +301,8 @@ function gapUrlIdentity(u) {
     .replace(/^https?:\/\//i, '')
     .replace(/^www\./i, '')
     .replace(/^([^/]+)/, (h) => h.toLowerCase())
-    .replace(/\/+$/, '')
-    .replace(/\/comment-page-\d+$/i, '');
+    .replace(/\/comment-page-\d+\/*(?=\?|$)/i, '')
+    .replace(/\/+(?=\?|$)/, '');
 }
 
 // Candidate-URL gate: delegates to the CANONICAL classifier in

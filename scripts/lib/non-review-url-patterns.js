@@ -428,12 +428,13 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // BRO-5169: theatre.reviews' own per-show roundups (/reviews-roundup/<slug>/)
   // relay other outlets' stars; the site publishes no first-party criticism.
   // The SERP census listed one as The Standard Of Living's "missing review".
-  // 5 corpus files at this shape, none scored.
+  // None scored in reviews.json (2026-10-13).
   { host: /(^|\.)theatre\.reviews$/, path: /^\/reviews-roundup\//i, reason: 'aggregator-roundup', allSources: true },
   // BRO-5169: London Theatre Direct's product pages (/play/<slug>-tickets,
   // /musical/, /booking/, ... optionally under a /de/ /es/ locale). Its reviews
-  // and roundups live under /news/ only. 31 corpus files at these shapes, all
-  // promo copy, none scored; the census cited /play/the-standard-of-living-tickets.
+  // and roundups live under /news/ only. Every corpus file at these shapes was
+  // promo copy and none scored (2026-10-13); the census cited
+  // /play/the-standard-of-living-tickets.
   { host: /(^|\.)londontheatredirect\.com$/, path: /^\/(?:[a-z]{2}\/)?(?:play|musical|dance|opera|concert|comedy|experience|booking|show|event)s?\//i, reason: 'ticket-seller-product-page', allSources: true },
 ];
 

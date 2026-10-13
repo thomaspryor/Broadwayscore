@@ -623,6 +623,8 @@ test('gapUrlIdentity: WordPress /comment-page-N/ is the same article (BRO-5169)'
   const bare = 'https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living/';
   assert.equal(gapUrlIdentity(bare + 'comment-page-1/'), gapUrlIdentity(bare));
   assert.equal(gapUrlIdentity('http://www.MonstaGigz.com/2026/09/24/theatre-review-the-standard-of-living'), gapUrlIdentity(bare));
+  // Article-id query kept by normalizeReviewUrl: the suffix still strips.
+  assert.equal(gapUrlIdentity('https://x.com/review/comment-page-2/?p=123'), gapUrlIdentity('https://x.com/review/?p=123'));
   // A slug that merely contains the words is untouched.
   assert.notEqual(gapUrlIdentity('https://x.com/comment-page-1-review/'), gapUrlIdentity('https://x.com/'));
 });
