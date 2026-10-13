@@ -288,6 +288,23 @@ function normalizeReviewUrl(href) {
   return noHash.slice(0, qi) + (kept.length ? `?${kept.join('&')}` : '');
 }
 
+// Scheme / www / trailing-slash / host-case variants are the same URL
+// (ship-check: without this, a flagged file whose URL differed only by a
+// trailing slash stopped vouching once hostFallbackVouchers dropped
+// flagged files, and the listed URL was re-ingested every run).
+// WordPress comment pagination serves the same article too (BRO-2869, the
+// same strip as review-normalization's normalizeUrl). BRO-5169: Monstagigz's
+// Standard Of Living review sat under .../comment-page-1/, so only an empty
+// flagged sibling at the bare url matched and the held review read as a gap.
+function gapUrlIdentity(u) {
+  return normalizeReviewUrl(u)
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .replace(/^([^/]+)/, (h) => h.toLowerCase())
+    .replace(/\/+$/, '')
+    .replace(/\/comment-page-\d+$/i, '');
+}
+
 // Candidate-URL gate: delegates to the CANONICAL classifier in
 // lib/non-review-url-patterns.js (task #1073) so this audit, the write path
 // (review-guards roundup policy), and the S5 probe can never drift apart
@@ -1162,17 +1179,8 @@ async function auditShow(show, opts = {}) {
     // no url — manual entries) — a BWW /shows/…/cast stub must not "cover"
     // the BWW hub URL and hide a genuine gap (The Vessel, 2026-08-05).
     const dirFilesAll = dirByHost.get(aggHost) || [];
-    // Scheme / www / trailing-slash / host-case variants are the same URL
-    // (ship-check: without this, a flagged file whose URL differed only by a
-    // trailing slash stopped vouching once hostFallbackVouchers dropped
-    // flagged files, and the listed URL was re-ingested every run).
-    const urlIdentity = (u) => normalizeReviewUrl(u)
-      .replace(/^https?:\/\//i, '')
-      .replace(/^www\./i, '')
-      .replace(/^([^/]+)/, (h) => h.toLowerCase())
-      .replace(/\/+$/, '');
-    const aggNorm = urlIdentity(aggUrl);
-    const exactMatches = dirFilesAll.filter(d => d.url && urlIdentity(d.url) === aggNorm);
+    const aggNorm = gapUrlIdentity(aggUrl);
+    const exactMatches = dirFilesAll.filter(d => d.url && gapUrlIdentity(d.url) === aggNorm);
     const dirFiles = exactMatches.length > 0
       ? exactMatches
       : hostFallbackVouchers(
@@ -2954,4 +2962,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
+module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
