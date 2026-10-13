@@ -21,8 +21,9 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
-const { loadPlaybillUrls, savePlaybillUrls } = require('./lib/playbill-urls-store');
+const { loadPlaybillUrls, savePlaybillUrls, logSaveResult } = require('./lib/playbill-urls-store');
 
+const { isBroadwayCategory } = require('./lib/venue-classification');
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
@@ -138,6 +139,18 @@ async function serpFallback(show) {
   }
 }
 
+/**
+ * Open or in-previews BROADWAY shows. Broadway used to be the only show with no
+ * category, so this filtered on `!s.category`; every entry now carries one
+ * ('broadway' included), which left the filter matching nothing and made
+ * update-show-status.yml's per-show `--show=<slug>` call exit "Show not found"
+ * for every new Broadway show (what-else finding). Still Broadway-only: the URL
+ * variants below hardcode "-broadway-".
+ */
+function isDiscoverTarget(s) {
+  return (s.status === 'open' || s.status === 'previews') && isBroadwayCategory(s);
+}
+
 async function main() {
   console.log('Discover Playbill URLs');
   console.log('='.repeat(40));
@@ -145,9 +158,7 @@ async function main() {
 
   // Load shows
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  let targetShows = showsData.shows.filter(s =>
-    (s.status === 'open' || s.status === 'previews') && !s.category
-  );
+  let targetShows = showsData.shows.filter(isDiscoverTarget);
 
   if (showFilter) {
     targetShows = targetShows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -206,7 +217,7 @@ async function main() {
     // it found is in this show's MARKET: generateUrlVariants hardcodes
     // "-broadway-" into every constructed URL, and serpFallback queries
     // "...broadway production" and returns a top result. Today this script only
-    // targets shows with NO category (see the targetShows filter), so it cannot
+    // targets Broadway shows (see isDiscoverTarget), so it cannot
     // reach a London show and is NOT what poisoned the six live entries — that
     // was fetch-show-images-auto.js. But "the filter happens to exclude the
     // shows this would break" is not a guarantee, and a durable cache that
@@ -234,17 +245,20 @@ async function main() {
   if (!dryRun && (found > 0)) {
     const r = savePlaybillUrls(OUTPUT_PATH, existing, existingSnapshot);
     console.log(`Saved to ${OUTPUT_PATH} (${r.sets} set, ${r.deletes} removed)`);
-    if (r.recovered > 0) {
-      // Non-zero means a concurrent writer added entries while this run was
-      // working. The old whole-file write destroyed exactly these silently.
-      console.log(`  merged ${r.recovered} entry(ies) another writer added since this run loaded the cache`);
-    }
+    // recovered = a concurrent writer's entries the old whole-file write would
+    // have destroyed; refused = the BRO-2893 matcher guard; conflicts = a peer
+    // wrote the same id after our load (BRO-2910).
+    logSaveResult(r);
   } else if (dryRun) {
     console.log('[DRY RUN] Would save to playbill-urls.json');
   }
 }
 
-main().catch(err => {
-  console.error('Fatal:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal:', err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { isDiscoverTarget };

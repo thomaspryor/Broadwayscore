@@ -330,9 +330,7 @@ function loadPlaybillUrlCache() {
 function savePlaybillUrlCache() {
   if (!playbillUrlSession) loadPlaybillUrlCache();
   const r = playbillUrlSession.save();
-  if (r.recovered > 0) {
-    console.log(`  [playbill-urls] merged ${r.recovered} entry(ies) another writer added since load`);
-  }
+  playbillUrlStore.logSaveResult(r);
   return r;
 }
 

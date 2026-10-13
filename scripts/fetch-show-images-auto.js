@@ -1297,9 +1297,7 @@ function savePlaybillUrls(data) {
   // the two existing call sites' shape.
   if (!playbillUrlSession) loadPlaybillUrls();
   const r = playbillUrlSession.save();
-  if (r.recovered > 0) {
-    console.log(`  [playbill-urls] merged ${r.recovered} entry(ies) another writer added since load`);
-  }
+  store.logSaveResult(r);
   return r;
 }
 
