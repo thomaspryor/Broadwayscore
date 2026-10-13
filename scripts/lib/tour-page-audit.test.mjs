@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { isShowScoreStatusEligible } = require('./showscore-status-eligibility.js');
-const { checkTourData, expectedCities, isScoredSlim } = require('./tour-page-audit.js');
+const { checkTourData, checkShowPage, expectedCities, isScoredSlim } = require('./tour-page-audit.js');
 import { readFileSync } from 'node:fs';
 
 // BRO-4876: ShowScore "Closed" on a tour's borrowed URL closed the live
@@ -79,4 +79,23 @@ test('parseListPage: unscored tour card does not borrow a neighbour review count
   const html = `<html><body><div>${card('a-tour-2026', '3 reviews')}${card('b-tour-2026', null)}${card('c-tour-2026', '5 reviews')}</div></body></html>`;
   const byId = Object.fromEntries(parseListPage(html).shows.map(s => [s.id, s.reviewCount]));
   assert.deepEqual(byId, { 'a-tour-2026': 3, 'b-tour-2026': null, 'c-tour-2026': 5 });
+});
+
+// BRO-4980: 273 schedule-city-unlinked errors came from expectedCities counting
+// unscored tours (BRO-4979). With the scored-only set, a city the site never
+// builds must not be demanded as a link, and a real city page still must be.
+test('schedule-city-unlinked follows the scored-only city set', () => {
+  const stop = { city: 'Ames, IA', venue: 'V', start: '2026-11-01', end: '2026-11-02' };
+  const tours = ['a', 'b', 'c', 'd'].map(id => ({ id, status: 'open' }));
+  const schedules = Object.fromEntries(tours.map(t => [t.id, { stops: [stop] }]));
+  const cityPages = ids => new Set(expectedCities({ tours, schedules, listedIds: new Set(ids), today: '2026-10-12' }).keys());
+  const page = cityHref => ({
+    tourSubtitle: 'National Tour', now: null, next: null, hasSchedule: true, scheduleCount: 1,
+    scheduleAll: [{ city: stop.city, venue: stop.venue, range: '', cityHref }], scheduleShown: [], ticketHrefs: [], jsonLd: [], rows: [], h: [],
+  });
+  const run = (cp, href) => checkShowPage({ url: '/show/a', page: page(href), show: { id: 'a', status: 'open' }, schedule: { stops: [stop] }, todays: ['2026-10-12'], cityPages: cp })
+    .filter(f => /^schedule-city-/.test(f.code)).map(f => f.code);
+  assert.deepEqual(run(cityPages(['a', 'b']), null), [], 'unscored mix builds no Ames page, so no link is expected');
+  assert.deepEqual(run(cityPages(['a', 'b', 'c']), null), ['schedule-city-unlinked']);
+  assert.deepEqual(run(cityPages(['a', 'b', 'c']), '/tours/ames-ia'), []);
 });
