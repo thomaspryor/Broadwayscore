@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5294-a",
   "planId": "5be8e366-6d62-48f3-9f0f-b3211d512c55",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T22:30:00.000Z",
   "submitter": {
     "name": null,
@@ -22,5 +22,13 @@
         "description": "Set needsRescore with rescoreReason 'multi-show column: score the target section (BRO-5294)' on 11 complete, scored, unlocked WSJ rows whose body has 2+ production boxes; the script refuses anything else."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T23:30:56.487Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran flag-multishow-column-rescore.js successfully"
+    }
+  ]
 }
