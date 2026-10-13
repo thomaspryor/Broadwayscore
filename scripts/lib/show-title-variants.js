@@ -61,9 +61,16 @@ const GENERIC_PREFIX_WORDS = new Set([
  * @param {string} s
  * @returns {string}
  */
+const CENSORED_F_WORD_RE = /\b(mother)?f[*‐‑‒–—―−\-#@!.]{1,4}(c?k(?:ers?|ing|in|ed|s)?|ers?|ing|in|ed)\b/gi;
+
 function normalizeForMention(s) {
   if (!s) return '';
   return foldDiacritics(String(s))
+    // Censored profanity reads as the full word on both sides: THR titles its
+    // review "The Motherf—ker With the Hat" and counted 0 mentions of "The
+    // Motherfucker with the Hat" (BRO-5222), while shows.json itself carries
+    // "What's the F**king Point?".
+    .replace(CENSORED_F_WORD_RE, (m, mother, rest) => `${mother || ''}fuck${rest.replace(/^c?k/i, '')}`)
     .replace(/[‘’‚‛ʼ＇`´]/g, "'")
     .replace(/[“”„‟"]/g, ' ')
     .replace(/[‐‑]/g, '-')
