@@ -32,7 +32,7 @@ for (const c of CASES) {
     assert.ok(line.includes(c.file), `${c.file} missing from the targeted reconcile call`);
   });
 
-  test(`clean -X theirs rebase drops the remote append; reconcile restores it (${c.file})`, () => {
+  test(`merger restores the remote append a clean -X theirs rebase drops (${c.file})`, () => {
     const entry = CORE_DATA_MERGE_REGISTRY.find((e) => c.file.endsWith(e.file));
     assert.ok(entry && entry.merge, 'registered merger');
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2463-'));

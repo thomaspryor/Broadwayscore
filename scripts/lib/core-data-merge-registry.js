@@ -176,9 +176,9 @@ const CORE_DATA_MERGE_REGISTRY = [
     // git-api.sh's fast path too, same pattern as audit/alert-ledger.json
     // below (BRO-2413).
     apiFallbackMerge: true,
-    // Unlike the other public-repo entries, this file is reconciled ONLY via
+    // Unlike the other public-repo entries, this file is reconciled via
     // push-with-retry.sh's resolve_conflicts() case arm (fires unconditionally
-    // on an actual rebase/merge conflict) — it is NOT part of reconcile-
+    // on an actual rebase/merge conflict) AND (BRO-2463) by push-with-retry.sh's targeted unconditional reconcile call. It is NOT part of reconcile-
     // merged-json.js's opt-in post-rebase pass (PUSH_RECONCILE_MERGED_JSON=1),
     // which exists to catch the DIFFERENT case of a non-conflicting `-X theirs`
     // rebase silently dropping a hunk. Excluding it from activeEntriesFor()

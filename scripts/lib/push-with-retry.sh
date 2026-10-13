@@ -1947,7 +1947,7 @@ reconcile_merged_json() {
   # grep across .github/workflows/*.yml), and its registry entry is
   # deliberately optInReconcile:false (reconciled via the case arm, not the
   # opt-in sweep) — so without this second, targeted call it would be
-  # silently unprotected on the common path. Scoped to exactly this one file;
+  # silently unprotected on the common path. Scoped to the files named in this one call (alert-digest-queue.json, feedback-request-ledger.json; BRO-2463);
   # does not change the opt-in default for any other MANAGED file or caller.
   local ledger_out
   ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json) || ledger_out=""
