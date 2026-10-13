@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-a-04",
   "planId": "e875e6ab-375e-4f23-a9ad-4320b6450b00",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T00:58:15.178Z",
   "submitter": {
     "name": null,
@@ -57,5 +57,38 @@
         "description": "Orphan copy (the-other-place-2026/ is not a shows.json id) of the-other-place-2013/minneapolis-star-tribune--mark-kennedy.json: same url, publishDate January 10, 2013 inside the-other-place-2013's run; the kept copy is excerpt 0 chars vs this untiered 0."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T01:48:48.479Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/thewrap--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/vulture--helen-shaw.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-notebook/theater-life--paulanne-simmons.json → the-notebook-2024/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/minneapolis-star-tribune--mark-kennedy.json"
+    }
+  ]
 }
