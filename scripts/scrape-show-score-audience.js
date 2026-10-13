@@ -276,9 +276,8 @@ function fetchViaBrightData(url) {
         }
       });
     });
-    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
-    req.on('timeout', () => reject(new Error('BrightData request timeout')));
+    req.on('timeout', () => { req.destroy(); reject(new Error('BrightData request timeout')); });
     req.end(body);
   }).catch(error => {
     console.error(`  BrightData failed: ${error.message}`);

@@ -1756,7 +1756,7 @@ async function resolveTodayTixUrls(existing) {
   for (const { showId, field, title, location, region } of toResolve) {
     try {
       const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(cleanSearchTitle(title))}&location=${location}&limit=3`;
-      const resp = await fetch(url, { signal: AbortSignal.timeout(300000) });
+      const resp = await fetch(url, { signal: AbortSignal.timeout(60000) });
       if (!resp.ok) {
         console.warn(`  [TodayTix] API error for "${title}": ${resp.status}`);
         revertToShowWebsite(showId, field, `TodayTix API ${resp.status} for "${title}"`);

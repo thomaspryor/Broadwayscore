@@ -424,7 +424,7 @@ async function extractOcrFromImage(page, imageId, verbose) {
       if (verbose) console.log('    No passive intercept — calling article API directly...');
       try {
         const direct = await page.evaluate(async (id) => {
-          const res = await fetch(`/api/article/page/${id}/articles`, { signal: AbortSignal.timeout(300000), headers: { accept: 'application/json' } });
+          const res = await fetch(`/api/article/page/${id}/articles`, { signal: AbortSignal.timeout(60000), headers: { accept: 'application/json' } });
           if (!res.ok) return { status: res.status, body: (await res.text()).slice(0, 120) };
           return { status: 200, json: await res.json() };
         }, imageId);

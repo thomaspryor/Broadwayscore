@@ -109,7 +109,7 @@ async function sendEmail(to, from, subject, html) {
         }
       });
     });
-    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
     req.on('error', reject);
     req.write(data);
     req.end();
