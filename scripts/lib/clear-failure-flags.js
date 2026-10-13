@@ -19,6 +19,8 @@
  * Per §15: extracted as a pure function for testability.
  */
 
+const { isToBeCalculatedScored } = require('./scorable-text');
+
 /**
  * Success condition: fullText is long enough to represent a real review.
  */
@@ -189,7 +191,9 @@ function clearFailureFlags(data, opts = {}) {
   // rebuild-helpers.js returns null on TO_BE_CALCULATED at line 336, silently excluding the
   // review from reviews.json with no audit signal beyond a 'no score' counter.
   // Stuart King email 2026-04-27 surfaced this on Flyby (Notion 351637c5-416f-81f2).
-  if (data.scoreStatus === 'TO_BE_CALCULATED' && hasLlmScore(data)) {
+  // BRO-5227: isToBeCalculatedScored covers the LLM-score case plus a star
+  // rating from a star outlet; the same predicate the rebuild reads.
+  if (isToBeCalculatedScored(data)) {
     data.scoreStatus = null;
     cleared.push('scoreStatus');
   }

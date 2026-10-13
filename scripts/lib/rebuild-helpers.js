@@ -11,6 +11,7 @@ const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar, adjudicationStarBasisGone } = require('./star-reliability');
 const { publishedScoreViolation } = require('./published-score-star-band');
+const { isToBeCalculatedScored } = require('./scorable-text');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
 // that often read the wrong element (pagination, dates, sidebars). The LLM may
@@ -670,8 +671,10 @@ function getBestScore(data, opts = {}) {
   const flagForHumanReview = opts.flagForHumanReview || (() => {});
   const inc = (key) => { stats[key] = (stats[key] || 0) + 1; };
 
-  // Skip if explicitly marked as TO_BE_CALCULATED
-  if (data.scoreStatus === 'TO_BE_CALCULATED') {
+  // Skip if explicitly marked as TO_BE_CALCULATED, unless the file now has a
+  // real score or star rating (BRO-5227). Text alone does not lift it here:
+  // see isToBeCalculatedScored in scorable-text.js.
+  if (data.scoreStatus === 'TO_BE_CALCULATED' && !isToBeCalculatedScored(data, data._showCategory)) {
     return null;
   }
 

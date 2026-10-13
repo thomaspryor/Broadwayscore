@@ -23,7 +23,7 @@
  */
 
 const { hasExcerpt } = require('./excerpt-fields');
-const { isCapsuleReview } = require('./scorable-text');
+const { isExemptFromBodyLengthGate } = require('./scorable-text');
 
 /**
  * Retire the rescore queue entry on a scored review file.
@@ -191,14 +191,15 @@ function stampTerminalScoringFailure(fileData, reason, blockedAt) {
  */
 function isBlockedFromRescore(data) {
   if (!data || !data.rescoreBlockedReason) return false;
-  // Theatre Record capsules stamped body_too_short predate the capsule
-  // exemption at the validator call sites (scorer.ts / ensemble-scorer.ts) —
+  // Theatre Record capsules and short partials (BRO-5227) stamped
+  // body_too_short predate their exemption at the validator call sites
+  // (scorer.ts / ensemble-scorer.ts), via the same isExemptFromBodyLengthGate —
   // the gate they failed no longer applies to them, so the deterministic
   // fingerprint is void. Unblocking here (logic-side) self-heals every
   // stamped file with zero review-texts writes.
   if (
     data.rescoreBlockedReason === 'input_validation_failed:body_too_short' &&
-    isCapsuleReview(data)
+    isExemptFromBodyLengthGate(data)
   ) {
     return false;
   }

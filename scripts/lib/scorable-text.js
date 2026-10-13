@@ -137,5 +137,111 @@ function strippedFullTextSelection(data, selectedText) {
   return full.startsWith(selectedText) || full.trim().startsWith(selectedText) ? selectedText : null;
 }
 
+// BRO-5227: shortest stored partial text worth handing to the scorer. Below
+// this the stored text is a page shell (byline block, cookie banner), not
+// a piece of the article.
+const MIN_SHORT_PARTIAL_CHARS = 300;
+const BODY_GATE_CHARS = 1000; // score-input-validator.js's body_too_short floor
+
+/**
+ * BRO-5227: a partial copy of a review (300-999 chars of fullText) with no
+ * other way to be scored. The owner's call (2026-10-13): a rough score from
+ * the part we have beats leaving the review off the site.
+ *
+ * This reopens, for partials, the gate isCapsuleReview's comment says to keep
+ * closed. The scoreability check in the scoring prompt is what keeps it safe:
+ * a hand test of 13 current partials against the live V5 prompt (gpt-4o)
+ * rejected every listing, casting note, menu tie-in, login wall and
+ * off-topic page, refused the ledes cut off before any verdict
+ * ("truncated_text"), and scored the two with a verdict (Heated Rivalry 76,
+ * Franz & Marie First Night 20). Scores from these are always low confidence
+ * (input-builder.ts), so getBestScore takes them as llmScore-lowconf.
+ *
+ * Files a classifier or a scorer already called non-review, wrong show or
+ * wrong production stay out. A junk page that slips through costs one scoring
+ * call: the ensemble's rejection sets rejectionReason, which ends the
+ * exemption, and BRO-5047's fingerprint stops a retry on the same text.
+ * @param {Object} data review-text record
+ * @returns {boolean}
+ */
+function isShortPartialReview(data) {
+  if (!data || typeof data.fullText !== 'string') return false;
+  const len = data.fullText.trim().length;
+  if (len < MIN_SHORT_PARTIAL_CHARS || len >= BODY_GATE_CHARS) return false;
+  if (isCapsuleReview(data)) return false;
+  // Only text the tier classifier itself called a partial copy of an article
+  // (all 20 unscored cases on open shows on 2026-10-13; ~245 files across the
+  // whole corpus, ~90 of them unscored). An untiered or 'complete' short text
+  // is something else (a page shell, a contact form) and keeps the gate.
+  if (data.contentTier !== 'truncated') return false;
+  return !(data.wrongShow || data.wrongProduction || data.isNonReview || data.rejectionReason);
+}
+
+/**
+ * The one answer to "does score-input-validator.js's body_too_short gate
+ * apply to this file?". The scorer call sites (scorer.ts, ensemble-scorer.ts)
+ * and rescore-lifecycle.js's isBlockedFromRescore must agree, or a file is
+ * blocked on one side and re-dispatched on the other (BRO-2985).
+ * @param {Object} data review-text record
+ * @returns {boolean}
+ */
+function isExemptFromBodyLengthGate(data) {
+  return isCapsuleReview(data) || isShortPartialReview(data);
+}
+
+/**
+ * BRO-5227: scoreStatus 'TO_BE_CALCULATED' is a placeholder written when a
+ * review had nothing to score (mark-uncalculated-reviews.js,
+ * score-all-unscored.js). Two ways it stops holding:
+ *
+ * isToBeCalculatedScored: the file now has a real score: an LLM score, a
+ * published rating, or a star rating relayed by an aggregator for an outlet
+ * that publishes stars. The marker no longer keeps it off the site
+ * (rebuild-helpers getBestScore) and clear-failure-flags.js may clear it.
+ * A relayed rating only counts on a London show: every star relay is a UK
+ * aggregator, and on a US show it rates the London production
+ * (harry-potter-2021/independent--unknown.json: StageDoor's 5/5 for the
+ * Palace Theatre run). Callers without the show (clear-failure-flags) pass
+ * no category, so a relay alone never clears the marker there.
+ *
+ * isStaleToBeCalculated: that, OR the file has text the scorer will take.
+ * Text alone only lets the file reach the scorer (review-guards
+ * explainExclusion, which isScoreable() delegates to); getBestScore keeps
+ * honouring the marker until a score exists, because these files often carry
+ * a placeholder bucket/assignedScore (Mixed 50/55, no source) that must never
+ * reach the site.
+ * @param {Object} data review-text record
+ * @returns {boolean}
+ */
+const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
+
+/**
+ * @param {Object} data review-text record
+ * @param {string} [showCategory] the show's shows.json category
+ * @returns {boolean}
+ */
+function isToBeCalculatedScored(data, showCategory) {
+  if (!data || data.scoreStatus !== 'TO_BE_CALCULATED') return false;
+  if (data.llmScore && typeof data.llmScore.score === 'number') return true;
+  if (data.originalScore) return true;
+  if (!data.aggregatorStars || !LONDON_CATEGORIES.has(showCategory)) return false;
+  // lazy: score-extractors is heavy and requires several guard modules
+  const { KNOWN_STAR_OUTLETS } = require('./score-extractors');
+  return KNOWN_STAR_OUTLETS.has(data.outletId);
+}
+
+/**
+ * @param {Object} data review-text record
+ * @param {string} [showCategory] the show's shows.json category
+ * @returns {boolean}
+ */
+function isStaleToBeCalculated(data, showCategory) {
+  if (!data || data.scoreStatus !== 'TO_BE_CALCULATED') return false;
+  if (isToBeCalculatedScored(data, showCategory)) return true;
+  if (typeof data.fullText === 'string' && data.fullText.trim().length >= BODY_GATE_CHARS) return true;
+  return isExemptFromBodyLengthGate(data);
+}
+
 module.exports = {
-  strippedFullTextSelection, selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH };
+  strippedFullTextSelection, selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH,
+  isShortPartialReview, isExemptFromBodyLengthGate, isToBeCalculatedScored, isStaleToBeCalculated };

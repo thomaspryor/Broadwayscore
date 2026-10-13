@@ -127,7 +127,13 @@ export function pickConsensusRejection(rejections: ModelOutcome[]): ModelOutcome
   // breaks ties AMONG the types tied for the plurality — it never overrides
   // an outright vote-count lead, including a plurality of garbage_text.
   const maxCount = Math.max(...Array.from(counts.values()));
-  const winner = REJECTION_TYPE_PRIORITY.find(type => (counts.get(type) || 0) === maxCount)!;
+  // BRO-5227: models also answer with types the prompt never lists (gpt-4o
+  // says "truncated_text" for a lede cut off before the verdict). With no
+  // listed type in the plurality, the old find() returned undefined and the
+  // caller threw, so nothing was saved and the file was re-sent on every
+  // run. Fall back to the plurality type itself (first named on a tie).
+  const winner = REJECTION_TYPE_PRIORITY.find(type => (counts.get(type) || 0) === maxCount)
+    ?? Array.from(counts.keys()).find(type => counts.get(type) === maxCount)!;
   return rejections.find(r => r.rejection === winner)!;
 }
 
@@ -611,6 +617,9 @@ export class EnsembleReviewScorer {
       // the allowlist-omission class; parity test in
       // tests/unit/ensemble-scorer-content-tier-forward.test.ts.
       contentTier: (reviewFile as any).contentTier,
+      // BRO-5227: input-builder's short-partial rule tells a Theatre Record
+      // capsule (source 'theatre-record') from a partial copy by source.
+      source: (reviewFile as any).source,
       fullText: reviewFile.fullText,
       ...excerptData,
       bwwThumb: reviewFile.bwwThumb,
@@ -635,11 +644,11 @@ export class EnsembleReviewScorer {
     // Pre-scoring input validation: reject nav chrome and garbage before sending to LLM.
     // Prevents the TheaterMania incident (Proof 2026-04-16) where nav chrome was scored 95/Rave.
     const { validateScoreableText } = require('../lib/score-input-validator.js');
-    const { isCapsuleReview } = require('../lib/scorable-text.js');
-    // Theatre Record print capsules are complete short reviews — exempt from
-    // the body-length gate like excerpts, without reclassifying textQuality
-    // (the prompt keeps its truncated-text caution framing).
-    const isExcerpt = scoringInput.textQuality === 'excerpt-only' || isCapsuleReview(reviewFile);
+    const { isExemptFromBodyLengthGate } = require('../lib/scorable-text.js');
+    // Theatre Record print capsules and short partials (BRO-5227) are exempt
+    // from the body-length gate like excerpts, without reclassifying
+    // textQuality (the prompt keeps its truncated-text caution framing).
+    const isExcerpt = scoringInput.textQuality === 'excerpt-only' || isExemptFromBodyLengthGate(reviewFile);
     const inputValidation = validateScoreableText(scoringInput.text, reviewFile.showTitle, { isExcerpt });
     if (!inputValidation.ok) {
       return {

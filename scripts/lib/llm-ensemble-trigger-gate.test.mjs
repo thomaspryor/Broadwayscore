@@ -93,6 +93,14 @@ const SPECTATOR_SUBMIT_PAGE = {
   rescoreBlockedHadExcerpt: false,
 };
 
+// BRO-5227: a 300-999 char text tiered 'truncated' is now a short partial the
+// scorer takes once; the ensemble's rejection (not_a_review here) then sets
+// rejectionReason and the file leaves the queue for good, so the live file
+// costs one attempt, not a loop. The pre-LLM refusal this suite pins still
+// holds for any other tier, so the tests below use the same page tiered
+// 'complete' (a short "complete" text keeps the body_too_short gate).
+const PRE_LLM_REFUSED = { ...SPECTATOR_SUBMIT_PAGE, contentTier: 'complete' };
+
 const THE_STORY = { id: 'the-story-west-end-2026', title: 'The Story', openingDate: '2026-09-03' };
 
 // A real orphan: substantive text, no exclusion flags, no score anywhere.
@@ -107,8 +115,16 @@ const GENUINE_ORPHAN = {
 
 // ── 1. The dispatch edge ────────────────────────────────────────────────────
 
+test('the live BRO-2985 file gets one scoring attempt and its rejection ends it', () => {
+  const ctx = { show: THE_STORY, showTitle: THE_STORY.title };
+  assert.equal(unscoredSkipReason(SPECTATOR_SUBMIT_PAGE, ctx), null, 'one attempt (BRO-5227)');
+  const rejected = { ...SPECTATOR_SUBMIT_PAGE, rejectionReason: 'not_a_review',
+    rejectedBy: 'ensemble-scoreability-check', rejectedAt: '2026-10-13T00:00:00.000Z' };
+  assert.notEqual(unscoredSkipReason(rejected, ctx), null, 'after the rejection: never again');
+});
+
 test('the file that pinned BRO-2985 is not dispatchable work', () => {
-  const reason = unscoredSkipReason(SPECTATOR_SUBMIT_PAGE, {
+  const reason = unscoredSkipReason(PRE_LLM_REFUSED, {
     show: THE_STORY,
     showTitle: THE_STORY.title,
   });
@@ -148,7 +164,7 @@ function stage(files) {
 
 test('auditShow: a show whose ONLY orphan is scorer-refused yields zero dispatchable orphans', (t) => {
   t.after(() => fs.rmSync(SYNTHETIC_DIR, { recursive: true, force: true }));
-  stage({ 'the-spectator-uk--unknown.json': SPECTATOR_SUBMIT_PAGE });
+  stage({ 'the-spectator-uk--unknown.json': PRE_LLM_REFUSED });
 
   const result = auditShow(SYNTHETIC_SHOW_ID, THE_STORY);
 
@@ -199,7 +215,7 @@ test('auditShow: a self-clearing backoff is not dispatchable, but is still count
 test('auditShow: a genuine orphan alongside the junk still triggers a dispatch', (t) => {
   t.after(() => fs.rmSync(SYNTHETIC_DIR, { recursive: true, force: true }));
   stage({
-    'the-spectator-uk--unknown.json': SPECTATOR_SUBMIT_PAGE,
+    'the-spectator-uk--unknown.json': PRE_LLM_REFUSED,
     'exeunt-magazine--loren-noveck.json': GENUINE_ORPHAN,
   });
 
@@ -219,7 +235,7 @@ test('t1 silent-gap sweep marks the same file non-dispatchable', () => {
   // hourly, capped at one dispatch per show per DISPATCH_RETRY_HOURS=6). Same
   // blind spot, bounded rather than unbounded — 4 wasted runner boots a day.
   const gap = classifySilentGap({
-    file: SPECTATOR_SUBMIT_PAGE,
+    file: PRE_LLM_REFUSED,
     show: THE_STORY,
     tier: 1,
     outletScored: false,

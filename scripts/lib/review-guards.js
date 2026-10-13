@@ -4921,7 +4921,11 @@ function explainExclusion(data, show, filePath) {
   // serpRetry-polling) that rebuild drops via skippedNoScore without ever
   // calling logExclusion (task #838's "unlogged stub" gap — a genuine
   // rebuild-all-reviews.js silent-exclusion path, not just a mirror miss).
-  if (data.scoreStatus === 'TO_BE_CALCULATED') return 'scoreStatusToBeCalculated';
+  // BRO-5227: only while the marker still holds. Once the file has something
+  // to score (isStaleToBeCalculated) it must reach the scorer, which shares
+  // this predicate through isScoreable(); before, the marker blocked both.
+  if (data.scoreStatus === 'TO_BE_CALCULATED'
+      && !require('./scorable-text').isStaleToBeCalculated(data, show && show.category)) return 'scoreStatusToBeCalculated';
   // BWW aggregator ambiguity: review was extracted from BWW's /reviews/ page for a show
   // that has title-token-overlap siblings (e.g. "Cats" reviews landing on a
   // "CATS: The Jellicle Ball" page) with no date or URL-year to disambiguate.

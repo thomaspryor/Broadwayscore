@@ -20,6 +20,7 @@ const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket
 // A renamed house is the same venue (BRO-4956: Rent at the Duke of York's,
 // reviewed as the Tom Stoppard Theatre, was rejected as wrong_production).
 const { otherVenueNames } = require('../lib/venue-aliases');
+const { isShortPartialReview } = require('../lib/scorable-text');
 
 // ========================================
 // TYPES
@@ -50,6 +51,7 @@ export interface ReviewInputData {
   // Content tier ('complete' | 'truncated' | ...). getBestTextForScoring trusts a
   // 'complete' tier over the missing final punctuation a page footer causes (BRO-4804).
   contentTier?: string;
+  source?: string;    // collector that wrote the file ('theatre-record' capsules, BRO-5227)
 
   // Text sources
   fullText?: string | null;
@@ -336,6 +338,13 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
   // is unreliable. Variety was scored 73/Positive from a 180-char BWW excerpt;
   // the full text was actually Mixed (66).
   if (textQualityStatus === 'excerpt-only' && textResult.text && textResult.text.length < 200) {
+    confidence = 'low';
+  }
+
+  // 2F (BRO-5227): a short partial (300-999 chars, exempt from the body
+  // gate) is always low confidence. A lede that happens to end on a full stop
+  // is labelled 'complete' above and would otherwise score as 'high'.
+  if (textResult.type === 'fullText' && isShortPartialReview(review)) {
     confidence = 'low';
   }
 

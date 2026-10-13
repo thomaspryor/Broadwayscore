@@ -61,10 +61,15 @@ test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO
   // scorer skipped it identically every time.
   const submitPageText =
     'Have a story to share with us? Contact the right member of the editorial team below. '.repeat(6);
-  const gap = classify({
+  // BRO-5227: a 300-999 char text the classifier tiered 'truncated' is a
+  // short partial the scorer now takes once (the ensemble's not_a_review
+  // rejection then ends it; see the dispatchable assertion at the end). A
+  // short text tiered anything else keeps the terminal block, which is what
+  // this test pins.
+  const blocked = {
     url: 'https://www.spectator.co.uk/submit/',
     fullText: submitPageText,
-    contentTier: 'truncated',
+    contentTier: 'complete',
     textFetchedAt: '2026-07-17T00:00:00Z',
     rescoreAttempts: 1,
     rescoreBlockedReason: 'input_validation_failed:body_too_short',
@@ -74,7 +79,8 @@ test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO
     // would pass for the wrong reason.
     rescoreBlockedTextLength: submitPageText.length,
     rescoreBlockedHadExcerpt: false,
-  }, { tier: 2 });
+  };
+  const gap = classify(blocked, { tier: 2 });
   // Still a reported gap — the operator must see it.
   assert.equal(gap && gap.type, 'unscored');
   assert.equal(
@@ -82,6 +88,8 @@ test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO
     false,
     'a file carrying a terminal rescue block must not keep dispatching scoring',
   );
+  // The same text tiered 'truncated' (the live file) is dispatchable since BRO-5227.
+  assert.equal(classify({ ...blocked, contentTier: 'truncated' }, { tier: 2 }).dispatchable, true);
 });
 
 test('content fetched within the 12h grace window is NOT yet a gap', () => {

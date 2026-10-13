@@ -1793,6 +1793,12 @@ const KNOWN_STAR_OUTLETS = new Set([
   // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
   // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
   'metro', 'the-sun', 'digital-spy', 'radio-times',
+  // BRO-5227: the registry's canonical ids. Review files carry these, so the
+  // short forms above never matched them ('metro' is only an alias of
+  // 'metro-uk'). metro-uk and sunday-express each have own-page star reads on
+  // file (unicode-stars; deaf-republic json-ld 5/5); the Sunday Telegraph
+  // prints the Telegraph's star ratings.
+  'metro-uk', 'sunday-telegraph', 'sunday-express',
   // WE outlets with verified star ratings (added 2026-04-03)
   'all-that-dazzles-uk', 'musical-theatre-review',
   'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',

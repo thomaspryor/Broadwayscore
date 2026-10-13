@@ -236,8 +236,13 @@ function isInScoreRange(n) {
  * 2026-04-27 ship-check found 5 false-positive "orphans" on Beaches because
  * the original predicate checked assignedScore on source files, where it's
  * always undefined regardless of scoring state.
+ *
+ * BRO-5227: the field list below misses the lower rungs (relayed aggregator
+ * stars, thumbs), so 35 of 109 orphans on current shows were reviews the
+ * rebuild does score. When `show` is given, getBestScore itself is asked
+ * last, so this cannot drift from the rebuild again.
  */
-function hasValidScore(data) {
+function hasValidScore(data, show) {
   if (!data || typeof data !== 'object') return false;
   // P0: humanReviewScore. Rebuild's getBestScore (rebuild-helpers.js:345-350)
   // SKIPS the human score when humanReviewScoreProvisional === true — the
@@ -271,6 +276,11 @@ function hasValidScore(data) {
   // P1: llmScore.score (the LLM ensemble result).
   if (data.llmScore && typeof data.llmScore === 'object') {
     if (isInScoreRange(data.llmScore.score)) return true;
+  }
+  if (show) {
+    // A copy: rebuild sets _showCategory on its own in-memory record.
+    const { getBestScore } = require('./lib/rebuild-helpers');
+    if (getBestScore({ ...data, _showCategory: show.category })) return true;
   }
   return false;
 }
@@ -411,7 +421,7 @@ function auditShow(showId, show) {
     if (!eligible) continue;
     eligibleScanned++;
 
-    if (hasValidScore(data)) continue;
+    if (hasValidScore(data, show)) continue;
 
     const { actionable, skipReason } = isDispatchActionable(data, show);
 
