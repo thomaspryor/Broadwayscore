@@ -1037,6 +1037,8 @@ on:
       # scripts/tests/ (registered in tests/unit-test-manifest.txt, not
       # globbed) — path-listed so a solo edit triggers CI.
       - 'scripts/tests/cmux-launch-reclaim.test.mjs'
+      # BRO-4077: identical-title guard for ordinary OWNER hand-offs.
+      - 'scripts/tests/cmux-launch-same-title-guard.test.mjs'
       # Card #650: cmux refuses launchd-parented process ancestry, so the
       # launcher now runs headless via this thin wrapper around the shared
       # scripts/lib/claude-cli.js primitive instead of cmux-launch.js.
