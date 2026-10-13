@@ -72,17 +72,30 @@ describe('banner component', () => {
   });
 });
 
-const PAGES = [
-  ['lotteries', 'broadway'],
-  ['rush', 'broadway'],
-  ['standing-room', 'broadway'],
-  ['discount-tickets', 'broadway'],
-  ['box-office', 'broadway'],
-  ['west-end/lotteries', 'west-end'],
-  ['west-end/rush', 'west-end'],
-  ['west-end/standing-room', 'west-end'],
-  ['west-end/discount-tickets', 'west-end'],
-];
+// Every page that shows a lottery/rush or grosses "Updated" date gets the
+// banner. Found by scan, not a hand list, so a new page cannot miss it (the
+// /best-value pages did on the first pass).
+import { readdirSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+function pagesUnder(dir, out = []) {
+  for (const n of readdirSync(dir)) {
+    const p = join(dir, n);
+    if (statSync(p).isDirectory()) pagesUnder(p, out);
+    else if (n === 'page.tsx') out.push(p);
+  }
+  return out;
+}
+const FEED_DATE_RE = /\b(getLotteryRushLastUpdated|getGrossesLastUpdated)\(\)/;
+const PAGES = pagesUnder('src/app')
+  .filter((p) => FEED_DATE_RE.test(readFileSync(p, 'utf8')))
+  .map((p) => [p.replace(/^src\/app\//, '').replace(/\/page\.tsx$/, ''), p.includes('/west-end/') ? 'west-end' : 'broadway']);
+
+test('the scan finds the known ticket-discovery pages', () => {
+  const names = PAGES.map(([p]) => p);
+  for (const p of ['lotteries', 'rush', 'standing-room', 'discount-tickets', 'box-office', 'best-value', 'west-end/lotteries', 'west-end/best-value']) {
+    assert.ok(names.includes(p), `scan missed ${p}`);
+  }
+});
 
 describe('every ticket-discovery page renders the banner', () => {
   for (const [page, market] of PAGES) {

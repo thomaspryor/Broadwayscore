@@ -7,7 +7,7 @@ import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo'
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, DataStalenessBanner } from '@/components/show-cards';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { BestValueTable, type BestValueRow } from '../../best-value/BestValueTable';
 import { formatTicketPrice } from '@/lib/formatting';
@@ -255,6 +255,7 @@ export default function WestEndBestValuePage() {
             {showsWithDiscounts.length} shows with discount tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
+        <DataStalenessBanner lastUpdated={lastUpdated} market="west-end" />
 
         <DiscountTicketsNav active="best-value" market="west-end" />
 
