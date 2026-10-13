@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-09",
   "planId": "0807a5ce-6608-4405-bbf6-337a891bae60",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T02:10:30.546Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,128 @@
         "description": "Reason for the isNonReview flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T03:01:12.022Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-no-mo-2022/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-no-mo-2022/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "birthday-candles-2022/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "birthday-candles-2022/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "book-of-mormon-2011/theatermania--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "book-of-mormon-2011/theatermania--david-rooney.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. David Rooney was a New York Times critic then (2010-2011), then The Hollywood Reporter\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "carousel-2018/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "carousel-2018/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "diana-the-musical-2021/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "diana-the-musical-2021/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/guardian--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/guardian--jesse-green.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/usatoday--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/usatoday--david-rooney.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. David Rooney is The Hollywood Reporter's chief theater critic (2011-), not a USA Today critic\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/washpost--peter-marks.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/washpost--peter-marks.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "its-only-a-play-2014/theatermania--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "its-only-a-play-2014/theatermania--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood was a New York Times critic then (2004-2017)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    }
+  ]
 }
