@@ -1,23 +1,35 @@
 {
-  "processed": [
-    "the-farnsworth-invention-2007/variety--charles-isherwood.json"
+  "processed": [],
+  "failed": [
+    "burn-this-2019/wsj--terry-teachout.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/burn-this-2019/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-farnsworth-invention-2007/variety--charles-isherwood.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-10-13T12:09:57.944Z",
-  "lastProcessed": "the-farnsworth-invention-2007/variety--charles-isherwood.json",
-  "log": []
+  "startTime": "2026-10-13T12:31:34.340Z",
+  "lastProcessed": "burn-this-2019/wsj--terry-teachout.json",
+  "log": [
+    {
+      "t": "2026-10-13T12:31:39.519Z",
+      "event": "bb-session",
+      "session": "ac8bab76",
+      "url": "https://www.wsj.com/articles/burn-this-review-red-hot-romance-fizzles-1155561505"
+    },
+    {
+      "t": "2026-10-13T12:31:40.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
