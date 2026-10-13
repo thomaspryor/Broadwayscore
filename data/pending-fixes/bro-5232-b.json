@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5232-b",
   "planId": "80aa0f00-6288-4707-bdd9-37cbd4e41dfc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T09:05:05.171Z",
   "submitter": {
     "name": null,
@@ -210,5 +210,128 @@
         "description": "Reason for the flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T12:14:16.983Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/broadway-space--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/broadway-space--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: critic credit is wrong, real author unnamed; evidence https://didtheylikeit.com/shows/13-reviews/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/ap--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/ap--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--michael-kuchwara.json credited to the wrong outlet/critic; evidence https://didtheylikeit.com/shows/little-night-music-broadway/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/washpost--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/washpost--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: byline/outlet wrong, real: ap / Mark Kennedy; evidence https://www.washingtonexaminer.com/news/121800/review-mamets-glengarry-glen-ross-crackles/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-bete-2010/ap--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-bete-2010/ap--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://didtheylikeit.com/shows/la-bete/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eclipsed-2016/wsj--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eclipsed-2016/wsj--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "linda-vista-2019/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "linda-vista-2019/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-tall-women-2018/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-tall-women-2018/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ring-of-fire-2006/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ring-of-fire-2006/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/business/business-news/power-players-90s-119047/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/ap--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/ap--david-rooney.json wrongAttributionReason: null -> \"BRO-5232: copy of hollywood-reporter--david-rooney.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/business/business-news/holidays-hurt-hills-as-finale-124875/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/abc-news--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/abc-news--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-MASTER-CLASS-on-Broadway-Updating-Live-20110707\""
+    }
+  ]
 }
