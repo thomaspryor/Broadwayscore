@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
-const { matchesOutletCriticFile } = require('./lib/review-file-match');
+const { findMatchingReviewFile } = require('./lib/review-file-match');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -107,11 +107,8 @@ function findMatchingFile(showId, outletId, criticNorm) {
     }
     // Same outlet family (edition variants like timeout / timeout-london), never
     // a critic-name-only match across outlets (BRO-3943).
-    for (const file of files) {
-      if (matchesOutletCriticFile(file, outletId, criticNorm)) {
-        return path.join(showDir, file);
-      }
-    }
+    const familyMatch = findMatchingReviewFile(files, outletId, criticNorm, normalizeOutlet);
+    if (familyMatch) return path.join(showDir, familyMatch);
   }
 
   // When critic is unknown, match by outlet — but only if there's exactly one file for that outlet
