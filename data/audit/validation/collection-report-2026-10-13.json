@@ -1,138 +1,102 @@
 {
-  "runDate": "2026-10-13T10:02:50.976Z",
+  "runDate": "2026-10-13T10:28:00.288Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 3,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "the-farnsworth-invention-2007,cyrano-de-bergerac-2007,enchanted-april-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 6,
-    "tier1_5Success": 3,
-    "tier1_9Attempts": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier3_6Attempts": 2,
+    "tier3Success": 3,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 1.7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 2,
+    "failed": 1,
     "shows": [
-      "an-ark-off-broadway-2026",
-      "burn-this-2019",
-      "fun-home-2015",
-      "parade-2023",
-      "the-music-man-2022"
+      "cyrano-de-bergerac-2007",
+      "enchanted-april-2003",
+      "the-farnsworth-invention-2007"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 7,
-      "failed": 1
+      "processed": 0,
+      "failed": 0
     }
   },
   "processed": [
-    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-    "parade-2023/wsj--charles-isherwood.json",
-    "burn-this-2019/wsj--terry-teachout.json"
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "enchanted-april-2003/variety--charles-isherwood.json"
   ],
   "failed": [
-    "the-music-man-2022/wsj--charles-isherwood.json",
-    "fun-home-2015/wsj--terry-teachout.json"
+    "cyrano-de-bergerac-2007/variety--charles-isherwood.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json",
       "the-farnsworth-invention-2007/variety--charles-isherwood.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
-      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "parade-2023/wsj--charles-isherwood.json",
-      "burn-this-2019/wsj--terry-teachout.json"
+      "enchanted-april-2003/variety--charles-isherwood.json"
     ],
     "failed": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
-      "the-music-man-2022/wsj--charles-isherwood.json",
-      "fun-home-2015/wsj--terry-teachout.json"
+      "cyrano-de-bergerac-2007/variety--charles-isherwood.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "data/review-texts/parade-2023/wsj--charles-isherwood.json",
-      "parade-2023/wsj--charles-isherwood.json",
-      "data/review-texts/burn-this-2019/wsj--terry-teachout.json",
-      "burn-this-2019/wsj--terry-teachout.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+      "enchanted-april-2003/variety--charles-isherwood.json"
+    ],
     "archiveToday": [],
-    "archive": [
-      "the-motherfucker-with-the-hat-2011/hollywood-reporter--david-rooney.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 2,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
