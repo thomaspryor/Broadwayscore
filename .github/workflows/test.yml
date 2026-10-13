@@ -1766,6 +1766,8 @@ on:
       # Card #1252 — ScrapingDog's equivalent daily breaker (same allow-list
       # gate reasoning as the Bright Data entries above).
       - 'scripts/check-sd-breaker.js'
+      # BRO-3010 — ScrapingBee's daily breaker (shadow first), same gate.
+      - 'scripts/check-sb-breaker.js'
       # BRO-3022 — the one-shot seeder for the breaker trip-transition ledger
       # those two checkers now append to. Same gap shape as the CLIs listed
       # above: a top-level scripts/ file outside the scripts/lib/** glob, whose

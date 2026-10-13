@@ -39,6 +39,7 @@ const { sdBilledCredits } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
+const { consultScrapingbee } = require('./scrapingbee-caps');
 const { creditsFor } = require('./provider-credits');
 const { usdFor } = require('./provider-pricing');
 const { fallbackFromLabel } = require('./fallback-attribution');
@@ -894,6 +895,19 @@ async function fetchWithScrapingBee(url, options = {}) {
   checkScrapingBeeCredits();
   if (_sbCreditsLow) {
     onSkip('sb-credits-low');
+    return null;
+  }
+
+  // Daily circuit breaker (BRO-3010) — mirrors fetchWithScrapingdog's
+  // consultScrapingdog() check. Only an ENFORCED trip blocks (shadow mode
+  // never sets trippedAt); null lets fetchPage()'s chain move on to
+  // Playwright/Browserbase, SB being the last paid tier.
+  const sbBreakerVerdict = consultScrapingbee();
+  if (!sbBreakerVerdict.allowed) {
+    if (sbBreakerVerdict.firstBlock) {
+      recordSbCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0, fallbackFrom: options.fallbackFrom || null });
+    }
+    onSkip('sb-breaker');
     return null;
   }
 

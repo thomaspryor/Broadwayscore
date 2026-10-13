@@ -30,6 +30,7 @@ const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { sdBilledCredits, withSpendFallback } = require('./provider-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog } = require('./scrapingdog-caps');
+const { consultScrapingbee } = require('./scrapingbee-caps');
 const { creditsFor } = require('./provider-credits');
 
 // Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
@@ -546,6 +547,14 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange, page = 0) {
   // with the account genuinely exhausted (task S1-T6, scraping cost v3).
   if (apiKey) scraper.checkScrapingBeeCredits();
   if (_scrapingBeeSerpExhausted || !apiKey || scraper.sbCreditsLow) return null;
+  // BRO-3010 daily breaker: blocks only on an ENFORCED trip. This regular
+  // SERP has other providers in its chain; the typed news/images SERP
+  // (_serpTypedViaScrapingBee) has none and is deliberately left ungated.
+  const sbBreaker = consultScrapingbee();
+  if (!sbBreaker.allowed) {
+    if (sbBreaker.firstBlock) recordSbCall({ host: 'serp.scrapingbee', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 });
+    return null;
+  }
   if (_sbSerpCallCount >= SERP_SB_MAX_CALLS_PER_RUN) {
     if (!_sbSerpCapLogged) {
       _sbSerpCapLogged = true;

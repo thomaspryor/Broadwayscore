@@ -112,6 +112,7 @@ test(`${BREAKER_STEP}: still stages the runner-only alert state it is hosted her
   for (const f of [
     'data/audit/bd-circuit-breaker.json',
     'data/audit/sd-circuit-breaker.json',
+    'data/audit/sb-circuit-breaker.json',
     'data/audit/breaker-transitions.jsonl',
     'data/audit/alert-ledger.json',
     'data/audit/alert-digest-queue.json',

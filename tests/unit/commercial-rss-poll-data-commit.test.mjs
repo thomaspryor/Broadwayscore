@@ -84,6 +84,7 @@ test('commercial-rss-poll.yml "Commit breaker state" step diff stays fallback-el
   const rc = runDisqualifierCheck([
     'data/audit/bd-circuit-breaker.json',
     'data/audit/sd-circuit-breaker.json',
+    'data/audit/sb-circuit-breaker.json',
     'data/audit/breaker-transitions.jsonl',
     'data/audit/alert-ledger.json',
     'data/audit/alert-digest-queue.json',
@@ -101,6 +102,7 @@ test('commercial-rss-poll.yml "Commit data changes" step diff stays fallback-eli
     'data/commercial-rss-state.json',
     'data/audit/bd-circuit-breaker.json',
     'data/audit/sd-circuit-breaker.json',
+    'data/audit/sb-circuit-breaker.json',
   ]);
   assert.equal(rc, 0, 'the full 4-file diff (2 named + 2 swept-in breaker files) must stay fallback-eligible, or every hourly run with a same-job breaker change repeats the BRO-2795 regression');
 });

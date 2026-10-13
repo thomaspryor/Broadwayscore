@@ -25,8 +25,8 @@ data/audit/stage-latency.jsonl merge=union
 # level (each JSON line is independent; duplicates are harmless to read).
 data/audit/alert-router-attempts.jsonl merge=union
 # Bot-only append log (BRO-3022), written by scripts/lib/breaker-transitions.js
-# from the two hourly spend-breaker checkers (check-sd-breaker.js,
-# check-bd-breaker.js) — one row per trip/recovery TRANSITION, so Sprint 3 can
+# from the three hourly spend-breaker checkers (check-sd-breaker.js,
+# check-bd-breaker.js, check-sb-breaker.js) — one row per trip/recovery TRANSITION, so Sprint 3 can
 # answer "which days did this guard trip" (alert-ledger.json only ever held a
 # cumulative notifyCount per condition, which is why this file exists). Both
 # checkers run in the same job today, but they are separate processes and a

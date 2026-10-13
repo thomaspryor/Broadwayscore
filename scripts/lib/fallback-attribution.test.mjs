@@ -53,6 +53,13 @@ test('the other never-attempted states are attributed too, not collapsed to the 
   assert.equal(fallbackFromLabel('brightdata', { skipReason: 'bd-budget' }), 'bd-budget');
 });
 
+test('a breaker-blocked ScrapingBee is "sb-breaker" (BRO-3010) — must not throw like an unknown reason', () => {
+  // scraper.js fetchWithScrapingBee calls onSkip('sb-breaker') when the SB
+  // daily breaker is enforced; without this label fetchPage would crash
+  // instead of falling back to Playwright.
+  assert.equal(fallbackFromLabel('scrapingbee', { skipReason: 'sb-breaker' }), 'sb-breaker');
+});
+
 test('an unknown skipReason throws instead of leaking a typo into the ledger', () => {
   assert.throws(
     () => fallbackFromLabel('scrapingdog', { skipReason: 'sd-breakr' }),
@@ -137,6 +144,8 @@ function runChain({ breakerTripped }) {
       // (2026-09-26: "802 billed vs ceiling 250"). A path with no file reads
       // as an untripped breaker.
       BD_BREAKER_STATE_PATH: path.join(dir, 'bd-circuit-breaker.json'),
+      // BRO-3010: and the ScrapingBee breaker, should SB ever join this chain.
+      SB_BREAKER_STATE_PATH: path.join(dir, 'sb-circuit-breaker.json'),
       // SD must be IN the chain for the breaker to be what removes it —
       // otherwise the test would pass for the wrong reason (SD never ordered).
       SCRAPER_USE_SCRAPINGDOG: '1',

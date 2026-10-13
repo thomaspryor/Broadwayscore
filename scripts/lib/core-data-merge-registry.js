@@ -776,6 +776,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "sd-circuit-breaker"/"check-sd-breaker.js" — sole writer is scripts/check-sd-breaker.js, invoked only by commercial-rss-poll.yml\'s "ScrapingDog daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). Same concurrency group as bd-circuit-breaker.json above, same workflow. 2026-09-07 (BRO-2960): same "Commit breaker state" step move as bd-circuit-breaker.json above.',
   },
   {
+    file: 'audit/sb-circuit-breaker.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-10-13 (BRO-3010): sole writer is scripts/check-sb-breaker.js (new), invoked only by commercial-rss-poll.yml\'s "ScrapingBee daily circuit-breaker check" step and committed by the same job\'s "Commit breaker state" step, exactly like sd-circuit-breaker.json above. scripts/lib/scrapingbee-caps.js only READS it. Freshly derived from the /usage billing API each hour — nothing to union.',
+  },
+  {
     file: 'audit/corpus-drift.json',
     surface: 'public-repo',
     status: 'single-writer',
@@ -1799,7 +1807,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     format: 'jsonl',
     apiFallbackMerge: true,
     optInReconcile: false, // see audit/alert-ledger.json's comment above
-    verifiedBy: '2026-09-08 (BRO-3022): 2 writers (scripts/check-sd-breaker.js, scripts/check-bd-breaker.js) via scripts/lib/breaker-transitions.js appendTransition() — append-only log, union deduped by (ts, conditionKey), no retention prune so no base-aware delete branch is needed. Registered specifically so that adding this path to commercial-rss-poll.yml\'s "Commit breaker state" step does NOT trip push-with-retry.sh\'s "unaudited data/audit/ path" disqualifier and silently strip the Git Data API fallback from the very commit BRO-2960 carved out and BRO-335 tuned for push contention. NOT apiFallbackSafe: that claims "no reconciliation needed" and is ours-wins-outright, which would drop the other side\'s appended rows (the residual risk documented on audit/autonomous-recheck-ledger.jsonl above) — for an append-only ledger a real per-row union is required. See scripts/lib/merge-breaker-transitions.js.',
+    verifiedBy: '2026-09-08 (BRO-3022): 2 writers (scripts/check-sd-breaker.js, scripts/check-bd-breaker.js; a third, scripts/check-sb-breaker.js, added 2026-10-13 by BRO-3010, same job and step) via scripts/lib/breaker-transitions.js appendTransition() — append-only log, union deduped by (ts, conditionKey), no retention prune so no base-aware delete branch is needed. Registered specifically so that adding this path to commercial-rss-poll.yml\'s "Commit breaker state" step does NOT trip push-with-retry.sh\'s "unaudited data/audit/ path" disqualifier and silently strip the Git Data API fallback from the very commit BRO-2960 carved out and BRO-335 tuned for push contention. NOT apiFallbackSafe: that claims "no reconciliation needed" and is ours-wins-outright, which would drop the other side\'s appended rows (the residual risk documented on audit/autonomous-recheck-ledger.jsonl above) — for an append-only ledger a real per-row union is required. See scripts/lib/merge-breaker-transitions.js.',
   },
   {
     file: 'audit/ob-venue-candidates.json',

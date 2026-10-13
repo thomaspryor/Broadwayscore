@@ -53,6 +53,7 @@ const SKIP_REASONS = new Set([
   'sb-unavailable',  // no key, or the reactive 401/403/429 page latch (BRO-4296)
   'sb-credits-low',  // account credits low (checkScrapingBeeCredits)
   'sb-budget',       // per-run SB_CREDIT_BUDGET spent
+  'sb-breaker',      // ScrapingBee daily circuit breaker (consultScrapingbee, BRO-3010)
 ]);
 
 /**

@@ -218,6 +218,28 @@ jobs:
           SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
         run: node scripts/check-sd-breaker.js
 
+      - name: ScrapingBee daily circuit-breaker check
+        # BRO-3010 — the SB twin of the ScrapingDog step above, same hosting
+        # rationale (no new cron). Lands in SHADOW mode: it records
+        # wouldTripAt and 'sb-circuit-breaker-shadow' transition rows and never
+        # blocks; SB_BREAKER_SHADOW=0 (repo variable) switches to loosen-only
+        # enforcement after the 7-day shadow review (S2-T9).
+        # continue-on-error: a /usage API blip must not red this CRITICAL data
+        # cron; unknown billing leaves the state file untouched.
+        # hygiene-run-budget-ok: 1 bounded /usage API read with an
+        # AbortSignal timeout (provider-billing.js) — no per-item fetch loop.
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          # Repo VARIABLES, same reasoning as SD_BREAKER_* above. Unset →
+          # empty → shadow mode with the plan-derived fair share.
+          SB_BREAKER_SHADOW: ${{ vars.SB_BREAKER_SHADOW }}
+          SB_BREAKER_CEILING: ${{ vars.SB_BREAKER_CEILING }}
+          SB_BREAKER_BURST_FACTOR: ${{ vars.SB_BREAKER_BURST_FACTOR }}
+        run: node scripts/check-sb-breaker.js
+
       - name: Commit breaker state
         # BRO-2960: this job's "Commit data changes" step below (the big
         # commercial-pending-review.json/commercial-rss-state.json commit)
@@ -297,14 +319,14 @@ jobs:
           # documented in BRO-335's comment above. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
-          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/sb-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
           if git diff --staged --quiet; then
             echo "No breaker state changes to commit"
           else
-            git commit -m "data: hourly poll — BD/SD breaker state
+            git commit -m "data: hourly poll — BD/SD/SB breaker state
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Breaker-state push failed after retries — next run re-derives BD/SD verdicts from billing APIs; alert-ledger/breaker-transitions state persists to main on the next successful push."
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Breaker-state push failed after retries — next run re-derives BD/SD/SB verdicts from billing APIs; alert-ledger/breaker-transitions state persists to main on the next successful push."
           fi
 
       - name: Commit data changes

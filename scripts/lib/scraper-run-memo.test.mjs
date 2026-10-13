@@ -146,6 +146,8 @@ function runChild(extraEnv = {}) {
       SCRAPER_SPEND_LEDGER_PATH: ledger,
       SD_BREAKER_STATE_PATH: path.join(dir, 'sd-circuit-breaker.json'),
       BD_BREAKER_STATE_PATH: path.join(dir, 'bd-circuit-breaker.json'),
+      // BRO-3010: and the ScrapingBee breaker, should SB ever join this chain.
+      SB_BREAKER_STATE_PATH: path.join(dir, 'sb-circuit-breaker.json'),
       SCRAPER_USE_SCRAPINGDOG: '1',
       SCRAPINGDOG_API_KEY: 'test-sd-key',
       BRIGHTDATA_TOKEN: 'test-bd-token',
