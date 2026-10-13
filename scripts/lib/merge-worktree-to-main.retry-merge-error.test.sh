@@ -99,7 +99,7 @@ args=("\$@")
 if [ "\${args[0]:-}" = "-C" ]; then
   rest=("\${args[@]:2}")
 else
-  rest=("\${args[@]}")
+  rest=(\${args[@]+"\${args[@]}"})
 fi
 if [ "\${rest[0]:-}" = "push" ] && [ "\${rest[1]:-}" = "origin" ] && [ ! -f "\$MARKER" ]; then
   touch "\$MARKER"
@@ -120,7 +120,7 @@ if [ "\${rest[0]:-}" = "push" ] && [ "\${rest[1]:-}" = "origin" ] && [ ! -f "\$M
       || echo "INJECTION FAILED at exit \$? — real push will proceed WITHOUT the conflict" >> "\$INJECT_LOG"
   } 2>>"\$INJECT_LOG"
 fi
-exec "\$REAL_GIT" "\${args[@]}"
+exec "\$REAL_GIT" \${args[@]+"\${args[@]}"}
 EOF
 chmod +x "$WRAPPER_DIR/git"
 

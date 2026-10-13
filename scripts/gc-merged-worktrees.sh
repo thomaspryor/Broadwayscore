@@ -172,10 +172,10 @@ is_stale() {
   local p="$1" days="$2"; shift 2
   local extra_dirs=("$@") d hit
   local prune_args=(-path '*/node_modules' -o -path '*/.next' -o -path '*/.git')
-  for d in "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
+  for d in "${extra_dirs[@]+${extra_dirs[@]+"${extra_dirs[@]}"}}"; do
     [ -n "$d" ] && prune_args+=(-o -path "*/$d")
   done
-  hit=$(find "$p" \( "${prune_args[@]}" \) -prune -o \
+  hit=$(find "$p" \( ${prune_args[@]+"${prune_args[@]}"} \) -prune -o \
     -type f -newermt "-${days} days" -print -quit 2>/dev/null)
   [ -z "$hit" ]
 }
@@ -285,7 +285,7 @@ strip_build_artifacts() {
   local extra_dirs=("$@")
   local name freed=0 d sz
   name="$(basename "$p")"
-  for d in node_modules .next "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
+  for d in node_modules .next "${extra_dirs[@]+${extra_dirs[@]+"${extra_dirs[@]}"}}"; do
     [ -z "$d" ] && continue
     if [ -d "$p/$d" ]; then
       if [ ! -L "$p/$d" ] && ! git -C "$p" check-ignore -q -- "$d" 2>/dev/null; then
@@ -388,7 +388,7 @@ check_chrome_clone_cache() {
   # expands to nothing for a zero-element array instead of dereferencing it.
   while IFS= read -r line; do
     log "$line"
-  done < <("$script" "${dry_run_arg[@]+"${dry_run_arg[@]}"}" 2>&1)
+  done < <("$script" "${dry_run_arg[@]+${dry_run_arg[@]+"${dry_run_arg[@]}"}}" 2>&1)
 }
 
 # Emergency cleanup, gated on the free-space floor. None of these touch
@@ -567,9 +567,9 @@ flush() {
     kept=$((kept+1))
     # Never delete unmerged worktrees — they may hold stranded work (task
     # #335). Just flag them for the digest line if they've gone quiet.
-    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}}"; then
       stale_unmerged+=("$CURRENT_REPO_NAME/$(basename "$path")")
-      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
+      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}}"
       strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
     fi
     path="" branch=""; return
@@ -631,8 +631,8 @@ flush() {
       # Mirror the real SKIP arm's stale-artifact strip so freed= predicts the
       # real run here too (strip_build_artifacts logs WOULD-STRIP and does not
       # delete when DRY_RUN=1).
-      if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
-        strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
+      if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}}"; then
+        strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}}"
         strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
       fi
     fi
@@ -702,8 +702,8 @@ flush() {
     skipped=$((skipped+1))
     # Merged-but-dirty worktrees can sit indefinitely (git won't remove them
     # while dirty) — same staleness treatment as unmerged ones.
-    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
-      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"
+    if is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}}"; then
+      strip_build_artifacts "$path" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}}"
       strip_freed_kb=$((strip_freed_kb + LAST_STRIP_FREED_KB))
     fi
   fi
@@ -724,7 +724,7 @@ gc_one_repo() {
 
   REPO="$repo_path"
   CURRENT_REPO_NAME="$repo_name"
-  CURRENT_BUILD_ARTIFACT_DIRS=("${build_dirs[@]+"${build_dirs[@]}"}")
+  CURRENT_BUILD_ARTIFACT_DIRS=("${build_dirs[@]+${build_dirs[@]+"${build_dirs[@]}"}}")
   stale_unmerged=()
 
   if ! cd "$REPO"; then
@@ -784,7 +784,7 @@ gc_one_repo() {
     done < <(git worktree list --porcelain)
     is_registered() {
       local d="$1" r
-      for r in "${registered_paths[@]+"${registered_paths[@]}"}"; do [ "$r" = "$d" ] && return 0; done
+      for r in "${registered_paths[@]+${registered_paths[@]+"${registered_paths[@]}"}}"; do [ "$r" = "$d" ] && return 0; done
       return 1
     }
     local dir orphan_name orphan_sz
@@ -813,7 +813,7 @@ gc_one_repo() {
   fi
 
   if [ "${#stale_unmerged[@]}" -gt 0 ]; then
-    log "DIGEST[$repo_name]: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]}"
+    log "DIGEST[$repo_name]: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]:-}"
   else
     log "DIGEST[$repo_name]: no stale-unmerged worktrees (>${STALE_DAYS}d untouched)"
   fi
@@ -845,7 +845,7 @@ while IFS=$'\t' read -r r_name r_path r_wtdir r_builddirs; do
   # against this exact bash 3.2 build. Same fix needed at every other
   # CURRENT_BUILD_ARTIFACT_DIRS/build_dirs expansion site in this file.
   IFS=',' read -r -a build_dirs_arr <<< "$r_builddirs"
-  gc_one_repo "$r_name" "$r_path" "$r_wtdir" "${build_dirs_arr[@]+"${build_dirs_arr[@]}"}"
+  gc_one_repo "$r_name" "$r_path" "$r_wtdir" "${build_dirs_arr[@]+${build_dirs_arr[@]+"${build_dirs_arr[@]}"}}"
 done <<< "$GC_REPO_LINES"
 
 total_freed_kb=$((floor_freed_kb + strip_freed_kb + orphan_freed_kb + removed_freed_kb))

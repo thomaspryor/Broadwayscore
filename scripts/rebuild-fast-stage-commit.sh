@@ -49,7 +49,7 @@ if [ -n "${REBUILD_FAST_STAGE_ONLY_PATHS_FILE:-}" ]; then
   while IFS= read -r -d '' p; do
     STAGED_NOW+=("$p")
   done < <(git diff --cached --no-renames --name-only -z)
-  for p in ${STAGED_NOW[@]+"${STAGED_NOW[@]}"}; do
+  for p in ${STAGED_NOW[@]+${STAGED_NOW[@]+"${STAGED_NOW[@]}"}}; do
     [ -z "$p" ] && continue
     [ -n "${KEEP[$p]+x}" ] && continue
     if git cat-file -e "HEAD:$p" 2>/dev/null; then

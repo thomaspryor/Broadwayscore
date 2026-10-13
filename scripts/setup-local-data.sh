@@ -197,7 +197,7 @@ fi
 
 SYMLINK_COUNT=0
 CLOUD_COPY_COUNT=0
-for f in "${SYMLINK_FILES[@]}"; do
+for f in ${SYMLINK_FILES[@]+"${SYMLINK_FILES[@]}"}; do
   src="$CORE_DATA_DIR/$f"
   dst="$DATA_DIR/$f"
   if [ ! -f "$src" ]; then
@@ -237,7 +237,7 @@ for f in "${SYMLINK_FILES[@]}"; do
 done
 
 COPY_COUNT=0
-for f in "${COPY_FILES[@]}"; do
+for f in ${COPY_FILES[@]+"${COPY_FILES[@]}"}; do
   src="$CORE_DATA_DIR/$f"
   [ -f "$src" ] || continue
   [ "$LINK_ONLY" = 1 ] && [ "$CLOUD_COPY" != 1 ] && [ -e "$DATA_DIR/$f" ] && continue
@@ -257,7 +257,7 @@ fi
 GENERATED_FILES=(cast-manifest.json actor-slugs.json)
 MAIN_REPO="$(git worktree list --porcelain 2>/dev/null | head -1 | sed 's/^worktree //')"
 GEN_COUNT=0
-for f in "${GENERATED_FILES[@]}"; do
+for f in ${GENERATED_FILES[@]+"${GENERATED_FILES[@]}"}; do
   src="$MAIN_REPO/data/$f"
   dst="$DATA_DIR/$f"
   if [ ! -f "$dst" ] && [ -f "$src" ] && [ "$src" != "$dst" ]; then

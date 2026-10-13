@@ -469,7 +469,7 @@ fi
 # never contain either character, so this is a defensive assertion, not a
 # live case.
 if [ "$USE_REST_REF_UPDATE" = "true" ]; then
-  for entry in "${CHANGED_STATUS[@]}"; do
+  for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
     _rest_path_check="${entry#* }"
     case "$_rest_path_check" in
       *$'\t'*|*$'\n'*)
@@ -499,7 +499,7 @@ fi
 # whatever CURRENT_TIP is that time). Delete ops are excluded: a path
 # disappearing from OUR diff has nothing to merge in.
 MERGE_CANDIDATE_PATHS=()
-for entry in "${CHANGED_STATUS[@]}"; do
+for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
   op="${entry%% *}"
   path="${entry#* }"
   [ "$op" = "D" ] && continue
@@ -521,7 +521,7 @@ if [ ${#MERGE_CANDIDATE_PATHS[@]} -gt 0 ]; then
   MERGE_PATHS_RAW="$(node -e '
       const { apiFallbackMergerFor } = require(process.argv[1]);
       for (const p of process.argv.slice(2)) if (apiFallbackMergerFor(p)) console.log(p);
-    ' "$SCRIPT_DIR/reconcile-merged-json.js" "${MERGE_CANDIDATE_PATHS[@]}" 2>"$MERGE_CLASSIFY_ERR")" || MERGE_CLASSIFY_RC=$?
+    ' "$SCRIPT_DIR/reconcile-merged-json.js" ${MERGE_CANDIDATE_PATHS[@]+"${MERGE_CANDIDATE_PATHS[@]}"} 2>"$MERGE_CLASSIFY_ERR")" || MERGE_CLASSIFY_RC=$?
   if [ "$MERGE_CLASSIFY_RC" -ne 0 ]; then
     echo "::error::push-via-git-api: apiFallbackMerge path classification failed (rc=$MERGE_CLASSIFY_RC) — aborting rather than silently treating candidate multi-writer paths as safe for a plain overlay:" >&2
     cat "$MERGE_CLASSIFY_ERR" >&2
@@ -581,7 +581,7 @@ REST_BLOB_CACHE=""
 upload_non_merge_blobs_once() {
   REST_BLOB_CACHE="$(mktemp)"
   local entry op path lstree_line blob_sha content_file attempt result ok outcome rest_sha
-  for entry in "${CHANGED_STATUS[@]}"; do
+  for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
     op="${entry%% *}"
     path="${entry#* }"
     [ "$op" = "D" ] && continue
@@ -784,7 +784,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   fi
 
   build_ok=true
-  for entry in "${CHANGED_STATUS[@]}"; do
+  for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
     op="${entry%% *}"
     path="${entry#* }"
     if [ "$op" = "D" ]; then
@@ -923,7 +923,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     printf '[' > "$REST_ENTRIES_FILE"
     _rest_entry_sep=""
     _rest_build_ok=true
-    for entry in "${CHANGED_STATUS[@]}"; do
+    for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
       op="${entry%% *}"
       path="${entry#* }"
       if [ "$op" = "D" ]; then

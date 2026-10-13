@@ -68,20 +68,20 @@ chmod 755 "$WORK"
 PORT=$(( 20000 + RANDOM % 20000 ))
 
 cleanup() {
-  "${RUN[@]}" "$PG_BIN/pg_ctl" -D "$WORK/data" -m immediate stop >/dev/null 2>&1 || true
+  ${RUN[@]+"${RUN[@]}"} "$PG_BIN/pg_ctl" -D "$WORK/data" -m immediate stop >/dev/null 2>&1 || true
   rm -rf "$WORK"
 }
 trap cleanup EXIT
 
-"${RUN[@]}" "$PG_BIN/initdb" -D "$WORK/data" -A trust -U postgres >/dev/null
-"${RUN[@]}" "$PG_BIN/pg_ctl" -D "$WORK/data" -l "$WORK/pg.log" \
+${RUN[@]+"${RUN[@]}"} "$PG_BIN/initdb" -D "$WORK/data" -A trust -U postgres >/dev/null
+${RUN[@]+"${RUN[@]}"} "$PG_BIN/pg_ctl" -D "$WORK/data" -l "$WORK/pg.log" \
   -o "-p $PORT -k $WORK -c listen_addresses=''" -w start >/dev/null
 
-PSQL=("${RUN[@]}" "$PG_BIN/psql" -h "$WORK" -p "$PORT" -U postgres -d postgres
+PSQL=(${RUN[@]+"${RUN[@]}"} "$PG_BIN/psql" -h "$WORK" -p "$PORT" -U postgres -d postgres
       -v ON_ERROR_STOP=1 -X -q)
 
 # Files are read by the postgres user, so hand psql the contents on stdin.
-run_sql() { "${PSQL[@]}" "$@"; }
+run_sql() { ${PSQL[@]+"${PSQL[@]}"} "$@"; }
 
 run_sql < "$STUB"
 
@@ -95,12 +95,12 @@ if [ "$MODE" = "self-test-fail" ]; then
   exit 0  # unreachable when the harness works: ON_ERROR_STOP exits 3 above
 fi
 
-for m in "${MIGRATIONS[@]}"; do
+for m in ${MIGRATIONS[@]+"${MIGRATIONS[@]}"}; do
   echo "-- applying $(basename "$m")"
   run_sql < "$m"
 done
 # Migrations must be re-runnable (apply-migration.yml may be dispatched twice).
-for m in "${MIGRATIONS[@]}"; do
+for m in ${MIGRATIONS[@]+"${MIGRATIONS[@]}"}; do
   echo "-- re-applying $(basename "$m") (idempotency)"
   run_sql < "$m"
 done

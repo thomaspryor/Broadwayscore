@@ -77,4 +77,4 @@ fi
 # hand-committed snapshot ever reached git history (BRO-1226).
 # || true because git add exits non-zero if a path doesn't exist or matches
 # nothing (common in CI).
-git add "${EXCLUDE_PATHS[@]}" "${PATHS[@]}" 2>/dev/null || true
+git add ${EXCLUDE_PATHS[@]+"${EXCLUDE_PATHS[@]}"} ${PATHS[@]+"${PATHS[@]}"} 2>/dev/null || true

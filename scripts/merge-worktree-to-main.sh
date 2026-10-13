@@ -228,10 +228,10 @@ log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} dele
 verify_files_on_origin() {
   local f fail=0
   echo "── verifying on origin/$DEFAULT_BRANCH ──"
-  for f in ${VERIFY_FILES[@]+"${VERIFY_FILES[@]}"}; do
+  for f in ${VERIFY_FILES[@]+${VERIFY_FILES[@]+"${VERIFY_FILES[@]}"}}; do
     if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then echo "  ✓ $f"; else echo "  ✗ MISSING: $f"; fail=1; fi
   done
-  for f in ${DELETED_FILES[@]+"${DELETED_FILES[@]}"}; do
+  for f in ${DELETED_FILES[@]+${DELETED_FILES[@]+"${DELETED_FILES[@]}"}}; do
     if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then echo "  ✗ STILL PRESENT (deletion did not land): $f"; fail=1; else echo "  ✓ deleted: $f"; fi
   done
   return $fail
@@ -872,7 +872,7 @@ done < <(g diff --name-only --diff-filter=d "$ORIGIN_BASE_SHA" HEAD 2>/dev/null)
 if [ ${#SYNTAX_CHECK_FILES[@]} -gt 0 ]; then
   log "syntax-checking ${#SYNTAX_CHECK_FILES[@]} changed scripts/ file(s) (post-merge floor)"
   SYNTAX_FAIL=0
-  for f in "${SYNTAX_CHECK_FILES[@]}"; do
+  for f in ${SYNTAX_CHECK_FILES[@]+"${SYNTAX_CHECK_FILES[@]}"}; do
     [ -f "$MAIN_DIR/$f" ] || continue
     if ! ERR=$(node --check "$MAIN_DIR/$f" 2>&1); then
       echo "  ✗ $f" >&2
