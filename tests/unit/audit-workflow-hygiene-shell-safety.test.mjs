@@ -11,7 +11,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   splitWorkflowSteps, findNodeTeeWithoutPipefail, findMaskedPushFailures,
-  declaredInputTypes, findStringInputInterpolation, maskedPushHandler,
+  declaredInputTypes, findStringInputInterpolation, maskedPushHandler, findCompositeShellHazards,
 } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 
 const WF = path.resolve(import.meta.dirname, '../../.github/workflows');
@@ -84,4 +84,23 @@ test('CLI exits non-zero for each of rules s, t, u (rules are wired into the tot
     assert.notEqual(r.status, 0, `rule (${rule}) must fail the CLI`);
     assert.match(r.stderr, new RegExp(`\\(${rule}\\)`));
   }
+});
+
+test('composite actions: masked push and raw input interpolation are flagged, env-routed values are not', () => {
+  const bad = 'runs:\n  using: composite\n  steps:\n    - name: C\n      shell: bash\n      run: |\n        bash scripts/lib/push-with-retry.sh 5 main || echo w\n        echo "${{ inputs.who }}"\n';
+  const kinds = findCompositeShellHazards(bad).map((h) => h.kind).sort();
+  assert.deepEqual(kinds, ['masked-push', 'string-input']);
+  const good = 'runs:\n  using: composite\n  steps:\n    - name: C\n      shell: bash\n      env:\n        W: ${{ inputs.who }}\n      run: |\n        bash scripts/lib/push-with-retry.sh 5 main\n        echo "$W"\n';
+  assert.deepEqual(findCompositeShellHazards(good), []);
+});
+
+test('real composite actions have no hazards', () => {
+  const dir = path.resolve(import.meta.dirname, '../../.github/actions');
+  const bad = [];
+  for (const d of fs.readdirSync(dir)) {
+    const f = path.join(dir, d, 'action.yml');
+    if (!fs.existsSync(f)) continue;
+    for (const h of findCompositeShellHazards(fs.readFileSync(f, 'utf8'))) bad.push(`${d}:${h.lineNum} ${h.kind} ${h.detail}`);
+  }
+  assert.deepEqual(bad, []);
 });

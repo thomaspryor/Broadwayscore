@@ -23,6 +23,8 @@ runs:
       shell: bash
       env:
         PUSH_RECONCILE_MERGED_JSON: '1'
+        INPUT_WORKFLOW_NAME: ${{ inputs.workflow-name }}
+        INPUT_PUSH_RETRY_ARGS: ${{ inputs.push-retry-args }}
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
@@ -31,6 +33,6 @@ runs:
         if git diff --staged --quiet; then
           echo "No ledger changes to commit"
         else
-          git commit -m "chore: Record scraper-spend ledger (${{ inputs.workflow-name }})"
-          bash scripts/lib/push-with-retry.sh ${{ inputs.push-retry-args }}
+          git commit -m "chore: Record scraper-spend ledger (${INPUT_WORKFLOW_NAME})"
+          bash scripts/lib/push-with-retry.sh ${INPUT_PUSH_RETRY_ARGS}
         fi

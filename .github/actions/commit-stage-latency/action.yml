@@ -23,6 +23,7 @@ runs:
       shell: bash
       env:
         GIT_NET_TIMEOUT_SEC: '30'
+        INPUT_WORKFLOW_NAME: ${{ inputs.workflow-name }}
       run: |
         if [ ! -f data/audit/stage-latency.jsonl ]; then
           echo "No stage-latency log on this runner"
@@ -34,6 +35,6 @@ runs:
         if git diff --staged --quiet; then
           echo "No stage-latency events to commit"
         else
-          git commit -m "audit: stage-latency events (${{ inputs.workflow-name }}) [skip ci]" -- data/audit/stage-latency.jsonl
-          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::stage-latency push failed (telemetry only)"
+          git commit -m "audit: stage-latency events (${INPUT_WORKFLOW_NAME}) [skip ci]" -- data/audit/stage-latency.jsonl
+          bash scripts/lib/push-with-retry.sh 5 main
         fi

@@ -110,11 +110,14 @@ runs:
       id: cooldown
       if: steps.policy.outputs.page == 'true'
       uses: actions/github-script@v7
+      env:
+        INPUT_COOLDOWN_MINUTES: ${{ inputs.cooldown_minutes }}
+        INPUT_MIN_CONSECUTIVE_FAILURES: ${{ inputs.min_consecutive_failures }}
       with:
         script: |
           const workflowName = context.workflow;
-          const cooldownMinutes = parseInt('${{ inputs.cooldown_minutes }}') || 120;
-          const minConsecutive = parseInt('${{ inputs.min_consecutive_failures }}') || 1;
+          const cooldownMinutes = parseInt(process.env.INPUT_COOLDOWN_MINUTES) || 120;
+          const minConsecutive = parseInt(process.env.INPUT_MIN_CONSECUTIVE_FAILURES) || 1;
 
           try {
             // context.workflow is the display name (e.g., "Test Suite"), but
@@ -218,16 +221,19 @@ runs:
       env:
         RESEND_API_KEY: ${{ inputs.resend_api_key }}
         OWNER_EMAIL: ${{ inputs.owner_email }}
+        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_DESCRIPTION: ${{ inputs.description }}
+        INPUT_EMAIL: ${{ inputs.email }}
       with:
         script: |
           const { sendAlert } = require('./scripts/lib/discord-notify.js');
           const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-          const desc = `${{ inputs.description }}` || 'Check the run logs for details.';
+          const desc = process.env.INPUT_DESCRIPTION || 'Check the run logs for details.';
           await sendAlert({
-            title: `${{ inputs.title }}`,
+            title: process.env.INPUT_TITLE,
             description: desc,
             severity: 'error',
-            email: ${{ inputs.email }},
+            email: process.env.INPUT_EMAIL === 'true',
             fields: [
               { name: 'Run', value: `[View logs](${runUrl})` }
             ],

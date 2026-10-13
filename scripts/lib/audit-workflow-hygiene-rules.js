@@ -1002,7 +1002,35 @@ function findStringInputInterpolation(raw) {
   return out;
 }
 
+/**
+ * Rules (t)/(u) for a composite action.yml (steps sit at indent 4, `inputs.*`
+ * are strings unless typed): masked push-with-retry.sh lines, and
+ * `${{ inputs.x }}` inside a `run:` / `script:` (github-script) block.
+ */
+function findCompositeShellHazards(raw) {
+  const lines = raw.split('\n');
+  const out = [];
+  let blockIndent = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+    if (blockIndent >= 0) {
+      if (l.trim() !== '' && indentOf(l) <= blockIndent) blockIndent = -1;
+      else if (!l.trimStart().startsWith('#')) {
+        const h = maskedPushHandler(l);
+        if (h) out.push({ kind: 'masked-push', lineNum: i + 1, detail: `|| ${h}` });
+        INPUT_EXPR_RE.lastIndex = 0;
+        let m;
+        while ((m = INPUT_EXPR_RE.exec(l))) out.push({ kind: 'string-input', lineNum: i + 1, detail: `inputs.${m[1]}` });
+        continue;
+      }
+    }
+    if (/^\s*(?:-\s+)?(?:run|script)\s*:\s*[|>][+-]?\d*\s*$/.test(l)) blockIndent = indentOf(l) + (/^\s*-\s/.test(l) ? 2 : 0);
+  }
+  return out;
+}
+
 module.exports = {
+  findCompositeShellHazards,
   splitWorkflowSteps,
   findNodeTeeWithoutPipefail,
   maskedPushHandler,

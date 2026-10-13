@@ -21,12 +21,13 @@ runs:
       shell: bash
       env:
         DEBIAN_FRONTEND: noninteractive
+        INPUT_BROWSERS: ${{ inputs.browsers }}
       run: |
         log=$(mktemp)
         if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
-          cmd=(npx playwright install ${{ inputs.browsers }} --with-deps)
+          cmd=(npx playwright install ${INPUT_BROWSERS} --with-deps)
         else
-          cmd=(npx playwright install-deps ${{ inputs.browsers }})
+          cmd=(npx playwright install-deps ${INPUT_BROWSERS})
         fi
         # timeout-minutes isn't supported on composite-action steps, so the
         # `timeout` command is what stops this from silently eating the
