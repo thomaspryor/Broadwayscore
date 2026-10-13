@@ -82,9 +82,11 @@ function pushLine(step, stepName) {
 
 test(`${BREAKER_STEP}: its push-with-retry.sh call is soft-failed, not job-fatal (BRO-2524)`, () => {
   const step = findStep(loadWorkflow(WORKFLOW), JOB, BREAKER_STEP);
-  assert.match(
-    pushLine(step, BREAKER_STEP),
-    /push-with-retry\.sh\s*\|\|\s*echo\s+"::warning::/,
+  // BRO-4730: soft-failed via step-level continue-on-error, never `|| echo` (which hid the failure).
+  assert.doesNotMatch(pushLine(step, BREAKER_STEP), /\|\|/, 'the push must not be masked inline');
+  assert.equal(
+    step['continue-on-error'],
+    true,
     'the breaker-state push must stay soft-failed — BD/SD verdicts are re-derived from the billing APIs next run, '
       + 'and routeAlert() already fired synchronously in the three checks above, so losing this push race must not '
       + 'red the whole hourly cron (20 consecutive failures, 2026-09-11->14)',

@@ -312,6 +312,6 @@ test('a committed change to an imported data file is dirty for the real git diff
     g('commit', '-qam', 'tour');
     assert.equal(dirty(b, g('rev-parse', 'HEAD').trim()), true, 'an imported data file change must trigger a deploy');
   } finally {
-    fs.rmSync(d, { recursive: true, force: true });
+    fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

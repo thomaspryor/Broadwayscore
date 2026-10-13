@@ -28,8 +28,12 @@ describe('commit-stage-latency composite action', () => {
     assert.match(run, /push-with-retry\.sh/);
   });
 
-  test('a failed push is a warning, never a job failure', () => {
-    assert.match(run, /push-with-retry\.sh[^\n]*\|\|\s*echo "::warning::/);
+  test('a failed push is never a job failure: callers are continue-on-error, the push is not masked (BRO-4730)', () => {
+    assert.doesNotMatch(run, /push-with-retry\.sh[^\n]*\|\|/);
+    for (const wf of ['opening-night-poller', 'opening-night-express']) {
+      const callers = stepsOf(`.github/workflows/${wf}.yml`).filter((s) => s.uses === ACTION);
+      assert.ok(callers.length > 0 && callers.every((s) => s['continue-on-error'] === true), `${wf} caller must set continue-on-error: true`);
+    }
   });
 
   test('union merge keeps concurrent appends from conflicting', () => {
