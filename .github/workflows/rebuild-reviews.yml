@@ -252,9 +252,10 @@ jobs:
         id: rebuild
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_FORCE_WRITE: ${{ inputs.force_write || 'false' }}
         run: |
           FORCE_FLAG=""
-          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+          if [ "${INPUT_FORCE_WRITE}" = "true" ]; then
             FORCE_FLAG="--force-write"
             echo "⚠️  Force-write enabled — regression guard overridden"
           fi
@@ -365,9 +366,10 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          INPUT_FORCE_WRITE: ${{ inputs.force_write || 'false' }}
         run: |
           FORCE_FLAG=""
-          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+          if [ "${INPUT_FORCE_WRITE}" = "true" ]; then
             FORCE_FLAG="--force"
           fi
           set +e
@@ -410,8 +412,9 @@ jobs:
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INPUT_SKIP_ENRICHMENT: ${{ inputs.skip_enrichment }}
         run: |
-          if [ "${{ inputs.skip_enrichment }}" = "true" ]; then
+          if [ "${INPUT_SKIP_ENRICHMENT}" = "true" ]; then
             echo "Skipping — skip_enrichment=true"
             exit 0
           fi
@@ -761,6 +764,7 @@ jobs:
           # shared 90s default other callers rely on. PUSH_DEADLINE_SEC is
           # deliberately left unchanged, matching BRO-334's precedent.
           GIT_NET_TIMEOUT_SEC: '30'
+          INPUT_REASON: ${{ inputs.reason }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -807,7 +811,7 @@ jobs:
           fi
 
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            REASON="${{ inputs.reason }}"
+            REASON="${INPUT_REASON}"
             MSG="data: Rebuild reviews.json - $REASON"
           else
             MSG="data: Scheduled rebuild of reviews.json"
@@ -1028,6 +1032,8 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          INPUT_REASON: ${{ inputs.reason }}
         run: |
           echo "## Reviews Rebuild Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -1035,7 +1041,7 @@ jobs:
           echo "**After:** ${{ steps.after.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
           echo "**Changes:** ${{ steps.changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "**Trigger:** Manual (${{ inputs.reason }})" >> $GITHUB_STEP_SUMMARY
+            echo "**Trigger:** Manual (${INPUT_REASON})" >> $GITHUB_STEP_SUMMARY
           else
             echo "**Trigger:** Scheduled (daily 4 AM UTC)" >> $GITHUB_STEP_SUMMARY
           fi

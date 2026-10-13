@@ -66,10 +66,11 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.shows }}" ]; then
-            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            ARGS="$ARGS --shows=${INPUT_SHOWS}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

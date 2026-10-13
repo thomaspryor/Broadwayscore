@@ -55,6 +55,8 @@ jobs:
 
       - name: Quick exit if no opening tonight
         id: gate
+        env:
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           OPENINGS=$(node -e "
             const data = require('./data/shows.json');
@@ -71,7 +73,7 @@ jobs:
             });
             if (matches.length > 0) console.log(matches.map(s => s.id).join(','));
           ")
-          FORCED="${{ inputs.show_id }}"
+          FORCED="${INPUT_SHOW_ID}"
           if [ -n "$OPENINGS" ] || [ -n "$FORCED" ]; then
             echo "active=true" >> $GITHUB_OUTPUT
             echo "Active openings: $OPENINGS${FORCED:+ (forced=$FORCED)}"
@@ -101,10 +103,11 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.show_id }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW_ID}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

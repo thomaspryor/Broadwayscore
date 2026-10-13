@@ -47,10 +47,12 @@ jobs:
         run: npm ci
 
       - name: Scrape Tony Awards data
+        env:
+          INPUT_YEAR: ${{ inputs.year }}
         run: |
-          if [ -n "${{ inputs.year }}" ]; then
-            echo "Scraping year ${{ inputs.year }} only..."
-            node scripts/scrape-tony-awards.js --year=${{ inputs.year }}
+          if [ -n "${INPUT_YEAR}" ]; then
+            echo "Scraping year ${INPUT_YEAR} only..."
+            node scripts/scrape-tony-awards.js --year=${INPUT_YEAR}
           else
             echo "Scraping all years..."
             node scripts/scrape-tony-awards.js
@@ -86,14 +88,15 @@ jobs:
           # writers, so opting both in gives awards.json full coverage on
           # both the conflicting and non-conflicting silent-drop paths.
           PUSH_RECONCILE_MERGED_JSON: '1'
+          INPUT_YEAR: ${{ inputs.year }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/awards.json
 
           YEAR_NOTE=""
-          if [ -n "${{ inputs.year }}" ]; then
-            YEAR_NOTE=" (year ${{ inputs.year }})"
+          if [ -n "${INPUT_YEAR}" ]; then
+            YEAR_NOTE=" (year ${INPUT_YEAR})"
           fi
 
           git commit -m "chore: Update Tony Awards data${YEAR_NOTE}
@@ -122,7 +125,7 @@ jobs:
       - name: Create IBDB scraper reminder issue
         if: steps.changes.outputs.has_changes == 'true' && github.event_name == 'workflow_dispatch'
         run: |
-          YEAR="${{ inputs.year }}"
+          YEAR="${INPUT_YEAR}"
           if [ -z "$YEAR" ]; then
             YEAR="$(date +%Y)"
           fi
@@ -152,6 +155,7 @@ jobs:
             --label "data"
         env:
           GH_TOKEN: ${{ github.token }}
+          INPUT_YEAR: ${{ inputs.year }}
 
       - name: Notify on failure
         if: failure()

@@ -47,10 +47,12 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Scrape WordPress theater blogs
+        env:
+          INPUT_SITE: ${{ inputs.site }}
         run: |
           SITE_ARG=""
-          if [ -n "${{ inputs.site }}" ]; then
-            SITE_ARG="--site=${{ inputs.site }}"
+          if [ -n "${INPUT_SITE}" ]; then
+            SITE_ARG="--site=${INPUT_SITE}"
           fi
           echo "Scraping WordPress theater blog reviews..."
           node scripts/scrape-wp-theater-blogs.js $SITE_ARG

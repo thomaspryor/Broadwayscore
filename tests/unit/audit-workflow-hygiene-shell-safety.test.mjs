@@ -5,6 +5,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
@@ -56,4 +58,30 @@ test('real workflows: no unpiped node|tee and no masked push-with-retry.sh (rule
     for (const h of findMaskedPushFailures(raw)) bad.push(`${f}:${h.lineNum} masked push "${h.name}"`);
   }
   assert.deepEqual(bad, []);
+});
+
+test('real workflows: no string-input interpolation inside run: (rule u)', () => {
+  const bad = [];
+  for (const f of fs.readdirSync(WF).filter((x) => x.endsWith('.yml'))) {
+    const raw = fs.readFileSync(path.join(WF, f), 'utf8');
+    for (const h of findStringInputInterpolation(raw)) bad.push(`${f}:${h.lineNum} inputs.${h.input} in "${h.name}"`);
+  }
+  assert.deepEqual(bad, []);
+});
+
+test('CLI exits non-zero for each of rules s, t, u (rules are wired into the total)', () => {
+  const cli = path.resolve(import.meta.dirname, '../../scripts/audit-workflow-hygiene.js');
+  const cases = {
+    s: '      - name: A\n        run: node x.js | tee o\n',
+    t: '      - name: A\n        run: bash scripts/lib/push-with-retry.sh || echo w\n',
+    u: '      - name: A\n        run: echo "${{ inputs.who }}"\n',
+  };
+  for (const [rule, body] of Object.entries(cases)) {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hyg-'));
+    fs.writeFileSync(path.join(dir, 'a.yml'), wf(body));
+    const r = spawnSync('node', [cli], { env: { ...process.env, HYGIENE_WORKFLOW_DIR: dir }, encoding: 'utf8' });
+    fs.rmSync(dir, { recursive: true, force: true });
+    assert.notEqual(r.status, 0, `rule (${rule}) must fail the CLI`);
+    assert.match(r.stderr, new RegExp(`\\(${rule}\\)`));
+  }
 });

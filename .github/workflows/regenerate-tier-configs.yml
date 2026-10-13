@@ -62,16 +62,19 @@ jobs:
           node-version: '20'
 
       - name: Regenerate configs
+        env:
+          INPUT_MIN_ATTEMPTS: ${{ inputs.min_attempts }}
+          INPUT_SKIP_THRESHOLD: ${{ inputs.skip_threshold }}
         run: |
           FLAGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             FLAGS="$FLAGS --dry-run"
           fi
-          if [ -n "${{ inputs.min_attempts }}" ] && [ "${{ inputs.min_attempts }}" != "3" ]; then
-            FLAGS="$FLAGS --min-attempts=${{ inputs.min_attempts }}"
+          if [ -n "${INPUT_MIN_ATTEMPTS}" ] && [ "${INPUT_MIN_ATTEMPTS}" != "3" ]; then
+            FLAGS="$FLAGS --min-attempts=${INPUT_MIN_ATTEMPTS}"
           fi
-          if [ -n "${{ inputs.skip_threshold }}" ] && [ "${{ inputs.skip_threshold }}" != "3" ]; then
-            FLAGS="$FLAGS --skip-threshold=${{ inputs.skip_threshold }}"
+          if [ -n "${INPUT_SKIP_THRESHOLD}" ] && [ "${INPUT_SKIP_THRESHOLD}" != "3" ]; then
+            FLAGS="$FLAGS --skip-threshold=${INPUT_SKIP_THRESHOLD}"
           fi
           node scripts/regenerate-tier-configs.js $FLAGS
 

@@ -58,13 +58,14 @@ jobs:
 
       - name: Fetch aggregator pages
         run: |
-          ARGS="--aggregator ${{ github.event.inputs.aggregator }} --shows ${{ github.event.inputs.shows }}"
+          ARGS="--aggregator ${{ github.event.inputs.aggregator }} --shows ${INPUT_SHOWS}"
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
             ARGS="$ARGS --force"
           fi
           npx tsx scripts/fetch-aggregator-pages.ts $ARGS
         env:
           NODE_ENV: production
+          INPUT_SHOWS: ${{ github.event.inputs.shows }}
 
       - name: Push aggregator-archive to private repo
         if: always()
@@ -74,11 +75,13 @@ jobs:
           message: "data: Fetch ${{ github.event.inputs.aggregator }} aggregator pages"
 
       - name: Summary
+        env:
+          INPUT_SHOWS: ${{ github.event.inputs.shows }}
         run: |
           echo "## Fetch Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Aggregator:** ${{ github.event.inputs.aggregator }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Shows:** ${{ github.event.inputs.shows }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows:** ${INPUT_SHOWS}" >> $GITHUB_STEP_SUMMARY
           echo "**Force:** ${{ github.event.inputs.force }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           AA_COUNT=$(find data/aggregator-archive -type f 2>/dev/null | wc -l | tr -d ' ')

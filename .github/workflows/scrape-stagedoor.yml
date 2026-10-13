@@ -75,11 +75,12 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           ARGS=""
 
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
 
           if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then

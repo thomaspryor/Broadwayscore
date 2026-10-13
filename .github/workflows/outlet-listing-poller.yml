@@ -73,16 +73,18 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           GITHUB_OUTPUT: ${{ env.GITHUB_OUTPUT }}
+          INPUT_LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days }}
+          INPUT_OUTLETS: ${{ github.event.inputs.outlets }}
         run: |
           ARGS=""
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          if [ -n "${{ github.event.inputs.lookback_days }}" ]; then
-            ARGS="$ARGS --lookback-days ${{ github.event.inputs.lookback_days }}"
+          if [ -n "${INPUT_LOOKBACK_DAYS}" ]; then
+            ARGS="$ARGS --lookback-days ${INPUT_LOOKBACK_DAYS}"
           fi
-          if [ -n "${{ github.event.inputs.outlets }}" ]; then
-            ARGS="$ARGS --outlets ${{ github.event.inputs.outlets }}"
+          if [ -n "${INPUT_OUTLETS}" ]; then
+            ARGS="$ARGS --outlets ${INPUT_OUTLETS}"
           fi
           if [ -n "${{ github.event.inputs.market }}" ] && [ "${{ github.event.inputs.market }}" != "all" ]; then
             ARGS="$ARGS --market ${{ github.event.inputs.market }}"

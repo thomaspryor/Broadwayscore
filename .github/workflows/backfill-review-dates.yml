@@ -90,13 +90,17 @@ jobs:
           COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
           COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          INPUT_LIMIT: ${{ inputs.limit }}
+          INPUT_OFFSET: ${{ inputs.offset }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_DOMAINS: ${{ inputs.domains }}
         run: |
-          ARGS="--limit=${{ inputs.limit }} --offset=${{ inputs.offset }}"
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          ARGS="--limit=${INPUT_LIMIT} --offset=${INPUT_OFFSET}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
-          if [ -n "${{ inputs.domains }}" ]; then
-            ARGS="$ARGS --domains=${{ inputs.domains }}"
+          if [ -n "${INPUT_DOMAINS}" ]; then
+            ARGS="$ARGS --domains=${INPUT_DOMAINS}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

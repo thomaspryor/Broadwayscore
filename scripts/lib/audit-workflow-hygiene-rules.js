@@ -979,7 +979,7 @@ function declaredInputTypes(raw) {
   }
   return types;
 }
-const INPUT_EXPR_RE = /\$\{\{\s*(?:github\.event\.)?inputs\.([\w-]+)\s*\}\}/g;
+const INPUT_EXPR_RE = /\$\{\{\s*(?:github\.event\.)?inputs\.([\w-]+)(?:\s*\|\|\s*(?:'[^']*'|\"[^\"]*\"|[\w.-]+))?\s*\}\}/g;
 function findStringInputInterpolation(raw) {
   const types = declaredInputTypes(raw);
   const out = [];

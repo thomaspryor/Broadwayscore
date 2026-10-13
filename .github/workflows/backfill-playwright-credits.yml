@@ -68,6 +68,8 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
           FLAGS=""
 
@@ -79,11 +81,11 @@ jobs:
             FLAGS="$FLAGS --split-credits"
           fi
 
-          if [ -n "${{ inputs.show }}" ]; then
-            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            FLAGS="$FLAGS --show=${INPUT_SHOW}"
           fi
 
-          LIMIT="${{ inputs.limit }}"
+          LIMIT="${INPUT_LIMIT}"
           if [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ]; then
             FLAGS="$FLAGS --limit=$LIMIT"
           fi

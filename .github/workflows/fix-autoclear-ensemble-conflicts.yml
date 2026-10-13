@@ -84,9 +84,11 @@ jobs:
       # reason. Stop and make a human look.
       - name: Surge guard
         if: inputs.dry_run != 'true'
+        env:
+          INPUT_MAX_FILES: ${{ inputs.max_files }}
         run: |
           COUNT='${{ steps.before.outputs.count }}'
-          MAX='${{ inputs.max_files }}'
+          MAX="${INPUT_MAX_FILES}"
           case "$COUNT" in (*[!0-9]*|'') echo "::error::audit did not return a numeric count (got '$COUNT')"; exit 1;; esac
           if [ "$COUNT" -gt "$MAX" ]; then
             echo "::error::$COUNT conflicts exceeds max_files=$MAX — a spike this size usually means a producer regression, not drift. Investigate before bulk-fixing, or re-dispatch with a higher max_files."
@@ -133,12 +135,14 @@ jobs:
             || echo "::warning::rebuild dispatch failed — run it manually: gh workflow run \"Rebuild Reviews Data\""
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## Auto-clear vs ensemble-verdict backfill"
             echo ""
             echo "**Conflicts before:** ${{ steps.before.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** DRY RUN — nothing written. Re-dispatch with \`dry_run=false\` to apply."
             else
               echo "**Conflicts after:** ${{ steps.after.outputs.count }}"

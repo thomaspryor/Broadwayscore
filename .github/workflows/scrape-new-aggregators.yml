@@ -109,15 +109,16 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           echo "Scraping Playbill Verdict review links..."
           SHOWS_FLAG=""
           # Default: skip the expensive per-show Google fallback (Step 4).
           SKIP_FLAG="--skip-google-fallback"
-          if [ -n "${{ inputs.shows }}" ]; then
-            SHOWS_FLAG="--shows=${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            SHOWS_FLAG="--shows=${INPUT_SHOWS}"
             SKIP_FLAG=""   # targeted runs go straight to Google by design
-            echo "Targeted mode: ${{ inputs.shows }}"
+            echo "Targeted mode: ${INPUT_SHOWS}"
           fi
           # Sunday weekly deep cron OR any manual dispatch → run the full
           # Google fallback. Mon-Sat daily cron keeps SKIP_FLAG set.
@@ -442,12 +443,13 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           echo "Scraping NYC Theatre review roundups..."
           SHOWS_FLAG=""
-          if [ -n "${{ inputs.shows }}" ]; then
-            SHOWS_FLAG="--shows=${{ inputs.shows }}"
-            echo "Targeted mode: ${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            SHOWS_FLAG="--shows=${INPUT_SHOWS}"
+            echo "Targeted mode: ${INPUT_SHOWS}"
           fi
           node scripts/scrape-nyc-theatre-roundups.js $SHOWS_FLAG
 
@@ -515,12 +517,13 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           echo "Scraping London Box Office review roundups..."
           SHOWS_FLAG=""
-          if [ -n "${{ inputs.shows }}" ]; then
-            SHOWS_FLAG="--shows=${{ inputs.shows }}"
-            echo "Targeted mode: ${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            SHOWS_FLAG="--shows=${INPUT_SHOWS}"
+            echo "Targeted mode: ${INPUT_SHOWS}"
           fi
           node scripts/scrape-london-box-office-roundups.js $SHOWS_FLAG
 
@@ -607,8 +610,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
         run: |
-          TB="${{ inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=22
           node scripts/scrape-bww-reviews.js --landing-discover --time-budget-min=$TB
 
@@ -837,6 +841,7 @@ jobs:
       - name: Auto-trigger text collection if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           NEEDS_COLLECTION=$(node -e '
             const fs = require("fs"), path = require("path");
@@ -861,7 +866,7 @@ jobs:
 
           # For targeted show runs, always trigger collection (even for 1 review)
           # For broad runs, use higher threshold to avoid noise
-          if [ -n "${{ inputs.shows }}" ]; then
+          if [ -n "${INPUT_SHOWS}" ]; then
             THRESHOLD=1
           else
             THRESHOLD=20
@@ -885,7 +890,7 @@ jobs:
             exit 0
           fi
 
-          SHOWS="${{ inputs.shows }}"
+          SHOWS="${INPUT_SHOWS}"
           if [ -n "$SHOWS" ]; then
             echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
             gh workflow run collect-review-texts.yml \

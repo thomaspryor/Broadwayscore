@@ -59,8 +59,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Split shows into parallel batches
         id: split
+        env:
+          INPUT_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
         run: |
-          JOBS=${{ inputs.parallel_jobs }}
+          JOBS=${INPUT_PARALLEL_JOBS}
 
           # Validate parallel_jobs is 1-10
           if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then

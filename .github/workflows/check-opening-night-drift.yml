@@ -66,12 +66,15 @@ jobs:
       - name: Early exit — no shows in window
         if: steps.rebuild_check.outputs.skip != 'true'
         id: window_check
+        env:
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
+          INPUT_WINDOW_DAYS: ${{ github.event.inputs.window_days || '7' }}
         run: |
           SHOW_ARG=""
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
-            SHOW_ARG="--show=${{ github.event.inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            SHOW_ARG="--show=${INPUT_SHOW_ID}"
           fi
-          WINDOW_RAW="${{ github.event.inputs.window_days || '7' }}"
+          WINDOW_RAW="${INPUT_WINDOW_DAYS}"
           # Clamp to integer 0-365 before embedding in JS
           WINDOW=$(echo "$WINDOW_RAW" | grep -oE '^[0-9]+$' || echo "7")
           [ "$WINDOW" -gt 365 ] && WINDOW=365
@@ -90,7 +93,7 @@ jobs:
             console.log(inWindow);
           " 2>/dev/null || echo "0")
           echo "shows_in_window=$COUNT" >> "$GITHUB_OUTPUT"
-          if [ -z "${{ github.event.inputs.show_id }}" ] && [ "$COUNT" -eq 0 ]; then
+          if [ -z "${INPUT_SHOW_ID}" ] && [ "$COUNT" -eq 0 ]; then
             echo "No shows in ±${WINDOW}d window — exiting."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
@@ -102,13 +105,16 @@ jobs:
         id: drift
         env:
           GH_TOKEN: ${{ github.token }}
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
+          INPUT_THRESHOLD: ${{ github.event.inputs.threshold || '2' }}
+          INPUT_WINDOW_DAYS: ${{ github.event.inputs.window_days || '7' }}
         run: |
           SHOW_ARG=""
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
-            SHOW_ARG="--show=${{ github.event.inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            SHOW_ARG="--show=${INPUT_SHOW_ID}"
           fi
-          THRESHOLD=$(echo "${{ github.event.inputs.threshold || '2' }}" | grep -oE '^[0-9]+$' || echo "2")
-          WINDOW=$(echo "${{ github.event.inputs.window_days || '7' }}" | grep -oE '^[0-9]+$' || echo "7")
+          THRESHOLD=$(echo "${INPUT_THRESHOLD}" | grep -oE '^[0-9]+$' || echo "2")
+          WINDOW=$(echo "${INPUT_WINDOW_DAYS}" | grep -oE '^[0-9]+$' || echo "7")
 
           set +e
           node scripts/check-opening-night-drift.js \

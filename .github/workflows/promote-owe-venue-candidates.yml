@@ -96,6 +96,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_MAX_PROMOTE: ${{ inputs.max_promote }}
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           if [ ! -f data/shows.json ]; then
@@ -105,7 +106,7 @@ jobs:
           DRY_FLAG=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then DRY_FLAG="--dry-run"; fi
           MAX_FLAG=""
-          if [ -n "${{ inputs.max_promote }}" ]; then MAX_FLAG="--max-promote=${{ inputs.max_promote }}"; fi
+          if [ -n "${INPUT_MAX_PROMOTE}" ]; then MAX_FLAG="--max-promote=${INPUT_MAX_PROMOTE}"; fi
           PROMOTE_RC=0
           node scripts/promote-owe-venue-candidates.js --time-budget-min=10 $DRY_FLAG $MAX_FLAG || PROMOTE_RC=$?
           if [ "$PROMOTE_RC" -ne 0 ]; then

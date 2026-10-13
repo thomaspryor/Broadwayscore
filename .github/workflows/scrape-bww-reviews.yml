@@ -89,9 +89,12 @@ jobs:
 
       - name: Pre-fetch roundup URL (plain HTTPS, no SB needed)
         if: inputs.roundup_url != ''
+        env:
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_ROUNDUP_URL: ${{ inputs.roundup_url }}
         run: |
-          SHOW="${{ inputs.shows }}"
-          URL="${{ inputs.roundup_url }}"
+          SHOW="${INPUT_SHOWS}"
+          URL="${INPUT_ROUNDUP_URL}"
           ARCHIVE_DIR="data/aggregator-archive/bww-roundups"
           mkdir -p "$ARCHIVE_DIR"
           echo "Fetching: $URL"
@@ -120,16 +123,19 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_LIMIT: ${{ inputs.limit }}
+          INPUT_ROUNDUP_URL: ${{ inputs.roundup_url }}
         run: |
           FLAGS="--type=${{ inputs.type || 'all' }}"
-          if [ -n "${{ inputs.shows }}" ]; then
-            FLAGS="$FLAGS --shows=${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            FLAGS="$FLAGS --shows=${INPUT_SHOWS}"
           fi
-          if [ -n "${{ inputs.limit }}" ]; then
-            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          if [ -n "${INPUT_LIMIT}" ]; then
+            FLAGS="$FLAGS --limit=${INPUT_LIMIT}"
           fi
           # Skip --force when roundup_url was pre-fetched so the cache is used
-          if [ "${{ inputs.force }}" = "true" ] && [ -z "${{ inputs.roundup_url }}" ]; then
+          if [ "${{ inputs.force }}" = "true" ] && [ -z "${INPUT_ROUNDUP_URL}" ]; then
             FLAGS="$FLAGS --force"
           fi
           echo "Running: node scripts/scrape-bww-reviews.js $FLAGS"
@@ -245,6 +251,7 @@ jobs:
       - name: Auto-trigger text collection if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           NEEDS_COLLECTION=$(node -e '
             const fs = require("fs"), path = require("path");
@@ -291,7 +298,7 @@ jobs:
           # shellcheck source=scripts/lib/dispatch-with-retry.sh
           source scripts/lib/dispatch-with-retry.sh
 
-          SHOWS="${{ inputs.shows }}"
+          SHOWS="${INPUT_SHOWS}"
           if [ -n "$SHOWS" ]; then
             echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
             dispatch_with_retry collect-review-texts.yml \

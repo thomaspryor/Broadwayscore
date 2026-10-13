@@ -59,9 +59,10 @@ jobs:
         id: resolve
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            ISSUE_NUM="${{ github.event.inputs.issue_number }}"
+            ISSUE_NUM="${INPUT_ISSUE_NUMBER}"
           else
             ISSUE_NUM="${{ github.event.issue.number }}"
           fi

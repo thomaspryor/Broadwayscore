@@ -91,15 +91,17 @@ jobs:
       - name: Run Theatr scraper
         env:
           THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           ARGS="--verbose"
 
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
 
-          if [ -n "${{ inputs.shows }}" ]; then
-            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            ARGS="$ARGS --shows=${INPUT_SHOWS}"
           fi
 
           if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then

@@ -51,12 +51,13 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_TIME_BUDGET_MIN: ${{ github.event.inputs.time_budget_min }}
         run: |
           # Exit each BD/SB step's loop cleanly well before the shared 25-min
           # job timeout; deferred shows are picked up next run. Default in
           # bash, not a GHA || expression — the expression coerces a literal
           # 0 (= unlimited) to falsy.
-          TB="${{ github.event.inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=9
           node scripts/fix-platform-ticket-links.js --time-budget-min="$TB"
 
@@ -70,8 +71,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_TIME_BUDGET_MIN: ${{ github.event.inputs.time_budget_min }}
         run: |
-          TB="${{ github.event.inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=9
           node scripts/enrich-official-urls.js --category=broadway --time-budget-min="$TB"
         continue-on-error: true

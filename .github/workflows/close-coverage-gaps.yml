@@ -173,9 +173,11 @@ jobs:
 
       - name: Partition gap shows into matrix batches
         id: partition
+        env:
+          INPUT_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
         run: |
           GAP_SHOWS="${{ steps.audit.outputs.gap_shows }}"
-          JOBS=${{ inputs.parallel_jobs }}
+          JOBS=${INPUT_PARALLEL_JOBS}
 
           # Validate parallel_jobs is 1-10
           if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
@@ -622,11 +624,13 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          INPUT_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
         run: |
           echo "## Coverage Gap Closure: ${{ inputs.era }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Shows in era:** ${{ needs.prepare.outputs.show_count }}" >> $GITHUB_STEP_SUMMARY
           echo "**Truly missing reviews:** ${{ needs.prepare.outputs.truly_missing }}" >> $GITHUB_STEP_SUMMARY
           echo "**Shows with gaps:** ${{ needs.prepare.outputs.gap_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Parallel jobs:** ${{ inputs.parallel_jobs }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Parallel jobs:** ${INPUT_PARALLEL_JOBS}" >> $GITHUB_STEP_SUMMARY
           echo "**Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY

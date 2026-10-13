@@ -60,9 +60,9 @@ jobs:
 
       - name: Run backfill
         run: |
-          ARGS="--weeks ${{ github.event.inputs.weeks || '55' }}"
-          if [ -n "${{ github.event.inputs.start_from }}" ]; then
-            ARGS="$ARGS --start-from ${{ github.event.inputs.start_from }}"
+          ARGS="--weeks ${INPUT_WEEKS}"
+          if [ -n "${INPUT_START_FROM}" ]; then
+            ARGS="$ARGS --start-from ${INPUT_START_FROM}"
           fi
           if [ "${{ inputs.refill_gaps }}" = "true" ]; then
             ARGS="--refill-gaps"
@@ -73,6 +73,8 @@ jobs:
           npx tsx scripts/backfill-grosses-history.ts $ARGS
         env:
           NODE_ENV: production
+          INPUT_WEEKS: ${{ github.event.inputs.weeks || '55' }}
+          INPUT_START_FROM: ${{ github.event.inputs.start_from }}
 
       - name: Check for changes
         if: always()

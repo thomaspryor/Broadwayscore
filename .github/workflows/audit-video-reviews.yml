@@ -62,11 +62,12 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
           set -euo pipefail
           ARGS=("--side=${{ inputs.side }}")
-          if [ -n "${{ inputs.limit }}" ] && [ "${{ inputs.limit }}" != "0" ]; then
-            ARGS+=("--limit=${{ inputs.limit }}")
+          if [ -n "${INPUT_LIMIT}" ] && [ "${INPUT_LIMIT}" != "0" ]; then
+            ARGS+=("--limit=${INPUT_LIMIT}")
           fi
           node scripts/video-reviews/audit-before-share.js "${ARGS[@]}"
 

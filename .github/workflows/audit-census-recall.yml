@@ -104,14 +104,17 @@ jobs:
           # the run reports a provider outage and records nothing, which is the
           # correct outcome for a measurement.
           SERP_NO_SB: '1'
+          INPUT_SAMPLE: ${{ inputs.sample || '5' }}
+          INPUT_PAGES: ${{ inputs.pages || '2' }}
+          INPUT_DAYS: ${{ inputs.days || '30' }}
         run: |
           # pipefail: without it the step takes tee's exit code, so a crashed
           # or empty-pool run still shows green (BRO-4139 review).
           set -o pipefail
           node scripts/audit-serp-census-recall.js \
-            --sample=${{ inputs.sample || '5' }} \
-            --pages=${{ inputs.pages || '2' }} \
-            --days=${{ inputs.days || '30' }} \
+            --sample=${INPUT_SAMPLE} \
+            --pages=${INPUT_PAGES} \
+            --days=${INPUT_DAYS} \
             ${{ inputs.no_trend && ' ' || '--trend' }} \
             | tee "$GITHUB_STEP_SUMMARY"
 

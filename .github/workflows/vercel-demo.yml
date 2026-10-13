@@ -238,12 +238,14 @@ jobs:
         # deploys of that branch alias demo; everything else builds-
         # without-aliasing. Empty / missing file = legacy behavior (every
         # successful deploy aliases). See .github/DEMO-PIN.md.
+        env:
+          INPUT_REF: ${{ github.event.inputs.ref }}
         run: |
           set +e
           git fetch origin main --depth=1 2>/dev/null
           PIN=$(git show origin/main:.github/demo-pin.txt 2>/dev/null | tr -d '[:space:]')
           set -e
-          REF="${{ github.event.inputs.ref }}"
+          REF="${INPUT_REF}"
           if [ -z "$REF" ] || [ "$REF" = "null" ]; then REF="${{ github.ref_name }}"; fi
           echo "Pin from origin/main: '${PIN}'"
           echo "Deployed ref:         '${REF}'"

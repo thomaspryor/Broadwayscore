@@ -151,6 +151,8 @@ jobs:
       - name: Commit sweep results
         if: always() && steps.sweep.outcome != 'skipped'
         shell: bash
+        env:
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
           git add data/audit/review-factcheck/web-search-bylines.json
           [ -f data/audit/review-factcheck/web-search-text-targets.json ] && git add data/audit/review-factcheck/web-search-text-targets.json
@@ -162,7 +164,7 @@ jobs:
             git add -f -A -- 'data/pending-fixes/bro-5090-*.json'
           fi
           if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "data: web-search byline sweep (fetchPage, limit=${{ inputs.limit }}) [BRO-5090] [skip ci]"
+          git commit -m "data: web-search byline sweep (fetchPage, limit=${INPUT_LIMIT}) [BRO-5090] [skip ci]"
           bash scripts/lib/push-with-retry.sh
 
       - name: Commit scraper-spend ledger

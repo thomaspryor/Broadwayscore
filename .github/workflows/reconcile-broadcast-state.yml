@@ -56,10 +56,11 @@ jobs:
       - name: Reconcile
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

@@ -79,6 +79,8 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           BASE_ARGS="--verbose"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -90,8 +92,8 @@ jobs:
             BASE_ARGS="$BASE_ARGS --include-closed"
           fi
 
-          SHOWS_INPUT="${{ inputs.shows }}"
-          SHOW_INPUT="${{ inputs.show }}"
+          SHOWS_INPUT="${INPUT_SHOWS}"
+          SHOW_INPUT="${INPUT_SHOW}"
 
           if [ -n "$SHOWS_INPUT" ]; then
             # Multiple shows: ONE process (one listing fetch) for the whole batch

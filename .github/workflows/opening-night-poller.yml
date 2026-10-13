@@ -178,16 +178,19 @@ jobs:
 
       - name: Find shows to poll
         id: find
+        env:
+          INPUT_MARKET: ${{ inputs.market }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           # WE reviews publish 12-48h after press night; use longer window
           DEFAULT_LOOKBACK=2
-          if [ "${{ inputs.market }}" = "west-end" ]; then
+          if [ "${INPUT_MARKET}" = "west-end" ]; then
             DEFAULT_LOOKBACK=4
           fi
           LOOKBACK=${{ inputs.lookback_days || '' }}
           LOOKBACK=${LOOKBACK:-$DEFAULT_LOOKBACK}
-          INPUT_SHOW="${{ inputs.show_id }}"
-          MARKET="${{ inputs.market }}"
+          INPUT_SHOW="${INPUT_SHOW_ID}"
+          MARKET="${INPUT_MARKET}"
 
           if [ -n "$INPUT_SHOW" ]; then
             echo "Using manual show: $INPUT_SHOW"
@@ -344,6 +347,8 @@ jobs:
           # For the burst cascade tripwire's automated owner email (scripts/lib/discord-notify.js).
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
+          INPUT_TB_REVIEW_URL: ${{ inputs.tb_review_url }}
         run: |
           IFS=',' read -ra SHOW_ARRAY <<< "${{ steps.find.outputs.shows }}"
           ANY_NEW=false
@@ -373,11 +378,11 @@ jobs:
             echo "════════════════════════════════════════"
             BWW_ARG=""
             TB_ARG=""
-            if [ -n "${{ inputs.bww_roundup_url }}" ]; then
-              BWW_ARG="--bww-roundup-url=${{ inputs.bww_roundup_url }}"
+            if [ -n "${INPUT_BWW_ROUNDUP_URL}" ]; then
+              BWW_ARG="--bww-roundup-url=${INPUT_BWW_ROUNDUP_URL}"
             fi
-            if [ -n "${{ inputs.tb_review_url }}" ]; then
-              TB_ARG="--tb-review-url=${{ inputs.tb_review_url }}"
+            if [ -n "${INPUT_TB_REVIEW_URL}" ]; then
+              TB_ARG="--tb-review-url=${INPUT_TB_REVIEW_URL}"
             fi
             # Capture poller output to a per-show file so we can grep for
             # guardian_redispatch_needed below. --force-serp is derived from workflow input.

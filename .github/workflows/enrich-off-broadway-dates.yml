@@ -74,6 +74,8 @@ jobs:
 
       - name: Determine mode flag
         id: mode
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           MODE="${{ inputs.mode || 'fix-unconfirmed' }}"
           case "$MODE" in
@@ -84,8 +86,8 @@ jobs:
             initial-backfill) FLAGS="--fix-unconfirmed --initial-backfill" ;;
             *) FLAGS="--fix-unconfirmed" ;;
           esac
-          if [ -n "${{ inputs.show }}" ]; then
-            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            FLAGS="$FLAGS --show=${INPUT_SHOW}"
           fi
           echo "flags=$FLAGS" >> "$GITHUB_OUTPUT"
           echo "Running with: $FLAGS"

@@ -152,6 +152,9 @@ jobs:
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
       - name: Summary
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
+          INPUT_MAX_ROUNDS: ${{ inputs.max_rounds }}
         run: |
           echo "## Retroactive LLM Verification: Preparation" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -160,7 +163,7 @@ jobs:
           echo "- **Mode:** ${{ inputs.mode }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Parallel jobs:** ${{ inputs.parallel_jobs }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Round:** ${{ inputs.current_round }} / ${{ inputs.max_rounds }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Round:** ${INPUT_CURRENT_ROUND} / ${INPUT_MAX_ROUNDS}" >> $GITHUB_STEP_SUMMARY
 
   verify:
     needs: prepare
@@ -241,6 +244,7 @@ jobs:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           SHOW_FILTER: ${{ matrix.shows }}
           COMMIT_EVERY: '25'
+          INPUT_MAX_PER_JOB: ${{ inputs.max_per_job }}
         run: |
           ARGS=""
           if [ "${{ inputs.mode }}" = "verify-only" ]; then
@@ -251,8 +255,8 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          if [ "${{ inputs.max_per_job }}" != "0" ]; then
-            ARGS="$ARGS --limit=${{ inputs.max_per_job }}"
+          if [ "${INPUT_MAX_PER_JOB}" != "0" ]; then
+            ARGS="$ARGS --limit=${INPUT_MAX_PER_JOB}"
           fi
           node scripts/verify-existing-reviews.js $ARGS
 
@@ -265,12 +269,14 @@ jobs:
           message: "data: Verify Existing Reviews (LLM) — Commit and push (partition ${{ matrix.partition }})"
       - name: Commit and push (partition ${{ matrix.partition }})
         if: always()
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
           git add data/audit/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit for partition ${{ matrix.partition }}"
           else
-            git commit -m "feat: Retroactive LLM verify (round ${{ inputs.current_round }}, partition ${{ matrix.partition }}/${{ inputs.parallel_jobs }})
+            git commit -m "feat: Retroactive LLM verify (round ${INPUT_CURRENT_ROUND}, partition ${{ matrix.partition }}/${{ inputs.parallel_jobs }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
             bash scripts/lib/push-with-retry.sh
@@ -387,12 +393,14 @@ jobs:
       - name: Commit rebuilt reviews.json
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
           git add data/audit/
           if git diff --staged --quiet; then
             echo "No changes to reviews.json"
           else
-            git commit -m "data: Auto-rebuild reviews.json (retroactive LLM verify round ${{ inputs.current_round }})"
+            git commit -m "data: Auto-rebuild reviews.json (retroactive LLM verify round ${INPUT_CURRENT_ROUND})"
             git pull --rebase origin main || {
               git rebase --abort 2>/dev/null || true
               git pull --no-rebase -X ours origin main
@@ -412,6 +420,9 @@ jobs:
         id: chain
         env:
           GH_TOKEN: ${{ github.token }}
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
+          INPUT_MAX_ROUNDS: ${{ inputs.max_rounds }}
+          INPUT_MAX_PER_JOB: ${{ inputs.max_per_job }}
         run: |
           REMAINING=$(node -e '
             const fs = require("fs"), path = require("path");
@@ -437,15 +448,15 @@ jobs:
             console.log(verify + recover);
           ')
           echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
-          CURRENT=${{ inputs.current_round }}
-          MAX=${{ inputs.max_rounds }}
+          CURRENT=${INPUT_CURRENT_ROUND}
+          MAX=${INPUT_MAX_ROUNDS}
           echo "Remaining: $REMAINING reviews, round $CURRENT of $MAX"
           if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
             NEXT=$((CURRENT + 1))
             echo "Chaining round $NEXT..."
             gh workflow run verify-existing-reviews.yml \
               -f parallel_jobs=${{ inputs.parallel_jobs }} \
-              -f max_per_job=${{ inputs.max_per_job }} \
+              -f max_per_job=${INPUT_MAX_PER_JOB} \
               -f mode=${{ inputs.mode }} \
               -f dry_run=false \
               -f max_rounds=$MAX \
@@ -457,8 +468,10 @@ jobs:
           fi
 
       - name: Summary
+        env:
+          INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
-          echo "## Retroactive LLM Verify Round ${{ inputs.current_round }}" >> $GITHUB_STEP_SUMMARY
+          echo "## Retroactive LLM Verify Round ${INPUT_CURRENT_ROUND}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY
           echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY

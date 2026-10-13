@@ -93,11 +93,13 @@ jobs:
       # Skips creators scanned < 24h ago unless --refresh.
       - name: Discover videos
         id: discover
+        env:
+          INPUT_CREATOR: ${{ inputs.creator }}
         run: |
           set -euo pipefail
           ARGS=()
-          if [ -n "${{ inputs.creator }}" ]; then
-            ARGS+=("--creator=${{ inputs.creator }}")
+          if [ -n "${INPUT_CREATOR}" ]; then
+            ARGS+=("--creator=${INPUT_CREATOR}")
           fi
           if [ "${{ inputs.refresh }}" = "true" ]; then
             ARGS+=("--refresh")
@@ -123,11 +125,12 @@ jobs:
       - name: Pre-classify titles
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_CREATOR: ${{ inputs.creator }}
         run: |
           set -euo pipefail
           ARGS=()
-          if [ -n "${{ inputs.creator }}" ]; then
-            ARGS+=("--creator=${{ inputs.creator }}")
+          if [ -n "${INPUT_CREATOR}" ]; then
+            ARGS+=("--creator=${INPUT_CREATOR}")
           fi
           node scripts/video-reviews/pre-classify-titles.js "${ARGS[@]}"
 
@@ -150,11 +153,12 @@ jobs:
           # Up to 6 Scrapingdog credits per YouTube video via the YouTube API
           # (BRO-4665); shared with fetchPage's Scrapingdog tier in this step.
           SD_CREDIT_BUDGET: '3000'
+          INPUT_CREATOR: ${{ inputs.creator }}
         run: |
           set -euo pipefail
           ARGS=()
-          if [ -n "${{ inputs.creator }}" ]; then
-            ARGS+=("--creator=${{ inputs.creator }}")
+          if [ -n "${INPUT_CREATOR}" ]; then
+            ARGS+=("--creator=${INPUT_CREATOR}")
           fi
           # Exit 3 = a platform extracted 0 transcripts with yt-dlp errors;
           # still publish what the other platform produced, fail at the end.

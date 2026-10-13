@@ -221,17 +221,18 @@ jobs:
       - name: Refresh review-texts before scoring
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
         run: |
           # Review-texts was checked out at job start, but fixes may have been pushed
           # while this run was queued. Pull latest to avoid scoring stale data.
           # (Becky Shaw incident: wrongShow:false was pushed but scoring used the old checkout)
           cd data/review-texts
           git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || true
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+          if [ -n "${INPUT_SHOW_ID}" ]; then
             # Targeted refresh: only pull the specific show directory (faster)
-            echo "Refreshing review-texts for show: ${{ github.event.inputs.show_id }}"
+            echo "Refreshing review-texts for show: ${INPUT_SHOW_ID}"
             git fetch origin main --depth=1
-            git checkout origin/main -- "${{ github.event.inputs.show_id }}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
+            git checkout origin/main -- "${INPUT_SHOW_ID}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
           else
             # Full refresh: pull all latest changes
             echo "Refreshing all review-texts..."
@@ -243,6 +244,8 @@ jobs:
       - name: Check if scoring needed
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
+          INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
         id: check-needed
         run: |
           # BRO-3029: this gate used to be schedule-only (if:
@@ -261,7 +264,7 @@ jobs:
           # then block that recovery dispatch just because the rest of the
           # corpus happens to have nothing pending.
           FORCE_RUN=false
-          if [ -n "${{ github.event.inputs.show_id }}" ] || \
+          if [ -n "${INPUT_SHOW_ID}" ] || \
              [ "${{ github.event.inputs.rescore }}" == "true" ] || \
              [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || \
              [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ] || \
@@ -276,8 +279,8 @@ jobs:
           # show, no rescore reason, no action flag) scores only reviews for
           # shows near opening night. Everything else waits for the next
           # half-price batch run (crons above). Rule: scripts/lib/scoring-lane.js.
-          PLAIN_BACKLOG=$(EVENT_NAME="${{ github.event_name }}" SHOW_ID="${{ github.event.inputs.show_id }}" \
-            RESCORE_REASON="${{ github.event.inputs.rescore_reason }}" FORCE_RUN="$FORCE_RUN" \
+          PLAIN_BACKLOG=$(EVENT_NAME="${{ github.event_name }}" SHOW_ID="${INPUT_SHOW_ID}" \
+            RESCORE_REASON="${INPUT_RESCORE_REASON}" FORCE_RUN="$FORCE_RUN" \
             SYNC="${{ github.event.inputs.sync }}" DISABLE_BACKLOG_BATCH="${{ vars.DISABLE_BACKLOG_BATCH }}" \
             DISABLE_BATCH_SCORING="${{ vars.DISABLE_BATCH_SCORING }}" node scripts/lib/scoring-lane.js)
           echo "only_urgent=$PLAIN_BACKLOG" >> $GITHUB_OUTPUT
@@ -417,12 +420,19 @@ jobs:
       - name: Build CLI arguments
         id: build-args
         if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
+        env:
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_MAX_COST: ${{ github.event.inputs.max_cost }}
+          INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
+          INPUT_SHARD: ${{ github.event.inputs.shard }}
+          INPUT_TOTAL_SHARDS: ${{ github.event.inputs.total_shards }}
         run: |
           ARGS="--ensemble"
 
           # Show filter
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
-            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW_ID}"
           else
             ARGS="$ARGS --all"
           fi
@@ -433,8 +443,8 @@ jobs:
           fi
 
           # Limit — scheduled runs default to 400
-          if [ -n "${{ github.event.inputs.limit }}" ]; then
-            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          if [ -n "${INPUT_LIMIT}" ]; then
+            ARGS="$ARGS --limit=${INPUT_LIMIT}"
           elif [ "${{ github.event_name }}" == "schedule" ]; then
             ARGS="$ARGS --limit=400"
           fi
@@ -446,7 +456,7 @@ jobs:
           # (parseFloat || 0) silently treats NaN/negative as "unlimited" —
           # exactly backwards for a cost-safety feature — so a typo here must
           # fail loud rather than pass through and silently disable the cap.
-          MAX_COST="${{ github.event.inputs.max_cost }}"
+          MAX_COST="${INPUT_MAX_COST}"
           if [ -n "$MAX_COST" ]; then
             if ! [[ "$MAX_COST" =~ ^[0-9]+(\.[0-9]+)?$ ]] || ! awk -v v="$MAX_COST" 'BEGIN { exit !(v > 0) }'; then
               echo "::error::max_cost must be a positive number (got '$MAX_COST')"
@@ -482,8 +492,8 @@ jobs:
           fi
 
           # Rescore reason filter (enables parallel runs for different reason buckets)
-          if [ -n "${{ github.event.inputs.rescore_reason }}" ]; then
-            ARGS="$ARGS --rescore-reason=${{ github.event.inputs.rescore_reason }}"
+          if [ -n "${INPUT_RESCORE_REASON}" ]; then
+            ARGS="$ARGS --rescore-reason=${INPUT_RESCORE_REASON}"
           fi
 
           # Outdated (rescore reviews with old prompt versions)
@@ -512,8 +522,8 @@ jobs:
           fi
 
           # Sharding for parallel runs
-          if [ -n "${{ github.event.inputs.shard }}" ] && [ -n "${{ github.event.inputs.total_shards }}" ]; then
-            ARGS="$ARGS --shard=${{ github.event.inputs.shard }} --total-shards=${{ github.event.inputs.total_shards }}"
+          if [ -n "${INPUT_SHARD}" ] && [ -n "${INPUT_TOTAL_SHARDS}" ]; then
+            ARGS="$ARGS --shard=${INPUT_SHARD} --total-shards=${INPUT_TOTAL_SHARDS}"
           fi
 
           # Batch API mode (task #516) — scheduled runs only.
@@ -638,6 +648,8 @@ jobs:
       - name: Comparative within-band rescore (WE/OWE anchored-v6, capped)
         if: (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true') && vars.DISABLE_COMPARATIVE_RESCORE != '1' && github.event.inputs.dry_run != 'true'
         continue-on-error: true
+        env:
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
         run: |
           # BRO-3029: used to always pass --all-we, so a single-show dispatch
           # (e.g. the per-show auto-rescore from dispatch-rescore.js) fired a
@@ -646,8 +658,8 @@ jobs:
           # comparative-rescore.ts already supports --show=ID; a Broadway
           # show_id just finds zero anchored-v6 groups and no-ops (that scope
           # is WE/OWE-only by design — see the script's own header).
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
-            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --show=${{ github.event.inputs.show_id }} --max-rescores=30
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --show=${INPUT_SHOW_ID} --max-rescores=30
           else
             npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30
           fi
@@ -732,14 +744,16 @@ jobs:
 
       - name: Commit and push changes
         if: always() && steps.check-changes.outputs.has_changes == 'true'
+        env:
+          INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Build commit message
           SHOW_MSG=""
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
-            SHOW_MSG=" for ${{ github.event.inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            SHOW_MSG=" for ${INPUT_SHOW_ID}"
           fi
 
           git commit -m "feat: Ensemble LLM score reviews${SHOW_MSG}
@@ -937,8 +951,14 @@ jobs:
           && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true' || github.event.inputs.upgrade_ensemble == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_REMAINING_BATCHES: ${{ github.event.inputs.remaining_batches }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_SHARD: ${{ github.event.inputs.shard }}
+          INPUT_TOTAL_SHARDS: ${{ github.event.inputs.total_shards }}
+          INPUT_MAX_COST: ${{ github.event.inputs.max_cost }}
+          INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
         run: |
-          BATCHES_LEFT="${{ github.event.inputs.remaining_batches }}"
+          BATCHES_LEFT="${INPUT_REMAINING_BATCHES}"
           if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
             if [ "${{ github.event_name }}" == "schedule" ]; then
               BATCHES_LEFT=5
@@ -952,10 +972,10 @@ jobs:
             exit 0
           fi
           NEXT_BATCHES=$((BATCHES_LEFT - 1))
-          LIMIT="${{ github.event.inputs.limit }}"
+          LIMIT="${INPUT_LIMIT}"
           LIMIT="${LIMIT:-400}"
-          SHARD="${{ github.event.inputs.shard }}"
-          TOTAL_SHARDS="${{ github.event.inputs.total_shards }}"
+          SHARD="${INPUT_SHARD}"
+          TOTAL_SHARDS="${INPUT_TOTAL_SHARDS}"
           echo "Triggering next batch (${NEXT_BATCHES} remaining after this)..."
           echo "Reviews still unscored: ${{ steps.count-remaining.outputs.remaining }}"
 
@@ -969,8 +989,8 @@ jobs:
           fi
           # Pass through max_cost so a budget cap applies across the whole chain,
           # not just the first batch
-          if [ -n "${{ github.event.inputs.max_cost }}" ]; then
-            CHAIN_ARGS="$CHAIN_ARGS -f max_cost=${{ github.event.inputs.max_cost }}"
+          if [ -n "${INPUT_MAX_COST}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f max_cost=${INPUT_MAX_COST}"
           fi
           # Pass through needs_rescore flag so rescore chains continue
           # Also pass through when scheduled run detected needsRescore backlog
@@ -978,8 +998,8 @@ jobs:
             CHAIN_ARGS="$CHAIN_ARGS -f needs_rescore=true"
           fi
           # Pass through rescore_reason filter so parallel chains stay in their lane
-          if [ -n "${{ github.event.inputs.rescore_reason }}" ]; then
-            CHAIN_ARGS="$CHAIN_ARGS -f rescore_reason=${{ github.event.inputs.rescore_reason }}"
+          if [ -n "${INPUT_RESCORE_REASON}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f rescore_reason=${INPUT_RESCORE_REASON}"
           fi
           # Pass through stale_scores flag so stale-score chains continue
           # Also pass through when scheduled run detected stale scores

@@ -58,20 +58,23 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
+          INPUT_MAX_TIER: ${{ inputs.max_tier }}
         run: |
           DRY_RUN_FLAG=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
 
           # Exit cleanly before the 30-min job timeout; deferred candidates
           # are picked up next run. Default in bash, not a GHA || expression —
           # the expression coerces a literal 0 (= unlimited) to falsy.
-          TB="${{ inputs.time_budget_min }}"
+          TB="${INPUT_TIME_BUDGET_MIN}"
           [ -z "$TB" ] && TB=22
 
           node scripts/retry-wrong-urls.js \
-            --max-tier ${{ inputs.max_tier }} \
+            --max-tier ${INPUT_MAX_TIER} \
             --time-budget-min="$TB" \
             $DRY_RUN_FLAG
 

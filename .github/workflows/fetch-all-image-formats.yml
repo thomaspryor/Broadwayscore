@@ -94,16 +94,18 @@ jobs:
           # scripts/scrape-theatr-audience.js which also populates this cache.
           # This prevents the refresh-token race where two workflows rotated
           # the token and one lost the rotated value.
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_CONCURRENCY: ${{ inputs.concurrency || '5' }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.show_id }}" ]; then
-            ARGS="--show=${{ inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            ARGS="--show=${INPUT_SHOW_ID}"
           elif [ "${{ inputs.bad_images }}" == "true" ]; then
             ARGS="--bad-images"
           elif [ "${{ inputs.only_missing }}" == "true" ] || [ "${{ github.event_name }}" == "schedule" ]; then
             ARGS="--missing"
           fi
-          CONCURRENCY="${{ inputs.concurrency || '5' }}"
+          CONCURRENCY="${INPUT_CONCURRENCY}"
           VERIFY_FLAG=""
           if [ "${{ inputs.verify }}" != "false" ]; then
             VERIFY_FLAG="--verify"

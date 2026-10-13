@@ -57,13 +57,15 @@ jobs:
 
       - name: Determine submission mode
         id: mode
+        env:
+          INPUT_SHOWS: ${{ inputs.shows }}
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
             echo "mode=all" >> $GITHUB_OUTPUT
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ -n "${{ inputs.shows }}" ]; then
+            if [ -n "${INPUT_SHOWS}" ]; then
               echo "mode=shows" >> $GITHUB_OUTPUT
-              echo "shows=${{ inputs.shows }}" >> $GITHUB_OUTPUT
+              echo "shows=${INPUT_SHOWS}" >> $GITHUB_OUTPUT
             else
               echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
             fi

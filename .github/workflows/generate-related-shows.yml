@@ -44,13 +44,14 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
         run: |
           ARGS=""
           if [ "${{ inputs.force }}" = "true" ]; then
             ARGS="$ARGS --force"
           fi
-          if [ -n "${{ inputs.show_filter }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          if [ -n "${INPUT_SHOW_FILTER}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW_FILTER}"
           fi
           # Cap scheduled runs to ensure completion within timeout (new shows processed first)
           if [ "${{ github.event_name }}" = "schedule" ]; then

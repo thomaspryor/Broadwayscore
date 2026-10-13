@@ -141,10 +141,12 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GH_TOKEN: ${{ github.token }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_CARD_ID: ${{ github.event.inputs.card_id }}
+          INPUT_BRANCH: ${{ github.event.inputs.branch }}
         run: |
           node scripts/autonomous-merge.js \
-            --card "${{ github.event.inputs.card_id }}" \
-            --branch "${{ github.event.inputs.branch }}" \
+            --card "${INPUT_CARD_ID}" \
+            --branch "${INPUT_BRANCH}" \
             --action "${{ github.event.inputs.action }}"
 
       - name: Release the landing mutex

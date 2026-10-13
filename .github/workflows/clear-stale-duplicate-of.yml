@@ -77,11 +77,13 @@ jobs:
 
       - name: Apply fix
         if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        env:
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
           # --fix refuses >25 clears in one run (surge guard — a spike usually
           # means a producer regression, not routine drift). For a legitimate
           # large backlog cleanup, re-run this workflow with force_bulk=true.
-          if [ "${{ inputs.force_bulk }}" = "true" ]; then
+          if [ "${INPUT_FORCE_BULK}" = "true" ]; then
             node scripts/audit-duplicate-of-url-mismatch.js --fix --force-bulk
           else
             node scripts/audit-duplicate-of-url-mismatch.js --fix
@@ -96,12 +98,14 @@ jobs:
             chore: auto-clear ${{ steps.audit.outputs.count }} stale duplicateOf flags [audit-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## duplicateOf Stale-Flag Sweep"
             echo ""
             echo "**Stale flags detected:** ${{ steps.audit.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.audit.outputs.status }}" = "0" ]; then
               echo "**Mode:** no fix needed"

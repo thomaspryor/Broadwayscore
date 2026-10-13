@@ -48,8 +48,10 @@ jobs:
 
       - name: Run director-consensus audit
         id: audit
+        env:
+          INPUT_SEVERITY: ${{ github.event.inputs.severity || 'strict' }}
         run: |
-          SEVERITY="${{ github.event.inputs.severity || 'strict' }}"
+          SEVERITY="${INPUT_SEVERITY}"
           FLAGS=""
           case "$SEVERITY" in
             soft) FLAGS="--soft" ;;

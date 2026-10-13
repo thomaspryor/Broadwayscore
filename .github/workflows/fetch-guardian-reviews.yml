@@ -85,15 +85,17 @@ jobs:
       - name: Fetch Guardian reviews
         env:
           GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_SHOWS: ${{ github.event.inputs.shows }}
         run: |
           ARGS=""
 
-          if [ "${{ github.event.inputs.limit }}" != "0" ] && [ -n "${{ github.event.inputs.limit }}" ]; then
-            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          if [ "${INPUT_LIMIT}" != "0" ] && [ -n "${INPUT_LIMIT}" ]; then
+            ARGS="$ARGS --limit=${INPUT_LIMIT}"
           fi
 
-          if [ -n "${{ github.event.inputs.shows }}" ]; then
-            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          if [ -n "${INPUT_SHOWS}" ]; then
+            ARGS="$ARGS --shows=${INPUT_SHOWS}"
           fi
 
           if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then

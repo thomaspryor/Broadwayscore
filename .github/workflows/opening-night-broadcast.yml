@@ -830,6 +830,7 @@ jobs:
           # in parallel. Without GH_TOKEN, `gh api` in CI would fail auth and the
           # lock helper would exit(1), blocking the send rather than risking a race.
           GH_TOKEN: ${{ github.token }}
+          INPUT_SEND_TO: ${{ inputs.send_to }}
         run: |
           # Modes:
           #   - send_to=<email>: transactional preview to that address only (no draft)
@@ -839,9 +840,9 @@ jobs:
           SEND_TO_FLAG=""
           CREATE_DRAFT="false"
 
-          if [ -n "${{ inputs.send_to }}" ]; then
-            SEND_TO_FLAG="--send-to=${{ inputs.send_to }}"
-            echo "** PREVIEW MODE — sending test email to ${{ inputs.send_to }} only **"
+          if [ -n "${INPUT_SEND_TO}" ]; then
+            SEND_TO_FLAG="--send-to=${INPUT_SEND_TO}"
+            echo "** PREVIEW MODE — sending test email to ${INPUT_SEND_TO} only **"
           elif [ "${{ inputs.create_draft }}" = "true" ] || [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event.schedule }}" = "30 12 * * *" ]; then
             # Approval dispatch or scheduled 12:30 UTC run: preview to owner + Resend draft
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"

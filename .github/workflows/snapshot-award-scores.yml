@@ -44,10 +44,13 @@ jobs:
           node-version: '20'
 
       - name: Take award-score snapshot
+        env:
+          INPUT_DATE: ${{ inputs.date }}
+          INPUT_MARKETS: ${{ inputs.markets }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.date }}" ]; then ARGS="$ARGS --date=${{ inputs.date }}"; fi
-          if [ -n "${{ inputs.markets }}" ]; then ARGS="$ARGS --markets=${{ inputs.markets }}"; fi
+          if [ -n "${INPUT_DATE}" ]; then ARGS="$ARGS --date=${INPUT_DATE}"; fi
+          if [ -n "${INPUT_MARKETS}" ]; then ARGS="$ARGS --markets=${INPUT_MARKETS}"; fi
           echo "Running: node scripts/snapshot-award-scores.js $ARGS"
           node scripts/snapshot-award-scores.js $ARGS
 

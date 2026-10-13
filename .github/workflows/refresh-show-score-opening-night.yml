@@ -69,8 +69,11 @@ jobs:
 
       - name: Identify shows in opening-night window
         id: window
+        env:
+          INPUT_SHOWS: ${{ inputs.shows }}
+          INPUT_LOOKBACK_DAYS: ${{ inputs.lookback_days || '2' }}
         run: |
-          MANUAL_SHOWS="${{ inputs.shows }}"
+          MANUAL_SHOWS="${INPUT_SHOWS}"
           if [ -n "$MANUAL_SHOWS" ]; then
             echo "shows=$MANUAL_SHOWS" >> "$GITHUB_OUTPUT"
             echo "Using manual show list: $MANUAL_SHOWS"
@@ -80,7 +83,7 @@ jobs:
           # Validate lookback_days is a positive integer (operator-controlled
           # input, but treat as untrusted — non-numeric crashes the node -e
           # silently and shows=0 candidates with a confusing error).
-          LOOKBACK_RAW="${{ inputs.lookback_days || '2' }}"
+          LOOKBACK_RAW="${INPUT_LOOKBACK_DAYS}"
           if ! [[ "$LOOKBACK_RAW" =~ ^[0-9]+$ ]]; then
             echo "::error::lookback_days must be a non-negative integer; got: $LOOKBACK_RAW"
             exit 1

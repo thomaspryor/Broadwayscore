@@ -45,22 +45,28 @@ jobs:
 
       - name: Scrape GoldDerby Tony odds
         id: goldderby
+        env:
+          INPUT_SEASON: ${{ inputs.season || '2026' }}
         run: |
-          SEASON="${{ inputs.season || '2026' }}"
+          SEASON="${INPUT_SEASON}"
           node scripts/scrape-gold-derby-tonys.js --season=$SEASON 2>&1 \
             || echo "::warning::GoldDerby scrape exited non-zero — check output above"
 
       - name: Scrape Polymarket Tony odds
         id: polymarket
+        env:
+          INPUT_SEASON: ${{ inputs.season || '2026' }}
         run: |
-          SEASON="${{ inputs.season || '2026' }}"
+          SEASON="${INPUT_SEASON}"
           node scripts/scrape-polymarket-tonys.js --season=$SEASON 2>&1 \
             || echo "::warning::Polymarket scrape exited non-zero — check output above"
 
       - name: Scrape Kalshi Tony odds
         id: kalshi
+        env:
+          INPUT_SEASON: ${{ inputs.season || '2026' }}
         run: |
-          SEASON="${{ inputs.season || '2026' }}"
+          SEASON="${INPUT_SEASON}"
           node scripts/scrape-kalshi-tonys.js --season=$SEASON 2>&1 \
             || echo "::warning::Kalshi scrape exited non-zero — check output above"
 

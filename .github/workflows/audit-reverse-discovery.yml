@@ -72,8 +72,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          INPUT_DAYS: ${{ inputs.days || '45' }}
         run: |
-          ARGS="--days=${{ inputs.days || '45' }}"
+          ARGS="--days=${INPUT_DAYS}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/audit-reverse-discovery.js $ARGS
 

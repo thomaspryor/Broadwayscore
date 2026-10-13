@@ -76,11 +76,14 @@ jobs:
 
       - name: Run sweep
         id: sweep
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
           set +e
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             OUT=$(node scripts/clear-stale-roundup-flags.js 2>&1)
-          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+          elif [ "${INPUT_FORCE_BULK}" = "true" ]; then
             OUT=$(node scripts/clear-stale-roundup-flags.js --apply --force-bulk 2>&1)
           else
             OUT=$(node scripts/clear-stale-roundup-flags.js --apply 2>&1)
@@ -105,13 +108,15 @@ jobs:
             fix: auto-clear ${{ steps.sweep.outputs.count }} stale isRoundupArticle flags [audit-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## isRoundupArticle Stale-Flag Sweep"
             echo ""
             echo "**Would clear:** ${{ steps.sweep.outputs.would }}"
             echo "**Cleared:** ${{ steps.sweep.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
               echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"

@@ -124,6 +124,15 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+          INPUT_PHASES: ${{ inputs.phases || '0,1,2,3' }}
+          INPUT_LIMIT: ${{ inputs.limit || '0' }}
+          INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
+          INPUT_OUTLET: ${{ inputs.outlet }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_MARKET: ${{ inputs.market }}
+          INPUT_SOURCE: ${{ inputs.source }}
+          INPUT_SINCE: ${{ inputs.since }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "schedule" ]; then
@@ -135,34 +144,34 @@ jobs:
             # the last 6 weekly runs red before 2026-06-11.
             ARGS="--phase=0,1,2,3 --time-budget-min=100"
           else
-            PHASES="${{ inputs.phases || '0,1,2,3' }}"
-            LIMIT="${{ inputs.limit || '0' }}"
+            PHASES="${INPUT_PHASES}"
+            LIMIT="${INPUT_LIMIT}"
             ARGS="--phase=$PHASES --limit=$LIMIT"
             # Default in bash, not a GHA || expression — the expression coerces
             # a literal 0 (= unlimited) to falsy and would silently turn it into 100.
-            TB="${{ inputs.time_budget_min }}"
+            TB="${INPUT_TIME_BUDGET_MIN}"
             [ -z "$TB" ] && TB=100
             ARGS="$ARGS --time-budget-min=$TB"
-            if [ -n "${{ inputs.outlet }}" ]; then
-              ARGS="$ARGS --outlet=${{ inputs.outlet }}"
+            if [ -n "${INPUT_OUTLET}" ]; then
+              ARGS="$ARGS --outlet=${INPUT_OUTLET}"
             fi
             # Single-show mode — opening-night-checklist.js dispatches
             # {show, outlet} together so an unparsed Guardian 3/5 on tonight's
             # opening recovers that one review, not the whole Guardian backlog
             # (task #389; the script's --show= filter predates this).
-            if [ -n "${{ inputs.show }}" ]; then
-              ARGS="$ARGS --show=${{ inputs.show }}"
+            if [ -n "${INPUT_SHOW}" ]; then
+              ARGS="$ARGS --show=${INPUT_SHOW}"
             fi
-            if [ -n "${{ inputs.market }}" ]; then
-              ARGS="$ARGS --market=${{ inputs.market }}"
+            if [ -n "${INPUT_MARKET}" ]; then
+              ARGS="$ARGS --market=${INPUT_MARKET}"
             fi
-            if [ -n "${{ inputs.source }}" ]; then
-              ARGS="$ARGS --source=${{ inputs.source }}"
+            if [ -n "${INPUT_SOURCE}" ]; then
+              ARGS="$ARGS --source=${INPUT_SOURCE}"
             fi
-            if [ -n "${{ inputs.since }}" ]; then
-              ARGS="$ARGS --since=${{ inputs.since }}"
+            if [ -n "${INPUT_SINCE}" ]; then
+              ARGS="$ARGS --since=${INPUT_SINCE}"
             fi
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               ARGS="$ARGS --dry-run"
             fi
           fi

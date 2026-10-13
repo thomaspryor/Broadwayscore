@@ -75,6 +75,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           FLAGS=""
 
@@ -84,11 +85,11 @@ jobs:
           if [ "$MODE" = "current-only" ]; then
             FLAGS="$FLAGS --current-only"
           elif [ "$MODE" = "show" ]; then
-            if [ -z "${{ inputs.show }}" ]; then
+            if [ -z "${INPUT_SHOW}" ]; then
               echo "Error: --show is required when mode=show"
               exit 1
             fi
-            FLAGS="$FLAGS --show=${{ inputs.show }}"
+            FLAGS="$FLAGS --show=${INPUT_SHOW}"
           fi
           # "all" mode needs no extra flags
 

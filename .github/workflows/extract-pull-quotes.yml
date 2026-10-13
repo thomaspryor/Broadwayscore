@@ -83,16 +83,18 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" == "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
-          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
-            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          if [ "${INPUT_LIMIT}" != "0" ] && [ -n "${INPUT_LIMIT}" ]; then
+            ARGS="$ARGS --limit=${INPUT_LIMIT}"
           fi
           if [ "${{ inputs.overwrite }}" == "true" ]; then
             ARGS="$ARGS --overwrite"
@@ -179,8 +181,11 @@ jobs:
         if: always() && inputs.chain
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_REMAINING_BATCHES: ${{ inputs.remaining_batches }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
-          REMAINING=${{ inputs.remaining_batches }}
+          REMAINING=${INPUT_REMAINING_BATCHES}
           if [ "$REMAINING" -le "0" ] 2>/dev/null; then
             echo "No remaining batches. Stopping chain."
             exit 0
@@ -190,8 +195,8 @@ jobs:
           echo "Chaining next run (remaining: $NEXT_REMAINING)..."
 
           gh workflow run extract-pull-quotes.yml \
-            -f show="${{ inputs.show }}" \
-            -f limit="${{ inputs.limit }}" \
+            -f show="${INPUT_SHOW}" \
+            -f limit="${INPUT_LIMIT}" \
             -f overwrite="${{ inputs.overwrite }}" \
             -f dry_run="${{ inputs.dry_run }}" \
             -f chain=true \

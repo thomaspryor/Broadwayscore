@@ -65,11 +65,14 @@ jobs:
 
       - name: Run sweep (report)
         id: sweep
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
           set +e
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             OUT=$(node scripts/clear-stale-suspected-misattribution-flags.js 2>&1)
-          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+          elif [ "${INPUT_FORCE_BULK}" = "true" ]; then
             OUT=$(node scripts/clear-stale-suspected-misattribution-flags.js --apply --force-bulk 2>&1)
           else
             OUT=$(node scripts/clear-stale-suspected-misattribution-flags.js --apply 2>&1)
@@ -91,12 +94,14 @@ jobs:
             fix: auto-clear ${{ steps.sweep.outputs.count }} stale suspectedMisattribution flags [audit-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## suspectedMisattribution Stale-Flag Sweep"
             echo ""
             echo "**Stale flags found:** ${{ steps.sweep.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
               echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"

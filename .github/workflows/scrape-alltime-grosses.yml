@@ -69,8 +69,8 @@ jobs:
           # In-run merge uses Math.max per slug, so partial-year stats from the per-year
           # pages cannot overwrite the main page's lifetime totals.
           ARGS="--all-years"
-          if [ -n "${{ inputs.year }}" ]; then
-            ARGS="--year ${{ inputs.year }}"
+          if [ -n "${INPUT_YEAR}" ]; then
+            ARGS="--year ${INPUT_YEAR}"
           elif [ "${{ inputs.all_years }}" = "false" ]; then
             ARGS=""
           fi
@@ -84,6 +84,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_YEAR: ${{ inputs.year }}
 
       - name: Check for changes
         if: inputs.dry_run != 'true'

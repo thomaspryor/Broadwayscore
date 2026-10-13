@@ -64,11 +64,13 @@ jobs:
           configure-git: 'true'
 
       - name: Classify stale closures
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           ARGS="--grace-days=${{ inputs.grace_days || '30' }}"
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '50' }}"
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

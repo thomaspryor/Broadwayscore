@@ -75,22 +75,27 @@ jobs:
 
       - name: Build CLI args
         id: args
+        env:
+          INPUT_PHASE: ${{ inputs.phase }}
+          INPUT_LIMIT: ${{ inputs.limit }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
+          INPUT_REASON_FILTER: ${{ inputs.reason_filter }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          if [ -n "${{ inputs.phase }}" ]; then
-            ARGS="$ARGS --phase=${{ inputs.phase }}"
+          if [ -n "${INPUT_PHASE}" ]; then
+            ARGS="$ARGS --phase=${INPUT_PHASE}"
           fi
-          if [ -n "${{ inputs.limit }}" ]; then
-            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          if [ -n "${INPUT_LIMIT}" ]; then
+            ARGS="$ARGS --limit=${INPUT_LIMIT}"
           fi
-          if [ -n "${{ inputs.show_filter }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          if [ -n "${INPUT_SHOW_FILTER}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW_FILTER}"
           fi
-          if [ -n "${{ inputs.reason_filter }}" ]; then
-            ARGS="$ARGS --reason=${{ inputs.reason_filter }}"
+          if [ -n "${INPUT_REASON_FILTER}" ]; then
+            ARGS="$ARGS --reason=${INPUT_REASON_FILTER}"
           fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 

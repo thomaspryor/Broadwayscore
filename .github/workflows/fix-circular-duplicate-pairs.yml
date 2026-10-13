@@ -90,12 +90,14 @@ jobs:
             chore: auto-collapse ${{ steps.audit.outputs.count }} circular duplicateOf pairs [circular-fix]
 
       - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## Circular duplicateOf Pair Sweep"
             echo ""
             echo "**Circular pairs detected:** ${{ steps.audit.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.audit.outputs.status }}" = "0" ]; then
               echo "**Mode:** no fix needed"

@@ -60,8 +60,10 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Validate mode
+        env:
+          INPUT_MODE: ${{ inputs.mode }}
         run: |
-          case "${{ inputs.mode }}" in
+          case "${INPUT_MODE}" in
             audit|reflag|html-dry|html-apply) ;;
             *) echo "::error::mode must be audit|reflag|html-dry|html-apply"; exit 1 ;;
           esac
@@ -84,13 +86,16 @@ jobs:
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_LIMIT: ${{ inputs.limit }}
+          INPUT_PER_OUTLET: ${{ inputs.per_outlet }}
         shell: bash
         run: |
           APPLY=""
-          [ "${{ inputs.mode }}" = "html-apply" ] && APPLY="--apply"
-          LIMIT="${{ inputs.limit }}"
+          [ "${INPUT_MODE}" = "html-apply" ] && APPLY="--apply"
+          LIMIT="${INPUT_LIMIT}"
           LIMIT_ARG=""
-          PO="${{ inputs.per_outlet }}"
+          PO="${INPUT_PER_OUTLET}"
           [ "${PO:-0}" != "0" ] && LIMIT_ARG="--per-outlet=${PO}"
           [ "${LIMIT:-0}" != "0" ] && LIMIT_ARG="$LIMIT_ARG --limit=${LIMIT}"
           # BRO-5081: stop at 70 min so the push below runs inside the 90-min job.

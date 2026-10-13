@@ -59,8 +59,10 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Run detector
+        env:
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             node scripts/detect-ob-closings.js --dry-run
           else
             node scripts/detect-ob-closings.js

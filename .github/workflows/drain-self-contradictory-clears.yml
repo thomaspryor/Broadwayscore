@@ -153,9 +153,11 @@ jobs:
       # a commit nobody reads.
       - name: Surge guard
         if: inputs.dry_run != 'true'
+        env:
+          INPUT_MAX_FILES: ${{ inputs.max_files || '40' }}
         run: |
           WOULDFIX='${{ steps.survey.outputs.wouldfix }}'
-          MAX='${{ inputs.max_files || '40' }}'
+          MAX="${INPUT_MAX_FILES}"
           case "$MAX" in (*[!0-9]*|'') echo "::error::max_files is not numeric (got '$MAX')"; exit 1;; esac
           if [ "$WOULDFIX" -gt "$MAX" ]; then
             echo "::error::$WOULDFIX drainable contradictions exceeds max_files=$MAX — a spike this size usually means a producer regression, not drift. Investigate before bulk-draining, or re-dispatch with a higher max_files."
@@ -212,13 +214,15 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
           {
             echo "## Self-Contradictory Clear Drain"
             echo ""
             echo "**Review files scanned:** ${{ steps.survey.outputs.scanned }}"
             echo "**Zero-score-impact contradictions found:** ${{ steps.survey.outputs.wouldfix }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${INPUT_DRY_RUN}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
             elif [ "${{ steps.survey.outputs.wouldfix }}" = "0" ]; then
               echo "**Mode:** nothing to drain"

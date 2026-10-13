@@ -69,16 +69,18 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
+          INPUT_LIMIT: ${{ inputs.limit }}
         run: |
           FLAGS=""
           if [ -n "${{ inputs.category }}" ] && [ "${{ inputs.category }}" != "all" ]; then
             FLAGS="$FLAGS --category=${{ inputs.category }}"
           fi
-          if [ -n "${{ inputs.show_filter }}" ]; then
-            FLAGS="$FLAGS --show-filter=${{ inputs.show_filter }}"
+          if [ -n "${INPUT_SHOW_FILTER}" ]; then
+            FLAGS="$FLAGS --show-filter=${INPUT_SHOW_FILTER}"
           fi
-          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
-            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          if [ "${INPUT_LIMIT}" != "0" ] && [ -n "${INPUT_LIMIT}" ]; then
+            FLAGS="$FLAGS --limit=${INPUT_LIMIT}"
           fi
           if [ "${{ inputs.force }}" = "true" ]; then
             FLAGS="$FLAGS --force"

@@ -188,10 +188,11 @@ jobs:
           # silent no-op — the parity checks stay blind to the exact
           # format-change misses they exist to catch.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |
           SHOW_ARG=""
-          if [ -n "${{ inputs.show_id }}" ]; then
-            SHOW_ARG="--show=${{ inputs.show_id }}"
+          if [ -n "${INPUT_SHOW_ID}" ]; then
+            SHOW_ARG="--show=${INPUT_SHOW_ID}"
           fi
           # --out writes the JSON to its own file: BOTH stdout (scraper '[SB
           # Call]' telemetry from the remediation step) and stderr used to

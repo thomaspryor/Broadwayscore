@@ -103,6 +103,10 @@ jobs:
 
       - name: Determine effective inputs
         id: inputs
+        env:
+          INPUT_LIMIT: ${{ inputs.limit || '0' }}
+          INPUT_CONCURRENCY: ${{ inputs.concurrency || '5' }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter || '' }}
         run: |
           # Scheduled runs always dry-run. Manual runs use workflow inputs.
           if [ "${{ github.event_name }}" = "schedule" ]; then
@@ -117,9 +121,9 @@ jobs:
             echo "market=${{ inputs.market || 'broadway' }}" >> $GITHUB_OUTPUT
             echo "mode=${{ inputs.mode || 'dry-run' }}" >> $GITHUB_OUTPUT
             echo "provider=${{ inputs.provider || 'claude' }}" >> $GITHUB_OUTPUT
-            echo "limit=${{ inputs.limit || '0' }}" >> $GITHUB_OUTPUT
-            echo "concurrency=${{ inputs.concurrency || '5' }}" >> $GITHUB_OUTPUT
-            echo "show_filter=${{ inputs.show_filter || '' }}" >> $GITHUB_OUTPUT
+            echo "limit=${INPUT_LIMIT}" >> $GITHUB_OUTPUT
+            echo "concurrency=${INPUT_CONCURRENCY}" >> $GITHUB_OUTPUT
+            echo "show_filter=${INPUT_SHOW_FILTER}" >> $GITHUB_OUTPUT
             echo "allow_tbd_regressions=${{ inputs.allow_tbd_regressions || 'false' }}" >> $GITHUB_OUTPUT
           fi
 

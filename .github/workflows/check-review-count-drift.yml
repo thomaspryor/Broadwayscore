@@ -67,10 +67,11 @@ jobs:
       - name: Run drift check
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           ARGS=""
-          if [ -n "${{ inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
           # Scheduled runs are ALWAYS strict: a suppression/freshness breach is
           # actionable (reviews silently missing on an opening-window show, or
@@ -150,6 +151,8 @@ jobs:
 
       - name: Commit and push audit
         if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -168,8 +171,8 @@ jobs:
 
           SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, ' + (s.newOffenders ?? 0) + ' older show(s) hiding scored reviews, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
 
-          if [ -n "${{ inputs.show }}" ]; then
-            MSG="audit: Review-count drift for ${{ inputs.show }} ($SUMMARY)"
+          if [ -n "${INPUT_SHOW}" ]; then
+            MSG="audit: Review-count drift for ${INPUT_SHOW} ($SUMMARY)"
           else
             MSG="audit: Daily review-count drift check ($SUMMARY)"
           fi

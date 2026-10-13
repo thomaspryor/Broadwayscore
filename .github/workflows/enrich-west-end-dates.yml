@@ -59,6 +59,8 @@ jobs:
 
       - name: Run West End date enrichment
         id: enrich
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
         run: |
           FLAGS=""
           MODE="${{ inputs.mode || '' }}"
@@ -92,8 +94,8 @@ jobs:
             FLAGS="$FLAGS --fix-unconfirmed"
           fi
 
-          if [ -n "${{ inputs.show }}" ]; then
-            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            FLAGS="$FLAGS --show=${INPUT_SHOW}"
           fi
 
           echo "Running: node scripts/enrich-west-end-dates.js $FLAGS"
