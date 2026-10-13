@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-a",
   "planId": "f69443b6-96e8-41fd-8f8e-d81c8c9d06f3",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T06:41:56.888Z",
   "submitter": {
     "name": null,
@@ -125,5 +125,68 @@
         "description": "Date read from the article url/page, not a model guess"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T07:49:59.648Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for bloodsport-after-helen-of-troy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bloodsport-after-helen-of-troy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for antigone-exits-chichester-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for antigone-exits-chichester-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for safe-house-off-broadway-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json publishDate: \"2026-07-14\" -> \"2026-08-24\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json dateSource: \"llm-scoring-year-corrected\" -> \"page-date\""
+    }
+  ]
 }
