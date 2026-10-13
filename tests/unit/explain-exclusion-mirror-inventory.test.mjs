@@ -40,6 +40,7 @@ const INVENTORY = {
   isRoundupPageAsReview: 'live',
   isUnverifiableWebSearchRow: 'live',
   wrongShowCleared: 'live',
+  wrongShowExplicitlyCleared: 'live',
   // The rebuild has no cvWrongArticle exclusion of its own: it promotes a
   // high-confidence CV wrongArticle verdict to isNonReview, guarded by
   // cvNonReviewHumanCleared, which honors the same manual clear.
