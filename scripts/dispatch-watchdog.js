@@ -533,7 +533,7 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
         await cmdReport({
           issue: linearMatch[1],
           status: 'blocked',
-          summary: `Watchdog safety net: headless job ${item.jobId} ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: ${item.reason || 'no reason given'}. Not retried automatically — resolve the blocker, then re-dispatch (node scripts/linear-next.js --id ${linearMatch[1]} --force once fixed).`,
+          summary: `${core.WATCHDOG_SAFETY_NET_PREFIX} headless job ${item.jobId} ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: ${item.reason || 'no reason given'}. Not retried automatically — resolve the blocker, then re-dispatch (node scripts/linear-next.js --id ${linearMatch[1]} --force once fixed).`,
         }, {});
       } catch (e) {
         console.error(`[watchdog] failed to post BLOCKED reason to Linear ${item.taskId}: ${e.message}`);

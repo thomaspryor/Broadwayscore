@@ -14,18 +14,12 @@
  * (the one format `linear-session.js report` writes) timestamped after the
  * `dead` row. A worker that reports back cannot have died before it reported.
  *
- * ATTRIBUTION (the strict part): a report landing after the `dead` row only
- * contradicts THAT row if it can be attributed to the worker the row buried —
- * an issue that was re-dispatched in between would otherwise have its
- * SUCCESSOR's report credited to the corpse. So a row counts as contradicted
- * only when the report lands before the next `launch` for the same taskId
- * (or there is no next launch). Rows where a re-dispatch intervened are
- * reported separately as `ambiguous`, never folded into the headline count.
- *
- * Deliberately requires the real parseSessionReportStatus/SESSION_REPORT_PREFIX
- * from scripts/lib/linear-session-reporting.js rather than re-deriving the
- * comment format here (CLAUDE.md rule 15) — if the report format changes, this
- * audit follows it instead of silently counting zero.
+ * ATTRIBUTION: delegated to scripts/lib/contradicted-dead-rows.js (BRO-2648),
+ * the same function the live dispatch gate uses — see its header. In short:
+ * the buried worker's own report must land after the `dead` row and before
+ * both the next `launch` and the next "Dispatched ..." comment; automation
+ * reports are ignored; anything else after a successor could have started is
+ * `ambiguous`, never folded into the headline count.
  *
  * Usage:
  *   node scripts/audit-false-dead-ledger-rows.js [--since=YYYY-MM-DD] [--json]
@@ -37,7 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { parseSessionReportStatus } = require('./lib/linear-session-reporting.js');
+const { classifyDeadRowsForTask } = require('./lib/contradicted-dead-rows.js');
 const linear = require('./lib/linear-client.js');
 const { dispatchCapDecision } = require('./lib/dispatch-ledger.js');
 
@@ -68,15 +62,17 @@ function readDeadRows(ledgerPath) {
     .map(e => ({ ...e, identifier: linearIdentifier(e) }));
 }
 
-// Timestamp of the first `launch` for this taskId strictly after `afterTs`, or
-// null when the task was never dispatched again. A report landing at or after
-// this belongs to the SUCCESSOR worker, not the one the `dead` row buried.
-function nextLaunchAfter(rows, taskId, afterTs) {
-  const later = rows
-    .filter(e => e.event === 'launch' && e.taskId === taskId && e.ts > afterTs)
-    .map(e => e.ts)
-    .sort();
-  return later.length ? later[0] : null;
+function toRecord(identifier, r) {
+  return {
+    identifier,
+    workspaceRef: r.workspaceRef,
+    deadAt: r.deadAt,
+    reportedAt: r.reportedAt,
+    reportStatus: r.reportStatus,
+    gapMinutes: Math.round((Date.parse(r.reportedAt) - Date.parse(r.deadAt)) / 60000),
+    nextLaunchAt: r.nextLaunchAt,
+    nextDispatchCommentAt: r.nextDispatchCommentAt,
+  };
 }
 
 const COMMENTS_QUERY = `query($id: String!) {
@@ -111,37 +107,31 @@ async function main() {
     try {
       const data = await linear.graphql(COMMENTS_QUERY, { id });
       const nodes = (data && data.issue && data.issue.comments && data.issue.comments.nodes) || [];
-      reportsByIssue.set(id, nodes
-        .filter(c => parseSessionReportStatus(c.body) !== null)
-        .map(c => ({ createdAt: c.createdAt, status: parseSessionReportStatus(c.body) })));
+      reportsByIssue.set(id, nodes);
     } catch (e) {
       failed.push({ id, error: e.message });
       reportsByIssue.set(id, null); // unknown, never counted as contradicted
     }
   }
 
+  // BRO-2648: attribution is the shared contradicted-dead-rows.js logic the
+  // LIVE dispatch gate uses, so capImpact below is exactly what linear-next
+  // now does. Deliberately stricter than this script's original BRO-2575
+  // rule: automation-posted reports (zombie sweep, watchdog park) are
+  // ignored, and a "Dispatched ..." comment between the death and the report
+  // also makes the row ambiguous — so counts are expected to drop.
   const contradicted = [];
   const ambiguous = [];
-  for (const row of dead) {
-    const reports = reportsByIssue.get(row.identifier);
-    if (!reports) continue; // fetch failed → unknown, not evidence either way
-    const after = reports.filter(r => r.createdAt > row.ts);
-    if (!after.length) continue;
-    const first = after.sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0];
-    const nextLaunch = nextLaunchAfter(allRows, row.taskId, row.ts);
-    const record = {
-      identifier: row.identifier,
-      workspaceRef: row.workspaceRef || null,
-      deadAt: row.ts,
-      reportedAt: first.createdAt,
-      reportStatus: first.status,
-      gapMinutes: Math.round((Date.parse(first.createdAt) - Date.parse(row.ts)) / 60000),
-      nextLaunchAt: nextLaunch,
-    };
-    // A re-dispatch between the death and the report means the report may be
-    // the SUCCESSOR's. Not evidence about this row either way.
-    if (nextLaunch && first.createdAt >= nextLaunch) ambiguous.push(record);
-    else contradicted.push(record);
+  for (const id of identifiers) {
+    const comments = reportsByIssue.get(id);
+    if (!comments) continue; // fetch failed → unknown, not evidence either way
+    const taskId = `linear:${id}`;
+    // Only rows that passed the --since filter are reported; the full ledger
+    // is still passed so next-launch bounds see every launch.
+    const inScope = new Set(dead.filter(d => d.identifier === id).map(d => `${d.workspaceRef}|${d.ts}`));
+    const { contradicted: c, ambiguous: a } = classifyDeadRowsForTask(taskId, allRows, comments);
+    for (const r of c) if (inScope.has(r.key)) contradicted.push(toRecord(id, r));
+    for (const r of a) if (inScope.has(r.key)) ambiguous.push(toRecord(id, r));
   }
 
   // BRO-2599: does discounting this issue's contradicted row(s) actually

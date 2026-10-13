@@ -54,6 +54,12 @@ const { computeSpendCircuitBreaker, DEFAULT_SPEND_THRESHOLD_USD, DEFAULT_CONCURR
 // — BRO-2542's shared reconcile loop, not a fourth hand-rolled fold).
 const dispatchReconcile = require('./dispatch-reconcile.js');
 
+// BRO-2648: the opening words of the session report dispatch-watchdog.js
+// posts (via linear-session.js cmdReport) when it parks a blocked headless
+// job. Exported so contradicted-dead-rows.js can tell this AUTOMATION report
+// apart from a worker's own report without copying the literal.
+const WATCHDOG_SAFETY_NET_PREFIX = 'Watchdog safety net:';
+
 const WATCHDOG_EVENTS = Object.freeze({
   REDISPATCH: 'watchdog-redispatch',
   PARK: 'watchdog-park',
@@ -1387,6 +1393,7 @@ function renderNarrative(plan) {
 
 module.exports = {
   NO_FURTHER_DISPATCH_EVENTS,
+  WATCHDOG_SAFETY_NET_PREFIX,
   WATCHDOG_EVENTS, structuralGuardRefusal, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,

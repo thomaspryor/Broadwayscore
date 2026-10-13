@@ -92,6 +92,7 @@ require('./lib/load-env').loadEnv();
 
 const linear = require('./lib/linear-client.js');
 const ld = require('./lib/linear-dispatch.js');
+const { contradictedDeadKeysForTask } = require('./lib/contradicted-dead-rows.js');
 const lsr = require('./lib/linear-session-reporting.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
@@ -1029,10 +1030,22 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // BRO-2575 — see bsc-next.js's identical call: the OS-process
         // cross-check that keeps a cmux blackout from manufacturing a 'dead'
         // row in this very dispatch's own self-heal pass.
+        // BRO-2648: discount dead rows this issue's own thread disproves (the
+        // buried worker reported back afterwards). Always computed — pure and
+        // cheap, and a pre-check would miss the case where this very call's
+        // freshDead self-heal row is what reaches the cap. Comments are the
+        // ones buildIssueQuery already fetched for this invocation (first 50;
+        // a longer thread only means fewer discounts, i.e. the old stricter
+        // behaviour). Spread LAST so no CLI token can shadow it.
+        const deadEntries = readLedgerEntriesFn();
+        const contradictedDeadKeys = contradictedDeadKeysForTask(taskId, deadEntries, (issue.comments && issue.comments.nodes) || []);
+        if (contradictedDeadKeys.size) {
+          console.error(`[linear-next] NOTE: ${contradictedDeadKeys.size} 'dead' ledger row(s) for ${taskId} are contradicted by a later session report on ${identifier} — not counting them toward the dead-dispatch cap: ${[...contradictedDeadKeys].join(', ')}`);
+        }
         const { freshDead, refusal } = checkDeadDispatch(
-          pseudoTask, workspaces, readLedgerEntriesFn(),
+          pseudoTask, workspaces, deadEntries,
           isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn,
-          { ...args, isWrapperAlive: makeSeedProcessProbe(), onSuppressed: s => console.error(`[linear-next] cmux said ${s.workspaceRef} is dead but its wrapper ${s.marker} is still running — not journaling a death for ${s.taskId}`) },
+          { ...args, isWrapperAlive: makeSeedProcessProbe(), onSuppressed: s => console.error(`[linear-next] cmux said ${s.workspaceRef} is dead but its wrapper ${s.marker} is still running — not journaling a death for ${s.taskId}`), contradictedDeadKeys },
         );
         freshDead.forEach((b) => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[linear-next] WARN ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[linear-next] ${refusal}`); process.exit(1); }

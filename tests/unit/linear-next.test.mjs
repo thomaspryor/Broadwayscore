@@ -1128,6 +1128,65 @@ test('reportedOutcomeGuard wiring: --force does NOT dispatch an issue whose outs
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called — this is BRO-2506 recurring');
 });
 
+// -- BRO-2648: contradicted dead rows in the LIVE dead-dispatch gate -------
+// Two cmux deaths reach DEAD_ATTEMPT_LIMIT. When the second buried worker
+// later posted its own (blocked) session report, that death is disproven and
+// must not count — the dispatch proceeds. Without the report it still
+// refuses. A stray `--contradictedDeadKeys` CLI token must not shadow the
+// computed Set (it is spread LAST).
+for (const [label, withReport, expectDispatch] of [
+  ['with the buried worker\'s later report', true, true],
+  ['without any report', false, false],
+]) test(`BRO-2648: dead-dispatch cap ${label} ${expectDispatch ? 'dispatches' : 'still refuses'}`, () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const { buildOutcomeCommentBody } = require('./scripts/lib/linear-session-reporting.js');
+    const taskId = 'linear:BRO-9648';
+    const issue = {
+      id: 'issue-uuid-2648', identifier: 'BRO-9648',
+      title: 'Contradicted dead row fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9648/x',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] },
+      comments: { nodes: ${withReport ? "[{ body: buildOutcomeCommentBody({ status: 'blocked', summary: 'needs a secret' }), createdAt: '2026-09-01T02:45:00.000Z' }]" : '[]'} },
+    };
+    const entries = [
+      { event: 'launch', taskId, workspaceRef: 'workspace:1', ts: '2026-09-01T00:00:00.000Z' },
+      { event: 'dead', taskId, workspaceRef: 'workspace:1', ts: '2026-09-01T00:30:00.000Z' },
+      { event: 'launch', taskId, workspaceRef: 'workspace:2', ts: '2026-09-01T02:00:00.000Z' },
+      { event: 'dead', taskId, workspaceRef: 'workspace:2', ts: '2026-09-01T02:30:00.000Z' },
+    ];
+    main(['--id', issue.identifier, '--headless', '--contradictedDeadKeys'], {
+      getIssue: async () => issue,
+      readLedgerEntries: () => entries,
+      appendLedgerEntry: () => {},
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'job2', logFile: null, headlessOutcome: 'done' }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      linear: { createComment: async () => {}, getTeam: async () => ({ states: [] }), getIssue: async () => issue, updateIssue: async () => {}, TEAM_KEY: 'BRO' },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  if (expectDispatch) {
+    assert.match(res.stderr, /contradicted by a later session report/, `stderr:\n${res.stderr}`);
+    assert.doesNotMatch(res.stderr, /has died \dx/);
+    assert.match(res.stderr, /RUNJOB_WAS_CALLED/, `stderr:\n${res.stderr}`);
+  } else {
+    assert.match(res.stderr, /has died 2x/, `stderr:\n${res.stderr}`);
+    assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/);
+  }
+});
+
 // -- --allow-automation-parked wiring, BRO-3060 ------------------------------
 //
 // scripts/linear-drain-parked.js/digest-autofix.js/autofix-canary.js each

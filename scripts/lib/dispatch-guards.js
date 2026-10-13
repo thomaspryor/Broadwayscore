@@ -212,7 +212,11 @@ function safeLedgerEntries(readEntries) {
 // completedLaunchGuard's carve-outs.
 function deadDispatchGuard(task, ledgerEntries, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  const cap = dispatchLedger.dispatchCapDecision(task.id, ledgerEntries);
+  // BRO-2648: dead rows the buried worker's own later session report
+  // disproves (contradicted-dead-rows.js) are dropped before the cap is
+  // counted. Callers that pass nothing get the old behaviour exactly.
+  const cap = dispatchLedger.dispatchCapDecision(task.id, ledgerEntries,
+    opts.contradictedDeadKeys ? { contradictedDeadKeys: opts.contradictedDeadKeys } : undefined);
   if (!cap.blocked) return null;
   if (cap.reason === 'infra') {
     const refs = cap.infra.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
