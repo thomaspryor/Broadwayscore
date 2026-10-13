@@ -24,6 +24,7 @@ import { readFileSync, existsSync, realpathSync, writeFileSync, statSync, openSy
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
+import { isMainModule } from './is-main-module.mjs';
 
 // This file lives at <root>/scripts/lib/, so the checkout root is two levels
 // up. Derived from THIS file rather than cwd on purpose: the gate hooks invoke
@@ -652,7 +653,7 @@ async function main() {
 }
 
 // Only run main when invoked directly (not when imported by tests).
-const __isMain = import.meta.url === `file://${process.argv[1]}`;
+const __isMain = isMainModule(import.meta.url);
 if (__isMain) {
   main().catch(err => { console.error(`FATAL: ${err?.stack || err}`); process.exit(1); });
 }

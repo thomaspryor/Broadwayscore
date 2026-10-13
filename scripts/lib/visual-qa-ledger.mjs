@@ -33,6 +33,7 @@ import { existsSync, readFileSync, openSync, writeSync, closeSync, mkdirSync } f
 import { join, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { UI_PATH_RE } from './ui-paths.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const DEFAULT_TTL_DAYS = 7;
 
@@ -218,7 +219,7 @@ async function main() {
   process.exit(1);
 }
 
-const __isMain = import.meta.url === `file://${process.argv[1]}`;
+const __isMain = isMainModule(import.meta.url);
 if (__isMain) {
   main().catch(err => { console.error(`FATAL: ${err?.stack || err}`); process.exit(1); });
 }

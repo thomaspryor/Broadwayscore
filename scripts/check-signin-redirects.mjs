@@ -34,6 +34,7 @@ import { writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
 import { GOOGLE_PAGE_LIMIT, GOOGLE_MISMATCH_MARKERS } from './supabase-custom-domain.mjs';
+import { isMainModule } from './lib/is-main-module.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -248,6 +249,6 @@ async function main() {
   return exitCodeFor(result);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule(import.meta.url)) {
   main().then((c) => process.exit(c));
 }
