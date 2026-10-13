@@ -163,7 +163,7 @@ const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve } = require('./lib/browserbase-caps');
 const { pinBrowserbaseFirst } = require('./lib/browserbase-route');
-const { classifyTimeoutPage, isTimeoutUrl } = require('./lib/timeout-capsule');
+const { classifyTimeoutPage, isTimeoutUrl, keepsStoredTimeoutReview } = require('./lib/timeout-capsule');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
@@ -6620,6 +6620,10 @@ function findReviewsToProcess() {
           _paywallRecheck: data._paywallRecheck === true,
           _datelessDateRetry: data._datelessDateRetry === true,
           _forceRefetch: forcedRefetch,
+          // What the file already holds (BRO-5222): a Time Out refetch that
+          // finds a listing blurb keeps a stored review instead of failing it.
+          _storedTier: data.contentTier || null,
+          _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -7438,6 +7442,13 @@ async function processReview(review) {
         critic: review.critic,
         showYear: showYearMatch ? Number(showYearMatch[1]) : null,
       });
+      // Time Out swaps a closed show's review for a listing blurb at the same
+      // url (the-present-2017 stores the 3,140-char review; the page is now a
+      // 2-line capsule). The blurb says nothing against text already held.
+      if (timeoutPage.verdict === 'listing_capsule' && keepsStoredTimeoutReview({ tier: review._storedTier, textLength: review._storedTextLength })) {
+        console.log(`  ↷ TIME OUT PAGE: ${timeoutPage.reason}; keeping the stored ${review._storedTier} text`);
+        return { success: false, error: 'timeout_listing_capsule_kept_existing', reason: timeoutPage.reason };
+      }
       if (timeoutPage.verdict === 'wrong_critic' || timeoutPage.verdict === 'listing_capsule') {
         console.log(`  ✗ TIME OUT PAGE: ${timeoutPage.reason}`);
         recordFailedFetch(review, 'url_content_mismatch', {

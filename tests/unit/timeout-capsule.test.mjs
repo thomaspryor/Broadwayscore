@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyTimeoutPage, parseTimeoutPage, isTimeoutUrl } = require('../../scripts/lib/timeout-capsule.js');
+const { classifyTimeoutPage, parseTimeoutPage, isTimeoutUrl, keepsStoredTimeoutReview } = require('../../scripts/lib/timeout-capsule.js');
 const { classifyReviewUrl, namedNonReviewReason, listingPageUrlReason } = require('../../scripts/lib/non-review-url-patterns.js');
 
 const shell = (inner) => `<html><head><title>Show</title><script>var x="Time Out says";</script></head><body><nav>Things to do</nav>${inner}<div>Details</div><p>Event website: example.com</p></body></html>`;
@@ -60,4 +60,33 @@ test('Time Out review and capsule URLs share a shape, so URL rules must not drop
     assert.equal(classifyReviewUrl(u).ok, true);
   }
   assert.equal(isTimeoutUrl('https://www.nottimeout.com/x'), false);
+});
+
+test('unsigned post-2014 listing blurb is a listing capsule (dancin-2023 class)', () => {
+  const blurb = shell(`<h2>Time Out says</h2><p>${prose(75)}</p><h3>Details</h3><p>Address</p>`);
+  assert.equal(classifyTimeoutPage({ html: blurb, critic: 'Adam Feldman', showYear: 2023 }).verdict, 'listing_capsule');
+  assert.equal(classifyTimeoutPage({ html: blurb, critic: 'David Cote', showYear: 2009 }).verdict, 'unknown');
+});
+
+test('signature followed by a Follow link and entity-quoted bodies still parse (once-2012, amelie-2017)', () => {
+  const signed = shell(`<h2>Time Out says</h2><p>${prose(60)} &mdash;David Cote</p><p>Follow David Cote on Twitter.</p>`);
+  assert.equal(parseTimeoutPage(signed).capsuleSigner, 'David Cote');
+  const quoted = shell(`<h2>Time Out says</h2><p>Broadway review by David Cote</p><p>&ldquo;Words&rdquo; ${prose(600)}</p>`);
+  const v = classifyTimeoutPage({ html: quoted, critic: 'Adam Feldman', showYear: 2017 });
+  assert.equal(v.verdict, 'wrong_critic');
+  assert.match(v.reason, /by David Cote,/);
+});
+
+test('a long signed review keeps its verdict: right signer is review, other signer is wrong_critic', () => {
+  const long = (s) => shell(`<h2>Time Out says</h2><p>${prose(290)} &mdash;${s}</p><p>Follow ${s} on Twitter.</p><h3>Details</h3>`);
+  assert.equal(classifyTimeoutPage({ html: long('David Cote'), critic: 'David Cote', showYear: 2012 }).verdict, 'review');
+  assert.equal(classifyTimeoutPage({ html: long('David Cote'), critic: 'Adam Feldman', showYear: 2012 }).verdict, 'wrong_critic');
+});
+
+test('a stored full review survives a refetch that finds the listing blurb (the-present-2017)', () => {
+  assert.equal(keepsStoredTimeoutReview({ tier: 'complete', textLength: 3140 }), true);
+  assert.equal(keepsStoredTimeoutReview({ tier: 'truncated', textLength: 1600 }), true);
+  assert.equal(keepsStoredTimeoutReview({ tier: 'stub', textLength: 0 }), false);
+  assert.equal(keepsStoredTimeoutReview({ tier: 'complete', textLength: 400 }), false);
+  assert.equal(keepsStoredTimeoutReview({}), false);
 });

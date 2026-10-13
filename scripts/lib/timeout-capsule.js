@@ -16,6 +16,7 @@
 
 const CAPSULE_MAX_WORDS = 150;
 const LISTING_CAPSULE_FROM_YEAR = 2014;
+const STORED_REVIEW_MIN_CHARS = 1500;
 
 function htmlToText(html) {
   return String(html || '')
@@ -25,6 +26,8 @@ function htmlToText(html) {
     .replace(/&nbsp;/gi, ' ')
     .replace(/&amp;/gi, '&')
     .replace(/&#8217;|&rsquo;/gi, '’')
+    .replace(/&ldquo;|&rdquo;|&quot;|&#8220;|&#8221;/gi, '"')
+    .replace(/&#x27;|&#39;|&lsquo;/gi, "'")
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -48,8 +51,14 @@ function parseTimeoutPage(html) {
   const by = after.slice(0, 1500).match(/\breview by ([A-Z][\s\S]{0,60})/);
   if (by) return { hasTimeOutSays: true, reviewBy: by[1].trim(), capsuleSigner: null, capsuleWords: 0 };
   // Capsule: body up to "—Name" followed by the Details block (or end).
-  const sig = after.match(/^([\s\S]{20,2500}?)\s?—\s?([A-Z][\w'’.-]+(?: [A-Z][\w'’.-]+){1,3}?)(?=\s+(?:Details|Advertising|Event website|Address)\b|\s*$)/);
-  if (!sig) return { hasTimeOutSays: true, reviewBy: null, capsuleSigner: null, capsuleWords: 0 };
+  const sig = after.match(/^([\s\S]{20,2500}?)\s?—\s?([A-Z][\w'’.-]+(?: [A-Z][\w'’.-]+){1,3}?)(?=\s+(?:Details|Advertising|Event website|Address|Follow)\b|\s*$)/);
+  if (!sig) {
+    // Unsigned capsule: current listing pages carry a short blurb with no
+    // signature and no byline, straight into the Details block (dancin-2023).
+    const body = after.match(/^([\s\S]{20,2500}?)\s+Details\b/);
+    const words = body ? body[1].trim().split(/\s+/).length : 0;
+    return { hasTimeOutSays: true, reviewBy: null, capsuleSigner: null, capsuleWords: words };
+  }
   return {
     hasTimeOutSays: true,
     reviewBy: null,
@@ -77,9 +86,18 @@ function classifyTimeoutPage({ html, critic, showYear }) {
     }
     return { verdict: 'review' };
   }
-  if (!page.capsuleSigner || page.capsuleWords > CAPSULE_MAX_WORDS) return { verdict: 'unknown' };
-  if (rowCritic && normName(page.capsuleSigner) !== rowCritic) {
+  // A signature naming another critic is the wrong critic at any length (once-2012: 296 words, signed David Cote).
+  if (page.capsuleSigner && rowCritic && normName(page.capsuleSigner) !== rowCritic) {
     return { verdict: 'wrong_critic', reason: `Time Out capsule signed ${page.capsuleSigner}, row credits ${critic}` };
+  }
+  if (!page.capsuleWords || page.capsuleWords > CAPSULE_MAX_WORDS) return { verdict: page.capsuleSigner ? 'review' : 'unknown' };
+  if (!page.capsuleSigner) {
+    // No byline and no signature: a listing blurb, unless the show predates the
+    // listing-page era (then nothing proves it is not the review).
+    if (Number.isFinite(showYear) && showYear >= LISTING_CAPSULE_FROM_YEAR) {
+      return { verdict: 'listing_capsule', reason: `Time Out unsigned listing capsule (${page.capsuleWords} words), not the review` };
+    }
+    return { verdict: 'unknown' };
   }
   if (Number.isFinite(showYear) && showYear >= LISTING_CAPSULE_FROM_YEAR) {
     return { verdict: 'listing_capsule', reason: `Time Out listing capsule (${page.capsuleWords} words), not the review` };
@@ -87,9 +105,19 @@ function classifyTimeoutPage({ html, critic, showYear }) {
   return { verdict: 'review' };
 }
 
+/**
+ * True when the row already holds review text a listing capsule cannot
+ * contradict: Time Out replaces a closed show's review with a blurb at the
+ * same url, so a refetch finding the blurb must not discard the stored text.
+ * @param {{tier?: string|null, textLength?: number}} stored - the file's contentTier and fullText length
+ */
+function keepsStoredTimeoutReview({ tier, textLength } = {}) {
+  return (tier === 'complete' || tier === 'truncated') && (textLength || 0) >= STORED_REVIEW_MIN_CHARS;
+}
+
 /** @param {string} url */
 function isTimeoutUrl(url) {
   try { return /(^|\.)timeout\.com$/i.test(new URL(url).hostname); } catch { return false; }
 }
 
-module.exports = { parseTimeoutPage, classifyTimeoutPage, isTimeoutUrl, CAPSULE_MAX_WORDS, LISTING_CAPSULE_FROM_YEAR };
+module.exports = { parseTimeoutPage, classifyTimeoutPage, keepsStoredTimeoutReview, isTimeoutUrl, CAPSULE_MAX_WORDS, LISTING_CAPSULE_FROM_YEAR };
