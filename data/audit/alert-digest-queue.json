@@ -2360,6 +2360,36 @@
     "queuedAt": "2026-10-13T22:29:00.561Z"
   },
   {
+    "conditionKey": "land:land/bro-5294-venue-box",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5294-venue-box",
+    "description": "land.yml did not land land/bro-5294-venue-box: the unit-tests-node gate went red at cc2d80a33e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38474401388",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5294-venue-box"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cc2d80a33ed94d32e1fd2b199c63ec20f2f6e447"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38474401388"
+      }
+    ],
+    "queuedAt": "2026-10-13T22:33:24.244Z"
+  },
+  {
     "conditionKey": "land:land/bro-4674-sibling-misroute",
     "title": "Landing blocked: unit-tests-node red on land/bro-4674-sibling-misroute",
     "description": "land.yml did not land land/bro-4674-sibling-misroute: the unit-tests-node gate went red at fed9d38597. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38474237021",
