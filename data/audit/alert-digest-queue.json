@@ -1550,9 +1550,9 @@
     "queuedAt": "2026-10-13T14:48:21.807Z"
   },
   {
-    "conditionKey": "land:land/bro-2664-ship-check-followups",
-    "title": "Landing blocked: rebase red on land/bro-2664-ship-check-followups",
-    "description": "land.yml did not land land/bro-2664-ship-check-followups: the rebase gate went red at e0b6016b76. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2664-ship-check-followups @ e0b6016b76 (origin/land/bro-2664-ship-check-followups) → origin/main @ 743b2d4ea6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 489b31100d: Rebasing (1/7) Rebasing (2/7) Rebasing (3/7) error: could not apply fd3d2ae24f0... fix: ship-check follow-ups for BRO-3014, BRO-2555, BRO-3006 hint: Resolve all conflicts manually, mark them as  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38413118219",
+    "conditionKey": "land:land/bro-5261-s3-901",
+    "title": "Landing blocked: rebase red on land/bro-5261-s3-901",
+    "description": "land.yml did not land land/bro-5261-s3-901: the rebase gate went red at 33e1317790. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5261-s3-901 @ 33e1317790 (origin/land/bro-5261-s3-901) → origin/main @ 7d41dd712b REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bade246c89: Rebasing (1/1) error: could not apply 33e1317790d... fix(staleness-banner): key lottery freshness on the last full check, not the last change (BRO-901 retro, BRO-5261) hint: Resolve all conflicts manually, mark them as res Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38412721308",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1562,7 +1562,7 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/bro-2664-ship-check-followups"
+        "value": "land/bro-5261-s3-901"
       },
       {
         "name": "gate",
@@ -1570,14 +1570,14 @@
       },
       {
         "name": "tip",
-        "value": "e0b6016b76e85880efc98673fb9e4a7c99dd537a"
+        "value": "33e1317790de7a95009ce02ea71f2e4c53311f09"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38413118219"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38412721308"
       }
     ],
-    "queuedAt": "2026-10-13T16:31:06.668Z"
+    "queuedAt": "2026-10-13T16:31:57.777Z"
   },
   {
     "conditionKey": "land:land/bro-5261-s1-tracker-release",
@@ -1677,5 +1677,35 @@
       }
     ],
     "queuedAt": "2026-10-13T16:32:17.443Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2664-ship-check-followups",
+    "title": "Landing blocked: rebase red on land/bro-2664-ship-check-followups",
+    "description": "land.yml did not land land/bro-2664-ship-check-followups: the rebase gate went red at e0b6016b76. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2664-ship-check-followups @ e0b6016b76 (origin/land/bro-2664-ship-check-followups) → origin/main @ 743b2d4ea6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 489b31100d: Rebasing (1/7) Rebasing (2/7) Rebasing (3/7) error: could not apply fd3d2ae24f0... fix: ship-check follow-ups for BRO-3014, BRO-2555, BRO-3006 hint: Resolve all conflicts manually, mark them as  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38413118219",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2664-ship-check-followups"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e0b6016b76e85880efc98673fb9e4a7c99dd537a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38413118219"
+      }
+    ],
+    "queuedAt": "2026-10-13T16:31:06.668Z"
   }
 ]
