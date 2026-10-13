@@ -438,6 +438,7 @@ function parseWorkflow(text) {
         let envDeadlineSec = null;
         let envFallbackAfterAttempts = null;
         let envFallbackDisabled = false;
+        let envGitNetTimeoutSec = null;
         if (envField) {
           const envKids = childLines(lines, envField.idx);
           const deadlineField = findChildKey(envKids, 'PUSH_DEADLINE_SEC');
@@ -446,6 +447,10 @@ function parseWorkflow(text) {
           if (fallbackAfterField) envFallbackAfterAttempts = parseIntOrNull(fallbackAfterField.inline.replace(/^['"]|['"]$/g, ''));
           const fallbackDisableField = findChildKey(envKids, 'PUSH_API_FALLBACK_DISABLE');
           if (fallbackDisableField) envFallbackDisabled = fallbackDisableField.inline.replace(/^['"]|['"]$/g, '').trim() === '1';
+          // BRO-2801: read for the remediation proposer only — evaluateStep
+          // still models the script default (unchanged audit behaviour).
+          const gitNetField = findChildKey(envKids, 'GIT_NET_TIMEOUT_SEC');
+          if (gitNetField) envGitNetTimeoutSec = parseIntOrNull(gitNetField.inline.replace(/^['"]|['"]$/g, ''));
         }
 
         step.name = nameField ? nameField.inline.replace(/^['"]|['"]$/g, '') : null;
@@ -453,6 +458,8 @@ function parseWorkflow(text) {
         step.envDeadlineSec = envDeadlineSec;
         step.envFallbackAfterAttempts = envFallbackAfterAttempts;
         step.envFallbackDisabled = envFallbackDisabled;
+        step.envGitNetTimeoutSec = envGitNetTimeoutSec;
+        step.envIdx = envField ? envField.idx : null;
         step.timeoutMinutes = stepTimeoutField ? parseIntOrNull(stepTimeoutField.inline) : null;
         step.continueOnError = continueOnErrorField ? /^true$/i.test(continueOnErrorField.inline) : false;
       }
@@ -785,6 +792,30 @@ function evaluateStep({
 }
 
 /**
+ * Sum of every OTHER step's worst-case budget in a job, for one push call
+ * `pc` (see the BRO-2370 note inside auditWorkflowText for the dedupe rule).
+ * Extracted (BRO-2801) so the remediation proposer reuses it instead of a copy.
+ * @param {object[]} explicitTimeoutSteps steps with their own timeout-minutes
+ * @param {{step: object, stepBudgetSec: number}[]} pushCalls every push call in the job
+ * @param {{step: object}} pc the call being evaluated (an element of pushCalls)
+ */
+function computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc) {
+  const { step } = pc;
+  const otherStepInfo = new Map(); // step -> { capped, sec }
+  for (const s of explicitTimeoutSteps) {
+    if (s === step) continue;
+    otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
+  }
+  for (const other of pushCalls) {
+    if (other === pc || other.step === step) continue;
+    const info = otherStepInfo.get(other.step);
+    if (info && info.capped) continue; // explicit cap already fully bounds this step
+    otherStepInfo.set(other.step, { capped: false, sec: (info?.sec || 0) + other.stepBudgetSec });
+  }
+  return [...otherStepInfo.values()].reduce((sum, v) => sum + v.sec, 0);
+}
+
+/**
  * Full per-workflow-file audit: parse, find every push-with-retry step in
  * every job, evaluate each, and attach a contention score for prioritization.
  * @param {string} text - raw workflow YAML
@@ -827,18 +858,7 @@ function auditWorkflowText(text, filePath) {
       // stepBudgetSec only when it has no explicit cap. Key each OTHER step
       // ONCE, by identity, so a capped+push-calling sibling is counted only
       // via its cap.
-      const otherStepInfo = new Map(); // step -> { capped, sec }
-      for (const s of explicitTimeoutSteps) {
-        if (s === step) continue;
-        otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
-      }
-      for (const other of pushCalls) {
-        if (other === pc || other.step === step) continue;
-        const info = otherStepInfo.get(other.step);
-        if (info && info.capped) continue; // explicit cap already fully bounds this step
-        otherStepInfo.set(other.step, { capped: false, sec: (info?.sec || 0) + other.stepBudgetSec });
-      }
-      const otherStepsBudgetSec = [...otherStepInfo.values()].reduce((sum, v) => sum + v.sec, 0);
+      const otherStepsBudgetSec = computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc);
 
       const evaluation = evaluateStep({
         maxRetries: call.maxRetries,
@@ -921,6 +941,7 @@ function auditWorkflowText(text, filePath) {
 }
 
 module.exports = {
+  computeOtherStepsBudgetSec,
   DEFAULT_MAX_RETRIES,
   DEFAULT_DEADLINE_SEC,
   DEFAULT_JOB_TIMEOUT_MIN,

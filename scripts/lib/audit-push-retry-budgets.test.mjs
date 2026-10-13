@@ -926,3 +926,13 @@ jobs:
   assert.equal(results.length, 1);
   assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
 });
+
+// BRO-2801: the sibling-budget dedupe was extracted so the remediation
+// proposer reuses it. A sibling with its own timeout-minutes counts once, by
+// that cap, even when it also calls push-with-retry.sh.
+test('computeOtherStepsBudgetSec: capped sibling counted once by its cap; uncapped push sibling by its budget', async () => {
+  const { computeOtherStepsBudgetSec } = await import('./audit-push-retry-budgets.js').then((m) => m.default || m);
+  const a = { timeoutMinutes: null }; const b = { timeoutMinutes: 5 }; const c = { timeoutMinutes: null };
+  const pushCalls = [{ step: a, stepBudgetSec: 240 }, { step: b, stepBudgetSec: 900 }, { step: c, stepBudgetSec: 600 }];
+  assert.equal(computeOtherStepsBudgetSec([b], pushCalls, pushCalls[0]), 300 + 600);
+});
