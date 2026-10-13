@@ -82,7 +82,9 @@ function outsideRunYears(other, reviewYear) {
   return false;
 }
 
-// Whole hyphen-delimited run: "knockout" must not match "knockouts".
+// Whole hyphen-delimited run: "knockout" must not match "knockouts". No
+// plural/possessive "s" either: "ambassadors-theatre" (a venue) is not
+// Ambassador (1972), and no real hit in the corpus needed it (BRO-3065).
 function hasSlugRun(urlPath, slug) {
   const esc = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return new RegExp(`(^|[^a-z0-9])${esc}([^a-z0-9]|$)`).test(urlPath);

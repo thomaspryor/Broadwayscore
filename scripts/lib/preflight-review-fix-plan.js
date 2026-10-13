@@ -40,6 +40,10 @@ function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review
           fs.cpSync(path.join(reviewTextsDir, showId), path.join(tmp, showId), { recursive: true });
           copied.add(showId);
         }
+        // A url repair may rest on another show's folder holding the current url
+        // (urlOwnedByOtherShow, BRO-3065); copy that folder too, or the replay
+        // cannot see the proof the real executor sees.
+        if (a.field === 'url') copyUrlOwnerFolder(reviewTextsDir, tmp, a.file, copied);
         const res = executeReviewFieldEditIn(tmp, a, { fixId: id, at: new Date().toISOString() });
         if (res.ok) ok++;
         else { failed++; log(`  FAIL ${id} ${a.file} ${a.field}: ${res.reason}`); }
@@ -52,7 +56,20 @@ function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review
   return { failed };
 }
 
-module.exports = { preflight };
+function copyUrlOwnerFolder(reviewTextsDir, tmp, file, copied, { detect } = {}) {
+  let record;
+  try { record = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, file), 'utf8')); } catch { return; }
+  const { urlOwnedByOtherShow } = require('./review-slot-guards');
+  const owner = urlOwnedByOtherShow({
+    reviewTextsDir, folder: String(file).split('/')[0], url: record && record.url, publishDate: record && record.publishDate, detect,
+  });
+  if (owner && !copied.has(owner.showId)) {
+    fs.cpSync(path.join(reviewTextsDir, owner.showId), path.join(tmp, owner.showId), { recursive: true });
+    copied.add(owner.showId);
+  }
+}
+
+module.exports = { preflight, copyUrlOwnerFolder };
 
 const USAGE = 'Usage: node scripts/lib/preflight-review-fix-plan.js <plan.json> [...]';
 
