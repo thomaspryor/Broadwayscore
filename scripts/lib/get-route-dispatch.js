@@ -22,8 +22,6 @@ const DISPATCH_RE = /\/dispatches\b|workflow_dispatch/;
 const ALLOWLIST = {
   'src/app/api/admin/gmail-reauth/callback/route.ts':
     'OAuth redirect target: Google can only return the user by GET. Never emailed, and gated on the state cookie the start step set in the owner\'s own browser, so a scanner fetching it is refused before any dispatch.',
-  'src/app/api/approve-broadcast/route.ts':
-    'Orphaned link nothing sends (no generator mints it); retirement tracked in BRO-5256.',
 };
 
 // Return the text of the balanced {...} block starting at the first '{' at or
