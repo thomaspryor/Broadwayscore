@@ -1265,5 +1265,35 @@
       }
     ],
     "queuedAt": "2026-10-13T13:30:11.144Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3494-broadcast-recheck-batch",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3494-broadcast-recheck-batch",
+    "description": "land.yml did not land land/bro-3494-broadcast-recheck-batch: the unit-tests-node gate went red at 6d6b14bc60. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38406442695",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3494-broadcast-recheck-batch"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6d6b14bc6002a95f7d48de8b90afff7233874fa5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38406442695"
+      }
+    ],
+    "queuedAt": "2026-10-13T14:07:48.072Z"
   }
 ]
