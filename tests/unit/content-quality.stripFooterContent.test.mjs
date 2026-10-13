@@ -64,8 +64,13 @@ test('short or single-line text is untouched', () => {
 });
 
 test('collect-review-texts.js wires stripExemptedChrome after cleanText', () => {
+  // BRO-5243: the wiring lives in lib/stored-text-form.js, shared by the save
+  // path and the content verifier.
+  const lib = fs.readFileSync(new URL('../../scripts/lib/stored-text-form.js', import.meta.url), 'utf8');
+  assert.match(lib, /stripExemptedChrome\(cleanText\(raw\)/);
   const src = fs.readFileSync(new URL('../../scripts/collect-review-texts.js', import.meta.url), 'utf8');
-  assert.match(src, /stripExemptedChrome\(cleanText\(text\)/);
+  assert.match(src, /preCleanedText = preCleanForStorage\(text\)/);
+  assert.match(src, /scrapedText: textAsStored\(result\.text\)/);
 });
 
 test('exemption comments no longer promise cleanText()', () => {
