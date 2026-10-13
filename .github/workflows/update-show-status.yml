@@ -1556,7 +1556,7 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add data/playbill-urls.json
             git commit -m "data: Add Playbill URLs for new shows [skip ci]" || true
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed for playbill-urls"
+            bash scripts/lib/push-with-retry.sh
           fi
         continue-on-error: true
 
@@ -1795,7 +1795,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: Record indexing API quota usage [skip ci]"
-          bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
+          bash scripts/lib/push-with-retry.sh
 
       - name: Commit scraper-spend ledger
         if: always()

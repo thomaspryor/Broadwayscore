@@ -96,6 +96,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           if [ ! -f data/shows.json ]; then
             echo "::warning::core data missing — skipping Off-West End promotion this run"

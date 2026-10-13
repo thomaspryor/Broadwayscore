@@ -105,6 +105,7 @@ jobs:
           retention-days: 7
 
       - name: Commit updated snapshots
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always() && github.event.inputs.update_snapshots == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -120,7 +121,7 @@ jobs:
           # doesn't help (proven: 20 retries/900s lost every attempt in a
           # live test, run 30057838225). The snapshot commit isn't
           # time-sensitive, so a lost race must not redden this job.
-          bash scripts/lib/push-with-retry.sh || echo "::warning::Snapshot push failed — next run will recommit"
+          bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()

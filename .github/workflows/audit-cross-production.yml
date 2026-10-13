@@ -56,6 +56,7 @@ jobs:
           fi
 
       - name: Commit audit results
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
         run: |
           cd data/audit
@@ -66,7 +67,7 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add cross-production-audit.json
             git commit -m "audit: Update cross-production audit results [skip ci]"
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Failed to push audit results"
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Notify on failure

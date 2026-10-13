@@ -349,6 +349,7 @@ jobs:
 
       - name: Fix URL collisions
         if: steps.sched.outputs.skip != 'true'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           echo "Running cross-show URL collision audit with auto-fix..."
           node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
@@ -584,6 +585,7 @@ jobs:
           echo "Next batch dispatched successfully."
 
       - name: Record pipeline success
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -591,7 +593,8 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/collect-review-texts.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record collect-review-texts success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record collect-review-texts success"
+          bash scripts/lib/push-with-retry.sh
 
   # Parallel multi-job mode (matrix strategy)
   collect-reviews-parallel:
@@ -752,6 +755,7 @@ jobs:
         continue-on-error: true
 
       - name: Fix URL collisions
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           echo "Running cross-show URL collision audit with auto-fix..."
           node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt

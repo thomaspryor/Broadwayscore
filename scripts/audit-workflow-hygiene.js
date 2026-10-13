@@ -230,6 +230,9 @@ const {
   findShortCoreDataJobTimeouts,
   CORE_DATA_JOB_MIN_TIMEOUT,
   findGitDiffOnIgnoredPaths,
+  findNodeTeeWithoutPipefail,
+  findMaskedPushFailures,
+  findStringInputInterpolation,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -766,6 +769,8 @@ async function main() {
     deadCommit: [],
     shortPushTimeout: [],
     stageWithoutCommit: [],
+    nodeTeeNoPipefail: [],
+    maskedPush: [],
     shortBatchPollTimeout: [],
     quoteApostrophe: [],
     paidProviderOnPush: [],
@@ -816,6 +821,8 @@ async function main() {
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
   const shortCoreDataTimeoutFindings = [];
+  // Rule (u) (BRO-4621) is advisory: raw string-input interpolation into run: scripts.
+  const stringInputFindings = [];
   // Rule (q) (BRO-5033) is advisory too: git diff/status/show on an ignored
   // path. Scans workflows and composite actions; `git check-ignore` decides.
   const ignoredDiffFindings = [];
@@ -923,6 +930,24 @@ async function main() {
       if (hits.length > 0) {
         violations.stageWithoutCommit.push({ file, hits });
       }
+    }
+
+    // ── Rule (s): `node … | tee` with no pipefail (BRO-5046) ─
+    if (!raw.includes('hygiene-pipefail-ok:')) {
+      const hits = findNodeTeeWithoutPipefail(raw);
+      if (hits.length > 0) violations.nodeTeeNoPipefail.push({ file, hits });
+    }
+
+    // ── Rule (t): push-with-retry.sh failure masked by `|| echo`/`|| true` (BRO-4730) ─
+    if (!raw.includes('hygiene-masked-push-ok:')) {
+      const hits = findMaskedPushFailures(raw);
+      if (hits.length > 0) violations.maskedPush.push({ file, hits });
+    }
+
+    // ── Rule (u): string input interpolated into a run: script (BRO-4621, advisory) ─
+    if (!raw.includes('hygiene-string-input-ok:')) {
+      const hits = findStringInputInterpolation(raw);
+      if (hits.length > 0) stringInputFindings.push({ file, hits });
     }
 
     // ── Rule (k): batch poll budget ≥ the step timeout that boxes it ─
@@ -1049,6 +1074,16 @@ async function main() {
     console.log('✅ Rule (q): no git diff/status/show on gitignored paths');
   }
 
+  // ── Rule (u): string input interpolated into run: (advisory — never counts toward `total`) ─
+  if (stringInputFindings.length) {
+    const n = stringInputFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `::warning::Rule (u): ${n} string-input \${{ inputs.x }} interpolation(s) inside run: scripts across ${stringInputFindings.length} workflow(s) (script-injection class, BRO-4621). Route the value through the step env: and use "$VAR". Exempt a file with  # hygiene-string-input-ok: <reason>.`,
+    );
+  } else {
+    console.log('✅ Rule (u): no string-input interpolation inside run: scripts');
+  }
+
   const total =
     violations.notifyFailure.length +
     violations.playwright.length +
@@ -1059,6 +1094,8 @@ async function main() {
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
     violations.stageWithoutCommit.length +
+    violations.nodeTeeNoPipefail.length +
+    violations.maskedPush.length +
     violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length +
     violations.paidProviderOnPush.length +
@@ -1226,6 +1263,29 @@ async function main() {
     }
     console.error('\nFix: add a commit after the "nothing staged" check and before the push.');
     console.error("Exempt (legitimate): add  # hygiene-stage-no-commit-ok: <reason>  anywhere in the file.\n");
+  }
+
+  if (violations.nodeTeeNoPipefail.length) {
+    console.error('── (s) `node … | tee` without pipefail ─');
+    console.error('A run: with no shell: executes as `bash -e {0}` (no pipefail), so the pipeline');
+    console.error("exits with tee's status and a failing node script exits 0 (BRO-5046).\n");
+    for (const { file, hits } of violations.nodeTeeNoPipefail) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      "${h.name}" line ${h.lineNum}`);
+    }
+    console.error('\nFix: add  shell: bash  to the step (runs -eo pipefail), or read PIPESTATUS.');
+    console.error('Exempt (legitimate): add  # hygiene-pipefail-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.maskedPush.length) {
+    console.error('── (t) push-with-retry.sh failure masked by || echo / || true ─');
+    console.error('A terminal push failure must not be swallowed at the workflow boundary (BRO-3342/4730).\n');
+    for (const { file, hits } of violations.maskedPush) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      "${h.name}" line ${h.lineNum}: || ${h.handler}`);
+    }
+    console.error('\nFix: drop the handler. For a non-critical push add step-level  continue-on-error: true.');
+    console.error('Exempt (legitimate): add  # hygiene-masked-push-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.shortPushTimeout.length) {

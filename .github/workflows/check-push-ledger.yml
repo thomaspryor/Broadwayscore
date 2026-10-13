@@ -61,6 +61,7 @@ jobs:
         run: node scripts/check-push-ledger.js
 
       - name: Commit alert state
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
         run: |
           # The ledger itself lives on the push-ledger branch (pruned in-place
@@ -83,7 +84,7 @@ jobs:
             echo "No alert-state changes to commit."
           else
             git commit -m "chore: push-ledger alert state [skip ci]"
-            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert state push failed after 5 attempts — next run re-derives from origin."
+            bash scripts/lib/push-with-retry.sh 5 main
           fi
 
       - name: Notify on failure

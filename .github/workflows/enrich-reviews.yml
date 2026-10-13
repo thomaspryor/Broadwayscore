@@ -134,6 +134,7 @@ jobs:
         if: inputs.skip_classify_non_reviews != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -146,6 +147,7 @@ jobs:
         # the model, so recurring cost tracks review inflow, not 200/run.
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/classify-wrong-production.js --apply --resume --limit=200 --provider=opus 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
@@ -153,6 +155,7 @@ jobs:
         if: inputs.skip_classify_wrong_show != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/classify-wrong-show.js --apply --resume --limit=100 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 5
@@ -171,11 +174,13 @@ jobs:
       # originalScore (write paths that skipped the outlet extractor). Store it
       # first so the late-star flag below re-anchors the file.
       - name: Capture star ratings printed in review text
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/capture-published-stars.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 5
 
       - name: Flag late-arriving stars for anchored re-score
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/flag-late-star-reanchor.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 5
@@ -191,6 +196,7 @@ jobs:
       # and never undoes late-star's work (those reviews are scoreable, so kept).
       # Holds the corpus invariant asserted by scripts/audit-stuck-rescore-flags.js.
       - name: Drain stuck needsRescore flags (non-scoreable)
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/audit-stuck-rescore-flags.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 5
@@ -207,6 +213,7 @@ jobs:
         # pace with opening-night review surges (a backlog of 150+ unknown-author
         # files built up across recent WE/OB openings). At ~1 req/s, 150 fits the
         # 15-min step timeout with headroom. Notion 38a637c5-416f-81a7.
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/backfill-unknown-critics.js --critics-only --limit=150 --time-budget-min=12 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 15
@@ -259,6 +266,7 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           DRAIN_SCOPE: ${{ steps.drain-scope.outputs.scope }}
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           FLAGS="--all-open"
           if [ "$DRAIN_SCOPE" = "closed-90d" ]; then
@@ -283,6 +291,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/replay-pending-bylines.js --all-pending --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 20

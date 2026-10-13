@@ -815,6 +815,7 @@ jobs:
             --detail-file /tmp/land.log
 
       - name: Commit alert-router ledger changes
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always() && steps.admit.outcome == 'success'
         # scripts/land-alert.js calls routeAlert()/resolveCondition(); the
         # ledger, digest queue and attempts log only exist on this runner's
@@ -829,7 +830,7 @@ jobs:
           bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/landings.jsonl
           if ! git diff --staged --quiet; then
             git commit -m "data: alert-router ledger + landings record (land.yml) [skip ci]"
-            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+            bash scripts/lib/push-with-retry.sh 5 main
           else
             echo "No ledger changes to commit."
           fi
@@ -902,6 +903,7 @@ jobs:
           echo "- owner digest: land:$BRANCH (${{ needs.checks.outputs.gate || 'checks' }} red) — ref left in place, nothing pushed" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit alert-router ledger changes
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
         run: |
           git config user.name "github-actions[bot]"
@@ -909,7 +911,7 @@ jobs:
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git commit -m "data: alert-router ledger update (land.yml) [skip ci]"
-            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+            bash scripts/lib/push-with-retry.sh 5 main
           else
             echo "No ledger changes to commit."
           fi

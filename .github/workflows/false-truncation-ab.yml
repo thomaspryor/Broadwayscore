@@ -74,6 +74,7 @@ jobs:
 
       - name: Snapshot
         if: inputs.mode == 'snapshot'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           mkdir -p ab
           node scripts/report-false-truncation-ab.js --snapshot=ab/before.json | tee -a "$GITHUB_STEP_SUMMARY"
@@ -88,6 +89,7 @@ jobs:
 
       - name: Compare
         if: inputs.mode == 'compare'
+        shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           status=0
           node scripts/report-false-truncation-ab.js --before=ab/before.json --json=ab/result.json | tee -a "$GITHUB_STEP_SUMMARY" || status=$?

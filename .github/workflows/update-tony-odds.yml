@@ -100,6 +100,7 @@ jobs:
           fi
 
       - name: Commit and push
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: steps.changes.outputs.has_changes == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -120,8 +121,7 @@ jobs:
 
           git commit -m "chore: Update Tony odds data —${CHANGED_LIST} [skip ci]"
 
-          bash scripts/lib/push-with-retry.sh \
-            || echo "::warning::Push failed after retries — odds update may be lost"
+          bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()

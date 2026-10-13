@@ -263,6 +263,7 @@ jobs:
             }
 
       - name: Commit updated drift state
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         # always(): routeAlert() has already written alert-ledger.json in-process
         # by this point. Without always() a failure in the routing step marks the
         # job failing, this step is skipped by the implicit success(), and the 6h
@@ -292,7 +293,7 @@ jobs:
             echo "No state changes to commit."
           else
             git commit -m "chore: update drift-state.json [skip ci]"
-            bash scripts/lib/push-with-retry.sh 3 main || echo "::warning::State push failed — next run will re-check."
+            bash scripts/lib/push-with-retry.sh 3 main
           fi
 
       - name: Notify on failure

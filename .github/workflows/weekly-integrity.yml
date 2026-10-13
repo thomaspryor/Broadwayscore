@@ -226,6 +226,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Weekly Data Integrity Check — Commit cleanup"
       - name: Commit cleanup
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
         env:
           PUSH_DEADLINE_SEC: '900'
@@ -237,7 +238,7 @@ jobs:
             echo "No junk files to clean"
           else
             git commit -m "chore: Auto-cleanup junk outlet review files"
-            bash scripts/lib/push-with-retry.sh 25 main || echo "::warning::Push failed — cleanup data may not have synced"
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: P0 score integrity check
@@ -352,6 +353,7 @@ jobs:
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
       - name: Record pipeline success
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: success()
         env:
           PUSH_DEADLINE_SEC: '900'
@@ -361,4 +363,5 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/weekly-integrity.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && bash scripts/lib/push-with-retry.sh 25 main || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success"
+          bash scripts/lib/push-with-retry.sh 25 main

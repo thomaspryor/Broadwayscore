@@ -210,6 +210,7 @@ jobs:
           fi
 
       - name: Record pipeline success
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -217,4 +218,5 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/weekly-grosses.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record weekly-grosses success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record weekly-grosses success"
+          bash scripts/lib/push-with-retry.sh
