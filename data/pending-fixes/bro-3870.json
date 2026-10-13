@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3870",
   "planId": "69e2b6ef-ea6a-446f-92ce-d05b37c6ee0b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T12:00:00.000Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,18 @@
         "description": "Clear crossOutletDuplicate on the Reuters copy so Rooney's review counts once (the THR stub stays excluded)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T14:16:55.523Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elling-2010/reuters--david-rooney.json crossOutletClearReason: null -> \"BRO-3870 hand clear: crossOutletPrimaryFile elling-2010/hollywood-reporter--.json no longer exists; the surviving THR copy hollywood-reporter--david-rooney.json is a 198-char stub flagged wrongProduction, so this complete Reuters/Hollywood Reporter text is the only usable copy of Rooney's review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elling-2010/reuters--david-rooney.json crossOutletDuplicate: true -> false"
+    }
+  ]
 }
