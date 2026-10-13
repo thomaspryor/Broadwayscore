@@ -667,5 +667,35 @@
       }
     ],
     "queuedAt": "2026-10-13T08:10:31.894Z"
+  },
+  {
+    "conditionKey": "land:land/bro-901-stale-banner",
+    "title": "Landing blocked: unit-tests-node red on land/bro-901-stale-banner",
+    "description": "land.yml did not land land/bro-901-stale-banner: the unit-tests-node gate went red at 70a100e68e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38364408012",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-901-stale-banner"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "70a100e68ed62e355786015890fe2156c7e286b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38364408012"
+      }
+    ],
+    "queuedAt": "2026-10-13T08:13:19.306Z"
   }
 ]
