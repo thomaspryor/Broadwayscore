@@ -1,11 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMyRating } from '@/hooks/useMyRating';
 import StarRating from './StarRating';
 import { featureFlags } from '@/config/feature-flags';
-import { couldHaveSeenShow, type RateabilitySource } from '@/lib/show-rateability';
+import { couldHaveSeenShow, dependsOnDate, type RateabilitySource } from '@/lib/show-rateability';
 
 interface HoverRateStarsProps {
   showId: string;
@@ -40,9 +41,25 @@ export default function HoverRateStars({ showId, show, showHref, starSize = 'xs'
   const router = useRouter();
   const { user } = useAuth();
   const myRating = useMyRating(user?.id || null, showId);
+  // Date-dependent shows (upcoming/announced) are decided after mount,
+  // against the viewer's date. Deciding them during render made the server
+  // HTML (UTC clock, show pages cached 24h) and the first client render
+  // disagree on a show's first-preview day: a hydration mismatch
+  // (ship-check, BRO-77). Every other status is decided during render, the
+  // same on both sides, so most cards skip the extra effect render. The
+  // strip is invisible until hover, so starting hidden changes nothing.
+  const { status, previewsStartDate, openingDate } = show;
+  const dateDependent = dependsOnDate(status);
+  const [seenAfterMount, setSeenAfterMount] = useState(false);
+  useEffect(() => {
+    if (dateDependent) setSeenAfterMount(couldHaveSeenShow({ status, previewsStartDate, openingDate }));
+  }, [dateDependent, status, previewsStartDate, openingDate]);
+  // Derived, not stored: a reused card that switches to an open show is
+  // seeable immediately instead of keeping a stale false.
+  const seeable = dateDependent ? seenAfterMount : true;
 
   if (!featureFlags.userAccounts) return null;
-  if (!couldHaveSeenShow(show)) return null;
+  if (!seeable) return null;
   if (myRating !== null) return null;
 
   return (

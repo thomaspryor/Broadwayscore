@@ -10,6 +10,7 @@
 import type { RecoupmentTrend } from '@/config/commercial';
 import { computeGrossTrend, getSeason, trailingAverageGross } from './commercial-metrics';
 import { isReported } from './box-office-weeks';
+import { MAX_GROSSES_AGE_DAYS, calendarDaysBetween, mdyToIso } from './grosses-week';
 
 // ---------------------------------------------------------------------------
 // Cost contract
@@ -602,8 +603,7 @@ export function countStatuses(statuses: Array<Pick<ShowBoxOfficeStatus, 'availab
 // (a stale local clone, a half-synced checkout) must not publish statuses: the
 // Phase 1 table was computed on 6-day-old inputs and every number moved.
 
-/** A week ending Sunday S is published by Tuesday S+2; this allows a missed Tuesday + Wednesday retry. */
-export const MAX_GROSSES_AGE_DAYS = 10;
+export { MAX_GROSSES_AGE_DAYS };
 /** commercial.json is refreshed weekly; older than this relative to the newest grosses week is stale. */
 export const MAX_COMMERCIAL_LAG_DAYS = 14;
 
@@ -618,17 +618,12 @@ export interface FreshnessInput {
   today: string;
 }
 
-function mdyToIso(mdy: string | null): string | null {
-  const m = mdy?.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  return m ? `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}` : null;
-}
-
 /** Empty list = fresh. Each entry says what is stale and by how much. */
 export function staleInputReasons(input: FreshnessInput): string[] {
   const reasons: string[] = [];
   const newest = input.historyNewestWeek;
   if (!newest) return ['grosses-history.json has no weeks'];
-  const age = daysBetween(newest, input.today);
+  const age = calendarDaysBetween(newest, input.today);
   if (age > MAX_GROSSES_AGE_DAYS) {
     reasons.push(`newest grosses week ${newest} is ${age} days old (max ${MAX_GROSSES_AGE_DAYS})`);
   }

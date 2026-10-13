@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { featureFlags } from '@/config/feature-flags';
+import { dependsOnDate, hasLocalDateArrived } from '@/lib/show-rateability';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import { formatShowDate as formatDate } from '@/lib/show-date-line';
@@ -178,6 +180,19 @@ export default function ShowPageBelowFold({
   score,
   faqs,
 }: ShowPageBelowFoldProps) {
+  // Lottery/rush card is hidden before the first preview. For upcoming and
+  // announced shows that depends on today's date, so it is decided after
+  // mount: deciding during render made the cached server HTML (UTC clock,
+  // 24h ISR) and the client disagree on preview day, a hydration mismatch
+  // (same class as BRO-77's HoverRateStars fix). Other statuses render it
+  // during SSR as before. A show with no status is treated as date-dependent
+  // too, so it keeps the old hide-before-previews behaviour.
+  const previewsDateDependent = !!show.previewsStartDate && (!show.status || dependsOnDate(show.status));
+  const [startedAfterMount, setStartedAfterMount] = useState(false);
+  useEffect(() => {
+    if (previewsDateDependent) setStartedAfterMount(hasLocalDateArrived(show.previewsStartDate));
+  }, [previewsDateDependent, show.previewsStartDate]);
+  const previewsStarted = previewsDateDependent ? startedAfterMount : true;
   return (
     <>
       {/* Video Reviews */}
@@ -320,14 +335,9 @@ export default function ShowPageBelowFold({
 
       {/* Discount Tickets (Lottery / Rush / Standing Room) */}
       <div id="discount-tickets" className="scroll-mt-20" />
-      {featureFlags.discountTickets && lotteryRush && (() => {
-        if (show.previewsStartDate) {
-          const previewsStart = new Date(show.previewsStartDate);
-          const today = new Date();
-          if (today < previewsStart) return null;
-        }
-        return <LotteryRushCard data={lotteryRush} showId={show.id} showName={show.title} showStatus={show.status} showCategory={show.category} showVenue={show.venue} />;
-      })()}
+      {featureFlags.discountTickets && lotteryRush && previewsStarted && (
+        <LotteryRushCard data={lotteryRush} showId={show.id} showName={show.title} showStatus={show.status} showCategory={show.category} showVenue={show.venue} />
+      )}
 
       {/* Cast Updates */}
       <div id="cast-updates" className="scroll-mt-20" />

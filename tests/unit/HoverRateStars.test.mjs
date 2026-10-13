@@ -62,7 +62,36 @@ test('every <HoverRateStars> usage passes a show prop', () => {
   assert.deepEqual(offenders, []);
 });
 
-test('HoverRateStars checks couldHaveSeenShow before rendering', () => {
+test('HoverRateStars decides after mount, never during render (hydration)', () => {
+  // Deciding during render made cached server HTML (UTC clock, 24h ISR on
+  // show pages) and the first client render disagree on preview day.
   const src = readFileSync('src/components/user/HoverRateStars.tsx', 'utf8');
-  assert.match(src, /if \(!couldHaveSeenShow\(show\)\) return null;/);
+  assert.match(src, /useEffect\(\(\) => \{\s*if \(dateDependent\) setSeenAfterMount\(couldHaveSeenShow\(/);
+  assert.match(src, /const seeable = dateDependent \? seenAfterMount : true;/);
+  assert.match(src, /if \(!seeable\) return null;/);
+  assert.doesNotMatch(src, /if \(!couldHaveSeenShow\(/);
+});
+
+test('dependsOnDate: only upcoming/announced need the viewer clock', async () => {
+  const { dependsOnDate } = await import('../../src/lib/show-rateability.ts');
+  assert.equal(dependsOnDate('upcoming'), true);
+  assert.equal(dependsOnDate('announced'), true);
+  for (const s of ['open', 'previews', 'closed', undefined, null]) assert.equal(dependsOnDate(s), false, String(s));
+});
+
+test('show page lottery card does not read the clock during render (hydration)', () => {
+  const src = readFileSync('src/components/show-page/ShowPageBelowFold.tsx', 'utf8');
+  assert.doesNotMatch(src, /const today = new Date\(\);\s*if \(today < previewsStart\)/);
+  assert.match(src, /const previewsStarted = previewsDateDependent \? startedAfterMount : true;/);
+  assert.match(src, /hasLocalDateArrived\(show\.previewsStartDate\)/);
+  assert.match(src, /lotteryRush && previewsStarted &&/);
+});
+
+test('hasLocalDateArrived compares by local calendar date, not UTC midnight', async () => {
+  const { hasLocalDateArrived } = await import('../../src/lib/show-rateability.ts');
+  assert.equal(hasLocalDateArrived('2026-10-14', '2026-10-13'), false);
+  assert.equal(hasLocalDateArrived('2026-10-14', '2026-10-14'), true);
+  assert.equal(hasLocalDateArrived('2026-10-01T19:00:00Z', '2026-10-13'), true);
+  assert.equal(hasLocalDateArrived(null, '2026-10-13'), true);
+  assert.equal(hasLocalDateArrived('TBA', '2026-10-13'), true);
 });

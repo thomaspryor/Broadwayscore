@@ -5,7 +5,9 @@ import { readFileSync } from 'node:fs';
 import {
   STALENESS_THRESHOLD_DAYS,
   daysSinceUpdate,
+  grossesAgeDays,
   staleDays,
+  staleDaysFor,
   stalenessMessage,
 } from '../../src/lib/data-staleness.ts';
 
@@ -40,6 +42,29 @@ describe('staleness decision', () => {
   });
 });
 
+describe('grosses age (measured from the week covered)', () => {
+  // Local noon so the viewer-local calendar date is unambiguous in any TZ.
+  const at = (d) => new Date(`${d}T12:00:00`).getTime();
+  test('a re-scraped but unchanged week still ages', () => {
+    // Scraper ran this morning, but the newest figures are for week ending Sep 27.
+    assert.equal(grossesAgeDays(new Date(at('2026-10-13')).toISOString(), '9/27/2026', at('2026-10-13')), 16);
+  });
+  test('the scrape age wins when it is older', () => {
+    assert.equal(grossesAgeDays(new Date(at('2026-09-01')).toISOString(), '10/4/2026', at('2026-10-13')), 42);
+  });
+  test('unparseable weekEnding falls back to the scrape age', () => {
+    assert.equal(grossesAgeDays(new Date(at('2026-10-11')).toISOString(), 'soon', at('2026-10-13')), 2);
+  });
+  test('same rule as the build status gate: quiet through the Wed retry, stale on Thursday', () => {
+    const scraped = new Date(at('2026-10-06')).toISOString(); // week ending Sun Oct 4, published Tue Oct 6
+    assert.equal(staleDaysFor({ kind: 'grosses', lastUpdated: scraped, weekEnding: '10/4/2026' }, at('2026-10-14')), null); // Wed retry day, 10 days
+    assert.equal(staleDaysFor({ kind: 'grosses', lastUpdated: scraped, weekEnding: '10/4/2026' }, at('2026-10-15')), 11); // both runs missed
+  });
+  test('ticket-policy feeds ignore weekEnding', () => {
+    assert.equal(staleDaysFor({ kind: 'ticket-policies', lastUpdated: daysAgo(3), weekEnding: '1/1/2020' }, NOW), null);
+  });
+});
+
 describe('copy', () => {
   test('ticket-policy copy names the age and the action', () => {
     const msg = stalenessMessage(9, 'ticket-policies');
@@ -47,13 +72,21 @@ describe('copy', () => {
     assert.match(msg, /double-check with the official platform before you go\.$/);
   });
   test('singular day', () => {
-    assert.match(stalenessMessage(1, 'grosses'), /1 day ago\./);
+    assert.match(stalenessMessage(1, 'ticket-policies'), /1 day ago\./);
+    assert.match(stalenessMessage(1, 'grosses'), /are 1 day old\./);
   });
   test('no em dashes in site copy', () => {
     for (const k of Object.keys(STALENESS_THRESHOLD_DAYS)) {
       assert.ok(!stalenessMessage(12, k).includes('—'), k);
     }
   });
+});
+
+test('banner and build status gate share one grosses threshold', async () => {
+  const gate = await import('../../src/lib/box-office-status.ts');
+  const week = await import('../../src/lib/grosses-week.ts');
+  assert.equal(gate.MAX_GROSSES_AGE_DAYS, week.MAX_GROSSES_AGE_DAYS);
+  assert.equal(STALENESS_THRESHOLD_DAYS.grosses, week.MAX_GROSSES_AGE_DAYS);
 });
 
 describe('banner component', () => {
@@ -113,6 +146,9 @@ describe('every ticket-discovery page renders the banner', () => {
     });
   }
   test('box office uses the weekly-grosses threshold', () => {
-    assert.match(readFileSync('src/app/box-office/page.tsx', 'utf8'), /<DataStalenessBanner[^>]*kind="grosses"/);
+    const src = readFileSync('src/app/box-office/page.tsx', 'utf8');
+    assert.match(src, /<DataStalenessBanner[^>]*kind="grosses"/);
+    // Measured from the covered week, not just the last scrape.
+    assert.match(src, /<DataStalenessBanner[^>]*weekEnding=\{weekEnding\}/);
   });
 });

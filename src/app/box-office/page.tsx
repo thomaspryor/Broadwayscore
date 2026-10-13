@@ -128,7 +128,7 @@ export default function BoxOfficePage() {
             Week ending {weekEnding} · {market ? 'Broadway League figures' : <>Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</>}
           </p>
         </div>
-        <DataStalenessBanner lastUpdated={lastUpdated} kind="grosses" market="broadway" />
+        <DataStalenessBanner lastUpdated={lastUpdated} weekEnding={weekEnding} kind="grosses" market="broadway" />
 
         {market ? (
           <>

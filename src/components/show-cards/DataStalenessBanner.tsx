@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { STALENESS_THRESHOLD_DAYS, staleDays, stalenessMessage, type StalenessKind } from '@/lib/data-staleness';
+import { staleDaysFor, stalenessMessage, type StalenessKind } from '@/lib/data-staleness';
 
 export interface DataStalenessBannerProps {
   /** ISO timestamp the feed was last refreshed (e.g. lottery-rush.json lastUpdated). */
   lastUpdated: string | null | undefined;
   /** Which feed, for the copy and the default threshold. */
   kind?: StalenessKind;
+  /** kind="grosses" only: grosses.json weekEnding (M/D/YYYY). Age is measured
+   *  from the week the figures cover, not just the last scrape. */
+  weekEnding?: string | null;
   /** Override the per-kind default threshold (days). */
   thresholdDays?: number;
   /** Market of the page. Kept for parity with the page props; copy is market-neutral. */
@@ -25,13 +28,12 @@ export interface DataStalenessBannerProps {
  * clock instead makes the first client render disagree with the static HTML
  * (hydration mismatch) exactly when the warning matters.
  */
-export function DataStalenessBanner({ lastUpdated, kind = 'ticket-policies', thresholdDays }: DataStalenessBannerProps) {
-  const threshold = thresholdDays ?? STALENESS_THRESHOLD_DAYS[kind];
+export function DataStalenessBanner({ lastUpdated, kind = 'ticket-policies', weekEnding, thresholdDays }: DataStalenessBannerProps) {
   const [days, setDays] = useState<number | null>(null);
 
   useEffect(() => {
-    setDays(staleDays(lastUpdated, threshold));
-  }, [lastUpdated, threshold]);
+    setDays(staleDaysFor({ kind, lastUpdated, weekEnding, thresholdDays }));
+  }, [kind, lastUpdated, weekEnding, thresholdDays]);
 
   if (days === null) return null;
 
