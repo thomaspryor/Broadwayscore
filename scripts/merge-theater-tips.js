@@ -21,7 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { buildMergedStructuredTips } = require('./lib/theater-tips-merge');
+const { buildMergedStructuredTips, draftHasContent, validateMergedMetadata } = require('./lib/theater-tips-merge');
 
 const DRAFT_FILE = path.join(__dirname, '..', 'data', 'theater-tips-draft.json');
 const METADATA_FILE = path.join(__dirname, '..', 'data', 'theater-metadata.json');
@@ -53,6 +53,8 @@ function main() {
   const isDryRun = process.argv.includes('--dry-run');
   const forceUpdate = process.argv.includes('--force');
 
+  const metadataBefore = JSON.parse(JSON.stringify(metadata));
+
   // Backup
   if (!isDryRun) {
     fs.writeFileSync(BACKUP_FILE, fs.readFileSync(METADATA_FILE, 'utf8'));
@@ -73,6 +75,14 @@ function main() {
     const tips = draftTheaters[name];
     if (!tips) {
       skipped++;
+      continue;
+    }
+
+    // BRO-3511: the draft itself must carry content. The "sections" check below
+    // runs on merged output, which accessibility injection alone satisfies.
+    if (!draftHasContent(tips)) {
+      console.log(`  ⚠️  ${name} — LLM draft has no tip content, keeping existing tips`);
+      issues++;
       continue;
     }
 
@@ -143,6 +153,14 @@ function main() {
     metadata._meta.lastUpdated = new Date().toISOString();
     if (!metadata._meta.sources.includes('newyorkcitytheatre.com')) {
       metadata._meta.sources.push('newyorkcitytheatre.com');
+    }
+
+    // BRO-3511: validate BEFORE publishing; validate-data.js does not cover this file.
+    const problems = validateMergedMetadata(metadataBefore, metadata);
+    if (problems.length > 0) {
+      console.error(`\n❌ MERGE INTEGRITY CHECK FAILED — not writing ${METADATA_FILE}:`);
+      problems.slice(0, 20).forEach((p) => console.error(`  - ${p}`));
+      process.exit(1);
     }
 
     fs.writeFileSync(METADATA_FILE, JSON.stringify(metadata, null, 2) + '\n');

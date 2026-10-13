@@ -26,6 +26,13 @@ on:
         type: boolean
         default: false
 
+# BRO-3511: one run at a time. A quarterly cron overlapping a manual dispatch
+# would both rewrite data/theater-metadata.json, and push-with-retry.sh resolves
+# data-file conflicts by keeping the running job's version.
+concurrency:
+  group: generate-theater-tips
+  cancel-in-progress: false
+
 jobs:
   generate-tips:
     runs-on: ubuntu-latest
@@ -97,19 +104,36 @@ jobs:
         run: node scripts/validate-restaurant-names.js --sample 10
 
       - name: Merge tips into theater metadata
+        id: merge
         if: ${{ github.event_name == 'schedule' || inputs.dry_run != true }}
         run: node scripts/merge-theater-tips.js
 
       - name: Validate data
+        id: validate
         if: ${{ github.event_name == 'schedule' || inputs.dry_run != true }}
         run: node scripts/validate-data.js
 
       - name: Commit and push if changed
         if: always()
+        env:
+          MERGE_OUTCOME: ${{ steps.merge.outcome }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/theater-tips-scraped.json data/theater-tips-draft.json data/theater-metadata.json
+          git add data/theater-tips-scraped.json data/theater-tips-draft.json
+          # BRO-3511: publish the merged metadata only when merge AND validation
+          # both succeeded (or were skipped for a dry run, which leaves it
+          # untouched). A failed/cancelled step keeps the scraped+draft research
+          # artifacts but never ships unvalidated metadata.
+          for o in "$MERGE_OUTCOME" "$VALIDATE_OUTCOME"; do
+            if [ "$o" != "success" ] && [ "$o" != "skipped" ]; then
+              echo "::warning::Theater metadata NOT committed (merge=$MERGE_OUTCOME validate=$VALIDATE_OUTCOME)"
+              git checkout -- data/theater-metadata.json || true
+              PUBLISH_METADATA=false
+            fi
+          done
+          if [ "${PUBLISH_METADATA:-true}" = "true" ]; then git add data/theater-metadata.json; fi
           if git diff --staged --quiet; then
             echo "No changes to theater tips"
           else

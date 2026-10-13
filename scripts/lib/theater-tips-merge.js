@@ -112,4 +112,45 @@ function buildMergedStructuredTips(tips, existingTheaterMetadata) {
   return { structuredTips, accessibilityInjected, restaurantNames };
 }
 
-module.exports = { buildMergedStructuredTips, buildAccessibilityText };
+/**
+ * Does the LLM DRAFT itself carry any tip content? (BRO-3511)
+ * buildMergedStructuredTips always injects verified accessibility text and
+ * preserves hand-curated seating sections, so a "some section is populated"
+ * check on its OUTPUT passes even for an empty draft, and the merge would
+ * then replace the theater's good parking/dining/logistics with an
+ * impoverished object. This asks the draft alone.
+ */
+function draftHasContent(tips) {
+  if (!tips || typeof tips !== 'object') return false;
+  const s = tips.seating || {};
+  if (s.bestSeats || s.avoidSeats) return true;
+  const p = tips.parking || {};
+  if (p.nearestGarages?.length > 0 || p.streetParking || p.tip) return true;
+  const d = tips.dining || {};
+  if (['preShow', 'postShow', 'quickBite'].some((c) => d[c]?.length > 0)) return true;
+  const l = tips.logistics || {};
+  return !!(l.entrance || l.nearestSubway || l.exitStrategy || l.restrooms);
+}
+
+/**
+ * Publish-time integrity check on the merged metadata object (BRO-3511).
+ * validate-data.js does not cover theater-metadata.json, so the merge script
+ * has to refuse a structurally damaged result itself. Returns a list of
+ * problems; empty means safe to write.
+ */
+function validateMergedMetadata(before, after) {
+  const problems = [];
+  if (!after || typeof after !== 'object' || !after._meta) return ['merged metadata lost its _meta block'];
+  const names = (m) => Object.keys(m).filter((k) => k !== '_meta');
+  const afterNames = new Set(names(after));
+  for (const n of names(before)) {
+    if (!afterNames.has(n)) problems.push(`theater dropped: ${n}`);
+    else if (before[n]?.structuredTips && !after[n]?.structuredTips) problems.push(`structuredTips lost: ${n}`);
+    else if (before[n]?.structuredTips?.seating?.sections?.length && !after[n]?.structuredTips?.seating?.sections?.length) {
+      problems.push(`seating.sections lost: ${n}`);
+    }
+  }
+  return problems;
+}
+
+module.exports = { buildMergedStructuredTips, buildAccessibilityText, draftHasContent, validateMergedMetadata };
