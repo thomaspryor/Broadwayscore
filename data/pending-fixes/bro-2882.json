@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2882",
   "planId": "575b5fc6-4f0b-4989-b9d0-0b97c88e1f82",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T01:58:57.671Z",
   "submitter": {
     "name": null,
@@ -208,5 +208,128 @@
         "description": "BRO-2882: record why the human slot is provisional."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T03:35:06.041Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "archduke-west-end-2026/city-am--steve-dinneen.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "archduke-west-end-2026/city-am--steve-dinneen.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beaches-2026/nysr--david-finkle.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beaches-2026/nysr--david-finkle.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloodsport-after-helen-of-troy-off-west-end-2026/radio-times--olivia-garrett.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloodsport-after-helen-of-troy-off-west-end-2026/radio-times--olivia-garrett.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-off-broadway-2026/timeout--melissa-rose-bernardo.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-off-broadway-2026/timeout--melissa-rose-bernardo.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-west-end-2026/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-west-end-2026/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-note-the-musical-west-end-2026/city-am--anna-moloney.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-note-the-musical-west-end-2026/city-am--anna-moloney.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fallen-angels-2026/nypost--johnny-oleksinski.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fallen-angels-2026/nypost--johnny-oleksinski.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fallen-angels-2026/nysr--melissa-rose-bernardo.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fallen-angels-2026/nysr--melissa-rose-bernardo.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-west-end-2026/city-am--steve-dinneen.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-west-end-2026/city-am--steve-dinneen.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/city-am--steve-dinneen.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/city-am--steve-dinneen.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grace-pervades-west-end-2026/independent--alice-saville.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grace-pervades-west-end-2026/independent--alice-saville.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    }
+  ]
 }
