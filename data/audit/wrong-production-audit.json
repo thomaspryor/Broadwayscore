@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T11:27:36.885Z",
+  "timestamp": "2026-10-13T12:19:58.760Z",
   "stats": {
     "totalReviews": 56285,
-    "alreadyFlagged": 21003,
-    "dateGuardCatches": 216,
+    "alreadyFlagged": 21009,
+    "dateGuardCatches": 217,
     "directorMismatch": 1859,
     "tvFilmSignals": 1638,
     "londonSignals": 2233,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5245
+    "noPublishDate": 5239
   },
   "findings": [
     {
@@ -21049,7 +21049,7 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--david-wootton.json",
       "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
@@ -46477,6 +46477,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -47151,7 +47165,7 @@
     },
     {
       "showId": "tru-off-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--jeremy-malies.json",
       "score": 78,
       "publishDate": "2026-09-28",
       "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
@@ -51523,7 +51537,7 @@
     },
     {
       "showId": "a-month-in-the-country-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--neil-dowden.json",
       "score": 79,
       "publishDate": "2026-09-07",
       "url": "https://playsinternational.org.uk/a-month-in-the-country-donmar-warehouse/",
@@ -61252,7 +61266,7 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--neil-dowden.json",
       "score": 82,
       "publishDate": "2026-09-18",
       "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
