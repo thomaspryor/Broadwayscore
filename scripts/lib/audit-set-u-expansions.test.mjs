@@ -68,6 +68,12 @@ test('review fixes: multi-line literal arrays are non-empty; local "$1" is not C
   assert.equal(usesSetU('set -o errexit -o nounset\n'), true);
 });
 
+test('ship-check fixes: an arithmetic shift is not a heredoc; <<\EOF is a quoted heredoc', () => {
+  assert.equal(auditSource(`${SETU}a=()\nx=$(( a << b ))\necho "\${a[@]}"\n`).length, 1, 'scan continues past the shift');
+  assert.equal(auditSource(`${SETU}a=()\n(( x <<= y ))\necho "\${a[@]}"\n`).length, 1);
+  assert.deepEqual(auditSource(`${SETU}a=()\ncat <<\\EOF\n\${a[@]}\nEOF\n`), [], '<<\\EOF body is literal');
+});
+
 test('the live repo is clean: every set -u site is guarded or annotated (regression lock)', () => {
   const lines = [];
   const rc = main(['--strict'], { repoRoot: REPO_ROOT, log: (l) => lines.push(l) });

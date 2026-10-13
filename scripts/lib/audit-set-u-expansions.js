@@ -118,7 +118,11 @@ function findArrayFindings(src) {
       if (/^\s*#/.test(raw)) return;
       line = stripComment(raw);
     }
-    const hd = heredoc ? null : raw.match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
+    // Arithmetic first: `$(( a << 2 ))` / `(( x <<= 1 ))` is a shift, not a
+    // heredoc (treating it as one hid the rest of the file).
+    const noArith = heredoc ? '' : raw.replace(/\$?\(\([^]*?\)\)/g, '');
+    const hdm = heredoc ? null : noArith.match(/<<-?\s*(?:(['"])([A-Za-z_][A-Za-z0-9_]*)\1|\\([A-Za-z_][A-Za-z0-9_]*)|([A-Za-z_][A-Za-z0-9_]*))/);
+    const hd = hdm && { end: hdm[2] || hdm[3] || hdm[4], quoted: Boolean(hdm[2] || hdm[3]) };
     line = line.replace(/\\\$/g, ''); // \$ is a literal dollar, not an expansion
     // Mask guarded forms so only bare expansions remain.
     const masked = line
@@ -131,7 +135,7 @@ function findArrayFindings(src) {
       if (annotated(lines, idx)) continue;
       out.push({ line: idx + 1, kind: 'array', name, text: raw.trim() });
     }
-    if (hd && !/<<</.test(raw)) heredoc = { end: hd[2], quoted: hd[1] !== '' };
+    if (hd && !/<<</.test(noArith)) heredoc = hd;
   });
   return out;
 }

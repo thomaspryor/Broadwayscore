@@ -342,13 +342,9 @@ if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
   rm -f "$GUARDS_OUT"
 fi
 
-# Node workflow audits (concurrency groups, notify-failure/playwright/push-retry
-# hygiene, cron-health coverage) — only when the push touches workflow files.
-if grep -qE "^\.github/workflows/.*\.ya?ml$" <<<"$ALL_CHANGED_FILES"; then
-  run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js"
-  run_audit "workflow-hygiene" "scripts/audit-workflow-hygiene.js"
-  run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js"
-fi
+# Workflow audits (concurrency, hygiene, cron-health coverage) run in
+# scripts/lib/run-push-audits.sh above (BRO-3014), which also honours CI's
+# [skip-cron-audit] tag; the inline copies here ignored it and ran twice.
 
 # TypeScript typecheck — the one diff-local code-correctness gate worth running
 # on push. Runs only when this push touches .ts/.tsx. tsc is project-wide (types

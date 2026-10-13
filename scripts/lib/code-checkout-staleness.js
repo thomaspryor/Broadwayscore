@@ -109,7 +109,8 @@ function formatCodeCheckoutStaleMessage({ behind, ahead, branch = '' }, repoDir)
       `   Work merged here has not reached origin, so CI, deploys and every other checkout`,
       `   cannot see it (86 commits once sat unpushed this way, BRO-2955). See what is waiting:`,
       `     git log --oneline origin/main..main`,
-      `   Land it (sessions cannot push main directly): git push origin main:refs/heads/land/<name>`,
+      `   Land it through the normal landing path; sessions cannot push main directly`,
+      `   (cloud: git push origin main:refs/heads/land/<name>).`,
     ].join('\n');
   }
   return null;
