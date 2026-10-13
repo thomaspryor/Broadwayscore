@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * strip-variety-promo-bleed.js — find (and later strip) the Variety promo
- * modules ("Related Stories", "Popular on Variety") that the old generic
- * extractor left inside stored Variety review texts (BRO-5254).
+ * strip-variety-promo-bleed.js — strip the Variety promo modules ("Related
+ * Stories", "Popular on Variety") that the old generic extractor left inside
+ * stored Variety review texts (BRO-5254). Rules: scripts/lib/variety-promo-bleed.js.
  *
- * Stage 1 (this version): --dump only. Prints how the promo lines look in the
- * stored plain text so the strip patterns are built from real rows, not
- * guessed. Read-only. Run in CI with the review texts:
- *   node scripts/cloud-run-script.js --review-texts scripts/strip-variety-promo-bleed.js --dump=25
+ * Default is a dry run that prints every block it would remove (clipped) and
+ * the rows it refuses (those need a refetch). --apply writes through
+ * safeWriteReview and queues a rescore. Runs in CI only (review texts are private):
+ *   node scripts/cloud-run-script.js --review-texts scripts/strip-variety-promo-bleed.js
+ *   data/pending-fixes run-script action: args "--apply --limit=5"
  */
 
 'use strict';
@@ -16,11 +17,22 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const {
+  stripVarietyPromoBleed, applyVarietyPromoStrip, hasVarietyPromoBleed, isExcludedRow,
+} = require('./lib/variety-promo-bleed');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const USAGE = `strip-variety-promo-bleed.js — Variety promo bleed in stored review texts (BRO-5254).
 
 Usage:
-  node scripts/strip-variety-promo-bleed.js --dump[=N]   print marker stats and N context samples (read-only)
+  node scripts/strip-variety-promo-bleed.js                 dry run: blocks it would remove, refused rows
+  node scripts/strip-variety-promo-bleed.js --apply         write the strips and queue rescores
+    --limit=N            only N rows, spread evenly over the list (sample runs)
+    --files=a/x.json,b/y.json   only these rows (show/file)
+    --verbose            print every removed line (dry run prints a clipped summary)
+  node scripts/strip-variety-promo-bleed.js --refetch-list  rows the strip refuses (need a refetch)
+  node scripts/strip-variety-promo-bleed.js --ab            A/B of stripped rows: pre-strip score vs rescore
+  node scripts/strip-variety-promo-bleed.js --dump[=N]      marker stats and N context samples (read-only)
 `;
 if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
 
@@ -105,9 +117,117 @@ function dump(n) {
   }
 }
 
+/** Rows the strip looks at: Variety, has a promo block, not excluded, not already stripped. */
+function candidates() {
+  const tally = { locked: 0, excluded: 0 };
+  const rows = [];
+  for (const x of varietyFiles()) {
+    if (!hasVarietyPromoBleed(x.d.fullText)) continue;
+    if (isExcludedRow(x.d)) { tally.excluded++; continue; }
+    if (x.d._locked) { tally.locked++; continue; }
+    rows.push(x);
+  }
+  return { rows, tally };
+}
+
+/** n rows spread evenly over the list (an alphabetical head would be a few shows only). */
+function spread(rows, n) {
+  if (!n || n >= rows.length) return rows;
+  const out = [];
+  for (let i = 0; i < n; i++) out.push(rows[Math.floor((i * rows.length) / n)]);
+  return out;
+}
+
+function run({ apply, limit, files, verbose, refetchOnly }) {
+  const { rows: all, tally } = candidates();
+  let rows = all;
+  if (files) {
+    const want = new Set(files);
+    rows = all.filter(x => want.has(x.rel));
+    for (const f of want) if (!rows.some(x => x.rel === f)) console.log(`  ? ${f}: not a candidate (no promo block, excluded, locked or missing)`);
+  }
+  const refused = [];
+  const ok = [];
+  for (const x of rows) {
+    const r = stripVarietyPromoBleed(x.d.fullText);
+    if (r.refused) refused.push({ ...x, reason: r.refused });
+    else ok.push({ ...x, r });
+  }
+  console.log(`candidates: ${all.length} (skipped: ${tally.excluded} excluded, ${tally.locked} locked); strippable: ${ok.length}; refused: ${refused.length}`);
+  const reasons = {};
+  for (const x of refused) { const k = x.reason.replace(/\(\d+\)/, '(N)'); reasons[k] = (reasons[k] || 0) + 1; }
+  console.log('refused by reason:', JSON.stringify(reasons));
+  if (refetchOnly) {
+    for (const x of refused) console.log(`  refetch ${x.rel}  (${x.reason}; ${x.d.fullText.length} chars)`);
+    return 0;
+  }
+  const todo = spread(ok, limit);
+  let wrote = 0, failed = 0;
+  const lineCounts = {};
+  for (const { rel, d, r } of todo) {
+    const removed = r.blocks.flatMap(b => b.lines);
+    for (const l of removed) { const k = clip(l, 80); lineCounts[k] = (lineCounts[k] || 0) + 1; }
+    const what = `${r.blocks.length} block(s), ${d.fullText.length} → ${r.text.length} chars`;
+    if (!apply) {
+      console.log(`  ✓ ${rel}: ${what}${removed.length ? ` — removes: ${removed.map(l => JSON.stringify(clip(l, verbose ? 300 : 60))).join(' | ')}` : ''}`);
+      continue;
+    }
+    const file = path.join(DIR, rel);
+    const res = safeWriteReview(file, applyVarietyPromoStrip(d, r.text), { force: true });
+    const after = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if ((res && res.wrote === false) || after.fullText !== r.text) {
+      failed++;
+      console.log(`  ✗ ${rel}: write did not stick (${(res && (res.skipped || res.reason)) || 'text differs after write'})`);
+      continue;
+    }
+    wrote++;
+    const flag = after.wrongShow && !d.wrongShow ? ' — write guard flagged wrongShow, check by hand' : '';
+    console.log(`  ✓ ${rel}: ${what}${flag}`);
+  }
+  // Lines removed more than once: the headline runs should be mostly unique; a
+  // repeated line that reads like review prose would mean the rule is too wide.
+  const repeated = Object.entries(lineCounts).filter(([, c]) => c > 1).sort((a, b) => b[1] - a[1]).slice(0, 15);
+  if (repeated.length) console.log('removed lines seen more than once:', JSON.stringify(repeated));
+  console.log(apply ? `applied: ${wrote}, failed: ${failed}` : `dry run: would strip ${todo.length}`);
+  return failed ? 1 : 0;
+}
+
+/** Pre-strip score (stamp) vs the rescored row, with the llm-scoring A/B limits. */
+function ab() {
+  const { compare, SHIFT_LIMIT, DRIFT_LIMIT } = require('./report-false-truncation-ab');
+  const before = [];
+  const current = new Map();
+  for (const { rel, d } of varietyFiles()) {
+    const s = d.varietyPromoStrip;
+    if (!s) continue;
+    before.push({ file: rel, score: s.previousScore, bucket: s.previousBucket, scoredAt: s.previousScoredAt, confidence: null, textStatus: null });
+    current.set(rel, d);
+  }
+  const c = compare(before, current, { requireTextFix: false });
+  console.log(`stripped rows: ${c.total}; rescored: ${c.rescored}; pending: ${c.pending}`);
+  console.log(`mean drift ${c.meanSigned.toFixed(2)} (abs ${c.meanAbs.toFixed(2)}, limit ${DRIFT_LIMIT}); max bucket share shift ${c.maxShift.toFixed(1)}pts (limit ${SHIFT_LIMIT}); bucket changes ${c.changedBucket}`);
+  console.log('bucket share shifts:', JSON.stringify(Object.fromEntries(Object.entries(c.shifts).map(([k, v]) => [k, +v.toFixed(1)]))));
+  const moves = before
+    .map(b => ({ file: b.file, before: b.score, after: current.get(b.file).assignedScore, d: current.get(b.file) }))
+    .filter(m => !m.d.needsRescore && m.before != null && typeof m.after === 'number' && m.d.llmMetadata && m.d.llmMetadata.scoredAt !== before.find(b => b.file === m.file).scoredAt)
+    .sort((a, b) => Math.abs(b.after - b.before) - Math.abs(a.after - a.before))
+    .slice(0, 10);
+  for (const m of moves) console.log(`  ${m.file}: ${m.before} → ${m.after} (${m.after - m.before >= 0 ? '+' : ''}${m.after - m.before})`);
+  console.log(`A/B: ${c.pass ? 'PASS' : c.rescored ? 'FAIL' : 'NO RESCORED ROWS YET'}`);
+  return c.pass || !c.rescored ? 0 : 1;
+}
+
 if (arg('dump') !== null) {
   dump(Number(arg('dump')) || 20);
+} else if (arg('ab') !== null) {
+  process.exit(ab());
 } else {
-  console.log(USAGE);
-  process.exit(2);
+  const files = arg('files');
+  process.exit(run({
+    apply: arg('apply') !== null,
+    limit: Number(arg('limit')) || 0,
+    files: files ? files.split(',').map(f => f.trim()).filter(Boolean) : null,
+    verbose: arg('verbose') !== null,
+    refetchOnly: arg('refetch-list') !== null,
+  }));
 }

@@ -63,7 +63,9 @@ function share(rows) {
   return Object.fromEntries(BUCKETS.map(b => [b, (100 * c[b]) / n]));
 }
 
-function compare(before, current) {
+// opts.requireTextFix (default true): the BRO-4804 pass also needs the truncated text
+// status cleared on most rescored files; other rescores (BRO-5254) only apply the drift gate.
+function compare(before, current, { requireTextFix = true } = {}) {
   const pairs = [];
   let missing = 0;
   for (const b of before) {
@@ -100,7 +102,7 @@ function compare(before, current) {
     // files it touched, otherwise the fix did not take effect and stable scores prove nothing.
     fixTookEffect: done.length > 0 && stillTruncated(done.map(p => p.a)) < stillTruncated(done.map(p => p.b)) * 0.5,
     pass: done.length > 0 && maxShift < SHIFT_LIMIT && Math.abs(meanSigned) < DRIFT_LIMIT
-      && stillTruncated(done.map(p => p.a)) < stillTruncated(done.map(p => p.b)) * 0.5,
+      && (!requireTextFix || stillTruncated(done.map(p => p.a)) < stillTruncated(done.map(p => p.b)) * 0.5),
   };
 }
 
@@ -152,4 +154,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { compare, summarize, share };
+module.exports = { compare, summarize, share, BUCKETS, SHIFT_LIMIT, DRIFT_LIMIT };
