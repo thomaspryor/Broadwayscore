@@ -1,29 +1,29 @@
 {
-  "runDate": "2026-10-13T12:10:55.518Z",
+  "runDate": "2026-10-13T12:33:13.439Z",
   "config": {
-    "batchSize": 1,
+    "batchSize": 10,
     "maxReviews": 1,
     "priority": "all",
-    "showFilter": "the-farnsworth-invention-2007",
+    "showFilter": "burn-this-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
@@ -32,32 +32,32 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "the-farnsworth-invention-2007"
+      "burn-this-2019"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,26 +65,26 @@
       "failed": 0
     }
   },
-  "processed": [
-    "the-farnsworth-invention-2007/variety--charles-isherwood.json"
+  "processed": [],
+  "failed": [
+    "burn-this-2019/wsj--terry-teachout.json"
   ],
-  "failed": [],
   "cumulativeResumedState": {
-    "processed": [
-      "the-farnsworth-invention-2007/variety--charles-isherwood.json"
-    ],
-    "failed": []
+    "processed": [],
+    "failed": [
+      "burn-this-2019/wsj--terry-teachout.json"
+    ]
   },
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/burn-this-2019/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-farnsworth-invention-2007/variety--charles-isherwood.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
