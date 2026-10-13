@@ -75,6 +75,7 @@ function fallbackOutletIdFromHost(hostname) {
   return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
 }
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
+const { matchesOutletCriticFile } = require('./lib/review-file-match');
 const { verifyProduction, quickDateCheck, getShowData, verifierCategoryFor } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
@@ -5723,9 +5724,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       let matched = false;
       for (const file of existingFiles) {
-        const expectedPattern = `${outletNorm}--${criticNorm}`;
-        if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-') ||
-            file.includes(`--${criticNorm}.json`) || file.includes(`--${criticNorm}-`)) {
+        if (matchesOutletCriticFile(file, outletNorm, criticNorm)) {
           const filePath = path.join(showDir, file);
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
@@ -5812,9 +5811,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       let matched = false;
       for (const file of existingFiles) {
-        const expectedPattern = `${outletNorm}--${criticNorm}`;
-        if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-') ||
-            file.includes(`--${criticNorm}.json`) || file.includes(`--${criticNorm}-`)) {
+        if (matchesOutletCriticFile(file, outletNorm, criticNorm)) {
           const filePath = path.join(showDir, file);
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
