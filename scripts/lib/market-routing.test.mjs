@@ -93,3 +93,79 @@ test('venue-substring signal: a real venue mention still matches (regression gua
   );
   assert.ok(signals.includes('venue-substring'), `expected venue-substring to fire for a genuine "longacre" mention, got: ${signals.join(', ')}`);
 });
+
+// BRO-4674: same-title West End reruns. Fixtures copy the shows.json rows.
+const arcadiaOldVic = {
+  id: 'arcadia-west-end-2026', title: 'Arcadia', category: 'west-end', venue: 'The Old Vic',
+  previewsStartDate: '2026-01-24', openingDate: '2026-02-04', closingDate: '2026-03-21',
+};
+const arcadiaDukeOfYorks = {
+  id: 'arcadia-duke-of-yorks-west-end-2026', title: 'Arcadia', category: 'west-end',
+  venue: "Duke of York's Theatre",
+  previewsStartDate: '2026-06-20', openingDate: '2026-07-01', closingDate: '2026-09-12',
+};
+
+test('BRO-4674: an Arcadia review dated after the Old Vic run reroutes to the Duke of York\'s run', () => {
+  const idx = buildSiblingIndex([arcadiaOldVic, arcadiaDukeOfYorks]);
+  const r = classifyMarketRouting({
+    showId: arcadiaOldVic.id, category: 'west-end', siblingIndex: idx,
+    url: 'https://www.timeout.com/london/theatre/arcadia-review-2', publishDate: '2026-07-02',
+  });
+  assert.equal(r.action, 'reroute');
+  assert.equal(r.targetShowId, arcadiaDukeOfYorks.id);
+});
+
+test('BRO-4674: the same review filed under the Duke of York\'s run stays put', () => {
+  const idx = buildSiblingIndex([arcadiaOldVic, arcadiaDukeOfYorks]);
+  const r = classifyMarketRouting({
+    showId: arcadiaDukeOfYorks.id, category: 'west-end', siblingIndex: idx,
+    url: 'https://www.timeout.com/london/theatre/arcadia-review-2', publishDate: '2026-07-02',
+  });
+  assert.equal(r.action, 'accept');
+  assert.equal(r.flag, undefined);
+});
+
+// A run with previews but no recorded press night must still claim its own
+// in-window reviews. Before the fix its window was undated, so an older
+// sibling's +/-1 url-year signal made every review on it ambiguous.
+const interAliaNT = {
+  id: 'inter-alia-west-end-2025', title: 'Inter Alia', category: 'west-end', venue: 'Lyttelton Theatre',
+  previewsStartDate: '2025-07-10', openingDate: null, closingDate: '2025-09-13',
+};
+const interAliaWyndhams = {
+  id: 'inter-alia-west-end-2026', title: 'Inter Alia', category: 'west-end', venue: "Wyndham's Theatre",
+  previewsStartDate: '2026-03-19', openingDate: '2026-04-07', closingDate: '2026-06-20',
+};
+
+test('BRO-4674: a previews-only run keeps its own in-window review (not ambiguous)', () => {
+  const idx = buildSiblingIndex([interAliaNT, interAliaWyndhams]);
+  const r = classifyMarketRouting({
+    showId: interAliaNT.id, category: 'west-end', siblingIndex: idx,
+    url: 'https://www.nytimes.com/2025/07/24/theater/inter-alia-national-theatre-london-review.html',
+    publishDate: '2025-07-24',
+  });
+  assert.equal(r.action, 'accept');
+  assert.notEqual(r.reason, 'ambiguous-production');
+  assert.equal(r.flag, undefined);
+});
+
+test('BRO-4674: the previews fallback applies to the current run only, so a previews-only sibling cannot pre-empt Guard H', () => {
+  const rjPinter = {
+    id: 'romeo-and-juliet-west-end-2026', title: 'Romeo and Juliet', category: 'west-end',
+    venue: 'Harold Pinter Theatre', previewsStartDate: '2026-03-16', openingDate: '2026-03-31', closingDate: '2026-06-20',
+  };
+  const rjDukeOfYorks = {
+    id: 'romeo-and-juliet-west-end-2024', title: 'Romeo and Juliet', category: 'west-end',
+    venue: "Duke of York's Theatre", previewsStartDate: '2024-05-11', openingDate: null, closingDate: '2024-08-03',
+  };
+  const idx = buildSiblingIndex([rjPinter, rjDukeOfYorks]);
+  const r = classifyMarketRouting({
+    showId: rjPinter.id, category: 'west-end', siblingIndex: idx, outletId: 'nypost',
+    url: 'https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shines-in-hollow-broadway-show/',
+    publishDate: 'October 24, 2024',
+  });
+  assert.equal(r.action, 'reject');
+  assert.match(r.reason, /^cross-market/);
+  const sib = idx.get(rjPinter.id).siblings.find(s => s.id === rjDukeOfYorks.id);
+  assert.equal(collectSameTitleSignals(sib, { url: 'https://example.com/2024/05/x', publishDate: '2024-06-01' }).length, 0);
+});

@@ -70,6 +70,7 @@ const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { findSiblingSameUrlPairs } = require('./lib/sibling-same-url');
 
 const USAGE = `audit-sibling-title-misroute.js — backfill audit for the same-title sibling class of cross-show contamination.
 
@@ -246,14 +247,41 @@ function main() {
   // STRICT/UPDATE_BASELINE only: a plain report run has nothing to gate.
   assertCorpusScanned(scanned, { gate: STRICT || UPDATE_BASELINE });
 
+  // BRO-4674: one url counted on two same-title productions. Undated files
+  // score no routing signal, so the per-file pass above accepts both copies.
+  // Report-only (never --fix): deciding which copy is wrong needs a person.
+  const loadFiles = (id) => {
+    const dir = path.join(REVIEW_TEXTS_DIR, id);
+    let names;
+    try { names = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { return []; }
+    const out = [];
+    for (const file of names) {
+      try { out.push({ file, data: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) }); } catch { /* unreadable */ }
+    }
+    return out;
+  };
+  // A clear on ONE copy says that copy belongs where it is, which makes the
+  // other copy the suspect, so only a pair cleared on both sides is skipped.
+  const isCounted = (d) => !isAlreadyFlagged(d) && !d.duplicateOf && d.isRoundupArticle !== true;
+  const bothCleared = (l, r) => isHumanCleared(l) && isHumanCleared(r);
+  for (const p of findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, bothCleared)) {
+    if (ONLY_SHOW && p.showId !== ONLY_SHOW && p.targetShowId !== ONLY_SHOW) continue;
+    hits.push({
+      type: 'same-url', showId: p.showId, file: p.file, targetShowId: p.targetShowId,
+      filePath: path.join(REVIEW_TEXTS_DIR, p.showId, p.file), url: p.url,
+      reason: `same url as ${p.targetShowId}/${p.targetFile}`,
+    });
+  }
+
   const rerouteHits = hits.filter(h => h.type === 'reroute');
   const ambiguousHits = hits.filter(h => h.type === 'ambiguous');
   const rejectHits = hits.filter(h => h.type === 'reject');
+  const sameUrlHits = hits.filter(h => h.type === 'same-url');
 
   if (UPDATE_BASELINE) {
     const baseline = {
       generatedAt: new Date().toISOString().slice(0, 10),
-      hits: [...rerouteHits, ...ambiguousHits].map(h => ({
+      hits: [...rerouteHits, ...ambiguousHits, ...sameUrlHits].map(h => ({
         type: h.type, showId: h.showId, file: h.file, targetShowId: h.targetShowId || null,
       })),
     };
@@ -321,7 +349,7 @@ function main() {
   }
 
   if (JSON_OUT) {
-    console.log(JSON.stringify({ scanned, reroute: rerouteHits, ambiguous: ambiguousHits, reject: rejectHits }, null, 2));
+    console.log(JSON.stringify({ scanned, reroute: rerouteHits, ambiguous: ambiguousHits, reject: rejectHits, sameUrl: sameUrlHits }, null, 2));
   } else {
     console.log(`Sibling-title misroute audit: scanned ${scanned} files across ${dirs.length} show dirs with same-title siblings`);
     console.log(`  reroute (wrong show today): ${rerouteHits.length}`);
@@ -332,6 +360,8 @@ function main() {
     for (const h of ambiguousHits) {
       console.log(`    ${h.showId}  ${h.file}  (${h.reason})${h.applied ? `  [${h.applied}]` : ''}${h.applyError ? `  [ERROR: ${h.applyError}]` : ''}`);
     }
+    console.log(`  same url counted on two productions (report-only): ${sameUrlHits.length}`);
+    for (const h of sameUrlHits) console.log(`    ${h.showId}  ${h.file}  (${h.reason})`);
     if (rejectHits.length) {
       console.log(`  reject (no plausible target, not auto-fixed): ${rejectHits.length}`);
       for (const h of rejectHits) console.log(`    ${h.showId}  ${h.file}  (${h.reason})`);
@@ -341,7 +371,7 @@ function main() {
 
   if (STRICT && !FIX) {
     const baselineKeys = loadBaselineKeys();
-    const newHits = [...rerouteHits, ...ambiguousHits].filter(h => !baselineKeys.has(hitKey(h)));
+    const newHits = [...rerouteHits, ...ambiguousHits, ...sameUrlHits].filter(h => !baselineKeys.has(hitKey(h)));
     if (newHits.length > 0) {
       console.error(`\n✗ STRICT: ${newHits.length} sibling-title misroute(s) NOT in baseline (${BASELINE_PATH}):`);
       for (const h of newHits) {

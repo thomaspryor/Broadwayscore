@@ -35,6 +35,12 @@ const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = re
 const { VENUE_STOPWORDS } = require('./production-match-gate');
 
 const DAY = 86400000;
+
+function validDate(v) {
+  if (!v) return null;
+  const d = new Date(v);
+  return isNaN(d.getTime()) ? null : d;
+}
 const SIBLING_CLOSE_DAYS = 30;         // same-market: sibling opening this close to review → candidate
 const CROSS_MARKET_SIBLING_CLOSE_DAYS = 60; // cross-market: wider window (e.g. oh-mary BW→WE at 32d)
 const CURRENT_FAR_DAYS = 90;           // current show's opening this far from review → eligible
@@ -78,6 +84,7 @@ function buildSiblingIndex(shows) {
       showYear,
       openingDate: opening && !isNaN(opening.getTime()) ? opening : null,
       closingDate: closing && !isNaN(closing.getTime()) ? closing : null,
+      previewsStartDate: validDate(s.previewsStartDate),
       title: s.title || null,
       category: s.category || null,
       venue: s.venue || null,
@@ -127,15 +134,24 @@ function buildSiblingIndex(shows) {
  */
 function collectSameTitleSignals(candidate, ctx) {
   const signals = [];
+  // A run with no openingDate (press night unrecorded) still has a known first
+  // preview: date its window from that, or the run's own in-window reviews
+  // score zero signals and read as ambiguous-production (BRO-4674:
+  // inter-alia-west-end-2025, for-black-boys-...-west-end-2024). Only the
+  // CURRENT show is passed a previewsStartDate (buildSiblingIndex keeps it off
+  // siblings): giving previews-only siblings signals turned 11 Broadway
+  // reviews filed under romeo-and-juliet-west-end-2026 from Guard H 'reject'
+  // into a weaker ambiguous flag via romeo-and-juliet-west-end-2024.
+  const runStart = candidate.openingDate || candidate.previewsStartDate || null;
   const url = ctx && ctx.url ? String(ctx.url) : '';
   const pubStr = ctx && ctx.publishDate ? ctx.publishDate : null;
   const reviewDate = parseDate(typeof pubStr === 'string' ? pubStr : null);
 
   // Signal 1: URL year matches opening year (or one year either side).
-  if (url && candidate.openingDate) {
+  if (url && runStart) {
     const urlYear = urlYearFromPath(url);
     if (urlYear) {
-      const openYear = candidate.openingDate.getFullYear();
+      const openYear = runStart.getFullYear();
       if (urlYear >= openYear - 1 && urlYear <= openYear + 1) {
         signals.push('url-year');
       }
@@ -143,12 +159,12 @@ function collectSameTitleSignals(candidate, ctx) {
   }
 
   // Signal 2: publishDate inside production window.
-  if (reviewDate && candidate.openingDate) {
-    const windowStart = new Date(candidate.openingDate.getTime() - 60 * DAY);
+  if (reviewDate && runStart) {
+    const windowStart = new Date(runStart.getTime() - 60 * DAY);
     // closingDate when known, else openingDate + 365d cap (long-runner safety).
     const windowEnd = candidate.closingDate
       ? new Date(candidate.closingDate.getTime() + 30 * DAY)
-      : new Date(candidate.openingDate.getTime() + 365 * DAY);
+      : new Date(runStart.getTime() + 365 * DAY);
     if (reviewDate >= windowStart && reviewDate <= windowEnd) {
       signals.push('publish-date');
     }
@@ -467,7 +483,8 @@ function classifyMarketRouting(args) {
     if (sameMarketSiblings.length >= 1) {
       const ctx = { url, publishDate };
       const currentSignals = collectSameTitleSignals(
-        { openingDate: sibData.openingDate, closingDate: sibData.closingDate, venue: sibData.venue },
+        { openingDate: sibData.openingDate, previewsStartDate: sibData.previewsStartDate,
+          closingDate: sibData.closingDate, venue: sibData.venue },
         ctx
       );
       const scored = sameMarketSiblings.map(s => ({
