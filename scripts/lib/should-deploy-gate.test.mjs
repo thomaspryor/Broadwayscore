@@ -198,3 +198,75 @@ test('SITE_PATHS keeps its load-bearing entries', () => {
     assert.ok(SITE_PATHS.includes(p), `SITE_PATHS must include ${p}`);
   }
 });
+
+// ─── BRO-3618: more core-data files tracked, generic compare ───────────────
+const { compareDataShas, DATA_TRACKED_FILES } = require('./should-deploy-gate.js');
+const { blobShaMetaKey, pickBlobShaMeta } = require('./core-data-blob-meta.js');
+const fs = await import('node:fs');
+const cp = await import('node:child_process');
+
+const allNow = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [f, 'n-' + f]).concat(Object.entries(over)));
+const allBase = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [blobShaMetaKey(f), 'n-' + f]).concat(Object.entries(over)));
+
+test('tracked set covers reviews, shows and the other private files read at build', () => {
+  for (const f of ['reviews.json', 'shows.json', 'commercial.json', 'grosses.json', 'critic-consensus.json']) {
+    assert.ok(DATA_TRACKED_FILES.includes(f), f);
+  }
+  // churn guard: audience-buzz is rewritten by ~16 workflows; it rides the 6h backstop.
+  assert.ok(!DATA_TRACKED_FILES.includes('audience-buzz.json'));
+});
+
+test('blobShaMetaKey: stable names, legacy keys unchanged', () => {
+  assert.equal(blobShaMetaKey('reviews.json'), 'reviewsBlobSha');
+  assert.equal(blobShaMetaKey('shows.json'), 'showsBlobSha');
+  assert.equal(blobShaMetaKey('critic-consensus.json'), 'criticConsensusBlobSha');
+  assert.deepEqual(pickBlobShaMeta({ githubCommitSha: 'x', grossesBlobSha: 'g', junkBlobSha: '' }), { grossesBlobSha: 'g' });
+});
+
+test('compareDataShas: every tracked file alone, with no public diff, flips the verdict to dirty', () => {
+  for (const f of DATA_TRACKED_FILES) {
+    assert.equal(compareDataShas(allNow({ [f]: 'CHANGED' }), allBase()), 'dirty', f);
+    // and decide() then proceeds on that signal alone (no public-repo diff)
+    const r = decide({ ...base, diffResult: 'clean', dataDiffResult: compareDataShas(allNow({ [f]: 'CHANGED' }), allBase()) });
+    assert.deepEqual([r.proceed, r.reason], [true, 'data-changed'], f);
+  }
+});
+
+test('compareDataShas: identical -> clean; lookup failed -> error/null', () => {
+  assert.equal(compareDataShas(allNow(), allBase()), 'clean');
+  assert.equal(compareDataShas(null, allBase()), 'error');
+  assert.equal(compareDataShas(null, {}), null);
+});
+
+test('compareDataShas: first rollout (baseline stamped without new files) is error, not dirty or clean', () => {
+  const legacyBase = { reviewsBlobSha: 'n-reviews.json', showsBlobSha: 'n-shows.json' };
+  assert.equal(compareDataShas(allNow(), legacyBase), 'error');
+  // a real reviews change still wins over the rollout ambiguity
+  assert.equal(compareDataShas(allNow({ 'reviews.json': 'X' }), legacyBase), 'dirty');
+});
+
+test('compareDataShas: a file absent on both sides is ignored, absent on one side is error', () => {
+  const now = allNow({ 'grosses.json': null });
+  const b = allBase();
+  delete b.grossesBlobSha;
+  assert.equal(compareDataShas(now, b), 'clean');
+  assert.equal(compareDataShas(allNow({ 'grosses.json': null }), allBase()), 'error');
+});
+
+test('workflow stamps exactly what the gate tracks (drift guard)', () => {
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.match(y, /should-deploy-gate\.js --meta-args/);
+  assert.match(y, /META_ARGS\+=\(--meta "\$line"\)/);
+  assert.doesNotMatch(y, /--meta "reviewsBlobSha=/); // hard-coded pair is gone
+  assert.match(y, /"\$\{META_ARGS\[@\]\}"/);
+});
+
+test('--meta-args prints one <name>BlobSha=<git blob sha> per tracked file present in data/', () => {
+  const dir = fs.mkdtempSync('/tmp/claude-0/s/meta-');
+  fs.mkdirSync(dir + '/data');
+  fs.writeFileSync(dir + '/data/reviews.json', '{"a":1}\n');
+  fs.writeFileSync(dir + '/data/critic-consensus.json', '{}\n');
+  const out = cp.execFileSync('node', [new URL('./should-deploy-gate.js', import.meta.url).pathname, '--meta-args'], { cwd: dir, encoding: 'utf8' });
+  const want = (f) => cp.execFileSync('git', ['hash-object', dir + '/data/' + f], { encoding: 'utf8' }).trim();
+  assert.equal(out, `reviewsBlobSha=${want('reviews.json')}\ncriticConsensusBlobSha=${want('critic-consensus.json')}\n`);
+});

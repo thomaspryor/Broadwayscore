@@ -158,11 +158,18 @@ jobs:
         # shows.json-only change (e.g. a status flip) isn't a blind spot.
         id: data_sha
         run: |
+          # reviews.json + shows.json are mandatory (a missing one must fail the
+          # job, as before). The other tracked files (BRO-3618) are stamped only
+          # when present; the gate reads an unstamped file as "absent".
           REVIEWS_SHA=$(git hash-object data/reviews.json)
           SHOWS_SHA=$(git hash-object data/shows.json)
           echo "reviews_sha=$REVIEWS_SHA" >> "$GITHUB_OUTPUT"
           echo "shows_sha=$SHOWS_SHA" >> "$GITHUB_OUTPUT"
-          echo "Core data blob SHAs — reviews.json: $REVIEWS_SHA  shows.json: $SHOWS_SHA"
+          # BRO-3618: full `<name>BlobSha=<sha>` list, names derived from
+          # scripts/lib/core-data-blob-meta.js (shared with the gate + read-back).
+          # Hashed HERE, before the build, because prebuild can rewrite data/.
+          node scripts/lib/should-deploy-gate.js --meta-args > "$RUNNER_TEMP/core-data-meta-args"
+          echo "Core data blob SHAs:"; cat "$RUNNER_TEMP/core-data-meta-args"
 
       - name: Verify Vercel build guard is active
         env:
@@ -439,9 +446,13 @@ jobs:
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          REVIEWS_BLOB_SHA: ${{ steps.data_sha.outputs.reviews_sha }}
-          SHOWS_BLOB_SHA: ${{ steps.data_sha.outputs.shows_sha }}
         run: |
+          # BRO-3618: `<name>BlobSha=<sha>` lines written by the "Compute core data
+          # blob SHAs" step (pre-build hashes); one --meta flag per tracked file.
+          META_ARGS=()
+          while IFS= read -r line; do
+            [ -n "$line" ] && META_ARGS+=(--meta "$line")
+          done < "$RUNNER_TEMP/core-data-meta-args"
           # --archive=split-tgz: Vercel's split-tarball format (Jan 2025 changelog)
           # uploads up to 30% faster than single --archive=tgz for prebuilt
           # deployments with many files (.vercel/output has ~15k files).
@@ -482,7 +493,7 @@ jobs:
             if [ "$ATTEMPT" -gt 1 ]; then
               ATTEMPT_TIMEOUT=240
             fi
-            URL=$(timeout 240 npx vercel deploy --prebuilt --prod --no-wait --archive=split-tgz --meta "reviewsBlobSha=$REVIEWS_BLOB_SHA" --meta "showsBlobSha=$SHOWS_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
+            URL=$(timeout 240 npx vercel deploy --prebuilt --prod --no-wait --archive=split-tgz "${META_ARGS[@]}" --token=$VERCEL_TOKEN) && status=0 || status=$?
             if [ "$status" -eq 0 ]; then
               node scripts/vercel-wait-deployment.js "$URL" --timeout="$ATTEMPT_TIMEOUT" && status=0 || status=$?
             fi

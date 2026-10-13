@@ -47,6 +47,7 @@
 
 const { execSync, execFileSync } = require('child_process');
 const { checkLanded } = require('./lib/landing-verify.js');
+const { pickBlobShaMeta } = require('./lib/core-data-blob-meta.js');
 const { prodProofFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
@@ -91,7 +92,7 @@ function githubProdDeploy() {
     }
     if (!proof) continue;
     if (!best || proof.provenAtMs > best.createdMs) {
-      best = { sha: run.head_sha, reviewsBlobSha: null, showsBlobSha: null, url: proof.url, createdMs: proof.provenAtMs, via: `deploy run ${run.id}` };
+      best = { sha: run.head_sha, reviewsBlobSha: null, showsBlobSha: null, blobShas: {}, url: proof.url, createdMs: proof.provenAtMs, via: `deploy run ${run.id}` };
     }
     if (++proofs >= GITHUB_PROOFS) break;
   }
@@ -124,6 +125,8 @@ async function fetchLatestProdDeploy({ timeoutMs = 20000 } = {}) {
     // this repo's git tree.
     reviewsBlobSha: (dep.meta && dep.meta.reviewsBlobSha) || null,
     showsBlobSha: (dep.meta && dep.meta.showsBlobSha) || null,
+    // BRO-3618: every other tracked core-data file (`<name>BlobSha` meta keys).
+    blobShas: pickBlobShaMeta(dep.meta),
     url: dep.url,
     createdMs: dep.created,
     ageSec: Math.round((Date.now() - dep.created) / 1000),
@@ -190,7 +193,7 @@ async function main() {
     const done = wait == null || live || Date.now() >= deadline;
     if (done) {
       if (json) {
-        console.log(JSON.stringify({ deployedSha: dep.sha, reviewsBlobSha: dep.reviewsBlobSha, showsBlobSha: dep.showsBlobSha, url: dep.url, ageSec: dep.ageSec, target: commit, live }, null, 2));
+        console.log(JSON.stringify({ deployedSha: dep.sha, reviewsBlobSha: dep.reviewsBlobSha, showsBlobSha: dep.showsBlobSha, blobShas: dep.blobShas || {}, url: dep.url, ageSec: dep.ageSec, target: commit, live }, null, 2));
       } else {
         const shortDeployed = dep.sha ? dep.sha.slice(0, 10) : '(unknown)';
         const label = dep.via
