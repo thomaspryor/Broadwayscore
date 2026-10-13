@@ -52,15 +52,22 @@ Usage:
   --apply     write the clear (isNonReview=false, nonReviewManualClear=true) to matched files.
               Default is report-only.
   --show=ID   scope the sweep to one show directory
-  --gate      exit 1 when the match count exceeds --max (informational — not wired into CI)
+  --gate      exit 1 when the match count exceeds --max (report-only in check-corpus-drift.yml,
+              --gate --max=0, BRO-2237; --apply is never run from CI, see BRO-2090)
   --max=N     ceiling for --gate (default 10)
   --json      machine-readable output
 `;
 
 const ROOT = path.resolve(__dirname, '..');
-const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
-const AUDIT_DIR = path.join(ROOT, 'data', 'audit');
-const LOG_PATH = path.join(AUDIT_DIR, 'exclusion-flags-audit.json');
+// Env overrides (BRO-2237) let check-corpus-drift.yml keep the tracked log
+// clean and let the test point the real script at a synthetic corpus.
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
+  ? path.resolve(process.env.REVIEW_TEXTS_DIR)
+  : path.join(ROOT, 'data', 'review-texts');
+const LOG_PATH = process.env.EXCLUSION_FLAGS_AUDIT_LOG
+  ? path.resolve(process.env.EXCLUSION_FLAGS_AUDIT_LOG)
+  : path.join(ROOT, 'data', 'audit', 'exclusion-flags-audit.json');
+const AUDIT_DIR = path.dirname(LOG_PATH);
 
 const SKIP_DIRS = new Set(['_pending', '_superseded-misattributed']);
 

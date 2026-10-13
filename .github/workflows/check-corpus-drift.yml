@@ -194,7 +194,8 @@ jobs:
           # classifier is documented as unreliable (memory:
           # feedback_llm_verifier_hallucinates.md), and neither existing
           # isNonReview false-positive audit (audit-exclusion-flags.js's
-          # essay-intro sweep, audit-cross-show-url.js's URL-slug detector)
+          # essay-intro sweep, run report-only in the next step, and
+          # audit-cross-show-url.js's URL-slug detector)
           # covers the content-based cross-show-misattribution class this adds.
           # Soaking non-blocking here first rather than a hard --gate in
           # test.yml's data-validation job — this is a brand-new predicate on
@@ -221,6 +222,33 @@ jobs:
           fi
           N2=$(echo "$OUT2" | grep -oE 'unaudited: *[0-9]+' | grep -oE '[0-9]+' | head -1)
           echo "::notice::nonreview-slug-coverage: ${N2:-0} isNonReview file(s) with 400+ words and a review URL slug remain unaudited (no existing predicate covers them — no validated auto-clear rule exists yet, BRO-3862)."
+
+      - name: Audit essay-intro isNonReview false positives (BRO-2237, report-only)
+        if: always()
+        env:
+          REVIEW_TEXTS_DIR: data/review-texts
+        run: |
+          # audit-exclusion-flags.js (BRO-57) sweeps isNonReview:true files for the
+          # essay-intro false-positive class classify-non-reviews.js keeps minting.
+          # REPORT-ONLY: --apply must never run from CI. BRO-2090 is the incident
+          # where an unattended exclusion-flag drain stripped 64 correct flags;
+          # every clear stays a human-verified, hand-run action.
+          # The log goes to RUNNER_TEMP so the tracked data/audit copy stays clean
+          # for the push-with-retry steps below. stdout only: the FAIL line is on
+          # stderr and would break the JSON parse.
+          set +e
+          OUT=$(EXCLUSION_FLAGS_AUDIT_LOG="$RUNNER_TEMP/exclusion-flags-audit.json" node scripts/audit-exclusion-flags.js --gate --max=0 --json 2>/dev/null)
+          RC=$?
+          set -e
+          SCANNED=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).scanned)}catch{console.log('')}})")
+          COUNT=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).count)}catch{console.log('')}})")
+          echo "essay-intro isNonReview FP sweep: scanned=${SCANNED:-none} matches=${COUNT:-none} exit=$RC"
+          if [ -z "$SCANNED" ] || [ "$SCANNED" = "0" ]; then
+            echo "::warning::audit-exclusion-flags.js could not run (exit=$RC, no corpus scanned) — no essay-intro isNonReview drift signal this run."
+          elif [ "${COUNT:-0}" -gt 0 ]; then
+            echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{for(const h of JSON.parse(s).hits.slice(0,20))console.log('  '+h.showId+'/'+h.file+' type='+h.nonReviewType+' words='+h.wordCount)})"
+            echo "::warning::audit-exclusion-flags.js found $COUNT isNonReview file(s) matching the essay-intro false-positive pattern (genuine reviews likely excluded from scoring). Verify each by hand, then clear them from a local checkout with the script's --show and --apply flags (never from CI)."
+          fi
 
       - name: Audit star-rating accuracy (HARD blocking-signal, SUSPECT warning)
         if: always()
