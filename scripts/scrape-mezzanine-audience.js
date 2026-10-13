@@ -137,7 +137,7 @@ const TRANSIENT_MESSAGES = /socket hang up|read ECONNRESET|connect ETIMEDOUT|req
 
 class AuthError extends Error {
   constructor(statusCode) {
-    super(`Authentication failed (${statusCode}). Session token may have expired. Re-intercept via mitmproxy to get a fresh token.`);
+    super(`Authentication failed (${statusCode}). Session token may have expired. Renew it from the owner's link on BRO-5235 (scripts/mezzanine-token.js).`);
     this.statusCode = statusCode;
     this.isAuth = true;
     this.exitCode = 2; // distinct from generic failure
@@ -753,7 +753,7 @@ async function main() {
   }
   if (!SESSION_TOKEN) {
     console.error('Error: MEZZANINE_SESSION_TOKEN environment variable must be set');
-    console.error('To get a fresh token, intercept Mezzanine iOS app traffic via mitmproxy.');
+    console.error('To get a fresh token: node scripts/mezzanine-token.js link --issue=BRO-5235 (the owner pastes one from the iPhone).');
     process.exit(1);
   }
 

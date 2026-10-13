@@ -79,6 +79,24 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Check when the Mezzanine token expires
+        # BRO-5235: within 30 days of expiry (or once expired) the owner gets
+        # the signed renewal link on the card, which emails them. Advisory: an
+        # unknown answer never asks the owner, and never blocks the scrape.
+        continue-on-error: true
+        env:
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/mezzanine-token.js check-expiry --issue=BRO-5235 --dry-run
+          else
+            node scripts/mezzanine-token.js check-expiry --issue=BRO-5235
+          fi
+
       - name: Run Mezzanine scraper
         id: scrape
         env:
@@ -127,6 +145,16 @@ jobs:
             resolveCondition("mezzanine:session-token-expired");
           '
 
+      - name: Post the owner's Mezzanine renewal link
+        # BRO-5235: the signed paste page (scripts/mezzanine-token.js). A link
+        # with 7+ days left is kept, so repeat failures send no second email.
+        if: failure() && steps.scrape.outputs.failure_mode == 'auth' && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/mezzanine-token.js link --issue=BRO-5235 "--problem=The Mezzanine sign-in code has expired, so the weekly ratings update is paused."
+
       - name: Send alert on failure
         if: failure()
         uses: actions/github-script@v7
@@ -144,15 +172,15 @@ jobs:
               await routeAlert({
                 conditionKey: 'mezzanine:session-token-expired',
                 title: 'Mezzanine Scraper Failed — Session Token Expired',
-                description: 'The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.',
+                description: 'The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** The owner renews it on the iPhone from the signed renewal link on BRO-5235 (scripts/mezzanine-token.js, posted by the step above); no Mac or GitHub secret edit needed.',
                 severity: 'error',
                 disposition: 'human',
                 // BRO-5099: only the owner can renew the token, so this is a decision
                 // row ("Needs your attention"), never an auto-fix dispatch.
                 decision: true,
-                decisionPrompt: 'Mezzanine Scraper Failed — Session Token Expired: renew MEZZANINE_SESSION_TOKEN (mitmproxy on the Mac, open the Mezzanine iPhone app, copy the X-Parse-Session-Token header into the GitHub secret).',
+                decisionPrompt: 'Mezzanine Scraper Failed — Session Token Expired: open the Reconnect Mezzanine link emailed to you and follow the iPhone steps there (about 10 minutes).',
                 fields: [
-                  { name: 'Action Required', value: 'Re-intercept Mezzanine iOS app via mitmproxy' },
+                  { name: 'Action Required', value: 'Owner: Reconnect Mezzanine link (BRO-5235)' },
                   { name: 'Run', value: `[View logs](${runUrl})` }
                 ],
                 url: runUrl
@@ -304,6 +332,16 @@ jobs:
             resolveCondition("mezzanine:session-token-expired");
           '
 
+      - name: Post the owner's Mezzanine renewal link
+        # BRO-5235: the signed paste page (scripts/mezzanine-token.js). A link
+        # with 7+ days left is kept, so repeat failures send no second email.
+        if: failure() && steps.resolve.outputs.failure_mode == 'auth'
+        continue-on-error: true
+        env:
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/mezzanine-token.js link --issue=BRO-5235 "--problem=The Mezzanine sign-in code has expired, so matching imported shows is paused."
+
       - name: Send alert on auth failure
         if: failure() && steps.resolve.outputs.failure_mode == 'auth'
         uses: actions/github-script@v7
@@ -318,13 +356,13 @@ jobs:
             await routeAlert({
               conditionKey: 'mezzanine:session-token-expired',
               title: 'Unmatched Imports Resolver Failed — Mezzanine Session Token Expired',
-              description: 'The nightly self-heal resolver failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
+              description: 'The nightly self-heal resolver failed with an authentication error (401/403). **The session token has expired.** The owner renews it on the iPhone from the signed renewal link on BRO-5235 (scripts/mezzanine-token.js).',
               severity: 'error',
               disposition: 'human',
               // BRO-5099: only the owner can renew the token, so this is a decision
               // row ("Needs your attention"), never an auto-fix dispatch.
               decision: true,
-              decisionPrompt: 'Unmatched Imports Resolver Failed — Mezzanine Session Token Expired: renew MEZZANINE_SESSION_TOKEN (mitmproxy on the Mac, open the Mezzanine iPhone app, copy the X-Parse-Session-Token header into the GitHub secret).',
+              decisionPrompt: 'Unmatched Imports Resolver Failed — Mezzanine Session Token Expired: open the Reconnect Mezzanine link emailed to you and follow the iPhone steps there (about 10 minutes).',
               fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));
@@ -456,6 +494,16 @@ jobs:
             resolveCondition("mezzanine:session-token-expired");
           '
 
+      - name: Post the owner's Mezzanine renewal link
+        # BRO-5235: the signed paste page (scripts/mezzanine-token.js). A link
+        # with 7+ days left is kept, so repeat failures send no second email.
+        if: failure() && steps.refresh.outputs.failure_mode == 'auth'
+        continue-on-error: true
+        env:
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/mezzanine-token.js link --issue=BRO-5235 "--problem=The Mezzanine sign-in code has expired, so the show catalog refresh is paused."
+
       - name: Send alert on auth failure
         if: failure() && steps.refresh.outputs.failure_mode == 'auth'
         uses: actions/github-script@v7
@@ -470,13 +518,13 @@ jobs:
             await routeAlert({
               conditionKey: 'mezzanine:session-token-expired',
               title: 'Mezzanine Catalog Refresh Failed — Session Token Expired',
-              description: 'The weekly diary-shows.json delta refresh failed with an authentication error (401/403). **The session token has expired.** Re-intercept the Mezzanine iOS app via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.',
+              description: 'The weekly diary-shows.json delta refresh failed with an authentication error (401/403). **The session token has expired.** The owner renews it on the iPhone from the signed renewal link on BRO-5235 (scripts/mezzanine-token.js).',
               severity: 'error',
               disposition: 'human',
               // BRO-5099: only the owner can renew the token, so this is a decision
               // row ("Needs your attention"), never an auto-fix dispatch.
               decision: true,
-              decisionPrompt: 'Mezzanine Catalog Refresh Failed — Session Token Expired: renew MEZZANINE_SESSION_TOKEN (mitmproxy on the Mac, open the Mezzanine iPhone app, copy the X-Parse-Session-Token header into the GitHub secret).',
+              decisionPrompt: 'Mezzanine Catalog Refresh Failed — Session Token Expired: open the Reconnect Mezzanine link emailed to you and follow the iPhone steps there (about 10 minutes).',
               fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
               url: runUrl,
             }).catch((e) => console.error('Alert notification failed:', e.message));

@@ -49,25 +49,7 @@ function mask(value) {
   if (value && process.env.GITHUB_ACTIONS === 'true') console.log(`::add-mask::${value}`);
 }
 
-async function linearIssue(identifier) {
-  const linear = require('./lib/linear-client');
-  const data = await linear.graphql('query($id: String!) { issue(id: $id) { id description state { type } } }', { id: identifier });
-  if (!data.issue) throw new Error(`Linear issue ${identifier} not found`);
-  return { linear, issue: data.issue };
-}
-
-// A closed card is not emailed (notify-owner-decisions skips terminal
-// states), so a later revocation reopens the renewal card to Todo.
-async function reopenInput(linear, issue) {
-  const { isTerminalStateType } = require('./lib/linear-state-types');
-  if (!isTerminalStateType(issue.state && issue.state.type)) return {};
-  const todo = (await linear.getTeam()).states.nodes.find((st) => st.type === 'unstarted');
-  return todo ? { stateId: todo.id } : {};
-}
-
-// A link with this much life left is kept: finance-ingest re-asks every day it
-// fails, and each new link would email the owner again.
-const KEEP_LINK_DAYS = 7;
+const card = require('./lib/owner-link-card');
 
 async function writeLink(identifier, problem, { dryRun = false, setup = false, nowMs = Date.now() } = {}) {
   const { url, exp } = g.buildStartLink(process.env.APPROVAL_HMAC_SECRET, nowMs);
@@ -76,28 +58,12 @@ async function writeLink(identifier, problem, { dryRun = false, setup = false, n
     console.log(`would write the DECISION NEEDED link to ${identifier} (valid until ${new Date(exp * 1000).toISOString().slice(0, 10)})`);
     return;
   }
-  const { linear, issue } = await linearIssue(identifier);
-  const current = g.existingLinkExp(issue.description);
-  if (!problem && current && current * 1000 - nowMs > KEEP_LINK_DAYS * 86400 * 1000) {
-    console.log(`${identifier} already has a renewal link valid until ${new Date(current * 1000).toISOString().slice(0, 10)}; kept it`);
-    return;
-  }
-  const reopen = await reopenInput(linear, issue);
-  try {
-    await linear.updateIssue(issue.id, { description: g.withDecisionBlock(issue.description, block), ...reopen });
-  } catch {
-    // never echo the error: it could quote the description, which holds the signed link
-    throw new Error(`Linear update of ${identifier} failed`);
-  }
-  console.log(`wrote the DECISION NEEDED renewal link to ${identifier}${reopen.stateId ? ' (reopened)' : ''}`);
+  // A problem note (a failed reconnect) always re-mints so the owner sees the reason.
+  await card.writeLinkBlock(identifier, g.LINK, block, { keepExisting: !problem, nowMs });
 }
 
 async function clearLink(identifier, note) {
-  const { linear, issue } = await linearIssue(identifier);
-  const next = g.stripDecisionBlock(issue.description);
-  if (next !== String(issue.description || '')) await linear.updateIssue(issue.id, { description: next });
-  await linear.createComment(issue.id, note);
-  console.log(`cleared the renewal link on ${identifier}`);
+  await card.clearLinkBlock(identifier, g.LINK, note);
 }
 
 /**

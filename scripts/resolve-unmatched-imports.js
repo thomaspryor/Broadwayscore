@@ -20,7 +20,7 @@
  *   NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY — Supabase REST
  *
  * Exit codes: 0 success, 1 unexpected error, 2 Mezzanine auth failure
- * (session token expired — rotate via mitmproxy, see memory/feedback_mac_studio_cookies.md).
+ * (session token expired — the owner renews it via scripts/mezzanine-token.js, BRO-5235).
  */
 
 const fs = require('fs');
