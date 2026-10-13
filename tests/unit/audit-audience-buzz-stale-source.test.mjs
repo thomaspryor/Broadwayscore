@@ -10,7 +10,7 @@ const { audit } = require('../../scripts/audit-audience-buzz-contamination.js');
 const TODAY = '2026-05-24';
 
 const shows = [
-  { id: 'pal-joey-2008', title: 'Pal Joey', category: 'broadway', openingDate: '2008-12-18', status: 'closed' },
+  { id: 'pal-joey-2008', title: 'Pal Joey', category: 'broadway', openingDate: '2008-12-18', closingDate: '2009-03-01', status: 'closed' },
   { id: 'merrily-2026', title: 'Merrily We Roll Along', category: 'broadway', openingDate: '2026-01-15', status: 'closed' },
   { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway', openingDate: '2015-08-06', status: 'open' },
   { id: 'old-no-modern-source', title: 'Old', category: 'broadway', openingDate: '1985-01-01', status: 'closed' },

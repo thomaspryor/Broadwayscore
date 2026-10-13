@@ -460,6 +460,16 @@ async function main() {
   let shows = showsData.shows;
   console.log(`  Total shows: ${shows.length}`);
 
+  // BRO-5277: drop cast files whose show left shows.json (retired or renamed
+  // rows used to leave wrong-production casts behind). Refuses on a stub
+  // shows.json; whole-run no-op on a dry run.
+  if (!dryRun) {
+    const { pruneOrphanCastFiles } = require('./prune-orphan-cast-files');
+    const pruned = pruneOrphanCastFiles({ castDir: CAST_DIR, showsFile: SHOWS_FILE, apply: true });
+    if (pruned.refused) console.log(`  Orphan cast prune skipped: ${pruned.refused}`);
+    else if (pruned.prune.length) console.log(`  Pruned ${pruned.prune.length} orphan cast file(s): ${pruned.prune.join(', ')}`);
+  }
+
   // Filter to target shows
   if (showFilter) {
     // --show-filter takes one id/slug or a comma-separated list (BRO-2517).

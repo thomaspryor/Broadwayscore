@@ -357,3 +357,39 @@ describe('outletRegistryAuditExclusionBranch (BRO-4401): the audit counts branch
     assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x' }), true);
   });
 });
+
+describe('deriveOutletDisplayName / unusable slugs (BRO-4468)', () => {
+  const { deriveOutletDisplayName, isUnusableOutletSlug, decideOutletAutoRegistration, STAGE_REASONS } =
+    require(resolve(ROOT, 'scripts/lib/outlet-auto-register.js'));
+
+  test('a review-supplied name that spells the same id wins over the capitalized slug', () => {
+    const r = deriveOutletDisplayName({
+      outletId: 'newjerseystage',
+      reviewOutletNames: ['New Jersey Stage', 'New Jersey Stage', 'Newjerseystage', 'newjerseystage'],
+    });
+    assert.deepEqual(r, { displayName: 'New Jersey Stage', inferred: false });
+  });
+
+  test('a name for a different identity (a critic byline) is never accepted', () => {
+    const r = deriveOutletDisplayName({ outletId: 'liamodell', reviewOutletNames: ['Alice Saville', 'Alice Saville'] });
+    assert.equal(r.displayName, 'Liamodell');
+    assert.equal(r.inferred, true);
+  });
+
+  test('a hyphenated slug falls back to word-capitalized and is not flagged', () => {
+    assert.deepEqual(deriveOutletDisplayName({ outletId: 'time-out-london' }), { displayName: 'Time Out London', inferred: false });
+  });
+
+  test('"Name.com" review labels match the id', () => {
+    assert.equal(deriveOutletDisplayName({ outletId: 'nytheatre', reviewOutletNames: ['NYTheatre.com'] }).displayName, 'NYTheatre.com');
+  });
+
+  test('a bare domain label is an unusable slug and is staged, even with a domain hint', () => {
+    for (const id of ['co', 'com', 'uk', 'ab']) assert.equal(isUnusableOutletSlug(id), true, id);
+    assert.equal(isUnusableOutletSlug('variety'), false);
+    assert.deepEqual(
+      decideOutletAutoRegistration({ outletId: 'co', domainHint: 'stagedoorjoe.co.uk', criticSlugs: new Set() }),
+      { action: 'stage', reason: STAGE_REASONS.UNUSABLE_SLUG },
+    );
+  });
+});

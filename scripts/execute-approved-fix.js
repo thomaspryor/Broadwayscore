@@ -78,6 +78,9 @@ const EDITABLE_DATA_FIELDS = pickEditableFields([
 ]);
 
 const ALLOWED_SCRIPTS = [
+  // BRO-5276: delete Theatr audience data attached to shows that closed before
+  // Theatr existed, recompute their combined score. Needs --apply in args.
+  'neutralize-stale-theatr-buzz.js',
   'rebuild-all-reviews.js',
   'gather-reviews.js',
   'collect-review-texts.js',

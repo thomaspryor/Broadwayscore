@@ -23,6 +23,7 @@ const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/title-match');
+const { closedBeforeTheatr } = require('./lib/theatr-stale-attachment');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { buildTheatrCoverageFlags } = require('./lib/theatr-coverage-audit');
 const { assertShowsQuerySuccess } = require('./lib/theatr-api-response');
@@ -260,7 +261,10 @@ function matchTheatrToShows(theatrShows, ourShows) {
     if (candidates && candidates.length > 0) {
       // If multiple (revivals/markets), prefer matching category but allow transfers
       const isBroadway = theatr.eventCategory === 'Broadway';
+      // BRO-5276: a row that closed before Theatr existed cannot own these votes;
+      // the listing is a modern production of the same title.
       const started = candidates.filter(s => {
+        if (closedBeforeTheatr(s)) return false;
         const start = s.previewsStartDate || s.openingDate;
         return !start || start <= today;
       });
@@ -289,7 +293,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
         const ratio = shorter.length / longer.length;
         if (ratio >= 0.3) {
           const start = show.previewsStartDate || show.openingDate;
-          if (!start || start <= today) {
+          if ((!start || start <= today) && !closedBeforeTheatr(show)) {
             prefixCandidates.push(show);
           }
         }

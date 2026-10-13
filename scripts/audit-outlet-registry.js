@@ -256,23 +256,11 @@ function extractOutletIdFromFilename(filename) {
 
 // Generate a suggested display name from an outletId
 function suggestDisplayName(outletId, existingDisplayNames = []) {
-  // If we have existing display names from the reviews, use the most common one
-  if (existingDisplayNames.length > 0) {
-    // Count occurrences and pick most frequent
-    const counts = {};
-    for (const name of existingDisplayNames) {
-      counts[name] = (counts[name] || 0) + 1;
-    }
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    return sorted[0][0];
-  }
-
-  // Otherwise, convert outletId to a reasonable display name
-  // e.g., "xyz-magazine" -> "Xyz Magazine"
-  return outletId
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  // BRO-4468: the capitalized slug is wrong for compound ids (newjerseystage),
+  // and "most common review.outlet" can be a critic name. Shared helper accepts
+  // a review-supplied name only when it spells the same id.
+  const { deriveOutletDisplayName } = require('./lib/outlet-auto-register');
+  return deriveOutletDisplayName({ outletId, reviewOutletNames: existingDisplayNames }).displayName;
 }
 
 // Generate a suggested registry entry for a missing outlet

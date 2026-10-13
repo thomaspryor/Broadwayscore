@@ -1223,6 +1223,11 @@ on:
       # runs in the tests/** glob; path-listed so a solo script edit triggers CI.
       - 'scripts/lib/sync-changed-files.sh'
       - 'scripts/audit-cast-contamination.js'
+      # BRO-4468 / BRO-5276: new top-level scripts, tests live in tests/unit/ (node --test batch).
+      - 'scripts/audit-registry-slug-displaynames.js'
+      - 'scripts/neutralize-stale-theatr-buzz.js'
+      - 'scripts/prune-orphan-cast-files.js'
+      - 'scripts/report-review-drift-details.js'
       - 'scripts/audit-commercial-contamination.js'
       - 'scripts/audit-audience-buzz-contamination.js'
       # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).

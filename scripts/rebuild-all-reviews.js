@@ -6870,14 +6870,17 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     STAGING_RELATIVE_PATH: OUTLET_STAGING_RELATIVE_PATH,
     criticNameSlugs,
     decideOutletAutoRegistration,
+    deriveOutletDisplayName,
     mergeStagingEntries,
   } = require('./lib/outlet-auto-register');
   const stagedOutlets = [];
+  const outletNamesSeen = {};
   const reviewCountByOutlet = {};
   const exampleShowByOutlet = {};
   for (const r of allReviews) {
     if (!r.outletId) continue;
     reviewCountByOutlet[r.outletId] = (reviewCountByOutlet[r.outletId] || 0) + 1;
+    if (r.outlet) (outletNamesSeen[r.outletId] = outletNamesSeen[r.outletId] || []).push(r.outlet);
     if (!exampleShowByOutlet[r.outletId]) exampleShowByOutlet[r.outletId] = r.showId || null;
   }
   if (newOutlets.length > 0) {
@@ -6893,11 +6896,12 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     // twin record in this very run.
     const criticSlugs = criticNameSlugs(criticRegistry, allReviews);
     for (const outletId of newOutlets) {
-      const displayName = outletId
-        .split('-')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ');
+      const { displayName, inferred: displayNameInferred } = deriveOutletDisplayName({
+        outletId,
+        reviewOutletNames: outletNamesSeen[outletId] || [],
+      });
       const candidateEntry = { displayName, tier: 3, aliases: [outletId] };
+      if (displayNameInferred) candidateEntry.displayNameInferred = true; // BRO-4468: slug-derived, needs a human look
       // A new outlet whose id/displayName (raw or "the "-stripped) lands on
       // an already-registered outlet's identity is a silent semantic
       // duplicate (the-la-times/latimes, task #1838/#1843) — it would

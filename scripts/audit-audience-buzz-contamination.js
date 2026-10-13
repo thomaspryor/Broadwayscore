@@ -71,6 +71,7 @@ const { meaningfulTitleTokens } = require('./lib/cast-extraction-guards');
 const { isRedditVolumeInflated, otherSourceReviewCounts, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
 const { isRedditEligible } = require('./lib/audience-weighting');
 const { normalizeTitle } = require('./lib/title-match');
+const { closedBeforeTheatr } = require('./lib/theatr-stale-attachment');
 
 const ROOT = path.join(__dirname, '..');
 const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
@@ -82,10 +83,17 @@ const FAIL_SIGNALS = new Set([
   'REDDIT_SCORE_DIVERGENCE',
 ]);
 
+// INFO signals are listed but never fail --strict (BRO-5276): a non-Reddit source
+// sitting 35+ points from the others is platform disagreement the audit's own doc
+// calls "not contamination" (Bad Cinderella: 241 Theatr votes, 19 vs 63). Left as
+// a warn it kept the daily --strict run red with nothing a human could fix.
+const INFO_SIGNALS = new Set([
+  'OTHER_SOURCE_DIVERGENCE',
+]);
+
 const WARN_SIGNALS = new Set([
   'SHOW_NOT_IN_DB',
   'BROADWAYCOM_URL_NO_TITLE',
-  'OTHER_SOURCE_DIVERGENCE',
   'OTHER_SOURCE_STALE',
   'REDDIT_GENERIC_VOLUME_INFLATION',
   'TITLE_COLLISION_SIBLING_DIVERGENCE',
@@ -119,6 +127,7 @@ const WARN_SIGNALS = new Set([
 // (2021-2025) safe (those CAN have legitimate modern app users).
 const MODERN_APP_SOURCES = ['theatr', 'seatplan'];
 const STALE_YEARS_AGO = 8;
+const OTHER_SOURCE_DIVERGENCE_MIN_RC = 25;
 
 function loadShows() {
   try {
@@ -231,6 +240,11 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
       if (src.suppressed) continue;
       const rc = src.reviewCount || 0;
       if (rc < 10) continue;
+      // BRO-5276: a non-Reddit source below OTHER_SOURCE_DIVERGENCE_MIN_RC votes
+      // swings 35+ points on sampling noise alone (15 Theatr votes: the-pass,
+      // the-real-ivanov, tootsie), and the daily --strict run could never clear
+      // it. Reddit keeps the old floor: its check is the contamination signal.
+      if (name !== 'reddit' && rc < OTHER_SOURCE_DIVERGENCE_MIN_RC) continue;
       const others = credibleOthers(name);
       // Reddit divergence is the contamination signal we care about — but
       // only meaningful if at least TWO other credible sources agree (so
@@ -322,8 +336,13 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
       const show = showById.get(resolvedId || id);
       if (show && show.status === 'closed' && show.openingDate) {
         const openYear = parseInt(show.openingDate.slice(0, 4), 10);
-        if (openYear && (currentYear - openYear) > STALE_YEARS_AGO) {
+        const oldRun = openYear && (currentYear - openYear) > STALE_YEARS_AGO;
+        if (oldRun) {
           for (const name of MODERN_APP_SOURCES) {
+            // BRO-5276: Theatr is judged by the show's CLOSE date (it had no users
+            // before 2021), so Dear Evan Hansen / Phantom, which closed 2022-23,
+            // keep their genuine votes. seatplan keeps the open-year rule.
+            if (name === 'theatr' && !closedBeforeTheatr(show)) continue;
             const src = sources[name];
             if (src && typeof src.score === 'number' && (src.reviewCount || 0) > 0) {
               flags.push(`OTHER_SOURCE_STALE:src=${name},score=${src.score},rc=${src.reviewCount},openYear=${openYear}`);
@@ -354,7 +373,7 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
         id,
         resolvedId: resolvedId && resolvedId !== id ? resolvedId : null,
         title: x.title || null,
-        severity: hasFail ? 'fail' : 'warn',
+        severity: hasFail ? 'fail' : (flags.every(f => INFO_SIGNALS.has(f.split(':')[0])) ? 'info' : 'warn'),
         flags,
       });
     }
@@ -384,7 +403,8 @@ function main() {
   } else {
     const fails = issues.filter(i => i.severity === 'fail');
     const warns = issues.filter(i => i.severity === 'warn');
-    console.log(`[audit-audience-buzz-contamination] ${fails.length} fail, ${warns.length} warn\n`);
+    const infos = issues.filter(i => i.severity === 'info');
+    console.log(`[audit-audience-buzz-contamination] ${fails.length} fail, ${warns.length} warn, ${infos.length} info (platform disagreement, not gated)\n`);
     for (const i of issues) {
       console.log(`  [${i.severity}] ${i.id}${i.title ? ` "${i.title}"` : ''}`);
       for (const f of i.flags) console.log(`     ${f}`);
@@ -440,4 +460,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { audit, FAIL_SIGNALS, WARN_SIGNALS, MODERN_APP_SOURCES, STALE_YEARS_AGO };
+module.exports = { audit, FAIL_SIGNALS, WARN_SIGNALS, INFO_SIGNALS, MODERN_APP_SOURCES, STALE_YEARS_AGO, OTHER_SOURCE_DIVERGENCE_MIN_RC };

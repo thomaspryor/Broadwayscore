@@ -30,6 +30,7 @@
  */
 
 const fs = require('fs');
+const { foldDiacritics } = require('./lib/title-match');
 const path = require('path');
 const {
   OPERA_TITLES,
@@ -70,6 +71,18 @@ function titleTokensFromShowId(showId) {
     .replace(/-globe-west-end-(20\d{2})$/, '')
     .split('-')
     .filter(t => t.length >= 4);
+}
+
+// True when the URL spells the show's slug with its separators removed
+// ("kramerfauci" in ".../Kramer/Fauci-335948/cast"). Slug must be >=6 chars so
+// short ids cannot match by accident.
+function urlCarriesShowSlug(lowerUrl, showId) {
+  const slug = foldDiacritics(showId)
+    .replace(/-(off-)?(broadway|west-end|off-west-end)-(20\d{2})$/, '')
+    .replace(/-globe$/, '')
+    .replace(/[^a-z0-9]/g, '');
+  if (slug.length < 6) return false;
+  return foldDiacritics(lowerUrl).replace(/[^a-z0-9]/g, '').includes(slug);
 }
 
 function audit() {
@@ -113,8 +126,13 @@ function audit() {
     if (d.sourceUrl) {
       const tokens = titleTokensFromShowId(showId);
       const url = d.sourceUrl.toLowerCase();
-      const hasTitle = tokens.some(t => url.includes(t));
-      if (!hasTitle) flags.push('SRC_URL_NO_TITLE');
+      // BRO-5277: compare run-together too. BWW paths spell "Kramer/Fauci-335948"
+      // and "Ai-Yah-Goy-Vey!-335828" for ids kramerfauci / ai-yah-goy-vey, where
+      // no hyphen-split token is both >=4 chars and present. `sourceVerified` is
+      // a human stamp for a source that cannot carry the title at all (a social
+      // post): the cast was read against independent press and recorded.
+      const hasTitle = tokens.some(t => url.includes(t)) || urlCarriesShowSlug(url, showId);
+      if (!hasTitle && !(d.sourceVerified && d.sourceVerified.by)) flags.push('SRC_URL_NO_TITLE');
 
       // Opera-publication source for a non-opera show. Showing this as a
       // distinct signal lets future contamination be triaged faster.
@@ -194,4 +212,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { audit };
+module.exports = { audit, urlCarriesShowSlug };
