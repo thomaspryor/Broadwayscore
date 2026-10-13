@@ -25,7 +25,21 @@
  * These never increment failureCount and never contribute to retirement.
  */
 const SOFT_404_REASON = 'soft_404';
-const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON]);
+/**
+ * The route this URL needs (Browserbase) was never tried because a day/run/
+ * domain session cap was already spent (BRO-5222). Before this reason existed
+ * those rows were recorded as all_tiers_timeout / all_tiers_failed, counted
+ * toward retirement, and 61 WSJ rows were reported as unrecoverable without a
+ * single Browserbase attempt.
+ */
+const ROUTE_CAPPED_REASON = 'route_not_attempted_cap';
+/**
+ * A row may be deferred for a capped route this many times; the next capped
+ * failure is recorded under its ordinary reason and counts. Stops a row whose
+ * route is capped every day from being retried forever at no evidence cost.
+ */
+const MAX_ROUTE_CAPPED_DEFERRALS = 3;
+const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON, ROUTE_CAPPED_REASON]);
 
 /** @param {string} reason */
 function isNonEvidenceFailure(reason) {
@@ -64,7 +78,7 @@ function isStrictFailureReason(reason) {
  * Thresholds (unchanged from the inline logic this replaces):
  *   strict (dead/garbage) → 3 failures
  *   everything else       → 5 failures
- *   budget_capped         → never (not evidence about the URL)
+ *   budget_capped / route_not_attempted_cap → never (not evidence about the URL)
  *
  * @param {{failureReason?: string, failureCount?: number}} entry
  */
@@ -73,6 +87,59 @@ function isPermanentlyFailed(entry) {
   const count = (entry && entry.failureCount) || 0;
   if (isNonEvidenceFailure(reason)) return false;
   return count >= (isStrictFailureReason(reason) ? 3 : 5);
+}
+
+/**
+ * Pick the failed-fetches reason for a fetch that threw. Precedence: a
+ * confirmed 404 is evidence about the URL and always wins; then a Bright Data
+ * budget cap; then a capped Browserbase route; then the generic buckets.
+ *
+ * @param {object} p
+ * @param {string} p.message - the thrown error's message
+ * @param {boolean} [p.bdWasCapped] - Bright Data withheld a request this review
+ * @param {string|null} [p.routeCapped] - 'day'|'run'|'domain' when the
+ *   Browserbase route would have run but a cap blocked it
+ * @returns {string}
+ */
+function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null }) {
+  const msg = String(message || '');
+  if (msg.includes('404')) return 'url_dead_404';
+  if (bdWasCapped) return 'budget_capped';
+  if (routeCapped) return ROUTE_CAPPED_REASON;
+  if (msg.includes('timeout') || msg.includes('TIMEOUT')) return 'all_tiers_timeout';
+  if (msg.includes('All tiers failed')) return 'all_tiers_failed';
+  return 'fetch_error';
+}
+
+/**
+ * Apply the capped-route deferral limit before a failure is written.
+ * Returns the reason to record and the new cappedDeferrals tally. Past
+ * MAX_ROUTE_CAPPED_DEFERRALS the row is recorded as all_tiers_failed (counts).
+ *
+ * @param {string} reason - from classifyFetchFailure
+ * @param {{cappedDeferrals?: number}|null} existing - prior ledger entry
+ * @returns {{reason: string, cappedDeferrals: number}}
+ */
+function applyRouteCapDeferralLimit(reason, existing) {
+  const prior = (existing && existing.cappedDeferrals) || 0;
+  if (reason !== ROUTE_CAPPED_REASON) return { reason, cappedDeferrals: prior };
+  const next = prior + 1;
+  return { reason: next > MAX_ROUTE_CAPPED_DEFERRALS ? 'all_tiers_failed' : reason, cappedDeferrals: next };
+}
+
+/**
+ * A capped-route row is not retried on the same UTC day it was capped: the
+ * caps reset daily, so a same-day retry would hit the same cap. Targeted runs
+ * bypass this through the collector's existing fetch-gate bypass.
+ *
+ * @param {{failureReason?: string, lastCappedAt?: string}|null} entry
+ * @param {Date} [now]
+ */
+function isRouteCapCooldownActive(entry, now = new Date()) {
+  if (!entry || entry.failureReason !== ROUTE_CAPPED_REASON || !entry.lastCappedAt) return false;
+  const capped = new Date(entry.lastCappedAt);
+  if (Number.isNaN(capped.getTime())) return false;
+  return capped.toISOString().slice(0, 10) === now.toISOString().slice(0, 10);
 }
 
 /**
@@ -97,6 +164,11 @@ function shouldReopenStaleContentMismatch(entry, data, currentVersion) {
 
 module.exports = {
   SOFT_404_REASON,
+  ROUTE_CAPPED_REASON,
+  MAX_ROUTE_CAPPED_DEFERRALS,
+  classifyFetchFailure,
+  applyRouteCapDeferralLimit,
+  isRouteCapCooldownActive,
   shouldReopenStaleContentMismatch,
   NON_EVIDENCE_REASONS,
   isNonEvidenceFailure,

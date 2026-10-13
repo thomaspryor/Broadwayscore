@@ -98,12 +98,43 @@ function resolveExemptScripts(env = process.env) {
 }
 
 /**
+ * Recovery reserve carved out of the daily ceiling (BRO-5222). On 2026-10-12
+ * routine sweeps used all 250 sessions by mid-morning, so 61 WSJ rows (a
+ * Browserbase-only outlet) never reached Browserbase and were reported as
+ * unrecoverable. Runs that do not opt in stop at maxPerDay - reserve; runs
+ * started with BROWSERBASE_USE_RESERVE=true (targeted recovery, opening night)
+ * may use the full ceiling. The ceiling itself is unchanged.
+ */
+const DEFAULT_RECOVERY_RESERVE = 30;
+
+/**
+ * BROWSERBASE_RECOVERY_RESERVE when a non-negative integer, else the default.
+ * 0 is allowed (turns the reserve off).
+ * @param {NodeJS.ProcessEnv} [env]
+ * @returns {number}
+ */
+function resolveRecoveryReserve(env = process.env) {
+  const raw = parseInt(env.BROWSERBASE_RECOVERY_RESERVE, 10);
+  return Number.isFinite(raw) && raw >= 0 ? raw : DEFAULT_RECOVERY_RESERVE;
+}
+
+/**
+ * Does this run consume the recovery reserve? Explicit opt-in only.
+ * @param {NodeJS.ProcessEnv} [env]
+ * @returns {boolean}
+ */
+function resolveUseReserve(env = process.env) {
+  return String(env.BROWSERBASE_USE_RESERVE || '').trim().toLowerCase() === 'true';
+}
+
+/**
  * @param {object} params
  * @param {number} params.sessionsToday - Sessions consumed across all runs today
  * @param {number} params.sessionsThisRun - Sessions consumed in the current run
  * @param {object} params.sessionsPerDomain - Map of {domain: count} for today
  * @param {string} [params.urlDomain] - Hostname of the URL being fetched
- * @param {object} params.config - Caps: maxPerDay, maxPerRun, maxPerDomain
+ * @param {object} params.config - Caps: maxPerDay, maxPerRun, maxPerDomain,
+ *   optional reserve (sessions held back from runs without useReserve) and useReserve
  * @returns {{allowed: boolean, reason?: 'day'|'run'|'domain', limit?: number, used?: number}}
  */
 function checkBrowserbaseCaps({
@@ -114,9 +145,11 @@ function checkBrowserbaseCaps({
   config,
 }) {
   const { maxPerDay, maxPerRun, maxPerDomain } = config;
+  const reserve = config.useReserve ? 0 : Math.max(0, config.reserve || 0);
+  const dayLimit = Math.max(0, maxPerDay - reserve);
 
-  if (sessionsToday >= maxPerDay) {
-    return { allowed: false, reason: 'day', limit: maxPerDay, used: sessionsToday };
+  if (sessionsToday >= dayLimit) {
+    return { allowed: false, reason: 'day', limit: dayLimit, used: sessionsToday };
   }
   if (sessionsThisRun >= maxPerRun) {
     return { allowed: false, reason: 'run', limit: maxPerRun, used: sessionsThisRun };
@@ -135,6 +168,9 @@ module.exports = {
   resolveMaxSessionsPerDay,
   resolveOpeningWindowReservePerShow,
   resolveExemptScripts,
+  resolveRecoveryReserve,
+  resolveUseReserve,
+  DEFAULT_RECOVERY_RESERVE,
   DEFAULT_MAX_SESSIONS_PER_DAY,
   DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW,
 };

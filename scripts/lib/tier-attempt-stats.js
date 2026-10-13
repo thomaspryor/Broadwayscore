@@ -53,7 +53,9 @@ function tallyFileAttempts(stats, domain, data, normalizeTierId) {
     && attempts[winner].method === data.fetchMethod;
 
   attempts.forEach((attempt, i) => {
-    if (!attempt) return;
+    // A tier skipped before running (Browserbase cap, BRO-5222) says nothing
+    // about whether that tier works for the domain.
+    if (!attempt || attempt.skipped) return;
     const tierId = normalizeTierId(attempt.method, attempt.tier);
     if (!stats[domain]) stats[domain] = {};
     if (!stats[domain][tierId]) stats[domain][tierId] = emptyBucket();

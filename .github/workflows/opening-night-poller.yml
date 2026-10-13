@@ -332,6 +332,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_USE_RESERVE: 'true' # opening night may use the recovery reserve (BRO-5222)
           # WE opening-night SERP burst is ON by default (automated; overrides the
           # orchestrator's iteration-1-8 --skip-serp deferral for aggressive-window WE shows,
           # bounded by the hard caps in scripts/lib/serp-burst-caps.js). Emergency kill-switch:
@@ -600,6 +601,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_USE_RESERVE: 'true' # opening night may use the recovery reserve (BRO-5222)
           BROWSERBASE_ENABLED: 'true'
           BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
           # Account-wide daily ceiling, injected so this job's bww-rr-discover

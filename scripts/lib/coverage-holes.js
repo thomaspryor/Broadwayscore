@@ -31,7 +31,7 @@ const { hasExcerpt } = require('./excerpt-fields');
 
 // An explicit decision stored on the record: D's "no exclusion flag" test.
 const EXCLUSION_FLAGS = ['wrongProduction', 'wrongShow', 'isNonReview', 'isNotReview', 'nonReviewFlag', 'duplicateOf', 'isRoundupArticle', 'fabricatedEntry', 'isSyndicatedDuplicate', 'crossOutletDuplicate', 'rejectionReason', 'rejectedAt', 'suspectedMisattribution'];
-const NO_TEXT_REASONS = ['url_content_mismatch', 'scraper_garbage', 'scraper_timeout', 'not_attempted', 'no_url', 'bot_blocked'];
+const NO_TEXT_REASONS = ['url_content_mismatch', 'scraper_garbage', 'scraper_timeout', 'not_attempted', 'no_url', 'bot_blocked', 'route_capped'];
 const NO_SIGNAL_RULES = ['noTextOrScoreSignal', 'wrongContentNoUsableSignal'];
 
 const has = (v) => v !== null && v !== undefined && v !== '' && v !== 0;

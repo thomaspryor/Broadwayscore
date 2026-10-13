@@ -256,6 +256,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_USE_RESERVE: 'true' # opening night may use the recovery reserve (BRO-5222)
           BROWSERBASE_ENABLED: 'true'
         run: |
           echo "=== Gathering review URLs (aggregator-first: BWW RR → DTLI → Playbill → SERP) ==="
@@ -281,6 +282,7 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_USE_RESERVE: 'true' # opening night may use the recovery reserve (BRO-5222)
           BROWSERBASE_ENABLED: 'true'
           BROWSERBASE_MAX_SESSIONS_PER_RUN: '20'
           SHOW_FILTER: ${{ inputs.show_id }}

@@ -74,6 +74,10 @@ on:
         description: 'Max Browserbase sessions per run (default 30, daily cap 250 — see scripts/lib/browserbase-caps.js)'
         required: false
         default: '30'
+      browserbase_recovery:
+        description: 'Targeted recovery run: may use the Browserbase recovery reserve, and the per-domain cap rises to the per-run cap (BRO-5222)'
+        required: false
+        default: 'false'
       content_tier:
         description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
         required: false
@@ -313,6 +317,8 @@ jobs:
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
           BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_USE_RESERVE: ${{ inputs.browserbase_recovery == 'true' && 'true' || '' }}
+          BROWSERBASE_MAX_SESSIONS_PER_DOMAIN: ${{ inputs.browserbase_recovery == 'true' && (inputs.browserbase_max_sessions || '30') || '' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ steps.sched.outputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
@@ -714,6 +720,8 @@ jobs:
           BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
           BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_USE_RESERVE: ${{ inputs.browserbase_recovery == 'true' && 'true' || '' }}
+          BROWSERBASE_MAX_SESSIONS_PER_DOMAIN: ${{ inputs.browserbase_recovery == 'true' && (inputs.browserbase_max_sessions || '30') || '' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           OUTLET_TIER: ${{ matrix.outlet_tier }}

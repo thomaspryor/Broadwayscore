@@ -28,8 +28,11 @@
  *   BROWSERBASE_API_KEY - Browserbase API key (for managed browser cloud)
  *   BROWSERBASE_PROJECT_ID - Browserbase project ID
  *   BROWSERBASE_ENABLED - 'true' to enable Browserbase tier
- *   BROWSERBASE_MAX_SESSIONS_PER_DAY - Daily limit (default: 30 = ~$3/day)
- *   BROWSERBASE_MAX_SESSIONS_PER_RUN - Per-run limit (default: 10)
+ *   BROWSERBASE_MAX_SESSIONS_PER_DAY - Daily limit (default: 250, lib/browserbase-caps.js)
+ *   BROWSERBASE_MAX_SESSIONS_PER_RUN - Per-run limit (default: 30)
+ *   BROWSERBASE_MAX_SESSIONS_PER_DOMAIN - Per-run per-domain limit (default: 10)
+ *   BROWSERBASE_RECOVERY_RESERVE - Sessions held back for opted-in runs (default: 30)
+ *   BROWSERBASE_USE_RESERVE - 'true' lets this run use the reserve (targeted recovery, opening night)
  *   WSJ_COOKIES - Base64-encoded JSON cookie array for WSJ paywall bypass
  *   NEWYORKER_COOKIES - Base64-encoded JSON cookie array for New Yorker paywall bypass
  *   NYT_COOKIES - Base64-encoded JSON cookie array for NYT paywall bypass
@@ -158,7 +161,8 @@ const {
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
-const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
+const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve } = require('./lib/browserbase-caps');
+const { pinBrowserbaseFirst } = require('./lib/browserbase-route');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
@@ -441,6 +445,10 @@ const CONFIG = {
   browserbaseMaxSessionsPerDay: resolveMaxSessionsPerDay(), // $25/day ceiling = $750/mo MAX; normal $5-9/day
   browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '30'), // Per workflow run; matches typical opening-night batch
   browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '10'), // Prevent one paywalled outlet monopolizing
+  // BRO-5222: the last BROWSERBASE_RECOVERY_RESERVE sessions of the day are
+  // held for runs started with BROWSERBASE_USE_RESERVE=true.
+  browserbaseRecoveryReserve: resolveRecoveryReserve(),
+  browserbaseUseReserve: resolveUseReserve(),
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -588,7 +596,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
-const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, applyRouteCapDeferralLimit, isRouteCapCooldownActive } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
@@ -2197,9 +2205,19 @@ function saveBrowserbaseUsage() {
  * Check if we can use Browserbase (within spending limits)
  */
 function canUseBrowserbase(urlDomain) {
-  if (CONFIG.browserbaseKillSwitch) return false;
-  if (!CONFIG.browserbaseEnabled) return false;
-  if (!CONFIG.browserbaseApiKey) return false;
+  return !browserbaseBlockReason(urlDomain);
+}
+
+/**
+ * Why Browserbase can't run right now: null when it can, 'disabled' for
+ * configuration (kill switch, off, no key), else the cap that is spent
+ * ('day' | 'run' | 'domain'). Only cap reasons make a failure a deferral
+ * (route_not_attempted_cap, BRO-5222); 'disabled' is not a spend decision.
+ */
+function browserbaseBlockReason(urlDomain) {
+  if (CONFIG.browserbaseKillSwitch) return 'disabled';
+  if (!CONFIG.browserbaseEnabled) return 'disabled';
+  if (!CONFIG.browserbaseApiKey) return 'disabled';
 
   const decision = checkBrowserbaseCaps({
     sessionsToday: browserbaseUsage.sessionsToday,
@@ -2210,14 +2228,18 @@ function canUseBrowserbase(urlDomain) {
       maxPerDay: CONFIG.browserbaseMaxSessionsPerDay,
       maxPerRun: CONFIG.browserbaseMaxSessionsPerRun,
       maxPerDomain: CONFIG.browserbaseMaxSessionsPerDomain,
+      reserve: CONFIG.browserbaseRecoveryReserve,
+      useReserve: CONFIG.browserbaseUseReserve,
     },
   });
   if (!decision.allowed) {
     const labels = { day: 'daily', run: 'per-run', domain: `per-domain (${urlDomain})` };
-    console.log(`    ⚠ Browserbase ${labels[decision.reason]} limit reached (${decision.used}/${decision.limit})`);
-    return false;
+    const reserveNote = decision.reason === 'day' && !CONFIG.browserbaseUseReserve && CONFIG.browserbaseRecoveryReserve > 0
+      ? `, ${CONFIG.browserbaseRecoveryReserve} held for recovery runs` : '';
+    console.log(`    ⚠ Browserbase ${labels[decision.reason]} limit reached (${decision.used}/${decision.limit}${reserveNote})`);
+    return decision.reason;
   }
-  return true;
+  return null;
 }
 
 /**
@@ -2244,6 +2266,10 @@ async function fetchWithBrowserbase(url, review) {
     return await _fetchWithBrowserbaseAttempt(url, review);
   } catch (error) {
     if (!/Insufficient text/.test(error.message)) throw error;
+    // A second session needs ~40s; with less left before the per-review
+    // REVIEW_TIMEOUT it would be paid for and then abandoned (BRO-5222).
+    const startedAt = Number.isFinite(review && review._reviewStartedAt) ? review._reviewStartedAt : null;
+    if (startedAt !== null && startedAt + CONFIG.reviewTimeout - Date.now() < 40000) throw error;
     console.log(`    ⚠ Browserbase returned insufficient text — retrying once with a fresh session...`);
     return await _fetchWithBrowserbaseAttempt(url, review);
   }
@@ -3361,7 +3387,7 @@ function buildTierContext(review) {
   const forceArchiveFirst = ['paywall', 'partial_text'].includes(reason);
   // Only skip direct scrapers for paywall if we DON'T have cookies (cookies = try Playwright first)
   const skipDirectScrapers = reason === 'paywall' && !getPaywallCredentials(url)?.email;
-  const enableBrowserbase = reason === 'bot_blocked' || reason === 'url_content_mismatch';
+  const enableBrowserbase = reason === 'bot_blocked' || reason === 'url_content_mismatch' || reason === 'route_capped';
 
   const isArchiveFirst = forceArchiveFirst || (!archiveOrgDisabledForBatch &&
     ((!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview)));
@@ -3548,16 +3574,29 @@ function buildTierChain(ctx, review) {
       timeoutMs: 120000,
       shouldRun: () => {
         if (!CONFIG.browserbaseEnabled) return false;
-        // canUseBrowserbase() now also enforces the per-domain cap when passed the
-        // hostname, so the day/run/domain decision is unified in one place.
-        let urlDomain;
-        try { urlDomain = new URL(ctx.url).hostname.replace('www.', ''); } catch {}
-        if (!canUseBrowserbase(urlDomain)) return false;
-        return (
+        const wouldRoute = (
           ctx.isKnownBlocked || ctx.sawCaptcha || ctx.enableBrowserbase ||
           (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
         );
+        if (!wouldRoute) return false;
+        // browserbaseBlockReason() also enforces the per-domain cap when passed
+        // the hostname, so the day/run/domain decision is unified in one place.
+        let urlDomain;
+        try { urlDomain = new URL(ctx.url).hostname.replace('www.', ''); } catch {}
+        const blocked = browserbaseBlockReason(urlDomain);
+        if (blocked && blocked !== 'disabled') {
+          // The route this URL needs was not tried: record it so the failure
+          // is a deferral, not evidence against the URL (BRO-5222).
+          ctx.browserbaseCapSkipped = blocked;
+          review._browserbaseCapSkipped = blocked;
+        }
+        return !blocked;
       },
+      // Read only when shouldRun() returned false (see the tier loop).
+      get skipMessage() {
+        return ctx.browserbaseCapSkipped ? `Browserbase not attempted: ${ctx.browserbaseCapSkipped} cap reached` : null;
+      },
+      skipIsCap: true,
       execute: (url) => fetchWithBrowserbase(url, review),
       onSuccess: (review, result) => {
         state.tierBreakdown.browserbase.push(review.filePath);
@@ -3742,6 +3781,7 @@ async function fetchReviewText(review) {
   }
 
   let chain = buildTierChain(ctx, review);
+  const builtChain = chain; // before reorder/skip, for pinBrowserbaseFirst below
 
   // Reorder tier chain based on domain-specific success rates.
   // Tiers listed in DOMAIN_TIER_ORDER for this domain get moved to the front (in priority order).
@@ -3780,6 +3820,13 @@ async function fetchReviewText(review) {
     }
   } catch {}
 
+  // Browserbase-first outlets (WSJ) try Browserbase before paid tiers. Applied
+  // after the learned order and the skip list, which are regenerated weekly
+  // from attempt stats and dropped Browserbase for wsj.com (BRO-5222).
+  try {
+    chain = pinBrowserbaseFirst(chain, new URL(url).hostname, builtChain);
+  } catch {}
+
   const attempts = [];
   let bestResult = null; // Track longest non-empty text from garbage tiers
   // BRO-4334: best non-garbage but INCOMPLETE result on a hard-paywall domain
@@ -3811,7 +3858,9 @@ async function fetchReviewText(review) {
     if (!tier.shouldRun()) {
       if (tier.skipMessage) {
         console.log(`  [Tier ${tier.tierNumber}] ${tier.skipMessage}`);
-        attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: tier.skipMessage });
+        // skipped: the tier never ran, so tier-attempt-stats must not count
+        // it as a failure for the domain (BRO-5222).
+        attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: tier.skipMessage, ...(tier.skipIsCap ? { skipped: true } : {}) });
       }
       continue;
     }
@@ -6193,7 +6242,7 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null };
+        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null, lastCappedAt: f.lastCappedAt || null };
         failedFetchesByReviewId.set(id, entry);
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
@@ -6425,7 +6474,11 @@ function findReviewsToProcess() {
         // The ledger entry may describe a URL the review no longer carries (BRO-3319).
         const ledgerForOtherUrl = isFetchLedgerEntryForOtherUrl(fetchFailureEntry, data);
         if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly && !ledgerForOtherUrl) {
-          const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
+          let fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
+          // A route capped today is capped until the UTC reset (BRO-5222).
+          if (fetchGate.shouldRetry && isRouteCapCooldownActive(fetchFailureEntry)) {
+            fetchGate = { shouldRetry: false, reason: 'route_cap_cooldown', nextAttemptAt: null };
+          }
           const gateBypassed = shouldBypassFetchGate({
             reviewTargeted: CONFIG.reviewFilter.size > 0,
             showFilterActive: isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter),
@@ -6825,6 +6878,10 @@ function recordFailedFetch(review, reason, details = {}) {
   // Excluded at the COUNTER, not merely at the read threshold — a write-time
   // increment is damage a read-time filter can no longer undo once the reason
   // field is overwritten by the next, genuine failure.
+  // A capped-route deferral is allowed MAX_ROUTE_CAPPED_DEFERRALS times, then
+  // recorded as an ordinary failure so a row can't defer forever (BRO-5222).
+  const capped = applyRouteCapDeferralLimit(reason, existing);
+  reason = capped.reason;
   const counts = shouldCountFailure(reason);
   const entry = {
     reviewId: review.reviewId,
@@ -6838,6 +6895,7 @@ function recordFailedFetch(review, reason, details = {}) {
     lastFailedAt: new Date().toISOString(),
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
     ...(counts || reason === 'soft_404' ? {} : { lastCappedAt: new Date().toISOString() }),
+    ...(capped.cappedDeferrals ? { cappedDeferrals: capped.cappedDeferrals } : {}),
     ...details,
   };
 
@@ -7682,21 +7740,17 @@ async function processReview(review) {
     stats.totalFailed++;
 
     // Record permanent failure (increments count — after 3, review is skipped)
-    const is404 = error.message.includes('404');
-    const isTimeout = error.message.includes('timeout') || error.message.includes('TIMEOUT');
-    const allTiersFailed = error.message.includes('All tiers failed');
     // A Bright Data request withheld by the daily breaker or per-run budget is
     // not evidence about the URL. A confirmed 404 still wins — that IS evidence
     // — but any other failure that happened while BD was capped is recorded as
     // budget_capped so it never counts toward permanent retirement (S2-T5).
+    // Same for a Browserbase route skipped at a session cap (BRO-5222).
     const bdWasCapped = (getScraperStats().bdBlocked || 0) > bdBlockedBefore;
-    const failReason = is404 ? 'url_dead_404'
-      : bdWasCapped ? 'budget_capped'
-      : isTimeout ? 'all_tiers_timeout'
-      : allTiersFailed ? 'all_tiers_failed'
-      : 'fetch_error';
+    const routeCapped = review._browserbaseCapSkipped || null;
+    const failReason = classifyFetchFailure({ message: error.message, bdWasCapped, routeCapped });
     recordFailedFetch(review, failReason, {
       errorMessage: error.message.slice(0, 200),
+      ...(routeCapped ? { routeCapped } : {}),
     });
 
     // Track failures by outlet for end-of-run reporting

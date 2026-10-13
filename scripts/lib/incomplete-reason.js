@@ -124,6 +124,15 @@ function classifyIncompleteReason(review, failedFetchEntry) {
     return { incompleteReason: 'no_url', incompleteDetail: 'No URL on review file' };
   }
 
+  // Priority 4.5: the needed route (Browserbase) was never tried because a
+  // session cap was spent (BRO-5222). Retried on a later day, never "blocked".
+  if (failureReason === 'route_not_attempted_cap') {
+    return {
+      incompleteReason: 'route_capped',
+      incompleteDetail: `Browserbase not attempted: ${failedFetchEntry.routeCapped || 'session'} cap reached`
+    };
+  }
+
   // Priority 5: Scraper timeout
   if (failureReason === 'all_tiers_timeout') {
     return {
