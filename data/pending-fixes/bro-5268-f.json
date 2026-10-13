@@ -1,6 +1,6 @@
 {
   "issueNumber": "bro-5268-f",
-  "planId": "3a8d4271-b207-4b7b-8913-08266aac55e3",
+  "planId": "cb660eb3-874a-4b35-8dca-be97f348abd4",
   "status": "pending",
   "submitter": {
     "name": null,
@@ -37,7 +37,7 @@
         "showId": "cabaret-2024",
         "field": "estimatedRecoupmentSource",
         "oldValue": "Deep Research: 0% investor recovery per lawsuit filings",
-        "newValue": "Broadway Journal (Sep 7, 2025) reported the production \"hasn't returned any money to investors, resulting in a total loss to-date,\" so investors had recouped 0% of the $24.25 million capitalization. https://broadwayjournal.com/cabaret-investor-sues-atg-amid-early-closing",
+        "newValue": "Broadway Journal (Sep 7, 2025) reported the production \"hasn't returned any money to investors, resulting in a total loss to-date,\" so investors had recouped 0% of the $24.25 million capitalization. https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
         "description": "cabaret-2024: Broadway Journal: no money returned to investors, a total loss to date"
       },
       {
@@ -48,36 +48,6 @@
         "field": "estimatedRecoupmentDate",
         "oldValue": "2026-01-31",
         "newValue": "2025-09-07",
-        "description": "cabaret-2024: Broadway Journal: no money returned to investors, a total loss to date"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "cabaret-2024",
-        "showId": "cabaret-2024",
-        "field": "sources",
-        "oldValue": [
-          {
-            "type": "trade",
-            "url": "https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
-            "date": "2025-09-07",
-            "excerpt": "Initial capitalization $24.25M; $7.5M spent transforming the August Wilson into the Kit Kat Club. The production has not returned any money to investors, a total loss to date."
-          }
-        ],
-        "newValue": [
-          {
-            "type": "trade",
-            "url": "https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
-            "date": "2025-09-07",
-            "excerpt": "Initial capitalization $24.25M; $7.5M spent transforming the August Wilson into the Kit Kat Club. The production has not returned any money to investors, a total loss to date."
-          },
-          {
-            "type": "trade",
-            "url": "https://broadwayjournal.com/cabaret-investor-sues-atg-amid-early-closing",
-            "date": "2025-09-07",
-            "excerpt": "hasn't returned any money to investors, resulting in a total loss to-date."
-          }
-        ],
         "description": "cabaret-2024: Broadway Journal: no money returned to investors, a total loss to date"
       },
       {
