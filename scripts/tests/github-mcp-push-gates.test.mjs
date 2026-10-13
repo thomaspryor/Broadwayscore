@@ -8,7 +8,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync, execFileSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -39,7 +40,8 @@ const ui = (extra = {}) => payload('push_files', {
 
 function run(input, { env = {}, home = freshHome(), cwd = REPO_ROOT, script = ADAPTER } = {}) {
   fs.rmSync(stubSeen, { force: true });
-  const r = spawnSync('bash', [script], {
+  // Stdin from a file (BRO-5248): the adapter exits before reading on most paths.
+  const r = spawnSyncStdinFile('bash', [script], {
     cwd, input: JSON.stringify(input), encoding: 'utf8', timeout: 60000,
     env: { ...process.env, HOME: home, BSC_HOOK_TEST: '1', MCP_PUSH_VISUAL_GATE: stub, MCP_PUSH_GATES_ENFORCE: '', LAND_ENFORCE_OFF: '', ...env },
   });
