@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, advisoryLine, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthTier, newFalseRecouped, advisoryLine, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
 
@@ -123,6 +123,24 @@ describe('scoring', () => {
     assert.deepEqual(worseGroups(s).sort(), ['all', 'era:pre-2020', 'kind:failed', 'type:play']);
     // minN: one-row groups are not gated.
     assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
+  });
+  // Checker 2026-10-10: inference truth never reaches the gating rows under the default.
+  test('truthTier keeps inference rows off the gate unless --truth=all', () => {
+    assert.equal(truthTier(null, 'reported'), null);
+    assert.equal(truthTier({ truthClass: 'reported' }, 'reported'), 'gate');
+    for (const truthClass of ['inference']) {
+      assert.equal(truthTier({ truthClass }, 'reported'), 'advisory', truthClass);
+      assert.equal(truthTier({ truthClass }, 'all'), 'gate', truthClass);
+    }
+  });
+  test('newFalseRecouped counts only rows the new side newly puts at 100%+ against a never-recouped truth', () => {
+    const rows = [
+      { truth: [0, 60], oldPct: 40, newPct: 120 },
+      { truth: [0, 60], oldPct: 110, newPct: 120 },
+      { truth: [100, 100], oldPct: 40, newPct: 120 },
+      { truth: [0, 60], oldPct: 40, newPct: 99 },
+    ];
+    assert.deepEqual(newFalseRecouped(rows), [rows[0]]);
   });
   // Owner 2026-10-13: Reddit/AI rows get their own line, labeled as not counted.
   test('advisoryLine reports the inference tier with its own worse groups and false recouped', () => {

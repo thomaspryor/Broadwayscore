@@ -7,7 +7,7 @@
 
 const path = require('path');
 const { timingTruth, windowError, historyCoverage, modelAt, displayableAt, hideRecoupment } = require('./recoupment-timing');
-const { category, summarize, worseGroups, formatMarkdown, fmtTruth, eitherBasis, basisLine } = require('./recoupment-ground-truth');
+const { category, summarize, worseGroups, newFalseRecouped, formatMarkdown, fmtTruth, eitherBasis, basisLine } = require('./recoupment-ground-truth');
 const guard = require('./model-display-guard');
 
 // The replay needs weekly grosses for most of the run so far; the model
@@ -132,7 +132,7 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
   const summary = summarize(rows);
   const worse = worseGroups(summary, { minN: MIN_GROUP });
   // A show the new side calls recouped 26 or 52 weeks before it did.
-  const newEarly = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100));
+  const newEarly = newFalseRecouped(rows);
   const hardRows = rows.filter((r) => r.displayable && r.truthClass === 'reported');
   const displayableHard = hardRows.length;
   // Strong rows test a band at the announcement; weak rows only test "< 100".

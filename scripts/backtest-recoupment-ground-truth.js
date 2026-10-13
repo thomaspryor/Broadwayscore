@@ -45,7 +45,7 @@ const os = require('os');
 const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { execFileSync } = require('child_process');
-const { groundTruth, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
+const { groundTruth, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthTier, newFalseRecouped: falseRecoupedRows, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals'];
@@ -126,8 +126,9 @@ for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
   if (!show) { skipped.noShow++; continue; }
   const truth = groundTruth(comm, show);
-  if (!truth) { sanityCheck(key, show, comm); continue; }
-  const advisory = truth.truthClass !== 'reported' && TRUTH === 'reported';
+  const tier = truthTier(truth, TRUTH);
+  if (!tier) { sanityCheck(key, show, comm); continue; }
+  const advisory = tier === 'advisory';
   const skip = advisory ? advisorySkipped : skipped;
   // Sanity covers advisory records exactly as before they were scored.
   if (advisory) { skipped.inference++; sanityCheck(key, show, comm); }
@@ -184,13 +185,13 @@ function sanityCheck(slug, show, comm) {
 
 // A truth that says "never recouped" (failed, or a reported range under 100)
 // that only the new side calls recouped.
-const newFalseRecouped = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100));
+const newFalseRecouped = falseRecoupedRows(rows);
 const detail = (list, fmt) => (list.length && !AGGREGATE_ONLY ? ` (${list.map(fmt).join(', ')})` : '');
 const falseRecoupedLine = `New false recouped vs truth: ${newFalseRecouped.length}${detail(newFalseRecouped, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}${newFalseRecouped.length ? '; blocks any switch' : ''}`;
 const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped): ${insane.length}${detail(insane, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}`;
 const newOnlyLine = `Rows only the new side failed to model: ${skipped.newOnly}${skipped.newOnly ? '; blocks any switch' : ''}`;
-const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported only, ${skipped.inference} inference rows left out (--truth=all adds them)` : 'reported and inference'}`;
-const advisoryOut = TRUTH === 'reported' ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}${advisorySkipped.newOnly ? `; ${advisorySkipped.newOnly} only the new side failed to model` : ''}` : null;
+const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported rows decide pass or fail; ${skipped.inference} inference rows are scored separately on the Advisory line (--truth=all mixes them in)` : 'reported and inference'}`;
+const advisoryOut = TRUTH === 'reported' ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}; of ${skipped.inference}, skipped ${advisorySkipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${advisorySkipped.notDisplayable} not displayable` : ''}, ${advisorySkipped.newOnly} only the new side failed to model` : null;
 
 const summary = summarize(rows);
 const worse = worseGroups(summary, { minN: MIN_GROUP });

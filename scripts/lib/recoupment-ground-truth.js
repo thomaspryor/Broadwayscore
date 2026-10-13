@@ -206,6 +206,22 @@ function worseGroups(summary, { minN = 1 } = {}) {
 }
 
 /**
+ * Which tier a truth row is scored in: 'gate' rows decide --strict and the CI
+ * annotations; 'advisory' rows (inference truth under --truth=reported) are
+ * scored on their own line and never gate (checker 2026-10-10).
+ * @param {{ truthClass: string } | null} truth
+ * @param {'reported'|'all'} mode
+ * @returns {'gate'|'advisory'|null} null when there is no truth to score
+ */
+function truthTier(truth, mode) {
+  if (!truth) return null;
+  return truth.truthClass !== 'reported' && mode === 'reported' ? 'advisory' : 'gate';
+}
+
+/** Rows the truth says never recouped (top of range under 100) that only the new side puts at 100%+. */
+const newFalseRecouped = (rows) => rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100));
+
+/**
  * One line for the inference tier (Reddit, deep research, our own synthesis).
  * Owner 2026-10-13: show how a change does against these rows too, but they
  * never gate a switch (checker 2026-10-10): many share the model's method, so
@@ -219,7 +235,7 @@ function advisoryLine(rows, { minN = 1 } = {}) {
   if (!rows.length) return `${label}: none scored`;
   const s = summarize(rows);
   const worse = worseGroups(s, { minN });
-  const falseRec = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100)).length;
+  const falseRec = newFalseRecouped(rows).length;
   const a = s.all;
   return `${label}: ${a.n} rows, mean error ${a.oldMae} -> ${a.newMae}, inside ${a.oldInside} -> ${a.newInside}, `
     + `${worse.length ? `worse in ${worse.join(', ')}` : 'no group worse'}, new false recouped ${falseRec}`;
@@ -251,4 +267,4 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
 
 module.exports = {
   creditBasis, eitherBasis, basisLine,
-  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, advisoryLine, formatMarkdown, fmtTruth, OWN_INFERENCE };
+  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, truthTier, newFalseRecouped, advisoryLine, formatMarkdown, fmtTruth, OWN_INFERENCE };
