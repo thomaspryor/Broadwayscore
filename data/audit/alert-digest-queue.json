@@ -219,6 +219,36 @@
     "queuedAt": "2026-10-13T05:25:14.609Z"
   },
   {
+    "conditionKey": "land:land/bro-2360-wsj-record",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-2360-wsj-record",
+    "description": "land.yml did not land land/bro-2360-wsj-record: the merged-tree-tests gate went red at 670c6dfaae. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2360-wsj-record @ 670c6dfaae (origin/land/bro-2360-wsj-record) → origin/main @ 9069d696bb [land] attempt 1/3: rebased onto 9069d696bb, 1 file(s) changed — running checks [land] verified-base: main moved df2f926aec → 9069d696bb across 197 file(s), substantive — re-checking on the merged tree (+14 test file(s) changed on main since the verified base) [land] linked 21 gitignored path( Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348674685",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2360-wsj-record"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "670c6dfaaeaf7bf7e93590b93a5fae2bb53190f7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38348674685"
+      }
+    ],
+    "queuedAt": "2026-10-13T06:09:46.234Z"
+  },
+  {
     "conditionKey": "land:land/bro-2969-toplevel-test-glob",
     "title": "Landing blocked: rebase red on land/bro-2969-toplevel-test-glob",
     "description": "land.yml did not land land/bro-2969-toplevel-test-glob: the rebase gate went red at f9bedd401c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2969-toplevel-test-glob @ f9bedd401c (origin/land/bro-2969-toplevel-test-glob) → origin/main @ 9f9e921c8f REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9f9e921c8f: Rebasing (1/1) error: could not apply f9bedd401c7... ci(test.yml): one scripts/*.test.mjs push-path glob replaces 177 literals (BRO-2969) hint: Resolve all conflicts manually, mark them as resolved  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348656552",
