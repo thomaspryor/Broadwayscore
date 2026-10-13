@@ -74,7 +74,8 @@ async function main() {
   let anyDrift = false;
   let fixedAny = false;
 
-  const broadcastsBody = await resendGet('https://api.resend.com/broadcasts');
+  // ?limit=100: default page is 20 (see scripts/lib/resend-draft-upsert.js).
+  const broadcastsBody = await resendGet('https://api.resend.com/broadcasts?limit=100');
   const all = (broadcastsBody && broadcastsBody.data) || [];
 
   for (const edition of EDITIONS) {

@@ -39,7 +39,9 @@ const NAMES = {
 };
 
 async function main() {
-  const res = await fetch('https://api.resend.com/broadcasts', {
+  // ?limit=100: the list pages at 20 by default, so a busy week could hide
+  // this draft and read as missing (same fix as scripts/lib/resend-draft-upsert.js).
+  const res = await fetch('https://api.resend.com/broadcasts?limit=100', {
     headers: { Authorization: `Bearer ${KEY}` },
     signal: AbortSignal.timeout(20_000),
   });
