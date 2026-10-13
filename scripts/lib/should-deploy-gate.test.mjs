@@ -271,3 +271,47 @@ test('--meta-args prints one <name>BlobSha=<git blob sha> per tracked file prese
   const want = (f) => cp.execFileSync('git', ['hash-object', dir + '/data/' + f], { encoding: 'utf8' }).trim();
   assert.equal(out, `reviewsBlobSha=${want('reviews.json')}\ncriticConsensusBlobSha=${want('critic-consensus.json')}\n`);
 });
+
+// BRO-4614: tracked data/*.json that src/ imports must be in the diff list, or
+// a commit that changes one is skipped as bookkeeping. The list is committed
+// (SITE_DATA_FILES) so the gate stays deterministic; this fails on drift.
+test('SITE_DATA_FILES matches the tracked data files src/ imports (BRO-4614)', () => {
+  const { scanSiteDataImports } = require('./site-data-imports.js');
+  const { SITE_DATA_FILES } = require('./should-deploy-gate.js');
+  assert.deepEqual([...SITE_DATA_FILES], scanSiteDataImports(), 'regenerate with: node scripts/lib/site-data-imports.js');
+  for (const f of SITE_DATA_FILES) assert.ok(SITE_PATHS.includes(f), `${f} must be diffed by the gate`);
+});
+
+test('SITE_DATA_FILES never admits data/audit bookkeeping or a bare data/ prefix (BRO-4614)', () => {
+  const { SITE_DATA_FILES } = require('./should-deploy-gate.js');
+  assert.ok(!SITE_DATA_FILES.some((f) => f.startsWith('data/audit/')));
+  assert.ok(!SITE_PATHS.includes('data/'));
+  assert.ok(SITE_DATA_FILES.includes('data/tour-schedules.json'));
+});
+
+test('a committed change to an imported data file is dirty for the real git diff (BRO-4614)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-data-'));
+  const g = (...a) => execFileSync('git', a, { cwd: d, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
+  try {
+    g('init', '-q');
+    fs.mkdirSync(path.join(d, 'data/audit'), { recursive: true });
+    fs.writeFileSync(path.join(d, 'data/tour-schedules.json'), '{"v":1}');
+    fs.writeFileSync(path.join(d, 'data/audit/x.json'), '{"v":1}');
+    g('add', '-A'); g('commit', '-qm', 'a');
+    const a = g('rev-parse', 'HEAD').trim();
+    fs.writeFileSync(path.join(d, 'data/audit/x.json'), '{"v":2}');
+    g('commit', '-qam', 'bookkeeping');
+    const b = g('rev-parse', 'HEAD').trim();
+    const dirty = (x, y) => { try { g('diff', '--quiet', '--no-renames', x, y, '--', ...SITE_PATHS); return false; } catch (e) { return e.status === 1; } };
+    assert.equal(dirty(a, b), false, 'audit churn must not trigger a deploy');
+    fs.writeFileSync(path.join(d, 'data/tour-schedules.json'), '{"v":2}');
+    g('commit', '-qam', 'tour');
+    assert.equal(dirty(b, g('rev-parse', 'HEAD').trim()), true, 'an imported data file change must trigger a deploy');
+  } finally {
+    fs.rmSync(d, { recursive: true, force: true });
+  }
+});

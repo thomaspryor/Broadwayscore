@@ -62,7 +62,7 @@ test('BRO-78: max_cost is passed down the rescore chain, not just the first batc
 // --- behavioural: run the REAL guard out of the workflow ---
 
 function extractGuard() {
-  const start = lines.findIndex(l => l.includes('MAX_COST="${{ github.event.inputs.max_cost }}"'));
+  const start = lines.findIndex(l => l.includes('MAX_COST="${INPUT_MAX_COST}"'));
   assert.ok(start >= 0, 'MAX_COST assignment not found in the workflow');
   const indent = lines[start].length - lines[start].trimStart().length;
   let end = -1;
