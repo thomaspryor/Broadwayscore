@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-13T05:08:04.566Z",
-  "bannerText": "248/470 Done(14d) verified on main · 13 FAILED · 1 vacuous · 16 stuck-but-done — PARTIAL RUN: 193 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-13T09:35:55.766Z",
+  "bannerText": "310/360 Done(14d) verified on main · 14 FAILED · 1 vacuous · 12 stuck-but-done — PARTIAL RUN: 29 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-3145 — P1: rebuild-reviews.yml cannot push — 30s per-attempt push timeout kills every attempt, API fallback disqualified",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/push-with-retry-timeout.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3145/p1-rebuild-reviewsyml-cannot-push-30s-per-attempt-push-timeout-kills"
+      "title": "FAILED BRO-2851 — P2: two genuine New Statesman West End reviews stay suppressed by a second flag, incompleteReason wrong_content",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/feedback_manual_review_protection_fields.md",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2851/p2-two-genuine-new-statesman-west-end-reviews-stay-suppressed-by-a"
     },
     {
-      "title": "FAILED BRO-2883 — P1: rebuild-reviews push-core-data retry loop cannot converge (5 identical failed attempts, silent data loss)",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2883/p1-rebuild-reviews-push-core-data-retry-loop-cannot-converge-5"
+      "title": "FAILED BRO-2360 — P1: WSJ URL re-discovery + refetch for 33 recent wrong_content files (finish owner mandate: all WSJ full texts)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/wsj_urls_recovered_from_wrong_content.jsonl",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2360/p1-wsj-url-re-discovery-refetch-for-33-recent-wrong-content-files"
     },
     {
       "title": "FAILED BRO-2257 — Audit all --update-baseline CI gates for stale 'permanent exception' entries",
@@ -43,5 +43,5 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
     }
   ],
-  "moreCount": 22
+  "moreCount": 19
 }
