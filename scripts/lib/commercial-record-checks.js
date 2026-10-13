@@ -324,6 +324,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 // Scheme and host with at most a slash: no path, query or fragment.
 const HOMEPAGE_URL = /^https?:\/\/[^/?#\s]+\/?$/i;
 const OWN_SITE_URL = /^https?:\/\/(?:www\.)?broadwayscorecard\.com(?:[/?#]|$)/i;
+const WIKIPEDIA_URL = /^https?:\/\/(?:[a-z-]+\.)*wikipedia\.org(?:[/?#]|$)/i;
 
 /**
  * Rules that depend on shows.json state as well as the record. validate-data.js
@@ -366,6 +367,7 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // A source that links a site's homepage, or this site, cites nothing
   // (BRO-5264: Hell's Kitchen's amNY and Broadway Journal entries, two bare
   // sec.gov links; bro-5006 cited broadwayscorecard.com for four stubs).
+  // Wikipedia is a pointer to sources, not one (BRO-5268: 26 records cite it).
   // Advisory (§19). A writer passes ctx.priorRecord so only a link the write
   // adds counts: a tip or plan on an old record is not blocked by its old links.
   if (Array.isArray(show.sources)) {
@@ -375,6 +377,8 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
       const url = src.url.trim();
       if (OWN_SITE_URL.test(url)) {
         out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is this site, which cannot source its own figures`);
+      } else if (WIKIPEDIA_URL.test(url)) {
+        out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is Wikipedia, not a source (link the article or filing it cites)`);
       } else if (HOMEPAGE_URL.test(url)) {
         out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is a homepage, not an article or filing (link the page that states it)`);
       }

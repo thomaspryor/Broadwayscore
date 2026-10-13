@@ -250,6 +250,17 @@ test('a homepage source URL warns; an article or filing URL does not (BRO-5264)'
   assert.deepEqual(commercialRecordWarnings('x', added, { priorRecord: old }).filter((m) => /homepage/.test(m)).map((m) => m.match(/sources\[(\d)\]/)[1]), ['1']);
 });
 
+test('a Wikipedia source URL warns, only when the write adds it (BRO-5268)', () => {
+  const rec = (url) => ({ designation: 'TBD', sources: [{ type: 'trade', url, date: '2026-01-02' }] });
+  for (const url of ['https://en.wikipedia.org/wiki/I_Need_That', 'http://en.m.wikipedia.org/wiki/Liberation_(play)', 'https://wikipedia.org']) {
+    assert.ok(commercialRecordWarnings('x', rec(url)).some((m) => /sources\[0\]\.url .* is Wikipedia/.test(m)), url);
+  }
+  // A page that only mentions Wikipedia in its path is not Wikipedia.
+  assert.ok(!commercialRecordWarnings('x', rec('https://www.broadwayjournal.com/p/wikipedia-and-broadway')).some((m) => /Wikipedia/.test(m)));
+  const old = rec('https://en.wikipedia.org/wiki/I_Need_That');
+  assert.ok(!commercialRecordWarnings('x', { ...old, notes: 'edited' }, { priorRecord: old }).some((m) => /Wikipedia/.test(m)));
+});
+
 test('a tip on a record with an old homepage link is not refused for it; a tip adding one is (BRO-5264)', () => {
   const commercial = { shows: { k: { designation: 'TBD', recouped: null, notes: 'Running.', sources: [{ type: 'trade', url: 'https://broadwaynews.com', date: '2021-12-01' }] } } };
   const showList = [{ slug: 'k', status: 'open' }];
