@@ -80,7 +80,15 @@ function classify(filePath) {
 
 // REJECTED_IMAGES_PATH overrides the list for tests.
 const REJECTED_IMAGES_PATH = process.env.REJECTED_IMAGES_PATH || path.join(ROOT, 'data', 'rejected-images.json');
-const REJECTED_MD5 = JSON.parse(fs.readFileSync(REJECTED_IMAGES_PATH, 'utf8')).md5 || {};
+// A missing/malformed list must not block every commit (the pre-commit hook
+// runs this): warn and check shapes only. show-hero-integrity.test.mjs still
+// fails on committed rejected bytes.
+let REJECTED_MD5 = {};
+try {
+  REJECTED_MD5 = JSON.parse(fs.readFileSync(REJECTED_IMAGES_PATH, 'utf8')).md5 || {};
+} catch (err) {
+  console.error(`::warning::check-image-aspect: cannot read ${REJECTED_IMAGES_PATH} (${err.message}); rejected-bytes check skipped`);
+}
 
 async function checkFile(absPath) {
   const role = classify(absPath);
@@ -232,7 +240,7 @@ async function main() {
   }
 
   if (args.includes('--quarantine') && mode === 'staged' && violations.length > 0) {
-    console.log(`Quarantining ${violations.length} aspect-ratio violation(s) so the rest of the batch can commit:`);
+    console.log(`Quarantining ${violations.length} image violation(s) so the rest of the batch can commit:`);
     const removedNewFiles = []; // repo-relative paths whose file no longer exists
     for (const v of violations) {
       const rel = path.relative(ROOT, v.absPath);
