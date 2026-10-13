@@ -10,11 +10,8 @@
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BOOT="$REPO_ROOT/scripts/cloud-bootstrap-data.sh"
 
-# Read stdin so the pipe never stalls; only .source is used (BRO-5217: compact
-# and clear must not re-copy cloud core data over the session's copies).
-SESSION_INPUT="$(cat 2>/dev/null || true)"
-BSC_SESSION_EVENT="$(printf '%s' "$SESSION_INPUT" | jq -r '.source // "startup"' 2>/dev/null)"
-export BSC_SESSION_EVENT="${BSC_SESSION_EVENT:-startup}"
+# Read stdin (never stall the pipe); .source lets compact/clear skip the core-data re-copy (BRO-5217).
+BSC_SESSION_EVENT="$(jq -r '.source // empty' 2>/dev/null)"; export BSC_SESSION_EVENT="${BSC_SESSION_EVENT:-startup}"
 
 # BRO-4745: Codex reads hooks and config only from ~/.codex, at startup, so a
 # fresh container needs the repo's guards installed before any Codex run.
