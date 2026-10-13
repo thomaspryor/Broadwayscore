@@ -45,7 +45,7 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
   const show = (showList || []).find((s) => s && s.slug === slug);
   const { entry, holdReason } = sanitizeForPublicRecord(draft, show);
   if (holdReason) return refuse(holdReason);
-  const ctx = { showRecord: show, allRecords: commercial.shows };
+  const ctx = { showRecord: show, allRecords: commercial.shows, priorRecord: existing };
   const problems = [...commercialRecordErrors(slug, entry, ctx), ...commercialRecordWarnings(slug, entry, ctx)];
   if (problems.length) return refuse(problems[0]);
   const changes = changedFields(existing, entry);

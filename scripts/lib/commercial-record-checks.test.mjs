@@ -241,4 +241,19 @@ test('a homepage source URL warns; an article or filing URL does not (BRO-5264)'
     assert.ok(!commercialRecordWarnings('x', rec(url)).some((m) => /homepage/.test(m)), url);
   }
   assert.ok(commercialRecordWarnings('x', rec('https://broadwayscorecard.com/show/hells-kitchen')).some((m) => /this site/.test(m)));
+  // The bare site gets the own-site message, not the homepage one.
+  assert.ok(commercialRecordWarnings('x', rec('https://broadwayscorecard.com')).some((m) => /this site/.test(m)));
+  // A writer passes the record as it stood: a link already there does not block the write.
+  const old = rec('https://www.amny.com');
+  assert.ok(!commercialRecordWarnings('x', { ...old, notes: 'edited' }, { priorRecord: old }).some((m) => /homepage/.test(m)));
+  const added = { ...old, sources: [...old.sources, { type: 'trade', url: 'https://playbill.com', date: '2026-01-01' }] };
+  assert.deepEqual(commercialRecordWarnings('x', added, { priorRecord: old }).filter((m) => /homepage/.test(m)).map((m) => m.match(/sources\[(\d)\]/)[1]), ['1']);
+});
+
+test('a tip on a record with an old homepage link is not refused for it; a tip adding one is (BRO-5264)', () => {
+  const commercial = { shows: { k: { designation: 'TBD', recouped: null, notes: 'Running.', sources: [{ type: 'trade', url: 'https://broadwaynews.com', date: '2021-12-01' }] } } };
+  const showList = [{ slug: 'k', status: 'open' }];
+  assert.equal(buildTipRecord(commercial, showList, 'k', [{ field: 'capitalization', newValue: 9e6 }]).refusedReason, null);
+  const adds = buildTipRecord(commercial, showList, 'k', [{ field: 'sources', newValue: [...commercial.shows.k.sources, { type: 'trade', url: 'https://playbill.com/', date: '2026-01-01' }] }]);
+  assert.match(adds.refusedReason || '', /homepage/);
 });

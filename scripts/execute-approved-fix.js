@@ -149,7 +149,7 @@ function output(key, value) {
   }
 }
 
-function runValidation(changedFiles, touchedCommercialKeys = []) {
+function runValidation(changedFiles, touchedCommercialKeys = [], priorCommercial = null) {
   // Targeted validation: check that each modified data file is valid JSON
   // with expected structure. Full validate-data.js catches pre-existing
   // review-text quality issues (garbage outlets, etc.) that are unrelated
@@ -174,7 +174,7 @@ function runValidation(changedFiles, touchedCommercialKeys = []) {
       const problems = [...new Set(touchedCommercialKeys)]
         .filter(k => data.shows[k])
         .flatMap(k => {
-          const ctx = { showRecord: bySlug.get(k), allRecords: data.shows };
+          const ctx = { showRecord: bySlug.get(k), allRecords: data.shows, priorRecord: priorCommercial && priorCommercial[k] };
           return [...commercialRecordErrors(k, data.shows[k], ctx), ...commercialRecordWarnings(k, data.shows[k], ctx)];
         });
       if (problems.length) throw new Error(`commercial rules: ${problems.slice(0, 5).join('; ')}`);
@@ -225,6 +225,16 @@ function snapshotCoreData() {
     snap.set(target, fs.existsSync(target) ? fs.readFileSync(target) : null);
   }
   return snap;
+}
+
+// commercial.json's records as they stood before the plan, from the snapshot,
+// so a record check can tell a link the plan added from one already there.
+function priorCommercialShows(snapshot) {
+  if (!snapshot) return null;
+  let target = path.join(ROOT, 'data/commercial.json');
+  try { target = fs.realpathSync(target); } catch { /* absent or dangling */ }
+  const buf = snapshot.get(target);
+  try { return buf ? JSON.parse(buf.toString('utf8')).shows || null : null; } catch { return null; }
 }
 
 function rollbackDataFiles(snapshot) {
@@ -737,7 +747,7 @@ async function main() {
       .filter(a => a.type === 'add-commercial-entry' || a.file === 'commercial.json')
       .map(a => a.slug || a.showSlug || a.showId)
       .filter(Boolean);
-    if (!runValidation(changedFiles, touchedCommercialKeys)) {
+    if (!runValidation(changedFiles, touchedCommercialKeys, priorCommercialShows(coreSnapshot))) {
       console.error('Validation failed — rolling back');
       rollbackDataFiles(coreSnapshot);
 
