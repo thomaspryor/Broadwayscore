@@ -1156,7 +1156,24 @@ function findOpenIssueForTerm(issues, term) {
   return null;
 }
 
+// BRO-3034 #3: a "Dispatched ..." comment can block linear-next.js forever.
+// The refusal prints the comment's age (BRO-3045), but nothing said what that
+// age MEANS, so an operator read "already dispatched" and moved on while a
+// weeks-old breadcrumb starved real work. This names the stale case outright.
+// It never changes the decision: a comment from another host cannot be proven
+// dead from here, so --force stays the human's call.
+const STALE_DISPATCH_COMMENT_MS = 24 * 60 * 60 * 1000;
+function staleDispatchCommentNote(comment, { nowMs = Date.now(), liveLedger = false } = {}) {
+  if (!comment || liveLedger) return null;
+  const t = Date.parse(comment.createdAt || '');
+  if (!Number.isFinite(t) || nowMs - t < STALE_DISPATCH_COMMENT_MS) return null;
+  const days = Math.max(1, Math.round((nowMs - t) / STALE_DISPATCH_COMMENT_MS));
+  return `This dispatch record is ${days} day${days === 1 ? '' : 's'} old and no job in this host's ledger is running it: it is probably stale. Check nobody else is on the card, then re-run with --force.`;
+}
+
 module.exports = {
+  STALE_DISPATCH_COMMENT_MS,
+  staleDispatchCommentNote,
   MAC_ONLY_LABEL,
   buildIssueQuery,
   buildOpenIssuesQuery,

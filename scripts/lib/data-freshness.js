@@ -38,9 +38,12 @@ const BEHIND_LOUD = 5;
  * @returns {{level: 'ok'|'unknown'|'behind'|'far-behind', behindCount: number|null,
  *   trustworthy: boolean, message: string, remedy: string|null}}
  */
-function classifyDataFreshness({ behindCount, refsFetched } = {}) {
-  const remedy =
+function classifyDataFreshness({ behindCount, refsFetched, label = 'Core data', remedy: remedyIn = null } = {}) {
+  // label/remedy (BRO-3034 #7): the same verdict for the review-texts clone a
+  // local gate run reads. Defaults keep every core-data message unchanged.
+  const remedy = remedyIn ||
     'git -C "$BSC_DATA_REPO" fetch origin main && git -C "$BSC_DATA_REPO" merge --ff-only origin/main';
+  const lower = label.charAt(0).toLowerCase() + label.slice(1);
 
   if (behindCount === null || behindCount === undefined || Number.isNaN(behindCount)) {
     return {
@@ -48,7 +51,7 @@ function classifyDataFreshness({ behindCount, refsFetched } = {}) {
       behindCount: null,
       trustworthy: false,
       message:
-        'Cannot tell whether core data is current (no origin ref). A local test ' +
+        `Cannot tell whether ${lower} is current (no origin ref). A local test ` +
         'run may not match CI, which checks out the data repo at origin.',
       remedy,
     };
@@ -60,7 +63,7 @@ function classifyDataFreshness({ behindCount, refsFetched } = {}) {
       behindCount,
       trustworthy: false,
       message:
-        `Core data is ${behindCount} commits behind origin. CI checks out ` +
+        `${label} is ${behindCount} commits behind origin. CI checks out ` +
         'origin, so a GREEN local test run proves nothing about CI — and a red ' +
         'CI test may be unreproducible locally. Fast-forward before trusting ' +
         'either result.',
@@ -74,7 +77,7 @@ function classifyDataFreshness({ behindCount, refsFetched } = {}) {
       behindCount,
       trustworthy: false,
       message:
-        `Core data is ${behindCount} commit(s) behind origin — data-dependent ` +
+        `${label} is ${behindCount} commit(s) behind origin — data-dependent ` +
         'tests may disagree with CI.',
       remedy,
     };
@@ -86,7 +89,7 @@ function classifyDataFreshness({ behindCount, refsFetched } = {}) {
       behindCount: 0,
       trustworthy: false,
       message:
-        'Core data matches the last KNOWN origin ref, but those refs were not ' +
+        `${label} matches the last KNOWN origin ref, but those refs were not ` +
         'refreshed — origin may have moved. Re-check with a fetch before ' +
         'trusting a data-dependent test result.',
       remedy,
@@ -97,9 +100,38 @@ function classifyDataFreshness({ behindCount, refsFetched } = {}) {
     level: 'ok',
     behindCount: 0,
     trustworthy: true,
-    message: 'Core data is level with origin.',
+    message: `${label} is level with origin.`,
     remedy: null,
   };
 }
 
-module.exports = { BEHIND_WARN, BEHIND_LOUD, classifyDataFreshness };
+/**
+ * BRO-3034 #7: is the local review-texts clone a gate just scanned current?
+ * Crown v48 reported the outlet gate green (42,807 files, Missing 0) while CI
+ * failed it at 42,817 files: the local clone was 97 files behind. Read-only
+ * and network-free unless `fetch` is set. A copied tree with no .git of its
+ * own (cloud bootstrap, setup-local-data.sh --all) must not be measured
+ * against whatever repo git finds walking up, so that reads as unknown.
+ * @returns classifyDataFreshness() verdict labelled "Review texts"
+ */
+function reviewTextsFreshness({ dir, fetch = false, exec = require('child_process').execFileSync } = {}) {
+  const fs = require('fs');
+  const remedy = `git -C "${dir}" pull --ff-only`;
+  const run = (args, timeout = 10000) => String(exec('git', ['-C', dir, ...args], {
+    encoding: 'utf8', timeout, stdio: ['ignore', 'pipe', 'ignore'],
+  })).trim();
+  let behindCount = null;
+  let refsFetched = false;
+  try {
+    const real = fs.realpathSync(dir);
+    if (fs.realpathSync(run(['rev-parse', '--show-toplevel'])) === real) {
+      if (fetch) {
+        try { run(['fetch', '-q', 'origin'], 20000); refsFetched = true; } catch { /* stays a lower bound */ }
+      }
+      behindCount = Number(run(['rev-list', '--count', 'HEAD..@{u}']));
+    }
+  } catch { behindCount = null; }
+  return classifyDataFreshness({ behindCount, refsFetched, label: 'Review texts', remedy });
+}
+
+module.exports = { BEHIND_WARN, BEHIND_LOUD, classifyDataFreshness, reviewTextsFreshness };

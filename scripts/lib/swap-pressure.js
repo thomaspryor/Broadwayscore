@@ -109,4 +109,46 @@ function isSwapPressureCritical({ totalMB, freeMB, floorMB }) {
   return freeMB < floorMB;
 }
 
-module.exports = { parseSwapUsage, currentSwapUsage, isSwapPressureCritical };
+/**
+ * BRO-3034 #5: the memory-pressure VERDICT, which neither swap number above
+ * is. Crown sessions watched "swap used >= 85%"; the harness then killed a
+ * background task for low memory with swap at 582M of 2,048M (28%). Neither
+ * swap figure can say that: `used` is a high-water mark macOS never shrinks,
+ * and `total` grows on demand (caveat above). Raw free pages cannot either:
+ * they sit near vm_page_free_target whatever is available (BRO-3053,
+ * claude-cli.js), so the card's "138MB free, 7.4GB inactive" was the normal
+ * steady state, not the incident.
+ *
+ * The kernel's own verdict is `sysctl -n kern.memorystatus_vm_pressure_level`:
+ * 1 normal, 2 warning, 4 critical (the same level `memory_pressure` and the
+ * jetsam killer act on). Read that, never swap percent, to decide whether a
+ * dispatch is viable.
+ */
+const VM_PRESSURE_LEVELS = Object.freeze({ 1: 'normal', 2: 'warning', 4: 'critical' });
+
+/**
+ * @param {string|number} raw output of `sysctl -n kern.memorystatus_vm_pressure_level`
+ * @returns {{level:'normal'|'warning'|'critical', critical:boolean, dispatchViable:boolean}|null}
+ *   null when the value is missing or unknown (non-macOS): no verdict, never "normal".
+ */
+function classifyVmPressureLevel(raw) {
+  const level = VM_PRESSURE_LEVELS[Number(String(raw == null ? '' : raw).trim())];
+  if (!level) return null;
+  return { level, critical: level === 'critical', dispatchViable: level === 'normal' };
+}
+
+/** I/O wrapper. null off macOS or when sysctl fails. */
+function currentVmPressure() {
+  try {
+    return classifyVmPressureLevel(execFileSync('sysctl', ['-n', 'kern.memorystatus_vm_pressure_level'], {
+      encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'],
+    }));
+  } catch {
+    return null;
+  }
+}
+
+module.exports = {
+  parseSwapUsage, currentSwapUsage, isSwapPressureCritical,
+  VM_PRESSURE_LEVELS, classifyVmPressureLevel, currentVmPressure,
+};

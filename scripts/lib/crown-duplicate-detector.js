@@ -57,6 +57,52 @@ function extractVersion(title) {
   return m ? parseInt(m[1], 10) : null;
 }
 
+// BRO-3034 #4: which duplicate to keep is a question about ACTIVITY, not
+// titles. Crown v48 saw a tab titled "✅ ... DONE ... handed to v45" still
+// live while the successor was refused. The dispatch ledger is the activity
+// record this machine has (no captured cmux payload carries a submission
+// time): per ref, the newest launch-type row, and whether a terminal row
+// (prune-closed / dead / vanished / remapped) came after it. A finished tab
+// ranks last even if its terminal row is the newest thing in the ledger.
+// Built once per detect call, not per comparison (Stop-hook hot path).
+function ledgerActivityByRef(entries) {
+  const { TERMINAL_LAUNCH_EVENTS } = require('./dispatch-ledger.js');
+  const map = new Map();
+  for (const e of entries || []) {
+    if (!e || !e.workspaceRef) continue;
+    const t = Date.parse(e.ts || '');
+    if (!Number.isFinite(t)) continue;
+    const cur = map.get(e.workspaceRef) || { activeMs: null, terminalMs: null };
+    if (TERMINAL_LAUNCH_EVENTS.has(e.event)) {
+      if (cur.terminalMs === null || t > cur.terminalMs) cur.terminalMs = t;
+    } else if (cur.activeMs === null || t > cur.activeMs) {
+      cur.activeMs = t;
+    }
+    map.set(e.workspaceRef, cur);
+  }
+  const out = new Map();
+  for (const [ref, { activeMs, terminalMs }] of map) {
+    out.set(ref, { activeMs, finished: terminalMs !== null && (activeMs === null || terminalMs >= activeMs) });
+  }
+  return out;
+}
+
+/** Sort comparator: unfinished before finished, then newest ledger activity, then title version. */
+function compareKeepPriority(a, b, activity) {
+  const ia = activity.get(a.ref) || { activeMs: null, finished: false };
+  const ib = activity.get(b.ref) || { activeMs: null, finished: false };
+  if (ia.finished !== ib.finished) return ia.finished ? 1 : -1;
+  if (ia.activeMs !== null && ib.activeMs !== null && ia.activeMs !== ib.activeMs) return ib.activeMs - ia.activeMs;
+  if (ia.activeMs !== null && ib.activeMs === null) return -1;
+  if (ib.activeMs !== null && ia.activeMs === null) return 1;
+  const va = extractVersion(a.title);
+  const vb = extractVersion(b.title);
+  if (va != null && vb != null) return vb - va;
+  if (va != null) return -1;
+  if (vb != null) return 1;
+  return 0;
+}
+
 /**
  * @param {Array<{ref:string,title:string,selected?:boolean,cwd?:string|null}>} workspaces
  *        from cmux-workspaces.listWorkspacesWithCwd() (or an equivalent fixture).
@@ -108,16 +154,10 @@ function detectDuplicateCrownTabs({ workspaces, entries, repoRoot, isCrownTab, l
   }
 
   const duplicateGroups = [];
+  const activity = ledgerActivityByRef(entries);
   for (const [key, { keyType, items }] of groups) {
     if (items.length < 2) continue;
-    const sorted = [...items].sort((a, b) => {
-      const va = extractVersion(a.title);
-      const vb = extractVersion(b.title);
-      if (va != null && vb != null) return vb - va;
-      if (va != null) return -1;
-      if (vb != null) return 1;
-      return 0;
-    });
+    const sorted = [...items].sort((a, b) => compareKeepPriority(a, b, activity));
     const [keep, ...stale] = sorted;
     duplicateGroups.push({
       key,
@@ -134,4 +174,4 @@ function detectDuplicateCrownTabs({ workspaces, entries, repoRoot, isCrownTab, l
   return { duplicateGroups };
 }
 
-module.exports = { detectDuplicateCrownTabs, stripVersionToken, titleFamilyKey, extractVersion };
+module.exports = { detectDuplicateCrownTabs, stripVersionToken, titleFamilyKey, extractVersion, ledgerActivityByRef, compareKeepPriority };

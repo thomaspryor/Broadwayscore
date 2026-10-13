@@ -31,7 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { summarizeTrunkRuns, extractFailingPaths } = require('./lib/trunk-status.js');
+const { summarizeTrunkRuns, extractFailingPaths, assessVerdictLag } = require('./lib/trunk-status.js');
 
 const REPO = path.join(__dirname, '..');
 const SNAPSHOT_PATH = path.join(REPO, 'data', 'audit', 'trunk-status-snapshot.json');
@@ -105,7 +105,7 @@ function inspectFailedRun(runId) {
 function buildSnapshot({ now = Date.now() } = {}) {
   const runs = JSON.parse(gh([
     'run', 'list', '--workflow', WORKFLOW, '--branch', BRANCH,
-    '--limit', String(RUN_LIMIT), '--json', 'databaseId,conclusion,createdAt,url,headSha',
+    '--limit', String(RUN_LIMIT), '--json', 'databaseId,conclusion,status,createdAt,url,headSha',
   ]));
   const trunk = summarizeTrunkRuns(runs, { now });
   const snap = {
@@ -116,6 +116,8 @@ function buildSnapshot({ now = Date.now() } = {}) {
     // can be traced to an actual sha instead of just a timestamp.
     latestRunHeadSha: (runs.find((r) => r && r.conclusion) || {}).headSha || null,
     ...trunk,
+    // BRO-3034 #6: how stale that verdict is relative to main right now.
+    verdictLag: assessVerdictLag(runs, { now }),
     failingJobs: [],
     failingPaths: [],
     topFailingJob: null,

@@ -161,6 +161,56 @@ function summarizeTrunkRuns(runs, { now = Date.now() } = {}) {
   };
 }
 
+// ── verdict lag (BRO-3034 #6) ───────────────────────────────────────────────
+
+const LAG_IN_FLIGHT_RUNS = 5;
+const LAG_NEWER_HEADS = 10;
+const LAG_AGE_HOURS = 3;
+
+/**
+ * How far behind main the newest DECIDED test.yml verdict is. Crown v48 saw
+ * ten consecutive runs all in_progress and a red head 43 commits stale; the
+ * snapshot said RED or GREEN with no hint that the verdict described a main
+ * that no longer existed. Reads only the run list already fetched (the
+ * snapshot runs on a depth-1 checkout, so git cannot count commits there):
+ * newer runs' distinct headShas are a lower bound on commits since the verdict.
+ * @param {Array<{conclusion?:string,status?:string,createdAt:string,headSha?:string}>} runs
+ * @returns {null|{verdictSha:string|null, verdictAt:string, verdictAgeHours:number,
+ *   newerHeads:number, runsInFlight:number, lagging:boolean}}
+ */
+function assessVerdictLag(runs, { now = Date.now() } = {}) {
+  const list = (Array.isArray(runs) ? runs : [])
+    .filter((r) => r && typeof r === 'object' && Number.isFinite(new Date(r.createdAt).getTime()))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const verdict = list.find((r) => DECIDED_CONCLUSIONS.has(String(r.conclusion || '')));
+  if (!verdict) return null;
+  const vt = new Date(verdict.createdAt).getTime();
+  const newer = list.filter((r) => new Date(r.createdAt).getTime() > vt);
+  const newerHeads = new Set(newer.map((r) => r.headSha).filter((sha) => sha && sha !== verdict.headSha)).size;
+  const runsInFlight = newer.filter((r) => ['in_progress', 'queued', 'waiting', 'pending', 'requested'].includes(String(r.status || ''))).length;
+  const verdictAgeHours = Math.max(0, (now - vt) / 3600e3);
+  return {
+    verdictSha: verdict.headSha || null,
+    verdictAt: verdict.createdAt,
+    verdictAgeHours,
+    newerHeads,
+    runsInFlight,
+    lagging: runsInFlight >= LAG_IN_FLIGHT_RUNS || newerHeads >= LAG_NEWER_HEADS
+      || (newerHeads > 0 && verdictAgeHours >= LAG_AGE_HOURS),
+  };
+}
+
+/** Plain suffix for the digest line, or '' when the verdict is current. */
+function renderVerdictLag(lag) {
+  if (!lag || !lag.lagging) return '';
+  const age = lag.verdictAgeHours >= 48 ? `${Math.round(lag.verdictAgeHours / 24)} days` : `${Math.round(lag.verdictAgeHours)}h`;
+  const parts = [];
+  if (lag.newerHeads > 0) parts.push(`${lag.newerHeads}+ newer commit(s) untested`);
+  if (lag.runsInFlight > 0) parts.push(`${lag.runsInFlight} run(s) still in flight`);
+  // Age is from the verdict run's START (createdAt); the run list carries no completion time.
+  return ` — but that verdict is from a run started ${age} ago${parts.length ? `: ${parts.join(', ')}` : ''}`;
+}
+
 // ── failure attribution ─────────────────────────────────────────────────────
 
 // `gh run view --log-failed` emits "<job>\t<step>\t<timestamp> <message>".
@@ -293,11 +343,12 @@ function renderTrunkDigestLine(trunk, { headlineAfterH = 24, headlineAfterFloorR
   if (!trunk || typeof trunk !== 'object' || !trunk.state || trunk.state === 'UNKNOWN') return null;
   const generatedAt = trunk.generatedAt || null;
 
+  const lagText = renderVerdictLag(trunk.verdictLag);
   if (trunk.state !== 'RED') {
     return {
-      text: 'trunk: GREEN — test.yml is passing on main',
+      text: `trunk: GREEN — test.yml is passing on main${lagText}`,
       level: 'ok', headline: false, generatedAt,
-      bannerText: 'trunk: GREEN — test.yml is passing on main',
+      bannerText: `trunk: GREEN — test.yml is passing on main${lagText}`,
       items: [], moreCount: 0,
     };
   }
@@ -314,7 +365,7 @@ function renderTrunkDigestLine(trunk, { headlineAfterH = 24, headlineAfterFloorR
     : `, red for ${hours >= 48 ? `${Math.round(hours / 24)} days` : `${Math.round(hours)}h`}${floor}`;
   const text =
     `trunk: RED (${n} consecutive failure${n === 1 ? '' : 's'}${forPart}` +
-    `${topJob ? `, top failing job: ${topJob}` : ''})`;
+    `${topJob ? `, top failing job: ${topJob}` : ''})${lagText}`;
 
   const failing = Array.isArray(trunk.failingPaths) ? trunk.failingPaths : [];
   return {
@@ -352,5 +403,6 @@ function readTrunkSnapshot(snapshotPath = DEFAULT_SNAPSHOT_PATH) {
 module.exports = {
   DEFAULT_SNAPSHOT_PATH,
   summarizeTrunkRuns, parseFailedLog, extractFailingPaths,
+  assessVerdictLag, renderVerdictLag,
   renderTrunkDigestLine, readTrunkSnapshot,
 };

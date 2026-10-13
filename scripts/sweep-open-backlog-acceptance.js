@@ -44,9 +44,11 @@ const { findClaimedTask } = require('./lib/autonomous-triage-core.js');
 const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify, CHECK_TIMEOUT_MS } = require('./lib/acceptance-check-core.js');
 const { selectOpenBacklogSweepCandidates } = require('./lib/autonomous-recheck-core.js');
 const { fetchOpenBacklogSweepCandidates } = require('./lib/linear-open-backlog-source.js');
+const { parseLandingRows, findCardLanding } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'open-backlog-acceptance-sweep.json');
+const LANDINGS_PATH = path.join(REPO, 'data', 'audit', 'landings.jsonl');
 const DEFAULT_LIMIT = 30; // bounded work: one candidate can cost up to 2 x CHECK_TIMEOUT_MS
 const RUN_DEADLINE_MS = 20 * 60 * 1000; // matches autonomous-acceptance-recheck.js's own run budget
 const MIN_REMAINING_MS_TO_START = 60 * 1000;
@@ -120,7 +122,7 @@ function writeReport(report) {
 // gap, Codex finding). `shadow: true` matches the sibling nightly recheck
 // ledger's own convention (autonomous-acceptance-recheck.js) marking every
 // row as report-only, never a state mutation.
-function buildReport({ generatedAt, totalCandidates, eligibleCandidates, results, fetchTruncated, fetchError, checkoutSha = null }) {
+function buildReport({ generatedAt, totalCandidates, eligibleCandidates, results, fetchTruncated, fetchError, checkoutSha = null, landings = [] }) {
   const passed = results.filter(r => r.status === 'pass');
   const failed = results.filter(r => r.status === 'fail');
   const unverifiable = results.filter(r => r.status === 'unverifiable');
@@ -145,6 +147,16 @@ function buildReport({ generatedAt, totalCandidates, eligibleCandidates, results
     // got a reason; a human couldn't tell WHY a card was unverifiable without
     // re-running it themselves.
     unverifiable: unverifiable.map(r => ({ id: r.cardId, name: r.name, verifyCmd: r.verifyCmd, detail: r.detail })),
+    // BRO-3034 #1a: the strongest subset of alreadyDone. Its own check passes
+    // on main AND a land/ branch naming it reached main (data/audit/
+    // landings.jsonl, written by land.yml), so the work shipped and only the
+    // board still says Backlog/Todo (BRO-2942 was exactly this). Report-only,
+    // like everything here; the landing ledger is used instead of git history
+    // because this runs on a depth-1 checkout.
+    landedButOpen: passed
+      .map(r => ({ r, landing: findCardLanding(r.cardId, landings) }))
+      .filter(x => x.landing)
+      .map(({ r, landing }) => ({ id: r.cardId, name: r.name, branch: landing.branch, sha: landing.sha, landedAt: landing.ts })),
   };
 }
 
@@ -232,6 +244,9 @@ async function main(argv = process.argv.slice(2)) {
     removeCheckout(checkout);
   }
 
+  let landings = [];
+  try { landings = parseLandingRows(fs.readFileSync(LANDINGS_PATH, 'utf8')); }
+  catch (err) { console.error(`[open-backlog-sweep] landings.jsonl unreadable (${err.code || err.message}); landedButOpen will be empty this run`); }
   const report = buildReport({
     generatedAt: new Date().toISOString(),
     totalCandidates: fetchResult.candidates.length,
@@ -239,9 +254,10 @@ async function main(argv = process.argv.slice(2)) {
     results,
     fetchTruncated: fetchResult.truncated,
     checkoutSha: checkout.sha,
+    landings,
   });
   writeReport(report);
-  console.log(`[open-backlog-sweep] ${report.counts.pass} already done, ${report.counts.fail} still fail, ${report.counts.unverifiable} unverifiable (of ${report.checked} checked, ${report.totalCandidates} candidates fetched)`);
+  console.log(`[open-backlog-sweep] ${report.counts.pass} already done (${report.landedButOpen.length} with a landing naming the card), ${report.counts.fail} still fail, ${report.counts.unverifiable} unverifiable (of ${report.checked} checked, ${report.totalCandidates} candidates fetched)`);
   console.log(`Report written: ${path.relative(REPO, REPORT_PATH)}`);
 
   if (process.env.GITHUB_STEP_SUMMARY) {
@@ -256,6 +272,11 @@ async function main(argv = process.argv.slice(2)) {
       `| Still fails | ${report.counts.fail} |`,
       `| Unverifiable | ${report.counts.unverifiable} |`,
       '',
+      ...(report.landedButOpen.length ? [
+        '### Probably shipped, still open on the board (own check passes and a land/ branch names the card; confirm it was not reverted before closing)', '',
+        ...report.landedButOpen.map(c => `- ${c.id} ${c.name} — ${c.branch} (${String(c.sha).slice(0, 10)})`),
+        '',
+      ] : []),
       ...(report.alreadyDone.length ? [
         '### Already done', '',
         ...report.alreadyDone.map(c => `- ${c.id} ${c.name} — \`${c.verifyCmd}\``),

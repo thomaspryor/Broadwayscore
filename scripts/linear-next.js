@@ -971,6 +971,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       console.error(`[linear-next] REFUSING to dispatch ${identifier}: it already looks dispatched.`);
       if (priorComment) {
         console.error(`  Linear comment: "${priorComment.body}" (${priorComment.createdAt}${describeAge(priorComment.createdAt)})`);
+        const staleNote = ld.staleDispatchCommentNote(priorComment, { liveLedger });
+        if (staleNote) console.error(`  ${staleNote}`);
       }
       if (liveLedger) {
         const latest = dispatchLedger.latestAttemptForTask(taskId, entries0);

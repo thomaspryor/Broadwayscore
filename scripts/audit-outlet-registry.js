@@ -16,6 +16,7 @@
  *   node scripts/audit-outlet-registry.js --dry-run     # Show what --fix would do
  *   node scripts/audit-outlet-registry.js --update      # Add missing outlets to registry (with confirmation)
  *   node scripts/audit-outlet-registry.js --strict          # Exit 1 on NEW (non-baselined) missing outlets
+ *   node scripts/audit-outlet-registry.js --check-corpus-freshness  # Fetch data/review-texts first; warn if a local result can't be trusted (BRO-3034)
  *   node scripts/audit-outlet-registry.js --update-baseline # Regenerate the baseline from current scan
  *   node scripts/audit-outlet-registry.js --report-only     # Report without writing the gaps file
  *
@@ -624,6 +625,18 @@ function printReport(auditResult) {
   console.log('Registry Coverage:');
   console.log(`  In registry: ${inRegistry} outlets`);
   console.log(`  Missing: ${findings.missingFromRegistry.length} outlets`);
+  // BRO-3034 #7: a local result is only as fresh as the local corpus. CI
+  // checks the corpus out at origin, so this only speaks up off CI.
+  if (!process.env.GITHUB_ACTIONS) {
+    const { reviewTextsFreshness } = require('./lib/data-freshness.js');
+    // Network-free by default, so only a KNOWN lag warns; --check-corpus-freshness
+    // fetches first and then also warns when currency cannot be confirmed.
+    const checkFresh = process.argv.includes('--check-corpus-freshness');
+    const fresh = reviewTextsFreshness({ dir: REVIEW_TEXTS_DIR, fetch: checkFresh });
+    if (fresh.behindCount > 0 || (checkFresh && !fresh.trustworthy)) {
+      console.log(`  ⚠️  LOCAL RESULT, CORPUS NOT CONFIRMED CURRENT: ${fresh.message}${fresh.remedy ? ` Fix: ${fresh.remedy}` : ''}`);
+    }
+  }
   console.log(`  Unused in registry: ${findings.unusedInRegistry.length} outlets`);
   if (findings.skippedJunkOutlets.length > 0) {
     console.log(`  Skipped as junk (never suggested): ${findings.skippedJunkOutlets.length} outlets`);

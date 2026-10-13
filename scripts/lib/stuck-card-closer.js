@@ -133,6 +133,22 @@ function parseLandingRows(text) {
   return rows;
 }
 
+/**
+ * BRO-3034 #1a: the newest land/ branch row naming this card, or null.
+ * Used for OPEN Backlog/Todo cards (the closer above only sees started ones):
+ * a landing that names the card plus its own check passing on main means the
+ * work shipped and only the board is stale. A revert branch names the card
+ * too but undoes it, so it never counts; a landing later reverted under
+ * another name still does, as in decideClosure.
+ * @param {string} identifier e.g. "BRO-2942"
+ * @param {Array<{ts:string,branch:string,sha:string}>} landings parseLandingRows() output
+ * @returns {{ts:string,branch:string,sha:string}|null}
+ */
+function findCardLanding(identifier, landings) {
+  const own = (landings || []).filter((l) => l && !/revert/i.test(l.branch) && branchIsForCard(l.branch, identifier));
+  return own.length ? own[own.length - 1] : null;
+}
+
 function futureRecheckAfter(texts, nowMs) {
   for (const t of texts) {
     for (const m of String(t || '').matchAll(RECHECK_AFTER_RE)) {
@@ -273,6 +289,7 @@ module.exports = {
   mentionsCard,
   branchIsForCard,
   parseLandingRows,
+  findCardLanding,
   commitIsForCard,
   planCandidates,
   futureRecheckAfter,

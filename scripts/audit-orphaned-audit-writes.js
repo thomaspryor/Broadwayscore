@@ -22,7 +22,10 @@ const { findOrphanedWrites } = require('./lib/orphaned-audit-writes');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // "script|data/audit/file": reason. Keep each entry justified.
-const EXEMPT = {};
+const EXEMPT = {
+  'scripts/sweep-open-backlog-acceptance.js|data/audit/landings.jsonl':
+    'read-only: BRO-3034 reads land.yml\'s landing ledger to report shipped-but-open cards; never writes it',
+};
 
 // Existing gaps found on first run (BRO-2420). Many are likely read-only or
 // staged through a composite action; triage them down over time. --check fails
