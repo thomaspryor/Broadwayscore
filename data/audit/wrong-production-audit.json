@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T00:59:52.635Z",
+  "timestamp": "2026-10-13T01:45:07.068Z",
   "stats": {
-    "totalReviews": 56195,
-    "alreadyFlagged": 20962,
+    "totalReviews": 56196,
+    "alreadyFlagged": 20970,
     "dateGuardCatches": 218,
-    "directorMismatch": 1805,
+    "directorMismatch": 1849,
     "tvFilmSignals": 1623,
     "londonSignals": 2214,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
-    "noPublishDate": 5269
+    "noPublishDate": 5264
   },
   "findings": [
     {
@@ -5018,6 +5018,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -17163,9 +17168,114 @@
       "url": "https://austin101magazine.com/review-hadestown-a-spellbinding-descent-into-love-labor-and-the-power-of-song/",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        },
+        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "belmontvision--zach-watkins.json",
+      "score": 84,
+      "publishDate": "2025-03-10",
+      "url": "https://www.belmontvision.com/post/hadestown-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "broadwayworld--albert-gutierrez.json",
+      "score": 78,
+      "publishDate": "2025-11-29",
+      "url": "https://www.broadwayworld.com/orlando/article/Review-Play-It-Again-Orpheus-HADESTOWN-at-Dr-Phillips-Center-For-The-Performing-Arts-20251129",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "broadwayworld--chloe-rabinowitz.json",
+      "publishDate": "2026-01-14",
+      "url": "https://www.broadwayworld.com/article/Joshua-Colley-J-Harrison-Ghee-Jordan-Tyson-and-More-to-Join-HADESTOWN-20260114",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "broadwayworld--stephi-wild.json",
+      "publishDate": "2026-05-04",
+      "url": "https://www.broadwayworld.com/article/John-MichaelLyles-Will-Join-HADESTOWN-Cast-as-Orpheus-in-June-20260504",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "broadwayworld--tara-bennett.json",
+      "publishDate": "2026-01-22",
+      "url": "https://www.broadwayworld.com/new-orleans/article/Interview-Nickolaus-Coln-of-HADESTOWN-at-Saenger-Theatre-20260122",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "dc-theater-arts--zoe-winsky.json",
+      "score": 94,
+      "publishDate": "2025-11-21",
+      "url": "https://dctheaterarts.org/2025/11/21/hadestown-on-tour-at-the-national-theatre-is-one-hell-of-a-show/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "intermissionblog--morgan-politzer.json",
+      "score": 83,
+      "publishDate": "2024-11-30",
+      "url": "https://www.intermissionblog.com/reviews/come-way-down-to-hadestown",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
         }
       ]
     },
@@ -17195,6 +17305,11 @@
       "url": "https://playbill.com/article/watch-music-video-for-way-down-hadestown-from-london-hadestown",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        },
+        {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
@@ -17203,6 +17318,33 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "santa-barbara-independent--leslie-dinaberg.json",
+      "publishDate": "2026-04-24",
+      "url": "https://www.independent.com/2026/04/24/hadestown-comes-to-our-town-april-28-29/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "the-show-report--theshowreport.json",
+      "score": 91,
+      "publishDate": "2024-10-30",
+      "url": "https://www.theshowreport.org/post/review-hadestown-segerstrom-center-for-the-arts",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
         }
       ]
     },
@@ -23098,6 +23240,59 @@
       "score": 88,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/kinky-boots-will-close-off-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-tour-2025",
+      "file": "broadwayworld--angela-lin.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.broadwayworld.com/chicago/article/InterviewFeature-KINKY-BOOTS-Dancing-in-Heels-Workshop-20260610",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-tour-2025",
+      "file": "broadwayworld--chloe-rabinowitz.json",
+      "publishDate": "2026-06-09",
+      "url": "https://www.broadwayworld.com/chicago/article/KINKY-BOOTS-is-Now-Playing-at-Chicagos-James-M-Nederlander-Theatre-20260609",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-tour-2025",
+      "file": "hartford-courant--christopher-arnott.json",
+      "score": 76,
+      "publishDate": "2026-03-19",
+      "url": "https://www.courant.com/2026/03/19/theater-review-kinky-boots-revival-tour-has-raw-energy-wild-spirit-and-lots-of-love/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-tour-2025",
+      "file": "nowtoronto--unknown.json",
+      "publishDate": "2026-05-31",
+      "url": "https://nowtoronto.com/event/kinky-boots/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -38126,20 +38321,6 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "1883magazine--nick-barr.json",
-      "score": 90,
-      "publishDate": "2025-05-14",
-      "url": "https://1883magazine.com/the-comedy-about-spies-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
       "file": "artsdesk--veronica-lee.json",
       "score": 77,
       "publishDate": "2025-05-15",
@@ -38148,7 +38329,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38162,7 +38343,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38176,7 +38357,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38190,7 +38371,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38204,7 +38385,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38218,7 +38399,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38232,7 +38413,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38246,7 +38427,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38257,11 +38438,6 @@
       "publishDate": "2025-05-14",
       "url": null,
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -38279,26 +38455,12 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "matineemouse--unknown.json",
-      "score": 92,
-      "publishDate": "2025-05-14",
-      "url": "https://matineemouse.substack.com/p/the-comedy-about-spies-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38312,7 +38474,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -38331,7 +38493,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38345,21 +38507,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "stagetopage--unknown.json",
-      "score": 98,
-      "publishDate": null,
-      "url": "http://www.stagetopage.co.uk/2025/05/the-comedy-about-spies-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38373,7 +38521,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38387,7 +38535,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38401,7 +38549,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -38420,35 +38568,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "theatrecat--libby-purves.json",
-      "score": 92,
-      "publishDate": "2025-05-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "therealchrisparkle--therealchrisparkle.json",
-      "score": 95,
-      "publishDate": "2025-05-14",
-      "url": "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38462,7 +38582,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38476,7 +38596,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38490,7 +38610,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -38509,7 +38629,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -38523,7 +38643,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
         }
       ]
     },
@@ -47773,6 +47893,20 @@
       ]
     },
     {
+      "showId": "waitress-tour-2026",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 65,
+      "publishDate": null,
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/jessie-mueller-star-turn-baked-perfection-waitress-article-1.2610433",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
+        }
+      ]
+    },
+    {
       "showId": "waitress-west-end-2019",
       "file": "daily-mail--holly-williams.json",
       "score": 74,
@@ -48242,6 +48376,20 @@
     },
     {
       "showId": "water-for-elephants-2024",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 79,
+      "publishDate": "2024-03-21",
+      "url": "https://www.talkinbroadway.com/page/world/WaterforElephants.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ryan emmons\" from water-for-elephants-tour-2025"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-2024",
       "file": "variety--aramide-tinubu.json",
       "score": 88,
       "publishDate": "March 21, 2024",
@@ -48251,6 +48399,463 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "albany-times-union--katherine-kiessling.json",
+      "score": 78,
+      "publishDate": "2026-04-08",
+      "url": "https://www.timesunion.com/theater/article/water-for-elephants-review-proctors-schenectady-22191760.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--christina-mancuso.json",
+      "score": 57,
+      "publishDate": "2026-06-10",
+      "url": "https://www.broadwayworld.com/columbus/article/Review-WATER-FOR-ELEPHANTS-at-Ohio-Theatre-A-Spectacle-in-Search-of-a-Soul-20260610",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "score": 77,
+      "publishDate": "2026-08-21",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-San-Diego-20260821",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--evan-henerson.json",
+      "score": 79,
+      "publishDate": "2026-09-14",
+      "url": "https://www.broadwayworld.com/los-angeles/article/Review-WATER-FOR-ELEPHANTS-at-Hollywood-Pantages-20260914",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--jeffrey-kare.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-WATER-FOR-ELEPHANTS-National-Tour-at-Durham-Performing-Arts-Center-20251217",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--jonathan-netek.json",
+      "score": 81,
+      "publishDate": "2025-01-30",
+      "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 240d before show (2025-01-30 vs 2025-09-27)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--marie-reiter.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/louisville/article/Review-WATER-FOR-ELEPHANTS-Presented-by-Broadway-Across-America-at-Kentucky-Performing-Arts-20251017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--michael-rabice.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-WATER-FOR-ELEPHANTS-at-Sheas-Buffalo-Theatre-20260415",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--peyton-vanderheyden.json",
+      "score": 78,
+      "publishDate": "2026-04-09",
+      "url": "https://www.broadwayworld.com/central-new-york/article/Review-WATER-FOR-ELEPHANTS-at-Proctors-20260409",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "score": 76,
+      "publishDate": "2026-06-25",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-In-Chicago-20260625",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--scott-rawson.json",
+      "score": 76,
+      "publishDate": "2026-06-17",
+      "url": "https://www.broadwayworld.com/madison/article/Review-WATER-FOR-ELEPHANTS-at-The-Overture-Center-20260617",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--taylor-clemons.json",
+      "score": 78,
+      "publishDate": "2025-10-17",
+      "url": "https://www.broadwayworld.com/louisville/article/Review-WATER-FOR-ELEPHANTS-Presented-by-Broadway-Across-America-at-Kentucky-Performing-Arts-20251017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "chicago-reader--kimzyn-campbell.json",
+      "score": 88,
+      "publishDate": "2026-06-26",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/water-for-elephants-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 66,
+      "publishDate": "2026-06-25",
+      "url": "https://www.chicagotribune.com/2026/06/25/review-water-elephants-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "dc-theater-arts--constance-beulah.json",
+      "score": 79,
+      "publishDate": "2025-10-02",
+      "url": "https://dctheaterarts.org/2025/10/02/the-awe-and-wonder-of-water-for-elephants-at-the-hippodrome-in-baltimore/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "hartford-courant--christopher-arnott.json",
+      "score": 88,
+      "publishDate": "2026-06-04",
+      "url": "https://www.courant.com/2026/06/04/theater-review-a-gritty-and-moody-water-for-elephants-produces-magic-at-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "latimes--jenelle-riley.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-09-14/water-for-elephants-at-pantages-is-circus-in-play",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "ludwig-van-toronto--paula-citron.json",
+      "score": 93,
+      "publishDate": "2025-10-08T10:39:26-04:00",
+      "url": "https://www.ludwig-van.com/toronto/2026/07/14/scrutiny-mirvishs-water-elephants-marvel-creative-staging-design-direction/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "nwtheatre--chase-d-anderson.json",
+      "score": 73,
+      "publishDate": "2026-10-08",
+      "url": "https://www.nwtheatre.org/2026/10/08/welcome-to-the-circus-water-for-elephants-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "picksinsix--ed-tracy.json",
+      "score": 90,
+      "publishDate": "2026-06-25",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/6/25/picksinsix-review-water-for-elephants-broadway-in-chicago",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "rachelsreviewstheatre--unknown.json",
+      "score": 66,
+      "publishDate": "2026-08-27",
+      "url": "https://rachelsreviewstheatre.com/2026/08/26/go-to-the-water-for-elephants-national-tour-for-the-circus-more-than-the-musical-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "score": 75,
+      "publishDate": "2026-06-25",
+      "url": "https://rachelweinbergreviews.com/2026/06/25/review-water-for-elephants-musical-tour-in-chicago-offers-dazzling-circus-tricks/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "revue--marin-heinritz.json",
+      "score": 92,
+      "publishDate": "2025-10-10",
+      "url": "https://revuewm.com/arts/review-water-for-elephants-is-a-spectacular-balancing-act-of-love-and-wonder",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 74,
+      "publishDate": "2026-08-20",
+      "url": "https://www.sandiegouniontribune.com/2026/08/20/review-water-for-elephants-musical-delivers-on-spectacle/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "south-florida-sun-sentinel--rod-stafford-hagwood.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.sun-sentinel.com/2025/11/13/review-how-broadway-tour-of-water-for-elephants-at-broward-center-sticks-its-landing/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "splash-magazines--susan-lillis.json",
+      "score": 81,
+      "publishDate": "2026-06-27",
+      "url": "https://splashmags.com/2026/06/water-for-elephants-at-the-nederlander-theatre-is-an-astounding-wonderment/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "stage-raw--steven-morris.json",
+      "score": 76,
+      "publishDate": "2026-09-16",
+      "url": "https://stageraw.com/stage-raw-review-water-for-elephants/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "stagescenela--unknown.json",
+      "score": 90,
+      "publishDate": "2026-09-10",
+      "url": "https://stagescenela.com/2026/09/water-for-elephants/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "the-cap-times--lindsay-christians.json",
+      "score": 74,
+      "publishDate": "2026-06-18",
+      "url": "https://captimes.com/entertainment/arts-and-theatre/souls-and-songs-take-flight-in-circus-musical-water-for-elephants/article_babf05f8-a5af-4b3c-8ae0-2db1c1f8c721.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "timesofsandiego--drew-sitton.json",
+      "score": 79,
+      "publishDate": "2026-08-20",
+      "url": "https://timesofsandiego.com/arts/2026/08/20/musical-tour-circus-water-for-elephants/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "wkrn--colleen-guerry.json",
+      "score": 82,
+      "publishDate": "2026-05-14",
+      "url": "https://www.wkrn.com/news/local-news/nashville/water-for-elephants-fills-tpac-with-music-circus-spectacles/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "wypr--rob-sivak.json",
+      "score": 77,
+      "publishDate": "2025-10-08T10:39:26-04:00",
+      "url": "https://www.wypr.org/show/midday/2025-10-01/rousucks-review-water-for-elephants-at-the-hippodrome",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
         }
       ]
     },
@@ -61047,20 +61652,6 @@
     },
     {
       "showId": "hadestown-tour-2024",
-      "file": "dc-theater-arts--zoe-winsky.json",
-      "score": 94,
-      "publishDate": "2025-11-21",
-      "url": "https://dctheaterarts.org/2025/11/21/hadestown-on-tour-at-the-national-theatre-is-one-hell-of-a-show/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-tour-2024",
       "file": "hotchka--jeremy-fogelman.json",
       "score": 81,
       "publishDate": "2025-11-19",
@@ -67162,7 +67753,7 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
-      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "file": "londontheatredirect--steve-mills.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/musical/martin-guerre-tickets?srsltid=AU7gw4WVzbtbXp9TL94RyxsFIGKt5DdfBYwx9DlI3UZ93KzuEc_8bxaK",
       "findings": [
@@ -80402,6 +80993,20 @@
       ]
     },
     {
+      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "file": "thestage--the-stage.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/the-prime-of-miss-jean-brodie-review-royal-lyceum-theatre-edinburgh",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-prince-of-egypt-west-end-2020",
       "file": "standard--nick-curtis.json",
       "score": 43,
@@ -83790,34 +84395,6 @@
       ]
     },
     {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--jonathan-netek.json",
-      "score": 81,
-      "publishDate": "2025-01-30",
-      "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 240d before show (2025-01-30 vs 2025-09-27)"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "dc-theater-arts--constance-beulah.json",
-      "score": 79,
-      "publishDate": "2025-10-02",
-      "url": "https://dctheaterarts.org/2025/10/02/the-awe-and-wonder-of-water-for-elephants-at-the-hippodrome-in-baltimore/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "we-will-rock-you-west-end-2023",
       "file": "whatsonstage--unknown.json",
       "publishDate": "June 8th, 2023",
@@ -84198,20 +84775,6 @@
       "score": 94,
       "publishDate": "2026-10-01",
       "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hateful-couple-in-town/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "ground--unknown.json",
-      "score": null,
-      "publishDate": "2026-09-30",
-      "url": "https://ground.news/article/production-images-released-for-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf-theatre-weekly",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
