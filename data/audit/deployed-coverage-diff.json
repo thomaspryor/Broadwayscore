@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-10-13T19:51:08.186Z",
+  "generatedAt": "2026-10-13T22:54:53.045Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 228,
-  "clean": 227,
+  "checked": 229,
+  "clean": 228,
   "defective": 1,
   "byType": {
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-standard-of-living-west-end-2026",
-      "title": "The Standard Of Living",
-      "openingDate": "2026-09-29",
+      "showId": "blood-of-my-blood-west-end-2026",
+      "title": "Blood of my Blood",
+      "openingDate": "2026-10-07",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.52 vs local 70.36 (Δ0.16)"
+          "detail": "deployed cs 80.96 vs local 80.57 (Δ0.39)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 31,
-      "firstDefectAt": "2026-10-13T19:51:05.344Z"
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-10-13T22:54:47.776Z"
     }
   ],
   "persistentDefective": 0,
