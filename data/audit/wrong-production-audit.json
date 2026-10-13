@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T19:53:02.071Z",
+  "timestamp": "2026-10-13T20:04:11.740Z",
   "stats": {
-    "totalReviews": 56429,
-    "alreadyFlagged": 21035,
+    "totalReviews": 56437,
+    "alreadyFlagged": 21038,
     "dateGuardCatches": 212,
     "directorMismatch": 1874,
     "tvFilmSignals": 1642,
-    "londonSignals": 2236,
+    "londonSignals": 2237,
     "offBroadwaySignals": 510,
     "yearMismatch": 139,
-    "noPublishDate": 5291
+    "noPublishDate": 5292
   },
   "findings": [
     {
@@ -63869,6 +63869,19 @@
       "file": "kidify--unknown.json",
       "publishDate": null,
       "url": "https://kidify.co.uk/day-out/high-school-musical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "file": "maninlondon--alan-greenhalgh.json",
+      "publishDate": "2026-10-12",
+      "url": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
