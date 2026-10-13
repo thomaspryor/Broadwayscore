@@ -19,14 +19,14 @@
  *
  * Usage:
  *   node scripts/audit-body-date-mismatch.js [--max-unexplained=N] [--json] [--dir=PATH]
- * Exit: 0 unexplained <= N (default 0) / 1 above / 3 corpus missing or unreadable.
+ * Exit: 0 unexplained <= N (default 0) / 1 above / 3 bad --max-unexplained, corpus missing or unreadable.
  * Runs daily (non-blocking) in check-corpus-drift.js.
  */
 const fs = require('fs');
 const path = require('path');
 const { detectBodyDateMismatch, isUrlRepairPending } = require('./lib/body-date-mismatch');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
-const { isDateBasedWrongProduction } = require('./lib/stale-flag-neutralization');
+const { isDateClaimWrongProduction } = require('./lib/stale-flag-neutralization');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-body-date-mismatch.js — byline date vs publishDate (>3 days apart)
@@ -45,8 +45,8 @@ function explainedBy(d, show) {
   if (d.crossOutletDuplicate === true) return 'crossOutletDuplicate';
   if (d.wrongProduction === true) {
     // A content reason (set by a person or a verifier) stands whatever the date says.
-    if (d.wrongProductionReason && !isDateBasedWrongProduction({ wrongProductionReason: d.wrongProductionReason })) return 'wrongProduction';
-    const dateBased = isDateBasedWrongProduction(d);
+    if (d.wrongProductionReason && !isDateClaimWrongProduction({ wrongProductionReason: d.wrongProductionReason })) return 'wrongProduction';
+    const dateBased = isDateClaimWrongProduction(d);
     const corrob = show ? evaluateCurrentRunCorroboration({ review: d, show }) : { signals: [] };
     if (dateBased && corrob.signals.some((sig) => sig.startsWith('body-byline-date:'))) return null;
     return 'wrongProduction';
@@ -55,6 +55,10 @@ function explainedBy(d, show) {
   if (d.duplicateOf) return 'duplicateOf';
   if (d.isNonReview === true) return 'isNonReview';
   if (d.isRoundupArticle === true) return 'isRoundupArticle';
+  // Excluded on the text or the attribution, which a byline date can't contradict.
+  if (d.isNotReview === true) return 'isNotReview';
+  if (d.wrongAttribution === true) return 'wrongAttribution';
+  if (d.rejectedAt || d.rejectionReason) return 'rejected';
   // url already corrected, body not yet re-fetched: the stale body is queued
   // for replacement (isAwaitingUrlCorrectionRefetch's state).
   if (d.needsRefetch === true && d.urlCorrectedFrom) return 'awaiting-url-refetch';
@@ -106,7 +110,12 @@ function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const arg = (k) => { const a = argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : null; };
-  const max = arg('max-unexplained') != null ? parseInt(arg('max-unexplained'), 10) : 0;
+  const maxArg = arg('max-unexplained');
+  const max = maxArg != null ? Number(maxArg) : 0;
+  if ((maxArg != null && !/^\d+$/.test(maxArg)) || !Number.isInteger(max)) {
+    console.error(`audit-body-date-mismatch: --max-unexplained must be a whole number >= 0, got "${maxArg}"`);
+    return 3;
+  }
   const root = arg('dir') || path.join(__dirname, '..', 'data', 'review-texts');
   if (!fs.existsSync(root)) {
     console.error(`audit-body-date-mismatch: corpus missing at ${root}`);

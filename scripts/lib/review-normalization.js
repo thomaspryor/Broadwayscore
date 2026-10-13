@@ -1209,10 +1209,7 @@ function outletOwnsUrlDomain(outletId, url) {
   } catch {
     return false;
   }
-  const owned = [entry.domain, ...(Array.isArray(entry.domainAliases) ? entry.domainAliases : [])]
-    .filter(d => typeof d === 'string' && d)
-    .map(d => d.replace(/^www\./, '').toLowerCase());
-  return owned.some(d => hostname === d || hostname.endsWith('.' + d));
+  return [...outletHosts(entry)].some(d => hostname === d || hostname.endsWith('.' + d));
 }
 
 /**
@@ -1374,8 +1371,11 @@ function splitChildrenOf(parentId) {
     const registry = loadOutletRegistry();
     for (const [id, entry] of Object.entries((registry && registry.outlets) || {})) {
       if (!entry || !entry.splitFrom) continue;
-      if (!_splitChildren.has(entry.splitFrom)) _splitChildren.set(entry.splitFrom, []);
-      _splitChildren.get(entry.splitFrom).push({ id, entry });
+      // Keyed by the normalized parent, as editionGroupKey reads splitFrom,
+      // so an alias spelling of the parent still finds its children.
+      const parent = normalizeOutlet(entry.splitFrom) || entry.splitFrom;
+      if (!_splitChildren.has(parent)) _splitChildren.set(parent, []);
+      _splitChildren.get(parent).push({ id, entry });
     }
   }
   return _splitChildren.get(parentId) || [];
@@ -1383,7 +1383,8 @@ function splitChildrenOf(parentId) {
 
 /** Bare host set of an outlet entry: domain plus domainAliases, www.-stripped, lowercased. */
 function outletHosts(entry) {
-  return new Set([entry && entry.domain, ...((entry && entry.domainAliases) || [])]
+  const aliases = entry && Array.isArray(entry.domainAliases) ? entry.domainAliases : [];
+  return new Set([entry && entry.domain, ...aliases]
     .filter((d) => typeof d === 'string' && d)
     .map((d) => d.replace(/^www\./, '').toLowerCase()));
 }
@@ -1395,11 +1396,8 @@ function outletHosts(entry) {
  * publications. The one definition behind editionGroupKey and editionFamily.
  */
 function sharesMasthead(child, parent) {
-  const hosts = outletHosts(child);
-  if (!hosts.size) return false;
-  const parentHosts = outletHosts(parent);
-  const primary = String(child.domain || '').replace(/^www\./, '').toLowerCase();
-  return !!primary && parentHosts.has(primary);
+  const primary = String((child && child.domain) || '').replace(/^www\./, '').toLowerCase();
+  return !!primary && outletHosts(parent).has(primary);
 }
 
 const _editionRoot = new Map();
@@ -2884,6 +2882,7 @@ module.exports = {
   getOutletTier,
   loadOutletRegistry,
   splitChildrenOf,
+  sharesMasthead,
   editionFamily,
   editionGroupKey,
   groupSameUrlFilesByOutlet,

@@ -111,6 +111,27 @@ function isDateBasedWrongProduction(existing) {
   );
 }
 
+// Date-window notes the rebuild's own guards stamp: wrong-production-autoclear's
+// DATE_GUARD_PREFIXES ("Review published N days before show opened", ...),
+// with its bare "Auto-flagged" narrowed to the date shapes (the same prefix
+// also opens content notes: "Auto-flagged: mentions director ..."), plus two
+// legacy URL-date shapes still on disk ("URL date ... days after show
+// closed", "URL contains date/format from").
+// Kept out of DATE_BASED_WRONGPROD_PREFIXES: the rebuild re-runs those guards,
+// so a body replacement may clear them. Read-only questions ("does this flag
+// rest only on a date?") use isDateClaimWrongProduction, which counts them.
+const DATE_CLAIM_NARROWED_PREFIXES = ['Auto-flagged: published', 'Auto-flagged: URL date', 'URL date', 'URL contains date'];
+
+function isDateClaimWrongProduction(existing) {
+  if (isDateBasedWrongProduction(existing)) return true;
+  if (!existing) return false;
+  const prefixes = [
+    ...require('./wrong-production-autoclear').DATE_GUARD_PREFIXES.filter((p) => p !== 'Auto-flagged'),
+    ...DATE_CLAIM_NARROWED_PREFIXES,
+  ];
+  return _wrongProductionBasisStrings(existing).some((basis) => prefixes.some((prefix) => basis.startsWith(prefix)));
+}
+
 /**
  * Signals that a human (or an explicit override flow) already made a
  * decision about this file's wrongProduction state — in EITHER direction —
@@ -254,6 +275,7 @@ module.exports = {
   BODY_SUBSTANTIAL_THRESHOLD,
   bodyBecameSubstantial,
   isDateBasedWrongProduction,
+  isDateClaimWrongProduction,
   isHumanClearedWrongProduction,
   neutralizeStaleFlagsOnBodyReplacement,
 };

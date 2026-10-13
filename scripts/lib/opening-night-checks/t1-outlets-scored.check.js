@@ -1,5 +1,7 @@
 'use strict';
 
+const { editionGroupKey } = require('../review-normalization');
+
 const name = 't1-outlets-scored';
 const description = 'Core T1 outlets are missing reviews or have unscored reviews after opening night';
 
@@ -10,6 +12,12 @@ const description = 'Core T1 outlets are missing reviews or have unscored review
  */
 const BROADWAY_CORE_T1 = ['nytimes', 'vulture', 'variety'];
 const WEST_END_CORE_T1 = ['guardian', 'telegraph', 'times-uk'];
+
+// An edition split (The Sunday Times out of times-uk, BRO-5137) fills its
+// parent's slot: a show reviewed only by the Sunday Times has its Times review.
+function coreSlot(outletId) {
+  return editionGroupKey(outletId);
+}
 
 // Hours after opening before we flag missing T1 reviews (give critics time to publish)
 const HOURS_AFTER_OPENING = 24;
@@ -45,18 +53,18 @@ function run(show, context) {
   const coreT1 = market === 'west-end' ? WEST_END_CORE_T1 : BROADWAY_CORE_T1;
 
   // Find which core T1 outlets have reviews (any state — even unscored)
-  const presentOutlets = new Set(reviews.map(r => r.outletId));
+  const presentOutlets = new Set(reviews.map(r => coreSlot(r.outletId)));
   const missing = coreT1.filter(id => !presentOutlets.has(id));
 
   // Find T1 reviews that exist but have no valid score
   const unscoredT1 = reviews.filter(r => {
-    if (!coreT1.includes(r.outletId)) return false;
+    if (!coreT1.includes(coreSlot(r.outletId))) return false;
     if (r.wrongProduction === true || r.wrongShow === true) return false;
     return r.compositeScore == null && r.assignedScore == null;
   });
 
   if (missing.length === 0 && unscoredT1.length === 0) {
-    const scored = reviews.filter(r => coreT1.includes(r.outletId)).length;
+    const scored = reviews.filter(r => coreT1.includes(coreSlot(r.outletId))).length;
     return {
       ok: true,
       severity: 'ok',

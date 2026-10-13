@@ -238,6 +238,11 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // and none of 357 theaterscene.net corpus reviews is a /tag/ url.
   { host: /(^|\.)theaterscene\.net$/, path: /^\/tags?\/[^/]+\/?$/i, reason: 'tag-index-page', allSources: true },
   { host: /(^|\.)bestoftheatre\.co\.uk$/, path: /^\/(?!blog(\/|$))[^/]+\/?$/i, reason: 'ticket-seller-product-page', allSources: true },
+  // SeatPlan ticket pages (/<city>/<show>-tickets/): one reached the scores
+  // through /submit-review (BRO-2716). Its editorial reviews live under
+  // /<city>/news/<show>-review-.../ (9 scored, 2026-10-13), so the write path
+  // refuses only this shape (the census list above still skips the host).
+  { host: /(^|\.)seatplan\.com$/, path: /^\/[^/]+\/[^/]+-tickets\/?$/i, reason: 'ticket-seller-product-page', allSources: true },
   { host: /(^|\.)eventticketscenter\.com$/, reason: 'ticketing-reseller' },
   // Stagebuddy publishes real reviews under /theater/reviews/…; its
   // theater-feature section is previews/features, not reviews (Disruption

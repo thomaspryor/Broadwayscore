@@ -75,7 +75,7 @@ test('dangling, chained, path-like or absent duplicateOf stays in scope', () => 
 const { nonReviewHostReasons, findNonReviewRegistryOutlets } = require('./audit-registry-nonreview-outlets.js');
 
 test('venue, ticketing and PR hosts are flagged; real review outlets are not', () => {
-  assert.ok(nonReviewHostReasons('www.broadway.com').includes('isBlockedDomain'));
+  assert.ok(nonReviewHostReasons('www.broadway.com').includes('isBlockedReviewUrl'));
   assert.ok(nonReviewHostReasons('scorebig.com').length > 0);
   assert.deepEqual(nonReviewHostReasons('nytimes.com'), []);
   // The census's bare .org catch-all is not evidence a registered outlet is a venue.
@@ -109,4 +109,31 @@ test('a copy of an EXCLUDED sibling stays in scope (the rebuild recovers such co
   assert.equal(isQuarantinedDuplicateOfCanonical({ duplicateOf: 'x.json' }, unscored), false);
   const blocked = () => ({ outletId: 'x', humanReviewScore: 80, url: 'https://www.facebook.com/a/posts/1' });
   assert.equal(isQuarantinedDuplicateOfCanonical({ duplicateOf: 'x.json' }, blocked), false);
+});
+
+// BRO-5261 retro-review of the BRO-2716 sweep: the host check composes the
+// write path's own predicates, so every host rule they hold applies.
+test('host rules other than ticketing-reseller are reported (named listing hosts)', () => {
+  assert.deepEqual(nonReviewHostReasons('westend.com'), ['ticketing-listing']);
+  assert.deepEqual(nonReviewHostReasons('abouttheartists.com'), ['production-database-listing']);
+});
+
+test('a subdomain of a blocked host is reported, as the write path refuses it', () => {
+  assert.ok(nonReviewHostReasons('m.facebook.com').includes('isBlockedReviewUrl'));
+  assert.ok(nonReviewHostReasons('uk.seatgeek.com').includes('isBlockedReviewUrl'));
+});
+
+test('real outlets, .org outlets and section-path rules are not reported', () => {
+  assert.deepEqual(nonReviewHostReasons('nytimes.com'), []);
+  assert.deepEqual(nonReviewHostReasons('wnyc.org'), [], 'the bare .org catch-all is a census heuristic');
+  assert.deepEqual(nonReviewHostReasons('broadwayworld.com'), [], 'aggregator-internal-nav is a path rule');
+  assert.deepEqual(nonReviewHostReasons('bestoftheatre.co.uk'), [], 'its product-page rule is a path rule');
+});
+
+test('a domainless outlet half on a ticket host is reported; one on a clean host is not', () => {
+  const registry = { outlets: { x: { displayName: 'X', tier: 4, domain: null } } };
+  const half = findNonReviewRegistryOutlets(registry, new Map([['x', ['https://broadway.com/a', 'https://realblog.com/r']]]));
+  assert.deepEqual(half.map((h) => h.outletId), ['x']);
+  const clean = findNonReviewRegistryOutlets(registry, new Map([['x', ['https://realblog.com/r']]]));
+  assert.deepEqual(clean, []);
 });

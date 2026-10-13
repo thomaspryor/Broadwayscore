@@ -2073,7 +2073,7 @@ function safeWriteReview(filePath, newData, options = {}) {
       if (!lockedOverride && typeof newData.fullText === 'string' && typeof existing.fullText === 'string'
           && !require('./url-change-invariant').urlCanonicallyChanged(existing.url, newData.url)) {
         const bodyDates = require('./body-date-mismatch');
-        const swap = bodyDates.isDifferentDatedArticle(existing.fullText, newData.fullText);
+        const swap = bodyDates.isDifferentDatedArticle(existing.fullText, newData.fullText, { recordDate: existing.publishDate });
         if (swap) {
           const cleared = bodyDates.invalidateStaleArticleFields(newData, existing, swap);
           console.warn(`[review-write-guard] ${path.basename(filePath)}: body replaced in place (byline ${swap.oldBodyDate} -> ${swap.newBodyDate}); cleared stale ${cleared.join(', ') || '(nothing carried over)'}; url marked for repair`);

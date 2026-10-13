@@ -124,8 +124,10 @@ function splitOutletCorrection(data) {
     reason,
     detail,
   });
+  let urlOwner = null;
   if (typeof data.url === 'string' && data.url) {
     const owner = resolveOutletFromUrl(data.url);
+    urlOwner = (owner && owner.outletId) || null;
     if (owner && owner.outletId && owner.outletId !== current) {
       const entry = getOutletFromRegistry(owner.outletId);
       if (entry && entry.splitFrom === current) {
@@ -133,7 +135,19 @@ function splitOutletCorrection(data) {
       }
     }
   }
-  const children = require('./review-normalization').splitChildrenOf(current);
+  const { splitChildrenOf, sharesMasthead } = require('./review-normalization');
+  // Label and critic only speak where the url can't: an edition child on its
+  // parent's own domain, or no url at all. A url on another registry outlet's
+  // domain (a Daily Mail piece by a Sunday Times critic), or on the parent's
+  // domain when the child publishes elsewhere (British Theatre Guide vs
+  // BritishTheatre.com), is publisherDomainCorrection's call (BRO-5261).
+  // An aggregator, archive or news-portal url names no publisher (the hosts
+  // publisherDomainCorrection skips too), so the label still decides there.
+  if (urlOwner && urlNamesNoPublisher(data.url, urlOwner)) urlOwner = null;
+  const parentEntry = getOutletFromRegistry(current);
+  const children = splitChildrenOf(current).filter((c) => !urlOwner
+    || urlOwner === c.id
+    || (urlOwner === current && parentEntry && sharesMasthead(c.entry, parentEntry)));
   if (!children.length) return null;
   const label = typeof data.outlet === 'string' ? data.outlet.trim() : '';
   const labelId = label ? normalizeOutlet(label) : null;
@@ -146,6 +160,15 @@ function splitOutletCorrection(data) {
   return byCritic
     ? fix(byCritic.id, 'outlet-split-critic', `generic label, ${data.criticName} is a ${byCritic.id} splitCritics critic`)
     : null;
+}
+
+function urlNamesNoPublisher(url, ownerId) {
+  let host;
+  try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return true; }
+  if ([...ARCHIVE_HOSTS].some((h) => host === h || host.endsWith('.' + h))) return true;
+  if (require('./review-normalization').isSyndicationPortalHost(host)) return true;
+  const { AGGREGATOR_OUTLET_IDS } = require('./aggregator-domains');
+  return !!(AGGREGATOR_OUTLET_IDS && AGGREGATOR_OUTLET_IDS.has && AGGREGATOR_OUTLET_IDS.has(ownerId));
 }
 
 /**

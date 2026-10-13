@@ -1194,6 +1194,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  DATE_GUARD_PREFIXES,
   locationFlagsStaleAfterMove,
   showIdDirMismatchNote,
   isWrongProductionHeld,

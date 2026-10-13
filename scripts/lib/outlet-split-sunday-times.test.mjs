@@ -183,3 +183,38 @@ test('every split outlet gets its parent\'s scoring treatment', () => {
     }
   }
 });
+
+// BRO-5261 retro-review: the label/critic routes speak only where the url can't.
+test('a url on another publisher, or on the parent of a cross-domain split, keeps the label/critic routes silent', () => {
+  // Christopher Hart (splitCritics) also writes for the Daily Mail.
+  const mail = { outletId: 'times-uk', outlet: 'The Times (UK)', criticName: 'Christopher Hart', url: 'https://www.dailymail.co.uk/tvshowbiz/article-1/review.html' };
+  assert.equal(quiet(() => splitOutletCorrection(mail)), null);
+  // Same critic on the shared Times domain still moves.
+  assert.equal(quiet(() => splitOutletCorrection({ ...mail, url: URL_CO_UK }))?.outletId, 'sunday-times');
+  // British Theatre Guide url with a BritishTheatre.com label: the url decides.
+  const btg = { outletId: 'british-theatre', outlet: 'BritishTheatre.com', criticName: 'Peter Lathan', url: 'https://www.britishtheatreguide.info/reviews/x' };
+  assert.equal(quiet(() => splitOutletCorrection(btg)), null);
+  // An aggregator url names no publisher: the label still decides.
+  const agg = { outletId: 'times-uk', outlet: 'The Sunday Times', criticName: 'Somebody', url: 'https://www.westendtheatre.com/12345/reviews/x' };
+  assert.equal(quiet(() => splitOutletCorrection(agg))?.outletId, 'sunday-times');
+});
+
+test('opening-night T1 check: a Sunday Times review fills the Times slot', () => {
+  const check = require('./opening-night-checks/t1-outlets-scored.check.js');
+  const now = new Date('2026-10-13');
+  const show = { id: 'x', category: 'west-end', openingDate: '2026-09-01', compositeScore: 70 };
+  const run = (rows) => quiet(() => check.run(show, { now, reviewsDoc: { x: rows } }));
+  const scored = (o) => ({ outletId: o, assignedScore: 70 });
+  assert.equal(run([scored('guardian'), scored('telegraph'), scored('sunday-times')]).ok, true);
+  assert.match(run([scored('guardian'), scored('telegraph')]).message, /Missing T1 reviews: times-uk/);
+  assert.match(run([scored('guardian'), scored('telegraph'), { outletId: 'sunday-times' }]).message, /Unscored T1 reviews: sunday-times/);
+});
+
+test('paywall recovery and the star recollect default cover both Times papers', () => {
+  const src = fs.readFileSync(new URL('../recover-thetimes-browser.js', import.meta.url), 'utf8');
+  assert.match(src, /filePrefix: \['times-uk', 'sunday-times'\]/);
+  const wf = fs.readFileSync(new URL('../../.github/workflows/recollect-for-scores.yml', import.meta.url), 'utf8');
+  for (const line of wf.split('\n').filter((l) => /OUTLETS=".*\btimes-uk\b/.test(l))) {
+    assert.match(line, /\bsunday-times\b/, 'a recollect OUTLETS list with times-uk must carry sunday-times');
+  }
+});

@@ -85,12 +85,19 @@ function extractDateFromText(fullText) {
 //   - a date directly followed by a clock time ("Stuart King 4 September,
 //     2026, 08:36"),
 // and never one inside a range or after updated/modified/from/until.
-// "By" + 1-4 capitalized name words (+ optional weekday) + optional separator.
-const BYLINE_BEFORE = /\b[Bb][Yy]:?\s+(?:[A-Z][\w.'’-]*,?\s+){1,5}(?:[\/|–—-]\s*)?$/;
+// "By" + 1-4 capitalized name words (+ optional weekday) + optional separator
+// ("By Jane Doe – March 3, 2026", "Posted by Jane Doe on March 3, 2026").
+const BYLINE_BEFORE = /\b[Bb][Yy]:?\s+(?:[A-Z][\w.'’-]*,?\s+){1,5}(?:(?:[\/|–—-]|on)\s*)?$/;
 // Clock time straight after the date, no "at" (news-ticker headlines read
 // "<headline> October 6, 2026 at 6:04 pm" on the same page chrome).
 const BYLINE_TIME_AFTER = /^,?\s*\d{1,2}[:.]\d{2}\b/;
 const BYLINE_REJECT_BEFORE = /(?:updated|modified|\b(?:from|until|through|thru|to|since|on)|[-–—])\s*[:,]?\s*(?:[A-Za-z]+day,?\s*)?$/i;
+// After a "By <name>" byline a dash or "on" is the byline's own separator;
+// only the run/update words still disqualify the date.
+const BYLINE_REJECT_BEFORE_AFTER_NAME = /(?:(?:updated|modified)(?:\s+on)?|\b(?:from|until|through|thru|to|since))\s*[:,]?\s*(?:[-–—]\s*)?(?:[A-Za-z]+day,?\s*)?$/i;
+// A capitalized "On" opens a sentence ("By Logan Martell On December 2, 2025,
+// the Met delivered..."): the date it introduces is the performance, not the byline.
+const SENTENCE_ON_BEFORE = /\bOn\s+(?:[A-Z][a-z]+day,?\s*)?$/;
 // A date followed by a colon or full stop introduces text ("By David Sheward
 // January 22, 2025: Billed as...", "By Samuel L. Leiter April 6, 2025. The
 // big reason..."): Theater Life stamps the performance seen that way, days
@@ -99,9 +106,10 @@ const BYLINE_REJECT_AFTER = /^\s*(?:[-–—]|to\b|until\b|[:.](?!\d))/i;
 
 /**
  * The article's own byline date in the first 500 chars of fullText, or null.
- * Exactly one qualifying date is required.
+ * Exactly one qualifying date is required. A date after `notAfter` (the day the
+ * text was fetched; default tomorrow) is a typo on the page, never the byline.
  */
-function extractBylineDate(fullText) {
+function extractBylineDate(fullText, { notAfter = null } = {}) {
   if (typeof fullText !== 'string' || !fullText) return null;
   const header = fullText.substring(0, 500);
   const found = [];
@@ -112,13 +120,21 @@ function extractBylineDate(fullText) {
       const before = header.substring(Math.max(0, m.index - 80), m.index);
       const after = header.substring(m.index + m[0].length, m.index + m[0].length + 20);
       if (TEXT_DATE_RUN_WORDS.test(before.slice(-50)) || BYLINE_RUN_WORDS.test(before.slice(-50))) continue;
-      if (BYLINE_REJECT_BEFORE.test(before.slice(-25)) || BYLINE_REJECT_AFTER.test(after)) continue;
-      if (!BYLINE_BEFORE.test(before) && !BYLINE_TIME_AFTER.test(after)) continue;
+      const afterName = BYLINE_BEFORE.test(before);
+      const rejectBefore = afterName ? BYLINE_REJECT_BEFORE_AFTER_NAME : BYLINE_REJECT_BEFORE;
+      if (rejectBefore.test(before.slice(-25)) || BYLINE_REJECT_AFTER.test(after)) continue;
+      if (afterName && SENTENCE_ON_BEFORE.test(before)) continue;
+      if (!afterName && !BYLINE_TIME_AFTER.test(after)) continue;
       found.push(m[0]);
     }
   }
   if (found.length !== 1) return null;
-  return extractDateFromText(found[0]);
+  const date = extractDateFromText(found[0]);
+  // "October 26, 2026" on a review fetched that August: a typo, and it stays
+  // one after October 26, so the bound is the fetch day, not the clock.
+  const limit = _isoDay(notAfter) || new Date(Date.now() + DAY_MS).toISOString().slice(0, 10);
+  if (date && date > limit) return null;
+  return date;
 }
 
 const DEFAULT_MAX_DAYS = 3;
@@ -146,7 +162,15 @@ function detectBodyDateMismatch(review, { maxDays = DEFAULT_MAX_DAYS } = {}) {
   if (!review || typeof review.fullText !== 'string' || review.fullText.length <= 100) return null;
   const publishDate = _isoDay(review.publishDate);
   if (!publishDate) return null;
-  const bodyDate = extractBylineDate(review.fullText);
+  // The text can't be dated after it was fetched: bound by the latest fetch
+  // stamp plus a day (a UK byline fetched at 23:00Z the evening before). A
+  // stamp older than publishDate was left behind by a later text write, so it
+  // bounds nothing (the default, tomorrow, applies).
+  const fetched = [review.textFetchedAt, review.firstSeenAt].map(_isoDay).filter(Boolean).sort().pop() || null;
+  const notAfter = fetched && fetched >= publishDate
+    ? new Date(Date.parse(fetched + 'T00:00:00Z') + DAY_MS).toISOString().slice(0, 10)
+    : null;
+  const bodyDate = extractBylineDate(review.fullText, { notAfter });
   if (!bodyDate) return null;
   const deltaDays = daysBetween(publishDate, bodyDate);
   if (Math.abs(deltaDays) <= maxDays) return null;
@@ -156,13 +180,19 @@ function detectBodyDateMismatch(review, { maxDays = DEFAULT_MAX_DAYS } = {}) {
 /**
  * True when both bodies carry a byline date and those dates are more than
  * maxDays apart: the write put a different article over the old one.
+ * With `recordDate` (the record's publishDate), a new body whose byline
+ * agrees with it is the right article replacing a stray one: the record's
+ * metadata already describes the new body, so nothing is stale.
  */
-function isDifferentDatedArticle(oldText, newText, { maxDays = DEFAULT_MAX_DAYS } = {}) {
+function isDifferentDatedArticle(oldText, newText, { maxDays = DEFAULT_MAX_DAYS, recordDate = null } = {}) {
   if (typeof oldText !== 'string' || typeof newText !== 'string' || oldText === newText) return null;
   const oldBodyDate = extractBylineDate(oldText);
   const newBodyDate = extractBylineDate(newText);
   if (!oldBodyDate || !newBodyDate) return null;
   if (Math.abs(daysBetween(oldBodyDate, newBodyDate)) <= maxDays) return null;
+  // publishDate is often prose ("March 25th, 2018"): read it as a date too.
+  const record = _isoDay(recordDate) || (typeof recordDate === 'string' ? extractDateFromText(recordDate) : null);
+  if (record && Math.abs(daysBetween(record, newBodyDate)) <= maxDays) return null;
   return { oldBodyDate, newBodyDate };
 }
 
@@ -188,7 +218,8 @@ function _same(a, b) {
  * write carried over unchanged from `existing` is parked under
  * staleArticleFieldsParked and removed, publishDate is re-derived from the new
  * byline, and the url is marked for repair (it still names the old article).
- * A rating a human verified against the outlet page is kept.
+ * Human-verified values are cleared too: they were checked against the old
+ * article.
  *
  * @param {object} newData  record about to be written (mutated)
  * @param {object} existing record on disk before this write
@@ -237,7 +268,11 @@ function invalidateStaleArticleFields(newData, existing, swap, opts = {}) {
  */
 function isUrlRepairPending(data) {
   if (!data || data.needsUrlRepair !== true || !data.bodySwapDetected) return false;
-  return (data.bodySwapDetected.url || null) === (data.url || null);
+  const was = data.bodySwapDetected.url || null;
+  const now = data.url || null;
+  if (!was || !now) return was === now;
+  // A cosmetic rewrite (trailing slash, http->https) is not a repair.
+  return !require('./url-change-invariant').urlCanonicallyChanged(was, now);
 }
 
 /**

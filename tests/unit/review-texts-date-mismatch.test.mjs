@@ -41,6 +41,43 @@ describe('extractBylineDate', () => {
     assert.equal(extractBylineDate(pad('By David Sheward January 22, 2025: Billed as a new play')), null);
     assert.equal(extractBylineDate(pad('By The Recs AG - Arlene Getz 27 minutes ago It’s November 30, 1993. The eve')), null);
   });
+  // BRO-5261 retro-review: these byline separators were rejected outright.
+  test('reads dash and "on" byline separators (real Louder Than War / WordPress shapes)', () => {
+    assert.equal(extractBylineDate(pad('Abba – Voyage: live review! By Filthy Dirty - 13 June 2022 8 Subscribe')), '2022-06-13');
+    assert.equal(extractBylineDate(pad('Review: HAMLET By Jane Doe – March 3, 2026 The production')), '2026-03-03');
+    assert.equal(extractBylineDate(pad('Posted by Jane Doe on March 3, 2026 The production')), '2026-03-03');
+  });
+  test('after a byline name, Updated stamps, run words and a sentence-opening "On" still disqualify', () => {
+    assert.equal(extractBylineDate(pad('By Jane Doe Updated on March 3, 2026 The production')), null);
+    assert.equal(extractBylineDate(pad('By Jane Doe, from March 3, 2026 The production')), null);
+    assert.equal(extractBylineDate(pad('Runs until - March 3, 2026 tickets')), null);
+    // operawire.com: the dateline above the headline is the byline; "On <date>," is the performance.
+    assert.equal(extractBylineDate(pad('Gershwin Revival Earns Grand Reception By Logan Martell On December 2, 2025, the Metropolitan Opera delivered')), null);
+  });
+  test('a byline dated after today is a page typo, not a date', () => {
+    const y = new Date().getFullYear() + 1;
+    assert.equal(extractBylineDate(pad(`Theatre Review by Howard Miller - October 26, ${y} Paranormal Activity`)), null);
+  });
+  test('the bound is the fetch day, so the typo stays a typo after its date passes', () => {
+    // talkinbroadway.com Paranormal Activity: published 2026-08-25, byline typo "October 26, 2026".
+    const rec = { fullText: pad('Theatre Review by Howard Miller - October 26, 2026 Paranormal Activity'), publishDate: '2026-08-25T20:51:56-04:00', textFetchedAt: '2026-10-13T13:05:54.629Z' };
+    assert.equal(detectBodyDateMismatch(rec), null);
+    assert.equal(extractBylineDate(rec.fullText, { notAfter: '2026-10-13' }), null);
+    assert.equal(extractBylineDate(rec.fullText, { notAfter: '2026-11-01' }), '2026-10-26');
+  });
+  test('a stale textFetchedAt or a late-evening UTC fetch never hides a real byline', () => {
+    // london-box-office THE STORY: textFetchedAt 2026-06-28 left behind, byline and publishDate 2026-09-04.
+    assert.equal(detectBodyDateMismatch({ fullText: NEW_BODY, publishDate: '2026-09-04', textFetchedAt: '2026-06-28T10:00:00Z' }), null);
+    assert.ok(detectBodyDateMismatch({ fullText: NEW_BODY, publishDate: '2023-05-31', textFetchedAt: '2026-06-28T10:00:00Z', firstSeenAt: '2026-09-04T09:00:00Z' }));
+    // Fetched 23:30Z on the 3rd, UK byline dated the 4th.
+    assert.ok(detectBodyDateMismatch({ fullText: NEW_BODY, publishDate: '2023-05-31', textFetchedAt: '2026-09-03T23:30:00Z' }));
+  });
+  test('only date-shaped Auto-flagged notes are date claims', () => {
+    const { isDateClaimWrongProduction } = require('../../scripts/lib/stale-flag-neutralization');
+    assert.equal(isDateClaimWrongProduction({ wrongProductionNote: "Auto-flagged: mentions director 'sam gold' who is not this production's" }), false);
+    assert.equal(isDateClaimWrongProduction({ wrongProductionNote: 'Auto-flagged: published 400 days before show earliest date 2026-08-20' }), true);
+    assert.equal(isDateClaimWrongProduction({ wrongProductionNote: 'Auto-flagged: URL date 2023-05-31 is 1177 days before show earliest date 2026-08-20.' }), true);
+  });
 });
 
 describe('extractDateFromText (collector publishDate fallback) keeps its old behaviour', () => {
@@ -123,6 +160,24 @@ describe('shared writer clears the old article’s fields on an in-place body sw
     assert.equal(out.bodySwapDetected, undefined);
   });
 
+  test('the right article replacing a stray body keeps the record (its publishDate matches the new byline)', () => {
+    const p = path.join(TMP, 'right-article.json');
+    // On disk: the url and metadata are THE STORY's; the body was another article.
+    const onDisk = { ...seed(), url: 'https://www.londonboxoffice.co.uk/news/post/the-story-olivier-review', publishDate: '2026-09-04', fullText: OLD_BODY };
+    fs.writeFileSync(p, JSON.stringify(onDisk));
+    safeWriteReview(p, { ...onDisk, fullText: NEW_BODY });
+    const out = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.equal(out.fullText, NEW_BODY);
+    assert.equal(out.publishDate, '2026-09-04');
+    assert.equal(out.aggregatorStars, '4/5');
+    assert.equal(out.needsUrlRepair, undefined, 'a correct url is never queued for repair');
+    assert.equal(out.bodySwapDetected, undefined);
+    assert.equal(isDifferentDatedArticle(OLD_BODY, NEW_BODY, { recordDate: '2026-09-05' }), null);
+    assert.ok(isDifferentDatedArticle(OLD_BODY, NEW_BODY, { recordDate: '2023-05-31' }));
+    // publishDate is often prose (talkinbroadway / EW records): still read as the record's date.
+    assert.equal(isDifferentDatedArticle(OLD_BODY, NEW_BODY, { recordDate: 'September 4th, 2026' }), null);
+  });
+
   test('a human-verified rating from the old page is cleared too', () => {
     const swap = isDifferentDatedArticle(OLD_BODY, NEW_BODY);
     const old = { ...seed(), originalScoreSource: 'manual-verified', scoreSource: 'manual-verified' };
@@ -164,6 +219,19 @@ describe('corpus audit (acceptance 3)', () => {
     assert.equal(explainedBy({ needsRefetch: true, urlCorrectedFrom: 'https://x' }), 'awaiting-url-refetch');
     assert.equal(explainedBy({ needsRefetch: true }), null);
     assert.equal(explainedBy({}), null);
+    assert.equal(explainedBy({ isNotReview: true }), 'isNotReview');
+    assert.equal(explainedBy({ wrongAttribution: true }), 'wrongAttribution');
+    assert.equal(explainedBy({ rejectionReason: 'not_a_review' }), 'rejected');
+  });
+  test('every date-window note shape counts as a date claim (rebuild and URL-date guards too)', () => {
+    for (const note of [
+      'Review published 1177 days before show opened — likely reviewing a different production',
+      'Auto-flagged: published 1177 days before show earliest date 2026-08-20',
+      'URL date 2023-05-31 is 1177 days before show window starts (2026-08-20). Likely review of an earlier production',
+    ]) {
+      const victim = { fullText: NEW_BODY, publishDate: '2023-05-31', wrongProduction: true, wrongProductionNote: note };
+      assert.equal(explainedBy(victim, show), null, note);
+    }
   });
   test('a DATE-based wrongProduction contradicted by an in-run byline is unexplained; a content reason explains it', () => {
     const victim = { fullText: NEW_BODY, publishDate: '2023-05-31', wrongProduction: true, wrongProductionNote: 'Date guard: review 2023-05-31 is 1177d before 2026-08-20 (preview/open) — likely different production' };
@@ -187,5 +255,10 @@ describe('corpus audit (acceptance 3)', () => {
     assert.deepEqual(hits.map((h) => h.file), ['a.json']);
     assert.equal(hits[0].explainedBy, null);
     assert.deepEqual(repairPending.map((r) => r.file), ['c.json'], 'a url changed since the swap counts as repaired');
+    // A cosmetic rewrite of the same url (trailing slash, https) is not a repair.
+    const { isUrlRepairPending } = require('../../scripts/lib/body-date-mismatch');
+    const swapped = { url: 'http://x.com/a', needsUrlRepair: true, bodySwapDetected: { url: 'http://x.com/a' } };
+    assert.equal(isUrlRepairPending({ ...swapped, url: 'https://x.com/a/' }), true);
+    assert.equal(isUrlRepairPending({ ...swapped, url: 'https://x.com/b' }), false);
   });
 });

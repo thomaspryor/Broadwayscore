@@ -89,6 +89,16 @@ test('classifyReviewUrl: host-scoped ticket pages blocked, real review shapes st
   assert.equal(classifyReviewUrl('https://www.cityam.com/inter-alia-play-review-springs-must-book-west-end-ticket/').ok, true);
 });
 
+test('submissionNonReviewReason: SeatPlan ticket pages are refused, its /news/ reviews are not (BRO-2716)', () => {
+  const { submissionNonReviewReason } = require('./non-review-url-patterns.js');
+  // The page that reached the scores through /submit-review.
+  assert.equal(submissionNonReviewReason('https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/'), 'ticket-seller-product-page');
+  assert.equal(namedNonReviewReason('https://seatplan.com/london/heathers-the-musical-tickets'), 'ticket-seller-product-page');
+  // Scored editorial reviews (data/review-texts, 2026-10-13).
+  assert.equal(submissionNonReviewReason('https://seatplan.com/london/news/beetlejuice-review-prince-edward-theatre/'), null);
+  assert.equal(namedNonReviewReason('https://seatplan.com/london/news/cats-review-regents-park-open-air-theatre-london/'), null);
+});
+
 test('namedNonReviewReason: an unparseable URL returns null, never throws', () => {
   assert.equal(namedNonReviewReason('not-a-url'), null);
   assert.equal(namedNonReviewReason(''), null);

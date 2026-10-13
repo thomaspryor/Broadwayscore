@@ -131,7 +131,8 @@ async function main() {
 
   let candidates;
   try {
-    candidates = loadCandidates({ filePrefix: 'times-uk', showsAllowlist, maxUrls: CONFIG.maxUrls });
+    // The Sunday Times shares the thetimes.com paywall (BRO-5137 split it into its own outlet).
+    candidates = loadCandidates({ filePrefix: ['times-uk', 'sunday-times'], showsAllowlist, maxUrls: CONFIG.maxUrls });
   } catch (e) {
     await context.close();
     throw e;

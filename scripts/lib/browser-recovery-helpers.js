@@ -84,7 +84,8 @@ const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '.
 const PUSH_WITH_RETRY = path.join(__dirname, 'push-with-retry.sh');
 
 /**
- * Find review-text files for `filePrefix` (e.g. "nytimes") that are not yet
+ * Find review-text files for `filePrefix` (e.g. "nytimes", or a list of
+ * prefixes when one paywall serves several outlets) that are not yet
  * contentTier=complete, are not already flagged wrong-show/wrong-production,
  * and carry a URL to refetch. Recency-first ordering via the trailing -YYYY
  * in the showId, matching recover-wsj-browser.js's proxy for "prioritize
@@ -102,6 +103,7 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
       `REVIEW_TEXTS_DIR to the main checkout's path, e.g. REVIEW_TEXTS_DIR=/path/to/Broadwayscore/data/review-texts.`
     );
   }
+  const prefixes = [].concat(filePrefix);
   const candidates = [];
   for (const dir of dirs) {
     if (showsAllowlist && !showsAllowlist.has(dir)) continue;
@@ -113,7 +115,7 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
     let files;
     try { files = fs.readdirSync(showPath); } catch { continue; }
     for (const f of files) {
-      if (!f.startsWith(filePrefix) || !f.endsWith('.json')) continue;
+      if (!prefixes.some((p) => f.startsWith(`${p}--`)) || !f.endsWith('.json')) continue;
       const filePath = path.join(showPath, f);
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }

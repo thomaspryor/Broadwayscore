@@ -109,7 +109,7 @@ jobs:
             # Excluded: nydailynews, rollingstone (no star ratings)
             # nysr (BRO-4486): its stars sit in the intro <p class="text-xl">,
             # which body extraction drops, so only the HTML carries them.
-            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,nysr,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,financialtimes"
+            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,nysr,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,sunday-times,financialtimes"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi
