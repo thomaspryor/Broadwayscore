@@ -2,7 +2,7 @@
   "createdAt": "2026-10-13T06:46:42Z",
   "issueNumber": "bro-4190-l",
   "planId": "03139ee5-5a0a-4a25-9930-d9b5f01aaba8",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -47,5 +47,28 @@
         "description": "Clear the date-guard flag"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T07:44:46.321Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json publishDate: \"2024-10-02\" -> \"2026-10-02\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json wrongProduction: true -> false"
+    }
+  ]
 }
