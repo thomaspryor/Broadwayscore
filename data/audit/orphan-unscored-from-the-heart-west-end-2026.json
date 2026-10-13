@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "from-the-heart-west-end-2026",
   "openingDate": "2026-10-08",
-  "detectedAt": "2026-10-13T10:25:30.111Z",
+  "detectedAt": "2026-10-13T10:38:00.352Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "jolienstheatrediary--jolien.json",
+      "outletId": "jolienstheatrediary",
+      "criticName": "Jolien",
+      "url": "https://www.jolienstheatrediary.com/reviews/review-from-the-heart-garrick-theatre",
+      "fullTextLen": 2652,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "theatre-news--unknown.json",
       "outletId": "theatre-news",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
