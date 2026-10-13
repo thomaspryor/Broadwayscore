@@ -462,3 +462,16 @@ test('Theater Scene tag archives are not reviews; its review urls and other host
   assert.equal(classifyReviewUrl('https://www.theaterscene.net/plays/offbway-plays/burning-leaves/tony-marinelli/').ok, true);
   assert.equal(classifyReviewUrl('https://twi-ny.com/tag/an-american-daughter/').ok, true);
 });
+
+test('theatre.reviews roundups and London Theatre Direct product pages are not reviews; LTD /news/ is (BRO-5169)', async () => {
+  const { classifyReviewUrl, classifyGapCandidateUrl } = (await import('node:module')).createRequire(import.meta.url)('./non-review-url-patterns.js');
+  assert.deepEqual(classifyGapCandidateUrl('https://theatre.reviews/reviews-roundup/standard-of-living-reviews/'), { ok: false, reason: 'aggregator-roundup' });
+  for (const u of [
+    'https://www.londontheatredirect.com/play/the-standard-of-living-tickets?srsltid=abc',
+    'https://www.londontheatredirect.com/de/play/buffy-revamped-tickets',
+    'https://www.londontheatredirect.com/musical/kimberly-akimbo-tickets',
+    'https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/797027',
+  ]) assert.deepEqual(classifyReviewUrl(u), { ok: false, reason: 'ticket-seller-product-page' }, u);
+  assert.equal(classifyReviewUrl('https://www.londontheatredirect.com/news/the-standard-of-living-review').ok, true);
+  assert.equal(classifyReviewUrl('https://www.londontheatredirect.com/de/news/x-review').ok, true);
+});
