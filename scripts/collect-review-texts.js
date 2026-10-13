@@ -123,6 +123,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { assessTextQuality, isGarbageContent, stripExemptedChrome, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { chooseArticleBody } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { discardNoRatingOutletScore } = require('./lib/no-rating-outlet-score');
@@ -4184,8 +4185,16 @@ function extractTextFromHtml(html, url) {
 
   // Try JSON-LD extraction — reliable when available, avoids CSS selector fragility
   const jsonLdText = extractFromJsonLd(html);
-  if (jsonLdText && jsonLdText.length > 500) return jsonLdText;
+  if (jsonLdText && jsonLdText.length > 500) {
+    // A short JSON-LD body can be a teaser (Variety, BRO-5222): prefer the
+    // page's paragraphs when they are clearly the fuller text.
+    return chooseArticleBody(jsonLdText, extractParagraphText(html)).text;
+  }
+  return extractParagraphText(html);
+}
 
+/** Generic <p>-based article extraction (sidebar/cruft stripped). */
+function extractParagraphText(html) {
   // Remove scripts, styles, nav, etc.
   let text = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -8302,7 +8311,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
   t.unref();
 }
 
-module.exports = { pushReviewTextsCheckpoint, commitChanges };
+module.exports = { pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection
