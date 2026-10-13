@@ -437,6 +437,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           if [ -f data/commercial-pending-review.json ]; then
             node scripts/reconcile-recoupment-claims.js --time-budget-min=25
           fi

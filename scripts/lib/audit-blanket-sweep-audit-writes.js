@@ -116,32 +116,7 @@ function readScript(rel) {
  * already unavailable there. Register an entry (then delete it here) or
  * split the step to burn one down. A NEW unregistered write is NOT allowed.
  */
-const BASELINE = new Set([
-  'check-show-freshness.yml|data/audit/london-only-nyc-accumulation.json',
-  'check-show-freshness.yml|data/audit/same-url-duplicate-baseline.json',
-  'check-show-freshness.yml|data/audit/tony-coverage-gaps.json',
-  'check-show-freshness.yml|data/audit/url-mismatch-suspects.json',
-  'check-show-freshness.yml|data/audit/validation-baseline.json',
-  'commercial-friday.yml|data/audit/url-mismatch-suspects.json',
-  'commercial-rss-poll.yml|data/audit/url-mismatch-suspects.json',
-  'commercial-weekly.yml|data/audit/url-mismatch-suspects.json',
-  'fetch-all-image-formats.yml|data/audit/existing-image-audit.json',
-  'fetch-all-image-formats.yml|data/audit/image-search-attempts.json',
-  'fetch-all-image-formats.yml|data/audit/suspect-duplicate-images.json',
-  'fetch-all-image-formats.yml|data/audit/url-mismatch-suspects.json',
-  'review-refresh.yml|data/audit/cross-show-fingerprint-collisions.json',
-  'review-refresh.yml|data/audit/market-misroutes.json',
-  'review-refresh.yml|data/audit/phantom-outlets-report.json',
-  'review-refresh.yml|data/audit/rebuild-regression.json',
-  'review-refresh.yml|data/audit/rebuild-show-drift.json',
-  'review-refresh.yml|data/audit/recover-ratings-report.json',
-  'review-refresh.yml|data/audit/recover-ratings-state.json',
-  'review-refresh.yml|data/audit/skipped-alias-collisions.json',
-  'review-refresh.yml|data/audit/stage-latency.jsonl',
-  'review-refresh.yml|data/audit/url-mismatch-suspects.json',
-  'scrape-aggregators.yml|data/audit/market-misroutes.json',
-  'scrape-westendtheatre.yml|data/audit/url-mismatch-suspects.json',
-]);
+const BASELINE = new Set(); // BRO-4751: burned down to zero; accepted writes carry a step-level `# blanket-sweep-audit-ok:` reason instead
 
 function gitIgnored(p) {
   try {

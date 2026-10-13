@@ -75,6 +75,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           INPUT_FEED: ${{ inputs.feed }}
         run: |
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           ARGS="--window-hours=${{ inputs.window_hours || '24' }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           if [ -n "${INPUT_FEED}" ]; then ARGS="$ARGS --feed=${INPUT_FEED}"; fi

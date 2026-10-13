@@ -84,6 +84,7 @@ jobs:
           INPUT_SHOW: ${{ inputs.show }}
           INPUT_TIME_BUDGET_MIN: ${{ inputs.time_budget_min }}
         run: |
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           ARGS=""
 
           if [ -n "${INPUT_SHOW}" ]; then

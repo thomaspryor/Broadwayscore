@@ -97,6 +97,10 @@ jobs:
           INPUT_SHOW_ID: ${{ inputs.show_id }}
           INPUT_CONCURRENCY: ${{ inputs.concurrency || '5' }}
         run: |
+          # blanket-sweep-audit-ok: data/audit/suspect-duplicate-images.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/existing-image-audit.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/image-search-attempts.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           ARGS=""
           if [ -n "${INPUT_SHOW_ID}" ]; then
             ARGS="--show=${INPUT_SHOW_ID}"
