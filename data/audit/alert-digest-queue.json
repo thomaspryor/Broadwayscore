@@ -1520,6 +1520,36 @@
     "queuedAt": "2026-10-13T14:45:15.985Z"
   },
   {
+    "conditionKey": "land:land/bro-3444-digest-recheck",
+    "title": "Landing blocked: colocated-tests red on land/bro-3444-digest-recheck",
+    "description": "land.yml did not land land/bro-3444-digest-recheck: the colocated-tests gate went red at e202a4eff7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-3444-digest-recheck @ e202a4eff7 (origin/land/bro-3444-digest-recheck) → origin/main @ 49e556ca5f [land] attempt 1/3: rebased onto 49e556ca5f, 2 file(s) changed — running checks [land] verified-base: main moved e18457fbf3 → 49e556ca5f across 449 file(s), substantive — re-checking on the merged tree (+69 test file(s) changed on main since the verified base) [land] linked 21 gitignor Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38410860926",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3444-digest-recheck"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "e202a4eff7b5dcf504cc1c9f029120069a3ca44b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38410860926"
+      }
+    ],
+    "queuedAt": "2026-10-13T16:09:05.763Z"
+  },
+  {
     "conditionKey": "land:land/bro-3333-ci-board-batch",
     "title": "Landing blocked: unit-tests-node red on land/bro-3333-ci-board-batch",
     "description": "land.yml did not land land/bro-3333-ci-board-batch: the unit-tests-node gate went red at 0edde25e84. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38410239325",
