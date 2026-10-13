@@ -109,6 +109,7 @@ const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'date-enrichment-
 const ABORT_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'enrich-off-broadway-dates-aborted.json');
 const PLAYBILL_URL_CACHE_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 const playbillUrlStore = require('./lib/playbill-urls-store');
+const { serpBackoffDecision, isBackoffEligible } = require('./lib/ob-serp-miss-backoff');
 
 const MONTHS = {
   january: '01', february: '02', march: '03', april: '04',
@@ -588,6 +589,16 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
     }
     let url = urlCache.shows?.[show.id];
     let usedCache = !!url;
+    // BRO-3528: a same-date show whose SERP keeps finding no Playbill page is
+    // probed once per cooldown instead of every run. Not logged as a miss, so
+    // the audit log stops repeating it. --show=ID always probes.
+    if (!url && opts.serpBackoffRuns && isBackoffEligible(show)) {
+      const b = serpBackoffDecision(show.id, opts.serpBackoffRuns, new Date());
+      if (b.skip) {
+        console.log(`  ${show.id}: SERP skipped (${b.misses} consecutive no-URL runs, last ${String(b.lastMissAt).slice(0, 10)})`);
+        continue;
+      }
+    }
     if (!url) {
       try {
         url = await discoverOBPlaybillUrl(show);
@@ -857,6 +868,15 @@ function saveShows(data) {
   showsWriteGuard.saveShows(data);
 }
 
+function loadAuditRuns() {
+  try {
+    const d = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+    return Array.isArray(d.runs) ? d.runs : [];
+  } catch {
+    return []; // missing/corrupt log: no backoff, probe as before
+  }
+}
+
 function appendAudit(entries) {
   if (entries.length === 0) return;
   let existing = { _meta: { schema: 'date-enrichment-corrections v1' }, runs: [] };
@@ -971,6 +991,8 @@ async function main() {
   }
   const urlCache = loadPlaybillUrlCache();
   const phase3 = await scrapePlaybillProductionPages(candidateShows, alreadyMatched, urlCache, {
+    // BRO-3528: prior runs' outcomes, for the SERP miss backoff. Off for --show.
+    serpBackoffRuns: showFilter ? null : loadAuditRuns(),
     broad: phase3Broad,
     includeClosed: includeClosedWhenYearMatches,
   });
