@@ -140,51 +140,91 @@ function otherLegVenueNames() {
   return _otherLegVenues;
 }
 
-const VENUE_FILLER_RE = /\b(the|theatre|theater|playhouse|hall|centre|center|main|stage|house)\b/g;
-function venueCore(v) {
+const VENUE_FILLER_RE = /\b(the|theatre|theater|playhouse|hall|centre|center|main|stage|house|royal)\b/g;
+function foldText(v) {
   return String(v || '').toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/\(.*?\)/g, ' ').replace(/[^a-z0-9' ]+/g, ' ')
+    .replace(/[‘’ʼ`]/g, "'");
+}
+function venueCore(v) {
+  return foldText(v).replace(/[^a-z0-9' ]+/g, ' ')
     .replace(VENUE_FILLER_RE, ' ').replace(/\s+/g, ' ').trim();
 }
+// Every way the show's own venue may be written: the full name, the part
+// outside brackets, the bracketed part ("Lyttelton Theatre (National Theatre)"),
+// and each side of a comma or dash ("Drury Lane, Theatre Royal",
+// "Queen Elizabeth Hall - Southbank Centre").
+function ownVenueCores(showVenue) {
+  const v = foldText(showVenue);
+  const parts = new Set([v, v.replace(/\(.*?\)/g, ' ')]);
+  for (const m of v.matchAll(/\(([^)]*)\)/g)) parts.add(m[1]);
+  for (const piece of v.replace(/[()]/g, ' ').split(/\s[-–—]\s|,/)) parts.add(piece);
+  return [...parts].map(venueCore).filter((c) => c.length > 2);
+}
+const escapeRe = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+// The sentence holding position idx (a run line never spans a full stop).
+function sentenceAt(text, idx) {
+  const start = Math.max(text.lastIndexOf('. ', idx), text.lastIndexOf('! ', idx), text.lastIndexOf('? ', idx), text.lastIndexOf('\n', idx));
+  const ends = ['. ', '! ', '? ', '\n'].map((e) => text.indexOf(e, idx)).filter((i) => i !== -1);
+  return text.slice(start === -1 ? 0 : start + 1, ends.length ? Math.min(...ends) : text.length);
+}
+
+// Present-tense run language tied to THAT venue inside one sentence:
 // "runs until 18 April at the Lowry", "at the Lowry, Salford until Saturday",
-// "plays the Alhambra this week": present-tense run language tying the review
-// to THAT venue's leg. A bare mention ("the tour visits the Lowry later") is
-// not enough.
-const CURRENT_RUN_RE = /\buntil\b|\bthis week\b|\b(?:runs|running|plays|playing|continues) (?:at|in)\b/;
-// Tour framing around the OTHER venue: the review is of this leg and names
-// where the tour goes next or came from.
-const TOUR_FRAMING_RE = /\b(then tours?|tour continues|touring to|tours to|next stop|before touring|before heading|heads? to|moves? to|transfers? to|after (?:its|a) run|following (?:its|a) run|previously|last year|originally|first seen|premiered|on tour)\b/;
+// "plays the Alhambra this week". A bare or historical mention is not enough.
+function currentRunAt(sentence, venueLower) {
+  const v = escapeRe(venueLower);
+  return new RegExp(`\\b(?:runs?|running|plays?|playing|continues?|is on|on stage)\\b[^.]{0,50}?\\buntil\\b[^.]{0,50}?\\bat (?:the )?${v}`).test(sentence)
+    || new RegExp(`\\b(?:at|plays?|playing) (?:the )?${v}\\b[^.]{0,40}?\\b(?:until|till|through|this week)\\b`).test(sentence)
+    || new RegExp(`\\b(?:runs?|running|plays?|playing|continues?) at (?:the )?${v}\\b`).test(sentence);
+}
+// Framing that makes the other venue history, or the tour's next stop.
+const TOUR_FRAMING_RE = /\b(then tours?|tour continues|touring to|tours to|next stop|before touring|before heading|heads? to|moves? to|transfers? to|before transferring|transferr(?:ing|ed)|after (?:its|a|an) |following (?:its|a|an) |previously|earlier|last (?:year|spring|summer|autumn|fall|winter|season|month)|in (?:19|20)\d\d|originally|original|first (?:saw|seen|staged|produced)|premiered|on tour|staging was|production was|version|outing|revival|caught it|saw it)\b/;
 
 /**
  * BRO-2278: on a West End / Off-West End show, find a review that names a
  * DIFFERENT UK touring/regional venue as where the production is running now,
  * without ever naming the show's own venue. Returns the matched venue and its
- * context, or null. Pure; exported for the corpus audit and tests.
+ * sentence, or null. Pure; exported for the corpus audit and tests.
  */
 function findOtherTourLegVenue(text, showVenue) {
   if (!text || !showVenue) return null;
-  const textLower = text.toLowerCase();
-  const ownCore = venueCore(showVenue);
-  if (!ownCore) return null;
-  // The show's own venue anywhere in the text: this review covers this leg
-  // (it may also name the next stop). Every word of the core must appear.
-  const ownWords = ownCore.split(' ').filter((w) => w.length > 2);
-  if (ownWords.length && ownWords.every((w) => textLower.includes(w))) return null;
+  const folded = foldText(text);
+  const ownCores = ownVenueCores(showVenue);
+  if (!ownCores.length) return null;
+  // Any spelling of the show's own venue anywhere: this review covers this leg
+  // (it may also name the next stop). Every word of that spelling must appear.
+  const hasWord = (w) => new RegExp(`\\b${escapeRe(w)}\\b`).test(folded);
+  if (ownCores.some((c) => c.split(' ').filter((w) => w.length > 2).every(hasWord))) return null;
 
   for (const name of otherLegVenueNames()) {
-    const lower = name.toLowerCase();
-    const idx = textLower.indexOf(lower);
-    if (idx === -1) continue;
+    // "The Lowry" must still match "at the Lowry": drop a leading article.
+    const lower = foldText(name).replace(/^the /, '');
     const otherCore = venueCore(name);
-    if (!otherCore || ownCore.includes(otherCore) || otherCore.includes(ownCore)) continue;
-    const context = textLower.substring(Math.max(0, idx - 120), Math.min(textLower.length, idx + lower.length + 120));
-    if (TOUR_FRAMING_RE.test(context)) continue;
-    if (!CURRENT_RUN_RE.test(context)) continue;
-    return { venue: name, context };
+    if (!otherCore || ownCores.some((c) => c.includes(otherCore) || otherCore.includes(c))) continue;
+    const re = new RegExp(`\\b${escapeRe(lower)}\\b`, 'g');
+    for (const m of folded.matchAll(re)) {
+      const sentence = sentenceAt(folded, m.index);
+      if (TOUR_FRAMING_RE.test(sentence)) continue;
+      if (!currentRunAt(sentence, lower)) continue;
+      return { venue: name, context: sentence.trim() };
+    }
   }
   return null;
+}
+
+/**
+ * The category gather-reviews.js passes to verifyProduction (BRO-2278).
+ * UK shows pass their own category, which turns on the tour-leg check.
+ * Everything else keeps the pre-BRO-2278 value ('off-broadway' when the
+ * caller allows it, else undefined): passing 'broadway' through would switch
+ * on the London-venue check for US shows and drop genuine transfer reviews.
+ */
+const UK_TOUR_LEG_CATEGORIES = new Set(['west-end', 'off-west-end']);
+function verifierCategoryFor(showData, allowOffBroadway) {
+  if (showData && UK_TOUR_LEG_CATEGORIES.has(showData.category)) return showData.category;
+  return allowOffBroadway ? 'off-broadway' : undefined;
 }
 
 // UK publication indicators
@@ -200,11 +240,13 @@ const UK_PUBLICATIONS = [
  * @param {string} params.url - Review URL
  * @param {string} params.publishDate - Publish date string
  * @param {string} params.text - Review text content (fullText or excerpt)
+ * @param {string} [params.fullText] - Full review text, preferred over `text` by
+ *   the tour-leg check (the "runs until ... at the Lowry" line is usually at the end)
  * @param {Object} params.showData - Show metadata from shows.json (optional)
  * @param {string} params.category - Show category ('broadway', 'off-broadway', 'west-end', 'off-west-end')
  * @returns {Object} { isValid, issues, confidence, shouldReject }
  */
-function verifyProduction({ showId, url, publishDate, text, showData, category }) {
+function verifyProduction({ showId, url, publishDate, text, fullText, showData, category }) {
   const issues = [];
   let confidence = 'low';
   const isOffBroadway = category === 'off-broadway';
@@ -353,8 +395,7 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
         'after its run', 'after a run',
         // Arrival language (BRO-2278 review: "comes to the Booth Theatre after
         // starting at the Donmar Warehouse" was rejected as a London review).
-        'after starting at', 'after starting in', 'fresh from', 'arrives from',
-        'arriving from', 'comes from',
+        'after starting at', 'after starting in', 'arrives from', 'arriving from',
       ];
       // Also check with regex for "after a [year/adjective] run" patterns
       const transferRegexes = [
@@ -387,8 +428,9 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
   // 6. Wrong tour leg (BRO-2278): a West End / Off-West End show page getting
   // a review of another UK leg of the same tour. Only when the caller passes
   // the show's category AND declared venue; Broadway/off-Broadway are untouched.
-  if (text && (category === 'west-end' || category === 'off-west-end') && showData && showData.venue) {
-    const otherLeg = findOtherTourLegVenue(text, showData.venue);
+  const legText = fullText || text;
+  if (legText && (category === 'west-end' || category === 'off-west-end') && showData && showData.venue) {
+    const otherLeg = findOtherTourLegVenue(legText, showData.venue);
     if (otherLeg) {
       issues.push({
         type: 'uk_tour_leg_venue_mismatch',
@@ -468,6 +510,7 @@ function getShowData(showId) {
 module.exports = {
   verifyProduction,
   findOtherTourLegVenue,
+  verifierCategoryFor,
   UK_TOURING_VENUES,
   quickDateCheck,
   getShowData,

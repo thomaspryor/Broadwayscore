@@ -74,3 +74,45 @@ test('audit-tour-leg-venues.js reports the wrong-leg file and skips already-excl
   assert.equal(out.scanned, 2, 'the excluded file is not scanned');
   assert.deepEqual(out.hits.map((h) => h.file), ['a.json']);
 });
+
+test('the tour-leg check reads fullText when the caller passes it (the run line sits at the end)', () => {
+  const r = verifyProduction({
+    showId: SHOW.id, text: 'A joyous adaptation with a terrific young cast.', fullText: WRONG_LEG,
+    category: SHOW.category, showData: SHOW,
+  });
+  assert.equal(r.shouldReject, true);
+});
+
+test('verifierCategoryFor: UK shows pass their category, US shows keep the pre-BRO-2278 value', async () => {
+  const { verifierCategoryFor } = require('../../scripts/lib/production-verifier.js');
+  assert.equal(verifierCategoryFor({ category: 'west-end' }, false), 'west-end');
+  assert.equal(verifierCategoryFor({ category: 'off-west-end' }, true), 'off-west-end');
+  assert.equal(verifierCategoryFor({ category: 'broadway' }, false), undefined, 'never "broadway"');
+  assert.equal(verifierCategoryFor({ category: 'broadway' }, true), 'off-broadway');
+  assert.equal(verifierCategoryFor({ category: 'off-broadway' }, false), undefined);
+  assert.equal(verifierCategoryFor(null, false), undefined);
+});
+
+// Second review (BRO-2278): sentences from genuine reviews of THIS leg that the
+// first matcher flagged. Each pairs a real WE/OWE venue with another venue.
+test('genuine reviews naming another venue as history or in a separate sentence are not flagged', () => {
+  const cases = [
+    ['Booking until March. Earlier I caught it at the Crucible Theatre in Sheffield.', 'Harold Pinter Theatre'],
+    ['The cast who wowed at the Sheffield Crucible are all back. Until the end of the run, tickets are scarce.', 'Garrick Theatre'],
+    ['It played the Lowry last spring before transferring, and runs until 4 May.', 'Noël Coward Theatre'],
+    ['I first saw this at Leeds Playhouse in 2019, and it has grown.', 'Lyttelton Theatre (National Theatre)'],
+    ['The Birmingham Rep staging was smaller and it ran until June there.', 'Olivier Theatre'],
+    ['After its acclaimed Chichester Festival outing, it is at the National Theatre until August.', 'Lyttelton Theatre (National Theatre)'],
+    ['Unlike the Storyhouse version, which played until May, this one is lean.', 'Shakespeare’s Globe'],
+    ['At Shakespeare’s Globe until 29 August; the Storyhouse run plays until July.', "Shakespeare's Globe"],
+  ];
+  for (const [text, venue] of cases) {
+    assert.equal(findOtherTourLegVenue(text, venue), null, `${venue}: ${text}`);
+  }
+});
+
+test('still flags the wrong leg phrased as a current run at the other venue', () => {
+  assert.ok(findOtherTourLegVenue('The show is at the Lowry, Salford until 18 April.', QEH));
+  assert.ok(findOtherTourLegVenue('The tour plays the Bristol Hippodrome this week.', 'Gielgud Theatre'));
+  assert.ok(findOtherTourLegVenue('It runs at Leeds Playhouse until Saturday.', 'Lyttelton Theatre (National Theatre)'));
+});
