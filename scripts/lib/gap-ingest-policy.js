@@ -189,14 +189,16 @@ function pendingPriorRunUrls(pending, show) {
   return out;
 }
 
-// Roundup sources whose id differs from the outlet id they print for themselves.
-const ROUNDUP_SOURCE_OUTLET = { 'lbo-roundup': 'london-box-office' };
+// Roundups whose own verdict lives ONLY inside the roundup (no standalone review
+// page). Not London Box Office: it publishes standalone review pages, so its
+// URL-less self-citation usually has a collectable page (review, BRO-4790).
+const SELF_VERDICT_ROUNDUPS = new Set(['westendtheatre']);
 
 /**
- * BRO-4790: a URL-less row where a roundup cites ITS OWN verdict (WestEndTheatre.com's
- * stars inside its own review round-up) has no review page to collect: the verdict
- * lives only on the roundup, which the write guard rejects as roundup-page. Counting
- * it as a missing review kept 6 of the 9 open citedNoUrl rows on 2026-10-13 open forever.
+ * BRO-4790: a URL-less row where WestEndTheatre.com cites ITS OWN verdict inside
+ * its own review round-up has no review page to collect: the write guard rejects
+ * the roundup as roundup-page. Counting it as missing kept 6 of the 9 open
+ * citedNoUrl rows on 2026-10-13 open forever.
  * @param {{outletId?:string, outletName?:string, source?:string}} row
  * @returns {boolean}
  */
@@ -204,8 +206,7 @@ function isRoundupSelfCitation(row) {
   if (!row || !row.source) return false;
   const { normalizeOutlet } = require('./review-normalization');
   const src = normalizeOutlet(row.source);
-  const own = ROUNDUP_SOURCE_OUTLET[src] || src;
-  return !!own && normalizeOutlet(row.outletId || row.outletName || '') === own;
+  return SELF_VERDICT_ROUNDUPS.has(src) && normalizeOutlet(row.outletId || row.outletName || '') === src;
 }
 
 module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isPublishDateBeforeRun, pendingPriorRunUrls, isRoundupSelfCitation };
