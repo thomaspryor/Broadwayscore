@@ -833,7 +833,7 @@ async function switchToProxy(url, opts = {}) {
   useScrapingBee = true;
   scrapingBeeSwitchTime = Date.now();
 
-  // Try Bright Data first (cheaper, no credit limit concerns)
+  // Try Bright Data first (subject to the BD daily breaker/per-run budget)
   if (process.env.BRIGHTDATA_TOKEN && !brightDataDown) {
     try {
       console.warn('  Switching to Bright Data proxy (will retry Reddit direct after 5 min cooldown)');

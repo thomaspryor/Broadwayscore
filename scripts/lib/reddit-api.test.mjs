@@ -2,7 +2,7 @@
 // breaker/per-run budget (brightdata-caps.js) and record one budget_capped
 // ledger row, like scraper.js fetchWithBrightData. Real function, no network:
 // the budget is consumed up front so the capped call never reaches BD.
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -15,9 +15,10 @@ const ledgerPath = path.join(tmp, 'ledger.jsonl');
 process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
 process.env.BRIGHTDATA_TOKEN = 'test-token';
 process.env.BD_REQ_BUDGET = '1';
+process.env.BD_BREAKER_STATE_PATH = path.join(tmp, 'no-breaker.json'); // never read the committed breaker file
 delete process.env.BD_CAPS_DISABLED;
 
-test('fetchViaBrightData is withheld once the BD budget is spent, logs one capped row, does not latch brightDataDown', async () => {
+test('fetchViaBrightData is withheld once the BD budget is spent and logs one capped row', async () => {
   const caps = require('./brightdata-caps.js');
   caps._resetForTests();
   const api = require('./reddit-api.js');
@@ -32,5 +33,6 @@ test('fetchViaBrightData is withheld once the BD budget is spent, logs one cappe
     : [];
   assert.equal(rows.filter((r) => r.status === 'budget_capped').length, 1, JSON.stringify(rows));
   assert.equal(caps.getBrightDataRunStats().blocked, 3);
-  fs.rmSync(tmp, { recursive: true, force: true });
 });
+
+after(() => fs.rmSync(tmp, { recursive: true, force: true }));
