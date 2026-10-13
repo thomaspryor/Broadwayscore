@@ -296,7 +296,10 @@ if grep -qE "$WF_RE|^scripts/audit-cron-health-coverage\.js$|^scripts/lib/(cron-
   # tip commit message skips it, so the lane never blocks what CI allows.
   # PUSH_AUDITS_TIP_MESSAGE overrides the message (tests pin it, so selection
   # never depends on whatever commit happens to be HEAD).
-  if printf '%s' "${PUSH_AUDITS_TIP_MESSAGE-$(git log -1 --format=%B 2>/dev/null)}" | grep -Fq "[skip-cron-audit]"; then
+  # A pattern match, not `| grep -q`: under pipefail an early grep exit can
+  # SIGPIPE the writer and turn a match into a miss.
+  _tip_msg="${PUSH_AUDITS_TIP_MESSAGE-$(git log -1 --format=%B 2>/dev/null)}"
+  if [[ "$_tip_msg" == *"[skip-cron-audit]"* ]]; then
     [ "$LIST_ONLY" = "1" ] || echo "run-push-audits: cron-health-coverage skipped via [skip-cron-audit]"
   else
     run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js" || FAIL=1
