@@ -164,6 +164,24 @@ function isPendingDrainEligible(show, closedWithin = 0, today = new Date()) {
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const REVIEW_TEXTS_ROOT = resolveReviewTextsDir();
 const PENDING_ROOT = path.join(REVIEW_TEXTS_ROOT, '_pending');
+const { pendingFileTimestamp, orderPendingWork } = require('./lib/pending-drain-order');
+
+// Newest strands first (BRO-4408), so a budget-limited run reaches a fresh
+// opening-night review before re-fetching old no-byline strands.
+function planPendingWork(ids) {
+  const shows = ids.map(showId => {
+    const dir = path.join(PENDING_ROOT, showId);
+    let names = [];
+    try { names = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { /* no _pending dir */ }
+    const files = names.map(file => {
+      let ts = 0;
+      try { ts = pendingFileTimestamp(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'))); } catch { /* unreadable: sort last */ }
+      return { file, ts };
+    });
+    return { showId, files };
+  });
+  return orderPendingWork(shows);
+}
 
 function listOperaShowIds() {
   const showsPath = path.join(__dirname, '../data/shows.json');
@@ -245,7 +263,7 @@ function isRedundantPendingStub(data, landedFile) {
   return !hasByline && !hasText && !hasScore && !hasExcerpt;
 }
 
-async function processShow(showId) {
+async function processShow(showId, orderedFiles) {
   const pendingDir = path.join(PENDING_ROOT, showId);
   if (!fs.existsSync(pendingDir)) {
     console.log(`[${showId}] no _pending dir`);
@@ -253,7 +271,7 @@ async function processShow(showId) {
   }
   const show = loadShow(showId);
   const openingYear = show?.openingDate ? new Date(show.openingDate).getFullYear() : null;
-  const files = fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
+  const files = orderedFiles || fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
   let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0;
@@ -459,8 +477,8 @@ if (require.main === module) {
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
     let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0;
-    for (const id of ids) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded } = await processShow(id);
+    for (const { showId: id, files } of planPendingWork(ids)) {
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded } = await processShow(id, files);
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
