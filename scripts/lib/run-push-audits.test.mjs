@@ -14,10 +14,13 @@ const LINT_SCRIPT = join(LIB_DIR, '..', 'lint-write-routing.sh');
 
 // --list mode selects without running (card #835) — fast + deterministic,
 // doesn't pay for real audit runs against live repo state.
-function listAudits(files) {
+function listAudits(files, tipMessage = '') {
   const out = execFileSync('bash', [SCRIPT, '--list'], {
     input: files.join('\n'),
     encoding: 'utf8',
+    // BRO-3014: pin the tip message so a real HEAD commit mentioning
+    // [skip-cron-audit] cannot change selection under test.
+    env: { ...process.env, PUSH_AUDITS_TIP_MESSAGE: tipMessage },
   });
   return out.trim().split('\n').filter(Boolean).sort();
 }
@@ -103,14 +106,21 @@ test('tests/e2e/*.ts selects playwright-evaluate-click only', () => {
 
 test('.github/workflows/*.yml selects unbounded-fetch + the workflow-subject guards (BRO-2785) + the full test-registration set (BRO-3239, test.yml itself gates push-path coverage)', () => {
   assert.deepEqual(listAudits(['.github/workflows/test.yml']), [
+    'blanket-sweep-audit-writes',
     'colocated-test-ci-coverage',
+    'cron-health-coverage',
+    'data-gate-heal-paths',
+    'gate-corpus-guard-coverage',
     'orphan-tests',
+    'push-retry-budgets',
+    'reconcile-coverage',
     'test-yml-manifest-paths',
     'tests-vs-derived-data',
     'toplevel-script-test-yml-coverage',
     'unbounded-fetch',
     'workflow-actionlint',
     'workflow-concurrency',
+    'workflow-hygiene',
     'workflow-line-length',
   ]);
 });
@@ -134,6 +144,7 @@ test('a change to workflow-line-length.js alone selects workflow-line-length (pl
 test('a change to audit-workflow-concurrency.js alone selects workflow-concurrency (plus its own scripts/*.js triggers)', () => {
   assert.deepEqual(listAudits(['scripts/audit-workflow-concurrency.js']), [
     'cmux-spawn-credential',
+    'gate-corpus-guard-coverage', // BRO-3014: it reads every scripts/audit-*.js
     'help-flag-safety',
     'unbounded-fetch',
     'workflow-actionlint',
@@ -141,6 +152,44 @@ test('a change to audit-workflow-concurrency.js alone selects workflow-concurren
     'workflow-line-length',
     'write-routing',
   ]);
+});
+
+// BRO-3014: blocking CI audits wired into the lane, each on its own inputs.
+test('BRO-3014: a non-test.yml workflow selects the workflow-content audits but not gate-corpus-guard-coverage', () => {
+  const got = listAudits(['.github/workflows/rebuild-reviews.yml']);
+  for (const a of ['workflow-hygiene', 'cron-health-coverage', 'data-gate-heal-paths', 'reconcile-coverage',
+    'push-retry-budgets', 'blanket-sweep-audit-writes']) {
+    assert.ok(got.includes(a), `${a} missing from ${got.join(',')}`);
+  }
+  assert.ok(!got.includes('gate-corpus-guard-coverage'), 'only test.yml carries the gated steps it reads');
+});
+
+test('BRO-3014: narrow triggers select exactly their audit', () => {
+  assert.deepEqual(listAudits(['scripts/launchd/com.bsc.nightly.plist']), ['launchd-stale-sync-guard']);
+  assert.deepEqual(listAudits(['scripts/.duplicate-of-floor.json']), ['duplicate-of-floor']);
+  assert.deepEqual(listAudits(['src/app/page.tsx']), ['nft-excluded-runtime-reads']);
+  assert.deepEqual(listAudits(['next.config.js']), ['nft-excluded-runtime-reads']);
+  assert.ok(listAudits(['scripts/sweep-we-aggregators.js']).includes('verifier-wiring'));
+  assert.ok(listAudits(['scripts/lib/push-with-retry.sh']).includes('push-retry-budgets'));
+  assert.ok(listAudits(['scripts/lib/stage-data-changes.sh']).includes('blanket-sweep-audit-writes'));
+});
+
+test('BRO-3014: a [skip-cron-audit] tip commit skips cron-health-coverage, like CI', () => {
+  assert.ok(listAudits(['.github/workflows/x.yml']).includes('cron-health-coverage'));
+  assert.ok(!listAudits(['.github/workflows/x.yml'], 'chore: retime cron [skip-cron-audit]').includes('cron-health-coverage'));
+});
+
+test('BRO-3014: the scripts/** source scanners stay CI-only (no --scope-stdin yet)', () => {
+  const got = listAudits(['scripts/some-new-script.js']);
+  for (const a of ['linear-issuecreate-chokepoint', 'digest-clip-safety', 'alert-senders', 'invisible-verification',
+    'direct-provider-calls', 'venue-write-guard', 'text-quality', 'new-gate-arming']) {
+    assert.ok(!got.includes(a), `${a} must not be in the push lane`);
+  }
+});
+
+test('BRO-3014 end-to-end: the newly wired audits pass on the live repo', () => {
+  execFileSync('bash', [SCRIPT, '.github/workflows/test.yml', 'scripts/launchd/x.plist', 'scripts/.duplicate-of-floor.json',
+    'scripts/sweep-we-aggregators.js', 'next.config.js'], { encoding: 'utf8', stdio: 'pipe' });
 });
 
 test('argv form (no stdin) matches piped-stdin form', () => {
