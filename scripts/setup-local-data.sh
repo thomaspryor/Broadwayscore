@@ -235,7 +235,7 @@ for f in "${COPY_FILES[@]}"; do
   COPY_COUNT=$((COPY_COUNT + 1))
 done
 if [ "$CLOUD_COPY" = 1 ]; then
-  git -C "$CORE_DATA_DIR" rev-parse HEAD > "$DATA_DIR/.core-data-sha" 2>/dev/null || rm -f "$DATA_DIR/.core-data-sha"
+  git -C "$CORE_DATA_DIR" rev-parse HEAD > "$DATA_DIR/.core-data-sha" 2>/dev/null || echo unknown > "$DATA_DIR/.core-data-sha"
   echo "Core data: $CLOUD_COPY_COUNT copied as cloud copies (BRO-5217), $COPY_COUNT copied to data/"
 else
   echo "Core data: $SYMLINK_COUNT symlinked, $COPY_COUNT copied to data/"
