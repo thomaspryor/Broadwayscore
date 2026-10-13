@@ -2286,6 +2286,8 @@ on:
       # counted it in removed=, while the real path's plain `git worktree
       # remove` refuses it. Same "scripts/tests/ is not scripts/lib/" gap.
       - 'scripts/tests/gc-dry-run-parity.test.mjs'
+      # BRO-5301: generated churn (pyc, auto-fix-results, committed core-data copies) is safe-dirty.
+      - 'scripts/tests/gc-safe-dirty-generated.test.mjs'
       # BRO-4815: salvage of landed untracked-notes-only worktrees (lib + colocated test).
       - 'scripts/lib/worktree-gc-salvage.js'
       - 'tests/unit/worktree-gc-salvage.test.mjs'

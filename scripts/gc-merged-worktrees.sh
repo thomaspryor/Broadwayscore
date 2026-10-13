@@ -226,6 +226,29 @@ is_worktree_clean() {
 # content (review-texts/, subscribers.json, cookies/, etc.) is invisible to
 # it either way and is deleted by ANY worktree removal, force or plain; that
 # exposure predates this function and is unchanged by it.
+#
+# BRO-5301: three more kinds of dirt are discardable, each for a stated reason
+# (disk sat at 2.7GB with ~12 merged worktrees held by nothing else):
+#   - *.pyc / __pycache__/  — bytecode, rebuilt from source (tracked at some
+#     old base commits, untracked since .gitignore:579).
+#   - data/auto-fix-results.json — auto-fix-show-data.js report output; nothing
+#     reads it.
+#   - a modified top-level data/*.json whose exact content was COMMITTED at that
+#     path on a branch (local or remote) of this repo or of the core-data clone
+#     (pre-BRO-5261 setup-local-data.sh copies of core data). Object-DB presence
+#     alone is not enough: `git add` + unstage, an aborted hook commit or a stash
+#     leaves an unreachable blob for a real edit (ship-check, BRO-5301), so the
+#     check is `log --find-object` over --branches --remotes, path-limited.
+GC_CORE_DATA_DIR="${WORKTREE_GC_CORE_DATA_DIR:-${HOME:+$HOME/broadway-scorecard-data}}"
+is_committed_copy() {
+  local p="$1" f="$2" h
+  [ -f "$p/$f" ] || return 1
+  h=$(git -C "$p" hash-object -- "$f" 2>/dev/null) || return 1
+  [ -n "$h" ] || return 1
+  [ -n "$(git -C "$p" log --branches --remotes -1 --format=%H --find-object="$h" -- "$f" 2>/dev/null)" ] && return 0
+  [ -n "$GC_CORE_DATA_DIR" ] && [ -d "$GC_CORE_DATA_DIR" ] || return 1
+  [ -n "$(git -C "$GC_CORE_DATA_DIR" log --branches --remotes -1 --format=%H --find-object="$h" -- "${f#data/}" 2>/dev/null)" ]
+}
 is_safe_dirty() {
   local p="$1" status line f
   status=$(git -C "$p" status --porcelain 2>/dev/null)
@@ -237,6 +260,10 @@ is_safe_dirty() {
       *' -> '*) return 1 ;;
       \"*) return 1 ;;
       data/audit/*) ;;
+      *.pyc|*/__pycache__/*) ;;
+      data/auto-fix-results.json) ;;
+      data/*/*) return 1 ;;
+      data/*.json) [ "${line:0:2}" = " M" ] && is_committed_copy "$p" "$f" || return 1 ;;
       *) return 1 ;;
     esac
   done <<< "$status"
@@ -620,7 +647,7 @@ flush() {
       log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
       removed=$((removed+1))
     elif is_safe_dirty "$path"; then
-      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
+      log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated churn dirty"
       removed=$((removed+1))
     elif salvage_out=$(salvage_worktree "$path" --check-only); then
       log "WOULD-SALVAGE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only untracked notes dirty; would copy to salvage dir ($salvage_out)"
@@ -665,7 +692,7 @@ flush() {
     # trivial cron-written diffs to data/audit/*.json (task #1682: 51/56
     # dirty worktrees were stuck this way, gc reporting freed=0KB run after
     # run while disk hit 99% full).
-    log "FORCE-REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, discarded uncommitted data/ churn (branch kept)"
+    log "FORCE-REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, discarded uncommitted generated churn (branch kept)"
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
   elif case "$remove_err" in *"locked"*) false ;; *) true ;; esac \
