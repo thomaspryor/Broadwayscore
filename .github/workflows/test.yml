@@ -542,6 +542,9 @@ on:
       # above); this top-level scripts/*.js + *.test.mjs pair needs its own
       # entry (no scripts/** broad glob) so a solo edit triggers CI.
       - 'scripts/audit-test-yml-lib-deps.js'
+      # BRO-3490: scripts/lib/stale-closure-review-card.test.mjs requires this
+      # top-level script (planReportItems); same reason as the entry above.
+      - 'scripts/notify-pending-commercial-linear.js'
       # The blocking manifest-vs-push-paths gate (BRO-2647). Thin CLI outside
       # scripts/lib/ — its logic and colocated test live in scripts/lib/ (globbed
       # above), but this wrapper needs its own entry or a solo edit to the gate

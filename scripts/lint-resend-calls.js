@@ -83,6 +83,7 @@ const ALLOWLIST = new Set([
   'scripts/lib/resend-owner-emails.js', // GET /emails read-only history reader (BRO-4373; moved out of monitor-scheduled-email-count.js, card #510) — shared by the monitor and check-morning-digest-sent.js, which alert via routeAlert()
   'scripts/send-follow-notifications.js',
   'scripts/newsletter/create-broadcast-draft.mjs',
+  'scripts/lib/resend-draft-upsert.js', // not a new sender: the GET/PATCH/POST /broadcasts draft lookup moved out of three allowlisted wrappers (fantasy-weekly-email, send-opening-night-broadcast, create-broadcast-draft) so they share one dedup (BRO-3494/3493); never calls /send
   'scripts/newsletter/send-test.mjs',
   '.github/workflows/btc-results-preview.yml',
   '.github/workflows/scraper-cost-report.yml',
