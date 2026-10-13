@@ -87,4 +87,16 @@ function cancelReason(conditionKey) {
   return `Alert condition ${conditionKey} has cleared (resolved in alert-ledger.json); this auto-filed card had no activity. BRO-4487 sweep.`;
 }
 
-module.exports = { AUTO_FILED_LINE, cardConditionIndex, ledgerCandidates, skipReason, cancelReason, routineLogCancelReason };
+/**
+ * PURE. Was this canceled card canceled by this sweep for this condition? The
+ * sweep's cancel posts "Canceled: <cancelReason(conditionKey)>" (linear-brain
+ * --cancel-reason). A card a person canceled is a decision and keeps its
+ * ledger pointer, so only the sweep's own cancels qualify (BRO-5261).
+ */
+function canceledBySweep(issue, conditionKey) {
+  if (!issue || (issue.state && issue.state.type) !== 'canceled') return false;
+  const want = `Canceled: ${cancelReason(conditionKey)}`;
+  return ((issue.comments && issue.comments.nodes) || []).some((c) => String((c && c.body) || '').includes(want));
+}
+
+module.exports = { AUTO_FILED_LINE, cardConditionIndex, ledgerCandidates, skipReason, cancelReason, canceledBySweep, routineLogCancelReason };

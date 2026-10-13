@@ -1494,6 +1494,37 @@ test('routeAlert: resolveCondition() after an escalation does not clear the file
   }
 });
 
+// BRO-5261: once the resolved-card sweep cancels the card, the next incident
+// must be able to file a fresh tracker. A human-cancelled card (no release)
+// keeps the pointer, pinned by the test above.
+test('routeAlert: after releaseSweptTracker() a reoccurrence files a new tracker; release refuses an open row or a different card', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const fire = () => router.routeAlert({
+      conditionKey: 'test:digest-swept', title: 'Swept', description: 'd', disposition: 'digest', cooldownHours: 0,
+    });
+    for (let i = 1; i <= 15; i++) await fire();
+    assert.equal(calls.createLinearIssue.length, 1);
+    const id = router.loadLedger().conditions['test:digest-swept'].linearIdentifier;
+    assert.ok(id);
+    assert.equal(router.releaseSweptTracker('test:digest-swept', id), false, 'an open condition is never released');
+    assert.equal(router.resolveCondition('test:digest-swept'), true);
+    assert.equal(router.releaseSweptTracker('test:digest-swept', 'BRO-1'), false, 'only the card the row points at');
+    assert.equal(router.releaseSweptTracker('test:digest-swept', id), true);
+    const row = router.loadLedger().conditions['test:digest-swept'];
+    assert.equal(row.linearIdentifier, null);
+    assert.equal(row.sweptTracker, id);
+    assert.equal(row.notifyCountAtRelease, 15);
+    await fire();
+    assert.equal(calls.createLinearIssue.length, 1, 'escalation restarts at the release: one recurrence is not a new card');
+    assert.equal(router.loadLedger().conditions['test:digest-swept'].notifyCountAtRelease, 15, 'the baseline survives the row rewrite');
+    for (let i = 0; i < 14; i++) await fire();
+    assert.equal(calls.createLinearIssue.length, 2, 'a recurrence that keeps firing past the threshold files a fresh tracker');
+  } finally {
+    restore();
+  }
+});
+
 // Ship-check catch (Bug 1): decideDigestEscalation originally keyed the
 // resurface decision on `lastNotifiedAt`, which the bottom ledger write
 // stamps to `now` on EVERY non-silent call including a 'quiet' one. Real

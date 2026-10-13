@@ -1012,8 +1012,12 @@ async function routeAlert(opts) {
   let digestNotifyCount = null;
   if (effectiveDisposition === 'digest') {
     digestNotifyCount = (existing?.notifyCount || 0) + 1;
+    // After the sweep released a cancelled tracker, escalation counts from
+    // the release, so a condition that recurs daily is not refiled (and
+    // swept again) on every incident.
+    const escalationCount = digestNotifyCount - (Number.isFinite(existing?.notifyCountAtRelease) ? existing.notifyCountAtRelease : 0);
     digestDecision = decideDigestEscalation({
-      conditionKey, notifyCount: digestNotifyCount, now: Date.now(), deferredAuto: deferAuto, fileAfterHours,
+      conditionKey, notifyCount: escalationCount, now: Date.now(), deferredAuto: deferAuto, fileAfterHours,
       existing: existingForDecision ? { ...existingForDecision, incidentOpenedAt } : existingForDecision,
     });
     if (digestDecision.action === 'promote') {
@@ -1230,6 +1234,9 @@ function carriedRedFirstFields(existing) {
   const out = {};
   if (existing && existing.dispatch) out.dispatch = existing.dispatch;
   if (existing && Array.isArray(existing.absentRunIds)) out.absentRunIds = existing.absentRunIds;
+  // BRO-5261: releaseSweptTracker's escalation baseline and audit stamp.
+  if (existing && Number.isFinite(existing.notifyCountAtRelease)) out.notifyCountAtRelease = existing.notifyCountAtRelease;
+  if (existing && existing.sweptTracker) out.sweptTracker = existing.sweptTracker;
   return out;
 }
 
@@ -1261,6 +1268,27 @@ function resolveCondition(conditionKey, { reason } = {}) {
   if (reason) existing.resolveReason = String(reason);
   persistLedger(ledger);
   return true;
+}
+
+// BRO-5261: sweep-resolved-alert-cards.js cancels a condition's auto-filed
+// card once the condition has resolved. resolveCondition() keeps
+// linearIdentifier, so without this a later incident still reads as already
+// tracked (decideDigestEscalation) and never gets a card again: a breaker that
+// trips most days lost its tracker for good at the first sweep. The sweep
+// calls this after its cancel succeeds, and for a card it cancelled on an
+// earlier run (canceledBySweep). Escalation then needs a fresh
+// ESCALATION_NOTIFY_THRESHOLD notifies before a new card is filed. A card a HUMAN cancels keeps its
+// pointer (a decision, see trackerRefileDue). Only a resolved row still
+// pointing at that exact card is released. Returns true when released.
+function releaseSweptTracker(conditionKey, identifier) {
+  const ledger = loadLedger();
+  const existing = ledger.conditions[conditionKey];
+  if (!existing || existing.status === 'open' || !identifier || existing.linearIdentifier !== identifier) return false;
+  existing.linearIdentifier = null;
+  existing.sweptTracker = identifier;
+  // Escalation restarts from here (see routeAlert's digest branch).
+  existing.notifyCountAtRelease = existing.notifyCount || 0;
+  return persistLedger(ledger);
 }
 
 // BRO-2458: batch resolve for a check whose rows can flap (health-check).
@@ -1347,6 +1375,7 @@ module.exports = {
   startNowEligible,
   MAX_START_NOW_PER_RUN,
   trackerIsClosed,
+  releaseSweptTracker,
   trackerRefileDue,
   REFILE_AFTER_CLOSE_HOURS,
   _resetStartNowCountForTests: () => { startNowFiledThisRun = 0; },

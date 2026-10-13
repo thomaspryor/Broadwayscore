@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { ledgerCandidates, skipReason, cancelReason, routineLogCancelReason } = require('./lib/resolved-alert-card-sweep.js');
+const { ledgerCandidates, skipReason, cancelReason, canceledBySweep, routineLogCancelReason } = require('./lib/resolved-alert-card-sweep.js');
 
 const REPO = path.join(__dirname, '..');
 const LEDGER = path.join(REPO, 'data', 'audit', 'alert-ledger.json');
@@ -29,6 +29,12 @@ async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const apply = argv.includes('--apply');
   const linear = require('./lib/linear-client.js');
+  // The router must write the same ledger this sweep reads (its default is a
+  // per-machine file outside CI). Children get the environment as it was.
+  const childEnv = { ...process.env };
+  if (!process.env.ALERT_LEDGER_PATH) process.env.ALERT_LEDGER_PATH = LEDGER;
+  const { releaseSweptTracker } = require('./lib/owner-alert-router');
+  let released = 0;
   const ledger = JSON.parse(fs.readFileSync(LEDGER, 'utf8'));
   const now = Date.now();
   const candidates = ledgerCandidates(ledger);
@@ -43,12 +49,24 @@ async function main(argv = process.argv.slice(2)) {
       return 3;
     }
     const reason = skipReason(issue, conditionKey);
+    // A card this sweep cancelled on an earlier run whose ledger row still
+    // points at it (cancelled before BRO-5261, or the release was lost):
+    // release it now.
+    if (reason === 'state-canceled' && apply && canceledBySweep(issue, conditionKey)
+        && releaseSweptTracker(conditionKey, identifier)) released++;
     if (reason) { counts[reason] = (counts[reason] || 0) + 1; continue; }
     if (!apply) { console.log(`would cancel ${identifier} (${conditionKey})`); counts.eligible = (counts.eligible || 0) + 1; continue; }
     if (cancelled >= MAX_PER_RUN) { counts['over-run-cap'] = (counts['over-run-cap'] || 0) + 1; continue; }
     const r = spawnSync('node', [path.join(__dirname, 'linear-brain.js'), 'update', identifier, '--state', 'Canceled', '--cancel-reason', cancelReason(conditionKey)],
-      { cwd: REPO, encoding: 'utf8', timeout: 120000 });
-    if (r.status === 0) { cancelled++; console.log(`cancelled ${identifier} (${conditionKey})`); }
+      { cwd: REPO, encoding: 'utf8', timeout: 120000, env: childEnv });
+    if (r.status === 0) {
+      cancelled++;
+      // Drop the ledger's pointer to the card just cancelled, so the next
+      // incident of this condition can file a fresh tracker (BRO-5261).
+      const ok = releaseSweptTracker(conditionKey, identifier);
+      if (ok) released++;
+      console.log(`cancelled ${identifier} (${conditionKey})${ok ? ' — tracker released' : ''}`);
+    }
     else { counts['cancel-failed'] = (counts['cancel-failed'] || 0) + 1; console.error(`cancel failed for ${identifier}: ${(r.stderr || r.stdout || '').trim().split('\n').pop()}`); }
   }
   // Finished opening-night routine logs (no ledger entry; matched by title).
@@ -63,11 +81,11 @@ async function main(argv = process.argv.slice(2)) {
     if (!apply) { console.log(`would cancel ${issue.identifier} (${issue.title})`); counts['log-eligible'] = (counts['log-eligible'] || 0) + 1; continue; }
     if (cancelled >= MAX_PER_RUN) { counts['over-run-cap'] = (counts['over-run-cap'] || 0) + 1; continue; }
     const r = spawnSync('node', [path.join(__dirname, 'linear-brain.js'), 'update', issue.identifier, '--state', 'Canceled', '--cancel-reason', why],
-      { cwd: REPO, encoding: 'utf8', timeout: 120000 });
+      { cwd: REPO, encoding: 'utf8', timeout: 120000, env: childEnv });
     if (r.status === 0) { cancelled++; console.log(`cancelled ${issue.identifier} (${issue.title})`); }
     else { counts['cancel-failed'] = (counts['cancel-failed'] || 0) + 1; console.error(`cancel failed for ${issue.identifier}: ${(r.stderr || r.stdout || '').trim().split('\n').pop()}`); }
   }
-  console.log(`[sweep-resolved-alert-cards] ledger candidates ${candidates.length}; ${apply ? `cancelled ${cancelled}; ` : ''}${JSON.stringify(counts)}`);
+  console.log(`[sweep-resolved-alert-cards] ledger candidates ${candidates.length}; ${apply ? `cancelled ${cancelled}; trackers released ${released}; ` : ''}${JSON.stringify(counts)}`);
   return 0;
 }
 

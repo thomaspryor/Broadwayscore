@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { ledgerCandidates, skipReason, cancelReason, AUTO_FILED_LINE } = require('./resolved-alert-card-sweep.js');
+const { ledgerCandidates, skipReason, cancelReason, canceledBySweep, AUTO_FILED_LINE } = require('./resolved-alert-card-sweep.js');
 
 const ledger = {
   conditions: {
@@ -70,4 +70,14 @@ test('a repeat-filing note does not count as activity on an alert card (BRO-4956
   const { skipReason, AUTO_FILED_LINE } = require('./resolved-alert-card-sweep.js');
   const issue = { state: { type: 'backlog' }, description: `PARKED: ${AUTO_FILED_LINE}k)`, comments: { nodes: [{ body: 'Filed again on 2026-10-10T10:00Z with the same title; added here' }] } };
   assert.equal(skipReason(issue, 'k'), null);
+});
+
+test('canceledBySweep: only the sweep cancel comment for this condition counts (BRO-5261)', () => {
+  const key = 'sd-circuit-breaker';
+  const card = (type, bodies) => ({ state: { type }, comments: { nodes: bodies.map((body) => ({ body })) } });
+  assert.equal(canceledBySweep(card('canceled', [`Canceled: ${cancelReason(key)}`]), key), true);
+  assert.equal(canceledBySweep(card('canceled', [`Canceled: ${cancelReason('other-key')}`]), key), false);
+  assert.equal(canceledBySweep(card('canceled', ['Canceled: Board triage (owner approved): won\'t fix']), key), false, 'a person\'s cancel is a decision');
+  assert.equal(canceledBySweep(card('completed', [`Canceled: ${cancelReason(key)}`]), key), false);
+  assert.equal(canceledBySweep(null, key), false);
 });
