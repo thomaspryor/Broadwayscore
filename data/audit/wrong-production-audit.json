@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T12:42:11.631Z",
+  "timestamp": "2026-10-13T12:51:04.351Z",
   "stats": {
     "totalReviews": 56308,
-    "alreadyFlagged": 21018,
-    "dateGuardCatches": 217,
+    "alreadyFlagged": 21020,
+    "dateGuardCatches": 216,
     "directorMismatch": 1863,
     "tvFilmSignals": 1639,
-    "londonSignals": 2236,
+    "londonSignals": 2238,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5239
+    "noPublishDate": 5235
   },
   "findings": [
     {
@@ -12697,7 +12697,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "times-uk--alice-jones.json",
-      "score": 66,
+      "score": 64,
       "publishDate": "2025-08-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/every-brilliant-thing-review-lenny-henry-h5czww7sq",
       "findings": [
@@ -21634,7 +21634,7 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "file": "readaboutstuff--unknown.json",
+      "file": "readaboutstuff--dan-english.json",
       "score": 79,
       "publishDate": "2025-12-20",
       "url": "https://readaboutstuff.com/2025/12/20/into-the-woods-bridge-theatre-london/",
@@ -46501,20 +46501,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -47460,6 +47446,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "west-end-best-friend--sarah-brown.json",
+      "score": 88,
       "publishDate": "2026-09-27",
       "url": "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
       "findings": [
@@ -63112,6 +63099,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "littlelondonwhispers--little-london-whispers.json",
+      "score": 46,
       "publishDate": "2026-10-11",
       "url": "https://littlelondonwhispers.substack.com/p/london-theatre-review-hay-fever",
       "findings": [
@@ -64613,7 +64601,7 @@
     },
     {
       "showId": "im-every-woman-off-west-end-2026",
-      "file": "theatreandtonic--unknown.json",
+      "file": "theatreandtonic--emmie-newitt.json",
       "score": 41,
       "publishDate": "2026-08-05",
       "url": "https://theatreandtonic.co.uk/blog/im-every-woman-the-chaka-khan-musical-review",
@@ -67832,6 +67820,19 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "londonlivinglarge--unknown.json",
+      "publishDate": "2026-09-21",
+      "url": "https://www.londonlivinglarge.com/2026/09/man-to-man-royal-court-theatre-sep-5.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "loureviews--louise-penn.json",
       "score": 77,
       "publishDate": "2026-09-29",
@@ -70244,6 +70245,19 @@
       ]
     },
     {
+      "showId": "night-city-off-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://firstnightmagazine.com/2026/09/16/__trashed-2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "no-i-d-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 96,
@@ -71220,7 +71234,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [

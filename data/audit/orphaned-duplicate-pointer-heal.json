@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-13T12:35:15.082Z",
+  "generated": "2026-10-13T12:45:56.307Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 26,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -50,6 +50,13 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "here-we-are-west-end-2025",
+      "loserFile": "all-that-dazzles-uk--unknown.json",
+      "targetFile": "all-that-dazzles-uk--all-that-dazzles.json",
+      "reason": "orphaned-duplicate-heal: all-that-dazzles-uk--all-that-dazzles.json was flagged invalid after all-that-dazzles-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -170,6 +177,13 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "here-we-are-west-end-2025",
+      "loserFile": "all-that-dazzles-uk--unknown.json",
+      "targetFile": "all-that-dazzles-uk--all-that-dazzles.json",
+      "reason": "orphaned-duplicate-heal: all-that-dazzles-uk--all-that-dazzles.json was flagged invalid after all-that-dazzles-uk--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
