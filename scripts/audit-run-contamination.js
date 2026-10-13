@@ -234,19 +234,33 @@ function class5(ctx) {
     return has(sa, b) || has(sb, a);
   };
   const byUrl = new Map();
+  const dateOf = new Map();
   for (const r of rows) {
-    if (!r.url || r.inheritedFromShowId) continue;
+    // manualEntry rows are the curated roll-up entries of a tour umbrella (the Paranormal Activity
+    // national tour, Gun and Powder regional): the same review is meant to sit on the umbrella and
+    // on the stop's own show (BRO-5239).
+    if (!r.url || r.inheritedFromShowId || r.manualEntry === true) continue;
     const c = canon(r.url);
     if (!c) continue;
     if (!byUrl.has(c)) byUrl.set(c, new Set());
     byUrl.get(c).add(r.showId);
+    dateOf.set(`${c}|${r.showId}`, r.publishDate && String(r.publishDate).length >= 10 ? String(r.publishDate) : null);
   }
-  const multi = [...byUrl.entries()].filter(([, set]) => {
+  const linkedMulti = [...byUrl.entries()].filter(([, set]) => {
     const ids = [...set];
     if (ids.length < 2) return false;
     for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) if (!linked(ids[i], ids[j])) return true;
     return false;
   });
+  // One article that reviews several shows (a double bill, a "critic's notebook") legitimately counts
+  // on each of them. Its rows then carry dates within two weeks of each other, or no day-level date to
+  // compare. Only a url whose rows are dated further apart is a suspect copy on the wrong run.
+  const isSharedArticle = ([u, set]) => {
+    const ds = [...set].map((id) => dateOf.get(`${u}|${id}`)).filter(Boolean).sort();
+    return ds.length < 2 || daysBetween(ds[ds.length - 1], ds[0]) <= 14;
+  };
+  const multi = linkedMulti.filter((e) => !isSharedArticle(e));
+  const sharedArticles = linkedMulti.length - multi.length;
   // url-less row beside a url row for the same outlet on the same show
   const perShow = new Map();
   for (const r of rows) {
@@ -266,6 +280,7 @@ function class5(ctx) {
   const urllessShows = new Set(urlless.map((u) => u.showId));
   return {
     sameUrlTwoShows: multi.length,
+    sharedArticles,
     sameUrlSample: multi.slice(0, 8).map(([u, set]) => `${u.slice(0, 70)} -> ${[...set].join(' | ')}`),
     ...(DETAIL ? { sameUrlAll: multi.map(([u, set]) => ({ url: u, shows: [...set].sort(), rows: rows.filter((r) => r.url && canon(r.url) === u && !r.inheritedFromShowId).map((r) => ({ showId: r.showId, outletId: r.outletId, criticName: r.criticName, publishDate: r.publishDate })) })) } : {}),
     urllessBesideUrl: urlless.length,
@@ -351,7 +366,7 @@ function main() {
   if (c.preWindow) L.push(`2 pre-window: ${c.preWindow.count} rows dated >1d before earliest show date (${JSON.stringify(c.preWindow.byBucket)}); by cause ${JSON.stringify(c.preWindow.byWhy)}; unexplained ${c.preWindow.unexplained} rows on ${c.preWindow.unexplainedShows} shows, since ${RECENT_SINCE}: ${c.preWindow.recentUnexplained} rows on ${c.preWindow.recentUnexplainedShows} shows; worst ${c.preWindow.worst.slice(0, 5).join(', ')}`);
   if (c.republished) L.push(`3 republished-marker: ${c.republished.count} counted rows on ${c.republished.shows} shows name an earlier year; worst ${c.republished.worst.slice(0, 5).join(', ')}`);
   if (c.flagVsClear) L.push(`4 flag-vs-clear: ${c.flagVsClear.count} files carry wrongProduction=true AND a clear marker (${c.flagVsClear.flaggedAfterClear} flagged by a plan AFTER the clear)`);
-  if (c.duplicates) L.push(`5 duplicates: ${c.duplicates.sameUrlTwoShows} URLs counted on 2+ unlinked shows; ${c.duplicates.urllessBesideUrl} url-less rows beside a url row on ${c.duplicates.urllessShows} shows`);
+  if (c.duplicates) L.push(`5 duplicates: ${c.duplicates.sameUrlTwoShows} URLs counted on 2+ unlinked shows with dates >14d apart (suspect), ${c.duplicates.sharedArticles} more are one article reviewing several shows; ${c.duplicates.urllessBesideUrl} url-less rows beside a url row on ${c.duplicates.urllessShows} shows`);
   if (c.showDates) L.push(`6 show-dates: ${c.showDates.reviewsBeforeStoredOpening} shows with 2+ outlets reviewing 1-14d before the stored opening (${c.showDates.reviewsBeforeStoredOpeningPlaybill} Playbill-derived); ${c.showDates.openNoReviews} open shows 2-30d past opening with zero reviews (${c.showDates.openNoReviewsPlaybill} Playbill-derived)`);
   if (c.stars) L.push(`7 stars: ${c.stars.count} numeric-star ratings on ${c.stars.shows} shows with no star evidence in the text (heuristic candidates)`);
   console.log(L.join('\n'));
@@ -362,6 +377,7 @@ function main() {
     republished: c.republished && c.republished.count,
     flagVsClear: c.flagVsClear && c.flagVsClear.flaggedAfterClear,
     sameUrlTwoShows: c.duplicates && c.duplicates.sameUrlTwoShows,
+    sharedArticles: c.duplicates && c.duplicates.sharedArticles,
     urllessBesideUrl: c.duplicates && c.duplicates.urllessBesideUrl,
     reviewsBeforeStoredOpening: c.showDates && c.showDates.reviewsBeforeStoredOpening,
     openNoReviews: c.showDates && c.showDates.openNoReviews,
