@@ -88,6 +88,18 @@ test('isUkRegionalShow accepts the aliases the pipeline accepts', () => {
   assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Crucible Studio, Anytown, OH' }), false);
 });
 
+import { getShowFAQs } from '../../src/lib/seo';
+
+test('FAQ copy: a UK flagship show is "in the UK", a US tryout stays "in a regional production"', () => {
+  const faqText = (s) => getShowFAQs(s).map((f) => `${f.question} ${f.answer}`).join(' ');
+  const uk = getUkRegionalShows().find((s) => s.status === 'open' || s.status === 'closed');
+  const us = getRegionalShows()[0];
+  assert.ok(uk && us, 'fixtures exist');
+  assert.match(faqText(uk), /in the UK/);
+  assert.doesNotMatch(faqText(uk), /regional production/);
+  assert.match(faqText(us), /regional production/);
+});
+
 test('related shows never mix UK flagship shows with US tryouts', () => {
   const isUs = (s) => s.category === 'regional' && !isUkRegionalShow(s);
   for (const s of getUkRegionalShows()) {

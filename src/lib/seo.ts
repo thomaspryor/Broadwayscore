@@ -635,7 +635,9 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
   const isRegional = show.category === 'regional';
   const isTour = show.category === 'tour';
   const isOpera = isOperaShow(show);
-  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : isTour ? 'on tour' : 'on Broadway';
+  // A UK flagship show (RSC, Chichester, ...) is not a Broadway tryout (BRO-5103).
+  const regionalLabel = getUkRegionalVenueCity(show.category, show.venue) ? 'in the UK' : 'in a regional production';
+  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? regionalLabel : isTour ? 'on tour' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
