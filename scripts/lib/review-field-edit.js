@@ -328,7 +328,7 @@ function predictedExcerptStrips(abs, record) {
   const self = path.basename(abs);
   const siblings = [];
   for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.startsWith('_') || f === self) continue;
     try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) }); } catch { /* unreadable sibling */ }
   }
   return guard.excerptFieldsToStrip(self, record, siblings).fields;
