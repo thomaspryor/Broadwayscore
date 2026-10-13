@@ -341,3 +341,40 @@ describe('playbillUrlTitleMatch — the corroboration and enablement gates', () 
     assert.equal(r.form, '1536-west-end');
   });
 });
+
+// BRO-2893: the matcher used to guard only the READ path, and the cache writers
+// bypassed it, so a wrong attribution written once was returned forever. The
+// write guard (playbill-cache-guard.js), applied inside playbill-urls-store.js's
+// save, is the same matcher; reverting the guard call in the store makes the
+// store assertion below fail.
+test('BRO-2893: a cache writer refuses to persist a URL the matcher rejects', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const store = require('./playbill-urls-store.js');
+  const { playbillCacheWriteVerdict } = require('./playbill-cache-guard.js');
+  const show = { id: 'giant-2026', title: 'Giant', category: 'broadway', venue: 'Music Box Theatre' };
+  const wrong = 'https://playbill.com/production/giant-the-play-broadway-music-box-theatre-2026';
+  const right = 'https://playbill.com/production/giant-broadway-music-box-theatre-2026';
+  assert.equal(playbillCacheWriteVerdict(show, wrong).ok, false);
+  assert.equal(playbillCacheWriteVerdict(show, right).ok, true);
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pb-guard-'));
+  const file = path.join(dir, 'playbill-urls.json');
+  fs.writeFileSync(file, JSON.stringify({ shows: {}, lastUpdated: null }));
+  fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify([show]));
+  const s = store.loadPlaybillUrls(file);
+  s.data.shows[show.id] = wrong;
+  const r = store.savePlaybillUrls(file, s.data, s.snapshot);
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).shows[show.id], undefined);
+  assert.equal(r.refused[0].reason, 'title-mismatch');
+});
+
+test('an inner "&" matches the Playbill slug that drops it (ship-check finding)', () => {
+  const show = { id: 'drunk-romeo-and-juliet-off-broadway-2025', title: 'Drunk Romeo & Juliet', category: 'off-broadway', venue: 'The Ruby Theatre' };
+  assert.equal(playbillUrlTitleMatch('https://playbill.com/production/drunk-romeo-juliet-off-broadway-ruby-theatre-2026', show).match, true);
+  assert.equal(playbillUrlTitleMatch('https://playbill.com/production/drunk-romeo-and-juliet-off-broadway-ruby-theatre-2026', show).match, true);
+  // Dropping the "&" never drops a WORD: "Romeo & Juliet" must not match bare "juliet".
+  assert.equal(playbillUrlTitleMatch('https://playbill.com/production/juliet-broadway-x-theatre-2026',
+    { id: 'romeo-and-juliet-2024', title: 'Romeo & Juliet', category: 'broadway', venue: 'Circle in the Square Theatre' }).match, false);
+});

@@ -178,6 +178,14 @@ function titleForms(rawTitle) {
     if (dropped) lossy.add(dropped);
   }
 
+  // Inner "&" — we slug "Drunk Romeo & Juliet" as "drunk-romeo-and-juliet",
+  // Playbill drops the ampersand: /production/drunk-romeo-juliet-off-broadway-…
+  // (ship-check finding: the BRO-2893 write guard refused that live entry).
+  if (/\S\s*&\s*\S/.test(title.replace(/^\s*&\s*/, ''))) {
+    const noAmp = normSlug(title.replace(/^\s*&\s*/, '').replace(/\s*&\s*/g, ' '));
+    if (noAmp && noAmp !== exact) lossless.add(noAmp);
+  }
+
   // Leading series brand — "Encores! La Cage Aux Folles", where "Encores!" is
   // a PRESENTER and "La Cage Aux Folles" is the work.
   //
@@ -489,7 +497,61 @@ function playbillUrlTitleMatch(url, show, opts = {}) {
   };
 }
 
+/** Optimal-string-alignment distance: an adjacent swap costs 1, not 2. */
+function osaDistance(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+      }
+    }
+  }
+  return d[a.length][b.length];
+}
+
+/**
+ * Was a REJECTED candidate a near-spelling of this show's title? (BRO-2703)
+ *
+ * findPlaybillUrl() used to stamp 'no-playbill-url' both when search found no
+ * Playbill page for a show and when it found pages and the scorer rejected
+ * every one. The second case includes a typo'd title in shows.json, which is
+ * exactly a defect the venue audit exists to catch.
+ *
+ * Deliberately NOT "any /production/ URL came back": two of the three SERP
+ * queries are site:playbill.com/production, so that predicate fires for nearly
+ * every page-less show (the attempt BRO-2701 reverted). And deliberately NOT
+ * "a same-title page in another market" either, which the card proposed:
+ * measured against the live cache, that fires for every London transfer
+ * (Hamilton, Wicked, Mamma Mia… West End entries whose only Playbill page is
+ * the Broadway one), 60 flags on scorer-rejected pairs, a permanent false
+ * positive. Only the typo shape counts: a market-delimited title segment
+ * that differs from our exact title form by one edit (two once the title is
+ * 10+ characters), with adjacent swaps costing one. Measured on the live cache
+ * (every show against every other show's cached URL, 661,600 pairs): 2 flags on
+ * scorer-rejected URLs, Otello/Othello and Shamilton/Hamilton, both genuinely
+ * one letter apart; 128 of 167 simulated swap typos caught. Advisory only.
+ * @returns {{kind: 'title-near', segment: string}|null}
+ */
+function titleNearMiss(url, show) {
+  const u = String(url || '').toLowerCase().replace(/[?#].*$/, '').replace(/\/+$/, '');
+  const exact = titleForms(show && show.title).exact;
+  if (!exact || exact.length < 6) return null;
+  const budget = exact.length >= 10 ? 2 : 1;
+  for (const seg of marketTitleSegments(u)) {
+    const form = normSlug(seg.head);
+    if (!form || form === exact || Math.abs(form.length - exact.length) > budget) continue;
+    if (osaDistance(form, exact) <= budget) return { kind: 'title-near', segment: form };
+  }
+  return null;
+}
+
 module.exports = {
+  titleNearMiss,
+  osaDistance,
   normSlug,
   venueSlug,
   venueTokens,

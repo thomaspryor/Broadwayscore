@@ -65,7 +65,37 @@ function findCorroboratingPriorRun(show, parsed) {
   }) || null;
 }
 
-const PRIOR_RUN_EXPLAINABLE_FIELDS = new Set(['venue', 'opening-year', 'openingDate', 'closingDate']);
+const PRIOR_RUN_EXPLAINABLE_FIELDS = new Set(['market', 'venue', 'opening-year', 'openingDate', 'closingDate']);
+
+/**
+ * The market labels Playbill prints first inside its <title> parentheses that
+ * a show of each category may legitimately carry (BRO-2896). Lowercased. A
+ * category not listed here is not market-checked.
+ */
+const PLAYBILL_MARKETS_FOR_CATEGORY = {
+  broadway: ['broadway'],
+  'off-broadway': ['off-broadway', 'off-off-broadway'],
+  'west-end': ['london', 'west end'],
+  'off-west-end': ['london', 'west end'],
+  regional: ['regional'],
+  // A tour page can be labelled either way; the URL scorer already insists on
+  // a tour keyword for a tour show (BRO-4211).
+  tour: ['tour', 'regional'],
+};
+
+/**
+ * Does the Playbill page's own market label contradict the show's category?
+ * Returns the page's market when it does, else null (unknown on either side
+ * is not a contradiction). A missing category means Broadway, the corpus
+ * convention.
+ */
+function playbillMarketConflict(show, titleParse) {
+  const pageMarket = titleParse && titleParse.market ? String(titleParse.market).toLowerCase() : null;
+  if (!pageMarket) return null;
+  const allowed = PLAYBILL_MARKETS_FOR_CATEGORY[(show && show.category) || 'broadway'];
+  if (!allowed) return null;
+  return allowed.includes(pageMarket) ? null : titleParse.market;
+}
 
 /**
  * @param {object} show shows.json entry
@@ -120,6 +150,22 @@ function compareShow(show, parsed, playbillUrl) {
       playbill: parsed.titleParse?.venue,
       playbillCanonical: pageVenueCanon,
     });
+  }
+
+  // BRO-2896: a page from a DIFFERENT MARKET is a different production, not
+  // this show with wrong dates. much-ado-about-nothing-2026 (Broadway, Winter
+  // Garden) against a "(Regional, PlayMakers Repertory Company, 2023)" page
+  // used to report opening-year, openingDate and closingDate mismatches, a
+  // confident and wrong diagnosis ("your dates are three years off"). Report
+  // the market (and the venue, recorded above) and stop: comparing dates,
+  // revival status or type against another production is noise. A page that a
+  // priorRun corroborates is this show's own earlier run in another market
+  // (an off-Broadway premiere before a transfer), so it takes the normal path
+  // and the market field is explained like the venue and dates.
+  const pageMarket = playbillMarketConflict(show, parsed.titleParse);
+  if (pageMarket) {
+    record({ field: 'market', shows: show.category || 'broadway', playbill: pageMarket });
+    if (!corroboratingPriorRun) return { mismatches, explainedByPriorRun, venueCheck };
   }
 
   // Year: prefer URL year (always present); cross-check with title year.
@@ -339,10 +385,20 @@ function serpQueryCompleted(results) {
  * a provider outage would be demoted out of the gate permanently. A lookup
  * failure is transient (tier 2) and gets rechecked early instead.
  */
-function missingUrlOutcome({ anyQueryCompleted }) {
-  return anyQueryCompleted
-    ? { source: 'none', result: 'no-playbill-url' }
-    : { source: 'serp-error', result: 'serp-error' };
+/*
+ * BRO-2703: when search answered and the scorer rejected every candidate, the
+ * candidates that were nonetheless about THIS title (titleNearMiss in
+ * playbill-title-match.js) ride along as `rejectedTitleCandidates`, and the
+ * CLI warns about them. The RESULT stays 'no-playbill-url' on purpose: a
+ * distinct non-definitive result would re-tier these shows ahead of clean ones
+ * and starve the time budget (the BRO-2701 revert), and a non-definitive one
+ * could never clear. Definitive on the first run, loud every run.
+ */
+function missingUrlOutcome({ anyQueryCompleted, rejectedTitleCandidates = [] }) {
+  if (!anyQueryCompleted) return { source: 'serp-error', result: 'serp-error' };
+  const out = { source: 'none', result: 'no-playbill-url' };
+  if (rejectedTitleCandidates.length) out.rejectedTitleCandidates = rejectedTitleCandidates.slice(0, 5);
+  return out;
 }
 
 /**
@@ -642,6 +698,8 @@ function rowIsStillAboutShow(row, byId, showId) {
 }
 
 module.exports = {
+  playbillMarketConflict,
+  PLAYBILL_MARKETS_FOR_CATEGORY,
   DATE_DELTA_DAYS,
   daysBetween,
   urlYear,
