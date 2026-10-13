@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-13T07:29:17.872Z",
+  "generatedAt": "2026-10-13T08:39:57.764Z",
   "summary": {
-    "total": 14,
-    "high": 8,
+    "total": 15,
+    "high": 9,
     "medium": 4,
     "low": 2
   },
@@ -384,6 +384,33 @@
       "suggestedWinner": "the-score-regional-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-02-07",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
     }
   ]
 }
