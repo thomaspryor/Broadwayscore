@@ -20,7 +20,9 @@
  *
  * --truth=reported (default) scores only rows a trade outlet, the producers or
  * a filing stated (truthClass in the lib); --truth=all adds Reddit, deep
- * research and our own synthesis. The excluded count is printed.
+ * research and our own synthesis. The excluded count is printed. Under the
+ * default the inference rows are still scored, on their own Advisory line
+ * (owner 2026-10-13): they never count toward --strict or the CI annotations.
  *
  * Two lines gate any shadow-to-live switch (checker, 2026-10-10):
  *   New false recouped: rows the truth says never recouped that the new side
@@ -43,7 +45,7 @@ const os = require('os');
 const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { execFileSync } = require('child_process');
-const { groundTruth, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
+const { groundTruth, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals'];
@@ -114,23 +116,26 @@ if (TIMING) {
 }
 
 const rows = [];
+const advisoryRows = [];
 const skipped = { noShow: 0, noModel: 0, notDisplayable: 0, inference: 0, newOnly: 0 };
+// Advisory rows' skips are their own, so a model gap there never blocks.
+const advisorySkipped = { noModel: 0, notDisplayable: 0, newOnly: 0 };
 const SANITY_LIMIT = 500;
 const insane = [];
 for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
   if (!show) { skipped.noShow++; continue; }
   const truth = groundTruth(comm, show);
-  if (!truth || (truth.truthClass !== 'reported' && TRUTH === 'reported')) {
-    if (truth) skipped.inference++;
-    sanityCheck(key, show, comm);
-    continue;
-  }
+  if (!truth) { sanityCheck(key, show, comm); continue; }
+  const advisory = truth.truthClass !== 'reported' && TRUTH === 'reported';
+  const skip = advisory ? advisorySkipped : skipped;
+  // Sanity covers advisory records exactly as before they were scored.
+  if (advisory) { skipped.inference++; sanityCheck(key, show, comm); }
   // --as-of-report: score a dated reported range against the model as it
   // stood on that date (both sides), so later grosses don't count against it.
   const at = AS_OF_REPORT && truth.asOf ? { asOf: truth.asOf } : {};
   if (DISPLAYABLE_ONLY && !(displaysModel(comm, show) && playedWeeks(show, at.asOf ? new Date(at.asOf) : new Date()) >= MIN_PLAYED_WEEKS)) {
-    skipped.notDisplayable++;
+    skip.notDisplayable++;
     continue;
   }
   const live = baseRun(show, comm, L, at);
@@ -148,14 +153,14 @@ for (const [key, comm] of Object.entries(commercial)) {
       usedPost = pick.usedPost;
     }
   }
-  if (at.asOf && live.tier !== 'weekly-model') { skipped.noModel++; continue; }
+  if (at.asOf && live.tier !== 'weekly-model') { skip.noModel++; continue; }
   // A row only the new side fails is a regression, not a skip: counted and blocking.
-  if (live.result && !fixed.result) { skipped.newOnly++; continue; }
-  if (!live.result || !fixed.result) { skipped.noModel++; continue; }
-  flagInsane(key, live.result.recoupmentPctCentral, fixed.result.recoupmentPctCentral);
+  if (live.result && !fixed.result) { skip.newOnly++; continue; }
+  if (!live.result || !fixed.result) { skip.noModel++; continue; }
+  if (!advisory) flagInsane(key, live.result.recoupmentPctCentral, fixed.result.recoupmentPctCentral);
   const oldPct = shown(live.result.recoupmentPctCentral);
   const newPct = shown(fixed.result.recoupmentPctCentral);
-  rows.push({
+  (advisory ? advisoryRows : rows).push({
     slug: key, kind: truth.kind, truthClass: truth.truthClass, creditBasis: truth.creditBasis, ...(usedPost !== undefined ? { usedPost } : {}), ...category(show),
     truth: [truth.lo, truth.hi], oldPct, newPct,
     oldErr: rangeError(oldPct, truth), newErr: rangeError(newPct, truth),
@@ -185,6 +190,7 @@ const falseRecoupedLine = `New false recouped vs truth: ${newFalseRecouped.lengt
 const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped): ${insane.length}${detail(insane, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}`;
 const newOnlyLine = `Rows only the new side failed to model: ${skipped.newOnly}${skipped.newOnly ? '; blocks any switch' : ''}`;
 const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported only, ${skipped.inference} inference rows left out (--truth=all adds them)` : 'reported and inference'}`;
+const advisoryOut = TRUTH === 'reported' ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}${advisorySkipped.newOnly ? `; ${advisorySkipped.newOnly} only the new side failed to model` : ''}` : null;
 
 const summary = summarize(rows);
 const worse = worseGroups(summary, { minN: MIN_GROUP });
@@ -194,10 +200,11 @@ if (process.env.GITHUB_ACTIONS && worse.length) console.log(`::warning title=Rec
 if (process.env.GITHUB_ACTIONS && (newFalseRecouped.length || skipped.newOnly)) console.log(`::error title=Recoupment backtest::${label}${scope}: ${falseRecoupedLine}; ${newOnlyLine}`);
 if (args.includes('--json')) {
   const detailOut = AGGREGATE_ONLY ? { newFalseRecouped: newFalseRecouped.length, insane: insane.length } : { newFalseRecouped, insane, rows };
-  console.log(JSON.stringify({ base: BASE || null, opts: OPTS, truth: TRUTH, summary, worse, skipped, ...detailOut }, null, 2));
+  const advisoryJson = TRUTH === 'reported' ? { advisory: { line: advisoryOut, summary: summarize(advisoryRows), skipped: advisorySkipped, ...(AGGREGATE_ONLY ? {} : { rows: advisoryRows }) } } : {};
+  console.log(JSON.stringify({ base: BASE || null, opts: OPTS, truth: TRUTH, summary, worse, skipped, ...detailOut, ...advisoryJson }, null, 2));
 } else if (MARKDOWN) {
   console.log(formatMarkdown({ title: `Recoupment ground-truth backtest: ${label}${scope} (${rows.length} shows)`, summary, rows, worse, aggregateOnly: AGGREGATE_ONLY }));
-  console.log([truthLine, ...(OPTS.creditBasis ? [basisLine(rows)] : []), `**${falseRecoupedLine}**`, `**${newOnlyLine}**`, sanityLine, ''].join('\n\n'));
+  console.log([truthLine, ...(OPTS.creditBasis ? [basisLine(rows)] : []), `**${falseRecoupedLine}**`, `**${newOnlyLine}**`, sanityLine, ...(advisoryOut ? [advisoryOut] : []), ''].join('\n\n'));
 } else {
   console.log(truthLine);
   if (OPTS.creditBasis) console.log(basisLine(rows));
@@ -218,5 +225,6 @@ if (args.includes('--json')) {
   console.log(falseRecoupedLine);
   console.log(newOnlyLine);
   console.log(sanityLine);
+  if (advisoryOut) console.log(advisoryOut);
 }
 if (args.includes('--strict') && (worse.length || newFalseRecouped.length || skipped.newOnly)) process.exit(1);

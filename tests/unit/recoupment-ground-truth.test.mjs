@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, advisoryLine, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
 
@@ -123,6 +123,23 @@ describe('scoring', () => {
     assert.deepEqual(worseGroups(s).sort(), ['all', 'era:pre-2020', 'kind:failed', 'type:play']);
     // minN: one-row groups are not gated.
     assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
+  });
+  // Owner 2026-10-13: Reddit/AI rows get their own line, labeled as not counted.
+  test('advisoryLine reports the inference tier with its own worse groups and false recouped', () => {
+    assert.match(advisoryLine([]), /not counted toward pass or fail\): none scored$/);
+    const rows = [
+      { kind: 'failed', type: 'musical', era: '2020+', truth: [0, 60], oldPct: 40, newPct: 120, oldErr: 0, newErr: 60 },
+      { kind: 'reported-pct', type: 'musical', era: '2020+', truth: [80, 90], oldPct: 85, newPct: 85, oldErr: 0, newErr: 0 },
+      // Already at 100%+ on the old side: not a new false recouped.
+      { kind: 'failed', type: 'play', era: 'pre-2020', truth: [0, 50], oldPct: 110, newPct: 115, oldErr: 60, newErr: 65 },
+    ];
+    const line = advisoryLine(rows);
+    assert.match(line, /^Advisory, Reddit\/AI\/our-estimate truth rows \(not counted toward pass or fail\): 3 rows/);
+    assert.match(line, /inside 2 -> 1/);
+    assert.match(line, /new false recouped 1$/);
+    assert.match(line, /worse in all, kind:failed/);
+    // minN keeps one-row groups out of the worse list, as on the reported tier.
+    assert.doesNotMatch(advisoryLine(rows, { minN: 2 }), /type:play/);
   });
 });
 

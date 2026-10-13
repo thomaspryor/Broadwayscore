@@ -205,6 +205,26 @@ function worseGroups(summary, { minN = 1 } = {}) {
     .map(([name]) => name);
 }
 
+/**
+ * One line for the inference tier (Reddit, deep research, our own synthesis).
+ * Owner 2026-10-13: show how a change does against these rows too, but they
+ * never gate a switch (checker 2026-10-10): many share the model's method, so
+ * agreement with them is weak evidence. The caller keeps them out of --strict.
+ * @param {object[]} rows scored rows, same shape as the reported rows
+ * @param {{ minN?: number }} [o]
+ * @returns {string}
+ */
+function advisoryLine(rows, { minN = 1 } = {}) {
+  const label = 'Advisory, Reddit/AI/our-estimate truth rows (not counted toward pass or fail)';
+  if (!rows.length) return `${label}: none scored`;
+  const s = summarize(rows);
+  const worse = worseGroups(s, { minN });
+  const falseRec = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100)).length;
+  const a = s.all;
+  return `${label}: ${a.n} rows, mean error ${a.oldMae} -> ${a.newMae}, inside ${a.oldInside} -> ${a.newInside}, `
+    + `${worse.length ? `worse in ${worse.join(', ')}` : 'no group worse'}, new false recouped ${falseRec}`;
+}
+
 const fmtTruth = (truth) => truth.map((v) => (Number.isFinite(v) ? v : (v > 0 ? '+inf' : '-inf'))).join('..');
 const r1 = (v) => Math.round(v * 10) / 10;
 
@@ -231,4 +251,4 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
 
 module.exports = {
   creditBasis, eitherBasis, basisLine,
-  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
+  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, advisoryLine, formatMarkdown, fmtTruth, OWN_INFERENCE };
