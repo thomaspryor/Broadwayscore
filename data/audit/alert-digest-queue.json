@@ -1505,5 +1505,18 @@
       }
     ],
     "queuedAt": "2026-10-13T14:41:12.068Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 16 review(s) flagged for anchored re-score",
+    "description": "{\"unanchored\":3,\"false-truncation\":13} across the whole corpus, by market {\"west-end\":7,\"broadway\":8,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] table-17-off-west-end-2026/rolandcat--roviews.json 5/5 stars band 91-100\n- [unanchored] from-the-heart-west-end-2026/jolienstheatrediary--jolien.json 5/5 stars band 91-100\n- [unanchored] the-real-thing-west-end-2024/city-am--unknown.json 4/5 stars band 71-90\n- [false-truncation] into-the-woods-2022/theater-pizzazz--samuel-l-leiter.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] miss-saigon-2017/theater-pizzazz--samuel-l-leiter.json score 73 scored with a truncation warning on a complete-tier text\n- [false-truncation] miss-saigon-2017/broadway-blog--matthew-wexler.json score 78 scored with a truncation warning on a complete-tier text\n- [false-truncation] the-assembled-parties-2013/wsj--terry-teachout.json score 45 scored with a truncation warning on a complete-tier text\n- [false-truncation] anything-goes-2011/theatermania--unknown.json score 81 scored with a truncation warning on a complete-tier text\n- [false-truncation] accent-on-youth-2009/ew--jeff-labrecque.json score 45 scored with a truncation warning on a complete-tier text\n- [false-truncation] rock-of-ages-2009/ew--thom-geier.json score 66 scored with a truncation warning on a complete-tier text",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T14:45:15.985Z"
   }
 ]
