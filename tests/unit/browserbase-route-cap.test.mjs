@@ -131,3 +131,25 @@ test('chokepoint message format still matches what browserbase-session.js throws
   assert.ok(m, 'browserbase-session.js no longer throws the day-cap message this mapping keys on');
   assert.equal(routeCapFromBrowserbaseError(m[1]), 'day');
 });
+
+test('collector local-limit refusal after a mid-run resync is a cap only when the local block reason says so', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/collect-review-texts.js', import.meta.url), 'utf8');
+  const m = src.match(/throw new Error\('(Browserbase unavailable[^']*)'\)/);
+  assert.ok(m, 'collect-review-texts.js no longer throws the local-limit message this mapping keys on');
+  assert.equal(routeCapFromBrowserbaseError(m[1], 'day'), 'day');
+  assert.equal(routeCapFromBrowserbaseError(m[1], 'run'), 'run');
+  assert.equal(routeCapFromBrowserbaseError(m[1], 'domain'), 'domain');
+  // Not configured or kill switch is not a cap; neither is an unblocked state.
+  assert.equal(routeCapFromBrowserbaseError(m[1], 'disabled'), null);
+  assert.equal(routeCapFromBrowserbaseError(m[1], null), null);
+  // A real fetch failure stays a failure even while the cap is now reached.
+  assert.equal(routeCapFromBrowserbaseError('Insufficient text: 429 chars', 'day'), null);
+});
+
+test('a discovered-URL retry starts without the previous attempt cap mark', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/collect-review-texts.js', import.meta.url), 'utf8');
+  const body = src.slice(src.indexOf('async function fetchReviewText(review) {'));
+  assert.match(body.slice(0, 400), /delete review\._browserbaseCapSkipped;/);
+});
