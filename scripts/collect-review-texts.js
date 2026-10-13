@@ -6964,7 +6964,7 @@ function stampDatelessRetry(filePath) {
  * at all, so a 2018 touring review landed on the 2015 Broadway show).
  * Returns null when the text is under 200 words or the verifier threw.
  */
-async function verifyFetchedContent(review, result, validation) {
+async function verifyFetchedContent(review, result, validation, { discoveredUrl = null } = {}) {
   let contentVerification = null;
   if (validation.wordCount >= 200) {
     console.log(`  LLM Verification...`);
@@ -7011,18 +7011,21 @@ async function verifyFetchedContent(review, result, validation) {
         // only at save, after this call) and drop the today fallback for a
         // long-closed show, whose reviews were otherwise "written in 2026".
         publishDate: verificationPublishDate({
-          storedDate: reviewData.publishDate,
+          // A discovered page is judged on its own date and url, never the old
+          // row's (a stored 2015 date made a 2018 tour review look like an
+          // opening-week review, BRO-5183).
+          storedDate: discoveredUrl ? null : reviewData.publishDate,
           derivedDate: extractPublishDateFromHtml(result.html)
-            || (() => { const u = reviewData.url ? extractDateFromUrlCanonical(reviewData.url) : null; return u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '') ? u.date : null; })()
+            || (() => { const pageUrl = discoveredUrl || reviewData.url; const u = pageUrl ? extractDateFromUrlCanonical(pageUrl) : null; return u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '') ? u.date : null; })()
             || (result.text && result.text.length > 100 ? extractDateFromText(result.text) : null),
-          textFetchedAt: reviewData.textFetchedAt,
+          textFetchedAt: discoveredUrl ? null : reviewData.textFetchedAt,
           show: showMeta,
           today: new Date().toISOString().slice(0, 10),
         }),
         // URL passed in so verifyContent can surface URL-year-vs-publishDate
         // conflicts to the LLM (issue #4, Mamma Mia WE 2021 case). Not used to
         // override — the LLM decides with both dates in hand. See CLAUDE.md rule 3.
-        url: review.url || reviewData.url || null,
+        url: discoveredUrl || reviewData.url || null,
         // BRO-989: foreign-roundup bypass of the temporal override.
         bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
         otherShowTitles: (_showsJsonCache?.shows || []).filter(s => s.id !== showId && s.title && s.title.length >= 6).map(s => s.title),
@@ -7373,7 +7376,17 @@ async function processReview(review) {
     }
 
     // LLM-based content verification (runs by default, falls back to heuristic without API key)
-    const contentVerification = await verifyFetchedContent(review, result, validation);
+    const contentVerification = await verifyFetchedContent(review, result, validation, { discoveredUrl: review._urlDiscovered ? review.url : null });
+    if (review._urlDiscovered) {
+      // no_url / fabricated / showNotMentioned recovery switched to a SERP hit:
+      // the search has to prove the page before its text is stored (BRO-5183).
+      const verdict = discoveredPageVerdict(contentVerification);
+      if (!verdict.accept) {
+        console.log(`  ✗ DISCOVERED PAGE REFUSED: ${verdict.reason}`);
+        stats.totalFailed++;
+        return { success: false, error: 'discovered_url_unverified', reason: verdict.reason };
+      }
+    }
 
     // Update JSON (pass HTML for score extraction)
     await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
@@ -7601,19 +7614,22 @@ async function processReview(review) {
 
           // A searched-up page must pass the content verifier (right show, right
           // production, right article) before it takes the slot (BRO-5183).
-          const retryVerification = await verifyFetchedContent(review, retryResult, validateReviewText(retryResult.text, review));
+          const validation = validateReviewText(retryResult.text, review);
+          const retryVerification = await verifyFetchedContent(review, retryResult, validation, { discoveredUrl });
           const discoveredVerdict = discoveredPageVerdict(retryVerification);
           if (!discoveredVerdict.accept) {
             console.log(`  ✗ DISCOVERED PAGE REFUSED: ${discoveredVerdict.reason}`);
-            recordFailedFetch(review, 'discovered_url_unverified', {
-              method: retryResult.method,
-              discoveredUrl,
-              reason: discoveredVerdict.reason,
-              textLength: retryResult.text.length,
-              archivePath,
-              retry: true,
-            });
             review.url = originalUrl;
+            if (!discoveredVerdict.retry) {
+              recordFailedFetch(review, 'discovered_url_unverified', {
+                method: retryResult.method,
+                discoveredUrl,
+                reason: discoveredVerdict.reason,
+                textLength: retryResult.text.length,
+                archivePath,
+                retry: true,
+              });
+            }
             stats.totalFailed++;
             return { success: false, error: 'discovered_url_unverified', reason: discoveredVerdict.reason };
           }
@@ -7649,7 +7665,6 @@ async function processReview(review) {
             return { success: false, error: 'discovered_url_write_refused' };
           }
 
-          const validation = validateReviewText(retryResult.text, review);
           await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', retryVerification);
 
           const retryMethodKey = retryResult.method === 'direct-cookies' ? 'directCookies' : retryResult.method;

@@ -4263,14 +4263,16 @@ function isUnverifiableWebSearchRow(data) {
   // BRO-5183: 300 chars is not proof of a real page. 103 live legacy rows held
   // a 365-char TheaterMania shell or a ~400-char Talkin' Broadway stub the
   // classifier itself tiers 'invalid', and kept their invented-excerpt score.
-  // A legacy url row's text counts as the page only when the content verifier
-  // passed it, or, never verified, when it is a full page (1000+ chars) that
-  // the tier classifier did not call invalid or stub.
+  // A legacy url row's text counts as the page only when the LLM content
+  // verifier passed it, or when it is a full page (1000+ chars) the tier
+  // classifier did not call invalid or stub (a longer page the verifier
+  // doubted is left to the wrong-article/production guards).
   if (data.url) {
     const cv = data.contentVerification;
-    const verified = !!cv && cv.isValid === true && !cv.wrongProduction && !cv.wrongArticle;
-    const fullUnverifiedPage = !cv && textLength >= 1000 && !['invalid', 'stub'].includes(data.contentTier);
-    if (!verified && !fullUnverifiedPage && !cv) return true;
+    const verified = !!cv && cv.isValid === true && String(cv.verifiedBy || '').startsWith('llm')
+      && !cv.wrongProduction && !cv.wrongArticle;
+    const fullPage = textLength >= 1000 && !['invalid', 'stub'].includes(data.contentTier);
+    if (!verified && !fullPage) return true;
   }
   // BRO-5183: real text arriving does not make the score real. Until the row
   // is rescored on that text its score is still the one read from the

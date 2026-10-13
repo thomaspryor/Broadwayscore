@@ -14,11 +14,16 @@
  * Pure, no I/O.
  */
 function discoveredPageVerdict(cv) {
-  if (!cv) return { accept: false, reason: 'no content verification (too short or verifier unavailable)' };
-  if (cv.wrongProduction) return { accept: false, reason: 'verifier: wrong production' };
+  // No verdict is not evidence against the page (an API outage, a capsule
+  // review under 200 words): `retry` tells the caller not to count it.
+  if (!cv) return { accept: false, retry: true, reason: 'no content verification (too short or verifier unavailable)' };
+  // Same bar the main path acts on (updateReviewJson): the temporal and
+  // in-window overrides lower a false wrongProduction to 'low' on purpose.
+  const wrongProductionCounts = cv.wrongProduction && (cv.confidence === 'high' || cv.confidence === 'medium');
+  if (wrongProductionCounts) return { accept: false, reason: 'verifier: wrong production' };
   if (cv.wrongArticle) return { accept: false, reason: 'verifier: wrong article' };
   if (cv.isFilmTv) return { accept: false, reason: 'verifier: film/TV piece' };
-  if (cv.isValid !== true) return { accept: false, reason: 'verifier: not valid' + (cv.issues && cv.issues[0] ? ` (${cv.issues[0]})` : '') };
+  if (cv.isValid !== true && !(cv.wrongProduction && !wrongProductionCounts)) return { accept: false, reason: 'verifier: not valid' + (cv.issues && cv.issues[0] ? ` (${cv.issues[0]})` : '') };
   return { accept: true, reason: 'verified' };
 }
 

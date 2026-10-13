@@ -38,7 +38,8 @@ test('a legacy url row counts only with a verified or full page, not a 300-char 
   assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: 'y'.repeat(1200), contentTier: 'invalid' }), true, 'classifier tiers it invalid');
   assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: 'y'.repeat(1200), contentTier: 'complete' }), false, 'full page, never verified');
   assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: shell, contentVerification: { isValid: true, verifiedBy: 'llm:claude-haiku' } }), false, 'short but verified');
-  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: shell, contentVerification: { isValid: false, wrongArticle: true } }), false, 'a verifier rejection is left to the wrong-article guards');
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: shell, contentVerification: { isValid: false, verifiedBy: 'heuristic' } }), true, 'short and not LLM-verified');
+  assert.equal(isUnverifiableWebSearchRow({ ...scored, fullText: 'y'.repeat(1200), contentTier: 'complete', contentVerification: { isValid: false, wrongArticle: true, verifiedBy: 'llm:claude-haiku' } }), false, 'a full page the verifier doubted is left to the wrong-article guards');
 });
 
 test('the verifier never gets a legacy web-search excerpt as its reference', () => {

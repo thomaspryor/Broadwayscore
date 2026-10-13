@@ -58,7 +58,7 @@ test('2: the fabricated Talkin\' Broadway web-search row is excluded', () => {
   };
   assert.equal(explainExclusion(row, ITW_2022, null), 'unverifiableWebSearchRow');
   // Control: the same row with a real url and text is not excluded for this reason.
-  const real = { ...row, url: 'https://www.talkinbroadway.com/page/ob/into-the-woods', fullText: 'x '.repeat(400) };
+  const real = { ...row, url: 'https://www.talkinbroadway.com/page/ob/into-the-woods', fullText: 'x '.repeat(600) };
   assert.notEqual(explainExclusion(real, ITW_2022, null), 'unverifiableWebSearchRow');
 });
 
