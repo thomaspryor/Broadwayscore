@@ -25,6 +25,7 @@ fi
 echo ""
 echo "--- data (did the bootstrap provision it?) ---"
 if [ -L data/shows.json ]; then loc="symlink -> $(readlink data/shows.json)"
+elif [ -f data/.core-data-sha ]; then loc="cloud copy of core data @ $(cut -c1-12 data/.core-data-sha) (BRO-5217)"
 elif [ -e data/shows.json ]; then loc="regular file"
 else loc="MISSING"; fi
 echo "data/shows.json: $loc"
