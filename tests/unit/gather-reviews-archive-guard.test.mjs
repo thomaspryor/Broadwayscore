@@ -149,10 +149,10 @@ test('Stagedoor (SD) archive read now validates cached identity before extractin
   const idx = SRC.indexOf("path.join(archBase, 'stagedoor'");
   assert.ok(idx > 0, 'must still locate the stagedoor archive path');
   const scope = SRC.slice(idx, idx + 1800);
-  assert.match(scope, /pageTitleConfirmsShow\(data\.title \|\| '', show\.title\)/,
-    'must validate data.title against show.title, defaulting a missing title to "" so it fails CLOSED (not skipped) rather than passing vacuously');
-  assert.match(scope, /data\.ourShowId && data\.ourShowId !== showId/,
-    'must also cross-check the archive\'s own ourShowId field against showId — the one signal that is NOT tautological across all 3 write paths');
+  // BRO-3615: identity predicate moved to scripts/lib/stagedoor-identity.js
+  // (real-function coverage in stagedoor-archive-identity.test.mjs).
+  assert.match(scope, /isStagedoorArchiveMismatch\(data, showId, show\.title\)/,
+    'must validate the cached archive identity via the shared predicate before reading reviews');
   assert.match(scope, /fs\.renameSync\(sdArchive, sdArchive \+ '\.mismatch'\)/,
     'an identity mismatch must quarantine the file, matching the TR/TS/LBO pattern above it');
   // The quarantine check must run BEFORE reviews are read out of the file.
