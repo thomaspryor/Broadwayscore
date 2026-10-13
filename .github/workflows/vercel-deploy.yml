@@ -170,6 +170,9 @@ jobs:
           # Hashed HERE, before the build, because prebuild can rewrite data/.
           node scripts/lib/should-deploy-gate.js --meta-args > "$RUNNER_TEMP/core-data-meta-args"
           echo "Core data blob SHAs:"; cat "$RUNNER_TEMP/core-data-meta-args"
+          # Never deploy unstamped: the mandatory pair must be in the list.
+          grep -q '^reviewsBlobSha=' "$RUNNER_TEMP/core-data-meta-args" && grep -q '^showsBlobSha=' "$RUNNER_TEMP/core-data-meta-args" \
+            || { echo "::error::core-data meta args missing reviews/shows SHAs"; exit 1; }
 
       - name: Verify Vercel build guard is active
         env:
