@@ -164,6 +164,11 @@ function toDateMs(value) {
   if (typeof value !== 'string') return NaN;
   const native = new Date(value).getTime();
   if (!isNaN(native)) return native;
+  // Same clock as the native parse: "November 17th, 2023" must equal
+  // "November 17, 2023" (local midnight). parseDate is UTC midnight, so it
+  // only agreed on a UTC machine (orphan-review-folders test, BRO-5280).
+  const stripped = new Date(stripOrdinals(value.trim())).getTime();
+  if (!isNaN(stripped)) return stripped;
   const d = parseDate(value) || parseHistoricalDate(value);
   return d ? d.getTime() : NaN;
 }

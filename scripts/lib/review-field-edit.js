@@ -229,6 +229,36 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     }
     sideEffectKeys = unexpectedChanges(beforeRetract, next, field);
   }
+  // BRO-5280: an approved flag outranks the clear breadcrumbs the self-clear
+  // audit pairs with it (wrongAttribution vs crossOutletVerified /
+  // wrongArticleManualClear). Left in place, the record says both "wrong" and
+  // "cleared" and audit-self-contradictory-clears fails Data Validation.
+  if (newValue === true) {
+    const fc = require('./flag-contradiction');
+    const beforeRetract = { ...next };
+    const pairs = fc.SELF_CLEAR_PAIRS.filter((p) => p.flag === field
+      && (p.resolution || 'retract-breadcrumb') === 'retract-breadcrumb'
+      && fc.hasClearBreadcrumbValue(next[p.breadcrumb]));
+    if (pairs.some((p) => p.breadcrumb === 'wrongArticleManualClear')) {
+      // Manual ingest stamps this with humanReviewedWrongArticle:false and
+      // nonReviewManualClear (manual-review-fields.js): a human verdict, which
+      // a flag plan must not overrule (same rule as BRO-5000 above). It also
+      // clears wrongFullText, so retracting it would revive that flag unasked.
+      if (next.humanReviewedWrongArticle === false || next.nonReviewManualClear === true) {
+        return { ok: false, reason: `${field}: record carries a human wrong-article clear (manual ingest); a flag plan will not overrule it` };
+      }
+      if (next.wrongFullText === true) {
+        return { ok: false, reason: `${field}: wrongArticleManualClear also clears a live wrongFullText; retracting it would revive that flag` };
+      }
+    }
+    for (const pair of pairs) {
+      fc.retractStaleClearBreadcrumb(next, { ...pair, task: `approved fix ${stamp.fixId}` });
+      // The note explains the clear; with the clear gone it only misleads
+      // (fix-cross-outlet-attributions.js drops it the same way).
+      if (pair.breadcrumb === 'crossOutletVerified') delete next.crossOutletVerifiedNote;
+    }
+    sideEffectKeys = [...new Set([...sideEffectKeys, ...unexpectedChanges(beforeRetract, next, field)])].sort();
+  }
   if (field === 'url' && newValue) {
     // Same markers as review-normalization maybeUpgradeUrl: the collector
     // refetches a url-corrected review past its wrong-content cooldown.

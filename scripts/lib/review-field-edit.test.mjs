@@ -283,6 +283,60 @@ test('wrongShow flag with no clear markers has no side effects', () => {
   assert.deepEqual(res.sideEffectKeys, []);
 });
 
+// BRO-5280: the-peewee-herman-show-2010 canadian-press--mark-kennedy got an
+// approved wrongAttribution over crossOutletVerified + wrongArticleManualClear,
+// and the leftover clears failed audit-self-contradictory-clears on main.
+test('wrongAttribution flag retracts its paired clear breadcrumbs and survives the write guard', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const { detectAllSelfContradictoryClears } = require('./flag-contradiction.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-wa-')), 'the-peewee-herman-show-2010');
+  fs.mkdirSync(dir, { recursive: true });
+  const p = path.join(dir, 'canadian-press--mark-kennedy.json');
+  const rec = {
+    showId: 'the-peewee-herman-show-2010', outletId: 'canadian-press', criticName: 'Mark Kennedy',
+    url: 'https://www.google.com/hostednews/canadianpress/article/example', contentTier: 'excerpt',
+    crossOutletVerified: true, crossOutletVerifiedNote: 'AP wire syndicated under the original byline',
+    wrongArticleManualClear: true,
+  };
+  fs.writeFileSync(p, JSON.stringify(rec, null, 2));
+  const res = applyReviewFieldEdit(rec, { field: 'wrongAttribution', oldValue: null, newValue: true }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.crossOutletVerified, undefined);
+  assert.equal(res.record.wrongArticleManualClear, undefined);
+  assert.ok(res.sideEffectKeys.includes('crossOutletVerified') && res.sideEffectKeys.includes('wrongArticleManualClear'));
+  assert.match(res.record.clearBreadcrumbRetracted, /approved fix bro-4202/);
+  safeWriteReview(p, res.record, {});
+  const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(after.wrongAttribution, true);
+  assert.equal(after.crossOutletVerified, undefined, 'breadcrumb not restored by the guard');
+  assert.equal(after.crossOutletVerifiedNote, undefined, 'stale explanation of the clear is dropped too');
+  assert.deepEqual(detectAllSelfContradictoryClears(after), []);
+  assert.deepEqual(unexpectedChanges(rec, after, 'wrongAttribution', res.sideEffectKeys), []);
+});
+
+test('wrongAttribution flag refuses over a human wrong-article clear or one that also masks wrongFullText', () => {
+  const act = { field: 'wrongAttribution', oldValue: null, newValue: true };
+  const human = applyReviewFieldEdit({ url: 'u', wrongArticleManualClear: true, humanReviewedWrongArticle: false, nonReviewManualClear: true }, act, stamp);
+  assert.equal(human.ok, false);
+  assert.match(human.reason, /human wrong-article clear/);
+  const ft = applyReviewFieldEdit({ url: 'u', wrongArticleManualClear: true, wrongFullText: true }, act, stamp);
+  assert.equal(ft.ok, false);
+  assert.match(ft.reason, /wrongFullText/);
+});
+
+test('setting a flag false or a non-paired flag leaves clear breadcrumbs alone', () => {
+  const rec = { url: 'u', wrongAttribution: true, crossOutletVerified: true };
+  const off = applyReviewFieldEdit(rec, { field: 'wrongAttribution', oldValue: true, newValue: false }, stamp);
+  assert.equal(off.record.crossOutletVerified, true);
+  assert.deepEqual(off.sideEffectKeys, []);
+  const other = applyReviewFieldEdit({ url: 'u', crossOutletVerified: true }, { field: 'isNonReview', oldValue: null, newValue: true }, stamp);
+  assert.equal(other.record.crossOutletVerified, true);
+});
+
 test('hasApprovedFlag: only an approved true for that field counts', () => {
   const { hasApprovedFlag } = require('./review-field-edit.js');
   assert.equal(hasApprovedFlag({ approvedFixes: [{ field: 'wrongShow', newValue: true }] }, 'wrongShow'), true);
