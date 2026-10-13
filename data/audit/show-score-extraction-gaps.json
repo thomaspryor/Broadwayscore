@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-13T11:07:38.502Z",
+    "generatedAt": "2026-10-13T16:55:45.088Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 378,
+  "totalGaps": 376,
   "errorSeverity": 266,
-  "warningSeverity": 112,
+  "warningSeverity": 110,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1081,15 +1081,6 @@
     {
       "showId": "hamilton-west-end-2021",
       "category": "west-end",
-      "expected": 9,
-      "extracted": 8,
-      "gap": 1,
-      "ratio": 0.89,
-      "severity": "warning"
-    },
-    {
-      "showId": "hamlet-2026",
-      "category": "off-broadway",
       "expected": 9,
       "extracted": 8,
       "gap": 1,
@@ -2974,15 +2965,6 @@
       "expected": 13,
       "extracted": 8,
       "gap": 5,
-      "ratio": 0.62,
-      "severity": "warning"
-    },
-    {
-      "showId": "the-play-that-goes-wrong-2019",
-      "category": "off-broadway",
-      "expected": 77,
-      "extracted": 48,
-      "gap": 29,
       "ratio": 0.62,
       "severity": "warning"
     },
