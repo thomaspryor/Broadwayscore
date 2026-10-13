@@ -29,11 +29,17 @@ const CHUNK = 60000;
 // writing its results there would bypass the sealing, so the child never sees them.
 const STRIPPED_ENV = ['GITHUB_STEP_SUMMARY', 'GITHUB_OUTPUT', 'GITHUB_ENV', 'GITHUB_PATH', 'GITHUB_STATE'];
 
+const BLOCKING_STDIO = path.join(__dirname, 'lib', 'blocking-stdio.js');
+
 function childEnv(env) {
   const out = { ...env };
   for (const k of Object.keys(out)) {
     if (STRIPPED_ENV.includes(k) || k.startsWith('RS_')) delete out[k];
   }
+  // BRO-4317: blocking stdout/stderr in the child, so process.exit() right after a
+  // large print cannot drop the buffered tail (see lib/blocking-stdio.js).
+  const preload = `--require ${JSON.stringify(BLOCKING_STDIO)}`;
+  out.NODE_OPTIONS = out.NODE_OPTIONS ? `${out.NODE_OPTIONS} ${preload}` : preload;
   return out;
 }
 

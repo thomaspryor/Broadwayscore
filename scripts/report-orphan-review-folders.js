@@ -109,5 +109,6 @@ function main() {
   return args.includes('--strict') && orphans.length ? 1 : 0;
 }
 
-if (require.main === module) process.exit(main());
+// exitCode, not process.exit(): exit() drops a large --json write still buffered in a pipe (run-script.yml cut it at ~219 KB).
+if (require.main === module) process.exitCode = main();
 module.exports = { main };

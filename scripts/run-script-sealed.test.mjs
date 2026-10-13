@@ -59,7 +59,24 @@ test('parseArgsJson accepts only arrays of strings', () => {
 test('the child never sees files Actions publishes, nor the request inputs', () => {
   const env = childEnv({ GITHUB_STEP_SUMMARY: '/s', GITHUB_OUTPUT: '/o', GITHUB_ENV: '/e', GITHUB_PATH: '/p',
     RS_PUBKEY_B64: 'k', RS_ARGS_JSON: '[]', POSTHOG_PERSONAL_API_KEY: 'x', PATH: '/bin' });
-  assert.deepEqual(Object.keys(env).sort(), ['PATH', 'POSTHOG_PERSONAL_API_KEY']);
+  assert.deepEqual(Object.keys(env).sort(), ['NODE_OPTIONS', 'PATH', 'POSTHOG_PERSONAL_API_KEY']);
+});
+
+test('a child that prints 2 MB and calls process.exit() delivers all of it (BRO-4317)', async () => {
+  const { spawn } = await import('node:child_process');
+  const run = (env) => new Promise((resolve) => {
+    const c = spawn(process.execPath, ['-e', 'process.stdout.write("x".repeat(2e6)); process.exit(0)'],
+      { env, stdio: ['ignore', 'pipe', 'pipe'] });
+    let n = 0;
+    c.stdout.on('data', (b) => { n += b.length; });
+    c.on('close', () => resolve(n));
+  });
+  assert.equal(await run(childEnv({ PATH: process.env.PATH })), 2e6);
+});
+
+test('an existing NODE_OPTIONS is kept, with the blocking-stdio preload appended', () => {
+  const env = childEnv({ NODE_OPTIONS: '--max-old-space-size=4096' });
+  assert.match(env.NODE_OPTIONS, /^--max-old-space-size=4096 --require ".*blocking-stdio\.js"$/);
 });
 
 test('chunk splits a long blob into short lines that join back losslessly', () => {
