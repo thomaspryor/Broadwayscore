@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T01:45:07.068Z",
+  "timestamp": "2026-10-13T02:11:48.298Z",
   "stats": {
-    "totalReviews": 56196,
-    "alreadyFlagged": 20970,
-    "dateGuardCatches": 218,
-    "directorMismatch": 1849,
-    "tvFilmSignals": 1623,
-    "londonSignals": 2214,
+    "totalReviews": 56205,
+    "alreadyFlagged": 20979,
+    "dateGuardCatches": 217,
+    "directorMismatch": 1852,
+    "tvFilmSignals": 1624,
+    "londonSignals": 2217,
     "offBroadwaySignals": 507,
     "yearMismatch": 138,
-    "noPublishDate": 5264
+    "noPublishDate": 5261
   },
   "findings": [
     {
@@ -17874,6 +17874,20 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "deadline--nellie-andreeva.json",
+      "score": null,
+      "publishDate": "2026-06-08",
+      "url": "https://deadline.com/2026/06/emmys-heated-rivalry-lord-of-the-flies-rivals-eligibility-1236942841/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "gay-city-news--david-kennerley.json",
       "score": 79,
       "publishDate": "2026-05-27",
@@ -22483,6 +22497,24 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "new-statesman--emily-lawford.json",
+      "publishDate": "2026-03-27",
+      "url": "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "observer--katherine-cowles.json",
       "score": 89,
       "publishDate": "2026-04-02",
@@ -22587,10 +22619,38 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 75,
+      "publishDate": "March 27th, 2026",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout--unknown.json",
       "score": 82,
       "publishDate": "2026-03-27",
       "url": "https://www.westendtheatre.com/346848/news/reviews/reviews-of-john-proctor-is-the-villain-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 85,
+      "publishDate": "March 26th, 2026",
+      "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46154,20 +46214,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -65336,6 +65382,20 @@
       ]
     },
     {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "indiependent--lucy-curtis.json",
+      "score": 86,
+      "publishDate": "2026-03-29",
+      "url": "https://www.indiependent.co.uk/explosive-entertainment-john-proctor-is-the-villain-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
       "score": 64,
@@ -71369,6 +71429,20 @@
       "score": 97,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 86,
+      "publishDate": "December 12, 2025",
+      "url": "https://nypost.com/2025/12/12/entertainment/paddington-the-musical-review-london-has-one-of-the-best-family-shows-in-years/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
