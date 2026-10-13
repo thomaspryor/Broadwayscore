@@ -67,6 +67,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
+const { isPlaceholderByline } = require('./lib/placeholder-byline');
 const { isBylineAttestedInText } = require('./lib/byline-attestation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
@@ -4712,8 +4713,8 @@ showDirs.forEach(showId => {
       {
         const oid = normalizeOutletCanonical(data.outletId || data.outlet);
         const crit = (data.criticName || '').trim().toLowerCase();
-        if (!crit || crit === 'unknown' || crit === 'unnamed' || crit === 'ri-admin') {
-          const parsed = extractBylineFromText(oid, data.fullText);
+        if (!crit || crit === 'unknown' || crit === 'unnamed' || crit === 'ri-admin' || isPlaceholderByline(data.criticName, data.outlet, { defaultCritic: (outletRegistry.outlets[oid] || {}).defaultCritic })) {
+          const parsed = extractBylineFromText(oid, data.fullText, { showTitle: showById[showId] && showById[showId].title });
           if (parsed && parsed.known) {
             data.criticName = parsed.name;
             stats.resolvedBylineFromText = (stats.resolvedBylineFromText || 0) + 1;

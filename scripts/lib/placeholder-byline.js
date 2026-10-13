@@ -31,6 +31,8 @@ const GENERIC_BYLINE_TERMS = new Set([
   'bww news desk', 'admin', 'contributor', 'contributors', 'guest',
   'guest contributor', 'anonymous', 'team', 'review team', 'reviewer',
   'critic', 'theatre desk', 'theater desk', 'correspondent',
+  // london-theatre-reviews house label (BRO-3919)
+  'the anonymous reviewer', 'anonymous reviewer',
 ]);
 
 /** Lowercase, strip parenthetical qualifiers ("(UK)"), collapse punctuation/whitespace. */

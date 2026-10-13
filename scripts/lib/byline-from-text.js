@@ -67,6 +67,8 @@ function extractPlaysInternationalByline(text) {
   return { name: captured, known: false };
 }
 
+const { extractBodyByline } = require("./byline-normalization");
+
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
 };
@@ -74,11 +76,19 @@ const BYLINE_EXTRACTORS = {
 /**
  * @param {string} outletId canonical outlet id
  * @param {string} text review fullText
+ * @param {{showTitle?: string}} [opts]
  * @returns {{name: string, known: boolean} | null}
  */
-function extractBylineFromText(outletId, text) {
+function extractBylineFromText(outletId, text, opts = {}) {
   const extractor = BYLINE_EXTRACTORS[outletId];
-  return extractor ? extractor(text) : null;
+  const hit = extractor ? extractor(text) : null;
+  if (hit) return hit;
+  // BRO-3919: any outlet — a reviewer credit as the text's final line
+  // ("Review: Emma Foxhall Photos Helen Murray", "Reviewer: Vera Liber").
+  // The extractor is strict (end-anchored, person-shaped, not the show
+  // title), so a hit is safe to apply where the stored byline is missing.
+  const tail = extractBodyByline(text, { showTitle: opts.showTitle });
+  return tail ? { name: tail, known: true } : null;
 }
 
 module.exports = {

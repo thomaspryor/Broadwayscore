@@ -232,10 +232,62 @@ function sanitizeCriticName(raw) {
   return cleaned;
 }
 
+// Words that read as a capitalised "name" in page chrome or credits but are
+// never a person (BRO-3919: theatremonkey "Submit Review Close").
+const BODY_BYLINE_STOPWORDS = new Set([
+  'submit', 'review', 'reviews', 'close', 'photo', 'photos', 'photography', 'credit', 'credits',
+  'share', 'tickets', 'ticket', 'here', 'read', 'more', 'the', 'theatre', 'theater', 'staff',
+  'editor', 'editors', 'team', 'admin', 'guest', 'anonymous', 'reviewer', 'contributor', 'click',
+  'book', 'now', 'online', 'london', 'broadway', 'west', 'end',
+]);
+const NAME_TOKEN = String.raw`[A-Z][a-z'’]+(?:-[A-Z][a-z'’]+)?|Mc[A-Z][a-z]+|O['’][A-Z][a-z]+`;
+const NAME_PARTICLE = String.raw`(?:de|da|di|del|van|von|le|la)`;
+const BODY_NAME = String.raw`((?:${NAME_TOKEN})(?:\s+(?:${NAME_PARTICLE}\s+)?(?:${NAME_TOKEN})){1,2})`;
+// The reviewer credit as the LAST thing in the text: "Review: Emma Foxhall
+// Photos Helen Murray" (londontheatrereviews.co.uk), "Reviewed by Jonathan
+// Mandell", "Review by X". Anchored to the end so a "Review: <Show Title>"
+// headline at the top of a page (Vulture) never matches.
+const BODY_BYLINE_RE = new RegExp(
+  // A bare "Review:" must start its own sentence/line: in a related-articles
+  // rail it follows a headline ("'Life and Trust' Review: Faustian Bargains").
+  String.raw`(?:(?:^|[.!?\n]\s*)Review\s*:|(?:^|[\s.!?)])(?:Review(?:ed)?\s+by|Reviewer\s*:))\s*${BODY_NAME}` +
+  String.raw`(?:\s*[|,]?\s*Photo(?:s|graphy)?(?:\s+by)?\s*:?\s*[^\n]{0,80})?\s*$`,
+);
+
+/**
+ * BRO-3919: recover a reviewer credit printed in the review BODY (some outlets
+ * have no byline element). Strict on purpose: the credit must be the text's
+ * final line, the name 2-3 capitalised tokens, not a chrome word, and not the
+ * show's own title. Returns the normalized name or null.
+ *
+ * Callers fill criticName from it ONLY when the stored name is Unknown/empty.
+ * A disagreement with a stored real name is reported, never overwritten (that
+ * is how a sibling outlet's critic got onto london-theatre-reviews rows).
+ *
+ * @param {string} text - review fullText.
+ * @param {{showTitle?: string}} [opts]
+ * @returns {string|null}
+ */
+function extractBodyByline(text, opts = {}) {
+  if (!text || typeof text !== 'string') return null;
+  const tail = text.trimEnd().slice(-300);
+  const m = BODY_BYLINE_RE.exec(tail);
+  if (!m) return null;
+  const name = normalizeBylineCapture(m[1].trim());
+  if (!name) return null;
+  const tokens = name.toLowerCase().split(/\s+/);
+  if (tokens.some((t) => BODY_BYLINE_STOPWORDS.has(t))) return null;
+  const title = String(opts.showTitle || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const flat = name.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (title && (title === flat || title.includes(flat))) return null;
+  return name;
+}
+
 module.exports = {
   normalizeBylineCapture,
   stripBylineSuffixes,
   normalizeCriticName,
   looksLikeUrlCriticName,
   sanitizeCriticName,
+  extractBodyByline,
 };
