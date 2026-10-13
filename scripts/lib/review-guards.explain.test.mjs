@@ -52,12 +52,12 @@ test('isIncludableForRebuild delegates to explainExclusion (no forked rule chain
   // Structural guard: catches a re-fork at the moment it is written, rather than
   // waiting for the two copies to disagree on some future corpus file.
   const src = fs.readFileSync(path.join(ROOT, 'scripts', 'lib', 'review-guards.js'), 'utf8');
-  const m = src.match(/function isIncludableForRebuild\(data, show, filePath\) \{([\s\S]*?)\n\}/);
+  const m = src.match(/function isIncludableForRebuild\(data, show, filePath, opts\) \{([\s\S]*?)\n\}/);
   assert.ok(m, 'isIncludableForRebuild not found with the expected signature');
   const body = m[1].replace(/\/\/.*$/gm, '').trim();
   assert.strictEqual(
     body,
-    "return explainExclusion(data, show, filePath) === null;",
+    "return explainExclusion(data, show, filePath, opts) === null;",
     'isIncludableForRebuild must stay a one-line delegation to explainExclusion — do not reimplement the rule chain'
   );
 });
