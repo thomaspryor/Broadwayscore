@@ -159,7 +159,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -170,7 +170,8 @@
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 139,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-10-13T19:10:21.063Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -15954,7 +15955,7 @@
       "resolveReason": "job-green"
     },
     "test-yml:red:Lint Workflows:688d32b5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no API route dispatches a workflow from GET (BRO-5262)",
       "firstSeen": "2026-10-13T18:39:34.395Z",
@@ -15964,7 +15965,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5286"
+      "linearIdentifier": "BRO-5286",
+      "resolvedAt": "2026-10-13T19:10:20.895Z",
+      "resolveReason": "job-green"
     },
     "cron-health-failed:Weekly Video Reviews": {
       "status": "open",
