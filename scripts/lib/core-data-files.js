@@ -73,8 +73,9 @@ function publicTrackedDataFiles(repoDir) {
  * either side are not reported (setup-local-data.sh already warns on those).
  * @returns {string[]}
  */
-// SYMLINK_FILES too: links are skipped below (the Mac), and in cloud they are copies.
-function findStaleCopies({ dataDir, coreDataDir, files = [...getLocalCopyFiles(), ...getLocalSymlinkFiles()] }) {
+// COPY_FILES only by default: in cloud the SYMLINK_FILES copies are refreshed by
+// cloud-bootstrap-data.sh, which may still be running when session-start.sh calls this.
+function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) {
   const stale = [];
   for (const f of files) {
     const local = path.join(dataDir, f);

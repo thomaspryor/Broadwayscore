@@ -106,8 +106,15 @@ attached_review_texts() {
 # moved past the commit last copied (data/.core-data-sha; also replaces a stub
 # or a copy baked into a snapshot). compact/clear keep the session's copies.
 cloud_core_copies() {
-  [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${BSC_CLOUD_DATA_SYMLINK:-}" != "1" ] || return 0
+  [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] || return 0
   [ -d "$CORE_HOME/.git" ] || return 0
+  if [ "${BSC_CLOUD_DATA_SYMLINK:-}" = "1" ]; then
+    # Kill switch: undo an earlier conversion (setup-local-data.sh relinks when the marker is there).
+    [ -f data/.core-data-sha ] || return 0
+    run_bounded 120 bash "$SCRIPT_DIR/setup-local-data.sh" --link-only 2>&1 \
+      | grep -E 'Linked|WARN|ERROR' | sed 's/^/[setup-local-data] /' || true
+    return 0
+  fi
   local head have linked
   head="$(git -C "$CORE_HOME" rev-parse HEAD 2>/dev/null)"
   have="$(cat data/.core-data-sha 2>/dev/null)"
