@@ -32,6 +32,7 @@ function stubFormspree(pages) {
   let call = 0;
   https.request = (options, cb) => {
     const req = new EventEmitter();
+    req.setTimeout = () => req; // real ClientRequest API; sync-followers arms an idle timeout (BRO-3840)
     req.end = () => {
       const page = pages[call++];
       const res = new EventEmitter();

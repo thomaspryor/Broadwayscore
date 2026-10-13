@@ -86,6 +86,7 @@ function fakeRes(status, body) {
 // Bright Data (POST via https.request) — succeed with plausible article HTML.
 https.request = (url, opts, cb) => {
   const req = new EventEmitter();
+  req.setTimeout = () => req; // real ClientRequest API (BRO-3840)
   req.end = () => cb(fakeRes(200, '<html><body>' + 'x'.repeat(4000) + '</body></html>'));
   req.destroy = () => {};
   return req;
@@ -93,6 +94,7 @@ https.request = (url, opts, cb) => {
 // Scrapingdog account pre-check (https.get) — fail fast, never a real call.
 https.get = () => {
   const req = new EventEmitter();
+  req.setTimeout = () => req; // real ClientRequest API (BRO-3840)
   setImmediate(() => req.emit('error', new Error('stubbed: no network in tests')));
   req.destroy = () => {};
   return req;
