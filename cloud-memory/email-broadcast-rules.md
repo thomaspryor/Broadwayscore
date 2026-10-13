@@ -50,10 +50,9 @@ never appear.
   /broadcasts/{id}` under `--recreate-draft`. There is no `/broadcasts/{id}/send`
   call anywhere in it; both greps matching it are comments.
 
-Renamed in BRO-2440. `src/app/api/approve-broadcast/route.ts` is orphaned: nothing
-mints its signed links, and it passes two undeclared inputs that GitHub rejects
-(HTTP 422), so it never dispatches. Do not "fix" its inputs without retiring or
-hardening it first: it is a public GET with no confirmation step.
+Renamed in BRO-2440. The orphaned `/api/approve-broadcast` GET link (nothing
+minted it; it never dispatched) was deleted in BRO-5256. Do not bring back a
+link that sends a broadcast from GET: scripts/audit-get-route-dispatch.js fails on it.
 
 ## Policy: unsent opening-night drafts (BRO-2935, owner decision 2026-10-11)
 
