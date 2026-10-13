@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-13T19:59:47.345Z",
+  "runDate": "2026-10-13T20:26:25.579Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 25,
@@ -11,21 +11,21 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 5,
+    "processed": 2,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "58.3%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 67,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 13,
+    "scrapingdog": 14,
     "scrapingbee": 10,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 12
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -33,64 +33,60 @@
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 20,
-    "tier1_5Success": 4,
+    "tier1_5Success": 0,
     "tier1_9Attempts": 7,
-    "tier1_9Success": 4,
-    "tier2Attempts": 9,
-    "tier2Success": 1,
+    "tier1_9Success": 1,
+    "tier2Attempts": 6,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
     "tier4Attempts": 10,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 70,
+    "tier4Success": 3,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 20,
-    "browserbaseMinutesUsed": 10.3,
+    "browserbaseMinutesUsed": 12.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 7,
-    "failed": 5,
+    "processed": 2,
+    "failed": 8,
     "shows": [
-      "a-bronx-tale-the-musical-2016",
-      "annie-2012",
-      "anything-goes-2011",
-      "baby-its-you-2011",
-      "lend-me-a-tenor-2010",
-      "once-upon-a-one-more-time-2023",
-      "prince-of-broadway-2017",
-      "something-rotten-2015",
-      "the-lifespan-of-a-fact-2018",
-      "the-parisian-woman-2017",
-      "the-price-2017",
-      "to-kill-a-mockingbird-2018"
+      "book-of-mormon-2011",
+      "cat-on-a-hot-tin-roof-2013",
+      "ifthen-2014",
+      "la-bete-2010",
+      "private-lives-2011",
+      "stick-fly-2011",
+      "the-mountaintop-2011",
+      "the-testament-of-mary-2013",
+      "the-winslow-boy-2013",
+      "wolf-hall-parts-one-and-two-2015"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 87,
-      "failed": 53
+      "processed": 94,
+      "failed": 58
     }
   },
   "processed": [
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "to-kill-a-mockingbird-2018/wsj--terry-teachout.json",
-    "the-lifespan-of-a-fact-2018/wsj--terry-teachout.json",
-    "the-parisian-woman-2017/wsj--terry-teachout.json",
-    "prince-of-broadway-2017/wsj--terry-teachout.json",
-    "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
-    "baby-its-you-2011/wsj--terry-teachout.json"
+    "private-lives-2011/wsj--unknown.json",
+    "the-mountaintop-2011/wsj--terry-teachout.json"
   ],
   "failed": [
-    "the-price-2017/wsj--terry-teachout.json",
-    "something-rotten-2015/wsj--terry-teachout.json",
-    "annie-2012/wsj--terry-teachout.json",
-    "anything-goes-2011/wsj--unknown.json",
-    "lend-me-a-tenor-2010/wsj--terry-teachout.json"
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "wolf-hall-parts-one-and-two-2015/wsj--terry-teachout.json",
+    "ifthen-2014/wsj--terry-teachout.json",
+    "the-winslow-boy-2013/wsj--terry-teachout.json",
+    "the-testament-of-mary-2013/wsj--terry-teachout.json",
+    "cat-on-a-hot-tin-roof-2013/wsj--terry-teachout.json",
+    "stick-fly-2011/wsj--terry-teachout.json",
+    "la-bete-2010/wsj--terry-teachout.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -187,7 +183,9 @@
       "the-parisian-woman-2017/wsj--terry-teachout.json",
       "prince-of-broadway-2017/wsj--terry-teachout.json",
       "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
-      "baby-its-you-2011/wsj--terry-teachout.json"
+      "baby-its-you-2011/wsj--terry-teachout.json",
+      "private-lives-2011/wsj--unknown.json",
+      "the-mountaintop-2011/wsj--terry-teachout.json"
     ],
     "failed": [
       "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -247,7 +245,15 @@
       "something-rotten-2015/wsj--terry-teachout.json",
       "annie-2012/wsj--terry-teachout.json",
       "anything-goes-2011/wsj--unknown.json",
-      "lend-me-a-tenor-2010/wsj--terry-teachout.json"
+      "lend-me-a-tenor-2010/wsj--terry-teachout.json",
+      "book-of-mormon-2011/wsj--terry-teachout.json",
+      "wolf-hall-parts-one-and-two-2015/wsj--terry-teachout.json",
+      "ifthen-2014/wsj--terry-teachout.json",
+      "the-winslow-boy-2013/wsj--terry-teachout.json",
+      "the-testament-of-mary-2013/wsj--terry-teachout.json",
+      "cat-on-a-hot-tin-roof-2013/wsj--terry-teachout.json",
+      "stick-fly-2011/wsj--terry-teachout.json",
+      "la-bete-2010/wsj--terry-teachout.json"
     ]
   },
   "tierDetails": {
@@ -315,7 +321,10 @@
       "my-joy-is-heavy-off-broadway-2025/one-minute-critic--jerry-portwood.json",
       "public-charge-off-broadway-2026/timeout--unknown.json",
       "public-charge-off-broadway-2026/one-minute-critic--jerry-portwood.json",
-      "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "night-side-songs-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "gobstopper-off-broadway-2026/front-row-center--david-walters.json",
+      "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -342,7 +351,8 @@
       "public-charge-off-broadway-2026/theater-life--david-sheward.json",
       "prince-of-broadway-2017/wsj--terry-teachout.json",
       "the-price-2017/wsj--terry-teachout.json",
-      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json"
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "stick-fly-2011/wsj--terry-teachout.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/new-york-sun--unknown.json",
@@ -368,12 +378,14 @@
       "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
       "gotta-dance-off-broadway-2026/playbill--unknown.json",
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-      "baby-its-you-2011/wsj--terry-teachout.json"
+      "baby-its-you-2011/wsj--terry-teachout.json",
+      "private-lives-2011/wsj--unknown.json",
+      "the-mountaintop-2011/wsj--terry-teachout.json"
     ]
   },
   "failuresByOutlet": {
     "The Wall Street Journal": {
-      "count": 2,
+      "count": 5,
       "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
