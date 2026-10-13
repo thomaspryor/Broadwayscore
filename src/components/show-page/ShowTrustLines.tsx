@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { getShowById, getTourStops, getToursOf } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-core';
 import { featureFlags } from '@/config/feature-flags';
-import { hasReachedStage } from '@/lib/market-utils';
+import { hasReachedStage, isUkRegionalShow } from '@/lib/market-utils';
 import { getTourParentLabel, describeTourScores } from '@/lib/tour-display';
 import { isTourScored } from '@/lib/tour-listing';
 import { hasEnoughReviews, applyCoverageFloor } from '@/config/score-buckets';
@@ -94,7 +94,14 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           since the detail page is reachable directly). Explains why a non-Broadway show
           lives on Broadway Scorecard so first-time search arrivals don't bounce.
           When the tryout has a linked Broadway transfer (transferredTo), say so. */}
-      {isRegional && (() => {
+      {isRegional && isUkRegionalShow(show) && (
+        <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
+          <span className="font-semibold">UK regional production</span>
+          <span className="text-gray-400"> — a major house outside London, tracked alongside the West End.</span>
+        </p>
+      )}
+
+      {isRegional && !isUkRegionalShow(show) && (() => {
         // A leg of a multi-venue tour doesn't carry transferredTo itself
         // (only the aggregate does) — fall back to the parent's link so
         // this line stays accurate instead of reading as untransferred.

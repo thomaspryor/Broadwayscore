@@ -71,10 +71,21 @@ export function getMarketMinReviews(category?: string): number {
 // isOffWestEndVenue() already does exactly this with west-end-venues.json.
 import ukRegionalVenues from '../../data/uk-regional-venues.json';
 
-function isUkRegionalVenue(category?: string, venue?: string): boolean {
-  if (category !== 'regional' || !venue) return false;
+type UkRegionalVenueEntry = { match: string; city: string; aliases?: string[] };
+
+// A hand-entered venue ("Sheffield Crucible", "Royal Exchange Manchester") may
+// carry an alias instead of the canonical `match` string; the pipeline accepts
+// both, so the site must too or the show lands on the Pre-Broadway shelf.
+function findUkRegionalVenue(category?: string, venue?: string): UkRegionalVenueEntry | undefined {
+  if (category !== 'regional' || !venue) return undefined;
   const v = venue.toLowerCase();
-  return (ukRegionalVenues as { match: string }[]).some((entry) => v.includes(entry.match));
+  return (ukRegionalVenues as UkRegionalVenueEntry[]).find(
+    (entry) => v.includes(entry.match) || (entry.aliases ?? []).some((alias) => v.includes(alias)),
+  );
+}
+
+function isUkRegionalVenue(category?: string, venue?: string): boolean {
+  return findUkRegionalVenue(category, venue) !== undefined;
 }
 
 /**
@@ -88,9 +99,7 @@ export function isUkRegionalShow(show: { category?: string; venue?: string }): b
 
 /** City for a UK-regional venue (e.g. 'Stratford-upon-Avon' for RSC), from data/uk-regional-venues.json. Undefined for non-UK-regional venues. */
 export function getUkRegionalVenueCity(category?: string, venue?: string): string | undefined {
-  if (category !== 'regional' || !venue) return undefined;
-  const v = venue.toLowerCase();
-  return (ukRegionalVenues as { match: string; city: string }[]).find((entry) => v.includes(entry.match))?.city;
+  return findUkRegionalVenue(category, venue)?.city;
 }
 
 /** Country code for a market category. `venue` disambiguates UK-regional shows. */

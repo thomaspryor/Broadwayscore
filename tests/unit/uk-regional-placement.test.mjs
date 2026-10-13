@@ -75,3 +75,29 @@ test('getDurationSuffix: a UK regional show is not "in tryout"; a US one still i
   assert.equal(getDurationSuffix('west-end'), 'in London');
   assert.equal(getDurationSuffix('tour'), 'on tour');
 });
+
+// ── Show page and related shows (ship-check of BRO-5103) ────────────────────
+import { getRelatedShowsOpen, getRelatedShowsClosed } from '../../src/lib/data-core';
+import { getUkRegionalVenueCity } from '../../src/lib/market-utils';
+
+test('isUkRegionalShow accepts the aliases the pipeline accepts', () => {
+  assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Sheffield Crucible, Sheffield' }), true);
+  assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Royal Exchange Manchester' }), true);
+  assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Lyceum Edinburgh' }), true);
+  assert.equal(getUkRegionalVenueCity('regional', 'Sheffield Crucible'), 'Sheffield');
+  assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Crucible Studio, Anytown, OH' }), false);
+});
+
+test('related shows never mix UK flagship shows with US tryouts', () => {
+  const isUs = (s) => s.category === 'regional' && !isUkRegionalShow(s);
+  for (const s of getUkRegionalShows()) {
+    for (const r of [...getRelatedShowsOpen(s), ...getRelatedShowsClosed(s)]) {
+      assert.equal(isUs(r), false, `${s.id} (UK) recommends US tryout ${r.id}`);
+    }
+  }
+  for (const s of getRegionalShows()) {
+    for (const r of [...getRelatedShowsOpen(s), ...getRelatedShowsClosed(s)]) {
+      assert.equal(isUkRegionalShow(r), false, `${s.id} (US tryout) recommends UK show ${r.id}`);
+    }
+  }
+});

@@ -29,7 +29,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
-import { getCurrencySymbol } from '@/lib/market-utils';
+import { getCurrencySymbol, isUkRegionalShow } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
@@ -274,8 +274,13 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
 
   // null when no browse page exists for this show's format (opera/special) —
   // drop that breadcrumb level rather than link to a mismatched page.
-  const browseSlug = getBrowseSlug(show.category, show.type);
-  const breadcrumbHome = { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL };
+  // UK flagship houses (RSC, Chichester, ...) live under the West End page's
+  // Beyond London shelf (BRO-5103): back/breadcrumb go there, and no Broadway
+  // browse list is a mismatched middle level.
+  const isUkRegional = isUkRegionalShow(show);
+  const homeHref = isWestEnd || isUkRegional ? '/west-end' : isOffBroadway ? '/off-broadway' : '/';
+  const browseSlug = isUkRegional ? null : getBrowseSlug(show.category, show.type);
+  const breadcrumbHome = { name: 'Home', url: `${BASE_URL}${homeHref === '/' ? '' : homeHref}` };
   const breadcrumbSchema = isOpera
     ? generateBreadcrumbSchema([
         { name: 'Home', url: BASE_URL },
@@ -479,7 +484,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
       />
 
       {/* Sticky Score Header */}
-      <StickyScoreHeader title={show.title} score={score} category={show.category} backHref={isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/'} />
+      <StickyScoreHeader title={show.title} score={score} category={show.category} backHref={homeHref} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={isOpera ? [
@@ -487,11 +492,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           { label: 'Opera', href: '/opera' },
           { label: show.title },
         ] : browseSlug ? [
-          { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
+          { label: 'Home', href: homeHref },
           { label: isTour ? 'Tours' : showFormatPlural(show.type), href: `/browse/${browseSlug}` },
           { label: isTour ? `${show.title} (Tour)` : show.title },
         ] : [
-          { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
+          { label: 'Home', href: homeHref },
           { label: show.title },
         ]} />
 

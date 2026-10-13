@@ -1322,10 +1322,10 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
-    const showCity = getCity(show.category);
+    const showCity = getCity(show);
     const curated = entry.relatedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && getCity(s.category) === showCity);
+      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && getCity(s) === showCity);
     return topUpRelated(curated, show, limit);
   }
   return getRelatedShowsAlgorithmic(show, limit);
@@ -1340,10 +1340,14 @@ function topUpRelated(curated: ComputedShow[], show: ComputedShow, limit: number
   return [...curated, ...extra].slice(0, limit);
 }
 
-function getCity(category: string | undefined): string {
-  const cat = category || 'broadway';
+function getCity(show: { category?: string; venue?: string }): string {
+  const cat = show.category || 'broadway';
   if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
   if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+  // UK flagship houses (RSC, Chichester, ...) are filed under the West End side
+  // of the site (Beyond London shelf, BRO-5103), so they relate to London shows
+  // and never to US tryouts.
+  if (isUkRegionalShow(show)) return 'london';
   // 'regional' (non-NYC US tryouts) intentionally returns its own bucket ('regional'),
   // so related-shows only pull other regional shows — never NYC/London productions.
   return cat;
@@ -1355,10 +1359,10 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
-    const showCity = getCity(show.category);
+    const showCity = getCity(show);
     const curated = entry.relatedOpenIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && getCity(s.category) === showCity);
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && getCity(s) === showCity);
     return topUpRelated(curated, show, limit, 'open');
   }
   // Fallback: rank within the open pool (status filter runs BEFORE the top-N cut,
@@ -1372,10 +1376,10 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
-    const showCity = getCity(show.category);
+    const showCity = getCity(show);
     const curated = entry.relatedClosedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && getCity(s.category) === showCity);
+      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && getCity(s) === showCity);
     return topUpRelated(curated, show, limit, 'closed');
   }
   // Fallback: rank within the closed pool. Filtering AFTER a global top-N cut gave
@@ -1449,10 +1453,10 @@ export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, status
     return 2;
   };
 
-  const showCity = getCity(show.category);
+  const showCity = getCity(show);
   const scored = allShows
     .filter(s => {
-      if (isSameShow(s, show) || (s.criticScore?.reviewCount ?? 0) < 5 || getCity(s.category) !== showCity) return false;
+      if (isSameShow(s, show) || (s.criticScore?.reviewCount ?? 0) < 5 || getCity(s) !== showCity) return false;
       const isActive = s.status === 'open' || s.status === 'previews' || s.status === 'upcoming';
       if (statusFilter === 'open' && !isActive) return false;
       if (statusFilter === 'closed') {
