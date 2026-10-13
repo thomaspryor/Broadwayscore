@@ -9,7 +9,14 @@ const { isLondonMarket } = require('./venue-classification');
  * `tour` case, a national-tour show fell through to "Broadway" and every tour
  * review in the queue was judged a wrong-market national-tour review.
  */
-function adjudicationExpectation(category) {
+function adjudicationExpectation(category, venue) {
+  if (category === 'regional') {
+    return {
+      expectedType: 'regional (Broadway-feeder)',
+      contextNote: `The canonical production is the professional regional-theater run at ${venue || 'the named regional venue'}. References to a pre-Broadway tryout describe this very production; an out-of-town dateline is correct. Background mentions of an earlier Broadway run, a later Broadway transfer or a future tour are NOT evidence this review is ABOUT another production. Only mark "wrong-market" when the review's own opinion-bearing content (the critic's actual assessment) evaluates a different production or venue, rather than this regional run.`,
+      wrongTypes: 'a Broadway or West End production, a national tour, a staging at a different regional venue, a prior year/season production, coverage of a later Broadway transfer rather than this regional run, or a film/TV adaptation or streaming special',
+    };
+  }
   if (category === 'tour') {
     return {
       expectedType: 'national tour',

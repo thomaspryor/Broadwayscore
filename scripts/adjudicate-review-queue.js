@@ -228,13 +228,15 @@ async function main() {
 
   console.log(`Found ${queue.reviews.length} flagged review(s) in queue.\n`);
 
-  // Load shows for title + category lookup
+  // Load shows for title, category and canonical venue lookup
   const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8'));
   const showTitleMap = {};
   const showCategoryMap = {};
+  const showVenueMap = {};
   for (const show of showsData.shows) {
     showTitleMap[show.id] = show.title;
     showCategoryMap[show.id] = show.category || 'broadway';
+    showVenueMap[show.id] = show.venue;
   }
 
   // Process each flagged review
@@ -285,11 +287,16 @@ async function main() {
     }
 
     // Contamination flags need a different adjudication approach:
-    // For tour/film/TV flags, we need to determine if this is a Broadway review or not,
+    // For tour/film/TV flags, determine if the review matches the show's production,
     // not score it. Use Claude to make a binary decision.
     if (review.reason === 'possible-tour-fulltext' || review.reason === 'possible-film-tv-fulltext') {
+      const showCategory = showCategoryMap[review.showId] || 'broadway';
+      const { expectedType, wrongTypes, contextNote } = adjudicationExpectation(showCategory, showVenueMap[review.showId]);
       if (DRY_RUN) {
         console.log(`  [DRY RUN] Would adjudicate contamination flag: ${review.reason}`);
+        console.log(`  Expected production: ${expectedType}`);
+        console.log(`  Wrong productions: ${wrongTypes}`);
+        console.log(`  Context: ${contextNote}`);
         results.skipped++;
         continue;
       }
@@ -302,8 +309,6 @@ async function main() {
       }
 
       try {
-        const showCategory = showCategoryMap[review.showId] || 'broadway';
-        const { expectedType, wrongTypes, contextNote } = adjudicationExpectation(showCategory);
         const contaminationPrompt = `You are a theater review classifier. Determine if this review is about a **${expectedType}** production or a NON-${expectedType.toUpperCase()} production (${wrongTypes}).
 
 **Show:** ${sourceData.showId}
