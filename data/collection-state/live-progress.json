@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-13T01:29:34.498Z",
-  "processed": 92,
-  "failed": 129,
-  "successRate": "41.6%",
+  "updatedAt": "2026-10-13T01:47:35.416Z",
+  "processed": 93,
+  "failed": 133,
+  "successRate": "41.2%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 10,
     "scrapingbee": 4,
@@ -14,25 +14,8 @@
     "archiveToday": 0,
     "archive": 26
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-10-12T21:42:33.858Z",
-      "event": "bb-session",
-      "session": "0a750b11",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
-    },
-    {
-      "t": "2026-10-12T21:42:46.726Z",
-      "event": "bb-session",
-      "session": "555ca400",
-      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
-    },
-    {
-      "t": "2026-10-12T21:42:47.078Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-10-12T21:43:04.288Z",
       "event": "bb-session",
@@ -87,6 +70,62 @@
       "t": "2026-10-13T01:21:48.875Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:38:58.464Z",
+      "event": "bb-session",
+      "session": "66d82bd1",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T01:40:08.737Z",
+      "event": "bb-session",
+      "session": "351fe909",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-13T01:40:09.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:40:26.061Z",
+      "event": "bb-session",
+      "session": "83f1d913",
+      "url": "https://www.talkinbroadway.com/page/ob/10_09_26.html"
+    },
+    {
+      "t": "2026-10-13T01:40:26.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:43:52.645Z",
+      "event": "bb-session",
+      "session": "5fd55f9c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T01:43:53.004Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:44:09.960Z",
+      "event": "bb-session",
+      "session": "b9bbc262",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T01:44:10.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-13T01:45:06.948Z",
+      "event": "bb-session",
+      "session": "cb85bbda",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ]
 }
