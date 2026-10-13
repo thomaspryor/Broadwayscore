@@ -1,49 +1,22 @@
 {
-  "generatedAt": "2026-10-13T05:21:30.784Z",
+  "generatedAt": "2026-10-13T09:48:31.100Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "e97b4610dcc3754c8f7c66d947f17bdd1b010c52",
-  "state": "RED",
-  "consecutiveFailures": 3,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "aaae0661d9bcfaed3c68d389935ffab0904c1c11",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 10,
+  "greenSince": "2026-10-13T08:14:59Z",
+  "greenForHours": 1.5589166666666667,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-13T04:42:00Z",
-  "redForHours": 0.6585511111111111,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-13T04:16:45Z",
-  "latestFailedRunId": "38349310140",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38349310140",
-  "decidedRuns": 98,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit review contamination",
-        "Validate market expansion"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/show-hero-integrity.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 11606 - no image file carries a hash rejected by eye"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "lastSuccessAt": "2026-10-13T09:16:37Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 95,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
