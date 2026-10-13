@@ -219,6 +219,36 @@
     "queuedAt": "2026-10-13T05:25:14.609Z"
   },
   {
+    "conditionKey": "land:land/bro-2969-toplevel-test-glob",
+    "title": "Landing blocked: rebase red on land/bro-2969-toplevel-test-glob",
+    "description": "land.yml did not land land/bro-2969-toplevel-test-glob: the rebase gate went red at f9bedd401c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2969-toplevel-test-glob @ f9bedd401c (origin/land/bro-2969-toplevel-test-glob) → origin/main @ 9f9e921c8f REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9f9e921c8f: Rebasing (1/1) error: could not apply f9bedd401c7... ci(test.yml): one scripts/*.test.mjs push-path glob replaces 177 literals (BRO-2969) hint: Resolve all conflicts manually, mark them as resolved  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348656552",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2969-toplevel-test-glob"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f9bedd401c77832a14c899de41c99e0bc6a7a109"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38348656552"
+      }
+    ],
+    "queuedAt": "2026-10-13T06:03:06.472Z"
+  },
+  {
     "conditionKey": "land:land/bro-2278-tour-leg-guard",
     "title": "Landing blocked: unit-tests-node red on land/bro-2278-tour-leg-guard",
     "description": "land.yml did not land land/bro-2278-tour-leg-guard: the unit-tests-node gate went red at bd476b9407. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348898130",
