@@ -44,6 +44,7 @@ function readJson(p, fallback) {
 // --- Gmail API source (lazy-required so --from-file needs no googleapis dep) ---
 async function fetchGmailReceipts(days) {
   const { google } = require('googleapis'); // eslint-disable-line
+  const { withGmailRetry } = require('./lib/gmail-quota-retry');
   const { GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN } = process.env;
   if (!GMAIL_CLIENT_ID || !GMAIL_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN) {
     throw new Error('Gmail source needs GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / GMAIL_REFRESH_TOKEN (or use --from-file).');
@@ -55,9 +56,9 @@ async function fetchGmailReceipts(days) {
   const out = [];
   let pageToken;
   do {
-    const list = await gmail.users.messages.list({ userId: 'me', q, maxResults: 100, pageToken });
+    const list = await withGmailRetry(() => gmail.users.messages.list({ userId: 'me', q, maxResults: 100, pageToken }));
     for (const { id } of list.data.messages || []) {
-      const msg = await gmail.users.messages.get({ userId: 'me', id, format: 'full' });
+      const msg = await withGmailRetry(() => gmail.users.messages.get({ userId: 'me', id, format: 'full' }));
       out.push(normalizeGmailMessage(msg.data));
     }
     pageToken = list.data.nextPageToken;
