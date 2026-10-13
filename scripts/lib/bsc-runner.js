@@ -54,6 +54,14 @@ function pidLooksLikeClaude(pid) {
   } catch { return false; }
 }
 
+// BRO-2954: the one place the lease-liveness decision lives for read-only
+// callers. A lease with pid:null is a job still in its first seconds of
+// startup (pid not recorded yet), which reads as LIVE, never as dead
+// (BRO-2414). A bare pidLooksLikeClaude(lease.pid) treats null as dead.
+function leaseLooksLive(lease, isAliveFn = pidLooksLikeClaude) {
+  return isLeaseLive(lease, isAliveFn);
+}
+
 /**
  * Acquire the per-task lease. Returns {ok:true} or {ok:false, reason, holder}.
  * A holder whose recorded PID is dead (or not a claude process) is stale and
@@ -495,7 +503,7 @@ async function runJob(opts) {
 
 module.exports = {
   gitSafeJobId,
-  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude,
+  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, leaseLooksLive,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble,
 };

@@ -197,7 +197,7 @@ function main(argv = process.argv.slice(2)) {
   // session that still has a live process would put two writers on one
   // transcript (the exact twin-corruption class the runner exists to kill).
   try {
-    const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
+    const { readLease, leaseLooksLive } = require('./lib/bsc-runner.js');
     const entries = dispatchLedger.readEntries();
     const jobs = [...dispatchLedger.foldJobs(entries).values()];
     const open = jobs.filter(j => !dispatchLedger.TERMINAL_JOB_EVENTS.has(j.event));
@@ -206,7 +206,7 @@ function main(argv = process.argv.slice(2)) {
       console.log(`\nHeadless jobs (${open.length} running):\n`);
       for (const j of open) {
         const lease = readLease(j.taskId);
-        const alive = lease && lease.jobId === j.jobId && pidLooksLikeClaude(lease.pid);
+        const alive = lease && lease.jobId === j.jobId && leaseLooksLive(lease);
         console.log(`  [${alive ? 'RUNNING' : 'UNKNOWN — next bsc-reconcile tick will resolve'}] #${j.taskId} ${j.subject || ''} (${j.jobId})`);
         console.log(`      log: ${j.logFile || '(none)'}`);
         if (alive) console.log(`      pid ${lease.pid} — live; do NOT resume while running`);

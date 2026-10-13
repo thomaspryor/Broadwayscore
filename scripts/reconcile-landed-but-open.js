@@ -49,7 +49,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const linearDispatch = require('./lib/linear-dispatch.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
-const { readLease, pidLooksLikeClaude, REPO } = require('./lib/bsc-runner.js');
+const { readLease, leaseLooksLive, REPO } = require('./lib/bsc-runner.js');
 const { classifyLandedButOpen, lastLedgerEventForTask } = require('./lib/landed-but-open-reconciler.js');
 const { repoDepthArgs } = require('./lib/shallow-fetch-args.js');
 
@@ -225,7 +225,7 @@ function findMergeCommit(identifier, mergeIndex) {
 
 function liveLeaseForTask(taskId) {
   const lease = readLease(taskId);
-  return !!(lease && pidLooksLikeClaude(lease.pid));
+  return leaseLooksLive(lease);
 }
 
 // The correlationId linear-dispatch.js's buildDispatchComment embeds:

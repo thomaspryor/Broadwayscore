@@ -354,8 +354,8 @@ function runFix(argv, { dir, repoRoot, trapped, dispatched }) {
   let leaseAliveOf = () => false;
   let liveTabOf = () => null;
   try {
-    const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
-    leaseAliveOf = (id) => { const l = readLease(id); return !!(l && pidLooksLikeClaude(l.pid)); };
+    const { readLease, leaseLooksLive } = require('./lib/bsc-runner.js');
+    leaseAliveOf = (id) => leaseLooksLive(readLease(id));
   } catch (e) { console.error(`[audit-archived-in-progress] WARN lease guard unavailable (${e.message}) — refusing to run without it`); process.exitCode = 2; return; }
   try {
     const cmuxws = require('./lib/cmux-workspaces.js');

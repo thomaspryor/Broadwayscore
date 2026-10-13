@@ -66,7 +66,7 @@ const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const { setAppFocus, osActivateCmuxApp, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
-const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
+const { readLease, releaseLease, pidLooksLikeClaude, leaseLooksLive, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
 const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 // BRO-4054: red-main signature cards are dispatched by THIS tick (the most
@@ -708,7 +708,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!hasSweptField && String(task.description || '').includes(UNTRACKED_MARKER)) continue;
     if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
-    if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
+    if (leaseLooksLive(lease)) { skipped.push({ id, why: 'live-lease' }); continue; }
     // BRO-2993: cmux couldn't be asked this tick — uncertainty must not
     // authorize action, so treat every remaining candidate as if its tab
     // were live rather than falling through with an unverified empty list.
@@ -1356,7 +1356,7 @@ function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
     // Anything younger than the grace window is presumed starting.
     const leaseAgeMs = lease && lease.acquiredAt ? now - Date.parse(lease.acquiredAt) : Infinity;
     const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
-    const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaudeFn(lease.pid);
+    const alive = lease && lease.jobId === job.jobId && leaseLooksLive(lease, pidLooksLikeClaudeFn);
     if (alive || starting) {
       // Clear a pending suspicion the moment the job is observed alive again
       // (Codex adversarial ship-check catch): without this, a one-off `ps`
@@ -1471,7 +1471,7 @@ async function main() {
       if (budget <= 0) break;
       if (!fs.existsSync(job.cwd)) continue; // worktree already GC'd — unresumable
       const lease = readLease(job.taskId);
-      if (lease && pidLooksLikeClaude(lease.pid)) continue; // something live holds this task
+      if (leaseLooksLive(lease)) continue; // something live holds this task
       budget--;
       // RETRIED before spawn (terminal for the old jobId) — the same
       // ordering rule every two-write path in dispatch-ledger.js follows: a
@@ -1491,7 +1491,7 @@ async function main() {
   for (const dir of leaseDirs) {
     if (openTasks.has(dir)) continue;
     const lease = readLease(dir);
-    if (lease && pidLooksLikeClaude(lease.pid)) continue; // live process, not ours to sweep
+    if (leaseLooksLive(lease)) continue; // live process, not ours to sweep
     // Same startup grace as the orphan loop (Opus ship-check P0): runJob
     // acquires the lease BEFORE provisioning the worktree and appending
     // job-spawned, so a young pid:null lease with no open job is a healthy

@@ -32,7 +32,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./lib/no-dispatch-marker.js');
 const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
-const { readLease, pidLooksLikeClaude } = require('./lib/bsc-runner.js');
+const { readLease, leaseLooksLive } = require('./lib/bsc-runner.js');
 const { findLiveWorkspaceForTask } = require('./lib/dispatch-guards.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
@@ -1078,7 +1078,7 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
   }
   const leaseAliveOf = (taskId) => {
     const lease = readLease(taskId);
-    return !!(lease && pidLooksLikeClaude(lease.pid));
+    return leaseLooksLive(lease);
   };
   const liveWorkspaceOf = (t, wsList, unavailable) => resolveLiveWorkspace(t, wsList, unavailable, cmuxws.isDoneTitle);
 
