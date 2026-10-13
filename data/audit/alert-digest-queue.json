@@ -2127,5 +2127,35 @@
       }
     ],
     "queuedAt": "2026-10-12T23:51:31.707Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4898-outlets",
+    "title": "Landing blocked: rebase red on land/bro-4898-outlets",
+    "description": "land.yml did not land land/bro-4898-outlets: the rebase gate went red at f690bf522e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38329806578",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4898-outlets"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f690bf522eaceab82a424e52aff03a4ccc403e9e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38329806578"
+      }
+    ],
+    "queuedAt": "2026-10-13T00:59:39.666Z"
   }
 ]
