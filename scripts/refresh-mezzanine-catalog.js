@@ -143,6 +143,7 @@ async function main() {
 
   if (stats.added > 0 || stats.updated > 0) {
     const output = { shows: diaryShows, lastUpdated: new Date().toISOString() };
+    require('./lib/cloud-data-copy').assertNotCloudCopy(diaryShowsPath); // BRO-5217
     fs.writeFileSync(diaryShowsPath, JSON.stringify(output, null, 2));
     console.log(`\nWrote ${diaryShowsPath} (${diaryShows.length} total shows)`);
   } else {

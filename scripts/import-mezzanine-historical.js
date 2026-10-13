@@ -333,6 +333,8 @@ async function main() {
   const merged = [...existingDiary.shows, ...diaryShows];
   const output = { shows: merged, lastUpdated: new Date().toISOString() };
 
+  require('./lib/cloud-data-copy').assertNotCloudCopy(diaryShowsPath); // BRO-5217
+
   fs.writeFileSync(diaryShowsPath, JSON.stringify(output, null, 2));
   const sizeMB = (fs.statSync(diaryShowsPath).size / 1024 / 1024).toFixed(1);
   console.log(`\nWrote ${diaryShowsPath} (${merged.length} total shows, ${sizeMB}MB)`);
