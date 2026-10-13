@@ -730,8 +730,8 @@
   },
   {
     "conditionKey": "land:land/bro-2440-fix",
-    "title": "Landing blocked: unit-tests-node red on land/bro-2440-fix",
-    "description": "land.yml did not land land/bro-2440-fix: the unit-tests-node gate went red at 5c0cd1d28c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904",
+    "title": "Landing blocked: rebase red on land/bro-2440-fix",
+    "description": "land.yml did not land land/bro-2440-fix: the rebase gate went red at 5c0cd1d28c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -745,7 +745,7 @@
       },
       {
         "name": "gate",
-        "value": "unit-tests-node"
+        "value": "rebase"
       },
       {
         "name": "tip",
@@ -756,6 +756,6 @@
         "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38365954904"
       }
     ],
-    "queuedAt": "2026-10-13T08:25:09.666Z"
+    "queuedAt": "2026-10-13T08:29:10.642Z"
   }
 ]
