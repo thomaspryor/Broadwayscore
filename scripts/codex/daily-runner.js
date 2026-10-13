@@ -472,10 +472,10 @@ const PICK_TIER = { p0p1: 'p0p1', 'p2-fallback': 'p2', 'p3-fallback': 'p3' };
 /** Why a picked card is no longer the picker's to give out (recent activity, a recent pause), or null. */
 async function pickedCardNowUnfit(id, card, comments, tier) {
   const P = require(path.join(ROOT, 'scripts/lib/cloud-worker-pick.js'));
-  let updatedAt = null;
-  try { updatedAt = (await linear.graphql('query($id: String!) { issue(id: $id) { updatedAt } }', { id })).issue.updatedAt; } catch { return 'updatedAt unreadable'; }
+  let times = null;
+  try { times = (await linear.graphql('query($id: String!) { issue(id: $id) { updatedAt createdAt } }', { id })).issue; } catch { return 'updatedAt unreadable'; }
   const nowMs = Date.now();
-  return P.skipReason({ ...card, updatedAt }, nowMs, { tier: PICK_TIER[tier] || 'p0p1' }) || P.pausedHistorySkipReason(comments, nowMs);
+  return P.skipReason({ ...card, ...times }, nowMs, { tier: PICK_TIER[tier] || 'p0p1' }) || P.pausedHistorySkipReason(comments, nowMs);
 }
 
 async function workCard(pick, stats, inFlight) {
@@ -513,7 +513,7 @@ async function workCard(pick, stats, inFlight) {
   let handedBack = false;
   try {
     // Record the claim in the lock, so a run that dies from here on leaves this card named.
-    if (!refreshLock(CODEX_TIMEOUT_MS)) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
+    if (!refreshLock(MAX_STAMP_GAP_MS)) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
     const branch = `codex/${id.toLowerCase()}`;
     const data = resetWorktree(branch);
     const cmd = verifyCommand(card);
@@ -540,23 +540,24 @@ async function workCard(pick, stats, inFlight) {
     let extra = onMain;
     // One Codex exec, retried (from the same commit) when it failed for a provider reason such as
     // "Selected model is at capacity" (BRO-5287, 2026-10-13 06:55), at most twice, while it fits.
-    const exec = (text) => {
+    // A provider error fails within seconds, so a retry needs only the time left, not a whole exec.
+    const exec = async (text) => {
       const base = git(['rev-parse', 'HEAD']);
       for (let retry = 0; ; retry++) {
         keepLock();
         const cx = runCodex(id, text, `codex${++execs}`);
         const transient = cx.code !== 0 ? R.codexExitTransient(cx.out) : null;
-        if (!transient || retry >= 2 || !execFits()) return cx;
+        if (!transient || retry >= 2 || cardDeadline - Date.now() < 15 * 60_000) return cx;
         log(`${id}: Codex exited ${cx.code} on a provider error (${transient}); retry ${retry + 1} in 4 min`);
         git(['reset', '-q', '--hard', base]);
         git(['clean', '-qfd', '-e', 'node_modules']);
         provideData(WT);
-        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 4 * 60_000);
+        await sleep(4 * 60_000); // async, so a SIGTERM can still hand the card back meanwhile
       }
     };
     const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
     for (;;) {
-      const cx = exec(prompt(extra));
+      const cx = await exec(prompt(extra));
       report = cx.report;
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
       if (cx.code !== 0) { abort = failed(cx); break; }
@@ -568,7 +569,7 @@ async function workCard(pick, stats, inFlight) {
       let landFails = c.hasDiff ? newLandFailures() : null;
       if (landFails && execFits()) {
         log(`${id}: attempt ${attempt} land checks red, back to Codex`);
-        const fx = exec(prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`));
+        const fx = await exec(prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`));
         if (fx.code !== 0) { abort = failed(fx); break; }
         report = `${report}\n\n--- after fixing the land-check failures ---\n${fx.report}`;
         c = commitAttempt(card, attempt);
@@ -747,6 +748,7 @@ function readLock() {
   if (f.code !== 0) return { error: `fetching the lock timed out or failed: ${tail(f.out.trim(), 200)}` };
   const meta = sh('git', ['log', '-1', '--format=%ct%n%s%n%b', 'FETCH_HEAD'], { cwd: ROOT });
   const [ct, subject, ...body] = meta.stdout.split('\n');
+  if (meta.code !== 0 || !Number.isFinite(Number(ct)) || !Number(ct)) return { error: `cannot read the lock commit: ${tail(meta.out.trim(), 200)}` };
   return { sha, subject: subject || '', run: R.lockRun(body.join('\n')), ms: Number(ct) * 1000 };
 }
 const lockHeld = (l) => !!l.sha && l.subject.startsWith('locked') && Date.now() - l.ms < LOCK_STALE_MS;
@@ -763,7 +765,13 @@ function takeLock() {
   // Adopted orphans stay named in our stamps until handled, so dying again does not lose them.
   for (const id of stale) openCards.add(id);
   const sha = lockCommit(lockStamp());
-  if (lockPush(sha, cur.sha).state !== 'pushed') { for (const id of stale) openCards.delete(id); return 'another run took the lock first'; }
+  const took = lockPush(sha, cur.sha);
+  if (took.state !== 'pushed') {
+    for (const id of stale) openCards.delete(id);
+    // Our stamp may have landed unseen: free it again rather than block every runner for 90 min.
+    if (took.state !== 'lost') lockPush(lockCommit('unlocked'), took.tip || sha);
+    return took.state === 'lost' ? 'another run took the lock first' : `could not push the lock (${took.state}); see the log`;
+  }
   lockSha = sha;
   lastStampOkMs = ownLockShas.get(sha);
   orphanCards = stale;
@@ -775,7 +783,10 @@ function takeLock() {
  * Re-stamp between blocking steps; a lost lock stops this card (the finally hands it back).
  * nextBlockMs: the longest the coming step can block without a stamp (Codex's exec timeout).
  */
-function keepLock(nextBlockMs = CODEX_TIMEOUT_MS) {
+// Longest stretch between two stamps: a Codex exec, the login save after it (up to 15 min) and a
+// provider-error retry wait (5 min); unit batches (40 min) and the check (30 min) are shorter.
+const MAX_STAMP_GAP_MS = CODEX_TIMEOUT_MS + 20 * 60_000;
+function keepLock(nextBlockMs = MAX_STAMP_GAP_MS) {
   let held = true;
   try { held = refreshLock(nextBlockMs); } catch { /* transient: the next stamp retries */ }
   if (!held) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
@@ -921,7 +932,7 @@ async function runLocked(startedMs) {
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd });
     if (!stop && stats.aborted) stop = stats.aborted;
     let held = true;
-    try { held = refreshLock(CODEX_TIMEOUT_MS); } catch { /* transient git error: the keep-alive retries */ }
+    try { held = refreshLock(MAX_STAMP_GAP_MS); } catch { /* transient git error: the keep-alive retries */ }
     if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';
     if (stop) { log(`stopping: ${stop}`); break; }
     try {

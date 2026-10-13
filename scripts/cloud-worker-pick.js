@@ -187,7 +187,9 @@ async function main() {
       const tierRank = new Map(rest.map((q) => [q.tier, 0]));
       [...tierRank.keys()].forEach((t, i) => tierRank.set(t, i)); // queue order already goes P0/P1, P2, P3
       rest = rest.filter((q) => !fit.get(q).skip)
-        .sort((a, b) => tierRank.get(a.tier) - tierRank.get(b.tier) || fit.get(b).score - fit.get(a).score);
+        .sort((a, b) => tierRank.get(a.tier) - tierRank.get(b.tier)
+          || Number(isStartNow(b.issue, nowMs)) - Number(isStartNow(a.issue, nowMs)) // owner's START-NOW stays first
+          || fit.get(b).score - fit.get(a).score);
     }
     const picks = [];
     while (picks.length < listN && rest.length) {

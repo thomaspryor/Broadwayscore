@@ -376,7 +376,9 @@ function lockStampTooOld({ lastStampOkMs, nowMs, staleMs, nextBlockMs = 0 }) {
 const CODEX_TRANSIENT_RE = /model is at capacity|\boverloaded\b|rate.?limit|\b(?:429|500|502|503|504)\b|stream (?:disconnected|error)|connection (?:reset|refused|closed)|ETIMEDOUT|ECONNRESET|temporarily unavailable|server_error/i;
 /** The capacity/transient line of a failed Codex exec's full output, or null. */
 function codexExitTransient(output) {
-  const line = String(output || '').split('\n').find((l) => /error/i.test(l) && CODEX_TRANSIENT_RE.test(l));
+  // Codex's own ERROR lines near the end only: tool output (tests, curl) inside a long exec can
+  // mention a 503 and must not make a timeout or crash look like a provider hiccup.
+  const line = String(output || '').split('\n').slice(-40).find((l) => /^\s*(?:ERROR|error):/.test(l) && CODEX_TRANSIENT_RE.test(l));
   return line ? line.trim().slice(0, 200) : null;
 }
 

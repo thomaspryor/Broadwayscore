@@ -375,3 +375,8 @@ test('codexCardFit: Mac-only and too-broad cards are skipped, one-test cards go 
   const vague = r.codexCardFit({ title: 'Some fix', description: 'x'.repeat(4000), verify: 'npx tsc --noEmit' });
   assert.ok(small.score > vague.score);
 });
+
+test('codexExitTransient: only Codex ERROR lines near the end count', () => {
+  assert.equal(r.codexExitTransient('ran tests: Error 503 from fixture\n' + 'x\n'.repeat(50) + 'Codex timed out'), null);
+  assert.equal(r.codexExitTransient('curl said error: 503\nmore'), null, 'not a line Codex itself printed as ERROR:');
+});
