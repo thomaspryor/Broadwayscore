@@ -594,7 +594,7 @@ function laneHeld(rec, guard) {
 const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, applyRouteCapDeferralLimit, isRouteCapCooldownActive } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
@@ -3994,6 +3994,8 @@ function getPaywallCredentials(url) {
 
 function isBlocked(html) {
   if (!html || typeof html !== 'string') return true;
+  // TollBit bot paywall (THR/Variety/Deadline 402 JSON, BRO-5222).
+  if (isTollbitGate(html)) return true;
   // Very short HTML = definitely blocked (error page or empty response)
   if (html.length < 1000) {
     const lower = html.toLowerCase();

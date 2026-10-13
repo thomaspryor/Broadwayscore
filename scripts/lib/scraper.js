@@ -149,7 +149,21 @@ function _isChallengeOrGarbage(content) {
     // 200 by Scrapingdog; without this the chain stops on a 1.4KB page (BRO-4450).
     content.includes('<title>Verifying Device</title>') ||
     content.includes('p.toadmash.net')
-  )) || isRobotBlockPage(content);
+  )) || isRobotBlockPage(content) || isTollbitGate(content);
+}
+
+/**
+ * TollBit paywall-for-bots (BRO-5222). THR, Variety and Deadline answer an
+ * AI-crawler user agent with a 307 to tollbit.<domain>, which returns a 402
+ * JSON body: [{"message":"You are not authorized to access this content
+ * without a valid TollBit Token...","url":"https://tollbit.dev"}]. A tier
+ * that follows the redirect gets a short 200-looking body with no article;
+ * it must count as blocked so the chain moves on.
+ */
+function isTollbitGate(content) {
+  return !!content && content.length < 5000 &&
+    (content.includes('valid TollBit Token') ||
+      (content.includes('tollbit.dev') && /not authorized to access this content/i.test(content)));
 }
 
 /**
@@ -2127,6 +2141,7 @@ module.exports = {
   __setChromiumForTest,
   __resetRunMemoForTest,
   isChallengeOrGarbage: _isChallengeOrGarbage,
+  isTollbitGate,
   cleanup,
   domainMatchesExpected,
   setRegistryDomainAliases,

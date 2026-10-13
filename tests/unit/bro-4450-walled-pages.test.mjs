@@ -30,3 +30,15 @@ test('thetimes interstitial is a challenge page', () => {
 test('real article page is not a challenge page', () => {
   assert.equal(isChallengeOrGarbage('<html><title>Review</title>' + 'x'.repeat(20000) + '</html>'), false);
 });
+
+// BRO-5222: the body tollbit.hollywoodreporter.com returns (402) after the
+// 307 an AI-crawler user agent gets. Must advance the chain, not be stored.
+test('TollBit 402 bot paywall is a challenge page', () => {
+  const body = '[{"message":"You are not authorized to access this content without a valid TollBit Token. Please follow this URL to find out more.","url":"https://tollbit.dev"}]';
+  assert.equal(isChallengeOrGarbage(body), true);
+});
+
+test('an article that mentions TollBit is not a challenge page', () => {
+  const html = '<html><title>Publishers and AI bots</title><body>' + 'Publishers such as Variety now route AI crawlers through TollBit, see tollbit.dev. '.repeat(80) + '</body></html>';
+  assert.equal(isChallengeOrGarbage(html), false);
+});
