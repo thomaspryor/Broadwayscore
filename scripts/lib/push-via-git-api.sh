@@ -216,7 +216,6 @@ fi
 # under this file's `set -euo pipefail` would abort the whole retry loop
 # mid-flight instead of just skipping a backoff.
 escalating_backoff_sec() {
-  # set-u-safe: count is an integer from this file's own retry loop, never CLI input
   local count="$1" backoff
   backoff=$((PUSH_API_TIMEOUT_BACKOFF_BASE_SEC * count))
   if [ "$backoff" -gt "$PUSH_API_TIMEOUT_BACKOFF_MAX_SEC" ]; then

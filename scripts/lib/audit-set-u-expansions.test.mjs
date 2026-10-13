@@ -44,8 +44,8 @@ test('auditSource: a # set-u-safe: annotation within 3 lines silences a site; a 
   assert.equal(auditSource(`${SETU}a=()\n# set-u-safe:\nfor x in "\${a[@]}"; do :; done\n`).length, 1);
 });
 
-test('auditSource: comments and heredoc bodies are ignored; scripts without set -u are skipped', () => {
-  assert.deepEqual(auditSource(`${SETU}a=()\n# for x in "\${a[@]}"\ncat <<EOF\n\${a[@]}\nEOF\n`), []);
+test('auditSource: comments and quoted-heredoc bodies are ignored; scripts without set -u are skipped', () => {
+  assert.deepEqual(auditSource(`${SETU}a=()\n# for x in "\${a[@]}"\ncat <<'EOF'\n\${a[@]}\nEOF\n`), []);
   assert.deepEqual(auditSource('#!/bin/bash\nset -e\na=()\necho "${a[@]}"\n'), []);
 });
 
@@ -54,6 +54,18 @@ test('auditSource: positional-fed variable in arithmetic is flagged unless valid
   assert.deepEqual(auditSource(bad).map((x) => [x.kind, x.name]), [['arithmetic', 'MAX']]);
   assert.deepEqual(auditSource(`${SETU}MAX=\${1:-7}\n[[ "$MAX" =~ ^[0-9]+$ ]] || exit 2\nN=$((MAX + 1))\n`), []);
   assert.deepEqual(auditSource(`${SETU}MAX=\${1:-7}\nif [[ ! "$MAX" =~ ^[0-9]+$ ]]; then exit 2; fi\nN=$((MAX + 1))\n`), []);
+});
+
+test('review fixes: unquoted heredoc bodies expand, quoted ones and \$ escapes do not', () => {
+  assert.equal(auditSource(`${SETU}a=()\ncat <<EOF\n\${a[@]}\nEOF\n`).length, 1, '<<EOF expands ${a[@]}');
+  assert.deepEqual(auditSource(`${SETU}a=()\ncat <<'EOF'\n\${a[@]}\nEOF\n`), []);
+  assert.deepEqual(auditSource(`${SETU}a=()\ncat <<EOF\n\\\${a[@]}\nEOF\n`), [], 'escaped dollar is literal');
+});
+
+test('review fixes: multi-line literal arrays are non-empty; local "$1" is not CLI input; -o errexit -o nounset is set -u', () => {
+  assert.deepEqual(auditSource(`${SETU}W=(\n  a\n  b\n)\nfor w in "\${W[@]}"; do :; done\n`), []);
+  assert.deepEqual(auditSource(`${SETU}f() {\n  local n="$1"\n  echo $((n * 2))\n}\n`), []);
+  assert.equal(usesSetU('set -o errexit -o nounset\n'), true);
 });
 
 test('the live repo is clean: every set -u site is guarded or annotated (regression lock)', () => {
