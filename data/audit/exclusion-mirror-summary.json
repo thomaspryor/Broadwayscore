@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-13T05:24:10.940Z",
+  "generatedAt": "2026-10-13T05:32:40.884Z",
   "totalScanned": 56379,
   "totalExcluded": 26911,
   "ruleCounts": {
-    "wrongProduction": 18049,
+    "wrongProduction": 18048,
     "wrongShow": 1832,
     "duplicateOf": 1762,
     "unverifiableWebSearchRow": 983,
@@ -28,8 +28,8 @@
     "namedNonReviewUrl": 34,
     "cancelledBeforeOpening": 30,
     "wrongContentFlagsUncleared": 17,
+    "urlYearReroute": 15,
     "fabricatedEntry": 14,
-    "urlYearReroute": 14,
     "tourContaminationInText": 10,
     "fullTextWrongAuthorNoExcerpt": 7,
     "lateDateMismatch": 7,
@@ -41,11 +41,10 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 2,
-    "duplicateOf": -1,
-    "urlYearReroute": -1
+    "wrongProduction": -1,
+    "urlYearReroute": 1
   },
-  "previousGeneratedAt": "2026-10-13T05:15:25.446Z",
+  "previousGeneratedAt": "2026-10-13T05:24:10.940Z",
   "mirror": {
     "comparedShows": 2504,
     "comparedFiles": 55842,
