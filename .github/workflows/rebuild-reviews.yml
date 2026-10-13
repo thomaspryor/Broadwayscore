@@ -104,7 +104,9 @@ jobs:
             COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
             echo "count=$COUNT" >> $GITHUB_OUTPUT
           else
-            echo "count=0" >> $GITHUB_OUTPUT
+            # No reviews.json to count: leave the count empty (unmeasured) so the
+            # commit message does not report a false "+N reviews" from 0.
+            echo "count=" >> $GITHUB_OUTPUT
           fi
 
       # NOTE: Pull-quote extraction (`scripts/extract-pull-quotes.js`) was previously HERE
@@ -779,9 +781,17 @@ jobs:
           # Reset any unstaged tracked files (e.g. core data overwritten by checkout-core-data)
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
 
-          BEFORE=${{ steps.before.outputs.count }}
-          AFTER=${{ steps.after.outputs.count }}
-          DIFF=$((AFTER - BEFORE))
+          BEFORE="${{ steps.before.outputs.count }}"
+          AFTER="${{ steps.after.outputs.count }}"
+          # The after-count step is skipped when the staleness guard withholds
+          # publishing; an empty count is unmeasured, not 0 (288ec4cb7).
+          DIFF=0
+          COUNTS="Reviews: $BEFORE → $AFTER"
+          if [[ "$BEFORE" =~ ^[0-9]+$ ]] && [[ "$AFTER" =~ ^[0-9]+$ ]]; then
+            DIFF=$((AFTER - BEFORE))
+          else
+            COUNTS="Reviews: count not measured (before=${BEFORE:-unset}, after=${AFTER:-unset})"
+          fi
 
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             REASON="${{ inputs.reason }}"
@@ -800,7 +810,7 @@ jobs:
 
           git commit -m "$MSG
 
-          Reviews: $BEFORE → $AFTER
+          $COUNTS
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 

@@ -92,7 +92,7 @@ export REBUILD_FAST_STAGE_ONLY_PATHS_FILE="$STAGE_ONLY"
 
 # The redo rebuilt reviews.json, so recount rather than reuse the first pass's.
 if [ -f data/reviews.json ]; then
-  REVIEWS_AFTER="$(node -e "console.log(require('./data/reviews.json').reviews.length)" 2>/dev/null || echo "${REVIEWS_AFTER:-0}")"
+  REVIEWS_AFTER="$(node -e "console.log(require('./data/reviews.json').reviews.length)" 2>/dev/null || echo "${REVIEWS_AFTER:-}")"
 fi
 export REVIEWS_AFTER
 

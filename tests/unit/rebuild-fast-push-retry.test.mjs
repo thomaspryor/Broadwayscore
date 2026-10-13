@@ -435,3 +435,44 @@ describe('staging lists stay in lockstep', () => {
     assert.deepEqual(addLines(script), wf);
   });
 });
+
+describe('commit message review counts', () => {
+  const commitWith = (env) => {
+    const fx = setupFixture();
+    try {
+      sh(`bash "${fx.regen}"`, fx.runner);
+      const r = spawnSync('bash', [path.join(REPO, 'scripts/rebuild-fast-stage-commit.sh')], {
+        cwd: fx.runner, env: { ...process.env, ...GIT_ENV, REBUILD_REASON: 'test', ...env }, encoding: 'utf8',
+      });
+      assert.equal(r.status, 0, r.stdout + r.stderr);
+      return sh('git log -1 --format=%B', fx.runner);
+    } finally {
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  };
+
+  test('measured counts report the delta', () => {
+    const msg = commitWith({ REVIEWS_BEFORE: '10', REVIEWS_AFTER: '13' });
+    assert.match(msg, /^data: Fast rebuild - test \(\+3 reviews\)/);
+    assert.match(msg, /Reviews: 10 → 13/);
+  });
+
+  test('an unmeasured after-count is not reported as a drop to 0 (288ec4cb7)', () => {
+    const msg = commitWith({ REVIEWS_BEFORE: '28702', REVIEWS_AFTER: '' });
+    assert.match(msg, /^data: Fast rebuild - test\n/);
+    assert.doesNotMatch(msg, /→ 0|-28702/);
+    assert.match(msg, /count not measured \(before=28702, after=unset\)/);
+  });
+
+  test('a drop is reported with its negative delta', () => {
+    const msg = commitWith({ REVIEWS_BEFORE: '20', REVIEWS_AFTER: '15' });
+    assert.match(msg, /^data: Fast rebuild - test \(-5 reviews\)/);
+    assert.match(msg, /Reviews: 20 → 15/);
+  });
+
+  test('an unmeasured before-count is not reported as a gain from 0', () => {
+    const msg = commitWith({ REVIEWS_BEFORE: '', REVIEWS_AFTER: '28702' });
+    assert.doesNotMatch(msg, /\+28702/);
+    assert.match(msg, /count not measured \(before=unset, after=28702\)/);
+  });
+});

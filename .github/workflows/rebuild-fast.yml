@@ -137,7 +137,9 @@ jobs:
             COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
             echo "count=$COUNT" >> $GITHUB_OUTPUT
           else
-            echo "count=0" >> $GITHUB_OUTPUT
+            # No reviews.json to count: leave the count empty (unmeasured) so the
+            # commit message does not report a false "+N reviews" from 0.
+            echo "count=" >> $GITHUB_OUTPUT
           fi
 
       - name: Rebuild reviews.json

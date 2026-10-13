@@ -534,8 +534,12 @@ jobs:
 
           BEFORE=${{ steps.before.outputs.count }}
           AFTER=${{ steps.after.outputs.count }}
-          DIFF=$((AFTER - BEFORE))
-          DIFF_STR=$([ $DIFF -ge 0 ] && echo "+$DIFF" || echo "$DIFF")
+          if [[ "$BEFORE" =~ ^[0-9]+$ ]] && [[ "$AFTER" =~ ^[0-9]+$ ]]; then
+            DIFF=$((AFTER - BEFORE))
+            DIFF_STR=$([ $DIFF -ge 0 ] && echo "+$DIFF" || echo "$DIFF")
+          else
+            DIFF_STR="?"  # an empty count is unmeasured, not 0 (288ec4cb7)
+          fi
           RETRY_TAG=$([ "${{ inputs.is_retry }}" = "true" ] && echo " (retry)" || echo "")
 
           git commit -m "data: Opening Night Express$RETRY_TAG — ${{ steps.show_meta.outputs.show_name }} ($DIFF_STR reviews)

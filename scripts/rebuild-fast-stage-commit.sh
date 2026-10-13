@@ -67,23 +67,29 @@ if git diff --cached --quiet; then
   exit 3
 fi
 
-BEFORE="${REVIEWS_BEFORE:-0}"
-AFTER="${REVIEWS_AFTER:-0}"
-[[ "$BEFORE" =~ ^[0-9]+$ ]] || BEFORE=0
-[[ "$AFTER" =~ ^[0-9]+$ ]] || AFTER=0
-DIFF=$((AFTER - BEFORE))
-
+# A count the workflow never measured (the "after" step is skipped when the
+# staleness guard withholds publishing) is reported as unmeasured. Defaulting
+# it to 0 wrote "Reviews: 28702 → 0 (-28702 reviews)" on a run that changed
+# no reviews at all (288ec4cb7, 2026-10-13).
+BEFORE="${REVIEWS_BEFORE:-}"
+AFTER="${REVIEWS_AFTER:-}"
 REASON="${REBUILD_REASON:-Scheduled safety-net refresh}"
 MSG="data: Fast rebuild - $REASON"
-if [ "$DIFF" -gt 0 ]; then
-  MSG="$MSG (+$DIFF reviews)"
-elif [ "$DIFF" -lt 0 ]; then
-  MSG="$MSG ($DIFF reviews)"
+if [[ "$BEFORE" =~ ^[0-9]+$ ]] && [[ "$AFTER" =~ ^[0-9]+$ ]]; then
+  DIFF=$((AFTER - BEFORE))
+  if [ "$DIFF" -gt 0 ]; then
+    MSG="$MSG (+$DIFF reviews)"
+  elif [ "$DIFF" -lt 0 ]; then
+    MSG="$MSG ($DIFF reviews)"
+  fi
+  COUNTS="Reviews: $BEFORE → $AFTER"
+else
+  COUNTS="Reviews: count not measured (before=${BEFORE:-unset}, after=${AFTER:-unset})"
 fi
 
 git commit -q -m "$MSG
 
-Reviews: $BEFORE → $AFTER
+$COUNTS
 
 Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 echo "rebuild-fast-stage-commit: committed $(git rev-parse --short HEAD): $MSG"
