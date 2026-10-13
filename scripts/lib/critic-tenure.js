@@ -94,4 +94,33 @@ function findTenureFlags(critics, opts = {}) {
   return flags.sort((a, b) => (a.criticSlug + a.showId).localeCompare(b.criticSlug + b.showId));
 }
 
-module.exports = { isVerifiedRow, reviewYear, findTenureFlags, MIN_PAIR_VERIFIED, MIN_CRITIC_VERIFIED, TENURE_SLACK_YEARS, MIN_ELSEWHERE_VERIFIED };
+/** Key for one flagged row: `<showId>/<file>`. */
+function tenureFlagKey(flag) {
+  return `${flag.showId}/${flag.file}`;
+}
+
+/**
+ * Split flags against a reviewed-exceptions list (rows checked by hand and
+ * found correct). An entry counts only with an http(s) evidence link; entries
+ * that no longer match a flag are returned as stale so the list cannot rot.
+ *
+ * @param {Array} flags - findTenureFlags() output
+ * @param {Array<{key: string, evidence: string}>} reviewed
+ * @returns {{unresolved: Array, reviewed: Array, stale: Array, invalid: Array}}
+ */
+function applyReviewedTenureFlags(flags, reviewed = []) {
+  const valid = new Map();
+  const invalid = [];
+  for (const e of reviewed) {
+    if (e && typeof e.key === 'string' && /^https?:\/\//.test(String(e.evidence || ''))) valid.set(e.key, e);
+    else invalid.push(e);
+  }
+  const unresolved = [];
+  const matched = [];
+  for (const f of flags) (valid.has(tenureFlagKey(f)) ? matched : unresolved).push(f);
+  const flagKeys = new Set(flags.map(tenureFlagKey));
+  const stale = [...valid.values()].filter(e => !flagKeys.has(e.key));
+  return { unresolved, reviewed: matched, stale, invalid };
+}
+
+module.exports = { tenureFlagKey, applyReviewedTenureFlags, isVerifiedRow, reviewYear, findTenureFlags, MIN_PAIR_VERIFIED, MIN_CRITIC_VERIFIED, TENURE_SLACK_YEARS, MIN_ELSEWHERE_VERIFIED };
