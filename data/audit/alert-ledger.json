@@ -164,9 +164,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-13T18:17:31.977Z",
-      "lastSeen": "2026-10-13T18:17:31.977Z",
-      "lastNotifiedAt": "2026-10-13T18:17:31.977Z",
+      "incidentOpenedAt": "2026-10-13T18:20:59.970Z",
+      "lastSeen": "2026-10-13T18:20:59.970Z",
+      "lastNotifiedAt": "2026-10-13T18:20:59.970Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 138,
       "cardId": null,
@@ -15938,7 +15938,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:c9be3b4a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"",
       "firstSeen": "2026-10-13T15:52:29.540Z",
@@ -15949,7 +15949,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "resolvedAt": "2026-10-13T18:20:57.131Z",
+      "resolveReason": "job-green"
     },
     "corpus-drift:orphaned-wrongprod-provenance": {
       "status": "open",
@@ -16034,10 +16035,10 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no API route dispatches a workflow from GET (BRO-5262)",
-      "firstSeen": "2026-10-13T18:17:31.582Z",
-      "incidentOpenedAt": "2026-10-13T18:17:31.582Z",
-      "lastSeen": "2026-10-13T18:17:31.582Z",
-      "lastNotifiedAt": "2026-10-13T18:17:31.582Z",
+      "firstSeen": "2026-10-13T18:20:57.149Z",
+      "incidentOpenedAt": "2026-10-13T18:20:57.149Z",
+      "lastSeen": "2026-10-13T18:20:57.149Z",
+      "lastNotifiedAt": "2026-10-13T18:20:57.149Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
