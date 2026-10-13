@@ -92,11 +92,11 @@ test('cloud bootstrap: converts snapshot links, re-copies on startup when the cl
     git(fx.clone, 'commit', '-qam', 'v2');
     run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_SESSION_EVENT: 'compact' });
     assert.deepEqual(read(shows), { f: 'shows.json', v: 1 }, 'compact must not overwrite the session copy');
-    assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone }), ['shows.json'], 'stale check sees the cloud copy');
+    assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone, files: getLocalSymlinkFiles() }), ['shows.json'], 'stale check sees the cloud copy');
 
     run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_SESSION_EVENT: 'startup' });
     assert.deepEqual(read(shows), { f: 'shows.json', v: 2 });
-    assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone }), []);
+    assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone, files: getLocalSymlinkFiles() }), []);
     assert.deepEqual(execFileSync('git', ['-C', fx.clone, 'status', '--porcelain'], { encoding: 'utf8' }), '', 'clone untouched');
   } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
 });
@@ -119,5 +119,21 @@ test('writers refuse a cloud copy loudly; links, non-cloud and the scratch overr
       if (prev === undefined) delete process.env.CLAUDE_CODE_REMOTE; else process.env.CLAUDE_CODE_REMOTE = prev;
     }
     assert.deepEqual(read(shows), { f: 'shows.json', v: 1 });
+    // Public tracked data/*.json share atomicWriteJson and stay writable (ship-check P1).
+    const playbill = path.join(fx.data, 'playbill-urls.json');
+    fs.writeFileSync(playbill, '{}');
+    assert.equal(cloudCopyWriteRefusal(playbill, cloud), null);
+  } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
+});
+
+test('kill switch after a conversion: copies and marker go, links come back', () => {
+  const fx = fixture();
+  try {
+    run(fx, 'setup-local-data.sh', ['--link-only'], cloud);
+    assert.equal(isLink(path.join(fx.data, 'shows.json')), false);
+    run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_CLOUD_DATA_SYMLINK: '1' });
+    for (const f of SYMLINK_FILES) assert.equal(isLink(path.join(fx.data, f)), true, f);
+    assert.equal(fs.existsSync(path.join(fx.data, '.core-data-sha')), false);
+    assert.deepEqual(fs.readdirSync(fx.data).filter((n) => /pre-symlink-backup/.test(n)), []);
   } finally { fs.rmSync(fx.root, { recursive: true, force: true }); }
 });

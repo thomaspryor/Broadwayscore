@@ -9,10 +9,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getLocalSymlinkFiles } = require('./core-data-files');
 
 /** @returns {string|null} why the write must not happen, or null when it may. */
 function cloudCopyWriteRefusal(targetPath, env = process.env) {
   if (env.CLAUDE_CODE_REMOTE !== 'true' || env.BSC_ALLOW_CLOUD_COPY_WRITE === '1') return null;
+  // Only the core files the clone owns (SYMLINK_FILES); public tracked data/*.json
+  // (playbill-urls.json etc.) share atomicWriteJson and must stay writable.
+  if (!getLocalSymlinkFiles().includes(path.basename(targetPath))) return null;
   let st;
   try { st = fs.lstatSync(targetPath); } catch { return null; }
   if (st.isSymbolicLink()) return null;

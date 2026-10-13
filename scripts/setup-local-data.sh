@@ -187,6 +187,13 @@ CLOUD_COPY=0
 if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${BSC_CLOUD_DATA_SYMLINK:-}" != "1" ]; then
   CLOUD_COPY=1
 fi
+# Kill switch on a converted checkout: the marker says the regular files are
+# disposable cloud copies, so drop them and link instead of keeping them.
+UNDO_CLOUD_COPY=0
+if [ "$CLOUD_COPY" != 1 ] && [ -f "$DATA_DIR/.core-data-sha" ]; then
+  UNDO_CLOUD_COPY=1
+  rm -f "$DATA_DIR/.core-data-sha"
+fi
 
 SYMLINK_COUNT=0
 CLOUD_COPY_COUNT=0
@@ -207,6 +214,9 @@ for f in "${SYMLINK_FILES[@]}"; do
       echo "  WARN: could not copy $f from $CORE_DATA_DIR"
     fi
     continue
+  fi
+  if [ "$UNDO_CLOUD_COPY" = 1 ] && [ -f "$dst" ] && [ ! -L "$dst" ]; then
+    rm -f "$dst"
   fi
   # --link-only never replaces a real file: a checkout that already has data
   # keeps it (ship-check: it rewrote the tracked *.pre-symlink-backup file).
