@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T04:47:58.052Z",
+  "timestamp": "2026-10-13T05:15:38.866Z",
   "stats": {
     "totalReviews": 56295,
-    "alreadyFlagged": 21000,
-    "dateGuardCatches": 217,
+    "alreadyFlagged": 20999,
+    "dateGuardCatches": 218,
     "directorMismatch": 1859,
     "tvFilmSignals": 1629,
     "londonSignals": 2232,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5265
+    "noPublishDate": 5264
   },
   "findings": [
     {
@@ -22644,7 +22644,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "theupcoming--unknown.json",
-      "score": null,
+      "score": 95,
       "publishDate": "2026-04-23",
       "url": "https://www.theupcoming.co.uk/2026/04/23/john-proctor-is-the-villain-at-wyndhams-theatre-theatre-review/",
       "findings": [
@@ -46369,6 +46369,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
