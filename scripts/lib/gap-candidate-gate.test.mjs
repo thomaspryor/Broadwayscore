@@ -152,3 +152,44 @@ test('an undated roundup is dated by its URL (BWW YYYYMMDD) when the page gives 
   const hope = { id: 'the-hope-theory-off-broadway-2026', title: 'The Hope Theory', openingDate: '2026-09-28', previewsStartDate: '2026-09-10' };
   assert.strictEqual(articleRunIdentity('<html></html>', hope, cur).priorRun, false);
 });
+
+test('a stored review dated well before this run marks its gap URL prior-run (BRO-4190 Met Macbeth 2008)', () => {
+  const { isPublishDateBeforeRun } = require('./gap-ingest-policy.js');
+  const macbeth = { openingDate: '2026-09-22', previewsStartDate: null };
+  assert.strictEqual(isPublishDateBeforeRun('2008-05-09', macbeth), true);
+  // first-night and pre-opening press inside the grace stay current
+  assert.strictEqual(isPublishDateBeforeRun('2026-09-20', macbeth), false);
+  assert.strictEqual(isPublishDateBeforeRun('2026-07-01', macbeth), false);
+  // a transfer keeps its declared earlier run's reviews
+  const transfer = { previewsStartDate: '2026-10-16', priorRuns: [{ openingDate: '2025-03-01', closingDate: '2025-04-30' }] };
+  assert.strictEqual(isPublishDateBeforeRun('2025-03-05', transfer), false);
+  assert.strictEqual(isPublishDateBeforeRun('2019-03-05', transfer), true);
+  // no dates: no verdict
+  assert.strictEqual(isPublishDateBeforeRun('2008-05-09', {}), false);
+  assert.strictEqual(isPublishDateBeforeRun(null, macbeth), false);
+});
+
+test('a press-night cluster of early-dated stored reviews stays a gap (Grease immersive 2025 vs a 2026 record)', () => {
+  const { pendingPriorRunUrls } = require('./gap-ingest-policy.js');
+  const show = { previewsStartDate: '2026-07-22' };
+  const cluster = [
+    { url: 'https://www.theguardian.com/stage/2025/aug/06/grease-review', publishDate: '2025-08-06' },
+    { url: 'https://www.thestage.co.uk/reviews/grease-review', publishDate: '2025-08-06' },
+    { url: 'https://www.standard.co.uk/culture/theatre/grease-b1', publishDate: '2025-08-05' },
+    { url: 'https://www.classicalsource.com/old-one/', publishDate: '2008-05-09' },
+  ];
+  assert.deepStrictEqual([...pendingPriorRunUrls(cluster, show).keys()], ['https://www.classicalsource.com/old-one/']);
+  // two old reviews of one earlier run are still prior-run
+  const two = cluster.slice(0, 2);
+  assert.strictEqual(pendingPriorRunUrls(two, show).size, 2);
+});
+
+test('a roundup citing its own verdict with no link is not a missing review (BRO-4790 WET Last Ship)', () => {
+  const { isRoundupSelfCitation } = require('./gap-ingest-policy.js');
+  assert.strictEqual(isRoundupSelfCitation({ outletId: 'westendtheatre', outletName: 'WestendTheatre.com', source: 'westendtheatre' }), true);
+  assert.strictEqual(isRoundupSelfCitation({ outletId: 'london-box-office', source: 'lbo-roundup' }), true);
+  // another outlet cited by the same roundup is still a gap
+  assert.strictEqual(isRoundupSelfCitation({ outletId: 'telegraph', source: 'lbo-roundup' }), false);
+  assert.strictEqual(isRoundupSelfCitation({ outletId: 'financialtimes', source: 'westendtheatre' }), false);
+  assert.strictEqual(isRoundupSelfCitation({ outletId: 'westendtheatre' }), false);
+});
