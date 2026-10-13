@@ -51,7 +51,7 @@ test('directory check: hidden only when sparse AND tracked', () => {
     assert.equal(isShowDirHiddenBySparseCheckout(sparse, 'brand-new-show-2026'), false, 'genuinely new show');
     assert.equal(isShowDirHiddenBySparseCheckout(full, 'brand-new-show-2026'), false, 'non-sparse clone');
     assert.equal(isShowDirHiddenBySparseCheckout(base, 'anything'), false, 'not a git repo: fail open');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('safeWriteReview refuses to "create" a tracked file hidden by sparse checkout, even with force', () => {
@@ -68,7 +68,7 @@ test('safeWriteReview refuses to "create" a tracked file hidden by sparse checko
     // A genuinely new file in the same sparse clone still writes.
     const fresh = path.join(sparse, 'visible-show-2026', 'new--critic.json');
     assert.equal(isPathHiddenBySparseCheckout(fresh), false);
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('rename into a hidden show whose folder does not exist on disk is refused and keeps the source', () => {
@@ -83,7 +83,7 @@ test('rename into a hidden show whose folder does not exist on disk is refused a
     assert.equal(r.wrote, false);
     assert.equal(r.skipped, 'hidden-by-sparse-checkout');
     assert.equal(fs.existsSync(src), true, 'source kept');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('a file deleted by hand INSIDE the sparse set stays writable (not "hidden")', () => {
@@ -95,7 +95,7 @@ test('a file deleted by hand INSIDE the sparse set stays writable (not "hidden")
     const r = safeWriteReview(fp, { showId: 'visible-show-2026', outletId: 'a', criticName: 'B' }, { merge: false });
     assert.notEqual(r.skipped, 'hidden-by-sparse-checkout');
     assert.equal(fs.existsSync(fp), true);
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('safeWriteReview refuses to overwrite a file whose on-disk copy has conflict markers', () => {
@@ -111,7 +111,7 @@ test('safeWriteReview refuses to overwrite a file whose on-disk copy has conflic
     assert.equal(fs.readFileSync(fp, 'utf8'), conflicted, 'untouched');
     const r2 = safeWriteReview(fp, { showId: 'show-2026', a: 2, humanReviewScore: 80 }, { overwriteConflicted: true });
     assert.notEqual(r2.skipped, 'on-disk-conflict-markers', 'explicit repair allowed');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('createOrMergeReviewFile refuses (guardRefused) instead of creating over a hidden show dir', () => {
@@ -125,5 +125,5 @@ test('createOrMergeReviewFile refuses (guardRefused) instead of creating over a 
     assert.equal(r.reason, 'show-dir-outside-sparse-checkout');
     assert.equal(r.guardRefused, true);
     assert.equal(fs.existsSync(path.join(sparse, 'hidden-show-2017')), false, 'no directory or file created');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

@@ -163,7 +163,7 @@ test('CLI refuses --git-repo on a shallow clone instead of reporting every card 
     assert.equal(await main(['--git-repo', path.join(dir, 'shallow')], { linear, noWrite, auditPath: '/nonexistent' }), 2);
   } finally {
     console.error = err;
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -232,7 +232,7 @@ test('CLI --apply closes past 10 and stops after repeated Done-gate refusals', a
     console.error = err;
   }
   const out = JSON.parse(fs.readFileSync(outPath, 'utf8'));
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assert.equal(out.counts.closed, 12);
   assert.equal(out.counts['gate-refused'], MAX_REFUSALS_PER_RUN);
   assert.equal(out.counts['refusal-breaker'], 20 - 12 - MAX_REFUSALS_PER_RUN);
@@ -327,7 +327,7 @@ test('CLI --apply moves failing In Review cards to Todo, capped per run; dry run
   assert.equal(dry.spawned.length, 0);
   assert.equal(dry.out.counts['would-bounce'], ids.length - 1);
   const live = await run(['--apply']);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assert.equal(live.out.counts.bounced, MAX_BOUNCES_PER_RUN);
   assert.equal(live.out.counts['bounce:bounce-exhausted'], 1);
   assert.equal(live.out.counts['bounce:over-run-cap'], ids.length - 1 - MAX_BOUNCES_PER_RUN);
@@ -376,7 +376,7 @@ test('CLI: a failed read on a bounce card skips that card and still runs the clo
     console.error = err;
   }
   const out = JSON.parse(fs.readFileSync(outPath, 'utf8'));
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assert.equal(code, 3);
   assert.equal(out.counts['bounce:read-failed'], 1);
   assert.deepEqual(spawned, ['BRO-402']);

@@ -309,7 +309,7 @@ test('--scope-stdin: a stray violating file NOT in the diff does not block', () 
     const result = runLint(dir, 'review-texts', ['scripts/target.js']);
     assert.equal(result.code, 0, `expected pass, got:\n${result.out}`);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -320,7 +320,7 @@ test('--scope-stdin: a violating file that IS in the diff still blocks (regressi
     assert.equal(result.code, 1, 'expected the in-scope violation to fail the audit');
     assert.match(result.out, /stray\.js/);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -333,7 +333,7 @@ test('--scope-stdin: an allowlist-only diff falls back to a full scan (does not 
     const result = runLint(dir, 'review-texts', ['.review-write-guard-exempt.txt']);
     assert.equal(result.code, 1, `expected fallback full-scan to still catch stray.js, got:\n${result.out}`);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -360,7 +360,7 @@ test('findLongLines detects a 504-char line (the exact BRO-2771 shape) and repor
     assert.equal(violations[0].line, 5);
     assert.ok(violations[0].length > 500, `expected >500 chars, got ${violations[0].length}`);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -371,7 +371,7 @@ test('findLongLines passes on a well-formed workflow with no long lines', () => 
     writeFileSync(join(dir, 'fixture.yml'), 'on: push\njobs:\n  x:\n    steps:\n      - run: echo hi\n');
     assert.deepEqual(findLongLines(dir), []);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -395,7 +395,7 @@ test('no --scope-stdin (CI direct-call mode) still scans the whole tree', () => 
     const result = runLint(dir, 'review-texts', undefined);
     assert.equal(result.code, 1, 'CI direct calls must keep scanning the full checkout');
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

@@ -108,7 +108,7 @@ test('CLI: exits 1 and prints the overage on stdout/stderr when CLAUDE.md conten
     assert.equal(r.status, 1);
     assert.match(r.stderr, /over the 50B cap/);
   } finally {
-    fs.rmSync(tdir, { recursive: true, force: true });
+    fs.rmSync(tdir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -120,7 +120,7 @@ test('CLI: exits 0 when CLAUDE.md content is within the cap', () => {
     assert.equal(r.status, 0);
     assert.match(r.stdout, /CLAUDE\.md OK/);
   } finally {
-    fs.rmSync(tdir, { recursive: true, force: true });
+    fs.rmSync(tdir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -137,7 +137,7 @@ test('CLI: fails open (exit 0) on malformed anchors JSON', () => {
     const r = runCli(anchorsPath, 'x'.repeat(999999));
     assert.equal(r.status, 0);
   } finally {
-    fs.rmSync(tdir, { recursive: true, force: true });
+    fs.rmSync(tdir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -211,7 +211,7 @@ before(() => {
 });
 
 after(() => {
-  if (fixtureDir) fs.rmSync(fixtureDir, { recursive: true, force: true });
+  if (fixtureDir) fs.rmSync(fixtureDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 const skipNoFixture = { get skip() { return (!fixtureDir || !refInCap || !refOverCap || !refDeleted || !refConfigChanged) && `fixture repo failed to build: ${fixtureError}`; } };
@@ -381,7 +381,7 @@ function commitInClone(relPath, content, message) {
 before(() => {
   try {
     hookWorktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre-push-hook-wt-'));
-    fs.rmSync(hookWorktreeDir, { recursive: true, force: true }); // `git worktree add` wants a non-existent path
+    fs.rmSync(hookWorktreeDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); // `git worktree add` wants a non-existent path
     spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
     const added = spawnSync('git', ['-C', REPO_ROOT, 'worktree', 'add', '-q', '-b', HOOK_WT_BRANCH, hookWorktreeDir, 'HEAD'], {
       encoding: 'utf8',
@@ -420,7 +420,7 @@ before(() => {
 after(() => {
   if (hookWorktreeDir) {
     spawnSync('git', ['-C', REPO_ROOT, 'worktree', 'remove', '--force', hookWorktreeDir], { timeout: GIT_TIMEOUT_MS });
-    fs.rmSync(hookWorktreeDir, { recursive: true, force: true });
+    fs.rmSync(hookWorktreeDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
   spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
 });

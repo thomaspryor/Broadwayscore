@@ -68,7 +68,7 @@ function writeFixture(lines) {
   const dir = mkdtempSync(join(tmpdir(), 'transcript-scan-test-'));
   const path = join(dir, 'transcript.jsonl');
   writeFileSync(path, lines.join('\n') + '\n');
-  return { path, cleanup: () => rmSync(dir, { recursive: true, force: true }) };
+  return { path, cleanup: () => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }) };
 }
 
 // ── walker basics ───────────────────────────────────────────────────────────

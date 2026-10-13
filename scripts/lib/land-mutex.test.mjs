@@ -141,7 +141,7 @@ test('CLI: 4 concurrent landers never overlap, land in queue order, and leave no
     assert.deepEqual(lines.filter((l) => l.startsWith('enter')), ['enter 11', 'enter 12', 'enter 13', 'enter 14']);
     assert.equal(execFileSync('git', ['ls-remote', ctx.remote, 'refs/land-mutex/*'], { encoding: 'utf8' }).trim(), '');
   } finally {
-    rmSync(ctx.dir, { recursive: true, force: true });
+    rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -158,7 +158,7 @@ test('CLI: a dead holder (lock + ticket left past the age cap) is broken and the
     assert.match(a.out, /holding the landing lock/, a.out);
     await run(['release'], cliEnv(ctx.remote, 21), ctx.work);
   } finally {
-    rmSync(ctx.dir, { recursive: true, force: true });
+    rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -172,6 +172,6 @@ test('CLI: an unreachable remote fails open with held=false', { timeout: 60000 }
     assert.match(a.out, /proceeding WITHOUT the landing lock/);
     assert.equal(readFileSync(out, 'utf8').trim(), 'held=false');
   } finally {
-    rmSync(ctx.dir, { recursive: true, force: true });
+    rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

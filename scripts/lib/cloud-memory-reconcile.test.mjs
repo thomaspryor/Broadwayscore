@@ -128,7 +128,7 @@ describe('dirHistory', () => {
       const want = execFileSync('git', ['-C', repo, 'rev-parse', 'side~1:m/a.md'], { encoding: 'utf8' }).trim();
       assert.ok(blobs.includes(want), `side-branch blob ${want} missing from ${blobs}`);
     } finally {
-      fs.rmSync(repo, { recursive: true, force: true });
+      fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });
@@ -227,7 +227,7 @@ describe('reconcile end to end', () => {
         assert.equal(log3.split(line).length - 1, 1, `${line} appears exactly once`);
       }
     } finally {
-      fs.rmSync(root, { recursive: true, force: true });
+      fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });

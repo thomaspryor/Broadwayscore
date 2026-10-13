@@ -38,8 +38,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const DIRS = ['tests/unit', 'scripts/tests'];
+// BRO-3620: the scanner lives in scripts/lib so tests/unit/git-race-fix.test.mjs
+// requires the same logic, and DIRS now covers scripts/ and scripts/lib/ too
+// (CI globs both; 147 unretried teardowns sat there unguarded).
+const { GIT_TEST_DIRS: DIRS, USES_GIT, RM_RECURSIVE, HAS_RETRIES, gitUsingTestFiles, offendersIn: scan } =
+  require('../../scripts/lib/git-test-teardown-scan.js');
 
 // This guard QUOTES the unretried teardown it bans — in the header above and in
 // the positive-control fixture below — so it matches its own patterns. It
@@ -50,28 +57,8 @@ const DIRS = ['tests/unit', 'scripts/tests'];
 // fix must not be to weaken the scan for everyone else.
 const SELF = path.basename(fileURLToPath(import.meta.url));
 
-// A test "shells out to git" if it invokes the binary at all. Deliberately
-// broad: `git init` alone would miss a test that clones or worktree-adds a repo
-// instead, and those race identically.
-const USES_GIT = /(?:execFileSync|execSync|spawnSync|execFile|spawn)\(\s*['"]git['"]|['"]git init['"]|\bgit init\b/;
-// The exact teardown shape that carries the race. Matching the options object
-// rather than the whole call keeps this independent of how the path argument is
-// built (path.join, a template literal, a bare variable — all appear in these
-// files).
-const RM_RECURSIVE = /rmSync\([^)]*\{[^}]*recursive:\s*true[^}]*\}/;
-const HAS_RETRIES = /maxRetries:\s*\d+/;
-
 function offendersIn(dir) {
-  const abs = path.join(repoRoot, dir);
-  if (!fs.existsSync(abs)) return [];
-  return fs.readdirSync(abs)
-    .filter(f => f.endsWith('.test.mjs') || f.endsWith('.test.js'))
-    .filter(f => !f.startsWith('_skip-') && f !== SELF)
-    .map(f => ({ rel: `${dir}/${f}`, src: fs.readFileSync(path.join(abs, f), 'utf8') }))
-    .filter(({ src }) => USES_GIT.test(src))
-    .flatMap(({ rel, src }) => src.split('\n')
-      .map((line, i) => ({ rel, line: i + 1, text: line }))
-      .filter(({ text }) => RM_RECURSIVE.test(text) && !HAS_RETRIES.test(text)));
+  return scan(repoRoot, dir, { exclude: [SELF] });
 }
 
 describe('tests that shell out to git must rmSync with retries', () => {
@@ -92,13 +79,7 @@ describe('tests that shell out to git must rmSync with retries', () => {
   // directories) would leave a guard that passes while checking nothing — the
   // "false positive fix turns the gate off" failure mode.
   it('the guard actually inspects git-using files (not vacuously green)', () => {
-    const inspected = DIRS.flatMap(dir => {
-      const abs = path.join(repoRoot, dir);
-      if (!fs.existsSync(abs)) return [];
-      return fs.readdirSync(abs)
-        .filter(f => f.endsWith('.test.mjs'))
-        .filter(f => f !== SELF && USES_GIT.test(fs.readFileSync(path.join(abs, f), 'utf8')));
-    });
+    const inspected = DIRS.flatMap(dir => gitUsingTestFiles(repoRoot, dir, { exclude: [SELF] }));
     assert.ok(inspected.length >= 20,
       `expected the git-using test population to stay substantial, saw ${inspected.length}`);
   });

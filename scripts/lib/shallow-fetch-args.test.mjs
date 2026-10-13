@@ -148,7 +148,7 @@ test('repoDepthArgs on a SHALLOW clone returns a --shallow-since bound (the bran
       `bound ${epoch} should sit just below the boundary commit ${oldest}`
     );
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -159,7 +159,7 @@ test('repoDepthArgs on a COMPLETE clone returns no bound (never shallow-ify a fu
     execFileSync('git', ['clone', '-q', `file://${origin}`, full]);
     assert.deepEqual(repoDepthArgs({ repoRoot: full }), []);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -168,6 +168,6 @@ test('repoDepthArgs fails open to [] when the path is not a git repo', () => {
   try {
     assert.deepEqual(repoDepthArgs({ repoRoot: tmp }), []);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

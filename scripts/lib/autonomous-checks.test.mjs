@@ -118,7 +118,7 @@ test('a real colocated .test.ts fixture is auto-derived and actually passes unde
   const byName = Object.fromEntries(results.map(r => [r.name, r]));
   assert.ok(byName['colocated-tests-tsx'], 'the real filesystem colocated .test.ts must be auto-derived');
   assert.equal(byName['colocated-tests-tsx'].pass, true, byName['colocated-tests-tsx'].detail);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // BRO-4525: a `.test.mjs` that imports a `.ts` module is listed in
@@ -149,7 +149,7 @@ test('readTsxRunTests unions the tsx and e2e manifests (both run under tsx in te
   fs.writeFileSync(path.join(dir, 'tests/e2e-unit-test-manifest.txt'), 'tests/unit/both.test.mjs\ntests/unit/outlet-id-mapper.test.mjs\n');
   assert.deepEqual([...readTsxRunTests(dir)].sort(),
     ['tests/unit/a.test.ts', 'tests/unit/both.test.mjs', 'tests/unit/outlet-id-mapper.test.mjs']);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('TSX_RUN_MANIFESTS matches test-manifest.js TSX_MANIFESTS (a new tsx-run manifest must reach Land too)', () => {
@@ -171,7 +171,7 @@ test('readTsxManifest reads the real manifest and is empty when the file is miss
   assert.ok([...real].some(f => f.endsWith('.test.mjs')), 'the manifest lists .test.mjs files that need tsx');
   const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-nomanifest-'));
   assert.equal(readTsxManifest(empty).size, 0);
-  fs.rmSync(empty, { recursive: true, force: true });
+  fs.rmSync(empty, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // Real execution: the fixture's .ts uses an enum, which plain node rejects on
@@ -201,7 +201,7 @@ test('runSafeChecks reads the tsx manifest from cwd and the test actually passes
   assert.equal(byName['colocated-tests'], undefined, 'a tsx-manifest test must never go to plain node --test');
   assert.ok(byName['colocated-tests-tsx'], 'the tsx-manifest .test.mjs must be routed to the tsx batch');
   assert.equal(byName['colocated-tests-tsx'].pass, true, byName['colocated-tests-tsx'].detail);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // `git diff --name-only` lists the paths a branch deleted. A deleted test or
@@ -369,7 +369,7 @@ test('prepareCheckWorkdir fills gaps only and never overwrites tracked files', (
   assert.equal(JSON.parse(fs.readFileSync(path.join(repo, 'data', 'shows.json'), 'utf8')).from, 'repo',
     'writing the worktree copy must not reach the source');
   assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true, 'node_modules stays a link');
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ── own install when the tree pins different packages (BRO-5210) ─────────────
@@ -399,7 +399,7 @@ test('prepareCheckWorkdir: a tree pinning different top-level versions gets its 
   assert.deepEqual(calls, [wt]);
   assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), false);
   assert.ok(linked.some(l => l.startsWith('node_modules (npm ci') && l.includes('next 14.2.35->15.5.27')), linked.join(' | '));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('prepareCheckWorkdir: matching installed versions keep the symlink and never install', () => {
@@ -407,7 +407,7 @@ test('prepareCheckWorkdir: matching installed versions keep the symlink and neve
   const linked = prepareCheckWorkdir(wt, repo, { install: () => { throw new Error('must not install'); } });
   assert.ok(linked.includes('node_modules'));
   assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true);
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('prepareCheckWorkdir: a failed install removes its partial tree and falls back to the symlink, with a FAILED marker', () => {
@@ -415,7 +415,7 @@ test('prepareCheckWorkdir: a failed install removes its partial tree and falls b
   const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { fs.mkdirSync(path.join(dir, 'node_modules', 'half'), { recursive: true }); return false; } });
   assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true, 'partial tree replaced by the link');
   assert.ok(linked.some(l => l.includes('npm ci FAILED')), linked.join(' | '));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('prepareCheckWorkdir: an existing workdir node_modules or an unreadable lockfile never triggers an install', () => {
@@ -427,7 +427,7 @@ test('prepareCheckWorkdir: an existing workdir node_modules or an unreadable loc
   fs.writeFileSync(path.join(wt, 'package-lock.json'), 'not json');
   const linked = prepareCheckWorkdir(wt, repo, never);
   assert.ok(linked.includes('node_modules'));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // Nested drift (BRO-5216): the hidden lockfile npm writes on every install
@@ -446,7 +446,7 @@ test('prepareCheckWorkdir: an override or nested-only bump (top level unchanged)
   const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { calls.push(dir); fs.mkdirSync(path.join(dir, 'node_modules')); return { ok: true }; } });
   assert.deepEqual(calls, [wt]);
   assert.ok(linked.some(l => l.includes('cheerio/node_modules/undici 6.21.0->6.24.1')), linked.join(' | '));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('staleNestedDeps: a matching hidden lockfile, absent optional entries and link entries are not drift', () => {
@@ -459,7 +459,7 @@ test('staleNestedDeps: a matching hidden lockfile, absent optional entries and l
   assert.deepEqual(staleNestedDeps(wt, repo), []);
   const linked = prepareCheckWorkdir(wt, repo, { install: () => { throw new Error('must not install'); } });
   assert.ok(linked.includes('node_modules'));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('staleNestedDeps: dev entries absent from an --omit=dev root and registry-URL-only differences are not drift; a moved git dep is', () => {
@@ -474,7 +474,7 @@ test('staleNestedDeps: dev entries absent from an --omit=dev root and registry-U
     'node_modules/gitpkg': { version: '1.0.0', resolved: 'git+ssh://git@github.com/x/gitpkg.git#aaa' },
   });
   assert.deepEqual(staleNestedDeps(wt, repo), ['gitpkg 1.0.0->1.0.0']);
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('prepareCheckWorkdir: a top-level drift seen by both checks is counted once', () => {
@@ -482,14 +482,14 @@ test('prepareCheckWorkdir: a top-level drift seen by both checks is counted once
   writeHiddenLock(repo, { 'node_modules/next': { version: '14.2.35' } });
   const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { fs.mkdirSync(path.join(dir, 'node_modules')); return { ok: true }; } });
   assert.ok(linked.some(l => l.includes('npm ci: 1 package version(s) differ')), linked.join(' | '));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('prepareCheckWorkdir: a failed install names its kept log in the FAILED marker', () => {
   const { root, repo, wt } = depsFixture({ installed: { react: '18.3.1' }, pinned: { react: '19.3.0' } });
   const linked = prepareCheckWorkdir(wt, repo, { install: () => ({ ok: false, logPath: '/tmp/npm-ci-x.log' }) });
   assert.ok(linked.some(l => l.includes('npm ci FAILED') && l.includes('log /tmp/npm-ci-x.log')), linked.join(' | '));
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ── resolveInstallRoot (BRO-3907) ────────────────────────────────────────────
@@ -498,7 +498,7 @@ test('resolveInstallRoot: a repo with its own node_modules is returned unchanged
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-'));
   fs.mkdirSync(path.join(root, 'node_modules'), { recursive: true });
   assert.equal(resolveInstallRoot(root), root);
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('resolveInstallRoot: a git WORKTREE with no node_modules of its own resolves to the main checkout that has one', () => {
@@ -524,13 +524,13 @@ test('resolveInstallRoot: a git WORKTREE with no node_modules of its own resolve
   assert.equal(fs.realpathSync(resolveInstallRoot(wt)), fs.realpathSync(main));
 
   execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: main });
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('resolveInstallRoot: a plain non-git directory with no node_modules fails closed to the input path', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-plain-'));
   assert.equal(resolveInstallRoot(root), root);
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('resolveInstallRoot: a worktree whose MAIN checkout also lacks node_modules fails closed to the input path (never invents a phantom root)', () => {
@@ -549,7 +549,7 @@ test('resolveInstallRoot: a worktree whose MAIN checkout also lacks node_modules
   assert.equal(resolveInstallRoot(wt), wt);
 
   execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: main });
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ── runner ──────────────────────────────────────────────────────────────────
@@ -568,7 +568,7 @@ test('runSafeChecks runs the plan and reports pass/fail per check', () => {
   assert.equal(byName['node --check scripts/good.js'].pass, true);
   assert.equal(byName['node --check scripts/bad.js'].pass, false);
   assert.ok(byName['node --check scripts/bad.js'].detail.length > 0);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // A tier-3 diff nothing can check is UNVERIFIED. It used to reach the owner
@@ -582,7 +582,7 @@ test('a tier-3 diff with no runnable check fails closed', () => {
   assert.equal(results[0].name, 'no-checks');
   assert.equal(results[0].pass, false);
   assert.match(results[0].detail, /scripts\/lib\/config\.json/);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('an inert (docs/tests) diff is still allowed to have nothing to run', () => {
@@ -590,7 +590,7 @@ test('an inert (docs/tests) diff is still allowed to have nothing to run', () =>
   assert.deepEqual(runSafeChecks({ cwd: dir, changedFiles: ['docs/x.md', 'memory/y.md'], isSafeCheckCommand: () => false, tier: 3, existsFn: never }), []);
   assert.deepEqual(runSafeChecks({ cwd: dir, changedFiles: ['scripts/lib/config.json'], isSafeCheckCommand: () => false, tier: 1, existsFn: never }), [],
     'tier 1 is unaffected');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('runSafeChecks cleans up the throwaway HOME it created', () => {
@@ -616,7 +616,7 @@ test('runSafeChecks cleans up the throwaway HOME it created', () => {
   }
   assert.ok(created.length > 0, 'runSafeChecks created a throwaway HOME (spy must see it, or this test proves nothing)');
   for (const p of created) assert.equal(fs.existsSync(p), false, `fake HOME left behind: ${p}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('runSafeChecks fails closed on an unsafe checkableDone instead of dropping it', () => {
@@ -626,7 +626,7 @@ test('runSafeChecks fails closed on an unsafe checkableDone instead of dropping 
     isSafeCheckCommand: () => false, tier: 3,
   });
   assert.deepEqual(results, [{ name: 'card-check', pass: false, detail: 'checkableDone failed safe-form validation: rm -rf /' }]);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('runSafeChecks executes a validated card check', () => {
@@ -638,7 +638,7 @@ test('runSafeChecks executes a validated card check', () => {
   });
   assert.equal(results.length, 1);
   assert.equal(results[0].pass, true);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ── dependency rule ─────────────────────────────────────────────────────────

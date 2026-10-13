@@ -100,12 +100,12 @@ test('finalizeStaged reports a served format whose rename failed as discarded', 
   assert.deepEqual(r, { promoted: [], discarded: ['thumbnail'] });
   assert.equal(fs.existsSync(final), false);
   assert.deepEqual(fs.readdirSync(dir), []);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('a deferred photo snapshot survives later rejected retries and is written only when served', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'photo-snapshot-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const final = path.join(root, 'x', 'thumbnail.jpg');
   const staged = {};
   const photo = Buffer.from('VERIFIED-PRODUCTION-PHOTO');
@@ -123,7 +123,7 @@ test('a deferred photo snapshot survives later rejected retries and is written o
 
 test('a chosen photo subsequently refused by ownership checks never reaches disk', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'photo-refused-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const final = path.join(root, 'x', 'thumbnail.jpg');
   const fallback = stageImageSnapshot({ thumbnail: LOCAL_T }, { [final]: Buffer.from('PHOTO') }, root);
   assert.equal(discardStaged(fallback, 'thumbnail'), true);
@@ -133,7 +133,7 @@ test('a chosen photo subsequently refused by ownership checks never reaches disk
 
 test('a final write failure preserves existing art and removes the partial accepted candidate', t => {
   const dir = showDir();
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const final = path.join(dir, 'thumbnail.jpg');
   const before = sha(final);
   const staged = {};

@@ -93,7 +93,7 @@ function scratchRepo() {
   g('init', '-q');
   g('config', 'user.email', 't@t.t');
   g('config', 'user.name', 't');
-  return { dir, g, cleanup: () => rmSync(dir, { recursive: true, force: true }) };
+  return { dir, g, cleanup: () => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }) };
 }
 
 function runCli(dir, base, head) {

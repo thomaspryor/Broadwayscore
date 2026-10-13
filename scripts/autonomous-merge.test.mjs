@@ -230,7 +230,7 @@ function withStubbedBins(names, fn) {
   try {
     fn({ tmp, marker });
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }
 

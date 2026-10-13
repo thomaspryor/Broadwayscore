@@ -84,7 +84,7 @@ test('inspectDataInputs sees an uncommitted registry edit vs HEAD', () => {
   fs.writeFileSync(path.join(dir, 'data/outlet-registry.json'), JSON.stringify(reg({ nyt: { tier: 3, aliases: ['NYT'] }, blog: { tier: 3 } })));
   const edited = lib.inspectDataInputs({ repoRoot: dir, baseRef: 'HEAD', coreDataDir: path.join(dir, 'nope') });
   assert.equal(edited.significant, true);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('scoring-delta.js wires the guard before both green exits', () => {

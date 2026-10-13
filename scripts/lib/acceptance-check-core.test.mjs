@@ -25,7 +25,7 @@ test('BRO-3446: a command naming a path absent from the checkout is unverifiable
     assert.equal(out.status, 'unverifiable');
     assert.match(out.detail, /tests\/unit\/does-not-exist\.test\.mjs/);
   } finally {
-    fs.rmSync(cwd, { recursive: true, force: true });
+    fs.rmSync(cwd, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -40,7 +40,7 @@ test('BRO-3446: the guard does not mask a real failure once the path exists', ()
     const out = runVerify(cwd, 'node --test tests/unit/broken.test.mjs', { attempts: 1 });
     assert.equal(out.status, 'fail');
   } finally {
-    fs.rmSync(cwd, { recursive: true, force: true });
+    fs.rmSync(cwd, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -55,7 +55,7 @@ test('BRO-3446: a command whose path DOES exist still runs and can pass', () => 
     const out = runVerify(cwd, 'node --test tests/unit/ok.test.mjs', { attempts: 1 });
     assert.equal(out.status, 'pass');
   } finally {
-    fs.rmSync(cwd, { recursive: true, force: true });
+    fs.rmSync(cwd, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -72,7 +72,7 @@ test('BRO-4523: a test file whose tests all skip is unverifiable, not pass', () 
     assert.equal(out.status, 'unverifiable');
     assert.match(out.detail, /no passing tests/);
   } finally {
-    fs.rmSync(cwd, { recursive: true, force: true });
+    fs.rmSync(cwd, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -158,7 +158,7 @@ test('BRO-4830: stale-but-clean data clone is fast-forwarded BEFORE the copy', (
       assert.equal(co.dataClone.status, 'fast-forwarded');
       assert.equal(co.prepared, true);
     } finally { removeCheckout(co); }
-  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-4830: a stale DIRTY data clone is untouched and the checkout is unverifiable, never fail', () => {
@@ -174,7 +174,7 @@ test('BRO-4830: a stale DIRTY data clone is untouched and the checkout is unveri
       const out = runVerify(co.wt, 'node --test tests/unit/x.test.mjs', { attempts: 1, prepared: co.prepared });
       assert.equal(out.status, 'unverifiable');
     } finally { removeCheckout(co); }
-  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-4830: refreshDataClone states: current, diverged=unsafe, missing=skipped, once per process', () => {
@@ -189,11 +189,11 @@ test('BRO-4830: refreshDataClone states: current, diverged=unsafe, missing=skipp
     const bare = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4830-nodata-'));
     const savedEnv = process.env.BSC_DATA_REPO; delete process.env.BSC_DATA_REPO;
     try { assert.equal(refreshDataClone(bare).status, 'skipped'); } finally { if (savedEnv !== undefined) process.env.BSC_DATA_REPO = savedEnv; }
-    fs.rmSync(bare, { recursive: true, force: true });
+    fs.rmSync(bare, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     // memoized: a second call returns the same object without re-fetching
     const a = refreshDataClone(f.repo); const b = refreshDataClone(f.repo);
     assert.equal(a, b);
-  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-4830: decideRefresh policy table', () => {
@@ -231,7 +231,7 @@ test('BRO-4830: ff-only merge failure on a known-behind clone is unsafe, unknown
     const r = refreshDataClone(f.repo, { memoize: false });
     assert.equal(r.status, 'unsafe');
     assert.match(r.detail, /ff-only merge failed/);
-  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 // BRO-4956: a ref lock held by another fetch in the same clone (cloud board
@@ -254,5 +254,5 @@ test('BRO-4956: a held fetch lock falls back to a standalone clone, never for a 
     assert.ok(fs.existsSync(lock), 'the other process\'s lock is never removed');
     const pinned = sh(f.repo, 'rev-parse', 'HEAD');
     assert.throws(() => makeFreshCheckout({ repo: f.repo, prefix: 'bro4956-co-', sha: pinned, lockRetryDelaysMs: [0] }), /\.lock': File exists/);
-  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
