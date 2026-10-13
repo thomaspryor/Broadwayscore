@@ -111,12 +111,43 @@ test('list_sessions is denied for both server spellings (BRO-4635)', () => {
   assert.equal(run(remote('list_sessions', {}), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
 });
 
+const SONNET = 'claude-sonnet-5-5';
+
 test('create_session passes for both server spellings: the owner wants sessions started (BRO-5040, supersedes BRO-4664)', () => {
-  assert.equal(run(remote('create_session', { prompt: 'x', source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
-  assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: {} }), 'pass');
-  assert.equal(run(remote('create_session', { prompt: 'x', source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
-  assert.equal(run(remote('create_session', { prompt: 'x', source_url: 'https://github.com/thomaspryor/broadway-scorecard-data' })), 'pass');
-  assert.equal(run(remote('create_session', { prompt: 'x', source_url: 'https://github.com/someone-else/broadwayscore' })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
+  assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { model: SONNET } }), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/broadway-scorecard-data' })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/someone-else/broadwayscore' })), 'pass');
+});
+
+test('create_session without an explicit model is denied: it would inherit the parent\'s Opus (BRO-5228)', () => {
+  const url = 'https://github.com/thomaspryor/Broadwayscore';
+  for (const model of [undefined, '', '  ', null]) {
+    assert.equal(run(remote('create_session', { prompt: 'x', model, source_url: url })), 'deny', String(model));
+    assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { model } }), 'deny', String(model));
+  }
+  assert.equal(run(remote('create_session', { prompt: 'x', source_url: url }), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
+});
+
+test('create_session model: Sonnet/Haiku pass in any spelling; Fable and short aliases are denied (BRO-5228)', () => {
+  for (const model of ['claude-sonnet-5-5', 'Claude-Sonnet-5-5', ' claude-sonnet-5-5 ', 'claude-sonnet-5-5[1m]', 'claude-haiku-5-5', 'claude-sonnet-4-6']) {
+    assert.equal(run(remote('create_session', { prompt: 'x', model })), 'pass', model);
+  }
+  for (const model of ['claude-fable-5-1', 'Claude-Fable-5-1[1m]', 'mythos', 'sonnet', 'opus', 'gpt-5', 'claude-sonnet', 5, { id: 'claude-sonnet-5-5' }, ['claude-sonnet-5-5']]) {
+    assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: P0', model })), 'deny', JSON.stringify(model));
+  }
+});
+
+test('create_session on Opus needs a non-empty MODEL-REASON: line in the prompt (BRO-5228)', () => {
+  for (const model of ['claude-opus-5-5', 'CLAUDE-OPUS-5-5', 'claude-opus-5-5[1m]']) {
+    assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1.', model })), 'deny', model);
+    assert.equal(run(remote('create_session', { model })), 'deny', model);
+    assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1.\nMODEL-REASON:   \n', model })), 'deny', model);
+    assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1. MODEL-REASON: inline is not a line', model })), 'deny', model);
+    assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1.\nMODEL-REASON: P0\nThen land it.', model })), 'pass', model);
+    assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked for Opus', model })), 'pass', model);
+  }
 });
 
 test('create_session with a misspelled Broadwayscore source_url is denied (BRO-5068: lowercase starts in /home/user, no commands or hooks)', () => {
@@ -125,8 +156,8 @@ test('create_session with a misspelled Broadwayscore source_url is denied (BRO-5
     ' https://github.com/thomaspryor/broadwayscore', 'http://github.com/thomaspryor/Broadwayscore', 'https://www.github.com/thomaspryor/Broadwayscore',
     'git@github.com:thomaspryor/Broadwayscore.git', 'https://github.com/thomaspryor/Broadwayscore.git/', 'https://github.com/thomaspryor/broadwayscore/tree/main',
     'github.com/thomaspryor/broadwayscore', 'https://github.com/ThomasPryor/Broadwayscore']) {
-    assert.equal(run(remote('create_session', { prompt: 'x', source_url: url })), 'deny', url);
-    assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { source_url: url } }), 'deny', url);
+    assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: url })), 'deny', url);
+    assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { model: SONNET, source_url: url } }), 'deny', url);
   }
 });
 

@@ -403,6 +403,43 @@ function pickModel(issue, { nowMs = Date.now(), readEntries, env = process.env }
   return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read, nowMs, env });
 }
 
+/**
+ * pickModel with the dispatch ledger read once per run. The ledger is the Mac's
+ * (gitignored); in a cloud container it is absent and reads as [], so the 24h
+ * Opus cap sees no launches. The reason says so rather than implying a check.
+ * Shared by scripts/cloud-worker-pick.js and scripts/session-model.js.
+ */
+function modelPicker(nowMs = Date.now()) {
+  const ledger = require('./dispatch-ledger.js');
+  const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
+  let entries;
+  const readEntries = () => {
+    if (entries === undefined) entries = ledger.readEntries();
+    return entries;
+  };
+  return (issue) => {
+    const m = pickModel(issue, { nowMs, readEntries });
+    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
+  };
+}
+
+/**
+ * The create_session `model` for a worker session given its cards' picks
+ * (BRO-5228). Sonnet unless EVERY card needs Opus: a mixed batch runs on Sonnet
+ * and hands each Opus card to an Opus subagent, as the board worker does
+ * (docs/cloud-routines/board-workers.md step 4), so one retry card does not
+ * put the whole batch on Opus. No cards (owner-asked work with no card): Sonnet.
+ * @param {Array<{model: string}>} picks - modelPicker results, short aliases
+ * @returns {{ model: string, opusCards: number }} model is the full id create_session takes
+ */
+function sessionModelFor(picks) {
+  const { DISPATCH_SONNET, DISPATCH_OPUS } = require('./models.js');
+  const list = Array.isArray(picks) ? picks : [];
+  const opusCards = list.filter((p) => p && p.model === 'opus').length;
+  const allOpus = list.length > 0 && opusCards === list.length;
+  return { model: allOpus ? DISPATCH_OPUS : DISPATCH_SONNET, opusCards };
+}
+
 /** Past the history-check budget, only a P0/P1 entry may be taken unchecked; P2/P3 entries are always checked. */
 function mayTakeUnchecked(entry) {
   return !!entry && entry.tier === TIER_P0P1;
@@ -525,6 +562,6 @@ function findResumeCard(issues, landRefs, opts) {
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
   AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
-  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, cloudPriorAttempts, mayTakeUnchecked,
+  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard,
 };

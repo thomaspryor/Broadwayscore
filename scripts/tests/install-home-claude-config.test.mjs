@@ -91,13 +91,13 @@ test('generated PreToolUse command reaches the real hook from a non-repo cwd: mi
   const s = JSON.parse(fs.readFileSync(path.join(target, '.claude', 'settings.json'), 'utf8'));
   const deny = runGenerated(s, 'PreToolUse', 'block-prompting-remote-tools.sh', {
     tool_name: 'mcp__claude-code-remote__create_session',
-    tool_input: { source_url: 'https://github.com/thomaspryor/broadwayscore', prompt: 'x' },
+    tool_input: { source_url: 'https://github.com/thomaspryor/broadwayscore', prompt: 'x', model: 'claude-sonnet-5-5' },
   }, target);
   assert.equal(deny.status, 0, deny.stderr);
   assert.match(deny.stdout, /"permissionDecision":\s*"deny"/, `got: ${deny.stdout}`);
   const ok = runGenerated(s, 'PreToolUse', 'block-prompting-remote-tools.sh', {
     tool_name: 'mcp__claude-code-remote__create_session',
-    tool_input: { source_url: 'https://github.com/thomaspryor/Broadwayscore', prompt: 'x' },
+    tool_input: { source_url: 'https://github.com/thomaspryor/Broadwayscore', prompt: 'x', model: 'claude-sonnet-5-5' },
   }, target);
   assert.doesNotMatch(ok.stdout, /deny/, 'the canonical URL passes');
 });
