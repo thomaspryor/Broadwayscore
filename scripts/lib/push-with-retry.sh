@@ -165,7 +165,8 @@ PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4
 # Pre-loop and post-loop network ops (entry ls-remote, API fallback, its
 # post-success fetch) keep the full GIT_NET_TIMEOUT_SEC.
 PUSH_OP_MIN_TIMEOUT_SEC=${PUSH_OP_MIN_TIMEOUT_SEC:-20}
-case "$PUSH_OP_MIN_TIMEOUT_SEC" in ''|*[!0-9]*) PUSH_OP_MIN_TIMEOUT_SEC=20 ;; esac
+# 0 is rejected too: `timeout 0` means NO timeout, the opposite of a floor.
+case "$PUSH_OP_MIN_TIMEOUT_SEC" in ''|0|0*|*[!0-9]*) PUSH_OP_MIN_TIMEOUT_SEC=20 ;; esac
 _PWR_IN_LOOP=0
 # The cap the most recent fetch/push actually ran under, for log lines (a
 # clamped op dies at its own cap, not GIT_NET_TIMEOUT_SEC — printing the wrong
@@ -2023,8 +2024,16 @@ verify_content_survived() {
   # "REVERTED" on a change that actually landed fine (caught by the existing
   # noop-rebase integration test when this check was first wired in — it
   # reproduces exactly that pinned-refspec condition).
+  # BRO-2800 review: these fetches decide whether a push that REPORTED success
+  # really landed, so they keep the full GIT_NET_TIMEOUT_SEC even inside the
+  # retry loop. Under the deadline clamp a slow fetch could time out, leave
+  # origin/$PULL_BRANCH stale, and read a landed push as dropped
+  # (commit-dropped-post-push + reset + a needless fallback).
+  _pwr_in_loop_saved="$_PWR_IN_LOOP"
+  _PWR_IN_LOOP=0
   git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 \
     || git_fetch origin "$PULL_BRANCH" >/dev/null 2>&1 || true
+  _PWR_IN_LOOP="$_pwr_in_loop_saved"
   local survival_args=(
     --before-sha="$SCRIPT_ENTRY_HEAD"
     --base-sha="$SCRIPT_ENTRY_BASE"

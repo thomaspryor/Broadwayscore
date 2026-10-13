@@ -24,7 +24,7 @@ setup_repo() {
 
 # --- Case 1: deadline=0 → break before any attempt, exit 1, warning present ---
 TMP1=$(mktemp -d)
-trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}" "${TMP4:-}" "${TMP5:-}" "${TMP6:-}" "${TMP7:-}" "${TMP8:-}"' EXIT
+trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}" "${TMP4:-}" "${TMP5:-}" "${TMP6:-}" "${TMP7:-}" "${TMP8:-}" "${TMP9:-}"' EXIT
 setup_repo "$TMP1"
 # A staged (clean) change so there is real work queued; no remote is configured,
 # so a push WOULD fail — but deadline=0 must short-circuit before that.
@@ -294,8 +294,39 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
   else
     echo "PASS[8]: far from the deadline the cap stays GIT_NET_TIMEOUT_SEC (push ${push_secs}s, total ${elapsed}s)"
   fi
+
+  # Case 9 (BRO-2800 review): PUSH_OP_MIN_TIMEOUT_SEC=0 must NOT become
+  # `timeout 0` (= no timeout). It falls back to the 20s default, so a push
+  # past the deadline against a 120s hang is still killed well before 120s.
+  TMP9=$(mktemp -d)
+  setup_repo "$TMP9"
+  git -C "$TMP9" config protocol.ext.allow always
+  git -C "$TMP9" remote add origin "ext::sleep 120"
+  printf '{ "ok": 9 }\n' > "$TMP9/state.json"
+  git -C "$TMP9" add state.json
+  start=$SECONDS
+  out9=$( cd "$TMP9" && GIT_NET_TIMEOUT_SEC=60 PUSH_DEADLINE_SEC=1 PUSH_OP_MIN_TIMEOUT_SEC=0 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP9/f.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); code9=$?
+  elapsed=$(( SECONDS - start ))
+  if [ "$code9" -eq 0 ]; then
+    echo "FAIL[9]: expected a failed push, got exit 0"; fail=1
+  elif [ "$elapsed" -ge 60 ]; then
+    echo "FAIL[9]: took ${elapsed}s — PUSH_OP_MIN_TIMEOUT_SEC=0 left an op unbounded or at the 60s cap"; fail=1
+  else
+    echo "PASS[9]: PUSH_OP_MIN_TIMEOUT_SEC=0 falls back to the default floor (${elapsed}s total)"
+  fi
 else
   echo "SKIP[7-8]: no timeout/gtimeout binary"
+fi
+
+# Case 10 (BRO-2800 review): verify_content_survived's fetches decide whether a
+# push that reported success really landed; they must run with the deadline
+# clamp OFF (full GIT_NET_TIMEOUT_SEC) or a slow fetch reads a landed push as
+# dropped. Pinned statically: the function body must switch _PWR_IN_LOOP off.
+vcs_body=$(awk '/^verify_content_survived\(\) \{/{f=1} f{print} f&&/^\}/{exit}' "$PUSH_SCRIPT")
+if grep -q '_PWR_IN_LOOP=0' <<<"$vcs_body" && grep -q '_PWR_IN_LOOP="\$_pwr_in_loop_saved"' <<<"$vcs_body"; then
+  echo "PASS[10]: verify_content_survived fetches run unclamped and restore the loop flag"
+else
+  echo "FAIL[10]: verify_content_survived no longer disables the deadline clamp around its fetches"; fail=1
 fi
 
 if [ "$fail" -ne 0 ]; then
