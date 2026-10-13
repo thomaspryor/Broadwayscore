@@ -55,14 +55,18 @@ function parseNoteFrontmatter(text) {
   const out = { name: '', description: '', type: '', archived: false, body: text };
   const normalized = text.replace(/\r\n/g, '\n');
   if (!normalized.startsWith('---\n')) return out;
-  const end = normalized.indexOf('\n---', 4);
+  // Search from index 3 so an empty block (`---\n---`) closes at once
+  // instead of swallowing the body up to its first horizontal rule.
+  const end = normalized.indexOf('\n---', 3);
   if (end === -1) return out;
   out.body = normalized.slice(normalized.indexOf('\n', end + 1) + 1);
   const top = {};
   const nested = {};
   for (const line of normalized.slice(4, end).split('\n')) {
     const m = line.match(/^(\s*)([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (!m || m[3] === '') continue;
+    // A block scalar (`description: >`) continues on lines this flat reader
+    // does not follow; leave it empty so the name/heading fallback applies.
+    if (!m || m[3] === '' || /^[>|][-+]?$/.test(m[3].trim())) continue;
     const target = m[1].length ? nested : top;
     if (!(m[2] in target)) target[m[2]] = unquote(m[3]);
   }
@@ -85,7 +89,9 @@ function fallbackSummary(body) {
 
 function oneLine(s) {
   const flat = String(s).replace(/\s+/g, ' ').replace(/\|/g, '/').trim();
-  return flat.length > DESCRIPTION_MAX ? `${flat.slice(0, DESCRIPTION_MAX - 3).trimEnd()}...` : flat;
+  // Code points, not UTF-16 units, so a cut never splits an emoji's surrogate pair.
+  const chars = Array.from(flat);
+  return chars.length > DESCRIPTION_MAX ? `${chars.slice(0, DESCRIPTION_MAX - 3).join('').trimEnd()}...` : flat;
 }
 
 /** One index line for one note: `file | type | description`. */
