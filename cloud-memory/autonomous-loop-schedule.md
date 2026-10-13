@@ -96,7 +96,6 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 06:00 | 1st | scrape-alltime-grosses.yml | all-time grosses scrape |
 | 06:00 | 1st of Jan/Apr/Jul/Oct | generate-theater-tips.yml | quarterly theater tips |
 | 06:20 | daily | check-corpus-drift.yml | corpus drift check |
-| 07:00 | daily | recover-wsj-subscriber.yml | WSJ subscriber-access recovery |
 | 07:00 | daily | poll-loureviews.yml | LouReviews UK poll |
 | **16:00** | **daily** | **data-health-check.yml (BSC digest carrier)** | **moved 07:00→16:00 UTC 2026-07-24 (card #409) — ≥3h from the overnight approval email; see check-cron-health.yml 26h note** |
 | 07:00 | Mon | enrich-west-end-dates.yml | West End date enrichment |
@@ -229,7 +228,7 @@ Note: CLAUDE.md §14 says orchestrator fires "3 AM UTC Broadway / 10 PM UTC West
 ## 4. Chosen nightly slot: **07:30 UTC (3:30 AM ET, EDT) daily**
 
 **Nearest-conflict clearance: 30 minutes** (both sides, among discrete crons):
-- 30 min after the 07:00 UTC daily trio (recover-wsj-subscriber, data-health-check, poll-loureviews — all lightweight, no data-repo writes of consequence).
+- 30 min after the 07:00 UTC daily pair (data-health-check, poll-loureviews — all lightweight, no data-repo writes of consequence).
 - 30 min before the 08:00 UTC burst (update-show-status, commercial-stale-closures, collect-we-ob-reviews, orchestrator Broadway-morning) and local backfill-gather (04:00 ET).
 - Opening-night orchestrator entries: WE-morning 05:00 UTC = 150 min before; Broadway-morning 08:00 UTC = 30 min after; Broadway-evening 23:00/00:00 UTC = 7.5h+ away.
 - Rebuild/scoring chain (04:00–05:15 UTC) and nightly test.yml (06:00 UTC) finish well before 07:30.

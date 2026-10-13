@@ -131,7 +131,7 @@ about how these workflows behave today, only adds the missing explicit statement
 | `fetch-guardian-reviews.yml` | Weekly cron (Wed 8am UTC) + manual, dispatched by `opening-night-poller.yml` and `opening-night-orchestrator.yml` with different `shows` values | **Per-`shows` group, not plain shared** — see gotcha section above. A plain shared group would risk losing a distinct show's Guardian fetch when a third dispatch cancels a second one's pending run. |
 | `overnight-collect.yml` | Manual only | Single job (`collect-batch`), dispatches `rebuild-reviews.yml` (already grouped) but does not self-dispatch. |
 | `process-review-submission.yml` | GH issue label + manual | **Per-issue group, not plain shared** — see gotcha section above. A plain shared group would risk silently dropping a submission (a cancelled pending run for a different issue), which is worse than the original no-group state. |
-| `recover-wsj-subscriber.yml` | Daily cron (7am UTC) + manual | No matrix, dispatches `rebuild-reviews.yml` only (no self-dispatch). |
+| `recover-wsj-subscriber.yml` | Manual only (cron removed 2026-10-13, BRO-5243; script deprecated, task 779) | No matrix, dispatches `rebuild-reviews.yml` only (no self-dispatch). |
 | `rediscover-urls.yml` | Weekly cron (Sun 1am UTC) + manual | No matrix, dispatches `collect-review-texts.yml` only (no self-dispatch). |
 | `retry-wrong-urls.yml` | Manual only | No matrix, dispatches `Rebuild Reviews Data` only. |
 | `review-refresh.yml` | Daily cron (9am UTC, `0 9 * * *`) + manual | No matrix, no self-dispatch. `.github/workflows/CLAUDE.md` previously described this as "Weekly on Mondays" — stale/wrong, corrected in this session (the cron is daily). Doesn't change the group choice, just the accuracy of the record. |

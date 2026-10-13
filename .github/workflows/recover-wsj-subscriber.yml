@@ -1,9 +1,11 @@
 name: Recover WSJ Reviews (Subscriber Cookies)
 
 on:
-  # Run daily — small batch to stay under DataDome threshold
-  schedule:
-    - cron: '0 7 * * *'  # 7 AM UTC / 2 AM EST daily
+  # No schedule (BRO-5243, 2026-10-13): scripts/recover-wsj-subscriber.js is
+  # deprecated (#779; WSJ answers plain fetch with 401 even with valid cookies),
+  # and the cookie check below gated on the empty COOKIES_BUNDLE_11 secret, so
+  # the daily cron skipped every day since at least 2026-08-14 while reporting
+  # success. The working path is scripts/recover-wsj-browser.js on the Mac.
   workflow_dispatch:
     inputs:
       max_urls:
