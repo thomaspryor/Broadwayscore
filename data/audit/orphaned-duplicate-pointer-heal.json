@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-13T12:14:38.863Z",
+  "generated": "2026-10-13T12:24:08.943Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 27,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -95,6 +95,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "patriots-2024",
+      "loserFile": "talkinbroadway--matthew-murray.json",
+      "targetFile": "talkinbroadway--howard-miller.json",
+      "reason": "orphaned-duplicate-heal: talkinbroadway--howard-miller.json was flagged invalid after talkinbroadway--matthew-murray.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -106,6 +113,13 @@
       "loserFile": "nytimes--unknown.json",
       "targetFile": "nytimes--helen-shaw.json",
       "reason": "orphaned-duplicate-heal: nytimes--helen-shaw.json was flagged invalid after nytimes--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
+      "loserFile": "patch--unknown.json",
+      "targetFile": "patch--katie-rosin.json",
+      "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -170,6 +184,13 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
+      "loserFile": "patch--unknown.json",
+      "targetFile": "patch--katie-rosin.json",
+      "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
