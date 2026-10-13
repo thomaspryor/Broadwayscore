@@ -63,6 +63,7 @@ const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldLogRejection } = require('./lib/gather-review-stats');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
+const { isArchiveIdentityMismatch: isStagedoorArchiveMismatch } = require('./lib/stagedoor-identity');
 const { matchTitleToShow, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { fetchPage } = require('./lib/scraper');
@@ -995,8 +996,7 @@ async function runAggregators(show) {
         // the fetched page — so a wrong-production file matched to the wrong
         // show at WRITE time can still pass both checks here. Tracked as a
         // write-side follow-up, not fixed by this read-time guard.
-        const sdIdentityMismatch = (sdData.ourShowId && sdData.ourShowId !== show.id)
-          || !pageTitleConfirmsShow(sdData.title || '', show.title);
+        const sdIdentityMismatch = isStagedoorArchiveMismatch(sdData, show.id, show.title); // BRO-3615: shared predicate, includes pageTitle
         if (sdIdentityMismatch) {
           console.log(`  Stagedoor: archive identity mismatch (title "${sdData.title}" vs "${show.title}"${sdData.ourShowId ? `, ourShowId "${sdData.ourShowId}" vs "${show.id}"` : ''}) — quarantining`);
           try { fs.renameSync(sdArchivePath, sdArchivePath + '.mismatch'); } catch {}
