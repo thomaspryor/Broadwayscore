@@ -71,7 +71,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
 const { extractByline } = require('./lib/byline-extraction');
-const { resolveCritic } = require('./lib/resolve-critic');
+const { resolveCritic, nameFromAuthorUrl } = require('./lib/resolve-critic');
 const { pageMentionsShowTitle } = require('./lib/submission-show-match');
 
 const args = process.argv.slice(2);
@@ -86,7 +86,7 @@ function hasFlag(name) {
 const showId = getArg('show');
 const url = getArg('url');
 const outletArg = getArg('outlet');
-const criticArg = getArg('critic');
+const criticArg = nameFromAuthorUrl(getArg('critic'));
 // Extra heading spelling for a multi-show post whose section heading misspells
 // the title (interestedbystander's "Toera" for Torera, BRO-4658).
 const sectionTitleArg = getArg('section-title');
