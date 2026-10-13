@@ -1262,6 +1262,11 @@ on:
       # edit to it triggers CI.
       - 'scripts/discover-opera-shows.js'
       - 'scripts/audit-broadway-category-predicate.js'
+      # BRO-3650: colocated tests for the shows.json-writing fix scripts; path-listed so a solo edit triggers CI.
+      - 'scripts/fix-shared-ibdb-urls.js'
+      - 'scripts/fix-show-statuses.js'
+      - 'scripts/fix-stale-upcoming-tags.js'
+      - 'scripts/fix-todaytix-links.js'
       # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
       # without this entry a --update-baseline commit touching only the JSON
       # (or a lib-only fix) would get ZERO CI (memory/feedback_test_yml_push_path_allowlist.md).
