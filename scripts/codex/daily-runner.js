@@ -688,9 +688,10 @@ const LOCK_REF = process.env.CODEX_RUNNER_LOCK_REF || 'refs/heads/codex-runner-l
 // mid-run (container reclaimed, no release) idled every Codex runner for 5 h on 2026-10-11.
 const LOCK_STALE_MS = 90 * 60_000;
 let lockSha = null;
-// Every lock commit this run made (commit-tree): a remote tip among them is still our lock.
-const ownLockShas = new Set();
-// When a stamp last reached the remote; a lock we cannot re-stamp goes stale from here.
+// Every lock commit this run made (commit-tree) -> its commit time: a remote tip among them is
+// still our lock, and other runs judge its age by that time, not by when the push finished.
+const ownLockShas = new Map();
+// Commit time of our stamp the remote holds; a lock we cannot re-stamp goes stale from here.
 let lastStampOkMs = NaN;
 const RUN_ID = R.runnerId();
 const LOCK_GIT_MS = 120_000; // one lock push/read; the 600 s default let a hung push eat a card's budget
@@ -703,7 +704,8 @@ const lockStamp = () => R.lockMessage(new Date().toISOString(), [...openCards]);
 function lockCommit(msg) {
   const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
   const sha = git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg, '-m', `Run: ${RUN_ID}`], ROOT);
-  ownLockShas.add(sha);
+  // %ct is whole seconds; flooring keeps our idea of the stamp's age never younger than theirs.
+  ownLockShas.set(sha, Number(git(['log', '-1', '--format=%ct', sha], ROOT)) * 1000);
   return sha;
 }
 /** Remote lock sha, '' when the ref is absent, null when unreadable. */
@@ -763,7 +765,7 @@ function takeLock() {
   const sha = lockCommit(lockStamp());
   if (lockPush(sha, cur.sha).state !== 'pushed') { for (const id of stale) openCards.delete(id); return 'another run took the lock first'; }
   lockSha = sha;
-  lastStampOkMs = Date.now();
+  lastStampOkMs = ownLockShas.get(sha);
   orphanCards = stale;
   orphanLockMs = cur.sha ? cur.ms : NaN;
   log(`took the run lock as ${RUN_ID}${cur.sha ? ` (was: ${describeLock(cur)})` : ''}`);
@@ -784,9 +786,9 @@ function refreshLock(nextBlockMs = 0) {
   if (!lockSha) return true;
   const sha = lockCommit(lockStamp());
   const res = lockPush(sha, lockSha);
-  if (res.state === 'pushed') { lockSha = sha; lastStampOkMs = Date.now(); return true; }
+  if (res.state === 'pushed') { lockSha = sha; lastStampOkMs = ownLockShas.get(sha); return true; }
   if (res.state === 'lost') { log(`lock lost: the remote tip ${String(res.tip).slice(0, 8)} is not a stamp of this run (${RUN_ID})`); return false; }
-  if (res.state === 'kept') lockSha = res.tip;
+  if (res.state === 'kept') { lockSha = res.tip; lastStampOkMs = ownLockShas.get(res.tip); }
   // Push trouble, not another run: still ours until it could go stale under us.
   const tooOld = R.lockStampTooOld({ lastStampOkMs, nowMs: Date.now(), staleMs: LOCK_STALE_MS, nextBlockMs });
   log(`lock not re-stamped (${res.state}); last good stamp ${Math.round((Date.now() - lastStampOkMs) / 60_000)} min ago -> ${tooOld ? 'stopping' : 'still held'}`);
