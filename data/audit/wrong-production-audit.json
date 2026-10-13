@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T09:46:05.022Z",
+  "timestamp": "2026-10-13T10:14:54.343Z",
   "stats": {
     "totalReviews": 56275,
-    "alreadyFlagged": 20996,
+    "alreadyFlagged": 21000,
     "dateGuardCatches": 217,
-    "directorMismatch": 1859,
+    "directorMismatch": 1860,
     "tvFilmSignals": 1638,
     "londonSignals": 2233,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5249
+    "noPublishDate": 5247
   },
   "findings": [
     {
@@ -30188,6 +30188,20 @@
       "score": 91,
       "publishDate": "March 16, 2023",
       "url": "https://variety.com/2023/legit/reviews/parade-review-ben-platt-broadway-musical-1235555503/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-2023",
+      "file": "wsj--charles-isherwood.json",
+      "score": 61,
+      "publishDate": "March 16th, 2023",
+      "url": "https://www.wsj.com/articles/parade-review-a-broadway-musical-of-american-bigotry-fbfa32a6",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
