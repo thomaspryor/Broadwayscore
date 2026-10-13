@@ -1,23 +1,35 @@
 {
-  "updatedAt": "2026-10-13T13:37:01.337Z",
-  "processed": 8,
-  "failed": 23,
-  "successRate": "25.8%",
+  "updatedAt": "2026-10-13T13:43:23.700Z",
+  "processed": 165,
+  "failed": 68,
+  "successRate": "70.8%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 89,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 2,
-    "brightdata": 2,
+    "scrapingdog": 15,
+    "scrapingbee": 14,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 35
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-13T12:42:13.031Z",
+      "t": "2026-10-13T12:25:21.784Z",
+      "event": "bb-session",
+      "session": "bf5eede2",
+      "url": "https://littlelondonwhispers.substack.com/p/whos-afraid-of-virginia-woolf"
+    },
+    {
+      "t": "2026-10-13T12:35:26.720Z",
+      "event": "bb-session",
+      "session": "85b1d5a6",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-13T12:35:27.114Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
