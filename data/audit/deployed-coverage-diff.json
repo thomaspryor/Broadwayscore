@@ -1,13 +1,153 @@
 {
-  "generatedAt": "2026-10-13T02:58:18.831Z",
+  "generatedAt": "2026-10-13T04:12:19.730Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 225,
-  "clean": 225,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 227,
+  "clean": 219,
+  "defective": 8,
+  "byType": {
+    "score-drift": 7,
+    "missing-from-prod": 2
+  },
+  "shows": [
+    {
+      "showId": "spamalot-tour-2025",
+      "title": "Spamalot",
+      "openingDate": "2025-12-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: fortworthbusiness"
+        }
+      ],
+      "missingFromProd": [
+        "fortworthbusiness"
+      ],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: standard"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.69 vs local 81.93 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [
+        "standard"
+      ],
+      "localCount": 29,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "title": "Rent",
+      "openingDate": "2026-10-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.15 vs local 78.23 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "openingDate": "2026-10-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.34 vs local 81.52 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.43 vs local 76.5 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 39,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
+      "openingDate": "2026-09-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.17 vs local 81.09 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-08-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.27 vs local 74.33 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 38,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.23 vs local 75.49 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 31,
+      "deployedCount": 31,
+      "firstDefectAt": "2026-10-13T04:12:15.677Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
