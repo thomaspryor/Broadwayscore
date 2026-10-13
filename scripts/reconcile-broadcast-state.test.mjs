@@ -86,11 +86,13 @@ function fakeHttpsRequest(responses) {
         if (event === 'end') cb();
       },
     };
-    return {
-      on() {},
+    const req = {
+      on() { return req; },
+      setTimeout() { return req; }, // real ClientRequest API (BRO-3840)
       end() { callback(res); },
       destroy() {},
     };
+    return req;
   };
 }
 
