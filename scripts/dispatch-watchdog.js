@@ -920,9 +920,10 @@ function codeChangedOnDisk() {
 async function dashboardLoop() {
   let lastTitle = '';
   refreshCodeBaseline();
-  // Exit RESTART_EXIT_CODE so the tab launcher relaunches (on the code now on
-  // disk) even when ensureTab's 10s wait timed out and gave up on this pid.
-  process.on('SIGTERM', () => { releaseLock(); process.exit(staleCode.RESTART_EXIT_CODE); });
+  // Exit 0 (not RESTART_EXIT_CODE): ensureTab SIGTERMs us and then closes the
+  // tab, so a relaunching launcher would start a second dashboard in the old
+  // tab. A timed-out kill heals via the heartbeat-stale path instead.
+  process.on('SIGTERM', () => { releaseLock(); process.exit(0); });
   process.on('SIGINT', () => { releaseLock(); process.exit(0); });
   for (;;) {
     // BRO-3390: refresh the Linear source before each sweep. Awaited inside
