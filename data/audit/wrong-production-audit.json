@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T03:13:20.942Z",
+  "timestamp": "2026-10-13T03:28:38.959Z",
   "stats": {
-    "totalReviews": 56244,
+    "totalReviews": 56279,
     "alreadyFlagged": 20990,
     "dateGuardCatches": 217,
-    "directorMismatch": 1852,
-    "tvFilmSignals": 1625,
+    "directorMismatch": 1859,
+    "tvFilmSignals": 1626,
     "londonSignals": 2217,
     "offBroadwaySignals": 507,
-    "yearMismatch": 138,
-    "noPublishDate": 5257
+    "yearMismatch": 139,
+    "noPublishDate": 5258
   },
   "findings": [
     {
@@ -159,6 +159,19 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--brock-mills.json",
+      "publishDate": "2026-04-17",
+      "url": "https://www.broadwayworld.com/jacksonville/article/Review-A-BEAUTIFUL-NOISE--THE-NEIL-DIAMOND-MUSICAL-at-Jacksonville-Center-For-The-Performing-Arts-20260417",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "broadwayworld--jared-fessler.json",
       "score": 79,
       "publishDate": null,
@@ -261,6 +274,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (4x) more than 2024 (2x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "florida-theater-on-stage--bill-hirschman.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.floridatheateronstage.com/reviews/neil-diamond-musical-reveals-troubled-man-behind-parade-of-greatest-hits/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
         }
       ]
     },
@@ -3236,6 +3262,7 @@
     {
       "showId": "arcadia-2011",
       "file": "talkinbroadway--matthew-murray.json",
+      "score": 63,
       "publishDate": "2011-03-17",
       "url": "https://www.talkinbroadway.com/page/world/Arcadia2011.html",
       "findings": [
@@ -8292,6 +8319,19 @@
       "score": 88,
       "publishDate": "2026-07-15",
       "url": "https://www.broadwayworld.com/edmonton/article/Review-CLUE-Takes-Centre-Stage-at-Edmontons-Northern-Alberta-Jubilee-Auditorium-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "broadwayworld--the-marriage-matinee.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.broadwayworld.com/indianapolis/article/Review-The-Evidence-Points-to-CLUE-at-Old-National-Centre-with-Endless-Laughter-20260416",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30103,6 +30143,7 @@
     {
       "showId": "paranormal-activity-2026",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 86,
       "publishDate": "2026-10-12",
       "url": "https://frontmezzjunkies.com/2026/10/12/paranormal-activity-turns-broadway-into-a-house-of-horrors/",
       "findings": [
@@ -30930,6 +30971,7 @@
     {
       "showId": "picnic-2013",
       "file": "talkinbroadway--matthew-murray.json",
+      "score": 46,
       "publishDate": "2013-01-13",
       "url": "https://talkinbroadway.com/page/world/Picnic2013.html",
       "findings": [
@@ -36141,6 +36183,19 @@
       "score": 78,
       "publishDate": "2025-11-20",
       "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-reminds-us-to-keep-marching_1812851/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "thetangential--jean-gabler.json",
+      "publishDate": "2026-04-08",
+      "url": "https://thetangential.com/2026/04/08/theater-review-suffs-resounds-with-righteousness/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42950,6 +43005,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2026-08-06",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/outsiders-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "chicago-sun-times--catey-sullivan.json",
       "score": 80,
       "publishDate": "2026-02-13",
@@ -43094,6 +43162,19 @@
       "score": 79,
       "publishDate": "2026-08-26",
       "url": "https://freepressokc.com/the-outsiders-stays-gold-in-striking-new-musical-at-civic-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-08-06",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/8/6/picksinsix-review-the-outsiders-broadway-in-chicago",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43802,6 +43883,19 @@
       "score": 93,
       "publishDate": "2025-11-25",
       "url": "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/review-the-phantom-mask-returns/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "rhetoricalreview--keolanani-kinghorn.json",
+      "publishDate": "2026-04-11",
+      "url": "https://rhetoricalreview.com/love-is-seeing-clearly-in-the-dark-the-phantom-of-the-opera-at-eccles-theater/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48738,6 +48832,19 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "onstagepittsburgh--sharon-eberson.json",
+      "publishDate": "2026-04-01",
+      "url": "https://onstagepittsburgh.com/2026/04/01/review-water-for-elephants-soars-with-the-thrills-of-circus-and-puppet-artistry/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "picksinsix--ed-tracy.json",
       "score": 90,
       "publishDate": "2026-06-25",
@@ -50145,6 +50252,19 @@
       "score": 88,
       "publishDate": "2022-06-10",
       "url": "https://www.bostonglobe.com/2022/06/10/arts/opera-house-wicked-still-casts-spell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "broadwayworld--theresa-bertram.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.broadwayworld.com/little-rock/article/Review-WICKED-at-Robinson-Center-in-Little-Rock-20260416",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -72451,7 +72571,7 @@
     {
       "showId": "relics-west-end-2026",
       "file": "liamodell--liam-odell.json",
-      "score": null,
+      "score": 61,
       "publishDate": "2026-06-28",
       "url": "https://liamodell.com/2026/06/28/relics-review-lyric-hammersmith-theatre-ben-ockrent-sally-phillips-sam-swainsbury-jj-feild-charly-clive-michael-longhurst/",
       "findings": [
