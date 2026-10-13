@@ -2359,6 +2359,10 @@ on:
       # guard (and the lib it needs); tests drive the real scripts. Also in
       # tests/unit-test-manifest.txt.
       - '.claude/hooks/github-main-guard.sh'
+      # BRO-2394: visual gate on GitHub MCP file writes (lib called by
+      # github-main-guard.sh); driven for real by the test below.
+      - 'scripts/lib/mcp-push-visual-gate.sh'
+      - 'scripts/tests/github-mcp-push-gates.test.mjs'
       - '.claude/hooks/block-resend-broadcasts.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
       # BRO-5221: hooks/commands for cloud sessions that start in /home/user;

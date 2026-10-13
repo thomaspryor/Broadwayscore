@@ -50,4 +50,7 @@ case "$branch" in
     echo "🛑 BLOCKED: GitHub-tool writes to thomaspryor/Broadwayscore main are refused (BRO-4238); they skip land.yml's gates. Write to a land/<name> branch instead (land.yml gates it and fast-forwards main), then follow the Land run. Emergency override: create \$HOME/.claude/LAND_ENFORCE_OFF." >&2
     exit 2 ;;
 esac
+# BRO-2394: visual-QA gate for MCP file writes carrying UI files (advisory).
+VG="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/lib/mcp-push-visual-gate.sh"
+[ -f "$VG" ] && { printf '%s' "$input" | bash "$VG"; exit $?; }
 exit 0
