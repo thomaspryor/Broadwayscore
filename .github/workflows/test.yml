@@ -5261,7 +5261,10 @@ jobs:
           new=$(comm -3 <(sort "$before") <(sort "$after") | sed -E 's/^\t?[0-9a-f]{64}  //' | sort -u)
           if [ -n "$new" ]; then
             echo "::warning::Unit tests wrote to production ledgers under data/audit:"
-            echo "$new"
+            # mtime per file: match it to the step timestamps above to find the writer.
+            while IFS= read -r f; do
+              if [ -e "$f" ]; then echo "$f (modified $(date -u -r "$f" +%H:%M:%S) UTC)"; else echo "$f (deleted)"; fi
+            done <<< "$new"
             echo "Isolate the test: redirect the ledger path to a tmp dir (see BRO-2656)."
           else
             echo "OK: no test wrote to data/audit."
