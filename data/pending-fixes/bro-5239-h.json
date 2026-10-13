@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-h",
   "planId": "2c1d08eb-0699-441f-b0b3-35632a6d1fca",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-13T08:13:56.197Z",
   "submitter": {
     "name": null,
@@ -215,5 +215,133 @@
         "description": "Page is not a rated review (listing, news item or forum thread); the stored 1/5 has no source."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T10:06:00.246Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-truth-a-comedy-by-florian-zeller-west-end-2026/north-west-end--savitha-venugopal.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/a-youngish-perspective--rose-charles-raj.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/liamodell--liam-odell.json originalScore: \"2/5\" -> \"2/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unfriend-west-end-2023/a-youngish-perspective--tabitha-james.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unfriend-west-end-2023/firstnightmagazine--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-virtuous-burglar-off-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"4.5/5\" -> \"4.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-world-is-full-of-married-men-off-west-end-2026/liamodell--liam-odell.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "this-is-not-about-me-off-west-end-2026/a-youngish-perspective--ke-meng.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "this-is-not-about-me-off-west-end-2026/firstnightmagazine--unknown.json originalScore: \"1.5/5\" -> \"1.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-men-in-a-boat-off-west-end-2026/north-west-end--prateek-sonny.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "tru-off-west-end-2026/liamodell--unknown.json originalScore applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/readaboutstuff--unknown.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twenty-thousand-streets-off-west-end-2026/readaboutstuff--unknown.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-animals-say-off-west-end-2026/the-spy-in-the-stalls--thespyinthestalls.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/readaboutstuff--unknown.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blood-of-my-blood-west-end-2026/london-unattached--mike-stone.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glass-kill-bluebeard-and-imp-west-end-2019/getthechance--hannah-goslin.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rare-earth-mettle-west-end-2021/getthechance--hannah-goslin.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spirited-away-west-end-2024/getthechance--hannah-goslin.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-west-end-2026/click-liverpool--unknown.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-neighbour-totoro-west-end-2025/click-liverpool--unknown.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/playbill--leah-putnam.json originalScore: \"2/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kenrex-off-broadway-2026/playbill--unknown.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lucky-guy-2013/playbill--playbill-staff.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mexodus-off-broadway-2026/times-square-chronicles--genevieve-rafter-keddy.json originalScore: \"1/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
 }
