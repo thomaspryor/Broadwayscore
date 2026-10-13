@@ -83,6 +83,7 @@ const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
+const { incomingCrossProductionReason, crossProductionMergeRefusal } = require('./lib/merge-date-guard');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -3590,6 +3591,18 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // BRO-3503: the URL-date wrongProduction guards below only run on the
+  // new-file path. Evaluate them up front so the merge/replace branches can
+  // refuse a cross-production url instead of merging it into an existing slot.
+  let _incomingCrossProdReason = null;
+  try { _incomingCrossProdReason = incomingCrossProductionReason(reviewData, _showMeta); } catch (e) { /* guard failure never blocks */ }
+  const refuseMergeInto = (existingReview, existingFile) => {
+    const reason = crossProductionMergeRefusal(existingReview, reviewData, _incomingCrossProdReason, normalizeUrl);
+    if (!reason) return null;
+    console.log(`    ✗ Refusing to merge ${reviewData.url} into ${existingFile}: ${reason}`);
+    return 'crossProductionMergeRefused';
+  };
+
   // Check for existing review with same normalized key
   if (fs.existsSync(showDir)) {
     const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -3608,6 +3621,8 @@ function createReviewFile(showId, reviewData, options = {}) {
           // or existing is a prefix of incoming
           if (incomingCriticSlug.length >= 3 && existingCriticSlug.startsWith(incomingCriticSlug + '-')) {
             // Incoming "jesse" matches existing "jesse-green" — merge into existing
+            const refused = refuseMergeInto(existingReview, existingFile);
+            if (refused) return refused;
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
@@ -3618,6 +3633,8 @@ function createReviewFile(showId, reviewData, options = {}) {
           }
           if (existingCriticSlug.length >= 3 && incomingCriticSlug.startsWith(existingCriticSlug + '-')) {
             // Existing "jesse" matches incoming "jesse-green" — merge and rename
+            const refused = refuseMergeInto(existingReview, existingFile);
+            if (refused) return refused;
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
@@ -3633,6 +3650,8 @@ function createReviewFile(showId, reviewData, options = {}) {
           // Catches: vulture--unknown.json (SERP) + incoming vulture/Sara Holdren (BWW/DTLI)
           if (existingCriticSlug === 'unknown' && incomingCriticSlug !== 'unknown'
               && !existingReview.criticNameManual) {
+            const refused = refuseMergeInto(existingReview, existingFile);
+            if (refused) return refused;
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
@@ -3648,6 +3667,9 @@ function createReviewFile(showId, reviewData, options = {}) {
 
         // Check if same review (by key or URL)
         if (existingKey === reviewKey) {
+          // BRO-3503: covers both the wrongShow/wrongProd replace and the merge below.
+          const refused = refuseMergeInto(existingReview, existingFile);
+          if (refused) return refused;
           // If existing file is wrongShow/wrongProduction and incoming has a different URL,
           // replace the existing file instead of merging — the old content is junk.
           // Preserve aggregator-sourced scores (bwwScore, showScoreRating, dtliThumb) that
@@ -4027,15 +4049,11 @@ function createReviewFile(showId, reviewData, options = {}) {
   // wrongProductionReason value would make the flag permanently un-auto-
   // clearable even after a legitimate priorRuns entry is declared (task #1678).
   //
-  // Scope note (ship-check adversarial review): like the Unknown-critic check
-  // above, this only runs on the NEW-FILE creation path — the merge/replace
-  // branches earlier in this function (existing outlet+critic match) return
-  // before `review` is even constructed, so a bad BWW RR URL that happens to
-  // match an ALREADY-EXISTING file for that outlet+critic slot merges without
-  // this check ever running. That gap predates this guard (it equally affects
-  // getWrongProductionReasonForUnknownCritic above) and reordering the merge
-  // decision tree ahead of the date guards is a much larger, separate change
-  // than BRO-916's scope — not addressed here. Also deliberately NOT gated on
+  // Scope note: this (and the Unknown-critic check above) flags on the NEW-FILE
+  // path. The merge/replace branches earlier in this function run the same two
+  // guards up front (BRO-3503, lib/merge-date-guard.js) and REFUSE a cross-
+  // production url rather than merge it into an existing outlet+critic slot.
+  // Also deliberately NOT gated on
   // review.publishDate: BWW RR's publishDate (when present) is the ROUNDUP
   // PAGE's own JSON-LD datePublished stamped onto every extracted entry
   // (Method 2 supplement, ~line 2536), not a per-review verified date — an
