@@ -1,14 +1,18 @@
 {
   "pipeline": "llm-ensemble-scoring",
-  "processed": 0,
+  "processed": 3,
   "total": 5,
-  "pct": 0,
-  "skipped": 0,
-  "errors": 0,
-  "filesModified": 0,
-  "elapsedSeconds": 0,
-  "rateSecondsPerReview": 0,
-  "estimatedRemainingMinutes": null,
-  "lastUpdated": "2026-10-13T21:28:25.184Z",
-  "runId": "38470159969"
+  "pct": 60,
+  "skipped": 1,
+  "errors": 1,
+  "filesModified": 4,
+  "elapsedSeconds": 474,
+  "rateSecondsPerReview": 158,
+  "estimatedRemainingMinutes": 5,
+  "lastUpdated": "2026-10-13T21:36:18.840Z",
+  "runId": "38470159969",
+  "globalTotalFiles": 56531,
+  "globalScored": 31503,
+  "globalUnscored": 3684,
+  "globalSkipped": 21344
 }

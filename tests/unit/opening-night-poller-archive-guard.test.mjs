@@ -96,10 +96,9 @@ test('Stagedoor (SD) archive read validates cached identity before extracting re
   const idx = SRC.indexOf("path.join(DATA_DIR, 'aggregator-archive', 'stagedoor'");
   assert.ok(idx > 0, 'must still locate the stagedoor archive path');
   const scope = SRC.slice(idx, idx + 1800);
-  assert.match(scope, /pageTitleConfirmsShow\(sdData\.title \|\| '', show\.title\)/,
-    'must validate sdData.title against show.title, defaulting a missing title to "" so it fails CLOSED (not skipped) rather than passing vacuously');
-  assert.match(scope, /sdData\.ourShowId && sdData\.ourShowId !== show\.id/,
-    'must also cross-check the archive\'s own ourShowId field against show.id');
+  // BRO-3615: shared predicate (scripts/lib/stagedoor-identity.js), tested against the real function in stagedoor-archive-identity.test.mjs
+  assert.match(scope, /isStagedoorArchiveMismatch\(sdData, show\.id, show\.title\)/,
+    'must validate the cached archive identity via the shared predicate');
   assert.match(scope, /fs\.renameSync\(sdArchivePath, sdArchivePath \+ '\.mismatch'\)/,
     'an identity mismatch must quarantine the file, matching the TR/TS pattern');
   const checkIdx = scope.indexOf('sdIdentityMismatch');

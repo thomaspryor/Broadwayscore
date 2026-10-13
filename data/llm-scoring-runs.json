@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-12T17:09:25.206Z",
-    "completedAt": "2026-10-12T17:09:25.208Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "38281187745",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-12T17:13:49.320Z",
-    "completedAt": "2026-10-12T17:13:51.815Z",
-    "totalReviews": 32,
-    "processed": 0,
-    "skipped": 31,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3986,
-      "output": 120,
-      "total": 11623
-    },
-    "costUsd": 0.014116499999999999,
-    "runId": "38280094401",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-12T17:13:53.809Z",
     "completedAt": "2026-10-12T17:13:53.821Z",
     "totalReviews": 0,
@@ -749871,6 +749839,44 @@
     },
     "costUsd": 0,
     "runId": "38460401844",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-13T21:28:25.184Z",
+    "completedAt": "2026-10-13T21:36:18.841Z",
+    "totalReviews": 56531,
+    "processed": 3,
+    "skipped": 56526,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 20122,
+      "output": 1065,
+      "total": 53368
+    },
+    "costUsd": 0.08011545,
+    "runId": "38470159969",
+    "errorDetails": [
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-13T21:36:32.363Z",
+    "completedAt": "2026-10-13T21:36:36.440Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38470159969",
     "errorDetails": []
   }
 ]

@@ -1,49 +1,21 @@
 {
-  "updatedAt": "2026-10-13T20:52:47.867Z",
-  "processed": 105,
-  "failed": 78,
-  "successRate": "57.4%",
+  "updatedAt": "2026-10-13T22:02:47.501Z",
+  "processed": 110,
+  "failed": 87,
+  "successRate": "55.8%",
   "tierBreakdown": {
-    "playwright": 74,
+    "playwright": 78,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 16,
-    "scrapingbee": 10,
+    "scrapingdog": 21,
+    "scrapingbee": 13,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 20
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-13T20:21:06.841Z",
-      "event": "bb-session",
-      "session": "946cf705",
-      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
-    },
-    {
-      "t": "2026-10-13T20:21:07.351Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T20:21:24.845Z",
-      "event": "bb-session",
-      "session": "7d014052",
-      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
-    },
-    {
-      "t": "2026-10-13T20:21:25.307Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T20:22:37.331Z",
-      "event": "bb-session",
-      "session": "932daae7",
-      "url": "http://online.wsj.com/article/SB10001424052970204323904577039983355570926.html"
-    },
     {
       "t": "2026-10-13T20:22:37.821Z",
       "event": "bb-cookie-inject",
@@ -126,6 +98,35 @@
       "event": "bb-session",
       "session": "b4dbf5ab",
       "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-13T21:53:12.557Z",
+      "event": "bb-session",
+      "session": "1c127632",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-13T21:54:52.383Z",
+      "event": "bb-session",
+      "session": "a8926ec8",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-13T21:55:00.659Z",
+      "event": "bb-session",
+      "session": "483f3baa",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-13T21:57:24.885Z",
+      "event": "bb-session",
+      "session": "78ea5dd1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-13T21:57:25.567Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

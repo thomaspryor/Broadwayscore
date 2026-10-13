@@ -89,4 +89,45 @@ function shouldLaunchNewCrown(existingWorkspaces, title) {
   };
 }
 
-module.exports = { isCrownLaunchTitle, shouldLaunchNewCrown };
+// BRO-4077: an ordinary "👑 OWNER — <mandate>" hand-off (not the BRO-343 crown,
+// not the "👑 OWNER watchdog" singleton) had no duplicate guard at all: a caller
+// that crashed AFTER a successful launch and re-ran produced two live workspaces
+// with the identical title (2026-09-23, workspace:35 and :36). Same-title is the
+// key because the title is the only thing both launches share.
+function isOwnerLaunchTitle(title) {
+  const t = String(title || '');
+  return OWNER_PREFIX_RE.test(t) && !isCrownLaunchTitle(t) && !/\bOWNER\s+watchdog\b/i.test(t);
+}
+
+// cmux prepends an activity glyph (braille spinner, ✅/🤖) to a live tab's title
+// (dispatch-watchdog.js strips it the same way), so a working tab never equals
+// the title we pass in. Strip the leading non-letter/non-digit/non-👑 run and
+// collapse whitespace before comparing.
+function normalizeLaunchTitle(title) {
+  return String(title || '').replace(/^[^\p{L}\p{N}👑]*/u, '').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * @param {Array<{ref:string,title:string}>} existingWorkspaces workspaces the
+ *   caller considers LIVE, with the successor's own predecessor already removed.
+ *   A listed identical-title tab counts as live even before claude registers
+ *   (the slow-boot window is minutes: the incident's re-run came seconds later);
+ *   a genuine corpse is closed or bypassed with force:true.
+ */
+function shouldLaunchSameTitle(existingWorkspaces, title) {
+  if (!isOwnerLaunchTitle(title)) return { allow: true };
+  const want = normalizeLaunchTitle(title);
+  const existing = (existingWorkspaces || []).find((w) => w && normalizeLaunchTitle(w.title) === want);
+  if (!existing) return { allow: true };
+  return {
+    allow: false,
+    existing,
+    reason:
+      `a workspace with the identical title is already running in ${existing.ref} ("${existing.title}") — ` +
+      `refusing to launch a duplicate "${title}". If a prior launch of this work crashed after creating it, ` +
+      `use that workspace. If it is a dead tab, close it first. A sanctioned successor hand-off passes ` +
+      `successorOf: process.env.CMUX_WORKSPACE_ID; force:true is for a deliberate second session.`,
+  };
+}
+
+module.exports = { isCrownLaunchTitle, shouldLaunchNewCrown, isOwnerLaunchTitle, normalizeLaunchTitle, shouldLaunchSameTitle };

@@ -29,7 +29,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
-const { isCrownLaunchTitle, shouldLaunchNewCrown } = require('./crown-fanout-guard.js');
+const { isCrownLaunchTitle, shouldLaunchNewCrown, isOwnerLaunchTitle, shouldLaunchSameTitle } = require('./crown-fanout-guard.js');
 const { decideLaunchWait, isSlowBootFailure, STATES, REASONS,
   shouldProbeSurface, shouldReprobeCapacity,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
@@ -1212,6 +1212,25 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       const reason = crownCheck.reason;
       console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
       return { ok: false, reason, refusedForCrownFanout: true, seedFile, command };
+    }
+  }
+
+  // BRO-4077: identical-title guard for ordinary "👑 OWNER — …" hand-offs (the
+  // crown guard above only matches BRO-343 crowns). A listed identical-title
+  // workspace refuses; a listing failure fails open. successorOf exempts the
+  // caller's own predecessor; force and SAME_TITLE_GUARD_DISABLED=1 bypass.
+  if (!force && isOwnerLaunchTitle(title) && process.env.SAME_TITLE_GUARD_DISABLED !== '1') {
+    let sameTitleCandidates = [];
+    try {
+      sameTitleCandidates = (probes.listWorkspaces || cmuxws.listWorkspacesWithCwd)()
+        .filter((w) => w && !(successorOf && (w.ref === successorOf || w.id === successorOf)));
+    } catch (e) {
+      console.error(`[cmux-launch] WARN could not list existing workspaces for the same-title guard (${e.message}) — proceeding without a duplicate-title check`);
+    }
+    const sameTitleCheck = shouldLaunchSameTitle(sameTitleCandidates, title);
+    if (!sameTitleCheck.allow) {
+      console.error(`[cmux-launch] REFUSING launch "${title}": ${sameTitleCheck.reason}`);
+      return { ok: false, reason: sameTitleCheck.reason, refusedForSameTitle: true, existingRef: sameTitleCheck.existing.ref, seedFile, command };
     }
   }
 
