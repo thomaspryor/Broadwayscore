@@ -117,7 +117,7 @@ async function fetchFormspreeSubmissions() {
       const response = await fetch(
         `https://formspree.io/api/0/forms/mojdjwqo/submissions?${qs}`,
         {
-          signal: AbortSignal.timeout(300000),
+          signal: AbortSignal.timeout(60000),
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

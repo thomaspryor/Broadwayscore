@@ -338,7 +338,7 @@ async function processShow(show, shows = [], services = {}) {
   const skipReason = castWebSkipReason(show);
   if (skipReason) return { skipped: true, reason: skipReason, cast: [] };
   const search = services.searchCast || searchCast;
-  const fetch = services.fetchPageText || fetchPageText;
+  const fetchText = services.fetchPageText || fetchPageText;
   const extract = services.extractCastWithLLM || extractCastWithLLM;
   const delay = services.sleep || sleep;
   const year = show.openingDate ? show.openingDate.split('-')[0] :
@@ -382,7 +382,7 @@ async function processShow(show, shows = [], services = {}) {
 
     let pageText;
     try {
-      pageText = await fetch(sr.url);
+      pageText = await fetchText(sr.url);
     } catch (e) {
       console.log(`  Fetch error: ${e.message}`);
       anyTransientFailure = true;
