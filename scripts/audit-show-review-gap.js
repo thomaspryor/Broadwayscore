@@ -1250,7 +1250,7 @@ async function auditShow(show, opts = {}) {
         if (!f.endsWith('.json')) continue;
         try {
           const d = JSON.parse(fs.readFileSync(path.join(pendingDir, f), 'utf8'));
-          if (d && d.url && d.publishDate) pending.push({ url: normalizeReviewUrl(d.url), publishDate: d.publishDate });
+          if (d && d.url && d.publishDate && d.pendingReason === 'date_implausible') pending.push({ url: normalizeReviewUrl(d.url), publishDate: d.publishDate });
         } catch { /* unreadable pending file: no evidence */ }
       }
       const priorByUrl = pendingPriorRunUrls(pending, show);
@@ -1339,13 +1339,13 @@ async function auditShow(show, opts = {}) {
       const oid = outletKey(rawOid);
       if (!oid || seenOutlets.has(oid)) continue;
       seenOutlets.add(oid);
-      if (isRoundupSelfCitation(row)) continue; // the roundup's own verdict: no page to collect
       const files = dirByOutlet.get(oid) || [];
       if (files.some(d => isCoveredFile(d, show))) {
         if (!row.priorRun) { _weCoveredNoUrl++; bumpPerSource(row.source, true); }
         continue;
       }
       if (pendingOutlets.has(oid)) continue;
+      if (isRoundupSelfCitation(row)) continue; // WET's own in-roundup verdict: no page to collect
       // Accuracy counts only CHECKABLE citations (QA review 2026-07-11): an
       // outlet with NO files at all is merely un-gathered — unverifiable, not
       // contradicted — and must not count against the source's accuracy (a
@@ -2042,7 +2042,7 @@ async function main(argv = process.argv.slice(2)) {
         try {
           const { sendAlert } = require('./lib/discord-notify');
           const lines = [
-            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? ' [prior-run roundup]' : ''}`),
+            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : ' [prior-run roundup]') : ''}`),
             ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
           ];
           const delivered = await sendAlert({

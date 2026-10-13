@@ -187,7 +187,8 @@ test('a press-night cluster of early-dated stored reviews stays a gap (Grease im
 test('a roundup citing its own verdict with no link is not a missing review (BRO-4790 WET Last Ship)', () => {
   const { isRoundupSelfCitation } = require('./gap-ingest-policy.js');
   assert.strictEqual(isRoundupSelfCitation({ outletId: 'westendtheatre', outletName: 'WestendTheatre.com', source: 'westendtheatre' }), true);
-  assert.strictEqual(isRoundupSelfCitation({ outletId: 'london-box-office', source: 'lbo-roundup' }), true);
+  // London Box Office has standalone review pages: its self-citation stays a gap
+  assert.strictEqual(isRoundupSelfCitation({ outletId: 'london-box-office', source: 'lbo-roundup' }), false);
   // another outlet cited by the same roundup is still a gap
   assert.strictEqual(isRoundupSelfCitation({ outletId: 'telegraph', source: 'lbo-roundup' }), false);
   assert.strictEqual(isRoundupSelfCitation({ outletId: 'financialtimes', source: 'westendtheatre' }), false);
