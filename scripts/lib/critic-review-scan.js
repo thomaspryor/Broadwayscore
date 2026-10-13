@@ -10,11 +10,13 @@ const path = require('path');
 const { normalizeOutlet } = require('./review-normalization');
 const { listShowDirs } = require('./list-show-dirs');
 const { isVerifiedRow, reviewYear } = require('./critic-tenure');
+const { foldDiacritics } = require('./title-match');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 
 function slugifyCritic(name) {
-  return name
+  // Fold first so an accented name keeps its letters ("Hélène" -> "helene").
+  return foldDiacritics(name)
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')

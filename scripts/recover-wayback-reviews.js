@@ -36,6 +36,7 @@ const { generateReviewFilename } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { chooseArticleBody } = require('./lib/jsonld-body-choice');
 
 const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
 
@@ -258,7 +259,16 @@ function extractTextFromHtml(html, url) {
   // Step 1: Strip Wayback toolbar FIRST
   html = stripWaybackToolbar(html);
 
-  // Step 2: Try JSON-LD articleBody (most reliable when available)
+  // Step 2: JSON-LD articleBody (most reliable when available). A short body
+  // can be a teaser of the page prose (Variety, BRO-5222): chooseArticleBody
+  // prefers the page text only when it is the same article, clearly longer.
+  const ldBody = extractJsonLdArticleBody(html);
+  const pageText = extractPageText(html, url);
+  if (!ldBody) return pageText;
+  return chooseArticleBody(ldBody, pageText).text;
+}
+
+function extractJsonLdArticleBody(html) {
   const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
   if (jsonLdMatch) {
     for (const match of jsonLdMatch) {
@@ -273,7 +283,10 @@ function extractTextFromHtml(html, url) {
       } catch {}
     }
   }
+  return '';
+}
 
+function extractPageText(html, url) {
   // Step 3: Try article-scoped extraction first (much cleaner than whole-page)
   // Match <article> tags, or common article container classes
   const articlePatterns = [
