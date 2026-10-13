@@ -28,6 +28,7 @@ test('manifest entries are applied: previews + dates, closed + closingDate, upco
 
 test('shows outside the manifest are left alone and missing manifest ids are reported, not fatal', () => {
   const r = runInSandbox('fix-show-statuses.js', [], fixture());
+  assert.equal(r.status, 0);
   assert.deepEqual(byId(r.after, 'untouched-2026'), fixture()[3]);
   assert.match(r.stderr, /Show not found: spare-parts-off-broadway-2026/);
   assert.match(r.stdout, /Done\. 3 shows updated/);

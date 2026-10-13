@@ -31,6 +31,7 @@ test('--apply drops the tag (case-insensitive) only where status moved past upco
 
 test('--show=ID scopes the fix to one show', () => {
   const r = runInSandbox('fix-stale-upcoming-tags.js', ['--apply', '--show=b'], fixture());
+  assert.equal(r.status, 0);
   assert.deepEqual(tags(r.after, 'b'), []);
   assert.deepEqual(tags(r.after, 'a'), ['Upcoming', 'musical']);
 });

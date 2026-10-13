@@ -15,8 +15,11 @@ export function runInSandbox(scriptName, args, shows) {
     const r = spawnSync(process.execPath, ['-r', join(here, 'shows-sandbox-preload.cjs'), join(here, '..', scriptName), ...args], {
       env: { ...process.env, SHOWS_SANDBOX_FILE: file },
       encoding: 'utf8',
+      timeout: 30000,
     });
-    return { status: r.status, stdout: r.stdout, stderr: r.stderr, after: JSON.parse(readFileSync(file, 'utf8')).shows };
+    let after;
+    try { after = JSON.parse(readFileSync(file, 'utf8')).shows; } catch (e) { throw new Error(`sandbox shows.json unreadable (${e.message}); stderr: ${r.stderr}`); }
+    return { status: r.status, stdout: r.stdout, stderr: r.stderr, after };
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
