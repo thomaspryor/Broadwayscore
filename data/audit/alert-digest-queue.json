@@ -1984,5 +1984,35 @@
       }
     ],
     "queuedAt": "2026-10-13T19:25:09.502Z"
+  },
+  {
+    "conditionKey": "land:land/gate-hardening",
+    "title": "Landing blocked: unit-tests-node red on land/gate-hardening",
+    "description": "land.yml did not land land/gate-hardening: the unit-tests-node gate went red at e83be60da3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38451359286",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/gate-hardening"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e83be60da340d32ea6183ef0cd16593a7d833a97"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38451359286"
+      }
+    ],
+    "queuedAt": "2026-10-13T19:29:23.456Z"
   }
 ]
