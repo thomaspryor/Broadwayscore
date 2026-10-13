@@ -28,5 +28,18 @@
       }
     ],
     "queuedAt": "2026-10-13T09:23:27.326Z"
+  },
+  {
+    "conditionKey": "coverage-holes:franz-and-marie-west-end-2026",
+    "title": "franz-and-marie-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json (stored URL looks like another show: repair the URL)\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-13T09:29:22.716Z"
   }
 ]

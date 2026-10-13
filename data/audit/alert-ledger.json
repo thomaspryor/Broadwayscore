@@ -334,12 +334,13 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-13T05:06:56.613Z",
+      "lastSeen": "2026-10-13T09:30:14.609Z",
       "lastNotifiedAt": "2026-10-13T05:06:56.613Z",
       "lastSurfacedAt": "2026-10-13T05:06:56.613Z",
       "notifyCount": 33,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -8951,12 +8952,13 @@
       "title": "Overdue P0/P1 queue: 7 P0 older than 24h, 37 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-13T05:05:57.855Z",
+      "lastSeen": "2026-10-13T09:28:56.846Z",
       "lastNotifiedAt": "2026-10-13T05:05:57.855Z",
       "lastSurfacedAt": "2026-10-13T05:05:57.855Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "open",
@@ -11115,7 +11117,7 @@
       "title": "1 new decision is waiting on you",
       "firstSeen": "2026-10-06T13:42:06.180Z",
       "incidentOpenedAt": "2026-10-12T03:15:06.793Z",
-      "lastSeen": "2026-10-13T05:06:26.007Z",
+      "lastSeen": "2026-10-13T09:29:25.098Z",
       "lastNotifiedAt": "2026-10-13T05:06:26.007Z",
       "lastSurfacedAt": "2026-10-13T05:06:26.007Z",
       "notifyCount": 3,
@@ -11128,7 +11130,8 @@
         "BRO-539@c3b1cb23c7ff",
         "BRO-855@7266dd395c3e",
         "BRO-958@6878f0b534d0"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-3619-muuev8ci": {
       "status": "open",
@@ -15780,6 +15783,19 @@
       "lastSeen": "2026-10-13T09:28:34.875Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.875Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.875Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:franz-and-marie-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "franz-and-marie-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-13T09:29:22.716Z",
+      "incidentOpenedAt": "2026-10-13T09:29:22.716Z",
+      "lastSeen": "2026-10-13T09:29:22.716Z",
+      "lastNotifiedAt": "2026-10-13T09:29:22.716Z",
+      "lastSurfacedAt": "2026-10-13T09:29:22.716Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
