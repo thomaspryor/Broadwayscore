@@ -163,14 +163,14 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-13T05:39:03.748Z",
-      "lastSeen": "2026-10-13T05:56:00.345Z",
-      "lastNotifiedAt": "2026-10-13T05:39:03.748Z",
+      "incidentOpenedAt": "2026-10-13T05:26:31.617Z",
+      "lastSeen": "2026-10-13T05:58:06.687Z",
+      "lastNotifiedAt": "2026-10-13T05:26:31.617Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 137,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -15249,15 +15249,21 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no image file carries a hash rejected by eye\"",
-      "firstSeen": "2026-10-13T05:17:09.904Z",
-      "incidentOpenedAt": "2026-10-13T05:17:09.904Z",
-      "lastSeen": "2026-10-13T05:56:00.340Z",
-      "lastNotifiedAt": "2026-10-13T05:17:09.904Z",
+      "firstSeen": "2026-10-13T05:09:25.068Z",
+      "incidentOpenedAt": "2026-10-13T05:09:25.068Z",
+      "lastSeen": "2026-10-13T05:58:06.677Z",
+      "lastNotifiedAt": "2026-10-13T05:09:25.068Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5236",
-      "silentRefires": 2
+      "dispatch": {
+        "requestedAt": "2026-10-13T05:09:25.068Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38348677399",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38348677399"
+      },
+      "silentRefires": 3
     },
     "land:land/bro-2278-tour-leg-guard": {
       "status": "open",
