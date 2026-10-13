@@ -51,6 +51,7 @@ const PAGE_WORTHY_PREFIXES = [
   // escalate reason is a deliberate stop (spend cap / attempt cap / no-progress
   // brake), e.g. "[CRITICAL] … spend cap reached ($202.66 >= $200)" — not a
   // dead pipeline and nothing the owner can act on. It routes to the digest.
+  'on-monitor-report-', // monitor-v2.md: the once-per-night final report (full parity) or window-end ESCALATION; sent only at those moments, never per pass (BRO-2791)
   'on-monitor-dead-session-', // opening-night-monitor-launch.js: the launcher kept dying (SIGKILL/OOM) until the attempt cap — monitor is dead for the rest of the window
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   // BRO-886: the draft itself was created and tracked fine — only the
