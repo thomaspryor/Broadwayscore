@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3248-a",
   "planId": "489b310a-fe06-4dd7-91a6-4a31a638e0b4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T10:51:56.983Z",
   "submitter": {
     "name": null,
@@ -121,5 +121,83 @@
         "description": "Move can-i-be-frank-off-broadway-2026 to its live id"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T12:27:17.787Z",
+  "results": [
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key little-shop-of-horrors-2019"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-other-place-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-25th-annual-putnam-county-spelling-bee-2025"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key cats-the-jellicle-ball-2024"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key stereophonic-2023"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key titanique-2022"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key oh-mary-2024-off-broadway"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key buena-vista-social-club-2023"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-play-that-goes-wrong-2019"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key into-the-woods-off-west-end-2025"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-phantom-of-the-opera-off-west-end-2021"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key into-the-woods-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key harry-potter-and-the-cursed-child-2021"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key dracula-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: moved can-i-be-frank-off-broadway-2026 -> morgan-bassichis-can-i-be-frank-off-broadway-2026"
+    }
+  ]
 }
