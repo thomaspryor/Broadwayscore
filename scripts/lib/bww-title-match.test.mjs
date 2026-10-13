@@ -5,9 +5,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { slugMatchesShow } = require('../lib/bww-rr-discover.js');
-const { urlLooksLikeReview } = require('../lib/review-guards.js');
-const { resolveCritic, nameFromAuthorUrl } = require('../lib/resolve-critic.js');
+const { slugMatchesShow } = require('./bww-rr-discover.js');
+const { urlLooksLikeReview } = require('./review-guards.js');
+const { resolveCritic, nameFromAuthorUrl } = require('./resolve-critic.js');
 
 const TITLE = 'Catarina and the Beauty of Killing Fascists';
 const SHOW = { title: TITLE, slug: 'catarina-and-the-beauty-of-killing-fascists-west-end-2026' };
