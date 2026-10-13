@@ -290,3 +290,19 @@ logExclusion({ script: 'parallel-test', showId: 'show-' + process.argv[2], file:
     fs.rmSync(tmpDir, { recursive: true });
   });
 });
+
+// BRO-2664: with no explicit dir, a test run must never resolve to data/audit,
+// while a real (non-test) run still does.
+it('default dir: temp under node --test, data/audit in a real run', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+  const lib = fileURLToPath(new URL('../../scripts/lib/exclusion-logger.js', import.meta.url));
+  const probe = `console.log(require(${JSON.stringify(lib)}).getTodayJsonlPath())`;
+  const env = { ...process.env };
+  delete env.EXCLUSION_LOGGER_AUDIT_DIR;
+  const underTest = execFileSync(process.execPath, ['-e', probe], { env: { ...env, NODE_TEST_CONTEXT: 'child-v8' }, encoding: 'utf8' }).trim();
+  assert.doesNotMatch(underTest, /[\\/]data[\\/]audit[\\/]/);
+  delete env.NODE_TEST_CONTEXT;
+  const real = execFileSync(process.execPath, ['-e', probe], { env, encoding: 'utf8' }).trim();
+  assert.match(real, /[\\/]data[\\/]audit[\\/]exclusions-\d{4}-\d{2}-\d{2}\.jsonl$/);
+});
