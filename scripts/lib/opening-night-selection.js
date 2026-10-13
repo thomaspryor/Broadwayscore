@@ -132,6 +132,8 @@ function selectOpeningNightShows(shows, opts = {}) {
  * the ~3 days its late-arriving reviews trickle in), not the severity
  * question's narrower tonight-focused window. Passing `{lookbackDays: 1,
  * lookAheadHours: 72}` answers that without a second show-selection helper.
+ * (Browserbase's reservation uses 48h instead, BRO-5243: see
+ * OPENING_WINDOW_RESERVE_OPTS in browserbase-caps.js.)
  *
  * @param {string} showsPath - absolute path to data/shows.json
  * @param {object} [opts] - override selectOpeningNightShows options (merged

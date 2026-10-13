@@ -163,7 +163,12 @@ const {
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
-const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve } = require('./lib/browserbase-caps');
+const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost } = require('./lib/browserbase-caps');
+
+/** BRO-5243: true when the URL's host is on the Browserbase deny list (never a review). */
+function isDeniedBrowserbaseHost(url) {
+  try { return isDeniedHost(new URL(url).hostname); } catch { return false; }
+}
 const { pinBrowserbaseFirst } = require('./lib/browserbase-route');
 const { classifyTimeoutPage, isTimeoutUrl, keepsStoredTimeoutReview } = require('./lib/timeout-capsule');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
@@ -775,6 +780,9 @@ let state = {
 // In-memory only (never saved with browserbaseUsage): set when the session-
 // create chokepoint refuses for the day, so later rows in this run skip it.
 let browserbaseChokepointCapped = false;
+// BRO-5243: set when the chokepoint holds the recovery reserve back from a
+// non-Tier-1 host. Later non-Tier-1 rows skip; WSJ/NYT/New Yorker still run.
+let browserbaseReserveHeld = false;
 let browserbaseUsage = {
   date: new Date().toISOString().split('T')[0],
   sessionsToday: 0,
@@ -2227,6 +2235,7 @@ function browserbaseBlockReason(urlDomain) {
   // The session-create chokepoint already refused this run (account-wide day
   // cap or opening-window reserve); the count only grows, so skip the rest.
   if (browserbaseChokepointCapped) return 'day';
+  if (browserbaseReserveHeld && !CONFIG.browserbaseUseReserve && !isTier1RecoveryHost(urlDomain)) return 'reserve';
 
   const decision = checkBrowserbaseCaps({
     sessionsToday: browserbaseUsage.sessionsToday,
@@ -2238,7 +2247,9 @@ function browserbaseBlockReason(urlDomain) {
       maxPerRun: CONFIG.browserbaseMaxSessionsPerRun,
       maxPerDomain: CONFIG.browserbaseMaxSessionsPerDomain,
       reserve: CONFIG.browserbaseRecoveryReserve,
-      useReserve: CONFIG.browserbaseUseReserve,
+      // Tier-1 paywalled hosts may spend the recovery reserve, matching the
+      // chokepoint (BRO-5243).
+      useReserve: CONFIG.browserbaseUseReserve || isTier1RecoveryHost(urlDomain),
     },
   });
   if (!decision.allowed) {
@@ -3588,6 +3599,9 @@ function buildTierChain(ctx, review) {
           (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
         );
         if (!wouldRoute) return false;
+        // BRO-5243: never spend Browserbase on a host that is never a review.
+        // Not a cap, so no deferral is recorded.
+        if (isDeniedBrowserbaseHost(ctx.url)) return false;
         // browserbaseBlockReason() also enforces the per-domain cap when passed
         // the hostname, so the day/run/domain decision is unified in one place.
         let urlDomain;
@@ -3616,7 +3630,9 @@ function buildTierChain(ctx, review) {
         // passed (live account count, opening-window reserve): still a cap.
         // The mid-run live resync can also trip the local cap after shouldRun().
         const message = error && error.message;
-        if (routeCapFromBrowserbaseError(message) === 'day') browserbaseChokepointCapped = true;
+        const chokepointCap = routeCapFromBrowserbaseError(message);
+        if (chokepointCap === 'day') browserbaseChokepointCapped = true;
+        if (chokepointCap === 'reserve') browserbaseReserveHeld = true;
         let urlDomain;
         try { urlDomain = new URL(ctx.url).hostname.replace('www.', ''); } catch {}
         const capped = routeCapFromBrowserbaseError(message, browserbaseBlockReason(urlDomain));

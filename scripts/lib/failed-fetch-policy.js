@@ -97,7 +97,7 @@ function isPermanentlyFailed(entry) {
  * @param {object} p
  * @param {string} p.message - the thrown error's message
  * @param {boolean} [p.bdWasCapped] - Bright Data withheld a request this review
- * @param {string|null} [p.routeCapped] - 'day'|'run'|'domain' when the
+ * @param {string|null} [p.routeCapped] - 'day'|'reserve'|'run'|'domain' when the
  *   Browserbase route would have run but a cap blocked it
  * @returns {string}
  */
@@ -120,11 +120,14 @@ function classifyFetchFailure({ message, bdWasCapped = false, routeCapped = null
  *
  * @param {string} message - error message from fetchWithBrowserbase
  * @param {string|null} [localBlockReason] - browserbaseBlockReason() after the failure
- * @returns {'day'|'run'|'domain'|null}
+ * @returns {'day'|'reserve'|'run'|'domain'|null}
  */
 function routeCapFromBrowserbaseError(message, localBlockReason) {
   const msg = String(message || '');
   if (/Browserbase daily cap reached/.test(msg)) return 'day';
+  // BRO-5243: the chokepoint held the recovery reserve back from a non-Tier-1
+  // host. Still a cap (deferral), but only for that class of host.
+  if (/Browserbase recovery reserve held/.test(msg)) return 'reserve';
   // The collector's own limit check (tripped by a mid-run live resync) throws
   // a generic message; the local block reason says whether it was a cap.
   if (/^Browserbase unavailable/.test(msg) && localBlockReason && localBlockReason !== 'disabled') {
