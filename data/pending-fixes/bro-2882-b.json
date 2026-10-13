@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2882-b",
   "planId": "49aba44f-079e-4a45-8027-02506f4684ff",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T01:58:57.671Z",
   "submitter": {
     "name": null,
@@ -216,5 +216,133 @@
         "description": "BRO-2882: record why the human slot is provisional."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T03:38:47.744Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jeeves-takes-charge-west-end-2026/thestage--the-stage.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jeeves-takes-charge-west-end-2026/thestage--the-stage.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/theatre-weekly--greg-stewart.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/theatre-weekly--greg-stewart.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/nysr--david-finkle.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/nysr--david-finkle.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lyonesse-west-end-2023/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lyonesse-west-end-2023/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-to-man-west-end-2026/city-am--steve-dinneen.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-to-man-west-end-2026/city-am--steve-dinneen.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "orphans-2013/timeout--david-cote.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "orphans-2013/timeout--david-cote.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "orphans-2013/timeout--david-cote.json originalScore: \"5/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pride-west-end-2026/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pride-west-end-2026/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/daily-mail--patrick-marmion.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/daily-mail--patrick-marmion.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    }
+  ]
 }

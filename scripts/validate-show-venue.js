@@ -95,7 +95,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, foldDiacritics } = require('./lib/title-match');
 // normalizeTitle is no longer imported here: the title comparison it backed
 // moved wholesale into playbill-title-match.js (BRO-2821), which calls it.
-const { playbillUrlTitleMatch, venueSlug, classifyMarketTail } = require('./lib/playbill-title-match');
+const { playbillUrlTitleMatch, venueSlug, classifyMarketTail, titleNearMiss } = require('./lib/playbill-title-match');
 const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
@@ -105,7 +105,7 @@ const {
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { openPlaybillUrls } = require('./lib/playbill-urls-store');
+const { openPlaybillUrls, logSaveResult } = require('./lib/playbill-urls-store');
 const { venueSearchToken } = require('./lib/venue-search-token');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { classifyNamedShowRun } = require('./lib/named-show-verdict');
@@ -230,10 +230,22 @@ function isExemptFromPlaybillCheck(show) {
   return false;
 }
 
+// BRO-2902: an entry whose venue is just its own title is the clearest
+// bad-stub signature in the corpus (2 of 2,942 when measured, both wrong or
+// unconfirmed: music-city-off-broadway-2026 had three wrong fields). Such an
+// entry often carries no discoverySource at all, so the provenance test below
+// never reached it. Zero false positives at that rate, so it joins the audit.
+const normForSignature = (v) => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+function hasVenueEqualsTitleSignature(show) {
+  const venue = normForSignature(show && show.venue);
+  return venue !== '' && venue === normForSignature(show && show.title);
+}
+
 function isProvisional(show) {
   if (isExemptFromPlaybillCheck(show)) return false;
   const src = show.discoverySource || '';
   if (show.provisional === true) return true;
+  if (hasVenueEqualsTitleSignature(show)) return true;
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }
 
@@ -613,6 +625,8 @@ async function findPlaybillUrl(show, log) {
   // one push could demote a brand-new stub with a wrong venue out of the gate
   // for good. Track whether any query actually completed.
   let anyQueryCompleted = false;
+  // BRO-2703: rejected candidates that were still about this title.
+  const rejectedTitleCandidates = [];
   for (const q of queries) {
     let results = null;
     try { results = await serpQuery(q, { nbResults: 10 }); }
@@ -622,12 +636,19 @@ async function findPlaybillUrl(show, log) {
     if (!serpQueryCompleted(results)) { log(`    serp unavailable (no provider answered)`); continue; }
     anyQueryCompleted = true;
     if (!results.length) continue;
-    const candidates = results
+    const scored = results
       .filter(r => r.url && r.url.includes('playbill.com/production/'))
       .map(r => {
         const cleanUrl = r.url.replace(/[?#].*$/, '');
         return { url: cleanUrl, score: scorePlaybillUrl(cleanUrl, show) };
-      })
+      });
+    for (const c of scored) {
+      if (c.score !== null && c.score > 0) continue;
+      if (rejectedTitleCandidates.some(x => x.url === c.url)) continue;
+      const near = titleNearMiss(c.url, show);
+      if (near) rejectedTitleCandidates.push({ url: c.url, kind: near.kind });
+    }
+    const candidates = scored
       .filter(c => c.score !== null && c.score > 0)
       .sort((a, b) => b.score - a.score);
     if (candidates.length) {
@@ -643,7 +664,7 @@ async function findPlaybillUrl(show, log) {
   // any third failure source added here later would silently default to
   // 'no-playbill-url' — the permanently-parked tier this refactor exists to
   // keep shows out of.
-  return { url: null, ...missingUrlOutcome({ anyQueryCompleted }) };
+  return { url: null, ...missingUrlOutcome({ anyQueryCompleted, rejectedTitleCandidates }) };
 }
 
 // Market labels Playbill prints first inside the <title> parentheses.
@@ -701,13 +722,17 @@ async function validateOne(show, log) {
   const urlResult = await findPlaybillUrl(show, log);
   if (!urlResult.url) {
     const outcome = { source: urlResult.source, result: urlResult.result };
+    const rejected = urlResult.rejectedTitleCandidates || [];
     log(outcome.result === 'serp-error'
       ? `  ⚠ Playbill lookup FAILED (every SERP query errored) — not evidence of a missing page`
-      : `  ⚠ no Playbill URL found`);
+      : rejected.length
+        ? `  ⚠ no ACCEPTED Playbill URL, but ${rejected.length} same/near-title page(s) were rejected: ${rejected.map(c => `${c.url} (${c.kind})`).join(', ')}`
+        : `  ⚠ no Playbill URL found`);
     return {
       id: show.id, title: show.title, venue: show.venue,
       result: outcome.result, urlSource: urlResult.source,
       mismatches: [], playbillUrl: null, parsed: null,
+      ...(rejected.length ? { rejectedTitleCandidates: rejected } : {}),
     };
   }
   log(`  url (${urlResult.source}): ${urlResult.url}`);
@@ -895,11 +920,11 @@ async function main() {
   // additionally guards against a page that loaded (>5000 bytes) but didn't
   // actually parse as a production page — an empty parse can't disagree with
   // shows.json on anything, so it would read as a vacuous 'match'.
-  // openPlaybillUrls (scripts/lib/playbill-urls-store.js) narrows, but does
-  // NOT close, the concurrent-write race between this process and a peer
-  // saving at the same instant — see that module's own docblock for exactly
-  // what remains open. dryRun skips it like every other write below.
-  const playbillCache = dryRun ? null : openPlaybillUrls(PLAYBILL_URLS_PATH);
+  // openPlaybillUrls (scripts/lib/playbill-urls-store.js) serialises the
+  // read-merge-write under a file lock, drops a stale set a peer has since
+  // corrected, and refuses any set the BRO-2821 matcher rejects (BRO-2910,
+  // BRO-2893). dryRun skips it like every other write below.
+  const playbillCache = dryRun ? null : openPlaybillUrls(PLAYBILL_URLS_PATH, { showsPath: SHOWS_PATH });
   const results = [];
   for (const show of targets) {
     if (timeBudget.exceeded()) break;
@@ -908,7 +933,7 @@ async function main() {
     if (playbillCache && r.urlSource === 'serp' && r.playbillUrl
         && r.result === 'match' && r.parsed?.titleParse?.venue) {
       playbillCache.data.shows[show.id] = r.playbillUrl;
-      playbillCache.save();
+      logSaveResult(playbillCache.save());
     }
     await sleep(400);
   }
@@ -942,6 +967,13 @@ async function main() {
 
   console.log('');
   console.log(`Summary: ${matches.length} match / ${venueUnverified.length} venue-unverified / ${mismatches.length} mismatch / ${errors.length} unresolved / ${infraUnavailable.length} infra-unavailable${explainedCount ? ` (${explainedCount} field(s) explained by priorRuns across ${results.filter(r => r.explainedByPriorRun?.length).length} show(s))` : ''}`);
+  // BRO-2703: a page-less show whose search DID return same- or near-titled
+  // Playbill pages, all rejected. Usually a typo'd title or a wrong market in
+  // shows.json. Advisory (CLAUDE.md rule 19), never gating.
+  const rejectedTitle = results.filter(r => r.result === 'no-playbill-url' && r.rejectedTitleCandidates?.length);
+  if (rejectedTitle.length) {
+    console.log(`::warning::validate-show-venue: ${rejectedTitle.length} show(s) have no accepted Playbill page but search returned same/near-title pages that were rejected (check the title and category in shows.json): ${rejectedTitle.map(r => `${r.id} -> ${r.rejectedTitleCandidates.map(c => `${c.url} (${c.kind})`).join(' ')}`).join('; ')}`);
+  }
   if (venueUnverified.length) {
     console.log(`::warning::validate-show-venue: ${venueUnverified.length} show(s) are venue-unverified — the Playbill page's venue could not be parsed, so the shows.json venue was NOT compared (dates/year/revival agree; not a mismatch, not a clean venue pass): ${venueUnverified.map(r => `${r.id} (shows.json venue "${r.venue}", ${r.playbillUrl})`).join(', ')}`);
   }
@@ -1142,5 +1174,5 @@ if (require.main === module) {
 module.exports = {
   isProvisional, isExemptFromPlaybillCheck, shortTitleSlug, scorePlaybillUrl,
   parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
-  findCorroboratingPriorRun, findPlaybillUrl, validateOne,
+  findCorroboratingPriorRun, findPlaybillUrl, validateOne, hasVenueEqualsTitleSignature,
 };

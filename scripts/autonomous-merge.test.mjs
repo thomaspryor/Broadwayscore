@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
@@ -57,7 +58,19 @@ test('verifyRebaseData: missing-show class rebases, gates, and runs validate-sho
   git(clone, ['add', '-A']);
   git(clone, ['commit', '-q', '-m', 'add fixture show']);
 
-  const result = verifyRebaseData(clone, 'scorecard-data', 'missing-show', { showIds: [] });
+  // The verifier runs validate-show-venue.js --all-provisional, which rewrites
+  // the TRACKED ledger data/audit/venue-date-mismatches.json (checksEnv()
+  // allowlists the child's env, so VENUE_AUDIT_PATH cannot redirect it).
+  // Running this test used to leave that file replaced by a 0-row report.
+  const ledger = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'audit', 'venue-date-mismatches.json');
+  const ledgerBefore = fs.existsSync(ledger) ? fs.readFileSync(ledger) : null;
+  let result;
+  try {
+    result = verifyRebaseData(clone, 'scorecard-data', 'missing-show', { showIds: [] });
+  } finally {
+    if (ledgerBefore !== null) fs.writeFileSync(ledger, ledgerBefore);
+    else fs.rmSync(ledger, { force: true });
+  }
   assert.equal(result.ok, true, JSON.stringify(result));
   assert.deepEqual(result.files, ['shows.json']);
 });

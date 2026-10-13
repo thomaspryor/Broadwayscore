@@ -824,3 +824,53 @@ test('validate-show-venue --show accepts a comma list and names every missing id
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// BRO-2896. The live Playbill page for the regional URL CI run 34000023372
+// picked for much-ado-about-nothing-2026. A different production must read as
+// a market/venue rejection, never as "your dates are three years off".
+const MUCH_ADO_REGIONAL_TITLE = '<html><head><title>Much Ado About Nothing (Regional, PlayMakers Repertory Company, 2023) | Playbill</title></head></html>';
+const MUCH_ADO_2026 = {
+  id: 'much-ado-about-nothing-2026', title: 'Much Ado About Nothing', category: 'broadway',
+  venue: 'Winter Garden Theatre', openingDate: '2026-11-19', closingDate: '2027-01-10',
+};
+
+test('BRO-2896: parseTitleVenueYear reads a Regional Playbill title', () => {
+  const tp = parseTitleVenueYear(MUCH_ADO_REGIONAL_TITLE);
+  assert.equal(tp.market, 'Regional');
+  assert.equal(tp.venue, 'PlayMakers Repertory Company');
+  assert.equal(tp.year, 2023);
+});
+
+test('BRO-2896: a different-market page is a market/venue rejection, not three date mismatches', () => {
+  const parsed = {
+    titleParse: parseTitleVenueYear(MUCH_ADO_REGIONAL_TITLE),
+    dates: { openingDate: '2023-11-18', closingDate: '2023-12-03' },
+    tagLine: null,
+  };
+  const { mismatches } = compareShow(MUCH_ADO_2026, parsed,
+    'https://playbill.com/production/much-ado-about-nothing-regional-playmakers-repertory-company-2023');
+  const fields = mismatches.map((m) => m.field).sort();
+  assert.deepEqual(fields, ['market', 'venue']);
+  assert.equal(mismatches.find((m) => m.field === 'market').playbill, 'Regional');
+});
+
+test('BRO-2896: a same-market page still gets the full date comparison', () => {
+  const parsed = {
+    titleParse: { rawTitle: 'Much Ado About Nothing', market: 'Broadway', venue: 'Winter Garden Theatre', year: 2026 },
+    dates: { openingDate: '2026-12-30', closingDate: null },
+    tagLine: null,
+  };
+  const { mismatches } = compareShow(MUCH_ADO_2026, parsed,
+    'https://playbill.com/production/much-ado-about-nothing-broadway-winter-garden-theatre-2026');
+  assert.deepEqual(mismatches.map((m) => m.field), ['openingDate']);
+});
+
+test('BRO-2896: off-Broadway accepts Off-Off-Broadway, London categories accept both London labels', () => {
+  const tp = (market) => ({ titleParse: { rawTitle: 'X', market, venue: 'V', year: 2026 }, dates: {}, tagLine: null });
+  const ob = { id: 'x-2026', title: 'X', category: 'off-broadway', venue: 'V' };
+  const owe = { id: 'x-2026', title: 'X', category: 'off-west-end', venue: 'V' };
+  assert.deepEqual(compareShow(ob, tp('Off-Off-Broadway'), '').mismatches, []);
+  assert.deepEqual(compareShow(owe, tp('London'), '').mismatches, []);
+  assert.deepEqual(compareShow(owe, tp('West End'), '').mismatches, []);
+  assert.deepEqual(compareShow(owe, tp('Off-Broadway'), '').mismatches.map((m) => m.field), ['market']);
+});

@@ -591,3 +591,5 @@ scripts/lib/.ab-old-verify-image-*.js
 # Mac-local markers written under the main checkout (repo-root.js); never commit (BRO-2682)
 /data/audit/job-log-prune.lock
 /data/audit/disk-pressure-alert-last-sent.json
+data/playbill-urls.json.lock
+data/playbill-urls.json.lock.steal-gate

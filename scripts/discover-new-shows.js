@@ -3165,7 +3165,7 @@ async function discoverShows() {
         // exact — a venue/opening-year mismatch means the page validateOne
         // fetched is probably the WRONG production (a different staging of
         // the same title), so its tag line must not be trusted here.
-        const wrongPage = (result?.mismatches || []).some(m => m.field === 'venue' || m.field === 'opening-year');
+        const wrongPage = (result?.mismatches || []).some(m => m.field === 'venue' || m.field === 'opening-year' || m.field === 'market');
         // Cross-check Playbill's own market label against the show's market
         // — belt-and-suspenders against the same wrong-page risk when the
         // venue/year happen to coincide.

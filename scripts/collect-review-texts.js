@@ -5701,11 +5701,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   }
 
   // Set incompleteReason if content is not complete
+  let setFreshIncompleteReason = false;
   if (data.contentTier && data.contentTier !== 'complete') {
     const reasonResult = classifyIncompleteReason(data, null);
     if (reasonResult) {
       data.incompleteReason = reasonResult.incompleteReason;
       data.incompleteDetail = reasonResult.incompleteDetail;
+      setFreshIncompleteReason = true;
     }
   } else {
     delete data.incompleteReason;
@@ -5714,7 +5716,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Pattern Card #1: clear stale failure-state flags proactively on the success path.
   // safeWriteReview's merge behavior would copy them back from disk if not explicitly set.
-  clearFailureFlags(data);
+  // skipIncompleteReasonClear: don't null the reason set a few lines above (BRO-2241).
+  clearFailureFlags(data, { skipIncompleteReasonClear: setFreshIncompleteReason });
 
   // NOTE: Do NOT extract years from URLs to flag wrong production.
   // URL patterns are inconsistent across outlets (republished content, migrated URLs,

@@ -927,3 +927,53 @@ __t('BRO-3903: Royal Court sub-stage names match the bare building name', () => 
   __assert.equal(venuesMatch('Royal Court Theatre', 'Royal Court Jerwood Theatre Upstairs'), true);
   __assert.equal(venuesMatch('Paper Mill Playhouse, Millburn, NJ', 'Riverside Theatre - Stark Stage'), false);
 });
+
+// BRO-2703: "no Playbill page" vs "pages found, all rejected".
+{
+  const vdc = require('./venue-date-compare.js');
+  const { titleNearMiss } = require('./playbill-title-match.js');
+  const OB = { id: 'des-moines-off-broadway-2026', title: 'Des Moines', category: 'off-broadway', venue: 'Some Theatre' };
+
+  test('BRO-2703: a typo\'d title is a near miss, an unrelated title is not', () => {
+    const show = { id: 'mrs-doubtfire-2026', title: 'Mrs Doubtfyre', category: 'broadway', venue: 'Stephen Sondheim Theatre' };
+    assert.deepEqual(titleNearMiss('https://playbill.com/production/mrs-doubtfire-broadway-stephen-sondheim-theatre-2021', show),
+      { kind: 'title-near', segment: 'mrs-doubtfire' });
+    assert.equal(titleNearMiss('https://playbill.com/production/hadestown-broadway-walter-kerr-theatre-2019', show), null);
+  });
+
+  test('BRO-2703: a same-title page in another market is NOT flagged (every London transfer has one)', () => {
+    assert.equal(titleNearMiss('https://playbill.com/production/des-moines-broadway-some-theatre-2026', OB), null);
+    const weHamilton = { id: 'hamilton-west-end-2021', title: 'Hamilton', category: 'west-end', venue: 'Victoria Palace Theatre' };
+    assert.equal(titleNearMiss('https://playbill.com/production/hamilton-broadway-richard-rodgers-theatre-2015', weHamilton), null);
+  });
+
+  test('BRO-2703: an adjacent swap is one edit; short titles allow only one', () => {
+    const swapped = { id: 'x-2026', title: 'Hadsetown', category: 'broadway', venue: 'Walter Kerr Theatre' };
+    assert.equal(titleNearMiss('https://playbill.com/production/hadestown-broadway-walter-kerr-theatre-2019', swapped).kind, 'title-near');
+    // Two edits on a short title: Heathen vs Heathers, Oh, Kay! vs Oh, Mary!
+    assert.equal(titleNearMiss('https://playbill.com/production/heathers-the-musical-off-broadway-new-world-stages-stage-1-2025',
+      { id: 'heathen-1972', title: 'Heathen', category: 'broadway', venue: 'Billy Rose Theatre' }), null);
+    assert.equal(titleNearMiss('https://playbill.com/production/oh-mary-broadway-lyceum-theatre-2024',
+      { id: 'oh-kay-1990', title: 'Oh, Kay!', category: 'broadway', venue: 'Richard Rodgers Theatre' }), null);
+  });
+
+  test('BRO-2703: short titles never take the edit-distance branch (Six vs Sic)', () => {
+    const six = { id: 'six-2026', title: 'Sic', category: 'broadway', venue: 'Lena Horne Theatre' };
+    assert.equal(titleNearMiss('https://playbill.com/production/six-broadway-lena-horne-theatre-2021', six), null);
+  });
+
+  test('BRO-2703: rejected same-title candidates are recorded but the result and tier do not change', () => {
+    const cands = [{ url: 'https://playbill.com/production/des-moine-off-broadway-some-theatre-2026', kind: 'title-near' }];
+    const out = vdc.missingUrlOutcome({ anyQueryCompleted: true, rejectedTitleCandidates: cands });
+    assert.equal(out.result, 'no-playbill-url');
+    assert.deepEqual(out.rejectedTitleCandidates, cands);
+    // Same tier as a plain no-page show: no budget starvation (the BRO-2701 revert).
+    const prior = { a: { result: 'no-playbill-url', rejectedTitleCandidates: cands }, b: { result: 'no-playbill-url' } };
+    assert.equal(vdc.provisionalPriorityTier('a', prior), vdc.provisionalPriorityTier('b', prior));
+    // Definitive on the first run, so it can never wedge the gate.
+    assert.equal(vdc.resolveLastDefinitive(out.result, undefined), 'no-playbill-url');
+    // And no candidates means the old shape exactly.
+    assert.deepEqual(vdc.missingUrlOutcome({ anyQueryCompleted: true }), { source: 'none', result: 'no-playbill-url' });
+    assert.deepEqual(vdc.missingUrlOutcome({ anyQueryCompleted: false, rejectedTitleCandidates: cands }), { source: 'serp-error', result: 'serp-error' });
+  });
+}
