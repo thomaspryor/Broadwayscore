@@ -1,7 +1,7 @@
 /**
  * Acceptance for BRO-5254: no stored Variety review text still carries the
  * "Related Stories" / "Popular on Variety" promo modules the old generic
- * extractor kept. Runs over data/review-texts (private; skipped where the
+ * extractor kept, or an excerpt repeated as the first paragraph. Runs over data/review-texts (private; skipped where the
  * corpus is not checked out, e.g. the land gate). Rows the rebuild excludes
  * anyway, and _locked rows (hand-curated), are left out.
  */
@@ -14,7 +14,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { DEFAULT_REVIEW_TEXTS_DIR } = require('../../scripts/lib/critic-review-scan.js');
 const { listShowDirs } = require('../../scripts/lib/list-show-dirs.js');
-const { hasVarietyPromoBleed, isExcludedRow } = require('../../scripts/lib/variety-promo-bleed.js');
+const { hasVarietyPromoBleed, hasDuplicatedLead, isExcludedRow } = require('../../scripts/lib/variety-promo-bleed.js');
 
 const corpusPresent = fs.existsSync(DEFAULT_REVIEW_TEXTS_DIR) && fs.readdirSync(DEFAULT_REVIEW_TEXTS_DIR).length > 100;
 
@@ -31,6 +31,7 @@ test('no stored Variety text carries promo bleed', { skip: corpusPresent ? false
       variety++;
       if (isExcludedRow(d) || d._locked) continue;
       if (hasVarietyPromoBleed(d.fullText)) hits.push(`${showId}/${f}`);
+      else if (hasDuplicatedLead(d.fullText)) hits.push(`${showId}/${f} (duplicated lead)`);
     }
   }
   assert.ok(variety > 500, `too few Variety texts (${variety})`);

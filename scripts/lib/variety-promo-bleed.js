@@ -101,6 +101,35 @@ function hasVarietyPromoBleed(text) {
   return !text.includes('\n') && FLAT_MARKER_RE.test(text);
 }
 
+// Some stored texts start with the review's excerpt and then the full body,
+// whose first paragraph is the same text: an exact repeat of the lead.
+const PARA_BREAK_RE = /\n[^\S\n]*\n\s*/;
+const MIN_DUP_LEAD_CHARS = 80;
+const normPara = (t) => t.replace(/\s+/g, ' ').trim();
+
+/** Index where the second paragraph starts when paragraph 1 repeats exactly as paragraph 2, else -1. */
+function duplicatedLeadEnd(text) {
+  if (typeof text !== 'string') return -1;
+  const t = text.replace(/^\s+/, '');
+  const m1 = t.match(PARA_BREAK_RE);
+  if (!m1) return -1;
+  const p1 = normPara(t.slice(0, m1.index));
+  const rest = t.slice(m1.index + m1[0].length);
+  const m2 = rest.match(PARA_BREAK_RE);
+  if (!m2) return -1; // the "repeat" would be the whole rest of the text
+  const p2 = normPara(rest.slice(0, m2.index));
+  if (p1.length < MIN_DUP_LEAD_CHARS || p1 !== p2) return -1;
+  return text.length - rest.length;
+}
+
+function hasDuplicatedLead(text) { return duplicatedLeadEnd(text) >= 0; }
+
+/** Text without the repeated lead paragraph (unchanged when there is none). */
+function dropDuplicatedLead(text) {
+  const i = duplicatedLeadEnd(text);
+  return i < 0 ? text : text.slice(i);
+}
+
 /**
  * { text, blocks, refused } — text is the cleaned text when refused is null.
  * refused names why the row needs a refetch instead.
@@ -109,7 +138,7 @@ function stripVarietyPromoBleed(text) {
   if (typeof text !== 'string' || !text) return { text, blocks: [], refused: 'no text' };
   const blocks = findVarietyPromoBleed(text);
   if (!blocks.length) {
-    if (!hasVarietyPromoBleed(text)) return { text, blocks, refused: null };
+    if (!hasVarietyPromoBleed(text)) return { text: dropDuplicatedLead(text), blocks, refused: null };
     return { text, blocks, refused: text.includes('\n') ? 'marker inline with text' : 'flat page chrome' };
   }
   if (blocks.some(b => b.unsafe)) return { text, blocks, refused: 'block is not a short headline run' };
@@ -129,7 +158,7 @@ function stripVarietyPromoBleed(text) {
   if (solid(text) - solid(out) > solid(text) * MAX_REMOVED_RATIO) {
     return { text, blocks, refused: 'strip would remove over 20% of the text' };
   }
-  return { text: out, blocks, refused: null };
+  return { text: dropDuplicatedLead(out), blocks, refused: null };
 }
 
 /**
@@ -153,14 +182,48 @@ function applyVarietyPromoStrip(record, newText, { at } = {}) {
   delete out.rescoreCompletedAt;
   // Push restore must not read the old (longer) copy as richer text (review-write-guard _deliberateTextTrim).
   out.fullTextTrimmed = { reason: RESCORE_REASON, fromLength: previousLength, toLength: newText.length, at: stamp };
-  // A second strip (after a refetch brought a marker back) keeps the first baseline.
-  out.varietyPromoStrip = record.varietyPromoStrip || {
+  // A second strip (a refetch brought a marker back, or a duplicated lead) keeps the
+  // first baseline score; newLength follows the text so restoreBigMove can tell a
+  // rescore of this text from one of a later refetch.
+  out.varietyPromoStrip = record.varietyPromoStrip ? { ...record.varietyPromoStrip, newLength: newText.length } : {
     at: stamp,
     previousLength,
     newLength: newText.length,
     previousScore: typeof record.assignedScore === 'number' ? record.assignedScore : null,
     previousBucket: (record.llmScore && record.llmScore.bucket) || null,
     previousScoredAt: (record.llmMetadata && record.llmMetadata.scoredAt) || null,
+  };
+  return out;
+}
+
+// The strip removes no review content, so a rescore that moves a row this far
+// (or across a bucket) is ensemble noise: keep the pre-strip score.
+const BIG_MOVE_POINTS = 5;
+
+/**
+ * Rescored after a strip and moved BIG_MOVE_POINTS+ or changed bucket: returns the
+ * record with the pre-strip llmScore score/bucket back (the rebuild reads llmScore)
+ * and the rescore kept in varietyPromoStrip.restored. Otherwise null.
+ */
+function restoreBigMove(record, { at } = {}) {
+  const s = record && record.varietyPromoStrip;
+  const llm = record && record.llmScore;
+  const scoredAt = record && record.llmMetadata && record.llmMetadata.scoredAt;
+  // No previous bucket: the baseline may be a non-LLM score (assignedScore is a rebuild output).
+  if (!s || typeof s.previousScore !== 'number' || !s.previousBucket || !llm || typeof llm.score !== 'number') return null;
+  if (record.needsRescore || !scoredAt || scoredAt === s.previousScoredAt) return null;
+  // Text changed since the strip (a refetch): the rescore is of other text, keep it.
+  if (typeof record.fullText !== 'string' || record.fullText.length !== s.newLength) return null;
+  if (s.restored && s.restored.scoredAt === scoredAt) return null;
+  const moved = Math.abs(llm.score - s.previousScore) >= BIG_MOVE_POINTS
+    || (!!llm.bucket && llm.bucket !== s.previousBucket);
+  if (!moved) return null;
+  const out = { ...record };
+  out.llmScore = { ...llm, score: s.previousScore, bucket: s.previousBucket };
+  out.assignedScore = s.previousScore;
+  out.varietyPromoStrip = {
+    ...s,
+    restored: { at: at || new Date().toISOString(), scoredAt, rescoredScore: llm.score, rescoredBucket: llm.bucket || null },
   };
   return out;
 }
@@ -176,5 +239,6 @@ function isExcludedRow(d) {
 
 module.exports = {
   findVarietyPromoBleed, hasVarietyPromoBleed, stripVarietyPromoBleed, applyVarietyPromoStrip,
-  isProseLine, isExcludedRow, RESCORE_REASON, MIN_CLEAN_LENGTH,
+  hasDuplicatedLead, dropDuplicatedLead, restoreBigMove,
+  isProseLine, isExcludedRow, RESCORE_REASON, MIN_CLEAN_LENGTH, BIG_MOVE_POINTS,
 };

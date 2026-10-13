@@ -19,6 +19,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   stripVarietyPromoBleed, applyVarietyPromoStrip, hasVarietyPromoBleed, isExcludedRow,
+  hasDuplicatedLead, restoreBigMove,
 } = require('./lib/variety-promo-bleed');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
@@ -33,6 +34,7 @@ Usage:
   node scripts/strip-variety-promo-bleed.js --refetch-list  rows the strip refuses (need a refetch)
   node scripts/strip-variety-promo-bleed.js --verify-live [--limit=N|--files=]  removed lines vs the live article (exit 1 on a hit)
   node scripts/strip-variety-promo-bleed.js --ab            A/B of stripped rows: pre-strip score vs rescore
+  node scripts/strip-variety-promo-bleed.js --restore-big-moves [--apply]  keep the pre-strip score where the rescore moved 5+ or changed bucket
   node scripts/strip-variety-promo-bleed.js --dump[=N]      marker stats and N context samples (read-only)
 `;
 if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
@@ -123,12 +125,14 @@ function dump(n) {
 
 /** Rows the strip looks at: Variety, has a promo block, not excluded, not already stripped. */
 function candidates() {
-  const tally = { locked: 0, excluded: 0 };
+  const tally = { locked: 0, excluded: 0, dupLead: 0 };
   const rows = [];
   for (const x of varietyFiles()) {
-    if (!hasVarietyPromoBleed(x.d.fullText)) continue;
+    const dup = hasDuplicatedLead(x.d.fullText);
+    if (!hasVarietyPromoBleed(x.d.fullText) && !dup) continue;
     if (isExcludedRow(x.d)) { tally.excluded++; continue; }
     if (x.d._locked) { tally.locked++; continue; }
+    if (dup) tally.dupLead++;
     rows.push(x);
   }
   return { rows, tally };
@@ -157,7 +161,7 @@ function run({ apply, limit, files, verbose, refetchOnly }) {
     if (r.refused) refused.push({ ...x, reason: r.refused });
     else ok.push({ ...x, r });
   }
-  console.log(`candidates: ${all.length} (skipped: ${tally.excluded} excluded, ${tally.locked} locked); strippable: ${ok.length}; refused: ${refused.length}`);
+  console.log(`candidates: ${all.length} (skipped: ${tally.excluded} excluded, ${tally.locked} locked; ${tally.dupLead} with a duplicated lead paragraph); strippable: ${ok.length}; refused: ${refused.length}`);
   const reasons = {};
   for (const x of refused) { const k = x.reason.replace(/\(\d+\)/, '(N)'); reasons[k] = (reasons[k] || 0) + 1; }
   console.log('refused by reason:', JSON.stringify(reasons));
@@ -171,7 +175,7 @@ function run({ apply, limit, files, verbose, refetchOnly }) {
   for (const { rel, d, r } of todo) {
     const removed = r.blocks.flatMap(b => b.lines);
     for (const l of removed) { const k = clip(l, 80); lineCounts[k] = (lineCounts[k] || 0) + 1; }
-    const what = `${r.blocks.length} block(s), ${d.fullText.length} → ${r.text.length} chars`;
+    const what = `${r.blocks.length} block(s)${hasDuplicatedLead(d.fullText) ? ' + duplicated lead' : ''}, ${d.fullText.length} → ${r.text.length} chars`;
     if (!apply) {
       console.log(`  ✓ ${rel}: ${what}${removed.length ? ` — removes: ${removed.map(l => JSON.stringify(clip(l, verbose ? 300 : 60))).join(' | ')}` : ''}`);
       continue;
@@ -251,10 +255,14 @@ function ab() {
     // Not on the live site (e.g. stripped before wrongAttribution joined isExcludedRow): tells the A/B nothing.
     if (isExcludedRow(d)) continue;
     before.push({ file: rel, score: s.previousScore, bucket: s.previousBucket, scoredAt: s.previousScoredAt, confidence: null, textStatus: null });
-    current.set(rel, d);
+    // A restored row measures the rescore it overrode, so --restore-big-moves cannot make the A/B pass.
+    const r = s.restored;
+    current.set(rel, r ? { ...d, assignedScore: r.rescoredScore, llmScore: { ...d.llmScore, score: r.rescoredScore, bucket: r.rescoredBucket } } : d);
   }
   const c = compare(before, current, { requireTextFix: false });
-  console.log(`stripped rows: ${c.total}; rescored: ${c.rescored}; pending: ${c.pending}`);
+  const restored = before.filter(b => current.get(b.file).varietyPromoStrip.restored).length;
+  // (the drift numbers below use the rescore's own score for restored rows)
+  console.log(`stripped rows: ${c.total}; rescored: ${c.rescored}; pending: ${c.pending}; pre-strip score restored: ${restored}`);
   console.log(`mean drift ${c.meanSigned.toFixed(2)} (abs ${c.meanAbs.toFixed(2)}, limit ${DRIFT_LIMIT}); max bucket share shift ${c.maxShift.toFixed(1)}pts (limit ${SHIFT_LIMIT}); bucket changes ${c.changedBucket}`);
   console.log('bucket share shifts:', JSON.stringify(Object.fromEntries(Object.entries(c.shifts).map(([k, v]) => [k, +v.toFixed(1)]))));
   const moves = before
@@ -267,7 +275,31 @@ function ab() {
   return c.pass || !c.rescored ? 0 : 1;
 }
 
-if (arg('dump') !== null) {
+/** Put the pre-strip score back on rescored rows that moved BIG_MOVE_POINTS+ or changed bucket. */
+function restoreBigMoves({ apply }) {
+  let found = 0, wrote = 0, failed = 0;
+  for (const { rel, d } of varietyFiles()) {
+    if (isExcludedRow(d)) continue;
+    const next = restoreBigMove(d);
+    if (!next) continue;
+    found++;
+    const r = next.varietyPromoStrip.restored;
+    const line = `${rel}: ${d.varietyPromoStrip.previousScore} ${d.varietyPromoStrip.previousBucket || '?'} kept (rescore said ${r.rescoredScore} ${r.rescoredBucket || '?'})`;
+    if (!apply) { console.log(`  would restore ${line}`); continue; }
+    const file = path.join(DIR, rel);
+    safeWriteReview(file, next, { force: true });
+    const after = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!after.llmScore || after.llmScore.score !== d.varietyPromoStrip.previousScore) { failed++; console.log(`  ✗ ${rel}: restore did not stick`); continue; }
+    wrote++;
+    console.log(`  restored ${line}`);
+  }
+  console.log(apply ? `restore: ${wrote} restored, ${failed} failed (of ${found})` : `restore dry run: ${found} rows would keep the pre-strip score`);
+  return failed ? 1 : 0;
+}
+
+if (arg('restore-big-moves') !== null) {
+  process.exit(restoreBigMoves({ apply: arg('apply') !== null }));
+} else if (arg('dump') !== null) {
   dump(Number(arg('dump')) || 20);
 } else if (arg('ab') !== null) {
   process.exit(ab());

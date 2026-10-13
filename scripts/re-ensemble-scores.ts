@@ -77,6 +77,10 @@ function shouldSkip(data: any): string | null {
   // would drop its critic's star/grade band (BRO-4335).
   if (isBandAnchored(data)) return 'band-anchored';
 
+  // BRO-5254: the pre-strip score was kept over a noisy rescore; re-ensembling the
+  // rescore's model votes would undo that.
+  if (data.varietyPromoStrip && data.varietyPromoStrip.restored) return 'variety-strip score kept';
+
   const modelScores = extractModelScores(data.ensembleData);
   if (modelScores.length < 2) return `only ${modelScores.length} model scores`;
 
