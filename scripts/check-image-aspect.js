@@ -31,11 +31,18 @@
  * Square posters and mild-portrait thumbnails render acceptably and are common
  * in legacy IBDB art — don't flag them.
  *
+ * Rejected bytes: any file whose md5 is listed in data/rejected-images.json (a
+ * person checked it by eye and removed it) is a violation regardless of shape.
+ * The auto-fetch job re-downloaded removed files from their recorded source
+ * URLs (c321b887f52 brought back all three BRO-4251 removals), so this is the
+ * one choke point every image writer passes before commit.
+ *
  * Exit: 0 = all pass, 1 = at least one violation
  */
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
@@ -71,12 +78,24 @@ function classify(filePath) {
   return m ? m[1].toLowerCase() : null;
 }
 
+// REJECTED_IMAGES_PATH overrides the list for tests.
+const REJECTED_IMAGES_PATH = process.env.REJECTED_IMAGES_PATH || path.join(ROOT, 'data', 'rejected-images.json');
+const REJECTED_MD5 = JSON.parse(fs.readFileSync(REJECTED_IMAGES_PATH, 'utf8')).md5 || {};
+
 async function checkFile(absPath) {
   const role = classify(absPath);
   if (!role) return null; // not a tracked image role
 
   const t = THRESHOLDS[role];
   if (!t) return null;
+
+  let digest = null;
+  try {
+    digest = crypto.createHash('md5').update(fs.readFileSync(absPath)).digest('hex');
+  } catch { /* unreadable: sharp below reports it */ }
+  if (digest && REJECTED_MD5[digest]) {
+    return { role, absPath, ok: false, reason: `rejected by eye (data/rejected-images.json): ${REJECTED_MD5[digest]}` };
+  }
 
   let meta;
   try {
@@ -149,7 +168,7 @@ function reportViolations(violations, mode) {
   }
 
   console.error('');
-  console.error(`✗ Found ${violations.length} aspect-ratio violation(s):`);
+  console.error(`✗ Found ${violations.length} image violation(s) (shape or rejected bytes):`);
   console.error('');
   for (const v of violations) {
     const rel = path.relative(ROOT, v.absPath);

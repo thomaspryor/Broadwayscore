@@ -25,12 +25,9 @@ const SHOWS_DIR = path.join(PUBLIC, 'data', 'shows');
 const md5 = (file) => crypto.createHash('md5').update(fs.readFileSync(file)).digest('hex');
 
 // Files checked by eye and removed (BRO-4251). A re-fetch that brings the same
-// bytes back fails here.
-const REJECTED_IMAGE_MD5 = {
-  '9c56c7ac3efb321f8e84a2d09da928b6': 'hangmen-2022 hero: text-only FINAL WEEK / ENDS JUNE 18 banner',
-  '8c0c124f9317bbd949498e7e4d539a2a': 'the-snowman-west-end-2026 hero: Chamber Music Society "Youthful Genius" ad',
-  '20f2fbef406d6303a62c95fea36b8a57': 'the-snowman-west-end-2026 poster: Chamber Music Society "Youthful Genius" ad',
-};
+// bytes back fails here. The list lives in data/rejected-images.json so
+// scripts/check-image-aspect.js can drop them before the auto-fetch commit.
+const REJECTED_IMAGE_MD5 = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'rejected-images.json'), 'utf8')).md5;
 
 // Different titles, same production lineage (a Broadway retitle).
 const RELATED_GROUPS = [
