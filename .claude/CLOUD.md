@@ -79,9 +79,9 @@ It cannot change auto mode: the classifier reads `autoMode` only from user, mana
 
 ## Fixing private data (review-texts, core data) from cloud
 
-Don't clone and push the private repos (every write stops for an approval). Route the edit through CI (BRO-4216):
+Don't clone and push the private repos. Route the edit through CI (BRO-4216):
 
-1. Write `data/pending-fixes/bro-N.json` like the others there: `issueNumber: "bro-N"`, fresh `planId` (uuid), `status: "pending"`, `submitter: {name: null, email: null}`, `plan: {summary, steps, riskLevel, actions}`. Actions:
+1. Write `data/pending-fixes/bro-N.json`: `issueNumber: "bro-N"`, fresh `planId` (uuid), `status: "pending"`, `submitter: {name: null, email: null}`, `plan: {summary, steps, riskLevel, actions}`. Actions:
    - review text field: `{type: "review-field-edit", file: "<showId>/<file>.json", field, oldValue, newValue, description}`. Allowlist in `scripts/lib/review-field-edit.js`; `oldValue` must equal the current value. `url` only as a repair (BRO-4430): the current url must be an aggregator/round-up page, a non-review page, or another critic's review a sibling file holds; `newValue` is the outlet's own review url or `""` for an aggregator url on a Theatre Record text. Model: `data/pending-fixes/bro-4430.json`. Moves/deletes: `{type: "review-file-op", operation: "delete"|"move", sourcePath, destPath}`. Bring back a deleted file (text stays out of the plan): `{type: "review-file-op", operation: "restore", sourcePath, fromCommit: "<40-char review-texts sha>[^]", destPath?}` (`scripts/lib/review-file-restore.js`; model `data/pending-fixes/bro-5133-c.json`).
    - shows.json / commercial.json field: `{type: "data-edit", ...}` (allowlist `scripts/lib/feedback-pipeline-fields.js`; commercial `showSlug` is the shows.json slug; absent field → `oldValue: null`).
    - new commercial.json entry for a Broadway show with none: `{type: "add-commercial-entry", slug: "<shows.json slug>", entry: {designation, sources: [{type, url, date}], ...}}` (`scripts/lib/commercial-entry-action.js`: slug-keyed only, cited sources required, same per-record checks as validate-data.js; a non-TBD outcome is stamped `humanReviewedDesignation`). Model: `data/pending-fixes/bro-4627.json`.
@@ -89,7 +89,7 @@ Don't clone and push the private repos (every write stops for an approval). Rout
    - drop a stale audience-buzz key: `{type: "drop-orphan-key", file: "audience-buzz.json", showId, reason, renameTo?}`.
    - cosmetic title repair (case, punctuation, a trailing slug counter; id/slug unchanged): `{type: "retitle-show", id, expectTitle, newTitle, reason}` (`scripts/lib/retitle-show-action.js`). Model: `data/pending-fixes/bro-4505.json`.
    - new shows.json entry: `{type: "add-show", show: {...}, crossLinkFrom?}` (`scripts/lib/add-show-action.js`: refuses an existing id/slug, placeholder venues and unknown fields; `crossLinkFrom` also appends a `priorRuns` link on that existing show; `priorRunOf: "<earlier run id>"` instead puts the link on the NEW entry, for a return engagement). Same-title reruns: `<slug>-off-broadway-<year>`. Art in `public/images/shows/<id>/` lands with the plan. Model: `data/pending-fixes/bro-4259.json`. Then dispatch `gather-reviews.yml` with `shows=<id>`.
-2. Land it (`land/<name>`).
+2. `node scripts/lib/preflight-review-fix-plan.js <plan>`, then land (`land/<name>`).
 3. Dispatch `execute-approved-fix.yml` (`mcp__github__actions_run_trigger`) with `issue_number=bro-N`, `plan_id=<planId>`, `mode=apply`. It applies and pushes the private repos (no owner email for `bro-*` plans: report in chat and Linear). Red if any action was refused.
 4. The next rebuild picks it up (or dispatch `rebuild-fast.yml`).
 
