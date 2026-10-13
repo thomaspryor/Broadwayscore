@@ -249,6 +249,36 @@
     "queuedAt": "2026-10-13T05:28:05.054Z"
   },
   {
+    "conditionKey": "land:land/bro-2420-orphaned-audit-writes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2420-orphaned-audit-writes",
+    "description": "land.yml did not land land/bro-2420-orphaned-audit-writes: the unit-tests-node gate went red at fadad8bec8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38349096439",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2420-orphaned-audit-writes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fadad8bec8924a86a57e771a12b8988f1169e793"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38349096439"
+      }
+    ],
+    "queuedAt": "2026-10-13T05:30:06.101Z"
+  },
+  {
     "conditionKey": "land:land/bro-2937-core-data-canary",
     "title": "Landing blocked: unit-tests-node red on land/bro-2937-core-data-canary",
     "description": "land.yml did not land land/bro-2937-core-data-canary: the unit-tests-node gate went red at d19a3d1bec. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38348823917",
