@@ -12,6 +12,16 @@ test('flags permanence language in baseline entry strings', () => {
   assert.equal(hits[0].path, '$.entries[0].note');
 });
 
+test('catches common phrasings', () => {
+  for (const s of ['Stays in baseline until BRO-1 migrates', 'kept indefinitely', "won't fix", 'permanent_exception']) {
+    assert.equal(findPermanentLabels({ n: s }).length, 1, s);
+  }
+});
+
+test('ignores show ids and URLs that contain the word', () => {
+  assert.deepEqual(findPermanentLabels({ ids: ['on-a-clear-day-you-can-see-forever-2011'], u: 'https://x.com/permanent-collection' }), []);
+});
+
 test('does not flag ordinary baseline text', () => {
   assert.deepEqual(findPermanentLabels({ description: 'Frozen list of known-bad archives', files: { 'x.js': 2 } }), []);
 });

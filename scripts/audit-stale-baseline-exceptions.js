@@ -18,12 +18,14 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const PERMANENCE = /\b(permanent(ly)?|stays? (in the )?baseline[d]?|deliberate(ly)? (exception|stays?)|forever|never (migrate|fix))\b/i;
+const PERMANENCE = /\b(permanent(ly)?|indefinite(ly)?|stays? (in (the )?)?baselined?|deliberate(ly)? (exception|stays?|exempt|kept|retained)|forever|never (migrate|fix)|won'?t fix)\b|permanent_/i;
+// Show ids / slugs / URLs ("on-a-clear-day-you-can-see-forever-2011") are data, not prose.
+const SLUG_OR_URL = /^(https?:\/\/\S+|[a-z0-9./:-]+)$/;
 
 // file -> why a permanence label is genuinely justified (none today).
 const ALLOWED = {};
 
-const BASELINE_FILE = /(^|\/)\.?[a-z0-9-]*baseline[a-z0-9-]*\.json$/;
+const BASELINE_FILE = /(^|\/)[^/]*baseline[^/]*\.json$/;
 
 function listBaselines(root) {
   const out = execFileSync('git', ['ls-files', '*baseline*.json'], { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
@@ -38,26 +40,32 @@ function collectStrings(v, p, acc) {
 }
 
 function findPermanentLabels(json) {
-  return collectStrings(json, '$', []).filter(([, s]) => PERMANENCE.test(s)).map(([p, s]) => ({ path: p, text: s.slice(0, 160) }));
+  return collectStrings(json, '$', []).filter(([, s]) => !SLUG_OR_URL.test(s) && PERMANENCE.test(s)).map(([p, s]) => ({ path: p, text: s.slice(0, 160) }));
 }
 
 function audit(root) {
   const findings = [];
+  const skipped = [];
   const files = listBaselines(root);
   for (const f of files) {
     if (ALLOWED[f]) continue;
     let json;
-    try { json = JSON.parse(fs.readFileSync(path.join(root, f), 'utf8')); } catch { continue; }
+    try { json = JSON.parse(fs.readFileSync(path.join(root, f), 'utf8')); } catch (e) {
+      // Some *baseline*.json files are text snapshots, not JSON: warn, don't fail.
+      skipped.push(f);
+      continue;
+    }
     for (const h of findPermanentLabels(json)) findings.push({ file: f, ...h });
   }
-  return { files, findings };
+  return { files, findings, skipped };
 }
 
 module.exports = { audit, findPermanentLabels, PERMANENCE };
 
 if (require.main === module) {
-  const { files, findings } = audit(path.join(__dirname, '..'));
-  console.log(`Scanned ${files.length} baseline files.`);
+  const { files, findings, skipped } = audit(path.join(__dirname, '..'));
+  console.log(`Scanned ${files.length - skipped.length} of ${files.length} baseline files.`);
+  for (const f of skipped) console.log(`  warning: ${f} is not parseable JSON, skipped`);
   for (const f of findings) console.log(`  ${f.file} ${f.path}: ${f.text}`);
   if (findings.length) {
     console.log('Permanence language in a baseline: migrate the entry, or document why it is architectural (ALLOWED).');
