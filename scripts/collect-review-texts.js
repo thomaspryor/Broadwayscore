@@ -110,7 +110,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -4176,6 +4176,14 @@ function extractTextFromHtml(html, url) {
   if (url && url.includes('newyorker.com')) {
     const nyText = extractNewYorkerFromHtml(html);
     if (nyText && nyText.length > 500) return nyText;
+  }
+
+  // Variety: the page paragraphs carry mid-article promo modules ("Related
+  // Stories" headlines) and the JSON-LD body can be a teaser; the dedicated
+  // extractor strips the promos (BRO-5222, Farnsworth refetch).
+  if (url && url.includes('variety.com')) {
+    const varietyText = extractVarietyBody(html);
+    if (varietyText && varietyText.length > 500) return varietyText;
   }
 
   // Zox News theme (t2conline.com): body container only, never the

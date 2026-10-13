@@ -37,6 +37,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 const { chooseArticleBody } = require('./lib/jsonld-body-choice');
+const { extractVarietyBody } = require('./lib/article-extractor');
 
 const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
 
@@ -258,6 +259,13 @@ function extractTextFromHtml(html, url) {
 
   // Step 1: Strip Wayback toolbar FIRST
   html = stripWaybackToolbar(html);
+
+  // Variety: dedicated extractor strips the mid-article promo modules the
+  // generic paragraph scrape picks up (BRO-5222).
+  if (url && url.includes('variety.com')) {
+    const varietyText = extractVarietyBody(html);
+    if (varietyText && varietyText.length > 500) return varietyText;
+  }
 
   // Step 2: JSON-LD articleBody (most reliable when available). A short body
   // can be a teaser of the page prose (Variety, BRO-5222): chooseArticleBody

@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { chooseArticleBody } = require('./lib/jsonld-body-choice');
+const { extractVarietyBody } = require('./lib/article-extractor');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const COOKIES_DIR = path.join(__dirname, '..', 'data', 'cookies');
@@ -101,6 +102,13 @@ function extractTextFromHtml(html, url) {
   // Try JSON-LD first. A short body can be a teaser of the page prose
   // (Variety, BRO-5222): chooseArticleBody prefers the page text only when
   // it is the same article, clearly longer.
+  // Variety: dedicated extractor strips the mid-article promo modules the
+  // generic paragraph scrape picks up (BRO-5222).
+  if (url && url.includes('variety.com')) {
+    const varietyText = extractVarietyBody(html);
+    if (varietyText && varietyText.length > 500) return varietyText;
+  }
+
   const jsonLdText = extractFromJsonLd(html);
   if (jsonLdText && jsonLdText.length > 500) {
     return chooseArticleBody(jsonLdText, extractPageText(html, url)).text;

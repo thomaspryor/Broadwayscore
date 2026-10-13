@@ -52,3 +52,18 @@ describe('extractTextFromHtml JSON-LD teaser fallback (BRO-5222)', () => {
     assert.equal(out, body.trim());
   });
 });
+
+describe('extractTextFromHtml Variety promo modules (BRO-5222)', () => {
+  const promo = `<div class="injected-related-story"><h3>Related Stories</h3><div><a>'Other Show' Review: Something Else Entirely Happens Here</a></div></div>`;
+  const varietyPage = (ld) => `<html><head><script type="application/ld+json">${JSON.stringify({ '@type': 'NewsArticle', articleBody: ld })}</script></head><body><article><div class="a-content">${para(4, 'Review')}${promo}${para(12, 'Review later')}</div><p>Read More About: theater</p></article></body></html>`;
+  it('drops the mid-article Related Stories block and keeps all review prose', () => {
+    const out = extractTextFromHtml(varietyPage('Review paragraph 0 '.repeat(40)), 'https://variety.com/2007/legit/reviews/x/');
+    assert.doesNotMatch(out, /Related Stories|Other Show/);
+    assert.match(out, /^Review paragraph 0/);
+    assert.match(out, /Review later paragraph 11/);
+  });
+  it('leaves non-Variety pages to the generic path', () => {
+    const out = extractTextFromHtml(varietyPage('Review paragraph 0 '.repeat(40)), 'https://example.com/x/');
+    assert.match(out, /Review/);
+  });
+});
