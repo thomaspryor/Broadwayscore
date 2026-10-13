@@ -872,7 +872,7 @@ done < <(g diff --name-only --diff-filter=d "$ORIGIN_BASE_SHA" HEAD 2>/dev/null)
 if [ ${#SYNTAX_CHECK_FILES[@]} -gt 0 ]; then
   log "syntax-checking ${#SYNTAX_CHECK_FILES[@]} changed scripts/ file(s) (post-merge floor)"
   SYNTAX_FAIL=0
-  for f in "${SYNTAX_CHECK_FILES[@]}"; do
+  for f in ${SYNTAX_CHECK_FILES[@]+"${SYNTAX_CHECK_FILES[@]}"}; do
     [ -f "$MAIN_DIR/$f" ] || continue
     if ! ERR=$(node --check "$MAIN_DIR/$f" 2>&1); then
       echo "  ✗ $f" >&2

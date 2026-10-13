@@ -70,7 +70,7 @@ if [ -n "${REBUILD_FAST_REGEN_CMD:-}" ]; then
 else
   FORCE_FLAG=()
   [ "${REBUILD_FORCE_WRITE:-false}" = "true" ] && FORCE_FLAG=(--force-write)
-  node "$SCRIPT_DIR/rebuild-all-reviews.js" "${FORCE_FLAG[@]}"
+  node "$SCRIPT_DIR/rebuild-all-reviews.js" ${FORCE_FLAG[@]+"${FORCE_FLAG[@]}"}
   bash "$SCRIPT_DIR/generate-mobile-artifacts.sh"
   bash "$SCRIPT_DIR/lib/revert-staleness-flagged-shows.sh"
   node "$SCRIPT_DIR/audit-score-public-since.js" || echo "::warning::audit-score-public-since.js failed during redo (fail-open, same as the first pass)"

@@ -134,7 +134,7 @@ unit_tests_node() {
   mapfile -t tests < tests/unit-test-manifest.txt 2>/dev/null
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/unit-test-manifest.txt is empty or missing"; return 1; fi
   echo "# node batch: ${#tests[@]} files"
-  node --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
+  node --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
 gate unit-tests-node unit_tests_node
 
@@ -143,7 +143,7 @@ unit_tests_tsx() {
   mapfile -t tests < tests/unit-test-manifest-tsx.txt 2>/dev/null
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; return 1; fi
   echo "# tsx batch: ${#tests[@]} files"
-  npx tsx --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
+  npx tsx --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
 gate unit-tests-tsx unit_tests_tsx
 
@@ -153,7 +153,7 @@ unit_tests_e2e() {
   mapfile -t tests < tests/e2e-unit-test-manifest.txt 2>/dev/null
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/e2e-unit-test-manifest.txt is empty or missing"; return 1; fi
   echo "# e2e unit batch: ${#tests[@]} files"
-  npx tsx --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
+  npx tsx --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
 gate unit-tests-e2e unit_tests_e2e
 
@@ -161,7 +161,7 @@ scripts_lib_tests() {
   shopt -s nullglob
   local -a tests=(scripts/lib/*.test.mjs)
   if [ ${#tests[@]} -eq 0 ]; then echo "no scripts/lib tests"; return 0; fi
-  node --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
+  node --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
 gate scripts-lib-tests scripts_lib_tests
 
@@ -218,12 +218,12 @@ bash_integration() {
   local nonce; nonce="$$-$(date +%s)"
   local start; start=$(date +%s)
   local FAILED="" f rf rc i=0 elapsed
-  for f in "${tests[@]}"; do
+  for f in ${tests[@]+"${tests[@]}"}; do
     i=$((i + 1))
     elapsed=$(( $(date +%s) - start ))
     if [ "$elapsed" -ge "$budget" ]; then
       echo "::error::bash-integration total budget (${budget}s) exceeded after ${elapsed}s — $(( ${#tests[@]} - i + 1 )) file(s) never ran"
-      for rf in "${tests[@]:$((i - 1))}"; do
+      for rf in ${tests[@]+"${tests[@]:$((i - 1))}"}; do
         echo "::error::bash-integration gate failed: $rf [budget-exceeded-${nonce}] (exit 124)"
         FAILED="$FAILED\n  - $rf (not run — budget exceeded)"
       done
@@ -254,7 +254,7 @@ toplevel_regression() {
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::land-gauntlet-toplevel-list.js derived ZERO node scripts/test-*.js steps from test.yml — broken matcher?"; return 1; fi
   echo "# toplevel regression: ${#tests[@]} files (derived from test.yml)"
   local FAILED="" f rc
-  for f in "${tests[@]}"; do
+  for f in ${tests[@]+"${tests[@]}"}; do
     echo "── $f"
     timeout 120 node "$f"
     rc=$?

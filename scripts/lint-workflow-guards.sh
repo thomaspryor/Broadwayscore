@@ -834,7 +834,7 @@ elif [ $# -gt 1 ]; then
   exit 2
 else
   IFS=',' read -ra CHECKS <<< "$1"
-  for c in "${CHECKS[@]}"; do
+  for c in ${CHECKS[@]+"${CHECKS[@]}"}; do
     run_check "$c"
   done
 fi
