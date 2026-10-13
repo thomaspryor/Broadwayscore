@@ -38,9 +38,8 @@ on:
       # decides whether a push TRIGGERS CI; whether a test RUNS is decided by
       # the unit-test collection. New top-level tests need no entry below; the
       # sibling scripts/<name>.js entries still do (top-level .js is not
-      # globbed). Literal scripts/<name>.test.mjs entries below are redundant
-      # and are being removed (tests/unit/test-yml-toplevel-test-glob.test.mjs
-      # refuses NEW ones).
+      # globbed). Never add a literal scripts/<name>.test.mjs entry:
+      # tests/unit/test-yml-toplevel-test-glob.test.mjs refuses one.
       - 'scripts/*.test.mjs'
       # scripts/lib/check-orphan-commits.test.mjs requires ../check-orphan-commits.js
       # (a top-level scripts/ file, outside the glob above) and

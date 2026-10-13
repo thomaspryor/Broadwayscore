@@ -4,9 +4,9 @@
 // test triggered zero CI (#1737, #1745, BRO-2603, BRO-2647). This keeps the
 // glob in place and stops new literal per-test entries.
 //
-// MAX_REDUNDANT_LITERALS is a ratchet: the literal scripts/<name>.test.mjs
-// entries that predate the glob are being removed in small steps (one big
-// deletion never rebased cleanly onto a busy test.yml). It may only go DOWN.
+// MAX_REDUNDANT_LITERALS was a ratchet while the ~180 literal entries that
+// predated the glob were removed in region batches (one big deletion never
+// rebased cleanly onto a busy test.yml). All are gone; it stays at 0.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -18,7 +18,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { readPushPathsFrom, globToRegExp, isCovered } = require(join(ROOT, 'scripts/lib/test-yml-push-paths.js'));
 
 const GLOB = 'scripts/*.test.mjs';
-const MAX_REDUNDANT_LITERALS = 180;
+const MAX_REDUNDANT_LITERALS = 0;
 const paths = readPushPathsFrom(join(ROOT, '.github/workflows/test.yml'));
 
 test('on.push.paths carries the scripts/*.test.mjs glob', () => {
