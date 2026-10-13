@@ -12,7 +12,8 @@
 # main body on load). Fail-open: with no timeout/gtimeout binary the op runs
 # unbounded, as before.
 #
-# Callers: .github/actions/push-core-data/action.yml ("Commit and push core data").
+# Callers: .github/actions/push-core-data/action.yml ("Commit and push core data"),
+# .github/actions/checkout-core-data/action.yml ("Clone core data repo", BRO-3074).
 git_net() {
   local secs="$1"; shift
   local bin

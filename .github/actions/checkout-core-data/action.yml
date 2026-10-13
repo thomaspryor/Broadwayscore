@@ -61,6 +61,8 @@ runs:
         # tests/unit/checkout-rate-limit-retry.test.mjs) instead of the flat
         # 10s sleep this used to give every failure regardless of cause.
         MAX_RETRIES=3
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+        NET_SEC="${CHECKOUT_CORE_DATA_NET_TIMEOUT_SEC:-120}"
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           START=$(date +%s)
@@ -84,7 +86,14 @@ runs:
           # branch's core data to all 284 invocations with every job still green.
           # checkout-review-texts/action.yml:44 already pins the same way.
           rm -rf /tmp/core-data-checkout
-          if git clone --depth 1 --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
+          # BRO-3074: bound the clone with git_net so a transport hang counts as
+          # a failed attempt instead of blocking until the job timeout. 120s is
+          # ~5x the 24s upper bound measured above and fits the 5-10 min
+          # timeout-minutes most callers have. `|| CLONE_RC=$?` because this
+          # step runs under bash -e.
+          CLONE_RC=0
+          git_net "$NET_SEC" clone --depth 1 --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE" || CLONE_RC=$?
+          if [ "$CLONE_RC" -eq 0 ]; then
             ELAPSED=$(($(date +%s) - START))
             echo "Core data cloned fresh in ${ELAPSED}s"
             SUCCESS=true
@@ -92,6 +101,17 @@ runs:
 
           if [ "$SUCCESS" = "true" ]; then
             break
+          fi
+
+          if [ "$CLONE_RC" -eq 124 ] || [ "$CLONE_RC" -eq 137 ]; then
+            cat "$STDERR_FILE" >&2
+            rm -rf /tmp/core-data-checkout
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              echo "::warning::Core data clone hung, killed after ${NET_SEC}s (attempt $ATTEMPT/$MAX_RETRIES, rc=$CLONE_RC) — retrying"
+              continue
+            fi
+            echo "::error::Core data clone hung on all $MAX_RETRIES attempts (killed after ${NET_SEC}s each)"
+            exit 1
           fi
 
           cat "$STDERR_FILE" >&2
