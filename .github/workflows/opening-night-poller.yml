@@ -1093,6 +1093,11 @@ jobs:
       - name: Rebuild reviews.json locally (for readiness check)
         id: readiness_rebuild
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        env:
+          # BRO-2757: this local rebuild only feeds the readiness check (the real
+          # rebuild is dispatched separately, or ran as fast_rebuild), so its
+          # 'rebuilt' events would be early and wrong now that the log is kept.
+          BSC_STAGE_LATENCY_MUTE: '1'
         run: node scripts/rebuild-all-reviews.js 2>&1 | tail -5
         continue-on-error: true
         timeout-minutes: 5
@@ -1154,6 +1159,16 @@ jobs:
           gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
             || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
         continue-on-error: true
+
+      - name: Commit stage-latency events
+        # BRO-2757: persists the review-first-seen / review-text-collected /
+        # scored events this job emitted. Late and always() so collect and
+        # scoring events are included even when a later step failed.
+        if: always() && steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/commit-stage-latency
+        with:
+          workflow-name: opening-night-poller
 
       # BRO-735 "Single integrated opening night pipeline": aggregates every
       # stage's real outcome (gather/collect/score/rebuild/deploy — all inline

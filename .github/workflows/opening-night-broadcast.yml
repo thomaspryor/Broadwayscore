@@ -468,35 +468,21 @@ jobs:
             # would already be set, suppressing the generic notify-failure
             # fallback below and leaving the owner with ZERO email for a real
             # blocked broadcast (worse than the pre-migration behavior).
-            BREACHED_LIST="$BREACHED_LIST" node -e "
-              const { routeAlert } = require('./scripts/lib/owner-alert-router');
-              routeAlert({
-                conditionKey: 'broadcast-gate:checklist:' + (process.env.BREACHED_LIST || 'unknown'),
-                title: 'Opening Night Broadcast Blocked — Checklist Errors',
-                description: 'Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.',
-                severity: 'error',
-                disposition: 'human',
-                cooldownHours: 24,
-                fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then((result) => {
-                // action==='digest' means the page-worthy gate (card #611) downgraded this
-                // from 'human' — the owner WILL see it in the morning digest, so that
-                // counts as informed too (otherwise this falls through to the generic
-                // direct-email notify-failure step below, defeating the gate).
-                const informed = result.action === 'silent' || result.action === 'digest' || (result.action === 'human' && result.delivered);
-                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
-                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
-                process.exit(1);
-              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
-            "
+            # BRO-2816: exits 0 with blocked=true once the owner is informed (the
+            # orphan_gate pattern), so later steps are not skipped; the broadcast
+            # step checks the output. Exits 1 only when delivery is unconfirmed,
+            # which lets "Notify on failure" email the owner instead.
+            BREACHED_LIST="$BREACHED_LIST" node scripts/lib/broadcast-gate-alert.js checklist
           else
             echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
+            echo "blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
 
       - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
         id: drift_gate
-        if: steps.check.outputs.pending_shows != ''
+        # BRO-2816: skip once the checklist gate already blocked and alerted (one alert per run).
+        if: steps.check.outputs.pending_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -557,35 +543,21 @@ jobs:
             # blocked=true only written after confirmed delivery/silence — see
             # the checklist gate above for the fail-closed-to-silence bug this
             # avoids (codex adversarial review 2026-07-23).
-            BREACHED_LIST="$BREACHED_LIST" node -e "
-              const { routeAlert } = require('./scripts/lib/owner-alert-router');
-              routeAlert({
-                conditionKey: 'broadcast-gate:drift:' + (process.env.BREACHED_LIST || 'unknown'),
-                title: 'Opening Night Broadcast Blocked — Review-Count Drift',
-                description: 'Automated broadcast halted: scored in-window reviews are missing from data/reviews.json for one or more pending shows (or reviews.json is stale).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
-                severity: 'error',
-                disposition: 'human',
-                cooldownHours: 24,
-                fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
-              }).then((result) => {
-                // action==='digest' means the page-worthy gate (card #611) downgraded this
-                // from 'human' — the owner WILL see it in the morning digest, so that
-                // counts as informed too (otherwise this falls through to the generic
-                // direct-email notify-failure step below, defeating the gate).
-                const informed = result.action === 'silent' || result.action === 'digest' || (result.action === 'human' && result.delivered);
-                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
-                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
-                process.exit(1);
-              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
-            "
+            # BRO-2816: exits 0 with blocked=true once the owner is informed (the
+            # orphan_gate pattern), so later steps are not skipped; the broadcast
+            # step checks the output. Exits 1 only when delivery is unconfirmed,
+            # which lets "Notify on failure" email the owner instead.
+            BREACHED_LIST="$BREACHED_LIST" node scripts/lib/broadcast-gate-alert.js drift
           else
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
+            echo "blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
 
       - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
         id: orphan_gate
-        if: steps.check.outputs.pending_shows != ''
+        # BRO-2816: skip on a checklist/drift block so a blocked night does not dispatch paid rescores.
+        if: steps.check.outputs.pending_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -837,7 +809,7 @@ jobs:
         run: bash scripts/generate-mobile-artifacts.sh
 
       - name: Create broadcast draft (owner sends manually from Resend)
-        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         id: broadcast
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -992,7 +964,10 @@ jobs:
           "
 
       - name: Gather more reviews if not ready
-        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
+        # BRO-2816: checklist/drift blocks no longer fail the job, so skip here
+        # explicitly as before. Those blocks have no self-heal budget, and a
+        # gather dispatch re-triggers this workflow (~2h loop, paid scraping).
+        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -1633,7 +1608,11 @@ jobs:
         # silently drop this critical alert. The gate outputs stay a safe
         # AND-guard on cancellation too: a cancelled gate step never sets its
         # 'blocked' output, so the != 'true' checks still pass through.
-        if: (failure() || cancelled()) && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        # BRO-2816: no gate fails its step after writing blocked=true any more
+        # (all three exit 0 on an informed block), so the old blocked guards
+        # here only hid unrelated later failures. A gate step that does fail
+        # (alert delivery unconfirmed) must reach this notifier.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Broadcast Failed'
@@ -1646,8 +1625,8 @@ jobs:
       - name: Trigger investigation
         # Only when the failure actually paged (2h cooldown) — a repeat failure
         # inside the cooldown shouldn't send a second investigation email. Same
-        # known-gate skip as "Notify on failure" above.
-        if: failure() && steps.notify.outputs.suppressed != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        # notifier rules as "Notify on failure" above.
+        if: failure() && steps.notify.outputs.suppressed != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |

@@ -601,6 +601,15 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Commit stage-latency events
+        # BRO-2757: gather/collect/score here emit stage-latency events that
+        # the main commit never staged (data/audit/*.json misses .jsonl).
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        uses: ./.github/actions/commit-stage-latency
+        with:
+          workflow-name: opening-night-express
+
       - name: Commit scraper-spend ledger
         if: always()
         continue-on-error: true
