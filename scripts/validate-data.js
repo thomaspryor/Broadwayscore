@@ -24,6 +24,7 @@ const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross
 const { findSharedSources } = require('./lib/shared-image-source');
 const { loadImageSources } = require('./lib/image-sources-store');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { hasStoredStaleUpcomingTag } = require('./lib/opening-night-completeness');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
 const { checkIdYearDrift } = require('./lib/id-year-drift');
 
@@ -1559,6 +1560,14 @@ function validateShowTypes(shows) {
       error(`Show "${show.title}" (${show.id}) has both "new" and "revival" tags — self-contradictory. Remove whichever no longer applies.`);
       issues++;
     }
+  }
+
+  // BRO-3208: advisory. The daily fix-stale-upcoming-tags.js step in
+  // update-show-status.yml clears these; a status flip by any other path can
+  // leave one for up to a day, and the compare page already hides the tag.
+  const staleUpcoming = shows.filter(hasStoredStaleUpcomingTag);
+  if (staleUpcoming.length > 0) {
+    warn(`${staleUpcoming.length} show(s) keep an 'upcoming' tag after their status moved on (e.g. ${staleUpcoming.slice(0, 3).map(s => s.id).join(', ')}). Fix: node scripts/fix-stale-upcoming-tags.js --apply`);
   }
 
   if (issues === 0) {

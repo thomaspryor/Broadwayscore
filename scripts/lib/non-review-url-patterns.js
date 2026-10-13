@@ -158,6 +158,25 @@ const NON_REVIEW_PATH_PATTERNS = [
   /(^|\/)photos?-/i,
 ];
 
+// A site's own utility page at the path root: /submit/, /contact-us, /about,
+// /subscribe, /privacy-policy, /login ... (BRO-3106: The Spectator's /submit/
+// editorial contact page, a list of staff emails, was ingested by
+// outlet-listing-poller as a T2 review of the-story-west-end-2026 and pinned a
+// rescore loop). Single-segment only, so /about/<slug>/ or a review slug
+// containing "contact" is untouched. 0 of 26,519 reviews.json URLs match.
+const SITE_UTILITY_PATH_RE = /^\/(submit|contact(-us)?|about(-us)?|subscribe|subscriptions?|privacy(-policy)?|terms(-of-(use|service))?|terms-and-conditions|advertise|advertising|login|log-in|sign-?in|sign-?up|register|my-account|account|newsletters?)\/?$/i;
+NON_REVIEW_PATH_PATTERNS.push(SITE_UTILITY_PATH_RE);
+
+/**
+ * 'site-utility-page' when the URL is a site's root utility page, else null.
+ * @param {string} url
+ * @returns {string|null}
+ */
+function siteUtilityPathReason(url) {
+  if (typeof url !== 'string' || !url) return null;
+  try { return SITE_UTILITY_PATH_RE.test(new URL(url).pathname) ? 'site-utility-page' : null; } catch { return null; }
+}
+
 /**
  * Third wave, measured task #907 (day-one live triage of the S5 probe's
  * first CI run — 6 of 9 first-run "gaps" were exactly this class) plus its
@@ -733,6 +752,7 @@ function classifyGapCandidateUrl(url) {
 }
 
 module.exports = {
+  siteUtilityPathReason,
   classifyGapCandidateUrl,
   submissionNonReviewReason,
   NON_REVIEW_HOST_PATTERNS,

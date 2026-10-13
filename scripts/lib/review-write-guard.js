@@ -196,6 +196,13 @@ const PROTECTED_FIELDS = [
   // review" clear (isNonReview=false + nonReviewManualClear). Self-protecting; no
   // code retracts it, so a rebase-time restore must never drop it.
   'nonReviewManualClear',
+  // The isNonReview verdict itself (BRO-3106). Unprotected, a manual "this is a
+  // scraped contact page, not a review" flag could be dropped by a rewrite or
+  // the push-time restore while every sibling exclusion flag (wrongShow,
+  // wrongProduction, isNotReview) survived. Every clear path sets
+  // isNonReview=false (+ reason null), which CLEAR_BREADCRUMBS honors below.
+  'isNonReview',
+  'isNonReviewReason',
   'wrongProductionOverride',
   'wrongProductionOverrideReason',
   'wrongProductionOverrideSetAt',
@@ -987,6 +994,12 @@ const _clearBreadcrumbRetracted = (field) => (d) => {
 // manual-clear predicates above, which are also unbounded.
 const _isNotReviewCleared = (d) =>
   d.isNotReviewManualClear === true || d.isNotReview === false;
+// isNonReview family (BRO-3106): the clear writers (classify-non-reviews.js,
+// manual-review-fields.js, audit-exclusion-flags.js, the reverify-*-cv-promoted
+// scripts, collect-review-texts.js) all write isNonReview=false and null the
+// reason; a human clear also stamps nonReviewManualClear (BRO-5130).
+const _isNonReviewCleared = (d) =>
+  d.nonReviewManualClear === true || d.isNonReview === false;
 
 // manualClearFallback* give-up markers (BRO-4656): tour-backfill.js
 // clearStaleScoringFailure nulls them when a review routed to a tour carries a
@@ -1036,6 +1049,8 @@ const CLEAR_BREADCRUMBS = {
   crossOutletFlaggedAt: (d) => !_isEmptyValue(d.crossOutletClearReason),
   isNotReview: _isNotReviewCleared,
   isNotReviewReason: _isNotReviewCleared,
+  isNonReview: _isNonReviewCleared,
+  isNonReviewReason: _isNonReviewCleared,
   isNotReviewSetAt: _isNotReviewCleared,
   isNotReviewSetBy: _isNotReviewCleared,
   duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),

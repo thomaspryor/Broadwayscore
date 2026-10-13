@@ -170,12 +170,17 @@ const STAR_SOURCE_BY_REFERENCE = {
  * @param {string|null} [args.critic]    - existing file's criticName (forces the
  *                                          ingest slug to match → merge not sibling)
  * @param {string|null} [args.url]       - aggregator's current-production URL to fetch
+ * @param {boolean} [args.blocked]       - url is on the show's _blocklist.json
+ *                                          (poller-blocklist). Terminal skip: an
+ *                                          operator blocked it on purpose, so it
+ *                                          must not count as a failed retry (BRO-3403)
  * @param {number} [args.cap]
  * @returns {{ action: 'recover'|'skip', reason: string, outletId?: string|null, critic?: string|null, url?: string|null }}
  */
-function decideEmptyBodyRecovery({ file, outletId = null, critic = null, url = null, cap = FLAGGED_RECOVERY_CAP } = {}) {
+function decideEmptyBodyRecovery({ file, outletId = null, critic = null, url = null, blocked = false, cap = FLAGGED_RECOVERY_CAP } = {}) {
   if (!file) return { action: 'skip', reason: 'no-file' };
   if (!url) return { action: 'skip', reason: 'no-aggregator-url' };
+  if (blocked) return { action: 'skip', reason: 'blocklisted' };
   if (file.humanReviewScore != null) return { action: 'skip', reason: 'human-protected' };
   if (file.wrongProduction === true || file.wrongShow === true) return { action: 'skip', reason: 'wrong-production-or-show' };
   if (file.wrongProductionManualClear === true || file.wrongShowManualClear === true) return { action: 'skip', reason: 'manual-clear' };

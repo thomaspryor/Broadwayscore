@@ -55,6 +55,24 @@ function hasStaleUpcomingTag(show) {
   return isRecentlyLive(show, STALE_UPCOMING_LIVENESS) && show.tags.includes('upcoming');
 }
 
+// Statuses that mean the show is no longer "upcoming" (BRO-3208). The tag is a
+// write-time snapshot stamped by discovery; nothing on a status transition
+// removed it, so 300+ open/previews/closed shows kept it and the compare page
+// rendered "upcoming" as a genre. Broader than hasStaleUpcomingTag above, which
+// stays open-and-recent because it feeds per-show opening-night alerts.
+const PAST_UPCOMING_STATUSES = Object.freeze(['open', 'previews', 'closed']);
+
+/**
+ * @param {Object} show
+ * @returns {boolean} true if the stored tags still say 'upcoming' (any case)
+ *   while the status has moved past upcoming/announced
+ */
+function hasStoredStaleUpcomingTag(show) {
+  if (!show || !Array.isArray(show.tags)) return false;
+  if (!PAST_UPCOMING_STATUSES.includes(show.status)) return false;
+  return show.tags.some(t => typeof t === 'string' && t.toLowerCase() === 'upcoming');
+}
+
 /**
  * Market-aware canonical-title match: true only if another show shares the
  * same canonical title AND the same category. A same-title show in a DIFFERENT
@@ -108,6 +126,8 @@ module.exports = {
   hasEmptyCast,
   isPlaceholderSynopsis,
   hasStaleUpcomingTag,
+  PAST_UPCOMING_STATUSES,
+  hasStoredStaleUpcomingTag,
   hasSameMarketTitleMatch,
   countRevivalMentions,
 };

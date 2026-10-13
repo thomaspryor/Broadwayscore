@@ -102,3 +102,48 @@ test('a show with no blocklist is unaffected (guard is selective)', () => {
   assert.doesNotMatch(r.out, /Fetching:/);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+// BRO-3403: an http entry must block its https twin (site migrations flip the
+// scheme), but the ?ID= query must stay part of the identity.
+test('an http blocklist entry blocks the https twin at the CLI', () => {
+  const root = makeCorpus();
+  const r = run(root, BLOCKED.replace('http:', 'https:'));
+  assert.equal(r.code, 1);
+  assert.match(r.out, /blocklisted/i);
+  assert.doesNotMatch(r.out, /Fetching:/);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('scheme-insensitive matching keeps ?ID= articles independent', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const { loadBlocklist, findBlockedEntry } = require('../../scripts/lib/poller-blocklist.js');
+  const root = makeCorpus();
+  const bl = loadBlocklist(path.join(root, SHOW));
+  const httpsTwin = BLOCKED.replace('http:', 'https:');
+  assert.ok(findBlockedEntry(bl, httpsTwin), 'https twin of an http entry is blocked');
+  assert.equal(findBlockedEntry(bl, httpsTwin.replace('-4LGZPY', 'ABC123')), null, 'a different ?ID= article is not blocked');
+  assert.equal(findBlockedEntry(bl, 'https://www.lightingandsoundamerica.com/news/story.asp'), null, 'the bare outlet path is not blocked');
+  // And the reverse direction: an https entry blocks the http twin.
+  fs.writeFileSync(path.join(root, SHOW, '_blocklist.json'), JSON.stringify({ urls: [{ url: httpsTwin.replace('-4LGZPY', 'ABC123') }] }));
+  const bl2 = loadBlocklist(path.join(root, SHOW));
+  assert.ok(findBlockedEntry(bl2, 'http://www.lightingandsoundamerica.com/news/story.asp?ID=ABC123'));
+  assert.equal(findBlockedEntry(bl2, BLOCKED), null);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('a blocklisted URL is a terminal skip for the recovery loop, not a retry', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const { decideEmptyBodyRecovery } = require('../../scripts/lib/flagged-recovery.js');
+  const file = { fullText: '', aggUrlRecoveryCount: 1 };
+  const blocked = decideEmptyBodyRecovery({ file, url: BLOCKED, blocked: true });
+  assert.deepEqual(blocked, { action: 'skip', reason: 'blocklisted' });
+  // audit-t1-silent-gaps.recoverFromOwnUrl returns before the exec and before
+  // the aggUrlRecoveryCount bump on any non-'recover' action.
+  const src = fs.readFileSync(path.join(HERE, '..', '..', 'scripts', 'audit-t1-silent-gaps.js'), 'utf8');
+  const fn = src.slice(src.indexOf('function recoverFromOwnUrl'));
+  assert.ok(fn.indexOf('blocked: !!') < fn.indexOf("if (decision.action !== 'recover') return"), 'blocklist consulted in the decision');
+  assert.ok(fn.indexOf("if (decision.action !== 'recover') return") < fn.indexOf('nextRecoveryCount'), 'skip returns before the counter bump');
+  assert.equal(decideEmptyBodyRecovery({ file, url: BLOCKED }).action, 'recover', 'unblocked URL still recovers');
+});

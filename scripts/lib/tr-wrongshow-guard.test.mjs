@@ -166,3 +166,16 @@ test('review round 2: caps possessive, quoted-with-comma, words split across lin
   assert.equal(g('Beetlejuice', '“Beetlejuice,” the new musical, arrives.'), false);
   assert.equal(g('Golden Boy', 'Golden.\n\n\n\nBoy was the old headline.'), true);
 });
+
+// BRO-3399 cousin: a hyphenated title was glued into one word ("preexisting")
+// and then searched for in raw prose that keeps the hyphen, so every mention
+// was missed and a real review read as wrong-show.
+test('computeMentionCounts counts mentions of a hyphenated title', () => {
+  const { computeMentionCounts } = require('./tr-wrongshow-guard.js');
+  const text = 'Spider-Man swings into the Foxwoods again. This Spider-Man is louder than ever.';
+  const r = computeMentionCounts({ title: 'Spider-Man' }, text);
+  assert.ok(r.mentions >= 2, `expected mentions >= 2, got ${r.mentions}`);
+  assert.deepEqual(r.showWords, ['spider-man'], 'one word, no short "man" fragment');
+  // And no false mentions from an unrelated 'man' or 'woman'.
+  assert.equal(computeMentionCounts({ title: 'Spider-Man' }, 'A woman and a man walk into the Old Vic. The man is sad.').mentions, 0);
+});

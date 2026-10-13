@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { titleMatchWords, textHasWord } = require('./lib/title-word-match');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
@@ -178,15 +179,15 @@ function validateSerpUrl(url, showTitle) {
   const slug = url.toLowerCase();
   // Extract significant words from show title (skip articles, prepositions)
   const skipWords = new Set(['the', 'a', 'an', 'at', 'in', 'of', 'and', 'or', 'on', 'to', 'is']);
-  const words = showTitle.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
-    .filter(w => w.length > 2 && !skipWords.has(w));
+  // Join-aware words: a glued "preexisting" never matched a "pre-existing" slug (BRO-3399)
+  const words = titleMatchWords(showTitle, { stopwords: [...skipWords] });
   if (words.length === 0) return true; // fallback: accept if no significant words
   // Require at least the first significant word to be in the URL
   const firstWord = words[0];
-  if (!slug.includes(firstWord)) return false;
+  if (!textHasWord(slug, firstWord)) return false;
   // For multi-word titles, require at least 2 words to match (prevents "six" matching unrelated)
   if (words.length >= 2) {
-    const matchCount = words.filter(w => slug.includes(w)).length;
+    const matchCount = words.filter(w => textHasWord(slug, w)).length;
     return matchCount >= Math.min(2, words.length);
   }
   return true;

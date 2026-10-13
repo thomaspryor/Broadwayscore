@@ -7,6 +7,7 @@ const {
   hasEmptyCast,
   isPlaceholderSynopsis,
   hasStaleUpcomingTag,
+  hasStoredStaleUpcomingTag,
   hasSameMarketTitleMatch,
   countRevivalMentions,
   MIN_SYNOPSIS_LENGTH,
@@ -105,5 +106,19 @@ describe('countRevivalMentions', () => {
   it('returns 0 for empty/undefined input', () => {
     assert.equal(countRevivalMentions([]), 0);
     assert.equal(countRevivalMentions(undefined), 0);
+  });
+});
+
+describe('hasStoredStaleUpcomingTag (BRO-3208)', () => {
+  it('flags open, previews and closed shows still tagged upcoming, any case', () => {
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'closed', tags: ['upcoming', 'new'] }), true);
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'previews', tags: ['Upcoming'] }), true);
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'open', tags: ['upcoming'] }), true);
+  });
+  it('leaves upcoming/announced shows and untagged shows alone', () => {
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'upcoming', tags: ['upcoming'] }), false);
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'announced', tags: ['upcoming'] }), false);
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'closed', tags: ['new'] }), false);
+    assert.equal(hasStoredStaleUpcomingTag({ status: 'closed' }), false);
   });
 });

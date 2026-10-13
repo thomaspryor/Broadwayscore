@@ -1727,6 +1727,13 @@ function bumpRecoveryCount(showId, file, value) {
 // file (a fill, not a sibling). The retry counter is bumped regardless of fetch
 // outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
 // per-flaggedMiss outcome for logging + the audit JSON.
+// One _blocklist.json read per show per run, not per flagged miss.
+const _recoveryBlocklists = new Map();
+function recoveryBlocklist(showId) {
+  if (!_recoveryBlocklists.has(showId)) _recoveryBlocklists.set(showId, loadBlocklist(path.join(REVIEW_TEXTS_DIR, showId)));
+  return _recoveryBlocklists.get(showId);
+}
+
 function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null) {
   // Re-run the cap/url decision against the CURRENT on-disk file, not the
   // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
@@ -1751,6 +1758,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
     outletId: m.recoverableOutletId || m.knownOutletId || null,
     critic: m.recoverableCritic || null,
     url: m.url,
+    blocked: !!(m.url && findBlockedEntry(recoveryBlocklist(showId), m.url)),
   });
   if (decision.action !== 'recover') {
     return { url: m.url, host: m.host, file: m.recoverableFile, recovered: false, skipped: true, reason: decision.reason };

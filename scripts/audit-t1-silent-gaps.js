@@ -49,6 +49,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 const { getTier } = require('./lib/outlet-tiers');
 const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 const { decideEmptyBodyRecovery, nextRecoveryCount, FLAGGED_RECOVERY_CAP } = require('./lib/flagged-recovery');
+const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const {
   loadRecoveryState, saveRecoveryState, decideRefetch, recordRefetch,
   DEFAULT_REFETCH_CONFIG,
@@ -160,6 +161,13 @@ function fileCountsAsScored(d, show) {
   return isIncludableForRebuild(d, show) && hasValidScore(d);
 }
 
+// One _blocklist.json read per show per run, not per recovered file.
+const _blocklistByShow = new Map();
+function showBlocklist(showId) {
+  if (!_blocklistByShow.has(showId)) _blocklistByShow.set(showId, loadBlocklist(path.join(REVIEW_TEXTS_DIR, showId)));
+  return _blocklistByShow.get(showId);
+}
+
 function recoverFromOwnUrl(showId, fileName, d, show) {
   const outletId = fileName.split('--')[0];
   const decision = decideEmptyBodyRecovery({
@@ -167,6 +175,10 @@ function recoverFromOwnUrl(showId, fileName, d, show) {
     outletId,
     critic: d.criticName && d.criticName !== 'Unknown' ? d.criticName : null,
     url: d.url || null,
+    // ingest-review-from-url.js refuses a blocklisted URL with exit 1 (BRO-3247);
+    // without this the refusal read as a failed fetch and bumped the retry
+    // counter every hour until the cap (BRO-3403).
+    blocked: !!(d.url && findBlockedEntry(showBlocklist(showId), d.url)),
   });
   if (decision.action !== 'recover') return { attempted: false, reason: decision.reason };
 

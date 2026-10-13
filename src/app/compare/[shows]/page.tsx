@@ -220,7 +220,8 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
   const musicB = getCreative(showB, ['Music', 'Composer', 'Music & Lyrics', 'Music and Lyrics']);
 
   // Genre tags (filter out structural tags)
-  const STRUCTURAL_TAGS = new Set(['musical', 'play', 'new', 'revival', 'limited-run', 'limited run']);
+  // 'upcoming' is a status snapshot, never a genre (BRO-3208)
+  const STRUCTURAL_TAGS = new Set(['musical', 'play', 'new', 'revival', 'limited-run', 'limited run', 'upcoming']);
   const genreTagsA = showA.tags?.filter(t => !STRUCTURAL_TAGS.has(t.toLowerCase())) ?? [];
   const genreTagsB = showB.tags?.filter(t => !STRUCTURAL_TAGS.has(t.toLowerCase())) ?? [];
 

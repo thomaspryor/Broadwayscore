@@ -1149,10 +1149,12 @@ describe('delete-without-breadcrumb merge-mode revert (task #1624)', () => {
     delete incoming.rejectionReason;
     safeWriteReview(filePath, incoming);
     const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    // Demonstrates the bug: isNonReview flips correctly, but the stale reason
-    // text is resurrected right next to it.
+    // Demonstrates the bug on a field with no breadcrumb: rejectionReason is
+    // resurrected. isNonReviewReason used to be the second example, but
+    // BRO-3106 registered it in CLEAR_BREADCRUMBS (isNonReview=false clears
+    // it), so its delete now sticks.
     assert.equal(written.isNonReview, false);
-    assert.equal(written.isNonReviewReason, 'CV-promoted (not a review): stale reasoning');
+    assert.equal(written.isNonReviewReason, undefined);
     assert.equal(written.rejectionReason, 'not_a_review');
   });
 

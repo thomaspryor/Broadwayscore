@@ -3336,7 +3336,8 @@ async function discoverShows() {
       }
 
       // Build tags based on detection
-      const tags = (status === 'previews' || status === 'upcoming' || status === 'announced') ? ['upcoming'] : [];
+      // previews is past 'upcoming' (BRO-3208): fix-stale-upcoming-tags.js strips it
+      const tags = (status === 'upcoming' || status === 'announced') ? ['upcoming'] : [];
       if (detection.isRevival) {
         tags.push('revival');
       } else if (detection.confidence === 'low') {
