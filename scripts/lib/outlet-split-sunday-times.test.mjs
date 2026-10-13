@@ -22,7 +22,7 @@ const quiet = (fn) => {
   console.warn = () => {}; console.log = () => {};
   try { return fn(); } finally { console.warn = warn; console.log = log; }
 };
-const { normalizeOutlet, resolveOutletFromUrl, loadOutletRegistry, validateCriticOutlet, editionFamily, editionGroupKey } = quiet(() => require('./review-normalization.js'));
+const { normalizeOutlet, resolveOutletFromUrl, loadOutletRegistry, validateCriticOutlet, editionFamily, editionGroupKey, groupSameUrlFilesByOutlet } = quiet(() => require('./review-normalization.js'));
 const { splitOutletCorrection, isGenericLabel, applyUrlEditionCorrection } = require('./outlet-mismatch-heal.js');
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 const { OUTLET_EXTRACTORS, KNOWN_STAR_OUTLETS, HOST_GATED_STAR_OUTLETS } = require('./score-extractors.js');
@@ -116,12 +116,35 @@ test('cleanup-phantom-outlets groups edition siblings as one outlet (never merge
   // The 2026-10-13 rebuild ran cleanup-phantom-outlets keyed on the raw
   // outlet label: a "The Sunday Times"-labelled file sharing a url with a
   // times-uk file read as a phantom of it and was merged + deleted (6 files).
-  assert.equal(editionGroupKey('sunday-times'), editionGroupKey('times-uk'));
-  assert.notEqual(editionGroupKey('britishtheatrecom'), editionGroupKey('british-theatre'));
+  assert.equal(editionGroupKey('sunday-times'), 'times-uk');
+  assert.equal(editionGroupKey('times-uk'), 'times-uk');
+  assert.equal(editionGroupKey('britishtheatrecom'), 'britishtheatrecom', 'cross-domain split is its own outlet');
   assert.equal(editionGroupKey('guardian'), 'guardian');
+  // Shape of a-midsummer-nights-dream-globe-west-end-2026 after the relabel:
+  // one url, a Sunday Times file and a Times file. One group, nothing to merge.
+  const edition = groupSameUrlFilesByOutlet([
+    { file: 'sunday-times--quentin-letts.json', data: { outletId: 'sunday-times', outlet: 'The Sunday Times', url: URL_COM } },
+    { file: 'times-uk--clive-davis.json', data: { outletId: 'times-uk', outlet: 'The Times (UK)', url: URL_COM } },
+    { file: 'times-uk--dominic-maxwell.json', data: { outletId: 'times-uk', outlet: 'The Sunday Times', url: URL_COM } },
+  ]);
+  assert.deepEqual([...edition.keys()], ['times-uk']);
+  // A genuinely different outlet on the same url is still its own group.
+  const mixed = groupSameUrlFilesByOutlet([
+    { file: 'times-uk--clive-davis.json', data: { outletId: 'times-uk', outlet: 'The Times (UK)', url: URL_COM } },
+    { file: 'guardian--arifa-akbar.json', data: { outletId: 'guardian', outlet: 'The Guardian', url: URL_COM } },
+  ]);
+  assert.deepEqual([...mixed.keys()].sort(), ['guardian', 'times-uk']);
+  // Wiring: the rebuild step must use the shared grouping, not an inline
+  // normalizeOutlet key (that inline key is what deleted the 15 files).
   const src = fs.readFileSync(new URL('../cleanup-phantom-outlets.js', import.meta.url), 'utf8');
-  assert.match(src, /editionGroupKey\(normalizeOutlet\(entry\.data\.outlet \|\| entry\.data\.outletId\)\)/,
-    'cleanup-phantom-outlets groups by editionGroupKey');
+  assert.match(src, /groupSameUrlFilesByOutlet\(group\)/);
+});
+
+test('edition key and family agree, and accept alias/www/normalized names', () => {
+  assert.equal(editionGroupKey('The Sunday Times'), 'times-uk');
+  assert.equal(editionGroupKey('the guardian'), 'guardian');
+  for (const id of editionFamily('sunday-times')) assert.equal(editionGroupKey(id), 'times-uk');
+  for (const id of editionFamily('times-uk')) assert.equal(editionGroupKey(id), 'times-uk');
 });
 
 test('write chokepoint: a Sunday Times label files under sunday-times, and a re-send as "The Times" merges into it', () => {

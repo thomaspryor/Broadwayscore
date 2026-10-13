@@ -1381,25 +1381,86 @@ function splitChildrenOf(parentId) {
   return _splitChildren.get(parentId) || [];
 }
 
+/** Bare host set of an outlet entry: domain plus domainAliases, www.-stripped, lowercased. */
+function outletHosts(entry) {
+  return new Set([entry && entry.domain, ...((entry && entry.domainAliases) || [])]
+    .filter((d) => typeof d === 'string' && d)
+    .map((d) => d.replace(/^www\./, '').toLowerCase()));
+}
+
 /**
- * The outlet plus its edition siblings: a split child that shares its
- * parent's domain is the same masthead (The Times / The Sunday Times), so a
- * critic known at one is not a misattribution at the other. A split onto a
+ * Same masthead: a split child whose primary domain is one of its parent's
+ * hosts (The Times / The Sunday Times share thetimes.co.uk). A split onto a
  * different domain (British Theatre Guide / BritishTheatre.com) is two
- * publications and is not a family.
+ * publications. The one definition behind editionGroupKey and editionFamily.
+ */
+function sharesMasthead(child, parent) {
+  const hosts = outletHosts(child);
+  if (!hosts.size) return false;
+  const parentHosts = outletHosts(parent);
+  const primary = String(child.domain || '').replace(/^www\./, '').toLowerCase();
+  return !!primary && parentHosts.has(primary);
+}
+
+const _editionRoot = new Map();
+/**
+ * One stable key per edition family (BRO-5137): the canonical id at the root
+ * of the outlet's splitFrom chain, followed only while each parent shares the
+ * child's masthead. times-uk and sunday-times both key to times-uk, and any
+ * later edition (or an edition of an edition) keys there too. Input and
+ * splitFrom names are normalized, so the key is always a registry id.
+ */
+function editionGroupKey(outletId) {
+  if (_editionRoot.has(outletId)) return _editionRoot.get(outletId);
+  let id = normalizeOutlet(outletId) || outletId;
+  const seen = new Set([id]);
+  for (;;) {
+    const entry = getOutletFromRegistry(id);
+    const parentId = entry && entry.splitFrom ? (normalizeOutlet(entry.splitFrom) || entry.splitFrom) : null;
+    const parent = parentId && getOutletFromRegistry(parentId);
+    if (!parent || seen.has(parentId) || !sharesMasthead(entry, parent)) break;
+    seen.add(parentId);
+    id = parentId;
+  }
+  _editionRoot.set(outletId, id);
+  return id;
+}
+
+/**
+ * The outlet plus every edition sibling: all outlets with the same
+ * editionGroupKey (so the critic-outlet guard and the phantom grouping agree
+ * on what one masthead is). A critic known at The Times is not a
+ * misattribution at The Sunday Times.
  */
 function editionFamily(outletId) {
-  const family = new Set([outletId]);
-  const self = getOutletFromRegistry(outletId);
-  const sameMasthead = (a, b) => a && b && a.domain && a.domain === b.domain;
-  if (self && self.splitFrom && sameMasthead(self, getOutletFromRegistry(self.splitFrom))) family.add(self.splitFrom);
-  for (const { id, entry } of splitChildrenOf(outletId)) if (sameMasthead(entry, self)) family.add(id);
+  const root = editionGroupKey(outletId);
+  const family = new Set([outletId, root]);
+  const stack = [root];
+  while (stack.length) {
+    const id = stack.pop();
+    for (const { id: child } of splitChildrenOf(id)) {
+      if (!family.has(child) && editionGroupKey(child) === root) { family.add(child); stack.push(child); }
+    }
+  }
   return family;
 }
 
-/** One stable key per edition family, for grouping files by outlet (BRO-5137). */
-function editionGroupKey(outletId) {
-  return [...editionFamily(outletId)].sort()[0];
+/**
+ * cleanup-phantom-outlets' per-url grouping: files sharing one url, keyed by
+ * outlet so a variant aggregator name (a phantom) can be folded into the
+ * canonical outlet. Edition siblings share one key (editionGroupKey), so a
+ * same-url Times / Sunday Times pair is never read as a phantom of each other.
+ * @param {Array<{file: string, data: object}>} entries
+ * @returns {Map<string, Array<{file: string, data: object}>>}
+ */
+function groupSameUrlFilesByOutlet(entries) {
+  const byOutlet = new Map();
+  for (const entry of entries) {
+    const key = editionGroupKey(normalizeOutlet(entry.data.outlet || entry.data.outletId));
+    if (!byOutlet.has(key)) byOutlet.set(key, []);
+    byOutlet.get(key).push(entry);
+  }
+  return byOutlet;
 }
 
 /**
@@ -2825,6 +2886,7 @@ module.exports = {
   splitChildrenOf,
   editionFamily,
   editionGroupKey,
+  groupSameUrlFilesByOutlet,
   levenshteinDistance,
   findExistingReviewFile,
   isFlaggedMergeTarget,
