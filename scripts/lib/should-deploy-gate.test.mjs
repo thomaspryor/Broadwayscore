@@ -204,6 +204,7 @@ const { compareDataShas, DATA_TRACKED_FILES } = require('./should-deploy-gate.js
 const { blobShaMetaKey, pickBlobShaMeta } = require('./core-data-blob-meta.js');
 const fs = await import('node:fs');
 const cp = await import('node:child_process');
+const os = await import('node:os');
 
 const allNow = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [f, 'n-' + f]).concat(Object.entries(over)));
 const allBase = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [blobShaMetaKey(f), 'n-' + f]).concat(Object.entries(over)));
@@ -262,7 +263,7 @@ test('workflow stamps exactly what the gate tracks (drift guard)', () => {
 });
 
 test('--meta-args prints one <name>BlobSha=<git blob sha> per tracked file present in data/', () => {
-  const dir = fs.mkdtempSync((await import('node:os')).tmpdir() + '/gate-meta-');
+  const dir = fs.mkdtempSync(os.tmpdir() + '/gate-meta-');
   fs.mkdirSync(dir + '/data');
   fs.writeFileSync(dir + '/data/reviews.json', '{"a":1}\n');
   fs.writeFileSync(dir + '/data/critic-consensus.json', '{}\n');
