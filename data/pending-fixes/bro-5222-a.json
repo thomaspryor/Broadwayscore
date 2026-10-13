@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-5222-a",
   "planId": "62f78c64-5e8d-47aa-8c9a-2b360f935f51",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T04:27:26.883713Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5222: correct 24 Time Out rows credited to the wrong critic. A sweep of all 1,720 stored Time Out rows fetched each page and read its byline (\"<Kind> review by <Critic>\") or capsule signature (\"\u2014<Critic>\"); these rows name a different critic than the page. Rows already excluded (duplicate, wrong production, non-review) are left alone. Where the real critic already has a row with the same review, this one is marked a duplicate; otherwise the critic name is corrected.",
+    "summary": "BRO-5222: correct 24 Time Out rows credited to the wrong critic. A sweep of all 1,720 stored Time Out rows fetched each page and read its byline (\"<Kind> review by <Critic>\") or capsule signature (\"—<Critic>\"); these rows name a different critic than the page. Rows already excluded (duplicate, wrong production, non-review) are left alone. Where the real critic already has a row with the same review, this one is marked a duplicate; otherwise the critic name is corrected.",
     "steps": [
       "Fetch every stored Time Out url and classify it with classifyTimeoutPage (scripts/lib/timeout-capsule.js)",
       "For each wrong_critic row not already excluded: criticName edit to the page's critic, or duplicateOf the real critic's existing row when both rows hold the same url"
@@ -208,5 +208,128 @@
         "description": "The Time Out page this row stores (https://www.timeout.com:443/newyork/theater/you-cant-take-it-with-you) is David Cote's review (byline/signature checked 2026-10-13 with scripts/lib/timeout-capsule.js); the row credited Adam Feldman. timeout--david-cote.json already holds David Cote's Time Out review under another url, so the corrected row collapses into it at rebuild instead of counting as a second critic."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T05:48:39.087Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-midnight-2013/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "airline-highway-2015/timeout--kris-vire.json criticName: \"Kris Vire\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bandstand-2017/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "big-fish-2013/timeout--david-cote.json duplicateOf: null -> \"timeout--adam-feldman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cirque-du-soleil-paramour-2016/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-people-2011/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-2012/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "magicbird-2012/timeout--davide-cote.json criticName: \"Davide Cote\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "misery-2015/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-side-songs-off-broadway-2026/timeout--matthew-wexler.json criticName: \"Matthew Wexler\" -> \"Tim Teeman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-2012/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-and-the-starcatcher-2012/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/timeout--morgan-carter.json criticName: \"Morgan Carter\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "red-2010/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rocky-2014/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "side-show-2014/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-2016/timeout--david-cote.json criticName: \"David Cote\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-2014/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-nance-2013/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-2013/timeout--andrzej-lukowski.json criticName: \"Andrzej Lukowski\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tuck-everlasting-2016/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-constitution-means-to-me-2019/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "you-cant-take-it-with-you-2014/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    }
+  ]
 }
