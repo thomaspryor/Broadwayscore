@@ -693951,19 +693951,19 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-13T17:29:10.191Z",
-    "completedAt": "2026-10-13T17:29:27.433Z",
-    "totalReviews": 84,
+    "startedAt": "2026-10-13T17:36:13.799Z",
+    "completedAt": "2026-10-13T17:36:27.607Z",
+    "totalReviews": 56542,
     "processed": 3,
-    "skipped": 81,
+    "skipped": 56466,
     "errors": 0,
     "tokensUsed": {
-      "input": 19198,
-      "output": 893,
-      "total": 46336
+      "input": 14135,
+      "output": 914,
+      "total": 38859
     },
-    "costUsd": 0.0839462,
-    "runId": "38438368621",
+    "costUsd": 0.06907680000000001,
+    "runId": "38436656985",
     "errorDetails": [],
     "validation": [
       {
@@ -706019,6 +706019,16 @@
           "flat": 2,
           "down": 1,
           "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "jane-eyre-rose-kingston-off-west-end-2026",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -719558,10 +719568,10 @@
       {
         "showId": "the-standard-of-living-west-end-2026",
         "ourDistribution": {
-          "up": 21,
+          "up": 22,
           "flat": 12,
           "down": 3,
-          "total": 36
+          "total": 37
         },
         "hasDisagreement": false
       },
@@ -722525,8 +722535,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-13T17:30:59.511Z",
-    "completedAt": "2026-10-13T17:30:59.534Z",
+    "startedAt": "2026-10-13T17:38:11.914Z",
+    "completedAt": "2026-10-13T17:38:15.781Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -722537,7 +722547,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "38438368621",
+    "runId": "38436656985",
     "errorDetails": []
   }
 ]
