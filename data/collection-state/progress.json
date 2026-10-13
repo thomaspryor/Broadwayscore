@@ -93,7 +93,9 @@
     "the-parisian-woman-2017/wsj--terry-teachout.json",
     "prince-of-broadway-2017/wsj--terry-teachout.json",
     "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
-    "baby-its-you-2011/wsj--terry-teachout.json"
+    "baby-its-you-2011/wsj--terry-teachout.json",
+    "private-lives-2011/wsj--unknown.json",
+    "the-mountaintop-2011/wsj--terry-teachout.json"
   ],
   "failed": [
     "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -153,7 +155,15 @@
     "something-rotten-2015/wsj--terry-teachout.json",
     "annie-2012/wsj--terry-teachout.json",
     "anything-goes-2011/wsj--unknown.json",
-    "lend-me-a-tenor-2010/wsj--terry-teachout.json"
+    "lend-me-a-tenor-2010/wsj--terry-teachout.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "wolf-hall-parts-one-and-two-2015/wsj--terry-teachout.json",
+    "ifthen-2014/wsj--terry-teachout.json",
+    "the-winslow-boy-2013/wsj--terry-teachout.json",
+    "the-testament-of-mary-2013/wsj--terry-teachout.json",
+    "cat-on-a-hot-tin-roof-2013/wsj--terry-teachout.json",
+    "stick-fly-2011/wsj--terry-teachout.json",
+    "la-bete-2010/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -251,7 +261,8 @@
       "public-charge-off-broadway-2026/theater-life--david-sheward.json",
       "prince-of-broadway-2017/wsj--terry-teachout.json",
       "the-price-2017/wsj--terry-teachout.json",
-      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json"
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "stick-fly-2011/wsj--terry-teachout.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/new-york-sun--unknown.json",
@@ -277,11 +288,13 @@
       "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
       "gotta-dance-off-broadway-2026/playbill--unknown.json",
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-      "baby-its-you-2011/wsj--terry-teachout.json"
+      "baby-its-you-2011/wsj--terry-teachout.json",
+      "private-lives-2011/wsj--unknown.json",
+      "the-mountaintop-2011/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "lend-me-a-tenor-2010/wsj--terry-teachout.json",
+  "lastProcessed": "la-bete-2010/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-10-13T19:44:44.248Z",
@@ -500,6 +513,226 @@
     },
     {
       "t": "2026-10-13T19:57:23.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:13:09.114Z",
+      "event": "bb-session",
+      "session": "341a98ab",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-13T20:13:09.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:13:27.562Z",
+      "event": "bb-session",
+      "session": "188b2ba4",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-13T20:13:28.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:14:21.867Z",
+      "event": "bb-session",
+      "session": "2452712c",
+      "url": "https://www.wsj.com/articles/review-of-wolf-hall-now-on-broadway-1428631502"
+    },
+    {
+      "t": "2026-10-13T20:14:22.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:14:40.008Z",
+      "event": "bb-session",
+      "session": "8f67497a",
+      "url": "https://www.wsj.com/articles/review-of-wolf-hall-now-on-broadway-1428631502"
+    },
+    {
+      "t": "2026-10-13T20:14:40.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:15:22.826Z",
+      "event": "bb-session",
+      "session": "940c9605",
+      "url": "https://www.wsj.com/articles/if-then-review-idina-menzel-cant-save-this-musical-"
+    },
+    {
+      "t": "2026-10-13T20:15:23.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:15:41.996Z",
+      "event": "bb-session",
+      "session": "937c2313",
+      "url": "https://www.wsj.com/articles/if-then-review-idina-menzel-cant-save-this-musical-"
+    },
+    {
+      "t": "2026-10-13T20:15:42.488Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:16:36.060Z",
+      "event": "bb-session",
+      "session": "e43e9aa3",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-13T20:16:36.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:16:54.247Z",
+      "event": "bb-session",
+      "session": "dee72880",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-13T20:16:54.741Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:18:07.954Z",
+      "event": "bb-session",
+      "session": "7353e8e5",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-13T20:18:08.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:18:26.097Z",
+      "event": "bb-session",
+      "session": "c073c621",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-13T20:18:26.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:19:37.258Z",
+      "event": "bb-session",
+      "session": "8539194c",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-13T20:19:37.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:19:55.453Z",
+      "event": "bb-session",
+      "session": "8d1ebb53",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-13T20:19:55.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:21:06.841Z",
+      "event": "bb-session",
+      "session": "946cf705",
+      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
+    },
+    {
+      "t": "2026-10-13T20:21:07.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:21:24.845Z",
+      "event": "bb-session",
+      "session": "7d014052",
+      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
+    },
+    {
+      "t": "2026-10-13T20:21:25.307Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:22:37.331Z",
+      "event": "bb-session",
+      "session": "932daae7",
+      "url": "http://online.wsj.com/article/SB10001424052970204323904577039983355570926.html"
+    },
+    {
+      "t": "2026-10-13T20:22:37.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:22:56.799Z",
+      "event": "bb-session",
+      "session": "f8738aaa",
+      "url": "http://online.wsj.com/article/SB10001424052970204323904577039983355570926.html"
+    },
+    {
+      "t": "2026-10-13T20:22:57.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:23:25.225Z",
+      "event": "bb-session",
+      "session": "d6f210a1",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:25.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:23:43.512Z",
+      "event": "bb-session",
+      "session": "69841e4e",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:44.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:24:10.004Z",
+      "event": "bb-session",
+      "session": "3dba0a25",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-13T20:24:10.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:24:28.066Z",
+      "event": "bb-session",
+      "session": "9cf1e0dd",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-13T20:24:28.562Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
