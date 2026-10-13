@@ -187,6 +187,18 @@ function extractGuardianRssReviewUrls(xml) {
 }
 
 /**
+ * BRO-4850: absolute URLs of BWW West End reviews (/westend/article/Review-*)
+ * on a BWW listing page; hrefs may be root-relative or absolute.
+ */
+function extractBwwWestEndReviewUrls(html) {
+  const urls = new Set();
+  const re = /href="(?:https?:\/\/(?:www\.)?broadwayworld\.com)?(\/westend\/article\/Review-[A-Za-z0-9-]+)"/g;
+  let m;
+  while ((m = re.exec(html || '')) !== null) urls.add('https://www.broadwayworld.com' + m[1]);
+  return [...urls];
+}
+
+/**
  * BRO-4899: absolute URLs for every href on a section page matching `pathRe`
  * (root-relative hrefs resolved against `origin`).
  */
@@ -537,6 +549,28 @@ const SITE_SEARCH_ENDPOINTS = {
       }
       if (urls.length === 0) console.warn('    Site search [Time Out section]: WARNING — 0 review links (possible structural change)');
       return [...new Set(urls)];
+    },
+  },
+  // BRO-4850: BWW's London reviews live at /westend/article/Review-* and no WE
+  // discovery layer read them (the 'broadwayworld' key below is opera-only), so
+  // The Hungry Ghost (Bush Theatre, off-West-End) went ~40h undiscovered.
+  // /westend/local-reviews/ lists the latest ~24; verified via fetchPage
+  // 2026-10-13 (Cloudflare 403s plain HTTP; fetchSSR falls back to fetchPage).
+  'broadwayworld-westend': {
+    name: 'BroadwayWorld',
+    domain: 'broadwayworld.com',
+    requiresJs: false,
+    market: 'west-end',
+    outletIdOverride: 'broadwayworld',
+    fetchAndParse: async () => {
+      const page = 'https://www.broadwayworld.com/westend/local-reviews/';
+      // Show-independent page: memoise per process so N shows x polls don't refetch.
+      const hit = _sectionCache.get(page);
+      const html = hit && Date.now() - hit.at < 120000 ? hit.html : await fetchSSR(page);
+      _sectionCache.set(page, { at: Date.now(), html });
+      const urls = extractBwwWestEndReviewUrls(html);
+      if (urls.length === 0) console.warn('    Site search [BroadwayWorld WE]: WARNING — listing returned 0 review links (possible URL/structural change)');
+      return urls;
     },
   },
   'telegraph': {
@@ -1490,6 +1524,8 @@ module.exports = {
   extractVultureTheaterArticleUrls,
   extractGuardianRssReviewUrls,
   extractSectionLinks,
+  extractBwwWestEndReviewUrls,
+  _sectionCache,
   urlLooksLikeReview,
   operaTitleWords,
   filterOperaUrls,
