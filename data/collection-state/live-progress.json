@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-10-13T23:15:09.701Z",
-  "processed": 248,
-  "failed": 205,
-  "successRate": "54.7%",
+  "updatedAt": "2026-10-13T23:57:06.760Z",
+  "processed": 238,
+  "failed": 178,
+  "successRate": "57.2%",
   "tierBreakdown": {
-    "playwright": 151,
-    "amp": 7,
+    "playwright": 144,
+    "amp": 9,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingdog": 31,
-    "scrapingbee": 23,
+    "scrapingbee": 22,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 46
+    "archive": 43
   },
   "browserbaseSessions": 6,
   "recentActivity": [
+    {
+      "t": "2026-10-13T20:23:25.225Z",
+      "event": "bb-session",
+      "session": "d6f210a1",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:25.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:23:43.512Z",
+      "event": "bb-session",
+      "session": "69841e4e",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:44.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-10-13T20:24:10.004Z",
       "event": "bb-session",
@@ -84,46 +106,24 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-13T22:58:32.202Z",
+      "t": "2026-10-13T23:53:23.758Z",
       "event": "bb-session",
-      "session": "afdf12e1",
+      "session": "b72008c9",
       "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-13T22:58:33.108Z",
+      "t": "2026-10-13T23:53:24.155Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-13T22:58:51.821Z",
+      "t": "2026-10-13T23:53:41.537Z",
       "event": "bb-session",
-      "session": "f305de58",
+      "session": "7aeb97d7",
       "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-13T22:58:52.733Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T23:03:22.681Z",
-      "event": "bb-session",
-      "session": "7943af14",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-13T23:03:23.557Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-13T23:03:35.324Z",
-      "event": "bb-session",
-      "session": "7e4e6b3d",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-13T23:03:36.159Z",
+      "t": "2026-10-13T23:53:41.903Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
