@@ -54,3 +54,10 @@ test('collector wires the real predicate (no inline copy)', () => {
   assert.match(src, /mayShortCircuitCollected\(data,/);
   assert.match(src, /const urlCorrectedRefetch = isUrlCorrectedRefetch\(data\)/);
 });
+
+test('locked / manually-complete corrected files keep the skip (write guard never clears them)', () => {
+  for (const extra of [{ _locked: true }, { manualContentTier: 'complete' }]) {
+    const d = { ...stale, ...extra };
+    assert.equal(mayShortCircuitCollected(d, opts(d)), true);
+  }
+});

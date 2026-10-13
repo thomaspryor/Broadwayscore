@@ -4776,6 +4776,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // Consume the URL-correction refetch signal once we have fresh text from the
   // corrected URL — otherwise the needsRefetch bypass (skip logic above) would
   // refetch this file on every run forever.
+  // BRO-5231: the score on a URL-corrected file belongs to the OLD article, so
+  // the fresh body must be rescored (this fires only when text was replaced).
+  if (isUrlCorrectedRefetch(data) && hadFullTextBefore && (data.llmScore || data.assignedScore != null)) {
+    data.needsRescore = true;
+    markRescoreFlagged(data);
+  }
   if (data.needsRefetch) data.needsRefetch = false;
 
   // Show Score's "For a previous production" is not a date, but it is truthy,

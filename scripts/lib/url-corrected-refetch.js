@@ -17,7 +17,13 @@ function isUrlCorrectedRefetch(data) {
  * skip this review. Never true for a URL-corrected refetch.
  */
 function mayShortCircuitCollected(data, { isTruncated, hasGarbageText, datelessDateRetry, scoredSkip, completeSkip }) {
-  if (isUrlCorrectedRefetch(data)) return false;
+  if (isUrlCorrectedRefetch(data)) {
+    // Protected files never clear needsRefetch (the write guard returns early),
+    // so bypassing for them would cost a paid fetch on every run.
+    return data._locked === true || data.manualContentTier === 'complete'
+      ? (completeSkip || scoredSkip)
+      : false;
+  }
   if (completeSkip && !isTruncated && !hasGarbageText && !datelessDateRetry) return true;
   if (scoredSkip && !isTruncated) return true;
   return false;
