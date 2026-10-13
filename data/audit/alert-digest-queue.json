@@ -2504,5 +2504,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-13T23:45:27.219Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2463-reconcile-ledgers-v2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2463-reconcile-ledgers-v2",
+    "description": "land.yml did not land land/bro-2463-reconcile-ledgers-v2: the unit-tests-node gate went red at b6198d5171. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38483923022",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2463-reconcile-ledgers-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b6198d517148028b1223834affc41e9c3e71d915"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38483923022"
+      }
+    ],
+    "queuedAt": "2026-10-13T23:54:46.874Z"
   }
 ]
