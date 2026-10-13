@@ -99,7 +99,28 @@ attached_review_texts() {
   done
   return 1
 }
+# BRO-5217: cloud data/*.json are plain copies of the clone (setup-local-data.sh
+# CLOUD_COPY), so reading them never leaves the working directory and never
+# stops on a permission prompt. Re-copy when a link into the clone is still
+# there (a snapshot from before BRO-5217), or at startup/resume when the clone
+# moved past the commit last copied (data/.core-data-sha; also replaces a stub
+# or a copy baked into a snapshot). compact/clear keep the session's copies.
+cloud_core_copies() {
+  [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${BSC_CLOUD_DATA_SYMLINK:-}" != "1" ] || return 0
+  [ -d "$CORE_HOME/.git" ] || return 0
+  local head have linked
+  head="$(git -C "$CORE_HOME" rev-parse HEAD 2>/dev/null)"
+  have="$(cat data/.core-data-sha 2>/dev/null)"
+  linked="$(find data -maxdepth 1 -name '*.json' -lname "$CORE_HOME/*" 2>/dev/null | head -1)"
+  case "${BSC_SESSION_EVENT:-startup}" in
+    compact|clear) [ -n "$linked" ] || return 0 ;;
+    *) [ -n "$linked" ] || [ "$head" != "$have" ] || return 0 ;;
+  esac
+  run_bounded 120 bash "$SCRIPT_DIR/setup-local-data.sh" --link-only 2>&1 \
+    | grep -E 'Core data:|WARN|ERROR' | sed 's/^/[setup-local-data] /' || true
+}
 refresh_core_data
+cloud_core_copies
 if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -z "$(ls -A data/review-texts 2>/dev/null)" ] \
    && RT_SRC="$(attached_review_texts)"; then
   log "copying review texts from the session-attached clone $RT_SRC (about a minute)"

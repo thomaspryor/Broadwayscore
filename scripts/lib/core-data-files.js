@@ -36,6 +36,13 @@ function getLocalCopyFiles({ scriptPath = SETUP_LOCAL_DATA } = {}) {
   return m[1].split(/\s+/).filter(Boolean);
 }
 
+/** SYMLINK_FILES=(...) from setup-local-data.sh: links on the Mac, plain copies in cloud (BRO-5217). */
+function getLocalSymlinkFiles({ scriptPath = SETUP_LOCAL_DATA } = {}) {
+  const m = fs.readFileSync(scriptPath, 'utf8').match(/^SYMLINK_FILES=\(([^)]*)\)/m);
+  if (!m) throw new Error(`could not find SYMLINK_FILES=(...) in ${scriptPath}`);
+  return m[1].split(/\s+/).filter(Boolean);
+}
+
 /**
  * @param {string[]} names  basenames of *.json in the private checkout
  * @param {{isPublicTracked: (name: string) => boolean, coreFiles?: string[]}} opts
@@ -66,7 +73,8 @@ function publicTrackedDataFiles(repoDir) {
  * either side are not reported (setup-local-data.sh already warns on those).
  * @returns {string[]}
  */
-function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) {
+// SYMLINK_FILES too: links are skipped below (the Mac), and in cloud they are copies.
+function findStaleCopies({ dataDir, coreDataDir, files = [...getLocalCopyFiles(), ...getLocalSymlinkFiles()] }) {
   const stale = [];
   for (const f of files) {
     const local = path.join(dataDir, f);
@@ -82,7 +90,7 @@ function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) 
   return stale;
 }
 
-module.exports = { getLocalCopyFiles, planCoreDataCopy, publicTrackedDataFiles, findStaleCopies };
+module.exports = { getLocalCopyFiles, getLocalSymlinkFiles, planCoreDataCopy, publicTrackedDataFiles, findStaleCopies };
 
 // CLI:
 //   node scripts/lib/core-data-files.js plan <privateCheckoutDir> [repoDir]

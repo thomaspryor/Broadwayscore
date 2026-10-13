@@ -43,6 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
+const { assertNotCloudCopy } = require('./cloud-data-copy');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const RETIRED_IDS_PATH = path.join(REPO_ROOT, 'data', 'retired-show-ids.json');
@@ -101,6 +102,7 @@ function resolveWriteTarget(filePath) {
 // Atomic write (tmp + rename) so a crash mid-write cannot leave a truncated
 // registry that the next reader would then throw on (or, worse, read as []).
 function writeJsonArray(filePath, arr) {
+  assertNotCloudCopy(filePath); // BRO-5217: a cloud copy would drop the retirement
   const target = resolveWriteTarget(filePath);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   const tmp = `${target}.tmp-${process.pid}`;

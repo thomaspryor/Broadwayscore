@@ -63,8 +63,8 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 ## Worktrees and branches in cloud
 
 - Make worktrees with `git worktree add`; `EnterWorktree` can stall on an approval nobody answers (BRO-5033).
-- **Never write through the `data/` symlinks** (`data/*.json` point into the private core-data clone): data changes go through approved-fix plans (`data/pending-fixes/`, below). Reads and scratch copies (`cp data/shows.json <scratchpad>/`) are fine (BRO-5217).
-- **Data in a new worktree:** `./scripts/setup-local-data.sh --link-only` links `data/*.json` and `data/review-texts` without fetching. Without it `tsc` and data tests fail for unrelated reasons.
+- **Core data in cloud is a disposable copy** (BRO-5217): `data/*.json` are plain copies of the private core-data clone, re-copied at each session start (`data/.core-data-sha`), never symlinks, so reading them needs no permission prompt. Edits to them are lost; data changes go through approved-fix plans (`data/pending-fixes/`, below). The shows.json and retired-id writers refuse a cloud copy (`BSC_ALLOW_CLOUD_COPY_WRITE=1` for a throwaway scratch run). Never write into the clone (`~/broadway-scorecard-data`) or through a leftover `data/` symlink. Kill switch for the copies: `BSC_CLOUD_DATA_SYMLINK=1`.
+- **Data in a new worktree:** `./scripts/setup-local-data.sh --link-only` sets up `data/*.json` (copies in cloud) and `data/review-texts` without fetching. Without it `tsc` and data tests fail for unrelated reasons.
 - **Never `git checkout -B <branch>` for a branch another checkout has checked out** (git moves it silently). Push to `land/<name>` from your own branch or a detached HEAD.
 
 ## Owner one-time setup (cloud environment → Edit → Setup script)

@@ -173,12 +173,39 @@ SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json retired-
 # Files that should be regular copies (read-only for most purposes)
 COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json)
 
+# BRO-5217: a cloud session gets plain COPIES of SYMLINK_FILES instead. The
+# clone lives outside the session's working directory, so every Bash command
+# that touched a data/*.json link stopped on a permission prompt nobody answers
+# (workers sat 2+ hours, 2026-10-12). Cloud never pushes the clone (data changes
+# go through data/pending-fixes plans, .claude/CLOUD.md), so a write-through link
+# only ever dirtied it; a copy is disposable and cloud-bootstrap-data.sh
+# re-copies it at each session start (data/.core-data-sha marks the clone commit
+# copied). Always overwrite, never the .pre-symlink-backup move below: that would
+# park private data under a name git does not ignore. Kill switch:
+# BSC_CLOUD_DATA_SYMLINK=1 restores the links.
+CLOUD_COPY=0
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${BSC_CLOUD_DATA_SYMLINK:-}" != "1" ]; then
+  CLOUD_COPY=1
+fi
+
 SYMLINK_COUNT=0
+CLOUD_COPY_COUNT=0
 for f in "${SYMLINK_FILES[@]}"; do
   src="$CORE_DATA_DIR/$f"
   dst="$DATA_DIR/$f"
   if [ ! -f "$src" ]; then
     echo "  WARN: $f missing in core-data repo, skipping"
+    continue
+  fi
+  if [ "$CLOUD_COPY" = 1 ]; then
+    # Temp name is dot-prefixed and gitignored; mv replaces a link itself, not its target.
+    tmp="$DATA_DIR/.$f.cloudcopy.$$"
+    if cp "$src" "$tmp" && mv -f "$tmp" "$dst"; then
+      CLOUD_COPY_COUNT=$((CLOUD_COPY_COUNT + 1))
+    else
+      rm -f "$tmp"
+      echo "  WARN: could not copy $f from $CORE_DATA_DIR"
+    fi
     continue
   fi
   # --link-only never replaces a real file: a checkout that already has data
@@ -203,11 +230,16 @@ COPY_COUNT=0
 for f in "${COPY_FILES[@]}"; do
   src="$CORE_DATA_DIR/$f"
   [ -f "$src" ] || continue
-  [ "$LINK_ONLY" = 1 ] && [ -e "$DATA_DIR/$f" ] && continue
+  [ "$LINK_ONLY" = 1 ] && [ "$CLOUD_COPY" != 1 ] && [ -e "$DATA_DIR/$f" ] && continue
   cp -f "$src" "$DATA_DIR/"
   COPY_COUNT=$((COPY_COUNT + 1))
 done
-echo "Core data: $SYMLINK_COUNT symlinked, $COPY_COUNT copied to data/"
+if [ "$CLOUD_COPY" = 1 ]; then
+  git -C "$CORE_DATA_DIR" rev-parse HEAD > "$DATA_DIR/.core-data-sha" 2>/dev/null || rm -f "$DATA_DIR/.core-data-sha"
+  echo "Core data: $CLOUD_COPY_COUNT copied as cloud copies (BRO-5217), $COPY_COUNT copied to data/"
+else
+  echo "Core data: $SYMLINK_COUNT symlinked, $COPY_COUNT copied to data/"
+fi
 
 # Generated files that live only in the main checkout's data/ (cast pipeline
 # output, not in the core-data repo). tsc fails in a fresh worktree without

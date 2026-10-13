@@ -21,6 +21,7 @@
  */
 
 const fs = require('fs');
+const { assertNotCloudCopy } = require('./cloud-data-copy');
 
 class AtomicWriteShrinkError extends Error {
   constructor(currentLines, newLines, dropPct) {
@@ -79,6 +80,7 @@ function atomicWriteShowsJson(targetPath, newData, options = {}) {
   // a regular file, silently orphaning the real target. Local checkouts have
   // data/shows.json symlinked into the private core-data clone (2026-07-20:
   // a runtime sweep's fixes landed in a stray local file this way).
+  assertNotCloudCopy(targetPath); // BRO-5217: a cloud copy would drop this write
   let realPath = targetPath;
   try {
     realPath = fs.realpathSync(targetPath);
