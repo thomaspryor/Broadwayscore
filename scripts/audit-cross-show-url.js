@@ -19,7 +19,7 @@
  *   node scripts/audit-cross-show-url.js --fix           # flag wrongShow + write
  *   node scripts/audit-cross-show-url.js --json          # machine-readable
  *   node scripts/audit-cross-show-url.js --strict        # exit 1 if unhandled > --max
- *   node scripts/audit-cross-show-url.js --strict --max=60  # CI monitor: fail only above baseline
+ *   node scripts/audit-cross-show-url.js --strict --max=50  # CI monitor: fail only above baseline
  *
  * IMPORTANT — report-only by default, NEVER auto --fix the whole corpus.
  * As a blanket scan the canonical guard has a known false-positive tail:

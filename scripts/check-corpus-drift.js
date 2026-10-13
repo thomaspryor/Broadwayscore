@@ -154,7 +154,12 @@ const AUDITS = [
     // Drift (exit 1) fires only when a new scrape leaks cross-show URLs and
     // pushes the count ABOVE the baseline, not on the existing FP backlog.
     // Re-baseline (lower this) after a triage pass clears the singles.
-    args: ['--strict', '--max=60'],
+    // BRO-3065 (2026-10-13): matcher now drops run-year-impossible candidates
+    // (publishDate), BWW /<region>/article/ words and part-word hits, and the
+    // real misfiles were fixed (data/pending-fixes/bro-3065*.json): 114 -> 47
+    // unhandled, all checked false positives (combined reviews, same title in
+    // another production, undated rows). 50 leaves room for 3 new singles.
+    args: ['--strict', '--max=50'],
     crashCodes: [2],           // 0 under baseline / 1 grew above baseline / 2 = corpus missing
   },
   // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
