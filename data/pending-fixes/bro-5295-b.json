@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5295-b",
   "planId": "0399ed1e-d66a-4d78-b0bb-ea6bb25b4c1e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T22:40:00Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "BRO-5295: HerCampus student article prints no rating; the 2/5 is '1992 starring Meryl Streep' read as stars and was re-added by the collector pre-pass after BRO-305 cleared it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T23:37:24.721Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json originalScore: \"2/5\" -> null (retracted originalScoreClearedReason, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
 }
