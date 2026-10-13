@@ -18,7 +18,7 @@
 #     cards, but the board worker takes one card per firing and its queue ran
 #     ~100-200 cards deep, so important work waited weeks. The owner accepts
 #     one approval tap per started session. How to start and follow one:
-#     .claude/CLOUD.md "Starting a worker session". Denied only for a misspelled Broadwayscore
+#     .claude/CLOUD.md "Starting a worker session". Denied for a misspelled Broadwayscore
 #     source_url: it starts in /home/user without project commands or hooks (BRO-5068).
 # Fails open (exit 0, no decision) on missing jq or unparseable input.
 # Kill switch: REMOTE_TOOL_BLOCKER_DISABLE=1.
@@ -39,6 +39,15 @@ deny() {
 
 case "$tool" in
   mcp__Claude_Code_Remote__create_session|mcp__claude-code-remote__create_session)
+    # BRO-5228: an omitted model inherits the parent's Opus and skips the card model policy.
+    m="$(printf '%s' "$input" | jq -r '(.tool_input.model // "" | if type == "string" then . else tojson end | ascii_downcase | gsub("^\\s+|\\s+$"; "") | sub("\\[[^]]*\\]$"; "")) as $m | if $m == "" then "none" elif ($m | test("fable|mythos")) then "fable" elif ($m | test("^claude-(sonnet|haiku)-[0-9]")) then "ok" elif ($m | test("^claude-opus-[0-9]") | not) then "bad" elif (.tool_input.prompt // "" | tostring | test("(^|\\n)\\s*MODEL-REASON:[ \\t]*\\S")) then "ok" else "opus" end' 2>/dev/null)"
+    how='Run `node scripts/session-model.js BRO-N [BRO-M ...]` (no card: `--no-card`) and pass its `model`.'
+    case "$m" in
+      none) deny "Blocked: create_session needs an explicit model; without one the session inherits yours (usually Opus) and skips the card model policy (BRO-5228). $how" ;;
+      fable) deny "Blocked: worker sessions never run on Fable (scripts/lib/bsc-next-model.js). $how" ;;
+      bad) deny "Blocked: create_session model must be a full id (claude-sonnet-<version> or claude-opus-<version>). $how" ;;
+      opus) deny "Blocked: an Opus session needs a \`MODEL-REASON: <why>\` line in its prompt (session-model.js modelReason, or the owner asked); otherwise use Sonnet (BRO-5228). $how" ;;
+    esac
     url="$(printf '%s' "$input" | jq -r '.tool_input.source_url // ""' 2>/dev/null)"
     canon='https://github.com/thomaspryor/Broadwayscore'
     names="$(printf '%s' "$url" | jq -Rr 'ascii_downcase | gsub("^\\s+|\\s+$"; "") | (capture("github\\.com[:/]+(?<o>[^/]+)/(?<r>[^/?#]+?)(\\.git)?(/.*)?$") | .o + "/" + .r) // ""' 2>/dev/null)"

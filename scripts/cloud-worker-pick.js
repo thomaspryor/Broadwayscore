@@ -139,7 +139,7 @@ async function firstUnpaused(queue, nowMs, historySkipped) {
 async function main() {
   const { listOpenIssuesWithDescriptions, listIssueComments } = require('./lib/linear-client.js');
   const { verifyCommand } = require('./lib/linear-drain-parked.js');
-  const { pickCloudCard, buildPickQueue, needsComments, isStartNow } = require('./lib/cloud-worker-pick.js');
+  const { pickCloudCard, buildPickQueue, needsComments, isStartNow, modelPicker } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
   // A VERIFY posted as a comment arms a card, and a newer one corrects the
@@ -216,26 +216,6 @@ function listArg(argv) {
     process.exit(2);
   }
   return n;
-}
-
-/**
- * pickModel with the dispatch ledger read once per run. The ledger is the Mac's
- * (gitignored); in a cloud container it is absent and reads as [], so the 24h
- * Opus cap sees no launches. The reason says so rather than implying a check.
- */
-function modelPicker(nowMs) {
-  const { pickModel } = require('./lib/cloud-worker-pick.js');
-  const ledger = require('./lib/dispatch-ledger.js');
-  const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
-  let entries;
-  const readEntries = () => {
-    if (entries === undefined) entries = ledger.readEntries();
-    return entries;
-  };
-  return (issue) => {
-    const m = pickModel(issue, { nowMs, readEntries });
-    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
-  };
 }
 
 function pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf) {
