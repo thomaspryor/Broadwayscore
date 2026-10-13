@@ -173,7 +173,7 @@ const AUDITS = [
     crashCodes: [3],           // 0 clean / 1 = unexplained mismatch (drift) / 3 = corpus missing
   },
   // BRO-5295: a stored numeric-stars/text-pattern rating that came from prose
-  // ("1992 starring ...", "(c) 2014 StarTribune"), not from a rating. Measured 6
+  // ("1992 starring ...", "(c) 2014 StarTribune"), not from a rating. Measured 7
   // on 2026-10-13 (all queued in data/pending-fixes/bro-5295.json); advisory
   // first (CLAUDE.md rule 19), so a new hit shows up in the digest.
   {

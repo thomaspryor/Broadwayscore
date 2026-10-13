@@ -47,7 +47,7 @@ async function main() {
       try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
 
       // Skip if already has verified score
-      if (data.originalScore) { continue; }
+      if (data.originalScore || data.originalScoreCleared === true) { continue; } // cleared stays cleared (BRO-5295)
       // Skip no-star outlets
       if (NO_STARS.has(data.outletId)) { continue; }
       // Need a URL to fetch

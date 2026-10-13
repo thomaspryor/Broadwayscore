@@ -488,7 +488,8 @@ async function updateReviewJson(review, text, archivePath, method) {
 
   // Extract explicit score from HTML/text if not already present
   // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
-  if (!updatedData.originalScore) {
+  // A rating a person or fix script cleared stays cleared (BRO-5295).
+  if (!updatedData.originalScore && review.data.originalScoreCleared !== true) {
     const html = archivePath ? fs.readFileSync(archivePath, 'utf8') : '';
     const outletId = review.data.outletId || '';
 

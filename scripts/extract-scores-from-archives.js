@@ -65,7 +65,7 @@ for (const dir of showDirs) {
     } catch (e) { continue; }
 
     // Skip if already has originalScore
-    if (data.originalScore) continue;
+    if (data.originalScore || data.originalScoreCleared === true) continue; // cleared stays cleared (BRO-5295)
 
     // Skip if no archive path
     if (!data.archivePath) continue;

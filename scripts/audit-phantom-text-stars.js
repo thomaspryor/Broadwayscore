@@ -3,7 +3,8 @@
 /**
  * audit-phantom-text-stars.js (BRO-5295): stored numeric-stars / text-pattern
  * ratings that came from prose ("1992 starring ...", "(c) 2014 StarTribune"),
- * not from a rating. See scripts/lib/phantom-text-star.js.
+ * not from a rating, and humanReviewScores that are really such a star. See
+ * scripts/lib/phantom-text-star.js.
  *
  * Usage: node scripts/audit-phantom-text-stars.js [--max=N] [--json] [--dir=PATH]
  * Exit: 0 hits <= N (default 0) / 1 above / 3 bad args or corpus missing.
@@ -12,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
-const { findPhantomTextStar } = require('./lib/phantom-text-star');
+const { findPhantomTextStar, findMachinePinnedHumanScore } = require('./lib/phantom-text-star');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-phantom-text-stars.js — stored text-derived stars that came from prose
@@ -39,6 +40,8 @@ function main(argv) {
       if (!f.endsWith('.json')) continue;
       let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
       const hit = findPhantomTextStar(d, extractScore);
+      const pinned = findMachinePinnedHumanScore(d);
+      if (pinned) hits.push({ file: `${show}/${f}`, stored: `humanReviewScore ${pinned.humanReviewScore}`, source: `${pinned.source} (machine-pinned human score)`, assignedScore: d.assignedScore ?? null, humanReviewScore: d.humanReviewScore });
       if (hit) hits.push({ file: `${show}/${f}`, stored: hit.stored, source: d.originalScoreSource, assignedScore: d.assignedScore ?? null, humanReviewScore: d.humanReviewScore ?? null });
     }
   }

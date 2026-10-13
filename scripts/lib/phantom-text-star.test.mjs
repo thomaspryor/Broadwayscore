@@ -45,3 +45,14 @@ test('a rating glued to the next word ("4 starsMegan") is not a phantom candidat
   assert.deepEqual(phantomRatings('Hamilton 4 starsMegan Hilty is superb'), []);
   assert.deepEqual(phantomRatings('film from 1992 starring X'), ['2/5']);
 });
+
+test('findMachinePinnedHumanScore: a star-shaped human score with no human trace is flagged; notes, manual entries and provisional ones are not', () => {
+  const { findMachinePinnedHumanScore } = require('./phantom-text-star.js');
+  const base = { humanReviewScore: 40, originalScoreNormalized: 40, originalScoreSource: 'numeric-stars' };
+  assert.deepEqual(findMachinePinnedHumanScore(base), { humanReviewScore: 40, source: 'numeric-stars' });
+  assert.equal(findMachinePinnedHumanScore({ ...base, humanReviewNote: 'checked against the page' }), null);
+  assert.equal(findMachinePinnedHumanScore({ ...base, manualEntry: true }), null);
+  assert.equal(findMachinePinnedHumanScore({ ...base, humanReviewScoreProvisional: true }), null);
+  assert.equal(findMachinePinnedHumanScore({ ...base, originalScoreSource: 'manual-stars' }), null);
+  assert.equal(findMachinePinnedHumanScore({ ...base, humanReviewScore: 55 }), null);
+});

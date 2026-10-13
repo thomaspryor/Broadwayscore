@@ -67,4 +67,20 @@ function findPhantomTextStar(data, extractScore) {
   return { stored, phantoms };
 }
 
-module.exports = { findPhantomTextStar, phantomRatings, ratingKey, GENERIC_TEXT_SOURCES };
+/**
+ * A "human" score that is really a generic text star: humanReviewScore equals the
+ * normalized value of a numeric-stars / text-pattern rating, with nothing a person
+ * leaves behind (manualEntry, humanReviewNote) and not marked provisional. humanReviewScore
+ * outranks every other score, so a machine-made one pins the review (Her Campus: 40 on a
+ * rave, 2026-10-13; the writer was not identified in the CI log, so this catches the result).
+ * Corpus on 2026-10-13: exactly 1 hit.
+ */
+function findMachinePinnedHumanScore(data) {
+  if (!data || typeof data.humanReviewScore !== 'number') return null;
+  if (!GENERIC_TEXT_SOURCES.has(data.originalScoreSource)) return null;
+  if (data.manualEntry === true || data.humanReviewNote || data.humanReviewScoreProvisional === true) return null;
+  if (data.humanReviewScore !== data.originalScoreNormalized) return null;
+  return { humanReviewScore: data.humanReviewScore, source: data.originalScoreSource };
+}
+
+module.exports = { findPhantomTextStar, findMachinePinnedHumanScore, phantomRatings, ratingKey, GENERIC_TEXT_SOURCES };
