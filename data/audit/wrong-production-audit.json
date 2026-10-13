@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T10:49:20.026Z",
+  "timestamp": "2026-10-13T11:27:36.885Z",
   "stats": {
-    "totalReviews": 56277,
-    "alreadyFlagged": 21002,
+    "totalReviews": 56285,
+    "alreadyFlagged": 21003,
     "dateGuardCatches": 216,
-    "directorMismatch": 1860,
+    "directorMismatch": 1859,
     "tvFilmSignals": 1638,
     "londonSignals": 2233,
     "offBroadwaySignals": 507,
     "yearMismatch": 139,
-    "noPublishDate": 5246
+    "noPublishDate": 5245
   },
   "findings": [
     {
@@ -11169,19 +11169,6 @@
       "score": 84,
       "publishDate": "2023-10-16",
       "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-england-closing-time-west-end-2023",
-      "file": "whatsonstage--unknown.json",
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/death-of-england-closing-time-in-the-west-end-review_1625939/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
