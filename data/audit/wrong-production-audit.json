@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T23:04:14.104Z",
+  "timestamp": "2026-10-13T23:48:54.814Z",
   "stats": {
     "totalReviews": 56451,
-    "alreadyFlagged": 21038,
-    "dateGuardCatches": 212,
-    "directorMismatch": 1874,
-    "tvFilmSignals": 1643,
+    "alreadyFlagged": 21047,
+    "dateGuardCatches": 208,
+    "directorMismatch": 1875,
+    "tvFilmSignals": 1638,
     "londonSignals": 2239,
-    "offBroadwaySignals": 510,
+    "offBroadwaySignals": 509,
     "yearMismatch": 139,
-    "noPublishDate": 5291
+    "noPublishDate": 5281
   },
   "findings": [
     {
@@ -783,7 +783,7 @@
     {
       "showId": "a-free-man-of-color-2010",
       "file": "wsj--terry-teachout.json",
-      "score": 95,
+      "score": 91,
       "publishDate": "November 19, 2010",
       "url": "http://online.wsj.com/article/SB10001424052748703326204575616442412658382.html",
       "findings": [
@@ -10532,7 +10532,7 @@
     {
       "showId": "death-of-a-salesman-2012",
       "file": "wsj--terry-teachout.json",
-      "score": 91,
+      "score": 89,
       "publishDate": "2012-03-15T20:42:51-04:00",
       "url": "http://online.wsj.com/article/SB10001424052702304692804577281333864897356.html",
       "findings": [
@@ -13840,11 +13840,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -14866,25 +14861,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "ghost-the-musical-2012",
-      "file": "variety--steven-suskin.json",
-      "score": 45,
-      "publishDate": "2012-04-24",
-      "url": "https://variety.com/2012/legit/reviews/ghost-the-musical-1117947430/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -16003,7 +15979,7 @@
     {
       "showId": "godspell-2011",
       "file": "wsj--terry-teachout.json",
-      "score": 90,
+      "score": 85,
       "publishDate": "November 11, 2011",
       "url": "http://online.wsj.com/article/SB10001424052970204224604577030051331149034.html",
       "findings": [
@@ -16011,11 +15987,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -25972,20 +25943,6 @@
       ]
     },
     {
-      "showId": "mcneal-2024",
-      "file": "variety--charles-isherwood.json",
-      "score": 42,
-      "publishDate": "September 23, 2024",
-      "url": "https://variety.com/2024/legit/reviews/mcneal-review-robert-downey-jr-broadway-1236179123/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
       "showId": "mean-girls-2018",
       "file": "chicagotribune--chris-jones.json",
       "score": 74,
@@ -29126,20 +29083,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from oklahoma-2002"
-        }
-      ]
-    },
-    {
-      "showId": "old-times-1971",
-      "file": "amny--matt-windman.json",
-      "score": 64,
-      "publishDate": null,
-      "url": "http://www.amny.com/entertainment/old-times-review-a-steely-sexy-puzzler-1.10930571",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"douglas hodge\" from old-times-2015"
         }
       ]
     },
@@ -33232,7 +33175,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2026-04-01",
       "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
@@ -33265,7 +33208,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 60,
+      "score": 57,
       "publishDate": "2026-04-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/romeo-juliet-review-sadie-sink-noah-jupe-hfr8798f2",
       "findings": [
@@ -33605,25 +33548,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
-        }
-      ]
-    },
-    {
-      "showId": "school-pictures-off-broadway-2026",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 79,
-      "publishDate": "November 22nd, 2023",
-      "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1050d before show (November 22nd, 2023 vs 2026-10-07)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
         }
       ]
     },
@@ -38751,6 +38675,25 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "broadwayworld--senior-franco-milazzo.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 95,
       "publishDate": "2025-05-14",
@@ -38853,6 +38796,24 @@
       "score": 90,
       "publishDate": "2025-05-13",
       "url": "https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "lovelondonloveculture--emma.json",
+      "publishDate": "2025-05-21",
+      "url": "https://lovelondonloveculture.com/2025/05/21/review-the-comedy-about-spies-noel-coward-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39051,6 +39012,24 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "westendtheatre--west-end-theatre-editorial.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.westendtheatre.com/291159/news/reviews/reviews-of-the-comedy-about-spies-in-the-west-end/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2025",
       "file": "whatsonstage--alun-hood.json",
       "score": 59,
       "publishDate": "May 14th, 2025",
@@ -39074,61 +39053,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "lovelondonloveculture--emma.json",
-      "publishDate": "2025-05-21",
-      "url": "https://lovelondonloveculture.com/2025/05/21/review-the-comedy-about-spies-noel-coward-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 437d before show (2025-05-21 vs 2026-08-01)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "westendtheatre--west-end-theatre-editorial.json",
-      "publishDate": "2025-05-14",
-      "url": "https://www.westendtheatre.com/291159/news/reviews/reviews-of-the-comedy-about-spies-in-the-west-end/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "writewatchwork--abbybathurst.json",
-      "score": 88,
-      "publishDate": "2025-06-18",
-      "url": "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 409d before show (2025-06-18 vs 2026-08-01)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -41725,20 +41649,6 @@
       ]
     },
     {
-      "showId": "the-iceman-cometh-2018",
-      "file": "variety--marilyn-stasio.json",
-      "score": 87,
-      "publishDate": "April 26, 2018",
-      "url": "https://variety.com/2018/legit/reviews/the-iceman-cometh-review-denzel-washington-broadway-1202787371/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-importance-of-being-earnest-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
@@ -42231,20 +42141,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-music-man-2022",
-      "file": "variety--peter-debruge.json",
-      "score": 92,
-      "publishDate": "February 11, 2022",
-      "url": "https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 9\""
         }
       ]
     },
@@ -61179,6 +61075,20 @@
       ]
     },
     {
+      "showId": "ghost-the-musical-2012",
+      "file": "variety--steven-suskin.json",
+      "score": 45,
+      "publishDate": "2012-04-24",
+      "url": "https://variety.com/2012/legit/reviews/ghost-the-musical-1117947430/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "giant-2026",
       "file": "amny--matt-windman.json",
       "score": 75,
@@ -72702,7 +72612,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-pride-dorfman-theatre",
       "findings": [
@@ -72758,7 +72668,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 91,
+      "score": 92,
       "publishDate": "2026-06-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review",
       "findings": [
@@ -72772,7 +72682,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "londontheatre1--terry-eastham.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2026-06-26",
       "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/",
       "findings": [
@@ -77962,6 +77872,20 @@
       ]
     },
     {
+      "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "writewatchwork--abbybathurst.json",
+      "score": 88,
+      "publishDate": "2025-06-18",
+      "url": "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "afridiziak-theatre-news--elana-joseph.json",
       "score": 63,
@@ -77972,20 +77896,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "broadwayworld--senior-franco-milazzo.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
