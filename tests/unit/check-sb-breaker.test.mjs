@@ -22,6 +22,7 @@ function run({ usage, prevState = null, env = {}, history = [] }) {
   const transitions = path.join(dir, 'transitions.jsonl');
   const daily = path.join(dir, 'daily.jsonl');
   const alerts = path.join(dir, 'alerts.json');
+  const resolves = path.join(dir, 'resolves.txt');
   if (prevState) fs.writeFileSync(statePath, JSON.stringify(prevState));
   fs.writeFileSync(daily, history.map((r) => JSON.stringify(r)).join('\n') + '\n');
   const preload = path.join(dir, 'preload.cjs');
@@ -32,7 +33,8 @@ function run({ usage, prevState = null, env = {}, history = [] }) {
     const routerPath = require.resolve(${JSON.stringify(path.join(ROOT, 'scripts/lib/owner-alert-router.js'))});
     require.cache[routerPath] = { id: routerPath, filename: routerPath, loaded: true, exports: {
       routeAlert: async (a) => { require('fs').appendFileSync(${JSON.stringify(alerts)}, JSON.stringify(a) + '\\n'); },
-      resolveCondition: () => false,
+      // Every condition reads as open, so a resolve call is observable.
+      resolveCondition: (k) => { require('fs').appendFileSync(${JSON.stringify(resolves)}, k + '\\n'); return true; },
     } };
   `);
   const res = spawnSync(process.execPath, ['-r', preload, SCRIPT], {
@@ -53,6 +55,7 @@ function run({ usage, prevState = null, env = {}, history = [] }) {
     state: fs.existsSync(statePath) ? JSON.parse(read(statePath)) : null,
     rows: read(transitions).split('\n').filter(Boolean).map((l) => JSON.parse(l)),
     alerts: read(alerts).split('\n').filter(Boolean).map((l) => JSON.parse(l)),
+    resolves: read(resolves).split('\n').filter(Boolean),
   };
 }
 
@@ -126,6 +129,19 @@ test('switching back to SHADOW resolves an open enforced incident (BRO-3010 revi
   assert.equal(r.code, 0, r.out);
   assert.equal(r.state.trippedAt, null);
   assert.match(r.out, /open sb-circuit-breaker incident resolved/);
+});
+
+// BRO-5261 retro-review: wasEnforced is day-scoped, so a trip from an earlier
+// UTC day never reached a resolve and its incident stayed open indefinitely.
+test('a trip from an EARLIER day is resolved at rollover, in shadow and in enforced mode', () => {
+  const yesterdayTrip = prev(250000, { day: daysBefore(1), trippedAt: `${daysBefore(1)}T20:00:00Z` });
+  for (const env of [{}, { SB_BREAKER_SHADOW: '0' }]) {
+    const r = run({ usage: usage(110000), prevState: yesterdayTrip, history, env });
+    assert.equal(r.code, 0, r.out);
+    assert.equal(r.state.trippedAt, null);
+    assert.deepEqual(r.resolves, ['sb-circuit-breaker'], `${JSON.stringify(env)}\n${r.out}`);
+    assert.equal(r.alerts.length, 0);
+  }
 });
 
 test('--dry-run writes nothing', () => {

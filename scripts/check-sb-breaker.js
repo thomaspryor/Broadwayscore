@@ -168,17 +168,21 @@ async function main() {
     ceilingSource: decision.ceilingSource,
   });
 
-  // Shadow never alerts. Switched back to shadow while an enforced trip was
-  // open: resolve that incident so it does not sit open forever.
+  // Shadow never alerts, and no enforced trip can be open while in shadow:
+  // resolve any sb-circuit-breaker incident (a no-op when none is open). Not
+  // keyed on wasEnforced, which is day-scoped and misses a trip from an
+  // earlier UTC day (BRO-5261).
   if (!decision.enforce) {
-    if (wasEnforced) {
-      const { resolveCondition } = require('./lib/owner-alert-router');
-      resolveCondition('sb-circuit-breaker');
-      console.log('Enforcement off (shadow) — open sb-circuit-breaker incident resolved.');
-    }
+    const { resolveCondition } = require('./lib/owner-alert-router');
+    if (resolveCondition('sb-circuit-breaker')) console.log('Enforcement off (shadow) — open sb-circuit-breaker incident resolved.');
     return;
   }
   if (enforcedTrip === wasEnforced) {
+    // Same rollover gap: an earlier day's trip never reaches the cleared branch.
+    if (!enforcedTrip) {
+      const { resolveCondition } = require('./lib/owner-alert-router');
+      if (resolveCondition('sb-circuit-breaker')) console.log('Not tripped — stale open incident from an earlier day resolved.');
+    }
     console.log('No breaker state change — no alert.');
     return;
   }

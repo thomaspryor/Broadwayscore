@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { usesSetU, auditSource, alwaysNonEmptyArrays, main } = require('./audit-set-u-expansions.js');
+const { usesSetU, auditSource, alwaysNonEmptyArrays, sourcedByNounset, main } = require('./audit-set-u-expansions.js');
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SETU = '#!/usr/bin/env bash\nset -euo pipefail\n';
 
@@ -66,6 +66,27 @@ test('review fixes: multi-line literal arrays are non-empty; local "$1" is not C
   assert.deepEqual(auditSource(`${SETU}W=(\n  a\n  b\n)\nfor w in "\${W[@]}"; do :; done\n`), []);
   assert.deepEqual(auditSource(`${SETU}f() {\n  local n="$1"\n  echo $((n * 2))\n}\n`), []);
   assert.equal(usesSetU('set -o errexit -o nounset\n'), true);
+});
+
+test('BRO-5261 retro-review: an unquoted glob literal can be empty; a quoted * cannot', () => {
+  assert.deepEqual(auditSource(`${SETU}shopt -s nullglob\nt=(scripts/*.mjs)\nnode "${'$'}{t[@]}"\n`).map((f) => f.name), ['t']);
+  assert.deepEqual(auditSource(`${SETU}a=(-path '*/x' -o -name "*.y")\nfind . "${'$'}{a[@]}"\n`), []);
+});
+
+test('BRO-5261 retro-review: a << in a trailing comment or an arithmetic shift opens no heredoc', () => {
+  const tail = `# example: "${'$'}{arr[@]}"\n`;
+  assert.deepEqual(auditSource(`${SETU}x=1 # see <<EOF usage\n${tail}`), []);
+  assert.deepEqual(auditSource(`${SETU}m=$(( 1 << bits ))\n${tail}`), []);
+  // A real unquoted heredoc still expands its body.
+  assert.equal(auditSource(`${SETU}cat <<EOF\n${'$'}{arr[@]}\nEOF\n`).length, 1);
+});
+
+test('BRO-5261 retro-review: a file sourced by a set -u script inherits nounset (arrays only)', () => {
+  const caller = `${SETU}source "$DIR/lib/helper.sh"\n. ./other.sh # comment\n. "$(dirname "\${BASH_SOURCE[0]}")/lib/gh-runs-query.sh"\n`;
+  assert.deepEqual([...sourcedByNounset([caller, 'source not-setu.sh\n'])].sort(), ['gh-runs-query.sh', 'helper.sh', 'other.sh']);
+  const lib = 'f() { for x in "${a[@]}"; do :; done; echo $(( $1 + 1 )); }\nN=$1\necho $((N+1))\n';
+  assert.deepEqual(auditSource(lib), []);
+  assert.deepEqual(auditSource(lib, { inheritsSetU: true }).map((f) => f.kind), ['array']);
 });
 
 test('the live repo is clean: every set -u site is guarded or annotated (regression lock)', () => {

@@ -16,6 +16,9 @@
  *   - every assignment to the array in the file is a literal, non-empty list
  *     (`arr=(a b c)`, no `$`, no `+=`-only, never `arr=()`/read -a/mapfile)
  *   - the line, or one of the 3 lines above it, carries `# set-u-safe: <why>`
+ * A file without set -u is still scanned (arrays only) when a set -u script
+ * sources it, since nounset carries into sourced code. An unquoted glob in a
+ * literal (`arr=(dir/*.x)`) does not count as non-empty.
  * Anything else is reported. Fix with the ${arr[@]+"${arr[@]}"} idiom (see
  * scripts/gc-merged-worktrees.sh) or annotate with the reason it can't be
  * empty.
@@ -83,7 +86,9 @@ function alwaysNonEmptyArrays(lines) {
         }
         body = `${body} ${rest.join(' ')}`.trim();
       }
-      mark(m[1], body.length > 0 && !body.includes('$') && !body.includes('`'));
+      // An unquoted glob can match nothing (empty array under nullglob).
+      const unquoted = body.replace(/'[^']*'|"[^"]*"/g, '');
+      mark(m[1], body.length > 0 && !body.includes('$') && !body.includes('`') && !/[*?[]/.test(unquoted));
     }
     for (const m of line.matchAll(/\b(?:read\s+(?:-[a-zA-Z]+\s+)*-a\s+|mapfile\s+(?:-[a-zA-Z]+\s+(?:\S+\s+)?)*|readarray\s+(?:-[a-zA-Z]+\s+(?:\S+\s+)?)*)([A-Za-z_][A-Za-z0-9_]*)/g)) {
       mark(m[1], false);
@@ -118,7 +123,10 @@ function findArrayFindings(src) {
       if (/^\s*#/.test(raw)) return;
       line = stripComment(raw);
     }
-    const hd = heredoc ? null : raw.match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
+    // Match on the comment-stripped line with (( )) arithmetic removed, so a
+    // `<<NAME` in a trailing comment or a `(( x << n ))` shift cannot open a
+    // heredoc that never closes.
+    const hd = heredoc ? null : line.replace(/\(\([^()]*\)\)/g, '').match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
     line = line.replace(/\\\$/g, ''); // \$ is a literal dollar, not an expansion
     // Mask guarded forms so only bare expansions remain.
     const masked = line
@@ -169,10 +177,31 @@ function findArithmeticFindings(src) {
   return out;
 }
 
-/** All findings for one file's source; [] when the file does not use set -u. */
-function auditSource(src) {
-  if (!usesSetU(src)) return [];
-  return [...findArrayFindings(src), ...findArithmeticFindings(src)].sort((a, b) => a.line - b.line);
+/**
+ * All findings for one file's source; [] when the file does not use set -u.
+ * `inheritsSetU`: the file is sourced by a set -u script, so nounset applies
+ * to it even though it never sets it (array findings only: its positional
+ * parameters are the caller's, not CLI input).
+ */
+function auditSource(src, { inheritsSetU = false } = {}) {
+  if (usesSetU(src)) return [...findArrayFindings(src), ...findArithmeticFindings(src)].sort((a, b) => a.line - b.line);
+  return inheritsSetU ? findArrayFindings(src) : [];
+}
+
+/** Basenames of *.sh files that a set -u script sources (`source x.sh` / `. x.sh`). */
+function sourcedByNounset(sources) {
+  const out = new Set();
+  for (const src of sources) {
+    if (!usesSetU(src)) continue;
+    for (const raw of src.split('\n')) {
+      // The path may be built from $(dirname "...") with spaces inside, so
+      // take the last *.sh token rather than the first word.
+      const m = stripComment(raw).match(/^\s*(?:source|\.)\s+(.*)$/);
+      const names = m ? m[1].match(/[A-Za-z0-9_.-]+\.sh\b/g) : null;
+      if (names) out.add(names[names.length - 1]);
+    }
+  }
+  return out;
 }
 
 /** Tracked *.sh files (plus extensionless bash scripts under scripts/hooks). */
@@ -202,10 +231,13 @@ function main(argv = process.argv.slice(2), { repoRoot = path.resolve(__dirname,
   const explicit = argv.filter((a) => !a.startsWith('--'));
   const files = explicit.length ? explicit : listShellFiles(repoRoot);
   const report = [];
+  const sources = new Map();
   for (const f of files) {
-    let src;
-    try { src = fs.readFileSync(path.isAbsolute(f) ? f : path.join(repoRoot, f), 'utf8'); } catch { continue; }
-    for (const finding of auditSource(src)) report.push({ file: f, ...finding });
+    try { sources.set(f, fs.readFileSync(path.isAbsolute(f) ? f : path.join(repoRoot, f), 'utf8')); } catch { /* unreadable: skip */ }
+  }
+  const inherited = sourcedByNounset(sources.values());
+  for (const [f, src] of sources) {
+    for (const finding of auditSource(src, { inheritsSetU: inherited.has(path.basename(f)) })) report.push({ file: f, ...finding });
   }
   if (json) {
     log(JSON.stringify(report, null, 2));
@@ -226,6 +258,7 @@ module.exports = {
   findArrayFindings,
   findArithmeticFindings,
   auditSource,
+  sourcedByNounset,
   listShellFiles,
   main,
 };

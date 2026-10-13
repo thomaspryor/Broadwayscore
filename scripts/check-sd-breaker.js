@@ -203,6 +203,15 @@ async function main() {
   });
 
   if (verdict.tripped === wasActive) {
+    // wasActive is day-scoped, so a trip on an earlier UTC day reads as "not
+    // active" at rollover and never reaches the cleared branch below: its
+    // incident stayed open for weeks (sd-circuit-breaker, open since
+    // 2026-09-06, BRO-5261). Resolve whenever we are not tripped; a no-op
+    // when nothing is open.
+    if (!verdict.tripped) {
+      const { resolveCondition } = require('./lib/owner-alert-router');
+      if (resolveCondition(conditionKey)) console.log('Not tripped — stale open incident from an earlier day resolved.');
+    }
     console.log('No breaker state change — no alert.');
     return;
   }

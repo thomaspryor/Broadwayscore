@@ -193,13 +193,22 @@ async function main() {
     });
   }
 
+  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+  // wasActive is day-scoped, so a trip on an earlier UTC day is never seen as
+  // a "change" at rollover and its incident stayed open indefinitely
+  // (BRO-5261). Resolve every untripped, unchanged zone; a no-op when nothing
+  // is open.
+  for (const o of observed) {
+    if (o.tripped || o.wasActive) continue;
+    if (resolveCondition(`bd-circuit-breaker-${o.zone}`)) console.log(`${o.zone}: not tripped — stale open incident from an earlier day resolved.`);
+  }
+
   if (!changes.length) {
     console.log('No breaker state change — no alert.');
     return;
   }
 
   const openingWindowShows = countShowsInOpeningWindow(SHOWS_PATH);
-  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   for (const change of changes) {
     // NOTE the per-zone suffix. BRO-3011's Sprint 3 plan names a flat
     // 'bd-circuit-breaker' key; that key has never existed. The real condition
