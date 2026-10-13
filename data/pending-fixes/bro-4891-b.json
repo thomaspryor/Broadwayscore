@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4891-b",
   "planId": "d966e319-c5ad-4466-90b9-198bfc253e2b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T00:47:51.668Z",
   "submitter": {
     "name": null,
@@ -149,5 +149,83 @@
         "description": "Clear the false wrong-production flag"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-13T02:03:06.151Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dreamgirls-1981/nydailynews--douglas-watt.json criticName: \"Douglas Watt\" -> \"Mary Campbell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dreamgirls-1981/nydailynews--douglas-watt.json humanReviewScore: null -> 93"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dreamgirls-1981/nydailynews--douglas-watt.json humanReviewNote: null -> \"BRO-4891: AP wire rave by Mary Campbell, read in full\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json humanReviewScore: null -> 92"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json humanReviewNote: null -> \"BRO-4891: 5/5 stars, score kept inside the 91-100 band\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/nypost--johnny-oleksinski.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/nypost--johnny-oleksinski.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/indiependent--lucy-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/indiependent--lucy-curtis.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json wrongProductionManualClear: \"UK outlet on WE show; false positive cleared 2026-04-01, body verified manually 2026-10-05 (BRO-2395): Royal Court review of this production; title not named in text\" -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json wrongProduction: true -> false"
+    }
+  ]
 }
