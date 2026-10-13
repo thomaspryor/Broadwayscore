@@ -899,7 +899,7 @@ assert_no_conflict_markers() {
   # ANY unbounded operation in this script from ~17min to the job's 180min. 30s
   # is generous for a local file scan; _timeout fails open (runs uncapped) if
   # no timeout binary exists, matching this file's other _timeout call sites.
-  if ! _timeout 30 node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
+  if ! _timeout 30 node "$SCRIPT_DIR/conflict-markers.js" ${existing[@]+"${existing[@]}"}; then
     echo "::error::Refusing to push: one or more staged/outgoing files contain unresolved git conflict markers (see paths above). This is the corruption class that committed invalid JSON to review-texts (commit 09e78a7a). Resolve the markers, re-commit, then push. Bypass only if these are intentional fixture lines: PUSH_SKIP_CONFLICT_CHECK=1."
     # `command -v`: the autostash block calls this guard before restore_head_if_moved
     # is defined (nothing has moved HEAD at that point, so there is nothing to restore).
@@ -1098,7 +1098,7 @@ if [ "${PUSH_AUTOSTASH:-1}" != "0" ] && git rev-parse --verify --quiet HEAD >/de
         AUTOSTASH_SHA="$_as_sha"
         AUTOSTASH_REF="$_as_ref"
         AUTOSTASH_HEAD="$(git rev-parse HEAD)"
-        echo "::warning::push-with-retry: caller left ${#AUTOSTASH_PATHS[@]} tracked file(s) modified but uncommitted; set aside for this push and restored on exit (BRO-3668). Commit them before calling to silence this. Paths: $(printf '%s ' "${AUTOSTASH_PATHS[@]:0:20}")"
+        echo "::warning::push-with-retry: caller left ${#AUTOSTASH_PATHS[@]} tracked file(s) modified but uncommitted; set aside for this push and restored on exit (BRO-3668). Commit them before calling to silence this. Paths: $(printf '%s ' ${AUTOSTASH_PATHS[@]+"${AUTOSTASH_PATHS[@]:0:20}"})"
         echo "  If this run is killed before restoring, recover with: git checkout $_as_sha -- <path>   (snapshot pinned at $_as_ref)"
       else
         git update-ref -d "$_as_ref" 2>/dev/null || true
@@ -1130,7 +1130,7 @@ restore_autostash() {
   cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" 2>/dev/null || true
   tmpd=$(mktemp -d 2>/dev/null || echo "/tmp/push-retry-autostash-merge.$$")
   mkdir -p "$tmpd" 2>/dev/null || true
-  for p in "${AUTOSTASH_PATHS[@]}"; do
+  for p in ${AUTOSTASH_PATHS[@]+"${AUTOSTASH_PATHS[@]}"}; do
     # Current on-disk content must equal HEAD's (or be absent where HEAD lacks it).
     if git cat-file -e "HEAD:$p" 2>/dev/null; then
       if [ ! -f "$p" ] || ! git diff --quiet HEAD -- "$p" 2>/dev/null; then
@@ -1476,7 +1476,7 @@ sync_restore_base_head() {
       while IFS= read -r f; do
         [ -n "$f" ] && [ -f "$f" ] && candidate_files+=("$f")
       done < <(git diff --no-renames --name-only --diff-filter=ACM "$RESTORE_BASE_HEAD" "$current" 2>/dev/null || true)
-      if [ ${#candidate_files[@]} -gt 0 ] && ! node "$SCRIPT_DIR/conflict-markers.js" "${candidate_files[@]}" >/dev/null 2>&1; then
+      if [ ${#candidate_files[@]} -gt 0 ] && ! node "$SCRIPT_DIR/conflict-markers.js" ${candidate_files[@]+"${candidate_files[@]}"} >/dev/null 2>&1; then
         echo "::warning::push-with-retry: HEAD advanced from $RESTORE_BASE_HEAD to $current but the new commit(s) contain unresolved conflict markers — NOT adopting as the restore point (BRO-259); the existing corruption guard will catch and reset it instead."
         return 0
       fi
@@ -1918,8 +1918,8 @@ reconcile_merged_json() {
   done <<< "$out"
   [ ${#changed_files[@]} -gt 0 ] || return 0
 
-  echo "  Reconciled ${#changed_files[@]} union-merged JSON file(s) against origin/$PULL_BRANCH (task #420): ${changed_files[*]}"
-  git add -- "${changed_files[@]}"
+  echo "  Reconciled ${#changed_files[@]} union-merged JSON file(s) against origin/$PULL_BRANCH (task #420): ${changed_files[*]:-}"
+  git add -- ${changed_files[@]+"${changed_files[@]}"}
   bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$PULL_BRANCH" >/dev/null 2>&1 || true
 }
 
@@ -1984,7 +1984,7 @@ verify_content_survived() {
     --check-ref="origin/$PULL_BRANCH"
   )
   [ -n "$pushed_sha" ] && survival_args+=(--pushed-sha="$pushed_sha")
-  node "$SCRIPT_DIR/push-content-survival.js" "${survival_args[@]}"
+  node "$SCRIPT_DIR/push-content-survival.js" ${survival_args[@]+"${survival_args[@]}"}
 }
 
 pushed=false
@@ -2274,7 +2274,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # escape hatch back to the pre-#1849 behavior, matching this file's
       # existing PUSH_SKIP_UNSHALLOW/PUSH_SKIP_CONFLICT_CHECK pattern.
       FETCH_DEPTH_ARGS=(--deepen=2000)
-      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — prior bound was REJECTED outright (not a timeout); escalating to ${FETCH_DEPTH_ARGS[*]} instead of repeating the identical failing bound (task #1849)"
+      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — prior bound was REJECTED outright (not a timeout); escalating to ${FETCH_DEPTH_ARGS[*]:-} instead of repeating the identical failing bound (task #1849)"
     else
       # Oldest LOCAL commit = the shallow boundary (cheap: a shallow repo holds
       # only a handful of commits). This is the commit that must remain an
@@ -2298,7 +2298,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
         FETCH_DEPTH_ARGS=(--deepen=200)
       fi
-      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]} (task #466)"
+      echo "  fetch: SHALLOW checkout ($(git rev-list --count HEAD 2>/dev/null || echo '?') local commit(s)) — bounding with ${FETCH_DEPTH_ARGS[*]:-} (task #466)"
     fi
   fi
   # NOTE on the ${arr[@]+"${arr[@]}"} expansions below: bash 3.2 (stock
@@ -2329,11 +2329,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           # Already escalated to --deepen=2000 above (task #1849) — reissue
           # that same wider bound on the bare form instead of regressing to
           # --deepen=200, which already failed once before escalation.
-          _fallback_depth_args=("${FETCH_DEPTH_ARGS[@]}")
-          echo "  Bare-form fallback reuses the escalated bound ${_fallback_depth_args[*]} (not regressing to --deepen=200, which already failed — task #1849)"
+          _fallback_depth_args=(${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"})
+          echo "  Bare-form fallback reuses the escalated bound ${_fallback_depth_args[*]:-} (not regressing to --deepen=200, which already failed — task #1849)"
         else
           _fallback_depth_args=(--deepen=200)
-          echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]} → --deepen=200 (the bound itself may be what was rejected)"
+          echo "  Bare-form fallback degrades the bound ${FETCH_DEPTH_ARGS[*]:-} → --deepen=200 (the bound itself may be what was rejected)"
         fi
       fi
       fetch_start=$SECONDS
@@ -2408,13 +2408,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # NOT depth-bounded (FETCH_DEPTH_ARGS may be empty here) — the invariant
       # being checked is the shallow checkout's ORIGINAL boundary, not whether
       # the fetch that just ran happened to carry a --depth/--shallow-since flag.
-      echo "  ::warning::shallow checkout's original boundary $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]} and refetching (task #466)"
+      echo "  ::warning::shallow checkout's original boundary $_shallow_base_sha is NOT an ancestor of the fetched tip — widening with ${_widen_args[*]:-} and refetching (task #466)"
       fetch_start=$SECONDS
-      if git_fetch "${_widen_args[@]}" \
+      if git_fetch ${_widen_args[@]+"${_widen_args[@]}"} \
            origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" 2>/dev/null; then
-        echo "  fetch(widened ${_widen_args[*]}) OK in $((SECONDS - fetch_start))s"
+        echo "  fetch(widened ${_widen_args[*]:-}) OK in $((SECONDS - fetch_start))s"
       else
-        echo "  fetch(widened ${_widen_args[*]}) FAILED in $((SECONDS - fetch_start))s"
+        echo "  fetch(widened ${_widen_args[*]:-}) FAILED in $((SECONDS - fetch_start))s"
       fi
       # Re-assert on the (possibly refreshed) FETCH_HEAD. Note a widened fetch
       # that FAILS leaves the previous successful FETCH_HEAD in place, so this
@@ -2439,7 +2439,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         # logged, non-zero — and leave main untouched. `if: always()` steps and
         # the failure telemetry still run.
         record_push_failure "shallow-ancestry-unrecoverable" "$i"
-        echo "::error::push-with-retry: fetch could not restore ancestry to the shallow checkout's original boundary — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
+        echo "::error::push-with-retry: fetch could not restore ancestry to the shallow checkout's original boundary — base $_shallow_base_sha is still NOT an ancestor of the fetched tip after widening with ${_widen_args[*]:-}. refs/remotes/origin/$PULL_BRANCH now points at a tip with unrelated history, so rebase/merge would replay this shallow checkout's whole-tree snapshot over whatever else landed on $PULL_BRANCH. Aborting instead (task #466). Re-run the job; if this repeats, the checkout needs fetch-depth: 0. Logged to data/audit/push-retry-failures.jsonl."
         restore_head_if_moved "shallow-ancestry-unrecoverable"
         exit 1
       fi

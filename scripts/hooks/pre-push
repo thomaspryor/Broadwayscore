@@ -198,7 +198,7 @@ $range_files"
       remote_content=$(git show "$remote_oid:CLAUDE.md" 2>/dev/null)
       local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
       if [ -n "$remote_content" ]; then
-        for pattern in "${CRITICAL_PATTERNS[@]}"; do
+        for pattern in ${CRITICAL_PATTERNS[@]+"${CRITICAL_PATTERNS[@]}"}; do
           if grep -q "$pattern" <<<"$remote_content" && \
              ! grep -q "$pattern" <<<"$local_content"; then
             echo ""

@@ -21,7 +21,7 @@ WORKFLOWS=(
   rediscover-urls.yml
 )
 
-for wf in "${WORKFLOWS[@]}"; do
+for wf in ${WORKFLOWS[@]+"${WORKFLOWS[@]}"}; do
   echo "Enabling $wf..."
   gh workflow enable "$wf"
 done

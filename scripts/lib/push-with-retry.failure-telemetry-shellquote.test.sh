@@ -74,7 +74,7 @@ for i in "${!REASONS[@]}"; do
 done
 
 CONTENT=$(git --git-dir="$TMP/origin.git" show push-retry-failures:failures.jsonl 2>/dev/null || echo "")
-for r in "${REASONS[@]}"; do
+for r in ${REASONS[@]+"${REASONS[@]}"}; do
   # Exact-match the JSON-escaped reason (parens/colons need no JSON escaping,
   # but this asserts round-trip fidelity through argv -> parseArgs -> JSON,
   # not just "some substring survived").

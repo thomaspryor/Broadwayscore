@@ -813,7 +813,7 @@ gc_one_repo() {
   fi
 
   if [ "${#stale_unmerged[@]}" -gt 0 ]; then
-    log "DIGEST[$repo_name]: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]}"
+    log "DIGEST[$repo_name]: ${#stale_unmerged[@]} unmerged worktree(s) untouched >${STALE_DAYS}d holding stranded work: ${stale_unmerged[*]:-}"
   else
     log "DIGEST[$repo_name]: no stale-unmerged worktrees (>${STALE_DAYS}d untouched)"
   fi
