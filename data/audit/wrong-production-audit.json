@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T07:34:49.806Z",
+  "timestamp": "2026-10-14T07:47:03.673Z",
   "stats": {
     "totalReviews": 56421,
-    "alreadyFlagged": 21069,
+    "alreadyFlagged": 21051,
     "dateGuardCatches": 204,
     "directorMismatch": 1879,
-    "tvFilmSignals": 1561,
+    "tvFilmSignals": 1562,
     "londonSignals": 2246,
     "offBroadwaySignals": 509,
     "yearMismatch": 142,
-    "noPublishDate": 5227
+    "noPublishDate": 5231
   },
   "findings": [
     {
@@ -17266,6 +17266,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "file": "medium--christian-lewis.json",
+      "score": 58,
+      "publishDate": null,
+      "url": "https://medium.com/@christianlewis_11156/review-head-over-heels-is-the-queerest-show-on-broadway-eff9dc8f026a",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 9\""
         }
       ]
     },
