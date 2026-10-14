@@ -15,7 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates, candidateParentId } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, candidateParentId, candidateKey } = require('./lib/tour-roundup-candidate');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -50,14 +50,14 @@ async function main() {
     if (found && Date.now() - Date.parse(c.firstSeen || 0) < 14 * 86400000) continue;
     // Not launched yet: create-tour-entries.js decides it once it has.
     if (found && c.segmentStart && c.segmentStart > new Date().toISOString().slice(0, 10)) continue;
-    const key = c.key || c.broadwayShowId;
+    const key = candidateKey(c);
     const parentId = candidateParentId(c);
     console.log(`${dryRun ? '[dry-run] would suggest' : 'suggesting'}: ${c.title} (${key}) ← ${c.url}`);
     if (dryRun) continue;
     try {
       await routeAlert({
         conditionKey: `tour-candidate:${key}`,
-        title: `Tour candidate: ${c.title} national tour`,
+        title: `Tour candidate: ${c.title} national tour${c.ended ? ` (${c.segmentStart})` : ''}`,
         severity: 'info',
         disposition: 'digest',
         decision: true,
@@ -72,7 +72,7 @@ async function main() {
           : found
           ? (c.ambiguous
             ? `Tours To You lists two ${c.title} tours running at once (${c.ambiguous}), so which one to track wasn't decided automatically.`
-            : `Tours To You lists a ${c.title} tour running since ${c.segmentStart}, but Wikipedia doesn't confirm its launch, so it wasn't added automatically.`)
+            : `Tours To You lists a ${c.title} tour ${c.ended ? `from ${c.segmentStart} through ${c.segmentEnd}, but its launch or closing is unconfirmed` : `running since ${c.segmentStart}, but Wikipedia doesn't confirm its launch`}, so it wasn't added automatically.`)
           : `BroadwayWorld published a national-tour review roundup for ${c.title} (${parentId}), which has no tour entry.`} ${c.needsClassification ? '' : parentId ? `Add a category:'tour' entry with tourOf:${parentId} (the production it tours; any market counts), then run node scripts/sweep-tour-reviews.js --tour=<id>.` : `Add a category:'tour' entry with tourScheduleSlug:${c.tourScheduleSlug} and no tourOf (a standalone tour), then run node scripts/sweep-tour-reviews.js --tour=<id>.`}`,
         cooldownHours: 24 * 30,
       });

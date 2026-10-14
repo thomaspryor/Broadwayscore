@@ -76,7 +76,15 @@ function roundupDateFromSlug(slugOrUrl) {
 // ("Dolly Parton's" vs "Dolly Parton\u2019s", BRO-4931).
 const sameTitleKey = t => String(t || '').trim().toLowerCase().replace(/[\u2018\u2019\u02bc`\u00b4]/g, "'");
 
-function hasOpenTour(matched, shows, { predecessorEnds = null, segmentStart = null } = {}) {
+const candidateBaseKey = c => c.parentId || c.broadwayShowId
+  || (c.segmentStart && String(c.key || '').endsWith(`:${c.segmentStart}`)
+    ? c.key.slice(0, -11) : c.key);
+const candidateKey = c => {
+  const base = candidateBaseKey(c);
+  return base && c.segmentStart ? `${base}:${c.segmentStart}` : base;
+};
+
+function hasOpenTour(matched, shows, { predecessorEnds = null, segmentStart = null, segmentEnd = null } = {}) {
   const title = sameTitleKey(matched.title);
   const byId = new Map((shows || []).map(s => [s.id, s]));
   return (shows || []).some(s => {
@@ -88,7 +96,17 @@ function hasOpenTour(matched, shows, { predecessorEnds = null, segmentStart = nu
       // page they were built from, is the link.
       || (!s.tourOf && sameTitleKey(s.title) === title)
       || (!!matched.tourScheduleSlug && s.tourScheduleSlug === matched.tourScheduleSlug);
-    if (!sameTitle || (s.status === 'closed' && s.closingDate)) return false;
+    if (!sameTitle) return false;
+    // A segment-specific row settles only when a tracked tour covers it.
+    // A later running tour must not hide a missing historical tour, and an
+    // already tracked closed tour must not be suggested again.
+    if (segmentStart) {
+      const end = s.closingDate || (predecessorEnds && predecessorEnds[s.id]);
+      if (end && end < segmentStart) return false;
+      if (s.openingDate && s.openingDate > (segmentEnd || segmentStart)) return false;
+      return true;
+    }
+    if (s.status === 'closed' && s.closingDate) return false;
     // A running tour its schedule page shows ending before this one starts
     // (tour-discovery.js lifecyclePlan, BRO-4724): the tour booked after its
     // layoff is a candidate now, not only once the first is marked closed.
@@ -145,8 +163,8 @@ function roundupOnlyCandidate(slug, url) {
 }
 
 /**
- * Merge candidates into the JSON ledger at file (one row per tour-parent show,
- * or per `key` for roundup-only rows, keeping the first-seen time). Returns
+ * Merge candidates into the JSON ledger at file (one row per parent/page and
+ * segment start, or per `key` for roundup-only rows, keeping the first-seen time). Returns
  * the number of rows tracked.
  */
 function recordTourCandidates(file, candidates, now = new Date().toISOString()) {
@@ -154,14 +172,15 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   let rows = [];
   try { rows = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { rows = []; }
   if (!Array.isArray(rows)) rows = [];
-  // Rows from before roundup-only candidates have no key: broadwayShowId is it.
-  const keyOf = r => r.key || r.broadwayShowId;
+  // Old rows may carry only broadwayShowId, or a key without segmentStart.
+  // Normalize their identity without dropping createdTourId/notifiedAt.
+  const keyOf = candidateKey;
   const byId = new Map(rows.filter(r => keyOf(r)).map(r => [keyOf(r), r]));
   const fromSchedule = r => !!r && r.source === 'tourstoyou';
   // What a schedule page said this run about how it splits (tour-discovery.js
   // lifecyclePlan): never carried over from an earlier run (BRO-4724).
   // needsClassification/type/upcoming (BRO-4931): an override added since, or a tour no longer booked ahead, must not leave the old value on the row.
-  const PAGE_FACTS = ['splitAt', 'predecessorEnds', 'needsClassification', 'type', 'upcoming'];
+  const PAGE_FACTS = ['splitAt', 'predecessorEnds', 'needsClassification', 'type', 'upcoming', 'ended', 'segmentEnd'];
   const dropStale = (row, c) => { if (fromSchedule(c)) for (const k of PAGE_FACTS) if (!(k in c)) delete row[k]; return row; };
   // Discovery reads a page without Wikipedia, so it reports 'unclassified' every run for a page the
   // create step already classified from the infobox (production, or an event). That earlier answer
@@ -175,9 +194,29 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
     return kept;
   };
   for (const c of candidates) {
-    const ck = keyOf(c);
+    let ck = keyOf(c);
     if (!ck) continue;
     let prev = byId.get(ck);
+    // Roundups do not yet know their segment. Pair only with a unique
+    // schedule whose launch window matches the roundup's publication date.
+    // An undated legacy roundup may pair with one current tour, never an
+    // ended segment. Keep settled roundups on their original row.
+    if (!prev) {
+      const { roundupConfirmsLaunch } = require('./tour-schedule');
+      const matches = [...byId.entries()].filter(([, r]) => {
+        if (candidateBaseKey(r) !== candidateBaseKey(c) || fromSchedule(r) === fromSchedule(c) || r.createdTourId) return false;
+        const schedule = fromSchedule(c) ? c : r;
+        const roundup = fromSchedule(c) ? r : c;
+        const date = roundupDateFromSlug(roundup.slug);
+        return date ? roundupConfirmsLaunch({ start: new Date(`${schedule.segmentStart}T00:00:00Z`) }, date) : !schedule.ended;
+      });
+      if (matches.length === 1) {
+        const [oldKey, row] = matches[0];
+        prev = row;
+        byId.delete(oldKey);
+        ck = fromSchedule(c) ? ck : keyOf(row);
+      }
+    }
     // A BWW roundup and a Tours To You listing of one show are two sources
     // for the same tour, not two tours: keep the schedule row and carry the
     // roundup on it, so create-tour-entries.js can use the roundup to confirm
@@ -210,7 +249,8 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
     if (!c.ambiguous) delete row.ambiguous;
     byId.set(ck, keepEarlierClass(dropStale(row, c), prev, c));
   }
-  const out = [...byId.values()].sort((a, b) => keyOf(a).localeCompare(keyOf(b)));
+  const out = [...byId.values()].map(r => r.segmentStart ? { ...r, key: keyOf(r) } : r)
+    .sort((a, b) => keyOf(a).localeCompare(keyOf(b)));
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
   return out.length;
 }
@@ -244,7 +284,7 @@ function openTourCandidates(rows, shows) {
     // slug; the same "no open tour of this title" test applies.
     const found = r.source === 'tourstoyou';
     const slug = found ? 'national-tour' : (r.slug || 'national-tour');
-    const opts = found ? { predecessorEnds: r.predecessorEnds, segmentStart: r.segmentStart } : {};
+    const opts = found ? { predecessorEnds: r.predecessorEnds, segmentStart: r.segmentStart, segmentEnd: r.segmentEnd } : {};
     const parentId = candidateParentId(r);
     if (!parentId) {
       // Only a Tours To You page row can stand on its own title.
@@ -270,4 +310,4 @@ function sortForCreate(candidates) {
   return [...candidates].sort((a, b) => rank(a) - rank(b));
 }
 
-module.exports = { sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates };
+module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates };

@@ -284,7 +284,7 @@ const iso = d => d.toISOString().slice(0, 10);
 const wikiForms = d => {
   const m = MONTHS[d.getUTCMonth()];
   const cap = m[0].toUpperCase() + m.slice(1);
-  return [`${cap} ${d.getUTCDate()}, ${d.getUTCFullYear()}`, `${d.getUTCDate()} ${cap} ${d.getUTCFullYear()}`, iso(d)];
+  return [`${cap} ${d.getUTCDate()}, ${d.getUTCFullYear()}`, `${d.getUTCDate()} ${cap} ${d.getUTCFullYear()}`, `${d.getUTCDate()} ${cap}, ${d.getUTCFullYear()}`, iso(d)];
 };
 /**
  * Article prose only: citations carry their own dates (access-date, the
@@ -640,9 +640,19 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
     else if (separateTourStarted) write.closingDate = iso(seg.end);
     else notes.push(`last listed stop ended ${iso(seg.end)} but nothing confirms the tour closed; left open`);
   }
+  // Full source sentences for the creation report, with citations removed
+  // so a publication/access date cannot masquerade as launch evidence.
+  const sentences = proseOnly(wikiText).split(/(?<!\b(?:[A-Z]|St|Dr|Mr|Ms)\.)(?<=[.!?])\s+|\n+/).filter(Boolean);
+  const opener = launch && seg.rows.find(r => r.start.getTime() === launch.getTime());
+  const wikiEvidence = {
+    launch: wikiLaunch && opener ? sentences.filter(s => segmentLaunch({ start: opener.start, rows: [opener] }, s)) : [],
+    closing: write.closingDate ? sentences.filter(s => wikiNamesClosing(s, seg.end)
+      || wikiNamesClosingMonth(s, seg.end)
+      || statedClosedRanges(s).some(r => r.from === launchYear && r.to === seg.end.getUTCFullYear())) : [],
+  };
   // The segment decided on, so a caller can check its engagements against
   // other tours (duplicateScheduleOf).
-  return { write, notes, launchSource, segmentRows: seg.rows };
+  return { write, notes, launchSource, segmentRows: seg.rows, wikiEvidence };
 }
 
 /** Tours To You slug guesses for a title ("MJ" is listed as mj-the-musical). */

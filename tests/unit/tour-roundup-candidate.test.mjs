@@ -152,12 +152,13 @@ test('a roundup and a Tours To You row for one show merge into the schedule row 
     // a later schedule row starts fresh, without it.
     fs.writeFileSync(file, JSON.stringify([{ ...roundup, firstSeen: '2024-10-01T00:00:00Z', notifiedAt: '2024-10-01T01:00:00Z', createdTourId: 'operation-mincemeat-tour-2024' }]));
     recordTourCandidates(file, [sched], '2026-10-02T00:00:00Z');
-    [row] = read();
+    row = read().find(r => r.source === 'tourstoyou');
     assert.equal(row.source, 'tourstoyou');
     assert.equal(row.roundupUrl, undefined);
     assert.equal(row.createdTourId, undefined);
     assert.equal(row.notifiedAt, undefined);
     assert.equal(row.firstSeen, '2026-10-02T00:00:00Z');
+    assert.equal(read().length, 2, 'the settled earlier roundup retains its own row');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
@@ -339,13 +340,13 @@ test('page rows are recorded by key: two standalone pages are two rows, the same
     const b = { key: 'page:clue', title: 'Clue', source: 'tourstoyou', slug: 'tourstoyou:clue:2024-02-27', tourScheduleSlug: 'clue', segmentStart: '2024-02-27', needsClassification: true };
     assert.equal(recordTourCandidates(file, [a, b], '2026-10-09T00:00:00Z'), 2);
     let rows = JSON.parse(fs.readFileSync(file, 'utf8'));
-    rows.find(r => r.key === 'page:the-bodyguard').notifiedAt = '2026-10-10T00:00:00Z';
+    rows.find(r => r.key === 'page:the-bodyguard:2026-10-15').notifiedAt = '2026-10-10T00:00:00Z';
     fs.writeFileSync(file, JSON.stringify(rows));
     assert.equal(recordTourCandidates(file, [a], '2026-10-12T00:00:00Z'), 2);
     rows = JSON.parse(fs.readFileSync(file, 'utf8'));
-    const row = rows.find(r => r.key === 'page:the-bodyguard');
+    const row = rows.find(r => r.key === 'page:the-bodyguard:2026-10-15');
     assert.deepEqual([row.firstSeen, row.lastSeen, row.notifiedAt], ['2026-10-09T00:00:00Z', '2026-10-12T00:00:00Z', '2026-10-10T00:00:00Z']);
-    assert.equal(rows.find(r => r.key === 'page:clue').lastSeen, '2026-10-09T00:00:00Z', 'a row not seen this run is untouched');
+    assert.equal(rows.find(r => r.key === 'page:clue:2024-02-27').lastSeen, '2026-10-09T00:00:00Z', 'a row not seen this run is untouched');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
@@ -432,11 +433,12 @@ test('P2: a row keeps the class the create step gave it while the same segment i
     assert.equal(openTourCandidates([row], []).length, 0);
     // A different segment is a different tour and starts again.
     recordTourCandidates(file, [{ ...discovered, slug: 'tourstoyou:some-show:2027-03-01', segmentStart: '2027-03-01' }], '2026-10-04T00:00:00Z');
-    [row] = read();
+    assert.equal(read().length, 2, 'both segments remain represented');
+    row = read().find(r => r.segmentStart === '2027-03-01');
     assert.deepEqual([row.pageClass, row.needsClassification], ['unclassified', true]);
     // A classifier answer (an override since) beats the earlier one.
     recordTourCandidates(file, [{ ...base, slug: 'tourstoyou:some-show:2027-03-01', segmentStart: '2027-03-01', pageClass: 'production', type: 'play' }], '2026-10-05T00:00:00Z');
-    [row] = read();
+    row = read().find(r => r.segmentStart === '2027-03-01');
     assert.deepEqual([row.pageClass, row.type, row.needsClassification], ['production', 'play', undefined]);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });

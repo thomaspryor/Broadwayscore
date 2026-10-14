@@ -118,7 +118,7 @@ async function main() {
       discovery = { pages, eligible: r.eligible, checked, failed: r.failed, rateLimited: r.rateLimited, found: candidates.length, ambiguous: ambiguous.length, error: null, coverage: r.coverage, classes: r.classes, denied: r.denied, autoClassified: r.autoClassified };
       // Recorded in report mode too: route-tour-candidates.js reads the file.
       const n = recordTourCandidates(CANDIDATES, candidates);
-      console.log(`${candidates.length} running tour(s) found; ${n} candidate row(s) tracked`);
+      console.log(`${candidates.length} tour segment(s) found; ${n} candidate row(s) tracked`);
       // Save what discovery read now: a step killed later in the run must not
       // send the next run back to the same pages (BRO-4725 review).
       writeAudit({ mode: write ? 'write' : 'report', created: [], results: [], partial: true });
@@ -199,7 +199,12 @@ async function main() {
     const built = d.built;
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write && (!standalone || standaloneMode === 'write') ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})${standalone ? ' [standalone]' : ''}`);
-    record({ roundupUrl, scheduleUrl, notes: d.decision.notes, launchSource: d.decision.launchSource || null, knownEnds: d.knownEnds, skip: built.skip || null, entry: built.entry || null, outcome: d.outcome, type: d.candidate.type || null });
+    if (built.entry && c.ended) {
+      for (const field of ['launch', 'closing']) {
+        console.log(`  Wikipedia ${field}: ${((d.decision.wikiEvidence || {})[field] || []).join(' ') || 'no sentence; see date decision notes and schedule history'}`);
+      }
+    }
+    record({ roundupUrl, scheduleUrl, notes: d.decision.notes, wikiEvidence: d.decision.wikiEvidence || null, launchSource: d.decision.launchSource || null, knownEnds: d.knownEnds, skip: built.skip || null, entry: built.entry || null, outcome: d.outcome, type: d.candidate.type || null });
   }
 
   if (ledgerChanged) fs.writeFileSync(CANDIDATES, JSON.stringify(rows, null, 2) + '\n');

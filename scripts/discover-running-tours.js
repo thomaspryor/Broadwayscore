@@ -23,7 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { listShowPages, runningTourCandidate, dedupeCandidates, candidateKey } = require('./lib/tour-discovery');
+const { listShowPages, runningTourCandidates, dedupeCandidates, candidateKey } = require('./lib/tour-discovery');
 const { classifyTourPage, loadTourPageClasses, SKIPPED_CLASSES } = require('./lib/tour-page-class');
 const { recordTourCandidates } = require('./lib/tour-roundup-candidate');
 const { STALE_DAYS, orderForCheck, nextCoverage, stalePages } = require('./lib/tours-to-you-coverage');
@@ -79,7 +79,7 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
     // A challenge or error body must not stamp the page as read.
     if (!looksLikeShowPage(html)) { failed++; log(`  ${slug}: answer is not a Tours To You page`); continue; }
     read.push(slug);
-    const r = runningTourCandidate({ slug, scheduleUrl, html, shows, overrides, pageTitle: titles[slug] || null });
+    const r = runningTourCandidates({ slug, scheduleUrl, html, shows, overrides, pageTitle: titles[slug] || null });
     if (r.pageClass) {
       classes[r.pageClass.class] = (classes[r.pageClass.class] || 0) + 1;
       if (r.pageClass.source === 'structure') autoClassified.push({ slug, class: r.pageClass.class, reason: r.pageClass.reason });
@@ -88,9 +88,9 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
     // the page doesn't say. Deduped by tour id (two pages, one tour).
     for (const x of (r.lifecycle && r.lifecycle.reopen) || []) if (!reopen.some(y => y.id === x.id)) reopen.push({ ...x, scheduleUrl });
     for (const x of (r.lifecycle && r.lifecycle.undecided) || []) if (!undecided.some(y => y.id === x.id)) undecided.push({ ...x, scheduleUrl });
-    if (r.candidate) {
-      log(`  running: ${slug} -> ${candidateKey(r.candidate)}${r.candidate.needsClassification ? ' (needs classification)' : ''} since ${r.candidate.segmentStart}`);
-      found.push(r.candidate);
+    for (const c of r.candidates || []) {
+      log(`  ${c.ended ? 'ended' : c.upcoming ? 'upcoming' : 'running'}: ${slug} -> ${candidateKey(c)}${c.needsClassification ? ' (needs classification)' : ''} since ${c.segmentStart}`);
+      found.push(c);
     }
   }
   const next = nextCoverage(coverage, worth, read);

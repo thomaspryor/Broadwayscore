@@ -125,14 +125,15 @@ function buildTourEntry({ parent = null, title: standaloneTitle = null, type: st
   // layoff, BRO-4724).
   const earlier = toursOfTitle(title, shows);
   const endOf = t => t.closingDate || (knownEnds && knownEnds[t.id]) || null;
-  const stillOpen = earlier.find(t => !endOf(t) || endOf(t) >= launch);
+  const close = decision.write.closingDate || null;
+  const stillOpen = earlier.find(t => (!close || !t.openingDate || t.openingDate <= close)
+    && (!endOf(t) || endOf(t) >= launch));
   if (stillOpen) return { skip: `tour ${stillOpen.id} is still open or overlaps ${launch}` };
 
   const id = `${parent ? baseSlug(parent.id) : titleSlug(title)}-tour-${launch.slice(0, 4)}`;
   if ((shows || []).some(s => s.id === id || s.slug === id)) return { skip: `id ${id} already exists` };
   if (retiredIds && retiredIds.has(id)) return { skip: `id ${id} is retired` };
 
-  const close = decision.write.closingDate || null;
   const entry = {
     id,
     title,

@@ -88,6 +88,11 @@ function decideTourCreation({
     ? decideTourDates(probe, html, wikiText, now, found ? { segmentStart: cand.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS, upcomingDays: UPCOMING_DAYS, cuts: cand.splitAt } : { seenAt: cand.firstSeen || cand.lastSeen, roundupDate })
     : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
   let kind = null;
+  // An exhausted schedule is not proof the tour closed. Historical
+  // candidates must never be created as running tours (BRO-4331).
+  if (!decision.problem && cand.ended && !decision.write.closingDate) {
+    decision.problem = 'ended segment has no confirmed closing date';
+  }
   // A page can carry another show's table (the Come From Away page showed
   // Operation Mincemeat's 2026 tour, BRO-4601): never create a tour whose
   // engagements are another tour's.

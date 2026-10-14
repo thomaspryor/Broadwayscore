@@ -22,6 +22,7 @@ const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment, tooFewS
 const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
 const { toursOfTitle, normTitle, TOUR_PARENT_CATEGORIES, AUTO_TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
 const { classifyTourPage, SKIPPED_CLASSES, pageTitleFromHtml, decodeTitle } = require('./tour-page-class');
+const { candidateKey, candidateBaseKey } = require('./tour-roundup-candidate');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
 const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt,title`;
@@ -240,8 +241,8 @@ function parentForClass(cls, { slug, title, shows, segStart }) {
 }
 
 /**
- * The tour on this schedule page that is running now, or failing that one
- * booked to launch soon, as a candidate row, or {skip, kind} saying why not
+ * The first untracked current/upcoming tour on this page, plus every
+ * untracked segment that ended since 2022 (BRO-4331), or {skip, kind} saying why not
  * (kind: event, aggregator, template, company, nothing-running, too-few-stops,
  * no-parent, tracked). A segment already covered by a tour of the title is
  * passed over, so a page whose current tour is tracked still yields the next one.
@@ -253,9 +254,9 @@ function parentForClass(cls, { slug, title, shows, segStart }) {
  * is recorded with needsClassification so create-tour-entries.js can try
  * Wikipedia and route-tour-candidates.js can ask the owner.
  * @param {{slug: string, scheduleUrl: string, html: string, shows: object[], now?: Date, pageTitle?: string, overrides?: object, wikiText?: string}} args
- * @returns {{candidate: object, lifecycle?: object} | {skip: string, kind: string, pageClass?: object, lifecycle?: object}}
+ * @returns {{candidates: object[], lifecycle?: object} | {skip: string, kind: string, pageClass?: object, lifecycle?: object}}
  */
-function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date(), pageTitle = null, overrides = {}, wikiText = '' }) {
+function runningTourCandidates({ slug, scheduleUrl, html, shows, now = new Date(), pageTitle = null, overrides = {}, wikiText = '', includeEnded = true }) {
   const rows = parseTourSchedule(html);
   const title = pageTitle || pageTitleFromHtml(html);
   const cls = classifyTourPage({ slug, pageTitle: title, rows, shows, overrides, wikiText });
@@ -270,12 +271,20 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
   const segments = splitSegmentsAt(segmentTourRows(rows), plan.cuts);
   const lifecycle = { reopen: plan.reopen, undecided: plan.undecided };
   const running = currentSegment(segments, now);
-  const options = [...(running ? [running] : []), ...upcomingSegments(segments, now).filter(s => s !== running)];
+  // The cutoff is the ending, not the launch: Mean Girls started in 2019
+  // but its recently ended tour belongs in the backfill too (BRO-4331).
+  const ended = includeEnded ? segments.filter(s => s.rows.length > 1
+    && isoDay(s.end) >= '2022-01-01' && s.end.getTime() + DAY <= now.getTime()) : [];
+  const options = [...(running ? [running] : []), ...upcomingSegments(segments, now).filter(s => s !== running), ...ended];
   if (!options.length) return { skip: 'no tour running now or booked to launch', kind: 'nothing-running', lifecycle, pageClass: cls };
   let skip = null;
   let kind = null;
+  const candidates = [];
   const note = (s, k) => { if (!skip) { skip = s; kind = k; } };
   for (const seg of options) {
+    // Preserve the existing current/next selection. An ended segment is an
+    // additional candidate, not a reason to change which live tour wins.
+    if (!ended.includes(seg) && candidates.some(c => !c.ended)) continue;
     const segStart = seg.start.toISOString().slice(0, 10);
     const parent = parentForClass(cls, { slug, title, shows, segStart });
     // A title that matches a tracked production, none of which had opened by
@@ -304,9 +313,8 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
     const predecessorEnds = Object.fromEntries(ofTitle.filter(t => !t.closingDate && plan.knownEnds[t.id] && plan.knownEnds[t.id] < segStart).map(t => [t.id, plan.knownEnds[t.id]]));
     const cuts = plan.cuts.filter(c => c < segStart);
     const isBroadway = parent && (parent.category || 'broadway') === 'broadway';
-    return {
-      candidate: {
-        key: parent ? parent.id : `page:${slug}`,
+    candidates.push({
+        key: `${parent ? parent.id : `page:${slug}`}:${segStart}`,
         // Back-compat for rows and readers that predate BRO-4931: only a Broadway parent.
         ...(isBroadway ? { broadwayShowId: parent.id } : {}),
         ...(parent ? { parentId: parent.id } : {}),
@@ -319,37 +327,46 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
         url: scheduleUrl,
         tourScheduleSlug: slug,
         segmentStart: segStart,
-        ...(seg !== running ? { upcoming: true } : {}),
+        segmentEnd: isoDay(seg.end),
+        ...(ended.includes(seg) ? { ended: true } : seg.start > now ? { upcoming: true } : {}),
         // Only when the page needs them; recordTourCandidates drops a stale
         // value an earlier run recorded.
         ...(cuts.length ? { splitAt: cuts } : {}),
         ...(Object.keys(predecessorEnds).length ? { predecessorEnds } : {}),
-      },
-      pageClass: cls,
-      lifecycle,
-    };
+    });
   }
+  if (candidates.length) return { candidates, pageClass: cls, lifecycle };
   return { skip, kind, lifecycle, pageClass: cls };
 }
 
-/** A candidate row's ledger key: the tracked parent's id, or page:<slug> for a standalone tour. */
-const candidateKey = c => c.key || c.broadwayShowId;
+// Existing page audits ask about the current/next tour only. Discovery uses
+// the plural result so a current tour cannot hide earlier ended segments.
+function runningTourCandidate(args) {
+  const r = runningTourCandidates({ ...args, includeEnded: false });
+  if (!r.candidates) return r;
+  const { segmentEnd, ...candidate } = r.candidates[0];
+  return { candidate: { ...candidate, key: candidateBaseKey(candidate) }, pageClass: r.pageClass, lifecycle: r.lifecycle };
+}
 
 /**
- * One candidate per tour parent, or per normalised title for a standalone
+ * One current/next candidate per tour parent, or per normalised title for a standalone
  * tour (two pages for one show: "jersey-boys" and "jersey-boys-1"). Two
  * pages running a tour of the same show from different starts (two companies)
  * is ambiguous: the first is kept with an ambiguous note, so it is never
  * created automatically but still reaches the owner as a suggestion.
+ * Ended segments dedupe by title and segment start instead.
  * @returns {{candidates: object[], ambiguous: string[]}}
  */
 function dedupeCandidates(candidates) {
   const byShow = new Map();
   for (const c of candidates) {
-    const key = candidateKey(c);
+    const key = candidateBaseKey(c);
     const k = String(key).startsWith('page:') && c.title ? `title:${normTitle(c.title)}` : key;
-    if (!byShow.has(k)) byShow.set(k, []);
-    byShow.get(k).push(c);
+    // Historical segments are independent ledger rows. Keep the existing
+    // ambiguity guard for different companies currently on the road.
+    const group = c.ended ? `${k}:${c.segmentStart}` : k;
+    if (!byShow.has(group)) byShow.set(group, []);
+    byShow.get(group).push(c);
   }
   const out = [];
   const ambiguous = [];
@@ -380,4 +397,4 @@ function roundupRowFor(pageRow, rows) {
   return hit.length === 1 ? hit[0] : null;
 }
 
-module.exports = { PAGES_API, listShowPages, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, parentForClass, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, dedupeCandidates, candidateKey, roundupRowFor };
+module.exports = { PAGES_API, listShowPages, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, parentForClass, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, runningTourCandidates, dedupeCandidates, candidateKey, roundupRowFor };
