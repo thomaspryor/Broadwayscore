@@ -22,13 +22,12 @@
  * in the manifest (proof a test exists and is meant to run in CI) but missing
  * from the push-path allow-list (proof a push touching it will ever fire).
  *
- * Non-blocking by design (same rationale as the sibling audits above):
- * covers manifest entries directly under scripts/ only (not scripts/lib/,
- * already globbed, and not scripts/tests/ (globbed by 'scripts/tests/**',
- * BRO-5309) or tests/ (globbed by 'tests/**')). No dependency-chasing: unlike
- * audit-test-yml-lib-deps.js this doesn't parse require()/import, it just
- * checks whether the manifest entry itself (and its sibling source file) is
- * covered by the allow-list.
+ * The CLI exits 0 always; the floor test in
+ * audit-toplevel-script-test-yml-coverage.test.mjs (findGaps() === []) is
+ * what blocks. Four shapes: a top-level scripts/*.test file and its sibling
+ * source; a top-level source a tests/ file require()s (BRO-3202); a script a
+ * push-running test.yml job executes (BRO-3207); a script a collected test or
+ * scripts/lib/*.test.mjs names by path, literal or path.join (BRO-5261).
  *
  * Usage:
  *   node scripts/audit-toplevel-script-test-yml-coverage.js            # human-readable, exit 0 always
@@ -39,7 +38,7 @@
 const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
-const { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers } = require('./audit-test-yml-lib-deps.js');
+const { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers, stripComments } = require('./audit-test-yml-lib-deps.js');
 const { readManifest } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -128,6 +127,38 @@ function toplevelScriptDeps(src, fromDir) {
     if (!abs) continue; // package import, or nothing on disk
     const repoRel = path.relative(ROOT, abs);
     if (SOURCE_RE.test(repoRel)) out.add(repoRel);
+  }
+  return Array.from(out).sort();
+}
+
+/** Pure: top-level scripts/ files a test NAMES by path, outside require():
+ *   - a quoted repo-relative literal: execFileSync(node, ['scripts/x.js']),
+ *     readFileSync('scripts/x.js');
+ *   - a path.join()/path.resolve() of string literals, the shape a CLI test
+ *     uses to spawn the script: path.join(here, '..', 'discard-stuck-broadcast-drafts.js').
+ *     The first identifier argument is read as the test's own directory, else
+ *     the repo root is tried. A call with a template segment is skipped.
+ * Comments are stripped first. A require() parse never sees these, so a solo
+ * edit to such a script ran zero CI (BRO-3087 retro-review, BRO-5261).
+ * `exists` is injectable for tests. */
+const PATH_CALL_RE = /path\.(?:join|resolve)\(([^()]*)\)/g;
+const SCRIPT_LITERAL_RE = /(['"`])(scripts\/[\w./-]+\.(?:js|mjs|cjs))\1/g;
+function pathJoinedScriptDeps(src, fromDir, exists = (abs) => fs.existsSync(abs) && fs.statSync(abs).isFile()) {
+  const code = stripComments(src);
+  const out = new Set();
+  const keep = (abs) => {
+    const repoRel = path.relative(ROOT, abs);
+    if (repoRel.startsWith('..') || !SOURCE_RE.test(repoRel) || !exists(abs)) return false;
+    out.add(repoRel);
+    return true;
+  };
+  for (const m of code.matchAll(SCRIPT_LITERAL_RE)) keep(path.join(ROOT, m[2]));
+  for (const m of code.matchAll(PATH_CALL_RE)) {
+    if (m[1].includes('${')) continue;
+    const segs = [...m[1].matchAll(/(['"`])([^'"`]+)\1/g)].map((x) => x[2]);
+    const last = segs[segs.length - 1];
+    if (!last || !/\.(js|mjs|cjs)$/.test(last)) continue;
+    for (const base of [fromDir, ROOT]) if (keep(path.resolve(base, ...segs))) break;
   }
   return Array.from(out).sort();
 }
@@ -349,6 +380,21 @@ function findGaps() {
     }
   }
 
+  // Fourth shape (BRO-5261): any collected test that spawns a top-level script
+  // by path (literal or joined), plus scripts/lib/*.test.mjs (run by test.yml's own glob,
+  // not the manifest).
+  const libTests = fs.readdirSync(path.join(ROOT, 'scripts', 'lib')).filter((f) => f.endsWith('.test.mjs')).map((f) => `scripts/lib/${f}`);
+  const collected = readManifestLines().map((l) => l.trim()).filter((t) => t && /\.test\.(mjs|cjs|js|ts)$/.test(t));
+  for (const testRelPath of [...new Set([...collected, ...libTests])]) {
+    const abs = path.join(ROOT, testRelPath);
+    if (!fs.existsSync(abs)) continue;
+    for (const sourceRelPath of pathJoinedScriptDeps(fs.readFileSync(abs, 'utf8'), path.dirname(abs))) {
+      if (isCovered(sourceRelPath, pathEntries) || seen.has(sourceRelPath)) continue;
+      seen.add(sourceRelPath);
+      gaps.push({ test: testRelPath, testCovered: isCovered(testRelPath, pathEntries), source: sourceRelPath, sourceCovered: false, via: 'path-named' });
+    }
+  }
+
   // Third shape (BRO-3207): scripts test.yml itself runs on push. Dedupe against
   // sources already reported above.
   for (const g of findWorkflowRunGaps(yml, pathEntries)) {
@@ -375,7 +421,7 @@ function main() {
   } else if (gaps.length === 0) {
     console.log('audit-toplevel-script-test-yml-coverage: no gaps found — every manifest-registered top-level scripts/*.test file (and its sibling source) is path-listed in test.yml.');
   } else {
-    console.log(`::warning::audit-toplevel-script-test-yml-coverage: ${gaps.length} manifest-registered top-level script test(s) are NOT (fully) covered by test.yml's on.push.paths allow-list (a solo push touching only these files triggers zero CI even though a test exists):`);
+    console.log(`::warning::audit-toplevel-script-test-yml-coverage: ${gaps.length} top-level script source(s) a test depends on are NOT (fully) covered by test.yml's on.push.paths allow-list (a solo push touching only these files triggers zero CI even though a test exists):`);
     for (const g of gaps) {
       const parts = [];
       if (!g.testCovered) parts.push(`test file ${g.test} missing`);
@@ -390,7 +436,7 @@ function main() {
 module.exports = {
   readManifestEntries, filterToplevelTestEntries, siblingSourcePath, findGaps,
   readTestsDirEntries, filterTestsDirEntries, toplevelScriptDeps,
-  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations,
+  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations, pathJoinedScriptDeps,
 };
 
 if (require.main === module) main();
