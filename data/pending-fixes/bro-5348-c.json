@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5348-c",
   "planId": "fde368c3-0f93-48ff-90c4-050d058ea190",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T11:58:08.216Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "BRO-5348: stale grade from another outlet's text; recovered Queerty text has no rating"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T12:41:12.149Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-play-2024/queerty--matthew-wexler.json originalScore: \"D\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized)"
+    }
+  ]
 }
