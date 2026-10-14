@@ -34,7 +34,6 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -45,7 +44,7 @@ const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '
 // BRO-3620: the scanner lives in scripts/lib so tests/unit/git-race-fix.test.mjs
 // requires the same logic, and DIRS now covers scripts/ and scripts/lib/ too
 // (CI globs both; 147 unretried teardowns sat there unguarded).
-const { GIT_TEST_DIRS: DIRS, USES_GIT, RM_RECURSIVE, HAS_RETRIES, gitUsingTestFiles, offendersIn: scan } =
+const { GIT_TEST_DIRS: DIRS, USES_GIT, isUnretriedTeardown, gitUsingTestFiles, offendersIn: scan } =
   require('../../scripts/lib/git-test-teardown-scan.js');
 
 // This guard QUOTES the unretried teardown it bans — in the header above and in
@@ -89,7 +88,7 @@ describe('tests that shell out to git must rmSync with retries', () => {
     const good = "execFileSync('git', ['init', d]);\n  fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });";
     for (const [label, src, expected] of [['unretried', bad, true], ['retried', good, false]]) {
       assert.ok(USES_GIT.test(src), `${label}: fixture must read as git-using`);
-      const flagged = src.split('\n').some(l => RM_RECURSIVE.test(l) && !HAS_RETRIES.test(l));
+      const flagged = src.split('\n').some(isUnretriedTeardown);
       assert.strictEqual(flagged, expected, `${label} fixture classified wrong`);
     }
   });

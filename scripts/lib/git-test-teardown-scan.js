@@ -1,26 +1,31 @@
 'use strict';
-// Scanner behind tests/unit/tmp-git-repo-teardown-retries.test.mjs and
-// tests/unit/git-race-fix.test.mjs (BRO-3620). A test that shells out to git
-// must tear its temp repo down with rmSync({ maxRetries }): git keeps writing
-// into .git/objects from processes that outlive the spawning command (`gc
-// --auto`), and a plain recursive rmSync dies on the first ENOTEMPTY, which
-// CI reports as a hookFailed on a test whose assertions all passed.
+// Scanner behind tests/unit/tmp-git-repo-teardown-retries.test.mjs (BRO-3620).
+// A test that shells out to git must tear its temp repo down with a retried
+// removal: git can keep writing into .git/objects from processes that outlive
+// the spawning command (`gc --auto`), and a plain recursive rmSync dies on the
+// first ENOTEMPTY, which CI reports as a hookFailed on a test whose assertions
+// all passed. rmSync({ maxRetries }) is enough for a writer that has already
+// stopped (CI also turns gc.auto and maintenance off, BRO-4749); removeTreeSync
+// below is the stronger form for a writer that may still be running.
 //
 // The original guard scanned tests/unit and scripts/tests only, while CI also
-// globs scripts/*.test.mjs and scripts/lib/*.test.mjs; 147 unretried
+// runs scripts/*.test.mjs and scripts/lib/*.test.mjs; 147 unretried
 // teardowns sat in those two directories (BRO-3620).
 
 const fs = require('fs');
 const path = require('path');
 
-// Every directory test.yml runs *.test.mjs from.
-const GIT_TEST_DIRS = ['tests/unit', 'scripts/tests', 'scripts', 'scripts/lib'];
+// Every directory CI runs node tests from, taken from the collector itself so
+// a new test directory is scanned without a second hand-kept list.
+const { NODE_TEST_DIRS } = require('./unit-test-collection');
+const GIT_TEST_DIRS = [...new Set([...NODE_TEST_DIRS, 'scripts/lib'])];
+const TEST_FILE_RE = /\.test\.(mjs|js|cjs)$/;
 
 // A test "shells out to git" if it invokes the binary at all.
 const USES_GIT = /(?:execFileSync|execSync|spawnSync|execFile|spawn)\(\s*['"]git['"]|['"]git init['"]|\bgit init\b/;
 // The teardown shape that carries the race.
 const RM_RECURSIVE = /rmSync\([^)]*\{[^}]*recursive:\s*true[^}]*\}/;
-const HAS_RETRIES = /maxRetries:\s*\d+/;
+const HAS_RETRIES = /maxRetries:\s*[1-9]\d*/; // maxRetries: 0 is no retry
 
 // fs.rmSync's maxRetries only re-tries the final rmdir of a directory, never
 // the walk that deletes its children, so a writer that adds a file after the
@@ -51,7 +56,7 @@ function listTestFiles(repoRoot, dir, { exclude = [] } = {}) {
   const abs = path.join(repoRoot, dir);
   if (!fs.existsSync(abs)) return [];
   return fs.readdirSync(abs)
-    .filter(f => f.endsWith('.test.mjs') || f.endsWith('.test.js'))
+    .filter(f => TEST_FILE_RE.test(f))
     .filter(f => !f.startsWith('_skip-') && !exclude.includes(f))
     .map(f => ({ rel: `${dir}/${f}`, src: fs.readFileSync(path.join(abs, f), 'utf8') }));
 }
