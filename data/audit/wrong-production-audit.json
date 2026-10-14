@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-13T23:59:39.930Z",
+  "timestamp": "2026-10-14T00:47:40.928Z",
   "stats": {
-    "totalReviews": 56455,
-    "alreadyFlagged": 21048,
-    "dateGuardCatches": 208,
+    "totalReviews": 56457,
+    "alreadyFlagged": 21050,
+    "dateGuardCatches": 209,
     "directorMismatch": 1875,
-    "tvFilmSignals": 1638,
+    "tvFilmSignals": 1562,
     "londonSignals": 2239,
     "offBroadwaySignals": 509,
     "yearMismatch": 139,
-    "noPublishDate": 5282
+    "noPublishDate": 5277
   },
   "findings": [
     {
@@ -941,20 +941,6 @@
     },
     {
       "showId": "a-raisin-in-the-sun-2014",
-      "file": "variety--marilyn-stasio.json",
-      "score": 91,
-      "publishDate": "April 3, 2014",
-      "url": "https://variety.com/2014/legit/reviews/broadway-review-a-raisin-in-the-sun-with-denzel-washington-1201152162/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "a-raisin-in-the-sun-2014",
       "file": "washpost--peter-marks.json",
       "score": 91,
       "publishDate": "2014-04-03",
@@ -1006,20 +992,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "a-tale-of-two-cities-2008",
-      "file": "variety--david-rooney.json",
-      "score": 43,
-      "publishDate": "2008-09-19",
-      "url": "https://variety.com/2008/film/awards/a-tale-of-two-cities-6-1200470437/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -1708,20 +1680,6 @@
       ]
     },
     {
-      "showId": "after-midnight-2013",
-      "file": "variety--marilyn-stasio.json",
-      "score": 81,
-      "publishDate": "2013-11-04",
-      "url": "https://variety.com/2013/legit/reviews/broadway-review-after-midnight-1200791616/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "aint-no-mo-2022",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 77,
@@ -2252,20 +2210,6 @@
       "score": 60,
       "publishDate": "2026-09-18",
       "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "american-buffalo-2008",
-      "file": "variety--david-rooney.json",
-      "score": 45,
-      "publishDate": "2008-11-18",
-      "url": "https://variety.com/2008/legit/reviews/american-buffalo-5-1200472173/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -3322,20 +3266,6 @@
       ]
     },
     {
-      "showId": "art-2025",
-      "file": "variety--daniel-daddario.json",
-      "score": 82,
-      "publishDate": "September 16, 2025",
-      "url": "https://variety.com/2025/legit/reviews/art-review-broadway-play-james-corden-1236519571/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "as-you-like-it-globe-west-end-2026",
       "file": "thestage--dave-fargnoli.json",
       "score": 74,
@@ -3346,20 +3276,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"daniel evans\" from all-male-as-you-like-it-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "august-osage-county-2007",
-      "file": "variety--charles-isherwood.json",
-      "score": 95,
-      "publishDate": "December 5, 2007",
-      "url": "https://variety.com/2007/legit/reviews/august-osage-county-3-1200554144/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -4650,25 +4566,6 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "variety--marilyn-stasio.json",
-      "score": 91,
-      "publishDate": "September 6, 2019",
-      "url": "https://variety.com/2019/legit/reviews/betrayal-review-tom-hiddleston-broadway-1203323155/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
       "file": "wsj--terry-teachout.json",
       "score": 47,
       "publishDate": "September 5th, 2019",
@@ -5382,20 +5279,6 @@
       ]
     },
     {
-      "showId": "buena-vista-social-club-2025",
-      "file": "variety--frank-rizzo.json",
-      "score": 91,
-      "publishDate": "March 19, 2025",
-      "url": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "cititour--brian-scott-lipton.json",
       "score": 80,
@@ -5867,20 +5750,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from cabaret-1987"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-2014",
-      "file": "variety--marilyn-stasio.json",
-      "score": 79,
-      "publishDate": "April 25, 2014",
-      "url": "https://variety.com/2014/legit/reviews/broadway-review-emma-stone-in-cabaret-1201372234/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -6779,20 +6648,6 @@
       ]
     },
     {
-      "showId": "catch-me-if-you-can-2011",
-      "file": "variety--steven-suskin.json",
-      "score": 64,
-      "publishDate": "April 10, 2011",
-      "url": "https://www.variety.com/review/VE1117945004",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "cats-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 75,
@@ -7662,20 +7517,6 @@
       ]
     },
     {
-      "showId": "chess-2025",
-      "file": "variety--christian-lewis.json",
-      "score": 73,
-      "publishDate": "November 16, 2025",
-      "url": "https://variety.com/2025/legit/reviews/chess-review-musical-broadway-lea-michele-1236583104/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "chewing-gum-dreams-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-admin.json",
       "score": 96,
@@ -7872,20 +7713,6 @@
       ]
     },
     {
-      "showId": "chicken-and-biscuits-2021",
-      "file": "variety--jesse-green.json",
-      "score": 91,
-      "publishDate": "October 11, 2021",
-      "url": "https://variety.com/2021/legit/reviews/chicken-biscuits-review-broadway-1235086264/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "children-of-a-lesser-god-2018",
       "file": "gq--mark-burka.json",
       "score": 84,
@@ -7910,20 +7737,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gordon davidson\" from children-of-a-lesser-god-1980"
-        }
-      ]
-    },
-    {
-      "showId": "china-doll-2015",
-      "file": "variety--marilyn-stasio.json",
-      "score": 41,
-      "publishDate": "2015-12-04",
-      "url": "https://variety.com/2015/legit/reviews/china-doll-review-al-pacino-1201654631/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -7980,20 +7793,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2019 (0x). 2026 matches production: choir-boy-off-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "choir-boy-2019",
-      "file": "variety--marilyn-stasio.json",
-      "score": 86,
-      "publishDate": "January 8, 2019",
-      "url": "https://variety.com/2019/legit/reviews/choir-boy-review-play-broadway-1203102655/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -8511,20 +8310,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
-        }
-      ]
-    },
-    {
-      "showId": "come-from-away-2017",
-      "file": "variety--marilyn-stasio.json",
-      "score": 75,
-      "publishDate": "March 12, 2017",
-      "url": "https://variety.com/2017/legit/reviews/come-from-away-review-broadway-1202007237/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -9123,20 +8908,6 @@
       ]
     },
     {
-      "showId": "crybaby-2008",
-      "file": "variety--charles-isherwood.json",
-      "score": 45,
-      "publishDate": "April 24, 2008",
-      "url": "https://variety.com/2008/legit/reviews/cry-baby-1200472551/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
       "showId": "cult-of-love-2024",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 45,
@@ -9585,20 +9356,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
-        }
-      ]
-    },
-    {
-      "showId": "dana-h-2021",
-      "file": "variety--frank-rizzo.json",
-      "score": 90,
-      "publishDate": "October 17, 2021",
-      "url": "https://variety.com/2021/legit/reviews/dana-h-review-broadway-1235090286/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -10088,20 +9845,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
-        }
-      ]
-    },
-    {
-      "showId": "dear-evan-hansen-2016",
-      "file": "variety--marilyn-stasio.json",
-      "score": 91,
-      "publishDate": "December 5, 2016",
-      "url": "https://variety.com/2016/legit/reviews/dear-evan-hansen-review-1201929914/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -11252,20 +10995,6 @@
       ]
     },
     {
-      "showId": "deuce-2007",
-      "file": "variety--charles-isherwood.json",
-      "score": 78,
-      "publishDate": "2007-05-07",
-      "url": "https://variety.com/2007/legit/reviews/deuce-1200558823/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "diana-the-musical-2021",
       "file": "amny--matt-windman.json",
       "score": 42,
@@ -11701,20 +11430,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1104d before show (2023-07-14 vs 2026-07-22)"
-        }
-      ]
-    },
-    {
-      "showId": "dividing-the-estate-2008",
-      "file": "variety--david-rooney.json",
-      "score": 87,
-      "publishDate": "November 21, 2008",
-      "url": "https://variety.com/2008/legit/reviews/dividing-the-estate-1200472426/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -12280,20 +11995,6 @@
       ]
     },
     {
-      "showId": "english-2025",
-      "file": "variety--christian-lewis.json",
-      "score": 96,
-      "publishDate": "January 23, 2025",
-      "url": "https://variety.com/2025/legit/reviews/english-review-broadway-play-1236282770/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "equus-2008",
       "file": "variety--charles-isherwood.json",
       "score": 78,
@@ -12304,11 +12005,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from equus-1974"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -12723,20 +12419,6 @@
       ]
     },
     {
-      "showId": "everyday-rapture-2010",
-      "file": "variety--steven-suskin.json",
-      "score": 89,
-      "publishDate": "April 30, 2010",
-      "url": "https://variety.com/2010/legit/reviews/everyday-rapture-1117942662/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
       "showId": "evita-2012",
       "file": "backstage--david-sheward.json",
       "score": 65,
@@ -12890,30 +12572,6 @@
       ]
     },
     {
-      "showId": "faith-healer-2006",
-      "file": "variety--karen-fricker.json",
-      "score": 79,
-      "publishDate": "2006-02-09",
-      "url": "https://variety.com/2006/legit/reviews/faith-healer-2-1200518647/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 68d before show (2006-02-09 vs 2006-04-18)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "fallen-angels-2026",
       "file": "deadline--greg-evans.json",
       "score": 91,
@@ -12984,20 +12642,6 @@
       ]
     },
     {
-      "showId": "falsettos-2016",
-      "file": "variety--marilyn-stasio.json",
-      "score": 87,
-      "publishDate": "November 4, 2016",
-      "url": "https://variety.com/2016/legit/reviews/falsettos-review-broadway-musical-1201902454/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "farinelli-and-the-king-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 74,
@@ -13008,20 +12652,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "farinelli-and-the-king-2017",
-      "file": "variety--marilyn-stasio.json",
-      "score": 76,
-      "publishDate": "December 18, 2017",
-      "url": "https://variety.com/2017/legit/reviews/farinelli-and-the-king-review-1202636164/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -14091,20 +13721,6 @@
       ]
     },
     {
-      "showId": "fish-in-the-dark-2015",
-      "file": "variety--marilyn-stasio.json",
-      "score": 77,
-      "publishDate": "March 5, 2015",
-      "url": "http://variety.com/2015/legit/reviews/fish-in-the-dark-review-larry-david-broadway-1201446406/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
       "score": 82,
@@ -14860,7 +14476,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -15823,20 +15439,6 @@
       ]
     },
     {
-      "showId": "god-of-carnage-2009",
-      "file": "variety--charles-isherwood.json",
-      "score": 86,
-      "publishDate": "2009-03-23",
-      "url": "https://variety.com/2009/film/awards/god-of-carnage-1200474074/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
-        }
-      ]
-    },
-    {
       "showId": "godspell-2011",
       "file": "about-entertainment--charles-isherwood.json",
       "score": 59,
@@ -16234,20 +15836,6 @@
     },
     {
       "showId": "good-night-and-good-luck-2025",
-      "file": "variety--frank-rizzo.json",
-      "score": 86,
-      "publishDate": "April 3, 2025",
-      "url": "https://variety.com/2025/legit/reviews/good-night-and-good-luck-review-george-clooney-broadway-3-1236354970/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "good-night-and-good-luck-2025",
       "file": "village-voice--michael-musto.json",
       "score": 75,
       "publishDate": "2025-04-04",
@@ -16341,25 +15929,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "grey-gardens-2006",
-      "file": "variety--charles-isherwood.json",
-      "score": 92,
-      "publishDate": "November 2, 2006",
-      "url": "https://variety.com/2006/legit/reviews/grey-gardens-1200514649/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -17091,20 +16660,6 @@
     },
     {
       "showId": "gypsy-2024",
-      "file": "variety--aramide-tinubu.json",
-      "score": 92,
-      "publishDate": "December 20, 2024",
-      "url": "https://variety.com/2024/legit/reviews/gypsy-review-broadway-audra-mcdonald-1236255433/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "gypsy-2024",
       "file": "village-voice--michael-musto.json",
       "score": 82,
       "publishDate": "2024-12-20",
@@ -17491,20 +17046,6 @@
     },
     {
       "showId": "hand-to-god-2015",
-      "file": "variety--gordon-cox.json",
-      "score": 91,
-      "publishDate": "April 7, 2015",
-      "url": "https://variety.com/2015/legit/reviews/hand-to-god-review-broadway-1201467612/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "hand-to-god-2015",
       "file": "vulture--jesse-green.json",
       "score": 87,
       "publishDate": "April 7, 2015",
@@ -17808,20 +17349,6 @@
       ]
     },
     {
-      "showId": "head-over-heels-2018",
-      "file": "variety--marilyn-stasio.json",
-      "score": 42,
-      "publishDate": "July 26, 2018",
-      "url": "https://variety.com/2018/legit/reviews/head-over-heels-review-go-gos-musical-1202883887/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
       "showId": "heart-of-rock-and-roll-2024",
       "file": "front-row-center--cameron-hughes.json",
       "score": 75,
@@ -17860,20 +17387,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "heart-of-rock-and-roll-2024",
-      "file": "variety--frank-rizzo.json",
-      "score": 75,
-      "publishDate": "April 22, 2024",
-      "url": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -18550,20 +18063,6 @@
       ]
     },
     {
-      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "file": "variety--marilyn-stasio.json",
-      "score": 82,
-      "publishDate": "October 14, 2016",
-      "url": "http://variety.com/2016/legit/reviews/holiday-inn-review-broadway-1201880340/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "home-2024",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 75,
@@ -18602,20 +18101,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"douglas turner ward\" from home-1980"
-        }
-      ]
-    },
-    {
-      "showId": "honeymoon-in-vegas-2015",
-      "file": "variety--marilyn-stasio.json",
-      "score": 77,
-      "publishDate": "January 15, 2015",
-      "url": "http://variety.com/2015/legit/reviews/honeymoon-in-vegas-review-broadway-musical-tony-danza-1201403116/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -19305,25 +18790,6 @@
     },
     {
       "showId": "illinoise-2024",
-      "file": "variety--charles-isherwood.json",
-      "score": 88,
-      "publishDate": "April 25, 2024",
-      "url": "https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "illinoise-2024",
       "file": "variety--christian-lewis.json",
       "score": 88,
       "publishDate": "April 26, 2024",
@@ -19570,20 +19036,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
-        }
-      ]
-    },
-    {
-      "showId": "in-transit-2016",
-      "file": "variety--frank-rizzo.json",
-      "score": 79,
-      "publishDate": "December 11th, 2016",
-      "url": "http://variety.com/2016/legit/reviews/in-transit-review-musical-1201939482/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -22854,34 +22306,6 @@
       ]
     },
     {
-      "showId": "journeys-end-2007",
-      "file": "variety--david-rooney.json",
-      "score": 78,
-      "publishDate": "2007-02-23",
-      "url": "https://variety.com/2007/film/awards/journey-s-end-1200510125/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
-        }
-      ]
-    },
-    {
-      "showId": "junk-2017",
-      "file": "variety--marilyn-stasio.json",
-      "score": 66,
-      "publishDate": "November 2, 2017",
-      "url": "https://variety.com/2017/legit/reviews/junk-review-play-ayad-akhtar-1202604575/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
       "showId": "juno-and-the-paycock-west-end-2024",
       "file": "british-theatre--howard-loxton.json",
       "score": 78,
@@ -23263,20 +22687,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
-        }
-      ]
-    },
-    {
-      "showId": "king-hedley-ii-2001",
-      "file": "variety--charles-isherwood.json",
-      "score": 66,
-      "publishDate": "2001-05-01",
-      "url": "https://variety.com/2001/legit/news/king-hedley-ii-2-1200468606/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -23764,20 +23174,6 @@
       ]
     },
     {
-      "showId": "lempicka-2024",
-      "file": "variety--frank-rizzo.json",
-      "score": 62,
-      "publishDate": "April 14, 2024",
-      "url": "https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-1235971035/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "lend-me-a-tenor-2010",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 87,
@@ -23788,25 +23184,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "leopoldstadt-2022",
-      "file": "variety--charles-isherwood.json",
-      "score": 88,
-      "publishDate": "October 3, 2022",
-      "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard-1235390899/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -25008,20 +24385,6 @@
       ]
     },
     {
-      "showId": "lucky-guy-2013",
-      "file": "variety--marilyn-stasio.json",
-      "score": 78,
-      "publishDate": "April 2, 2013",
-      "url": "https://variety.com/2013/legit/reviews/legit-review-lucky-guy-1200331512/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "lungs-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
@@ -25117,20 +24480,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "lysistrata-jones-2011",
-      "file": "variety--steven-suskin.json",
-      "score": 77,
-      "publishDate": "December 14, 2011",
-      "url": "http://www.variety.com/review/VE1117946753?refCatId=33",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -25422,11 +24771,6 @@
       "url": "https://variety.com/2025/legit/reviews/mamma-mia-review-broadway-2025-1236488886/",
       "findings": [
         {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        },
-        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
@@ -25623,34 +24967,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-jane-2024",
-      "file": "variety--aramide-tinubu.json",
-      "score": 77,
-      "publishDate": "April 23, 2024",
-      "url": "https://variety.com/2024/legit/reviews/mary-jane-broadway-review-rachel-mcadams-1235978406/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"series finale\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-stuart-2009",
-      "file": "variety--marilyn-stasio.json",
-      "score": 86,
-      "publishDate": "2009-04-20",
-      "url": "https://variety.com/2009/film/awards/mary-stuart-4-1200474491/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -26122,20 +25438,6 @@
     },
     {
       "showId": "merrily-we-roll-along-2023",
-      "file": "variety--trish-deitch.json",
-      "score": 63,
-      "publishDate": "October 10, 2023",
-      "url": "https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-daniel-radcliffe-jonathan-groff-lindsay-mendez-1235750477/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
       "file": "village-voice--michael-musto.json",
       "score": 86,
       "publishDate": "2023-10-10",
@@ -26326,20 +25628,6 @@
       "score": 82,
       "publishDate": "April 12, 2010",
       "url": "http://www.reuters.com/article/2010/04/12/us-stage-million-idUSTRE63B0I520100412",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "million-dollar-quartet-2010",
-      "file": "variety--steven-suskin.json",
-      "score": 79,
-      "publishDate": "2010-04-12",
-      "url": "https://variety.com/2010/legit/reviews/million-dollar-quartet-1117942558/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26853,20 +26141,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "mr-saturday-night-2022",
-      "file": "variety--charles-isherwood.json",
-      "score": 81,
-      "publishDate": "2022-04-28",
-      "url": "https://variety.com/2022/legit/reviews/mr-saturday-night-review-billy-crystal-broadway-1235227471/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -28760,25 +28034,6 @@
       ]
     },
     {
-      "showId": "oh-mary-2024",
-      "file": "variety--unknown.json",
-      "score": 91,
-      "publishDate": "2024-07-12",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
       "showId": "oh-mary-off-broadway-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 93,
@@ -29125,20 +28380,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "old-times-2015",
-      "file": "variety--marilyn-stasio.json",
-      "score": 76,
-      "publishDate": "October 6, 2015",
-      "url": "http://variety.com/2015/legit/reviews/old-times-review-clive-owen-broadway-1201611404/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -29839,20 +29080,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "oslo-2017",
-      "file": "variety--marilyn-stasio.json",
-      "score": 90,
-      "publishDate": "April 13, 2017",
-      "url": "https://variety.com/2017/legit/reviews/oslo-review-broadway-1202023735/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -32617,20 +31844,6 @@
       ]
     },
     {
-      "showId": "pygmalion-2007",
-      "file": "variety--david-rooney.json",
-      "score": 41,
-      "publishDate": "2007-10-19",
-      "url": "https://variety.com/2007/legit/markets-festivals/pygmalion-4-1200555250/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
-        }
-      ]
-    },
-    {
       "showId": "queen-versailles-2025",
       "file": "ap--mark-kennedy.json",
       "score": 56,
@@ -32893,20 +32106,6 @@
       ]
     },
     {
-      "showId": "redwood-2025",
-      "file": "variety--frank-rizzo.json",
-      "score": 79,
-      "publishDate": "February 13, 2025",
-      "url": "https://variety.com/2025/legit/reviews/redwood-review-idina-menzel-broadway-musical-1236305841/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "relatively-speaking-2011",
       "file": "about-entertainment--charles-isherwood.json",
       "score": 67,
@@ -32926,20 +32125,6 @@
       "score": 75,
       "publishDate": "2011-10-21",
       "url": "https://www.nytimes.com/2011/10/21/theater/reviews/relatively-speaking-at-brooks-atkinson-theater-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "relatively-speaking-2011",
-      "file": "variety--marilyn-stasio.json",
-      "score": 44,
-      "publishDate": "2011-10-21",
-      "url": "http://www.variety.com/review/VE1117946401",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -33038,20 +32223,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "richard-iii-2013",
-      "file": "variety--marilyn-stasio.json",
-      "score": 93,
-      "publishDate": "November 10, 2013",
-      "url": "https://variety.com/2013/legit/reviews/broadway-review-richard-iiitwelfth-night-1200816666/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -34861,7 +34032,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -36422,20 +35593,6 @@
       "score": 77,
       "publishDate": "April 25, 2023",
       "url": "https://nypost.com/2023/04/25/summer-1976-review-laura-linney-jessica-hecht-on-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "summer-2018",
-      "file": "variety--marilyn-stasio.json",
-      "score": 45,
-      "publishDate": "April 23, 2018",
-      "url": "https://variety.com/2018/legit/reviews/summer-review-donna-summer-musical-broadway-1202782604/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38300,20 +37457,6 @@
       ]
     },
     {
-      "showId": "the-cherry-orchard-2016",
-      "file": "variety--charles-isherwood.json",
-      "score": 45,
-      "publishDate": "October 17, 2016",
-      "url": "http://variety.com/2016/legit/reviews/the-cherry-orchard-review-diane-lane-1201890576/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 5\""
-        }
-      ]
-    },
-    {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
       "file": "culturesauce--unknown.json",
       "score": 96,
@@ -39057,16 +38200,16 @@
       ]
     },
     {
-      "showId": "the-constant-wife-2005",
-      "file": "variety--charles-isherwood.json",
-      "score": 77,
-      "publishDate": "2005-06-17",
-      "url": "https://variety.com/2005/legit/markets-festivals/the-constant-wife-3-1200525090/",
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "soundsandstage--sounds-and-stage.json",
+      "score": 86,
+      "publishDate": "2025-05-13",
+      "url": "https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/",
       "findings": [
         {
-          "type": "TV_FILM_SIGNAL",
+          "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
         }
       ]
     },
@@ -39095,20 +38238,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "the-country-girl-2008",
-      "file": "variety--charles-isherwood.json",
-      "score": 79,
-      "publishDate": "April 28, 2008",
-      "url": "https://variety.com/2008/legit/reviews/the-country-girl-1200472139/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -39585,20 +38714,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-father-2016",
-      "file": "variety--marilyn-stasio.json",
-      "score": 81,
-      "publishDate": "April 14, 2016",
-      "url": "https://variety.com/2016/legit/reviews/the-father-review-broadway-frank-langella-1201753769/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -40988,20 +40103,6 @@
       ]
     },
     {
-      "showId": "the-great-society-2019",
-      "file": "variety--marilyn-stasio.json",
-      "score": 63,
-      "publishDate": "October 1, 2019",
-      "url": "https://variety.com/2019/legit/reviews/great-society-review-brian-cox-1203355172/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-gruffalo-west-end-2026",
       "file": "curtain-call-reviews--unknown.json",
       "score": 78,
@@ -41995,20 +41096,6 @@
       ]
     },
     {
-      "showId": "the-minutes-2022",
-      "file": "variety--naveen-kumar.json",
-      "score": 94,
-      "publishDate": "April 17, 2022",
-      "url": "https://variety.com/2022/legit/reviews/the-minutes-review-broadway-play-tracy-letts-1235234223/amp/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
       "showId": "the-mirror-and-the-light-west-end-2021",
       "file": "artsdesk--ismene-brown.json",
       "score": 44,
@@ -42201,20 +41288,6 @@
       ]
     },
     {
-      "showId": "the-nance-2013",
-      "file": "variety--gordon-cox.json",
-      "score": 82,
-      "publishDate": "2013-04-16",
-      "url": "https://variety.com/2013/legit/reviews/legit-review-the-nance-1200369817/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-new-one-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 90,
@@ -42295,20 +41368,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-norman-conquests-2009",
-      "file": "variety--charles-isherwood.json",
-      "score": 91,
-      "publishDate": "2009-04-24",
-      "url": "https://variety.com/2009/film/awards/the-norman-conquests-2-1200474437/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -45424,20 +44483,6 @@
       ]
     },
     {
-      "showId": "the-sound-inside-2019",
-      "file": "variety--marilyn-stasio.json",
-      "score": 91,
-      "publishDate": "October 17, 2019",
-      "url": "https://variety.com/2019/legit/reviews/the-sound-inside-review-mary-louise-parker-1203370204/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-sound-of-music-tour-2025",
       "file": "broadwayworld--aa-cristi.json",
       "publishDate": "2026-09-29",
@@ -45979,34 +45024,6 @@
       ]
     },
     {
-      "showId": "the-visit-2015",
-      "file": "variety--frank-rizzo.json",
-      "score": 77,
-      "publishDate": "April 9, 2015",
-      "url": "https://variety.com/2015/legit/reviews/visit-review-broadway-chita-rivera-1201478480/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-wedding-singer-2006",
-      "file": "variety--charles-isherwood.json",
-      "score": 66,
-      "publishDate": "April 27, 2006",
-      "url": "https://variety.com/2006/legit/reviews/the-wedding-singer-1200512345/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
       "showId": "the-weir-west-end-2025",
       "file": "british-theatre--vera-liber.json",
       "score": 94,
@@ -46212,20 +45229,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "the-wiz-2024",
-      "file": "variety--naveen-kumar.json",
-      "score": 51,
-      "publishDate": "April 17, 2024",
-      "url": "https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -48784,20 +47787,6 @@
       ]
     },
     {
-      "showId": "war-paint-2017",
-      "file": "variety--marilyn-stasio.json",
-      "score": 77,
-      "publishDate": "April 6, 2017",
-      "url": "https://variety.com/2017/legit/reviews/war-paint-review-broadway-1202024897/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "water-for-elephants-2024",
       "file": "talkinbroadway--howard-miller.json",
       "score": 79,
@@ -50687,20 +49676,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
-        }
-      ]
-    },
-    {
-      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
-      "file": "variety--charles-isherwood.json",
-      "score": 62,
-      "publishDate": "2010-11-05",
-      "url": "https://variety.com/2010/legit/news/women-on-the-verge-of-a-nervous-breakdown-1117943995/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 8\""
         }
       ]
     },
@@ -54385,6 +53360,20 @@
       "score": 63,
       "publishDate": "2019-09-05",
       "url": "https://www.theatermania.com/broadway/reviews/broadway-continues-its-love-affair-with-betrayal_89678.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2019",
+      "file": "variety--marilyn-stasio.json",
+      "score": 91,
+      "publishDate": "September 6, 2019",
+      "url": "https://variety.com/2019/legit/reviews/betrayal-review-tom-hiddleston-broadway-1203323155/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -60209,6 +59198,25 @@
       ]
     },
     {
+      "showId": "faith-healer-2006",
+      "file": "variety--karen-fricker.json",
+      "score": 79,
+      "publishDate": "2006-02-09",
+      "url": "https://variety.com/2006/legit/reviews/faith-healer-2-1200518647/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 68d before show (2006-02-09 vs 2006-04-18)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "faith-hope-and-charity-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
       "score": 91,
@@ -61819,6 +60827,20 @@
       "score": 90,
       "publishDate": "2006-11-03",
       "url": "https://www.newspapers.com/image/231392090/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "grey-gardens-2006",
+      "file": "variety--charles-isherwood.json",
+      "score": 92,
+      "publishDate": "November 2, 2006",
+      "url": "https://variety.com/2006/legit/reviews/grey-gardens-1200514649/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -64646,6 +63668,20 @@
     },
     {
       "showId": "illinoise-2024",
+      "file": "variety--charles-isherwood.json",
+      "score": 88,
+      "publishDate": "April 25, 2024",
+      "url": "https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
       "file": "vulture--sara-holdren.json",
       "score": 91,
       "publishDate": "April 26, 2024",
@@ -65572,20 +64608,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-2005",
-      "file": "variety--david-rooney.json",
-      "score": 76,
-      "publishDate": "2005-11-07",
-      "url": "https://www.variety.com/review/VE1117928787?categoryid=1265&cs=1",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -66654,6 +65676,20 @@
       "score": 90,
       "publishDate": "2022-10-17",
       "url": "https://www.theaterscene.net/plays/broadway-plays/leopoldstadt/victor-gluck/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "leopoldstadt-2022",
+      "file": "variety--charles-isherwood.json",
+      "score": 88,
+      "publishDate": "October 3, 2022",
+      "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard-1235390899/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70907,6 +69943,20 @@
       "file": "variety--aramide-tinubu.json",
       "score": 91,
       "publishDate": "July 10, 2024",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "variety--unknown.json",
+      "score": 91,
+      "publishDate": "2024-07-12",
       "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
       "findings": [
         {
@@ -77503,6 +76553,20 @@
       ]
     },
     {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 82,
+      "publishDate": "2026-10-13",
+      "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-children-2017",
       "file": "amny--matt-windman.json",
       "score": 77,
@@ -77918,20 +76982,6 @@
       "score": 98,
       "publishDate": "2026-08-10",
       "url": "https://northwestend.com/the-comedy-about-spies-adelphi-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "theupcoming--unknown.json",
-      "score": 95,
-      "publishDate": "2026-08-10",
-      "url": "https://www.theupcoming.co.uk/2026/08/10/the-comedy-about-spies-at-adelphi-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80343,20 +79393,6 @@
       ]
     },
     {
-      "showId": "the-little-mermaid-2008",
-      "file": "variety--david-rooney.json",
-      "score": 45,
-      "publishDate": "2008-01-10",
-      "url": "https://variety.com/2008/film/awards/the-little-mermaid-2-1200553677/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 8\""
-        }
-      ]
-    },
-    {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
       "file": "thestage--unknown.json",
       "publishDate": null,
@@ -82727,20 +81763,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
-        }
-      ]
-    },
-    {
-      "showId": "the-trip-to-bountiful-2013",
-      "file": "variety--marilyn-stasio.json",
-      "score": 60,
-      "publishDate": "April 23, 2013",
-      "url": "https://variety.com/2013/legit/reviews/legit-review-the-trip-to-bountiful-1200413696/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
