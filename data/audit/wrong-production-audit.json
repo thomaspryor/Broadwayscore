@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T17:04:12.202Z",
+  "timestamp": "2026-10-14T19:32:00.927Z",
   "stats": {
-    "totalReviews": 56526,
-    "alreadyFlagged": 21048,
-    "dateGuardCatches": 209,
+    "totalReviews": 56536,
+    "alreadyFlagged": 21050,
+    "dateGuardCatches": 210,
     "directorMismatch": 1904,
-    "tvFilmSignals": 1573,
-    "londonSignals": 2341,
+    "tvFilmSignals": 1574,
+    "londonSignals": 2342,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5225
+    "noPublishDate": 5199
   },
   "findings": [
     {
@@ -1435,7 +1435,7 @@
       "showId": "affluenza-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "2026-10-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
       "findings": [
         {
@@ -5118,7 +5118,7 @@
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 60,
-      "publishDate": null,
+      "publishDate": "2024-05-30",
       "url": "https://www.londonboxoffice.co.uk/news/post/boys-from-the-blackstuff-review",
       "findings": [
         {
@@ -10796,6 +10796,17 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2012 (2x) more than 2026 (1x). 2012 matches production: death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-west-end-2019",
+      "file": "london-box-office--phil-willmott.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1620d before show (2015-05-18 vs 2019-10-24)"
         }
       ]
     },
@@ -37820,6 +37831,19 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
+      "file": "daily-mail--unknown.json",
+      "publishDate": "2026-10-13",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 77,
       "publishDate": "2026-10-13",
@@ -55446,7 +55470,7 @@
       "showId": "broken-glass-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 41,
-      "publishDate": null,
+      "publishDate": "2026-03-04",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-broken-glass-young-vic",
       "findings": [
         {
@@ -56182,7 +56206,7 @@
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "2026-09-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre-review",
       "findings": [
         {
@@ -67191,7 +67215,7 @@
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "2026-04-02",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-les-liaisons-dangereuses-national-theatre",
       "findings": [
         {
@@ -76130,7 +76154,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "lost-in-theatreland--jill-johnson.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2023-12-18",
       "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
       "findings": [
@@ -76172,7 +76196,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "standard--robert-dex-arts-correspondent.json",
-      "score": 91,
+      "score": 94,
       "publishDate": "2023-12-15",
       "url": "https://www.standard.co.uk/news/uk/stranger-things-the-first-shadow-west-end-theatre-louis-mccartney-b1127164.html",
       "findings": [
@@ -78135,6 +78159,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 80,
+      "publishDate": "2026-10-14",
+      "url": "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -83887,7 +83925,7 @@
       "showId": "the-witches-west-end-2023",
       "file": "london-box-office--stuart-king.json",
       "score": 97,
-      "publishDate": null,
+      "publishDate": "2023-11-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-witches-review",
       "findings": [
         {
