@@ -4745,7 +4745,11 @@ showDirs.forEach(showId => {
         const crit = (data.criticName || '').trim().toLowerCase();
         if (!crit || crit === 'unknown' || crit === 'unnamed') {
           const outletEntry = outletRegistry.outlets[oid];
-          if (shouldFillDefaultCritic(outletEntry)) {
+          // Same outlet-split guard as the text-byline fill above (BRO-3919
+          // ship-check cousin): never name an Unknown file into a second critic
+          // at an outlet that already has a different named critic in this show.
+          if (shouldFillDefaultCritic(outletEntry)
+              && !otherNamedCriticAtOutlet(seenKeys, oid, normalizeCriticCanonical(outletEntry.defaultCritic))) {
             data.criticName = outletEntry.defaultCritic;
             stats.resolvedDefaultCritic = (stats.resolvedDefaultCritic || 0) + 1;
           }
