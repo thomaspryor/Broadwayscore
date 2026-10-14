@@ -22,6 +22,9 @@ try {
   for (const v of (r.reviews || r)) liveKey.add(`${v.showId}|${v.outletId}|${(v.criticName || '').toLowerCase()}`);
 } catch {}
 
+const showsById = {};
+try { const sj = require('../data/shows.json'); for (const v of (sj.shows || sj)) showsById[v.id] = v; } catch {}
+
 let failed = {};
 try {
   for (const f of JSON.parse(fs.readFileSync(path.join(root, 'failed-fetches.json'), 'utf8'))) failed[f.reviewId || `${f.showId}/${f.file}`] = f;
@@ -45,6 +48,15 @@ for (const showId of fs.readdirSync(root)) {
       const hit = cv && isCvVerdictFromTruncatedFetch(cv, d.fullText || d.wrongFullText || '', d.url);
       if (hit && (d.wrongShow || d.isNonReview || d.rejectionReason === 'not_a_review')) {
         rows.push({ id, flags: ['wrongShow', 'isNonReview'].filter(k => d[k]).join(','), rej: d.rejectionReason || '', cleared: !!(d.humanReviewedWrongProduction === false || d.manualClear), publishDate: d.publishDate || '', textLen: (d.fullText || d.wrongFullText || '').length, excerpt: !!(d.aggregatorExcerpt || d.excerpt), url: d.url, cvType: cv.articleType, cvSaid: String(cv.reasoning || '').slice(0, 160) });
+      }
+    }
+    if (card === '4564-detail') {
+      const cv = d.contentVerification;
+      const hit = cv && isCvVerdictFromTruncatedFetch(cv, d.fullText || d.wrongFullText || '', d.url);
+      if (hit && (d.wrongShow || d.isNonReview || d.rejectionReason === 'not_a_review') && !/brittani-samuel/.test(file)) {
+        const t = (d.fullText || d.wrongFullText || '').replace(/\s+/g, ' ');
+        const sh = showsById[showId] || {};
+        rows.push({ id, run: `${sh.previewsStartDate || ''}..${sh.openingDate || ''}..${sh.closingDate || ''}`, title: sh.title, publishDate: d.publishDate || '', url: d.url, head: t.slice(0, 260), tail: t.slice(-120), cvSaid: String(cv.reasoning || '').slice(0, 200), agg: String(d.aggregatorExcerpt || d.excerpt || '').slice(0, 120) });
       }
     }
     if (card === '4301' && only) {
