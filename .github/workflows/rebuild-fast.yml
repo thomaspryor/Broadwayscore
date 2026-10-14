@@ -253,7 +253,9 @@ jobs:
       # no-LLM, no-API-key --prune-only path so a wrongShow/removal clears the
       # blurb on the next fast rebuild. Keeps the MAX_STALE_PRUNE cap.
       - name: Prune stale Critics' Take (no LLM)
-        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        # staleness must be clean: a scoped guard failure still sets safe_to_publish,
+        # but reviews.json is then incomplete for the flagged show.
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: node scripts/generate-critic-consensus.js --prune-only
         continue-on-error: true
 

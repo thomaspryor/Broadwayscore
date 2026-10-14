@@ -2051,8 +2051,8 @@ const CORE_DATA_MERGE_REGISTRY = [
     file: 'critic-consensus.json',
     surface: 'private-core-data',
     status: 'single-writer',
-    note: 'written by generate-critic-consensus.js only, from THREE workflows (BRO-3514 found the third, recreate-broadcast-draft.yml) with separate concurrency groups',
-    writers: ['opening-night-broadcast.yml', 'recreate-broadcast-draft.yml', 'update-critic-consensus.yml'],
+    note: 'written by generate-critic-consensus.js only, from FOUR workflows (BRO-3514 found recreate-broadcast-draft.yml; BRO-4960 added rebuild-fast.yml, which only runs --prune-only) with separate concurrency groups',
+    writers: ['opening-night-broadcast.yml', 'rebuild-fast.yml', 'recreate-broadcast-draft.yml', 'update-critic-consensus.yml'],
     // BRO-3514: risk accepted rather than a new merge fn. A take lost to a
     // race is regenerated: shouldRegenerate() re-creates a missing take and
     // one whose review count moved by 3+, update-critic-consensus.yml runs
@@ -2060,7 +2060,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     // poller. Cost of a loss: one repeated LLM call. Caveat: an opening-night
     // broadcast already sent with a take that later lost the race is not
     // corrected (the email is out); recreate-broadcast-draft.yml is manual.
-    multiWriterMitigation: 'lost take regenerated on the next update-critic-consensus run (shouldRegenerate: missing or 3+ review delta); sent broadcasts are not corrected',
+    multiWriterMitigation: 'lost take regenerated on the next update-critic-consensus run (shouldRegenerate: missing or 3+ review delta); a prune undone by a racing generator run is redone by the next rebuild-fast; sent broadcasts are not corrected',
   },
   {
     file: 'audience-reviews-lbo.json',

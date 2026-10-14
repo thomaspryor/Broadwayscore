@@ -234,6 +234,9 @@ async function main() {
     ? JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf-8'))
     : { _meta: {}, shows: {} };
 
+  if (!process.argv.includes('--prune-only') && !process.env.ANTHROPIC_API_KEY) {
+    throw new Error('ANTHROPIC_API_KEY is required (only --prune-only runs without it)');
+  }
   const force = process.argv.includes('--force');
   const cleanupOrphans = process.argv.includes('--cleanup-orphans');
   // --prune-only: drop stale + orphaned entries, write, exit before any LLM call.
@@ -287,8 +290,7 @@ async function main() {
   } catch { liveCounts = null; liveOutlets = null; }
 
   if (pruneOnly) {
-    let counts = null;
-    try { counts = liveScoredCounts(JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'))); } catch { /* unreadable */ }
+    const counts = liveCounts;
     if (!counts) {
       console.warn('::warning::consensus prune-only skipped: reviews.json unreadable');
       return;
