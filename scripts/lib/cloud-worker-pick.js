@@ -234,6 +234,13 @@ function isStaleAutomationParked(issue, nowMs) {
   return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
 }
 
+/** True when the description or a comment carries the VERIFY: owner-judgment marker. */
+function ownerJudgmentMarked(issue) {
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const { sortedCommentBodies } = require('./linear-dispatch.js');
+  return !!evaluateVerifiability(issue.description || '', sortedCommentBodies(issue)).ownerJudgment;
+}
+
 /** Why a headless worker can't finish this card (no safe VERIFY, or a headless blocker), or null. */
 function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   const hd = require('./headless-dispatchability.js');
@@ -244,7 +251,10 @@ function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   // answer before any code. Description only: comments quote the marker.
   if (require('./no-dispatch-marker.js').hasNoDispatchMarker(issue.description)) return 'no-dispatch-marker';
   const cmd = drain.verifyCommand(issue);
-  if (!cmd) return 'no-safe-verify';
+  // BRO-5370: a "VERIFY: owner-judgment" card is armed for a person, not a
+  // worker. Counting it as no-safe-verify hid the 35 cards the arming pass
+  // can still fix behind 76 that only a person can close.
+  if (!cmd) return ownerJudgmentMarked(issue) ? 'owner-judgment' : 'no-safe-verify';
   if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(cmd).trim())) {
     return 'verify-not-cloud-runnable';
   }
@@ -258,6 +268,7 @@ const START_NOW_FIX_HINTS = {
   'parked-or-backlog': 'file it with --dispatch, not --park',
   'not-p0-p1': 'file it with --priority 1 or 2',
   'no-safe-verify': 'add a safe-form "VERIFY: <cmd>" line (node --test <path>.test.mjs, npx tsc --noEmit, npx next lint, test -f <path>)',
+  'owner-judgment': 'the card says a person must judge it (VERIFY: owner-judgment); drop START-NOW or replace the marker with a safe-form VERIFY',
   'verify-not-cloud-runnable': 'use a narrower VERIFY than the whole unit suite',
   'no-dispatch-marker': 'drop NO-DISPATCH or drop START-NOW',
   'ios-app-repo': 'the cloud worker cannot check out the app repo; drop START-NOW',

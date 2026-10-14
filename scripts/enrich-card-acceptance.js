@@ -786,9 +786,13 @@ function isArmedIncludingComments(issue) {
   return !!evaluateVerifiability(String(issue.description || ''), sortedCommentBodies(issue)).armed;
 }
 
+// BRO-5370: comment-aware when the caller attached comments ({comments:
+// {nodes}}, see attachComments). Without them this is description-only, as
+// before; with them, a card armed by a comment never reaches the scan, where
+// ~60 such cards used to spend most of the 100-slot SCAN_CEILING every run.
 function selectRefusedLinearIdentifiers(openIssuesWithDesc, { identifiers = null } = {}) {
   const refused = (openIssuesWithDesc || [])
-    .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed);
+    .filter(iss => iss && !isArmedIncludingComments(iss));
   if (Array.isArray(identifiers) && identifiers.length) {
     const refusedSet = new Set(refused.map(iss => iss.identifier));
     const seen = new Set();
@@ -808,6 +812,23 @@ function selectRefusedLinearIdentifiers(openIssuesWithDesc, { identifiers = null
 // from an unset shell variable) returns [] — main() refuses that with exit 2
 // before any Linear fetch, because silently widening to the whole backlog is
 // the opposite of what the caller asked for.
+// Attaches {comments: {nodes}} to every issue whose description alone is
+// unarmed. Mutates in place; returns the number of issues read, or -1 when the
+// read failed (logged, never thrown). listIssueComments reads at most 50
+// comments per issue, so this is a pre-filter, not the authoritative check.
+async function attachComments(issues, client) {
+  const unarmed = (issues || []).filter(iss => iss && iss.identifier && !evaluateVerifiability(iss.description || '').armed);
+  if (!unarmed.length) return 0;
+  try {
+    const byId = await client.listIssueComments(unarmed.map(iss => iss.identifier));
+    for (const iss of unarmed) if (byId.has(iss.identifier)) iss.comments = { nodes: byId.get(iss.identifier) };
+    return unarmed.length;
+  } catch (e) {
+    console.error(`[enrich-card-acceptance] linear: bulk comment read failed, selecting on descriptions only: ${e.message}`);
+    return -1;
+  }
+}
+
 function parseIdentifiersArg(args) {
   const raw = args ? args.identifiers : undefined;
   if (raw === undefined || raw === null || raw === false) return null;
@@ -1414,7 +1435,13 @@ async function runLinearLeg(args, { dryRun, limit }) {
     return [{ id: 'linear-fetch', name: 'Linear open-issue fetch', action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' }];
   }
 
+  // BRO-5370: read comments in bulk (one request per 50 cards) for every
+  // description-unarmed card, so comment-armed ones drop out before the scan.
+  // A failed read falls back to the description-only selection; the per-issue
+  // check below still catches them, as it always has.
   const identifiers = parseIdentifiersArg(args);
+  const wanted = identifiers && identifiers.length ? new Set(identifiers) : null;
+  await attachComments(wanted ? openIssues.filter(iss => iss && wanted.has(iss.identifier)) : openIssues, linear);
   const selected = selectRefusedLinearIdentifiers(openIssues, { identifiers });
   if (identifiers && identifiers.length) {
     const kept = new Set(selected);
@@ -1423,9 +1450,9 @@ async function runLinearLeg(args, { dryRun, limit }) {
     console.error(`[enrich-card-acceptance] linear: --identifiers gave ${identifiers.length} ids; ${selected.length} selected, ${dropped.length} dropped (already armed or not an open issue)${dropped.length ? `: ${shown}` : ''}`);
   }
   // BRO-4135 (ship-check/Codex finding): --limit bounds ENRICHMENT ATTEMPTS,
-  // not raw candidates. selectRefusedLinearIdentifiers is description-only
-  // (the list query carries no comments), so a card already armed via a
-  // LATER comment (BRO-3395's rearm path, or a human's own comment) still
+  // not raw candidates. The list query carries no comments; attachComments
+  // (BRO-5370) now fills them in bulk, but it reads at most 50 per card and
+  // fails open, so a card already armed via a LATER comment (BRO-3395's rearm path, or a human's own comment) still
   // shows up here and only resolves to 'skipped' once the loop below fetches
   // its full issue. The old `selected.slice(0, limit)` spent the whole
   // budget on the same P0/P1-sorted prefix every run — if that prefix is
@@ -1867,6 +1894,8 @@ module.exports = {
   linearIssueNumber, isLinearIssueTerminal, categoryOfLinearIssue,
   // BRO-3913: pure — default P0/P1-first ordering + the shared --identifiers parser.
   priorityTierRank, parseIdentifiersArg,
+  // BRO-5370: bulk comment pre-filter for the Linear sweep.
+  attachComments,
   // BRO-3395: rearm path — makeLinearRearmWriteCard/runLinearRearmLeg take an
   // injectable client/args the same way the task #1830 exports above do.
   makeLinearRearmWriteCard, runLinearRearmLeg,

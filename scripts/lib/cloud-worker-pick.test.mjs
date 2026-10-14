@@ -281,7 +281,11 @@ test('a VERIFY posted as a comment arms the card, newest arming comment wins (BR
   const broken = issue({ comments: { nodes: [{ body: 'VERIFY: `node scripts/run-unit-tests.js`', createdAt: at(60_000) }] } });
   assert.equal(skipReason(broken, NOW), 'verify-not-cloud-runnable');
   const judged = issue({ comments: { nodes: [{ body: 'VERIFY: owner-judgment, needs a product call', createdAt: at(60_000) }] } });
-  assert.equal(skipReason(judged, NOW), 'no-safe-verify');
+  // BRO-5370: owner-judgment is its own reason, so the no-safe-verify count is the armable pool.
+  assert.equal(skipReason(judged, NOW), 'owner-judgment');
+  assert.equal(skipReason(issue({ description: `${bare}\n\nVERIFY: owner-judgment` }), NOW), 'owner-judgment');
+  const { startNowUnpickableReason } = require('./cloud-worker-pick.js');
+  assert.match(startNowUnpickableReason({ title: 'x', description: 'START-NOW: now\n\nVERIFY: owner-judgment', priority: 2, mode: 'dispatch' }).hint, /person must judge/);
   const parkedBare = issue({ state: { name: 'Backlog', type: 'backlog' },
     description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${bare}`,
     comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: at(60_000) }] } });

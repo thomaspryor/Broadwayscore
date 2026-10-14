@@ -1173,7 +1173,7 @@ test('parseArgs accepts --key=value as well as --key value', () => {
 // BRO-3913 ship-check (Codex): a card armed through a COMMENT is dispatchable
 // (linear-next reads comments) but the description-only sweep still selected
 // it, and the write would have replaced the description with a second command.
-test('isArmedIncludingComments: comment-supplied command counts as armed, description-only selector still lists it', () => {
+test('isArmedIncludingComments: comment-supplied command counts as armed, and the selector skips it', () => {
   const { isArmedIncludingComments } = require('./enrich-card-acceptance.js');
   const cmd = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
   const viaComment = {
@@ -1186,7 +1186,31 @@ test('isArmedIncludingComments: comment-supplied command counts as armed, descri
   assert.equal(isArmedIncludingComments(viaDescription), true);
   assert.equal(isArmedIncludingComments(unarmed), false);
   assert.equal(isArmedIncludingComments(null), false);
-  // The list-query selector cannot see comments, so BRO-1 is still selected
-  // there — the per-issue re-check in runLinearLeg is what skips it.
-  assert.deepEqual(selectRefusedLinearIdentifiers([viaComment, viaDescription, unarmed]), ['BRO-1', 'BRO-3']);
+  // BRO-5370: once comments are attached (attachComments), the selector sees
+  // them, so a comment-armed card no longer spends a scan slot.
+  assert.deepEqual(selectRefusedLinearIdentifiers([viaComment, viaDescription, unarmed]), ['BRO-3']);
+});
+
+// BRO-5370: ~60 comment-armed cards used to fill most of the 100-slot
+// SCAN_CEILING every daily run, so newer P2/P3 cards were never reached.
+test('selectRefusedLinearIdentifiers drops a card armed by a bulk-attached comment', async () => {
+  const { attachComments } = require('./enrich-card-acceptance.js');
+  const issues = [
+    { identifier: 'BRO-1', description: '## Problem\nNo command.' },
+    { identifier: 'BRO-2', description: '## Problem\nNo command either.' },
+    { identifier: 'BRO-3', description: '## Acceptance criteria\n`npx tsc --noEmit`' },
+  ];
+  const asked = [];
+  const client = { listIssueComments: async (ids) => { asked.push(...ids); return new Map([['BRO-1', [{ body: 'VERIFY: `npx tsc --noEmit`', createdAt: '2026-10-01T00:00:00Z' }]]]); } };
+  assert.equal(await attachComments(issues, client), 2);
+  assert.deepEqual(asked, ['BRO-1', 'BRO-2'], 'only description-unarmed cards are read');
+  assert.deepEqual(selectRefusedLinearIdentifiers(issues), ['BRO-2']);
+});
+
+test('attachComments failing leaves the description-only selection intact', async () => {
+  const { attachComments } = require('./enrich-card-acceptance.js');
+  const issues = [{ identifier: 'BRO-1', description: 'none' }, { identifier: 'BRO-2', description: 'none' }];
+  const client = { listIssueComments: async () => { throw new Error('boom'); } };
+  assert.equal(await attachComments(issues, client), -1);
+  assert.deepEqual(selectRefusedLinearIdentifiers(issues), ['BRO-1', 'BRO-2']);
 });
