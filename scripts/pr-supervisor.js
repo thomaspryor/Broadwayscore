@@ -108,7 +108,10 @@ function gh(argv) {
 async function loadEvidence() {
   const mod = await import(path.join(REPO_ROOT, 'scripts/lib/review-gate.mjs'));
   try {
-    return mod.readLedger(mod.canonicalRoot(REPO_ROOT)) || [];
+    // BRO-4277: in strict mode (REVIEW_EVIDENCE_REQUIRED=1) drop strong passes
+    // that carry no skill evidence, so they cannot clear an autonomous merge.
+    return (mod.readLedger(mod.canonicalRoot(REPO_ROOT)) || [])
+      .filter((e) => !(e && e.result === 'pass' && ['ship-check', 'code-review'].includes(e.reviewer)) || mod.isEvidencedStrongPass(e));
   } catch (err) {
     console.error(`[pr-supervisor] could not read the review ledger (${err.message}) — every code PR will HOLD for missing evidence, which is the safe direction.`);
     return [];

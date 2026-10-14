@@ -511,6 +511,11 @@ function ancestorSet(repoRoot, ref) {
 
 // ── ledger ───────────────────────────────────────────────────────────────────
 
+function parseEvidenceArg(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
 export function readLedger(ledgerRoot) {
   const p = join(ledgerRoot, LEDGER_REL_PATH);
   if (!existsSync(p)) return [];
@@ -522,10 +527,42 @@ export function readLedger(ledgerRoot) {
   return entries;
 }
 
-export function recordVerdict({ repoRoot, ledgerRoot = null, reviewer, result, ref = 'HEAD', sessionId = null }) {
+// BRO-4277: a strong-reviewer pass (ship-check, code-review) must carry
+// evidence produced by the skill's own phases, so a session cannot satisfy the
+// gate by typing `--query=record --reviewer=ship-check --result=pass`.
+// Advisory first (CLAUDE.md rule 19): the skills do not emit evidence yet, so
+// by default an unevidenced pass is recorded flagged `evidenceMissing`;
+// REVIEW_EVIDENCE_REQUIRED=1 refuses it at record time and makes the push gate
+// ignore it.
+const HEX64 = /^[0-9a-f]{64}$/i;
+export function evidenceValid(ev) {
+  if (!ev || typeof ev !== 'object') return false;
+  if (typeof ev.outputsHash !== 'string' || !HEX64.test(ev.outputsHash)) return false;
+  if (typeof ev.invocationId !== 'string' || !ev.invocationId.trim()) return false;
+  const c = ev.checks;
+  return Array.isArray(c) ? c.length > 0 : !!c && typeof c === 'object' && Object.keys(c).length > 0;
+}
+// One predicate for every ledger consumer (push gate, pr-supervisor).
+export function isEvidencedStrongPass(e, env = process.env) {
+  if (!e || e.result !== 'pass' || !STRONG_REVIEWERS.has(e.reviewer)) return false;
+  return !evidenceRequired(env) || evidenceValid(e.evidence);
+}
+export function evidenceRequired(env = process.env) {
+  return env.REVIEW_EVIDENCE_REQUIRED === '1';
+}
+
+export function recordVerdict({ repoRoot, ledgerRoot = null, reviewer, result, ref = 'HEAD', sessionId = null, evidence = null }) {
   ledgerRoot = ledgerRoot || canonicalRoot(repoRoot);
   if (!reviewer) return { recorded: false, reason: '--reviewer is required' };
   if (!['pass', 'fail'].includes(result)) return { recorded: false, reason: '--result must be pass|fail' };
+  const needsEvidence = result === 'pass' && STRONG_REVIEWERS.has(reviewer);
+  const evidenceOk = !needsEvidence || evidenceValid(evidence);
+  if (!evidenceOk && evidenceRequired()) {
+    return {
+      recorded: false,
+      reason: `a ${reviewer} pass needs --evidence='{"outputsHash":"<sha256>","invocationId":"<id>","checks":[...]}' produced by the skill run (BRO-4277)`,
+    };
+  }
   const base = resolveBase(repoRoot);
   if (!base) return { recorded: false, reason: 'no origin/main or main ref to diff against' };
   // 'WORKTREE' isn't a real git rev (see diffRangeArgs) — it means "diff the
@@ -549,10 +586,15 @@ export function recordVerdict({ repoRoot, ledgerRoot = null, reviewer, result, r
     diffHash: computeDiffHash(repoRoot, base, ref),
     gatedLines: stats.totalLines,
     ...(sessionId ? { sessionId } : {}),
+    ...(needsEvidence && evidenceOk ? { evidence } : {}),
+    ...(needsEvidence && !evidenceOk ? { evidenceMissing: true } : {}),
   };
   const p = join(ledgerRoot, LEDGER_REL_PATH);
   mkdirSync(dirname(p), { recursive: true });
   appendFileSync(p, JSON.stringify(entry) + '\n');
+  if (needsEvidence && !evidenceOk) {
+    process.stderr.write(`[review-gate] WARNING: ${reviewer} pass recorded without skill evidence (BRO-4277); REVIEW_EVIDENCE_REQUIRED=1 will refuse it.\n`);
+  }
   return { recorded: true, entry, ledger: p };
 }
 
@@ -783,7 +825,8 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
   const reviewerEligible = (e) => {
     const light = LIGHT_REVIEWERS.has(e.reviewer);
     if (light) return stats.totalLines <= SECOND_OPINION_MAX_LINES;
-    return STRONG_REVIEWERS.has(e.reviewer);
+    // BRO-4277: in strict mode a strong pass only counts with skill evidence.
+    return isEvidencedStrongPass(e);
   };
   // Pre-pass over exactly the entries the scan below would price, so the memo
   // keys for all of them resolve in ONE `cat-file` batch instead of a diff each.
@@ -1511,6 +1554,7 @@ if (__isMain) {
         repoRoot, ledgerRoot, ref,
         reviewer: args.reviewer, result: args.result,
         sessionId: args['session-id'] || null,
+        evidence: parseEvidenceArg(args.evidence),
       });
       break;
     case 'record-plan':
