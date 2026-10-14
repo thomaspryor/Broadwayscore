@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-10-14T17:44:02.994Z",
-  "processed": 321,
-  "failed": 312,
-  "successRate": "50.7%",
+  "updatedAt": "2026-10-14T17:55:35.710Z",
+  "processed": 326,
+  "failed": 308,
+  "successRate": "51.4%",
   "tierBreakdown": {
-    "playwright": 94,
+    "playwright": 98,
     "amp": 2,
     "browserbase": 9,
     "directCookies": 0,
     "scrapingdog": 10,
-    "scrapingbee": 17,
+    "scrapingbee": 19,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 32
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-14T15:08:13.710Z",
-      "event": "bb-session",
-      "session": "0e4b7195",
-      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
-    },
     {
       "t": "2026-10-14T15:08:14.369Z",
       "event": "bb-cookie-inject",
@@ -125,6 +119,12 @@
       "t": "2026-10-14T17:40:05.382Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T17:52:31.930Z",
+      "event": "bb-session",
+      "session": "56e3cd69",
+      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
     }
   ]
 }

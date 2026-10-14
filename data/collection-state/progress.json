@@ -320,7 +320,12 @@
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
+    "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+    "the-cherry-orchard-west-end-2026/daily-mail--unknown.json",
+    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+    "the-cherry-orchard-west-end-2026/londontheatredirect--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ],
   "failed": [
     "the-book-of-mormon-west-end-2024/washpost--unknown.json",
@@ -349,13 +354,11 @@
     "a-number-west-end-2022/standard--nick-curtis.json",
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
     "stories-the-tap-dance-sensation-west-end-2026/theupcoming--unknown.json",
-    "nina-off-west-end-2026/guardian--kate-wyver.json",
     "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
     "an-oak-tree-off-west-end-2026/thestage--unknown.json",
     "from-the-heart-west-end-2026/thestage--neil-norman.json",
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
     "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
-    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
     "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
     "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
@@ -424,8 +427,6 @@
     "constellations-2015/ny1--roma-torre.json",
     "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
     "promises-promises-2010/ap--michael-kuchwara.json",
-    "the-cherry-orchard-west-end-2026/daily-mail--unknown.json",
-    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
     "much-ado-about-nothing-2026/telegraph--dominic-cavendish.json",
     "one-day-the-musical-west-end-2026/london-box-office--stuart-king.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -632,7 +633,9 @@
     "john-proctor-is-the-villain-west-end-2026/guardian--arifa-akbar.json",
     "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json",
     "consumed-west-end-2026/whatsonstage--sarah-crompton.json",
-    "la-traviata-off-broadway-2026/guardian--erica-jeal.json"
+    "la-traviata-off-broadway-2026/guardian--erica-jeal.json",
+    "the-cherry-orchard-west-end-2026/city-am--adam-bloodworth.json",
+    "baby-off-west-end-2026/daily-mail--tom-lawrence.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -730,7 +733,11 @@
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-      "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json"
+      "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+      "the-cherry-orchard-west-end-2026/londontheatredirect--unknown.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
     ],
     "amp": [
       "data/review-texts/much-ado-about-nothing-2026/variety--unknown.json",
@@ -777,7 +784,9 @@
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "death-of-a-salesman-2026/cititour--unknown.json",
       "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
-      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+      "the-cherry-orchard-west-end-2026/daily-mail--unknown.json",
+      "baby-off-west-end-2026/daily-mail--tom-lawrence.json"
     ],
     "brightdata": [
       "dirty-dancing-tour-2026/hollywood-reporter--caitlin-huston.json",
@@ -822,7 +831,7 @@
     ]
   },
   "startTime": "2026-10-14T08:42:53.725Z",
-  "lastProcessed": "la-traviata-off-broadway-2026/guardian--erica-jeal.json",
+  "lastProcessed": "affluenza-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
   "log": [
     {
       "t": "2026-10-14T09:04:35.773Z",
@@ -1591,12 +1600,22 @@
       "t": "2026-10-14T17:40:05.382Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T17:52:31.930Z",
+      "event": "bb-session",
+      "session": "56e3cd69",
+      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
     }
   ],
   "recoveredAfterFailure": [
     "a-history-of-water-in-the-middle-east-west-end-2019/times-uk--clive-davis.json",
     "hadestown-2019/theater-life--isa-goldberg.json",
     "oh-mary-west-end-2025/times-uk--clive-davis.json",
-    "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json"
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "the-cherry-orchard-west-end-2026/daily-mail--unknown.json",
+    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ]
 }
