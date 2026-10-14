@@ -349,6 +349,7 @@ jobs:
 
 
       - name: Push review-texts to private repo
+        id: push_texts
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
@@ -396,9 +397,12 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from scrape-dtli-show-score'
       - name: Auto-trigger text collection if needed
-        # BRO-3224: an earlier failed push must not skip the dispatch that
-        # collects the reviews this run found.
-        if: ${{ !cancelled() }}
+        # BRO-3224: an unrelated earlier failure must not skip the dispatch
+        # that collects the reviews this run found. It does need the
+        # review-texts push itself: collect-review-texts.yml reads the private
+        # repo, so stubs this run failed to push cannot be collected
+        # (push-review-texts exits 0 when there is nothing to push).
+        if: ${{ !cancelled() && steps.push_texts.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INPUT_SHOWS: ${{ inputs.shows }}

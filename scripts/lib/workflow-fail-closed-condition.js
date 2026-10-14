@@ -37,11 +37,15 @@ function conditionIsFailClosed(cond) {
 // enforces for test.yml's lint-workflows job, generalised to every job in
 // every workflow that adopted the same anchor. A job "adopts" it when 3+
 // steps open their condition with `always() && steps.<X>.outcome ==
-// 'success'` for the same X: the author has declared that the steps after X
+// 'success'` (or `!cancelled() && ...`, which also survives a failure but not
+// a cancel; fetch-tour-schedules.yml uses it) for the same X: the author has declared that the steps after X
 // must survive unrelated failures. Fewer than 3 is an incidental condition,
 // not a declaration (scrape-dtli-show-score.yml has a one-off).
-const ANCHOR_PREFIX = /^\s*(?:\$\{\{\s*)?always\(\)\s*&&\s*steps\.([A-Za-z0-9_-]+)\.outcome\s*==\s*'success'/;
-const STATUS_FUNCTION = /\b(?:always|cancelled|failure|success)\s*\(\s*\)/;
+const ANCHOR_PREFIX = /^\s*(?:\$\{\{\s*)?(?:always\(\)|!\s*cancelled\(\))\s*&&\s*steps\.([A-Za-z0-9_-]+)\.outcome\s*==\s*'success'/;
+// success() is NOT a guard: `success() && x` is skipped after an unrelated
+// earlier failure exactly like a bare `x` (BRO-5261 retro-review). A step that
+// must only run on full success belongs in the test's EXEMPT list instead.
+const STATUS_FUNCTION = /\b(?:always|cancelled|failure)\s*\(\s*\)/;
 const MIN_ANCHORED_STEPS = 3;
 
 /** Anchor step ids a job has adopted (see above), in step order. */
