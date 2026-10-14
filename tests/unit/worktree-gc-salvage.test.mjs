@@ -1,10 +1,3 @@
-// timebomb-audit-exempt: the fixture stamps note mtimes via utimesSync(Date.now()
-//   - 3h), then spawns gc-merged-worktrees.sh (a separate bash/find process on
-//   the REAL clock). Under audit-time-bomb-tests.js the in-process clock is
-//   shifted +Nd but the filesystem/child clock is not, so the notes' mtimes sit
-//   N days in the future and the GC correctly treats them as fresh. Both clocks
-//   agree in production; this is the "shim-backdated mtime + spawned child"
-//   variant documented in audit-time-bomb-tests.js (KNOWN LIMITATION).
 /**
  * BRO-4815 — landed worktrees whose only dirt is untracked session notes must
  * be salvaged (notes copied out) and removed by gc-merged-worktrees.sh, while
@@ -21,6 +14,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 
 const require = createRequire(import.meta.url);
 const { parseStatusZ, evaluateEligibility, resolveSalvageRoot } = require('../../scripts/lib/worktree-gc-salvage.js');
@@ -30,7 +24,8 @@ const REPOS_HELPER = fileURLToPath(new URL('../../scripts/lib/worktree-gc-repos.
 const ROOTS = [];
 after(() => { for (const r of ROOTS) fs.rmSync(r, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-const OLD = new Date(Date.now() - 3 * 3600 * 1000);
+// Real (unshifted) clock: the spawned GC script reads real time, so fixture mtimes must too.
+const OLD = new Date(realNowMs() - 3 * 3600 * 1000);
 const note = (wt, rel, body = 'session note\n', when = OLD) => {
   const f = path.join(wt, rel);
   fs.mkdirSync(path.dirname(f), { recursive: true });
@@ -65,7 +60,7 @@ function fixture() {
   fs.appendFileSync(path.join(wt('wt-tracked'), 'src/real.ts'), 'export const b = 2;\n');
   note(wt('wt-locked'), 'STATE.md');
   git(repo, 'worktree', 'lock', wt('wt-locked'), '--reason', 'BRO-4815 fixture');
-  note(wt('wt-fresh'), 'STATE.md', 'just written\n', new Date());
+  note(wt('wt-fresh'), 'STATE.md', 'just written\n', new Date(realNowMs()));
   fs.symlinkSync('/etc/hosts', path.join(wt('wt-link'), 'link.txt'));
   return { tmp, repo, wt, salvage: path.join(tmp, 'salvage') };
 }
