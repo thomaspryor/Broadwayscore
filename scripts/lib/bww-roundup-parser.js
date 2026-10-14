@@ -274,17 +274,56 @@ function nameTokens(name) {
 }
 
 /**
- * Loose same-person check for two critic names: identical after folding, or
- * same surname with the same first initial ("Bob Verini" / "Robert Verini"
- * does NOT match; "J. Kelly Nestruck" / "Kelly Nestruck" does not either --
- * both then fall back to positional order).
+ * Loose same-person check for two critic names: identical after folding,
+ * same surname with the same first initial, or one name's tokens all present
+ * in the other with the same surname ("Rose Bernardo" / "Melissa Rose
+ * Bernardo", "Kelly Nestruck" / "J. Kelly Nestruck"). "Bob Verini" /
+ * "Robert Verini" does NOT match and falls back to positional order.
  */
 function criticNamesMatch(a, b) {
   const ta = nameTokens(a);
   const tb = nameTokens(b);
   if (ta.length < 2 || tb.length < 2) return false;
   if (ta.join(' ') === tb.join(' ')) return true;
-  return ta[ta.length - 1] === tb[tb.length - 1] && ta[0][0] === tb[0][0];
+  if (ta[ta.length - 1] !== tb[tb.length - 1]) return false;
+  if (ta[0][0] === tb[0][0]) return true;
+  const [shorter, longer] = ta.length <= tb.length ? [ta, tb] : [tb, ta];
+  return shorter.length < longer.length && shorter.every((t) => longer.includes(t));
+}
+
+/**
+ * Whether Method 1 should leave this review's URL for the Method 2 pass.
+ * True for a slot with no usable critic name (null / "Unknown") at an outlet
+ * whose articleBody names critics: Method 2 renames such a slot to one of
+ * those critics, so a URL picked now (by position, before the slot has a
+ * name) would be paired with whichever critic it is later renamed to.
+ *
+ * @param {string|null} criticName - the review's critic so far
+ * @param {string[]} rosterNames - prescanned articleBody critics at the outlet
+ * @returns {boolean}
+ */
+function shouldDeferRoundupUrl(criticName, rosterNames) {
+  return nameTokens(criticName).length < 2 && Array.isArray(rosterNames) && rosterNames.length > 0;
+}
+
+/**
+ * Per-outlet roster of every critic the roundup names, gathered BEFORE any URL
+ * is handed out (BRO-3504 follow-up). Method 1 (JSON-LD) assigns URLs before
+ * Method 2 (articleBody) has added its critics, so a roster built only from
+ * the reviews found so far let a nameless / unmatched JSON-LD slot take the
+ * named anchor of a critic Method 2 finds later.
+ *
+ * @param {Array<{outletId: string|null, criticName: string|null}>} critics
+ * @returns {Record<string, string[]>} outletId -> distinct critic names
+ */
+function buildOutletRoster(critics) {
+  const roster = {};
+  for (const c of critics || []) {
+    if (!c || !c.outletId || !c.criticName || nameTokens(c.criticName).length < 2) continue;
+    const list = roster[c.outletId] || (roster[c.outletId] = []);
+    if (!list.some((n) => n === c.criticName)) list.push(c.criticName);
+  }
+  return roster;
 }
 
 /**
@@ -326,5 +365,7 @@ module.exports = {
   scanRoundupOutletAnchors,
   criticNamesMatch,
   orderAnchorCandidates,
+  buildOutletRoster,
+  shouldDeferRoundupUrl,
   CRITIC_OUTLET_PATTERN,
 };

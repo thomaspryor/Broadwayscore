@@ -94,7 +94,7 @@ const { resolveWriteTarget, buildSiblingIndex, tourDecision } = require('./lib/m
 const { recordMarketMisroute: _recordMarketMisroute } = require('./lib/market-misroute-ledger');
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
-const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates } = require('./lib/bww-roundup-parser');
+const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates, buildOutletRoster, shouldDeferRoundupUrl } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 // 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
@@ -2367,12 +2367,42 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   let sharedAnchorsByOutlet = null;
   let sharedUrlsByOutlet = null;
   let sharedConsumedByOutlet = null;
+  let sharedRosterByOutlet = null;
+  // The articleBody critics Method 2 will add later, read up front (same
+  // JSON-LD block, parser, outlet normalizer and canonicalization Method 2
+  // uses) so Method 1's URL pass already knows whose named anchors to leave
+  // alone. Anchor lead-in names are deliberately NOT added: a nameless JSON-LD
+  // slot may BE that critic, and with no other claimant it should still get
+  // the anchor positionally.
+  function prescanArticleBodyCritics() {
+    const out = [];
+    try {
+      const m = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+      if (!m) return out;
+      const ld = JSON.parse(m[1].replace(/[\x00-\x1F\x7F]/g, ' '));
+      for (const pair of parseArticleBodyReviews((ld && ld.articleBody) || '')) {
+        const outletId = normalizeOutlet(pair.outletRaw);
+        if (!outletId) continue;
+        out.push({ outletId, criticName: canonicalizeCritic(outletId, pair.criticName).name });
+      }
+    } catch (e) {
+      // Same tolerance as Method 2: an unparseable block just means no prescan.
+    }
+    return out;
+  }
   function getSharedUrlQueues() {
     if (sharedUrlsByOutlet) return { urlsByOutlet: sharedUrlsByOutlet };
     sharedAnchorsByOutlet = scanRoundupOutletAnchors(html, normalizeOutlet);
+    sharedRosterByOutlet = buildOutletRoster(prescanArticleBodyCritics());
     sharedUrlsByOutlet = {};
     sharedConsumedByOutlet = {};
     for (const [oid, entries] of Object.entries(sharedAnchorsByOutlet)) {
+      // Same canonicalization Methods 1/2 apply to critic names, so an anchor
+      // written "Steve Dineen, <a>City A.M." still matches the canonical
+      // "Steve Dinneen" review (and isn't reserved against him).
+      for (const e of entries) {
+        if (e.criticName) e.criticName = canonicalizeCritic(oid, e.criticName).name;
+      }
       sharedUrlsByOutlet[oid] = entries.map((e) => e.href);
       sharedConsumedByOutlet[oid] = new Set();
     }
@@ -2394,9 +2424,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     const entries = sharedAnchorsByOutlet[review.outletId];
     if (!entries || entries.length === 0) return { assigned: false, rejected: 0 };
     const consumed = sharedConsumedByOutlet[review.outletId];
+    // Roster = critics found so far PLUS the articleBody critics prescanned
+    // before Method 1 ran, so pass order can't hand a later-found critic's
+    // named anchor to someone else.
     const rosterNames = reviews
       .filter((r) => r !== review && r.outletId === review.outletId && r.criticName)
-      .map((r) => r.criticName);
+      .map((r) => r.criticName)
+      .concat(sharedRosterByOutlet[review.outletId] || []);
     const order = orderAnchorCandidates(entries, consumed, review.criticName || null, rosterNames);
     let rejected = 0;
     for (const idx of order) {
@@ -2567,6 +2601,9 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     let urlsRejected = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId) {
+        // Nameless slot at an outlet whose articleBody names critics: Method 2
+        // will rename it, so its URL is picked after that, by name.
+        if (shouldDeferRoundupUrl(review.criticName, sharedRosterByOutlet[review.outletId])) continue;
         const result = assignUrlFromSharedQueue(review);
         urlsRejected += result.rejected;
         if (result.assigned) urlsPopulated++;

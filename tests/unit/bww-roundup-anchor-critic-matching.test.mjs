@@ -21,6 +21,8 @@ const {
   scanRoundupOutletAnchors,
   criticNamesMatch,
   orderAnchorCandidates,
+  buildOutletRoster,
+  shouldDeferRoundupUrl,
 } = require('../../scripts/lib/bww-roundup-parser.js');
 const { normalizeOutlet } = require('../../scripts/lib/review-normalization.js');
 const { extractBWWRoundupReviews } = require('../../scripts/gather-reviews.js');
@@ -129,6 +131,11 @@ describe('BRO-3504: orderAnchorCandidates', () => {
     assert.ok(!criticNamesMatch('Frank Scheck', 'David Finkle'));
     assert.ok(!criticNamesMatch('Scheck', 'Frank Scheck'));
     assert.ok(!criticNamesMatch(null, 'Frank Scheck'));
+    // same surname, one name's tokens inside the other's (middle/leading name)
+    assert.ok(criticNamesMatch('Rose Bernardo', 'Melissa Rose Bernardo'));
+    assert.ok(criticNamesMatch('Kelly Nestruck', 'J. Kelly Nestruck'));
+    assert.ok(!criticNamesMatch('Bob Verini', 'Robert Verini'));
+    assert.ok(!criticNamesMatch('Rose Smith', 'Melissa Rose Bernardo'));
   });
 });
 
@@ -185,5 +192,101 @@ describe('BRO-3504: extractBWWRoundupReviews pairs URLs by critic name', () => {
     const finkle = reviews.find((r) => r.criticName === 'David Finkle');
     assert.strictEqual(scheck.url, SCHECK_URL);
     assert.strictEqual(finkle.url, FINKLE_URL);
+  });
+});
+
+describe('BRO-3504 follow-up: roster is seeded before Method 1 assigns URLs', () => {
+  test('buildOutletRoster groups distinct multi-word names by outlet', () => {
+    assert.deepStrictEqual(buildOutletRoster([
+      { outletId: 'nysr', criticName: 'David Finkle' },
+      { outletId: 'nysr', criticName: 'David Finkle' },
+      { outletId: 'nysr', criticName: 'Unknown' },
+      { outletId: 'nyt', criticName: 'Jesse Green' },
+      { outletId: null, criticName: 'Nobody Here' },
+    ]), { nysr: ['David Finkle'], nyt: ['Jesse Green'] });
+  });
+
+  test('shouldDeferRoundupUrl: only nameless slots at outlets with articleBody critics', () => {
+    assert.strictEqual(shouldDeferRoundupUrl(null, ['David Finkle']), true);
+    assert.strictEqual(shouldDeferRoundupUrl('Unknown', ['David Finkle']), true);
+    assert.strictEqual(shouldDeferRoundupUrl(null, []), false);
+    assert.strictEqual(shouldDeferRoundupUrl(null, undefined), false);
+    assert.strictEqual(shouldDeferRoundupUrl('Bob Verini', ['David Finkle']), false);
+  });
+
+  // Exact failure the review found: Method 1 hands out URLs before Method 2
+  // has added the articleBody critics. A JSON-LD slot with no critic name
+  // (or a name that matches no anchor) fell back to document order and took
+  // the FIRST anchor, which is named for articleBody critic B.
+  for (const [label, jsonLdAuthor] of [
+    ['nameless JSON-LD slot', undefined],
+    ['unmatched JSON-LD name', 'New York Stage Review - Bob Verini'],
+  ]) {
+    test(`${label} does not take the named anchor of an articleBody-only critic`, () => {
+      const bUrl = 'https://nystagereview.com/2026/04/15/test-show-finkle-take/';
+      const aUrl = 'https://nystagereview.com/2026/04/15/test-show-other-take/';
+      const ld = {
+        '@type': 'LiveBlogPosting',
+        articleBody: "Let's see what the critics had to say... David Finkle, New York Stage Review: Finkle loved it.",
+        liveBlogUpdate: [
+          { '@type': 'BlogPosting', headline: 'New York Stage Review - Test Show',
+            ...(jsonLdAuthor ? { author: { name: jsonLdAuthor } } : {}), articleBody: 'A different take.' },
+        ],
+      };
+      const html = `<html><body><script type="application/ld+json">${JSON.stringify(ld)}</script>
+<p>David Finkle, <a href="${bUrl}">New York Stage Review:</a> Finkle loved it.</p>
+<p>Robert Verini, <a href="${aUrl}">New York Stage Review:</a> A different take.</p></body></html>`;
+      const reviews = extractBWWRoundupReviews(html, 'test-show-2026', BWW_URL, 'Test Show');
+      const finkle = reviews.find((r) => r.criticName === 'David Finkle');
+      assert.ok(finkle, 'expected the articleBody critic David Finkle');
+      assert.strictEqual(finkle.url, bUrl, 'Finkle must get the anchor named for him');
+      const urls = reviews.map((r) => r.url).filter(Boolean);
+      assert.strictEqual(new Set(urls).size, urls.length, 'no URL handed out twice (BRO-923)');
+      for (const r of reviews) {
+        if (r !== finkle) assert.notStrictEqual(r.url, bUrl, `${r.criticName} must not hold Finkle's link`);
+      }
+    });
+  }
+
+  test('two nameless JSON-LD slots renamed by articleBody keep their own named anchors', () => {
+    // articleBody order [Finkle, Sommers]; anchor order [Sommers, Finkle].
+    // Pre-fix: Method 1 gave slot 1 Sommers' URL and slot 2 Finkle's by
+    // position, then Method 2 renamed slot 1 -> Finkle, slot 2 -> Sommers:
+    // both critics ended up holding the other's link.
+    const finkleUrl = 'https://nystagereview.com/2026/04/15/test-show-finkle/';
+    const sommersUrl = 'https://nystagereview.com/2026/04/15/test-show-sommers/';
+    const ld = {
+      '@type': 'LiveBlogPosting',
+      articleBody: "Let's see what the critics had to say... David Finkle, New York Stage Review: Loved it. Michael Sommers, New York Stage Review: Hated it.",
+      liveBlogUpdate: [
+        { '@type': 'BlogPosting', headline: 'New York Stage Review - Test Show', articleBody: 'Loved it.' },
+        { '@type': 'BlogPosting', headline: 'New York Stage Review - Test Show', articleBody: 'Hated it.' },
+      ],
+    };
+    const html = `<html><body><script type="application/ld+json">${JSON.stringify(ld)}</script>
+<p>Michael Sommers, <a href="${sommersUrl}">New York Stage Review:</a> Hated it.</p>
+<p>David Finkle, <a href="${finkleUrl}">New York Stage Review:</a> Loved it.</p></body></html>`;
+    const reviews = extractBWWRoundupReviews(html, 'test-show-2026', BWW_URL, 'Test Show');
+    const finkle = reviews.find((r) => r.criticName === 'David Finkle');
+    const sommers = reviews.find((r) => r.criticName === 'Michael Sommers');
+    assert.ok(finkle && sommers, `expected both critics, got ${JSON.stringify(reviews.map((r) => r.criticName))}`);
+    assert.strictEqual(finkle.url, finkleUrl);
+    assert.strictEqual(sommers.url, sommersUrl);
+  });
+
+  test('canonicalized critic still gets the anchor written under the raw spelling', () => {
+    // Real page (the-american-clock-west-end-2019): BWW writes "Steve Dineen,
+    // <a>City A.M.</a>"; critic-canonicalization renames him Steve Dinneen.
+    const url = 'http://www.cityam.com/273290/american-clock-old-vic-theatre-review';
+    const ld = {
+      '@type': 'LiveBlogPosting',
+      articleBody: "Let's see what the critics had to say... Steve Dineen, City A.M.: Even the most dramatic scenes fall flat.",
+    };
+    const html = `<html><body><script type="application/ld+json">${JSON.stringify(ld)}</script>
+<p>Steve Dineen, <a href="${url}">City A.M.:</a> Even the most dramatic scenes fall flat.</p></body></html>`;
+    const reviews = extractBWWRoundupReviews(html, 'the-american-clock-2019', BWW_URL, 'The American Clock');
+    const r = reviews.find((x) => x.criticName === 'Steve Dinneen');
+    assert.ok(r, `expected canonical Steve Dinneen, got ${JSON.stringify(reviews.map((x) => x.criticName))}`);
+    assert.strictEqual(r.url, url);
   });
 });
