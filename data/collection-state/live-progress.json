@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-10-14T00:29:06.918Z",
-  "processed": 287,
-  "failed": 219,
-  "successRate": "56.7%",
+  "updatedAt": "2026-10-14T01:03:26.685Z",
+  "processed": 331,
+  "failed": 255,
+  "successRate": "56.5%",
   "tierBreakdown": {
-    "playwright": 172,
+    "playwright": 203,
     "amp": 9,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingdog": 40,
-    "scrapingbee": 25,
-    "brightdata": 0,
+    "scrapingdog": 43,
+    "scrapingbee": 29,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 52
+    "archive": 56
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
+    {
+      "t": "2026-10-13T20:23:43.512Z",
+      "event": "bb-session",
+      "session": "69841e4e",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621823024535518.html?m"
+    },
+    {
+      "t": "2026-10-13T20:23:44.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T20:24:10.004Z",
+      "event": "bb-session",
+      "session": "3dba0a25",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-13T20:24:10.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-10-13T20:24:28.066Z",
       "event": "bb-session",
@@ -95,16 +117,15 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-14T00:03:57.801Z",
+      "t": "2026-10-14T00:50:37.979Z",
       "event": "bb-session",
-      "session": "69d5efbf",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "session": "50e0690d",
+      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
     },
     {
-      "t": "2026-10-14T00:04:05.959Z",
-      "event": "bb-session",
-      "session": "72a2c613",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "t": "2026-10-14T00:50:38.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
