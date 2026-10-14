@@ -693,6 +693,7 @@ export function checkReviewCoverage({ command, cwd, targets, env = process.env, 
   try {
     const events = seams.events !== undefined ? seams.events : transcriptPath && fs.existsSync(transcriptPath) ? rc.walkTranscript(transcriptPath) : null;
     let gatedLines = 0;
+    let touchesSrc = false;
     let root = null;
     for (const t of targets) {
       const p = t.push;
@@ -701,9 +702,12 @@ export function checkReviewCoverage({ command, cwd, targets, env = process.env, 
       if (!ok(top)) continue;
       root = out(top);
       const stats = seams.stats || rc.gatedDiffStats(root, 'origin/main', t.src || 'HEAD');
-      if (!stats.error) gatedLines = Math.max(gatedLines, stats.totalLines);
+      if (!stats.error) {
+        gatedLines = Math.max(gatedLines, stats.totalLines);
+        if ((stats.files || []).some((f) => f.path.startsWith('src/'))) touchesSrc = true;
+      }
     }
-    const v = rc.landGateDecision({ command, events, gatedLines, budget: rc.GATE_LINE_BUDGET, env });
+    const v = rc.landGateDecision({ command, events, gatedLines, budget: rc.GATE_LINE_BUDGET, touchesSrc, env });
     if (root) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines });
     return v;
   } catch {

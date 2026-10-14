@@ -265,3 +265,19 @@ test('stop hook: a LENSES/TESTED block that only exists in the closing message (
   assert.equal(stopHookDecision({ lastMessage: closing, events: base, env: CLOUD }).decision, 'allow');
   assert.equal(stopHookDecision({ lastMessage: 'Done.\n\nSAFE TO EXIT', events: base, env: CLOUD }).decision, 'block');
 });
+
+test('general-purpose reviewer accepted when it has a real review prompt; a build is required only for src/ diffs', () => {
+  const gp = tool('Agent', { subagent_type: 'general-purpose', prompt: 'Please review this diff for bugs and design problems in the changed files. '.repeat(5) });
+  assert.equal(evaluateCoverage(ev(skill(), gp, curl())).complete, true);
+  const chatty = tool('Agent', { subagent_type: 'general-purpose', prompt: 'Tell me a long story about theatre. '.repeat(10) });
+  assert.equal(evaluateCoverage(ev(skill(), chatty, curl())).complete, false, 'a long prompt that is not a review does not count');
+  const build = tool('Bash', { command: 'NEXT_PUBLIC_FEATURES=criticPages npm run build 2>&1 | tail -30' });
+  const full = ev(skill(), agent(), curl());
+  assert.equal(evaluateCoverage(full, { requireBuild: true }).complete, false);
+  assert.match(evaluateCoverage(full, { requireBuild: true }).missing[0], /npm run build/);
+  assert.equal(evaluateCoverage([...full, ...ev(build)], { requireBuild: true }).complete, true);
+  assert.equal(evaluateCoverage([...full, ...ev(tool('Bash', { command: 'echo npm run build' }))], { requireBuild: true }).complete, false);
+  const gate = { command: 'git push origin HEAD:refs/heads/land/x', gatedLines: 90, env: CLOUD, events: full };
+  assert.equal(landGateDecision({ ...gate, touchesSrc: false }).decision, 'allow');
+  assert.equal(landGateDecision({ ...gate, touchesSrc: true }).decision, 'block');
+});

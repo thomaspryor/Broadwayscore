@@ -8,7 +8,9 @@
 // This lib reads the session transcript and answers one question: after the
 // last real ship-check/code-review run, did the reviewers the skill requires
 // actually get launched? Required (cloud profile, see .claude/commands/ship-check.md):
-//   1. a Claude codebase review: an Agent call with subagent_type review-panelist
+//   1. a Claude codebase review: an Agent call (review-panelist preferred; some containers lack that
+//      type and sessions fall back to general-purpose, so any subagent type counts) with a real
+//      review prompt
 //   2. an external adversarial review: curl to api.openai.com / Gemini, or `codex exec`
 // tsc/lint/build are NOT checked here: land.yml runs them strictly on the rebased tree.
 // Known limits (accepted, BRO-5359 ship-check): this sets a floor, not proof of review quality;
@@ -51,6 +53,7 @@ const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:\\w+=\\S*\\s+)
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
 const unquoted = (cmd) => cmd.replace(/'[^']*'/g, "''").replace(/"[^"]*"/g, '""');
+const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
 const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
 const MIN_RESULT_CHARS = 40;
 const isExternalReviewCall = (cmd) => {
@@ -95,7 +98,7 @@ export function findRuns(events, skills = STRONG_SKILLS) {
  * Coverage after the last strong review run in the session.
  * -> { ran, complete, skill, missing: string[], evidence|null }
  */
-export function evaluateCoverage(events) {
+export function evaluateCoverage(events, { requireBuild = false } = {}) {
   const runs = findRuns(events);
   if (runs.length === 0) {
     return { ran: false, complete: false, skill: null, missing: ['no /ship-check or /code-review run in this session'], evidence: null };
@@ -117,13 +120,16 @@ export function evaluateCoverage(events) {
   for (const e of events.slice(last.i + 1)) {
     if (e.kind !== 'assistant_tool_use') continue;
     if (e.name === 'Agent' || e.name === 'Task') {
-      if (e.input?.subagent_type === 'review-panelist' && String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && answered(e.id)) claude.push(e);
+      if (String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && /review|audit|adversar|qa\b/i.test(String(e.input?.prompt)) && answered(e.id)) claude.push(e);
     } else if (e.name === 'Bash' && isExternalReviewCall(String(e.input?.command || '')) && answeredWell(e.id)) {
       external.push(e);
     }
   }
+  // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
+  const built = events.slice(last.i + 1).some((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash' && BUILD_RE.test(unquoted(String(e.input?.command || ''))) && answered(e.id));
   const missing = [];
-  if (claude.length === 0) missing.push('Claude codebase review (Agent with subagent_type "review-panelist" and a real review prompt)');
+  if (requireBuild && !built) missing.push('the build (`npm run build`, Phase 2 of ship-check): land.yml does not run it and this diff touches src/');
+  if (claude.length === 0) missing.push('Claude codebase review (an Agent call, subagent_type review-panelist, with a real review prompt of 200+ characters)');
   if (external.length === 0) missing.push('external adversarial review (curl -d to api.openai.com /v1/chat/completions, Gemini generateContent, or `codex exec`) with a real response');
   const complete = missing.length === 0;
   let evidence = null;
@@ -143,14 +149,14 @@ export function evaluateCoverage(events) {
  * Pure land-push decision. `gatedLines` = gated diff size of the pushed range.
  * -> { decision: 'allow'|'skip'|'block', reason, message? }
  */
-export function landGateDecision({ command = '', events = null, gatedLines = 0, budget = 30, env = process.env }) {
+export function landGateDecision({ command = '', events = null, gatedLines = 0, budget = 30, touchesSrc = false, env = process.env }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'skip', reason: 'not a cloud session (the Mac has its own finish-line gate)' };
   if (env.SHIP_CHECK_LAND_GATE_DISABLE === '1') return { decision: 'skip', reason: 'SHIP_CHECK_LAND_GATE_DISABLE=1' };
   const bypass = NO_SHIP_CHECK_RE.exec(command);
   if (bypass) return { decision: 'allow', reason: `NO-SHIP-CHECK bypass: ${bypass[1].trim()}` };
   if (!events || events.length === 0) return { decision: 'skip', reason: 'no transcript to judge (fails open)' };
   if (gatedLines <= budget) return { decision: 'skip', reason: `gated diff is ${gatedLines} lines (<= ${budget})` };
-  const cov = evaluateCoverage(events);
+  const cov = evaluateCoverage(events, { requireBuild: touchesSrc });
   if (cov.complete) return { decision: 'allow', reason: `${cov.skill} coverage complete` };
   return {
     decision: 'block',
@@ -159,8 +165,8 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
       `LAND BLOCKED (BRO-5359): this push lands ${gatedLines} lines of code but the session has no complete review yet.`,
       'Missing:',
       ...cov.missing.map((m) => `  - ${m}`),
-      'Run the real /ship-check now, before landing: follow its cloud profile (Claude review-panelist Agent AND an external reviewer), fix what it finds, then push again.',
-      'tsc, lint and the build are run by land.yml on the rebased tree; do not skip the reviewers for that reason.',
+      'Run the real /ship-check now, before landing: follow its cloud profile (a Claude review Agent AND an external reviewer), fix what it finds, then push again.',
+      'land.yml runs tsc and lint on the rebased tree, but NOT the build: a src/ change needs `npm run build` from you. Do not skip the reviewers for that reason.',
       'Only if the review truly cannot run: add `# NO-SHIP-CHECK: <reason, 15+ chars>` to the push command (logged).',
     ].join('\n'),
   };
