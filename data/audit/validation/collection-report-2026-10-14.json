@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-14T05:01:16.703Z",
+  "runDate": "2026-10-14T05:56:43.156Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 5,
@@ -17,39 +17,39 @@
     "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 262,
+    "playwright": 264,
     "amp": 9,
     "browserbase": 20,
     "directCookies": 0,
-    "scrapingdog": 47,
+    "scrapingdog": 48,
     "scrapingbee": 35,
     "brightdata": 10,
     "archiveToday": 0,
     "archive": 85
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 0,
     "tier1Success": 0,
-    "ampAttempts": 3,
+    "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 3,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier3_6Attempts": 3,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 5,
-    "scrapingBeePageCredits": 10,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
+    "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -57,24 +57,24 @@
     "processed": 0,
     "failed": 5,
     "shows": [
-      "book-of-mormon-2011",
-      "mj-2022",
-      "the-outsiders-2024",
+      "pride-west-end-2026",
+      "romeo-and-juliet-west-end-2026",
+      "to-kill-a-mockingbird-west-end-2026",
       "wicked-2003"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 437,
-      "failed": 0
+      "processed": 439,
+      "failed": 23
     }
   },
   "processed": [],
   "failed": [
-    "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "mj-2022/variety--peter-marks.json",
-    "book-of-mormon-2011/vulture--jesse-green.json",
-    "wicked-2003/variety--peter-debruge.json"
+    "wicked-2003/variety--peter-debruge.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -514,14 +514,38 @@
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "into-the-woods-west-end-2025/liamodell--unknown.json",
       "into-the-woods-west-end-2025/theatre-weekly--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "failed": [
       "the-outsiders-2024/hollywood-reporter--angie-han.json",
       "the-outsiders-2024/hollywood-reporter--david-rooney.json",
       "mj-2022/variety--peter-marks.json",
       "book-of-mormon-2011/vulture--jesse-green.json",
-      "wicked-2003/variety--peter-debruge.json"
+      "wicked-2003/variety--peter-debruge.json",
+      "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
+      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json",
+      "fish-off-broadway-2026/timeout--unknown.json",
+      "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "soon-off-broadway-2026/latimes--lucas-villa.json",
+      "soon-off-broadway-2026/playbill--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+      "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+      "human-things-off-broadway-2026/deadline--glenn-garner.json",
+      "la-boheme-off-broadway-2026/parterre-box--unknown.json",
+      "la-boheme-off-broadway-2026/thestage--the-stage.json",
+      "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+      "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
+      "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
+      "pride-west-end-2026/nyt-theater--unknown.json",
+      "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+      "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
     ]
   },
   "tierDetails": {
@@ -787,7 +811,9 @@
       "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
       "into-the-woods-west-end-2025/liamodell--unknown.json",
       "into-the-woods-west-end-2025/theatre-weekly--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -870,7 +896,8 @@
       "becky-shaw-2026/cote-notices--david-cote.json",
       "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
-      "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json"
+      "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/new-york-sun--unknown.json",
@@ -1010,28 +1037,6 @@
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
