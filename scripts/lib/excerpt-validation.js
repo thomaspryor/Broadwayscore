@@ -694,6 +694,7 @@ function tourContextForShow(show) {
   return {
     currentShowId: show.id,
     currentShowTitle: show.title,
+    currentShowCategory: show.category || 'broadway',
     currentShowVenue: show.venue || show.theater || null,
     currentShowYear: Number.isFinite(year) ? year : null,
     tourWordingExpected: show.category === 'tour' || show.status === 'tour-stop' || show.type === 'special',
@@ -722,6 +723,27 @@ function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
     if ((prev && !/^(?:The|A|An|This|That|Its|Their|His|Her|Our)$/.test(prev)) || /^\s+[A-Z]/.test(after)) return 'company-name';
   }
   if (TOUR_HISTORY_PREFIX.test(before)) return 'history';
+  // BRO-5327: a bare national-tour mention can describe the history of a
+  // production now at its own venue or on Broadway, whatever the phrasing.
+  // Keep explicit descriptions of an attended/current tour as live signals.
+  // Tour venues are checked first by isTourReviewExcerpt; the own-venue
+  // matcher also vetoes other cities, even when the Broadway home is named.
+  if (context && (!context.currentShowCategory || context.currentShowCategory === 'broadway')
+      && /^national tour$/i.test(matchText)
+      && !/\b(?:first|UK|US)\s+$/i.test(before)
+      && !/^\s+(?:at|in|is|has|now|currently|plays?|stops?|arrives?|comes?|visits?)\b/i.test(after)
+      && !TOUR_PRESENT_PATTERNS.some(p => p.test(excerpt))
+      && !TOUR_PAST_TENSE_PATTERNS.some(p => p.test(excerpt))) {
+    const { reviewedAtOwnVenue } = require('./tour-stop-carveout');
+    // This matcher normally treats Broadway/New York as a different city
+    // from a London venue. Here they are the Broadway production's home.
+    const localText = excerpt.replace(/\b(?:on Broadway|New York(?: City)?)\b/gi, '');
+    const atOwnVenue = context.currentShowVenue
+      && reviewedAtOwnVenue(localText, { venue: context.currentShowVenue });
+    const onBroadway = /\bon Broadway\b/i.test(excerpt)
+      && reviewedAtOwnVenue(excerpt, { venue: 'Broadway, New York' });
+    if (atOwnVenue || onBroadway) return 'history';
+  }
   // The tour's stop AT this record's own venue is this production: "reviews
   // the UK touring production of Curtains at the Wyndham's Theatre" on the
   // Wyndham's 2019 record (BRO-4884). The venue must follow the tour words in
@@ -743,6 +765,7 @@ function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
  *
  * @param {string} excerpt - The excerpt text
  * @param {{currentShowId?: string, currentShowTitle?: string,
+ *          currentShowCategory?: string,
  *          currentShowVenue?: string, currentShowYear?: number,
  *          tourWordingExpected?: boolean}} [context] -
  *   build it with tourContextForShow(show). With it, a tour production's or
