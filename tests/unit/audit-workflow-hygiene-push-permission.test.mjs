@@ -10,7 +10,9 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -102,6 +104,76 @@ describe('findPushWithoutWritePermission', () => {
     const raw = wf({ top: 'permissions:\n  contents: read\n' });
     const [hit] = findPushWithoutWritePermission(raw);
     assert.match(raw.split('\n')[hit.lineNum - 1], /push-with-retry\.sh/);
+  });
+});
+
+describe('syntax variants', () => {
+  const read = 'permissions:\n  contents: read\n';
+  const run = (cmd) => wf({ top: read, steps: `      - name: P\n        run: ${cmd}\n` });
+
+  test('bash -x, source, dot, and bare ./ invocations all count as a push', () => {
+    for (const cmd of [
+      'bash -x scripts/lib/push-with-retry.sh',
+      'bash -e -x scripts/lib/push-with-retry.sh 5 main',
+      'sh scripts/lib/push-with-retry.sh',
+      'source scripts/lib/push-with-retry.sh',
+      '. scripts/lib/push-with-retry.sh',
+      './scripts/lib/push-with-retry.sh',
+    ]) {
+      assert.equal(findPushWithoutWritePermission(run(cmd)).length, 1, cmd);
+    }
+  });
+
+  test('a path inside an echo is not a push', () => {
+    assert.equal(findPushWithoutWritePermission(run('echo "see ./scripts/lib/push-with-retry.sh"')).length, 0);
+  });
+
+  test('flow-map and quoted contents: write are treated as write', () => {
+    assert.equal(findPushWithoutWritePermission(wf({ top: 'permissions: { contents: write }\n' })).length, 0);
+    assert.equal(findPushWithoutWritePermission(wf({ top: "permissions:\n  contents: 'write'\n" })).length, 0);
+  });
+
+  test('read-all and a job-level empty block are not write', () => {
+    assert.equal(findPushWithoutWritePermission(wf({ top: 'permissions: read-all\n' })).length, 1);
+    const job = '    permissions: {}\n';
+    assert.equal(findPushWithoutWritePermission(wf({ top: 'permissions:\n  contents: write\n', job })).length, 1);
+  });
+
+  test('a trailing comment after the composite name still matches', () => {
+    const steps = '      - uses: ./.github/actions/commit-stage-latency # emits stage events\n';
+    assert.equal(findPushWithoutWritePermission(wf({ top: read, steps })).length, 1);
+  });
+});
+
+describe('audit CLI wiring (rule v reaches the exit code)', () => {
+  const audit = path.join(ROOT, 'scripts/audit-workflow-hygiene.js');
+  const runAudit = (body) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hygiene-pushperm-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'x.yml'), body);
+      return spawnSync('node', [audit], { env: { ...process.env, HYGIENE_WORKFLOW_DIR: dir }, encoding: 'utf8' });
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  };
+  // the same body shape for all three runs; only the permission/exemption differs
+  const body = (perm, marker = '') =>
+    `name: x\n${marker}on: workflow_dispatch\n${perm}jobs:\n  j:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Push\n        run: |\n          git config user.name "github-actions[bot]"\n          git add data/audit/x.json\n          git commit -m x\n          bash scripts/lib/push-with-retry.sh\n      - name: Notify on failure\n        if: failure()\n        uses: ./.github/actions/notify-failure\n        with:\n          title: x\n`;
+
+  test('read permission fails the audit and names rule (v)', () => {
+    const r = runAudit(body('permissions:\n  contents: read\n'));
+    assert.notEqual(r.status, 0, r.stdout + r.stderr);
+    assert.match(r.stderr, /\(v\) Root push/);
+  });
+
+  test('contents: write passes', () => {
+    const r = runAudit(body('permissions:\n  contents: write\n'));
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  });
+
+  test('hygiene-push-perm-ok exemption passes', () => {
+    const r = runAudit(body('permissions:\n  contents: read\n', '# hygiene-push-perm-ok: pushes via a PAT remote\n'));
+    assert.equal(r.status, 0, r.stdout + r.stderr);
   });
 });
 

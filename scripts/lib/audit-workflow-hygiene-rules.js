@@ -1064,12 +1064,12 @@ const NESTED_PUSH_COMPOSITES = ['checkout-core-data', 'push-core-data'];
 function readPermissionsGrantsContentsWrite(lines, idx) {
   const indent = indentOf(lines[idx]);
   const inline = lines[idx].replace(/^[^:]*:/, '').replace(/#.*$/, '').trim();
-  if (inline) return inline === 'write-all';
+  if (inline) return inline === 'write-all' || /\bcontents\s*:\s*['"]?write\b/.test(inline); // flow map: { contents: write }
   for (let i = idx + 1; i < lines.length; i++) {
     const l = lines[i];
     if (!l.trim() || l.trim().startsWith('#')) continue;
     if (indentOf(l) <= indent) break;
-    if (/^\s*contents\s*:\s*write\b/.test(l)) return true;
+    if (/^\s*contents\s*:\s*['"]?write\b/.test(l)) return true;
   }
   return false;
 }
@@ -1081,9 +1081,10 @@ function findPushWithoutWritePermission(raw) {
   const topIdx = lines.findIndex((l) => /^permissions\s*:/.test(l));
   const top = topIdx === -1 ? null : readPermissionsGrantsContentsWrite(lines, topIdx);
   const composite = new RegExp(
-    `^\\s*-?\\s*uses:\\s*\\./\\.github/actions/(${ROOT_PUSH_COMPOSITES.join('|')})\\s*$`,
+    `^\\s*-?\\s*uses:\\s*\\./\\.github/actions/(${ROOT_PUSH_COMPOSITES.join('|')})\\s*(#.*)?$`,
   );
-  const direct = /\b(?:bash|sh)\s+\S*push-with-retry\.sh/;
+  // `bash [-x] path`, `sh path`, `source path`, `. path`, or a bare `./path` at the start of a command.
+  const direct = /(?:\b(?:bash|sh|source)\s+(?:-\S+\s+)*|(?:^|[\s;&|])\.\s+|^\s*(?:-\s+)?(?:run:\s*[|>]?\s*)?\.\/)\S*push-with-retry\.sh/;
   const starts = findJobBoundaries(lines, jobsIdx);
   const hits = [];
   for (let j = 0; j < starts.length - 1; j++) {
