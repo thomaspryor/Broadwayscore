@@ -98,9 +98,10 @@ function classifiedCandidates(comm, show, now) {
 
 /**
  * The rows a record is scored on: its groundTruth() claim in its tier and,
- * under --truth=reported, an inference % the reported claim displaced, as an
- * advisory row (ship-check BRO-5311: Chess's Reddit 10-20% lost to a
- * designation-wide failed row and was scored nowhere).
+ * an inference % the reported claim displaced, as an advisory row (ship-check
+ * BRO-5311: Chess's Reddit 10-20% lost to a designation-wide failed row and
+ * was scored nowhere). Under --truth=all too: the reported claim now outranks
+ * it there as well (BRO-5264 retro-review, BRO-5261).
  * @returns {Array<{ truth: object, tier: 'gate'|'advisory', superseded?: true }>}
  */
 function truthRows(comm, show, mode, now = new Date()) {
@@ -108,7 +109,7 @@ function truthRows(comm, show, mode, now = new Date()) {
   const tier = truthTier(truth, mode);
   if (!tier) return [];
   const out = [{ truth, tier }];
-  if (mode === 'reported' && tier === 'gate' && truth.kind !== 'reported-pct') {
+  if (tier === 'gate' && truth.kind !== 'reported-pct') {
     const pct = classifiedCandidates(comm, show, now).find((t) => t.kind === 'reported-pct' && t.truthClass !== 'reported');
     if (pct) out.push({ truth: pct, tier: 'advisory', superseded: true });
   }

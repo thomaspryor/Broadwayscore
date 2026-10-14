@@ -140,13 +140,13 @@ describe('scoring', () => {
     assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
   });
   // BRO-5311: the inference % a reported claim displaced is still scored, as advisory.
-  test('truthRows adds the displaced inference % as an advisory row, only under --truth=reported', () => {
+  test('truthRows adds the displaced inference % as an advisory row, under --truth=reported and all', () => {
     const show = { closingDate: '2026-02-22', openingDate: '2025-04-01', type: 'musical' };
     const comm = { estimatedRecoupmentPct: [10, 20], estimatedRecoupmentSource: 'Reddit Grosses Analysis post states recoup=10-20%', recouped: false, designation: 'Fizzle', notes: 'Variety reported the show closed without recouping.' };
     const rows = truthRows(comm, show, 'reported');
     assert.deepEqual(rows.map((r) => [r.truth.kind, r.tier, !!r.superseded]), [['failed', 'gate', false], ['reported-pct', 'advisory', true]]);
     assert.deepEqual(rows[1].truth.lo, 10);
-    assert.equal(truthRows(comm, show, 'all').length, 1);
+    assert.deepEqual(truthRows(comm, show, 'all').map((r) => [r.truth.kind, r.tier, !!r.superseded]), [['failed', 'gate', false], ['reported-pct', 'advisory', true]]);
     // An inference-only record: one advisory row, nothing extra.
     assert.deepEqual(truthRows({ ...comm, notes: 'Closed early.' }, show, 'reported').map((r) => [r.truth.kind, r.tier]), [['reported-pct', 'advisory']]);
     assert.deepEqual(truthRows(null, show, 'reported'), []);

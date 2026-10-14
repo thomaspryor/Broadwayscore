@@ -630,3 +630,23 @@ describe('released rows keep the record\'s own text (BRO-5041 review)', () => {
     assert.deepEqual(fresh, { notes: 'Row note.', recouped: false, recoupedSource: 'https://row.example/' });
   });
 });
+
+// BRO-5264 retro-review (BRO-5261): automated writers drop a placeholder link
+// they would add, and keep one already on the record.
+describe('buildCommercialEntry placeholder sources', () => {
+  const { normalizeSources } = require('../../scripts/lib/commercial-sources');
+  it('drops new homepage / Wikipedia / own-site links, keeps articles and existing links', () => {
+    const existing = { designation: 'TBD', sources: [{ type: 'trade', url: 'https://en.wikipedia.org/wiki/Old', date: null }] };
+    const entry = { designation: 'TBD', sources: [
+      { type: 'trade', url: 'https://www.broadwayjournal.com', date: '2026-10-01' },
+      { type: 'trade', url: 'https://en.wikipedia.org/wiki/New', date: '2026-10-01' },
+      { type: 'trade', url: 'https://broadwayscorecard.com/show/x', date: '2026-10-01' },
+      { type: 'trade', url: 'https://www.broadwayjournal.com/p/hells-kitchen-recoupment', date: '2026-10-01' },
+      { type: 'trade', url: 'https://en.wikipedia.org/wiki/Old', date: null },
+    ] };
+    const out = gate.buildCommercialEntry(entry, existing, { isClaimAutoApply: true, normalizeSources });
+    assert.deepEqual(out.sources.map((s) => s.url), ['https://en.wikipedia.org/wiki/Old', 'https://www.broadwayjournal.com/p/hells-kitchen-recoupment']);
+    const fresh = gate.buildCommercialEntry(entry, existing, { normalizeSources });
+    assert.deepEqual(fresh.sources.map((s) => s.url), ['https://www.broadwayjournal.com/p/hells-kitchen-recoupment', 'https://en.wikipedia.org/wiki/Old']);
+  });
+});

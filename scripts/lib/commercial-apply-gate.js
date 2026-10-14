@@ -4,6 +4,7 @@
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES } = require('./commercial-designations');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
+const { placeholderSourceKind } = require('./commercial-sources');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
@@ -277,10 +278,13 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     delete result.classifiedReason;
   }
   if (Array.isArray(entry.sources) && entry.sources.length > 0) {
-    const normalized = normalizeSources(entry.sources);
+    // A placeholder link (homepage, Wikipedia, this site) cites nothing; the
+    // automated writers drop any they would ADD, the same rule the plan runner
+    // and tip writers refuse on (commercial-record-checks.js, BRO-5264).
+    const existingUrls = new Set((Array.isArray(existing?.sources) ? existing.sources : []).map(s => s && typeof s.url === 'string' ? s.url.trim() : null).filter(Boolean));
+    const normalized = normalizeSources(entry.sources).filter(s => !placeholderSourceKind(s.url) || existingUrls.has(s.url));
     if (normalized.length > 0) {
       if (overlay && Array.isArray(existing?.sources)) {
-        const existingUrls = new Set(existing.sources.map(s => s.url).filter(Boolean));
         result.sources = [...existing.sources, ...normalized.filter(s => !existingUrls.has(s.url))];
       } else {
         result.sources = normalized;

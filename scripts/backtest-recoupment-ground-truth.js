@@ -194,7 +194,9 @@ const falseRecoupedLine = `New false recouped vs truth: ${newFalseRecouped.lengt
 const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped): ${insane.length}${detail(insane, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}`;
 const newOnlyLine = `Rows only the new side failed to model: ${skipped.newOnly}${skipped.newOnly ? '; blocks any switch' : ''}`;
 const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported rows decide pass or fail; ${skipped.inference} inference-only records go to the Advisory line instead (--truth=all mixes them in)` : 'reported and inference'}`;
-const advisoryOut = TRUTH === 'reported' ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}; of ${skipped.inference + advisorySkipped.superseded} (${advisorySkipped.superseded} an inference % a reported claim displaced), skipped ${advisorySkipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${advisorySkipped.notDisplayable} not displayable` : ''}, ${advisorySkipped.newOnly} only the new side failed to model` : null;
+// --truth=all prints it too when a reported claim displaced an inference % (BRO-5264 retro-review).
+const showAdvisory = TRUTH === 'reported' || advisorySkipped.superseded > 0;
+const advisoryOut = showAdvisory ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}; of ${skipped.inference + advisorySkipped.superseded} (${advisorySkipped.superseded} an inference % a reported claim displaced), skipped ${advisorySkipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${advisorySkipped.notDisplayable} not displayable` : ''}, ${advisorySkipped.newOnly} only the new side failed to model` : null;
 
 const summary = summarize(rows);
 const worse = worseGroups(summary, { minN: MIN_GROUP });
@@ -204,7 +206,7 @@ if (process.env.GITHUB_ACTIONS && worse.length) console.log(`::warning title=Rec
 if (process.env.GITHUB_ACTIONS && (newFalseRecouped.length || skipped.newOnly)) console.log(`::error title=Recoupment backtest::${label}${scope}: ${falseRecoupedLine}; ${newOnlyLine}`);
 if (args.includes('--json')) {
   const detailOut = AGGREGATE_ONLY ? { newFalseRecouped: newFalseRecouped.length, insane: insane.length } : { newFalseRecouped, insane, rows };
-  const advisoryJson = TRUTH === 'reported' ? { advisory: { line: advisoryOut, summary: summarize(advisoryRows), skipped: advisorySkipped, ...(AGGREGATE_ONLY ? {} : { rows: advisoryRows }) } } : {};
+  const advisoryJson = showAdvisory ? { advisory: { line: advisoryOut, summary: summarize(advisoryRows), skipped: advisorySkipped, ...(AGGREGATE_ONLY ? {} : { rows: advisoryRows }) } } : {};
   console.log(JSON.stringify({ base: BASE || null, opts: OPTS, truth: TRUTH, summary, worse, skipped, ...detailOut, ...advisoryJson }, null, 2));
 } else if (MARKDOWN) {
   console.log(formatMarkdown({ title: `Recoupment ground-truth backtest: ${label}${scope} (${rows.length} shows)`, summary, rows, worse, aggregateOnly: AGGREGATE_ONLY }));

@@ -268,3 +268,21 @@ test('a tip on a record with an old homepage link is not refused for it; a tip a
   const adds = buildTipRecord(commercial, showList, 'k', [{ field: 'sources', newValue: [...commercial.shows.k.sources, { type: 'trade', url: 'https://playbill.com/', date: '2026-01-01' }] }]);
   assert.match(adds.refusedReason || '', /homepage/);
 });
+
+// BRO-5264 retro-review (BRO-5261)
+test('placeholder links: subdomains of this site, homepage variants, Wikipedia mirrors and ports', () => {
+  const rec = (url) => ({ designation: 'TBD', sources: [{ type: 'trade', url, date: '2026-01-18' }] });
+  const kind = (url) => commercialRecordWarnings('x', rec(url)).join(' ');
+  assert.match(kind('https://beta.broadwayscorecard.com/show/x'), /this site/);
+  for (const url of ['https://www.playbill.com/?', 'https://www.sec.gov/#', 'https://www.playbill.com/index.html']) assert.match(kind(url), /homepage/, url);
+  for (const url of ['https://en.wikipedia.org:443/wiki/X', 'https://www.wikiwand.com/en/articles/X']) assert.match(kind(url), /Wikipedia/, url);
+  assert.doesNotMatch(kind('https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1730694'), /homepage/);
+});
+
+test('prior links: whitespace changes do not warn, a second entry on an old placeholder does', () => {
+  const old = { designation: 'TBD', sources: [{ type: 'trade', url: 'https://www.amny.com ', date: '2026-01-18' }] };
+  const trimmed = { ...old, sources: [{ ...old.sources[0], url: 'https://www.amny.com' }] };
+  assert.ok(!commercialRecordWarnings('x', trimmed, { priorRecord: old }).some((m) => /homepage/.test(m)));
+  const reused = { ...old, sources: [...old.sources, { type: 'trade', url: 'https://www.amny.com', date: '2026-10-12', excerpt: 'investors got back 55%' }] };
+  assert.deepEqual(commercialRecordWarnings('x', reused, { priorRecord: old }).filter((m) => /homepage/.test(m)).map((m) => m.match(/sources\[(\d)\]/)[1]), ['1']);
+});
