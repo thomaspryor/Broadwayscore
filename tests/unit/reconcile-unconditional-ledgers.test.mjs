@@ -55,7 +55,7 @@ for (const c of CASES) {
       const merged = JSON.parse(fs.readFileSync(f, 'utf8')).entries;
       assert.equal(merged.length, 2, 'both writers survive after reconcile');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 }
