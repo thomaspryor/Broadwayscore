@@ -58,10 +58,11 @@ function headers(accessToken: string, prefer?: string): Record<string, string> {
   return h;
 }
 
-/** INSERT a row via PostgREST, returning the inserted row. */
+/** INSERT a row via PostgREST, returning the inserted row (or nothing with returning: 'minimal'). */
 export async function supabaseRestInsert<T = Record<string, unknown>>(
   table: string,
   row: Record<string, unknown>,
+  opts: { returning?: 'representation' | 'minimal' } = {},
 ): Promise<RestResult<T>> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
@@ -70,7 +71,7 @@ export async function supabaseRestInsert<T = Record<string, unknown>>(
 
   const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: 'POST',
-    headers: headers(accessToken, 'return=representation'),
+    headers: headers(accessToken, `return=${opts.returning ?? 'representation'}`),
     body: JSON.stringify(row),
   });
 
@@ -79,6 +80,9 @@ export async function supabaseRestInsert<T = Record<string, unknown>>(
     return { data: null, error: { message: body.message || `HTTP ${res.status}`, code: body.code } };
   }
 
+  // return=minimal sends an empty 201: nothing to parse (and a column-grant
+  // table like user_show_stubs would refuse the RETURNING read anyway).
+  if (opts.returning === 'minimal') return { data: null, error: null };
   const data = await res.json();
   // PostgREST returns an array; take the first item
   return { data: Array.isArray(data) ? data[0] : data, error: null };

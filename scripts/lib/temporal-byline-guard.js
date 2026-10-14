@@ -46,6 +46,15 @@ const RETIRED_CRITICS = [
   { name: 'Peter Marks', lastActiveDate: '2024-12-31', freelanceUntilDate: '2026-12-31', reason: 'WaPo ended theater desk 2024' },
 ];
 
+// Outlet tenures (BRO-5243): a critic who joined an outlet on a known date
+// cannot have written its reviews before then. The legacy LLM web-search step
+// credited Terry Teachout's WSJ reviews (2017-2021) to his successor; 3 showed
+// under Isherwood's name on the live site and one invented row double-counted
+// WSJ. outletId is the canonical id (normalizeOutlet).
+const OUTLET_TENURES = [
+  { name: 'Charles Isherwood', outletId: 'wsj', firstActiveDate: '2022-01-14', reason: "succeeded Terry Teachout as WSJ critic after Teachout's death on 2022-01-13" },
+];
+
 const _retiredIndex = (() => {
   const map = new Map();
   for (const e of RETIRED_CRITICS) {
@@ -59,15 +68,28 @@ const _retiredIndex = (() => {
  *
  * @param {string} criticName
  * @param {string} publishDate - ISO date or YYYY-MM-DD; can also accept "Month D, YYYY" forms.
+ * @param {string|null} [outletId] - canonical outlet id; enables the OUTLET_TENURES check.
  * @returns {{ok: boolean, reason?: string, warning?: string, hardBlock?: boolean}}
  */
-function validateTemporalAttribution(criticName, publishDate) {
+function validateTemporalAttribution(criticName, publishDate, outletId = null) {
   if (!criticName || !publishDate) return { ok: true };
-  const entry = _retiredIndex.get(String(criticName).toLowerCase());
-  if (!entry) return { ok: true };
-
   const pubIso = _toIso(publishDate);
   if (!pubIso) return { ok: true };
+
+  if (outletId) {
+    const name = String(criticName).toLowerCase();
+    const tenure = OUTLET_TENURES.find((t) => t.outletId === outletId && t.name.toLowerCase() === name);
+    if (tenure && pubIso < tenure.firstActiveDate) {
+      return {
+        ok: false,
+        hardBlock: true,
+        reason: `${criticName} joined ${outletId} on ${tenure.firstActiveDate} (${tenure.reason}). Article publishDate ${pubIso} cannot be authored by them there.`,
+      };
+    }
+  }
+
+  const entry = _retiredIndex.get(String(criticName).toLowerCase());
+  if (!entry) return { ok: true };
 
   if (pubIso <= entry.lastActiveDate) return { ok: true };
 
@@ -96,4 +118,4 @@ function _toIso(d) {
   return null;
 }
 
-module.exports = { validateTemporalAttribution, RETIRED_CRITICS };
+module.exports = { validateTemporalAttribution, RETIRED_CRITICS, OUTLET_TENURES };

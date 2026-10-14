@@ -15,6 +15,7 @@ const os = require('os');
 const path = require('path');
 const { executeReviewFieldEditIn } = require('./review-field-edit');
 const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
+const { planStatusAction } = require('./plan-status');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -27,6 +28,13 @@ function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review
       const planData = JSON.parse(fs.readFileSync(planPath, 'utf8'));
       const id = planData.issueNumber || path.basename(planPath, '.json');
       const actions = (planData.plan && planData.plan.actions) || [];
+      // The executor only runs a "pending" plan; any other new status is refused
+      // at apply time after a ~45 min land (BRO-5015, again in BRO-5254 plan G
+      // typed "approved"). Same predicate the executor uses.
+      if (planStatusAction(planData.status) !== 'run') {
+        failed++;
+        log(`  FAIL ${id}: status "${planData.status}" will not run; a new plan must be "pending"`);
+      }
       // execute-approved-fix refuses a plan over the cap; say so here, not at land (BRO-3414).
       if (actions.length > MAX_PLAN_ACTIONS) {
         failed++;

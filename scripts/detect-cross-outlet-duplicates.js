@@ -48,6 +48,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
 const { GEMINI_FLASH } = require('./lib/models');
+const { crossOutletPointer, skipAsAlreadyFlagged } = require('./lib/cross-outlet-pointer');
 
 // ============================================================
 // Text Processing
@@ -194,6 +195,9 @@ async function main() {
     newDuplicates: 0,
   };
   const duplicates = [];
+  // BRO-5348: pairs where one row points at the other outlet's file. Reported
+  // for a human or a byline check, never auto-flagged.
+  const pointerPairs = [];
 
   for (const showId of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -213,11 +217,15 @@ async function main() {
         // Skip reviews without any text
         const { text, source } = getBestText(data);
         if (!text || text.length < 50) continue;
-        // Skip already-flagged syndicated duplicates
-        if (data.isSyndicatedDuplicate || data.duplicateOf || data.duplicateTextOf) {
+        // Skip already-flagged syndicated duplicates and same-outlet pointers.
+        // A pointer to ANOTHER outlet's file is compared (BRO-5348): the
+        // target can be a misfetch that holds this row's text.
+        const readSibling = (f) => { try { return JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { return null; } };
+        if (skipAsAlreadyFlagged(data, file, readSibling)) {
           stats.alreadyFlagged++;
           continue;
         }
+        const pointerAcross = crossOutletPointer(data, file, readSibling);
 
         reviews.push({
           file,
@@ -228,6 +236,7 @@ async function main() {
           textSource: source,
           fingerprint: contentFingerprint(text),
           score: data.llmScore?.score || data.assignedScore || null,
+          pointerAcross: pointerAcross ? pointerAcross.target : null,
         });
         stats.reviewsScanned++;
       } catch { /* skip corrupt */ }
@@ -251,10 +260,18 @@ async function main() {
 
       // Choose primary: higher tier, more text, then alphabetical
       group.sort((a, b) => getTier(a.outletId) - getTier(b.outletId) || b.text.length - a.text.length);
-      const primary = group[0];
+      // Rows pointing at another outlet's file are reported, never a primary or
+      // a flagged copy (BRO-5348); the rest still dedupe among themselves.
+      for (const p of group.filter(r => r.pointerAcross)) {
+        // Name the pointer's own target when it is in the group, else another outlet's row.
+        const other = group.find(r => r.file === p.pointerAcross) || group.find(r => r !== p && r.outletId !== p.outletId) || group.find(r => r !== p);
+        pointerPairs.push({ showId, method: 'fingerprint', files: [p.file, other.file], outlets: [p.outlet, other.outlet], critics: [p.criticName, other.criticName] });
+      }
+      const plain = group.filter(r => !r.pointerAcross);
+      const primary = plain[0];
 
-      for (let i = 1; i < group.length; i++) {
-        const secondary = group[i];
+      for (let i = 1; i < plain.length; i++) {
+        const secondary = plain[i];
         duplicates.push({
           showId,
           method: 'fingerprint',
@@ -313,6 +330,10 @@ async function main() {
         const primary = primaryIdx === 0 ? r1 : r2;
         const secondary = primaryIdx === 0 ? r2 : r1;
 
+        if (primary.pointerAcross || secondary.pointerAcross) {
+          pointerPairs.push({ showId, method: 'similarity', similarity: sim, files: [primary.file, secondary.file], outlets: [primary.outlet, secondary.outlet], critics: [primary.criticName, secondary.criticName] });
+          continue;
+        }
         duplicates.push({
           showId,
           method: llmResult === true ? 'similarity+llm' : 'similarity',
@@ -343,8 +364,12 @@ async function main() {
     console.log(`LLM confirmed: ${stats.llmConfirmed} | LLM rejected: ${stats.llmRejected}`);
   }
   console.log(`Total duplicates found: ${duplicates.length}`);
+  console.log(`Cross-outlet pointer pairs (report only): ${pointerPairs.length}`);
+  for (const p of pointerPairs.slice(0, 50)) {
+    console.log(`  ${p.showId}: ${p.files[0]} <-> ${p.files[1]} (${p.method})`);
+  }
 
-  if (duplicates.length > 0) {
+  if (duplicates.length > 0 || pointerPairs.length > 0) {
     // Deduplicate results (same pair might be found by both methods)
     const seen = new Set();
     const unique = duplicates.filter(d => {
@@ -378,7 +403,7 @@ async function main() {
     // Score impact
     const totalDiff = unique.reduce((s, d) => s + d.scoreDiff, 0);
     console.log('\n--- Score Impact ---');
-    console.log(`Avg score diff: ${(totalDiff / unique.length).toFixed(1)} pts`);
+    console.log(`Avg score diff: ${unique.length ? (totalDiff / unique.length).toFixed(1) : 0} pts`);
     console.log(`>5 pt diff: ${unique.filter(d => d.scoreDiff > 5).length}`);
     console.log(`>10 pt diff: ${unique.filter(d => d.scoreDiff > 10).length}`);
 
@@ -394,6 +419,8 @@ async function main() {
         byMethod,
       },
       duplicates: unique,
+      // BRO-5348: one row points at the other outlet's file; for review only.
+      crossOutletPointerPairs: pointerPairs,
     };
     const reportPath = path.join(AUDIT_DIR, 'cross-outlet-duplicates.json');
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');

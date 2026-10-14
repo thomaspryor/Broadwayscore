@@ -57,7 +57,7 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, skipCrossOutletSelfDemote } = require('./lib/review-filter');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch } = require('./lib/review-filter');
 const { hostMatchesOutletDomain } = require('./lib/outlet-domain-validation');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -4865,6 +4865,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
     console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
   }
+  if (forcedReplacement && data.crossOutletDuplicate === true && data.crossOutletPrimaryFile) {
+    let primaryFingerprint = null;
+    try {
+      const primary = JSON.parse(fs.readFileSync(path.join(CONFIG.reviewTextsDir, data.crossOutletPrimaryFile), 'utf8'));
+      primaryFingerprint = primary.fullText ? computeContentFingerprint(primary.fullText) : null;
+    } catch { /* unreadable primary: keep the flag */ }
+    if (staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplicate: true, crossOutletMethod: data.crossOutletMethod, newFingerprint: computeContentFingerprint(cleanedText), primaryFingerprint })) {
+      const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
+      console.log(`    → Cleared crossOutletDuplicate: forced refetch text no longer matches ${data.crossOutletPrimaryFile} (BRO-5348)`);
+      clearCrossOutletFields(data, `forced refetch from own url replaced the text; no longer matches ${data.crossOutletPrimaryFile} (BRO-5348)`);
+    }
+  }
   if (!data.needsRescore && shouldRescoreCompletedTruncated({
     tierBefore: contentTierBeforeUpdate,
     hasScore: !!(data.llmScore && data.llmScore.score),
@@ -5533,21 +5545,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           if (siblingData.fullText) {
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {
-              if (skipCrossOutletSelfDemote({
+              if (applyCrossOutletSkip(data, sibling, siblingData, {
                 forcedRefetch: review._forceRefetch === true,
-                outletId: data.outletId,
-                siblingOutletId: siblingData.outletId,
                 hostMatches: hostMatchesOutletDomain(data.url, data.outletId, loadOutletRegistryForDedupe()),
               })) {
                 console.log(`    ⚠ Same text as ${sibling} (${siblingData.outletId}); fresh fetch from this outlet's own domain, so not marking this file the copy (BRO-5254)`);
-                if (data.duplicateTextOf === sibling) {
-                  // Protected field: the clear needs its breadcrumb or the push restore puts it back.
-                  delete data.duplicateTextOf;
-                  data.duplicateClearReason = `forced refetch from own domain; ${sibling} is another outlet holding this text (BRO-5254)`;
-                }
                 continue;
               }
-              data.duplicateTextOf = sibling;
+              setDuplicateTextOf(data, sibling);
               console.log(`    ⚠ Duplicate text of ${sibling}`);
               break;
             }

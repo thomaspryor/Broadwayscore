@@ -1498,3 +1498,38 @@ describe('protectStagedDeletions (BRO-2559)', () => {
     assert.ok(fs.existsSync(flaggedPath));
   });
 });
+
+describe('BRO-4383 wrong-article write guard on sparse historical WE rows (BRO-5142)', () => {
+  const { _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard');
+  const { screenWrongArticle } = require('../../scripts/lib/wrong-article-screen');
+  // Mirrors anna-x-west-end-2021: a promote-historical-we.js row with a venue but no
+  // cast/creativeTeam. The real WhatsOnStage review names the star and the con-artist
+  // plot but never the title or the house, so the venue keywords never match.
+  const ANNA_X = { id: 'anna-x-west-end-2021', title: 'Anna X', venue: 'Harold Pinter Theatre', openingDate: '2021-07-16' };
+  const filler = (n) => 'The scenes loop backwards and forwards and the design keeps the pulse racing. '.repeat(n);
+  const REVIEW = `Emma Corrin makes her stage debut as an art-world influencer who invents a fortune and talks her way into Manhattan society. ${filler(30)}`;
+  const writeAs = (show, file) => {
+    _setShowsCacheForTest(new Map([[show.id, show]]));
+    const dir = path.join(tmpDir, show.id);
+    fs.mkdirSync(dir, { recursive: true });
+    const fp = path.join(dir, file);
+    safeWriteReview(fp, { showId: show.id, outletId: 'whatsonstage', criticName: 'Alex Wood', url: 'https://example.com/anna-x-review', fullText: REVIEW }, { force: false });
+    return JSON.parse(fs.readFileSync(fp, 'utf8'));
+  };
+  afterEach(() => _setShowsCacheForTest(null));
+
+  test('venue-only metadata is sparse: Anna X review is not flagged wrongShow', () => {
+    const verdict = screenWrongArticle(REVIEW, ANNA_X);
+    assert.equal(verdict.titleMentions, 0);
+    assert.equal(verdict.sparseIdentity, true);
+    assert.notEqual(writeAs(ANNA_X, 'whatsonstage--alex-wood.json').wrongShow, true);
+  });
+
+  test('control: same text still flagged when the show has cast/creative data it never names', () => {
+    const withCast = { ...ANNA_X, cast: [{ name: 'Jane Bloggsworth' }, { name: 'Sam Pemberton' }], creativeTeam: [{ name: 'Lee Whitcombe' }] };
+    assert.equal(screenWrongArticle(REVIEW, withCast).sparseIdentity, false);
+    const out = writeAs(withCast, 'whatsonstage--alex-wood.json');
+    assert.equal(out.wrongShow, true);
+    assert.match(out.wrongShowReason, /BRO-4383/);
+  });
+});

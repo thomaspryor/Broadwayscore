@@ -1561,10 +1561,13 @@ function safeWriteReview(filePath, newData, options = {}) {
   }
 
   // Temporal byline guard — refuse to write attributions to retired/deceased
-  // critics for articles dated past their last-active date.
+  // critics for articles dated past their last-active date, or to a critic at
+  // an outlet before they joined it (OUTLET_TENURES, BRO-5243).
   // (Soft warnings — like Brantley freelance pieces — pass through with a log.)
   if (newData && newData.criticName && (newData.publishDate || newData.parsedDate)) {
-    const tcheck = validateTemporalAttribution(newData.criticName, newData.publishDate || newData.parsedDate);
+    const { normalizeOutlet } = require('./review-normalization');
+    const outletId = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
+    const tcheck = validateTemporalAttribution(newData.criticName, newData.publishDate || newData.parsedDate, outletId);
     if (tcheck.warning) {
       console.warn(`[temporal-byline-guard] ${path.basename(filePath)}: ${tcheck.warning}`);
     }

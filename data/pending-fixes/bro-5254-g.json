@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5254-g",
   "planId": "49f993ec-b005-4172-86b9-39ac51b09df8",
-  "status": "approved",
+  "status": "applied",
   "createdAt": "2026-10-14T08:01:52.529Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,18 @@
         "description": "breadcrumb for the flag"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T09:50:47.455Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-1997/vulture--john-simon.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-1997/vulture--john-simon.json wrongAttributionReason: null -> \"BRO-5254: fullText is Variety Greg Evans review (Jaccard 1.000 vs variety--greg-evans.json, March 2026 misfetch); Simon real text (New York, Dec 1 1997, pp.106-108) not recoverable through fetch chain\""
+    }
+  ]
 }

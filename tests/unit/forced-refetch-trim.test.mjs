@@ -69,3 +69,42 @@ test('skipCrossOutletSelfDemote: real registry says variety.com is Variety', () 
   const reg = JSON.parse(readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8'));
   assert.equal(hostMatchesOutletDomain('https://variety.com/1997/legit/reviews/the-lion-king-new-amsterdam-theater-1117339958/', 'variety', reg), true);
 });
+
+// BRO-5348: a forced refetch that restored the row's own text clears a
+// crossOutletDuplicate flag set while it held another outlet's text.
+test('staleCrossOutletFlagAfterRefetch: cleared only when the refetched text no longer matches the primary', () => {
+  const { staleCrossOutletFlagAfterRefetch } = require('../../scripts/lib/review-filter.js');
+  const base = { forcedReplacement: true, crossOutletDuplicate: true, crossOutletMethod: 'fingerprint', newFingerprint: 'aaa', primaryFingerprint: 'bbb' };
+  assert.equal(staleCrossOutletFlagAfterRefetch(base), true);
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, primaryFingerprint: 'aaa' }), false, 'still the same text');
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, forcedReplacement: false }), false, 'routine fetch leaves the flag');
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, primaryFingerprint: null }), false, 'unreadable primary keeps the flag');
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletDuplicate: false }), false);
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletMethod: 'similarity' }), false, 'a similarity flag differs by fingerprint already');
+});
+
+// 1C loop wiring (BRO-5254 review): the helpers in the order the loop calls them.
+test('cross-outlet skip then a same-outlet match: pointer set, clear note dropped', () => {
+  const { applyCrossOutletSkip, setDuplicateTextOf } = require('../../scripts/lib/review-filter.js');
+  const opts = { forcedRefetch: true, hostMatches: true };
+  const data = { outletId: 'variety', duplicateTextOf: 'vulture--john-simon.json' };
+  assert.equal(applyCrossOutletSkip(data, 'vulture--john-simon.json', { outletId: 'vulture' }, opts), true);
+  assert.equal(data.duplicateTextOf, undefined);
+  assert.match(data.duplicateClearReason, /^forced refetch from own domain;/);
+  assert.equal(applyCrossOutletSkip(data, 'variety--other.json', { outletId: 'variety' }, opts), false, 'same outlet is not skipped');
+  setDuplicateTextOf(data, 'variety--other.json');
+  assert.equal(data.duplicateTextOf, 'variety--other.json');
+  assert.equal(data.duplicateClearReason, null, 'a stale clear note must not sit beside a live pointer');
+});
+
+test('alias outlet ids count as one outlet; a duplicateOf file gets no clear note', () => {
+  const { applyCrossOutletSkip, setDuplicateTextOf } = require('../../scripts/lib/review-filter.js');
+  const opts = { forcedRefetch: true, hostMatches: true };
+  assert.equal(applyCrossOutletSkip({ outletId: 'vulture' }, 'nymag--x.json', { outletId: 'nymag' }, opts), false);
+  const d = { outletId: 'variety', duplicateOf: 'variety--a.json', duplicateTextOf: 'vulture--b.json' };
+  assert.equal(applyCrossOutletSkip(d, 'vulture--b.json', { outletId: 'vulture' }, opts), true);
+  assert.equal(d.duplicateClearReason, undefined, 'the note would also license dropping duplicateOf');
+  const keep = { duplicateClearReason: 'manual: owner cleared (BRO-1)' };
+  setDuplicateTextOf(keep, 'x.json');
+  assert.equal(keep.duplicateClearReason, 'manual: owner cleared (BRO-1)', 'only this guard\'s own note is dropped');
+});

@@ -12,7 +12,7 @@ import Anthropic from '@anthropic-ai/sdk';
 // The scored-review floor below which a Critics' Take is not generated. Shared
 // with opening-night-checks/critics-take-present.check.js so the check cannot
 // demand a consensus this script is coded to refuse (task #389).
-import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
+import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
 import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
 import { normalizeOutlet } from './lib/review-normalization.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
@@ -30,9 +30,16 @@ const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
 const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// Lazy: --prune-only runs in rebuild-fast with no ANTHROPIC_API_KEY (BRO-4960).
+let anthropicClient = null;
+const anthropic = {
+  messages: {
+    create: (...args) => {
+      anthropicClient = anthropicClient || new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+      return anthropicClient.messages.create(...args);
+    },
+  },
+};
 
 /**
  * Load review texts for a show
@@ -227,8 +234,13 @@ async function main() {
     ? JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf-8'))
     : { _meta: {}, shows: {} };
 
+  if (!process.argv.includes('--prune-only') && !process.env.ANTHROPIC_API_KEY) {
+    throw new Error('ANTHROPIC_API_KEY is required (only --prune-only runs without it)');
+  }
   const force = process.argv.includes('--force');
   const cleanupOrphans = process.argv.includes('--cleanup-orphans');
+  // --prune-only: drop stale + orphaned entries, write, exit before any LLM call.
+  const pruneOnly = process.argv.includes('--prune-only');
 
   // Parse --shows=a,b / --show=a filter: Set of requested ids, or null for a
   // whole scan (single-show mode for opening-night remediation; list mode for
@@ -276,6 +288,26 @@ async function main() {
     liveCounts = liveScoredCounts(reviewsJson);
     liveOutlets = liveOutletKeys(reviewsJson);
   } catch { liveCounts = null; liveOutlets = null; }
+
+  if (pruneOnly) {
+    const counts = liveCounts;
+    if (!counts) {
+      console.warn('::warning::consensus prune-only skipped: reviews.json unreadable');
+      return;
+    }
+    const { stale, orphans, capped } = pruneConsensusEntries(consensusData.shows, counts, showIdSet);
+    if (capped) {
+      console.warn(`::warning::consensus prune skipped: ${stale.length} entries look stale (cap ${MAX_STALE_PRUNE}), reviews.json is probably incomplete`);
+      return;
+    }
+    if (!stale.length && !orphans.length) {
+      console.log('Nothing to prune.');
+      return;
+    }
+    console.log(`🗑️  Pruned ${stale.length} stale, ${orphans.length} orphaned consensus entries: ${[...stale, ...orphans].join(', ')}`);
+    fs.writeFileSync(CONSENSUS_FILE, JSON.stringify(consensusData, null, 2));
+    return;
+  }
 
   // Prune every consensus whose show has too few live reviews, whatever the
   // --show filter: no LLM call, and a blurb outliving its reviews is wrong on

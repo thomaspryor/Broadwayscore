@@ -12,13 +12,13 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { preflight } = require('../../scripts/lib/preflight-review-fix-plan.js');
 
-function fixture(files, actions) {
+function fixture(files, actions, status = 'pending') {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'preflight-test-'));
   const rt = path.join(root, 'review-texts', 'fixture-show-2026');
   fs.mkdirSync(rt, { recursive: true });
   for (const [f, d] of Object.entries(files)) fs.writeFileSync(path.join(rt, f), JSON.stringify(d, null, 2));
   const plan = path.join(root, 'plan.json');
-  fs.writeFileSync(plan, JSON.stringify({ issueNumber: 'bro-test', plan: { actions } }));
+  fs.writeFileSync(plan, JSON.stringify({ issueNumber: 'bro-test', status, plan: { actions } }));
   return { root, reviewTextsDir: path.join(root, 'review-texts'), plan, cleanup: () => fs.rmSync(root, { recursive: true, force: true }) };
 }
 const edit = (file, field, oldValue, newValue) => ({ type: 'review-field-edit', file: `fixture-show-2026/${file}`, field, oldValue, newValue });
@@ -66,4 +66,17 @@ test('a plan over the action cap fails preflight', () => {
     assert.equal(preflight([c.plan], { reviewTextsDir: c.reviewTextsDir, log: (m) => logs.push(m) }).failed, 1, logs.join('\n'));
     assert.ok(logs.some((l) => l.includes(`max ${MAX_PLAN_ACTIONS}`)), logs.join('\n'));
   } finally { c.cleanup(); }
+});
+
+test('a status the executor will not run fails here, not after the land (BRO-5015, BRO-5254 plan G)', () => {
+  for (const status of ['approved', null]) {
+    const c = fixture({ 'a.json': { showId: 'fixture-show-2026', outletId: 'ew', criticName: 'A', url: 'https://ew.com/a', originalScore: 'B' } }, [
+      edit('a.json', 'originalScore', 'B', 'B+'),
+    ], status);
+    try {
+      const logs = [];
+      assert.equal(preflight([c.plan], { reviewTextsDir: c.reviewTextsDir, log: (m) => logs.push(m) }).failed, 1, logs.join('\n'));
+      assert.match(logs.join('\n'), /must be "pending"/);
+    } finally { c.cleanup(); }
+  }
 });

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-14T08:53:55.484Z",
+  "generated": "2026-10-14T13:41:17.844Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -57,6 +57,13 @@
       "loserFile": "standard--unknown.json",
       "targetFile": "standard--nick-curtis.json",
       "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "love-letters-2014",
+      "loserFile": "huffpost--unknown.json",
+      "targetFile": "huffpost--steven-suskin.json",
+      "reason": "orphaned-duplicate-heal: huffpost--steven-suskin.json was flagged invalid after huffpost--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

@@ -47,9 +47,14 @@ function screenWrongArticle(text, show) {
   const titleMentions = countTitleMentions(text, show);
   const keywords = buildShowKeywordSet({ ...show, title: '' });
   const identityKeyword = findShowKeywordInText(text, keywords);
-  // Sparse metadata (no cast/creative/venue) leaves nothing to corroborate a
-  // non-literal title mention, so the screen fails open rather than guess.
-  const sparseIdentity = keywords.size < 2;
+  // Sparse metadata leaves nothing to corroborate a non-literal title mention,
+  // so the screen fails open rather than guess. Venue words alone do not count
+  // (BRO-5142): historical WE rows (promote-historical-we.js) carry a venue but
+  // no cast/creativeTeam, and a real review often never names the house, so
+  // "Harold Pinter" absent from an Anna X review was flagged wrongShow.
+  const castCreativeKeywords = buildShowKeywordSet({ cast: show.cast, creativeTeam: show.creativeTeam });
+  const sparseIdentity = castCreativeKeywords.size < 2;
+  // identityKeyword still searches cast + creative + venue (a venue hit clears suspicion).
   return { applicable: true, sparseIdentity, suspect: !identityKeyword && titleMentions <= 1, titleMentions, identityKeyword };
 }
 

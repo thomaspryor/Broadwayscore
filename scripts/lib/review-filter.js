@@ -98,7 +98,53 @@ function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, tex
  * returns the same text must still be able to clear the wrong pointer.
  */
 function skipCrossOutletSelfDemote({ forcedRefetch, outletId, siblingOutletId, hostMatches }) {
-  return !!(forcedRefetch && hostMatches === true && outletId && siblingOutletId && outletId !== siblingOutletId);
+  if (!(forcedRefetch && hostMatches === true && outletId && siblingOutletId)) return false;
+  // Alias ids (nymag/vulture, variety-frank-rizzo/variety) are one outlet: a
+  // same-outlet copy must still dedupe.
+  const canon = (id) => require('./review-normalization').normalizeOutlet(id) || String(id).toLowerCase();
+  return canon(outletId) !== canon(siblingOutletId);
 }
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote };
+/**
+ * BRO-5348: a crossOutletDuplicate flag set while the row held another
+ * outlet's text outlives a forced refetch that restored the row's own text,
+ * and keeps the real review hidden (merrily-we-roll-along-2023 amNY). Clear it
+ * when the refetch replaced the text and the new text no longer matches the
+ * flagged primary. An unreadable primary (no fingerprint) and a similarity
+ * flag keep the flag.
+ */
+function staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplicate, crossOutletMethod, newFingerprint, primaryFingerprint }) {
+  // Only an exact-fingerprint flag: a similarity flag's fingerprint differs from
+  // its primary by construction, so a fingerprint change proves nothing there.
+  return !!(forcedReplacement && crossOutletDuplicate === true && crossOutletMethod === 'fingerprint'
+    && newFingerprint && primaryFingerprint && newFingerprint !== primaryFingerprint);
+}
+
+
+const CROSS_OUTLET_CLEAR_PREFIX = 'forced refetch from own domain;';
+
+/**
+ * 1C dedupe wiring for skipCrossOutletSelfDemote. Returns true when this
+ * sibling must be skipped. A pointer at that sibling is dropped; the clear
+ * note (the push restore's breadcrumb for duplicateTextOf) is written only
+ * when no duplicateOf is present, since any non-empty duplicateClearReason
+ * also licenses dropping duplicateOf (review-write-guard CLEAR_BREADCRUMBS).
+ */
+function applyCrossOutletSkip(data, sibling, siblingData, { forcedRefetch, hostMatches }) {
+  if (!skipCrossOutletSelfDemote({ forcedRefetch, outletId: data.outletId, siblingOutletId: siblingData && siblingData.outletId, hostMatches })) return false;
+  if (data.duplicateTextOf === sibling) {
+    delete data.duplicateTextOf;
+    if (!data.duplicateOf) data.duplicateClearReason = `${CROSS_OUTLET_CLEAR_PREFIX} ${sibling} is another outlet holding this text (BRO-5254)`;
+  }
+  return true;
+}
+
+/** Sets the 1C pointer and drops a cross-outlet clear note from this same pass:
+ *  a stale clear note beside a live pointer would let a later write drop it. */
+function setDuplicateTextOf(data, sibling) {
+  data.duplicateTextOf = sibling;
+  if (typeof data.duplicateClearReason === 'string' && data.duplicateClearReason.startsWith(CROSS_OUTLET_CLEAR_PREFIX)) data.duplicateClearReason = null;
+}
+
+
+module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch };

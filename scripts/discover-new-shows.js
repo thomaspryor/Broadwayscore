@@ -130,8 +130,8 @@ function mintCandidateId(show, now = new Date()) {
 
 // Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
 // normalized. We deliberately do NOT use broadway-theaters' isOfficialBroadwayTheater
-// here: its findTheater() does loose substring matching (great for resolving a
-// known shows.json venue, wrong for discovery), which false-positives "Lotte New
+// here: before BRO-5088 its findTheater() did loose substring matching, which
+// false-positived "Lotte New
 // York Palace Hotel" → Palace Theatre and "Laura Pels Theatre" (an OB house).
 const BROADWAY_HOUSE_NAMES = new Set();
 for (const t of Object.values(BROADWAY_THEATERS)) {

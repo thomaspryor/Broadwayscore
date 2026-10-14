@@ -444,7 +444,7 @@ function describeResult(r) {
 //
 // The funnel is deliberately the SAME gate bsc-next.js/linear-next.js apply
 // before spending a session on a card (autofixFiledIssueGuard, then
-// classifyHeadlessDispatchability's five blockers) — not a new, looser
+// classifyHeadlessDispatchability's six blockers) — not a new, looser
 // "looks abandoned" heuristic. A card this predicate selects is one a human
 // or headless dispatch would otherwise have paid a full session to discover
 // was already done.

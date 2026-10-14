@@ -52,14 +52,16 @@
       "market": "broadway",
       "queuedAt": "2026-10-13T13:31:11.795Z",
       "dueAt": "2026-10-14T05:31:11.795Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-14T10:39:34.648Z"
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "market": "west-end",
       "queuedAt": "2026-10-13T13:38:10.754Z",
       "dueAt": "2026-10-14T05:38:10.754Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-14T10:39:34.648Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -97,6 +99,20 @@
       "outletIds": [
         "guardian"
       ],
+      "attempted": false
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-14T11:58:00.114Z",
+      "dueAt": "2026-10-15T03:58:00.114Z",
+      "attempted": false
+    },
+    {
+      "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-14T12:20:57.475Z",
+      "dueAt": "2026-10-15T04:20:57.475Z",
       "attempted": false
     }
   ]

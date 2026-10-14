@@ -45,6 +45,7 @@
 
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
+const { hasNoDispatchMarker } = require('./no-dispatch-marker.js');
 const { hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
 const { AUTO_FILED_MARKER: ALERT_ROUTER_FILED_MARKER } = require('./linear-drain-parked.js');
 
@@ -61,6 +62,7 @@ const ALERT_ROUTER_PARKED_RE = new RegExp(`^PARKED:[^\\n]*${ALERT_ROUTER_FILED_M
 
 const BLOCKERS = Object.freeze({
   PARKED_SENTINEL: 'PARKED_SENTINEL',
+  NO_DISPATCH_MARKER: 'NO_DISPATCH_MARKER',
   VISUAL_QA_GATE: 'VISUAL_QA_GATE',
   ASYNC_WAIT_GATE: 'ASYNC_WAIT_GATE',
   OWNER_DECISION_GATE: 'OWNER_DECISION_GATE',
@@ -146,6 +148,8 @@ const OWNER_DECISION_RES = [
   OWNER_JUDGMENT_RE,
   /\bowner\s+(?:must|needs?\s+to|has\s+to|should)\s+(?:decide|choose|approve|pick|sign off)\b/i,
   /\b(?:needs?|requires?|awaiting)\s+(?:an?\s+)?owner\s+(?:decision|judgment|judgement|approval|call)\b/i,
+  // BRO-4868: "needs the owner's answer" / "requires the owner's input" phrasing.
+  /\b(?:needs?|requires?|awaiting|waiting\s+(?:on|for))\s+(?:the\s+)?owner(?:'s|\u2019s)\s+(?:answer|input|decision|call|approval|judg(?:e)?ment|go-ahead)\b/i,
 ];
 
 // Expand a brace group once: src/**/*.{tsx,css} -> [src/**/*.tsx, src/**/*.css]
@@ -275,6 +279,17 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
       ? 'description carries the repo\'s PARKED: do-not-dispatch sentinel — parked by owner-alert-router, awaiting linear-drain-parked.js (not an owner decision); override with --allow-automation-parked, --force, or --allow-human-gated'
       : 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated';
     blockers.push({ code: BLOCKERS.PARKED_SENTINEL, detail });
+  }
+
+  // BRO-4868: the NO-DISPATCH marker (notion-brain --no-spawn) means "no
+  // dispatcher may launch this card". Only the cloud picker honoured it
+  // (BRO-2204); here every dispatcher shares one check. Notes only: like
+  // PARKED, a subject line must not carry it.
+  if (hasNoDispatchMarker(notes)) {
+    blockers.push({
+      code: BLOCKERS.NO_DISPATCH_MARKER,
+      detail: 'description carries the NO-DISPATCH: marker — the card was filed to not be launched by any dispatcher; override with --allow-human-gated',
+    });
   }
 
   const uiPaths = uiPathsIn(text);

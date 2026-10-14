@@ -18,3 +18,18 @@ test('the Steinberg Center (Laura Pels, Black Box) is not a Broadway house', () 
   assert.equal(isOfficialBroadwayTheater('The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre'), false);
   assert.notEqual(validateVenue('Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre').category, 'broadway');
 });
+
+// BRO-5088: findTheater() matched substrings both ways, so fragments and
+// unrelated venues resolved to a Broadway house.
+test('findTheater matches exactly, never by substring', () => {
+  for (const bad of ['Theatre', '54', 'Booth', 'Ambassadors Theatre', 'The Other Palace', 'Alexandra Palace', 'Lyric Hammersmith', 'Royal Lyceum Theatre, Edinburgh', 'Broadway Comedy Club']) {
+    assert.equal(isOfficialBroadwayTheater(bad), false, bad);
+  }
+  assert.equal(getCanonicalVenueName('Theatre'), 'Theatre');
+});
+
+test('real Broadway spellings still resolve', () => {
+  assert.equal(getCanonicalVenueName('The Booth Theater'), 'Booth Theatre');
+  assert.equal(getCanonicalVenueName('Ambassador Theatre'), 'Ambassador Theatre');
+  assert.equal(getCanonicalVenueName('Vivian Beaumont Theater - Lincoln Center Theater'), 'Vivian Beaumont Theater');
+});

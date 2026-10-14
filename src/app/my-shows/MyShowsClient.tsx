@@ -1892,7 +1892,7 @@ function AddShowSearch({
   // diary-only selection.
   const handleLiveSelect = async (candidate: MezzanineCandidate) => {
     if (!userId) return;
-    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(candidate, userId)).catch(() => {});
+    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(candidate, userId), { returning: 'minimal' }).catch(() => {});
     onLiveShowAdded({
       id: candidate.id,
       title: candidate.title,

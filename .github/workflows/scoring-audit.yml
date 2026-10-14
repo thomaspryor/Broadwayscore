@@ -102,6 +102,11 @@ jobs:
 
       - name: Commit audit data
         if: always()
+        env:
+          # BRO-4405: this step also commits the rebuild's auto-registered
+          # outlets, and data/outlet-registry.json is multi-writer; the flag
+          # makes push-with-retry.sh run the keyed merge instead of ours-wins.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -114,6 +119,15 @@ jobs:
           # reachable once the review-texts checkout made the rebuild succeed.
           git checkout -- public/data 2>/dev/null || true
           git add data/audit/scoring-audit.json data/audit/scoring-audit.md data/audit/scoring-audit-history.json data/audit/needs-human-review.json data/audit/rebuild-score-drift.json
+          # BRO-4405: the rebuild above auto-registers / stages outlets; without
+          # this they were written to the runner disk and discarded.
+          for f in data/outlet-registry.json data/audit/outlet-registry-staging.json; do
+            if node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              git add -- "$f" 2>/dev/null || true
+            else
+              echo "::warning::$f missing or not valid JSON, leaving it uncommitted"
+            fi
+          done
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
