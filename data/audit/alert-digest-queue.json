@@ -273,5 +273,35 @@
       }
     ],
     "queuedAt": "2026-10-14T05:30:15.237Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5261-retro-fixes",
+    "title": "Landing blocked: bash-integration red on land/bro-5261-retro-fixes",
+    "description": "land.yml did not land land/bro-5261-retro-fixes: the bash-integration gate went red at e9884514be. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38514076319",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5261-retro-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "e9884514be9d4480da7f428cc8c2fc1f5eac2450"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38514076319"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:33:02.644Z"
   }
 ]
