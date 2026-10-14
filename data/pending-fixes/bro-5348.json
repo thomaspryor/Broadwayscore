@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5348",
   "planId": "f8e8e3aa-3d11-444c-96a1-b170043a29be",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T08:49:10.030Z",
   "submitter": {
     "name": null,
@@ -72,5 +72,43 @@
         "description": "BRO-5348: FT review (2022-10-19, Barbican run listed in priorRuns) credited to Sarah Hemming by The Stage round-up and theatre.reviews (financialtimes--sarah-hemming.json, financialtimes--unknown.json, both duplicateOf this row). Page byline unreadable: ft.com 403, Wayback snapshot is the paywall."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T09:18:30.555Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "airline-highway-2015/huffpost--michael-giltz.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "airline-highway-2015/huffpost--michael-giltz.json wrongAttributionReason: null -> \"BRO-5348: stored text is Roma Torre's review at https://www.ny1.com/nyc/queens/theater-reviews/2015/04/24/theater-review---airline-highway-.html (filed as ny1--roma-torre.json); own url forced refetch 2026-10-14 returned the same text (HuffPost page no longer serves the Giltz review)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-boys-in-the-band-2018/talkinbroadway--matthew-murray.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-boys-in-the-band-2018/talkinbroadway--matthew-murray.json wrongAttributionReason: null -> \"BRO-5348: stored text is Naveen Kumar's review at https://www.towleroad.com/2018/05/boys-in-the-band-review/ (filed as towleroad--naveen-kumar.json); own url forced refetch 2026-10-14 returned the same text (Talkin Broadway page unreachable)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-your-feet-2015/backstage-barbie--backstage-barbie.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-your-feet-2015/backstage-barbie--backstage-barbie.json wrongAttributionReason: null -> \"BRO-5348: stored text is Janice C. Simpson (Broadway & Me)'s review at https://broadwayandme.blogspot.com/2016/01/standing-up-for-old-fashioned-fun-of-on.html (filed as broadway-and-me--janice-c-simpson.json); own url forced refetch 2026-10-14 returned the same text\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-neighbour-totoro-west-end-2025/financialtimes--financial-times.json criticName: \"Financial Times\" -> \"Sarah Hemming\""
+    }
+  ]
 }
