@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-14T02:04:23.775Z",
+  "generatedAt": "2026-10-14T02:29:12.997Z",
   "totalScanned": 56562,
-  "totalExcluded": 27084,
+  "totalExcluded": 27090,
   "ruleCounts": {
-    "wrongProduction": 18107,
+    "wrongProduction": 18108,
     "wrongShow": 1842,
-    "duplicateOf": 1788,
+    "duplicateOf": 1794,
     "unverifiableWebSearchRow": 969,
     "rejectionReason": 863,
     "noTextOrScoreSignal": 764,
@@ -19,7 +19,7 @@
     "previewPlaceholder": 127,
     "scoreStatusToBeCalculated": 94,
     "cvWrongArticleHighConfidence": 89,
-    "listingPageUrl": 78,
+    "listingPageUrl": 77,
     "knownSyndicationSecondary": 67,
     "directorMismatch": 62,
     "rejectedAt": 62,
@@ -40,24 +40,19 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "wrongShow": 2,
-    "duplicateOf": 1,
-    "unverifiableWebSearchRow": -1,
-    "noTextOrScoreSignal": -2,
-    "wrongAttribution": -3,
-    "blockedReviewUrl": -16,
-    "scoreStatusToBeCalculated": -2,
-    "listingPageUrl": -2
+    "wrongProduction": 1,
+    "duplicateOf": 6,
+    "listingPageUrl": -1
   },
-  "previousGeneratedAt": "2026-10-14T01:39:05.942Z",
+  "previousGeneratedAt": "2026-10-14T02:04:23.775Z",
   "mirror": {
     "comparedShows": 2515,
     "comparedFiles": 56029,
-    "agreeExcluded": 26303,
-    "agreeIncluded": 28531,
+    "agreeExcluded": 26309,
+    "agreeIncluded": 28529,
     "mirrorOnly": 253,
-    "rebuildOnly": 942,
-    "disagreements": 1195,
+    "rebuildOnly": 938,
+    "disagreements": 1191,
     "disagreementRate": 0.0213,
     "mirrorOnlyByRule": {
       "duplicateOf": 85,
@@ -71,8 +66,8 @@
       "rejectionReason": 1
     },
     "rebuildOnlyByReason": {
-      "skippedDuplicateText": 308,
-      "skippedUnknownCriticDedup": 229,
+      "skippedDuplicateText": 300,
+      "skippedUnknownCriticDedup": 230,
       "skippedCrossMarket": 78,
       "skippedNoScore": 76,
       "skippedInvalidUrl": 66,
@@ -83,9 +78,9 @@
       "skippedShowNotMentioned": 18,
       "skippedScraperGarbage": 12,
       "priorRunSuperseded": 10,
+      "skippedWithinShowDupe": 8,
       "skippedDateMismatch": 6,
       "skippedGarbage": 5,
-      "skippedWithinShowDupe": 5,
       "skippedOutletAsCriticDedup": 4,
       "heldPreOpeningCorroboration": 3,
       "skippedDuplicateTextInheritedFlag": 3,
@@ -100,5 +95,5 @@
     "notComparedShows": 84,
     "notComparedFiles": 533
   },
-  "previousDisagreementRate": 0.0209
+  "previousDisagreementRate": 0.0213
 }
