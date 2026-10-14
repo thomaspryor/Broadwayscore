@@ -61,7 +61,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews } = require('./lib/prior-run-sibling');
+const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews, preWindowExemptPriorRuns } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -1149,6 +1149,20 @@ for (const s of showsData.shows) {
   showById[s.id] = s;
 }
 
+// priorRuns as every pre-window guard call in this file must see them
+// (BRO-5333): an inheritReviews:false run that has its own sibling entry no
+// longer exempts reviews dated inside its window, they belong on the sibling.
+// One helper so the six evaluatePreWindowInclusion calls below cannot drift
+// apart (scoring-delta.js replays it too). The CV-promotion and URL-path
+// priorRuns checks still read show.priorRuns.
+const preWindowPriorRunsCache = new Map();
+function preWindowPriorRuns(showId) {
+  if (!preWindowPriorRunsCache.has(showId)) {
+    preWindowPriorRunsCache.set(showId, preWindowExemptPriorRuns(showById[showId], showsData.shows));
+  }
+  return preWindowPriorRunsCache.get(showId);
+}
+
 // ---------------------------------------------------------------------------
 // Require-as-a-library escape hatch (2026-08-01).
 //
@@ -1905,7 +1919,7 @@ const crossShowFingerprints = new Map();
             pubDate: reviewDate,
             showEarliest,
             isFlexCategory: true,
-            priorRuns: showRecord && showRecord.priorRuns,
+            priorRuns: showRecord && preWindowPriorRuns(sid),
             tourLegs: showRecord && showRecord.tourLegs,
           });
           // Production-continuity skip: review falls inside a declared priorRuns window
@@ -2850,7 +2864,7 @@ showDirs.forEach(showId => {
               pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
-              priorRuns: showById[showId]?.priorRuns,
+              priorRuns: preWindowPriorRuns(showId),
               tourLegs: showById[showId]?.tourLegs,
             });
             if (preWindow.exclude) refExcluded = true;
@@ -2958,7 +2972,7 @@ showDirs.forEach(showId => {
               pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
-              priorRuns: showById[showId]?.priorRuns,
+              priorRuns: preWindowPriorRuns(showId),
               tourLegs: showById[showId]?.tourLegs,
             });
             if (preWindow.exclude) refWouldBeExcluded = true;
@@ -4041,7 +4055,7 @@ showDirs.forEach(showId => {
           pubDate,
           showEarliest: openDate,
           isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
-          priorRuns: showById[showId]?.priorRuns,
+          priorRuns: preWindowPriorRuns(showId),
           tourLegs: showById[showId]?.tourLegs,
         });
         if (preWindow.exclude) {
@@ -4263,7 +4277,7 @@ showDirs.forEach(showId => {
             pubDate,
             showEarliest: showDateMap[showId],
             isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
-            priorRuns: showById[showId]?.priorRuns,
+            priorRuns: preWindowPriorRuns(showId),
             tourLegs: showById[showId]?.tourLegs,
           });
           if (preWindow.exclude) {
@@ -5655,7 +5669,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                       pubDate,
                       showEarliest: sEarliest,
                       isFlexCategory: sCat === 'off-broadway' || isLondonMarket(sCat),
-                      priorRuns: showById[showId]?.priorRuns,
+                      priorRuns: preWindowPriorRuns(showId),
                       tourLegs: showById[showId]?.tourLegs,
                     });
                     if (preWindow.exclude) wouldBeExcluded = true;
