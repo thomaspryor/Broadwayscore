@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5356-n",
   "planId": "15f75c4a-dfc3-489d-a448-9116a055d452",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T19:10:00.000Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,13 @@
         "description": "BRO-5356 cousin: four Feb 2025 reviews of the Theatre Royal Drury Lane run (Hiddleston/Atwell), which much-ado-about-nothing-2026 lists in priorRuns (2025-02-10 to 2025-04-05). The rebuild released their dateless-revival hold (wrongProduction false) but left contentTier 'invalid' ('Wrong production'), so all four are off the site (explainExclusion contentTierInvalid). No fullText; classifyContentTier gives excerpt from their aggregator excerpts (671-1,085 chars)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T19:52:30.553Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
 }
