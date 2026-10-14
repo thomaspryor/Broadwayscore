@@ -62,4 +62,36 @@ function findStaleCreators(discoveries, now = new Date(), maxAgeDays = MAX_SCAN_
   return stale;
 }
 
-module.exports = { detectTranscriptOutages, findStaleCreators, isVideoSpecificError, MIN_ERRORED_ATTEMPTS, MAX_SCAN_AGE_DAYS };
+
+// BRO-5366: TikTok intermittently answers a profile listing with an empty body
+// ("Failed to parse JSON"), which skipped 4 creators for 15-23 days while the
+// other creators scanned fine in the same run. One retry round with a pause
+// recovers most of these; a creator that fails every attempt still goes stale.
+const SCAN_ATTEMPTS = 3;
+
+/** The last yt-dlp ERROR line of a failed execSync, else the first line of the message. */
+function scanErrorLine(err) {
+  const out = `${err && err.stdout ? err.stdout : ''}\n${err && err.stderr ? err.stderr : ''}`;
+  const lines = out.split('\n').filter(l => /ERROR:/.test(l));
+  if (lines.length) return lines[lines.length - 1].trim().substring(0, 300);
+  return String((err && err.message) || err || '').split('\n')[0].substring(0, 300);
+}
+
+/**
+ * Run fn() up to `attempts` times. fn throws on failure and returns on success.
+ * @returns {{ok:boolean, value?:any, error?:string, attempts:number}}
+ */
+function runWithRetries(fn, { attempts = SCAN_ATTEMPTS, pause = () => {} } = {}) {
+  let error = null;
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      return { ok: true, value: fn(i), attempts: i };
+    } catch (err) {
+      error = scanErrorLine(err);
+      if (i < attempts) pause(i);
+    }
+  }
+  return { ok: false, error, attempts };
+}
+
+module.exports = { runWithRetries, scanErrorLine, SCAN_ATTEMPTS, detectTranscriptOutages, findStaleCreators, isVideoSpecificError, MIN_ERRORED_ATTEMPTS, MAX_SCAN_AGE_DAYS };

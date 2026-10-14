@@ -58,3 +58,23 @@ test('dead-video errors are video-specific; extractor breakage is not', () => {
     'ERROR: [tiktok:user] tylernabinger: Failed to parse JSON',
   ]) assert.equal(isVideoSpecificError(e), false, e);
 });
+
+// BRO-5366: a TikTok profile listing that fails once must be retried.
+const { runWithRetries, scanErrorLine } = require('../../scripts/lib/video-pipeline-health.js');
+
+test('runWithRetries recovers from a transient failure and pauses between attempts', () => {
+  const pauses = [];
+  let calls = 0;
+  const r = runWithRetries(() => { if (++calls < 3) throw new Error('boom'); return 'ok'; }, { pause: n => pauses.push(n) });
+  assert.deepEqual(r, { ok: true, value: 'ok', attempts: 3 });
+  assert.deepEqual(pauses, [1, 2]);
+});
+
+test('runWithRetries gives up after the last attempt and reports the yt-dlp ERROR line', () => {
+  const err = Object.assign(new Error('Command failed: yt-dlp ...'), { stdout: 'x\nERROR: ashley: Failed to parse JSON\n' });
+  const r = runWithRetries(() => { throw err; }, { attempts: 2 });
+  assert.equal(r.ok, false);
+  assert.equal(r.attempts, 2);
+  assert.match(r.error, /Failed to parse JSON/);
+  assert.equal(scanErrorLine(new Error('plain\nsecond')), 'plain');
+});

@@ -26,7 +26,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { findStaleCreators } = require('../lib/video-pipeline-health');
+const { findStaleCreators, runWithRetries } = require('../lib/video-pipeline-health');
 const { preserveLlmFlags } = require('../lib/video-discovery-merge');
 
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -50,9 +50,19 @@ function scanCreator(creator, limit) {
 
   console.log(`  Fetching up to ${limit} videos from ${url}...`);
 
-  try {
+  {
     const cmd = `yt-dlp --flat-playlist --print "%(id)s\t%(title)s\t%(upload_date)s\t%(duration_string)s\t%(view_count)s" "${url}" --playlist-items 1-${limit} --sleep-interval 1 2>&1`;
-    const output = execSync(cmd, { encoding: 'utf8', timeout: 300000 });
+    const listing = runWithRetries(() => execSync(cmd, { encoding: 'utf8', timeout: 300000 }), {
+      pause: (n) => {
+        console.log(`  listing attempt ${n} failed, retrying in ${n * 30}s...`);
+        execSync(`sleep ${n * 30}`);
+      },
+    });
+    if (!listing.ok) {
+      console.error(`  Error scanning ${handle} (${listing.attempts} attempts): ${listing.error}`);
+      return null;
+    }
+    const output = listing.value;
 
     const videos = output.split('\n')
       .filter(l => !l.match(/WARNING|ERROR|Downloading|Extracting/) && l.includes('\t'))
@@ -79,9 +89,6 @@ function scanCreator(creator, limit) {
       reviewCandidates: classified.filter(v => v.isReviewCandidate).length,
       videos: classified
     };
-  } catch (err) {
-    console.error(`  Error scanning ${handle}:`, err.message?.substring(0, 200));
-    return null;
   }
 }
 
