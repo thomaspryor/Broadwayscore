@@ -697,5 +697,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-14T17:16:29.679Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5359-stop-hook-wiring",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5359-stop-hook-wiring",
+    "description": "land.yml did not land land/bro-5359-stop-hook-wiring: the unit-tests-node gate went red at fe765a03aa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38600893880",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5359-stop-hook-wiring"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fe765a03aa70df99a047d62db91df7d572f96311"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38600893880"
+      }
+    ],
+    "queuedAt": "2026-10-14T17:21:12.980Z"
   }
 ]
