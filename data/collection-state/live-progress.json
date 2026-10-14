@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-14T03:52:36.803Z",
-  "processed": 402,
-  "failed": 297,
-  "successRate": "57.5%",
+  "updatedAt": "2026-10-14T04:05:53.926Z",
+  "processed": 405,
+  "failed": 301,
+  "successRate": "57.4%",
   "tierBreakdown": {
-    "playwright": 245,
+    "playwright": 247,
     "amp": 9,
     "browserbase": 20,
     "directCookies": 0,
@@ -12,27 +12,10 @@
     "scrapingbee": 34,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 72
+    "archive": 73
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-10-13T22:19:09.105Z",
-      "event": "bb-session",
-      "session": "cb24d691",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-13T22:19:09.988Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-13T23:53:23.758Z",
-      "event": "bb-session",
-      "session": "b72008c9",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
     {
       "t": "2026-10-13T23:53:24.155Z",
       "event": "bb-cookie-inject",
@@ -125,6 +108,24 @@
       "t": "2026-10-14T03:05:25.907Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T04:01:55.649Z",
+      "event": "bb-session",
+      "session": "6943b452",
+      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
+    },
+    {
+      "t": "2026-10-14T04:02:55.937Z",
+      "event": "bb-session",
+      "session": "19cc6d29",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-14T04:03:08.438Z",
+      "event": "bb-session",
+      "session": "aee24b01",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
     }
   ]
 }
