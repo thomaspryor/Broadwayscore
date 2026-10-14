@@ -180,5 +180,18 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-14T08:20:43.876Z"
+  },
+  {
+    "conditionKey": "corpus-drift:outlet-identity-hygiene",
+    "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
+    "description": "check-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 28905\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 0 outlet(s)\ncorpus files scanned: 56518; provisional outlets without a decision: 1\n  thechelseacitizen (1) e.g. what-the-animals-say-off-west-end-2026/thechelseacitizen--olivia-blackman.json\nPROBLEMS: 1",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T08:49:42.389Z"
   }
 ]
