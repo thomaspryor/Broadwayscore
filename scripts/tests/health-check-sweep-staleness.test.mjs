@@ -103,3 +103,18 @@ test('row is registered in health-check.js AUTO_FIX_PLAYBOOK (not anonymous low)
   assert.ok(entry, 'playbook entry exists');
   assert.equal(entry.urgency, 'this-week');
 });
+
+test('a fresh report carrying fetchError warns (watchdog reads an empty set)', () => {
+  const now = Date.parse('2026-10-14T12:00:00Z');
+  const r = sweepReportStalenessResult({ report: { generatedAt: '2026-10-14T11:00:00Z', fetchError: 'bad key' } }, now);
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /fetchError/);
+});
+
+test('row sits inside computeCoreHealthResults so the health-row probe sees it', () => {
+  const src = fs.readFileSync(new URL('../health-check.js', import.meta.url), 'utf8');
+  const start = src.indexOf('async function computeCoreHealthResults');
+  const end = src.indexOf('\n}\n', start);
+  assert.ok(start > 0 && end > start);
+  assert.match(src.slice(start, end), /checkSweepReportStaleness\(\)/);
+});

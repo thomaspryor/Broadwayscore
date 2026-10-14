@@ -14,7 +14,8 @@
  *   - unparseable JSON / missing or unparseable generatedAt -> error
  *     (a sweep that cannot prove it ran is treated like one that did not,
  *     same as checkFreshness / evaluateAuditFreshness)
- *   - age > 96h -> error, age > 48h -> warn (daily cron, one missed run warns)
+ *   - age > 96h -> error, age > 48h -> warn (daily cron; the health check runs before the sweep step in the
+ *     same job, so it reads the previous day's report: warn fires after ~2 missed runs)
  *
  * Ages come from scripts/lib/hours-ago.js, the helper every freshness row uses.
  * Tested by scripts/tests/health-check-sweep-staleness.test.mjs (require()s
@@ -51,6 +52,9 @@ function sweepReportStalenessResult({ report = null, parseError = null } = {}, n
   const value = report && typeof report === 'object' ? report.generatedAt : undefined;
   if (!value) {
     return { name, status: 'error', message: 'No generatedAt field', hint };
+  }
+  if (report.fetchError) {
+    return { name, status: 'warn', message: `Latest sweep wrote a failure report (fetchError: ${String(report.fetchError).slice(0, 80)}); the watchdog reads an empty result set`, hint };
   }
   const age = hoursAgo(value, nowMs);
   if (age === Infinity) {

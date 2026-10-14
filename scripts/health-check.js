@@ -5646,6 +5646,8 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
   return [
     ...checkFreshness(),
     ...checkAuditFreshness(),
+    // BRO-4382: staleness of the daily open-backlog acceptance sweep report.
+    checkSweepReportStaleness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
@@ -5784,9 +5786,6 @@ async function main() {
     } catch {
       allResults.push(...notionScheduleCouplingResults(null));
     }
-
-    // BRO-4382: staleness of the daily open-backlog acceptance sweep report.
-    allResults.push(checkSweepReportStaleness());
 
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
