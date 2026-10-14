@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T08:20:54.110Z",
+  "generatedAt": "2026-10-14T11:31:23.339Z",
   "windowDays": 45,
   "showsScanned": 168,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 5,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 134.5993261111111,
+      "fileAgeHours": 137.77567333333334,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 129.56936027777778
+      "nonTerminalAgeHours": 132.74414611111112
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -35,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 519.6709544444444,
+      "fileAgeHours": 522.8472877777778,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 70.69197444444444
+      "nonTerminalAgeHours": 73.86676027777777
     },
     {
       "showId": "nina-off-west-end-2026",
@@ -49,17 +49,16 @@
       "type": "empty-body",
       "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/",
       "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        "attempted": false,
+        "reason": "circuit-breaker:per-file-cap"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=nina-off-west-end-2026 --url=https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/ --outlet=thereviewshub --critic=\"The Reviews Hub - Ireland\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-13T22:13:30.839Z",
-      "fileAgeHours": 10.123130555555555,
+      "fileAgeHours": 13.297916388888888,
       "gapSeenAt": "2026-10-14T02:28:45.459Z",
-      "nonTerminalAgeHours": 5.869069722222222
+      "nonTerminalAgeHours": 9.043855555555556
     }
   ],
   "contradictions": []
