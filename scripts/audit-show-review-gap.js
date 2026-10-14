@@ -617,8 +617,7 @@ function otherProductionUrlSignal(u, show, serpTitle) {
     { only: venueTextApplies ? ['url-edition-market', 'venue-text'] : ['url-edition-market'], useText: true },
   );
   if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
-  if (sig) return sig;
-  return edinburghFringeUrlSignal(u, show);
+  return sig;
 }
 
 // BRO-5132: a New York show that transferred from the Edinburgh Fringe drags its
@@ -627,8 +626,10 @@ function otherProductionUrlSignal(u, show, serpTitle) {
 // A slug naming the Fringe is the Fringe run's review: a New York review of the
 // transfer names the venue it is playing, not "edfringe-2026". Slug only, never
 // the SERP title ("the Edinburgh Fringe hit arrives in New York" is a NYC
-// review), and never for a show that declares prior runs.
-const EDINBURGH_FRINGE_SLUG_RE = /(^|[\/\-_])(edfringe|edinburgh[\/\-_](?:festival[\/\-_])?fringe|fringe[\/\-_]edinburgh)([\/\-_]|$)|^\/edinburgh\//i;
+// review), and never for a show that declares prior runs. Census only: Show
+// Score's page for a NYC production links that production's reviews, so a
+// Fringe-named slug there is a NYC review and must not be tagged prior-run.
+const EDINBURGH_FRINGE_SLUG_RE = /(^|[\/\-_])(edfringe(?:\d{2}|\d{4})?|edinburgh[\/\-_](?:festival[\/\-_])?fringe|fringe[\/\-_]edinburgh)([\/\-_]|$)|^\/edinburgh\//i;
 function edinburghFringeUrlSignal(u, show) {
   if (!show || !['broadway', 'off-broadway'].includes(show.category)) return null;
   if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return null;
@@ -648,7 +649,7 @@ function isOwnVenueUrl(u, show) {
   const norm = (s) => String(s || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
   const venue = norm(show && show.venue);
   if (venue.length < 6) return false;
-  const host = registrableHost(u);
+  const host = registrableHost(hostOf(u));
   if (!host) return false;
   const label = norm(host.split('.')[0]);
   return label === venue || label === `the${venue}`;
@@ -700,7 +701,7 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   if (isUrlYearOutOfWindow(u, show)) return null;
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
-  if (otherProductionUrlSignal(u, show, sr.title)) return null;
+  if (otherProductionUrlSignal(u, show, sr.title) || edinburghFringeUrlSignal(u, show)) return null;
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words

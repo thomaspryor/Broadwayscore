@@ -523,15 +523,19 @@ test('acceptSerpCensusResult drops Edinburgh Fringe reviews and the venue site o
     'https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review',
     'https://www.sohoplayhouse.com/shows/elf-lyons-the-woman-on-the-edge',
     'https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge',
+    'https://sohoplayhouse.com/shows/elf-lyons-the-woman-on-the-edge',
+    'https://www.sohoplayhouse.com/shows/elf-lyons-the-woman-on-the-edge.html',
+    'https://example.com/review-elf-lyons-the-woman-on-the-edge-edfringe2026',
   ]) assert.equal(acceptSerpCensusResult({ url, title }, { show, showInfo: info }), null, url);
   // A New York review of the transfer stays, even when its headline names the Fringe.
   assert.ok(acceptSerpCensusResult({ url: 'https://www.nytimes.com/2026/09/28/theater/elf-lyons-the-woman-on-the-edge-review.html', title: 'Review: The Edinburgh Fringe hit The Woman on the Edge arrives' }, { show, showInfo: info }));
   assert.ok(acceptSerpCensusResult({ url: 'https://www.timeout.com/newyork/theater/elf-lyons-the-woman-on-the-edge-review', title }, { show, showInfo: info }));
-  // A declared prior run, a West End show, or an Edinburgh-named show is not judged.
-  const fringeUrl = 'https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/';
-  assert.equal(otherProductionUrlSignal(fringeUrl, { ...show, priorRuns: [{ venue: 'Pleasance Courtyard', openingDate: '2026-08-01' }] }), null);
-  assert.equal(otherProductionUrlSignal(fringeUrl, { ...show, category: 'off-west-end', venue: 'Soho Theatre' }), null);
-  assert.equal(otherProductionUrlSignal(fringeUrl, { ...show, title: 'Edinburgh Fringe Comedy Hour' }), null);
+  // A declared prior run or a West End show is not judged.
+  const fringe = { url: 'https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/', title };
+  assert.ok(acceptSerpCensusResult(fringe, { show: { ...show, priorRuns: [{ venue: 'Pleasance Courtyard', openingDate: '2026-08-01' }] }, showInfo: info }));
+  assert.ok(acceptSerpCensusResult(fringe, { show: { ...show, category: 'off-west-end', venue: 'Soho Theatre' }, showInfo: info }));
+  // Census only: the Show Score path (otherProductionUrlSignal) never tags a Fringe slug prior-run.
+  assert.equal(otherProductionUrlSignal(fringe.url, show), null);
   // Short venue names never match a host (The Tank -> "tank").
   const tank = { id: 'x-off-broadway-2026', title: 'Elf Lyons: The Woman on the Edge', category: 'off-broadway', venue: 'The Tank', openingDate: '2026-10-01' };
   assert.ok(acceptSerpCensusResult({ url: 'https://tank.com/elf-lyons-the-woman-on-the-edge-review', title }, { show: tank, showInfo: info }));
