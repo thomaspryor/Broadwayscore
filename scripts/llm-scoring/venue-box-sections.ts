@@ -19,7 +19,7 @@ export interface VenueShow { id: string; title: string; venue?: string | null; o
 export interface VenueBoxResult { ok: boolean; text?: string; reason: string; boxes: number }
 
 const PRICE = /\(\$\s?\d[\d.,]*(?:\s?[-–]\s?\$?\d[\d.,]*)?\)/g;
-const TAIL = /^(?:,?\s*\d{3}[-.]\d{3}[-.]\d{4}(?:\s*\/\s*\d{3}[-.]\d{3}[-.]\d{4})*)?(?:,?\s*(?:closes|extended|open-ended|through)[^\n]{0,30}?(?:\d{4}|\d{1,2}\b))?/;
+const TAIL = /^(?:,?\s*\d{3}[-.]\d{3}[-.]\d{4}(?:\s*\/\s*\d{3}[-.]\d{3}[-.]\d{4})*)?(?:,?\s*(?:closes|extended|open-ended|through)(?:[^.\n]|\.(?=\s*\d)){0,30}?(?:\d{4}|\d{1,2}\b))?/;
 const ADDRESS = /\b\d{1,4}\s+(?:[NSEW]\.?\s+)?[\w.']+(?:\s+[\w.']+)?\s+(?:St|Street|Ave|Avenue|Blvd|Road|Rd|Place|Pl|Square|Broadway)\b\.?,?\s*(?:[A-Z][\w.' ]{0,40},?\s*)?$/;
 const CLUSTER_GAP = 300;
 const MIN_SECTION = 800;

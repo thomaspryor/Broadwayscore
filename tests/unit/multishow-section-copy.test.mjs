@@ -34,10 +34,18 @@ test('creates the target row as a split child and marks the column row as its sp
   assert.deepEqual(r.parent.multiShowSplitChildShowIds, ['target-show']);
   assert.equal(r.parent.fullText, source().fullText, 'the column row keeps its whole text');
   assert.equal(r.parent.multiShowSplitProcessed, undefined, 'no processed marker: the fan-out must not treat the column as trimmed');
+  assert.equal(r.parent.multiShowSplitMethod, 'venue-box');
+});
+
+test('the BRO-4431 fan-out leaves a venue-box column whole (it would re-cut godspell-2011 at the wrong place)', () => {
+  const { planMultiShowFanout } = require('../../scripts/lib/multi-show-review-fanout.js');
+  const r = planSectionCopy(base());
+  assert.equal(planMultiShowFanout(r.parent, [{ id: 'col-show', title: 'Col Show' }, { id: 'target-show', title: 'Target Show' }]), null);
 });
 
 test('fills a short stub row, moving excerpts that are not in the section aside', () => {
   const target = { showId: 'target-show', criticName: 'Pat Critic', url: 'https://www.wsj.com/articles/SB999', fullText: 'A wrong production excerpt about other actors.',
+    assignedScore: 78, llmMetadata: { model: 'x' }, originalScore: '3/5',
     dtliExcerpt: 'A wrong production excerpt about other actors.', showScoreExcerpt: SECTION.slice(0, 120), rejectionReason: 'not_a_review', contentTier: 'truncated' };
   const r = planSectionCopy(base({ target }));
   assert.equal(r.ok, true, r.reason);
@@ -47,6 +55,9 @@ test('fills a short stub row, moving excerpts that are not in the section aside'
   assert.equal(r.row.dtliExcerpt, null);
   assert.equal(r.row.showScoreExcerpt, SECTION.slice(0, 120), 'an excerpt found in the section stays');
   assert.equal(r.row.rejectionReason, null);
+  assert.equal(r.row.assignedScore, null, 'the stub score must not publish against the new text');
+  assert.equal(r.row.llmMetadata, null);
+  assert.equal(r.row.originalScore, null);
   assert.equal(r.row.previousUrl, 'https://www.wsj.com/articles/SB999');
   assert.equal(r.row.multiShowSectionCopy.replaced.dtliExcerpt, target.dtliExcerpt);
   assert.equal(r.row.multiShowSectionCopy.replaced.fullText, target.fullText);
@@ -73,6 +84,8 @@ test('never overwrites a real target text, a human verdict or another critic', (
   assert.match(planSectionCopy(base({ target: t({ humanReviewScore: 70 }) })).reason, /locked human score/);
   assert.equal(planSectionCopy(base({ target: t({ humanReviewScore: 70, humanReviewScoreProvisional: true }) })).ok, true);
   assert.match(planSectionCopy(base({ target: t({ _locked: true }) })).reason, /_locked/);
+  assert.match(planSectionCopy(base({ target: t({ wrongProduction: true }) })).reason, /wrongProduction/);
+  assert.match(planSectionCopy(base({ target: t({ wrongShow: true }) })).reason, /wrongShow/);
   assert.match(planSectionCopy(base({ target: t({ isNonReview: true }) })).reason, /isNonReview/);
   assert.match(planSectionCopy(base({ target: t({ criticName: 'Someone Else' }) })).reason, /differs/);
   assert.match(planSectionCopy(base({ targetShowId: 'col-show' })).reason, /must differ/);

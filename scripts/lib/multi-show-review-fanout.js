@@ -423,6 +423,10 @@ function planMultiShowFanout(data, shows, opts = {}) {
   if (data.multiShowSplitChild) return null;
   // An undone split stays whole (a later heuristic change must not re-cut it).
   if (data.multiShowUnsplitAt) return null;
+  // A column whose sections were filed by copy-multishow-section.js (BRO-5325)
+  // stays whole: the scorer reads its own section at score time (BRO-5294),
+  // and this planner's intro cut lands elsewhere in WSJ capsule columns.
+  if (data.multiShowSplitMethod === 'venue-box') return null;
   if (data.multiShowSplitProcessed) {
     const retrimmed = data.multiShowSplitParent && typeof data.fullText === 'string'
       && Number.isFinite(data.multiShowSplitTextLength)
