@@ -32,7 +32,7 @@
  *     },
  *     forceFlag: process.argv.includes('--force'),
  *     initialBackfillFlag: process.argv.includes('--initial-backfill'),
- *     snapshotPath: 'data/audit/...-aborted.json', // optional
+ *     snapshotPath: '<repo>/data/audit/<name>-aborted.json', // optional
  *   });
  *   if (!result.ok) process.exit(1);
  */

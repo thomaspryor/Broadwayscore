@@ -84,6 +84,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
+          # blanket-sweep-audit-ok: data/audit/auto-fix-show-data-aborted.json written only when the BRO-3574 stability guard aborts a run; single-writer, and a run that aborted has no shows.json change, so this step accepts losing only the last-resort Git Data API push fallback for that commit
           node scripts/auto-fix-show-data.js
 
       # Step 4: Closing dates handled by audit-closing-dates.yml (daily 14:00 UTC)
