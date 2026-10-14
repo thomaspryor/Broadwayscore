@@ -17,13 +17,13 @@
       "firstSeen": "2026-07-24T07:50:32.738Z",
       "incidentOpenedAt": "2026-10-13T05:05:40.220Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.719Z",
+      "lastSeen": "2026-10-14T02:45:34.220Z",
       "lastNotifiedAt": "2026-10-13T05:05:40.220Z",
       "lastSurfacedAt": "2026-10-13T05:05:40.220Z",
       "notifyCount": 6,
       "cardId": "3ba637c5-416f-81ee-bf77-eb41b75c5b07",
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Secrets: health": {
       "status": "resolved",
@@ -116,12 +116,13 @@
       "firstSeen": "2026-07-24T07:50:36.268Z",
       "incidentOpenedAt": "2026-07-24T07:50:36.268Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:28.913Z",
+      "lastSeen": "2026-10-14T02:45:33.542Z",
       "lastNotifiedAt": "2026-10-13T09:28:28.913Z",
       "lastSurfacedAt": "2026-10-13T09:28:28.913Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": "BRO-5249"
+      "linearIdentifier": "BRO-5249",
+      "silentRefires": 1
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -484,13 +485,17 @@
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Cron failed: Weekly Video Reviews",
       "firstSeen": "2026-08-04T07:42:02.538Z",
-      "lastSeen": "2026-08-04T07:42:02.538Z",
-      "lastNotifiedAt": "2026-08-04T07:42:02.538Z",
-      "notifyCount": 1,
-      "cardId": "3b2637c5-416f-81f6-96a0-d843ea48466b"
+      "incidentOpenedAt": "2026-10-14T02:45:34.226Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-14T02:45:34.226Z",
+      "lastNotifiedAt": "2026-10-14T02:45:34.226Z",
+      "lastSurfacedAt": "2026-10-14T02:45:34.226Z",
+      "notifyCount": 2,
+      "cardId": "3b2637c5-416f-81f6-96a0-d843ea48466b",
+      "linearIdentifier": null
     },
     "backstop:othello-off-broadway-2026/wsj--unknown.json": {
       "status": "open",
@@ -675,7 +680,7 @@
       "resolvedAt": "2026-09-22T12:04:54.000Z"
     },
     "health-check:Revenue: affiliate health": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "BSC Daily: Revenue: affiliate health",
       "firstSeen": "2026-08-09T07:42:46.513Z",
@@ -686,7 +691,9 @@
       "lastSurfacedAt": "2026-10-09T13:52:38.341Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-3979"
+      "linearIdentifier": "BRO-3979",
+      "resolvedAt": "2026-10-14T02:45:33.517Z",
+      "resolveReason": "health-check row passing"
     },
     "health-check:Cron failed: Reverse Discovery": {
       "status": "open",
@@ -793,13 +800,13 @@
       "firstSeen": "2026-08-11T07:57:54.489Z",
       "incidentOpenedAt": "2026-08-11T07:57:54.489Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.566Z",
+      "lastSeen": "2026-10-14T02:45:33.988Z",
       "lastNotifiedAt": "2026-10-12T05:05:44.537Z",
       "lastSurfacedAt": "2026-10-12T05:05:44.537Z",
       "notifyCount": 5,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
       "linearIdentifier": "BRO-2263",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "resolved",
@@ -1992,13 +1999,13 @@
       "firstSeen": "2026-08-30T12:17:23.237Z",
       "incidentOpenedAt": "2026-10-13T05:05:40.211Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.713Z",
+      "lastSeen": "2026-10-14T02:45:34.136Z",
       "lastNotifiedAt": "2026-10-13T05:05:40.211Z",
       "lastSurfacedAt": "2026-10-13T05:05:40.211Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "cron-health:Process Feedback Submissions": {
       "status": "resolved",
@@ -15558,12 +15565,13 @@
       "firstSeen": "2026-10-13T09:28:34.744Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.744Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.744Z",
+      "lastSeen": "2026-10-14T02:45:34.249Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.744Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.744Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data quality: fulltext-mentions-show lifetime sweep": {
       "status": "open",
@@ -15572,12 +15580,13 @@
       "firstSeen": "2026-10-13T09:28:34.752Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.752Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.752Z",
+      "lastSeen": "2026-10-14T02:45:34.390Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.752Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.752Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data quality: slug-mismatch lifetime sweep": {
       "status": "open",
@@ -15614,12 +15623,13 @@
       "firstSeen": "2026-10-13T09:28:34.776Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.776Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.776Z",
+      "lastSeen": "2026-10-14T02:45:34.452Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.776Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.776Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data quality: stale announced shows": {
       "status": "open",
@@ -15628,12 +15638,13 @@
       "firstSeen": "2026-10-13T09:28:34.785Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.785Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.785Z",
+      "lastSeen": "2026-10-14T02:45:34.514Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.785Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.785Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Coverage: adversarial probe": {
       "status": "open",
@@ -15642,12 +15653,13 @@
       "firstSeen": "2026-10-13T09:28:34.795Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.795Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.795Z",
+      "lastSeen": "2026-10-14T02:45:34.522Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.795Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.795Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data: OB shows no closing signal can detect": {
       "status": "open",
@@ -15656,12 +15668,13 @@
       "firstSeen": "2026-10-13T09:28:34.803Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.803Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.803Z",
+      "lastSeen": "2026-10-14T02:45:34.528Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.803Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.803Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data: tour dates need a look": {
       "status": "open",
@@ -15670,12 +15683,13 @@
       "firstSeen": "2026-10-13T09:28:34.810Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.810Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.810Z",
+      "lastSeen": "2026-10-14T02:45:34.534Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.810Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.810Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data: closed national tour lists new dates": {
       "status": "open",
@@ -15684,12 +15698,13 @@
       "firstSeen": "2026-10-13T09:28:34.818Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.818Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.818Z",
+      "lastSeen": "2026-10-14T02:45:34.541Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.818Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.818Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Commercial model drift": {
       "status": "open",
@@ -15698,12 +15713,13 @@
       "firstSeen": "2026-10-13T09:28:34.826Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.826Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.826Z",
+      "lastSeen": "2026-10-14T02:45:34.547Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.826Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.826Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Stuck pipeline items": {
       "status": "open",
@@ -15712,12 +15728,13 @@
       "firstSeen": "2026-10-13T09:28:34.834Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.834Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.834Z",
+      "lastSeen": "2026-10-14T02:45:34.553Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.834Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.834Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data freshness: shows missing poster/synopsis/tickets": {
       "status": "open",
@@ -15726,12 +15743,13 @@
       "firstSeen": "2026-10-13T09:28:34.841Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.841Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.841Z",
+      "lastSeen": "2026-10-14T02:45:34.561Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.841Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.841Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Feedback: needs-manual-review backlog": {
       "status": "open",
@@ -15740,12 +15758,13 @@
       "firstSeen": "2026-10-13T09:28:34.851Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.851Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.851Z",
+      "lastSeen": "2026-10-14T02:45:34.567Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.851Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.851Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data: T1/T2 silent review gaps": {
       "status": "open",
@@ -15754,12 +15773,13 @@
       "firstSeen": "2026-10-13T09:28:34.859Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.859Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.859Z",
+      "lastSeen": "2026-10-14T02:45:34.236Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.859Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.859Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data: uncollected live review strands": {
       "status": "open",
@@ -15768,12 +15788,13 @@
       "firstSeen": "2026-10-13T09:28:34.867Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.867Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.867Z",
+      "lastSeen": "2026-10-14T02:45:34.573Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.867Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.867Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data: reviewed shows missing from shows.json": {
       "status": "open",
@@ -15782,12 +15803,13 @@
       "firstSeen": "2026-10-13T09:28:34.875Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.875Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-13T09:28:34.875Z",
+      "lastSeen": "2026-10-14T02:45:34.595Z",
       "lastNotifiedAt": "2026-10-13T09:28:34.875Z",
       "lastSurfacedAt": "2026-10-13T09:28:34.875Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:franz-and-marie-west-end-2026": {
       "status": "open",
@@ -16197,6 +16219,62 @@
       "lastSeen": "2026-10-14T02:10:19.268Z",
       "lastNotifiedAt": "2026-10-14T02:10:19.268Z",
       "lastSurfacedAt": "2026-10-14T02:10:19.268Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Quality: opening date vs review dates": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Quality: opening date vs review dates",
+      "firstSeen": "2026-10-14T02:45:33.530Z",
+      "incidentOpenedAt": "2026-10-14T02:45:33.530Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-14T02:45:33.530Z",
+      "lastNotifiedAt": "2026-10-14T02:45:33.530Z",
+      "lastSurfacedAt": "2026-10-14T02:45:33.530Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Quality: standingCoverage drift": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Quality: standingCoverage drift",
+      "firstSeen": "2026-10-14T02:45:34.129Z",
+      "incidentOpenedAt": "2026-10-14T02:45:34.129Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-14T02:45:34.129Z",
+      "lastNotifiedAt": "2026-10-14T02:45:34.129Z",
+      "lastSurfacedAt": "2026-10-14T02:45:34.129Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Commercial model: stored vs fresh run": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Commercial model: stored vs fresh run",
+      "firstSeen": "2026-10-14T02:45:34.142Z",
+      "incidentOpenedAt": "2026-10-14T02:45:34.142Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-14T02:45:34.142Z",
+      "lastNotifiedAt": "2026-10-14T02:45:34.142Z",
+      "lastSurfacedAt": "2026-10-14T02:45:34.142Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Data quality: cross-outlet attribution drift": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Data quality: cross-outlet attribution drift",
+      "firstSeen": "2026-10-14T02:45:34.242Z",
+      "incidentOpenedAt": "2026-10-14T02:45:34.242Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-14T02:45:34.242Z",
+      "lastNotifiedAt": "2026-10-14T02:45:34.242Z",
+      "lastSurfacedAt": "2026-10-14T02:45:34.242Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
