@@ -36,7 +36,8 @@ function serpBackoffDecision(showId, runs, now = new Date(), opts = {}) {
   const list = Array.isArray(runs) ? runs : [];
   for (let i = list.length - 1; i >= 0; i--) {
     const run = list[i];
-    const mine = (run && Array.isArray(run.entries) ? run.entries : []).filter((e) => e && e.showId === showId);
+    const mine = (run && Array.isArray(run.entries) ? run.entries : []).filter((e) => e && (e.showId || e.id) === showId);
+    // 'applied' entries carry the show as `id`, audit-only ones as `showId`.
     if (mine.length === 0) continue;
     const reasons = mine.map((e) => e.reason || '');
     if (reasons.every((r) => NEUTRAL_REASON_RE.test(r))) continue;

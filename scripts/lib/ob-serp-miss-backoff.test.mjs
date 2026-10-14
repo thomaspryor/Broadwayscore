@@ -87,3 +87,16 @@ test('only the same-date class backs off; a show in previews with no opening dat
   assert.equal(isBackoffEligible({ previewsStartDate: '2026-09-01', openingDate: '2026-09-20' }), false);
   assert.equal(isBackoffEligible(null), false);
 });
+
+test('an applied fix (logged with id, not showId) ends the streak', () => {
+  const runs = [
+    run('2026-10-01T00:00:00Z', miss('a')),
+    run('2026-10-02T00:00:00Z', miss('a')),
+    run('2026-10-03T00:00:00Z', miss('a')),
+    run('2026-10-05T00:00:00Z', { kind: 'applied', id: 'a', field: 'openingDate' }),
+    run('2026-10-08T00:00:00Z', miss('a')),
+  ];
+  const d = serpBackoffDecision('a', runs, NOW);
+  assert.equal(d.misses, 1);
+  assert.equal(d.skip, false);
+});
