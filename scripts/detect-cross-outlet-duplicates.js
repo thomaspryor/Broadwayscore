@@ -364,14 +364,8 @@ async function main() {
   for (const p of pointerPairs.slice(0, 50)) {
     console.log(`  ${p.showId}: ${p.files[0]} <-> ${p.files[1]} (${p.method})`);
   }
-  if (pointerPairs.length > 0) {
-    if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
-    const pairsPath = path.join(AUDIT_DIR, 'cross-outlet-pointer-pairs.json');
-    fs.writeFileSync(pairsPath, JSON.stringify({ generatedAt: new Date().toISOString(), pairs: pointerPairs }, null, 2) + '\n');
-    console.log(`Pointer pairs report: ${pairsPath}`);
-  }
 
-  if (duplicates.length > 0) {
+  if (duplicates.length > 0 || pointerPairs.length > 0) {
     // Deduplicate results (same pair might be found by both methods)
     const seen = new Set();
     const unique = duplicates.filter(d => {
@@ -405,7 +399,7 @@ async function main() {
     // Score impact
     const totalDiff = unique.reduce((s, d) => s + d.scoreDiff, 0);
     console.log('\n--- Score Impact ---');
-    console.log(`Avg score diff: ${(totalDiff / unique.length).toFixed(1)} pts`);
+    console.log(`Avg score diff: ${unique.length ? (totalDiff / unique.length).toFixed(1) : 0} pts`);
     console.log(`>5 pt diff: ${unique.filter(d => d.scoreDiff > 5).length}`);
     console.log(`>10 pt diff: ${unique.filter(d => d.scoreDiff > 10).length}`);
 
@@ -421,6 +415,8 @@ async function main() {
         byMethod,
       },
       duplicates: unique,
+      // BRO-5348: one row points at the other outlet's file; for review only.
+      crossOutletPointerPairs: pointerPairs,
     };
     const reportPath = path.join(AUDIT_DIR, 'cross-outlet-duplicates.json');
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
