@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5254-d",
   "planId": "3adabec9-e15d-4127-b158-6409dfbb5875",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T01:21:48.467Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,18 @@
         "description": "BRO-5254: drop the repeated excerpt lead paragraph from live Variety texts (no rescore)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T02:11:56.339Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
 }
