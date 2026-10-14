@@ -90,3 +90,10 @@ test('runWithRetries does not retry a timeout and never pauses after the last at
   assert.equal(scanErrorLine(Object.assign(new Error('x'), { stderr: 'ERROR: from stderr' })), 'ERROR: from stderr');
   assert.equal(scanErrorLine(null), '');
 });
+
+test('runWithRetries survives a throwing pause and defaults to 3 attempts', () => {
+  let calls = 0;
+  const r = runWithRetries(() => { calls++; throw new Error('x'); }, { pause: () => { throw new Error('sleep failed'); } });
+  assert.equal(calls, 3);
+  assert.equal(r.ok, false);
+});
