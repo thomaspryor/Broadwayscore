@@ -463,12 +463,57 @@ stale_unmerged=()
 # Parse `git worktree list --porcelain` into (path, branch, lock-state)
 # triples. Reads $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS,
 # which gc_one_repo() sets before invoking this per repo.
+# Detached temp checkouts leaked by a killed caller (BRO-5364).
+# makeFreshCheckout (acceptance-check-core.js) creates <tmpdir>/<prefix>XXXXXX/main
+# with `git worktree add --detach` and removes it in a finally block; a killed
+# caller leaks it, and the detached-HEAD SKIP in flush() kept it forever
+# (2026-10-14: a day-old 1.2GB merge-test-gate-baseline checkout helped take /
+# to 2.1GB free). Reaped only when ALL hold: under a temp root, parent is a
+# known makeFreshCheckout mkdtemp name (keep TMP_CHECKOUT_PREFIXES in step
+# with the callers; gc-reap-stale-tmp-checkout.test.mjs fails on a new
+# prefix), the parent and every file idle > TMP_CHECKOUT_MAX_AGE_MIN, and HEAD
+# already on origin/main. Returns 0 when handled, 1 to fall through to SKIP.
+TMP_CHECKOUT_MAX_AGE_MIN="${TMP_CHECKOUT_MAX_AGE_MIN:-360}"
+reap_stale_tmp_checkout() {
+  local wt="$1" parent sz
+  case "$wt" in
+    *..*) return 1 ;;
+    /tmp/*/main|/private/tmp/*/main|/var/folders/*/main|/private/var/folders/*/main) ;;
+    *) return 1 ;;
+  esac
+  parent="${wt%/main}"
+  case "${parent##*/}" in
+    acceptance-check-??????|auto-recheck-??????|card-relevance-check-??????|close-verify-??????|\
+    close-verify-dryrun-??????|done-evidence-??????|landed-but-open-??????|linear-done-verify-??????|\
+    merge-test-gate-baseline-??????|open-backlog-sweep-??????|zombie-verify-??????) ;;
+    *) return 1 ;;
+  esac
+  [ -n "$(find "$parent" -maxdepth 0 -mmin +"$TMP_CHECKOUT_MAX_AGE_MIN" 2>/dev/null)" ] || return 1
+  find "$wt" -path "$wt/node_modules" -prune -o -mmin -"$TMP_CHECKOUT_MAX_AGE_MIN" -print 2>/dev/null | grep -q . && return 1
+  git -C "$wt" merge-base --is-ancestor HEAD origin/main 2>/dev/null || return 1
+  sz=$(du -sk "$wt" 2>/dev/null | awk '{print $1}')
+  sz=${sz:-0}
+  if [ "$DRY_RUN" = "1" ]; then
+    log "WOULD-REMOVE-TMP  [$CURRENT_REPO_NAME] $wt — detached temp checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m, HEAD on origin/main"
+  else
+    LC_ALL=C git worktree remove --force "$wt" >/dev/null 2>&1 || return 1
+    rmdir "$parent" 2>/dev/null || true
+    log "REMOVE-TMP [$CURRENT_REPO_NAME] $wt — freed $(human_kb "$sz"), detached temp checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m"
+  fi
+  removed=$((removed+1))
+  removed_freed_kb=$((removed_freed_kb + sz))
+  return 0
+}
+
 path="" branch="" is_locked=0 locked_reason=""
 flush() {
   [ -z "$path" ] && return
   # Skip the main checkout.
   if [ "$path" = "$REPO" ]; then path="" branch=""; return; fi
   if [ -z "$branch" ]; then
+    if [ "$is_locked" != "1" ] && reap_stale_tmp_checkout "$path"; then
+      path="" branch=""; return
+    fi
     log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — detached HEAD, leaving alone"
     skipped=$((skipped+1)); path="" branch=""; return
   fi
