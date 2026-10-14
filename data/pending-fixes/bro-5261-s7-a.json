@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5261-s7-a",
   "planId": "c1b30eb0-fb01-4ac2-89a9-4e8dea08104c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T01:49:59.318Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,28 @@
         "description": "newyorktheater.me is Jonathan Mandell's site; the archived page (https://web.archive.org/web/2022/https://newyorktheater.me/2016/04/27/long-days-journey-into-night-with-jessica-lange-review-pics/) is posted by WordPress author jlmandell3 and names no David NouNou. The NouNou credit came only from the legacy web-search step (BRO-5081 class). No Mandell twin exists for this show, so the rename fixes the byline without a double count. Same class as bro-5222-e."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T03:22:42.694Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-midnight-2013/nyt-theater--david-nounou.json criticName: \"David NouNou\" -> \"Jonathan Mandell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-the-way-2014/nyt-theater--david-nounou.json criticName: \"David NouNou\" -> \"Jonathan Mandell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-charles-iii-2015/nyt-theater--david-nounou.json criticName: \"David NouNou\" -> \"Jonathan Mandell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/nyt-theater--david-nounou.json criticName: \"David NouNou\" -> \"Jonathan Mandell\""
+    }
+  ]
 }
