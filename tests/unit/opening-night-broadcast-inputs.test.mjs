@@ -11,7 +11,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const yaml = require('js-yaml');
 
-const SRC = readFileSync('.github/workflows/opening-night-broadcast.yml', 'utf8');
+const SRC = readFileSync(new URL('../../.github/workflows/opening-night-broadcast.yml', import.meta.url), 'utf8');
 const wf = yaml.load(SRC);
 const inputs = wf.on.workflow_dispatch.inputs;
 
@@ -29,13 +29,19 @@ test('descriptions say plainly that nothing goes to subscribers', () => {
   assert.match(inputs.send_to_all.description, /does not send to subscribers/i);
 });
 
-test('every send_to_all read is paired with create_draft', () => {
-  const lines = SRC.split('\n').filter((l) => /\$\{\{[^}]*inputs\.send_to_all/.test(l));
-  assert.ok(lines.length >= 2, `expected the dedup-skip and draft-mode reads, found ${lines.length}`);
-  for (const l of lines) assert.match(l, /inputs\.create_draft/, `unpaired send_to_all read: ${l.trim()}`);
+test('every send_to_all read is paired with create_draft, and vice versa, by OR', () => {
+  const reads = (name) => SRC.split('\n').filter((l) => new RegExp(`\\$\\{\\{[^}]*inputs\\.${name}\\b`).test(l));
+  const old = reads('send_to_all');
+  const cur = reads('create_draft');
+  assert.ok(old.length >= 2, `expected the dedup-skip and draft-mode reads, found ${old.length}`);
+  assert.deepEqual(cur, old, 'create_draft and send_to_all must be read on the same lines');
+  // Either one GitHub expression `inputs.create_draft || inputs.send_to_all`, or two
+  // bash tests joined by `] || [`. An && would make the alias (or the new name) inert.
+  const joined = /inputs\.create_draft \|\| inputs\.send_to_all|inputs\.create_draft \}\}" = "true" \] \|\| \[ "\$\{\{ inputs\.send_to_all/;
+  for (const l of old) assert.match(l, joined, `create_draft/send_to_all not joined by OR: ${l.trim()}`);
 });
 
-test('a default dispatch still creates no draft (workflow_run / update-show-status rely on it)', () => {
+test('a default dispatch creates no draft outside deadline mode (workflow_run / update-show-status rely on it)', () => {
   // The draft branch must be gated on an input or the 12:30 cron, never unconditional.
   const m = SRC.match(/elif \[ "\$\{\{ inputs\.create_draft \}\}" = "true" \][^\n]*\n[\s\S]*?CREATE_DRAFT="true"/);
   assert.ok(m, 'draft branch not found');
@@ -48,4 +54,19 @@ test('a default dispatch still creates no draft (workflow_run / update-show-stat
   const elseBranch = SRC.slice(elseIdx, fiIdx);
   assert.match(elseBranch, /PREVIEW MODE/);
   assert.doesNotMatch(elseBranch, /CREATE_DRAFT="true"/);
+});
+
+test('past-deadline shows get --force-create-draft in every draft mode, approval included', () => {
+  // BRO-5261 retro-review: the approval branch (create_draft / 12:30 cron) runs before
+  // the deadline branch, so the force flag set only inside the deadline branch was
+  // skipped there. One rule after the mode chain now covers both.
+  const rule = SRC.match(/if \[ "\$CREATE_DRAFT" = "true" \] && \[ -n "\$\{\{ steps\.check\.outputs\.deadline_shows \}\}" \]; then\n\s*DRAFT_FLAGS="--force-create-draft"/);
+  assert.ok(rule, 'post-chain force rule not found');
+  const chainEnd = SRC.indexOf('** PREVIEW MODE — sending preview to owner for approval **');
+  assert.ok(chainEnd !== -1 && SRC.indexOf(rule[0]) > chainEnd, 'force rule must follow the whole mode chain');
+  assert.equal(SRC.split('DRAFT_FLAGS="--force-create-draft"').length - 1, 1, 'exactly one place may set the force flag');
+  // The flag only ever reaches the draft call, never the preview send.
+  for (const l of SRC.split('\n').filter((x) => x.includes('send-opening-night-broadcast.js'))) {
+    if (l.includes('DRAFT_FLAGS')) assert.doesNotMatch(l, /SEND_TO_FLAG/, `force flag on a preview call: ${l.trim()}`);
+  }
 });

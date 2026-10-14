@@ -32,9 +32,14 @@ audience. It sets `--send-to=$OWNER_EMAIL` (a transactional preview to the
 owner) plus `CREATE_DRAFT=true`. No audience send happens on that path.
 
 **A plain `gh workflow run opening-night-broadcast.yml` with default inputs
-produces NO draft.** `CREATE_DRAFT` starts `false` and only flips true on
-`send_to_all == true` OR `github.event_name == 'schedule'`. A default dispatch
-takes the else branch: owner preview only.
+produces NO draft unless a pending show is past its draft deadline.**
+`CREATE_DRAFT` starts `false` and flips true only on `create_draft == true`
+(or its alias `send_to_all`), on the `30 12 * * *` cron (NOT the hourly
+`41 13-23` cron), or in deadline mode (BRO-4417: a pending show past 14:00 UTC
+the day after opening, on any trigger). Otherwise a default dispatch takes the
+else branch: owner preview only. `send_to=<email>` wins over `create_draft`
+(preview to that address, no draft). Past-deadline shows get
+`--force-create-draft` in every draft mode.
 
 This cost two sessions three failed dispatch attempts on Paranormal Activity,
 and produced a handoff doc that told the next session to use default inputs AND

@@ -37,7 +37,7 @@ on:
         type: string
         default: ''
       create_draft:
-        description: 'Create a Resend DRAFT for owner review, plus an owner-only preview email. Does NOT send to subscribers; the owner sends the draft from Resend. Skips the preview dedup check.'
+        description: 'Create a Resend DRAFT for owner review, plus an owner-only preview email. Does NOT send to subscribers; the owner sends the draft from Resend. Skips the preview dedup check. Ignored when send_to is set.'
         required: false
         type: boolean
         default: false
@@ -188,7 +188,7 @@ jobs:
           fi
 
       - name: Time gate — no broadcast before 7 AM ET
-        # No send_to_all skip here or on the readiness gate (BRO-4417 what-else):
+        # No create_draft/send_to_all skip here or on the readiness gate (BRO-4417 what-else):
         # the old `inputs.send_to_all != 'true'` compared a BOOLEAN input to a
         # string, which GitHub coerces to 1 != NaN, so it was always true and
         # both gates always ran (run 36594174568, send_to_all=true, ran both).
@@ -839,6 +839,7 @@ jobs:
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
           CREATE_DRAFT="false"
+          DRAFT_FLAGS=""
 
           if [ -n "${INPUT_SEND_TO}" ]; then
             SEND_TO_FLAG="--send-to=${INPUT_SEND_TO}"
@@ -853,15 +854,22 @@ jobs:
             # step narrowed the batch), so any run type creates the draft now.
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
             CREATE_DRAFT="true"
-            # The workflow readiness gate (15+ reviews + aggregator) already
-            # passed; the script's stricter T1/T2/high-confidence gate must not
-            # silently leave a past-deadline show with no draft. The owner still
-            # reviews the draft (and the page lists what the gates flagged).
-            DRAFT_FLAGS="--force-create-draft"
             echo "** DEADLINE MODE — draft deadline passed for ${{ steps.check.outputs.deadline_shows }}: preview to owner AND creating Resend draft **"
           else
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
             echo "** PREVIEW MODE — sending preview to owner for approval **"
+          fi
+
+          # Past-deadline shows (the check step narrowed the batch to them) get a
+          # forced draft in EVERY draft mode, approval included: the workflow
+          # readiness gate (15+ reviews + aggregator) already passed, and the
+          # script's stricter T1/T2/high-confidence gate must not silently leave
+          # a past-deadline show with no draft. The approval branch above runs
+          # first, so this was skipped for create_draft dispatches and the 12:30
+          # cron until the BRO-5261 retro-review. The owner still reviews the
+          # draft (and the page lists what the gates flagged). Draft-only.
+          if [ "$CREATE_DRAFT" = "true" ] && [ -n "${{ steps.check.outputs.deadline_shows }}" ]; then
+            DRAFT_FLAGS="--force-create-draft"
           fi
 
           SENT="false"
