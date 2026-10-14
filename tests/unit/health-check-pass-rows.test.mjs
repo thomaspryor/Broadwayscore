@@ -140,39 +140,6 @@ test('checkDataFreshnessGaps: missing, stale or malformed report is a Skipped ro
   });
 });
 
-// --- Stuck work (Notion) — stubbed lib modules, real health-check.js code ---
-
-test('checkStuckWork: a clean card set passes all four names; no NOTION_API_KEY passes none', async () => {
-  const stuckPath = require.resolve('../../scripts/lib/stuck-work');
-  const recPath = require.resolve('../../scripts/lib/stuck-work-linear-reconcile');
-  const saved = { stuck: require.cache[stuckPath], rec: require.cache[recPath], key: process.env.NOTION_API_KEY };
-  const stub = (p, exports) => { require.cache[p] = { id: p, filename: p, loaded: true, exports }; };
-  const names = [
-    'Stuck work: paused P0/P1 cards',
-    'Stuck work: orphaned in-progress cards',
-    'Stuck work: paused P2/other cards',
-    'Stuck work: unparseable timestamps',
-  ];
-  try {
-    stub(stuckPath, {
-      fetchBrainCards: async () => [{ name: 'card' }],
-      classifyStuckCards: () => ({ pausedCritical: [], pausedStale: [], orphaned: [], pausedAwaitingRecheck: [], pausedParked: [], invalidDates: 0 }),
-    });
-    stub(recPath, {
-      fetchLinearIssueStates: async () => null,
-      reconcileStuckBuckets: (raw) => ({ ...raw, applied: true, resolvedCounts: {} }),
-    });
-    process.env.NOTION_API_KEY = 'test';
-    assertAllAbsent(await hc.checkStuckWork(), names);
-    delete process.env.NOTION_API_KEY;
-    assertNoneAbsent(await hc.checkStuckWork(), names);
-  } finally {
-    if (saved.stuck) require.cache[stuckPath] = saved.stuck; else delete require.cache[stuckPath];
-    if (saved.rec) require.cache[recPath] = saved.rec; else delete require.cache[recPath];
-    if (saved.key === undefined) delete process.env.NOTION_API_KEY; else process.env.NOTION_API_KEY = saved.key;
-  }
-});
-
 // BRO-3697 digest side: the local rollups fold in only when the snapshot lacks
 // the same-name core row, so a card is never filed twice and its name always
 // matches what check-health-row-absent.js --live probes.

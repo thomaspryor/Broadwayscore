@@ -42,16 +42,6 @@ run_bounded() {
   fi
 }
 
-ensure_notion_client() {
-  # notion-brain.js needs @notionhq/client, which isn't in committed deps.
-  if [ -n "${NOTION_API_KEY:-}" ] && ! node -e "require('@notionhq/client')" >/dev/null 2>&1; then
-    log "NOTION_API_KEY set but @notionhq/client missing -> npm install --no-save"
-    run_bounded 120 npm install --no-save @notionhq/client >/dev/null 2>&1 \
-      && log "installed @notionhq/client" \
-      || log "WARN: could not install @notionhq/client in time (notion-brain.js will fail)"
-  fi
-}
-
 # Loud, so a session that needs review texts (audits, recovery) finds out at start
 # rather than halfway through. Cloud only: local checkouts manage their own data.
 warn_if_no_review_texts() {
@@ -137,7 +127,6 @@ fi
 
 # 1. Real data already resolvable (symlink or file with content)? Nothing to do.
 if [ -s data/shows.json ]; then
-  ensure_notion_client
   warn_if_no_review_texts
   exit 0
 fi
@@ -186,5 +175,4 @@ else
   log "WARN: still no data/shows.json — app build will fail; set REVIEW_TEXTS_TOKEN"
 fi
 
-ensure_notion_client
 exit 0

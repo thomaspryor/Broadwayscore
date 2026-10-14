@@ -455,10 +455,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Owner-alert-router (#279): NEEDS_REVIEW/SUSPICIOUS verdicts now file
-          # an Action Queue card via scripts/lib/owner-alert-router.js instead
-          # of emailing directly (RESEND_API_KEY/OWNER_EMAIL no longer needed here).
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/analyze-rebuild-drops.js
         continue-on-error: true

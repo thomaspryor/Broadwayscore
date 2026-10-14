@@ -654,6 +654,7 @@ first.
     contents instead, which is what the criterion actually meant.)
 
 ### Task S5-T6: Demote NOTION_API_KEY from cloud-secrets TIER_1 to TIER_2
+- **Status:** Done 2026-10-14 (BRO-3018): the last cloud reader, health-check.js's stuck-work rows, was retired; all three files updated.
 - **Filed:** 2026-09-05 (out of the S5-T5 review)
 - **Complexity:** S
 - **Depends on:** the legacy Notion readers being retired or confirmed cloud-irrelevant

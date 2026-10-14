@@ -359,7 +359,6 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NEXT_PUBLIC_SUPABASE_URL` | 1 cross-repo writers (of 8 workflows using it): `update-mezzanine.yml` |
 | `NORTHJERSEY_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NORTHJERSEY_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
-| `NOTION_API_KEY` | 3 cross-repo writers (of 8 workflows using it): `audit-aggregator-gap.yml`, `rebuild-reviews.yml`, `test.yml` |
 | `NYDAILYNEWS_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NYDAILYNEWS_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NYTIMES_PASSWORD` | 7 cross-repo writers (of 8 workflows using it) |

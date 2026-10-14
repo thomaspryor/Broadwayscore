@@ -19,3 +19,29 @@ test('no workflow passes the retired NOTION_TOKEN secret', () => {
   }
   assert.deepEqual(hits, []);
 });
+
+// BRO-3018: the same for NOTION_API_KEY. After the stuck-work rows were
+// retired no scheduled script reads it; the steps that still passed it were
+// leftovers from when owner-alert-router shelled out to notion-brain.js.
+// autonomous-merge.yml is the retired nightly loop, dispatch-only and kept
+// as history.
+const NOTION_KEY_ALLOWED = new Set(['autonomous-merge.yml']);
+
+test('no workflow passes secrets.NOTION_API_KEY outside the retired-loop allowlist', () => {
+  const files = fs.readdirSync(DIR).filter((f) => /\.ya?ml$/.test(f));
+  const hits = [];
+  for (const f of files) {
+    if (NOTION_KEY_ALLOWED.has(f)) continue;
+    fs.readFileSync(path.join(DIR, f), 'utf8').split('\n').forEach((line, i) => {
+      if (/secrets\.NOTION_API_KEY\b/.test(line) && !line.trimStart().startsWith('#')) hits.push(`${f}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(hits, []);
+});
+
+test('the NOTION_API_KEY allowlist has no stale entries', () => {
+  for (const f of NOTION_KEY_ALLOWED) {
+    const src = fs.readFileSync(path.join(DIR, f), 'utf8');
+    assert.match(src, /secrets\.NOTION_API_KEY\b/, `${f} no longer uses the key; drop it from the allowlist`);
+  }
+});

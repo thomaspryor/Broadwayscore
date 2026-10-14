@@ -746,17 +746,6 @@ function isVisitorFacingRow(row) {
   return !!(row && row.fromHealth) && startNowHealthRowReason(row) === null;
 }
 
-// Pull newly filed cards into the shared task list so they get task numbers.
-function syncTasks({ log = () => {} } = {}) {
-  try {
-    execFileSync('node', [path.join(REPO, 'scripts', 'notion-tasks-sync.js'), 'pull'],
-      { cwd: REPO, encoding: 'utf8', timeout: 120000 });
-    return true;
-  } catch (err) {
-    log(`[digest-autofix] WARN tasks-sync pull failed (cards stay queued for the drain): ${String(err.message).slice(0, 120)}`);
-    return false;
-  }
-}
 
 // Detached headless dispatch — byte-for-byte the backlog drain's pattern
 // (stdio to a log file so a refusal is debuggable, unref so the digest exits).
@@ -1427,6 +1416,6 @@ module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,
-  fileCard, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
+  fileCard, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

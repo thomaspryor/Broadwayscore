@@ -43,9 +43,9 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      # routeAlert's disposition='auto' path shells out to notion-brain.js,
-      # which requires @notionhq/client — same gap that broke every
-      # data-health-check.yml auto-dispatch until it was added there.
+      # Full npm install: the scripts below require package dependencies
+      # (routeAlert files Linear issues through scripts/lib/linear-client.js).
+      # The Notion SDK reason this step was first added for is gone (BRO-3018).
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit --no-fund
 
@@ -53,7 +53,6 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           ARGS=""

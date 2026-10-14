@@ -2448,7 +2448,6 @@ on:
       - 'scripts/tests/record-push-ledger-redaction.test.mjs'
       - 'scripts/tests/scripts-no-undef.test.mjs'
       - 'scripts/tests/stale-wrongproduction-adjudication.test.mjs'
-      - 'scripts/tests/stuck-work-linear-reconcile.test.mjs'
       - 'scripts/tests/verify-gate-ts-runner.test.mjs'
       - 'scripts/tests/fix-platform-ticket-links.test.mjs'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
@@ -2852,7 +2851,7 @@ on:
       - 'scripts/lib/pr-supervisor-core.js'
       - 'tests/unit/pr-supervisor-core.test.mjs'
       # RECHECK-AFTER stamp parser leaf (2026-08-02), shared by the recheck
-      # and the stuck-work digest check. Colocated test runs in the lib-test
+      # (its stuck-work digest consumer was retired, BRO-3018). Colocated test runs in the lib-test
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/autonomous-acceptance-recheck.js'
       # BRO-3551: the open-backlog acceptance sweep (report-only — never
@@ -6795,7 +6794,6 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GH_TOKEN: ${{ github.token }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}

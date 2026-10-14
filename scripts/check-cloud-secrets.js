@@ -33,14 +33,10 @@ const { readEnvKeys, readEnvFile } = require('./lib/load-env');
 // Tier 1: required for common cloud-session work. Update this list when a
 // new script gains a hard cloud-relevant env dependency.
 //
-// NOTION_API_KEY: kept required only for the legacy Notion readers that still
-// run (notion-action-poll.js, health-check.js, posthog-friction-analyzer.js).
-// It is NOT needed by any hook — `.claude/hooks/notion-create-block.sh` gates
-// on a /tmp breadcrumb file and never reads this key; the "notion-create hook
-// gate" rationale that used to sit here and in CLOUD.md was simply wrong.
-// Since CLAUDE.md §6 retires Notion, this belongs in Tier 2 — tracked as
-// S5-T6 in sprint-plan-notion-linear-cutover.md rather than changed here,
-// because demoting it is a behavior change of its own.
+// NOTION_API_KEY moved to Tier 2 (BRO-3018, closes S5-T6 in
+// sprint-plan-notion-linear-cutover.md): the board is Linear and nothing a
+// cloud session runs reads it any more. Only the retired Mac-side Notion
+// tools and the one-shot corpus export still use it.
 //
 // LINEAR_API_KEY: CLAUDE.md §6 makes Linear the board, and linear-brain.js
 // needs it at BOTH session start (file the issue) and session end (comment the
@@ -48,7 +44,6 @@ const { readEnvKeys, readEnvFile } = require('./lib/load-env');
 // sandbox could report "all Tier 1 present" while every board operation failed
 // closed and the session left no board entry at all.
 const TIER_1 = [
-  'NOTION_API_KEY',
   'LINEAR_API_KEY',
   'ANTHROPIC_API_KEY',
   'GH_TOKEN',
@@ -65,6 +60,7 @@ const TIER_1 = [
 
 // Tier 2: useful when doing specific work. Reported but doesn't fail the check.
 const TIER_2 = [
+  'NOTION_API_KEY',
   'RESEND_BROADWAY_AUDIENCE_ID',
   'RESEND_WE_AUDIENCE_ID',
   'RESEND_FANTASY_AUDIENCE_ID',

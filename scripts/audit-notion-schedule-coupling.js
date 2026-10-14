@@ -36,9 +36,9 @@
  *
  * COUPLING SIGNAL: does the target script (or a same-script `require('./lib/*')`
  * it pulls in, one level deep) reference TASKS_DIR, loadTasksUnioned,
- * notionIdOf(, notion-brain.js, or @notionhq/client — the four literal
- * strings named in the BRO-3431 reopen comment as how the four original
- * instances were actually found.
+ * notionIdOf(, notion-brain.js, or @notionhq/client — the strings named in
+ * the BRO-3431 reopen comment — or, since BRO-3018, notion-tasks-sync.js,
+ * notion-action-poll.js and loadNotionMirrorTasks.
  *
  * SHADOW MODE: writes data/audit/notion-schedule-coupling.json and prints a
  * summary. Never exits non-zero on a finding — a real coupling is a report
@@ -82,6 +82,11 @@ const COUPLING_SIGNALS = [
   { name: 'notionIdOf(', re: /\bnotionIdOf\s*\(/ },
   { name: 'notion-brain.js', re: /notion-brain\.js/ },
   { name: '@notionhq/client', re: /@notionhq\/client/ },
+  // BRO-3018: the mirror sync, the retired action poller and linear-next's
+  // mirror loader are the same retired world under other names.
+  { name: 'notion-tasks-sync.js', re: /notion-tasks-sync(\.js)?\b/ },
+  { name: 'notion-action-poll.js', re: /notion-action-poll(\.js)?\b/ },
+  { name: 'loadNotionMirrorTasks', re: /\bloadNotionMirrorTasks\b/ },
 ];
 
 // Known-intentional coupling: Notion-side housekeeping of the frozen mirror

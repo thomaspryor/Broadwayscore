@@ -32,7 +32,6 @@ const ALLOW = {
   'scripts/notion-tasks-sync.js': 'mirror-update',
   'scripts/enrich-card-acceptance.js': 'mirror-update',  // Notion leg is opt-in (--source); workflow now passes linear
   'scripts/freeze-ledgers.js': 'read-only',
-  'scripts/lib/stuck-work.js': 'read-only',              // data_sources query (POST but a read)
   'scripts/linear-brain.js': 'text-only',                // USAGE text contrasting with notion-brain
   'scripts/bsc-next.js': 'text-only',                    // hint strings only
   'scripts/lib/dispatch-guards.js': 'text-only',         // refusal text naming the legacy command

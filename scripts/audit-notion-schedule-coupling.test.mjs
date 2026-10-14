@@ -29,6 +29,18 @@ test('findSignals: matches real code, ignores comments', () => {
   assert.deepEqual(src.findSignals('nothing coupled here'), []);
 });
 
+test('findSignals: the mirror sync, action poller and mirror loader count as coupling (BRO-3018)', () => {
+  // The escalation path in generate-remediation-plan.js ran exactly this after
+  // filing in Linear; none of the original five signals matched it.
+  assert.deepEqual(
+    src.findSignals("execFileSync('node', [path.join(dir, 'notion-tasks-sync.js'), 'pull']);"),
+    ['notion-tasks-sync.js'],
+  );
+  assert.deepEqual(src.findSignals("spawn('node', ['scripts/notion-action-poll.js']);"), ['notion-action-poll.js']);
+  assert.deepEqual(src.findSignals('const t = loadNotionMirrorTasks();'), ['loadNotionMirrorTasks']);
+  assert.deepEqual(src.findSignals('// notion-tasks-sync.js pull used to run here'), []);
+});
+
 test('findSignals: block comment stripping does not eat real code either side of it', () => {
   const code = "const before = 'ok';\n/* comment */\nconst x = notionIdOf(t);";
   assert.deepEqual(src.findSignals(code), ['notionIdOf(']);

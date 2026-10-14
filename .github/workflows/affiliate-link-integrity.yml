@@ -48,8 +48,9 @@ jobs:
         with:
           node-version: '20'
 
-      # owner-alert-router shells out to notion-brain.js (@notionhq/client)
-      # for card dispatch — same npm ci requirement as data-health-check.yml.
+      # Full npm install: the scripts below require package dependencies
+      # (routeAlert files Linear issues through scripts/lib/linear-client.js).
+      # The Notion SDK reason this step was first added for is gone (BRO-3018).
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit --no-fund
 
@@ -59,7 +60,6 @@ jobs:
           CI: 'true'
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         run: node scripts/verify-affiliate-links.js
 
       # Without this the probe's routeAlert() digest line + cooldown ledger

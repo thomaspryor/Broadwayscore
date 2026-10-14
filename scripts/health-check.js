@@ -3499,130 +3499,14 @@ function checkDeployFreshness() {
   })];
 }
 
-// --- Category: Stuck Work (silent Notion-brain states) ---
+// --- Category: Stuck Work — retired (BRO-3018) ---
 //
-// Closes the blind spot found 2026-07-22 (alert-router card 3a4637c5): a P1
-// card sat "Paused" with its build unshipped and NOTHING surfaced it — the
-// nightly loop skips out-of-tier cards, the "stalling the loop" email only
-// reports Auto-tagged cards, and session-start stale checks look at
-// In-progress only. First live run found 41 paused P0/P1 + 50 in-progress
-// cards idle >48h (oldest 89 days). Warn-level (visible in NEEDS YOUR
-// ATTENTION) rather than error so a chronic backlog doesn't permanently
-// red-flag the subject line.
-
-async function checkStuckWork() {
-  if (!process.env.NOTION_API_KEY) {
-    return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Skipped — no NOTION_API_KEY available' }];
-  }
-  // Entire body is guarded: this is the only async check awaited bare in
-  // main(), so an uncaught throw here would reject main() and kill the WHOLE
-  // digest — the exact silent-failure class this check exists to catch.
-  try {
-    return await checkStuckWorkInner();
-  } catch (err) {
-    return [{ name: 'Stuck work: brain cards', status: 'warn', message: `Stuck-work check crashed — skipped this run (${err.message.slice(0, 160)})` }];
-  }
-}
-
-async function checkStuckWorkInner() {
-  const { classifyStuckCards, fetchBrainCards } = require('./lib/stuck-work');
-  const cards = await fetchBrainCards(process.env.NOTION_API_KEY);
-  if (cards.length === 0) {
-    // ~120 cards sit in these states on a normal day. Zero means the status
-    // names drifted (query filters match nothing) far more likely than a
-    // genuinely empty brain — surface it instead of reporting a clean pass.
-    return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Notion returned 0 Paused/In-progress cards — status names may have been renamed (check stuck-work.js filters)' }];
-  }
-  const raw = classifyStuckCards(cards, Date.now());
-  const { invalidDates } = raw;
-  // Reconcile against Linear before reporting (BRO-104). The board moved to
-  // Linear on 2026-08-12 (CLAUDE.md §6) but these buckets are still computed
-  // from the Notion brain, so cards closed in Linear sit Paused/In-progress in
-  // Notion forever and the counts only grow. Drop a card ONLY when its Linear
-  // twin is explicitly closed; no-twin cards keep counting (the mirror froze at
-  // task 1285, so post-freeze Notion-only work has no twin at all). An
-  // unreachable Linear is a no-op, never a shrink — see the lib's contract.
-  const { reconcileStuckBuckets, fetchLinearIssueStates } = require('./lib/stuck-work-linear-reconcile');
-  // No `process.env.LINEAR_API_KEY &&` gate here on purpose: linear-client
-  // resolves the key from .env too, so gating on the raw env var would make a
-  // manual run print UN-reconciled numbers while CI printed reconciled ones —
-  // same command, two different answers, no signal in either. Let the fetch
-  // decide; a missing key throws inside it and degrades to the no-op path.
-  const linearStates = await fetchLinearIssueStates();
-  const rec = reconcileStuckBuckets(raw, linearStates);
-  const { pausedCritical, pausedStale, orphaned, pausedAwaitingRecheck, pausedParked } = rec;
-  // Appended to each row so the number is self-explaining: a reader who
-  // remembers "55 orphaned yesterday" can see why it is 20 today.
-  const recNote = (n) => {
-    // Three distinct states, and the email must not collapse them: reconciled
-    // and excluded N; reconciled and excluded nothing; never reconciled at all
-    // (which means the number may be inflated by stale Notion twins).
-    if (!rec.applied) return ' [not reconciled against Linear this run — may include cards already closed there]';
-    if (n > 0) return ` [${n} more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]`;
-    return '';
-  };
-  const results = [];
-  // Card names are free text typed into Notion and land in the HTML email —
-  // escape them (first check to inject arbitrary text into the digest).
-  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  // Stamped-but-overdue and parked-past-the-window cards say why they count
-  // as stuck (the nightly recheck / the owner should have acted by now).
-  const fmt = (c) => `${esc(c.name.slice(0, 60))} (${Math.round(c.idleHours / 24)}d${c.stampOverdueDays != null ? `, stamp overdue ${c.stampOverdueDays}d` : ''}${c.parkedOverdueDays != null ? `, parked past 7d window by ${c.parkedOverdueDays}d` : ''})`;
-  // Cards Paused-with-a-future-RECHECK-AFTER-stamp are parked by process rule
-  // (/wrap-up deferred-effect fixes), not stuck — reported as info, never warn.
-  // Same for tab-close-parked cards (bsc-prune `## Parked` marker) inside
-  // their 7-day window. Both fold into the existing check's message: a new
-  // check name would mint a new alert-router condition key (pass/warn/error
-  // is the whole status vocabulary — there is no "info" status).
-  const parkedNote = pausedParked.length > 0
-    ? `${pausedParked.length} parked via tab-close, oldest ${new Date(pausedParked[0].parkedAtMs).toISOString().slice(0, 10)} — resume: node scripts/bsc-next.js --id ${pausedParked[0].parkedTaskId ?? 'N'} --force`
-    : '';
-  const awaitingNote = [
-    pausedAwaitingRecheck.length > 0
-      ? `${pausedAwaitingRecheck.length} awaiting recheck, earliest due ${new Date(pausedAwaitingRecheck[0].recheckAfterMs).toISOString().slice(0, 10)}`
-      : '',
-    parkedNote,
-  ].filter(Boolean).join('; ');
-
-  if (pausedCritical.length > 0) {
-    results.push({
-      // NOTE: this check name is a stable condition key — alert-router dedup
-      // and Fix-button acceptance criteria reference `health-check:Stuck
-      // work: paused P0/P1 cards` byte-for-byte. Never rename it.
-      name: 'Stuck work: paused P0/P1 cards',
-      status: 'warn',
-      message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}${recNote(rec.resolvedCounts.pausedCritical)}`,
-      hint: 'Triage in Linear (these are frozen Notion cards whose Linear twin is still open): node scripts/linear-brain.js find "<card title>" for the BRO-N, then dispatch (node scripts/linear-next.js --id BRO-N), close (linear-brain.js update BRO-N --state Done), or park with RECHECK-AFTER: YYYY-MM-DD',
-    });
-  } else {
-    results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}${recNote(rec.resolvedCounts.pausedCritical)}` });
-  }
-
-  if (orphaned.length > 0) {
-    results.push({
-      name: 'Stuck work: orphaned in-progress cards',
-      status: 'warn',
-      message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}${recNote(rec.resolvedCounts.orphaned)}`,
-      hint: 'Triage in Linear (frozen Notion cards whose Linear twin is still open): node scripts/linear-brain.js find "<card title>" for the BRO-N, then re-dispatch (linear-next.js --id BRO-N), park with a reason, or close',
-    });
-  } else {
-    results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: `No in-progress cards idle >48h${recNote(rec.resolvedCounts.orphaned)}` });
-  }
-
-  // BRO-3833: explicit pass rows (this point is only reached after a real
-  // fetch of a non-empty card set) so a fixed row can verify 'absent'.
-  if (pausedStale.length > 0) {
-    results.push({ name: 'Stuck work: paused P2/other cards', status: 'warn', message: `${pausedStale.length} lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)${recNote(rec.resolvedCounts.pausedStale)}` });
-  } else {
-    results.push({ name: 'Stuck work: paused P2/other cards', status: 'pass', message: 'No lower-priority cards Paused >7d' });
-  }
-  if (invalidDates > 0) {
-    results.push({ name: 'Stuck work: unparseable timestamps', status: 'warn', message: `${invalidDates} card(s) skipped — last_edited_time did not parse (they may be hiding stuck work)` });
-  } else {
-    results.push({ name: 'Stuck work: unparseable timestamps', status: 'pass', message: 'Every card timestamp parsed' });
-  }
-  return results;
-}
+// The "Stuck work:" rows read the Notion brain, frozen since 2026-08-20, and
+// counted cards that were long closed in Linear or never migrated. Linear
+// covers both states itself: linear-reclaim-abandoned.js hands idle In
+// Progress cards back hourly, and a paused report moves a card to Backlog
+// (linear-drain-parked.js). The last snapshot is in
+// docs/notion-linear-residue-sweep.md.
 
 // --- Category J: API Credits ---
 
@@ -5750,7 +5634,6 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkSecretsHealth(),
     ...checkAPICredits(),
     ...checkDeployFreshness(),
-    ...(await checkStuckWork()),
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
@@ -6009,4 +5892,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
