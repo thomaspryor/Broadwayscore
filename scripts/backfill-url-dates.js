@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./lib/date-utils');
 /**
  * Backfill publishDate from URL patterns for review files that are missing dates.
  *
@@ -75,7 +76,7 @@ function validateAndFormat(yearStr, monthStr, dayStr) {
   const day = parseInt(dayStr, 10);
 
   // Range checks
-  if (year < 1970 || year > 2027) return null;
+  if (year < 1970 || year > maxPlausibleYear({ atLeast: 2027 })) return null;
   if (month < 1 || month > 12) return null;
   if (day < 1 || day > 31) return null;
 

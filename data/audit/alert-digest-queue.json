@@ -183,5 +183,198 @@
       }
     ],
     "queuedAt": "2026-10-14T04:04:32.520Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5331-poster-audit",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5331-poster-audit",
+    "description": "land.yml did not land land/bro-5331-poster-audit: the scripts-lib-tests gate went red at f922a7f418. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38511357949",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5331-poster-audit"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "f922a7f418bc3979a6f4f9caa8427ea2a4016f0f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38511357949"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:03:52.530Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5261-s13-retro-fixes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5261-s13-retro-fixes",
+    "description": "land.yml did not land land/bro-5261-s13-retro-fixes: the unit-tests-node gate went red at af8db0fec3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38513956946",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5261-s13-retro-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "af8db0fec3b213f689b672f838b1ceec83954a0f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38513956946"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:28:59.800Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5254-shipcheck",
+    "title": "Landing blocked: bash-integration red on land/bro-5254-shipcheck",
+    "description": "land.yml did not land land/bro-5254-shipcheck: the bash-integration gate went red at f380d2b007. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38513549267",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5254-shipcheck"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "f380d2b007d7aa5400461aaf3a12e05df0058a3d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38513549267"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:30:15.237Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5261-retro-fixes",
+    "title": "Landing blocked: bash-integration red on land/bro-5261-retro-fixes",
+    "description": "land.yml did not land land/bro-5261-retro-fixes: the bash-integration gate went red at e9884514be. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38514076319",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5261-retro-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "e9884514be9d4480da7f428cc8c2fc1f5eac2450"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38514076319"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:33:02.644Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:nina-off-west-end-2026",
+    "title": "Review gap — \"Nina\" missing 1 cited review(s)",
+    "description": "Nina (nina-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=nina-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T06:00:40.582Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5261-s9-retro-fixes",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5261-s9-retro-fixes",
+    "description": "land.yml did not land land/bro-5261-s9-retro-fixes: the scripts-lib-tests gate went red at 42f7af2ea8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38515253005",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5261-s9-retro-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "42f7af2ea8aa7124b05244ac9c56595da2861d69"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38515253005"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:45:15.757Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3574-autofix-breaker",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3574-autofix-breaker",
+    "description": "land.yml did not land land/bro-3574-autofix-breaker: the scripts-lib-tests gate went red at 523aea8ea7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38516069162",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3574-autofix-breaker"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "523aea8ea7cae533888b3f8cf31e2ea2eec0ff56"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38516069162"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:53:08.688Z"
   }
 ]

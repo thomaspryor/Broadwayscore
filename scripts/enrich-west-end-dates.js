@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./lib/date-utils');
 /**
  * West End Date Enrichment Script
  *
@@ -146,7 +147,7 @@ function parseBritishDate(text) {
   const year = match[3];
 
   const y = parseInt(year);
-  if (y < 2024 || y > 2028) return null;
+  if (y < 2024 || y > maxPlausibleYear({ atLeast: 2028 })) return null;
 
   return `${year}-${month}-${day}`;
 }
@@ -340,7 +341,7 @@ function parsePlaybillDate(text) {
   const year = match[3];
 
   const y = parseInt(year);
-  if (y < 2024 || y > 2028) return null;
+  if (y < 2024 || y > maxPlausibleYear({ atLeast: 2028 })) return null;
 
   return `${year}-${month}-${day}`;
 }

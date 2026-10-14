@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./date-utils');
 /**
  * IBDB Date Lookup Module
  *
@@ -74,7 +75,7 @@ function extractYearFromUrl(url) {
   const match = url.match(/\/broadway-production\/.*?(\d{4})/);
   if (match) {
     const year = parseInt(match[1]);
-    if (year >= 1850 && year <= 2030) return String(year);
+    if (year >= 1850 && year <= maxPlausibleYear({ atLeast: 2030 })) return String(year);
   }
   return null;
 }

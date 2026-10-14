@@ -21,6 +21,7 @@
  */
 
 'use strict';
+const { maxPlausibleYear } = require('./lib/date-utils');
 
 const fs = require('fs');
 const path = require('path');
@@ -64,14 +65,14 @@ function normalizeExtractedDate(dateStr) {
     const m = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
     if (m) {
       const year = parseInt(m[1], 10), month = parseInt(m[2], 10), day = parseInt(m[3], 10);
-      if (year < 1970 || year > 2030) return null;
+      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
       if (month < 1 || month > 12 || day < 1 || day > 31) return null;
       return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     }
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
     const year = d.getFullYear();
-    if (year < 1970 || year > 2030) return null;
+    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
     return `${year}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   } catch (e) { return null; }
 }

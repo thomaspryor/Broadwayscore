@@ -13,6 +13,7 @@ const https = require('https');
 const http = require('http');
 const { foldDiacritics } = require('./title-match');
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
+const { withinOneEdit, QUERY_NOISE_WORDS } = require('./show-search-match');
 
 // Theater-specific feeds (narrow enough that date-window filtering is safe)
 // NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
@@ -215,11 +216,24 @@ function parseFeedItems(xml) {
   return parseRSSItems(xml);
 }
 
+// One-typo tolerance (opts.fuzzy, BRO-4001): BroadwayWorld headlined and
+// slugged its Catarina review "CATERINA", and every word-match channel dropped
+// it. Deliberately narrow, since loose fuzzy title matching once filed 27
+// wrong-show archives (roadmap): opt-in per caller, titles of 3+ significant
+// words, at most ONE word matched at edit distance 1, that word 7+ letters and
+// never a generic title word ("musical" vs a "/musicals/" path segment).
+const FUZZY_MIN_WORD_LEN = 7;
+const FUZZY_MIN_TITLE_WORDS = 3;
+const CONTRACTED_N_RE = /(?:^|\s)['\u2018\u2019]?n['\u2018\u2019](?:\s|$)|(?:^|\s)['\u2018\u2019]n(?:\s|$)/i;
+
 /**
  * Check if a title likely contains a review for the given show.
  * Matches show title words (ignoring articles) against RSS item title.
+ * @param {{fuzzy?: boolean}} [opts] fuzzy: allow one typo'd word (see above).
+ *   Off by default: first-match callers (poll-trade-press-rss) must not let a
+ *   near match on one show beat an exact match on another.
  */
-function titleMatchesShow(itemTitle, showTitle) {
+function titleMatchesShow(itemTitle, showTitle, opts = {}) {
   // Strip articles and punctuation, get significant words.
   // foldDiacritics runs BEFORE the [^a-z0-9' ] filter: without it "Misérables"
   // loses the é entirely and tokenizes to "misrables", which matches nothing.
@@ -229,20 +243,28 @@ function titleMatchesShow(itemTitle, showTitle) {
   // never matched and Theatre Weekly's review was dropped. Curly quotes fold
   // to ASCII here too — the old class ['\u0027\u0027'] held two plain
   // apostrophes (cloud-memory/feedback_rss_discovery_curly_apostrophe_bug.md).
-  const normalize = t => foldDiacritics(String(t || '')).toLowerCase()
+  // Apostrophes: show words drop them ("Night's" -> nights) and the item is
+  // read both ways, apostrophe kept (a word boundary, so "Hadestown's" still
+  // holds "hadestown") and dropped (so "Nights Dream" / "disneys" hold the
+  // show word). Dropping them on the item side alone lost every possessive
+  // headline (BRO-5261 retro-review, ship-check).
+  const normalizeKeep = t => foldDiacritics(String(t || '')).toLowerCase()
     .replace(/[\u2018\u2019\u02BC]/g, "'")
     .replace(/[-\u2010-\u2015]/g, ' ')
     .replace(/[^a-z0-9' ]/g, '').replace(/\s+/g, ' ').trim();
+  const normalize = t => normalizeKeep(t).replace(/'/g, '');
   const showWords = normalize(showTitle)
     .split(/\s+/)
     .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
-    .filter(w => w.length > 1);
+    // "Rock 'n' Roll": the 'n' is a word of the title (it kept "rock and roll"
+    // headlines from matching before apostrophes were folded), so keep it.
+    .filter(w => w.length > 1 || (w === 'n' && CONTRACTED_N_RE.test(String(showTitle || ''))));
 
   if (showWords.length === 0) return false;
   // BRO-2760: "The Story"-style titles need the article+word phrase, not a lone word.
   if (!passesGenericTitleIdentity(itemTitle, showTitle)) return false;
 
-  const itemLower = normalize(itemTitle);
+  const itemForms = [...new Set([normalizeKeep(itemTitle), normalize(itemTitle)])];
   // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
   // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
   const wordMatch = (haystack, word) => {
@@ -253,13 +275,18 @@ function titleMatchesShow(itemTitle, showTitle) {
   // no distinctive token: splitting compounds made "Spider-Man" headlines
   // match it (BRO-4185 live probe). Require the whole title as a phrase.
   if (new Set(showWords).size === 1 && showWords.length > 1) {
-    return wordMatch(itemLower, normalize(showTitle));
+    return itemForms.some(h => wordMatch(h, normalize(showTitle)));
   }
 
   // All significant show words must appear in the item title
-  const matchCount = showWords.filter(w => wordMatch(itemLower, w)).length;
+  const missed = showWords.filter(w => !itemForms.some(h => wordMatch(h, w)));
+  const needed = Math.ceil(showWords.length * 0.8);
   // Require at least 80% of words to match (handles subtitles, alternate names)
-  return matchCount >= Math.ceil(showWords.length * 0.8);
+  if (showWords.length - missed.length >= needed) return true;
+  if (!opts.fuzzy || showWords.length < FUZZY_MIN_TITLE_WORDS || showWords.length - missed.length + 1 < needed) return false;
+  const itemTokens = itemForms.join(' ').split(/[\s\-/._"']+/).filter(Boolean);
+  return missed.some(w => w.length >= FUZZY_MIN_WORD_LEN && !QUERY_NOISE_WORDS.has(w)
+    && itemTokens.some(t => !QUERY_NOISE_WORDS.has(t) && withinOneEdit(w, t)));
 }
 
 /**
@@ -269,12 +296,12 @@ function titleMatchesShow(itemTitle, showTitle) {
  * the title (/theater/the-pass-review.html). Converts slug separators to
  * spaces and reuses titleMatchesShow's word-boundary matching.
  */
-function urlSlugMatchesShow(url, showTitle) {
+function urlSlugMatchesShow(url, showTitle, opts = {}) {
   if (!url) return false;
   let pathname;
   try { pathname = new URL(url).pathname; } catch { return false; }
   const slugText = pathname.replace(/\.[a-z0-9]+$/i, '').replace(/[-_/]+/g, ' ');
-  const normalize = t => String(t || '').toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const normalize = t => String(t || '').toLowerCase().replace(/[\u2018\u2019']/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   const significantWords = normalize(showTitle).split(' ')
     .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
     .filter(w => w.length > 1);
@@ -289,7 +316,7 @@ function urlSlugMatchesShow(url, showTitle) {
     if (!phrase) return false;
     return (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ');
   }
-  return titleMatchesShow(slugText, showTitle);
+  return titleMatchesShow(slugText, showTitle, opts);
 }
 
 /**

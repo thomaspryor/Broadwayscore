@@ -302,6 +302,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   2. **TodayTix page scrape** (closed shows) — discovers TodayTix page via Google SERP, scrapes Contentful image URLs, crops portrait to square via Contentful transforms
   3. **Playbill fallback** — OG image only (landscape, used as hero)
 - **Scripts:** `scripts/fetch-show-images-auto.js` → `scripts/archive-show-images.js`
+- **Poster audit (BRO-5331, advisory):** after archiving, `scripts/audit-new-show-posters.js` vision-audits only shows whose thumbnail this run wrote or replaced (`audit-images-llm.js --show=ID --no-write`), prints `::warning::` and a step summary for `delete` verdicts, never fails the job, never writes `image-verification.json`. Skips itself when `--no-write` is absent. TodayTix API art is trusted by `--verify`, so this is the only check on it.
 - **Triggered by:** `update-show-status.yml` and `discover-historical-shows.yml`
 - **Image formats:** Poster 720x1080 (portrait), Thumbnail 1080x1080 (square), Hero 1920x800 (landscape) — all WebP
 - **Flags:** `--missing` (only shows without images), `--bad-images` (re-source shows with identical Playbill images), `--show=ID` (single show)

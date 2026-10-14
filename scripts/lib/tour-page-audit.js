@@ -409,7 +409,7 @@ function eventsIn(blocks) {
  * build may legitimately reflect (today, and yesterday: a page built late
  * last night is still the live one until the next deploy).
  */
-function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays, listed, inSitemap, listReviewCount, jsonReviewCount, cityPages }) {
+function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays, listed, inSitemap, listReviewCount, jsonReviewCount, cityPages, cityPagesPrev = null }) {
   const out = [];
   const err = (c, m) => out.push(finding('error', c, url, m));
   const warn = (c, m) => out.push(finding('warn', c, url, m));
@@ -448,9 +448,15 @@ function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays
         if (i < 3 || out.filter(f => f.code === 'schedule-row-mismatch').length < 3) err('schedule-row-mismatch', `row ${i + 1} shows "${r.range} ${r.city} / ${r.venue}", data has "${s.start}..${s.end} ${s.city} / ${s.venue}"`);
       }
       if (cityPages) {
+        // The live build may be a day old (todays = [yesterday, today]), and a
+        // city page appears or drops when its 365-day window crosses midnight.
+        // Demand a link only when both days build the page, and call a link
+        // dead only when neither does (cityPagesPrev: yesterday's set).
         const slug = citySlug(s.city);
-        if (cityPages.has(slug) && r.cityHref !== `/tours/${slug}`) err('schedule-city-unlinked', `row ${s.city} should link /tours/${slug}`);
-        if (!cityPages.has(slug) && r.cityHref) err('schedule-city-dead-link', `row ${s.city} links ${r.cityHref} but no such city page is built`);
+        const today = cityPages.has(slug);
+        const prev = cityPagesPrev ? cityPagesPrev.has(slug) : today;
+        if (today && prev && r.cityHref !== `/tours/${slug}`) err('schedule-city-unlinked', `row ${s.city} should link /tours/${slug}`);
+        if (!today && !prev && r.cityHref) err('schedule-city-dead-link', `row ${s.city} links ${r.cityHref} but no such city page is built`);
       }
     });
     const nowRows = page.scheduleShown.filter(r => r.now);

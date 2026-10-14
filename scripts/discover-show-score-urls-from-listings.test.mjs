@@ -38,3 +38,39 @@ test('a production with no venue on file cannot be ruled out', () => {
   assert.equal(r.rejected, false);
   assert.deepEqual(r.candidates.map(s => s.id), ['hamlet-2030']);
 });
+
+// BRO-5261 retro-review of BRO-2595: the candidates-file merge.
+test('mergeShowScoreCandidates never carries a venue-rejected URL over as a candidate', () => {
+  const { mergeShowScoreCandidates } = require('./lib/show-score-venue-disambiguation.js');
+  const now = Date.parse('2026-10-14T00:00:00Z');
+  const old = '2026-10-01T00:00:00Z';
+  const existing = {
+    candidates: [
+      { showScoreUrl: 'https://ss/x', discoveredAt: old },
+      { showScoreUrl: 'https://ss/keep', discoveredAt: old },
+      { showScoreUrl: 'https://ss/expired', discoveredAt: '2026-01-01T00:00:00Z' },
+    ],
+    venueRejected: [{ showScoreUrl: 'https://ss/x', discoveredAt: '2026-10-05T00:00:00Z' }],
+  };
+  const { write, data } = mergeShowScoreCandidates({
+    candidates: [], venueRejects: [{ showScoreUrl: 'https://ss/x', reason: 'venue-mismatch' }],
+    existing, matchedUrls: new Set(), ttlDays: 90, now,
+  });
+  assert.equal(write, true);
+  assert.deepEqual(data.candidates.map(c => c.showScoreUrl), ['https://ss/keep']);
+  // First-seen time survives the rewrite.
+  assert.equal(data.venueRejected[0].discoveredAt, '2026-10-05T00:00:00Z');
+  assert.equal(data._meta.totalVenueRejected, 1);
+});
+
+test('mergeShowScoreCandidates clears stale venueRejected entries when nothing else is left', () => {
+  const { mergeShowScoreCandidates } = require('./lib/show-score-venue-disambiguation.js');
+  const r = mergeShowScoreCandidates({
+    candidates: [], venueRejects: [], existing: { candidates: [], venueRejected: [{ showScoreUrl: 'https://ss/y', discoveredAt: '2026-10-01T00:00:00Z' }] },
+    matchedUrls: new Set(), ttlDays: 90,
+  });
+  assert.equal(r.write, true);
+  assert.deepEqual(r.data.venueRejected, []);
+  const none = mergeShowScoreCandidates({ candidates: [], venueRejects: [], existing: {}, matchedUrls: new Set(), ttlDays: 90 });
+  assert.equal(none.write, false);
+});

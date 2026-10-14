@@ -25,7 +25,11 @@ const WF_DIR = path.join(REPO_ROOT, '.github', 'workflows');
 
 // `${workflow}::${job}::${step name}` -> reason. Keep it empty unless a step
 // genuinely must not run after an unrelated earlier failure.
-const EXEMPT = new Map([]);
+// success() no longer counts as a guard (BRO-5261 retro-review), so a step
+// that deliberately runs only on full success is listed here.
+const EXEMPT = new Map([
+  ['rebuild-reviews.yml::rebuild::Record pipeline success', 'records a SUCCESSFUL pipeline run; must not run after any failure'],
+]);
 
 function loadAll() {
   return fs.readdirSync(WF_DIR)
@@ -107,4 +111,18 @@ test('fewer than 3 steps on one anchor is incidental, not an adopted anchor', ()
   ] };
   assert.deepEqual(anchorIdsOf(job), []);
   assert.deepEqual(findAnchorGaps(job), []);
+});
+
+test('an explicit success() is not a guard; always()/!cancelled() anchors both count (BRO-5261)', () => {
+  const anchorIf = (id) => `always() && steps.${id}.outcome == 'success'`;
+  const job = (lastIf) => ({ steps: [
+    { id: 'a', name: 'anchor', run: 'x' },
+    { name: 's1', if: anchorIf('a'), run: 'x' },
+    { name: 's2', if: "${{ !cancelled() && steps.a.outcome == 'success' }}", run: 'x' },
+    { name: 's3', if: anchorIf('a'), run: 'x' },
+    { name: 'late', if: lastIf, run: 'x' },
+  ] });
+  assert.deepEqual(anchorIdsOf(job("always()")), ['a']);
+  assert.deepEqual(findAnchorGaps(job("success() && steps.a.outcome == 'success'")).map((g) => g.name), ['late']);
+  assert.deepEqual(findAnchorGaps(job("!cancelled() && steps.a.outcome == 'success'")), []);
 });

@@ -192,6 +192,9 @@ function loadWeProving() {
   try { return JSON.parse(fs.readFileSync(WE_PROVING_PATH, 'utf8')) || emptyTracker(); } catch { return emptyTracker(); }
 }
 function saveWeProving(t) {
+  // --dry-run writes nothing (its documented contract); a local dry run
+  // rewrote this tracked tracker (BRO-5261 S10).
+  if (dryRun) return;
   try { fs.writeFileSync(WE_PROVING_PATH, JSON.stringify(t, null, 2) + '\n'); } catch { /* non-fatal */ }
 }
 const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalization');
@@ -386,13 +389,12 @@ function getShowScoreUrlMap() {
   return _showScoreUrlMap;
 }
 
-// Every shows.json record, loaded once, for showScoreUrlForShow's un-curated
-// same-title collision check (BRO-3556): two un-curated productions that
-// construct the same Show Score URL get none until an operator curates one.
+// Every shows.json record, for showScoreUrlForShow's un-curated same-title
+// collision check (BRO-3556), when the caller did not pass opts.allShows. No
+// catch: an empty list would silently turn the check off for the whole run.
 let _allShowsForShowScore = null;
 function getAllShowsForShowScore() {
-  if (_allShowsForShowScore) return _allShowsForShowScore;
-  try { _allShowsForShowScore = loadShows(); } catch { _allShowsForShowScore = []; }
+  if (!_allShowsForShowScore) _allShowsForShowScore = loadShows();
   return _allShowsForShowScore;
 }
 
@@ -919,7 +921,7 @@ async function auditShow(show, opts = {}) {
   const ssPriorRunUrls = new Map(); // url -> priorRunSource
   try {
     const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
-    const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap(), getAllShowsForShowScore());
+    const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap(), opts.allShows || getAllShowsForShowScore());
     if (ssUrl) {
       const fetchHtml = async (u) => {
         const r = await fetchPage(u, { timeout: 45000 });
@@ -1755,6 +1757,10 @@ function recoveryBlocklist(showId) {
   return _recoveryBlocklists.get(showId);
 }
 
+function isRecoveryUrlBlocklisted(showId, url) {
+  return !!(url && findBlockedEntry(recoveryBlocklist(showId), url));
+}
+
 function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null) {
   // Re-run the cap/url decision against the CURRENT on-disk file, not the
   // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
@@ -1779,7 +1785,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
     outletId: m.recoverableOutletId || m.knownOutletId || null,
     critic: m.recoverableCritic || null,
     url: m.url,
-    blocked: !!(m.url && findBlockedEntry(recoveryBlocklist(showId), m.url)),
+    blocked: isRecoveryUrlBlocklisted(showId, m.url),
   });
   if (decision.action !== 'recover') {
     return { url: m.url, host: m.host, file: m.recoverableFile, recovered: false, skipped: true, reason: decision.reason };
@@ -2269,7 +2275,11 @@ async function main(argv = process.argv.slice(2)) {
         const nPrior = weRecBlocked.filter(isPriorProductionCitation).length;
         console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
-      const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m));
+      // A blocklisted url is a terminal skip (BRO-3403); dropping it here, before
+      // the budget slice, keeps it from holding a per-show fetch slot every run.
+      const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m) && !isRecoveryUrlBlocklisted(r.showId, m.url));
+      const nRecBlocklisted = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m) && isRecoveryUrlBlocklisted(r.showId, m.url)).length;
+      if (nRecBlocklisted > 0) console.log(`  ⏭  ${nRecBlocklisted} recoverable(s) blocklisted (_blocklist.json) — terminal skip, no fetch slot`);
       // Recovery draws from whatever the missing-URL ingest left of the shared
       // per-show fetch budget (INGEST_PER_SHOW_CAP). Anything beyond rolls to the
       // next hourly run via the audit JSON.
@@ -2320,7 +2330,8 @@ async function main(argv = process.argv.slice(2)) {
           if (!parsed) return true;
           return parsed.getTime() >= openingMs - 30 * 86400000;
         };
-        const uncited = dirAll.filter(d => d._file && !citedFiles.has(d._file) && isRecoverableUncitedStub(d) && notPriorRun(d));
+        const uncited = dirAll.filter(d => d._file && !citedFiles.has(d._file) && isRecoverableUncitedStub(d) && notPriorRun(d)
+          && !isRecoveryUrlBlocklisted(r.showId, d.url));
         const uncitedBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
         if (uncited.length > uncitedBudget) {
           console.log(`  ⏸  ${uncited.length - uncitedBudget} uncited stub(s) over shared per-show fetch budget — next run`);

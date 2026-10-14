@@ -20,6 +20,17 @@ const { foldDiacritics } = require('./title-match');
 
 const SS_HOSTS = /(^|\.)show-score\.com$/i;
 
+/** Show Score's ASCII-folded title slug, or '' (shared by the constructed URL
+ *  and the same-title sibling checks). */
+function showScoreTitleSlug(show) {
+  if (!show || typeof show.title !== 'string') return '';
+  return foldDiacritics(show.title)
+    .toLowerCase()
+    .replace(/['’.]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 /**
  * The CONSTRUCTED (un-curated) Show Score page URL for a show: section + slug
  * from the title, NYC categories only. null when no URL can be constructed.
@@ -30,11 +41,7 @@ function constructShowScoreUrl(show) {
   // foldDiacritics FIRST: without it "Les Misérables" slugs to
   // "les-mis-rables" (the é is a non-[a-z0-9] char and becomes a separator),
   // which 404s. Show Score's own slugs are ASCII-folded. Task #648.
-  const slug = foldDiacritics(show.title)
-    .toLowerCase()
-    .replace(/['’.]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+  const slug = showScoreTitleSlug(show);
   if (!slug) return null;
   const cat = String(show.category || '').toLowerCase();
   // Only NYC categories get a CONSTRUCTED url. The two NYC sections below are
@@ -71,6 +78,12 @@ function productionRecencyMs(show) {
  * production in the group (show or rival) or a tie at the top → false.
  */
 function isNewestProduction(show, rivals) {
+  // The winner needs a REAL date. A trailing -YYYY in the id only ranks older
+  // rivals: an announced revival with no dates (dreamgirls-2026,
+  // private-lives-2025) would otherwise take the page Show Score still shows
+  // for the last production, and with no dates isUrlYearOutOfWindow can block
+  // none of that production's links.
+  if (!hasProductionDate(show)) return false;
   const mine = productionRecencyMs(show);
   if (mine === null) return false;
   for (const r of rivals) {
@@ -80,7 +93,71 @@ function isNewestProduction(show, rivals) {
   return true;
 }
 
+function hasProductionDate(show) {
+  return [show && show.openingDate, show && show.previewsStartDate]
+    .some((d) => d && Number.isFinite(new Date(d).getTime()));
+}
+
 const normSsUrl = (u) => u.toLowerCase().replace(/\/+$/, '');
+
+// allShows array -> Map(normalized constructed url -> shows). Built once per
+// array (callers never mutate it after the first lookup): the per-call scan was O(N) slug builds, so a full audit pass did N²
+// (7.8s on 3,730 shows).
+const _constructedIndex = new WeakMap();
+function constructedUrlIndex(allShows) {
+  let idx = _constructedIndex.get(allShows);
+  if (idx) return idx;
+  idx = new Map();
+  for (const other of allShows) {
+    if (!other) continue;
+    const u = constructShowScoreUrl(other);
+    if (!u) continue;
+    const k = normSsUrl(u);
+    if (!idx.has(k)) idx.set(k, []);
+    idx.get(k).push(other);
+  }
+  _constructedIndex.set(allShows, idx);
+  return idx;
+}
+
+/**
+ * True when a same-title production in the same Show Score section is definitively newer than `show` (BRO-3556). Show Score keeps one
+ * page per title showing the newest production, so slug-guessing a page for
+ * the older one lands on the newer one's critic links, which pass a
+ * year-before-window gate. Applies to closed productions only. An undatable
+ * sibling does not count here (the year gate still applies); a tie does not
+ * either.
+ */
+function sameTitleSiblings(show, allShows) {
+  if (!show || !Array.isArray(allShows)) return [];
+  const slug = showScoreTitleSlug(show);
+  if (!slug) return [];
+  // Show Score section: /broadway-shows, /off-broadway-shows and the London
+  // pages are separate, so only a sibling in the same section shares a page.
+  const section = (c) => {
+    const k = String(c || '').toLowerCase();
+    return k === 'west-end' || k === 'off-west-end' ? 'london' : k;
+  };
+  return allShows.filter((o) => o && o.id !== show.id
+    && section(o.category) === section(show.category)
+    && showScoreTitleSlug(o) === slug);
+}
+
+function hasNewerSameTitleProduction(show, allShows) {
+  if (!show || !Array.isArray(allShows)) return false;
+  // Only a CLOSED production is superseded. Concurrent same-title runs
+  // (jane-eyre-off-west-end-2026 vs the Rose Kingston one) keep discovery and
+  // rely on the year gate and venue check, as before.
+  if (show.status !== 'closed') return false;
+  const mine = productionRecencyMs(show);
+  // A sibling counts only with a real date: an announced revival with no dates
+  // has no Show Score page yet (same rule as isNewestProduction).
+  return sameTitleSiblings(show, allShows).some((other) => {
+    if (!hasProductionDate(other)) return false;
+    const theirs = productionRecencyMs(other);
+    return theirs !== null && (mine === null || theirs > mine);
+  });
+}
 
 /**
  * Resolve a show's Show Score page URL. Prefers the curated map
@@ -138,13 +215,8 @@ function showScoreUrlForShow(show, urlMap, allShows) {
   // URL the check above already refused it; if it points elsewhere it does not
   // compete.
   if (Array.isArray(allShows)) {
-    const rivals = [];
-    for (const other of allShows) {
-      if (!other || other.id === show.id) continue;
-      if (urlMap && typeof urlMap[other.id] === 'string' && urlMap[other.id]) continue;
-      const theirs = constructShowScoreUrl(other);
-      if (theirs && normSsUrl(theirs) === want) rivals.push(other);
-    }
+    const rivals = (constructedUrlIndex(allShows).get(want) || []).filter((other) =>
+      other.id !== show.id && !(urlMap && typeof urlMap[other.id] === 'string' && urlMap[other.id]));
     if (rivals.length > 0 && !isNewestProduction(show, rivals)) return null;
   }
   return constructed;
@@ -285,11 +357,26 @@ function showScorePosterFromHtml(html) {
   return poster ? { poster, thumbnail: poster.replace('/medium_', '/preview_') } : null;
 }
 
+/**
+ * True when a guessed BARE-title Show Score slug for `show` may land on
+ * another production's page (BRO-3556): a closed production with a newer
+ * same-title sibling, or a production with no real date (an announced
+ * revival) that has any same-title sibling, since isUrlYearOutOfWindow can
+ * block nothing without dates. Slugs carrying the production's year are
+ * still safe to try.
+ */
+function bareSlugGuessUnsafe(show, allShows) {
+  if (hasNewerSameTitleProduction(show, allShows)) return true;
+  return !hasProductionDate(show) && sameTitleSiblings(show, allShows).length > 0;
+}
+
 module.exports = {
   showScorePosterFromHtml,
   showScoreUrlForShow,
   constructShowScoreUrl,
   productionRecencyMs,
+  hasNewerSameTitleProduction,
+  bareSlugGuessUnsafe,
   loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,

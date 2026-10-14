@@ -375,7 +375,11 @@ function auditOutletRegistry() {
       // tested (scripts/outlet-registry.test.mjs) instead of re-derived here.
       // See that file's comments for the incident history behind each branch.
       if (isQuarantinedDuplicateOfCanonical(review, name => readSiblingReview(reviewFile.fullPath, name),
-        sibling => isIncludableForRebuild(sibling, showsById()[reviewFile.showId]))) {
+        // filePath matters: explainExclusion's syndication-pair branch only runs
+        // with it, and without it a rebuild-excluded sibling read as included,
+        // hiding the copy the rebuild publishes instead (BRO-5261 retro of BRO-2726).
+        sibling => isIncludableForRebuild(sibling, showsById()[reviewFile.showId],
+          path.join(path.dirname(reviewFile.fullPath), review.duplicateOf)))) {
         findings.quarantinedDuplicatesSkipped++;
         continue;
       }

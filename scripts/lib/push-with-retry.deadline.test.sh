@@ -336,26 +336,29 @@ fi
 # Case 11 (BRO-5261 retro-review): a backoff skipped because it would end past
 # the deadline must END the loop. It used to skip only the sleep, so the loop
 # top (still under the deadline) ran attempt after attempt with no backoff.
-# ext::false rejects instantly, so every backoff (>=5s) crosses a 6s deadline.
+# ext::false rejects instantly. The first backoff is 3+2+RANDOM%5 = 5..9s, so a
+# 5s deadline is crossed by every one of them even when attempt 1 ends at
+# SECONDS=0 (a 6s deadline let a 5s backoff fit and flaked ~1 in 5 on fast runners,
+# main run 38509426971; BRO-5334).
 TMP11=$(mktemp -d)
 setup_repo "$TMP11"
 git -C "$TMP11" config protocol.ext.allow always
 git -C "$TMP11" remote add origin "ext::false"
 printf '{ "ok": 11 }\n' > "$TMP11/state.json"
 git -C "$TMP11" add state.json
-# A loaded runner can spend the whole 6s budget before attempt 1 (the loop-top
+# A loaded runner can spend the whole 5s budget before attempt 1 (the loop-top
 # break then fires first and nothing here is exercised): retry, never pass vacuously.
 for _try11 in 1 2 3; do
-  out11=$( cd "$TMP11" && PUSH_DEADLINE_SEC=6 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP11/f.jsonl" bash "$PUSH_SCRIPT" 5 main 2>&1 ); code11=$?
+  out11=$( cd "$TMP11" && PUSH_DEADLINE_SEC=5 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP11/f.jsonl" bash "$PUSH_SCRIPT" 5 main 2>&1 ); code11=$?
   grep -q "Pre-resolution push (attempt 1)" <<<"$out11" && break
 done
 if ! grep -q "Pre-resolution push (attempt 1)" <<<"$out11"; then
-  echo "FAIL[11]: startup used the 6s budget 3 times; attempt 1 never ran. Output:"; echo "$out11"; fail=1
+  echo "FAIL[11]: startup used the 5s budget 3 times; attempt 1 never ran. Output:"; echo "$out11"; fail=1
 elif [ "$code11" -eq 0 ]; then
   echo "FAIL[11]: expected a failed push, got exit 0"; fail=1
 elif grep -q "Pre-resolution push (attempt 2)" <<<"$out11"; then
   echo "FAIL[11]: a no-backoff attempt 2 ran after the backoff was skipped for the deadline. Output:"; echo "$out11"; fail=1
-elif ! grep -q "overall deadline 6s exceeded by the [0-9]*s backoff after attempt 1" <<<"$out11"; then
+elif ! grep -q "overall deadline 5s exceeded by the [0-9]*s backoff after attempt 1" <<<"$out11"; then
   echo "FAIL[11]: no deadline break at the skipped backoff. Output:"; echo "$out11"; fail=1
 else
   echo "PASS[11]: skipped backoff ends the loop (no back-to-back attempts past the budget)"

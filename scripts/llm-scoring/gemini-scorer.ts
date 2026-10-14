@@ -270,7 +270,7 @@ export class GeminiScorer {
         const [, ys, ms, ds] = dm;
         const y = parseInt(ys), m = parseInt(ms), d = parseInt(ds);
         const dt = new Date(y, m - 1, d);
-        if (y >= 1970 && y <= 2027 && dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d) {
+        if (y >= 1970 && y <= Math.max(2027, new Date().getFullYear() + 1) && dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d) {
           publishDate = parsed.publishDate;
         }
       }

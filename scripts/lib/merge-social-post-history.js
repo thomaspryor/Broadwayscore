@@ -31,6 +31,9 @@
 //     appended in remote order — deterministic, minimal diff.
 //   * _meta.lastUpdated: the newer of the two ISO timestamps.
 
+// The writer's history cap (generate-social-post.js pruneHistory).
+const MAX_POSTS = 365;
+
 function keyOf(entry) {
   if (!entry || typeof entry !== 'object') return null;
   if (entry.tweetId) return `tw:${entry.tweetId}`;
@@ -74,15 +77,30 @@ function mergeSocialPostHistory(ours, remote) {
     added++;
   }
 
-  const merged = { ...ours, posts: mergedPosts };
+  // generate-social-post.js prunes history to the newest MAX_POSTS. A plain
+  // union would bring every pruned post back from the remote (the API
+  // fallback runs this merge on every push, BRO-5261 retro-review), and
+  // appending them after ours would make the writer's slice(-MAX) keep them.
+  // So the merge applies the same cap, dropping the oldest by date.
+  let capped = mergedPosts;
+  let droppedOld = 0;
+  if (mergedPosts.length > MAX_POSTS) {
+    const t = (e) => { const ms = Date.parse(e && e.date); return Number.isNaN(ms) ? -Infinity : ms; };
+    const order = mergedPosts.map((e, i) => i).sort((a, b) => t(mergedPosts[a]) - t(mergedPosts[b]) || a - b);
+    const drop = new Set(order.slice(0, mergedPosts.length - MAX_POSTS));
+    capped = mergedPosts.filter((e, i) => !drop.has(i));
+    droppedOld = drop.size;
+  }
+
+  const merged = { ...ours, posts: capped };
   merged._meta = { ...(ours._meta || {}), ...(remote._meta || {}) };
   const lu = newerIso(ours._meta && ours._meta.lastUpdated, remote._meta && remote._meta.lastUpdated);
   if (lu) merged._meta.lastUpdated = lu;
 
   return {
     merged,
-    stats: { added, kept, totalPosts: mergedPosts.length },
+    stats: { added, kept, droppedOld, totalPosts: capped.length },
   };
 }
 
-module.exports = { mergeSocialPostHistory, keyOf };
+module.exports = { mergeSocialPostHistory, keyOf, MAX_POSTS };

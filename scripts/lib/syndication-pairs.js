@@ -104,6 +104,31 @@ function isCrossOutletSyndicationPair(a, b, normalize = (o) => o) {
   return getSyndicationPrimaries(ca, oa).includes(ob) || getSyndicationPrimaries(ca, ob).includes(oa);
 }
 
+/**
+ * A rename-collision pair (BRO-5274): collect-review-texts renames a web-search file
+ * when its criticName is overridden (variety--aramide-tinubu.json -> the real critic).
+ * If the target filename already exists (an aggregator filed the same article under
+ * another url form) it stamps duplicateOf + duplicateReason 'criticName-override-
+ * collided-at-rename'. The write guard then cleared that pointer because the two url
+ * forms differ, leaving two live copies of one article (53 key duplicates, 2026-10-13).
+ * Same outlet, same real critic, same opening text = the same review: keep the pointer.
+ *
+ * @param {object} a the file carrying duplicateOf
+ * @param {object} b the pointer target
+ * @returns {boolean}
+ */
+function isRenameCollisionPair(a, b) {
+  if (!a || !b || a.duplicateReason !== 'criticName-override-collided-at-rename') return false;
+  // Same outlet, and the target must not point back (a mutual pair would loop).
+  if (String(a.outletId || a.outlet || '').toLowerCase() !== String(b.outletId || b.outlet || '').toLowerCase()) return false;
+  if (b.duplicateOf) return false;
+  const ca = String(a.criticName || '').toLowerCase().trim();
+  if (!_isRealByline(ca) || ca !== String(b.criticName || '').toLowerCase().trim()) return false;
+  const head = (d) => foldDiacritics(String(d.fullText || d.text || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 240);
+  const ha = head(a);
+  return ha.length >= 120 && ha === head(b);
+}
+
 /** Filename slug for a critic, matching review-texts naming (punctuation -> '-'). */
 function criticFileSlug(criticName) {
   return foldDiacritics(String(criticName || '')).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -135,5 +160,5 @@ function isLiveSyndicationPrimary(d) {
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, getSyndicationConfig, isSecondaryOutlet,
-  getSyndicationPrimaries, isCrossOutletSyndicationPair,
+  getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

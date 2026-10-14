@@ -21,6 +21,8 @@ const { imagePresent } = require('./lib/show-image-presence');
 const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
 const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
 const { readinessMarket, isWestEndReadinessMarket } = require('./lib/readiness-market');
+const { spawnSync } = require('child_process');
+const { posterReadiness, preExistingReviewsReadiness, parseImageAuditLine, describeSpawnFailure } = require('./lib/readiness-guards');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -251,25 +253,44 @@ async function runChecks() {
   }
 
   // 7. Wrong-production pre-scores
+  // A "clean slate" is only true BEFORE opening (BRO-5326: Fish passed this check
+  // with 12 review files because the resolver pointed at an empty tree).
   const reviewTextsDir = path.join(require('./lib/review-texts-dir').resolveReviewTextsDir(), SHOW_ID);
-  if (fs.existsSync(reviewTextsDir)) {
-    const files = fs.readdirSync(reviewTextsDir).filter(f => f.endsWith('.json'));
-    const wrongProd = [];
-    for (const f of files) {
-      try {
-        const d = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, f), 'utf8'));
-        if (d.wrongProduction) wrongProd.push(f);
-      } catch {}
-    }
-    if (wrongProd.length > 0) {
-      report(WARN, 'Wrong-production files', `${wrongProd.length} files flagged: ${wrongProd.slice(0, 3).join(', ')}${wrongProd.length > 3 ? '...' : ''}`);
-    } else if (files.length > 0) {
-      report(PASS, 'Pre-existing reviews', `${files.length} review files, none flagged as wrong production`);
-    } else {
-      report(PASS, 'Pre-existing reviews', 'No pre-existing review files (clean slate)');
-    }
+  const dirExists = fs.existsSync(reviewTextsDir);
+  const rtFiles = dirExists ? fs.readdirSync(reviewTextsDir).filter(f => f.endsWith('.json')) : [];
+  const wrongProd = [];
+  for (const f of rtFiles) {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, f), 'utf8'));
+      if (d.wrongProduction) wrongProd.push(f);
+    } catch {}
+  }
+  const rtVerdict = preExistingReviewsReadiness({
+    openingDate: show.openingDate, today: new Date().toISOString().slice(0, 10),
+    dirExists, fileCount: rtFiles.length, wrongProductionCount: wrongProd.length,
+  });
+  if (wrongProd.length > 0) {
+    report(WARN, 'Wrong-production files', `${wrongProd.length} files flagged: ${wrongProd.slice(0, 3).join(', ')}${wrongProd.length > 3 ? '...' : ''}`);
   } else {
-    report(PASS, 'Pre-existing reviews', 'No review-texts directory yet (clean slate)');
+    report(rtVerdict.status === 'pass' ? PASS : WARN, 'Pre-existing reviews', rtVerdict.detail);
+  }
+
+  // 7b. Poster is this show's art (BRO-5326: Fish shipped with Big Fish art; the
+  // vision audit that catches it was never scheduled, so nothing ever looked).
+  {
+    // The audit child loads .env itself, so load it here too: a key that lives only
+    // in .env must not make a by-hand run report "not verified".
+    if (!process.env.GEMINI_API_KEY) { try { require('./lib/load-env').loadEnv(); } catch {} }
+    const hasKey = !!process.env.GEMINI_API_KEY;
+    let parsed = null, failure = null;
+    if (hasKey) {
+      const r = spawnSync(process.execPath, [path.join(__dirname, 'audit-images-llm.js'), `--show=${SHOW_ID}`, '--no-write', '--skip-validation'],
+        { encoding: 'utf8', timeout: 90000, cwd: DATA_DIR });
+      parsed = parseImageAuditLine(r.stdout);
+      failure = describeSpawnFailure(r);
+    }
+    const pv = posterReadiness(parsed, { hasKey, failure });
+    report(pv.status === 'pass' ? PASS : pv.status === 'warn' ? WARN : SKIP, 'Poster is this show', pv.detail);
   }
 
   // 8. API keys (quick validation — no costly API calls)

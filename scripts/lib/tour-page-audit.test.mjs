@@ -99,3 +99,22 @@ test('schedule-city-unlinked follows the scored-only city set', () => {
   assert.deepEqual(run(cityPages(['a', 'b', 'c']), null), ['schedule-city-unlinked']);
   assert.deepEqual(run(cityPages(['a', 'b', 'c']), '/tours/ames-ia'), []);
 });
+
+// BRO-5261 retro-review of BRO-4980: the live build may be a day old, so a
+// city page that appears or drops at midnight must not raise unlinked or
+// dead-link errors (the sitemap check already allowed yesterday's set).
+test('schedule-city checks tolerate a one-day build lag', () => {
+  const stop = { city: 'Ames, IA', venue: 'V', start: '2026-11-01', end: '2026-11-02' };
+  const page = cityHref => ({
+    tourSubtitle: 'National Tour', now: null, next: null, hasSchedule: true, scheduleCount: 1,
+    scheduleAll: [{ city: stop.city, venue: stop.venue, range: '', cityHref }], scheduleShown: [], ticketHrefs: [], jsonLd: [], rows: [], h: [],
+  });
+  const run = (cp, prev, href) => checkShowPage({ url: '/show/a', page: page(href), show: { id: 'a', status: 'open' }, schedule: { stops: [stop] }, todays: ['2026-10-12', '2026-10-13'], cityPages: cp, cityPagesPrev: prev })
+    .filter(f => /^schedule-city-/.test(f.code)).map(f => f.code);
+  const on = new Set(['ames-ia']); const off = new Set();
+  assert.deepEqual(run(on, off, null), [], 'page appears today, build from yesterday has no link yet');
+  assert.deepEqual(run(off, on, '/tours/ames-ia'), [], 'page dropped today, build from yesterday still links it');
+  assert.deepEqual(run(on, on, null), ['schedule-city-unlinked']);
+  assert.deepEqual(run(off, off, '/tours/ames-ia'), ['schedule-city-dead-link']);
+  assert.deepEqual(run(on, null, null), ['schedule-city-unlinked'], 'no prev set keeps the old single-day rule');
+});

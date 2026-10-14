@@ -121,9 +121,42 @@ test('newest falls back to previewsStartDate, then the id year', () => {
   const prev = { id: 'she-loves-me-2030', title: 'She Loves Me', category: 'broadway', previewsStartDate: '2030-01-05' };
   assert.equal(showScoreUrlForShow(prev, {}, [new2016, prev]), SLM_2016);
   assert.equal(showScoreUrlForShow(new2016, {}, [new2016, prev]), null);
-  // No dates at all: the trailing id year decides.
-  assert.equal(showScoreUrlForShow(show2016, {}, [show1994, show2016]), SLM_2016);
+  // The id year only RANKS rivals: an undated newest gets nothing (BRO-5261
+  // retro-review: dreamgirls-2026 / private-lives-2025, announced with no
+  // dates, took the page Show Score still shows for the last production).
+  assert.equal(showScoreUrlForShow(show2016, {}, [show1994, show2016]), null);
   assert.equal(showScoreUrlForShow(show1994, {}, [show1994, show2016]), null);
+  const dated2016 = { ...show2016, openingDate: '2016-03-17' };
+  assert.equal(showScoreUrlForShow(dated2016, {}, [show1994, dated2016]), SLM_2016);
+});
+
+test('an announced revival with no dates does not take a dated production\'s page', () => {
+  const announced = { id: 'she-loves-me-2027', title: 'She Loves Me', category: 'broadway', status: 'announced' };
+  const all = [new2016, announced];
+  assert.equal(showScoreUrlForShow(announced, {}, all), null);
+  assert.equal(showScoreUrlForShow(new2016, {}, all), null);
+});
+
+test('hasNewerSameTitleProduction: only a definitively newer same-section sibling counts', () => {
+  const { hasNewerSameTitleProduction } = require('./show-score-discover.js');
+  const c = (x) => ({ ...x, status: 'closed' });
+  const announced = { id: 'she-loves-me-2027', title: 'She Loves Me', category: 'broadway' };
+  const ob = { id: 'she-loves-me-ob-2030', title: 'She Loves Me', category: 'off-broadway', openingDate: '2030-01-01' };
+  const we = { id: 'she-loves-me-we-2031', title: 'She Loves Me', category: 'west-end', openingDate: '2031-01-01' };
+  assert.equal(hasNewerSameTitleProduction(c(old1994), [old1994, new2016]), true);
+  assert.equal(hasNewerSameTitleProduction(c(new2016), [old1994, new2016]), false);
+  // A running production keeps slug guessing even with a newer sibling.
+  assert.equal(hasNewerSameTitleProduction({ ...old1994, status: 'open' }, [old1994, new2016]), false);
+  // An undated announced sibling has no Show Score page yet: it does not count.
+  assert.equal(hasNewerSameTitleProduction(c(new2016), [new2016, announced]), false);
+  // Other sections have their own Show Score pages.
+  assert.equal(hasNewerSameTitleProduction(c(new2016), [new2016, ob, we]), false);
+  const we2 = { ...we, id: 'she-loves-me-we-2020', category: 'off-west-end', openingDate: '2020-01-01', status: 'closed' };
+  assert.equal(hasNewerSameTitleProduction(we2, [we2, we]), true);
+  // A sibling with no usable date at all, or no list, does not count.
+  const undatable = { id: 'she-loves-me', title: 'She Loves Me', category: 'broadway' };
+  assert.equal(hasNewerSameTitleProduction(c(new2016), [new2016, undatable]), false);
+  assert.equal(hasNewerSameTitleProduction(c(new2016), null), false);
 });
 
 test('a tie for newest fails closed for every sibling', () => {
@@ -195,4 +228,15 @@ test('showScorePosterFromHtml: no og:image or no poster in its folder means no p
   assert.equal(showScorePosterFromHtml(`<img src="${promo}">`), null);
   assert.equal(showScorePosterFromHtml(`<meta property="og:image" content="https://www.show-score.com/fb-posts/image/show/841_1.jpg"><img src="${promo}">`), null);
   assert.equal(showScorePosterFromHtml(''), null);
+});
+
+test('bareSlugGuessUnsafe: closed-and-superseded, or undated with any same-title sibling', () => {
+  const { bareSlugGuessUnsafe } = require('./show-score-discover.js');
+  const announced = { id: 'she-loves-me-2027', title: 'She Loves Me', category: 'broadway', status: 'announced' };
+  // Second-opinion finding: an undated upcoming revival is not closed, but the
+  // year gate blocks nothing without dates, so bare slugs are unsafe for it.
+  assert.equal(bareSlugGuessUnsafe(announced, [announced, new2016]), true);
+  assert.equal(bareSlugGuessUnsafe(announced, [announced]), false);
+  assert.equal(bareSlugGuessUnsafe({ ...old1994, status: 'closed' }, [old1994, new2016]), true);
+  assert.equal(bareSlugGuessUnsafe({ ...new2016, status: 'open' }, [old1994, new2016]), false);
 });

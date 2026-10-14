@@ -130,6 +130,17 @@ jobs:
           fi
           node scripts/archive-show-images.js $ARCHIVE_ARGS
 
+      # BRO-5331: advisory. Vision-audits shows whose thumbnail this run wrote or
+      # replaced; the fetch --verify gate trusts TodayTix API art, so a wrong
+      # poster (Fish, BRO-5326) used to ship unchecked. Never fails the job.
+      - name: Audit new poster art (advisory)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 20
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/audit-new-show-posters.js --limit=25
+
       # BRO-4901: advisory. Lists art whose recorded source is a URL the show rejected.
       - name: Audit image sources against rejected URLs
         if: always()

@@ -95,7 +95,7 @@ function decodeOltText(value) {
     .replace(/&#8211;|[–]/g, '–')
     .replace(/&#8212;|[—]/g, '—')
     .replace(/&#038;|&amp;/g, '&')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
     .trim();
 }
 

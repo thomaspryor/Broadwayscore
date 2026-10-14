@@ -294,9 +294,9 @@ on:
       # scripts/tests/ - same scripts/tests/ situation, so it needs its own
       # entry too.
       - 'scripts/tests/ack-landed-stranded-rebased.test.mjs'
-      # BRO-1711: destructive-script --help ratchet test (scripts/tests/ is not globbed).
+      # BRO-1711: destructive-script --help ratchet test (entry predates the scripts/tests/** glob, BRO-5309).
       - 'scripts/tests/help-flag-safety-guard.test.mjs'
-      # BRO-3188: syndicated-reprint canonical-extraction test (scripts/tests/ is not globbed).
+      # BRO-3188: syndicated-reprint canonical-extraction test (entry predates the scripts/tests/** glob, BRO-5309).
       - 'scripts/tests/syndication-canonical-extraction.test.mjs'
       # BRO-4133: --job-id correlationId fallback fixture test, same
       # scripts/tests/ situation as the five entries above — scripts/lib/
@@ -314,13 +314,11 @@ on:
       # BRO-4133: three more scripts/tests/ files found unregistered by the
       # same audit gap (audit-orphan-tests.js had never scanned this
       # directory at all) — same scripts/tests/ situation as the entries
-      # above. A scripts/tests/** glob (mirroring scripts/lib/** above) would
-      # be the more durable fix given this hand-list is now 66+ entries deep
-      # (plan-reviewed 2026-09-25); deferred to a follow-up card since a safe
-      # migration needs its own out-of-glob dependency audit first.
+      # above. (BRO-5309 later added the scripts/tests/** glob, so these
+      # literal scripts/tests/ entries are now redundant.)
       - 'scripts/tests/batch-drain-decision.test.mjs'
       - 'scripts/tests/verify-edits-cloud-session-gates.test.mjs'
-      # BRO-3630: Ruthless! data-integrity test (scripts/tests/ is not globbed)
+      # BRO-3630: Ruthless! data-integrity test (entry predates the scripts/tests/** glob, BRO-5309)
       - 'scripts/tests/show-ruthless-data.test.mjs'
       - 'scripts/tests/watchdog-skips-landed-acked.test.mjs'
       # scripts/lib/fanout-verified-core.test.mjs covers the decision this
@@ -904,7 +902,7 @@ on:
       # credential. Detection is pure + colocated-tested; the walker is
       # path-listed so a solo edit to it still triggers CI.
       - 'scripts/audit-cmux-spawn-credential.js'
-      # Same class, lower stakes: this one lives in scripts/tests/ (not globbed)
+      # Same class, lower stakes: this one lives in scripts/tests/ (literal entry predates the BRO-5309 glob)
       # and is registered in tests/unit-test-manifest-tsx.txt. Its two subjects
       # (src/lib/ticket-utils.ts, scripts/lib/ticket-link-discovery.js) already
       # trigger CI, so only an edit to the TEST ITSELF was invisible.
@@ -2212,10 +2210,9 @@ on:
       - '.claude/hooks/session-start.sh'
       # BRO-2663: session-start.sh's code-checkout-staleness.js wiring is
       # asserted by scripts/tests/session-start-staleness.test.mjs. The lib
-      # itself rides the 'scripts/lib/**' glob above, but scripts/tests/ has
-      # no glob in this file (same "scripts/tests/ is not scripts/lib/" gap
-      # as every other entry in this block) — a solo edit to the test would
-      # run ZERO CI without this line. Also registered in
+      # itself rides the 'scripts/lib/**' glob above, and scripts/tests/ had
+      # no glob until BRO-5309 added scripts/tests/** (this literal entry is
+      # now redundant). Also registered in
       # tests/unit-test-manifest.txt.
       - 'scripts/tests/session-start-staleness.test.mjs'
       # BRO-4237: the cloud session-start hook installs the owner's global
@@ -2635,7 +2632,7 @@ on:
       # BRO-3925 (backlog-drain R4): Linear-'started' zombie sweep. Pure
       # logic lives in scripts/lib/linear-started-zombie-sweep.js (already
       # covered by the scripts/lib/** glob above); this test lives in
-      # scripts/tests/ (not globbed, registered in
+      # scripts/tests/ (literal entry predates the BRO-5309 glob; registered in
       # tests/unit-test-manifest.txt) so a solo edit still triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/tests/bsc-reconcile-linear-started.test.mjs'

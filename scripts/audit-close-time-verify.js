@@ -97,7 +97,7 @@ function main() {
         checkout = makeFreshCheckout({ repo: REPO, prefix: 'close-verify-dryrun-' });
       }
       const verifyResult = runVerify(checkout.wt, dispatch.verifyCmd, {
-        attempts: 1, timeoutMs: PER_CARD_TIMEOUT_MS, prepared: checkout.prepared,
+        attempts: 1, timeoutMs: PER_CARD_TIMEOUT_MS, prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason,
       });
       const decision = decideClose({ dispatch, verifyResult });
       results.push({ cardId: card.id, subject: card.name, taskId: dispatch.taskId, decision });

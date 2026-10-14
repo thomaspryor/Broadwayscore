@@ -223,13 +223,16 @@ async function processVerify(items) {
           const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
           data.verifiedBy = provider;
 
+          let setFlag = false;
           if (laneBypasses(data, 'wrongProduction')) {
             // BRO-4807: an opening-night lane review is never flagged by the retroactive verifier
           } else if (result.wrongProduction) {
+            setFlag = true;
             data.wrongProduction = true;
             invalidateWrongProductionAutoClear(data);
             data.wrongProductionReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
           } else if (!wrongShowCleared(data)) {
+            setFlag = true;
             if (result.isFilmTv) {
               data.wrongShow = true;
               data.wrongShowReason = `Retroactive LLM verify (film/TV): ${result.reasoning || reason}`;
@@ -240,8 +243,10 @@ async function processVerify(items) {
             invalidateWrongShowAutoClear(data); // BRO-3225: this file's own workflow calls push-review-texts in the SAME job
           }
 
-          // Preserve fullText in wrongFullText before nulling
-          if (data.fullText) {
+          // Preserve fullText in wrongFullText before nulling. Only when a flag
+          // was set: a lane review or a human-cleared wrongShow keeps its body
+          // (BRO-5261 S11; it was moved even when nothing excluded the file).
+          if (setFlag && data.fullText) {
             quarantineBody(data); // BRO-2788: records quarantinedWordCount
           }
 

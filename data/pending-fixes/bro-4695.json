@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-4695",
+  "planId": "6266d5cf-51a7-43e1-994c-93990b57ccdd",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4695: flag 5 excerpt-only cross-outlet rows wrongAttribution (wire reprints and a mismatched critic whose real review is held under another file) so the cross-outlet drift audit clears. No counted review changes.",
+    "steps": [
+      "Flag each of the 5 audit suspects wrongAttribution with a reason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4695: Mark Kennedy's AP review, hosted on a WSJ wire page; the counted review is ap--mark-kennedy.json. This excerpt-only row credits the wrong outlet.",
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4695: Mark Kennedy's AP review, hosted on a WSJ wire page; the counted review is ap--mark-kennedy.json. This excerpt-only row credits the wrong outlet.",
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-realistic-joneses-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-realistic-joneses-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4695: Mark Kennedy's AP review, hosted on a WSJ wire page; the counted review is ap--mark-kennedy.json. This excerpt-only row credits the wrong outlet.",
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-2013/minneapolis-star-tribune--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-2013/minneapolis-star-tribune--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4695: Mark Kennedy's AP review, syndicated on startribune.com; the counted review is ap--mark-kennedy.json. This excerpt-only row credits the wrong outlet.",
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rocky-2014/philadelphia-inquirer--joe-dziemianowicz.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rocky-2014/philadelphia-inquirer--joe-dziemianowicz.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4695: the philly.com page is the Inquirer's own Rocky review, held in philadelphia-inquirer--chuck-darron.json; this excerpt-only row credits Joe Dziemianowicz (a Daily News critic) to the Inquirer.",
+        "description": "BRO-4695"
+      }
+    ]
+  }
+}

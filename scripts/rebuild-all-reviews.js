@@ -61,7 +61,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews } = require('./lib/prior-run-sibling');
+const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews, preWindowExemptPriorRuns } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -82,7 +82,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch, classifyOutletHostMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { dedupeByReviewKey } = require('./lib/final-key-dedup');
-const { parseDate } = require('./lib/date-utils');
+const { parseDate, maxPlausibleYear } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
@@ -1149,6 +1149,20 @@ for (const s of showsData.shows) {
   showById[s.id] = s;
 }
 
+// priorRuns as every pre-window guard call in this file must see them
+// (BRO-5333): an inheritReviews:false run that has its own sibling entry no
+// longer exempts reviews dated inside its window, they belong on the sibling.
+// One helper so the six evaluatePreWindowInclusion calls below cannot drift
+// apart (scoring-delta.js replays it too). The CV-promotion and URL-path
+// priorRuns checks still read show.priorRuns.
+const preWindowPriorRunsCache = new Map();
+function preWindowPriorRuns(showId) {
+  if (!preWindowPriorRunsCache.has(showId)) {
+    preWindowPriorRunsCache.set(showId, preWindowExemptPriorRuns(showById[showId], showsData.shows));
+  }
+  return preWindowPriorRunsCache.get(showId);
+}
+
 // ---------------------------------------------------------------------------
 // Require-as-a-library escape hatch (2026-08-01).
 //
@@ -1690,9 +1704,13 @@ const crossShowFingerprints = new Map();
             isDatedGuardNote(d.wrongProductionNote) &&
             !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
             !d.allowEarlyDate) {
-          const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId });
-          // evaluateDateGuard exempts every priorRuns window; one marked
-          // inheritReviews:false is not a reason to clear (BRO-5285).
+          // Current run only: a date inside a priorRun/tourLeg is cleared by
+          // the prior-run block above, which refuses operator reasons and
+          // high-confidence CV wrongArticle. Letting evaluateDateGuard's
+          // show.priorRuns fallback clear it here would bypass those refusals.
+          const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId, priorRuns: null, tourLegs: null });
+          // Belt and braces: a priorRuns window marked inheritReviews:false is
+          // never a reason to clear (BRO-5285).
           const nowInWindow = dgDecision.flag === false && !isWithinOptOutPriorRun(reviewDate, showRecord?.priorRuns);
           if (shouldAutoClearStaleDateGuard(d, { nowInWindow })) {
             const wasNote = d.wrongProductionNote;
@@ -1901,7 +1919,7 @@ const crossShowFingerprints = new Map();
             pubDate: reviewDate,
             showEarliest,
             isFlexCategory: true,
-            priorRuns: showRecord && showRecord.priorRuns,
+            priorRuns: showRecord && preWindowPriorRuns(sid),
             tourLegs: showRecord && showRecord.tourLegs,
           });
           // Production-continuity skip: review falls inside a declared priorRuns window
@@ -2846,7 +2864,7 @@ showDirs.forEach(showId => {
               pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
-              priorRuns: showById[showId]?.priorRuns,
+              priorRuns: preWindowPriorRuns(showId),
               tourLegs: showById[showId]?.tourLegs,
             });
             if (preWindow.exclude) refExcluded = true;
@@ -2954,7 +2972,7 @@ showDirs.forEach(showId => {
               pubDate: parseDate(refData.publishDate),
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
-              priorRuns: showById[showId]?.priorRuns,
+              priorRuns: preWindowPriorRuns(showId),
               tourLegs: showById[showId]?.tourLegs,
             });
             if (preWindow.exclude) refWouldBeExcluded = true;
@@ -2978,7 +2996,11 @@ showDirs.forEach(showId => {
         if (staleFlag) {
           // Texts no longer match — flag is stale, let this file through
           stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
-        } else if (!refAlsoDupe && !refWouldBeExcluded) {
+        } else if (!refAlsoDupe && !refWouldBeExcluded && !(isCircular && circularSameText)) {
+          // A mutual same-text pair (A.duplicateTextOf=B, B.duplicateTextOf=A)
+          // falls through to the circular tiebreak below: skipping here dropped
+          // BOTH files (BRO-5261 S11: the Times review of Stranger Things: The
+          // First Shadow, clive-davis <-> dominic-maxwell, was off the site).
           logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
@@ -4033,7 +4055,7 @@ showDirs.forEach(showId => {
           pubDate,
           showEarliest: openDate,
           isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
-          priorRuns: showById[showId]?.priorRuns,
+          priorRuns: preWindowPriorRuns(showId),
           tourLegs: showById[showId]?.tourLegs,
         });
         if (preWindow.exclude) {
@@ -4255,7 +4277,7 @@ showDirs.forEach(showId => {
             pubDate,
             showEarliest: showDateMap[showId],
             isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
-            priorRuns: showById[showId]?.priorRuns,
+            priorRuns: preWindowPriorRuns(showId),
             tourLegs: showById[showId]?.tourLegs,
           });
           if (preWindow.exclude) {
@@ -4378,7 +4400,7 @@ showDirs.forEach(showId => {
         if (yearMatches) {
           const urlYears = yearMatches
             .map(m => parseInt(m.match(/\d{4}/)[0]))
-            .filter(y => y >= 1950 && y <= 2030);
+            .filter(y => y >= 1950 && y <= maxPlausibleYear({ atLeast: 2030 }));
           if (urlYears.length > 0) {
             const closestYear = urlYears.reduce((best, y) =>
               Math.abs(y - showYear) < Math.abs(best - showYear) ? y : best);
@@ -5272,15 +5294,15 @@ showDirs.forEach(showId => {
         publishDate: normalizePublishDate(data.publishDate) || (() => {
           // Backfill when source file has no publishDate (BRO-4252: article-id URL digits lose to a later text date)
           const urlDate = resolveBackfillPublishDate(data);
-          if (urlDate && urlDate.source === 'text-over-url-compact') stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
           if (urlDate && urlDate.date) {
-            stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
+            if (urlDate.source === 'text-over-url-compact') stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
+            else stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
             // Validate: if extracted date year is before show opens, log warning
             if (showDateMap[showId]) {
               const showYear = showDateMap[showId].getFullYear();
               const extractedYear = parseInt(urlDate.date.substring(0, 4));
               if (extractedYear < showYear - 1) {
-                console.log(`  [URL-DATE SUSPECT] ${showId}/${file}: URL date ${urlDate.date} is before show opens ${showYear} (${urlDate.source})`);
+                console.log(`  [URL-DATE SUSPECT] ${showId}/${file}: ${urlDate.source === 'text-over-url-compact' ? 'text' : 'URL'} date ${urlDate.date} is before show opens ${showYear} (${urlDate.source})`);
                 if (!stats.urlDateSuspect) stats.urlDateSuspect = [];
                 stats.urlDateSuspect.push({ showId, file, urlDate: urlDate.date, showYear, source: urlDate.source });
               }
@@ -5647,7 +5669,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                       pubDate,
                       showEarliest: sEarliest,
                       isFlexCategory: sCat === 'off-broadway' || isLondonMarket(sCat),
-                      priorRuns: showById[showId]?.priorRuns,
+                      priorRuns: preWindowPriorRuns(showId),
                       tourLegs: showById[showId]?.tourLegs,
                     });
                     if (preWindow.exclude) wouldBeExcluded = true;
@@ -6646,6 +6668,9 @@ if (stats.excerptMismatches > 0) {
 // URL date backfill summary
 if (stats.urlDateBackfills > 0) {
   console.log(`\n📅 URL date backfills: ${stats.urlDateBackfills} reviews gained publishDate from URL`);
+}
+if (stats.textDateBackfills > 0) {
+  console.log(`📅 Text date backfills: ${stats.textDateBackfills} reviews took a later text dateline over an article-id URL date`);
 }
 if (stats.openingDateFallbacks > 0) {
   console.log(`📅 Opening date fallbacks: ${stats.openingDateFallbacks} reviews used show opening date as publishDate`);

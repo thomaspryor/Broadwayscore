@@ -48,7 +48,35 @@ test('reports review-shaped URLs on unregistered domains, marks the ones on disk
     blog,
   ], hosts, new Set([blog2]));
   assert.deepEqual(hits, [
-    { url: blog2, host: 'boycottingtrends.blogspot.com', onDisk: true },
-    { url: blog, host: 'maryamphilpottblog.wordpress.com', onDisk: false },
+    { url: blog2, host: 'boycottingtrends.blogspot.com', onDisk: true, pending: false },
+    { url: blog, host: 'maryamphilpottblog.wordpress.com', onDisk: false, pending: false },
   ]);
+});
+
+test('a url parked in _pending/ is marked pending, not missing (BRO-5261)', () => {
+  const u = 'https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/';
+  const [row] = findUnregisteredCensusUrls([u], new Set(), new Set(), (x) => x, new Set([u]));
+  assert.equal(row.onDisk, false);
+  assert.equal(row.pending, true);
+  const [row2] = findUnregisteredCensusUrls([u], new Set());
+  assert.equal(row2.pending, false);
+});
+
+test('pendingUrlStates: an identity-rejected _pending file reads rejected, not pending (ship-check)', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { pendingUrlStates } = require('./outlet-registry-census-reconciler.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'census-pending-'));
+  const dir = path.join(root, '_pending', 'show-a');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'a--x.json'), JSON.stringify({ url: 'https://a.com/r' }));
+  fs.writeFileSync(path.join(dir, 'b--x.json'), JSON.stringify({ url: 'https://b.com/r', rssIdentityRejected: true }));
+  const m = pendingUrlStates('show-a', (u) => u, root);
+  assert.equal(m.get('https://a.com/r'), 'pending');
+  assert.equal(m.get('https://b.com/r'), 'rejected');
+  const [row] = findUnregisteredCensusUrls(['https://b.com/r'], new Set(), new Set(), (u) => u, m);
+  assert.equal(row.rejected, true);
+  assert.equal(row.pending, false);
+  fs.rmSync(root, { recursive: true, force: true });
 });

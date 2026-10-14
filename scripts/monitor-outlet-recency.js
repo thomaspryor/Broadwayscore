@@ -19,7 +19,7 @@
  *   node scripts/monitor-outlet-recency.js --dry-run      # print only, always exit 0
  *   node scripts/monitor-outlet-recency.js --json         # machine-readable output
  *   node scripts/monitor-outlet-recency.js --write-baseline  # ack current backlog (card #643)
- *   node scripts/monitor-outlet-recency.js --renew-baseline  # same, re-acking listed pairs from today (BRO-3364: acks expire after 90d)
+ *   node scripts/monitor-outlet-recency.js --renew-baseline[=<outlet>::<market>,...]  # same, re-acking the named pairs (bare: all) from today (BRO-3364: acks expire after 90d)
  *
  * --write-baseline snapshots the currently-flagged outlet×market pairs into
  * data/audit/outlet-heartbeat-baseline.json. The "Quality: outlet-heartbeat
@@ -33,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildCadenceReport } = require('./lib/outlet-cadence');
 const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
-const { buildBaseline } = require('./lib/baseline-ttl');
+const { buildBaseline, parseRenewArg, unknownRenewKeys } = require('./lib/baseline-ttl');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -74,8 +74,8 @@ function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const jsonOut = args.includes('--json');
-  const renewBaseline = args.includes('--renew-baseline');
-  const writeBaseline = renewBaseline || args.includes('--write-baseline');
+  const renewBaseline = parseRenewArg(args); // null | true | Set of outlet::market keys
+  const writeBaseline = renewBaseline !== null || args.includes('--write-baseline');
 
   const reviewsData = JSON.parse(fs.readFileSync(resolveDataFile('data/reviews.json'), 'utf8'));
   const outletsData = JSON.parse(fs.readFileSync(resolveDataFile('data/outlet-registry.json'), 'utf8'));
@@ -104,10 +104,13 @@ function main() {
     const p = baselinePath();
     let prev = null;
     try { prev = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { /* first write */ }
-    const { doc: payload, stats } = buildBaseline(actionable.map((r) => `${r.outletId}::${r.market}`), prev, {
-      renew: renewBaseline,
+    const keys = actionable.map((r) => `${r.outletId}::${r.market}`);
+    const unknown = unknownRenewKeys(renewBaseline, keys);
+    if (unknown.length) { console.error(`--renew-baseline names pair(s) not currently baselinable: ${unknown.join(', ')}`); process.exit(2); }
+    const { doc: payload, stats } = buildBaseline(keys, prev, {
+      renew: renewBaseline || false,
       meta: {
-        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Each ack expires after ttlDays (BRO-3364) and the pair re-enters the normal 2-week streak. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline (keeps existing acks\' dates); --renew-baseline re-acks every listed pair from today.',
+        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Each ack expires after ttlDays (BRO-3364) and the pair re-enters the normal 2-week streak. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline (keeps existing acks\' dates); --renew-baseline=<outlet>::<market> re-acks one pair from today, bare --renew-baseline every listed pair.',
       },
     });
     fs.mkdirSync(path.dirname(p), { recursive: true });

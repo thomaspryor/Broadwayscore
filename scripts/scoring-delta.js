@@ -658,11 +658,14 @@ function loadBaselineGuards() {
   // inline ones) resolve against the full baseline scripts/lib copied above.
   const cmPath = path.join(baselineLibDir, 'cross-market-guard.js');
   delete require.cache[require.resolve(cmPath)];
+  const prsPath = path.join(baselineLibDir, 'prior-run-sibling.js');
+  delete require.cache[require.resolve(prsPath)];
   return {
     ...guards,
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
+    __priorRunSiblingLib: require(prsPath),
   };
 }
 
@@ -676,11 +679,14 @@ function loadWorkingTreeGuards() {
   delete require.cache[require.resolve(prPath)];
   const cmPath = path.resolve(REPO_ROOT, 'scripts/lib/cross-market-guard.js');
   delete require.cache[require.resolve(cmPath)];
+  const prsPath = path.resolve(REPO_ROOT, 'scripts/lib/prior-run-sibling.js');
+  delete require.cache[require.resolve(prsPath)];
   return {
     ...guards,
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
+    __priorRunSiblingLib: require(prsPath),
   };
 }
 
@@ -830,6 +836,13 @@ function getUrlShowIdsAll(guards) {
   return index;
 }
 
+// Raw shows.json entries, for prior-run-sibling lookups (set in main()).
+let ALL_SHOWS_RAW = [];
+function preWindowPriorRunsFor(show, guards) {
+  const fn = guards.__priorRunSiblingLib?.preWindowExemptPriorRuns;
+  return fn && show?.raw ? fn(show.raw, ALL_SHOWS_RAW) : show?.priorRuns;
+}
+
 function decideInclusion(review, show, guards) {
   // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
@@ -934,11 +947,16 @@ function decideInclusion(review, show, guards) {
       wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
     }
 
-    // Stale dated pre-opening guard auto-clear — mirrors rebuild-all-reviews.js:
-    // 1461-1464's outer gate (own-flag note prefix + no manual/human override)
-    // and 1463's evaluateDateGuard(...).flag === false ctx.
+    // Stale dated guard auto-clear — mirrors rebuild-all-reviews.js's block:
+    // isDatedGuardNote (both 'Pre-opening guard:' and 'Date guard:' notes), no
+    // manual/human override, evaluateDateGuard on the CURRENT run only
+    // (priorRuns/tourLegs: null, BRO-5261 retro-review) and the
+    // inheritReviews:false prior-run refusal (BRO-5285).
+    const isDatedNote = typeof autoClear.isDatedGuardNote === 'function'
+      ? autoClear.isDatedGuardNote(review.wrongProductionNote)
+      : String(review.wrongProductionNote || '').startsWith('Pre-opening guard:');
     if (!wrongProductionCleared && review.wrongProduction === true
-        && String(review.wrongProductionNote || '').startsWith('Pre-opening guard:')
+        && isDatedNote
         && !review.wrongProductionManualClear
         && review.humanReviewedWrongProduction !== false
         && !review.allowEarlyDate
@@ -946,8 +964,10 @@ function decideInclusion(review, show, guards) {
         && typeof guards.__dateGuard?.evaluateDateGuard === 'function') {
       const reviewDate = resolveReviewDate(review);
       if (reviewDate) {
-        const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId });
-        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false });
+        const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId, priorRuns: null, tourLegs: null });
+        const optOutRun = typeof autoClear.isWithinOptOutPriorRun === 'function'
+          && autoClear.isWithinOptOutPriorRun(reviewDate, show?.priorRuns);
+        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false && !optOutRun });
       }
     }
 
@@ -1315,7 +1335,9 @@ function decideInclusion(review, show, guards) {
         pubDate: parseDate(review.publishDate),
         showEarliest: new Date(show.earliestDate),
         isFlexCategory: isOB || isLondon,
-        priorRuns: show.priorRuns,
+        // BRO-5333: rebuild drops opted-out runs that have their own entry
+        // (preWindowPriorRuns); a baseline without the helper sees them all.
+        priorRuns: preWindowPriorRunsFor(show, guards),
         tourLegs: show.tourLegs,
       });
       if (pw.exclude) {
@@ -1525,6 +1547,9 @@ function main() {
         && String(baseline.__dateGuard?.PRE_WINDOW_DAYS) === String(working.__dateGuard?.PRE_WINDOW_DAYS)
         && String(baseline.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY) === String(working.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY)
         && (baseline.__priorRunLib?.isWithinPriorRun?.toString() || '') === (working.__priorRunLib?.isWithinPriorRun?.toString() || '')
+        // BRO-5333: which priorRuns the pre-window replay sees.
+        && (baseline.__priorRunSiblingLib?.preWindowExemptPriorRuns?.toString() || '') === (working.__priorRunSiblingLib?.preWindowExemptPriorRuns?.toString() || '')
+        && (baseline.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '') === (working.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '')
         // Same rationale for isWithinTourLeg: evaluatePreWindowInclusion's own
         // toString() doesn't capture the source of a function it CALLS, so an
         // edit only inside isWithinTourLeg would otherwise go undetected here.
@@ -1704,6 +1729,7 @@ function main() {
   }
   const showsRaw = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
   const shows = Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || [];
+  ALL_SHOWS_RAW = shows;
   const showById = new Map();
   for (const s of shows) {
     // earliestDate: MIN of previewDate/previewsStartDate/openingDate — same
@@ -1731,6 +1757,7 @@ function main() {
       status: s.status || 'open',
       priorRuns: s.priorRuns || null,
       tourLegs: s.tourLegs || null,
+      raw: s,
       // title + creativeTeam (audit S6-T4, BRO-4204): read by the
       // cvFlagVetoedInWindow replay in decideInclusion — the URL-slug ⇔ title
       // match and the named-different-director strong-signal bypass.

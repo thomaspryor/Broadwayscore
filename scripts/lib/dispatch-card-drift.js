@@ -306,11 +306,8 @@ function summarizeDrift(rows = []) {
  * backslash in the card body has to go before it is handed to cmux.
  */
 function formatAmendMessage({ launch, card, drift, maxChars = 3500 } = {}) {
-  const flatten = (s) => String(s == null ? '' : s)
-    .replace(/\\/g, '/')          // "\n" typed literally in a card would submit
-    .replace(/[\r\n\t]+/g, ' ⏎ ')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
+  // "\n" typed literally in a card would submit; shared with the other senders.
+  const flatten = require('./cmux-workspaces.js').flattenToSingleLine;
 
   const taskId = (launch && launch.taskId) || (drift && drift.taskId) || '?';
   const title = flatten((card && card.name) || (launch && launch.subject) || '');

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T02:28:45.459Z",
+  "generatedAt": "2026-10-14T06:02:51.980Z",
   "windowDays": 45,
   "showsScanned": 168,
   "gaps": [
@@ -12,14 +12,18 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389",
-      "recovery": null,
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": "s\":false,\"status\":\"Bright Data request timeout\",\"credits\":null,\"fallback_from\":null,\"purpose\":null,\"category\":null,\"showId\":null} |   → Trying Playwright (last resort)... |   ⏱️  Playwright: network still busy after 15s at https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389 — reading the DOMContentLoaded page |   ✅ Success (Playwright, html) |  | Done. 0 succeeded, 0 failed, 1 skipped."
+      },
       "recoveryCount": 3,
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 128.72887305555557,
+      "fileAgeHours": 132.2995586111111,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 123.70029055555555
+      "nonTerminalAgeHours": 127.26876861111111
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -35,9 +39,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 513.8004391666667,
+      "fileAgeHours": 517.3711963888888,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 64.82290472222222
+      "nonTerminalAgeHours": 68.39138277777778
     },
     {
       "showId": "nina-off-west-end-2026",
@@ -57,9 +61,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=nina-off-west-end-2026 --url=https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/ --outlet=thereviewshub --critic=\"The Reviews Hub - Ireland\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-13T22:13:30.839Z",
-      "fileAgeHours": 4.254060833333333,
+      "fileAgeHours": 7.8225388888888885,
       "gapSeenAt": "2026-10-14T02:28:45.459Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.5684780555555555
     }
   ],
   "contradictions": []

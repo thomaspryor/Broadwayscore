@@ -53,13 +53,15 @@ function earliestShowDate(show) {
 }
 
 function evaluateDateGuard({ pubDate, show, outletId, priorRuns, tourLegs }) {
-  // The show's own declared runs apply when the caller does not pass them.
-  // Three callers (the rebuild's stale-guard auto-clear, url-downgrade-guard,
-  // audit-we-historical-season) passed only the show, so a review of a
-  // declared prior run (Amélie at The Other Palace, 2019) read as out of
-  // window to them (BRO-4884).
-  if (priorRuns == null && show) priorRuns = show.priorRuns;
-  if (tourLegs == null && show) tourLegs = show.tourLegs;
+  // The show's own declared runs apply when the caller does not pass them, so
+  // a review of a declared prior run (Amélie at The Other Palace, 2019) is not
+  // read as out of window by a caller that forgot them (BRO-4884). Only an
+  // omitted argument falls back: callers that must judge the current run alone
+  // pass null or [] (the rebuild's stale-guard auto-clear, whose prior-run
+  // clears belong to shouldAutoClearWrongProductionPriorRun and its operator /
+  // CV refusals; flag-wrong-production-by-date, which counts its own skips).
+  if (priorRuns === undefined && show) priorRuns = show.priorRuns;
+  if (tourLegs === undefined && show) tourLegs = show.tourLegs;
   // NOTE: 'observer' deliberately excluded. observer.com is flagged
   // isDualMarket:true in outlet-registry.json — both NY Observer (US/Broadway
   // critics like David Cote) and The Observer UK share the outletId. Giving
@@ -372,7 +374,10 @@ function textNumericDates(text) {
     if (d <= 12 && !m[4]) continue;
     const before = head.slice(Math.max(0, m.index - 25), m.index);
     const after = head.slice(m.index + m[0].length, m.index + m[0].length + 4);
-    if (/(updated|modified|edited|until|through|from|tickets?|previews?|on sale|runs?|to|-|\u2013)\s*:?\s*$/i.test(before) || /^\s*[-\u2013]/.test(after)) continue;
+    // Whole words only ("Toronto 18/09/2026" is a byline), and a dash marks a
+    // range only after another date or a month ("By Jane Doe – 18/09/2026" is a
+    // byline; "10 Sept – 18/09/2026" is a range).
+    if (/(?:\b(?:updated|modified|edited|until|through|from|tickets?|previews?|on sale|runs?|to)|(?:\d|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?)\s*[-\u2013\u2014])\s*:?\s*$/i.test(before) || /^\s*[-\u2013\u2014]/.test(after)) continue;
     if (mo >= 1 && mo <= 12 && new Date(t).getUTCDate() === d) out.push(new Date(t).toISOString().slice(0, 10));
   }
   return out;

@@ -103,6 +103,26 @@ function isTextlessNeedsRefetch(data) {
   return len <= NEEDS_REFETCH_MIN_TEXT;
 }
 
+/** Fetch failures after which a refetch slot is wasted (dead URL, wall, mismatch). */
+const NEEDS_REFETCH_MAX_FAILURES = 3;
+
+/**
+ * True when a textless needsRefetch review deserves a reserved slot: no usable
+ * body, not protected, and not already failed repeatedly. The first 5-review CI
+ * test (2026-10-14) spent every slot on Variety/Vulture URLs with 48 recorded
+ * url_dead_404 failures; those need URL rediscovery, not another fetch.
+ *
+ * @param {object} data review file JSON
+ * @param {{failureCount?: number}|null} ledgerEntry failed-fetches.json row
+ */
+function isNeedsRefetchDrainCandidate(data, ledgerEntry) {
+  if (!isTextlessNeedsRefetch(data)) return false;
+  if (data._locked === true || data.manualContentTier === 'complete') return false;
+  const fileFails = Array.isArray(data.fetchAttempts) ? data.fetchAttempts.length : 0;
+  const ledgerFails = ledgerEntry && Number.isFinite(ledgerEntry.failureCount) ? ledgerEntry.failureCount : 0;
+  return Math.max(fileFails, ledgerFails) < NEEDS_REFETCH_MAX_FAILURES;
+}
+
 /**
  * Move up to `cap` textless needsRefetch entries (flag `_needsRefetch`) to the
  * front of an already-sorted queue, lowest outlet tier number first, keeping the
@@ -121,6 +141,8 @@ function promoteNeedsRefetch(queue, cap = NEEDS_REFETCH_DRAIN_PER_RUN) {
 module.exports = {
   NEEDS_REFETCH_DRAIN_PER_RUN,
   isTextlessNeedsRefetch,
+  isNeedsRefetchDrainCandidate,
+  NEEDS_REFETCH_MAX_FAILURES,
   promoteNeedsRefetch,
   NO_DATE_SENTINEL,
   showRecencyKey,

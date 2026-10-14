@@ -40,12 +40,10 @@ const { shouldBlockReviewTextsGate, HEALABLE_CHECKS } = require('./lib/review-te
 // population that predicate hides, so a second copy here would drift from the ratchet
 // it's supposed to agree with by construction (task #1002, task #1194).
 const { isSkippedByValidator, hasAggregatorUrlMismatch } = require('./lib/aggregator-url-latent');
-// The per-show URL blocklist sidecar (scripts/lib/poller-blocklist.js) is
-// operator/tooling metadata — {urls:[{url,reason,blockedAt}]} — not a review
-// record, so it has no showId/outletId by design and must not be scanned as
-// one. Import the real filename constant (CLAUDE.md rule 15) instead of
-// re-hardcoding '_blocklist.json' a second place that could drift from it.
-const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
+// Per-show sidecars (_blocklist.json, _ingest-rejections.json, any `_` file)
+// are tooling metadata with no showId/outletId by design and must not be
+// scanned as reviews: one shared predicate, so a new sidecar can't red the gate.
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 
 // Startup assertion — prevent silent no-ops if import breaks
 if (!AGGREGATOR_SCORE_SOURCES || AGGREGATOR_SCORE_SOURCES.size === 0) {
@@ -290,7 +288,7 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
 function getReviewFilesForShow(showDir) {
   try {
     return fs.readdirSync(showDir)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json' && f !== BLOCKLIST_FILENAME)
+      .filter(isReviewTextFile)
       .map(f => path.join(showDir, f));
   } catch (err) {
     return [];

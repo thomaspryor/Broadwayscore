@@ -52,7 +52,7 @@
  *   --test-url="URL" - Test single URL with all tiers
  */
 
-const { pointsAtFile } = require('./lib/canonical-duplicate-pointers');
+const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
@@ -138,7 +138,7 @@ const {
   NO_DATE_SENTINEL,
   buildShowRecencyMap,
   NEEDS_REFETCH_DRAIN_PER_RUN,
-  isTextlessNeedsRefetch,
+  isNeedsRefetchDrainCandidate,
   promoteNeedsRefetch,
   compareReviewPriority,
 } = require('./lib/collection-priority');
@@ -188,7 +188,7 @@ const { verificationPublishDate } = require('./lib/verification-publish-date');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const { discoveredPageVerdict } = require('./lib/discovered-page-verdict');
 const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
-const { parseDate } = require('./lib/date-utils');
+const { parseDate, maxPlausibleYear } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
@@ -4124,6 +4124,7 @@ function isPaywalled(html) {
 // it lived inline). The function is serialized and injected into the
 // Playwright browser context via page.evaluate.
 const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor');
+const { decodeBloxRot47, decodeBloxRot47InDocument } = require('./lib/blox-rot47-decode');
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
@@ -4132,6 +4133,9 @@ async function extractArticleText(page) {
   // page URL is passed through so BRO-912's talkinbroadway.com bail-out
   // (dom-article-extractor.js) can domain-scope itself.
   const currentUrl = page.url();
+  // BRO-4221: BLOX ROT47-scrambled paragraphs are one text node in the DOM;
+  // decode them in place first, or the extractor saves the gibberish.
+  await page.evaluate(`(${decodeBloxRot47InDocument.toString()})(document)`).catch(() => 0);
   return await page.evaluate(
     `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
   );
@@ -4189,6 +4193,9 @@ function extractFromJsonLd(html) {
 // result is short, and wins only if it recovers more text.
 const DEDICATED_FALLBACK_MIN_CHARS = 500;
 function extractTextFromHtml(html, url) {
+  // BLOX CMS hosts (Tulsa World, Buffalo News, ...) ship paywalled paragraphs
+  // ROT47-scrambled; decode before either extractor runs (BRO-4221).
+  html = decodeBloxRot47(html);
   const generic = extractTextFromHtmlGeneric(html, url);
   if (!url || generic.length >= DEDICATED_FALLBACK_MIN_CHARS || !isDedicatedExtractorHost(url)) return generic;
   let dedicated = null;
@@ -4704,7 +4711,7 @@ function normalizeExtractedDate(dateStr) {
       const year = parseInt(dateMatch[1]);
       const month = parseInt(dateMatch[2]);
       const day = parseInt(dateMatch[3]);
-      if (year < 1970 || year > 2030) return null;
+      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
       if (month < 1 || month > 12 || day < 1 || day > 31) return null;
       return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     }
@@ -4712,7 +4719,7 @@ function normalizeExtractedDate(dateStr) {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
     const year = d.getFullYear();
-    if (year < 1970 || year > 2030) return null;
+    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
@@ -4987,7 +4994,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // allowEarlyDate: operator approved the early date (BRO-720) — flagging again would re-loop with the rebuild auto-clear
     if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !bodyDateClears && !laneHeld(data, 'wrongProduction')) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
-      data.fullText = null;
+      // Kept in wrongFullText like every other wrong-content verdict, so the
+      // record does not read as never scraped (BRO-2788 cousin, BRO-5261 S11).
+      if (!quarantineBody(data)) data.fullText = null;
       data.wrongProduction = true;
       invalidateWrongProductionAutoClear(data);
       data.wrongProductionReason = 'anticipatory_pre_opening_post';
@@ -5283,7 +5292,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
         delete data.showNotMentioned;
         delete data._showNotMentionedDiscoveryAttempted;
-        if (data.wrongFullText) {
+        if (data.wrongFullText && data.fullText && !data.wrongProduction && !data.wrongShow) {
           delete data.wrongFullText;
           console.log(`    → Cleared stale wrongFullText (LLM-verified content restored to fullText)`);
         }
@@ -5320,10 +5329,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           delete data._showNotMentionedDiscoveryAttempted;
           repaired = true;
         }
-        // Restore fullText from wrongFullText if a prior run nulled it
-        if (!data.fullText && data.wrongFullText) {
+        // Restore fullText from wrongFullText if a prior run nulled it. Not
+        // when a live wrong-content verdict quarantined it (this run's
+        // anticipatory gate, BRO-5261 S11).
+        if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow) {
           data.fullText = data.wrongFullText;
-          delete data.wrongFullText;
+          data.wrongFullText = null;
           repaired = true;
         }
         if (repaired) {
@@ -5508,7 +5519,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf8'));
           // This file is already that sibling's canonical: pointing back would
           // close a cycle the daily dedupe heal then has to clear (BRO-3102).
-          if (pointsAtFile(siblingData, currentFile)) continue;
+          // A back-pointer already on disk is dropped too, or a cycle written
+          // before that fix survives every refetch (BRO-5261 S11: 3 pairs).
+          if (pointsAtFile(siblingData, currentFile)) {
+            const plan = planCanonicalPointerClear(data, { self: currentFile, clusterFiles: [sibling], siblings: { [sibling]: siblingData } });
+            applyCanonicalPointerClear(data, { drop: plan.drop.filter(f => f === 'duplicateTextOf') });
+            continue;
+          }
           if (siblingData.fullText) {
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {
@@ -6767,7 +6784,7 @@ function findReviewsToProcess() {
           _forceRefetch: forcedRefetch,
           // What the file already holds (BRO-5222): a Time Out refetch that
           // finds a listing blurb keeps a stored review instead of failing it.
-          _needsRefetch: isTextlessNeedsRefetch(data),
+          _needsRefetch: isNeedsRefetchDrainCandidate(data, failedFetchesByReviewId.get(reviewId)),
           _storedTier: data.contentTier || null,
           _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
           // Stored text that may not be this url's review (repointed url, show

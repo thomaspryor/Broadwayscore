@@ -25,4 +25,55 @@ function disambiguateByVenue(candidates, listingVenue, venuesMatch) {
   return { candidates: [], rejected: true };
 }
 
-module.exports = { disambiguateByVenue };
+/**
+ * Build show-score-candidates.json's next contents (BRO-2595 retro-review).
+ * Pure: the caller reads the old file and writes the result.
+ *
+ * - candidates: this run's (fresh discoveredAt) plus unexpired, unmatched old
+ *   ones. A URL this run venue-REJECTED is never carried over: discover-new-shows
+ *   auto-consumes `candidates`, so a stale entry would add a show from a listing
+ *   the venue check just refused.
+ * - venueRejected: this run's rejects, keeping the first-seen discoveredAt of a
+ *   reject already listed, so its age shows how long it has been stuck.
+ * - write: false only when there is nothing old or new to record; a file whose
+ *   only content is old venueRejected entries is rewritten so they clear.
+ *
+ * @returns {{ write: boolean, data: object }}
+ */
+function mergeShowScoreCandidates({ candidates, venueRejects, existing, matchedUrls, ttlDays, now = Date.now() }) {
+  const existingCandidates = (existing && existing.candidates) || [];
+  const existingRejects = (existing && existing.venueRejected) || [];
+  const nowIso = new Date(now).toISOString();
+  const currentUrls = new Set(candidates.map(c => c.showScoreUrl));
+  const rejectedUrls = new Set(venueRejects.map(v => v.showScoreUrl));
+  const ttlMs = ttlDays * 24 * 60 * 60 * 1000;
+
+  const merged = [];
+  for (const c of candidates) {
+    if (matchedUrls.has(c.showScoreUrl)) continue;
+    merged.push({ ...c, discoveredAt: nowIso });
+  }
+  for (const c of existingCandidates) {
+    if (currentUrls.has(c.showScoreUrl)) continue;
+    if (matchedUrls.has(c.showScoreUrl)) continue;
+    if (rejectedUrls.has(c.showScoreUrl)) continue;
+    if (now - new Date(c.discoveredAt).getTime() > ttlMs) continue;
+    merged.push(c);
+  }
+
+  const firstSeen = new Map(existingRejects.filter(v => v && v.showScoreUrl && v.discoveredAt).map(v => [v.showScoreUrl, v.discoveredAt]));
+  const venueRejected = venueRejects.map(v => ({ ...v, discoveredAt: firstSeen.get(v.showScoreUrl) || nowIso }));
+
+  const write = merged.length > 0 || existingCandidates.length > 0 || venueRejected.length > 0 || existingRejects.length > 0;
+  return {
+    write,
+    data: {
+      _meta: { lastUpdated: nowIso, totalCandidates: merged.length, totalVenueRejected: venueRejected.length, ttlDays },
+      candidates: merged,
+      // For a person (BRO-2595). discover-new-shows.js consumes only `candidates`.
+      venueRejected,
+    },
+  };
+}
+
+module.exports = { disambiguateByVenue, mergeShowScoreCandidates };

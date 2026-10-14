@@ -29,7 +29,7 @@ const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { venuesMatch } = require('./lib/deduplication');
 const { findConflictingShowId } = require('./lib/show-score-url-map');
-const { disambiguateByVenue } = require('./lib/show-score-venue-disambiguation');
+const { disambiguateByVenue, mergeShowScoreCandidates } = require('./lib/show-score-venue-disambiguation');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -75,7 +75,7 @@ function sleep(ms) {
 //   "Burnout Paradise (Astor Place Theatre)"
 // Category tags like (Broadway), (Off-Broadway) etc. are NOT venues.
 
-const CATEGORY_TAGS = /^(Broadway|London|West End|Off-Broadway|NYC|Off Broadway)$/i;
+const CATEGORY_TAGS = /^(Broadway|London|West End|Off-Broadway|NYC|Off Broadway|Off-West End|Off West End)$/i;
 
 function extractVenueFromTitle(rawTitle) {
   const title = (rawTitle || '').replace(/&amp;/g, '&').replace(/&#39;/g, "'");
@@ -140,10 +140,10 @@ function validateUrlWithArchive(url, show) {
   const datePattern = /(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}(?:st|nd|rd|th)?,?\s*\d{4}/gi;
   const rawDates = archiveHtml.match(datePattern) || [];
   const dates = [];
-  const { parseDate: parseDateUtil } = require('./lib/date-utils');
+  const { parseDate: parseDateUtil, maxPlausibleYear } = require('./lib/date-utils');
   for (const m of rawDates) {
     const d = parseDateUtil(m);
-    if (d && d.getFullYear() >= 2000 && d.getFullYear() <= 2030) {
+    if (d && d.getFullYear() >= 2000 && d.getFullYear() <= maxPlausibleYear({ atLeast: 2030 })) {
       dates.push(d);
     }
   }
@@ -657,63 +657,29 @@ async function main() {
   // ── Write candidates file (unmatched listings for new show discovery) ──
   // Always run merge/prune logic (even with 0 new candidates) to expire stale entries
   {
-    // Load existing candidates and merge
-    let existingCandidates = [];
+    // Load existing candidates and merge (pure step: mergeShowScoreCandidates)
+    let existing = {};
     try {
-      const existing = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
-      existingCandidates = existing.candidates || [];
+      existing = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
     } catch (e) {
       if (e.code !== 'ENOENT') console.warn(`  Warning: could not parse ${CANDIDATES_PATH}: ${e.message}`);
     }
+    const { write, data: candidatesData } = mergeShowScoreCandidates({
+      candidates,
+      venueRejects,
+      existing,
+      matchedUrls: new Set(Object.values(urlData.shows)),
+      ttlDays: CANDIDATE_TTL_DAYS,
+    });
 
-    // Build URL set of current candidates for dedup
-    const currentUrls = new Set(candidates.map(c => c.showScoreUrl));
-
-    // Keep existing candidates that:
-    // 1. Aren't in the current batch (they weren't on listings this run — keep if not expired)
-    // 2. Haven't been matched to a show (URL not in urlData.shows values)
-    const matchedUrls = new Set(Object.values(urlData.shows));
-    const now = Date.now();
-    const ttlMs = CANDIDATE_TTL_DAYS * 24 * 60 * 60 * 1000;
-
-    const mergedCandidates = [];
-
-    // Add current run's candidates with fresh timestamp
-    for (const c of candidates) {
-      if (matchedUrls.has(c.showScoreUrl)) continue; // Already matched this run
-      mergedCandidates.push({
-        ...c,
-        discoveredAt: new Date().toISOString(),
-      });
-    }
-
-    // Carry over existing candidates not in this run and not expired/matched
-    for (const c of existingCandidates) {
-      if (currentUrls.has(c.showScoreUrl)) continue; // Replaced by fresh entry above
-      if (matchedUrls.has(c.showScoreUrl)) continue; // Matched since last run
-      const age = now - new Date(c.discoveredAt).getTime();
-      if (age > ttlMs) continue; // Expired (>90 days old)
-      mergedCandidates.push(c);
-    }
-
-    if (mergedCandidates.length > 0 || existingCandidates.length > 0 || venueRejects.length > 0) {
-      const candidatesData = {
-        _meta: {
-          lastUpdated: new Date().toISOString(),
-          totalCandidates: mergedCandidates.length,
-          ttlDays: CANDIDATE_TTL_DAYS,
-        },
-        candidates: mergedCandidates,
-        // This run's venue mismatches, for a person (BRO-2595). Not read by
-        // discover-new-shows.js, which consumes only `candidates`.
-        venueRejected: venueRejects.map(v => ({ ...v, discoveredAt: new Date().toISOString() })),
-      };
-
+    if (write) {
+      const n = candidatesData.candidates.length;
+      const r = candidatesData.venueRejected.length;
       if (!dryRun) {
         fs.writeFileSync(CANDIDATES_PATH, JSON.stringify(candidatesData, null, 2) + '\n');
-        console.log(`Wrote ${mergedCandidates.length} candidates to show-score-candidates.json (${candidates.length} new this run)`);
+        console.log(`Wrote ${n} candidates and ${r} venue-rejected listings to show-score-candidates.json (${candidates.length} new this run)`);
       } else {
-        console.log(`[DRY RUN] Would write ${mergedCandidates.length} candidates (${candidates.length} new)`);
+        console.log(`[DRY RUN] Would write ${n} candidates (${candidates.length} new) and ${r} venue-rejected listings`);
       }
     }
   }

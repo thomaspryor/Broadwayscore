@@ -1,4 +1,5 @@
 'use strict';
+const { maxPlausibleYear } = require('./date-utils');
 // venue-write-guard-ok: `expected: { venue: show.venue }` builds a mismatch report for an archive page; nothing here writes shows.json (moved from scripts/validate-archive-productions.js, BRO-2507).
 
 /**
@@ -126,7 +127,7 @@ function validateBwwArchive(showId, show, html, file) {
   if (expectedYear && yearsFound.size > 0 && !yearsFound.has(expectedYear)) {
     const otherProductionYears = [...yearsFound].filter(y =>
       y !== expectedYear &&
-      y > 1990 && y < 2030 &&
+      y > 1990 && y <= maxPlausibleYear({ atLeast: 2029 }) &&
       Math.abs(y - expectedYear) > 1
     );
     if (otherProductionYears.length > 0) {

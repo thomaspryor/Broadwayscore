@@ -110,6 +110,7 @@ const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { partitionShowScoreReviews } = require('./lib/gap-ingest-policy');
+const { bareSlugGuessUnsafe } = require('./lib/show-score-discover');
 const { recordSbCall, sbBilledCredits, withSpendShow } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -174,7 +175,7 @@ const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
+const { parseDate, parseHistoricalDate, maxPlausibleYear } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
@@ -266,6 +267,22 @@ function getShowScoreUrlMap() {
     _showScoreUrlMap = {};
   }
   return _showScoreUrlMap;
+}
+
+// Every shows.json record, for the same-title sibling check before Show Score
+// slug guessing (BRO-3556). null when unreadable: the caller then drops every
+// bare-title guess (fail closed).
+let _showScoreAllShows;
+function getShowScoreAllShows() {
+  if (_showScoreAllShows !== undefined) return _showScoreAllShows;
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    _showScoreAllShows = data.shows || data;
+  } catch (e) {
+    console.log(`    [WARN] shows.json unreadable for the Show Score sibling check: ${e.message}`);
+    _showScoreAllShows = null;
+  }
+  return _showScoreAllShows;
 }
 
 // DTLI slug map (persistent mapping discovered from sitemaps)
@@ -1123,6 +1140,7 @@ async function searchShowScore(show) {
     console.log('    Curated URL failed, falling back to slug variations...');
   }
 
+
   const year = productionYear(show);
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
@@ -1213,14 +1231,29 @@ async function searchShowScore(show) {
       .filter(([id, u]) => id !== show.id && typeof u === 'string' && u)
       .map(([, u]) => u.toLowerCase().replace(/\/+$/, ''))
   );
+  // Show Score keeps one page per title, showing the newest production, so a
+  // bare-title slug guessed for an older (or undated) production lands on a
+  // same-title sibling's page, whose later-year links pass the year gate
+  // (BRO-3556). Only slugs carrying this production's year stay.
+  // shows.json unreadable: fail closed (no sibling check means no bare guesses).
+  const allShowsForSlugs = getShowScoreAllShows();
+  const bareUnsafe = allShowsForSlugs ? bareSlugGuessUnsafe(show, allShowsForSlugs) : true;
+  const yearTag = year ? `-${year}` : null;
   const candidateSlugs = [...new Set(variations)].filter((slug) => {
     const url = `${showScoreBase}/${slug}`.toLowerCase().replace(/\/+$/, '');
     if (ownedByOtherShow.has(url)) {
       console.log(`    Skip: ${showScoreBase}/${slug} (curated page of another production)`);
       return false;
     }
+    if (bareUnsafe && !(yearTag && slug.includes(yearTag))) {
+      console.log(`    Skip: ${showScoreBase}/${slug} (bare title; a same-title production may own it)`);
+      return false;
+    }
     return true;
   });
+  if (!candidateSlugs.length) {
+    console.log('    No safe Show Score slug to guess (same-title productions); curate show-score-urls.json to cover this show');
+  }
 
   if (chromium) {
     for (const slug of candidateSlugs) {
@@ -1563,6 +1596,11 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
 /**
  * Extract reviews from Show Score HTML
  */
+// The Show Score critic link before validateUrl may null it: the production-
+// identity gate must see a stale-year link even when the slug check rejected
+// it (BRO-3556). A Symbol key, so it never reaches a written review file.
+const SS_RAW_URL = Symbol('showScoreRawUrl');
+
 function extractShowScoreReviews(html, showId, showTitle) {
   const reviews = [];
 
@@ -1621,6 +1659,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
                 outletId,
                 criticName: review.author?.name || 'Unknown',
                 url: validateUrl(review.url),
+                [SS_RAW_URL]: review.url,
                 excerpt: review.reviewBody || null,
                 publishDate: normalizePublishDate(review.datePublished) || null,
                 source: 'show-score'
@@ -1717,6 +1756,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
             outletId,
             criticName,
             url: validateUrl(url),
+            [SS_RAW_URL]: url,
             source: 'show-score'
           });
         }
@@ -1770,6 +1810,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
         outletId,
         criticName,
         url: validateUrl(url),
+        [SS_RAW_URL]: url,
         source: 'show-score'
       });
     }
@@ -3037,7 +3078,7 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl, 
   // 2. Fallback: extract year from URL (e.g., "Review-Roundup-SHOW-Opens-on-Broadway-20241224")
   if (!roundupDate) {
     const url = bwwUrl || '';
-    const years = [...url.matchAll(/(\d{4})/g)].map(m => parseInt(m[1])).filter(y => y >= 2000 && y <= 2030);
+    const years = [...url.matchAll(/(\d{4})/g)].map(m => parseInt(m[1])).filter(y => y >= 2000 && y <= maxPlausibleYear({ atLeast: 2030 }));
     if (years.length > 0) {
       // Use the last year in the URL (usually the date suffix)
       roundupDate = new Date(years[years.length - 1], 0, 1);
@@ -4425,9 +4466,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // applies to its Show Score discovery (BRO-1412, lib/gap-ingest-policy.js);
     // a blocked link is never pushed into foundReviews, so no file is written.
     const gateShowScore = (reviews, label) => {
-      const { kept, blocked } = partitionShowScoreReviews(reviews, show);
+      const urlOf = (r) => (r && r[SS_RAW_URL]) || (r && r.url);
+      const { kept, blocked } = partitionShowScoreReviews(reviews, show, { urlOf });
       for (const { review, reason } of blocked) {
-        console.log(`    ✗ Show Score ${label}: skip ${review.url} (${reason}: prior production)`);
+        console.log(`    ✗ Show Score ${label}: skip ${urlOf(review)} (${reason}: prior production)`);
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedShowScorePriorProduction', details: { url: urlOf(review), gate: reason, path: label } });
       }
       return kept;
     };

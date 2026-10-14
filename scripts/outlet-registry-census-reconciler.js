@@ -81,9 +81,11 @@ function censusUrlsForShow(row) {
  * @param {Set<string>} hosts registeredHosts(registry)
  * @param {Set<string>} [onDisk] normalized review URLs already stored for the show
  * @param {(u: string) => string} [normalize]
- * @returns {{url: string, host: string, onDisk: boolean}[]}
+ * @param {Set<string>|Map<string,string>} [pending] normalized urls parked in
+ *   data/review-texts/_pending/<show>/ (Map values 'pending' | 'rejected')
+ * @returns {{url: string, host: string, onDisk: boolean, pending: boolean}[]}
  */
-function findUnregisteredCensusUrls(urls, hosts, onDisk = new Set(), normalize = u => u) {
+function findUnregisteredCensusUrls(urls, hosts, onDisk = new Set(), normalize = u => u, pending = new Set()) {
   const out = [];
   const seen = new Set();
   for (const url of urls) {
@@ -93,9 +95,34 @@ function findUnregisteredCensusUrls(urls, hosts, onDisk = new Set(), normalize =
     if (!classifyReviewUrl(url).ok || isBlockedReviewUrl(url)) continue;
     if (isSyndicationPortalHost(host)) continue;
     if (isRegisteredHost(host, hosts)) continue;
-    out.push({ url, host, onDisk: onDisk.has(normalize(url)) });
+    const key = normalize(url);
+    // pending: a Set of urls, or a Map url -> 'pending' | 'rejected'.
+    const pendingState = pending instanceof Map ? (pending.get(key) || null) : (pending.has(key) ? 'pending' : null);
+    out.push({ url, host, onDisk: onDisk.has(key), pending: pendingState === 'pending', ...(pendingState === 'rejected' ? { rejected: true } : {}) });
   }
   return out.sort((a, b) => a.host.localeCompare(b.host) || a.url.localeCompare(b.url));
+}
+
+/**
+ * State of each url parked in data/review-texts/_pending/<show>/: 'rejected'
+ * when the parker judged it not this show's review (rssIdentityRejected,
+ * wrongProduction), else 'pending'. Either way it was fetched, not missed.
+ */
+function pendingUrlStates(showId, normalize, reviewTextsDir = path.join(ROOT, 'data', 'review-texts')) {
+  const out = new Map();
+  const dir = path.join(reviewTextsDir, '_pending', showId);
+  let files = [];
+  try { files = fs.readdirSync(dir); } catch { return out; }
+  for (const f of files) {
+    if (!f.endsWith('.json')) continue;
+    let rec;
+    try { rec = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
+    if (!rec || !rec.url) continue;
+    const key = normalize(rec.url);
+    const state = rec.rssIdentityRejected === true || rec.wrongProduction === true ? 'rejected' : 'pending';
+    if (out.get(key) !== 'pending') out.set(key, state);
+  }
+  return out;
 }
 
 function getArg(name) {
@@ -149,23 +176,28 @@ function main() {
   const { normalizeReviewUrl } = require('./audit-show-review-gap.js');
   const results = rows.map(row => {
     const urls = censusUrlsForShow(row);
-    return { showId: row.showId, censusUrls: urls.length, unregistered: findUnregisteredCensusUrls(urls, hosts, onDiskUrls(row.showId), normalizeReviewUrl) };
+    // A fetched review parked in _pending/<show>/ was fetched, not missed: it
+    // waits on review there (BRO-5261 retro of BRO-2731; hound-of-the-
+    // baskervilles brawtheatre/yeahlifestyle read MISSING while pending).
+    const pending = pendingUrlStates(row.showId, normalizeReviewUrl);
+    return { showId: row.showId, censusUrls: urls.length, unregistered: findUnregisteredCensusUrls(urls, hosts, onDiskUrls(row.showId), normalizeReviewUrl, pending) };
   });
-  const missingTotal = results.reduce((n, r) => n + r.unregistered.filter(h => !h.onDisk).length, 0);
+  const isMissing = h => !h.onDisk && !h.pending && !h.rejected;
+  const missingTotal = results.reduce((n, r) => n + r.unregistered.filter(isMissing).length, 0);
 
   if (process.argv.includes('--json')) {
     console.log(JSON.stringify({ reportGeneratedAt: report.generatedAt || null, shows: results }, null, 2));
   } else {
     for (const r of results) {
-      const missing = r.unregistered.filter(h => !h.onDisk).length;
+      const missing = r.unregistered.filter(isMissing).length;
       console.log(`${r.showId}: ${r.censusUrls} census URL(s) (report ${report.generatedAt || '?'}), ${r.unregistered.length} review-shaped on an unregistered domain, ${missing} not on disk`);
-      for (const h of r.unregistered) console.log(`  ${h.onDisk ? 'on disk ' : 'MISSING '} ${h.host}  ${h.url}`);
+      for (const h of r.unregistered) console.log(`  ${h.onDisk ? 'on disk ' : h.pending ? 'pending ' : h.rejected ? 'rejected' : 'MISSING '} ${h.host}  ${h.url}`);
     }
-    if (missingTotal) console.log('\nNot on disk = the pipeline never fetched it. Register the outlet (data/outlet-registry.json) or ingest the URL (scripts/ingest-review-from-url.js).');
+    if (missingTotal) console.log('\nNot on disk = the pipeline never fetched it (pending = fetched, parked in _pending/ for review; rejected = fetched, judged not a review of this show). Register the outlet (data/outlet-registry.json) or ingest the URL (scripts/ingest-review-from-url.js).');
   }
   process.exit(process.argv.includes('--strict') && missingTotal ? 1 : 0);
 }
 
 if (require.main === module) main();
 
-module.exports = { registeredHosts, isRegisteredHost, censusUrlsForShow, findUnregisteredCensusUrls };
+module.exports = { registeredHosts, isRegisteredHost, censusUrlsForShow, findUnregisteredCensusUrls, pendingUrlStates };

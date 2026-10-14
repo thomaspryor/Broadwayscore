@@ -20,6 +20,7 @@
  *   SOURCE_MODE=not_attempted Process review files with incompleteReason='not_attempted' (URLs never scraped)
  */
 
+const { decodeBloxRot47 } = require('./lib/blox-rot47-decode');
 const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const fs = require('fs');
 const path = require('path');
@@ -259,6 +260,8 @@ function extractTextFromHtml(html, url) {
 
   // Step 1: Strip Wayback toolbar FIRST
   html = stripWaybackToolbar(html);
+  // BLOX CMS ROT47-scrambled paragraphs (BRO-4221): snapshots carry them too.
+  html = decodeBloxRot47(html);
 
   // Variety: dedicated extractor strips the mid-article promo modules the
   // generic paragraph scrape picks up (BRO-5222).

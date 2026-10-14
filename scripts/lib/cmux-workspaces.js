@@ -500,6 +500,18 @@ function assertSingleLine(text) {
   }
 }
 
+// The one sanctioned way to make free text pass assertSingleLine: backslashes
+// become "/" (a typed "\\n" would submit) and CR/LF/tab runs become " ⏎ ".
+// Shared by dispatch-card-drift.formatAmendMessage and
+// message-dispatched-workspace.js (BRO-5261 S15).
+function flattenToSingleLine(s) {
+  return String(s == null ? '' : s)
+    .replace(/\\/g, '/')
+    .replace(/[\r\n\t]+/g, ' ⏎ ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
 function sendToWorkspace(ref, text, opts = {}) {
   assertValidWorkspaceRef(ref);
   assertSingleLine(text);
@@ -832,7 +844,7 @@ function pruneDone(opts = {}) {
 module.exports = {
   CMUX, cmuxAvailable, run, _resetRunWarnings, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS,
   parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude, liveAgentIn, AGENT_TAG_RE, anyAgentAliveInTsv,
-  hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef,
+  hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef, flattenToSingleLine,
   listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
 };

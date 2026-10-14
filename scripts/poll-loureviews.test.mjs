@@ -85,3 +85,20 @@ test('poll-loureviews checks the rejection record before fetching and never file
   const reextract = fs.readFileSync(path.join(HERE, 're-extract-aggregator-reviews.js'), 'utf8');
   assert.match(reextract, /bucketWriteResult\(result\)/);
 });
+
+test('a post the writer re-routed to a sibling show counts as on disk (BRO-5261)', () => {
+  const { loureviewsUrlsOnDisk } = require('./lib/loureviews-match');
+  const { normalizeUrl } = require('./lib/poller-blocklist');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'lou-ondisk-'));
+  fs.mkdirSync(path.join(root, 'x-west-end-2026'));
+  fs.mkdirSync(path.join(root, 'x-broadway-2026'));
+  fs.mkdirSync(path.join(root, '_pending'));
+  fs.writeFileSync(path.join(root, 'x-west-end-2026', 'loureviews--louise-penn.json'),
+    JSON.stringify({ url: 'http://loureviews.blog/2026/05/01/review-x/?utm_source=rss' }));
+  fs.writeFileSync(path.join(root, 'x-west-end-2026', '_blocklist.json'), JSON.stringify({ urls: [] }));
+  const urls = loureviewsUrlsOnDisk(root);
+  assert.ok(urls.has(normalizeUrl('https://loureviews.blog/2026/05/01/review-x/')));
+  assert.equal(urls.size, 1);
+  assert.equal(loureviewsUrlsOnDisk(path.join(root, 'nope')).size, 0);
+  fs.rmSync(root, { recursive: true, force: true });
+});

@@ -133,13 +133,15 @@ function showScoreUrlBlockReason(url, show) {
  * Split Show Score-sourced review candidates into ingestable and blocked.
  * @param {Array<{url?: string|null}>} reviews
  * @param {object} show shows.json record
+ * @param {{urlOf?: function}} [opts] urlOf picks the link to gate; pass the raw
+ *   Show Score link when the review's url may already have been nulled.
  * @returns {{kept: object[], blocked: Array<{review: object, reason: string}>}}
  */
-function partitionShowScoreReviews(reviews, show) {
+function partitionShowScoreReviews(reviews, show, { urlOf = (r) => r && r.url } = {}) {
   const kept = [];
   const blocked = [];
   for (const review of reviews || []) {
-    const reason = showScoreUrlBlockReason(review && review.url, show);
+    const reason = showScoreUrlBlockReason(urlOf(review), show);
     if (reason) blocked.push({ review, reason });
     else kept.push(review);
   }

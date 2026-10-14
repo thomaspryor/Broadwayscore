@@ -137,3 +137,10 @@ test('a domainless outlet half on a ticket host is reported; one on a clean host
   const clean = findNonReviewRegistryOutlets(registry, new Map([['x', ['https://realblog.com/r']]]));
   assert.deepEqual(clean, []);
 });
+
+test('duplicateOf sibling include check passes the sibling filePath (BRO-5261)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./audit-outlet-registry.js', import.meta.url), 'utf8');
+  const call = src.slice(src.indexOf('isQuarantinedDuplicateOfCanonical(review'), src.indexOf('findings.quarantinedDuplicatesSkipped++'));
+  assert.match(call, /isIncludableForRebuild\(sibling, [^,]+,\s*path\.join\(path\.dirname\(reviewFile\.fullPath\), review\.duplicateOf\)\)/);
+});

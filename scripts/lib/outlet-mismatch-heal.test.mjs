@@ -463,3 +463,14 @@ test('runOutletMismatchCleanup: a differing conclusion is not "covered" text', (
     assert.match(fx.read('nytimes--ben-brantley.json').fullText, /triumph nobody else quotes/);
   } finally { fx.cleanup(); }
 });
+
+test('runOutletMismatchCleanup: every `_` sidecar is left alone, not just _blocklist.json (BRO-5261)', () => {
+  const side = { urls: [{ url: LONDON, outletId: 'timeout', reason: 'cross-market', source: 'loureviews-poller', rejectedAt: '2026-10-14T00:00:00Z' }] };
+  const fx = fixture({ '_ingest-rejections.json': side, '_blocklist.json': { urls: [] } });
+  try {
+    const before = fx.snapshot();
+    const r = run(fx.root);
+    assert.equal(r.editionFixedCount + r.renamedCount + r.tombstoneDeletedCount, 0);
+    assert.deepEqual(fx.snapshot(), before);
+  } finally { fx.cleanup(); }
+});

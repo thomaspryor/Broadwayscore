@@ -71,3 +71,36 @@ describe('parseDate', () => {
     assert.equal(d.toISOString().slice(0, 10), '2025-03-22');
   });
 });
+
+// BRO-5261 S11: date parsers hard-coded 2027/2028/2030 year caps and would drop
+// every later date. maxPlausibleYear keeps each old cap as a floor and moves
+// with the clock; no parser may carry a literal cap again.
+describe('maxPlausibleYear', () => {
+  const { maxPlausibleYear } = require('../../scripts/lib/date-utils');
+  test('next year, never below the floor', () => {
+    const next = new Date().getFullYear() + 1;
+    assert.equal(maxPlausibleYear(), next);
+    assert.equal(maxPlausibleYear({ atLeast: 2030 }), Math.max(2030, next));
+    assert.equal(maxPlausibleYear({ atLeast: 1990 }), next);
+  });
+  test('no literal upper year cap in scripts/', async () => {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const root = path.join(import.meta.dirname, '..', '..', 'scripts');
+    const CAP = /(?:\b(?:y|yr|year)|getFullYear\(\))\s*(?:<=?|>)\s*20(?:2[6-9]|[3-8]\d|9[0-8])\b/;
+    const offenders = [];
+    const walk = (dir) => {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        if (['node_modules', 'one-off', 'migrations'].includes(e.name)) continue;
+        const p = path.join(dir, e.name);
+        if (e.isDirectory()) { walk(p); continue; }
+        if (!/\.(c?js|mjs|ts)$/.test(e.name) || /\.test\./.test(e.name)) continue;
+        fs.readFileSync(p, 'utf8').split('\n').forEach((line, i) => {
+          if (CAP.test(line)) offenders.push(`${path.relative(root, p)}:${i + 1}`);
+        });
+      }
+    };
+    walk(root);
+    assert.deepEqual(offenders, [], 'use maxPlausibleYear({ atLeast }) from scripts/lib/date-utils.js');
+  });
+});

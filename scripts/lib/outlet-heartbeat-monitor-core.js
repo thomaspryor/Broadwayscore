@@ -70,7 +70,7 @@ function evaluateOutletHeartbeat(opts = {}) {
     name,
     status: 'warn',
     message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)${expiryNote}`,
-    hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged. Acks expire after 90 days; --write-baseline keeps existing acks\' dates, `--renew-baseline` re-acks everything listed (BRO-3364).',
+    hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged. Acks expire after 90 days; --write-baseline keeps existing acks\' dates, `--renew-baseline=<outlet>::<market>` re-acks one pair, bare `--renew-baseline` everything listed (BRO-3364).',
     actionable,
   };
 }

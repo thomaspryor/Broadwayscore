@@ -519,10 +519,10 @@ function makeDirIO(sDir, dryRun) {
   const fs = require('fs');
   const { writeReviewOrThrow, safeRenameReview } = require('./review-write-guard');
   const { cascadeClearDuplicateRefs } = require('./cascade-clear-duplicate-refs');
-  const { BLOCKLIST_FILENAME } = require('./poller-blocklist');
+  const { isReviewTextFile } = require('./review-text-sidecars');
   const virt = dryRun ? new Map() : null; // filename -> data, or null once deleted
   const clone = (d) => JSON.parse(JSON.stringify(d));
-  const isReview = (x) => x.endsWith('.json') && x !== BLOCKLIST_FILENAME;
+  const isReview = isReviewTextFile;
   const io = {
     list() {
       const set = new Set(fs.readdirSync(sDir).filter(isReview));
@@ -588,7 +588,8 @@ function renameAndRepoint(io, fromFile, toFile, data, showId) {
  * doesn't match the outletId in its JSON, rename it, or merge it into the
  * correctly-named file and delete it. URL edition is applied to the JSON
  * first; flagged tombstones are deleted per flaggedTombstoneDecision.
- * BLOCKLIST_FILENAME is skipped (BRO-1011: it is not a review and would
+ * Sidecars (_blocklist.json and every other `_` file, review-text-sidecars.js)
+ * are skipped (BRO-1011: a sidecar is not a review and would
  * otherwise be renamed to unknown--unknown.json).
  *
  * @param {object} p

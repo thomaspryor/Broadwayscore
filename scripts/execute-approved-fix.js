@@ -50,7 +50,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
-const { applyDropOrphanKey } = require('./lib/orphan-key-action.js');
+const { applyDropOrphanKey, DROP_ORPHAN_KEY_FILES } = require('./lib/orphan-key-action.js');
 const { applyRetitleShow } = require('./lib/retitle-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./lib/commercial-record-checks.js');
@@ -113,6 +113,10 @@ const ALLOWED_SCRIPTS = [
   // BRO-5294: queue named multi-review-column rows for a rescore that reads
   // only the target show's section (llm-scoring/venue-box-sections.ts).
   'flag-multishow-column-rescore.js',
+  // BRO-5325: file a show's section of a multi-review column stored under
+  // another show into its own row (rules: scripts/lib/multishow-section-copy.js;
+  // refuses ambiguous sections; --expect-start/--expect-end use `_` for spaces).
+  'copy-multishow-section.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
@@ -480,9 +484,18 @@ function _showIdSets() {
 }
 
 function executeDropOrphanKey(action) {
+  // Fail this action, not the run: a throw here skipped validation/rollback
+  // while the always() push step still pushed earlier actions' writes.
+  if (!action || !DROP_ORPHAN_KEY_FILES.has(action.file)) return { ok: false, reason: `drop-orphan-key: unsupported file ${action && action.file}` };
   const rel = `data/${action.file}`;
-  const data = loadJsonFile(rel);
-  const result = applyDropOrphanKey(data.shows, action, _showIdSets());
+  let data, idSets;
+  try {
+    data = loadJsonFile(rel);
+    idSets = _showIdSets();
+  } catch (e) {
+    return { ok: false, reason: `drop-orphan-key ${action.showId}: cannot read inputs (${e.message})` };
+  }
+  const result = applyDropOrphanKey(data && data.shows, action, idSets);
   if (result.ok) saveJsonFile(rel, data);
   return result;
 }

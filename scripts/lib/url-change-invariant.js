@@ -529,11 +529,19 @@ const OLD_URL_WRONG_REASONS = new Set(['wrong_content', 'url_content_mismatch', 
  * @param {{preserveFields?: Set<string>, oldUrlProvenWrong?: boolean}} [opts]
  * @returns {boolean}
  */
+// A released body that was put back (quarantine-body.js restoreReleasedBody
+// stamps releasedBodyRestoredAt; quarantineBody clears it on a new verdict)
+// leaves its audit copy in wrongFullText. That copy is not evidence the url is
+// wrong (BRO-5261 S11).
+function restoredBodyCopy(existing, k) {
+  return k === 'wrongFullText' && !!existing.releasedBodyRestoredAt;
+}
+
 function wouldDiscardScore(existing, opts = {}) {
   const { hasPreservableAggregatorScore } = require('./aggregator-domains');
   if (!existing || !hasPreservableAggregatorScore(existing)) return false;
   if (opts.oldUrlProvenWrong === true) return false;
-  if (OLD_URL_WRONG_FLAGS.some((k) => existing[k])) return false;
+  if (OLD_URL_WRONG_FLAGS.some((k) => existing[k] && !restoredBodyCopy(existing, k))) return false;
   if (OLD_URL_WRONG_REASONS.has(existing.incompleteReason)) return false;
   const keep = opts.preserveFields;
   const kept = (k) => existing[k] == null || (keep && typeof keep.has === 'function' && keep.has(k));

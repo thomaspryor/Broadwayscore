@@ -278,6 +278,10 @@ function extractReviews(html, showId) {
  * Parse a single review paragraph into structured data.
  * Returns null if the paragraph doesn't look like a review.
  */
+// Capitalised words that open a sentence before the outlet, not part of its name.
+const PROSE_LEAD_IN_WORDS = new Set(['and', 'but', 'also', 'over', 'meanwhile', 'elsewhere', 'lastly', 'finally',
+  'writing', 'while', 'whilst', 'however', 'here', 'there', 'then', 'next', 'plus', 'so', 'yet', 'for']);
+
 function parseReviewParagraph($, $p, text, stars) {
   // Extract the first external link (usually the outlet link + review URL)
   const links = [];
@@ -321,9 +325,20 @@ function parseReviewParagraph($, $p, text, stars) {
     // ("T<a>he Standard</a>‘s", "<a>Time Ou</a>t’s"), so the link text alone
     // produced outletIds "he-standard" / "time-ou". When the link text is a
     // strict prefix or suffix of the prose outlet (3+ chars, so a stray
-    // one-letter link can't hijack it), the prose is the whole name.
-    const isFragment = outlet.length >= 3 && proseOutlet.length > outlet.length
-      && (proseOutlet.startsWith(outlet) || proseOutlet.endsWith(outlet));
+    // one-letter link can't hijack it), the prose is the whole name. A link can
+    // also cover whole words of the name ("Financial <a>Times</a>’",
+    // "<a>Time</a> Out’s"), so the rest of the name is accepted when it is
+    // capitalised name words; lead-in prose ("Over at <a>The Stage</a>’s",
+    // "And <a>The Guardian</a>’s") has a lower-case or filler word and keeps the
+    // link text (BRO-5261 retro-review).
+    const extra = proseOutlet.startsWith(outlet) ? proseOutlet.slice(outlet.length)
+      : proseOutlet.endsWith(outlet) ? proseOutlet.slice(0, proseOutlet.length - outlet.length) : null;
+    const extraWords = extra == null ? [] : extra.trim().split(/\s+/).filter(Boolean);
+    const cutsWord = extra != null && /^[A-Za-z]+$/.test(extra)
+      && (proseOutlet.startsWith(outlet) ? /[A-Za-z]$/.test(outlet) : /^[A-Za-z]/.test(outlet));
+    const nameWords = extraWords.length > 0
+      && extraWords.every((w) => /^[A-Z][\w&.'-]*$/.test(w) && !PROSE_LEAD_IN_WORDS.has(w.toLowerCase()));
+    const isFragment = outlet.length >= 3 && proseOutlet.length > outlet.length && (cutsWord || nameWords);
     if (!outlet || isFragment) outlet = proseOutlet;
     critic = patternA[2].trim();
   }

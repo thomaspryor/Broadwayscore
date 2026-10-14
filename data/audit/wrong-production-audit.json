@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T03:50:37.567Z",
+  "timestamp": "2026-10-14T06:08:32.859Z",
   "stats": {
-    "totalReviews": 56459,
-    "alreadyFlagged": 21060,
-    "dateGuardCatches": 211,
-    "directorMismatch": 1883,
-    "tvFilmSignals": 1566,
+    "totalReviews": 56430,
+    "alreadyFlagged": 21062,
+    "dateGuardCatches": 204,
+    "directorMismatch": 1880,
+    "tvFilmSignals": 1562,
     "londonSignals": 2246,
-    "offBroadwaySignals": 511,
+    "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5245
+    "noPublishDate": 5231
   },
   "findings": [
     {
@@ -2257,20 +2257,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "american-idiot-2010",
-      "file": "variety--david-rooney.json",
-      "score": 74,
-      "publishDate": "April 19, 2010",
-      "url": "https://variety.com/2010/legit/reviews/american-idiot-1117942595/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -9677,9 +9663,14 @@
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2023-11-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-prince-edward-review",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 830d before show (2023-11-17 vs 2026-02-24)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -9689,6 +9680,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -13740,8 +13736,9 @@
     },
     {
       "showId": "fish-off-broadway-2026",
-      "file": "theater-pizzazz--unknown.json",
-      "publishDate": null,
+      "file": "theater-pizzazz--stuart-miller.json",
+      "score": 78,
+      "publishDate": "2026-10-12",
       "url": "https://theaterpizzazz.com/its-sink-or-swim-in-melis-akers-fish/",
       "findings": [
         {
@@ -17241,17 +17238,6 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "amny--matt-windman.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 710d before show (2024-10-29 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "file": "front-row-center--tulis-mccall.json",
       "score": 90,
       "publishDate": "2018-04-30",
@@ -17266,79 +17252,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "observer--susannah-clapp.json",
-      "score": 88,
-      "publishDate": "2016-07-31",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "sunday-times--maxie-szalwinska.json",
-      "score": 88,
-      "publishDate": "2016-07-31",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-harry-potter-and-the-cursed-child-parts-one-and-two-tvg33p33g",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "the-spectator-uk--lloyd-evans.json",
-      "score": 25,
-      "publishDate": "2016-08-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3716d before show (2016-08-06 vs 2026-10-09)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 84,
-      "publishDate": "2016-08-02",
-      "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3720d before show (2016-08-02 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "times-uk--ann-treneman.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3091d before show (2018-04-23 vs 2026-10-09)"
         }
       ]
     },
@@ -18923,6 +18836,20 @@
       "score": 62,
       "publishDate": "2026-02-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-IM-SORRY-PRIME-MINISTER-starring-Griff-Rhys-Jones-Apollo-Theatre-20260213",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 51,
+      "publishDate": "2026-02-13",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-i-m-sorry-prime-minister-apollo-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -20706,30 +20633,6 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "variety--naman-ramachandran.json",
-      "score": null,
-      "publishDate": "2026-03-05",
-      "url": "https://variety.com/2026/theater/news/paddington-into-the-woods-2026-olivier-awards-nominations-1236680111/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 201d before show (2026-03-05 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "west-end-best-friend--chris-abbott.json",
       "score": 93,
       "publishDate": "2026-10-08",
@@ -20972,7 +20875,7 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "file": "liamodell--unknown.json",
+      "file": "liamodell--liam-odell.json",
       "score": 42,
       "publishDate": "2026-01-08",
       "url": "https://liamodell.com/2026/01/08/into-the-woods-review-bridge-theatre-james-lapine-jamie-parker-gracie-mcgonigal-katie-brayben-chumisa-dornford-may-characters-story/",
@@ -21383,20 +21286,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "is-he-dead-2007",
-      "file": "variety--david-rooney.json",
-      "score": 86,
-      "publishDate": "December 10, 2007",
-      "url": "https://variety.com/2007/legit/reviews/is-he-dead-1200554085/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -23127,7 +23016,7 @@
     },
     {
       "showId": "la-bete-2010",
-      "file": "stageandcinema--unknown.json",
+      "file": "stageandcinema--alexander-harrington.json",
       "score": 74,
       "publishDate": null,
       "url": "https://stageandcinema.com/2010/10/23/la-bete/",
@@ -23197,7 +23086,7 @@
     },
     {
       "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--houman-barekat.json",
       "score": 74,
       "publishDate": null,
       "url": "https://www.nytimes.com/2023/02/01/theater/lemons-lemons-lemons-lemons-lemons-review-aidan-turner.html",
@@ -23399,7 +23288,7 @@
     },
     {
       "showId": "les-miserables-2006",
-      "file": "broadwayworld--unknown.json",
+      "file": "broadwayworld--walter-mcbride.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/article/Photo-Coverage-Les-Miserables-Opening-Night-Arrivals-20061110",
@@ -23418,7 +23307,7 @@
     },
     {
       "showId": "les-miserables-2006",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--matthew-murray.json",
       "score": 41,
       "publishDate": "2006-11-09",
       "url": "https://www.talkinbroadway.com/page/world/LesMiz2006.html",
@@ -28359,7 +28248,7 @@
     {
       "showId": "ohio-state-murders-2022",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "December 9, 2022",
       "url": "https://nypost.com/2022/12/08/ohio-state-murders-review-audra-mcdonald-wows-in-mild-show/",
       "findings": [
@@ -29927,20 +29816,6 @@
       "score": 78,
       "publishDate": "2021-08-22T17:50:55",
       "url": "https://nystagereview.com/2021/08/22/pass-over-a-play-that-speaks-to-our-times/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"amazon prime\""
-        }
-      ]
-    },
-    {
-      "showId": "pass-over-2021",
-      "file": "nytg--david-gordon.json",
-      "score": 90,
-      "publishDate": "2021-08-23",
-      "url": "https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -37881,7 +37756,7 @@
     {
       "showId": "the-color-purple-2015",
       "file": "timeout--adam-feldman.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "December 10, 2015",
       "url": "http://www.timeout.com/newyork/theater/the-color-purple",
       "findings": [
@@ -37889,20 +37764,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2015 (0x). 2005 matches production: the-color-purple-2005"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2015",
-      "file": "variety--marilyn-stasio.json",
-      "score": 93,
-      "publishDate": "December 10, 2015",
-      "url": "https://variety.com/2015/legit/reviews/the-color-purple-review-broadway-jennifer-hudson-1201657768/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -38356,20 +38217,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "soundsandstage--sounds-and-stage.json",
-      "score": 86,
-      "publishDate": "2025-05-13",
-      "url": "https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
         }
       ]
     },
@@ -44523,7 +44370,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "independent--anya-ryan.json",
-      "score": 46,
+      "score": 56,
       "publishDate": "2021-10-22",
       "url": "https://www.independent.co.uk/independentpremium/culture/shark-is-broken-review-ambassador-theatre-b1942569.html",
       "findings": [
@@ -47621,20 +47468,6 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "standard--henry-hitchings.json",
-      "score": 78,
-      "publishDate": "March 8th, 2019",
-      "url": "https://www.standard.co.uk/go/london/theatre/waitress-review-adelphi-theatre-london-west-end-a4086001.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from waitress-2021"
-        }
-      ]
-    },
-    {
-      "showId": "waitress-west-end-2019",
-      "file": "standard--unknown.json",
       "score": 77,
       "publishDate": "2019-03-08",
       "url": "https://www.standard.co.uk/culture/theatre/waitress-musical-london-review-a-satisfying-mix-of-whimsy-warmth-and-sadness-a4086001.html",
@@ -47663,20 +47496,6 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "thestage--tim-bano.json",
-      "score": 88,
-      "publishDate": "March 7th, 2019",
-      "url": "https://www.thestage.co.uk/reviews/2019/waitress-musical-london-katharine-mcphee-sara-bareilles/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from waitress-2021"
-        }
-      ]
-    },
-    {
-      "showId": "waitress-west-end-2019",
-      "file": "thestage--unknown.json",
       "score": 80,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/waitress-review-at-adelphi-theatre-london--sweet-as-the-best-homemade-pie",
@@ -53325,7 +53144,7 @@
     {
       "showId": "baghdaddy-west-end-2022",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 58,
+      "score": 55,
       "publishDate": "November 29th, 2022",
       "url": "https://theartsdesk.com/theatre/baghdaddy-royal-court-review-middle-eastern-magic-realism",
       "findings": [
@@ -53353,7 +53172,7 @@
     {
       "showId": "baghdaddy-west-end-2022",
       "file": "london-theatre--matt-wolf.json",
-      "score": 79,
+      "score": 61,
       "publishDate": "November 26th, 2022",
       "url": "https://www.londontheatre.co.uk/reviews/baghdaddy-review-royal-court",
       "findings": [
@@ -55219,7 +55038,7 @@
     {
       "showId": "camp-siegfried-west-end-2021",
       "file": "i-paper--sam-marlowe.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2021-09-20",
       "url": "https://inews.co.uk/culture/camp-siegfried-old-vic-review-a-queasy-nightmare-of-adolescent-passion-1207737?srsltid=AU7gw4VdZKFmINEfxc1IKFf54olhmpbxg17xWY50vB17ogcirso5bK5V",
       "findings": [
@@ -55261,7 +55080,7 @@
     {
       "showId": "camp-siegfried-west-end-2021",
       "file": "whatsonstage--alex-wood.json",
-      "score": 75,
+      "score": 61,
       "publishDate": "September 19th, 2021",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/camp-siegfried-old-vic_54938.html",
       "findings": [
@@ -60886,7 +60705,7 @@
     {
       "showId": "good-west-end-2022",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 74,
+      "score": 61,
       "publishDate": "October 13th, 2022",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/good-david-tennant-west-end_57594.html",
       "findings": [
@@ -62264,7 +62083,7 @@
     {
       "showId": "harry-potter-2021",
       "file": "nysr--steven-suskin.json",
-      "score": 85,
+      "score": 83,
       "publishDate": "2018-04-22T21:19:18",
       "url": "https://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
       "findings": [
@@ -66337,7 +66156,7 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--antonia-georgiou.json",
       "score": 92,
       "publishDate": "2026-04-02",
       "url": "https://www.theupcoming.co.uk/2026/04/02/les-liaisons-dangereuses-at-the-national-theatre-theatre-review/",
@@ -66449,7 +66268,7 @@
     },
     {
       "showId": "linda-vista-2019",
-      "file": "slantmagazine--unknown.json",
+      "file": "slantmagazine--dan-rubins.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.slantmagazine.com/theater/review-tracy-lettss-linda-vista-doesnt-make-enough-space-for-its-women/",
@@ -73451,6 +73270,20 @@
       ]
     },
     {
+      "showId": "shadowlands-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 78,
+      "publishDate": "2026-02-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-shadowlands-aldwych-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "shifters-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 57,
@@ -74250,20 +74083,6 @@
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 96,
-      "publishDate": "2024-02-29",
-      "url": "https://www.ft.com/content/f79037a8-7b3e-4205-927d-0221f1d85ea4",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
       "score": 96,
       "publishDate": "2024-02-29",
@@ -74927,6 +74746,19 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "guardian--unknown.json",
+      "publishDate": "2023-12-01",
+      "url": "https://www.theguardian.com/stage/gallery/2023/dec/01/west-end-stranger-things-the-first-shadow-in-pictures",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "lost-in-theatreland--jill-johnson.json",
       "score": 96,
       "publishDate": "2023-12-18",
@@ -75457,7 +75289,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 59,
+      "score": 75,
       "publishDate": "2023-02-15",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-11761329/A-Shadow-Cabinet-minister-ruined-lust-tragedy-PATRICK-MARMION-reviews-Phaedra.html",
       "findings": [
@@ -75793,7 +75625,7 @@
     {
       "showId": "the-47th-west-end-2022",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 42,
+      "score": 55,
       "publishDate": "2022-04-09",
       "url": "https://www.broadwayworld.com/westend/article/BWW-Review-THE-47TH-The-Old-Vic-20220409",
       "findings": [
@@ -79567,20 +79399,6 @@
       ]
     },
     {
-      "showId": "the-lion-king-1997",
-      "file": "variety--greg-evans.json",
-      "score": 94,
-      "publishDate": "November 13, 1997",
-      "url": "http://variety.com/1997/legit/reviews/the-lion-king-new-amsterdam-theater-1117339958/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "the-lion-king-tour-2021",
       "file": "trib-live--by-alexis-papalia.json",
       "score": 78,
@@ -81480,20 +81298,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-shark-is-broken-2023",
-      "file": "nyt-theater--david-nounou.json",
-      "score": 60,
-      "publishDate": "August 5, 2023",
-      "url": "https://newyorktheater.me/2023/08/10/the-shark-is-broken-broadway-review-waiting-for-jaws/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },

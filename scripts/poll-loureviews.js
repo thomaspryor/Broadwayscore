@@ -29,6 +29,8 @@ const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isDurablyRejected, recordDurableRejection, bucketWriteResult } = require('./lib/ingest-rejection-cache');
+const { normalizeUrl } = require('./lib/poller-blocklist');
+const { loureviewsUrlsOnDisk } = require('./lib/loureviews-match');
 
 const WP_BASE = 'https://loureviews.blog/wp-json/wp/v2/posts';
 const REPO_ROOT = path.join(__dirname, '..');
@@ -86,6 +88,7 @@ async function main() {
   console.log(`Fetched ${posts.length} posts since ${after.slice(0, 10)}`);
 
   const summary = { matched: 0, ingested: 0, skippedExisting: 0, rejected: 0, refused: 0, collisions: 0, weak: 0, errors: 0 };
+  const onDisk = loureviewsUrlsOnDisk(REVIEW_TEXTS_DIR);
   for (const p of posts) {
     if (summary.ingested >= limit) break;
     const parsed = parseReviewPost(p.title && p.title.rendered);
@@ -95,7 +98,7 @@ async function main() {
     summary.matched++;
     const showDir = path.join(REVIEW_TEXTS_DIR, m.showId);
     const target = path.join(showDir, 'loureviews--louise-penn.json');
-    if (fs.existsSync(target)) { summary.skippedExisting++; continue; }
+    if (fs.existsSync(target) || onDisk.has(normalizeUrl(p.link))) { summary.skippedExisting++; continue; }
     // BRO-2926: a permanently refused post never lands a file, so the exists
     // check above never skips it; without this it is re-fetched every poll.
     if (isDurablyRejected(showDir, p.link)) { summary.rejected++; continue; }

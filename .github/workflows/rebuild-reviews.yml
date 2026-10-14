@@ -870,7 +870,9 @@ jobs:
         id: scoring-trigger
         # BRO-3224: unscored reviews need the dispatch even when a later step
         # (a push, an audit) failed; plain job anchor, not the staleness output.
-        if: always() && steps.rebuild.outcome == 'success'
+        # !cancelled(), not always(): a cancelled or timed-out run must not
+        # start the paid scoring chain (BRO-5261 retro-review).
+        if: ${{ !cancelled() && steps.rebuild.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |

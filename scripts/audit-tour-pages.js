@@ -203,14 +203,17 @@ async function main() {
     const expected = A.expectedCities({ tours, schedules, listedIds: scoredIds, today });
     const expectedYesterday = A.expectedCities({ tours, schedules, listedIds: scoredIds, today: todays[0] });
     const cityPages = new Set(expected.keys());
+    const cityPagesPrev = new Set(expectedYesterday.keys());
     cityCount = expected.size;
     for (const p of sitemap) {
       const m = p.match(/^\/tours\/([^/]+)$/);
       if (m && !expected.has(m[1]) && !expectedYesterday.has(m[1])) findings.push({ severity: 'error', code: 'sitemap-city-unexpected', where: p, message: 'city page in sitemap but data gives it no page' });
     }
     if (list.cityLinks.length) {
-      for (const c of list.cityLinks) if (!cityPages.has(c)) findings.push({ severity: 'error', code: 'list-city-dead-link', where: listUrl, message: `links /tours/${c}, which the data gives no page` });
-      for (const c of cityPages) if (!list.cityLinks.includes(c)) findings.push({ severity: 'error', code: 'list-city-missing', where: listUrl, message: `city page /tours/${c} is not linked from the tours list` });
+      // Same one-day build lag as the sitemap check: a link is dead only when
+      // neither day's data builds the page, and missing only when both do.
+      for (const c of list.cityLinks) if (!cityPages.has(c) && !cityPagesPrev.has(c)) findings.push({ severity: 'error', code: 'list-city-dead-link', where: listUrl, message: `links /tours/${c}, which the data gives no page` });
+      for (const c of cityPages) if (cityPagesPrev.has(c) && !list.cityLinks.includes(c)) findings.push({ severity: 'error', code: 'list-city-missing', where: listUrl, message: `city page /tours/${c} is not linked from the tours list` });
     }
 
     // 4. Every tour show page.
@@ -233,6 +236,7 @@ async function main() {
         url, page, show: t, parent: byId.get(t.tourOf), schedule: schedules[t.id], tickets: tickets[t.id] || [], todays,
         listed: listed.has(t.id), inSitemap: sitemap.has(url), listReviewCount: listed.get(t.id)?.reviewCount ?? null, jsonReviewCount: jsonCount,
         cityPages: args['city-links'] === 'off' ? null : cityPages,
+        cityPagesPrev: args['city-links'] === 'off' ? null : cityPagesPrev,
       }));
       for (const k of ['poster', 'thumbnail']) {
         const src = t.images && t.images[k];

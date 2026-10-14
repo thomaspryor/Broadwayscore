@@ -18,6 +18,8 @@
  * longer re-adds a non-live key, so the drop sticks.
  */
 
+const { MIN_PLAUSIBLE_SHOWS } = require('./live-show-ids');
+
 const FILES = new Set(['audience-buzz.json']);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -26,7 +28,9 @@ function applyDropOrphanKey(map, action, { liveIds, retiredIds = new Set() }) {
   if (!FILES.has(file)) return { ok: false, reason: `drop-orphan-key: unsupported file ${file}` };
   if (!showId || !ID_RE.test(showId)) return { ok: false, reason: 'drop-orphan-key: showId missing or malformed' };
   if (!reason || String(reason).trim().length < 10) return { ok: false, reason: `drop-orphan-key ${showId}: reason (>=10 chars) required` };
-  if (!liveIds || liveIds.size === 0) return { ok: false, reason: 'drop-orphan-key: shows.json ids unavailable' };
+  // Same floor as live-show-ids.js: a stub or truncated shows.json would make a
+  // real show's key look like an orphan.
+  if (!liveIds || liveIds.size < MIN_PLAUSIBLE_SHOWS) return { ok: false, reason: `drop-orphan-key: shows.json has ${liveIds ? liveIds.size : 0} ids (< ${MIN_PLAUSIBLE_SHOWS}), refusing on a stub` };
   if (liveIds.has(showId)) return { ok: false, reason: `drop-orphan-key ${showId}: is a live shows.json id, refusing` };
   if (!map || !Object.prototype.hasOwnProperty.call(map, showId)) return { ok: false, reason: `drop-orphan-key ${showId}: no such key in ${file}` };
   if (renameTo !== undefined && renameTo !== null) {
@@ -41,4 +45,4 @@ function applyDropOrphanKey(map, action, { liveIds, retiredIds = new Set() }) {
   return { ok: true, msg: `${file}: dropped orphan key ${showId}` };
 }
 
-module.exports = { applyDropOrphanKey };
+module.exports = { applyDropOrphanKey, DROP_ORPHAN_KEY_FILES: FILES };

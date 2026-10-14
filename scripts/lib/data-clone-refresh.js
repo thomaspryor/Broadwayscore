@@ -54,12 +54,27 @@ function decideRefresh({ behind, headInOrigin, originInHead, dirty }) {
   return 'unsafe';
 }
 
+// BRO-5332: name the dirty files. A disk-full ff-merge once left reviews.json
+// truncated and the gate said only "stale and dirty/diverged" for ~5 hours.
+const INSPECT_HINT = ' (inspect with git diff --stat first: a file torn by a failed merge can be restored with git checkout -- <path>, a real edit must be committed)';
+function listDirty(statusOut, max = 5) {
+  const paths = statusOut.split('\n').filter(Boolean).map((l) => l.replace(/^\s*\S+\s+/, ''));
+  return paths.slice(0, max).join(', ') + (paths.length > max ? `, +${paths.length - max} more` : '');
+}
+
 function refreshDataClone(repo, { dataRepo = null, memoize = true } = {}) {
   const clone = dataRepo || resolveDataClone(repo);
   if (!clone) return { status: 'skipped', detail: 'no separate data clone' };
   if (memoize && memo.has(clone)) return memo.get(clone);
   // `unknown` (transient lock/offline) is never memoized: a later card retries.
-  const done = (r) => { r.clone = clone; if (memoize && r.status !== 'unknown') memo.set(clone, r); return r; };
+  const done = (r) => {
+    r.clone = clone;
+    if (memoize && r.status !== 'unknown') memo.set(clone, r);
+    // BRO-5332: an unsafe clone makes every acceptance check on this machine
+    // unverifiable; say why once per process instead of only in a return value.
+    if (r.status === 'unsafe') console.error(`[data-clone-refresh] ${r.detail}`);
+    return r;
+  };
 
   try { git(clone, ['fetch', '--quiet', 'origin', 'main'], FETCH_TIMEOUT_MS); }
   catch (e) { return done({ status: 'unknown', detail: `fetch failed: ${String(e.message).split('\n')[0]}` }); }
@@ -73,17 +88,24 @@ function refreshDataClone(repo, { dataRepo = null, memoize = true } = {}) {
     const headInOrigin = isAncestor('HEAD', 'origin/main');
     const originInHead = isAncestor('origin/main', 'HEAD');
     const behind = !originInHead;
-    const dirty = git(clone, ['status', '--porcelain', '--untracked-files=no']) !== '';
+    const statusOut = git(clone, ['status', '--porcelain', '--untracked-files=no']);
+    const dirty = statusOut !== '';
     verdict = decideRefresh({ behind, headInOrigin, originInHead, dirty });
     if (verdict === 'unsafe') {
-      return done({ status: 'unsafe', detail: `data clone is behind origin/main but ${dirty ? 'has uncommitted changes' : 'has diverged'}; left untouched` });
+      return done({ status: 'unsafe', detail: `data clone ${clone} is behind origin/main but ${dirty ? `has uncommitted changes (${listDirty(statusOut)})` : 'has diverged'}; left untouched${dirty ? INSPECT_HINT : ''}` });
     }
     if (verdict === 'fast-forward') {
       try { git(clone, ['merge', '--ff-only', 'origin/main'], 60000); }
       catch (e) {
         // Known behind and could not advance (lock, untracked file in the way):
         // copying would reproduce the stale-data failure, so do not grade it.
-        return done({ status: 'unsafe', detail: `known behind origin/main but ff-only merge failed: ${String(e.message).split('\n')[0]}` });
+        // BRO-5332: the cause ("No space left on device") is in stderr, not
+        // e.message, and a half-applied merge leaves torn files behind.
+        const errLines = String(e.stderr || '').split('\n').map((l) => l.trim()).filter(Boolean);
+        const why = errLines.find((l) => /^(fatal|error):/.test(l)) || errLines.pop() || String(e.message).split('\n')[0];
+        let left = '';
+        try { left = git(clone, ['status', '--porcelain', '--untracked-files=no']); } catch { /* report what we have */ }
+        return done({ status: 'unsafe', detail: `data clone ${clone} is behind origin/main but ff-only merge failed: ${why}${left ? `; left uncommitted changes (${listDirty(left)})${INSPECT_HINT}` : ''}` });
       }
       return done({ status: 'fast-forwarded', detail: `data clone advanced to ${git(clone, ['rev-parse', '--short', 'HEAD'])}` });
     }

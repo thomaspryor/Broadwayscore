@@ -221,7 +221,8 @@ function rssAdapter({ feeds }) {
         try { items = parseFeedItems(await fetchText(feed.url)); } catch { continue; } // one dead feed never hides the others
         for (const it of items) {
           if (!it.link) continue;
-          if (!titleMatchesShow(it.title, show.title) && !urlSlugMatchesShow(it.link, show.title)) continue;
+          // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
+          if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
           const iso = toIso(it.pubDate);
           out.push({ url: it.link, title: it.title, source: 'outlet-index', publishDate: iso, needsDate: !iso, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
         }
@@ -243,7 +244,7 @@ function sectionIndexAdapter({ outlets }) {
         const host = hostOf(o.indexUrl);
         for (const a of extractAnchors(bodyScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
-          if (!titleMatchesShow(a.text, show.title) && !urlSlugMatchesShow(a.url, show.title)) continue;
+          if (!titleMatchesShow(a.text, show.title, { fuzzy: true }) && !urlSlugMatchesShow(a.url, show.title, { fuzzy: true })) continue;
           out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, via: o.indexUrl, outletId: o.outletId });
         }
       }

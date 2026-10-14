@@ -311,3 +311,35 @@ test('guardPublishDate: BRO-4198 byline ignores run dates, updated stamps, ambig
   assert.equal(mk('March 12, 2008\nReview posted 10/09/2026'), '2008-03-12');
   assert.equal(mk('March 12, 2008\nTickets on sale 18/09/2026'), '2008-03-12');
 });
+
+// BRO-4884 retro-review: the tourLegs fallback, and null as an explicit opt-out.
+test("a show's own tourLegs apply when the caller passes none; null opts out of both fallbacks", () => {
+  const tour = {
+    id: 'example-uk-tour-2025', category: 'west-end',
+    previewsStartDate: '2025-09-01', openingDate: '2025-09-10', closingDate: '2025-12-20',
+    tourLegs: [{ city: 'Leeds', startDate: '2025-03-01', endDate: '2025-04-15' }],
+  };
+  const inLeg = evaluateDateGuard({ pubDate: new Date('2025-03-20'), show: tour, outletId: 'telegraph' });
+  assert.equal(inLeg.flag, false);
+  const legOptOut = evaluateDateGuard({ pubDate: new Date('2025-03-20'), show: tour, outletId: 'telegraph', priorRuns: null, tourLegs: null });
+  assert.equal(legOptOut.flag, true);
+  const amelie = {
+    id: 'amelie-west-end-2021', category: 'west-end',
+    previewsStartDate: '2021-06-17', openingDate: '2021-06-17', closingDate: '2021-09-25',
+    priorRuns: [{ openingDate: '2019-11-29', closingDate: '2020-02-01', venue: 'The Other Palace' }],
+  };
+  const runOptOut = evaluateDateGuard({ pubDate: new Date('2019-12-04'), show: amelie, outletId: 'telegraph', priorRuns: null, tourLegs: null });
+  assert.equal(runOptOut.flag, true);
+});
+
+test('textNumericDates: whole-word reject list, dash is a range only after a date (BRO-5261 S11)', () => {
+  const { textNumericDates } = require('./date-guard.js');
+  assert.deepEqual(textNumericDates('By Jane Doe \u2013 18/09/2026'), ['2026-09-18']);
+  assert.deepEqual(textNumericDates('Charing Cross Theatre, London - 18/08/2026'), ['2026-08-18']);
+  assert.deepEqual(textNumericDates('Deep Heat, Toronto 18/09/2026'), ['2026-09-18']);
+  assert.deepEqual(textNumericDates('Now playing 10/09/2026 - 31/12/2026'), []);
+  assert.deepEqual(textNumericDates('runs to 18/09/2026'), []);
+  assert.deepEqual(textNumericDates('10 Sept \u2013 18/09/2026'), []);
+  assert.deepEqual(textNumericDates('September \u2014 18/09/2026'), []);
+  assert.deepEqual(textNumericDates('Now playing 10/09/2026 \u2014 31/12/2026'), []);
+});

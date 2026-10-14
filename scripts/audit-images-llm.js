@@ -20,6 +20,8 @@ const crypto = require('crypto');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_FLASH } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { formatImageAuditLine } = require('./lib/readiness-guards');
+const { buildAuditReport } = require('./lib/image-audit-report');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -27,6 +29,7 @@ const USAGE = `audit-images-llm.js — Uses Gemini 2.0 Flash vision to verify th
 
 Usage:
   node scripts/audit-images-llm.js [options]
+  node scripts/audit-images-llm.js --show=ID [--no-write]   one show; --no-write leaves image-verification.json untouched
   node scripts/audit-images-llm.js --help, -h    print this usage and exit
 `;
 // hygiene-help-flag-ok: audit-help-flag-safety.js flags the await fetch(imageUrl) call inside the VerifierClient class's verifyImageFromUrl() method — a class method is never invoked at module load, only when a class instance calls it from within main(), after the --help guard. Verified: node <this file> --help exits immediately with no network side effects.
@@ -704,6 +707,7 @@ async function main() {
   const showArg = args.find(a => a.startsWith('--show='));
   const singleShow = showArg ? showArg.split('=')[1] : null;
   const skipValidation = args.includes('--skip-validation');
+  const noWrite = args.includes('--no-write');
 
   // Load API key
   const apiKey = process.env.GEMINI_API_KEY;
@@ -758,16 +762,30 @@ async function main() {
     fs.mkdirSync(AUDIT_DIR, { recursive: true });
   }
 
-  // Save results
-  const auditReport = {
-    generatedAt: new Date().toISOString(),
-    mode: applyMode ? 'apply' : 'dry-run',
-    totalShows: showsArr.length,
-    results,
-    stats: verifier.getStats(),
-  };
-  fs.writeFileSync(AUDIT_OUTPUT, JSON.stringify(auditReport, null, 2) + '\n');
-  console.log(`\nAudit report saved to ${AUDIT_OUTPUT}`);
+  // One machine-readable line per --show run, read by check-opening-night-readiness.js.
+  if (singleShow && results[singleShow]) console.log(formatImageAuditLine(results[singleShow]));
+
+  // Save results. A --show run used to REPLACE the whole report with one row
+  // (BRO-5326: 734 shows -> 1); it now merges its row into the existing report,
+  // and --no-write skips the file entirely (the readiness check uses that).
+  if (noWrite) {
+    console.log('\n--no-write: audit report not saved');
+  } else {
+    let prior = {};
+    if (singleShow) {
+      try { prior = JSON.parse(fs.readFileSync(AUDIT_OUTPUT, 'utf8')); } catch { prior = {}; }
+    }
+    const auditReport = buildAuditReport({
+      prior, results, singleShow, mode: applyMode ? 'apply' : 'dry-run',
+      showCount: showsArr.length, stats: verifier.getStats(), now: new Date().toISOString(),
+    });
+    if (auditReport) {
+      fs.writeFileSync(AUDIT_OUTPUT, JSON.stringify(auditReport, null, 2) + '\n');
+      console.log(`\nAudit report saved to ${AUDIT_OUTPUT}`);
+    } else {
+      console.log(`\nNo result for ${singleShow} (id not found?); audit report left unchanged`);
+    }
+  }
 
   // Print summary
   printSummary(results, verifier);

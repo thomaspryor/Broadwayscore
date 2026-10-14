@@ -302,6 +302,8 @@ function suggestCloseMatches(index, query, limit = 3) {
 }
 
 module.exports = {
+  withinOneEdit,
+  QUERY_NOISE_WORDS,
   matchesShowSearchQuery,
   matchesShowCastQuery,
   matchesShowPlaceOrCreatorQuery,

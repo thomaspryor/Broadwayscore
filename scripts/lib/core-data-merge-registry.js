@@ -153,9 +153,10 @@ const CORE_DATA_MERGE_REGISTRY = [
     merge: mergeSocialPostHistory,
     format: 'json',
     newline: true,
-    // BRO-3333 (2026-10-13): append-only (generate-social-post.js never
-    // prunes posts), per-post key union, so running it on every fallback
-    // push loses nothing and resurrects nothing. social-post.yml uses a
+    // BRO-3333 (2026-10-13): per-post key union. generate-social-post.js
+    // does prune to the newest 365 posts, so the merge applies the same cap
+    // by date (BRO-5261 retro-review); without it, running on every
+    // fallback push resurrected every pruned post. social-post.yml uses a
     // per-run concurrency group, so this is the file most likely to race.
     apiFallbackMerge: true,
   },
@@ -1963,7 +1964,9 @@ const CORE_DATA_MERGE_REGISTRY = [
     // caveat: run on every fallback push, it re-adds a ceremony block ours
     // deleted (fix-tony-attribution.js deletes `tony` blocks) if that deletion
     // rides a fallback push; that script is manual-only today, and the next
-    // manual run removes the block again.
+    // manual run removes the block again. Same for a whole show id: a writer
+    // whose checkout predates a rename-show-id.js run puts the old id back
+    // (rename is manual and rare; rerun it to clear the stray id).
     apiFallbackMerge: true,
   },
   {

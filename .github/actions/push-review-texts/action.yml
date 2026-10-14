@@ -103,10 +103,25 @@ runs:
           find . -type l -not -path './.git/*' -delete
         fi
 
+        # BRO-5261 S15 (BRO-3599 follow-on): a clean index is not "nothing to
+        # push". A mid-run checkpoint commit whose own push failed
+        # (collect-review-texts.js, the recover-* scripts) is still local, and
+        # exiting on a clean index dropped it when the job ended. Counted after
+        # the pull above refreshed origin/main, with the checkpoint path's own
+        # helper; an unknown count pushes (a no-op push is cheap, a lost commit
+        # is not).
+        nothing_owed() {
+          OWED=$(node -e "const n = require(process.argv[1]).countUnpushedCommits('.', 'main'); process.stdout.write(n == null ? 'unknown' : String(n))" "$GITHUB_WORKSPACE/scripts/lib/review-texts-checkpoint-gate.js" 2>/dev/null) || OWED=unknown
+          [ "$OWED" = "0" ] && return 0
+          [ -n "${OWED_NOTICED:-}" ] || echo "::notice::push-review-texts: nothing new staged, but ${OWED} earlier commit(s) are unpushed; pushing them"
+          OWED_NOTICED=1
+          return 1
+        }
+
         git add -A
 
         # Check if there are changes to commit
-        if git diff --staged --quiet; then
+        if git diff --staged --quiet && nothing_owed; then
           echo "No review-texts changes to push"
           exit 0
         fi
@@ -280,7 +295,7 @@ runs:
 
         # Re-stage after protection pass
         git add -A
-        if git diff --staged --quiet; then
+        if git diff --staged --quiet && nothing_owed; then
           echo "No review-texts changes to push (all changes were stale)"
           exit 0
         fi
@@ -323,15 +338,18 @@ runs:
             fi
           done <<< "$BAD_FILES"
           echo "::warning::push-review-texts: repaired $BAD_JSON invalid staged JSON file(s) before commit"
-          if git diff --staged --quiet; then
+          if git diff --staged --quiet && nothing_owed; then
             echo "No review-texts changes to push after invalid-file repair"
             exit 0
           fi
         fi
 
         # Commit
-        CHANGED=$(git diff --staged --stat | tail -1)
-        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+        # Skipped when only earlier unpushed commits are owed (nothing_owed).
+        if ! git diff --staged --quiet; then
+          CHANGED=$(git diff --staged --stat | tail -1)
+          git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+        fi
 
         # Push with retry and content-aware conflict resolution
         # Instead of -X theirs (which silently drops local changes), we rebase

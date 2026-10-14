@@ -6,9 +6,10 @@
  * Shape 2's instance (dispatch-guard-vacuous-check.test.mjs) now injects its
  * git oracle. Shape 1 was guarded in tests/unit and scripts/tests only, while
  * CI also runs scripts/*.test.mjs and scripts/lib/*.test.mjs, where 147
- * unretried teardowns sat. This file proves (a) the retried teardown survives
- * a live concurrent writer, real git included, and (b) no CI-run test
- * directory carries an unretried teardown in a git-using file.
+ * unretried teardowns sat. This file proves removeTreeSync survives a live
+ * concurrent writer, real git included, and that the scanner covers every
+ * directory CI runs tests from. The scan itself is owned by
+ * tests/unit/tmp-git-repo-teardown-retries.test.mjs.
  *
  * Run: node --test tests/unit/git-race-fix.test.mjs
  */
@@ -23,9 +24,7 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const { removeTreeSync, GIT_TEST_DIRS, offendersIn, gitUsingTestFiles, isUnretriedTeardown } = require('../../scripts/lib/git-test-teardown-scan.js');
-
-const RETRIED = { recursive: true, force: true, maxRetries: 10, retryDelay: 50 };
+const { removeTreeSync, GIT_TEST_DIRS, gitUsingTestFiles, isUnretriedTeardown } = require('../../scripts/lib/git-test-teardown-scan.js');
 
 // A detached child that keeps creating files inside `dir` for `ms`, the way
 // `git gc --auto` keeps writing into .git/objects after the command returns.
@@ -36,7 +35,8 @@ function startWriter(dir, ms) {
     const fs = require('fs'), path = require('path');
     const end = Date.now() + ${ms}; let i = 0, told = false;
     while (Date.now() < end) {
-      try { fs.writeFileSync(path.join(${JSON.stringify(dir)}, 'obj' + (i++ % 50)), 'x'); } catch (_) {}
+      try { fs.writeFileSync(path.join(${JSON.stringify(dir)}, 'obj' + (i++ % 50)), 'x'); }
+      catch (e) { if (e.code === 'ENOENT') break; }
       if (!told) { told = true; process.stdout.write('live\\n'); }
     }`;
   const child = spawn(process.execPath, ['-e', code], { stdio: ['ignore', 'pipe', 'ignore'] });
@@ -47,24 +47,6 @@ function startWriter(dir, ms) {
 const waitExit = (child) => new Promise((resolve) => {
   if (child.exitCode !== null || child.signalCode !== null) resolve();
   else child.once('exit', resolve);
-});
-
-test('retried rmSync removes a directory while another process is still writing into it', async () => {
-  for (let round = 0; round < 5; round++) {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3620-race-'));
-    const hot = path.join(root, '.git', 'objects', 'ab');
-    fs.mkdirSync(hot, { recursive: true });
-    const writer = startWriter(hot, 150);
-    try {
-      await writer.live;
-      await waitExit(writer); // the writer ends on its own; teardown below must still be clean
-      assert.doesNotThrow(() => fs.rmSync(root, RETRIED));
-      assert.equal(fs.existsSync(root), false, `round ${round}: directory survived teardown`);
-    } finally {
-      writer.kill();
-      fs.rmSync(root, RETRIED);
-    }
-  }
 });
 
 test('removeTreeSync wins against a writer that is still running when teardown starts', async () => {
@@ -91,7 +73,7 @@ test('removeTreeSync wins against a writer that is still running when teardown s
 
 test('removeTreeSync cleans a real git repo while a background gc runs', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3620-gc-'));
-  const git = (...a) => execFileSync('git', a, { cwd: root, stdio: 'pipe' });
+  const git = (...a) => execFileSync('git', ['-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', ...a], { cwd: root, stdio: 'pipe' });
   git('init', '-q');
   git('config', 'user.name', 't');
   git('config', 'user.email', 't@t');
@@ -114,16 +96,12 @@ test('removeTreeSync cleans a real git repo while a background gc runs', async (
 });
 
 test('every directory CI runs tests from is scanned, including scripts/ and scripts/lib/', () => {
-  for (const d of ['tests/unit', 'scripts/tests', 'scripts', 'scripts/lib']) {
+  const { NODE_TEST_DIRS } = require('../../scripts/lib/unit-test-collection.js');
+  for (const d of [...NODE_TEST_DIRS, 'scripts/lib']) {
     assert.ok(GIT_TEST_DIRS.includes(d), `${d} missing from GIT_TEST_DIRS`);
   }
   const libGitTests = gitUsingTestFiles(repoRoot, 'scripts/lib');
   assert.ok(libGitTests.length >= 20, `expected scripts/lib to hold git-using tests, saw ${libGitTests.length}`);
-});
-
-test('no git-using test in any CI-run directory tears down without retries', () => {
-  const offenders = GIT_TEST_DIRS.flatMap((d) => offendersIn(repoRoot, d, { exclude: ['tmp-git-repo-teardown-retries.test.mjs'] }));
-  assert.deepEqual(offenders.map((o) => `${o.rel}:${o.line}`), []);
 });
 
 test('scanner positive control: flags the unretried shape, clears the retried one', () => {
@@ -132,4 +110,5 @@ test('scanner positive control: flags the unretried shape, clears the retried on
   assert.equal(isUnretriedTeardown(`${RM}(d, { recursive: true, force: true });`), true);
   assert.equal(isUnretriedTeardown("fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });"), false);
   assert.equal(isUnretriedTeardown("fs.rmSync(file);"), false);
+  assert.equal(isUnretriedTeardown(`${RM}(d, { recursive: true, force: true, maxRetries: 0 });`), true, 'maxRetries: 0 retries nothing');
 });

@@ -427,6 +427,28 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
 }
 
 /**
+ * BRO-5287 acceptance over the runner's own "## Codex runner" summaries (BRO-4745 comments):
+ * at least `minRuns` summaries, none stopped by a lost lock, no lock-loss crash, and at least one
+ * card landed. -> { ok, runs, landed, problems[] }
+ */
+function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {
+  const runs = (Array.isArray(bodies) ? bodies : []).filter((b) => /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(b || '')));
+  const problems = [];
+  let landed = 0;
+  for (const b of runs) {
+    const stop = (b.match(/^- Stopped early: (.*)$/m) || [])[1] || '';
+    if (/lock/i.test(stop)) problems.push(`stopped on the lock: ${stop}`);
+    for (const label of ['Landed and Done', 'Landed part, back to Todo with what is left']) {
+      const list = (b.match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
+      if (list !== 'none') landed += list.split(',').length;
+    }
+  }
+  if (runs.length < minRuns) problems.push(`only ${runs.length} run summaries (want ${minRuns})`);
+  if (!landed) problems.push('no card landed');
+  return { ok: problems.length === 0, runs: runs.length, landed, problems };
+}
+
+/**
  * What to do with a card a dead run's stale lock names. Only a card still In Progress from
  * a start no later than that lock stamp is the dead run's (Linear clears startedAt when a
  * card goes back to Todo, so a later re-claim by anyone moves startedAt past the stamp).
@@ -496,6 +518,7 @@ module.exports = {
   lockTipVerdict,
   lockStampTooOld,
   landWaitMinutes,
+  assessRunnerSummaries,
   codexExitTransient,
   stripHookNoise,
   codexCardFit,

@@ -177,7 +177,7 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // BRO-4830: a stale-but-dirty/diverged data clone was copied above; its
   // results would measure old data, not the card, so report unprepared.
   const prepared = fs.existsSync(path.join(wt, 'node_modules')) && dataClone.status !== 'unsafe';
-  return { dir, wt, repo, sha, prepared, dataClone };
+  return { dir, wt, repo, sha, prepared, unpreparedReason: unpreparedReason(wt, dataClone), dataClone };
 }
 
 /**
@@ -218,7 +218,18 @@ function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-chec
   }
   const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: wt, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
   const prepared = fs.existsSync(path.join(wt, 'node_modules')) && dataClone.status !== 'unsafe';
-  return { dir, wt, repo, sha, prepared, dataClone, standalone: true };
+  return { dir, wt, repo, sha, prepared, unpreparedReason: unpreparedReason(wt, dataClone), dataClone, standalone: true };
+}
+
+/**
+ * BRO-5332: why a checkout is unprepared, for runVerify's refusal text (it
+ * used to be one generic sentence, so a dirty data clone hid for hours).
+ */
+function unpreparedReason(wt, dataClone) {
+  const reasons = [];
+  if (!fs.existsSync(path.join(wt, 'node_modules'))) reasons.push('no node_modules in the checkout');
+  if (dataClone && dataClone.status === 'unsafe') reasons.push(dataClone.detail);
+  return reasons.length ? reasons.join('; ') : null;
 }
 
 /** Best effort: a leftover worktree is picked up by `git worktree prune`. */
@@ -250,11 +261,12 @@ function zeroPassingTests(output) {
  * @param {{attempts?:number, timeoutMs?:number}} o
  * @returns {{status:'pass'|'fail'|'unverifiable', detail:string|null}}
  */
-function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepared = true } = {}) {
+function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepared = true, unpreparedReason = null } = {}) {
   const argv = cardCheckArgv(cmd, isSafeCheckCommand);
   if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
   if (!prepared) {
-    return { status: 'unverifiable', detail: 'checkout not prepared (no node_modules, or the local data clone is stale and dirty/diverged) — any result would measure the environment, not the card' };
+    const why = unpreparedReason || 'no node_modules, or the local data clone is stale and dirty/diverged';
+    return { status: 'unverifiable', detail: `checkout not prepared (${why}) — any result would measure the environment, not the card` };
   }
   // BRO-3446: a card's acceptance command can name a path that was never
   // created — a --allow-phantom-path dispatch guess, or a stale reference to

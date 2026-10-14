@@ -68,7 +68,7 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
     try {
       checkout = makeFreshCheckout({ repo, prefix: 'linear-done-verify-' });
       log(`[linear-cmd-execution] running \`${cmd}\` against origin/main @ ${checkout.sha ? checkout.sha.slice(0, 9) : 'unknown'}…`);
-      const verifyResult = runVerify(checkout.wt, cmd, { attempts: VERIFY_ATTEMPTS, timeoutMs, prepared: checkout.prepared });
+      const verifyResult = runVerify(checkout.wt, cmd, { attempts: VERIFY_ATTEMPTS, timeoutMs, prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason });
       // A synthetic dispatch record — this call has no dispatch-ledger entry
       // to look up (findCardDispatch is Notion's launch-ledger lookup; the
       // command here comes straight from evaluateDoneTransition's own

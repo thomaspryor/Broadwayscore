@@ -5,7 +5,6 @@
 // Hooks live in ~/.claude/hooks (claude-config repo); skipped where absent (CI).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir, homedir } from 'node:os';
 import path from 'node:path';

@@ -56,3 +56,9 @@ test('stripLeadingHtmlArtifacts: a leading <figure> with a caption is left whole
 test('cleanText: prose that opens with an escaped "&lt;img&gt;" keeps it', () => {
   assert.match(cleanText('&lt;img&gt; is how the play opens, a stage direction in brackets.'), /^<img> is how the play opens/);
 });
+
+test('decodeHtmlEntities keeps astral code points and leaves out-of-range entities (BRO-5261 S12)', () => {
+  const { decodeHtmlEntities } = require('./text-cleaning.js');
+  assert.strictEqual(decodeHtmlEntities('a &#128512; b &#x1F3AD; c'), 'a \u{1F600} b \u{1F3AD} c');
+  assert.strictEqual(decodeHtmlEntities('x &#99999999; y'), 'x &#99999999; y');
+});

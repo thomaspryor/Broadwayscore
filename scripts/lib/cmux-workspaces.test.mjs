@@ -1017,3 +1017,23 @@ test('sendToWorkspace: refuses multi-line text (LF, CR, literal \\n) before touc
     assert.deepEqual(calls, []);
   }
 });
+
+// BRO-5261 S15: flattenToSingleLine is what lets free text through the
+// single-line guard, and the CLI that messages dispatched tabs uses it.
+test('flattenToSingleLine output always passes sendToWorkspace\'s single-line guard', () => {
+  const cw = require('./cmux-workspaces.js');
+  for (const raw of ['a\nb', 'a\r\n\r\nb', 'step1\\nstep2', 'tab\there', '  x  ', null]) {
+    const flat = cw.flattenToSingleLine(raw);
+    const calls = [];
+    cw.sendToWorkspace('workspace:15', flat, { runFn: (a) => { calls.push(a); return ''; } });
+    assert.equal(calls[0][calls[0].length - 1], flat, JSON.stringify(raw));
+  }
+  assert.equal(cw.flattenToSingleLine('a\nb'), 'a ⏎ b');
+  assert.equal(cw.flattenToSingleLine('step1\\nstep2'), 'step1/nstep2');
+});
+
+test('message-dispatched-workspace.js types only through sendToWorkspace (no raw cmux send)', () => {
+  const src = require('fs').readFileSync(new URL('../message-dispatched-workspace.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(src, /cmux\(\[\s*'send(-key)?'/);
+  assert.match(src, /cmuxws\.sendToWorkspace\(resolved\.ref, cmuxws\.flattenToSingleLine\(message\), \{ expectedTitle: resolved\.title \}\)/);
+});

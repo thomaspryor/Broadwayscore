@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5254-f",
   "planId": "991764bf-db7c-45e7-a137-19b09cf89b6c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T04:49:53.801Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,13 @@
         "description": "CV wrongProduction is a cast misread (Shalhoub played the older Moss Hart and Kaufman); the review is of this production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T06:11:50.428Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "act-one-2014/variety--marilyn-stasio.json wrongProductionManualClear: null -> true"
+    }
+  ]
 }

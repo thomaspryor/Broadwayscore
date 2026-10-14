@@ -205,6 +205,26 @@ function findPriorRunSiblings(show, shows) {
   return out;
 }
 
+/**
+ * The priorRuns whose dates still exempt a review from the rebuild's
+ * pre-opening (wrong-production) guard. A run marked `inheritReviews: false`
+ * whose reviews have their own entry (a matched sibling) is dropped: a review
+ * dated inside it belongs on that sibling, not here. Without a sibling the run
+ * stays exempt, because this entry is then the only home those reviews have
+ * (no such run in shows.json as of 2026-10-14: all five opted-out runs have
+ * a sibling). BRO-5333:
+ * the-comedy-about-spies-west-end-2026 kept re-collecting the 2025 run's
+ * reviews unflagged and failing the class-A contamination gate.
+ * @param {object} show shows.json entry
+ * @param {Array<object>} shows all shows.json entries
+ * @returns {Array<object>|undefined} show.priorRuns, minus opted-out runs with a sibling
+ */
+function preWindowExemptPriorRuns(show, shows) {
+  if (!show || !Array.isArray(show.priorRuns)) return show ? show.priorRuns : undefined;
+  const housed = new Set(findPriorRunSiblings(show, shows).filter(s => !s.carryReviews).map(s => s.run));
+  return housed.size ? show.priorRuns.filter(r => !housed.has(r)) : show.priorRuns;
+}
+
 /** True when RERUN_SEPARATE_MIN_OUTLETS+ distinct outlets reviewed the return's own run. */
 function reReviewedByManyOutlets(show, shows, existing) {
   const { isCurrent } = priorRunClassifier(show, shows);
@@ -403,6 +423,7 @@ module.exports = {
   baseTitle,
   buildMultiProdDirectorGuard,
   findPriorRunSiblings,
+  preWindowExemptPriorRuns,
   inheritPriorRunReviews,
   reReviewedByManyOutlets,
   RERUN_SEPARATE_MIN_OUTLETS,

@@ -1,19 +1,133 @@
 {
-  "updatedAt": "2026-10-14T04:41:02.194Z",
-  "processed": 10,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-14T05:57:06.797Z",
+  "processed": 440,
+  "failed": 24,
+  "successRate": "94.8%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 265,
+    "amp": 9,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 48,
+    "scrapingbee": 35,
     "brightdata": 10,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 85
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-14T02:11:48.793Z",
+      "event": "bb-session",
+      "session": "5c1fa0a8",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-14T02:11:49.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:12:06.930Z",
+      "event": "bb-session",
+      "session": "a6d6d7d2",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-14T02:12:07.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:14:45.970Z",
+      "event": "bb-session",
+      "session": "7ca45240",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-14T02:14:46.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:14:55.714Z",
+      "event": "bb-session",
+      "session": "d17d4135",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-14T02:14:56.223Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:58:41.185Z",
+      "event": "bb-session",
+      "session": "9f2b8f70",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-10-14T02:58:41.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T03:05:25.353Z",
+      "event": "bb-session",
+      "session": "fe0dd7db",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-10-14T03:05:25.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T05:10:03.493Z",
+      "event": "bb-session",
+      "session": "bfcb406f",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T05:10:22.858Z",
+      "event": "bb-session",
+      "session": "9a2b3eea",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T05:10:59.111Z",
+      "event": "bb-session",
+      "session": "49f92f00",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T05:13:59.999Z",
+      "event": "bb-session",
+      "session": "a5149b51",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T05:14:00.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T05:17:13.464Z",
+      "event": "bb-session",
+      "session": "b0472b09",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-14T05:56:05.907Z",
+      "event": "bb-session",
+      "session": "fe366c55",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-14T05:56:15.230Z",
+      "event": "bb-session",
+      "session": "de7ffc27",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    }
+  ]
 }

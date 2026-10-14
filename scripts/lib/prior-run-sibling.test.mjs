@@ -270,3 +270,34 @@ test('carried files vouch for their own URL only (never the rest of their host)'
   const got = collectCarriedFiles(ST_ANNS, [SKIRBALL, ST_ANNS], deps);
   assert.ok(got.length > 0 && got.every(d => d._exactMatchOnly === true));
 });
+
+// BRO-5333: real shapes. The 2026 Adelphi return opts out of the 2025 run's
+// reviews and the 2025 run has its own entry, so its window no longer exempts
+// a 2025-dated review from the pre-opening guard. A run with no entry of its
+// own stays exempt; a run that carries reviews stays exempt.
+const { preWindowExemptPriorRuns } = require('./prior-run-sibling');
+const SPIES_2025 = {
+  id: 'the-comedy-about-spies-west-end-2025', title: 'The Comedy About Spies', category: 'west-end',
+  venue: 'Noël Coward Theatre', previewsStartDate: '2025-04-14', openingDate: '2025-05-06', closingDate: '2025-09-05',
+};
+const SPIES_RUN = { openingDate: '2025-04-14', closingDate: '2025-08-03', venue: 'Noël Coward Theatre', inheritReviews: false };
+const SPIES_2026 = {
+  id: 'the-comedy-about-spies-west-end-2026', title: 'The Comedy About Spies', category: 'west-end',
+  venue: 'Adelphi Theatre', previewsStartDate: '2026-08-01', openingDate: '2026-08-06', closingDate: '2026-09-26',
+  priorRuns: [SPIES_RUN],
+};
+
+test('BRO-5333: an opted-out prior run with its own entry no longer exempts the pre-opening guard', () => {
+  assert.deepEqual(preWindowExemptPriorRuns(SPIES_2026, [SPIES_2025, SPIES_2026]), []);
+});
+
+test('BRO-5333: an opted-out run with no entry of its own stays exempt', () => {
+  assert.deepEqual(preWindowExemptPriorRuns(SPIES_2026, [SPIES_2026]), [SPIES_RUN]);
+});
+
+test('BRO-5333: a carried run, or no priorRuns at all, is unchanged', () => {
+  const carried = { ...SPIES_2026, priorRuns: [{ ...SPIES_RUN, inheritReviews: undefined }] };
+  assert.deepEqual(preWindowExemptPriorRuns(carried, [SPIES_2025, carried]), carried.priorRuns);
+  assert.equal(preWindowExemptPriorRuns(SPIES_2025, [SPIES_2025]), undefined);
+  assert.equal(preWindowExemptPriorRuns(null, []), undefined);
+});

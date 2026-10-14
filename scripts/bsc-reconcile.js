@@ -896,7 +896,7 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
     makeCheckoutFn = () => require('./lib/acceptance-check-core.js').makeFreshCheckout({ repo: REPO, prefix: 'zombie-verify-' }),
     removeCheckoutFn = (co) => require('./lib/acceptance-check-core.js').removeCheckout(co),
     runVerifyFn = (co, cmd) => require('./lib/acceptance-check-core.js').runVerify(co.wt, cmd, {
-      attempts: 1, timeoutMs: LINEAR_ZOMBIE_VERIFY_TIMEOUT_MS, prepared: co.prepared,
+      attempts: 1, timeoutMs: LINEAR_ZOMBIE_VERIFY_TIMEOUT_MS, prepared: co.prepared, unpreparedReason: co.unpreparedReason,
     }),
     // A command can write files; reset the shared checkout between cards.
     cleanCheckoutFn = (co) => {
