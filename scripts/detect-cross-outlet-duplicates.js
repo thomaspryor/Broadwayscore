@@ -263,7 +263,8 @@ async function main() {
       // Rows pointing at another outlet's file are reported, never a primary or
       // a flagged copy (BRO-5348); the rest still dedupe among themselves.
       for (const p of group.filter(r => r.pointerAcross)) {
-        const other = group.find(r => r !== p && r.outletId !== p.outletId) || group.find(r => r !== p);
+        // Name the pointer's own target when it is in the group, else another outlet's row.
+        const other = group.find(r => r.file === p.pointerAcross) || group.find(r => r !== p && r.outletId !== p.outletId) || group.find(r => r !== p);
         pointerPairs.push({ showId, method: 'fingerprint', files: [p.file, other.file], outlets: [p.outlet, other.outlet], critics: [p.criticName, other.criticName] });
       }
       const plain = group.filter(r => !r.pointerAcross);
