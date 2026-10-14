@@ -96,7 +96,7 @@ const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates, buildOutletRoster, shouldDeferRoundupUrl } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
-const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
+const { parseBwwPostingAuthor, isMultiPersonOutlet, isMentionedPersonOutlet } = require('./lib/bww-jsonld-author');
 // 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
 // omc-discovery covers OMC on a per-show RSS + date-window matcher, and was
 // wired into the poller in BRO-4322 — but this manual/backfill path had no
@@ -2515,6 +2515,16 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         // pairing below stays aligned and Method 2/3 see the outlet as taken,
         // then dropped before return.
         const foreignTitle = detectForeignTitlePosting(posting, showTitle);
+        // Not a real outlet: a radio-segment name list (BRO-4357) or a person
+        // the excerpt only mentions (BRO-3936). Same keep-then-drop treatment
+        // as foreignTitle so thumb pairing stays aligned.
+        // "Registered" here means a registry entry WITH a domain: a rebuild
+        // auto-registers critic names as domainless outlets, so a bare
+        // isRegisteredOutlet() would shield the very phantoms being dropped.
+        const hasRealOutlet = () => registeredOutletHasDomain(outletId);
+        const phantomOutlet = isMultiPersonOutlet(outletRaw, hasRealOutlet)
+          ? 'multi-person author'
+          : (isMentionedPersonOutlet(outletRaw, criticName, quote, hasRealOutlet) ? 'person mentioned in excerpt' : null);
 
         // Fix mis-attributions BWW occasionally introduces when parsing their
         // "Critic, Outlet" strings — e.g. "David Finkle, Cote Notices" for a
@@ -2557,6 +2567,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           bwwRoundupUrl: bwwUrl,
           source: 'bww-roundup',
           ...(foreignTitle ? { _foreignTitle: foreignTitle.subjectTitle, _foreignTitleUrl: posting.url || null } : {}),
+          ...(phantomOutlet ? { _phantomOutlet: phantomOutlet } : {}),
         });
       }
     } catch (e) {
@@ -2823,6 +2834,10 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    [BWW RR] dropped phantom outlet "${phantom.outletId}" (critic name) — same review as ${twin.outletId} / ${twin.criticName}`);
   }
   return kept.filter(r => {
+    if (r._phantomOutlet) {
+      console.log(`    [BWW RR] dropped phantom outlet "${r.outletId}": ${r._phantomOutlet} (BRO-4357/BRO-3936)`);
+      return false;
+    }
     if (!r._foreignTitle) return true;
     console.log(`    [BWW RR] dropped ${r.outletId}: headline reviews "${r._foreignTitle}", not "${showTitle}" (BRO-4977)`);
     logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedBwwForeignTitle', details: { outletId: r.outletId, subjectTitle: r._foreignTitle, url: r._foreignTitleUrl || r.url } });

@@ -108,4 +108,45 @@ function parseBwwPostingAuthor(posting, isRegisteredOutlet = defaultIsRegistered
   return { outletRaw, criticName };
 }
 
-module.exports = { parseBwwPostingAuthor };
+// A name-shaped token run: "J. Wynn Rousuck", "Sam Bermas-Dawes", "Ricky Martin".
+const PERSON_NAME_RE = /^(?:[A-Z][\p{L}'.\u2019-]*)(?:\s+[A-Z][\p{L}'.\u2019-]*){1,3}$/u;
+
+function looksLikePerson(s) {
+  return PERSON_NAME_RE.test(String(s || '').trim());
+}
+
+/**
+ * BRO-4357: an author string that is a comma list of 3+ person names ("J. Wynn
+ * Rousuck, Tom Hall, Sam Bermas-Dawes, Rob Sivak": the host and guests of a
+ * WYPR radio segment) is not one outlet. With neither side registered the
+ * parser above hands the whole string back as outletRaw, which minted the
+ * outlet j-wynn-rousuck-tom-hall-... and a second copy of a review the
+ * URL-bearing wypr record already carries. Returns true when the outletRaw the
+ * parser produced is such a list, so the caller can drop the slot.
+ */
+function isMultiPersonOutlet(outletRaw, isRegisteredOutlet = defaultIsRegisteredOutlet) {
+  if (!outletRaw || isRegisteredOutlet(outletRaw)) return false;
+  const parts = String(outletRaw).split(/\s*(?:,|&|\band\b)\s*/).filter(Boolean);
+  return parts.length >= 3 && parts.every(looksLikePerson);
+}
+
+/**
+ * BRO-3936: the outlet slot holds a bare person name that is unregistered and
+ * appears inside the excerpt after its first word, i.e. a person the review
+ * text MENTIONS (evita-2012: "Ricky Martin", "Elena Roger" are cast members,
+ * not critics or outlets). A real bare-name byline opens its own excerpt or is
+ * absent from it. Pure; the caller passes the posting's excerpt text.
+ */
+function isMentionedPersonOutlet(outletRaw, criticName, excerpt, isRegisteredOutlet = defaultIsRegisteredOutlet) {
+  if (criticName || !outletRaw || isRegisteredOutlet(outletRaw)) return false;
+  const name = String(outletRaw).trim();
+  if (!looksLikePerson(name)) return false;
+  const text = String(excerpt || '');
+  const idx = text.toLowerCase().indexOf(name.toLowerCase(), 1);
+  if (idx <= 0) return false;
+  const before = text[idx - 1];
+  const after = text[idx + name.length];
+  return !/[\p{L}\p{N}]/u.test(before || ' ') && !/[\p{L}\p{N}]/u.test(after || ' ');
+}
+
+module.exports = { parseBwwPostingAuthor, isMultiPersonOutlet, isMentionedPersonOutlet };
