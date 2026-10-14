@@ -20,7 +20,8 @@
  * the scoring logic itself stays single-source.
  *
  * Usage: node scripts/run-ensemble-scoring-guard.js <args...>
- *   (workflow passes ${{ steps.build-args.outputs.args }} verbatim)
+ *   (workflow passes the build-args flag list, then --rescore-reason as one
+ *   quoted arg when set, so a reason with spaces is not split; BRO-5254)
  *
  * Exit codes: 0 on a clean run OR an auto-recovered crash (this step must
  * never hard-fail the job past the auto-recovery threshold); index.ts's own
