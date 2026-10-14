@@ -155,7 +155,9 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
     const r = spawnSyncStdinFile('bash', [REPO_HOOK], {
       input: stdin,
       encoding: 'utf8',
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', ...env, HOME: fakeHomeDir },
+      // BRO-5359: the review-coverage rule has its own tests below; every other case here
+      // models a bare Skill call, so isolate them from it (override with SHIP_CHECK_COVERAGE_DISABLE: '').
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -1478,6 +1480,33 @@ test('chain: reviewed but /what-else never ran → BLOCKED', skipNoRepoHook, () 
   const r = chain('chain-nowhatelse', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
   assertBlocked(r, 'no what-else');
   assert.match(r.stderr, /Still to run.*\/what-else, then \/wrap-up/, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+// BRO-5359: a bare /ship-check Skill call is not a review. The reviewers the skill
+// requires (Claude review-panelist Agent + an external reviewer) must have run after it.
+const REVIEW_AGENT = toolUse('Agent', { subagent_type: 'review-panelist', prompt: 'review the diff' }, 'Findings: none.');
+const EXTERNAL_REVIEW = toolUse('Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY" -d @/tmp/req.json' }, '{"choices":[{"message":{"content":"No blockers."}}]}');
+const COVERAGE_ON = { SHIP_CHECK_COVERAGE_DISABLE: '' };
+
+test('chain coverage: a bare /ship-check call no longer counts as the review', skipNoRepoHook, () => {
+  const bare = [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE];
+  const r = chain('cov-bare', bare, CLOSED, COVERAGE_ON);
+  assertBlocked(r, 'ship-check with no reviewers');
+  assert.match(r.stderr, /BOTH reviewers ran after it.*review-panelist.*api\.openai\.com/s, `got: ${r.stderr.slice(0, 400)}`);
+});
+
+test('chain coverage: only one of the two reviewers is still not a review', skipNoRepoHook, () => {
+  assertBlocked(chain('cov-gpt-only', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, EXTERNAL_REVIEW, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED, COVERAGE_ON), 'external reviewer only');
+  assertBlocked(chain('cov-claude-only', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, REVIEW_AGENT, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED, COVERAGE_ON), 'claude reviewer only');
+});
+
+test('chain coverage: both reviewers after the skill, bypass line, second-opinion and kill switch → ALLOWED', skipNoRepoHook, () => {
+  assertAllowed(chain('cov-full', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, REVIEW_AGENT, EXTERNAL_REVIEW, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED, COVERAGE_ON), 'full coverage');
+  const so = toolUse('Skill', { skill: 'second-opinion' });
+  assertAllowed(chain('cov-so', [HOOK_EDIT, HOOK_RUN, so, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED, COVERAGE_ON), 'second-opinion is a light review and is not coverage-checked');
+  assertAllowed(chain('cov-killswitch', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED, { SHIP_CHECK_COVERAGE_DISABLE: '1' }), 'kill switch');
+  assertAllowed(chain('cov-bypass', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE],
+    'NO-SHIP-CHECK: external reviewers cannot run here, no OPENAI key in this container\n\nSAFE TO EXIT — done.', COVERAGE_ON), 'honest bypass');
 });
 
 test('chain: review + what-else → ALLOWED; second-opinion counts as the review', skipNoRepoHook, () => {

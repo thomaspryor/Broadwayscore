@@ -35,6 +35,9 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { landPushTargets } from './push-command.mjs';
+import { walkTranscript } from './transcript-scan.mjs';
+import { gatedDiffStats, GATE_LINE_BUDGET } from './review-gate.mjs';
+import { landGateDecision } from './review-coverage.mjs';
 
 const require = createRequire(import.meta.url);
 const { isPromisorFetchFailure } = require('./promisor-fetch-failure.js');
@@ -668,11 +671,50 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
 }
 
+/** Directory a land push runs in, from its `cd` / `git -C` prefixes. */
+function pushDir(cwd, p) {
+  let dir = cwd;
+  if (p.cdDir) dir = path.resolve(dir, p.cdDir);
+  for (const c of p.gitC) dir = path.resolve(dir, c);
+  return dir;
+}
+
+/**
+ * BRO-5359: a cloud land push of real code needs a COMPLETE review first (Claude
+ * review-panelist + an external reviewer after a real /ship-check). Run once per
+ * command, independent of NO-LAND-PREFLIGHT (that bypass is for rebase/test-registry
+ * refusals, not for skipping review). Fails open on any error or missing transcript.
+ */
+export function checkReviewCoverage({ command, cwd, targets, env = process.env, transcriptPath = null, seams = {} }) {
+  if (env.CLAUDE_CODE_REMOTE !== 'true' || env.SHIP_CHECK_LAND_GATE_DISABLE === '1') return null;
+  try {
+    const events = seams.events !== undefined ? seams.events : transcriptPath && fs.existsSync(transcriptPath) ? walkTranscript(transcriptPath) : null;
+    let gatedLines = 0;
+    let root = null;
+    for (const t of targets) {
+      const p = t.push;
+      if (p.dirUnknown || p.headMovedBefore || (p.remote && p.remote !== 'origin')) continue;
+      const top = git(pushDir(cwd, p), ['rev-parse', '--show-toplevel']);
+      if (!ok(top)) continue;
+      root = out(top);
+      const stats = seams.stats || gatedDiffStats(root, 'origin/main', t.src || 'HEAD');
+      if (!stats.error) gatedLines = Math.max(gatedLines, stats.totalLines);
+    }
+    const v = landGateDecision({ command, events, gatedLines, budget: GATE_LINE_BUDGET, env });
+    if (root) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines });
+    return v;
+  } catch {
+    return null;
+  }
+}
+
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
-export function runHook({ command, cwd, env = process.env, seams = {} }) {
+export function runHook({ command, cwd, env = process.env, seams = {}, transcriptPath = null }) {
   if (env.LAND_PREFLIGHT_DISABLE === '1') return { decision: 'skip', reason: 'LAND_PREFLIGHT_DISABLE=1' };
   const targets = landPushTargets(command);
   if (targets.length === 0) return { decision: 'skip', reason: 'not a land push' };
+  const cov = checkReviewCoverage({ command, cwd, targets, env, transcriptPath, seams });
+  if (cov && cov.decision === 'block') return { decision: 'block', message: cov.message, warnings: [], results: [cov] };
   const results = [];
   for (const t of targets) {
     const p = t.push;
@@ -684,9 +726,7 @@ export function runHook({ command, cwd, env = process.env, seams = {} }) {
       results.push({ decision: 'skip', reason: `remote ${p.remote} is not origin` });
       continue;
     }
-    let dir = cwd;
-    if (p.cdDir) dir = path.resolve(dir, p.cdDir);
-    for (const c of p.gitC) dir = path.resolve(dir, c);
+    const dir = pushDir(cwd, p);
     const top = git(dir, ['rev-parse', '--show-toplevel']);
     if (!ok(top)) {
       results.push({ decision: 'skip', reason: `not a git repo: ${dir}` });
@@ -731,7 +771,7 @@ function main(argv) {
     }
     const command = input?.tool_input?.command;
     if (!command) return 0;
-    const v = runHook({ command, cwd: input.cwd || process.cwd() });
+    const v = runHook({ command, cwd: input.cwd || process.cwd(), transcriptPath: input.transcript_path || null });
     if (v.decision === 'block') {
       process.stderr.write(v.message + '\n');
       return 2;
