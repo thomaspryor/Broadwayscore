@@ -872,7 +872,25 @@ function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: s
  * call does — ship-check adversarial review flagged an earlier version that
  * skipped clearFailureFlags entirely as broader than necessary.
  */
+/** Score a multi-show section without losing the stored body (BRO-5294). */
+function applyMultiShowTrim(reviewFile: any, trimResult: { text: string; method: string; originalLength: number; trimmedLength: number }): void {
+  if (typeof reviewFile.__preTrimFullText !== 'string') reviewFile.__preTrimFullText = reviewFile.fullText;
+  reviewFile.fullText = trimResult.text;
+  reviewFile.multiShowTrim = { method: trimResult.method, originalLength: trimResult.originalLength, scoredLength: trimResult.trimmedLength, at: new Date().toISOString() };
+}
+
+function restorePreTrimFullText(data: any): void {
+  if (data && typeof data.__preTrimFullText === 'string') {
+    data.fullText = data.__preTrimFullText;
+  }
+  if (data) delete data.__preTrimFullText;
+}
+
 function saveReviewFile(filePath: string, data: any, opts: { skipRejectionReasonClear?: boolean } = {}): void {
+  // BRO-5294: a multi-show trim narrows only what the models read. The stored
+  // body keeps the full text (a bad trim once threw away master-class-2011's
+  // verdict), and multiShowTrim records what was scored.
+  restorePreTrimFullText(data);
   clearFailureFlags(data, { skipRejectionReasonClear: !!opts.skipRejectionReasonClear });
   // BRO-3108: byte-identical re-serialisations are not modifications — they
   // used to bump filesModified and make no-op runs dispatch a rebuild.
@@ -1821,7 +1839,7 @@ async function main(): Promise<void> {
           const showTitle = showTitles.get(reviewFile.showId);
           if (showTitle) {
             const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
-            if (trimResult.trimmed && !trimResult.trimFailed) reviewFile.fullText = trimResult.text;
+            if (trimResult.trimmed && !trimResult.trimFailed) applyMultiShowTrim(reviewFile, trimResult);
           }
         }
         const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
@@ -2223,7 +2241,7 @@ async function main(): Promise<void> {
         if (showTitle && reviewFile.fullText) {
           const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
           if (trimResult.trimmed && !trimResult.trimFailed) {
-            reviewFile.fullText = trimResult.text;
+            applyMultiShowTrim(reviewFile, trimResult);
             console.log(`(multi-show: trimmed ${trimResult.originalLength}→${trimResult.trimmedLength} chars) `);
           } else {
             console.log(`(multi-show: ${multiShowResult.reason}, trim failed — scoring full text) `);
@@ -2238,7 +2256,7 @@ async function main(): Promise<void> {
       if (showTitle) {
         const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
         if (trimResult.trimmed && !trimResult.trimFailed) {
-          reviewFile.fullText = trimResult.text;
+          applyMultiShowTrim(reviewFile, trimResult);
           if (options.verbose) {
             console.log(`  Pre-flagged multi-show: trimmed ${trimResult.originalLength}→${trimResult.trimmedLength} chars`);
           }

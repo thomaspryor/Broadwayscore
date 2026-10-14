@@ -115,10 +115,11 @@ export function extractVenueBoxSection(text: string, target: VenueShow, allShows
   // Boxes clustered between reviews: the first box belongs to the review before
   // the cluster. The text after a cluster can hold several reviews (one per
   // later box), possibly of shows we do not list, so it is never taken.
+  // A cluster of boxes can sit in the MIDDLE of a review that continues after
+  // it (master-class-2011, a-free-man-of-color-2010, waiting-for-godot-2009),
+  // so neither side is known to be the whole review: refuse.
   if (clusters[ci].length > 1) {
-    if (clusters[ci][0] !== hits[0] || mb <= ma) {
-      return { ok: false, reason: 'target box inside a box cluster (layout ambiguous)', boxes: boxes.length };
-    }
+    return { ok: false, reason: 'target box inside a box cluster (layout ambiguous)', boxes: boxes.length };
   }
   const [best, bm, om] = ma > mb ? [after, ma, mb] : [before, mb, ma];
   if (bm < 2 || bm <= om || best.trim().length < MIN_SECTION) {

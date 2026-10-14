@@ -34,12 +34,15 @@ test('box-before layout: the target section is the one after its box', () => {
   assert.doesNotMatch(m.text, /burlesque/);
 });
 
-test('clustered boxes between the reviews: the first show takes the text before; the second refuses (eclipsed-2016 shape)', () => {
-  const text = `${NANCE} ${BOX_N} ${BOX_M} ${MOTOWN}`;
-  assert.match(extractVenueBoxSection(text, SHOWS[0], SHOWS).text, /burlesque/);
-  const second = extractVenueBoxSection(text, SHOWS[1], SHOWS);
-  assert.equal(second.ok, false);
-  assert.match(second.reason, /cluster/);
+test('a box cluster in the middle of a review refuses (master-class-2011 shape: the review continues after the boxes)', () => {
+  const setup = P('The Nance opens with a long setup about burlesque and The Nance takes its time.', 7);
+  const verdict = P('The Nance pays off richly in the second half and the cast is superb.', 6);
+  const text = `${setup} ${BOX_N} ${BOX_M} ${verdict} ${MOTOWN}`;
+  const r = extractVenueBoxSection(text, SHOWS[0], SHOWS);
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /cluster/);
+  // The old rule took the text before the cluster and lost the verdict.
+  assert.equal((r.text || '').includes('pays off richly'), false);
 });
 
 test('both reviews after a clustered header refuse (network-2018 / the-cher-show-2018 shape)', () => {
