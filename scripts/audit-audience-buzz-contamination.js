@@ -339,10 +339,10 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
         const oldRun = openYear && (currentYear - openYear) > STALE_YEARS_AGO;
         if (oldRun) {
           for (const name of MODERN_APP_SOURCES) {
-            // BRO-5276: Theatr is judged by the show's CLOSE date (it had no users
-            // before 2021), so Dear Evan Hansen / Phantom, which closed 2022-23,
-            // keep their genuine votes. seatplan keeps the open-year rule.
-            if (name === 'theatr' && !closedBeforeTheatr(show)) continue;
+            // BRO-5276: modern apps are judged by the show's CLOSE date (no users
+            // before 2021), so Dear Evan Hansen / Phantom (closed 2022-23) and the
+            // long-running Cursed Child (2,930 seatplan ratings) keep genuine votes.
+            if (!closedBeforeTheatr(show)) continue;
             const src = sources[name];
             if (src && typeof src.score === 'number' && (src.reviewCount || 0) > 0) {
               flags.push(`OTHER_SOURCE_STALE:src=${name},score=${src.score},rc=${src.reviewCount},openYear=${openYear}`);
