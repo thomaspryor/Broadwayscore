@@ -1,0 +1,613 @@
+{
+  "issueNumber": "bro-5321-b",
+  "planId": "68aeb360-0835-4f5f-bc26-074223db74f3",
+  "status": "pending",
+  "createdAt": "2026-10-14T03:32:11.736Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5321 step 2, batch 1: 29 groups on 28 shows where one review text sits under two critics and the counted row names the wrong one. Byline read from the page that carries the text (verify-identical-text-bylines.js). Renames the counted row to the page author when its url carries the text; otherwise flags the counted copy wrongAttribution and re-admits the copy whose url carries the text. Review counts per show stay the same except la-cage-aux-folles-2010 (Variety was counted twice, now once).",
+    "steps": [
+      "Rename the counted row to the page byline where its url carries the text",
+      "Flag same-outlet copies of that text wrongAttribution",
+      "Where another row holds the url, flag the counted copy and clear the duplicate pointer on the row that holds it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Ayanna Prescod",
+        "description": "BRO-5321: the page carrying this text credits Ayanna Prescod (https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--ayanna-prescod.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--ayanna-prescod.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--aramide-tinubu.json, which holds Ayanna Prescod's review at https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://variety.com/2011/legit/reviews/follies-2-1117946070/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--steven-suskin.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--steven-suskin.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--david-rooney.json, which holds Steven Suskin's review at https://variety.com/2011/legit/reviews/follies-2-1117946070/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-of-broadway-2017/huffpost--huffington-post-steven-suskin.json",
+        "field": "criticName",
+        "oldValue": "Huffington Post (Steven Suskin)",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://www.huffpost.com/entry/599f632de4b0a62d0987ae0b)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "she-loves-me-2016/huffpost--fern-siegel.json",
+        "field": "criticName",
+        "oldValue": "Fern Siegel",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://www.huffpost.com/steven-suskin/aisle-view-musical-candy_b_9492440.html)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "BRO-5321: the page carrying this text credits David Rooney (https://variety.com/2006/legit/reviews/spring-awakening-1200516066/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds David Rooney's review at https://variety.com/2006/legit/reviews/spring-awakening-1200516066/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Frank Scheck",
+        "description": "BRO-5321: the page carrying this text credits Frank Scheck (https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--frank-scheck.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--frank-scheck.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as hollywood-reporter--david-rooney.json, which holds Frank Scheck's review at https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-king-and-i-west-end-2024/timeout-london--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Tom Wicker",
+        "description": "BRO-5321: the page at this url credits Tom Wicker (https://www.timeout.com/london/theatre/the-king-and-i-review-1)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--emlyn-travis.json",
+        "field": "criticName",
+        "oldValue": "Emlyn Travis",
+        "newValue": "Matt Windman",
+        "description": "BRO-5321: the page carrying this text credits Matt Windman (https://www.amny.com/news/review-cabaret-revival-2024/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--matt-windman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--matt-windman.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as amny--emlyn-travis.json, which holds Matt Windman's review at https://www.amny.com/news/review-cabaret-revival-2024/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/nysr--melissa-rose-bernardo.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/nysr--melissa-rose-bernardo.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: this text is Steven Suskin's review (nysr--steven-suskin.json): the page carrying this text credits Steven Suskin (http://nystagereview.com/2021/11/23/clydes-zestfully-tasty-new-play-from-lynn-nottage-with-cilantro-and-dill/)",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/nysr--steven-suskin.json",
+        "field": "duplicateTextOf",
+        "oldValue": "nysr--melissa-rose-bernardo.json",
+        "newValue": null,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/nysr--steven-suskin.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: nysr--melissa-rose-bernardo.json is the misattributed copy (now wrongAttribution); this row holds Steven Suskin's review",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-west-end-2021/timeout-london--andrzej-lukowsksi.json",
+        "field": "criticName",
+        "oldValue": "Andrzej Lukowsksi",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5321: the page carrying this text credits Andrzej Lukowski (https://www.timeout.com/london/theatre/hamilton-review)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/nysr--david-finkle.json",
+        "field": "criticName",
+        "oldValue": "David Finkle",
+        "newValue": "Melissa Rose Bernardo",
+        "description": "BRO-5321: the page carrying this text credits Melissa Rose Bernardo (https://nystagereview.com/2025/12/08/marjorie-prime-a-very-real-exploration-of-memory-and-loss-powered-by-ai/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oedipus-2025/nysr--michael-sommers.json",
+        "field": "criticName",
+        "oldValue": "Michael Sommers",
+        "newValue": "Melissa Rose Bernardo",
+        "description": "BRO-5321: the page carrying this text credits Melissa Rose Bernardo (https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Marilyn Stasio",
+        "description": "BRO-5321: the page carrying this text credits Marilyn Stasio (https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203381347/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds Marilyn Stasio's review at https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203381347/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Marilyn Stasio",
+        "description": "BRO-5321: the page carrying this text credits Marilyn Stasio (https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds Marilyn Stasio's review at https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-soldiers-play-2020/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Marilyn Stasio",
+        "description": "BRO-5321: the page carrying this text credits Marilyn Stasio (https://variety.com/2020/legit/reviews/a-soldiers-play-review-broadway-1203468086/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-soldiers-play-2020/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-soldiers-play-2020/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--aramide-tinubu.json, which holds Marilyn Stasio's review at https://variety.com/2020/legit/reviews/a-soldiers-play-review-broadway-1203468086/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Naveen Kumar",
+        "description": "BRO-5321: the page carrying this text credits Naveen Kumar (https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--aramide-tinubu.json, which holds Naveen Kumar's review at https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/timeout-london--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5321: the page at this url credits Andrzej Lukowski (https://www.timeout.com/london/theatre/dr-semmelweis-review)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/hollywood-reporter--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Frank Scheck",
+        "description": "BRO-5321: the page carrying this text credits Frank Scheck (https://www.hollywoodreporter.com/news/general-news/transit-review-955048/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/hollywood-reporter--frank-scheck.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/hollywood-reporter--frank-scheck.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as hollywood-reporter--david-rooney.json, which holds Frank Scheck's review at https://www.hollywoodreporter.com/news/general-news/transit-review-955048/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-2010/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://variety.com/2010/legit/reviews/la-cage-aux-folles-1117942582/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-2010/variety--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-2010/variety--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds Steven Suskin's review at https://variety.com/2010/legit/reviews/la-cage-aux-folles-1117942582/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-boys-in-the-band-2018/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Marilyn Stasio",
+        "description": "BRO-5321: the page carrying this text credits Marilyn Stasio (https://variety.com/2018/legit/reviews/the-boys-in-the-band-review-broadway-1202815063/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-boys-in-the-band-2018/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-boys-in-the-band-2018/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds Marilyn Stasio's review at https://variety.com/2018/legit/reviews/the-boys-in-the-band-review-broadway-1202815063/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-2016/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Marilyn Stasio",
+        "description": "BRO-5321: the page carrying this text credits Marilyn Stasio (http://variety.com/2016/legit/reviews/the-cherry-orchard-review-diane-lane-1201890576/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-2016/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-2016/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds Marilyn Stasio's review at http://variety.com/2016/legit/reviews/the-cherry-orchard-review-diane-lane-1201890576/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-people-in-the-picture-2011/variety--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945115/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-people-in-the-picture-2011/variety--steven-suskin.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-people-in-the-picture-2011/variety--steven-suskin.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--david-rooney.json, which holds Steven Suskin's review at https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945115/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-present-2017/timeout--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-present-2017/timeout--adam-feldman.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: this text is David Cote's review (timeout--david-cote.json): the page carrying this text credits David Cote (https://www.timeout.com/newyork/blog/broadway-review-in-the-present-cate-blanchett-does-chekhov-australian-style-010817)",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-present-2017/timeout--david-cote.json",
+        "field": "duplicateTextOf",
+        "oldValue": "timeout--adam-feldman.json",
+        "newValue": null,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-present-2017/timeout--david-cote.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: timeout--adam-feldman.json is the misattributed copy (now wrongAttribution); this row holds David Cote's review",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
+        "field": "criticName",
+        "oldValue": "Angie Han",
+        "newValue": "David Rooney",
+        "description": "BRO-5321: the page carrying this text credits David Rooney (https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as hollywood-reporter--angie-han.json, which holds David Rooney's review at https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/thewrap--robert-hofler.json",
+        "field": "criticName",
+        "oldValue": "Robert Hofler",
+        "newValue": "Jason Clark",
+        "description": "BRO-5321: the page carrying this text credits Jason Clark (http://www.thewrap.com/cats-broadway-review-andrew-lloyd-webbers-hit-is-back-for-a-10th-life/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/nysr--bob-verini.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/nysr--bob-verini.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: this text is Steven Suskin's review (nysr--steven-suskin.json): the page carrying this text credits Steven Suskin (https://nystagereview.com/2024/11/17/elf-irrepressible-holiday-hijinks-for-adults-and-kids-too/)",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/nysr--steven-suskin.json",
+        "field": "duplicateTextOf",
+        "oldValue": "nysr--bob-verini.json",
+        "newValue": null,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/nysr--steven-suskin.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: nysr--bob-verini.json is the misattributed copy (now wrongAttribution); this row holds Steven Suskin's review",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flying-over-sunset-2021/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Marilyn Stasio",
+        "description": "BRO-5321: the page carrying this text credits Marilyn Stasio (https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-1235122751/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flying-over-sunset-2021/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flying-over-sunset-2021/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--aramide-tinubu.json, which holds Marilyn Stasio's review at https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-1235122751/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+        "field": "criticName",
+        "oldValue": "Mike Davis | Wbez",
+        "newValue": "Steven Oxman",
+        "description": "BRO-5321: the page carrying this text credits Steven Oxman (https://chicago.suntimes.com/theater/2026/06/30/iceboy-review-megan-mullally-nick-offerman-goodman-theatre-world-premiere)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-off-west-end-2026/london-box-office--phil-willmott.json",
+        "field": "criticName",
+        "oldValue": "Phil Willmott",
+        "newValue": "Shehrazade Zafar-Arif",
+        "description": "BRO-5321: the page carrying this text credits Shehrazade Zafar-Arif (https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as london-box-office--phil-willmott.json, which holds Shehrazade Zafar-Arif's review at https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-2010/variety--steven-suskin.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5321: legacy VE1117942582 url is the same Variety article as variety--charles-isherwood.json (now credited to Steven Suskin); this excerpt row must not shadow it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-2010/variety--steven-suskin.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "url-collision-detected-at-write",
+        "description": "BRO-5321: legacy VE1117942582 url is the same Variety article as variety--charles-isherwood.json (now credited to Steven Suskin); this excerpt row must not shadow it"
+      }
+    ]
+  }
+}
