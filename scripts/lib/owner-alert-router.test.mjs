@@ -1920,6 +1920,17 @@ test('BRO-3881: rowMatchKey is idempotent — the checker re-applies it to an al
   }
 });
 
+test('BRO-5204: a clamp that lands on a space still round-trips through the encoded check token', () => {
+  const { rowMatchKey, alertAbsentCheckCmd } = require('./health-row-check-cmd.js');
+  // The real key whose card could never pass: its clamp ended in a space.
+  const key = 'time-bomb-tests:unit-tsx:tests/unit/box-office-v2-display.test.ts::real data: cost coverage puts every running Broadway show in exactly one bucket';
+  const token = alertAbsentCheckCmd(key).split('--key-b64 ')[1];
+  assert.equal(rowMatchKey(Buffer.from(token, 'base64url').toString('utf8')), rowMatchKey(key));
+  assert.equal(rowMatchKey(key), rowMatchKey(key).trimEnd());
+  // Cards already filed with the trailing-space token must match too.
+  assert.equal(rowMatchKey(Buffer.from('dGltZS1ib21iLXRlc3RzOnVuaXQtdHN4OnRlc3RzL3VuaXQvYm94LW9mZmljZS12Mi1kaXNwbGF5LnRlc3QudHM6OnJlYWwgZGF0YTogY29zdCBjb3ZlcmFnZSBwdXRzIGV2ZXJ5IHJ1bm5pbmcgQnJvYWR3YXkg', 'base64url').toString('utf8')), rowMatchKey(key));
+});
+
 test('BRO-3881: a backtick or VERIFY: in a row name cannot displace the real acceptance command', () => {
   const { buildCardNotes } = require('./owner-alert-router.js');
   const { evaluateVerifiability } = require('./verify-gate.js');

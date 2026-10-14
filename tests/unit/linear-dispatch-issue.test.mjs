@@ -31,7 +31,7 @@ test('acceptance command matches the scripts/lib/health-row-check-cmd.js encoder
     const want = row ? rowCmd.rowAbsentCheckCmd(row) : rowCmd.alertAbsentCheckCmd(key);
     assert.equal(lib.acceptanceCommand(key), want, key);
   }
-  for (const s of ['', 'abc', 'x'.repeat(500), 'é'.repeat(200)]) assert.equal(lib.rowMatchKey(s), rowCmd.rowMatchKey(s));
+  for (const s of ['', 'abc', 'x'.repeat(500), 'é'.repeat(200), 'time-bomb-tests:unit-tsx:tests/unit/box-office-v2-display.test.ts::real data: cost coverage puts every running Broadway show in exactly one bucket']) assert.equal(lib.rowMatchKey(s), rowCmd.rowMatchKey(s));
 });
 
 test('shared constants match their scripts/lib owners', () => {

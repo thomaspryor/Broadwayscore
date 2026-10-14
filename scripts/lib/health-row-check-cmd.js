@@ -62,7 +62,10 @@ function rowMatchKey(name) {
   while (key && Buffer.from(key, 'utf8').toString('base64url').length > SAFE_TOKEN_MAX_CHARS) {
     key = key.slice(0, -1);
   }
-  return key;
+  // Trim AFTER the clamp too (BRO-5204): a cut that lands on a space left the
+  // encoder's token ending in one, the checker trimmed the decoded token, and
+  // the two sides never matched again ("in no alert ledger", forever).
+  return key.trimEnd();
 }
 
 /**
