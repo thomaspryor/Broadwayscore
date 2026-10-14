@@ -26,13 +26,18 @@
  *   --gather-trade  Only gather trade press data
  *   --gather-all    Gather all sources (default if no specific gather flag)
  *   --gather-only   Stop after gathering, don't run AI analysis
+ *   --shadow-grosses=FILE  Compare the latest 8 archived Grosses Analysis posts
+ *                         in a local JSON array; write nothing, no scraping.
+ *                         Uses each post's sonnetRows array when supplied, else
+ *                         the existing parser (up to 8 Sonnet calls with a key).
+ *                         Without Sonnet results the comparison is incomplete.
  */
 
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isRelevantPost } = require('./lib/reddit-grosses');
+const { isRelevantPost, extractWeeklyFinancialsFromPost } = require('./lib/reddit-grosses');
 const { truthClassOf } = require('./lib/recoupment-ground-truth');
 const {
   isReportedWeeklyCost, citedSections, costSourceBasis, methodologyForCostSource, isReportedSource,
@@ -42,6 +47,7 @@ const { sanitizeForPublicRecord, internalWordingIn, PUBLIC_TEXT_FIELDS } = requi
 const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
+const { commercialGrossesCandidate, compareGrossesRows, compareCostParsers } = require('./lib/commercial-grosses-shadow');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
@@ -2414,7 +2420,61 @@ function extractSourceUrl(source) {
 // Main
 // ---------------------------------------------------------------------------
 
+async function shadowGrosses(posts, parseBaseline = parseGrossesPost) {
+  const relevant = posts.filter(isRelevantPost);
+  const latest = [...new Map(relevant.filter(post => /grosses\s+analysis/i.test(post.title || ''))
+    .map(post => [post.id, post])).values()]
+    .sort((a, b) => b.created_utc - a.created_utc).slice(0, 8);
+  if (latest.length < 8) throw new Error('Shadow comparison needs at least 8 Grosses Analysis posts');
+  const weeks = [];
+  for (const post of latest) {
+    if (!post.id || !Number.isFinite(post.created_utc) || typeof post.selftext !== 'string') {
+      throw new Error('Shadow posts need id, created_utc and selftext');
+    }
+    const legacy = parseGrossesAnalysisPost(post.selftext);
+    const cached = Array.isArray(post.sonnetRows);
+    const baseline = cached ? post.sonnetRows : await parseBaseline(post.selftext);
+    let source = 'legacy-regex';
+    if (cached && baseline.length) source = 'cached-sonnet';
+    else if (!cached && baseline.length > legacy.length) source = 'sonnet';
+    const candidate = commercialGrossesCandidate(post.selftext);
+    weeks.push({
+      postId: post.id,
+      postedDate: new Date(post.created_utc * 1000).toISOString().slice(0, 10),
+      baselineSource: source,
+      legacyRows: legacy.length,
+      wouldUseSonnetFallback: candidate.length < 10,
+      ...compareGrossesRows(baseline, candidate),
+      rangesAndFlags: extractWeeklyFinancialsFromPost(post.selftext).map(row => ({
+        showName: row.showName, costLow: row.costLow, costHigh: row.costHigh,
+        profit: row.profit, flags: row.flags,
+      })),
+    });
+  }
+  return {
+    mode: 'shadow-only',
+    sonnetComparisonComplete: weeks.every(week => week.baselineSource !== 'legacy-regex'),
+    mapping: 'Closed cost/profit ranges use their midpoint; open profit ranges use their known bound. Commentary differences are flagged without copying prose.',
+    weeks,
+    costs: compareCostParsers(relevant),
+  };
+}
+
 async function main() {
+  // Return before loading commercial data, gathering sources, analysis, issues,
+  // or any writer. This gate never enables the candidate in a live run.
+  const shadowArg = args.find(arg => arg.startsWith('--shadow-grosses='));
+  if (args.includes('--shadow-grosses') && !shadowArg) {
+    throw new Error('Use --shadow-grosses=FILE with a local archive JSON array');
+  }
+  if (shadowArg) {
+    const posts = JSON.parse(fs.readFileSync(shadowArg.slice('--shadow-grosses='.length), 'utf8'));
+    if (!Array.isArray(posts)) throw new Error('Shadow input must be a JSON array of archived posts');
+    const report = await shadowGrosses(posts);
+    console.log(JSON.stringify(report, null, 2));
+    if (!report.sonnetComparisonComplete) process.exitCode = 2;
+    return;
+  }
   console.log('=== Broadway Scorecard: Commercial Data Updater ===');
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
   console.log(`Gather: ${GATHER_ALL ? 'ALL' : (GATHER_REDDIT ? 'REDDIT' : 'TRADE')}`);
@@ -2740,7 +2800,7 @@ async function main() {
 }
 
 // Exports for unit testing
-module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue, applyChanges, extractSourceType };
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue, applyChanges, extractSourceType, shadowGrosses };
 
 // Run only when executed directly (not when require()'d for testing)
 if (require.main === module) {

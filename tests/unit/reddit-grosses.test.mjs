@@ -102,6 +102,18 @@ describe('extractCostsFromPost', () => {
     assert.equal(extractCostsFromPost('***X***\nWeekly Operating Cost: $650-$700k')[0].cost, 675000);
   });
 
+  it('reads Reddit-escaped costs only in the shadow candidate until checker signoff', () => {
+    for (const [value, cost] of [['\\~$750k/week', 750000], ['\\~$650-\\~$700k/week', 675000]]) {
+      const text = `***X***\nEstimated Weekly Operating Cost: ${value}`;
+      assert.deepEqual(extractCostsFromPost(text), []);
+      assert.deepEqual(extractCostsFromPost(text, { unescapeCosts: true }), [{ showName: 'X', cost }]);
+    }
+  });
+
+  it('keeps costs with ordinary formatting identical in shadow mode', () => {
+    assert.deepEqual(extractCostsFromPost(post, { unescapeCosts: true }), extractCostsFromPost(post));
+  });
+
   it('returns nothing for an empty post or a cost with no heading', () => {
     assert.deepEqual(extractCostsFromPost(''), []);
     assert.deepEqual(extractCostsFromPost(undefined), []);

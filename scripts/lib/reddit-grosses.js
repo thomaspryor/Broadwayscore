@@ -68,7 +68,9 @@ const TRAILING_PUNCT_RE = /[\s\-–—:\\]+$/;
  * in post order: one { showName, cost } per cost line, attributed to the
  * last ***Show Name*** heading above it.
  */
-function extractCostsFromPost(selftext) {
+// The escaped-cost fix is opt-in for BRO-5028's shadow comparison until the
+// commercial checker approves changing the live gap-fill.
+function extractCostsFromPost(selftext, { unescapeCosts = false } = {}) {
   if (!selftext) return [];
   const results = [];
   let currentShowName = null;
@@ -78,7 +80,7 @@ function extractCostsFromPost(selftext) {
       const name = showMatch[1].trim().replace(LEADING_EMOJI_RE, '').replace(TRAILING_PUNCT_RE, '').trim();
       if (name) currentShowName = name;
     }
-    const m = line.match(COST_RE);
+    const m = (unescapeCosts ? line.replace(/\\~/g, '~') : line).match(COST_RE);
     if (!m || !currentShowName) continue;
     const [, lowNum, lowSuffix, highNum, highSuffix] = m;
     const high = highNum ? parseDollarAmount(highNum, highSuffix) : null;
@@ -162,7 +164,7 @@ const RECOUPED_RE = /percentage\s+recouped\**:?\**\s*~?\s*([\d.]+)\s*%(?:\s*[-�
  * Missing fields are null. A show heading with none of the detail lines is
  * dropped.
  */
-function extractWeeklyFinancialsFromPost(selftext) {
+function extractWeeklyFinancialsFromPost(selftext, { includeCommercialFields = false } = {}) {
   if (!selftext) return [];
   const rows = [];
   let cur = null;
@@ -181,6 +183,13 @@ function extractWeeklyFinancialsFromPost(selftext) {
           showName: name, gross: g ? parseDollarAmount(g[1], g[2]) : null, grossLessFees: null,
           costLow: null, costHigh: null, profit: null, profitText: null, recoupedLow: null, recoupedHigh: null,
         };
+        if (includeCommercialFields) {
+          const capacity = after.match(/([\d.]+)%\s*capacity/i);
+          const atp = after.match(/\$([\d.,]+)\s*atp/i);
+          cur.capacity = capacity ? Number(capacity[1]) : null;
+          cur.atp = atp ? Number(atp[1].replace(/,/g, '')) : null;
+          cur.commentary = '';
+        }
       }
     }
     if (!cur) continue;
@@ -188,8 +197,8 @@ function extractWeeklyFinancialsFromPost(selftext) {
     // or a post-mortem's run totals.
     const lf = cur.grossLessFees == null && line.match(LESS_FEES_RE);
     if (lf) cur.grossLessFees = parseDollarAmount(lf[1], lf[2]);
-    // Reddit escapes "~" as "\~" ("\~$750k"); COST_RE has no slot for the
-    // backslash. extractCostsFromPost keeps reading the raw line (BRO-5028).
+    // Reddit escapes "~" as "\~" ("\~$750k"). The live cost-only caller
+    // retains its old behavior until BRO-5028's checker signoff.
     const c = cur.costLow == null && line.replace(/\\~/g, '~').match(COST_RE);
     if (c) {
       const [, lowNum, lowSuffix, highNum, highSuffix] = c;
@@ -204,6 +213,9 @@ function extractWeeklyFinancialsFromPost(selftext) {
     if (r) {
       cur.recoupedLow = parseFloat(r[1]);
       cur.recoupedHigh = r[2] ? parseFloat(r[2]) : parseFloat(r[1]);
+    }
+    if (includeCommercialFields && !showMatch && !lf && !c && !p && !r && line.trim()) {
+      cur.commentary = [cur.commentary, line.trim()].filter(Boolean).join(' ');
     }
   }
   flush();
