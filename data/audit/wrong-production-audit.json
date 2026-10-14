@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T10:55:15.747Z",
+  "timestamp": "2026-10-14T11:11:51.166Z",
   "stats": {
     "totalReviews": 56430,
     "alreadyFlagged": 21061,
-    "dateGuardCatches": 204,
+    "dateGuardCatches": 205,
     "directorMismatch": 1882,
     "tvFilmSignals": 1562,
     "londonSignals": 2248,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5219
+    "noPublishDate": 5218
   },
   "findings": [
     {
@@ -454,7 +454,7 @@
     {
       "showId": "a-bronx-tale-the-musical-2016",
       "file": "vulture--jesse-green.json",
-      "score": 59,
+      "score": 42,
       "publishDate": null,
       "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html",
       "findings": [
@@ -2450,7 +2450,7 @@
     {
       "showId": "american-son-2018",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "2018-11-04T22:01:37",
       "url": "https://nystagereview.com/2018/11/04/american-son-ripped-from-the-headlines/",
       "findings": [
@@ -49477,6 +49477,20 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "camdennewjournal--unknown.json",
+      "score": 80,
+      "publishDate": "2024-10-08",
+      "url": "https://www.camdennewjournal.co.uk/article/review-whos-afraid-of-virginia-woolf-at-soho-place",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 713d before show (2024-10-08 vs 2026-09-21)"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "islingtontribune--unknown.json",
       "score": 80,
       "publishDate": "2023-10-08",
@@ -50103,7 +50117,7 @@
     {
       "showId": "a-christmas-carol-2019",
       "file": "nysr--bob-verini.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2019-11-20T21:46:28",
       "url": "https://nystagereview.com/2019/11/20/a-christmas-carol-god-blast-ye-merry-gentlemen/",
       "findings": [
@@ -80877,7 +80891,7 @@
     {
       "showId": "the-price-2017",
       "file": "wsj--terry-teachout.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "March 16th, 2017",
       "url": "https://www.wsj.com/articles/the-price-review-a-major-miller-back-on-broadway-1489710601",
       "findings": [
