@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-13T03:10:52.874Z",
-    "completedAt": "2026-10-13T03:13:40.747Z",
-    "totalReviews": 56352,
-    "processed": 36,
-    "skipped": 56311,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 253453,
-      "output": 12268,
-      "total": 603608
-    },
-    "costUsd": 0.5021541,
-    "runId": "38340098575",
-    "errorDetails": [
-      {
-        "showId": "hadestown-tour-2024",
-        "outletId": "arkansas-democrat-gazette",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "martin-guerre-west-end-2026",
-        "outletId": "londontheatredirect",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-13T03:13:51.356Z",
     "completedAt": "2026-10-13T03:13:54.513Z",
     "totalReviews": 0,
@@ -1003000,6 +1002968,22 @@
     },
     "costUsd": 0,
     "runId": "38520573426",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-14T06:22:55.089Z",
+    "completedAt": "2026-10-14T06:22:55.096Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38521498172",
     "errorDetails": []
   }
 ]
