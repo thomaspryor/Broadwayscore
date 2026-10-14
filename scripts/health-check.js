@@ -270,6 +270,12 @@ const AUTO_FIX_PLAYBOOK = [
   // generated from AUDIT_FRESHNESS_CHECKS so a new row can never ship without
   // its playbook entry (asserted in tests/unit/audit-freshness-checks.test.mjs).
   ...require('./lib/audit-freshness-checks').auditFreshnessPlaybookEntries(),
+  // BRO-4382: same #1199 trap, an unregistered row defaults to 'low' and never
+  // names itself. No `workflow`: the writer is one continue-on-error step of
+  // data-health-check.yml, and redispatching that whole job to refresh one
+  // shadow report is not worth it; a human should look at why the step stopped.
+  { match: require('./lib/sweep-report-staleness').SWEEP_REPORT_ROW_MATCH, urgency: 'this-week',
+    humanAction: 'The daily sweep that checks which open backlog cards already pass their acceptance check has stopped updating its report, so the watchdog is reading an old snapshot. Open Claude Code and say: "The open-backlog acceptance sweep report is stale (BRO-4382 row) — check the sweep and commit steps in data-health-check.yml and get it landing again."' },
   // No `workflow` — there's no automated fix, this just needs a human to look
   // at the scoring workflow's polling. 'this-week' (not fix-now): a batch
   // between 12-48h in flight is within the vendor's normal turnaround, not an
@@ -574,6 +580,29 @@ function checkAuditFreshness({ auditDir = AUDIT_DIR, now = Date.now() } = {}) {
       if (status === 'ok') return { name, status: 'pass', message };
       return { name, status, message, hint: row.hint };
     });
+  });
+}
+
+// --- Category A1c: open-backlog acceptance sweep report freshness (BRO-4382) ---
+// data/audit/open-backlog-acceptance-sweep.json is written daily by a
+// continue-on-error step of data-health-check.yml, so a stopped sweep never
+// turns that run red. Absent file = warn (not yet run; data/ is a disposable
+// copy in cloud sessions), bad JSON / missing or bad generatedAt = error,
+// >48h warn, >96h error. Pure decision: scripts/lib/sweep-report-staleness.js.
+function checkSweepReportStaleness({ auditDir = AUDIT_DIR, now = Date.now() } = {}) {
+  const { sweepReportStalenessResult, SWEEP_REPORT_ROW_NAME } = require('./lib/sweep-report-staleness');
+  return runCheck(SWEEP_REPORT_ROW_NAME, () => {
+    const sweepPath = path.join(auditDir, 'open-backlog-acceptance-sweep.json');
+    if (!fs.existsSync(sweepPath)) return sweepReportStalenessResult({ report: null }, now);
+    // Non-parse read errors (EACCES, EISDIR, ...) propagate to runCheck's crash row.
+    const raw = fs.readFileSync(sweepPath, 'utf8');
+    let report;
+    try {
+      report = JSON.parse(raw);
+    } catch (err) {
+      return sweepReportStalenessResult({ parseError: err.message }, now);
+    }
+    return sweepReportStalenessResult({ report }, now);
   });
 }
 
@@ -5756,6 +5785,9 @@ async function main() {
       allResults.push(...notionScheduleCouplingResults(null));
     }
 
+    // BRO-4382: staleness of the daily open-backlog acceptance sweep report.
+    allResults.push(checkSweepReportStaleness());
+
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       // firstSeen lives in the STATE file, not the candidates report — without
@@ -5897,4 +5929,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
