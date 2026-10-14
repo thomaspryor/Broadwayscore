@@ -52,7 +52,7 @@
  *   --test-url="URL" - Test single URL with all tiers
  */
 
-const { pointsAtFile } = require('./lib/canonical-duplicate-pointers');
+const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
@@ -187,7 +187,7 @@ const { verificationPublishDate } = require('./lib/verification-publish-date');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const { discoveredPageVerdict } = require('./lib/discovered-page-verdict');
 const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
-const { parseDate } = require('./lib/date-utils');
+const { parseDate, maxPlausibleYear } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
@@ -4688,7 +4688,7 @@ function normalizeExtractedDate(dateStr) {
       const year = parseInt(dateMatch[1]);
       const month = parseInt(dateMatch[2]);
       const day = parseInt(dateMatch[3]);
-      if (year < 1970 || year > 2030) return null;
+      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
       if (month < 1 || month > 12 || day < 1 || day > 31) return null;
       return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     }
@@ -4696,7 +4696,7 @@ function normalizeExtractedDate(dateStr) {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
     const year = d.getFullYear();
-    if (year < 1970 || year > 2030) return null;
+    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
@@ -4971,7 +4971,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // allowEarlyDate: operator approved the early date (BRO-720) — flagging again would re-loop with the rebuild auto-clear
     if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !bodyDateClears && !laneHeld(data, 'wrongProduction')) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
-      data.fullText = null;
+      // Kept in wrongFullText like every other wrong-content verdict, so the
+      // record does not read as never scraped (BRO-2788 cousin, BRO-5261 S11).
+      if (!quarantineBody(data)) data.fullText = null;
       data.wrongProduction = true;
       invalidateWrongProductionAutoClear(data);
       data.wrongProductionReason = 'anticipatory_pre_opening_post';
@@ -5304,10 +5306,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           delete data._showNotMentionedDiscoveryAttempted;
           repaired = true;
         }
-        // Restore fullText from wrongFullText if a prior run nulled it
-        if (!data.fullText && data.wrongFullText) {
+        // Restore fullText from wrongFullText if a prior run nulled it. Not
+        // when a live wrong-content verdict quarantined it (this run's
+        // anticipatory gate, BRO-5261 S11). null, not delete: the write
+        // guard's merge copies a missing key back from disk.
+        if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow) {
           data.fullText = data.wrongFullText;
-          delete data.wrongFullText;
+          data.wrongFullText = null;
           repaired = true;
         }
         if (repaired) {
@@ -5492,7 +5497,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf8'));
           // This file is already that sibling's canonical: pointing back would
           // close a cycle the daily dedupe heal then has to clear (BRO-3102).
-          if (pointsAtFile(siblingData, currentFile)) continue;
+          // A back-pointer already on disk is dropped too, or a cycle written
+          // before that fix survives every refetch (BRO-5261 S11: 3 pairs).
+          if (pointsAtFile(siblingData, currentFile)) {
+            const plan = planCanonicalPointerClear(data, { self: currentFile, clusterFiles: [sibling], siblings: { [sibling]: siblingData } });
+            applyCanonicalPointerClear(data, { drop: plan.drop.filter(f => f === 'duplicateTextOf') });
+            continue;
+          }
           if (siblingData.fullText) {
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {

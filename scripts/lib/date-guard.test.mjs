@@ -331,3 +331,12 @@ test("a show's own tourLegs apply when the caller passes none; null opts out of 
   const runOptOut = evaluateDateGuard({ pubDate: new Date('2019-12-04'), show: amelie, outletId: 'telegraph', priorRuns: null, tourLegs: null });
   assert.equal(runOptOut.flag, true);
 });
+
+test('textNumericDates: whole-word reject list, dash is a range only after a date (BRO-5261 S11)', () => {
+  const { textNumericDates } = require('./date-guard.js');
+  assert.deepEqual(textNumericDates('By Jane Doe \u2013 18/09/2026'), ['2026-09-18']);
+  assert.deepEqual(textNumericDates('Charing Cross Theatre, London - 18/08/2026'), ['2026-08-18']);
+  assert.deepEqual(textNumericDates('Deep Heat, Toronto 18/09/2026'), ['2026-09-18']);
+  assert.deepEqual(textNumericDates('Now playing 10/09/2026 - 31/12/2026'), []);
+  assert.deepEqual(textNumericDates('runs to 18/09/2026'), []);
+});

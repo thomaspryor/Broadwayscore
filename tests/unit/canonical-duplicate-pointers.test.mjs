@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -138,4 +140,38 @@ test('pointsAtFile detects a sibling that already treats this file as canonical'
   assert.equal(pointsAtFile({ duplicateTextOf: 'a--wexler.json' }, 'a--wexler.json'), true);
   assert.equal(pointsAtFile({ duplicateOf: 'other.json' }, 'a--wexler.json'), false);
   assert.equal(pointsAtFile(null, 'a--wexler.json'), false);
+});
+
+// BRO-5261 S11: a mutual same-text duplicateTextOf pair already on disk was
+// dropped on BOTH sides by the rebuild (the plain skip ran before the circular
+// tiebreak), and the collector's BRO-3102 skip never removed a back-pointer
+// that was already there. Source pins on both sites; the corpus effect is
+// checked by scoring-delta (Stranger Things: The First Shadow, Times).
+test('rebuild lets a mutual same-text duplicateTextOf pair reach the circular tiebreak', () => {
+  const src = fs.readFileSync(path.join(import.meta.dirname, '..', '..', 'scripts', 'rebuild-all-reviews.js'), 'utf8');
+  const plainSkip = src.indexOf('} else if (!refAlsoDupe && !refWouldBeExcluded && !(isCircular && circularSameText)) {');
+  const tiebreak = src.indexOf('logExclusion("skippedCircularDuplicateTiebreak"', plainSkip);
+  assert.ok(plainSkip > 0, 'plain duplicateTextOf skip excludes mutual same-text pairs');
+  assert.ok(tiebreak > plainSkip);
+});
+
+test('collector drops its own stale back-pointer at a sibling that points at it', () => {
+  const src = fs.readFileSync(path.join(import.meta.dirname, '..', '..', 'scripts', 'collect-review-texts.js'), 'utf8');
+  const at = src.indexOf('if (pointsAtFile(siblingData, currentFile)) {');
+  assert.ok(at > 0);
+  const block = src.slice(at, at + 600);
+  assert.match(block, /planCanonicalPointerClear\(data, \{ self: currentFile, clusterFiles: \[sibling\], siblings: \{ \[sibling\]: siblingData \} \}\)/);
+  assert.match(block, /plan\.drop\.filter\(f => f === 'duplicateTextOf'\)/);
+});
+
+test('applying the collector plan clears only duplicateTextOf, never a loser\'s duplicateOf', () => {
+  const { planCanonicalPointerClear, applyCanonicalPointerClear } = require('../../scripts/lib/canonical-duplicate-pointers.js');
+  const mutual = { duplicateTextOf: 'b.json' };
+  const plan = planCanonicalPointerClear(mutual, { self: 'a.json', clusterFiles: ['b.json'], siblings: { 'b.json': { duplicateTextOf: 'a.json' } } });
+  applyCanonicalPointerClear(mutual, { drop: plan.drop.filter(f => f === 'duplicateTextOf') });
+  assert.equal('duplicateTextOf' in mutual, false);
+  const loser = { duplicateOf: 'b.json' };
+  const p2 = planCanonicalPointerClear(loser, { self: 'a.json', clusterFiles: ['b.json'], siblings: { 'b.json': { duplicateTextOf: 'a.json' } } });
+  applyCanonicalPointerClear(loser, { drop: p2.drop.filter(f => f === 'duplicateTextOf') });
+  assert.equal(loser.duplicateOf, 'b.json');
 });

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./lib/date-utils');
 /**
  * backfill-review-dates.js — Fetch pages for undated reviews to extract publishDate.
  *
@@ -90,14 +91,14 @@ function normalizeExtractedDate(dateStr) {
       const year = parseInt(dateMatch[1]);
       const month = parseInt(dateMatch[2]);
       const day = parseInt(dateMatch[3]);
-      if (year < 1970 || year > 2030) return null;
+      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
       if (month < 1 || month > 12 || day < 1 || day > 31) return null;
       return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     }
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
     const year = d.getFullYear();
-    if (year < 1970 || year > 2030) return null;
+    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;

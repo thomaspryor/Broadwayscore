@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./lib/date-utils');
 /**
  * Extract publishDate from review text using Claude Haiku.
  *
@@ -50,7 +51,7 @@ ${headerText}
   if (!match) return null;
 
   const [y, m, d] = match[1].split('-').map(Number);
-  if (y < 1970 || y > 2027 || m < 1 || m > 12 || d < 1 || d > 31) return null;
+  if (y < 1970 || y > maxPlausibleYear({ atLeast: 2027 }) || m < 1 || m > 12 || d < 1 || d > 31) return null;
   const date = new Date(y, m - 1, d);
   if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return null;
 

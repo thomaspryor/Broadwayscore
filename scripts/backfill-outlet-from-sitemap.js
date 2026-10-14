@@ -20,6 +20,7 @@
  *     [--max-matches=10] [--dry-run] [--write] [--require-year-match]
  */
 'use strict';
+const { maxPlausibleYear } = require('./lib/date-utils');
 
 const fs = require('fs');
 const path = require('path');
@@ -189,7 +190,7 @@ function parseUrl(url, lastmod) {
     for (const s of segs) {
       if (/^\d{4}$/.test(s)) {
         const y = parseInt(s, 10);
-        if (y >= 1995 && y <= 2030) { year = y; yearSource = 'url-segment'; break; }
+        if (y >= 1995 && y <= maxPlausibleYear({ atLeast: 2030 })) { year = y; yearSource = 'url-segment'; break; }
       }
     }
     // Fallback to sitemap lastmod for outlets that don't put year in URL path

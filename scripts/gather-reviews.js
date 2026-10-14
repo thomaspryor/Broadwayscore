@@ -174,7 +174,7 @@ const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
+const { parseDate, parseHistoricalDate, maxPlausibleYear } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
@@ -3037,7 +3037,7 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl, 
   // 2. Fallback: extract year from URL (e.g., "Review-Roundup-SHOW-Opens-on-Broadway-20241224")
   if (!roundupDate) {
     const url = bwwUrl || '';
-    const years = [...url.matchAll(/(\d{4})/g)].map(m => parseInt(m[1])).filter(y => y >= 2000 && y <= 2030);
+    const years = [...url.matchAll(/(\d{4})/g)].map(m => parseInt(m[1])).filter(y => y >= 2000 && y <= maxPlausibleYear({ atLeast: 2030 }));
     if (years.length > 0) {
       // Use the last year in the URL (usually the date suffix)
       roundupDate = new Date(years[years.length - 1], 0, 1);

@@ -28,7 +28,12 @@ function countWords(text) {
  * @returns {boolean} true when a body was quarantined
  */
 function quarantineBody(data) {
-  if (!data || typeof data.fullText !== 'string' || !data.fullText.trim()) return false;
+  if (!data) return false;
+  if (typeof data.fullText !== 'string' || !data.fullText.trim()) {
+    // Nothing to keep, but the caller's verdict still empties the live body.
+    if (typeof data.fullText === 'string') data.fullText = null;
+    return false;
+  }
   data.wrongFullText = data.fullText;
   data.fullText = null;
   data.quarantinedWordCount = countWords(data.wrongFullText);
@@ -91,6 +96,9 @@ function releasedBodyRestoreVerdict(data, deps) {
   if (data.incompleteReason === 'non_review' || data.suspectedLlmHallucination === true) {
     return { ok: false, reason: `quarantined as ${data.incompleteReason === 'non_review' ? 'not a review' : 'suspected hallucination'}` };
   }
+  // flagged-recovery discardWrongPageFill sets no exclusion flag (BRO-5261 S11).
+  if (data.incompleteReason === 'wrong_page_served') return { ok: false, reason: 'quarantined as a wrong page served' };
+  if (data.wrongArticle === true) return { ok: false, reason: 'still excluded (wrongArticle)' };
   if (data.contentVerification && data.contentVerification.wrongArticle === true) return { ok: false, reason: 'contentVerification says wrong article' };
   const released = data.wrongProductionManualClear === true || data.wrongProductionOverride === true
     || data.wrongShowManualClear === true || data.humanReviewedWrongProduction === false;
@@ -104,12 +112,15 @@ function releasedBodyRestoreVerdict(data, deps) {
 }
 
 /**
- * Put the quarantined body back. Mutates `data`. wrongFullText stays as the
- * audit copy (beside a live fullText it excludes nothing); the tier is
- * re-derived so the scorer and rebuild see the full text.
+ * Put the quarantined body back. Mutates `data`. wrongFullText is cleared: it
+ * would only be an identical copy, and readers such as url-change-invariant's
+ * wouldDiscardScore take a set wrongFullText as evidence the url is wrong
+ * (BRO-5261 S11). The tier is re-derived so the scorer and rebuild see the
+ * full text.
  */
 function restoreReleasedBody(data, classifyContentTier, nowIso) {
   data.fullText = data.wrongFullText;
+  data.wrongFullText = null;
   // null, not delete: safeWriteReview's merge pass copies a missing key back from disk.
   data.quarantinedWordCount = null;
   data.releasedBodyRestoredAt = nowIso || new Date().toISOString();

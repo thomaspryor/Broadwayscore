@@ -254,7 +254,7 @@ function isPublishedRatingEvidence(raw, data) {
   return publishedRatingEvidence(raw, data) !== null;
 }
 
-const { normalizeDate } = require('./date-utils');
+const { normalizeDate, maxPlausibleYear } = require('./date-utils');
 function normalizePublishDate(dateStr) {
   return normalizeDate(dateStr);
 }
@@ -1240,7 +1240,7 @@ const MONTH_ABBR_TO_NUM = {
 };
 
 function validateCalendarDate(year, month, day) {
-  if (year < 1970 || year > 2027 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  if (year < 1970 || year > maxPlausibleYear({ atLeast: 2027 }) || month < 1 || month > 12 || day < 1 || day > 31) return null;
   const d = new Date(year, month - 1, day);
   if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -1284,7 +1284,7 @@ function extractDateFromUrl(url) {
   if (dashMatch && !TITLE_YEARS.has(dashMatch[1])) {
     const y = parseInt(dashMatch[1]), m = parseInt(dashMatch[2]), d = parseInt(dashMatch[3]);
     // Reject if it doesn't look like a date (e.g., 1776-10-17 is a title year pattern)
-    if (y >= 2000 && y <= 2027) {
+    if (y >= 2000 && y <= maxPlausibleYear({ atLeast: 2027 })) {
       const result = validateCalendarDate(y, m, d);
       if (result) return { date: result, source: 'url-dash' };
     }
@@ -1294,7 +1294,7 @@ function extractDateFromUrl(url) {
   const blogspotMatch = pathOnly.match(/\.blogspot\.com\/(\d{4})\/(\d{2})\//);
   if (blogspotMatch) {
     const y = parseInt(blogspotMatch[1]), m = parseInt(blogspotMatch[2]);
-    if (y >= 2000 && y <= 2027 && m >= 1 && m <= 12) {
+    if (y >= 2000 && y <= maxPlausibleYear({ atLeast: 2027 }) && m >= 1 && m <= 12) {
       return { date: `${y}-${String(m).padStart(2, '0')}`, source: 'url-blogspot-ym' };
     }
   }
@@ -1322,7 +1322,7 @@ function extractDateFromUrl(url) {
   const yearMatch = pathOnly.match(/\/(20\d\d)\//);
   if (yearMatch && !TITLE_YEARS.has(yearMatch[1])) {
     const y = parseInt(yearMatch[1]);
-    if (y >= 2000 && y <= 2027) {
+    if (y >= 2000 && y <= maxPlausibleYear({ atLeast: 2027 })) {
       return { date: null, yearOnly: y, source: 'url-year-only' };
     }
   }

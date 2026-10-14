@@ -57,7 +57,9 @@ test('no script hand-rolls the fullText -> wrongFullText move', () => {
       if (!/\.(c?js|ts)$/.test(e.name) || /\.test\./.test(e.name)) continue;
       if (p.endsWith(path.join('lib', 'quarantine-body.js'))) continue;
       const src = fs.readFileSync(p, 'utf8');
-      if (/\b(\w+)\.wrongFullText\s*=\s*\1\.fullText\b/.test(src)) offenders.push(path.relative(scriptsDir, p));
+      // Any hand-rolled move: same or another variable, assignment or object
+      // literal (BRO-5261 S11 widened it from the same-variable form only).
+      if (/\bwrongFullText\s*[:=]\s*[A-Za-z_$][\w$.\[\]'"]*\.fullText\b/.test(src)) offenders.push(path.relative(scriptsDir, p));
     }
   };
   walk(scriptsDir);
@@ -87,6 +89,9 @@ test('refuses: no explicit release (script auto-clear only), still flagged, garb
   assert.equal(releasedBodyRestoreVerdict(released({ fullText: null, incompleteReason: 'non_review' }), deps).ok, false);
   assert.equal(releasedBodyRestoreVerdict(released({ fullText: null, suspectedLlmHallucination: true }), deps).ok, false);
   assert.equal(releasedBodyRestoreVerdict(released({ fullText: null, contentVerification: { wrongArticle: true } }), deps).ok, false);
+  // BRO-5261 S11: discardWrongPageFill and a top-level wrongArticle set no exclusion flag above
+  assert.equal(releasedBodyRestoreVerdict(released({ fullText: null, incompleteReason: 'wrong_page_served' }), deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict(released({ fullText: null, wrongArticle: true }), deps).ok, false);
 });
 
 test('released with no live text: restore, and the tier is re-derived from the full body', () => {
@@ -94,9 +99,16 @@ test('released with no live text: restore, and the tier is re-derived from the f
   assert.equal(releasedBodyRestoreVerdict(d, deps).ok, true);
   restoreReleasedBody(d, () => ({ contentTier: 'complete', tierReason: 'Full review text', wordCount: 240 }), '2026-10-13T00:00:00Z');
   assert.equal(d.fullText, REVIEW);
-  assert.equal(d.wrongFullText, REVIEW, 'audit copy kept');
+  assert.equal(d.wrongFullText, null, 'identical copy cleared, so url-change-invariant does not read it as a wrong url');
   assert.equal(d.quarantinedWordCount, null);
   assert.equal(d.contentTier, 'complete');
   assert.equal(d.incompleteReason, null);
   assert.equal(describeTextState(d).state, 'present');
+});
+
+test('quarantineBody: a whitespace-only body is emptied and an older quarantined body is left alone (BRO-5261 S11)', () => {
+  const d = { fullText: '  \n ', wrongFullText: 'older body' };
+  assert.equal(quarantineBody(d), false);
+  assert.equal(d.fullText, null);
+  assert.equal(d.wrongFullText, 'older body');
 });

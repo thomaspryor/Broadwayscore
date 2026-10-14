@@ -1037,3 +1037,14 @@ test('BRO-4131 updateFileUrlWithInvariant refuses a round-up page url', () => {
   assert.equal(quiet(() => updateFileUrlWithInvariant(f, 'https://www.thestage.co.uk/review-round-ups/hamilton-reviews-round-up')), null);
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
+
+// BRO-5261 S11: a released body put back by restoreReleasedBody left an identical
+// wrongFullText, which wouldDiscardScore read as "the old url is wrong".
+test('wouldDiscardScore: a wrongFullText identical to fullText is not wrong-url evidence', () => {
+  const { wouldDiscardScore } = require('./url-change-invariant.js');
+  const body = 'The full review text. '.repeat(20);
+  const base = { showId: 's', outletId: 'thestage', criticName: 'A', url: 'https://www.thestage.co.uk/reviews/x', originalScore: '4' };
+  assert.equal(wouldDiscardScore({ ...base, fullText: body, wrongFullText: body }), true, 'restored copy: score protected');
+  assert.equal(wouldDiscardScore({ ...base, fullText: null, wrongFullText: body }), false, 'quarantined body: url is wrong');
+  assert.equal(wouldDiscardScore({ ...base, fullText: 'stub', wrongFullText: body }), false, 'different body: url is wrong');
+});

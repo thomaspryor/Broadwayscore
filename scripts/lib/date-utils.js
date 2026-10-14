@@ -40,6 +40,17 @@ function stripOrdinals(dateStr) {
 }
 
 /**
+ * Latest year a parsed publish/URL date may carry: next calendar year, but never
+ * below `atLeast` (the old literal cap at that site), so today's behaviour is
+ * unchanged and the cap no longer expires. BRO-5261 S11: eight-plus parsers
+ * hard-coded 2027/2028/2030 and would silently drop every later date.
+ * @param {{atLeast?: number}} [opts]
+ */
+function maxPlausibleYear({ atLeast = 0 } = {}) {
+  return Math.max(atLeast, new Date().getFullYear() + 1);
+}
+
+/**
  * Validate that year/month/day form a real calendar date.
  * Returns YYYY-MM-DD string or null.
  *
@@ -49,7 +60,7 @@ function stripOrdinals(dateStr) {
  * @returns {string|null}
  */
 function validateCalendarDate(year, month, day) {
-  if (year < 1970 || year > 2030 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 }) || month < 1 || month > 12 || day < 1 || day > 31) return null;
   const d = new Date(year, month - 1, day);
   if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -173,4 +184,4 @@ function toDateMs(value) {
   return d ? d.getTime() : NaN;
 }
 
-module.exports = { normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate, toDateMs };
+module.exports = { maxPlausibleYear, normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate, toDateMs };

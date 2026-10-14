@@ -82,7 +82,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch, classifyOutletHostMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { dedupeByReviewKey } = require('./lib/final-key-dedup');
-const { parseDate } = require('./lib/date-utils');
+const { parseDate, maxPlausibleYear } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
@@ -2982,7 +2982,11 @@ showDirs.forEach(showId => {
         if (staleFlag) {
           // Texts no longer match — flag is stale, let this file through
           stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
-        } else if (!refAlsoDupe && !refWouldBeExcluded) {
+        } else if (!refAlsoDupe && !refWouldBeExcluded && !(isCircular && circularSameText)) {
+          // A mutual same-text pair (A.duplicateTextOf=B, B.duplicateTextOf=A)
+          // falls through to the circular tiebreak below: skipping here dropped
+          // BOTH files (BRO-5261 S11: the Times review of Stranger Things: The
+          // First Shadow, clive-davis <-> dominic-maxwell, was off the site).
           logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
@@ -4382,7 +4386,7 @@ showDirs.forEach(showId => {
         if (yearMatches) {
           const urlYears = yearMatches
             .map(m => parseInt(m.match(/\d{4}/)[0]))
-            .filter(y => y >= 1950 && y <= 2030);
+            .filter(y => y >= 1950 && y <= maxPlausibleYear({ atLeast: 2030 }));
           if (urlYears.length > 0) {
             const closestYear = urlYears.reduce((best, y) =>
               Math.abs(y - showYear) < Math.abs(best - showYear) ? y : best);
@@ -5276,15 +5280,15 @@ showDirs.forEach(showId => {
         publishDate: normalizePublishDate(data.publishDate) || (() => {
           // Backfill when source file has no publishDate (BRO-4252: article-id URL digits lose to a later text date)
           const urlDate = resolveBackfillPublishDate(data);
-          if (urlDate && urlDate.source === 'text-over-url-compact') stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
           if (urlDate && urlDate.date) {
-            stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
+            if (urlDate.source === 'text-over-url-compact') stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
+            else stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
             // Validate: if extracted date year is before show opens, log warning
             if (showDateMap[showId]) {
               const showYear = showDateMap[showId].getFullYear();
               const extractedYear = parseInt(urlDate.date.substring(0, 4));
               if (extractedYear < showYear - 1) {
-                console.log(`  [URL-DATE SUSPECT] ${showId}/${file}: URL date ${urlDate.date} is before show opens ${showYear} (${urlDate.source})`);
+                console.log(`  [URL-DATE SUSPECT] ${showId}/${file}: ${urlDate.source === 'text-over-url-compact' ? 'text' : 'URL'} date ${urlDate.date} is before show opens ${showYear} (${urlDate.source})`);
                 if (!stats.urlDateSuspect) stats.urlDateSuspect = [];
                 stats.urlDateSuspect.push({ showId, file, urlDate: urlDate.date, showYear, source: urlDate.source });
               }
@@ -6650,6 +6654,9 @@ if (stats.excerptMismatches > 0) {
 // URL date backfill summary
 if (stats.urlDateBackfills > 0) {
   console.log(`\n📅 URL date backfills: ${stats.urlDateBackfills} reviews gained publishDate from URL`);
+}
+if (stats.textDateBackfills > 0) {
+  console.log(`📅 Text date backfills: ${stats.textDateBackfills} reviews took a later text dateline over an article-id URL date`);
 }
 if (stats.openingDateFallbacks > 0) {
   console.log(`📅 Opening date fallbacks: ${stats.openingDateFallbacks} reviews used show opening date as publishDate`);

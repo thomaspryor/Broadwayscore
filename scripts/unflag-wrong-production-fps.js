@@ -31,7 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
-const { parseHistoricalDate } = require('./lib/date-utils');
+const { parseHistoricalDate, maxPlausibleYear } = require('./lib/date-utils');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -89,7 +89,7 @@ function extractDates(data) {
     // Year-only from URL
     const ym = data.url.match(/(?:[/\-_.])((?:19|20)\d\d)(?:[/\-_.]|$)/g);
     if (ym) {
-      result.urlYears = ym.map(y => parseInt(y.match(/\d{4}/)[0])).filter(y => y >= 1950 && y <= 2030);
+      result.urlYears = ym.map(y => parseInt(y.match(/\d{4}/)[0])).filter(y => y >= 1950 && y <= maxPlausibleYear({ atLeast: 2030 }));
     }
   }
 
