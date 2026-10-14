@@ -57,7 +57,7 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated } = require('./lib/review-filter');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim } = require('./lib/review-filter');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -4831,7 +4831,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // A forced refetch replaces text that came from the wrong page, so the score
   // read from that text is wrong too (the excerpt trigger above only fires
   // when there was no text before). BRO-5090.
-  if (shouldRescoreForcedReplacement(review, fullTextBeforeUpdate, cleanedText)) {
+  const forcedReplacement = shouldRescoreForcedReplacement(review, fullTextBeforeUpdate, cleanedText);
+  if (forcedReplacement) {
     data.needsRescore = true;
     markRescoreFlagged(data);
     data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
@@ -5881,6 +5882,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
+  // Stamped last so toLength names the text actually written (BRO-5254).
+  if (forcedReplacement) {
+    const trim = forcedRefetchTrim(fullTextBeforeUpdate, data.fullText);
+    if (trim) data.fullTextTrimmed = trim;
+  }
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
 
   // BRO-4431: a multi-show article (photo-caption sections, capsule round-ups

@@ -54,6 +54,20 @@ function shouldRescoreForcedReplacement(review, textBefore, textAfter) {
 }
 
 /**
+ * A forced refetch that brings back SHORTER text (the stored copy carried page
+ * chrome or another article) must say so on the record, or the push restore
+ * reads the old longer copy as richer content and puts it back
+ * (review-write-guard _deliberateTextTrim). BRO-5254: all 10 Variety refetches
+ * were reverted this way. Returns the breadcrumb, or null when nothing shrank.
+ */
+const FORCED_REFETCH_TRIM_REASON = 'forced refetch replaced wrong-page text (BRO-5254)';
+function forcedRefetchTrim(textBefore, textAfter, at) {
+  if (typeof textBefore !== 'string' || typeof textAfter !== 'string' || !textAfter) return null;
+  if (textAfter.length >= textBefore.length) return null;
+  return { reason: FORCED_REFETCH_TRIM_REASON, fromLength: textBefore.length, toLength: textAfter.length, at: at || new Date().toISOString() };
+}
+
+/**
  * A truncated row's score was read from partial text. When a fetch replaces that
  * text with a substantially longer body, the score must be redone (BRO-5243:
  * truncated WSJ rows completed by the backfill were never rescored, because the
@@ -66,4 +80,4 @@ function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, tex
   return before > 0 && after >= before + 500 && after >= before * 1.25;
 }
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated };
+module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON };
