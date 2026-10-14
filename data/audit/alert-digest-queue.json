@@ -766,5 +766,35 @@
       }
     ],
     "queuedAt": "2026-10-14T17:21:12.980Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2735-pending-stubs",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2735-pending-stubs",
+    "description": "land.yml did not land land/bro-2735-pending-stubs: the unit-tests-node gate went red at abf2c5465a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38604966859",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2735-pending-stubs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "abf2c5465a068d2e3600e15a3f24dc099fd86434"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38604966859"
+      }
+    ],
+    "queuedAt": "2026-10-14T17:53:26.728Z"
   }
 ]
