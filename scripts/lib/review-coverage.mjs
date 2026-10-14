@@ -19,10 +19,10 @@
 //
 // One implementation for both enforcement points:
 //   - land gate:   land-preflight.mjs runHook -> landGateDecision (blocks a land/* push)
-//   - Stop hook:   .claude/hooks/lib/stop-review-coverage.sh runs `--stop-hook` (a final 'SAFE TO EXIT'
-//                  after a hollow ship-check is refused). Deliberately not verify-edits.sh, which is a
-//                  copy of a Mac master (cloud-parity.json), and in hooks/lib so the top-level hook-file
-//                  ceiling (V1-V3-dispatch-status.test.mjs) is untouched.
+//   - Stop hook:   .claude/hooks/stop-review-coverage.sh runs `--stop-hook` (a final 'SAFE TO EXIT' after a
+//                  hollow ship-check is refused). Deliberately not verify-edits.sh, a copy of a Mac master
+//                  (cloud-parity.json). Top-level because scripts/install-home-claude-config.js wires only
+//                  .claude/hooks/<name>.sh into home-rooted cloud sessions (a hooks/lib one never ran live).
 //
 // Rules (cloud only, CLAUDE_CODE_REMOTE=true):
 //   land gate  - a `git push ... land/*` over 30 gated lines needs complete ship-check coverage, plus
