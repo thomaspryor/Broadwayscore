@@ -222,7 +222,7 @@ export function walkTranscript(transcriptPath) {
         }
         if (c.type === 'tool_result') {
           const body = normalizeToolResultContent(c.content);
-          events.push({ kind: 'tool_result', tool_use_id: c.tool_use_id, content: body, ts, messageId });
+          events.push({ kind: 'tool_result', tool_use_id: c.tool_use_id, content: body, isError: c.is_error === true, ts, messageId });
           // Tool results may include image paths from attached files
           if (containsImageAttachment(body)) {
             events.push({ kind: 'attachment', detail: 'tool_result_image', ts, messageId });
