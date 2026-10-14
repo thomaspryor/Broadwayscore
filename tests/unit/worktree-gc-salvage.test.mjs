@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 
 const require = createRequire(import.meta.url);
 const { parseStatusZ, evaluateEligibility, resolveSalvageRoot } = require('../../scripts/lib/worktree-gc-salvage.js');
@@ -23,7 +24,9 @@ const REPOS_HELPER = fileURLToPath(new URL('../../scripts/lib/worktree-gc-repos.
 const ROOTS = [];
 after(() => { for (const r of ROOTS) fs.rmSync(r, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-const OLD = new Date(Date.now() - 3 * 3600 * 1000);
+// mtimes are compared by the GC child process on the REAL clock, so stamp them
+// from realNowMs() — Date.now() is shifted under audit-time-bomb-tests (BRO-5209).
+const OLD = new Date(realNowMs() - 3 * 3600 * 1000);
 const note = (wt, rel, body = 'session note\n', when = OLD) => {
   const f = path.join(wt, rel);
   fs.mkdirSync(path.dirname(f), { recursive: true });
@@ -58,7 +61,7 @@ function fixture() {
   fs.appendFileSync(path.join(wt('wt-tracked'), 'src/real.ts'), 'export const b = 2;\n');
   note(wt('wt-locked'), 'STATE.md');
   git(repo, 'worktree', 'lock', wt('wt-locked'), '--reason', 'BRO-4815 fixture');
-  note(wt('wt-fresh'), 'STATE.md', 'just written\n', new Date());
+  note(wt('wt-fresh'), 'STATE.md', 'just written\n', new Date(realNowMs()));
   fs.symlinkSync('/etc/hosts', path.join(wt('wt-link'), 'link.txt'));
   return { tmp, repo, wt, salvage: path.join(tmp, 'salvage') };
 }
