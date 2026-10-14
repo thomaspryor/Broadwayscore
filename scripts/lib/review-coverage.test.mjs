@@ -114,11 +114,11 @@ test('checkReviewCoverage: blocks a thin review, ignores NO-LAND-PREFLIGHT, pass
   const targets = landPushTargets(cmd);
   assert.equal(targets.length, 1);
   const stats = { files: [], totalLines: 120 };
-  const run = (command, events) => checkReviewCoverage({ command, cwd: ROOT, targets: landPushTargets(command), env: CLOUD, seams: { events, stats } });
+  const run = (command, events) => checkReviewCoverage({ command, cwd: ROOT, targets: landPushTargets(command), env: CLOUD, seams: { events, stats, noLog: true } });
   assert.equal(run(cmd, ev(skill())).decision, 'block');
   assert.equal(run(`${cmd} # NO-LAND-PREFLIGHT: rebase is known to conflict here`, ev(skill())).decision, 'block');
   assert.equal(run(cmd, ev(skill(), agent(), curl())).decision, 'allow');
-  assert.equal(checkReviewCoverage({ command: cmd, cwd: ROOT, targets, env: {}, seams: { events: ev(skill()), stats } }), null);
+  assert.equal(checkReviewCoverage({ command: cmd, cwd: ROOT, targets, env: {}, seams: { events: ev(skill()), stats, noLog: true } }), null);
 });
 
 test('walkTranscript surfaces is_error on tool results', () => {
@@ -330,8 +330,24 @@ test('review-ship-check findings: build recognition, code-review-only sessions, 
   assert.equal(stopHookDecision({ lastMessage: 'Reviewed.\n\nSAFE TO EXIT', events: cr, env: CLOUD }).decision, 'allow', 'pure code-review is not held to the ship-check chain');
   const src = { files: [{ path: 'src/lib/x.ts', added: 40, deleted: 0 }], totalLines: 40 };
   const cmd = 'git push origin HEAD:refs/heads/land/bro-1-x';
-  const res1 = checkReviewCoverage({ command: cmd, cwd: ROOT, targets: landPushTargets(cmd), env: CLOUD, seams: { events: full, stats: src } });
+  const res1 = checkReviewCoverage({ command: cmd, cwd: ROOT, targets: landPushTargets(cmd), env: CLOUD, seams: { events: full, stats: src, noLog: true } });
   assert.equal(res1.decision, 'block', 'src diff without a build is blocked through checkReviewCoverage');
   assert.match(res1.message, /npm run build/);
-  assert.equal(checkReviewCoverage({ command: cmd, cwd: ROOT, targets: landPushTargets(cmd), env: CLOUD, seams: { events: [...full, ...ev(tool('Bash', { command: 'npm run build' }))], stats: src } }).decision, 'allow');
+  assert.equal(checkReviewCoverage({ command: cmd, cwd: ROOT, targets: landPushTargets(cmd), env: CLOUD, seams: { events: [...full, ...ev(tool('Bash', { command: 'npm run build' }))], stats: src, noLog: true } }).decision, 'allow');
+});
+
+test('a push chained after a commit in the same command is still judged (it used to be skipped)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-chain-'));
+  const sh = (cwd, c) => spawnSync('bash', ['-c', c], { cwd, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t', GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' } });
+  sh(dir, 'git init -q --bare origin.git && git clone -q origin.git work 2>/dev/null; cd work && git checkout -q -b main && mkdir -p scripts/lib && echo base > scripts/lib/base.mjs && git add -A && git commit -q -m base && git push -q origin main');
+  const work = path.join(dir, 'work');
+  const cmd = 'git add -A && git commit -q -m x && git push origin HEAD:refs/heads/land/bro-1-x';
+  const run = (events) => checkReviewCoverage({ command: cmd, cwd: work, targets: landPushTargets(cmd), env: CLOUD, seams: { events, noLog: true } });
+  assert.equal(landPushTargets(cmd)[0].push.headMovedBefore, true);
+  fs.writeFileSync(path.join(work, 'scripts', 'lib', 'small.mjs'), '// tiny\n'.repeat(5));
+  assert.equal(run(ev(skill())).decision, 'skip', '5 untracked lines are under the budget');
+  fs.writeFileSync(path.join(work, 'scripts', 'lib', 'big.mjs'), '// a line\n'.repeat(60));
+  assert.equal(run(ev(skill())).decision, 'block', 'a chained commit-and-push of 60 new lines with a hollow review is blocked');
+  assert.equal(run(ev(skill(), agent(), curl())).decision, 'allow');
+  fs.rmSync(dir, { recursive: true, force: true });
 });

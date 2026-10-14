@@ -39,7 +39,7 @@ import { landPushTargets } from './push-command.mjs';
 // rebase/test-registry preflight below must keep working, so load them tolerantly (checkReviewCoverage
 // fails open when `rc` is null).
 const rc = await Promise.all([import('./transcript-scan.mjs'), import('./review-gate.mjs'), import('./review-coverage.mjs')])
-  .then(([t, g, c]) => ({ walkTranscript: t.walkTranscript, gatedDiffStats: g.gatedDiffStats, GATE_LINE_BUDGET: g.GATE_LINE_BUDGET, landGateDecision: c.landGateDecision }))
+  .then(([t, g, c]) => ({ walkTranscript: t.walkTranscript, gatedDiffStats: g.gatedDiffStats, GATE_LINE_BUDGET: g.GATE_LINE_BUDGET, GATED_PATH_RE: g.GATED_PATH_RE, landGateDecision: c.landGateDecision }))
   .catch(() => null);
 
 const require = createRequire(import.meta.url);
@@ -683,6 +683,34 @@ function pushDir(cwd, p) {
 }
 
 /**
+ * Gated lines a push chained after a HEAD-moving command (`git add -A && git commit && git push …`) will
+ * carry: the working tree against origin/main, plus untracked new files. The pushed commit does not exist yet,
+ * so the normal range cannot be computed, and skipping it would let any chained commit-and-push evade the gate.
+ */
+function pendingGatedStats(root) {
+  const files = [];
+  let totalLines = 0;
+  const num = git(root, ['diff', '--numstat', 'origin/main', '--', 'src', 'scripts', '.github/workflows']);
+  if (!ok(num)) return { files, totalLines, error: 'git diff failed' };
+  for (const line of out(num).split('\n')) {
+    const m = /^(\d+|-)\t(\d+|-)\t(.+)$/.exec(line);
+    if (!m || !rc.GATED_PATH_RE.test(m[3])) continue;
+    const n = (m[1] === '-' ? 0 : Number(m[1])) + (m[2] === '-' ? 0 : Number(m[2]));
+    files.push({ path: m[3], added: n, deleted: 0 });
+    totalLines += n;
+  }
+  const untracked = git(root, ['ls-files', '--others', '--exclude-standard', '--', 'src', 'scripts', '.github/workflows']);
+  for (const f of ok(untracked) ? out(untracked).split('\n').filter(Boolean) : []) {
+    if (!rc.GATED_PATH_RE.test(f)) continue;
+    let n = 0;
+    try { n = fs.readFileSync(path.join(root, f), 'utf8').split('\n').length; } catch { /* unreadable: count nothing */ }
+    files.push({ path: f, added: n, deleted: 0 });
+    totalLines += n;
+  }
+  return { files, totalLines };
+}
+
+/**
  * BRO-5359: a cloud land push of real code needs a COMPLETE review first (Claude
  * review-panelist + an external reviewer after a real /ship-check). Run once per
  * command, independent of NO-LAND-PREFLIGHT (that bypass is for rebase/test-registry
@@ -697,18 +725,18 @@ export function checkReviewCoverage({ command, cwd, targets, env = process.env, 
     let root = null;
     for (const t of targets) {
       const p = t.push;
-      if (p.dirUnknown || p.headMovedBefore || (p.remote && p.remote !== 'origin')) continue;
+      if (p.dirUnknown || (p.remote && p.remote !== 'origin')) continue;
       const top = git(pushDir(cwd, p), ['rev-parse', '--show-toplevel']);
       if (!ok(top)) continue;
       root = out(top);
-      const stats = seams.stats || rc.gatedDiffStats(root, 'origin/main', t.src || 'HEAD');
+      const stats = seams.stats || (p.headMovedBefore ? pendingGatedStats(root) : rc.gatedDiffStats(root, 'origin/main', t.src || 'HEAD'));
       if (!stats.error) {
         gatedLines = Math.max(gatedLines, stats.totalLines);
         if ((stats.files || []).some((f) => f.path.startsWith('src/'))) touchesSrc = true;
       }
     }
     const v = rc.landGateDecision({ command, events, gatedLines, budget: rc.GATE_LINE_BUDGET, touchesSrc, env });
-    if (root) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines });
+    if (root && !seams.noLog) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines });
     return v;
   } catch {
     return null;
