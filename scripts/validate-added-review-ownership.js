@@ -91,6 +91,31 @@ function listAddedReviewFiles(cwd, base) {
 }
 
 /**
+ * Urls of review files with text DELETED between base and HEAD, read from base. A file
+ * added under one of these urls in the same diff is a move (review-file-op
+ * move, rename, re-home), never a stale re-creation: dropping it while the
+ * delete goes through loses the review (BRO-5373, broadwayworld--kat-mokrynski
+ * moved to the Apollo 2025 show, 2026-10-14).
+ */
+function listDeletedReviewUrls(cwd, base) {
+  const out = execSync(`git diff --no-renames --diff-filter=D --name-only ${base} HEAD`, {
+    cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
+  });
+  const keys = new Set();
+  for (const rel of out.split('\n').map((l) => l.trim()).filter(isReviewFilePath)) {
+    try {
+      const data = JSON.parse(execSync(`git show "${base}:${rel}"`, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+      // Only a deleted file that carried a review is a move source. A text-less
+      // stub deleted beside a re-creation is the --no-renames violator case.
+      if (!data || String(data.fullText || '').trim().length < NEAR_EMPTY_BODY_CHARS) continue;
+      const key = data.url ? canonicalArticleKey(data.url) : null;
+      if (key) keys.add(key);
+    } catch { /* unreadable at base: nothing to protect */ }
+  }
+  return keys;
+}
+
+/**
  * NEW review files (untracked or staged-added) relative to HEAD — pre-commit
  * mode. `-uall` is required: a brand-new show directory otherwise reports as
  * one `?? show-dir/` entry and every file inside it would be missed.
@@ -354,7 +379,13 @@ function main() {
   // Force a fresh index: the whole point is validating against the
   // just-rebased tree, never a cached snapshot.
   _resetUrlOwnershipIndex();
-  const drops = decideOwnershipDrops(candidates, cwd);
+  let drops = decideOwnershipDrops(candidates, cwd);
+  if (base && drops.length) {
+    const moved = listDeletedReviewUrls(cwd, base);
+    const kept = drops.filter((d) => moved.has(canonicalArticleKey(d.url)));
+    for (const d of kept) console.log(`::warning::[ownership-gate] keeping ${d.file}: its url was deleted elsewhere in this push, so it is a move, not a re-creation`);
+    drops = drops.filter((d) => !kept.includes(d));
+  }
   if (drops.length === 0) {
     console.log(`[ownership-gate] ${candidates.length} new file(s) — all pass cross-show + same-show URL ownership`);
     return;
@@ -363,7 +394,11 @@ function main() {
     const where = d.kind === 'same-show'
       ? `a sibling in the same show (${d.owner.file})`
       : `${d.owner.showId}/${d.owner.file}`;
-    console.log(`::warning::[ownership-gate] dropping ${d.file} — URL is live at ${where} (stale-checkout race): ${d.url}`);
+    // ::error:: so a drop is never silent (BRO-5373); the step still exits 0.
+    console.log(`::error::[ownership-gate] dropping ${d.file} — URL is live at ${where} (stale-checkout race): ${d.url}`);
+    if (process.env.GITHUB_STEP_SUMMARY && !dryRun) {
+      try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `- ownership-gate dropped \`${d.file}\` (url live at ${where})\n`); } catch { /* summary is best-effort */ }
+    }
     if (dryRun) continue;
     if (base) {
       execSync(`git rm -f -q -- "${d.file}"`, { cwd });
@@ -392,4 +427,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { decideOwnershipDrops, listNewReviewFiles, listAddedReviewFiles };
+module.exports = { decideOwnershipDrops, listNewReviewFiles, listAddedReviewFiles, listDeletedReviewUrls };

@@ -1691,6 +1691,7 @@ on:
       - 'scripts/reverify-stale-cv-promoted.js'
       - 'scripts/reclassify-invalid-reviews.js'
       - 'scripts/audit-listing-page-text.js'
+      - 'scripts/validate-added-review-ownership.js'
       - 'scripts/reverify-nulled-cv-promoted.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.

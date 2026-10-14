@@ -276,6 +276,38 @@ describe('CLI --base mode — committed re-creation dropped via git rm + commit'
   });
 });
 
+describe('CLI --base mode — a move is never dropped (BRO-5373)', () => {
+  const SCRIPT = path.resolve('scripts/validate-added-review-ownership.js');
+  const git = (cwd, cmd) => execSync(`git ${cmd}`, { cwd, encoding: 'utf8' });
+  // Replays broadwayworld--kat-mokrynski: moved between shows while another
+  // show still held the url live. The gate dropped the moved file, the source
+  // delete went through, and the review was lost.
+  test('an added file whose url was deleted elsewhere in the push is kept', () => {
+    const repo = path.join(tmpDir, 'repo');
+    fs.mkdirSync(repo);
+    git(repo, 'init -q -b main');
+    git(repo, 'config user.email t@t');
+    git(repo, 'config user.name t');
+    for (const [show, file, data] of [
+      [SIBLING_SHOW, 'thestage--dave-fargnoli.json', { url: SOHO_URL, fullText: 'The review being moved, a full body of text. '.repeat(40) }],
+      ['third-show-2026', 'thestage--dave-fargnoli.json', { url: SOHO_URL, fullText: 'a live copy elsewhere' }],
+    ]) {
+      fs.mkdirSync(path.join(repo, show), { recursive: true });
+      fs.writeFileSync(path.join(repo, show, file), JSON.stringify(data));
+    }
+    git(repo, 'add -A');
+    git(repo, 'commit -qm base');
+    git(repo, 'branch base-marker');
+    fs.mkdirSync(path.join(repo, OWNER_SHOW), { recursive: true });
+    git(repo, `mv ${SIBLING_SHOW}/thestage--dave-fargnoli.json ${OWNER_SHOW}/thestage--dave-fargnoli.json`);
+    git(repo, 'commit -qm move');
+    const out = execSync(`node ${SCRIPT} --base=base-marker`, { cwd: repo, encoding: 'utf8' });
+    assert.match(out, /keeping tender-by-dave-harris-off-west-end-2026\/thestage--dave-fargnoli\.json: its url was deleted elsewhere/);
+    assert.equal(fs.existsSync(path.join(repo, OWNER_SHOW, 'thestage--dave-fargnoli.json')), true);
+    assert.equal(git(repo, 'log -1 --format=%s').trim(), 'move', 'nothing dropped, no drop commit');
+  });
+});
+
 describe('decideOwnershipDrops — same-show resurrection race (BRO-3092)', () => {
   const WSJ_URL = 'http://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
   const SHOW = 'the-addams-family-2010';
