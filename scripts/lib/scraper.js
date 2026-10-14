@@ -102,11 +102,11 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   // Aug 5 cron). BD web_unlocker2 fetches IBDB fine — let it go straight there.
   'broadway.com',       // Schedule/runtime pages — public, needs JS for some content
   'broadway.org',       // Playbill/closing dates — public HTML
-  'playbill.com',       // Production pages — public static HTML, but the "last
-                         // resort" Playwright tier waits for networkidle, and
-                         // playbill.com's ad/analytics XHRs never let it settle
-                         // (times out at 30s, same failure mode as Signature
-                         // Theatre). Fast domcontentloaded works fine (BRO-2023).
+  'playbill.com',       // Production pages — public static HTML. Its ad/analytics
+                         // XHRs never let networkidle settle (BRO-2023, when the
+                         // Playwright tier still waited for it and timed out at
+                         // 30s); fast domcontentloaded skips even the bounded
+                         // settle that replaced that wait (BRO-2729).
   'web.playbill.com',   // Same site, alternate hostname seen in cached URLs
                          // (data/playbill-urls.json) — same fix applies.
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
@@ -211,9 +211,23 @@ function playwrightNavigationPlan(options = {}) {
   return { waitUntil: 'domcontentloaded', settleMs: settle ? PLAYWRIGHT_SETTLE_MS : 0 };
 }
 
+/** The bounded networkidle settle after a DOMContentLoaded goto (BRO-2729).
+ * A settle TimeoutError means "read what rendered"; any other error (target
+ * closed, crash) is rethrown so fetchPage falls through to the next tier. */
+async function settleAfterNavigation(page, nav, url) {
+  if (!(nav.settleMs > 0)) return;
+  try {
+    await page.waitForLoadState('networkidle', { timeout: nav.settleMs });
+  } catch (e) {
+    if (e?.name !== 'TimeoutError') throw e;
+    console.log(`  ⏱️  Playwright: network still busy after ${nav.settleMs / 1000}s at ${url} — reading the DOMContentLoaded page`);
+  }
+}
+
 // --- Domains whose pages never reach networkidle (BRO-2763) ---
-// Ad/analytics-heavy WordPress sites: Playwright's default networkidle wait
-// times out at 30s on every call. domcontentloaded is enough for them.
+// Ad/analytics-heavy WordPress sites that never go network-idle. Before
+// BRO-2729 the default networkidle goto timed out at 30s on every call; now
+// listing them only skips the 15s bounded settle, which they always use up.
 const NEVER_IDLE_DOMAINS = new Set([
   'westendtheatre.com',
   'britishtheatreguide.info',
@@ -1227,14 +1241,7 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
     // fast/never-idle/selector callers keep no settle, as before.
     const nav = playwrightNavigationPlan(options);
     await page.goto(url, { waitUntil: nav.waitUntil, timeout: 30000 });
-    if (nav.settleMs > 0) {
-      try {
-        await page.waitForLoadState('networkidle', { timeout: nav.settleMs });
-      } catch (e) {
-        if (e?.name !== 'TimeoutError') throw e;
-        console.log(`  ⏱️  Playwright: network still busy after ${nav.settleMs / 1000}s at ${url} — reading the DOMContentLoaded page`);
-      }
-    }
+    await settleAfterNavigation(page, nav, url);
     // Optional: wait for a specific selector to appear before reading content.
     // Required when networkidle times out (e.g. Signature Theatre's
     // /productions/ — see scripts/lib/venue-listing-discover.js for the
@@ -2197,6 +2204,7 @@ module.exports = {
   NEVER_IDLE_DOMAINS,
   playwrightNavigationPlan,
   PLAYWRIGHT_SETTLE_MS,
+  settleAfterNavigation,
   recordUrlMismatch,
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
