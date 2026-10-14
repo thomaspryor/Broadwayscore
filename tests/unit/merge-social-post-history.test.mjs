@@ -77,3 +77,20 @@ test('acceptance against real data/social-post-history.json shape', () => {
   assert.equal(stats.added, 0);
   assert.equal(merged.posts.length, real.posts.length);
 });
+
+test('a post the writer pruned is not resurrected from the remote (BRO-5261)', () => {
+  const { MAX_POSTS } = require('../../scripts/lib/merge-social-post-history.js');
+  const day = (i) => new Date(Date.UTC(2025, 0, 1) + i * 86400000).toISOString();
+  const all = Array.from({ length: MAX_POSTS + 1 }, (_, i) => ({ tweetId: `t${i}`, date: day(i), type: 'x', showId: 's' }));
+  const remote = { posts: all.slice(0, MAX_POSTS) };          // before the prune
+  const ours = { posts: all.slice(1) };                        // writer added t365, pruned t0
+  const { merged, stats } = mergeSocialPostHistory(ours, remote);
+  assert.equal(merged.posts.length, MAX_POSTS);
+  assert.equal(merged.posts.some((p) => p.tweetId === 't0'), false);
+  assert.equal(stats.droppedOld, 1);
+  // A concurrent run's new post still survives the cap.
+  const racing = { posts: [...all.slice(1, MAX_POSTS), { tweetId: 'other', date: day(MAX_POSTS + 1), type: 'x', showId: 'o' }] };
+  const r2 = mergeSocialPostHistory(ours, racing).merged.posts;
+  assert.ok(r2.some((p) => p.tweetId === 'other') && r2.some((p) => p.tweetId === `t${MAX_POSTS}`));
+  assert.equal(r2.length, MAX_POSTS);
+});

@@ -581,7 +581,8 @@ async function checkDeadManSwitch(history) {
 // ─── History Pruning ─────────────────────────────────────────
 
 function pruneHistory(history) {
-  const MAX_ENTRIES = 365;
+  // Shared with the merge, which applies the same cap (BRO-5261).
+  const MAX_ENTRIES = require('./lib/merge-social-post-history').MAX_POSTS;
   if (history.posts.length > MAX_ENTRIES) {
     const pruned = history.posts.length - MAX_ENTRIES;
     history.posts = history.posts.slice(-MAX_ENTRIES);
@@ -693,7 +694,8 @@ async function main() {
   console.log(`[Social] Done. ${tweetResult.success ? 'Posted successfully.' : 'Post failed or skipped.'}`);
 }
 
-main().catch(err => {
+// Guarded so requiring this file (a test, a REPL) cannot post (BRO-5261).
+if (require.main === module) main().catch(err => {
   console.error('[Social] Fatal error:', err);
   process.exit(1);
 });
