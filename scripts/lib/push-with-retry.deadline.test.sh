@@ -333,6 +333,53 @@ else
   echo "FAIL[10]: verify_content_survived no longer disables the deadline clamp around its fetches"; fail=1
 fi
 
+# Case 11 (BRO-5261 retro-review): a backoff skipped because it would end past
+# the deadline must END the loop. It used to skip only the sleep, so the loop
+# top (still under the deadline) ran attempt after attempt with no backoff.
+# ext::false rejects instantly, so every backoff (>=5s) crosses a 6s deadline.
+TMP11=$(mktemp -d)
+setup_repo "$TMP11"
+git -C "$TMP11" config protocol.ext.allow always
+git -C "$TMP11" remote add origin "ext::false"
+printf '{ "ok": 11 }\n' > "$TMP11/state.json"
+git -C "$TMP11" add state.json
+# A loaded runner can spend the whole 6s budget before attempt 1 (the loop-top
+# break then fires first and nothing here is exercised): retry, never pass vacuously.
+for _try11 in 1 2 3; do
+  out11=$( cd "$TMP11" && PUSH_DEADLINE_SEC=6 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP11/f.jsonl" bash "$PUSH_SCRIPT" 5 main 2>&1 ); code11=$?
+  grep -q "Pre-resolution push (attempt 1)" <<<"$out11" && break
+done
+if ! grep -q "Pre-resolution push (attempt 1)" <<<"$out11"; then
+  echo "FAIL[11]: startup used the 6s budget 3 times; attempt 1 never ran. Output:"; echo "$out11"; fail=1
+elif [ "$code11" -eq 0 ]; then
+  echo "FAIL[11]: expected a failed push, got exit 0"; fail=1
+elif grep -q "Pre-resolution push (attempt 2)" <<<"$out11"; then
+  echo "FAIL[11]: a no-backoff attempt 2 ran after the backoff was skipped for the deadline. Output:"; echo "$out11"; fail=1
+elif ! grep -q "overall deadline 6s exceeded by the [0-9]*s backoff after attempt 1" <<<"$out11"; then
+  echo "FAIL[11]: no deadline break at the skipped backoff. Output:"; echo "$out11"; fail=1
+else
+  echo "PASS[11]: skipped backoff ends the loop (no back-to-back attempts past the budget)"
+fi
+rm -rf "$TMP11"
+
+# Case 12: a leading-zero PUSH_DEADLINE_SEC ("0009") is base 10, not an octal
+# error that kills the script inside the loop under set -e.
+TMP12=$(mktemp -d)
+setup_repo "$TMP12"
+git -C "$TMP12" config protocol.ext.allow always
+git -C "$TMP12" remote add origin "ext::false"
+printf '{ "ok": 12 }\n' > "$TMP12/state.json"
+git -C "$TMP12" add state.json
+out12=$( cd "$TMP12" && PUSH_DEADLINE_SEC=0009 PUSH_API_FALLBACK_DISABLE=1 PUSH_SKIP_FAILURE_LEDGER=1 PUSH_FAILURE_LOG="$TMP12/f.jsonl" bash "$PUSH_SCRIPT" 5 main 2>&1 )
+if grep -q "value too great for base\|invalid number" <<<"$out12"; then
+  echo "FAIL[12]: leading-zero deadline crashed the arithmetic. Output:"; echo "$out12"; fail=1
+elif ! grep -q "All push attempts failed" <<<"$out12"; then
+  echo "FAIL[12]: script died before its exhaustion path. Output:"; echo "$out12"; fail=1
+else
+  echo "PASS[12]: PUSH_DEADLINE_SEC=0009 read as 9s"
+fi
+rm -rf "$TMP12"
+
 if [ "$fail" -ne 0 ]; then
   echo "push-with-retry deadline guard test: FAILED"; exit 1
 fi

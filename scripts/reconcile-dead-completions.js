@@ -247,7 +247,9 @@ async function correctLinearIssue(identifier, taskId, opts = {}) {
   if (!shouldReopenLinearIssue(issue)) return false;
   const texts = [issue.title, issue.description,
     ...(((issue.comments && issue.comments.nodes) || []).map((c) => c && c.body))];
-  const landed = checkWorkLanded({ taskId: taskId || `linear:${identifier}`, texts, entries: freshEntries }, opts.git || makeGitProbe());
+  // Own-id markers ([linear:BRO-N]) only from the description: a comment can
+  // quote another card's marker.
+  const landed = checkWorkLanded({ taskId: taskId || `linear:${identifier}`, texts, ownTexts: [issue.description], ownIds: [identifier], entries: freshEntries }, opts.git || makeGitProbe());
   if (landed.landed) {
     if (typeof opts.onLanded === 'function') opts.onLanded(landed);
     return 'landed';
@@ -275,7 +277,7 @@ function partitionLandedCompletions(flagged, tasks, entries, git) {
   for (const f of flagged || []) {
     const task = byId.get(String(f.id)) || {};
     const ownIds = [task.linearIdentifier, task.linearId].filter(Boolean);
-    const verdict = checkWorkLanded({ taskId: f.id, texts: [task.subject, task.description], entries, ownIds }, git);
+    const verdict = checkWorkLanded({ taskId: f.id, texts: [task.subject, task.description], ownTexts: [task.description], entries, ownIds }, git);
     if (verdict.landed) landed.push({ ...f, landedReason: verdict.reason });
     else reopen.push(f);
   }

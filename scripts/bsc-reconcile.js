@@ -66,7 +66,7 @@ const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const { setAppFocus, osActivateCmuxApp, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
-const { readLease, releaseLease, pidLooksLikeClaude, leaseLooksLive, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
+const { readLease, releaseLease, pidLooksLikeClaude, leaseLooksLive, PID_NULL_GRACE_MS, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
 const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 // BRO-4054: red-main signature cards are dispatched by THIS tick (the most
@@ -83,7 +83,7 @@ const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
 const MAX_RETRIES_PER_TICK = 2;
 const MAX_RETRIES_PER_DAY = 6;
-const GRACE_MS = 2 * 60 * 1000; // startup window before pid:null counts as dead
+const GRACE_MS = PID_NULL_GRACE_MS; // startup window before pid:null counts as dead (shared with leaseLooksLive)
 // Same per-tick throttle shape as MAX_RETRIES_PER_TICK above (task #883,
 // ship-check catch): a first-ever run against a backlog with several
 // genuinely-dead sessions would otherwise re-dispatch all of them in one
@@ -600,6 +600,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     readLedgerEntriesFn = ledger.readEntries,
     listWorkspacesFn = cmuxws.listWorkspaces,
     readLeaseFn = readLease,
+    pidLooksLikeClaudeFn = pidLooksLikeClaude,
     fetchCardFn = (notionId) => {
       const r = spawnSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', notionId], { encoding: 'utf8', timeout: 60_000 });
       if (r.status !== 0) return null;
@@ -708,7 +709,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!hasSweptField && String(task.description || '').includes(UNTRACKED_MARKER)) continue;
     if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
-    if (leaseLooksLive(lease)) { skipped.push({ id, why: 'live-lease' }); continue; }
+    if (leaseLooksLive(lease, pidLooksLikeClaudeFn, nowFn())) { skipped.push({ id, why: 'live-lease' }); continue; }
     // BRO-2993: cmux couldn't be asked this tick — uncertainty must not
     // authorize action, so treat every remaining candidate as if its tab
     // were live rather than falling through with an unverified empty list.

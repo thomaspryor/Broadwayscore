@@ -126,7 +126,7 @@ DEADLINE_HIT=0
 # file's mutex/trap/EXIT-handler side effects. Same env var names/defaults
 # so a caller tuning one tunes both consistently.
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
-case "$GIT_NET_TIMEOUT_SEC" in ''|*[!0-9]*) GIT_NET_TIMEOUT_SEC=90 ;; esac
+case "$GIT_NET_TIMEOUT_SEC" in ''|*[!0-9]*) GIT_NET_TIMEOUT_SEC=90 ;; *) GIT_NET_TIMEOUT_SEC=$((10#$GIT_NET_TIMEOUT_SEC)) ;; esac  # "0090" is 90, not octal
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}
 
 # BRO-3125: PUSH_API_DEADLINE_SEC used to be checked only BETWEEN attempts, so

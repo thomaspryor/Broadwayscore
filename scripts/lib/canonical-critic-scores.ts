@@ -29,7 +29,7 @@
  * float and aren't publishing it.
  */
 
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, readdirSync, existsSync, realpathSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -92,7 +92,15 @@ export function getCriticScoreMap(): Map<string, number | null> {
 
 /** CLI: `npx tsx scripts/lib/canonical-critic-scores.ts > /tmp/critic-scores.json`
  *  Dumps the integer map as JSON so JS scripts (which can't import TS) can read it. */
-if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+// realpath both sides: import.meta.url is already the real path, so a
+// symlinked argv[1] (macOS /tmp -> /private/tmp) never matched (BRO-2312 cousin).
+const isCli = (() => {
+  if (!process.argv[1]) return false;
+  const self = fileURLToPath(import.meta.url);
+  if (self === resolve(process.argv[1])) return true; // literal first: needs no filesystem access
+  try { return self === realpathSync(resolve(process.argv[1])); } catch { return false; }
+})();
+if (isCli) {
   const out: Record<string, number | null> = {};
   for (const [id, score] of getCriticScoreMap()) out[id] = score;
   process.stdout.write(JSON.stringify(out, null, 2));

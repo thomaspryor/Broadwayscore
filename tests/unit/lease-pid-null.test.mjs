@@ -5,23 +5,41 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { leaseLooksLive } = require('../../scripts/lib/bsc-runner.js');
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
+const { leaseLooksLive, PID_NULL_GRACE_MS } = require('../../scripts/lib/bsc-runner.js');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('leaseLooksLive: pid:null is live, dead pid is dead, no lease is dead', () => {
+const NOW = Date.UTC(2026, 9, 14, 12);
+const ago = (ms) => new Date(NOW - ms).toISOString();
+
+test('leaseLooksLive: pid:null is live inside the startup grace, dead pid is dead, no lease is dead', () => {
   const never = () => false;
-  assert.equal(leaseLooksLive({ pid: null }, never), true);
-  assert.equal(leaseLooksLive({}, never), true);
-  assert.equal(leaseLooksLive({ pid: 123 }, never), false);
-  assert.equal(leaseLooksLive({ pid: 123 }, () => true), true);
-  assert.equal(leaseLooksLive(null, () => true), false);
-  assert.equal(leaseLooksLive(undefined, () => true), false);
+  assert.equal(leaseLooksLive({ pid: null, acquiredAt: ago(5_000) }, never, NOW), true);
+  assert.equal(leaseLooksLive({ acquiredAt: ago(5_000) }, never, NOW), true);
+  assert.equal(leaseLooksLive({ pid: 123 }, never, NOW), false);
+  assert.equal(leaseLooksLive({ pid: 123 }, () => true, NOW), true);
+  assert.equal(leaseLooksLive(null, () => true, NOW), false);
+  assert.equal(leaseLooksLive(undefined, () => true, NOW), false);
 });
 
-test('leaseLooksLive: default liveness check treats pid:null as live without consulting ps', () => {
-  assert.equal(leaseLooksLive({ pid: null }), true);
+test('leaseLooksLive: pid:null past the grace (crashed before spawn) or with no acquiredAt reads dead', () => {
+  const always = () => true; // never consulted for pid:null
+  assert.equal(leaseLooksLive({ pid: null, acquiredAt: ago(PID_NULL_GRACE_MS - 1) }, always, NOW), true);
+  assert.equal(leaseLooksLive({ pid: null, acquiredAt: ago(PID_NULL_GRACE_MS) }, always, NOW), false);
+  assert.equal(leaseLooksLive({ pid: null, acquiredAt: ago(6 * 3600_000) }, always, NOW), false);
+  assert.equal(leaseLooksLive({ pid: null }, always, NOW), false, 'malformed lease (no acquiredAt) is not a starting job');
+  assert.equal(leaseLooksLive({}, always, NOW), false);
+});
+
+test('leaseLooksLive: grace is the one bsc-reconcile orphan sweeps use', () => {
+  const { GRACE_MS } = require('../../scripts/bsc-reconcile.js');
+  assert.equal(GRACE_MS, PID_NULL_GRACE_MS);
+});
+
+test('leaseLooksLive: default liveness check treats a fresh pid:null as live without consulting ps', () => {
+  assert.equal(leaseLooksLive({ pid: null, acquiredAt: new Date().toISOString() }), true);
   assert.equal(leaseLooksLive({ pid: 2 ** 22 + 12345 }), false);
 });
 

@@ -48,12 +48,15 @@ const SHA_RE = /^[0-9a-f]{7,40}$/i;
 // ("regressed by commit abc1234") as often as fixes.
 const TEXT_SHA_RE = /\b(?:landed|merged|shipped|fixed)(?:\s+(?:as|in|at|via|by))?(?:\s+(?:commit|sha))?[:\s]+`?([0-9a-f]{7,40})\b|\bfix(?:ed)?\s+commit[:\s]+`?([0-9a-f]{7,40})\b/gi;
 // Cause-of-a-problem phrasing just before the sha disqualifies it.
-const SHA_NEGATIVE_CONTEXT_RE = /\b(?:regress\w*|broke\w*|break\w*|introduc\w*|caused|revert\w*|culprit)\b/i;
+// "not (yet) landed in", "partially fixed in", "never merged" say the work
+// is NOT on main either (BRO-5261 retro-review). Applied to PR links too.
+const SHA_NEGATIVE_CONTEXT_RE = /\b(?:regress\w*|broke\w*|break\w*|introduc\w*|caused|revert\w*|culprit|partial\w*|(?:not|never)\s+(?:yet\s+)?(?:landed|merged|shipped|fixed))\b/i;
 // Ledger events that certify the task's work reached origin/main
 // (ack-landed.js writes them after its own ancestry check). job-stranded's
 // `sha` is the job worktree HEAD, often just the base commit, so it is NOT
 // evidence and is ignored.
-const LANDED_LEDGER_EVENTS = new Set(['landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']);
+// One list, owned by dispatch-ledger.js (BRO-4662: hand copies drifted).
+const { LANDED_ACK_EVENTS: LANDED_LEDGER_EVENTS, latestAttemptForTask } = require('./dispatch-ledger.js');
 // This script's own auto-reopen notes (local REOPEN_MARKER line, Linear
 // "Auto-corrected ... by reconcile-dead-completions" comment) are never
 // evidence of anything.
@@ -78,7 +81,7 @@ function escapeRe(s) {
  * A BRO-N merely MENTIONED in the text ("follow-up to BRO-50") is never a
  * ref: a file naming BRO-50 says nothing about this task.
  */
-function taskRefsOf(taskId, texts = [], ownIds = []) {
+function taskRefsOf(taskId, ownTexts = [], ownIds = []) {
   const refs = new Set();
   const add = (raw) => {
     const id = String(raw || '').trim();
@@ -88,7 +91,7 @@ function taskRefsOf(taskId, texts = [], ownIds = []) {
   };
   add(taskId);
   for (const o of ownIds || []) add(o);
-  for (const t of texts) {
+  for (const t of ownTexts) {
     for (const m of String(t || '').matchAll(OWN_LINEAR_MARKER_RE)) refs.add(m[1]);
   }
   return [...refs];
@@ -131,12 +134,25 @@ function isSafeRepoPath(p) {
  *   for this taskId are read, for their `sha`).
  * @returns {{refs: string[], shas: string[], prNumbers: number[], keyFiles: string[]}}
  */
-function extractLandedEvidence({ taskId, texts = [], entries = [], ownIds = [] } = {}) {
+function extractLandedEvidence({ taskId, texts = [], ownTexts = texts, entries = [], ownIds = [] } = {}) {
   const shas = new Set();
   const prNumbers = new Set();
   const keyFiles = new Set();
-  for (const e of Array.isArray(entries) ? entries : []) {
+  const rows = Array.isArray(entries) ? entries : [];
+  // A landing certified for an EARLIER dispatch round does not cover the
+  // latest (dead) attempt: only ack rows for the latest attempt's jobId, or
+  // written after it, count (landedAckOverridesDeath's scoping, BRO-4075;
+  // BRO-5261 retro-review).
+  const latest = latestAttemptForTask(taskId, rows);
+  const latestTs = latest ? Date.parse(latest.ts || '') : NaN;
+  for (const e of rows) {
     if (!e || String(e.taskId) !== String(taskId) || !LANDED_LEDGER_EVENTS.has(e.event)) continue;
+    if (latest) {
+      const ts = Date.parse(e.ts || '');
+      const sameJob = latest.jobId && e.jobId === latest.jobId;
+      const after = Number.isFinite(latestTs) && Number.isFinite(ts) && ts > latestTs;
+      if (!sameJob && !after) continue;
+    }
     if (typeof e.sha === 'string' && SHA_RE.test(e.sha)) shas.add(e.sha.toLowerCase());
   }
   const cleanTexts = (texts || []).map(stripOwnNotes);
@@ -147,14 +163,17 @@ function extractLandedEvidence({ taskId, texts = [], entries = [], ownIds = [] }
       // All-digit tokens are almost always task/PR numbers, not shas.
       if (/[a-f]/i.test(sha) && !SHA_NEGATIVE_CONTEXT_RE.test(before)) shas.add(sha.toLowerCase());
     }
-    for (const m of t.matchAll(PR_URL_RE)) prNumbers.add(Number(m[1]));
+    for (const m of t.matchAll(PR_URL_RE)) {
+      // "Regression introduced by <PR link>" names a cause, not this task's landing.
+      if (!SHA_NEGATIVE_CONTEXT_RE.test(t.slice(Math.max(0, m.index - 60), m.index))) prNumbers.add(Number(m[1]));
+    }
     for (const m of t.matchAll(KEY_FILE_RE)) {
       const p = m[1].replace(/[.,;:)\]'"`]+$/, '');
       if (isSafeRepoPath(p)) keyFiles.add(p);
     }
   }
   return {
-    refs: taskRefsOf(taskId, cleanTexts, ownIds),
+    refs: taskRefsOf(taskId, (ownTexts || []).map(stripOwnNotes), ownIds),
     shas: [...shas],
     prNumbers: [...prNumbers],
     keyFiles: [...keyFiles],
@@ -221,12 +240,29 @@ function makeGitProbe({ ref = DEFAULT_REF, cwd = REPO_ROOT, run } = {}) {
       return memo(`p:${n}`, () => {
         const r = exec(['log', ref, '-F', `--grep=(#${n})`, `--grep=Merge pull request #${n} from`, '--format=%H%x09%s', '-n', '20']);
         if (r.status !== 0) return null;
-        // A revert of the PR names it too and must not count as its landing.
+        // --grep also matches commit BODIES ("supersedes (#N)"): only a
+        // SUBJECT naming the PR is its merge. A revert names it too: any
+        // revert on main means the effect may be gone, so not landed
+        // (conservative: the task stays reopenable).
+        const own = new RegExp(`\\(#${n}\\)\\s*$|^Merge pull request #${n} from `);
+        let landedSha = null;
+        let revertDecided = false;
         for (const line of String(r.stdout || '').split('\n')) {
           const [sha, subject = ''] = line.split('\t');
-          if (SHA_RE.test(sha || '') && !/^Revert\b/i.test(subject.trim())) return sha;
+          if (!SHA_RE.test(sha || '')) continue;
+          const subj = subject.trim();
+          // Newest first: the first revert-family subject decides. An even
+          // number of 'Revert "' prefixes restores the work, an odd one removes it.
+          if (!revertDecided && /^Revert\b/i.test(subj) && (subj.includes(`(#${n})`) || subj.includes(`#${n} `))) {
+            const depth = (subj.match(/^(?:Revert ")+/i) || [''])[0].length / 'Revert "'.length;
+            if (depth % 2 === 1) return null;
+            revertDecided = true;
+            continue;
+          }
+          if (/^Revert\b/i.test(subj)) continue;
+          if (!landedSha && own.test(subj)) landedSha = sha;
         }
-        return null;
+        return landedSha;
       });
     },
     readFile(p) {

@@ -38,7 +38,7 @@
  * Exit: 0 done / ready, 1 failed or refused, 2 pending (run again later).
  */
 import { appendFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { isMainModule } from './lib/is-main-module.mjs';
 import { createRecord, deleteRecord, listRecords, planDns, recordsToDelete, DEFAULT_TEAM_ID } from './lib/vercel-dns.mjs';
 
 export const ZONE = 'broadwayscorecard.com';
@@ -449,7 +449,7 @@ export async function run(env = process.env) {
   return code;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (isMainModule(import.meta.url)) { // realpath-aware: a symlinked path still runs the CLI (BRO-2312)
   run().then((code) => { flushSummary(); process.exit(code); }, (e) => {
     summary(`failed: ${String(e && e.message || e)}`);
     summary(`Next: ${nextStep(String(process.env.ACTION || 'status'), 'failed', String(process.env.CUSTOM_HOSTNAME || `auth.${ZONE}`))}`);

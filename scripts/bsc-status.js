@@ -209,7 +209,7 @@ function main(argv = process.argv.slice(2)) {
         const alive = lease && lease.jobId === j.jobId && leaseLooksLive(lease);
         console.log(`  [${alive ? 'RUNNING' : 'UNKNOWN — next bsc-reconcile tick will resolve'}] #${j.taskId} ${j.subject || ''} (${j.jobId})`);
         console.log(`      log: ${j.logFile || '(none)'}`);
-        if (alive) console.log(`      pid ${lease.pid} — live; do NOT resume while running`);
+        if (alive) console.log(lease.pid == null ? '      starting (pid not recorded yet); do NOT resume while it starts' : `      pid ${lease.pid} — live; do NOT resume while running`);
         else if ((lease && lease.sessionId) || j.sessionId) console.log(`      attach: ${require('./lib/claude-tab-relaunch.js').RELAUNCH_SCRIPT} --cwd '${j.cwd}' --resume ${(lease && lease.sessionId) || j.sessionId}`);
       }
       for (const j of recentDone) {

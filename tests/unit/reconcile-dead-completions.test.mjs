@@ -144,6 +144,23 @@ test('Linear --fix pass: a landed issue returns "landed" before any mutation', a
   assert.equal(controlResult, true, 'missing-file control stays reopenable');
 });
 
+test('retro: Linear pass with a local numeric taskId still counts the issue own BRO id', async () => {
+  const entries = [
+    { ts: '2026-09-01T00:00:00Z', event: 'launch', taskId: '1834', ref: 'headless:1' },
+    { ts: '2026-09-01T00:01:00Z', event: 'job-failed', taskId: '1834', ref: 'headless:1' },
+  ];
+  const completedAt = '2026-09-02T00:00:00Z';
+  const result = await correctLinearIssue('BRO-76', '1834', {
+    entries, git: MAIN, dryMutation: true,
+    getIssue: async () => ({
+      state: { type: 'completed' }, completedAt, title: 'merge JSON',
+      description: '## Key Files\nscripts/lib/reconcile-merged-json.js',
+      comments: { nodes: [{ body: 'DONE-GATE-BYPASS: forced', createdAt: completedAt }] },
+    }),
+  });
+  assert.equal(result, 'landed', 'reconcile-merged-json.js names BRO-76, the issue being checked');
+});
+
 test('makeGitProbe against a real temp repo: ancestor, key file, missing file', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rdc-landed-'));
   try {
@@ -230,5 +247,57 @@ test('review #5: PR probe skips Revert commits that name the PR', () => {
   const run2 = (args) => (args[0] === 'log'
     ? { status: 0, stdout: 'aaaaaaa1111111\tRevert "add thing (#77)"\nbbbbbbb2222222\tadd thing (#77)\n' }
     : { status: 1, stdout: '' });
-  assert.equal(makeGitProbe({ run: run2 }).prMerged(77), 'bbbbbbb2222222');
+  // BRO-5261 retro-review: a PR reverted on main is not landed (its effect is gone).
+  assert.equal(makeGitProbe({ run: run2 }).prMerged(77), null);
+  const run3 = (args) => (args[0] === 'log'
+    ? { status: 0, stdout: 'bbbbbbb2222222\tadd thing (#77)\n' }
+    : { status: 1, stdout: '' });
+  assert.equal(makeGitProbe({ run: run3 }).prMerged(77), 'bbbbbbb2222222');
+});
+
+test('retro: a revert of the revert restores the PR landing', () => {
+  const run = (args) => (args[0] === 'log'
+    ? { status: 0, stdout: 'eeeeeee5555555\tRevert "Revert \"add thing (#77)\""\naaaaaaa1111111\tRevert "add thing (#77)"\nbbbbbbb2222222\tadd thing (#77)\n' }
+    : { status: 1, stdout: '' });
+  assert.equal(makeGitProbe({ run }).prMerged(77), 'bbbbbbb2222222');
+});
+
+test('retro: PR probe ignores commits that only mention (#N) in the body', () => {
+  // git log --grep matched on the body; the subject belongs to another PR.
+  const run = (args) => (args[0] === 'log'
+    ? { status: 0, stdout: 'ccccccc3333333\tunrelated change (#900)\n' }
+    : { status: 1, stdout: '' });
+  assert.equal(makeGitProbe({ run }).prMerged(640), null);
+  const merge = (args) => (args[0] === 'log'
+    ? { status: 0, stdout: 'ddddddd4444444\tMerge pull request #640 from o/b\n' }
+    : { status: 1, stdout: '' });
+  assert.equal(makeGitProbe({ run: merge }).prMerged(640), 'ddddddd4444444');
+});
+
+test('retro: a PR link named as the cause is not the task landing', () => {
+  const ev = extractLandedEvidence({ taskId: '9', texts: ['Regression introduced by https://github.com/o/Broadwayscore/pull/812, fix it. Fix landed in https://github.com/o/Broadwayscore/pull/813'] });
+  assert.deepEqual(ev.prNumbers, [813]);
+});
+
+test('retro: "partially fixed in" / "not yet landed in" shas are not landings', () => {
+  const ev = extractLandedEvidence({ taskId: '9', texts: ['Partially fixed in 3f9e2ab; cache path still broken.', 'Not yet landed in 4a1b2c3.', 'Landed in 5d6e7f8.'] });
+  assert.deepEqual(ev.shas, ['5d6e7f8']);
+});
+
+test('retro: an ack from an earlier dispatch round does not cover a later dead attempt', () => {
+  const entries = [
+    { event: 'launch', taskId: '50', jobId: 'jobA', ts: '2026-10-01T00:00:00Z' },
+    { event: 'landed-acked', taskId: '50', jobId: 'jobA', sha: 'aaaaaaa1111111', ts: '2026-10-01T01:00:00Z' },
+    { event: 'launch', taskId: '50', jobId: 'jobB', ts: '2026-10-05T00:00:00Z' },
+    { event: 'job-orphaned', taskId: '50', jobId: 'jobB', ts: '2026-10-05T00:10:00Z' },
+  ];
+  assert.deepEqual(extractLandedEvidence({ taskId: '50', entries }).shas, []);
+  const acked = [...entries, { event: 'landed-acked', taskId: '50', jobId: 'jobB', sha: 'bbbbbbb2222222', ts: '2026-10-05T01:00:00Z' }];
+  assert.deepEqual(extractLandedEvidence({ taskId: '50', entries: acked }).shas, ['bbbbbbb2222222']);
+});
+
+test('retro: [linear:BRO-N] markers count as own ids only from ownTexts (description), not quoted comments', () => {
+  const ev = extractLandedEvidence({ taskId: 'linear:BRO-900', texts: ['desc', 'comment quoting [linear:BRO-76] P1 Done'], ownTexts: ['desc'] });
+  assert.ok(!ev.refs.includes('BRO-76'));
+  assert.ok(ev.refs.includes('BRO-900'));
 });

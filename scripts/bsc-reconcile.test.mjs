@@ -655,6 +655,31 @@ test('zombie sweep: never touches ledger-tracked, recheck-parked, tab-matched, o
   assert.deepEqual(h.flips, [], `nothing should flip; got ${h.flips}`);
 });
 
+test('zombie sweep: a starting pid:null lease skips the task, one stuck at pid:null past grace does not', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const nid8 = 'aaaa8aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9), zTask(8)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) }, [nid8]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const leases = {
+    9: { pid: null, acquiredAt: new Date(T1184_NOW - 10_000).toISOString() },
+    8: { pid: null, acquiredAt: new Date(T1184_NOW - 6 * 3600_000).toISOString() },
+  };
+  h.deps.readLeaseFn = (id) => leases[id] || null;
+  h.deps.pidLooksLikeClaudeFn = () => { throw new Error('pid:null must not reach the pid check'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, ['8']);
+});
+
+test('zombie sweep: live-pid check is injectable (no host ps lookup)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  h.deps.readLeaseFn = () => ({ pid: 4242, acquiredAt: new Date(T1184_NOW - 6 * 3600_000).toISOString() });
+  h.deps.pidLooksLikeClaudeFn = (pid) => pid === 4242;
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, []);
+});
+
 test('zombie sweep: cadence gate — a recent prior run skips entirely (no Notion fetches)', () => {
   const h = zombieHarness({ tasks: [zTask(9)], stateAge: 1, cards: {} });
   const r = sweepUntrackedInProgress({ deps: h.deps });

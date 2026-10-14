@@ -139,6 +139,10 @@ export PUSH_WITH_RETRY_CALLER="${PUSH_WITH_RETRY_CALLER:-bot}"
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}   # hard cap per fetch/push op
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}     # git aborts if <1KB/s this long
 PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4 min); override per-caller for measured high-churn cost
+# Leading zeros ("0900") read as octal in $(( )) and kill the script mid-loop
+# under set -e: normalize numeric values to base 10 once (BRO-5261 retro-review).
+case "$PUSH_DEADLINE_SEC" in ''|*[!0-9]*) ;; *) PUSH_DEADLINE_SEC=$((10#$PUSH_DEADLINE_SEC)) ;; esac
+case "$GIT_NET_TIMEOUT_SEC" in ''|*[!0-9]*) ;; *) GIT_NET_TIMEOUT_SEC=$((10#$GIT_NET_TIMEOUT_SEC)) ;; esac
 
 # BRO-2800: in-iteration deadline bound. The deadline above used to be checked
 # only at the TOP of each retry-loop iteration, so an iteration that began just
@@ -157,8 +161,10 @@ PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4
 # Honest residual bound past the deadline: one in-flight op that started just
 # before it (<= GIT_NET_TIMEOUT_SEC+10), local rebase/merge CPU (not a network
 # op, not clamped; measured ~3 min worst case, task #458), then at most the
-# post-resolution push and its content-survival fetches at
-# PUSH_OP_MIN_TIMEOUT_SEC+10 each, plus the Git Data API fallback. BRO-2824
+# post-resolution push at PUSH_OP_MIN_TIMEOUT_SEC+10, and after ANY push that
+# reports success its two content-survival fetches at the FULL
+# GIT_NET_TIMEOUT_SEC+10 each (unclamped since BRO-2800's edb2f4ad: they decide
+# whether the push really landed), plus the Git Data API fallback. BRO-2824
 # stops its retries at the remaining deadline and BRO-3125 clamps each of its
 # ops and sleeps the same way, so a fallback started past the deadline runs
 # one attempt: tip lookups at PUSH_OP_MIN_TIMEOUT_SEC+10 each, the ref update
@@ -166,11 +172,14 @@ PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}      # overall wall-clock budget (~4
 # that path; see push-via-git-api.sh's BRO-3125 comment). A legitimately slow
 # deepen/unshallow fetch is only clamped when less than GIT_NET_TIMEOUT_SEC
 # remains; if it then times out, the loop-top check breaks as before.
-# Pre-loop and post-loop network ops (entry ls-remote, API fallback, its
-# post-success fetch) keep the full GIT_NET_TIMEOUT_SEC.
+# Post-loop network ops (API fallback, its post-success fetch) keep the full
+# GIT_NET_TIMEOUT_SEC; the attempt-1 entry ls-remote runs inside the loop and
+# is clamped like the rest.
 PUSH_OP_MIN_TIMEOUT_SEC=${PUSH_OP_MIN_TIMEOUT_SEC:-20}
 # 0 is rejected too: `timeout 0` means NO timeout, the opposite of a floor.
-case "$PUSH_OP_MIN_TIMEOUT_SEC" in ''|0|0*|*[!0-9]*) PUSH_OP_MIN_TIMEOUT_SEC=20 ;; esac
+# "05" is 5 (base 10), not the default.
+case "$PUSH_OP_MIN_TIMEOUT_SEC" in ''|*[!0-9]*) PUSH_OP_MIN_TIMEOUT_SEC=20 ;; *) PUSH_OP_MIN_TIMEOUT_SEC=$((10#$PUSH_OP_MIN_TIMEOUT_SEC)) ;; esac
+[ "$PUSH_OP_MIN_TIMEOUT_SEC" -eq 0 ] && PUSH_OP_MIN_TIMEOUT_SEC=20
 _PWR_IN_LOOP=0
 # The cap the most recent fetch/push actually ran under, for log lines (a
 # clamped op dies at its own cap, not GIT_NET_TIMEOUT_SEC — printing the wrong
@@ -2939,8 +2948,15 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     WAIT=$(( 3 + i * 2 + RANDOM % 5 ))
     if [ $(( SECONDS + WAIT )) -ge "$PUSH_DEADLINE_SEC" ]; then
       # BRO-2800: the loop-top deadline check would break right after this
-      # sleep anyway — sleeping first is pure latency past the deadline.
-      echo "  Skipping ${WAIT}s backoff: it would end past the ${PUSH_DEADLINE_SEC}s deadline"
+      # sleep, so sleeping first is pure latency past the deadline. Break
+      # here: skipping only the sleep started a new attempt with NO backoff
+      # (the loop top still saw time left) that then ran its fetch/rebase/
+      # push past the deadline (BRO-5261 retro-review). A last attempt that
+      # might still have fit goes to the API fallback instead.
+      echo "::warning::push-with-retry: overall deadline ${PUSH_DEADLINE_SEC}s exceeded by the ${WAIT}s backoff after attempt $i (it would end past the deadline); giving up to avoid hanging the job"
+      _LOCAL_ATTEMPTS_MADE="$i"
+      _ABORT_QUALIFIER="deadline"
+      break
     else
       echo "  Waiting ${WAIT}s before retry..."
       sleep "$WAIT"

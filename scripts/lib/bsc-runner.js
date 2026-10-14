@@ -58,8 +58,21 @@ function pidLooksLikeClaude(pid) {
 // callers. A lease with pid:null is a job still in its first seconds of
 // startup (pid not recorded yet), which reads as LIVE, never as dead
 // (BRO-2414). A bare pidLooksLikeClaude(lease.pid) treats null as dead.
-function leaseLooksLive(lease, isAliveFn = pidLooksLikeClaude) {
-  return isLeaseLive(lease, isAliveFn);
+// BRO-5261 retro-review: only for PID_NULL_GRACE_MS after acquiredAt, the
+// same window bsc-reconcile's orphan sweeps use (they share the constant).
+// A lease stuck at pid:null past it (runner crashed before spawn, or its
+// best-effort pid write failed) reads dead here too, instead of "live
+// forever" at these sites while the reconciler calls it dead. Deliberately
+// NOT acquireLease's steal rule (isLeaseLive: pid:null is never stolen;
+// bsc-reconcile reclaims it).
+const PID_NULL_GRACE_MS = 2 * 60 * 1000;
+function leaseLooksLive(lease, isAliveFn = pidLooksLikeClaude, nowMs = Date.now()) {
+  if (!lease) return false;
+  if (lease.pid == null) {
+    const acquired = Date.parse(lease.acquiredAt || '');
+    return Number.isFinite(acquired) && nowMs - acquired < PID_NULL_GRACE_MS;
+  }
+  return isAliveFn(lease.pid);
 }
 
 /**
@@ -503,7 +516,7 @@ async function runJob(opts) {
 
 module.exports = {
   gitSafeJobId,
-  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, leaseLooksLive,
+  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble,
 };

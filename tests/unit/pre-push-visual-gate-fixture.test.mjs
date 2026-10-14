@@ -51,8 +51,10 @@ test('precondition: jq is installed (the hook fails open without it)', () => {
   assert.ok(existsSync(HOOK), `hook not found at ${HOOK}`);
 });
 
+// Setup git ignores the caller's global/system config (core.hooksPath,
+// init.templateDir, insteadOf rewrites) so the fixture is really hermetic.
 function git(cwd, ...args) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8', env: cleanEnv(), stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  return execFileSync('git', args, { cwd, encoding: 'utf8', env: cleanEnv({ GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' }), stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
 // Never inherit GIT_DIR / GIT_WORK_TREE etc. from a parent git hook.
@@ -89,6 +91,10 @@ function makeFixture(t, { uiBranch = true } = {}) {
   for (const d of [repo, home, logs, tmp]) mkdirSync(d, { recursive: true });
 
   git(root, 'init', '-q', '--bare', '-b', 'main', origin);
+  // Global config is nulled above, so CI's global maintenance-off never reaches
+  // this bare origin: receive-pack's detached auto-maintenance would race the
+  // teardown rmSync (BRO-4749). Set the keys in the bare repo itself.
+  for (const [k, v] of [['gc.auto', '0'], ['gc.autoDetach', 'false'], ['maintenance.auto', 'false'], ['receive.autogc', 'false']]) git(origin, 'config', k, v);
   git(repo, 'init', '-q', '-b', 'main');
   for (const [k, v] of [
     ['user.email', 'test@example.com'], ['user.name', 'Test'], ['commit.gpgsign', 'false'],
@@ -146,15 +152,13 @@ function writeTranscript(fx, userText, name = 'transcript.jsonl') {
   return p;
 }
 
-// The libs gate their CLI on `import.meta.url === file://${process.argv[1]}`.
-// Node realpaths the main module's URL, so through the scripts/ symlink the
-// two differ, main() never runs, every query prints nothing, and the hook
-// fails OPEN (isPush empty -> exit 0). --preserve-symlinks-main keeps the
-// main module's URL on the symlinked path so the real libs run unmodified.
-// The 'libs run through the symlink' test below fails loudly if this breaks.
+// The libs run through the fixture's scripts/ symlink exactly as in
+// production: their CLI gate is realpath-aware (scripts/lib/is-main-module.mjs,
+// fa3705d2). No --preserve-symlinks-main: that flag masked a regression of the
+// helper (BRO-5261 retro-review). The 'libs run through the symlink' test
+// below fails loudly if the gate breaks again.
 function hookEnv(fx, home) {
-  const nodeOptions = [process.env.NODE_OPTIONS, '--preserve-symlinks-main'].filter(Boolean).join(' ');
-  return cleanEnv({ HOME: home, CLAUDE_LOG_DIR: fx.logs, TMPDIR: fx.tmp, NODE_OPTIONS: nodeOptions });
+  return cleanEnv({ HOME: home, CLAUDE_LOG_DIR: fx.logs, TMPDIR: fx.tmp });
 }
 
 function runHook(fx, transcript, { home = fx.home, command = PUSH_CMD } = {}) {

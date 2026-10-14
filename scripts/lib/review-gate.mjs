@@ -43,11 +43,11 @@
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync, renameSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
+import { isMainModule } from './is-main-module.mjs';
 
 // CJS libs — ci-red-claims.js/duplicate-dispatch-guard.js predate this file's
 // ESM conversion and are shared with scripts/claim-ci-red.js, so require()
@@ -1489,15 +1489,8 @@ All queries print JSON to stdout. Exit 0 success / 1 bad args.`);
 // realpath both sides: a `file://${argv[1]}` string compare silently fails
 // when the script is invoked via a symlinked path (macOS /tmp → /private/tmp),
 // making the CLI a no-op — bit the hook test suite on 2026-07-12.
-const __isMain = (() => {
-  if (!process.argv[1]) return false;
-  try {
-    return import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href
-        || import.meta.url === pathToFileURL(process.argv[1]).href;
-  } catch {
-    return false;
-  }
-})();
+// One implementation (scripts/lib/is-main-module.mjs, BRO-2312).
+const __isMain = isMainModule(import.meta.url);
 if (__isMain) {
   const args = parseCliArgs(process.argv.slice(2));
   if (args.help) { printHelp(); process.exit(0); }

@@ -45,13 +45,40 @@ for (const lib of ['transcript-scan.mjs', 'visual-qa-ledger.mjs']) {
       : ['--query=push-allowed', `--repo=${dir}`, '--current-content-hash=abc'];
     const r = spawnSync(process.execPath, [path.join(link, 'lib', lib), ...args], { encoding: 'utf8', cwd: dir });
     assert.notEqual(r.stdout.trim(), '', `${lib} printed nothing via ${link} (stderr: ${r.stderr}) — its CLI did not run`);
-    assert.doesNotThrow(() => JSON.parse(r.stdout.trim().split('\n').pop()));
+    assert.equal(r.status, 0, `${lib} exited ${r.status} (stderr: ${r.stderr})`);
+    const answer = JSON.parse(r.stdout.trim().split('\n').pop());
+    // A wrong answer fails the hook open as surely as no answer.
+    if (lib === 'transcript-scan.mjs') assert.equal(answer.isPush, true, JSON.stringify(answer));
+    else assert.equal(typeof answer.allowed, 'boolean', JSON.stringify(answer));
   });
 }
 
-test('no script uses the bare `file://${process.argv[1]}` main-module idiom', () => {
-  const needle = 'import.meta.url === `file://${process.argv[1]}`';
-  const out = execFileSync('git', ['grep', '-l', '-F', needle, '--', 'scripts', '.claude', 'src'], { cwd: ROOT, encoding: 'utf8' }).trim();
-  const hits = out.split('\n').filter((f) => f && !f.endsWith('is-main-module.mjs') && !f.endsWith('is-main-module.test.mjs'));
-  assert.deepEqual(hits, [], `use isMainModule(import.meta.url) from scripts/lib/is-main-module.mjs instead in:\n${hits.join('\n')}`);
+// Any spelling of the check (`file://${...}`, 'file://' + ..., pathToFileURL(
+// argv[1]).href, fileURLToPath(...) === resolve(argv[1])) breaks the same way
+// unless it realpaths argv[1] (BRO-5261 retro-review: the guard used to match
+// one exact byte string and missed two live variants).
+function bareMainChecks(cwd) {
+  const r = spawnSync('git', ['grep', '-n', '-E', 'import\\.meta\\.url.*process\\.argv\\[1\\]|process\\.argv\\[1\\].*import\\.meta\\.url',
+    '--', 'scripts', '.claude', 'src', 'tools', 'supabase'], { cwd, encoding: 'utf8' });
+  if (r.status === 1) return []; // git grep: no match at all
+  assert.equal(r.status, 0, r.stderr);
+  return r.stdout.split('\n').filter((l) => l && !/realpath/i.test(l)
+    && !/^scripts\/lib\/is-main-module(\.test)?\.mjs:/.test(l));
+}
+
+test('no script compares import.meta.url with process.argv[1] without realpath', () => {
+  const hits = bareMainChecks(ROOT);
+  assert.deepEqual(hits, [], `use isMainModule(import.meta.url) from scripts/lib/is-main-module.mjs instead:\n${hits.join('\n')}`);
+});
+
+test('the main-module guard catches the variants it exists for (and is clean on none)', (t) => {
+  const dir = tmp(t, 'guard-');
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  fs.mkdirSync(path.join(dir, 'scripts'));
+  assert.deepEqual(bareMainChecks(dir), []);
+  fs.writeFileSync(path.join(dir, 'scripts', 'a.mjs'), "if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) run();\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'b.mjs'), "if (import.meta.url === 'file://' + process.argv[1]) run();\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'ok.mjs'), "if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) run();\n");
+  execFileSync('git', ['add', '.'], { cwd: dir });
+  assert.deepEqual(bareMainChecks(dir).map((l) => l.split(':')[0]), ['scripts/a.mjs', 'scripts/b.mjs']);
 });
