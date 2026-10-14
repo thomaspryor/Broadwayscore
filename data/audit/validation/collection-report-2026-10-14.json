@@ -1,49 +1,49 @@
 {
-  "runDate": "2026-10-14T10:44:28.760Z",
+  "runDate": "2026-10-14T10:45:51.328Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "into-the-woods-noel-coward-west-end-2026",
+    "showFilter": "whos-afraid-of-virginia-woolf-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 2,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 1,
     "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
     "totalFailed": 2,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
+    "processed": 2,
     "failed": 2,
     "shows": [
-      "into-the-woods-noel-coward-west-end-2026"
+      "whos-afraid-of-virginia-woolf-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,38 +66,42 @@
     }
   },
   "processed": [
-    "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json"
+    "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json"
   ],
   "failed": [
-    "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
-    "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json"
+    "whos-afraid-of-virginia-woolf-west-end-2026/financialtimes--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/littlelondonwhispers--little-london-whispers.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json"
+      "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json"
     ],
     "failed": [
-      "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
-      "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json"
+      "whos-afraid-of-virginia-woolf-west-end-2026/financialtimes--unknown.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/littlelondonwhispers--little-london-whispers.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json"
+    ]
   },
   "failuresByOutlet": {
-    "cherylmarkosky": {
+    "littlelondonwhispers": {
       "count": 1,
-      "domain": "cherylmarkosky.com",
+      "domain": "littlelondonwhispers.substack.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
