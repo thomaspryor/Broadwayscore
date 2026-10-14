@@ -24,8 +24,8 @@
  *
  * Non-blocking by design (same rationale as the sibling audits above):
  * covers manifest entries directly under scripts/ only (not scripts/lib/,
- * already globbed, and not scripts/tests/ or tests/, both broadly globbed by
- * 'tests/**' — see test.yml line ~9). No dependency-chasing: unlike
+ * already globbed, and not scripts/tests/ (globbed by 'scripts/tests/**',
+ * BRO-5309) or tests/ (globbed by 'tests/**')). No dependency-chasing: unlike
  * audit-test-yml-lib-deps.js this doesn't parse require()/import, it just
  * checks whether the manifest entry itself (and its sibling source file) is
  * covered by the allow-list.
@@ -52,7 +52,7 @@ const MANIFESTS = [
 
 // scripts/*.test.(mjs|ts) directly under scripts/ (not scripts/lib/, not
 // scripts/tests/) — those two subdirectories already have their own coverage
-// (scripts/lib/** glob; tests/** glob covers scripts/tests/ via its own path).
+// (scripts/lib/** and scripts/tests/** globs, BRO-5309).
 const TOPLEVEL_TEST_RE = /^scripts\/[^/]+\.test\.(mjs|ts)$/;
 
 // tests/unit/*.test.(mjs|ts) — the SECOND shape (BRO-3202). These test files

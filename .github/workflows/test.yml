@@ -31,6 +31,13 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      # scripts/tests/** — same glob fix for scripts/tests/ (BRO-5309). A new
+      # scripts/tests/*.test.mjs with no literal entry below failed
+      # scripts/lib/test-yml-manifest-paths.test.mjs at land time (land run
+      # 38406539275). The older literal scripts/tests/ entries below are now
+      # redundant but harmless. Top-level scripts/<name>.js a test requires
+      # still needs its own entry (not globbed).
+      - 'scripts/tests/**'
       # scripts/*.test.mjs — same fix one level up (BRO-2969). Every top-level
       # colocated test used to need its own hand-written entry here, and
       # forgetting one was a recurring bug (#1737, #1745, BRO-2603, BRO-2647).

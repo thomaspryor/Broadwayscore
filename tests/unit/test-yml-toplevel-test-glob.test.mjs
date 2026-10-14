@@ -37,7 +37,7 @@ test('no NEW literal top-level scripts/<name>.test.mjs entry (the glob covers it
 
 test('the glob triggers on top-level tests only', () => {
   assert.equal(isCovered('scripts/some-new-thing.test.mjs', paths), true);
-  // '*' must not cross '/': scripts/tests/ and other subdirectories keep their own entries.
+  // '*' must not cross '/': scripts/tests/ has its own scripts/tests/** glob (BRO-5309).
   assert.equal(globToRegExp(GLOB).test('scripts/tests/some-new-thing.test.mjs'), false);
   // Top-level sources are not globbed and still need their own entries.
   assert.equal(globToRegExp(GLOB).test('scripts/some-new-thing.js'), false);
