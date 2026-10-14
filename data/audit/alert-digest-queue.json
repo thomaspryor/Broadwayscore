@@ -305,6 +305,19 @@
     "queuedAt": "2026-10-14T05:33:02.644Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:nina-off-west-end-2026",
+    "title": "Review gap — \"Nina\" missing 1 cited review(s)",
+    "description": "Nina (nina-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=nina-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T06:00:40.582Z"
+  },
+  {
     "conditionKey": "land:land/bro-5261-s9-retro-fixes",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-5261-s9-retro-fixes",
     "description": "land.yml did not land land/bro-5261-s9-retro-fixes: the scripts-lib-tests gate went red at 42f7af2ea8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38515253005",
