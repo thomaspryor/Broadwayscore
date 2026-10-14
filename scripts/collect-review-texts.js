@@ -5546,10 +5546,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {
               if (applyCrossOutletSkip(data, sibling, siblingData, {
-                forcedRefetch: review._forceRefetch === true,
+                // A consent-salvage reuses the stored text: nothing was fetched, so it proves nothing.
+                forcedRefetch: review._forceRefetch === true && !review._salvageUsed,
                 hostMatches: hostMatchesOutletDomain(data.url, data.outletId, loadOutletRegistryForDedupe()),
               })) {
-                console.log(`    ⚠ Same text as ${sibling} (${siblingData.outletId}); fresh fetch from this outlet's own domain, so not marking this file the copy (BRO-5254)`);
+                console.log(`    ⚠ Same text as ${sibling} (${siblingData.outletId}); fresh fetch from this outlet's own domain, so not marking this file the copy${data.duplicateOf ? ' (duplicateOf still excludes it)' : ''} (BRO-5254)`);
                 continue;
               }
               setDuplicateTextOf(data, sibling);
