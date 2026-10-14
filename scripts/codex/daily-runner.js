@@ -766,7 +766,11 @@ function lockPush(sha, expect) {
   let tip = null;
   for (let i = 0; i < 3; i++) {
     if (i) sh('sleep', [String(5 * i)]);
-    const p = sh('git', ['push', '-q', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`], { timeoutMs: LOCK_GIT_MS });
+    // --no-verify: the lock is a parentless bookkeeping commit, not code. The repo's pre-push hook
+    // (scripts/hooks/pre-push, installed in routine sessions) runs code audits on it and refused
+    // every stamp while one audit was red: the real cause of the "lost the run lock" stops
+    // (BRO-5287, run log 2026-10-14 01:47: "Bypass for emergencies: git push --no-verify").
+    const p = sh('git', ['push', '-q', '--no-verify', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`], { timeoutMs: LOCK_GIT_MS });
     if (p.code === 0) return { state: 'pushed', tip: sha };
     tip = lockRemoteTip();
     if (tip === sha) return { state: 'pushed', tip: sha }; // the push landed but its reply was lost

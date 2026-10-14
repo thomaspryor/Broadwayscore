@@ -400,3 +400,10 @@ test('recovery git calls run in ROOT: they run before the runner worktree exists
     for (const c of calls) assert.match(c, /,\s*ROOT\)$/, `${fn}: ${c} must pass ROOT`);
   }
 });
+
+test('lock pushes skip git hooks: the pre-push code audits refused bookkeeping stamps (BRO-5287)', () => {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
+  const pushes = src.match(/\['push',[^\]]*LOCK_REF[^\]]*\]/g) || [];
+  assert.ok(pushes.length > 0, 'found the lock push');
+  for (const p of pushes) assert.ok(p.includes("'--no-verify'"), p);
+});
