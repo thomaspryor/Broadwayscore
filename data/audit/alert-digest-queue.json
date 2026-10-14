@@ -511,5 +511,35 @@
       }
     ],
     "queuedAt": "2026-10-14T14:27:47.159Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5358-feed-reconcile",
+    "title": "Landing blocked: toplevel-regression red on land/bro-5358-feed-reconcile",
+    "description": "land.yml did not land land/bro-5358-feed-reconcile: the toplevel-regression gate went red at 99756b4bf3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38576835406",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5358-feed-reconcile"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "99756b4bf3d7e84de009e13e1e23b3a8b95cc1a0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38576835406"
+      }
+    ],
+    "queuedAt": "2026-10-14T14:39:45.363Z"
   }
 ]
