@@ -403,6 +403,19 @@ const US_THEATRE_HOSTNAMES = new Set([
   'nystagereview.com', 'www.nystagereview.com',
   'stageandcinema.com', 'www.stageandcinema.com',
 ]);
+// BRO-4280: further US/AU hosts the 'theatre'/'independent'/'standard' substring wrongly reads
+// as UK (corpus audit: hostnames matching the heuristic that review only US shows or are US-based).
+// Matched on the registrable name, with or without www. UK blogs stay on the heuristic.
+const US_OUTLET_DOMAINS = new Set([
+  'mdtheatreguide.com', 'dctheatrearts.org', 'dctheatrescene.com', 'bgindependentmedia.org',
+  'newyorktheatreguide.com', 'nytheatreguide.com', 'nytheatre.com', 'nytheatre-wire.com',
+  'nyctheatreaddict.com', 'theatreweekly.com', 'theatrereviews.com', 'jkstheatrescene.com',
+  'jkstheatrescene.blogspot.com', 'buffalotheatreguide.com', 'leagueofcincytheatres.info',
+  'localtheatreny.com', 'vegastheatrescene.com', 'nwtheatre.org', 'netheatregeek.com',
+  'newhavenindependent.org', 'independent.com', 'recliningstandards.com', 'recliningstandards.org',
+  'themusicaltheatrereport.com', 'morristheatredc.com', 'theatreartsdaily.com',
+  'theatrereviewskurahashi.wordpress.com', 'aussietheatre.com.au', 'rachelsreviewstheatre.com',
+]);
 
 function isUkOutletUrl(url) {
   if (!url) return false;
@@ -410,6 +423,7 @@ function isUkOutletUrl(url) {
     const hostname = new URL(url).hostname || '';
     // Exclude known US outlets before applying 'theatre' hostname heuristic
     if (US_THEATRE_HOSTNAMES.has(hostname)) return false;
+    if (US_OUTLET_DOMAINS.has(hostname.replace(/^(www|amp)\./, ''))) return false;
     // Only match genuinely UK-specific outlet hostnames.
     // DO NOT include global/US outlets like variety, nytimes, timeout here —
     // they review both Broadway and West End shows.
