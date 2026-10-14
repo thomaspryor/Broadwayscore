@@ -650,3 +650,21 @@ describe('buildCommercialEntry placeholder sources', () => {
     assert.deepEqual(fresh.sources.map((s) => s.url), ['https://www.broadwayjournal.com/p/hells-kitchen-recoupment', 'https://en.wikipedia.org/wiki/Old']);
   });
 });
+
+describe('buildCommercialEntry placeholder sources (ship-check)', () => {
+  const { normalizeSources } = require('../../scripts/lib/commercial-sources');
+  it('a rebuild whose new links are all placeholders keeps the record\'s sources', () => {
+    const existing = { designation: 'TBD', sources: [{ type: 'trade', url: 'https://deadline.com/2026/01/x/', date: null }] };
+    const out = gate.buildCommercialEntry({ designation: 'TBD', sources: [{ type: 'trade', url: 'https://playbill.com', date: null }] }, existing, { normalizeSources });
+    assert.deepEqual(out.sources.map((s) => s.url), ['https://deadline.com/2026/01/x/']);
+  });
+  it('a second entry reusing an old placeholder link is dropped, like the record check warns', () => {
+    const existing = { designation: 'TBD', sources: [{ type: 'trade', url: 'https://www.amny.com', date: null }] };
+    const entry = { designation: 'TBD', sources: [
+      { type: 'trade', url: 'https://www.amny.com', date: null },
+      { type: 'trade', url: 'https://www.amny.com', date: '2026-10-12', excerpt: 'investors got back 55%' },
+    ] };
+    const out = gate.buildCommercialEntry(entry, existing, { normalizeSources });
+    assert.equal(out.sources.length, 1);
+  });
+});

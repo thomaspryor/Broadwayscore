@@ -321,7 +321,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   return out;
 }
 
-const { placeholderSourceKind } = require('./commercial-sources');
+const { addedPlaceholderSources } = require('./commercial-sources');
 
 /**
  * Rules that depend on shows.json state as well as the record. validate-data.js
@@ -368,27 +368,15 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // Advisory (§19). A writer passes ctx.priorRecord so only a link the write
   // adds counts: a tip or plan on an old record is not blocked by its old links.
   if (Array.isArray(show.sources)) {
-    // Counted per trimmed URL, so a write that adds a SECOND entry (a new
-    // claim) on a placeholder link already on the record still warns, and a
-    // whitespace-only change to an old link does not (BRO-5264 retro-review).
-    const priorCount = new Map();
-    for (const s of (ctx.priorRecord && ctx.priorRecord.sources) || []) {
-      if (s && typeof s.url === 'string') priorCount.set(s.url.trim(), (priorCount.get(s.url.trim()) || 0) + 1);
-    }
-    show.sources.forEach((src, idx) => {
-      if (!src || typeof src.url !== 'string') return;
-      const url = src.url.trim();
-      const left = priorCount.get(url) || 0;
-      if (left > 0) { priorCount.set(url, left - 1); return; }
-      const kind = placeholderSourceKind(url);
+    for (const { idx, kind, url } of addedPlaceholderSources(show.sources, ctx.priorRecord && ctx.priorRecord.sources)) {
       if (kind === 'own-site') {
-        out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is this site, which cannot source its own figures`);
+        out.push(`commercial.json: "${showId}" sources[${idx}].url ${url} is this site, which cannot source its own figures`);
       } else if (kind === 'wikipedia') {
-        out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is Wikipedia, not a source (link the article or filing it cites)`);
-      } else if (kind === 'homepage') {
-        out.push(`commercial.json: "${showId}" sources[${idx}].url ${src.url} is a homepage, not an article or filing (link the page that states it)`);
+        out.push(`commercial.json: "${showId}" sources[${idx}].url ${url} is Wikipedia, not a source (link the article or filing it cites)`);
+      } else {
+        out.push(`commercial.json: "${showId}" sources[${idx}].url ${url} is a homepage, not an article or filing (link the page that states it)`);
       }
-    });
+    }
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);

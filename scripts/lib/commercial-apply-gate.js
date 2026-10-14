@@ -4,7 +4,7 @@
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES } = require('./commercial-designations');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
-const { placeholderSourceKind } = require('./commercial-sources');
+const { addedPlaceholderSources } = require('./commercial-sources');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
@@ -281,10 +281,18 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     // A placeholder link (homepage, Wikipedia, this site) cites nothing; the
     // automated writers drop any they would ADD, the same rule the plan runner
     // and tip writers refuse on (commercial-record-checks.js, BRO-5264).
-    const existingUrls = new Set((Array.isArray(existing?.sources) ? existing.sources : []).map(s => s && typeof s.url === 'string' ? s.url.trim() : null).filter(Boolean));
-    const normalized = normalizeSources(entry.sources).filter(s => !placeholderSourceKind(s.url) || existingUrls.has(s.url));
+    const existingSources = Array.isArray(existing?.sources) ? existing.sources : [];
+    const incoming = normalizeSources(entry.sources);
+    const dropped = addedPlaceholderSources(incoming, existingSources);
+    for (const d of dropped) console.warn(`  ⚠️  Dropped ${d.kind} source link ${d.url} (cites nothing; link the article or filing)`);
+    const droppedIdx = new Set(dropped.map(d => d.idx));
+    const normalized = incoming.filter((s, i) => s && !droppedIdx.has(i));
+    // Every new link was a placeholder: keep the record's own sources rather
+    // than writing it with none.
+    if (normalized.length === 0 && existingSources.length > 0 && !overlay) result.sources = existingSources;
     if (normalized.length > 0) {
-      if (overlay && Array.isArray(existing?.sources)) {
+      if (overlay && existingSources.length) {
+        const existingUrls = new Set(existingSources.map(s => s.url).filter(Boolean));
         result.sources = [...existing.sources, ...normalized.filter(s => !existingUrls.has(s.url))];
       } else {
         result.sources = normalized;
