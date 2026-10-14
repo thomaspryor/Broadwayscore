@@ -265,6 +265,9 @@ describe('lookupOutletForHost — parent-domain resolution (issue #908)', () => 
   test('exactOnly refuses a parent-domain match', () => {
     assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com', { exactOnly: true }), null);
     assert.strictEqual(lookupOutletForHost('dailymail.com', { exactOnly: true }), 'daily-mail');
+    // BRO-5373: an edition split on the parent's domain leaves the host with the parent.
+    assert.strictEqual(lookupOutletForHost('www.dailymail.co.uk'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('thetimes.co.uk'), 'times-uk');
   });
 
   test('never walks onto a blog platform or a bare public suffix', () => {

@@ -49,8 +49,15 @@ function buildDomainMap() {
   if (_cachedDomainMap) return { domainToOutlet: _cachedDomainMap, ambiguous: _cachedAmbiguous };
   const registry = loadRegistry();
   const collect = {};
-  for (const [id, o] of Object.entries(registry.outlets || {})) {
+  const outlets = registry.outlets || {};
+  for (const [id, o] of Object.entries(outlets)) {
     const domains = [];
+    // An edition split off a parent on the parent's own domain (BRO-5137
+    // sunday-times, BRO-5373 mail-on-sunday) does not claim that domain: the
+    // url never names the edition, so the host belongs to the parent. Without
+    // this the shared domain went ambiguous and resolved to nothing.
+    const parent = o.splitFrom && outlets[o.splitFrom];
+    if (parent && parent.domain && o.domain && String(parent.domain).toLowerCase() === String(o.domain).toLowerCase()) continue;
     if (o.domain) domains.push(String(o.domain).toLowerCase());
     if (Array.isArray(o.domainAliases)) {
       o.domainAliases.forEach((d) => domains.push(String(d).toLowerCase()));
