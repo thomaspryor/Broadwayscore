@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-14T02:43:20.926Z",
+    "lastUpdated": "2026-10-14T08:48:29.910Z",
     "version": "2.1.0",
     "lastChange": "BRO-5137: split The Sunday Times (sunday-times, splitFrom times-uk) out of times-uk"
   },
@@ -12805,6 +12805,18 @@
       ],
       "displayNameInferred": true,
       "domain": "ilovemanchester.com"
+    },
+    "thechelseacitizen": {
+      "displayName": "Thechelseacitizen",
+      "tier": 3,
+      "aliases": [
+        "thechelseacitizen"
+      ],
+      "displayNameInferred": true,
+      "domain": "thechelseacitizen.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-14T08:48:29.910Z"
     }
   },
   "_aliasIndex": {
