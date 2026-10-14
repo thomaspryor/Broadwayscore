@@ -236,6 +236,24 @@ function tier1BoostForCaller(host, { exempt = false, ...opts } = {}) {
  *   optional reserve (sessions held back from runs without useReserve) and useReserve
  * @returns {{allowed: boolean, reason?: 'day'|'run'|'domain', limit?: number, used?: number}}
  */
+/**
+ * Count one Browserbase attempt against a caller's local usage counters, or
+ * (delta -1) give it back when the session-create chokepoint refused before
+ * any session existed (err.bbNoSession, browserbase-session.js). Without the
+ * refund a run of refusals used up the per-run and per-domain caps and shut
+ * out the Tier-1 rows behind them (BRO-5261).
+ */
+function countBrowserbaseAttempt(usage, urlDomain, delta = 1) {
+  const step = (n) => Math.max(0, (n || 0) + delta);
+  usage.sessionsToday = step(usage.sessionsToday);
+  usage.sessionsThisRun = step(usage.sessionsThisRun);
+  if (urlDomain) {
+    usage.sessionsPerDomain = usage.sessionsPerDomain || {};
+    usage.sessionsPerDomain[urlDomain] = step(usage.sessionsPerDomain[urlDomain]);
+  }
+  return usage;
+}
+
 function checkBrowserbaseCaps({
   sessionsToday,
   sessionsThisRun,
@@ -264,6 +282,7 @@ function checkBrowserbaseCaps({
 
 module.exports = {
   checkBrowserbaseCaps,
+  countBrowserbaseAttempt,
   resolveMaxSessionsPerDay,
   resolveOpeningWindowReservePerShow,
   resolveExemptScripts,

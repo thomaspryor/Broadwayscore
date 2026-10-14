@@ -169,7 +169,7 @@ const {
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
-const { checkBrowserbaseCaps, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
+const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
 /** BRO-5243: true when the URL's host is on the Browserbase deny list (never a review). */
@@ -2339,12 +2339,8 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
   const startTime = Date.now();
 
   // Track usage BEFORE attempting (we pay even if it fails)
-  browserbaseUsage.sessionsToday++;
-  browserbaseUsage.sessionsThisRun++;
+  countBrowserbaseAttempt(browserbaseUsage, urlDomain);
   stats.browserbaseSessionsUsed++;
-  if (urlDomain) {
-    browserbaseUsage.sessionsPerDomain[urlDomain] = (browserbaseUsage.sessionsPerDomain[urlDomain] || 0) + 1;
-  }
 
 
   console.log(`    Browserbase session ${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun} (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} today)`);
@@ -2357,7 +2353,8 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
     const { chromium: bbChromium } = require('playwright');
     const { createBbSession } = require('./lib/browserbase-session');
 
-    // Create session via Browserbase API
+    // Create session via Browserbase API. A refusal before the create call
+    // (cap, reserve, denied host) cost nothing: give the counts back.
     const bbSession = await createBbSession({
       apiKey: CONFIG.browserbaseApiKey,
       projectId: CONFIG.browserbaseProjectId,
@@ -2376,6 +2373,12 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
           },
         },
       },
+    }).catch((err) => {
+      if (err && err.bbNoSession) {
+        countBrowserbaseAttempt(browserbaseUsage, urlDomain, -1);
+        stats.browserbaseSessionsUsed = Math.max(0, stats.browserbaseSessionsUsed - 1);
+      }
+      throw err;
     });
 
     const sessionId = bbSession.id;

@@ -15,7 +15,7 @@
 // Pure lib -> pure lib. Reading THE shared ceiling (rather than re-deriving a
 // number here) is what keeps the digest's cap-exhausted line honest after the
 // T13 step-down moves the cap.
-const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
+const { resolveMaxSessionsPerDay, activeTier1Boost } = require('./browserbase-caps');
 // BRO-3097: which providers' ledger rows get `host` folded into the daily
 // aggregate's grouping key — see HOST_DIMENSION_PROVIDERS's own docstring.
 const { HOST_DIMENSION_PROVIDERS } = require('./provider-telemetry');
@@ -211,8 +211,12 @@ function renderSnapshot({
   // in sync. See memory/browserbase-cap-stepdown-runbook.md.
   if (p.browserbase?.status === 'ok' && typeof p.browserbase.sessions === 'number') {
     const used = p.browserbase.sessions;
+    // BRO-5243 Tier-1 boost: Tier-1 hosts may pass the bulk ceiling, bulk
+    // hosts still stop at it, so a boosted day names both (BRO-5261).
+    const boost = activeTier1Boost({ now: new Date(`${record.day}T12:00:00Z`) });
+    const boostNote = boost > 0 ? ` (bulk ceiling; Tier-1 boost to ${maxSessionsPerDay + boost} active${used >= maxSessionsPerDay + boost ? ', also exhausted' : ''})` : '';
     if (used >= maxSessionsPerDay) {
-      items.push({ title: `⚠️ Browserbase CAP EXHAUSTED: ${used}/${maxSessionsPerDay} sessions — work was dropped, this day does NOT count toward the step-down streak` });
+      items.push({ title: `⚠️ Browserbase CAP EXHAUSTED: ${used}/${maxSessionsPerDay} sessions${boostNote} — work was dropped, this day does NOT count toward the step-down streak` });
     } else if (used >= maxSessionsPerDay * 0.9) {
       items.push({ title: `Browserbase near cap: ${used}/${maxSessionsPerDay} sessions (${Math.round((used / maxSessionsPerDay) * 100)}%)` });
     }

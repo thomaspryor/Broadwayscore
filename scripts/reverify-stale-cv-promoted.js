@@ -44,7 +44,7 @@ const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { assessClearSafety } = require('./lib/reverify-clear-guards');
 const { selectCvPromotedNonReview, planClear } = require('./lib/cv-promoted-nonreview-selector');
-const { parseFileSpecs, holdFileModeVerdict } = require('./lib/reverify-file-mode');
+const { parseFileSpecs, fileModeHoldReason } = require('./lib/reverify-file-mode');
 
 const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
@@ -60,9 +60,10 @@ Usage:
                                                          select CV-promoted isNonReview files (any hash state)
                                                          on shows opened since the date instead of stale-hash findings
   node scripts/reverify-stale-cv-promoted.js --file=<show-id>/<file>.json[,...] --dry-run
-                                                         re-verify just these files' stored text (any flag state)
-                                                         an unclean verdict is printed, never written,
-                                                         unless --allow-new-exclusion
+                                                         re-verify just these unflagged files' stored text;
+                                                         a flagged row, or a verdict that would exclude,
+                                                         is printed, never written (--allow-new-exclusion
+                                                         stores the excluding verdict)
   node scripts/reverify-stale-cv-promoted.js --help, -h  print this usage and exit
 
 Makes live LLM verification calls and writes review files — never blind-clears.
@@ -216,13 +217,13 @@ async function main() {
       }
       let didClear = false;
 
-      // --file rows are picked by hand, not by an exclusion flag, so an unclean
-      // verdict here could newly exclude a row that is live today (the rebuild
-      // promotes high-confidence wrongArticle/wrongProduction). Print it, write
-      // nothing, unless the operator passes --allow-new-exclusion.
-      if (holdFileModeVerdict({ fileMode: !!fileArg, clean, allowNewExclusion: args.includes('--allow-new-exclusion') })) {
-        console.log('  Not written: unclean verdict on a hand-picked row (pass --allow-new-exclusion to store it)');
-        stats.refused++;
+      // --file rows are picked by hand: a flagged row is left to the selector
+      // sweeps, and a verdict that would newly exclude a live row is printed,
+      // not written, unless --allow-new-exclusion (lib/reverify-file-mode.js).
+      const holdReason = fileModeHoldReason({ fileMode: !!fileArg, data, result, allowNewExclusion: args.includes('--allow-new-exclusion') });
+      if (holdReason) {
+        console.log(`  Not written: ${holdReason}`);
+        if (safety.safe) stats.refused++; // a safety refusal was already counted above
         continue;
       }
 
