@@ -65,7 +65,7 @@ test('the push Protected block keeps a renamed file\'s own fields (no score or d
     assert.equal(t.duplicateOf, undefined);
     assert.equal(t._renamedFrom.file, 's/wsj--charles-isherwood.json');
     assert.equal(read(dir, 's/other--critic.json').assignedScore, 70, 'control: path-matched restore still works');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 }); }
 });
 
 test('restore-protected-fields.js after a rebase compares a renamed file with its source path', () => {
@@ -78,7 +78,7 @@ test('restore-protected-fields.js after a rebase compares a renamed file with it
     const t = read(dir, 's/wsj--terry-teachout.json');
     assert.equal(t.llmScore.score, 94);
     assert.equal(t.duplicateOf, undefined);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 }); }
 });
 
 test('rename-identity: only a stamp not already on the committed version redirects the history', () => {
