@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-14T18:05:04.535Z",
-  "processed": 348,
-  "failed": 335,
-  "successRate": "51.0%",
+  "updatedAt": "2026-10-14T18:45:32.955Z",
+  "processed": 354,
+  "failed": 336,
+  "successRate": "51.3%",
   "tierBreakdown": {
-    "playwright": 108,
-    "amp": 4,
+    "playwright": 111,
+    "amp": 5,
     "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 13,
+    "scrapingdog": 15,
     "scrapingbee": 19,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 40
+    "archive": 42
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-14T15:09:27.191Z",
-      "event": "bb-session",
-      "session": "a7e7c17c",
-      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
-    },
-    {
-      "t": "2026-10-14T15:09:27.850Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-14T15:09:45.713Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
       "t": "2026-10-14T18:02:34.102Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T18:16:54.496Z",
+      "event": "bb-session",
+      "session": "b0335aca",
+      "url": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed"
+    },
+    {
+      "t": "2026-10-14T18:16:55.242Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
