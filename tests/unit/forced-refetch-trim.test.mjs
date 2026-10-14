@@ -108,3 +108,15 @@ test('alias outlet ids count as one outlet; a duplicateOf file gets no clear not
   setDuplicateTextOf(keep, 'x.json');
   assert.equal(keep.duplicateClearReason, 'manual: owner cleared (BRO-1)', 'only this guard\'s own note is dropped');
 });
+
+// BRO-5348: overrides read from text a forced refetch replaced.
+test('staleScoreOverridesAfterRefetch: a locked pin turns provisional, an unverified rating is set aside', () => {
+  const { staleScoreOverridesAfterRefetch } = require('../../scripts/lib/review-filter.js');
+  // days-of-wine-and-roses-2024 amNY: pin 78 set against Vulture's text.
+  assert.deepEqual(staleScoreOverridesAfterRefetch({ forcedReplacement: true, humanReviewScore: 78 }), { humanPin: true, originalScore: false });
+  // mother-play-2024 Queerty: "D" read from Theater Pizzazz's text.
+  assert.deepEqual(staleScoreOverridesAfterRefetch({ forcedReplacement: true, originalScore: 'D' }), { humanPin: false, originalScore: true });
+  assert.equal(staleScoreOverridesAfterRefetch({ forcedReplacement: true, originalScore: '4/5', humanVerifiedRating: true }).originalScore, false, 'a human-verified rating is never touched');
+  assert.equal(staleScoreOverridesAfterRefetch({ forcedReplacement: true, humanReviewScore: 78, humanReviewScoreProvisional: true }).humanPin, false, 'already provisional');
+  assert.deepEqual(staleScoreOverridesAfterRefetch({ forcedReplacement: false, humanReviewScore: 78, originalScore: 'D' }), { humanPin: false, originalScore: false }, 'routine fetch changes nothing');
+});

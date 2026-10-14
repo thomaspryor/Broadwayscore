@@ -147,4 +147,22 @@ function setDuplicateTextOf(data, sibling) {
 }
 
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch };
+/**
+ * BRO-5348: score overrides set while a row held the wrong page's text outlive
+ * a forced refetch that replaced it. A humanReviewScore pin (days-of-wine amNY
+ * 78, set "to override LLM Mixed (64)" read from Vulture's text) keeps beating
+ * the rescore of the real text; a rating read from the old text (mother-play
+ * Queerty "D", Theater Pizzazz's grade) keeps binding the band. After a forced
+ * replacement: a locked pin turns provisional (the new LLM score wins, the pin
+ * stays on record), and an unverified rating is set aside so the extractor
+ * reads the new page; a human-verified rating is never touched.
+ */
+function staleScoreOverridesAfterRefetch({ forcedReplacement, humanReviewScore, humanReviewScoreProvisional, originalScore, humanVerifiedRating }) {
+  if (!forcedReplacement) return { humanPin: false, originalScore: false };
+  return {
+    humanPin: Number.isInteger(humanReviewScore) && humanReviewScore >= 1 && humanReviewScore <= 100 && humanReviewScoreProvisional !== true,
+    originalScore: originalScore != null && originalScore !== '' && humanVerifiedRating !== true,
+  };
+}
+
+module.exports = { staleScoreOverridesAfterRefetch, parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch };

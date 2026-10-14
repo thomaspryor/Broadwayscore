@@ -4865,6 +4865,27 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
     console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
   }
+  // BRO-5348: overrides read from the replaced text must not outlive it.
+  const staleOverrides = staleScoreOverridesAfterRefetch({
+    forcedReplacement,
+    humanReviewScore: data.humanReviewScore,
+    humanReviewScoreProvisional: data.humanReviewScoreProvisional,
+    originalScore: data.originalScore,
+    humanVerifiedRating: require('./lib/verified-original-score').isHumanVerifiedRating(data),
+  });
+  if (staleOverrides.humanPin) {
+    data.humanReviewScoreProvisional = true;
+    data.humanReviewNote = `${data.humanReviewNote ? `${data.humanReviewNote} ` : ''}[provisional since a forced refetch replaced the text; the rescore of the new text wins (BRO-5348)]`;
+    console.log(`    → humanReviewScore ${data.humanReviewScore} made provisional: set before the text was replaced (BRO-5348)`);
+  }
+  // Set aside, not cleared: the extractor below only runs without an originalScore.
+  let staleOriginalScore = null;
+  if (staleOverrides.originalScore) {
+    staleOriginalScore = data.originalScore;
+    data.originalScore = null;
+    data.originalScoreNormalized = null;
+    console.log(`    → originalScore "${staleOriginalScore}" set aside for re-extraction from the new page (BRO-5348)`);
+  }
   if (forcedReplacement && data.crossOutletDuplicate === true && data.crossOutletPrimaryFile) {
     let primaryFingerprint = null;
     try {
@@ -5222,6 +5243,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         (routed.wasAggregator ? ' [routed to aggregatorStars]' : '')
       );
     }
+  }
+
+  // BRO-5348: the new page had no rating, so the set-aside one came from the
+  // replaced text. Clear it with its breadcrumb (a bare null is restored on write).
+  if (staleOriginalScore != null && (data.originalScore == null || data.originalScore === '')) {
+    require('./lib/verified-original-score').applyVerifiedOriginalScore(data, null,
+      `"${staleOriginalScore}" was read from text a forced refetch replaced; the new page has no rating (BRO-5348)`);
+    console.log(`    → originalScore "${staleOriginalScore}" cleared: the refetched page has no rating (BRO-5348)`);
   }
 
   // Extract designation (Critics_Pick, Must_See, etc.) if not already present
