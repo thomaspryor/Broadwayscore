@@ -21,7 +21,17 @@ test('every stub insert uses return=minimal (RETURNING created_by is refused)', 
   }
 });
 
-test('web client selects never read created_by or *', () => {
-  const s = readFileSync('src/lib/show-stubs.ts', 'utf8');
-  assert.ok(!/created_by|select=\*/.test(s));
+test('no anon/authenticated reader of user_show_stubs touches created_by or *', () => {
+  const files = [];
+  const walk = (d) => { for (const e of readdirSync(d, { withFileTypes: true })) {
+    const p = d + '/' + e.name;
+    if (e.isDirectory()) walk(p); else if (/\.(ts|tsx)$/.test(e.name)) files.push(p);
+  } };
+  walk('src'); walk('supabase/functions');
+  for (const f of files) {
+    const t = readFileSync(f, 'utf8');
+    if (!t.includes('user_show_stubs') || f.endsWith('supabase-rest.ts')) continue;
+    const reads = t.split('\n').filter((l) => /user_show_stubs\?|select=/.test(l));
+    for (const l of reads) assert.ok(!/created_by|select=\*/.test(l), `${f}: ${l.trim()}`);
+  }
 });

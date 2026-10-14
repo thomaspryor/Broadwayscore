@@ -58,7 +58,7 @@ function headers(accessToken: string, prefer?: string): Record<string, string> {
   return h;
 }
 
-/** INSERT a row via PostgREST, returning the inserted row. */
+/** INSERT a row via PostgREST, returning the inserted row (or nothing with returning: 'minimal'). */
 export async function supabaseRestInsert<T = Record<string, unknown>>(
   table: string,
   row: Record<string, unknown>,
