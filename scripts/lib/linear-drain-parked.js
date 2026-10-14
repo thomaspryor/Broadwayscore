@@ -86,8 +86,11 @@ function hasSafeVerifyCommand(issue) {
 // Session-parked P0/P1 cards (BRO-4535, owner-approved): a session wrote
 // "PARKED: <reason>" and nothing ever unparked it. Only cards whose every park
 // reason is technical (needs a review, a worktree, a monitor window) qualify;
-// isDrainableSessionParked holds the owner-hold deny list. Lower priorities
-// stay parked: the owner asked for P0/P1 throughput, not the whole board.
+// isDrainableSessionParked holds the owner-hold deny list. This Mac drain keeps
+// P0/P1 only (the BRO-4535 scope); the cloud worker picker passes `priorities`
+// to take P2/P3 technical parks too, under a stricter reason filter, since the
+// owner wants every card handled (2026-10-11) and asked on 2026-10-14 why so
+// many cards were never worked (BRO-5369).
 const SESSION_PARKED_PRIORITIES = new Set([1, 2]);
 
 // Also requires every OTHER headless blocker (visual-qa, async wait, owner
@@ -95,9 +98,11 @@ const SESSION_PARKED_PRIORITIES = new Set([1, 2]);
 // the PARKED sentinel, so a card failing those would just be refused inside
 // the detached child and burn a drain slot.
 // Lazy: headless-dispatchability.js requires this module for AUTO_FILED_MARKER.
-function isSessionParkedDrainable(issue) {
+// `priorities` widens the tier for the cloud worker picker, which takes P2/P3
+// technical parks too (BRO-5369); the Mac drain keeps the P0/P1 default.
+function isSessionParkedDrainable(issue, { priorities = SESSION_PARKED_PRIORITIES } = {}) {
   if (!issue || !issue.state || !PARKED_STATE_TYPES.has(issue.state.type)) return false;
-  if (!SESSION_PARKED_PRIORITIES.has(Number(issue.priority))) return false;
+  if (!priorities.has(Number(issue.priority))) return false;
   const hd = require('./headless-dispatchability.js');
   if (!hd.isDrainableSessionParked(issue.description || '')) return false;
   const { blockers } = hd.classifyHeadlessDispatchability(

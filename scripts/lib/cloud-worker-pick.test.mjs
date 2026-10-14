@@ -518,8 +518,8 @@ test('P2 fallback: the same rules apply; owner-decision, parked and unfit P2 car
   assert.equal(skipReason(p2({ updatedAt: FRESH }), NOW, { tier: 'p2' }), 'recent-activity');
   assert.equal(skipReason(p2({ description: '## Acceptance criteria\nLooks right.' }), NOW, { tier: 'p2' }), 'no-safe-verify');
   assert.equal(skipReason(p2({ state: STARTED_STATE }), NOW, { tier: 'p2' }), 'state-started');
-  // A technically parked P2 card (drainable at P0/P1) stays parked.
-  const parked = p2({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` });
+  // An owner-held P2 park stays parked (a technical one is taken since BRO-5369, see below).
+  const parked = p2({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` });
   assert.equal(skipReason(parked, NOW, { tier: 'p2' }), 'parked-or-backlog');
   assert.equal(isP2FallbackCandidate(parked, NOW), false);
   // BRO-5360: a stale machine-filed P2 card is taken (the Mac drain that ran them is gone), after Todo cards.
@@ -648,7 +648,7 @@ test('P3 fallback: the same rules apply; owner-decision, parked, started and unf
   assert.equal(skipReason(p3(), NOW, { tier: 'p2' }), 'not-p2');
   assert.equal(isP3FallbackCandidate(issue({ priority: 3 }), NOW), false);
   // A parked P3 card stays parked; a stale machine-filed one is taken (BRO-5360).
-  const parked = p3({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` });
+  const parked = p3({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` });
   assert.equal(skipReason(parked, NOW, { tier: 'p3' }), 'parked-or-backlog');
   assert.equal(isP3FallbackCandidate(parked, NOW), false);
   const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
@@ -816,4 +816,37 @@ test('reclaim and Codex notes are machine comments; a reclaim to Backlog keeps t
   assert.equal(pausedHistorySkipReason([reclaimBacklog, report('paused', 'Ran out of time.', old - 30_000)], NOW, opts), null);
   // On a Todo card the reclaim rule does not apply.
   assert.equal(pausedHistorySkipReason([report('paused', 'Ran out of time.', old), reclaimBacklog], NOW, { priority: 2 }), null);
+});
+
+// BRO-5369: technical session parks at the fallback tiers.
+test('P2/P3 technical parks are taken, after Todo; "later" wording, owner holds and other gates keep them out', () => {
+  const { isFallbackTechnicalPark } = require('./cloud-worker-pick.js');
+  const drain = require('./linear-drain-parked.js');
+  const BACKLOG = { name: 'Backlog', type: 'backlog' };
+  const tech = (priority, reason = 'needs a rule-18 second-opinion before the edit', extra = '') =>
+    issue({ identifier: `BRO-${priority}0`, priority, state: BACKLOG, description: `PARKED: ${reason}\n\n${BODY}${extra}` });
+  assert.equal(skipReason(tech(3), NOW, { tier: 'p2' }), null);
+  assert.equal(skipReason(tech(4), NOW, { tier: 'p3' }), null);
+  assert.equal(isFallbackTechnicalPark(tech(3)), true);
+  // Tier mismatch.
+  assert.equal(skipReason(tech(3), NOW, { tier: 'p3' }), 'not-p3');
+  // "Later" wording that TECHNICAL_PARK_RE alone would accept stays parked at P2/P3.
+  for (const reason of ['low impact, small follow-up for next session', 'second-opinion: risky migration of prod data, irreversible', 'wait for next pass of cron to verify']) {
+    assert.equal(skipReason(tech(3, reason), NOW, { tier: 'p2' }), 'parked-or-backlog', reason);
+  }
+  // Owner holds and other headless gates still refuse.
+  assert.equal(skipReason(tech(3, 'waiting on owner go-ahead'), NOW, { tier: 'p2' }), 'parked-or-backlog');
+  // Another headless gate on the card means it is not drainable at all (same as P0/P1): it stays parked.
+  assert.equal(skipReason(tech(3, undefined, '\n\nDECISION NEEDED: owner picks.'), NOW, { tier: 'p2' }), 'parked-or-backlog');
+  assert.equal(skipReason(tech(4, undefined, '\n\nRECHECK-AFTER: 2026-12-01'), NOW, { tier: 'p3' }), 'parked-or-backlog');
+  // The Mac drain's default scope is unchanged: P0/P1 only.
+  assert.equal(drain.isSessionParkedDrainable(tech(4)), false);
+  assert.equal(drain.isSessionParkedDrainable(tech(4), { priorities: new Set([4]) }), true);
+  assert.equal(drain.isSessionParkedDrainable(tech(2)), true);
+  // Order within a fallback tier: Todo, then technical parks, then stale machine parks.
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const machine = issue({ identifier: 'BRO-1', priority: 3, state: BACKLOG, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; x.\n\n${BODY}` });
+  const todo = issue({ identifier: 'BRO-999', priority: 3 });
+  const techCard = issue({ identifier: 'BRO-5', priority: 3, state: BACKLOG, description: `PARKED: needs a worktree\n\n${BODY}` });
+  assert.deepEqual(pickCloudCard([machine, techCard, todo], { nowMs: NOW }).orderedP2.map((i) => i.identifier), ['BRO-999', 'BRO-5', 'BRO-1']);
 });

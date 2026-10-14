@@ -26,9 +26,9 @@
  *     only when no P0/P1 card survives the history and Codex-bounce skips
  *     too). Measured 2026-10-11: 76 eligible P0/P1 cards, about 3-4 days of
  *     work, and 17 P2 Todo cards nothing could ever reach, so the workers
- *     would sit idle once P0/P1 drained. Todo, plus paused Backlog cards and
- *     stale machine-filed parked cards (both below); a PARKED line a person
- *     wrote keeps a P2 card parked.
+ *     would sit idle once P0/P1 drained. Todo, plus paused Backlog cards,
+ *     stale machine-filed parks and technical session parks (BRO-5369); an
+ *     owner hold on a PARKED line keeps a P2 card parked.
  *     START-NOW does not apply to P2 (linear-issue-create refuses to file a
  *     START-NOW P2 card), so a P2 card always waits out IDLE_MS. A refused
  *     P2 landing is resumed too (findResumeCandidates includeP2), after every
@@ -40,8 +40,9 @@
  *     handled, not only urgent ones (2026-10-11). The Codex runner (--list=N)
  *     reads the same queue, so it takes Low cards too, last. No-priority
  *     (Linear 0) cards are never picked: nobody has triaged them.
- *   - Todo (unstarted) only, plus parked P0/P1 session cards the Mac drain
- *     would also unpark (isSessionParkedDrainable). Every Mac dispatch moves
+ *   - Todo (unstarted) only, plus technically parked session cards at any
+ *     tier (isSessionParkedDrainable; P2/P3 since BRO-5369, the Mac drain
+ *     that used to be the only path being dead). Every Mac dispatch moves
  *     its card to a started state (linear-next.js), so the state filter alone
  *     keeps the cloud off cards the Mac already holds.
  *   - PAUSED BACKLOG (BRO-5360): a worker's pause report moves its card to
@@ -153,6 +154,20 @@ const MAX_PAUSES = 3;
 const PARKED_LINE_RE = /^\s*PARKED\s*:/im;
 // The Codex runner's own comments (scripts/codex/daily-runner.js moveCard): it works Backlog cards too.
 const CODEX_RUNNER_NOTE_RE = /^\s*(?:<!--[^>]*-->\s*)?## Codex runner\b/;
+
+// P2/P3 cards collect "do it later" parks that TECHNICAL_PARK_RE also matches
+// ("low impact, small follow-up for next session", "risky ... irreversible").
+// At the fallback tiers any PARKED line with these words keeps the card parked.
+const FALLBACK_PARK_DENY_RE = /\bnext (?:working )?(?:session|pass)\b|low.?impact|follow.?up|irreversib|risky/i;
+const FALLBACK_TIER_PRIORITIES = { [P2_PRIORITY]: new Set([P2_PRIORITY]), [P3_PRIORITY]: new Set([P3_PRIORITY]) };
+
+/** A P2/P3 card parked only for a technical reason, with no "later" wording (BRO-5369). */
+function isFallbackTechnicalPark(issue) {
+  const drain = require('./linear-drain-parked.js');
+  const priorities = FALLBACK_TIER_PRIORITIES[Number(issue && issue.priority)];
+  if (!priorities || !drain.isSessionParkedDrainable(issue, { priorities })) return false;
+  return ![...String(issue.description || '').matchAll(/^\s*PARKED\s*:(.*)$/gim)].some((m) => FALLBACK_PARK_DENY_RE.test(m[1]));
+}
 
 /** A Backlog card a worker paused (no PARKED line), not one parked at filing or by a person. */
 function isPausedBacklog(issue) {
@@ -270,9 +285,9 @@ function startNowUnpickableReason({ title, description, priority, mode }) {
 /**
  * Why this card can't be picked in a tier, or null. The default tier is
  * P0/P1 ('not-p0-p1' for anything else). `{ tier: 'p2' }` checks the P2
- * fallback: priority 3 only ('not-p2' otherwise), with no technically-parked
- * path (stale machine-filed parks and paused Backlog cards still count),
- * every other rule the same. `{ tier: 'p3' }` is the same for priority 4
+ * fallback: priority 3 only ('not-p2' otherwise), every other rule the same
+ * (technical session parks, stale machine-filed parks and paused Backlog
+ * cards included). `{ tier: 'p3' }` is the same for priority 4
  * ('not-p3').
  */
 function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
@@ -282,7 +297,10 @@ function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
   const fallback = fallbackPriority != null;
   if (fallback ? Number(issue.priority) !== fallbackPriority : !PRIORITIES.has(Number(issue.priority))) return fallback ? `not-${tier}` : 'not-p0-p1';
   const type = issue.state && issue.state.type;
-  const parkedDrainable = (!fallback && drain.isSessionParkedDrainable(issue)) || isStaleAutomationParked(issue, nowMs);
+  // Technical session parks (needs a review, a worktree, a monitor window) at every tier (BRO-5369);
+  // the fallback tiers use the stricter isFallbackTechnicalPark.
+  const parkedDrainable = (fallback ? isFallbackTechnicalPark(issue) : drain.isSessionParkedDrainable(issue))
+    || isStaleAutomationParked(issue, nowMs);
   if (type !== 'unstarted' && !parkedDrainable && !isPausedBacklog(issue)) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
   if (unfit) return unfit;
@@ -367,9 +385,11 @@ function pickCloudCard(issues, { nowMs }) {
   const startTier = (iss) => (isStartNow(iss, nowMs) ? 0 : 1);
   eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
     || (issueNumber(a.identifier) - issueNumber(b.identifier)));
-  // START-NOW doesn't apply to P2 and P3: oldest first, stale machine-filed cards last.
-  eligibleP2.sort((a, b) => (machineTier(a) - machineTier(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
-  eligibleP3.sort((a, b) => (machineTier(a) - machineTier(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
+  // START-NOW doesn't apply to P2 and P3: Todo and paused cards oldest first, then
+  // technical parks, then stale machine-filed parks (BRO-5369).
+  const fallbackTier = (iss) => (isStaleAutomationParked(iss, nowMs) && !(iss.state && iss.state.type === 'unstarted') ? 2 : (isFallbackTechnicalPark(iss) ? 1 : 0));
+  eligibleP2.sort((a, b) => (fallbackTier(a) - fallbackTier(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
+  eligibleP3.sort((a, b) => (fallbackTier(a) - fallbackTier(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
   const pick = eligible[0] || eligibleP2[0] || eligibleP3[0] || null;
   const pickTier = eligible.length ? TIER_P0P1 : (eligibleP2.length ? TIER_P2 : (eligibleP3.length ? TIER_P3 : null));
   return {
@@ -620,7 +640,7 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
-  AUTOMATION_PARK_STALE_MS, hasPersonParkHold, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard,
 };
