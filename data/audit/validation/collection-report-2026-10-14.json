@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-14T08:46:10.831Z",
+  "runDate": "2026-10-14T10:44:28.760Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "american-buffalo-2022,gutenberg-2023,mother-play-2024,on-your-feet-2015,prayer-for-the-french-republic-2024",
+    "showFilter": "into-the-woods-noel-coward-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,7 +25,7 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 3,
@@ -42,9 +42,9 @@
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,14 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 1,
+    "failed": 2,
     "shows": [
-      "american-buffalo-2022",
-      "gutenberg-2023",
-      "mother-play-2024",
-      "on-your-feet-2015",
-      "prayer-for-the-french-republic-2024"
+      "into-the-woods-noel-coward-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -70,29 +66,24 @@
     }
   },
   "processed": [
-    "mother-play-2024/queerty--matthew-wexler.json",
-    "prayer-for-the-french-republic-2024/amny--matt-windman.json",
-    "gutenberg-2023/amny--matt-windman.json",
-    "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
+    "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json"
   ],
   "failed": [
-    "on-your-feet-2015/backstage-barbie--backstage-barbie.json"
+    "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "mother-play-2024/queerty--matthew-wexler.json",
-      "prayer-for-the-french-republic-2024/amny--matt-windman.json",
-      "gutenberg-2023/amny--matt-windman.json",
-      "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
+      "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json"
     ],
     "failed": [
-      "on-your-feet-2015/backstage-barbie--backstage-barbie.json"
+      "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
+      "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "prayer-for-the-french-republic-2024/amny--matt-windman.json",
-      "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
+      "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -101,15 +92,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "mother-play-2024/queerty--matthew-wexler.json",
-      "gutenberg-2023/amny--matt-windman.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "BackStage Barbie": {
+    "cherylmarkosky": {
       "count": 1,
-      "domain": "backstagebarbie.blogspot.com",
+      "domain": "cherylmarkosky.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
