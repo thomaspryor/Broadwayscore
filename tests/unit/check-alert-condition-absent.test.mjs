@@ -10,6 +10,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 
 const require = createRequire(import.meta.url);
 const SCRIPT = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'scripts', 'check-alert-condition-absent.js');
@@ -17,7 +18,10 @@ const { alertAbsentCheckCmd } = require('../../scripts/lib/health-row-check-cmd.
 const { QUIET_WINDOW_H } = require('../../scripts/check-alert-condition-absent.js');
 
 const H = 36e5;
-const iso = (hoursAgo) => new Date(Date.now() - hoursAgo * H).toISOString();
+// Stamps are read by a child process that runs on the REAL clock (the clock-shift
+// preload is not inherited), so stamp from the real clock too or a +Nd audit shift
+// makes every ledger entry look future-dated.
+const iso = (hoursAgo) => new Date(realNowMs() - hoursAgo * H).toISOString();
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-absent-'));
 
 function writeLedger(name, conditions) {
