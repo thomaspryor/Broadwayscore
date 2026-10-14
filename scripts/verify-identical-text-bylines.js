@@ -28,6 +28,17 @@ const arg = (name) => {
   return a ? a.slice(name.length + 3) : null;
 };
 
+// A scraper call that never settles leaves nothing on the event loop, so Node
+// exits 0 mid-run and the output just stops (BRO-5321: 3 of 4 cloud batches
+// ended at 8-63 of ~100 groups). The ref'd timer keeps the process alive and
+// turns the hang into a recorded 'error' page.
+const FETCH_DEADLINE_MS = Number(process.env.VERIFY_FETCH_DEADLINE_MS) || 120000;
+function withDeadline(promise, ms, label) {
+  let t;
+  const timeout = new Promise((_, reject) => { t = setTimeout(() => reject(new Error(`timeout after ${ms}ms: ${label}`)), ms); });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
+}
+
 /** Fetch candidates in order; stop at the first that names an author and carries the text. */
 async function evidence(url, text, scrape) {
   const tried = [];
@@ -47,7 +58,7 @@ async function evidence(url, text, scrape) {
   if (!ok && scrape && !tried.some((t) => structuredAuthors(t.authors).length)) {
     const { fetchPage } = require('./lib/scraper.js');
     try {
-      const r = await fetchPage(url);
+      const r = await withDeadline(fetchPage(url), FETCH_DEADLINE_MS, url);
       const body = (r && (r.content || r.html || r.text)) || '';
       ok = consider(`fetchPage:${r && r.source ? r.source : '?'}`, body);
     } catch { /* falls through to the best partial below */ }
@@ -75,7 +86,7 @@ async function main() {
     for (const m of g) if (m.d.url && !byCanon.has(canonUrl(m.d.url))) byCanon.set(canonUrl(m.d.url), m.d.url);
     const pages = [];
     for (const url of byCanon.values()) {
-      try { pages.push(await evidence(url, text, scrape)); } catch (e) { pages.push({ url, via: 'error', authors: [], overlap: null, error: String(e.message || e).slice(0, 80) }); }
+      try { pages.push(await withDeadline(evidence(url, text, scrape), FETCH_DEADLINE_MS * 2, url)); } catch (e) { pages.push({ url, via: 'error', authors: [], overlap: null, error: String(e.message || e).slice(0, 80) }); }
       await new Promise((r) => setTimeout(r, 1200));
     }
     console.log(JSON.stringify({
@@ -85,9 +96,16 @@ async function main() {
     }));
     if (++done % 25 === 0) console.error(`[verify-identical] ${done}/${groups.length}`);
   }
+  console.error(`[verify-identical] done ${done}/${groups.length}`);
   return 0;
 }
 
 if (require.main === module) {
-  main().then((c) => process.exit(c), (e) => { console.error(e); process.exit(1); });
+  // Belt and braces for the hang above: a drained event loop before main()
+  // settles is an incomplete run, never a success.
+  let settled = false;
+  process.on('beforeExit', () => {
+    if (!settled) { console.error('[verify-identical] event loop drained before the run finished; output is incomplete'); process.exit(1); }
+  });
+  main().finally(() => { settled = true; }).then((c) => process.exit(c), (e) => { console.error(e); process.exit(1); });
 }
