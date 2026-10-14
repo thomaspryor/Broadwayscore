@@ -1,13 +1,11 @@
 {
-  "updatedAt": "2026-10-14T02:59:55.844Z",
+  "updatedAt": "2026-10-14T07:50:45.649Z",
   "scanned": 2601,
   "showsWithViolations": 327,
-  "totalViolations": 508,
-  "newSinceLastRun": 3,
+  "totalViolations": 506,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "la-bete-2010::nytimes--charles-isherwood.json",
-    "the-car-man-west-end-2026::nowthenmagazine--unknown.json",
-    "dinosaur-world-live-off-west-end-2026::dayoutwiththekids--jessica-degraag.json"
+    "la-boheme-2002::timeout--trevor-johnston.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -111,7 +109,6 @@
     "a-delicate-balance-2014::ew--marc-snetiker.json",
     "the-river-2014::financialtimes--brendan-lemon.json",
     "the-last-ship-2014::newsday--linda-winer.json",
-    "the-last-ship-2014::nytimes--charles-isherwood.json",
     "disgraced-2014::ew--thom-geier.json",
     "on-the-town-2014::washpost--peter-marks.json",
     "this-is-our-youth-2014::huffpost--david-finkle.json",
@@ -152,7 +149,6 @@
     "the-nance-2013::huffpost--david-finkle.json",
     "motown-the-musical-2013::new-jersey-newsroom--michael-sommers.json",
     "kinky-boots-2013::talkinbroadway--matthew-murray.json",
-    "lucky-guy-2013::guardian--alexis-soloski.json",
     "breakfast-at-tiffanys-2013::ap--mark-kennedy.json",
     "ann-2013::ny1--roma-torre.json",
     "the-anarchist-2012::ew--lisa-schwarzbaum.json",
@@ -206,7 +202,6 @@
     "good-people-2011::financialtimes--unknown.json",
     "the-importance-of-being-earnest-2011::ap--mark-kennedy.json",
     "the-importance-of-being-earnest-2011::hollywood-reporter--david-rooney.json",
-    "the-importance-of-being-earnest-2011::nypost--elisabeth-vincentelli.json",
     "the-merchant-of-venice-2010::nytimes--ben-brantley.json",
     "the-scottsboro-boys-2010::ny1--roma-torre.json",
     "la-bete-2010::hollywood-reporter--david-rooney.json",
@@ -253,6 +248,7 @@
     "the-color-purple-2005::talkinbroadway--matthew-murray.json",
     "the-color-purple-2005::telegraph--robbie-collin.json",
     "les-miserables-1987::whatsonstage--tanyel-gumushan.json",
+    "la-boheme-2002::timeout--trevor-johnston.json",
     "mamma-mia-2001::broadway-voice--kristen-balzano.json",
     "anything-goes-2002::northjerseycom--robert-feldberg.json",
     "proof-2000::nydailynews--david-kaufman.json",
@@ -1828,21 +1824,13 @@
       "showId": "the-last-ship-2014",
       "title": "The Last Ship",
       "openingDate": "2014-10-26",
-      "message": "newsday/Linda Winer (newsday--linda-winer.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): https://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html?ref=arts&_r=0",
+      "message": "newsday/Linda Winer (newsday--linda-winer.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
       "violations": [
         {
           "filename": "newsday--linda-winer.json",
           "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042",
           "outletId": "newsday",
           "criticName": "Linda Winer",
-          "haystackLength": 303,
-          "textIssuesFlag": false
-        },
-        {
-          "filename": "nytimes--charles-isherwood.json",
-          "url": "https://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html?ref=arts&_r=0",
-          "outletId": "nytimes",
-          "criticName": "Charles Isherwood",
           "haystackLength": 303,
           "textIssuesFlag": false
         }
@@ -2385,22 +2373,6 @@
       ]
     },
     {
-      "showId": "lucky-guy-2013",
-      "title": "Lucky Guy",
-      "openingDate": "2013-04-01",
-      "message": "guardian/Alexis Soloski (guardian--alexis-soloski.json) SHIPPED but fullText never mentions 'Lucky Guy' (288 chars): https://www.guardian.co.uk/stage/2013/apr/02/lucky-guy-review\n⚠️  backstage/Erik Haagensen (backstage--erik-haagensen.json) also too short to assess (0 chars): http://www.backstage.com/review/ny-theater/broadway/nora-ephron-lucky-guy-tom-hanks-mike-mcalary/\n⚠️  bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) also too short to assess (0 chars): http://www.bloomberg.com/news/2013-04-02/hanks-swaggers-into-broadway-stardom-in-lucky-review.html",
-      "violations": [
-        {
-          "filename": "guardian--alexis-soloski.json",
-          "url": "https://www.guardian.co.uk/stage/2013/apr/02/lucky-guy-review",
-          "outletId": "guardian",
-          "criticName": "Alexis Soloski",
-          "haystackLength": 288,
-          "textIssuesFlag": false
-        }
-      ]
-    },
-    {
       "showId": "breakfast-at-tiffanys-2013",
       "title": "Breakfast at Tiffany's",
       "openingDate": "2013-03-20",
@@ -2700,7 +2672,7 @@
       "showId": "the-road-to-mecca-2012",
       "title": "The Road to Mecca",
       "openingDate": "2012-01-17",
-      "message": "northjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'The Road to Mecca' (387 chars): https://www.northjersey.com/arts_entertainment/theater/137548378_Tale_of_isolation_in_South_Africa.html?page=all\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'The Road to Mecca' (303 chars): https://www.variety.com/review/VE1117946845\n⚠️  backstage/Erik Haagensen (backstage--erik-haagensen.json) also too short to assess (0 chars): http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-the-road-to-mecca-1005901552.story\n⚠️  newsday/Linda Winer (newsday--linda-winer.json) also too short to assess (0 chars): http://www.newsday.com/entertainment/theater/the-road-to-mecca-by-athol-fugard-1.3458761\n⚠️  village-voice/Michael Musto (village-voice--michael-musto.json) also too short to assess (0 chars): http://blogs.villagevoice.com/dailymusto/2012/01/the_road_to_mec.php",
+      "message": "northjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'The Road to Mecca' (387 chars): https://www.northjersey.com/arts_entertainment/theater/137548378_Tale_of_isolation_in_South_Africa.html?page=all\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'The Road to Mecca' (303 chars): https://www.variety.com/review/VE1117946845\n⚠️  newsday/Linda Winer (newsday--linda-winer.json) also too short to assess (0 chars): http://www.newsday.com/entertainment/theater/the-road-to-mecca-by-athol-fugard-1.3458761\n⚠️  village-voice/Michael Musto (village-voice--michael-musto.json) also too short to assess (0 chars): http://blogs.villagevoice.com/dailymusto/2012/01/the_road_to_mec.php",
       "violations": [
         {
           "filename": "northjerseycom--robert-feldberg.json",
@@ -3092,7 +3064,7 @@
       "showId": "the-importance-of-being-earnest-2011",
       "title": "The Importance of Being Earnest",
       "openingDate": "2011-01-13",
-      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'The Importance of Being Earnest' (303 chars): http://abcnews.go.com/Entertainment/wireStory?id=12612595&page=3\nhollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Importance of Being Earnest' (4802 chars, textIssues flag set): http://www.hollywoodreporter.com/review/importance-earnest-theater-review-71658?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Ffilm+%28The+Hollywood+Reporter+-+Movies%29\nnypost/Elisabeth Vincentelli (nypost--elisabeth-vincentelli.json) SHIPPED but fullText never mentions 'The Importance of Being Earnest' (303 chars): https://www.nypost.com/p/entertainment/theater/the_lady_mans_up_in_wickedly_wilde_8iPQ8PQ0wsUPq6qrMAFiqL?CMP=OTC-rss&FEEDNAME=",
+      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'The Importance of Being Earnest' (303 chars): http://abcnews.go.com/Entertainment/wireStory?id=12612595&page=3\nhollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Importance of Being Earnest' (4802 chars, textIssues flag set): http://www.hollywoodreporter.com/review/importance-earnest-theater-review-71658?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Ffilm+%28The+Hollywood+Reporter+-+Movies%29",
       "violations": [
         {
           "filename": "ap--mark-kennedy.json",
@@ -3109,14 +3081,6 @@
           "criticName": "David Rooney",
           "haystackLength": 4802,
           "textIssuesFlag": true
-        },
-        {
-          "filename": "nypost--elisabeth-vincentelli.json",
-          "url": "https://www.nypost.com/p/entertainment/theater/the_lady_mans_up_in_wickedly_wilde_8iPQ8PQ0wsUPq6qrMAFiqL?CMP=OTC-rss&FEEDNAME=",
-          "outletId": "nypost",
-          "criticName": "Elisabeth Vincentelli",
-          "haystackLength": 303,
-          "textIssuesFlag": false
         }
       ]
     },
@@ -3140,7 +3104,7 @@
       "showId": "the-scottsboro-boys-2010",
       "title": "The Scottsboro Boys",
       "openingDate": "2010-10-31",
-      "message": "ny1/Roma Torre (ny1--roma-torre.json) SHIPPED but fullText never mentions 'The Scottsboro Boys' (114 chars): https://www.ny1.com/content/ny1_living/theater_reviews/128223/ny1-theater-review---the-scottsboro-boys-\n⚠️  chicagotribune/Chris Jones (chicagotribune--chris-jones.json) also too short to assess (0 chars): https://leisureblogs.chicagotribune.com/the_theater_loop/2010/10/the-scottsboro-boys-on-broadway-minstrelsy-cruelty-and-longing.html",
+      "message": "ny1/Roma Torre (ny1--roma-torre.json) SHIPPED but fullText never mentions 'The Scottsboro Boys' (114 chars): https://www.ny1.com/content/ny1_living/theater_reviews/128223/ny1-theater-review---the-scottsboro-boys-",
       "violations": [
         {
           "filename": "ny1--roma-torre.json",
@@ -3709,6 +3673,22 @@
           "criticName": "Tanyel Gumushan",
           "haystackLength": 10770,
           "textIssuesFlag": true
+        }
+      ]
+    },
+    {
+      "showId": "la-boheme-2002",
+      "title": "La Bohème",
+      "openingDate": "2002-12-08",
+      "message": "timeout/Trevor Johnston (timeout--trevor-johnston.json) SHIPPED but fullText never mentions 'La Bohème' (1706 chars): https://www.timeout.com/movies/la-boheme-1",
+      "violations": [
+        {
+          "filename": "timeout--trevor-johnston.json",
+          "url": "https://www.timeout.com/movies/la-boheme-1",
+          "outletId": "timeout",
+          "criticName": "Trevor Johnston",
+          "haystackLength": 1706,
+          "textIssuesFlag": false
         }
       ]
     },
@@ -4588,7 +4568,7 @@
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
       "title": "Here There Are Blueberries",
       "openingDate": "2026-02-11",
-      "message": "thereviewshub/Chris Lilly (thereviewshub--chris-lilly.json) SHIPPED but fullText never mentions 'Here There Are Blueberries' (3742 chars): https://www.thereviewshub.com/here-there-are-blueberries-stratford-east-london/\n⚠️  whatsonstage/Alun Hood (whatsonstage--alun-hood.json) also too short to assess (0 chars): https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/",
+      "message": "thereviewshub/Chris Lilly (thereviewshub--chris-lilly.json) SHIPPED but fullText never mentions 'Here There Are Blueberries' (3742 chars): https://www.thereviewshub.com/here-there-are-blueberries-stratford-east-london/",
       "violations": [
         {
           "filename": "thereviewshub--chris-lilly.json",

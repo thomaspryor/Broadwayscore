@@ -1,14 +1,10 @@
 {
-  "updatedAt": "2026-10-14T03:01:39.207Z",
+  "updatedAt": "2026-10-14T07:52:23.339Z",
   "scanned": 2601,
   "showsWithViolations": 136,
-  "totalViolations": 173,
-  "newSinceLastRun": 3,
-  "newViolationKeys": [
-    "la-bete-2010::https://www.nytimes.com/2010/10/15/theater/reviews/15bete.html",
-    "13-2008::http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html",
-    "jersey-boys-2005::https://www.thejournalnews.com/apps/pbcs.dll/article?AID=/20051107/LIFESTYLE01/511070313/1031"
-  ],
+  "totalViolations": 172,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "violationKeys": [
     "sunset-boulevard-2024::https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
     "here-lies-love-2023::https://www.northjersey.com/arts-and-entertainment/theater/a-life-set-to-a-disco-beat-1.1007620",
@@ -90,7 +86,6 @@
     "good-people-2011::https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3iaf3864c8eb9b2c77cda50f2d93739485",
     "good-people-2011::https://www.ft.com/cms/s/2/2d52ccbe-45c3-11e0-acd8-00144feab49a.html#axzz1Fc6514p8",
     "the-importance-of-being-earnest-2011::http://abcnews.go.com/Entertainment/wireStory?id=12612595&page=3",
-    "the-importance-of-being-earnest-2011::https://www.nypost.com/p/entertainment/theater/the_lady_mans_up_in_wickedly_wilde_8iPQ8PQ0wsUPq6qrMAFiqL?CMP=OTC-rss&FEEDNAME=",
     "the-peewee-herman-show-2010::http://www.usatoday.com/life/theater/reviews/2010-11-12-longstory10_ST_N.htm",
     "colin-quinn-long-story-short-2010::https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html",
     "women-on-the-verge-of-a-nervous-breakdown-2010::https://www.northjersey.com/arts_entertainment/theater/106747248_Insanity_reigns_for_days_in_Spain_.html?page=all",
@@ -1175,19 +1170,13 @@
       "showId": "the-importance-of-being-earnest-2011",
       "title": "The Importance of Being Earnest",
       "openingDate": "2011-01-13",
-      "message": "Review URL for ap/Mark Kennedy does not mention show slug (checked: the-importance-of-being-earnest-2011, the-importance-of-being-earnest, importance, being, earnest, importancebeingearnest): http://abcnews.go.com/Entertainment/wireStory?id=12612595&page=3\nReview URL for nypost/Elisabeth Vincentelli does not mention show slug (checked: the-importance-of-being-earnest-2011, the-importance-of-being-earnest, importance, being, earnest, importancebeingearnest): https://www.nypost.com/p/entertainment/theater/the_lady_mans_up_in_wickedly_wilde_8iPQ8PQ0wsUPq6qrMAFiqL?CMP=OTC-rss&FEEDNAME=",
+      "message": "Review URL for ap/Mark Kennedy does not mention show slug (checked: the-importance-of-being-earnest-2011, the-importance-of-being-earnest, importance, being, earnest, importancebeingearnest): http://abcnews.go.com/Entertainment/wireStory?id=12612595&page=3",
       "violations": [
         {
           "outletId": "ap",
           "criticName": "Mark Kennedy",
           "url": "http://abcnews.go.com/Entertainment/wireStory?id=12612595&page=3",
           "urlSlug": "entertainment wire story"
-        },
-        {
-          "outletId": "nypost",
-          "criticName": "Elisabeth Vincentelli",
-          "url": "https://www.nypost.com/p/entertainment/theater/the_lady_mans_up_in_wickedly_wilde_8iPQ8PQ0wsUPq6qrMAFiqL?CMP=OTC-rss&FEEDNAME=",
-          "urlSlug": "p entertainment theater the_lady_mans_up_in_wickedly_wilde_8i pq 8 pq 0ws u pq 6qr ma fiq l"
         }
       ]
     },
