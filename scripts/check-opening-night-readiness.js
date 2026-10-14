@@ -22,6 +22,7 @@ const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
 const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
 const { readinessMarket, isWestEndReadinessMarket } = require('./lib/readiness-market');
 const { spawnSync } = require('child_process');
+const { readinessVerdict } = require('./lib/outlet-feed-reconcile');
 const { posterReadiness, preExistingReviewsReadiness, parseImageAuditLine, describeSpawnFailure } = require('./lib/readiness-guards');
 
 // --- CLI args ---
@@ -291,6 +292,17 @@ async function runChecks() {
     }
     const pv = posterReadiness(parsed, { hasKey, failure });
     report(pv.status === 'pass' ? PASS : pv.status === 'warn' ? WARN : SKIP, 'Poster is this show', pv.detail);
+  }
+
+  // 7c. Outlet feeds hold no review of this show that we never ingested (BRO-5358:
+  // Fish had two in RSS feeds for ~2 days). Advisory, like every new gate (CLAUDE.md §19).
+  {
+    const r = spawnSync(process.execPath, [path.join(__dirname, 'outlet-feed-reconcile.js'), `--show=${SHOW_ID}`, '--json', '--no-write'],
+      { encoding: 'utf8', timeout: 120000, cwd: DATA_DIR });
+    let parsed = null;
+    try { parsed = JSON.parse(r.stdout); } catch { /* skip verdict below */ }
+    const fv = readinessVerdict(parsed);
+    report(fv.status === 'pass' ? PASS : fv.status === 'warn' ? WARN : SKIP, 'Outlet feeds vs corpus', fv.detail);
   }
 
   // 8. API keys (quick validation — no costly API calls)

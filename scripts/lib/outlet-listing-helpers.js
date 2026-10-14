@@ -44,7 +44,7 @@ function escapeRegex(s) {
  * @param {string} urlSlug  - URL slug/path of the article
  * @param {Array}  activeShows - Shows with status open or previews
  * @param {string} [creditText] - feed description/summary; only used to find a cast or director name (or, for a brand-new production, a writer name) for one-word titles under 5 letters
- * @param {{nowMs?: number}} [opts]
+ * @param {{nowMs?: number, publishDate?: string}} [opts] publishDate (YYYY-MM-DD) lets a credit-less short-title show match on a headline that is exactly its title, inside its run window
  * @returns {Array} subset of activeShows that match
  */
 // normalizeTitle JOINS hyphenated words ("Grown-Ups" → "grownups", deliberate
@@ -94,8 +94,8 @@ function isYoungProduction(show, nowMs) {
   return !Number.isNaN(t) && nowMs - t <= YOUNG_PRODUCTION_DAYS * DAY_MS && nowMs - t >= -DAY_MS * 365;
 }
 
-function namesShowCredit(combined, show, nowMs = Date.now()) {
-  const hay = ` ${combined} `;
+// Full-name credits that identify THIS production (see the two kinds above).
+function creditNames(show, nowMs = Date.now()) {
   const young = isYoungProduction(show, nowMs);
   const roleOk = (p) => {
     const role = String((p && p.role) || '');
@@ -103,13 +103,66 @@ function namesShowCredit(combined, show, nowMs = Date.now()) {
     return PRODUCTION_ROLE_RE.test(role) || (young && SHARED_ROLE_RE.test(role));
   };
   const people = [...(show.creativeTeam || []).filter(roleOk), ...(show.cast || [])];
-  for (const p of people) {
-    const name = hyphenSpaced(p && p.name);
-    // Full names only: a first or last name alone ("Mark") would match anything.
-    // normalizeTitle drops the apostrophe, so "Melis Aker's Fish" reads "melis akers".
-    if (name && name.split(/\s+/).length >= 2 && (hay.includes(` ${name} `) || hay.includes(` ${name}s `))) return true;
+  // Full names only: a first or last name alone ("Mark") would match anything.
+  return people.map((p) => hyphenSpaced(p && p.name)).filter((n) => n && n.split(/\s+/).length >= 2);
+}
+
+function namesShowCredit(combined, show, nowMs = Date.now()) {
+  const hay = ` ${combined} `;
+  // normalizeTitle drops the apostrophe, so "Melis Aker's Fish" reads "melis akers".
+  return creditNames(show, nowMs).some((name) => hay.includes(` ${name} `) || hay.includes(` ${name}s `));
+}
+
+// BRO-5358: Soon, Rope, Baby, MYTH and Nina are one-word titles under 5 letters
+// whose shows.json rows carry no cast or creative team yet, so namesShowCredit
+// can never be true and the outlet-first poller could never file them. For such
+// a show the show's OWN venue, as a whole phrase in the headline, slug or feed
+// description, is the credit context ("Soon at St. Luke's Theatre"). Guards:
+//  - only when the show has no usable credits (otherwise credits stay the rule);
+//  - a venue that is a bare generic word ("Theatre", "TBD") is not a signal;
+//  - a one-word venue under 6 letters (JACK) must appear exactly as stored
+//    (all-caps), so the name "Jack" or "jack of all trades" does not count;
+//  - if another active show at the same venue matched by its own title, the
+//    venue belongs to that show, not to this one (decided in findMatchingShows).
+const GENERIC_VENUES = new Set(['theatre', 'theater', 'tbd', 'tba', 'various', 'off broadway', 'broadway', 'west end', 'london', 'new york', 'online', 'virtual']);
+function venuePhrase(show) {
+  const norm = hyphenSpaced(show && show.venue);
+  if (!norm || GENERIC_VENUES.has(norm)) return '';
+  return norm;
+}
+
+// Real feeds title an off-Broadway review with the bare show name: Off Off Online's
+// "Soon" and Theater Scene's "Soon" (BRO-5358) name no venue, cast or writer. For a
+// credit-less short-title show, an item whose WHOLE headline is the title ("Soon",
+// "Review: Soon", "Soon review"), published inside the show's own run window, is
+// credit enough: the date pins it to this production, the exact headline to the show.
+const RUN_LEAD_DAYS = 3;
+const RUN_TAIL_DAYS = 21;
+function publishedInRunWindow(show, publishDate) {
+  const pub = Date.parse(publishDate || '');
+  const start = Date.parse(show.previewsStartDate || show.openingDate || '');
+  if (Number.isNaN(pub) || Number.isNaN(start)) return false;
+  const end = Date.parse(show.openingDate || '') || start;
+  return pub >= start - RUN_LEAD_DAYS * DAY_MS && pub <= Math.max(start, end) + RUN_TAIL_DAYS * DAY_MS;
+}
+
+function headlineIsTitle(headline, show) {
+  const norm = hyphenSpaced(show && show.title);
+  const h = hyphenSpaced(String(headline || '').replace(/[_/]+/g, ' '));
+  return !!norm && !!h && (h === norm || h === `review ${norm}` || h === `${norm} review`);
+}
+
+function namesShowVenue(combined, rawText, show, nowMs = Date.now()) {
+  if (creditNames(show, nowMs).length > 0) return false;
+  const norm = venuePhrase(show);
+  if (!norm) return false;
+  if (!` ${combined} `.includes(` ${norm} `)) return false;
+  const tokens = norm.split(/\s+/);
+  if (tokens.length === 1 && norm.length < 6) {
+    const stored = String(show.venue).trim();
+    return new RegExp(`(^|[^A-Za-z0-9])${escapeRegex(stored)}($|[^A-Za-z0-9])`).test(String(rawText || ''));
   }
-  return false;
+  return true;
 }
 
 // A book review names the musical's title or characters without being about
@@ -127,7 +180,7 @@ function looksLikeBookReview(headline, urlSlug) {
   return (BOOK_REVIEW_RE.test(text) || BOOKS_SECTION_RE.test(String(urlSlug || ''))) && !THEATRE_WORD_RE.test(text);
 }
 
-function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now() } = {}) {
+function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now(), publishDate = null } = {}) {
   if (!headline && !urlSlug) return [];
   if (looksLikeBookReview(headline, urlSlug)) return [];
   // Slug separators become spaces too (hyphenSpaced handles the dashes):
@@ -151,6 +204,9 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
   const creditHay = `${combined} ${hyphenSpaced(String(creditText || ''))}`;
 
   const matches = [];
+  // Matched on the show's venue alone (see namesShowVenue); checked after the loop.
+  const venueOnly = new Set();
+  const rawText = `${headline || ''} ${creditText || ''}`;
 
   for (const show of activeShows) {
     const norm = hyphenSpaced(String(show.title || '').replace(/[_/]+/g, ' '));
@@ -158,7 +214,11 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
 
     const tokens = norm.split(/\s+/).filter(Boolean);
 
-    if (COMMON_WORD_SHOW_TITLES.has(norm)) {
+    // A common-word show with no credits yet (Baby, BRO-5358) has nothing but
+    // its venue to go on: venue belongs to one production, unlike a writer
+    // credit shared by every production of the title, so it stays safe here.
+    const commonWord = COMMON_WORD_SHOW_TITLES.has(norm);
+    if (commonWord && !(creditNames(show, nowMs).length === 0 && venuePhrase(show))) {
       // Common one-word shows (Six, Rent, Chicago, Giant, etc.) are handled by
       // the per-show SERP collector (collect-outlet-reviews.js). Skip them here
       // to avoid false positives from generic theater articles.
@@ -166,7 +226,7 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
     }
     // Very short single-word titles not in the common set (e.g. "Job", "Fur",
     // "Fish") match only with production-credit context (namesShowCredit).
-    const needsCredit = tokens.length === 1 && norm.length < 5;
+    const needsCredit = commonWord || (tokens.length === 1 && norm.length < 5);
 
     // Multi-word titles or longer single-word distinctive titles: the title
     // must appear as whole words. A raw includes() also matched inside longer
@@ -195,13 +255,20 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
           return next === '' || /[0-9A-Z]/.test(next);
         }));
     }
-    if (ok && needsCredit && !namesShowCredit(creditHay, show, nowMs)) ok = false;
+    if (ok && needsCredit && !namesShowCredit(creditHay, show, nowMs)) {
+      if (namesShowVenue(creditHay, rawText, show, nowMs)) venueOnly.add(show);
+      else if (creditNames(show, nowMs).length === 0 && headlineIsTitle(headline, show) && publishedInRunWindow(show, publishDate)) venueOnly.add(show);
+      else ok = false;
+    }
     if (ok) {
       matches.push(show);
     }
   }
 
-  return matches;
+  // A venue credit is void when another show at the same venue matched on its
+  // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
+  return matches.filter((show) => !venueOnly.has(show)
+    || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
 }
 
 /**
@@ -469,6 +536,7 @@ function extractListingUrls(html, domain) {
 }
 
 module.exports = {
+  namesShowVenue,
   looksLikeBookReview,
   findMatchingShows,
   deriveQualifyingOutlets,

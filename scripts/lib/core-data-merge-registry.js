@@ -1560,6 +1560,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
   },
   {
+    file: 'audit/outlet-feed-reconcile.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-10-14 (BRO-5358; produce-coverage-digest-snapshot.js ignores it once older than 36h): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
     file: 'audit/uncollected-live-reviews.json',
     surface: 'public-repo',
     status: 'single-writer',

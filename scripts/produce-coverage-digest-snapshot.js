@@ -22,11 +22,14 @@
 const fs = require('fs');
 const path = require('path');
 const { coverageDigestItems } = require('./lib/coverage-digest.js');
+const { digestItems: feedGapItems } = require('./lib/outlet-feed-reconcile.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { coverageGateDisabled } = require('./lib/coverage-gate.js');
 
 const REPO = path.join(__dirname, '..');
 const GAP_AUDIT_PATH = path.join(REPO, 'data', 'audit', 'show-review-gap.json');
+const FEED_RECONCILE_PATH = path.join(REPO, 'data', 'audit', 'outlet-feed-reconcile.json');
+const FEED_RECONCILE_MAX_AGE_H = 36;
 const SNAPSHOT_PATH = path.join(REPO, 'data', 'audit', 'coverage-digest-snapshot.json');
 const LIMIT = 10;
 
@@ -42,12 +45,24 @@ const FIXTURES = {
   }),
 };
 
-function buildSnapshot(gapAudit, nowIso) {
+// BRO-5358: advisory feed-vs-corpus reconcile rows (scripts/outlet-feed-reconcile.js).
+// A stale or unreadable reconcile file adds nothing rather than repeating old gaps.
+function readFeedReconcile(nowMs = Date.now()) {
+  try {
+    const r = JSON.parse(fs.readFileSync(FEED_RECONCILE_PATH, 'utf8'));
+    const ageH = (nowMs - Date.parse(r.generatedAt)) / 3600000;
+    return ageH >= 0 && ageH < FEED_RECONCILE_MAX_AGE_H ? r : null;
+  } catch { return null; }
+}
+
+function buildSnapshot(gapAudit, nowIso, feedReconcile = null) {
   const items = coverageDigestItems(gapAudit?.results || [], { limit: LIMIT });
-  const bannerText = items.length === 0
+  const feedItems = feedGapItems(feedReconcile?.gaps || [], LIMIT).map((it) => ({ ...it, detail: `${it.detail} (advisory)` }));
+  const all = [...items, ...feedItems].slice(0, LIMIT);
+  const bannerText = all.length === 0
     ? 'Every censused show has all known reviews live'
-    : `${items.length} show(s) with known reviews live but incomplete`;
-  return { generatedAt: nowIso, bannerText, items, moreCount: 0 };
+    : [items.length && `${items.length} show(s) with known reviews live but incomplete`, feedItems.length && `${feedItems.length} new show(s) with reviews in outlet feeds we have not ingested`].filter(Boolean).join('; ');
+  return { generatedAt: nowIso, bannerText, items: all, moreCount: 0 };
 }
 
 function removeStaleSnapshot() {
@@ -104,7 +119,7 @@ function main() {
     }
   }
 
-  const snapshot = buildSnapshot(gapAudit, nowIso);
+  const snapshot = buildSnapshot(gapAudit, nowIso, fixtureArg ? null : readFeedReconcile());
   console.log(`[coverage-digest] ${snapshot.bannerText}`);
   for (const it of snapshot.items) console.log(`  · ${it.title}: ${it.detail}`);
 
@@ -120,4 +135,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { buildSnapshot };
+module.exports = { buildSnapshot, readFeedReconcile };

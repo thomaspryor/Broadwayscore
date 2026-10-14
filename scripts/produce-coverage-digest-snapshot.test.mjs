@@ -34,3 +34,16 @@ test('buildSnapshot: missing/null gapAudit degrades to empty, never throws', () 
   const snapshot = buildSnapshot(null, '2026-08-03T12:00:00.000Z');
   assert.deepStrictEqual(snapshot.items, []);
 });
+
+test('buildSnapshot adds advisory rows for reviews in outlet feeds that are not ingested (BRO-5358)', () => {
+  const feed = { gaps: [
+    { showId: 'fish-off-broadway-2026', title: 'Fish', level: 'matched', outletId: 'theater-pizzazz' },
+    { showId: 'fish-off-broadway-2026', title: 'Fish', level: 'matched', outletId: 'off-off-online' },
+    { showId: 'x', title: 'X', level: 'possible', outletId: 'q' },
+  ] };
+  const snap = buildSnapshot({ results: [] }, '2026-10-14T00:00:00.000Z', feed);
+  assert.equal(snap.items.length, 1);
+  assert.match(snap.items[0].detail, /^2 reviews in outlet feeds not ingested \(theater-pizzazz, off-off-online\) \(advisory\)$/);
+  assert.match(snap.bannerText, /1 new show\(s\) with reviews in outlet feeds/);
+  assert.equal(buildSnapshot({ results: [] }, 'now').items.length, 0);
+});

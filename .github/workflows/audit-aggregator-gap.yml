@@ -430,6 +430,17 @@ jobs:
       # producer on the audit cron" the plan calls for. Fails open (kill
       # switch / missing audit file → no write, section just omitted from the
       # email) so it can never block this job.
+      # BRO-5358: ADVISORY feed-vs-corpus reconcile. Lists outlet-feed items that look
+      # like a review of a show opened in the last 7 days but are in no review file
+      # (Fish had two unfiled for ~2 days, BRO-5326). Plain-HTTP feeds only; the
+      # digest producer below reads its JSON. Capped so a hung feed cannot eat the
+      # commit/push headroom; new gates land advisory first (CLAUDE.md §19).
+      - name: Outlet feed vs corpus reconcile (advisory)
+        if: always()
+        continue-on-error: true  # lint-allow-swallow: advisory per CLAUDE.md §19; the script exits 0 unless --strict and a missing report just omits the digest rows
+        timeout-minutes: 5
+        run: node scripts/outlet-feed-reconcile.js
+
       - name: Coverage digest snapshot
         if: always()
         run: node scripts/produce-coverage-digest-snapshot.js
@@ -515,7 +526,7 @@ jobs:
           # those rows never reach the public repo and are lost every run,
           # which is why attributedPct read near-zero for BD's SERP zone
           # (Sprint 3, card 3b1637c5).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json data/audit/outlet-ground-truth.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/outlet-feed-reconcile.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json data/audit/outlet-ground-truth.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

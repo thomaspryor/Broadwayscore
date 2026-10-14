@@ -747,7 +747,7 @@ async function main() {
 
     for (const { url, headline, publishDate, description } of articles) {
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
-      const matchedShows = findMatchingShows(headline, urlSlug, activeShows, description);
+      const matchedShows = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
 
       if (matchedShows.length === 0) continue;
 
@@ -835,4 +835,8 @@ if (require.main === module) {
 }
 
 // Exported for scripts/probe-outlet-feeds.js (lists SERP-only outlets) and tests.
-module.exports = { SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget };
+module.exports = {
+  SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget,
+  // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
+  fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml,
+};
