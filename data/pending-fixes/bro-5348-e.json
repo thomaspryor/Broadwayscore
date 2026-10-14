@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5348-e",
   "planId": "9ca729d1-2d85-427d-8368-37f9a7efcdd5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T13:26:09.877Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,28 @@
         "description": "BRO-5348: spelling; the url is the /michael-giltz/ HuffPost contributor page."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T13:54:29.693Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "noises-off-2016/huffpost--fern-siegel.json criticName: \"Fern Siegel\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beautiful-the-carole-king-musical-2014/huffpost--danny-groner.json criticName: \"Danny Groner\" -> \"David Finkle\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eclipsed-2016/huffpost--michael-glitz.json criticName: \"Michael Glitz\" -> \"Michael Giltz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/huffpost--michael-glitz.json criticName: \"Michael Glitz\" -> \"Michael Giltz\""
+    }
+  ]
 }
