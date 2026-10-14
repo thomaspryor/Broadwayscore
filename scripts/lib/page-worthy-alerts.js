@@ -51,7 +51,7 @@ const PAGE_WORTHY_PREFIXES = [
   // escalate reason is a deliberate stop (spend cap / attempt cap / no-progress
   // brake), e.g. "[CRITICAL] … spend cap reached ($202.66 >= $200)" — not a
   // dead pipeline and nothing the owner can act on. It routes to the digest.
-  'on-monitor-escalation-', // monitor-v2.md step 3: the window is ending with parity never reached; the success report stays on 'on-monitor-report-' (digest) per the open email-policy call BRO-3154 (BRO-2791)
+  'on-monitor-escalation-', // monitor-v2.md step 3: the window is ending with parity never reached; mid-window reports on the base 'on-monitor-report-<NIGHT_KEY>' key stay digest per the open email-policy call BRO-3154 (BRO-2791); the one FINAL per-show report pages via PAGE_WORTHY_FINAL_REPORT_RE below (BRO-4043)
   'on-monitor-dead-session-', // opening-night-monitor-launch.js: the launcher kept dying (SIGKILL/OOM) until the attempt cap — monitor is dead for the rest of the window
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   // BRO-886: the draft itself was created and tracked fine — only the
@@ -242,9 +242,22 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // the morning digest as error rows (router downgrade human -> digest).
 ]);
 
+// Category 2 (BRO-4043): the opening-night monitor's ONE final report per show
+// per night, 'on-monitor-report-<NIGHT_KEY>-<show-id>-parity-final' (parity
+// reached) or '...-escalation-final' (window ended without parity). Sent from
+// scripts/opening-night-prompts/monitor-v2.md steps 2-3. These are their own
+// conditionKeys on purpose: the router dedups per conditionKey, so an earlier
+// mid-window send under the base 'on-monitor-report-<NIGHT_KEY>' key (which
+// stays digest-tier) used to return action=silent for the final report, and a
+// variant key was demoted to the digest because it was not allowlisted. A
+// retry of the identical -final key is still deduped by the router's cooldown,
+// so the owner gets exactly one final email per show per night.
+const PAGE_WORTHY_FINAL_REPORT_RE = /^on-monitor-report-.+-(?:parity|escalation)-final$/;
+
 function isPageWorthy(conditionKey) {
   if (!conditionKey) return false;
   if (PAGE_WORTHY_CONDITION_KEYS.has(conditionKey)) return true;
+  if (PAGE_WORTHY_FINAL_REPORT_RE.test(conditionKey)) return true;
   return PAGE_WORTHY_PREFIXES.some((prefix) => conditionKey.startsWith(prefix));
 }
 
@@ -299,6 +312,7 @@ function isPageWorthyWorkflow(workflowFile) {
 
 module.exports = {
   PAGE_WORTHY_CONDITION_KEYS,
+  PAGE_WORTHY_FINAL_REPORT_RE,
   PAGE_WORTHY_PREFIXES,
   PAGE_WORTHY_WORKFLOWS,
   isPageWorthy,
