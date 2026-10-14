@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4828",
   "planId": "3ade368c-9ee7-4e2c-9225-893ce30f0b70",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T00:00:00.000Z",
   "submitter": {
     "name": null,
@@ -42,5 +42,28 @@
         "description": "Excerpt is The Hunger Games On Stage, flagged wrongProduction."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T04:47:51.155Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/independent--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/whatsonstage--unknown.json"
+    }
+  ]
 }
