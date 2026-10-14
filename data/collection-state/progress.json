@@ -445,7 +445,12 @@
     "lucky-guy-2013/guardian--alexis-soloski.json",
     "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
     "elling-2010/bloomberg--jeremy-gerard.json",
-    "next-to-normal-2009/neontommy--jason-kehe.json"
+    "next-to-normal-2009/neontommy--jason-kehe.json",
+    "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+    "the-importance-of-being-earnest-2011/nypost--elisabeth-vincentelli.json",
+    "the-last-ship-2014/nytimes--charles-isherwood.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "born-yesterday-2011/playbill--robert-simonson.json"
   ],
   "failed": [
     "the-outsiders-2024/hollywood-reporter--angie-han.json",
@@ -473,7 +478,26 @@
     "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
     "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
     "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "operation-mincemeat-2025/londontheatre1--unknown.json",
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "constellations-2015/ew--melissa-maerz.json",
+    "gigi-2015/washpost--peter-marks.json",
+    "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+    "constellations-2015/ny1--roma-torre.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "mary-poppins-west-end-2019/times-uk--clive-davis.json",
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "jack-absolute-flies-again-west-end-2022/telegraph--fiona-mountford.json",
+    "the-addams-family-2010/variety--steven-suskin.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+    "brokeback-mountain-west-end-2023/times-uk--clive-davis.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "patriots-west-end-2023/standard--nick-curtis.json",
+    "west-side-story-2009/ew--leah-greenblatt.json",
+    "endgame-west-end-2020/times-uk--clive-davis.json",
+    "buena-vista-social-club-off-broadway-2023/nysr--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -745,7 +769,10 @@
       "nina-off-west-end-2026/guardian--kate-wyver.json",
       "the-cherry-orchard-west-end-2026/timeout-london--unknown.json",
       "harry-potter-and-the-cursed-child-one-part-west-end-2026/britishtheatrecom--unknown.json",
-      "lucky-guy-2013/guardian--alexis-soloski.json"
+      "lucky-guy-2013/guardian--alexis-soloski.json",
+      "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+      "the-importance-of-being-earnest-2011/nypost--elisabeth-vincentelli.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -756,7 +783,8 @@
       "data/review-texts/the-great-gatsby-tour-2026/deadline--baz-bamigboye.json",
       "the-great-gatsby-tour-2026/deadline--baz-bamigboye.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
-      "book-of-mormon-2011/variety--marilyn-stasio.json"
+      "book-of-mormon-2011/variety--marilyn-stasio.json",
+      "data/review-texts/the-addams-family-2010/variety--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
@@ -779,7 +807,9 @@
       "becky-shaw-2026/wsj--charles-isherwood.json",
       "data/review-texts/dog-day-afternoon-2026/wsj--charles-isherwood.json",
       "dog-day-afternoon-2026/wsj--charles-isherwood.json",
-      "data/review-texts/the-cherry-orchard-west-end-2026/theatremonkey--unknown.json"
+      "data/review-texts/the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+      "data/review-texts/the-last-ship-2014/nytimes--charles-isherwood.json",
+      "the-last-ship-2014/nytimes--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -970,11 +1000,13 @@
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
       "elling-2010/bloomberg--jeremy-gerard.json",
-      "next-to-normal-2009/neontommy--jason-kehe.json"
+      "next-to-normal-2009/neontommy--jason-kehe.json",
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+      "born-yesterday-2011/playbill--robert-simonson.json"
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "next-to-normal-2009/neontommy--jason-kehe.json",
+  "lastProcessed": "buena-vista-social-club-off-broadway-2023/nysr--unknown.json",
   "log": [
     {
       "t": "2026-10-13T19:44:44.248Z",
@@ -1647,6 +1679,17 @@
       "event": "bb-session",
       "session": "4015450a",
       "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T07:07:09.643Z",
+      "event": "bb-session",
+      "session": "df585997",
+      "url": "https://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-th"
+    },
+    {
+      "t": "2026-10-14T07:07:10.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
