@@ -2377,6 +2377,7 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
       if (err && err.bbNoSession) {
         countBrowserbaseAttempt(browserbaseUsage, urlDomain, -1);
         stats.browserbaseSessionsUsed = Math.max(0, stats.browserbaseSessionsUsed - 1);
+        stats.tier1_5Attempts = Math.max(0, stats.tier1_5Attempts - 1);
       }
       throw err;
     });
@@ -7167,7 +7168,7 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
       // The body as stored (junk/chrome stripped, multi-show section isolated
       // with the same url and title the save path uses), not the raw fetch: a
       // verdict on text we then strip described a different body (BRO-5243).
-      const stored = storedTextForm(result.text, { url: reviewData.url || review.url, showTitle: showMeta ? showMeta.title : '' });
+      const stored = storedTextForm(result.text, { url: discoveredUrl || reviewData.url || review.url, showTitle: showMeta ? showMeta.title : '' });
       // A multi-show post with no section for this show is refused by the save
       // path; verifying it would be a wasted LLM call (BRO-5261).
       if (stored.refused) {

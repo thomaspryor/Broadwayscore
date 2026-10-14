@@ -70,7 +70,7 @@ test('collect-review-texts.js wires stripExemptedChrome after cleanText', () => 
   assert.match(lib, /stripExemptedChrome\(cleanText\(raw\)/);
   const src = fs.readFileSync(new URL('../../scripts/collect-review-texts.js', import.meta.url), 'utf8');
   assert.match(src, /preCleanedText = preCleanForStorage\(text\)/);
-  assert.match(src, /storedTextForm\(result\.text, \{ url: reviewData\.url \|\| review\.url, showTitle:/);
+  assert.match(src, /storedTextForm\(result\.text, \{ url: discoveredUrl \|\| reviewData\.url \|\| review\.url, showTitle:/);
   assert.match(src, /scrapedText: stored\.text \|\| result\.text/);
 });
 
