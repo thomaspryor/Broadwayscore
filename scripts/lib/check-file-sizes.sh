@@ -20,8 +20,9 @@
 # Severity: a finding in a STAGED file exits 1, as before. A finding only in
 # an unstaged or untracked file is a ::warning:: plus a step-summary line and
 # exits 0, while the wider scan proves itself (CHECK_FILE_SIZES_ENFORCE_ALL=1
-# makes those exit 1 too). This is detection, not a gate: every caller's
-# commit step runs under always() whatever this reports.
+# makes those exit 1 too). This is detection, not a gate: almost every
+# caller's commit step runs under always() whatever this reports (one
+# exception, detect-ob-closings.yml, gates its commit on its own outputs).
 set -uo pipefail
 
 LIMIT=5242880       # 5 MiB
@@ -34,6 +35,11 @@ SUMMARY="${GITHUB_STEP_SUMMARY:-/dev/null}"
 size_of() { stat --format=%s "$1" 2>/dev/null || stat -f%z "$1" 2>/dev/null || echo 0; }
 in_list() { case " $2 " in *" $1 "*) return 0 ;; esac; return 1; }
 
+if ! git rev-parse --verify -q HEAD >/dev/null; then
+  # No HEAD (empty repo): nothing to diff against, so every file is new.
+  echo "::warning::check-file-sizes: no HEAD commit; treating every data/ file as new"
+fi
+
 declare -A STAGED=()
 while IFS= read -r -d '' f; do STAGED["$f"]=1; done < <(git diff --cached --no-renames --name-only -z --diff-filter=ACM -- data/ 2>/dev/null)
 
@@ -41,6 +47,7 @@ declare -A SEEN=()
 CANDIDATES=()
 add() { [ -n "$1" ] && [ -z "${SEEN[$1]:-}" ] && { SEEN["$1"]=1; CANDIDATES+=("$1"); }; }
 while IFS= read -r -d '' f; do add "$f"; done < <(git diff --no-renames --name-only -z --diff-filter=ACM HEAD -- data/ 2>/dev/null)
+while IFS= read -r -d '' f; do add "$f"; done < <(git diff --cached --no-renames --name-only -z --diff-filter=ACM -- data/ 2>/dev/null)
 while IFS= read -r -d '' f; do add "$f"; done < <(git ls-files --others --exclude-standard -z -- data/ 2>/dev/null)
 
 errors=""
