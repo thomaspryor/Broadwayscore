@@ -329,7 +329,6 @@
     "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
     "beetlejuice-west-end-2026/guardian--chris-wiegand.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "oh-mary-west-end-2025/times-uk--clive-davis.json",
     "paddington-the-musical-west-end-2025/standard--martin-robinson.json",
     "titanique-west-end-2024/nypost--johnny-oleksinski.json",
     "oliver-west-end-2024/i-paper--fiona-mountford.json",
@@ -518,7 +517,6 @@
     "and-juliet-tour-2024/third-coast-review--unknown.json",
     "the-outsiders-2024/hollywood-reporter--angie-han.json",
     "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json",
     "and-juliet-2022/wsj--charles-isherwood.json",
     "and-juliet-2022/exeunt-magazine--unknown.json",
     "and-juliet-2022/theater-life--unknown.json",
@@ -545,7 +543,19 @@
     "equus-west-end-2026/guardian--kate-wyver.json",
     "equus-west-end-2026/thestage--holly-omahony.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
-    "the-maids-off-broadway-2026/nydailynews--unknown.json"
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -625,7 +635,8 @@
       "much-ado-about-nothing-2026/variety--unknown.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -635,7 +646,8 @@
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "the-lost-boys-2026/the-knockturnal--paul-chi.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "hadestown-2019/the-knockturnal--justin-rodriguez.json"
+      "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -653,12 +665,6 @@
       "water-for-elephants-tour-2025/broadwayworld--christina-mancuso.json",
       "beauty-and-the-beast-tour-2025/broadwayworld--taylor-clemons.json",
       "oh-mary-2024/broadwaynews--brittani-samuel.json"
-    ],
-    "brightdata": [
-      "dirty-dancing-tour-2026/hollywood-reporter--caitlin-huston.json",
-      "dirty-dancing-tour-2026/variety--payton-turkeltaub.json",
-      "dirty-dancing-tour-2026/deadline--greg-evans.json",
-      "dirty-dancing-tour-2026/rollingstone--althea-legaspi.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -689,7 +695,7 @@
     ]
   },
   "startTime": "2026-10-14T08:42:53.725Z",
-  "lastProcessed": "the-maids-off-broadway-2026/nydailynews--unknown.json",
+  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json",
   "log": [
     {
       "t": "2026-10-14T09:04:35.773Z",
@@ -1436,10 +1442,64 @@
       "t": "2026-10-14T17:05:45.366Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T17:34:15.070Z",
+      "event": "bb-session",
+      "session": "8a28c506",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T17:40:05.580Z",
+      "event": "bb-session",
+      "session": "66a57ea2",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-14T17:40:26.389Z",
+      "event": "bb-session",
+      "session": "c608f5e6",
+      "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0"
+    },
+    {
+      "t": "2026-10-14T17:40:41.394Z",
+      "event": "bb-session",
+      "session": "94f0b929",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T17:40:42.258Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T17:42:44.050Z",
+      "event": "bb-session",
+      "session": "073847b6",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T17:42:50.478Z",
+      "event": "bb-session",
+      "session": "2cc80782",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-14T17:42:51.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T17:42:52.441Z",
+      "event": "bb-session",
+      "session": "57180373",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
     }
   ],
   "recoveredAfterFailure": [
     "a-history-of-water-in-the-middle-east-west-end-2019/times-uk--clive-davis.json",
-    "hadestown-2019/theater-life--isa-goldberg.json"
+    "hadestown-2019/theater-life--isa-goldberg.json",
+    "oh-mary-west-end-2025/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json"
   ]
 }
