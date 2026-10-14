@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { noCriticReviewsExpected } from '@/lib/review-expectation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -177,7 +178,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   };
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
-    : `${isLiveTour(show) && reviewCount === 0
+    : `${noCriticReviewsExpected(show, reviewCount)
+      ? `${show.title} ${marketLabel}: no critic reviews were found for this event.`
+      : isLiveTour(show) && reviewCount === 0
       ? `Reviews of ${show.title} ${marketLabel} are coming in as local critics see it in each city.`
       : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
   ).trim();
@@ -455,6 +458,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // Hero extras the legacy header carried: how many more reviews unlock a
   // CriticScore (only when review count, not previews/upcoming, is the gate)
   // and which fallback fills the Critics' Take slot when there's no consensus.
+  // One server-side verdict for every place on the page (see review-expectation.ts).
+  const noReviewsExpected = noCriticReviewsExpected(show, reviewCount);
   const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
@@ -520,6 +525,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               isOffBroadway={isOffBroadway}
               offBroadwayVenueSlug={offBroadwayTheater?.slug ?? null}
               reviewsRemaining={reviewsRemaining}
+              noReviewsExpected={noReviewsExpected}
               criticsTakeMode={criticsTakeMode}
               ranks={ranks}
               tourReviewYears={isTour && !show.openingDate ? getTourReviewYears(show.criticScore?.reviews) : null}
@@ -648,6 +654,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                             const remaining = showTBD
                               ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
                               : 0;
+                            if (noReviewsExpected) {
+                              return <span className="text-xs sm:text-sm text-gray-500">No critic reviews expected</span>;
+                            }
                             const isGatedByReviewCount = showTBD && show.status !== 'previews' && show.status !== 'upcoming' && remaining > 0;
                             if (isGatedByReviewCount) {
                               return (
@@ -989,7 +998,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               <h2 id="critic-scorecard-heading-archived" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
             </header>
             <p className="text-gray-400 text-sm">
-              Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.
+              {noReviewsExpected
+                ? 'We found no critic reviews for this event.'
+                : <>Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.</>}
             </p>
           </section>
         )}

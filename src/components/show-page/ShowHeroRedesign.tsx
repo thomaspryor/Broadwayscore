@@ -106,6 +106,8 @@ interface ShowHeroRedesignProps {
   offBroadwayVenueSlug?: string | null;
   /** Reviews still needed for a CriticScore; 0 when the gate isn't review count. */
   reviewsRemaining?: number;
+  /** Server-computed noCriticReviewsExpected() (src/lib/review-expectation.ts). */
+  noReviewsExpected?: boolean;
   /** Which Critics' Take fallback to show when there's no consensus (see getCriticsTakeDisplayMode). */
   criticsTakeMode?: 'consensus' | 'coming-soon' | 'synopsis' | 'none';
   /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
@@ -159,6 +161,7 @@ function Inner({
   isOffBroadway,
   offBroadwayVenueSlug,
   reviewsRemaining = 0,
+  noReviewsExpected = false,
   criticsTakeMode = 'none',
   ranks,
   tourReviewYears,
@@ -577,7 +580,7 @@ function Inner({
           inline in the title column on lg+). Awaiting card replaces both when
           there aren't enough critic reviews. */}
       {!hasEnoughCriticReviews ? (
-        <AwaitingCard show={show} reviewCount={reviewCount} reviewsRemaining={reviewsRemaining} />
+        <AwaitingCard show={show} reviewCount={reviewCount} reviewsRemaining={reviewsRemaining} noReviewsExpected={noReviewsExpected} />
       ) : (
         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
           <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
@@ -872,11 +875,14 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
   );
 }
 
-function AwaitingCard({ show, reviewCount, reviewsRemaining }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number; reviewsRemaining: number }) {
+function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected = false }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number; reviewsRemaining: number; noReviewsExpected?: boolean }) {
   // A national tour is reviewed city by city as it plays, so its empty state
   // says reviews are coming in rather than that something is missing (BRO-4931).
   const isTour = show.category === 'tour';
-  const progress = (
+  // A long-closed one-off event with no reviews will not get a CriticScore;
+  // say so instead of counting down to one (owner decision 2026-10-14).
+  const title = noReviewsExpected ? 'No critic reviews expected' : isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews';
+  const progress = noReviewsExpected ? 'We found no critic reviews for this event.' : (
     <>
       {show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? (isTour ? 'Tour starts soon' : 'Show opens soon') : isTour ? 'Critics in each city review the tour as it plays' : 'Not enough reviews yet'}
       {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}
@@ -885,7 +891,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining }: { show: ComputedS
   );
   return (
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
-      <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid="awaiting-reviews">{isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews'}</p>
+      <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid={noReviewsExpected ? 'no-reviews-expected' : 'awaiting-reviews'}>{title}</p>
       {reviewCount > 0 ? (
         <a href="#critic-reviews" className="text-xs text-gray-500 hover:text-brand transition-colors">{progress}</a>
       ) : (
