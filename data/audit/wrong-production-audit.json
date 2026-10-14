@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-14T05:37:40.360Z",
+  "timestamp": "2026-10-14T05:50:41.999Z",
   "stats": {
     "totalReviews": 56431,
-    "alreadyFlagged": 21056,
-    "dateGuardCatches": 210,
+    "alreadyFlagged": 21057,
+    "dateGuardCatches": 209,
     "directorMismatch": 1881,
     "tvFilmSignals": 1562,
     "londonSignals": 2248,
@@ -38302,20 +38302,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "soundsandstage--sounds-and-stage.json",
-      "score": 99,
-      "publishDate": "2025-05-13",
-      "url": "https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
         }
       ]
     },
