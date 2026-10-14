@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5274-d",
   "planId": "61134473-6343-4280-863a-56e0723aa0ec",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-14T04:46:49.068668Z",
   "submitter": {
     "name": null,
@@ -125,5 +125,78 @@
         "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T05:44:27.718Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "a-soldiers-play-2020/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "between-riverside-and-crazy-2022/variety--naveen-kumar.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/amny--matt-windman.json duplicateOf: null -> \"amny--emlyn-travis.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "caroline-or-change-2021/hollywood-reporter--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "caroline-or-change-2021/variety--ayanna-prescod.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "deuce-2007/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "follies-2011/variety--steven-suskin.json duplicateOf: null -> \"variety--david-rooney.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "in-transit-2016/hollywood-reporter--frank-scheck.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "radio-golf-2007/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "spring-awakening-2006/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "straight-white-men-2018/hollywood-reporter--frank-scheck.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-inheritance-2019/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-lehman-trilogy-2021/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-shark-is-broken-2023/nyt-theater--david-nounou.json"
+    }
+  ]
 }
