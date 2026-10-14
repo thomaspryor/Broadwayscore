@@ -340,7 +340,9 @@
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/frontmezzjunkies--steven-ross.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/lighting-and-sound-america--david-barbour.json",
-    "harry-potter-and-the-cursed-child-one-part-west-end-2026/theater-pizzazz--michael-bracken.json"
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/theater-pizzazz--michael-bracken.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -599,7 +601,17 @@
     "the-name-off-west-end-2026/daily-mail--unknown.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/newsday--barbara-schuler.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/broadway-blog--matthew-wexler.json",
-    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json"
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -812,7 +824,9 @@
       "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json",
       "harry-potter-and-the-cursed-child-one-part-west-end-2026/frontmezzjunkies--steven-ross.json",
       "harry-potter-and-the-cursed-child-one-part-west-end-2026/lighting-and-sound-america--david-barbour.json",
-      "harry-potter-and-the-cursed-child-one-part-west-end-2026/theater-pizzazz--michael-bracken.json"
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026/theater-pizzazz--michael-bracken.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -887,7 +901,8 @@
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
       "the-enormous-crocodile-west-end-2026/northernartsreview--unknown.json",
       "the-car-man-west-end-2026/theupcoming--unknown.json",
-      "the-name-off-west-end-2026/daily-mail--unknown.json"
+      "the-name-off-west-end-2026/daily-mail--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/new-york-sun--unknown.json",
@@ -989,7 +1004,7 @@
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "an-oak-tree-off-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
   "log": [
     {
       "t": "2026-10-13T19:44:44.248Z",
@@ -1508,6 +1523,41 @@
       "t": "2026-10-14T00:50:38.339Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T01:31:39.158Z",
+      "event": "bb-session",
+      "session": "e86ccd37",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T01:32:19.732Z",
+      "event": "bb-session",
+      "session": "293678cd",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T01:32:27.558Z",
+      "event": "bb-session",
+      "session": "67a8c904",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T01:35:21.029Z",
+      "event": "bb-session",
+      "session": "da56c844",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T01:35:21.522Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T01:38:30.457Z",
+      "event": "bb-session",
+      "session": "e5a71749",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ],
   "recoveredAfterFailure": [
