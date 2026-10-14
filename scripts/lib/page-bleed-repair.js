@@ -99,6 +99,8 @@ function applyBleedTrim(record, newText, { at, source } = {}) {
   require('./rescore-lifecycle').markRescoreFlagged(out, at);
   delete out.rescoreCompletedAt;
   out.pageBleedRepair = { at: out.rescoreFlaggedAt, previousLength, newLength: newText.length, source: source || null };
+  // Push restore must not read the old (longer) copy as richer text (review-write-guard _deliberateTextTrim, BRO-5254).
+  out.fullTextTrimmed = { reason: RESCORE_REASON, fromLength: previousLength, toLength: newText.length, at: out.rescoreFlaggedAt };
   return out;
 }
 

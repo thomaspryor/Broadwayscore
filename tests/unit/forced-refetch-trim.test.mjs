@@ -42,3 +42,11 @@ test('a later fetch that changes the text again is not covered by the old breadc
   const local = { fullText: NEW + ' more', fullTextTrimmed: forcedRefetchTrim(OLD, NEW) };
   assert.equal(isIntentionalClear('fullText', local, { fullText: OLD }), false);
 });
+
+test('a page-bleed trim records the cut too, so the push restore keeps it', () => {
+  const { applyBleedTrim } = require('../../scripts/lib/page-bleed-repair.js');
+  const committed = { fullText: OLD, textWordCount: 200 };
+  const local = applyBleedTrim(committed, NEW, { at: '2026-10-14T00:00:00Z' });
+  reconcileProtectedFields(local, committed, { ...committed }, { staleCheckoutGuard: true });
+  assert.equal(local.fullText, NEW);
+});
