@@ -1,0 +1,204 @@
+{
+  "generatedAt": "2026-10-14T17:38:20.841Z",
+  "advisory": true,
+  "windowDays": 7,
+  "shows": [
+    {
+      "id": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-10-13"
+    },
+    {
+      "id": "fish-off-broadway-2026",
+      "title": "Fish",
+      "openingDate": "2026-10-11"
+    },
+    {
+      "id": "good-time-charlie-off-broadway-2026",
+      "title": "Good Time Charlie",
+      "openingDate": "2026-10-09"
+    },
+    {
+      "id": "fences-off-west-end-2026",
+      "title": "Fences",
+      "openingDate": "2026-10-09"
+    },
+    {
+      "id": "rent-west-end-2026",
+      "title": "Rent",
+      "openingDate": "2026-10-08"
+    },
+    {
+      "id": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "openingDate": "2026-10-15"
+    },
+    {
+      "id": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "title": "ANON – a tempest at our kitchen table",
+      "openingDate": "2026-10-14"
+    },
+    {
+      "id": "from-the-heart-west-end-2026",
+      "title": "From The Heart",
+      "openingDate": "2026-10-08"
+    },
+    {
+      "id": "an-oak-tree-off-west-end-2026",
+      "title": "An Oak Tree",
+      "openingDate": "2026-10-08"
+    },
+    {
+      "id": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "openingDate": "2026-10-09"
+    },
+    {
+      "id": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "openingDate": "2026-10-13"
+    },
+    {
+      "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "title": "The Banality of Evil: Hannah Arendt, France 1940",
+      "openingDate": "2026-10-13"
+    },
+    {
+      "id": "triumph-off-broadway-2026",
+      "title": "Triumph",
+      "openingDate": "2026-10-08"
+    },
+    {
+      "id": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "title": "The Prime of Miss Jean Brodie",
+      "openingDate": "2026-10-11"
+    },
+    {
+      "id": "king-lear-royal-exchange-regional-2026",
+      "title": "King Lear",
+      "openingDate": "2026-10-10"
+    },
+    {
+      "id": "nina-off-west-end-2026",
+      "title": "Nina",
+      "openingDate": "2026-10-12"
+    }
+  ],
+  "skipped": [
+    {
+      "showId": "some-woman-west-end-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
+  "feedsChecked": 73,
+  "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "slantmagazine",
+      "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "musical-theatre-review",
+      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    }
+  ],
+  "itemsScanned": 682,
+  "matchedGaps": 1,
+  "possibleGaps": 6,
+  "gaps": [
+    {
+      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "title": "The Banality of Evil: Hannah Arendt, France 1940",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/the-banality-of-arcola-theatre-26112",
+      "headline": "The Banality of Evil: Hannah Arendt, France, 1940",
+      "publishDate": "2026-10-14"
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "level": "possible",
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
+      "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
+      "publishDate": null
+    },
+    {
+      "showId": "nina-off-west-end-2026",
+      "title": "Nina",
+      "level": "possible",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
+      "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
+      "publishDate": "2026-10-13"
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "title": "Rent",
+      "level": "possible",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/rent-30th-anniversary-concert-livestream-gates-match/",
+      "headline": "$525,600 for &#8216;Rent&#8217;: Gates Foundation matches the livestream minute for minute",
+      "publishDate": "2026-10-06"
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "title": "Rent",
+      "level": "possible",
+      "outletId": "afridiziak-theatre-news",
+      "url": "https://www.afridiziak.com/reviews/rent-the-musical-tom-stoppard-theatre/",
+      "headline": "Rent the Musical – review",
+      "publishDate": "2026-10-14"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "level": "possible",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-application-39-aviva-studios-tour",
+      "headline": "Review: APPLICATION 39, Aviva Studios - Tour",
+      "publishDate": "2026-10-10"
+    },
+    {
+      "showId": "triumph-off-broadway-2026",
+      "title": "Triumph",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/little-shop-of-horrors-hope-mill-theatre-manchester/",
+      "headline": "Little Shop of Horrors &#8211; Hope Mill Theatre, Manchester",
+      "publishDate": "2026-10-08"
+    }
+  ]
+}

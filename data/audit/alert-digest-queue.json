@@ -686,6 +686,45 @@
     "queuedAt": "2026-10-14T16:18:14.022Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:antigone-exits-chichester-regional-2026",
+    "title": "Review gap — \"Antigone Exits\" missing 1 cited review(s)",
+    "description": "Antigone Exits (antigone-exits-chichester-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=antigone-exits-chichester-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T17:37:57.272Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
+    "title": "Review gap — \"King Lear\" missing 5 cited review(s)",
+    "description": "King Lear (king-lear-royal-exchange-regional-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T17:37:57.467Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 2 cited review(s)",
+    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T17:37:58.350Z"
+  },
+  {
     "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-cherry-orchard-west-end-2026:telegraph",
     "title": "Auto-remediation gave up on the-cherry-orchard-west-end-2026",
     "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-cherry-orchard-west-end-2026\",\"outlet\":\"telegraph\",\"phases\":\"0,1,2,3\"}",

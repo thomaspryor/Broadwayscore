@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T14:20:57.650Z",
+  "generatedAt": "2026-10-14T17:38:06.267Z",
   "windowDays": 45,
   "showsScanned": 167,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 5,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 140.60205972222224,
+      "fileAgeHours": 143.88780777777777,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 135.5703436111111
+      "nonTerminalAgeHours": 138.85607055555556
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -35,27 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 525.6735847222222,
+      "fileAgeHours": 528.959335,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 76.69295777777778
-    },
-    {
-      "showId": "nina-off-west-end-2026",
-      "title": "Nina",
-      "openingDate": "2026-10-12",
-      "file": "thereviewshub--the-reviews-hub-ireland.json",
-      "outletId": "thereviewshub",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=nina-off-west-end-2026 --url=https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/ --outlet=thereviewshub --critic=\"The Reviews Hub - Ireland\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-13T22:13:30.839Z",
-      "fileAgeHours": 16.124114166666665,
-      "gapSeenAt": "2026-10-14T02:28:45.459Z",
-      "nonTerminalAgeHours": 11.870053055555555
+      "nonTerminalAgeHours": 79.97868472222223
     }
   ],
   "contradictions": []
