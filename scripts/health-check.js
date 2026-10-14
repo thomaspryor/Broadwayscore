@@ -3745,6 +3745,52 @@ function checkAPICredits() {
   return results;
 }
 
+// Pure (no I/O): group completed runs into repeat-failure entries (>=2 reds
+// in the window), annotated selfHealed, minus gate workflows that are only
+// refusing input. @param {object[]} completed - GitHub workflow_run objects
+function summarizeRepeatFailures(completed) {
+  // Group by workflow name to surface repeat offenders. A workflow failing
+  // 4+ consecutive runs gets drowned in the top-5 "latest failures" list
+  // (scheduled update-lottery-rush.yml did exactly this 2026-04-10→14).
+  // repeatFailures holds workflows with >=2 failures in the window; they're
+  // rendered in their own section of the digest so the pattern is visible.
+  const byWorkflow = new Map();
+  for (const run of completed.filter(r => r.conclusion === 'failure')) {
+    const entry = byWorkflow.get(run.name) || { name: run.name, count: 0, latestUrl: null, latestAt: null };
+    entry.count += 1;
+    if (!entry.latestAt || run.created_at > entry.latestAt) {
+      entry.latestAt = run.created_at;
+      entry.latestUrl = run.html_url;
+    }
+    byWorkflow.set(run.name, entry);
+  }
+  const repeatFailures = Array.from(byWorkflow.values())
+    .filter(entry => entry.count >= 2)
+    .sort((a, b) => b.count - a.count);
+
+  // Self-heal annotation: a repeat-failure whose streak has demonstrably
+  // ENDED (2+ consecutive green completed runs since the last failure) has
+  // likely already been fixed — the trailing-24h window just hasn't aged the
+  // failures out yet. The Aug 1 Test Suite streak ended 05:10 UTC but the
+  // digest fired a "likely broken" Fix-this card ~6.5h later, burning a
+  // session on an already-resolved condition. Deliberately NOT a bare
+  // latest-run-green check: a flapping workflow (11/19 failures, 2026-06-13)
+  // has a green latest run most mornings, and last-successful-run heuristics
+  // are the exact blindness repeatFailureResults was built to fix
+  // (second-opinion review, 2026-08-01).
+  for (const entry of repeatFailures) {
+    const conclusions = completed
+      .filter(r => r.name === entry.name)
+      .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+      .map(r => r.conclusion);
+    entry.selfHealed = isRepeatFailureSelfHealed(conclusions);
+    entry.gateRefusalsOnly = GATE_WORKFLOWS.has(entry.name) && !isGateWorkflowBroken(conclusions);
+  }
+  // BRO-5174: a gate workflow's red run is the gate refusing a branch
+  // (already alerted per branch), not the workflow breaking.
+  return repeatFailures.filter(entry => !entry.gateRefusalsOnly);
+}
+
 // --- Category K: Workflow Runs (last 24h summary via GitHub API) ---
 
 async function getWorkflowRunSummary() {
@@ -3809,42 +3855,7 @@ async function getWorkflowRunSummary() {
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
 
-    // Group by workflow name to surface repeat offenders. A workflow failing
-    // 4+ consecutive runs gets drowned in the top-5 "latest failures" list
-    // (scheduled update-lottery-rush.yml did exactly this 2026-04-10→14).
-    // repeatFailures holds workflows with >=2 failures in the window; they're
-    // rendered in their own section of the digest so the pattern is visible.
-    const byWorkflow = new Map();
-    for (const run of failed) {
-      const entry = byWorkflow.get(run.name) || { name: run.name, count: 0, latestUrl: null, latestAt: null };
-      entry.count += 1;
-      if (!entry.latestAt || run.created_at > entry.latestAt) {
-        entry.latestAt = run.created_at;
-        entry.latestUrl = run.html_url;
-      }
-      byWorkflow.set(run.name, entry);
-    }
-    const repeatFailures = Array.from(byWorkflow.values())
-      .filter(entry => entry.count >= 2)
-      .sort((a, b) => b.count - a.count);
-
-    // Self-heal annotation: a repeat-failure whose streak has demonstrably
-    // ENDED (2+ consecutive green completed runs since the last failure) has
-    // likely already been fixed — the trailing-24h window just hasn't aged the
-    // failures out yet. The Aug 1 Test Suite streak ended 05:10 UTC but the
-    // digest fired a "likely broken" Fix-this card ~6.5h later, burning a
-    // session on an already-resolved condition. Deliberately NOT a bare
-    // latest-run-green check: a flapping workflow (11/19 failures, 2026-06-13)
-    // has a green latest run most mornings, and last-successful-run heuristics
-    // are the exact blindness repeatFailureResults was built to fix
-    // (second-opinion review, 2026-08-01).
-    for (const entry of repeatFailures) {
-      const conclusions = completed
-        .filter(r => r.name === entry.name)
-        .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
-        .map(r => r.conclusion);
-      entry.selfHealed = isRepeatFailureSelfHealed(conclusions);
-    }
+    const repeatFailures = summarizeRepeatFailures(completed);
 
     return {
       total: completed.length,
@@ -3886,6 +3897,28 @@ function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
     leadingGreens++;
   }
   return leadingGreens >= 2;
+}
+
+// Gate workflows: a red run means the gate REFUSED its input (Land: the
+// branch broke a test or would not rebase), and that refusal is already
+// alerted per branch (scripts/land-alert.js, conditionKey land:<branch>).
+// Counting those reds as "Workflow repeat-failure: Land" filed BRO-5174 for
+// a day of 6 correct refusals among ~22 landings. The gate itself is broken
+// only when it stops landing anything: no green run in the window, or
+// GATE_BROKEN_STREAK+ reds in a row at the head (interleaved refusals in
+// practice run at most 2 deep).
+const GATE_WORKFLOWS = new Set(['Land']);
+const GATE_BROKEN_STREAK = 4;
+// Pure (no I/O). @param {string[]} conclusionsNewestFirst - completed runs, newest first
+function isGateWorkflowBroken(conclusionsNewestFirst) {
+  const cs = Array.isArray(conclusionsNewestFirst) ? conclusionsNewestFirst : [];
+  if (!cs.includes('success')) return true;
+  let leadingFailures = 0;
+  for (const c of cs) {
+    if (c !== 'failure') break;
+    leadingFailures++;
+  }
+  return leadingFailures >= GATE_BROKEN_STREAK;
 }
 
 // A self-healed repeat-failure streak (result.selfHealed, set from
@@ -5947,4 +5980,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };

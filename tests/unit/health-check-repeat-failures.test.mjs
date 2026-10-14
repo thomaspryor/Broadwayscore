@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { silentGapBacklogResults, bwwRoundupMissBacklogResults, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { silentGapBacklogResults, bwwRoundupMissBacklogResults, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -520,4 +520,42 @@ test('silentGapBacklogResults: files discovered under 24h ago are not counted', 
   assert.deepEqual(silentGapBacklogResults({ gaps: [{ ...fresh, firstSeen: '2026-10-12T02:01:00Z' }] }, now), []);
   // No stamp at all: fail open, still counted.
   assert.equal(silentGapBacklogResults({ gaps: [unstamped] }, now).length, 1);
+});
+
+// BRO-5174: Land's red runs are the gate refusing branches (alerted per
+// branch by land-alert.js), not Land breaking. The 2026-10-14 window had 6
+// refusals among ~22 landings and still filed "Workflow repeat-failure: Land".
+test('isGateWorkflowBroken: interleaved refusals with greens is a working gate', () => {
+  assert.ok(GATE_WORKFLOWS.has('Land'));
+  // Real Land completed-run conclusions 2026-10-14, newest first.
+  const land20261014 = ['failure', 'failure', 'success', 'success', 'success', 'failure', 'success',
+    'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success', 'success',
+    'failure', 'success', 'failure', 'success', 'success', 'success', 'success', 'failure'];
+  assert.equal(isGateWorkflowBroken(land20261014), false);
+  assert.equal(isGateWorkflowBroken(['failure', 'failure', 'failure', 'success']), false);
+});
+
+test('isGateWorkflowBroken: no green in the window, or 4+ reds at the head, is broken', () => {
+  assert.equal(isGateWorkflowBroken(['failure', 'failure']), true);
+  assert.equal(isGateWorkflowBroken(['failure', 'cancelled', 'failure']), true);
+  assert.equal(isGateWorkflowBroken(['failure', 'failure', 'failure', 'failure', 'success', 'success']), true);
+  assert.equal(isGateWorkflowBroken([]), true);
+  assert.equal(isGateWorkflowBroken(undefined), true);
+});
+
+test('summarizeRepeatFailures: Land refusals among greens are dropped; a Land that never lands is kept', () => {
+  const run = (name, conclusion, minsAgo) => ({ name, status: 'completed', conclusion,
+    created_at: new Date(Date.UTC(2026, 9, 14, 12) - minsAgo * 60000).toISOString(), html_url: `https://x/${name}/${minsAgo}` });
+  const refusingLand = [run('Land', 'failure', 1), run('Land', 'success', 2), run('Land', 'failure', 3),
+    run('Land', 'success', 4), run('Land', 'failure', 5)];
+  const other = [run('Broken Cron', 'failure', 1), run('Broken Cron', 'failure', 2), run('Broken Cron', 'failure', 3)];
+  assert.deepEqual(summarizeRepeatFailures([...refusingLand, ...other]).map(r => [r.name, r.count]), [['Broken Cron', 3]]);
+  // Non-gate workflows keep the old behaviour even when greens interleave.
+  const flappy = refusingLand.map(r => ({ ...r, name: 'Test Suite' }));
+  assert.deepEqual(summarizeRepeatFailures(flappy).map(r => r.name), ['Test Suite']);
+  // A Land that stopped landing anything is still surfaced.
+  const deadLand = [run('Land', 'failure', 1), run('Land', 'failure', 2), run('Land', 'failure', 3)];
+  const out = summarizeRepeatFailures(deadLand);
+  assert.deepEqual(out.map(r => [r.name, r.count]), [['Land', 3]]);
+  assert.equal(repeatFailureResults({ skipped: false, repeatFailures: out })[0].name, 'Workflow repeat-failure: Land');
 });
