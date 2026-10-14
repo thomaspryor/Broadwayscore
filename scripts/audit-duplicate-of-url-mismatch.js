@@ -37,7 +37,7 @@ const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
-const { isCrossOutletSyndicationPair } = require('./lib/syndication-pairs');
+const { isCrossOutletSyndicationPair, isRenameCollisionPair } = require('./lib/syndication-pairs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -355,7 +355,7 @@ function audit() {
       // BRO-2406: a cross-outlet syndication pointer (same critic, Tribune-group
       // reprint, wire pair, or a human-declared syndication reason) differs by
       // URL BY DEFINITION — nulling it re-admits the double-counted review.
-      if (a && b && a !== b && !isCrossOutletSyndicationPair(data, sibling, normalizeOutlet)) {
+      if (a && b && a !== b && !isCrossOutletSyndicationPair(data, sibling, normalizeOutlet) && !isRenameCollisionPair(data, sibling)) {
         mismatches.push({
           showId: path.basename(showDir),
           file,
