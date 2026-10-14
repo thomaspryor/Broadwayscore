@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4564-d",
   "planId": "b534d8b1-27b3-4269-8df4-392354712481",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T05:52:15.808Z",
   "submitter": {
     "name": null,
@@ -159,5 +159,98 @@
         "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T07:38:26.000Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lobby-hero-2018/medium--christian-lewis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lobby-hero-2018/medium--christian-lewis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lobby-hero-2018/medium--christian-lewis.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ferryman-2018/thestage--mark-shenton.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ferryman-2018/thestage--mark-shenton.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ferryman-2018/thestage--mark-shenton.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/limelight-magazine-au--clive-paget.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/bloomberg--philip-boroff.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/bloomberg--philip-boroff.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/bloomberg--philip-boroff.json wrongArticleManualClear: null -> true"
+    }
+  ]
 }
