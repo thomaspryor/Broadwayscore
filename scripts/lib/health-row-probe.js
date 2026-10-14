@@ -53,10 +53,13 @@
 
 const fs = require('fs');
 
-const LIMIT = 120; // same bound digest-autofix encodes rows with (check-health-row-absent.js)
+// BRO-5204: delegate to the encoder's own clamp. A private trim+slice(120)
+// skipped the byte clamp and the post-clamp trimEnd, so a long row cut on a
+// space could never match the --row-b64 token.
+const { rowMatchKey, ROW_NAME_MATCH_LIMIT: LIMIT } = require('./health-row-check-cmd.js');
 
 function normalizeName(name) {
-  return String(name || '').trim().slice(0, LIMIT);
+  return rowMatchKey(name);
 }
 
 // See the module-header note above (ship-check finding, task #1224): every
