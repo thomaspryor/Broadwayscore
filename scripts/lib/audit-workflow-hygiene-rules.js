@@ -1061,18 +1061,20 @@ function findCompositeShellHazards(raw) {
 const ROOT_PUSH_COMPOSITES = ['commit-scraper-spend-ledger', 'commit-stage-latency'];
 const NESTED_PUSH_COMPOSITES = ['checkout-core-data', 'push-core-data'];
 
-function readPermissionsGrantsContentsWrite(lines, idx) {
+function readPermissionsGrant(lines, idx, scope) {
   const indent = indentOf(lines[idx]);
+  const re = new RegExp(`^\\s*${scope}\\s*:\\s*['"]?write\\b`);
   const inline = lines[idx].replace(/^[^:]*:/, '').replace(/#.*$/, '').trim();
-  if (inline) return inline === 'write-all' || /\bcontents\s*:\s*['"]?write\b/.test(inline); // flow map: { contents: write }
+  if (inline) return inline === 'write-all' || new RegExp(`\\b${scope}\\s*:\\s*['"]?write\\b`).test(inline); // flow map: { contents: write }
   for (let i = idx + 1; i < lines.length; i++) {
     const l = lines[i];
     if (!l.trim() || l.trim().startsWith('#')) continue;
     if (indentOf(l) <= indent) break;
-    if (/^\s*contents\s*:\s*['"]?write\b/.test(l)) return true;
+    if (re.test(l)) return true;
   }
   return false;
 }
+const readPermissionsGrantsContentsWrite = (lines, idx) => readPermissionsGrant(lines, idx, 'contents');
 
 function findPushWithoutWritePermission(raw) {
   const lines = raw.split('\n');
@@ -1107,7 +1109,45 @@ function findPushWithoutWritePermission(raw) {
   return hits;
 }
 
+/**
+ * Rule (w): `gh workflow run` / `gh run cancel|rerun` / a `/dispatches` API call
+ * in a step that authenticates with the workflow token (no secrets-backed
+ * GH_TOKEN/GITHUB_TOKEN in the step env), inside a job whose declared permissions
+ * lack `actions: write` (BRO-5302 cousin; the 13-workflow silent-403 fix recorded
+ * in memory/roadmap.md was the first instance). Same effective-permissions
+ * semantics as rule (v): job-level wins, no block anywhere = repo default, skipped.
+ */
+const DISPATCH_RE = /\bgh\s+(?:workflow\s+run|run\s+(?:cancel|rerun))\b|\bgh\s+api\b[^\n]*\/dispatches\b/;
+function findDispatchWithoutActionsWrite(raw) {
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return [];
+  const topIdx = lines.findIndex((l) => /^permissions\s*:/.test(l));
+  const top = topIdx === -1 ? null : readPermissionsGrant(lines, topIdx, 'actions');
+  const starts = findJobBoundaries(lines, jobsIdx);
+  const steps = splitWorkflowSteps(raw);
+  const hits = [];
+  for (let j = 0; j < starts.length - 1; j++) {
+    const jobKey = lines[starts[j]].trim().replace(/:\s*$/, '');
+    const body = lines.slice(starts[j], starts[j + 1]);
+    const permOffset = body.findIndex((l) => indentOf(l) === 4 && /^\s*permissions\s*:/.test(l));
+    const grants = permOffset !== -1 ? readPermissionsGrant(body, permOffset, 'actions') : top;
+    if (grants === null || grants === true) continue;
+    for (const step of steps.filter((s) => s.startLine > starts[j] && s.startLine < starts[j + 1])) {
+      const text = step.lines.join('\n');
+      if (/\b(?:GH_TOKEN|GITHUB_TOKEN)\s*:\s*\$\{\{\s*secrets\./.test(text)) continue; // PAT, not the workflow token
+      step.lines.forEach((l, k) => {
+        if (!l.trim().startsWith('#') && DISPATCH_RE.test(l)) {
+          hits.push({ job: jobKey, lineNum: step.startLine + k + 1, text: l.trim() });
+        }
+      });
+    }
+  }
+  return hits;
+}
+
 module.exports = {
+  findDispatchWithoutActionsWrite,
   findCompositeShellHazards,
   splitWorkflowSteps,
   findNodeTeeWithoutPipefail,

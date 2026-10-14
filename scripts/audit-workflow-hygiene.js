@@ -195,6 +195,7 @@
  *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
  *   # hygiene-push-perm-ok: <reason>       — skip root-push-without-contents-write check (rule v, BRO-5302)
+ *   # hygiene-dispatch-perm-ok: <reason>   — skip dispatch-without-actions-write check (rule w, BRO-5302)
  *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
  *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
  *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
@@ -234,6 +235,7 @@ const {
   findNodeTeeWithoutPipefail,
   findMaskedPushFailures,
   findPushWithoutWritePermission,
+  findDispatchWithoutActionsWrite,
   findStringInputInterpolation,
   findCompositeShellHazards,
 } = require('./lib/audit-workflow-hygiene-rules');
@@ -772,6 +774,7 @@ async function main() {
     deadCommit: [],
     shortPushTimeout: [],
     pushNoWrite: [],
+    dispatchNoActionsWrite: [],
     stageWithoutCommit: [],
     nodeTeeNoPipefail: [],
     maskedPush: [],
@@ -931,6 +934,12 @@ async function main() {
     if (!raw.includes('hygiene-push-perm-ok:')) {
       const hits = findPushWithoutWritePermission(raw);
       if (hits.length > 0) violations.pushNoWrite.push({ file, hits });
+    }
+
+    // ── Rule (w): workflow-token dispatch/cancel in a job without actions: write ─
+    if (!raw.includes('hygiene-dispatch-perm-ok:')) {
+      const hits = findDispatchWithoutActionsWrite(raw);
+      if (hits.length > 0) violations.dispatchNoActionsWrite.push({ file, hits });
     }
 
     // ── Rule (p): staged files pushed with no commit in between (BRO-4897) ─
@@ -1107,6 +1116,7 @@ async function main() {
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
     violations.pushNoWrite.length +
+    violations.dispatchNoActionsWrite.length +
     violations.stageWithoutCommit.length +
     violations.nodeTeeNoPipefail.length +
     violations.maskedPush.length +
@@ -1347,6 +1357,19 @@ async function main() {
     }
     console.error('\nFix: add `contents: write` to that job\'s (or the workflow\'s) permissions block.');
     console.error('Exempt (push goes to a different token or repo): add  # hygiene-push-perm-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.dispatchNoActionsWrite.length) {
+    console.error('── (w) Workflow-token dispatch/cancel in a job without `actions: write` ─');
+    console.error('`gh workflow run` / `gh run cancel|rerun` / a /dispatches call with the workflow');
+    console.error('token 403s silently when the job\'s permissions omit `actions: write`; the');
+    console.error('failure is usually swallowed by `|| echo` (BRO-5302 cousin).\n');
+    for (const { file, hits } of violations.dispatchNoActionsWrite) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      job "${h.job}" line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: add `actions: write` to that job\'s (or the workflow\'s) permissions block, or run the step with a PAT (GH_TOKEN: ${{ secrets.… }}).');
+    console.error('Exempt (legitimate): add  # hygiene-dispatch-perm-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.quoteApostrophe.length) {
