@@ -59,6 +59,16 @@ for (const showId of fs.readdirSync(root)) {
         rows.push({ id, run: `${sh.previewsStartDate || ''}..${sh.openingDate || ''}..${sh.closingDate || ''}`, title: sh.title, publishDate: d.publishDate || '', url: d.url, head: t.slice(0, 260), tail: t.slice(-120), cvSaid: String(cv.reasoning || '').slice(0, 200), agg: String(d.aggregatorExcerpt || d.excerpt || '').slice(0, 120) });
       }
     }
+    if (card === 'file' && arg('file') === id) {
+      const scalars = {};
+      for (const [k, v] of Object.entries(d)) {
+        if (typeof v === 'string' && !/text/i.test(k)) scalars[k] = v.slice(0, 160);
+        else if (typeof v === 'boolean' || typeof v === 'number' || v === null) scalars[k] = v;
+      }
+      const t = (d.fullText || d.wrongFullText || '').replace(/\s+/g, ' ');
+      const dates = (t.match(/\b(?:\d{1,2}\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(?:\d{1,2},?\s+)?20\d\d\b/g) || []).slice(0, 8);
+      rows.push({ id, scalars, head: t.slice(0, 200), dates });
+    }
     if (card === '4301' && only) {
       rows.push({ id, criticName: d.criticName, publishDate: d.publishDate, textLen: (d.fullText || '').length, url: d.url, wrongProduction: !!d.wrongProduction, flags: Object.keys(d).filter(k => /wrong|priorRun|dateSource|publishDateSource/i.test(k)).join(',') });
     }
