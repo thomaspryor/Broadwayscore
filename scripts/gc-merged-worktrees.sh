@@ -43,6 +43,8 @@
 #
 # Env overrides (all optional):
 #   WORKTREE_GC_STALE_DAYS=3        # build-artifact strip + stale-unmerged digest threshold
+#   WORKTREE_GC_RETIRE_STALE_DAYS=8 # idle job-* worktree with unlanded branch: remove worktree, keep branch (BRO-5378)
+#   WORKTREE_GC_RETIRE_STALE_JOBS=0 # turn that off
 #   WORKTREE_GC_DISK_FLOOR_GB=20    # emergency cleanup trigger
 #   WORKTREE_GC_SCRATCHPAD_STALE_DAYS=3
 #   WORKTREE_GC_REPOS_JSON='[...]'  # override the repo set (scripts/lib/worktree-gc-repos.js)
@@ -505,6 +507,52 @@ reap_stale_tmp_checkout() {
   return 0
 }
 
+# Stale job worktrees whose branch never landed (BRO-5378). Headless job-*
+# worktrees (bsc-runner.js) that end without landing, or whose work landed
+# through different commits, were KEPT forever by the unmerged arm below at
+# ~1GB each: on 2026-10-14, 48 idle ones held 50GB and / hit 4.7GB free.
+# Retired (worktree removed, branch ref KEPT, so no commit is lost) only when
+# ALL hold: job-* name, not locked, idle > RETIRE_STALE_DAYS (default 8, past
+# dispatch-watchdog.js's 7-day unlanded re-check, which reads HEAD from the
+# job's cwd), the branch ref exists, no process has it as cwd, no live lease,
+# and the tree is clean or only generated churn (is_safe_dirty). The caller
+# keeps it in the stale digest. Kill switch: WORKTREE_GC_RETIRE_STALE_JOBS=0.
+RETIRE_STALE_DAYS="${WORKTREE_GC_RETIRE_STALE_DAYS:-8}"
+retire_stale_job_worktree() {
+  local wt="$1" br="$2" pin how sz
+  [ "${WORKTREE_GC_RETIRE_STALE_JOBS:-1}" = "0" ] && return 1
+  case "$(basename "$wt")" in job-*) ;; *) return 1 ;; esac
+  [ "$is_locked" = "1" ] && return 1
+  git rev-parse --verify -q "refs/heads/$br" >/dev/null 2>&1 || return 1
+  is_stale "$wt" "$RETIRE_STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}" || return 1
+  command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ] || return 1
+  pin=$(node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$wt" --classify 2>/dev/null | head -n 1)
+  [ "$pin" = "none" ] || return 1
+  if is_worktree_clean "$wt"; then how="clean"
+  elif is_safe_dirty "$wt"; then how="generated churn only"
+  else return 1
+  fi
+  sz=$(du -sk "$wt" 2>/dev/null | awk '{print $1}')
+  sz=${sz:-0}
+  if [ "$DRY_RUN" = "1" ]; then
+    log "WOULD-RETIRE  [$CURRENT_REPO_NAME] $(basename "$wt") — $br unmerged, idle >${RETIRE_STALE_DAYS}d, $how; branch would be kept"
+  else
+    # Lease re-check right before the remove: a resumed job may have taken it.
+    if [ -f "$SCRIPT_DIR/lib/worktree-live-lease-check.js" ]; then
+      node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$wt" >/dev/null 2>&1 && return 1
+    fi
+    if [ "$how" = "clean" ]; then
+      LC_ALL=C git worktree remove "$wt" >/dev/null 2>&1 || return 1
+    else
+      LC_ALL=C git worktree remove --force "$wt" >/dev/null 2>&1 || return 1
+    fi
+    log "REMOVE [$CURRENT_REPO_NAME] $(basename "$wt") — retired: $br unmerged, idle >${RETIRE_STALE_DAYS}d, $how; branch kept (BRO-5378)"
+  fi
+  removed=$((removed+1))
+  removed_freed_kb=$((removed_freed_kb + sz))
+  return 0
+}
+
 path="" branch="" is_locked=0 locked_reason=""
 flush() {
   [ -z "$path" ] && return
@@ -681,6 +729,10 @@ flush() {
   fi
 
   if [ "$removable" != "1" ]; then
+    if retire_stale_job_worktree "$path" "$branch"; then
+      stale_unmerged+=("$CURRENT_REPO_NAME/$(basename "$path")(retired,branch:$branch)")
+      path="" branch=""; return
+    fi
     log "KEEP  [$CURRENT_REPO_NAME] $(basename "$path") — $unmerged unmerged commit(s) on $branch"
     kept=$((kept+1))
     # Never delete unmerged worktrees — they may hold stranded work (task
