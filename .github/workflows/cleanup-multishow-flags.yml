@@ -40,6 +40,11 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '20'
+          cache: 'npm'
+
+      # The script runs the scorer's own detector (TypeScript, via tsx).
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run cleanup script
         run: |

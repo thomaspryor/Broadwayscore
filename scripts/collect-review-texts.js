@@ -115,7 +115,7 @@ const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extr
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
-const { preCleanForStorage, textAsStored } = require('./lib/stored-text-form');
+const { preCleanForStorage, storedTextForm } = require('./lib/stored-text-form');
 
 // LLM-based content verification
 const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash, isCvVerdictFromTruncatedFetch } = require('./lib/content-verifier');
@@ -7164,11 +7164,18 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
         showMeta = _showsJsonCache.shows.find(s => s.id === showId);
       } catch (e) { /* shows.json unavailable */ }
 
+      // The body as stored (junk/chrome stripped, multi-show section isolated
+      // with the same url and title the save path uses), not the raw fetch: a
+      // verdict on text we then strip described a different body (BRO-5243).
+      const stored = storedTextForm(result.text, { url: reviewData.url || review.url, showTitle: showMeta ? showMeta.title : '' });
+      // A multi-show post with no section for this show is refused by the save
+      // path; verifying it would be a wasted LLM call (BRO-5261).
+      if (stored.refused) {
+        console.log('  LLM Verification skipped: multi-show post has no unique section for this show');
+        return null;
+      }
       contentVerification = await verifyContent({
-        // The body as stored (junk/chrome stripped, multi-show section isolated
-        // with the same url and title the save path uses), not the raw fetch: a
-        // verdict on text we then strip described a different body (BRO-5243).
-        scrapedText: textAsStored(result.text, { url: reviewData.url || review.url, showTitle: showMeta ? showMeta.title : '' }) || result.text,
+        scrapedText: stored.text || result.text,
         excerpt: excerpt,
         showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
         outletName: review.outlet,

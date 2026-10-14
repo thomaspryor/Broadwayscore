@@ -256,3 +256,15 @@ test('tier1BoostForCaller: exempt callers get the boost for any host, others onl
   assert.equal(tier1BoostForCaller('wsj.com', { exempt: false, ...on }), 100);
   assert.equal(tier1BoostForCaller('deadline.com', { exempt: true, ...off }), 0);
 });
+
+test('countBrowserbaseAttempt counts an attempt and gives it back when no session was created (BRO-5261)', () => {
+  const { countBrowserbaseAttempt } = require('../../scripts/lib/browserbase-caps.js');
+  const u = { sessionsToday: 5, sessionsThisRun: 2, sessionsPerDomain: { 'wsj.com': 1 } };
+  countBrowserbaseAttempt(u, 'wsj.com');
+  assert.deepEqual(u, { sessionsToday: 6, sessionsThisRun: 3, sessionsPerDomain: { 'wsj.com': 2 } });
+  countBrowserbaseAttempt(u, 'wsj.com', -1);
+  assert.deepEqual(u, { sessionsToday: 5, sessionsThisRun: 2, sessionsPerDomain: { 'wsj.com': 1 } });
+  const z = { sessionsToday: 0, sessionsThisRun: 0, sessionsPerDomain: {} };
+  countBrowserbaseAttempt(z, 'nytimes.com', -1);
+  assert.deepEqual(z, { sessionsToday: 0, sessionsThisRun: 0, sessionsPerDomain: { 'nytimes.com': 0 } }, 'never below zero');
+});

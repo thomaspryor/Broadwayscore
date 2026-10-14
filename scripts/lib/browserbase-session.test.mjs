@@ -74,7 +74,7 @@ test('createBbSession rejects when the live daily session count is at/over the c
   try {
     await assert.rejects(
       () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'discovery' }),
-      /Browserbase daily cap reached \(10\/10\)/,
+      (err) => /Browserbase daily cap reached \(10\/10\)/.test(err.message) && err.bbNoSession === true,
     );
     assert.equal(liveMock.mock.callCount(), 1);
   } finally {

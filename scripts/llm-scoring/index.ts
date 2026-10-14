@@ -879,6 +879,10 @@ function applyMultiShowTrim(reviewFile: any, trimResult: { text: string; method:
   reviewFile.multiShowTrim = { method: trimResult.method, originalLength: trimResult.originalLength, scoredLength: trimResult.trimmedLength, at: new Date().toISOString() };
 }
 
+function clearMultiShowTrim(reviewFile: any): void {
+  if (reviewFile && reviewFile.multiShowTrim) reviewFile.multiShowTrim = null;
+}
+
 function restorePreTrimFullText(data: any): void {
   if (data && typeof data.__preTrimFullText === 'string') {
     data.fullText = data.__preTrimFullText;
@@ -1835,6 +1839,7 @@ async function main(): Promise<void> {
           reviewFile.type = showMeta.type ?? undefined;
           reviewFile.priorRuns = showMeta.priorRuns ?? undefined;
         }
+        clearMultiShowTrim(reviewFile);
         if (reviewFile.isMultiShowReview && reviewFile.fullText) {
           const showTitle = showTitles.get(reviewFile.showId);
           if (showTitle) {
@@ -2223,6 +2228,10 @@ async function main(): Promise<void> {
         }
       }
     }
+
+    // multiShowTrim describes THIS run's scoring input: cleared here and set
+    // again only if a trim below applies (BRO-5261).
+    clearMultiShowTrim(reviewFile);
 
     // Multi-show detection: flag multi-show reviews for trimming, skip only roundup articles
     if (scorableText && reviewFile.showId && !reviewFile.isCombinedReview) {

@@ -127,7 +127,7 @@ test('session-create chokepoint refusal (opening-window reserve) is a day route 
 test('chokepoint message format still matches what browserbase-session.js throws', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../../scripts/lib/browserbase-session.js', import.meta.url), 'utf8');
-  const m = src.match(/throw new Error\(`(Browserbase daily cap reached[^`]*)`\)/);
+  const m = src.match(/throw (?:new Error|refusal)\(`(Browserbase daily cap reached[^`]*)`\)/);
   assert.ok(m, 'browserbase-session.js no longer throws the day-cap message this mapping keys on');
   assert.equal(routeCapFromBrowserbaseError(m[1]), 'day');
 });
