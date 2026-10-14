@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-14T04:41:02.194Z",
-  "processed": 10,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-14T04:44:22.025Z",
+  "processed": 437,
+  "failed": 306,
+  "successRate": "58.8%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 262,
+    "amp": 9,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 10,
+    "scrapingdog": 47,
+    "scrapingbee": 35,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 85
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-10-13T22:19:09.105Z",
+      "event": "bb-session",
+      "session": "cb24d691",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-13T22:19:09.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-13T23:53:23.758Z",
+      "event": "bb-session",
+      "session": "b72008c9",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-13T23:53:24.155Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-13T23:53:41.537Z",
+      "event": "bb-session",
+      "session": "7aeb97d7",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-13T23:53:41.903Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T00:50:37.979Z",
+      "event": "bb-session",
+      "session": "50e0690d",
+      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
+    },
+    {
+      "t": "2026-10-14T00:50:38.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T02:11:48.793Z",
+      "event": "bb-session",
+      "session": "5c1fa0a8",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-14T02:11:49.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:12:06.930Z",
+      "event": "bb-session",
+      "session": "a6d6d7d2",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-14T02:12:07.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:14:45.970Z",
+      "event": "bb-session",
+      "session": "7ca45240",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-14T02:14:46.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:14:55.714Z",
+      "event": "bb-session",
+      "session": "d17d4135",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-14T02:14:56.223Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T02:58:41.185Z",
+      "event": "bb-session",
+      "session": "9f2b8f70",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-10-14T02:58:41.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T03:05:25.353Z",
+      "event": "bb-session",
+      "session": "fe0dd7db",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-10-14T03:05:25.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
