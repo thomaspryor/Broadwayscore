@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-14T12:20:20.062Z",
-  "processed": 160,
-  "failed": 168,
-  "successRate": "48.8%",
+  "updatedAt": "2026-10-14T12:28:58.998Z",
+  "processed": 166,
+  "failed": 173,
+  "successRate": "49.0%",
   "tierBreakdown": {
-    "playwright": 93,
+    "playwright": 96,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingdog": 11,
-    "scrapingbee": 13,
-    "brightdata": 4,
+    "scrapingbee": 15,
+    "brightdata": 6,
     "archiveToday": 0,
     "archive": 39
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-14T09:44:21.998Z",
-      "event": "bb-session",
-      "session": "d2abe77f",
-      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
-    },
-    {
-      "t": "2026-10-14T09:44:22.798Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-14T09:50:16.034Z",
-      "event": "bb-session",
-      "session": "608100c5",
-      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
-    },
-    {
-      "t": "2026-10-14T09:50:16.894Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-14T09:50:35.623Z",
       "event": "bb-session",
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-10-14T11:41:35.213Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T12:02:10.263Z",
+      "event": "bb-session",
+      "session": "06ec550c",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-14T12:02:10.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T12:02:28.531Z",
+      "event": "bb-session",
+      "session": "4a37819b",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-14T12:02:29.085Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
