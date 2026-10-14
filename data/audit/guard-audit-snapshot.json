@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T02:46:56.501Z",
+  "generatedAt": "2026-10-14T07:39:52.429Z",
   "window": {
     "since": "2026-10-08",
     "until": "2026-10-14"
@@ -8,11 +8,11 @@
   "items": [
     {
       "title": "bd-circuit-breaker-serp_api1",
-      "detail": "OK: 1 trip day(s); spend n/a (no skip label) · CAP DRIFT: ceiling 250 (opening-window-reserve) < 1.5x 14-day median 208"
+      "detail": "OK: 1 trip day(s); spend n/a (no skip label) · CAP DRIFT: ceiling 250 (opening-window-reserve) < 1.5x 14-day median 205"
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 4 trip day(s); rerouted spend on trip days $0.02 (136 rows, data since 2026-10-11) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2787"
+      "detail": "ACCEPTED: 4 trip day(s); rerouted spend on trip days $0.02 (136 rows, data since 2026-10-11) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2800"
     },
     {
       "title": "sb-circuit-breaker",
@@ -48,7 +48,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 208,
+        "median14d": 205,
         "drift": true,
         "note": null
       }
@@ -80,7 +80,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2787,
+        "median14d": 2800,
         "drift": true,
         "note": null
       }
@@ -103,11 +103,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 40110,
+        "ceiling": 36584,
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 26740,
+        "median14d": 24389,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -134,7 +134,7 @@
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 45041,
+        "median14d": 44372,
         "drift": false,
         "note": null
       }
