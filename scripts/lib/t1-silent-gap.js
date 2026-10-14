@@ -23,7 +23,11 @@
 'use strict';
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
-const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
+const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt, explainExclusion } = require('./review-guards');
+
+// explainExclusion() reasons where a SIBLING file carries the same review into
+// the score, so this file's absence is resolved, not a gap (BRO-4457).
+const SIBLING_SHIELDED_REASONS = new Set(['knownSyndicationSecondary']);
 const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
 const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
@@ -399,6 +403,15 @@ function classifyGapCardState({ file, show, tier, outletScored, now, filePath })
   if (isRoundupPageAsReview(file)) return GAP_CARD_STATE.NO_REVIEW;
   const gap = classifySilentGap({ file, show, tier, outletScored, now, filePath });
   if (gap) return GAP_CARD_STATE.OPEN;
+  // BRO-4457: a known-syndication secondary (nydailynews Chris Jones next to a
+  // live chicagotribune primary) is excluded by the scorer and rebuild on
+  // purpose; the critic's review reaches the score through the primary file.
+  // classifySilentGap already returns null for it (filePath-aware), but this
+  // function then fell through to null ("not eligible"), so a backstop card
+  // filed before that classifier fix could never close. Map it to COLLECTED.
+  if (filePath && SIBLING_SHIELDED_REASONS.has(explainExclusion(file, show, filePath))) {
+    return GAP_CARD_STATE.COLLECTED;
+  }
   // classifySilentGap's own final branch excludes contentTier:'invalid' from
   // ever counting as a recoverable empty-body gap — mirror that exclusion
   // here as a terminal state rather than plain "not eligible" so a stale
