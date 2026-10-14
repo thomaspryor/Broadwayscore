@@ -636,9 +636,14 @@ function edinburghFringeUrlSignal(u, show) {
   if (/edinburgh|fringe/i.test(`${show.title || ''} ${show.venue || ''}`)) return null;
   let pathname = '';
   try { pathname = decodeURIComponent(new URL(u).pathname); } catch { return null; }
-  return EDINBURGH_FRINGE_SLUG_RE.test(pathname)
-    ? { signal: 'edinburgh-fringe-url', detail: 'url names the Edinburgh Fringe; show is a New York run' }
-    : null;
+  if (!EDINBURGH_FRINGE_SLUG_RE.test(pathname)) return null;
+  // A NYC review of the transfer can name the Fringe in its slug too
+  // ("edinburgh-fringe-hit-at-soho-playhouse"): naming New York or this
+  // show's venue in the same slug keeps it.
+  const flat = pathname.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const venue = String(show.venue || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+  if (/newyork|nyc|offbroadway|broadway/.test(flat) || (venue.length >= 6 && flat.includes(venue))) return null;
+  return { signal: 'edinburgh-fringe-url', detail: 'url names the Edinburgh Fringe; show is a New York run' };
 }
 
 // BRO-5132: the show's own venue website (sohoplayhouse.com/shows/<slug>) is a

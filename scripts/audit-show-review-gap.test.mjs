@@ -530,6 +530,9 @@ test('acceptSerpCensusResult drops Edinburgh Fringe reviews and the venue site o
   // A New York review of the transfer stays, even when its headline names the Fringe.
   assert.ok(acceptSerpCensusResult({ url: 'https://www.nytimes.com/2026/09/28/theater/elf-lyons-the-woman-on-the-edge-review.html', title: 'Review: The Edinburgh Fringe hit The Woman on the Edge arrives' }, { show, showInfo: info }));
   assert.ok(acceptSerpCensusResult({ url: 'https://www.timeout.com/newyork/theater/elf-lyons-the-woman-on-the-edge-review', title }, { show, showInfo: info }));
+  // A Fringe-named slug that also names New York or the venue is the transfer's review.
+  assert.ok(acceptSerpCensusResult({ url: 'https://example.com/reviews/elf-lyons-the-woman-on-the-edge-edinburgh-fringe-hit-at-soho-playhouse/', title }, { show, showInfo: info }));
+  assert.ok(acceptSerpCensusResult({ url: 'https://example.com/edfringe-hit-elf-lyons-the-woman-on-the-edge-off-broadway/', title }, { show, showInfo: info }));
   // A declared prior run or a West End show is not judged.
   const fringe = { url: 'https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/', title };
   assert.ok(acceptSerpCensusResult(fringe, { show: { ...show, priorRuns: [{ venue: 'Pleasance Courtyard', openingDate: '2026-08-01' }] }, showInfo: info }));
