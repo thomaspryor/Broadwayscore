@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5243-i",
   "planId": "7fc614cc-a169-4ce2-8516-ab60540b4263",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-14T13:00:00.000Z",
   "submitter": {
     "name": null,
@@ -70,5 +70,43 @@
         "description": "BRO-5243: its verdict still reads 'byline mismatch, expected Isherwood' from before plan h renamed it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T13:25:25.658Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateClearReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateClearReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reverify-stale-cv-promoted.js successfully"
+    }
+  ]
 }
