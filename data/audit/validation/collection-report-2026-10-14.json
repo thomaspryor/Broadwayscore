@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-14T05:56:43.156Z",
+  "runDate": "2026-10-14T06:54:26.757Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 5,
@@ -11,70 +11,72 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 4,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 264,
+    "playwright": 268,
     "amp": 9,
-    "browserbase": 20,
+    "browserbase": 21,
     "directCookies": 0,
     "scrapingdog": 48,
     "scrapingbee": 35,
     "brightdata": 10,
     "archiveToday": 0,
-    "archive": 85
+    "archive": 88
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 5,
+    "tier4Attempts": 3,
+    "tier4Success": 3,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 4,
+    "failed": 1,
     "shows": [
-      "pride-west-end-2026",
-      "romeo-and-juliet-west-end-2026",
-      "to-kill-a-mockingbird-west-end-2026",
+      "elling-2010",
+      "lucky-guy-2013",
+      "next-to-normal-2009",
+      "the-scottsboro-boys-2010",
       "wicked-2003"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 439,
-      "failed": 23
+      "processed": 442,
+      "failed": 26
     }
   },
-  "processed": [],
+  "processed": [
+    "lucky-guy-2013/guardian--alexis-soloski.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "elling-2010/bloomberg--jeremy-gerard.json",
+    "next-to-normal-2009/neontommy--jason-kehe.json"
+  ],
   "failed": [
-    "wicked-2003/variety--peter-debruge.json",
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
-    "pride-west-end-2026/nyt-theater--unknown.json",
-    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
-    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
+    "wicked-2003/variety--peter-debruge.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -516,7 +518,14 @@
       "into-the-woods-west-end-2025/theatre-weekly--unknown.json",
       "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
       "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
-      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "the-cherry-orchard-west-end-2026/timeout-london--unknown.json",
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026/britishtheatrecom--unknown.json",
+      "lucky-guy-2013/guardian--alexis-soloski.json",
+      "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+      "elling-2010/bloomberg--jeremy-gerard.json",
+      "next-to-normal-2009/neontommy--jason-kehe.json"
     ],
     "failed": [
       "the-outsiders-2024/hollywood-reporter--angie-han.json",
@@ -542,10 +551,9 @@
       "la-boheme-off-broadway-2026/thestage--the-stage.json",
       "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
       "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
-      "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
-      "pride-west-end-2026/nyt-theater--unknown.json",
-      "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
-      "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
+      "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
+      "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
     ]
   },
   "tierDetails": {
@@ -813,7 +821,11 @@
       "into-the-woods-west-end-2025/theatre-weekly--unknown.json",
       "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
       "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
-      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "the-cherry-orchard-west-end-2026/timeout-london--unknown.json",
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026/britishtheatrecom--unknown.json",
+      "lucky-guy-2013/guardian--alexis-soloski.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -846,7 +858,8 @@
       "data/review-texts/becky-shaw-2026/wsj--charles-isherwood.json",
       "becky-shaw-2026/wsj--charles-isherwood.json",
       "data/review-texts/dog-day-afternoon-2026/wsj--charles-isherwood.json",
-      "dog-day-afternoon-2026/wsj--charles-isherwood.json"
+      "dog-day-afternoon-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-cherry-orchard-west-end-2026/theatremonkey--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1034,7 +1047,10 @@
       "the-other-place-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "bug-2026/new-york-city-theatre--unknown.json",
-      "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+      "elling-2010/bloomberg--jeremy-gerard.json",
+      "next-to-normal-2009/neontommy--jason-kehe.json"
     ]
   },
   "failuresByOutlet": {},
