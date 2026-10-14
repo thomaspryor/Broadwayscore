@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 const { foldAttempts, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 
 // The MAIN checkout (repo-root.js), not path.join(__dirname, '..', '..'), on purpose: both callers
@@ -38,6 +39,25 @@ const { foldAttempts, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 // bare literal; repo-root.js also resolves the main checkout off the Mac.
 const { MAIN_REPO_ROOT: REPO } = require('./repo-root');
 const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl');
+
+// Default for appendEntry/readEntries, resolved at CALL time so a test can set
+// DISPATCH_LEDGER_PATH after require. A test process never defaults to the real
+// ledger (BRO-5261 retro-review of BRO-2664: a crown-launch test wrote a fake
+// 'Crown v45' launch row there). Callers that pass a path, or read LEDGER_PATH
+// directly, are unchanged.
+let _testLedgerCleanup = false;
+function defaultLedgerPath() {
+  if (process.env.DISPATCH_LEDGER_PATH) return process.env.DISPATCH_LEDGER_PATH;
+  if (isTestRun()) {
+    const p = path.join(require('os').tmpdir(), `dispatch-ledger.test-${process.pid}.jsonl`);
+    if (!_testLedgerCleanup) {
+      _testLedgerCleanup = true;
+      process.once('exit', () => { try { fs.unlinkSync(p); } catch (_) { /* never written */ } });
+    }
+    return p;
+  }
+  return LEDGER_PATH;
+}
 const { stripAutoPrefix } = require('./workspace-naming.js');
 
 // A task with this many recorded 'dead' entries blocks further blind
@@ -59,7 +79,7 @@ const DEAD_ATTEMPT_LIMIT = 2;
 // clock skew is plausible, versus corrupt input."
 const FUTURE_TS_GRACE_MS = 5 * 60 * 1000;
 
-function appendEntry(entry, ledgerPath = LEDGER_PATH) {
+function appendEntry(entry, ledgerPath = defaultLedgerPath()) {
   if (!entry || typeof entry.event !== 'string' || !entry.event || !entry.taskId) {
     throw new Error('dispatch-ledger entry requires an event string and a taskId');
   }
@@ -76,7 +96,7 @@ function appendEntry(entry, ledgerPath = LEDGER_PATH) {
 // Corrupt lines (partial write from a crash) are skipped, never fatal — the
 // ledger must stay readable after any crash, same invariant as
 // autonomous-ledger.js's readEntries.
-function readEntries(ledgerPath = LEDGER_PATH) {
+function readEntries(ledgerPath = defaultLedgerPath()) {
   let raw;
   try { raw = fs.readFileSync(ledgerPath, 'utf8'); }
   catch { return []; }
@@ -1701,7 +1721,7 @@ function followRetryChain(entries, taskId, firstJobId) {
 }
 
 module.exports = {
-  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS, LANDED_ACK_EVENTS,
+  LEDGER_PATH, defaultLedgerPath, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS, LANDED_ACK_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   wrapperVouchesAlive, wrapperCheckDisabled, unreconciledLaunchForRef, lastByRef,

@@ -85,6 +85,7 @@ const fs = require('fs');
 const { rowAbsentCheckCmd, alertAbsentCheckCmd, healthRowNameFromConditionKey, sanitizeRowText } = require('./health-row-check-cmd.js');
 const os = require('os');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 const { sendAlert } = require('./discord-notify');
 const { isPageWorthy } = require('./page-worthy-alerts');
 // BRO-375 (Phase 1): dispatchCard() below calls this in-process instead of
@@ -261,7 +262,7 @@ function loadLedger() {
 // Guarded at write time (not require time) so read-only tests of the
 // path-resolution logic still load.
 function assertRealFileWriteIsSafeUnderTest(kind, overrideEnvVar) {
-  if (process.env.NODE_TEST_CONTEXT && !process.env[overrideEnvVar]) {
+  if (isTestRun() && !process.env[overrideEnvVar]) {
     throw new Error(`owner-alert-router: refusing to write a REAL ${kind} under node:test — set ${overrideEnvVar} to a temp file (see loadRouterWithFakes)`);
   }
 }

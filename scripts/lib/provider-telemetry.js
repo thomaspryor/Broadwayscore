@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 const { AsyncLocalStorage } = require('async_hooks');
 
 // Per-show spend attribution (BRO-3386). A per-show loop wraps its work in
@@ -106,7 +107,7 @@ function _ledgerPath() {
   // SCRAPER_SPEND_LEDGER_PATH; a local run appended fake rows and, via
   // rotation, dropped real ones (1,289 in one BRO-4215 run). Real script runs
   // never have NODE_TEST_CONTEXT, so production writes are unchanged.
-  if (process.env.NODE_TEST_CONTEXT) {
+  if (isTestRun()) {
     const p = path.join(require('os').tmpdir(), `scraper-spend-ledger.test-${process.pid}.jsonl`);
     if (!_testLedgerCleanup) {
       _testLedgerCleanup = true;

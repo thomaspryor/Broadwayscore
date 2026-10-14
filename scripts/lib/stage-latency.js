@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 
 /** @typedef {'review-first-seen'|'review-text-collected'|'scored'|'rebuilt'|'deployed-live'} Stage */
 
@@ -77,7 +78,7 @@ function emitStage({ showId, reviewKey, stage, at, metadata }) {
   // NODE_TEST_CONTEXT: a local `node --test` run has no test.yml env, and it
   // appended fake 'rebuilt' rows to the tracked log (2026-09-29, as BRO-4220 did
   // for the spend ledger). Node sets it in every test process and its children.
-  if ((process.env.BSC_STAGE_LATENCY_MUTE === '1' || process.env.NODE_TEST_CONTEXT) && !process.env.STAGE_LATENCY_LOG) return;
+  if ((process.env.BSC_STAGE_LATENCY_MUTE === '1' || isTestRun()) && !process.env.STAGE_LATENCY_LOG) return;
 
   const logFile = process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
 

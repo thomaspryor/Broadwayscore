@@ -41,6 +41,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 const { summarizeFailureStreak } = require('./alert-dispatch-streak.js');
 
 const CHECK_NAME = 'cmux socket: reachability';
@@ -74,7 +75,7 @@ const ATTEMPTS_LOG_PATH = process.env.CMUX_REACHABILITY_ATTEMPTS_LOG_PATH || DEF
 // assertRealFileWriteIsSafeUnderTest) — belt-and-suspenders on top of every
 // test in this repo passing an explicit logPath.
 function assertRealFileWriteIsSafeUnderTest(logPath) {
-  if (process.env.NODE_TEST_CONTEXT && logPath === DEFAULT_ATTEMPTS_LOG_PATH && !process.env.CMUX_REACHABILITY_ATTEMPTS_LOG_PATH) {
+  if (isTestRun() && logPath === DEFAULT_ATTEMPTS_LOG_PATH && !process.env.CMUX_REACHABILITY_ATTEMPTS_LOG_PATH) {
     throw new Error('cmux-reachability-check: refusing to write the REAL attempts log under node:test — pass an explicit logPath (a temp file) instead');
   }
 }

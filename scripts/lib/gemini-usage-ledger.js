@@ -22,6 +22,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 
 const LEDGER_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'gemini-usage-ledger.jsonl');
 const GEMINI_HOST = 'generativelanguage.googleapis.com';
@@ -101,7 +102,7 @@ function buildRows(agg, { now = new Date(), workflow, script } = {}) {
 function _ledgerPath() {
   if (process.env.GEMINI_USAGE_LEDGER_PATH) return process.env.GEMINI_USAGE_LEDGER_PATH;
   // Never write the real ledger from a test process (same rule as provider-telemetry).
-  if (process.env.NODE_TEST_CONTEXT) return path.join(os.tmpdir(), `gemini-usage-ledger.test-${process.pid}.jsonl`);
+  if (isTestRun()) return path.join(os.tmpdir(), `gemini-usage-ledger.test-${process.pid}.jsonl`);
   return LEDGER_PATH;
 }
 

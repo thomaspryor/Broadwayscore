@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 
 // Under `node --test` (NODE_TEST_CONTEXT is set by the runner, never in a real
 // run) the default is a per-process temp dir: tests reach logExclusion through
@@ -9,7 +10,7 @@ const path = require('path');
 // data/audit/exclusions-<date>.jsonl (BRO-2664; caught by test.yml's ledger
 // isolation check). An explicit EXCLUSION_LOGGER_AUDIT_DIR always wins.
 const AUDIT_DIR = process.env.EXCLUSION_LOGGER_AUDIT_DIR
-  || (process.env.NODE_TEST_CONTEXT
+  || (isTestRun()
     ? path.join(require('os').tmpdir(), `exclusion-logger-test-${process.pid}`)
     : path.join(__dirname, '../../data/audit'));
 

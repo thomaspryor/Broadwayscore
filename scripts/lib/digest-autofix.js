@@ -60,6 +60,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isTestRun } = require('./test-run-guard');
 const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
@@ -105,7 +106,7 @@ const LINEAR_IDENTIFIER_IN_JSON_RE = new RegExp(`"identifier":\\s*"(${LINEAR_IDE
 
 const REPO = path.join(__dirname, '..', '..');
 // Under node:test the logs go to a per-process temp dir, removed on exit.
-const LOG_DIR = process.env.DIGEST_AUTOFIX_LOG_DIR || (process.env.NODE_TEST_CONTEXT
+const LOG_DIR = process.env.DIGEST_AUTOFIX_LOG_DIR || (isTestRun()
   ? (() => {
     const dir = path.join(require('os').tmpdir(), `digest-autofix-test-logs-${process.pid}`);
     // Tests re-require this module per case; register the cleanup once per process.
@@ -1116,7 +1117,7 @@ function runAutofix({
   //    (same rule as owner-alert-router's saveLedger guard): tests that want
   //    the gate pass their own seenPath.
   const gateUsesRealFile = seenPath === DIGEST_SEEN_PATH;
-  if (!(gateUsesRealFile && process.env.NODE_TEST_CONTEXT)) try {
+  if (!(gateUsesRealFile && isTestRun())) try {
     let seen = {};
     try { seen = JSON.parse(require('fs').readFileSync(seenPath, 'utf8')); } catch { seen = {}; }
     const { seen: updated, hold } = computePersistenceGate(plan, seen, now.getTime());
