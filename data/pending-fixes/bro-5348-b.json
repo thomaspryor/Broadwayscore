@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5348-b",
   "planId": "d10a1174-aec1-402b-84f9-7a6979ee04ab",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T10:24:25.460Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,18 @@
         "description": "BRO-5348: flag was set while this row held Vulture text; its own amNY review is restored, so the flag is stale and hides it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T11:01:35.931Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "merrily-we-roll-along-2023/amny--matt-windman.json crossOutletClearReason: null -> \"BRO-5348: forced refetch from the amNY url (2026-10-14) replaced the Vulture text this row held; it no longer matches merrily-we-roll-along-2023/vulture--jackson-mchenry.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "merrily-we-roll-along-2023/amny--matt-windman.json crossOutletDuplicate: true -> false"
+    }
+  ]
 }
