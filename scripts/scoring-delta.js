@@ -1364,7 +1364,7 @@ function ensureBaseRef(ref, run = execSync) {
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  RUN_STAMP = { base: BASE_REF, changed: [], dataFlagChanges: 0 };
+  RUN_STAMP = { started: new Date().toISOString(), base: BASE_REF, changed: [], dataFlagChanges: 0 };
   log(`[scoring-delta] Comparing working-tree vs ${BASE_REF}`);
   if (!ensureBaseRef(BASE_REF)) {
     log(`[scoring-delta] ${BASE_REF} is not in this clone; in a shallow clone pass the full 40-char sha so it can be fetched`);

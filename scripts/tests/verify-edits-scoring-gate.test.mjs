@@ -150,6 +150,23 @@ test('a scoring pass no longer skips the later gates: an unverified later edit s
   blocked(runHook(f), /unverified edit to `other-tool\.js`/, 'later unverified edit');
 });
 
+test('a run that started before the edit landed does not count, even if it exited after', () => {
+  const f = fixture([{ ...edit(RG), ts: ago(300) }, { ...SHIP_CHECK, ts: ago(100) }], [stamp(200, 0, [RG], { started: ago(350) })]);
+  blocked(runHook(f), /without a counterfactual/, 'overlapping run');
+});
+
+test('an edit with no transcript timestamp fails closed (no run can be shown to follow it)', () => {
+  const f = fixture([{ ...edit(RG) }, { ...SHIP_CHECK, ts: ago(100) }], [stamp(200, 0, [RG])]);
+  blocked(runHook(f), /without a counterfactual/, 'no edit timestamp');
+});
+
+test('exit 2 names the §13 A/B whenever the run saw an LLM-input file, whichever watched file was edited last', () => {
+  const f = fixture([{ ...edit(RG), ts: ago(300) }, { ...SHIP_CHECK, ts: ago(100) }], [stamp(200, 2, [RG, TQ])]);
+  blocked(runHook(f), /§13 A\/B/, 'review-guards edit with LLM input in the diff');
+  const g = fixture([{ ...edit(RG), ts: ago(300) }, { ...SHIP_CHECK, ts: ago(100) }], [stamp(200, 2, [RG])]);
+  blocked(runHook(g), /significant delta/, 'plain exit 2');
+});
+
 test('NO-VERIFY in the current turn still waives the gate', () => {
   const f = fixture([{ ...edit(TQ), ts: ago(300) }, { ...SHIP_CHECK, ts: ago(100) }], [stamp(200, 2, [TQ])]);
   allowed(runHook(f, 'NO-VERIFY: A/B re-score of 120 reviews, bucket shift 1.2%, mean drift 0.4.'), 'NO-VERIFY');
@@ -177,4 +194,5 @@ test('scoring-delta.js stamps its real exit code (exit 1 on a bad base), and --h
   assert.equal(stamps.length, 1);
   assert.equal(stamps[0].exitCode, 1);
   assert.equal(stamps[0].base, 'no-such-ref-bro5270');
+  assert.ok(stamps[0].started <= stamps[0].ts, 'stamp records when the run started');
 });

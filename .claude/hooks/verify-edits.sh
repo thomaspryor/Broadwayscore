@@ -1403,7 +1403,7 @@ def _scoring_state():
         sid = os.path.basename(sys.argv[1]).rsplit('.', 1)[0]
         return json.loads(_ss.run(['node', '-e', js, lib, sid], capture_output=True, text=True, timeout=8).stdout)
     except Exception:
-        return {'files': list(SCORING_LOGIC_FALLBACK), 'llm': [], 'stamps': []}
+        return {'files': list(SCORING_LOGIC_FALLBACK), 'llm': [], 'stamps': [], 'noload': True}
 
 # ─── BWSC visual-QA gate (added 2026-05-24) ──────────────────────────────────
 # Edits to files producing rendered HTML require a verdict.json from
@@ -1828,13 +1828,15 @@ if scoring_edit or ran_audit_sweep:
     label = os.path.basename(scoring_edit[1]) if scoring_edit else 'audit-sweep'
     ref_ts = max([scoring_edit[2] if scoring_edit else ''] + [result_ts_by_id.get(p[2], '') for k, p in events
                  if k == 'tool' and p[0] == 'Bash' and _is_review_texts_write(p[1].get('command', '') or '')])
-    runs = [r for r in _sc['stamps'] if isinstance(r, dict) and str(r.get('ts', '')) > ref_ts]
+    # A run counts only if it STARTED after the edit (a parallel run read the old
+    # tree); no edit timestamp means no run can be shown to follow it.
+    runs = [r for r in _sc['stamps'] if ref_ts and isinstance(r, dict) and str(r.get('started') or r.get('ts', '')) > ref_ts]
     last = runs[-1] if runs else {}
     code = last.get('exitCode')
     if not runs:
-        _ve_final(f"UNVERIFIED_SCORING:{label}:none")
+        _ve_final(f"UNVERIFIED_SCORING:{label}:{'noload' if _sc.get('noload') else 'none'}")
     elif code == 2:
-        _ve_final(f"SCORING_FAILED:{label}:{'llm' if scoring_edit and scoring_edit[1] in _sc['llm'] else 'delta'}")
+        _ve_final(f"SCORING_FAILED:{label}:{'llm' if set(last.get('changed') or []) & set(_sc['llm']) else 'delta'}")
     elif code != 0:
         _ve_final(f"SCORING_FAILED:{label}:error")
     elif (scoring_edit[1] in (last.get('changed') or [])) if scoring_edit else last.get('dataFlagChanges'):
@@ -1984,11 +1986,12 @@ if [[ "$result" == SCORING_FAILED:* || "$result" == UNVERIFIED_SCORING:* ]]; the
   fname="${result#*:}"; kind="${fname##*:}"; fname="${fname%:*}"
   [[ "$fname" == "audit-sweep" ]] && what="audit sweep of data/review-texts/" || what="scoring-logic edit (\`${fname}\`)"
   case "$kind" in
-    llm) echo "🛑 BLOCKED: \`${fname}\` shapes LLM scoring input, so scoring-delta.js exits 2 by design (the replay can't measure it). Re-score through the CLAUDE.md §13 A/B check, then NO-VERIFY: <A/B result: bucket shift, mean drift>." >&2 ;;
+    llm) echo "🛑 BLOCKED: scoring-delta.js exited 2 after ${what}: the diff changes LLM scoring input, which it exits 2 on by design (the replay can't measure it). Fix any other delta it reported, re-score through the CLAUDE.md §13 A/B check, then NO-VERIFY: <A/B result: bucket shift, mean drift>." >&2 ;;
+    noload) echo "🛑 BLOCKED: ${what}, and the gate could not load scripts/lib/scoring-watchlists.js (node missing from the hook PATH, or a stale checkout), so it cannot read scoring-delta.js results. Run node scripts/scoring-delta.js --base=origin/main, then NO-VERIFY: <its exit code + summary>." >&2 ;;
     delta) echo "🛑 BLOCKED: scoring-delta.js exited 2 (significant delta) after ${what}. Fix the regression and re-run, or NO-VERIFY: <user-approved delta + specifics>." >&2 ;;
     error) echo "🛑 BLOCKED: scoring-delta.js errored after ${what}, so nothing was measured. Fix the run (missing data: npm run data:check) and re-run it." >&2 ;;
     unmeasured) echo "🛑 BLOCKED: the latest scoring-delta.js run did not see ${what} in its diff (committed already? run node scripts/scoring-delta.js --base=origin/main)." >&2 ;;
-    *) echo "🛑 BLOCKED: ${what} without a counterfactual. Run: node scripts/scoring-delta.js (its exit code is the verdict). Bypass: NO-VERIFY: <why this can't affect scoring>." >&2 ;;
+    *) echo "🛑 BLOCKED: ${what} without a counterfactual. Run: node scripts/scoring-delta.js --base=origin/main (its exit code is the verdict). Bypass: NO-VERIFY: <why this can't affect scoring>." >&2 ;;
   esac
   exit 2
 fi
