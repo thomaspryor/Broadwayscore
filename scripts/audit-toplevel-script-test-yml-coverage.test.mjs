@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   filterToplevelTestEntries, siblingSourcePath, findGaps,
   filterTestsDirEntries, toplevelScriptDeps,
-  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations,
+  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations, pathJoinedScriptDeps,
 } = require('./audit-toplevel-script-test-yml-coverage.js');
 const { relativeSpecifiers, stripComments } = require('./audit-test-yml-lib-deps.js');
 
@@ -106,9 +106,9 @@ test('relativeSpecifiers: is not left stateful by a previous call (/g lastIndex)
   assert.deepEqual(first, ['./one.js', './two.js']);
 });
 
-test('findGaps: the real repo reports all three shapes and currently has none of any', () => {
+test('findGaps: the real repo reports all four shapes and currently has none of any', () => {
   const gaps = findGaps();
-  assert.deepEqual(gaps, [], `push-path entries missing for: ${gaps.map((g) => g.source).join(', ')}`);
+  assert.deepEqual(gaps, [], `push-path entries missing; add each to test.yml on.push.paths as - '<path>': ${gaps.map((g) => g.source).join(', ')}`);
 });
 
 // --- BRO-3202 ship-check: making REQUIRE_RE whitespace-tolerant widened what
@@ -283,4 +283,34 @@ test('scriptsExecutedBy: flag values, multiple files, ./ prefix, bash .sh, conti
   assert.deepEqual(scriptsExecutedBy('echo "Run: node scripts/x.js"'), []);
   assert.deepEqual(scriptsExecutedBy('FOO=1 node scripts/E.js'), ['scripts/E.js']);
   assert.deepEqual(joinContinuations(['node \\', 'scripts/E.js', 'echo hi']), ['node scripts/E.js', 'echo hi']);
+});
+
+// --- BRO-5261 (BRO-3087 retro-review): fourth shape, scripts a test names by path.
+import pathMod from 'node:path';
+const ROOT_DIR = pathMod.resolve(pathMod.dirname(new URL(import.meta.url).pathname), '..');
+const libDir = pathMod.join(ROOT_DIR, 'scripts', 'lib');
+const real = () => true;
+
+test('pathJoinedScriptDeps: a path.join from scripts/lib up to a top-level script', () => {
+  assert.deepEqual(pathJoinedScriptDeps("const cli = path.join(here, '..', 'discard-stuck-broadcast-drafts.js');", libDir), ['scripts/discard-stuck-broadcast-drafts.js']);
+});
+
+test('pathJoinedScriptDeps: a quoted scripts/ literal resolves from the repo root', () => {
+  assert.deepEqual(pathJoinedScriptDeps("execFileSync(node, ['scripts/verify-commercial-sources.js', '--x']);", libDir), ['scripts/verify-commercial-sources.js']);
+});
+
+test('pathJoinedScriptDeps: ignores comments, scripts/lib, missing files and template segments', () => {
+  const src = [
+    "// path.join(here, '..', 'discard-stuck-broadcast-drafts.js')",
+    "/* 'scripts/verify-commercial-sources.js' */",
+    "path.join(here, 'broadcast-dismiss.js');",
+    "readFileSync('scripts/lib/broadcast-dismiss.js');",
+    "path.join(here, '..', 'no-such-script-xyz.js');",
+    "path.join(here, `${dir}`, '..', 'discard-stuck-broadcast-drafts.js');",
+  ].join('\n');
+  assert.deepEqual(pathJoinedScriptDeps(src, libDir), []);
+});
+
+test('pathJoinedScriptDeps: exists is injectable', () => {
+  assert.deepEqual(pathJoinedScriptDeps("readFileSync('scripts/made-up.js')", libDir, real), ['scripts/made-up.js']);
 });
