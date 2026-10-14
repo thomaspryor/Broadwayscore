@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-14T22:37:40.412Z",
+  "timestamp": "2026-10-14T23:07:56.488Z",
   "stats": {
-    "totalReviews": 56546,
+    "totalReviews": 56549,
     "alreadyFlagged": 21053,
     "dateGuardCatches": 210,
     "directorMismatch": 1906,
@@ -9,7 +9,7 @@
     "londonSignals": 2345,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5196
+    "noPublishDate": 5197
   },
   "findings": [
     {
@@ -1920,20 +1920,6 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 76,
-      "publishDate": "2025-11-30",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
       "file": "hollywood-reporter--demetrios-matheou.json",
       "score": 91,
       "publishDate": "2025-11-22",
@@ -1948,6 +1934,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 76,
+      "publishDate": "2025-11-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -2959,20 +2959,6 @@
     },
     {
       "showId": "anna-x-west-end-2021",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 74,
-      "publishDate": "2021-07-17",
-      "url": "https://www.dailymail.com/home/event/article-9791155/Anna-X-review-Emma-Corrin-amazingly-assured-stage-presence.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "anna-x-west-end-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 85,
       "publishDate": "2021-07-17",
@@ -2991,6 +2977,20 @@
       "score": 86,
       "publishDate": "2021-07-18",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/anna-x-play-emma-corrin-review-b1885373.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 74,
+      "publishDate": "2021-07-17",
+      "url": "https://www.dailymail.com/home/event/article-9791155/Anna-X-review-Emma-Corrin-amazingly-assured-stage-presence.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -15090,25 +15090,6 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 57,
-      "publishDate": "2026-06-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 79,
       "publishDate": "2026-06-18",
@@ -15213,6 +15194,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 57,
+      "publishDate": "2026-06-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -18210,7 +18210,7 @@
     {
       "showId": "hope-has-a-happy-meal-west-end-2023",
       "file": "liamodell--liam-odell.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2023-06-10",
       "url": "https://liamodell.com/2023/06/10/hope-has-a-happy-meal-review-royal-court-theatre-tom-fowler-amaka-okafor-mary-malone-nima-taleghani-mcdonalds/",
       "findings": [
@@ -19469,20 +19469,6 @@
     },
     {
       "showId": "inter-alia-west-end-2025",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 97,
-      "publishDate": "2025-07-27",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/index.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 79,
       "publishDate": "2025-07-24",
@@ -19498,7 +19484,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "guardian--emma-john.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2025-07-10",
       "url": "https://www.theguardian.com/stage/2025/jul/24/inter-alia-review-lyttelton-theatre-london-rosamund-pike-suzie-miller",
       "findings": [
@@ -19558,6 +19544,20 @@
       "score": 82,
       "publishDate": "2025-07-24",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2025",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 97,
+      "publishDate": "2025-07-27",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/index.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -20903,20 +20903,6 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "file": "daily-mail--mark-cook.json",
-      "score": 82,
-      "publishDate": "2025-12-21",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 85,
       "publishDate": "2025-12-19",
@@ -21097,6 +21083,20 @@
       "score": 87,
       "publishDate": "2026-01-08",
       "url": "https://loureviews.blog/2026/01/08/musical-review-into-the-woods-at-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "mail-on-sunday--patrick-marmion.json",
+      "score": 82,
+      "publishDate": "2025-12-21",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -23750,25 +23750,6 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 89,
-      "publishDate": "2020-01-25",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james powell\" from les-miserables-2014"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
       "file": "guardian--michael-billington.json",
       "score": 82,
       "publishDate": "2025-10-07",
@@ -23822,6 +23803,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 89,
+      "publishDate": "2020-01-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
         }
       ]
     },
@@ -24965,20 +24965,6 @@
     },
     {
       "showId": "manhunt-west-end-2025",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 60,
-      "publishDate": "2025-04-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "manhunt-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
       "score": 73,
       "publishDate": "April 9th, 2025",
@@ -24993,6 +24979,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "manhunt-west-end-2025",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 60,
+      "publishDate": "2025-04-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -26801,25 +26801,6 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 89,
-      "publishDate": "2025-03-02",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 97,
       "publishDate": "2025-02-20",
@@ -26885,6 +26866,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 89,
+      "publishDate": "2025-03-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -32517,20 +32517,6 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 40,
-      "publishDate": "2026-04-05",
-      "url": "https://www.dailymail.com/tv/article-15701933/sadie-sink-noah-jupe-romeo-juliet-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 61,
       "publishDate": "2026-04-01",
@@ -32545,6 +32531,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 40,
+      "publishDate": "2026-04-05",
+      "url": "https://www.dailymail.com/tv/article-15701933/sadie-sink-noah-jupe-romeo-juliet-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -38675,7 +38675,7 @@
     },
     {
       "showId": "the-crown-jewels-west-end-2023",
-      "file": "daily-mail--robert-gore-langton.json",
+      "file": "mail-on-sunday--robert-gore-langton.json",
       "score": 43,
       "publishDate": "2023-07-30",
       "url": null,
@@ -39436,20 +39436,6 @@
     },
     {
       "showId": "the-grapes-of-wrath-west-end-2024",
-      "file": "daily-mail--neil-armstrong.json",
-      "score": 70,
-      "publishDate": "2024-08-04",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"frank galati\" from the-grapes-of-wrath-1990"
-        }
-      ]
-    },
-    {
-      "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
       "score": 61,
       "publishDate": "2024-08-02",
@@ -39539,6 +39525,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-grapes-of-wrath-west-end-2024",
+      "file": "mail-on-sunday--neil-armstrong.json",
+      "score": 70,
+      "publishDate": "2024-08-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"frank galati\" from the-grapes-of-wrath-1990"
         }
       ]
     },
@@ -40541,10 +40541,10 @@
     },
     {
       "showId": "the-guilty-west-end-2026",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 77,
-      "publishDate": "2026-07-12",
-      "url": null,
+      "file": "london-theatre--anya-ryan.json",
+      "score": 90,
+      "publishDate": "2026-07-01",
+      "url": "https://www.londontheatre.co.uk/reviews/the-guilty-review-donmar-warehouse",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -40555,10 +40555,10 @@
     },
     {
       "showId": "the-guilty-west-end-2026",
-      "file": "london-theatre--anya-ryan.json",
-      "score": 90,
-      "publishDate": "2026-07-01",
-      "url": "https://www.londontheatre.co.uk/reviews/the-guilty-review-donmar-warehouse",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 77,
+      "publishDate": "2026-07-12",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -40761,22 +40761,8 @@
     },
     {
       "showId": "the-hills-of-california-west-end-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 87,
-      "publishDate": "2024-02-11",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
-        }
-      ]
-    },
-    {
-      "showId": "the-hills-of-california-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "February 8th, 2024",
       "url": "https://www.theguardian.com/stage/2024/feb/08/the-hills-of-california-review-jerusalem-jez-butterworth-harold-pinter-theatre-london",
       "findings": [
@@ -40849,6 +40835,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 87,
+      "publishDate": "2024-02-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
         }
       ]
     },
@@ -40981,7 +40981,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "2024-02-11",
       "url": null,
       "findings": [
@@ -41137,10 +41137,10 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 41,
-      "publishDate": "2025-11-16",
-      "url": null,
+      "file": "independent--alice-saville.json",
+      "score": 65,
+      "publishDate": "2025-11-13",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hunger-games-play-theatre-review-b2863265.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -41151,10 +41151,10 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
-      "file": "independent--alice-saville.json",
-      "score": 65,
-      "publishDate": "2025-11-13",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hunger-games-play-theatre-review-b2863265.html",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 41,
+      "publishDate": "2025-11-16",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43799,7 +43799,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2024-02-15",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-picture-of-dorian-gray-theatre-royal-haymarket",
       "findings": [
@@ -43827,7 +43827,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2024-02-16",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13089133/Sarah-Snook-plays-succession-26-characters-Wilde-success-PATRICK-MARMION-reviews-TV-stars-West-End-debut-Picture-Dorian-Gray.html",
       "findings": [
@@ -43840,27 +43840,8 @@
     },
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 92,
-      "publishDate": "2024-02-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "2024-02-15",
       "url": "https://www.ft.com/content/9cfac1df-4313-465f-8ffb-8100a4fe6e0d",
       "findings": [
@@ -43879,7 +43860,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 100,
+      "score": 99,
       "publishDate": "2024-02-16T04:34:27+00:00",
       "url": "https://www.theguardian.com/stage/2024/feb/15/the-picture-of-dorian-gray-review-sarah-snook-succession",
       "findings": [
@@ -43929,6 +43910,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 92,
+      "publishDate": "2024-02-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -45537,25 +45537,6 @@
     },
     {
       "showId": "the-upstart-crow-west-end-2020",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 56,
-      "publishDate": "2020-02-22",
-      "url": "https://www.dailymail.com/home/event/article-8024547/The-Upstart-Crow-review-relentless.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-upstart-crow-west-end-2020",
       "file": "guardian--mark-lawson.json",
       "score": 91,
       "publishDate": "2020-02-17",
@@ -45589,6 +45570,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 56,
+      "publishDate": "2020-02-22",
+      "url": "https://www.dailymail.com/home/event/article-8024547/The-Upstart-Crow-review-relentless.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -50620,7 +50620,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 59,
+      "score": 56,
       "publishDate": "June 19th, 2025",
       "url": "https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre-london-sarah-kane-play",
       "findings": [
@@ -52693,7 +52693,7 @@
     {
       "showId": "an-enemy-of-the-people-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "February 20th, 2024",
       "url": "https://www.theguardian.com/stage/2024/feb/20/an-enemy-of-the-people-review-matt-smith-ibsen-duke-of-yorks-theatre-london",
       "findings": [
@@ -57165,20 +57165,6 @@
     },
     {
       "showId": "coriolanus-west-end-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 80,
-      "publishDate": "2024-09-29",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "coriolanus-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
       "score": 85,
       "publishDate": "2024-09-25",
@@ -57211,6 +57197,20 @@
       "score": 79,
       "publishDate": "2024-09-25",
       "url": "https://www.londonboxoffice.co.uk/news/post/coriolanus-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "coriolanus-west-end-2024",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 80,
+      "publishDate": "2024-09-29",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -60723,7 +60723,7 @@
     {
       "showId": "foxfinder-west-end-2018",
       "file": "guardian--miriam-gillinson.json",
-      "score": 39,
+      "score": 36,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/sep/14/foxfinder-review-dawn-king",
       "findings": [
@@ -60849,7 +60849,7 @@
     {
       "showId": "frozen-west-end-2021",
       "file": "london-theatre--suzy-evans.json",
-      "score": 94,
+      "score": 96,
       "publishDate": "2022-01-25",
       "url": "https://www.londontheatre.co.uk/reviews/review-frozen-west-end-theatre-royal-drury-lane",
       "findings": [
@@ -61254,7 +61254,7 @@
     {
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/sep/26/glass-kill-bluebeard-imp-review-finding-fascination-in-bloodshot-fables",
       "findings": [
@@ -61964,7 +61964,7 @@
     },
     {
       "showId": "groan-ups-west-end-2019",
-      "file": "daily-mail--robert-gore-langton.json",
+      "file": "mail-on-sunday--robert-gore-langton.json",
       "publishDate": "2019-10-19",
       "url": "https://www.dailymail.com/home/event/article-7583541/Groan-Ups-review-material-crumpled-mess-director-Kirsty-Patrick-Ward-iron-out.html",
       "findings": [
@@ -63036,7 +63036,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 57,
+      "score": 65,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/sep/04/hansard-review-lyttelton-alex-jennings-lindsay-duncan-simon-woods",
       "findings": [
@@ -63050,7 +63050,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "london-theatre--will-longman.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "2019-09-04",
       "url": "https://www.londontheatre.co.uk/reviews/review-hansard-at-the-national-theatre",
       "findings": [
@@ -63660,19 +63660,6 @@
     },
     {
       "showId": "hello-dolly-west-end-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "publishDate": "2024-07-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 74,
       "publishDate": "2024-07-20",
@@ -63682,6 +63669,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "publishDate": "2024-07-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -64341,7 +64341,7 @@
     {
       "showId": "hope-has-a-happy-meal-west-end-2023",
       "file": "broadwayworld--alexander-cohen.json",
-      "score": 65,
+      "score": 64,
       "publishDate": "2023-06-12",
       "url": "https://www.broadwayworld.com/westend/article/Review-HOPE-HAS-A-HAPPY-MEAL-Royal-Court-20230612",
       "findings": [
@@ -64492,20 +64492,6 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 91,
-      "publishDate": "2026-08-16",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "how-the-other-half-loves-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 87,
       "publishDate": "2026-08-12",
@@ -64538,6 +64524,20 @@
       "score": 86,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 91,
+      "publishDate": "2026-08-16",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -64927,7 +64927,7 @@
     {
       "showId": "im-not-running-west-end-2018",
       "file": "guardian--michael-billington.json",
-      "score": 59,
+      "score": 62,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/oct/10/im-not-running-review-david-hare-lyttelton-national-theatre",
       "findings": [
@@ -65556,7 +65556,7 @@
     {
       "showId": "is-god-is-west-end-2021",
       "file": "guardian--arifa-akbar.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2021/sep/17/is-god-is-review-royal-court",
       "findings": [
@@ -66159,7 +66159,7 @@
     {
       "showId": "jitney-west-end-2022",
       "file": "express-uk--neil-norman.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2022-06-24",
       "url": "https://www.express.co.uk/entertainment/theatre/1630664/jitney-review-theatre-august-wilson",
       "findings": [
@@ -66941,7 +66941,7 @@
     {
       "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "January 31st, 2023",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/lemons-lemons-lemons-lemons-lemons-in-the-west-end_58254.html",
       "findings": [
@@ -73573,7 +73573,7 @@
     {
       "showId": "red-pitch-west-end-2024",
       "file": "guardian--unknown.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2024-04-23",
       "url": "https://www.theguardian.com/stage/2024/apr/14/the-week-in-theatre-player-kings-robert-icke-ian-mckellen-noel-coward-theatre-review-red-pitch-tyrell-williams-sohoplace-underdog-the-other-other-bronte-sarah-gordon-dorfman-national-theatre",
       "findings": [
@@ -74071,7 +74071,7 @@
     {
       "showId": "rose-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "June 6th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/rose-ambassadors-theatre-review-maureen-lipman/",
       "findings": [
@@ -75176,20 +75176,6 @@
     },
     {
       "showId": "slave-play-west-end-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 62,
-      "publishDate": "2024-07-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "slave-play-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 98,
       "publishDate": "2024-07-11",
@@ -75213,6 +75199,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "slave-play-west-end-2024",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 62,
+      "publishDate": "2024-07-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -76606,7 +76606,7 @@
     {
       "showId": "superhoe-west-end-2019",
       "file": "guardian--unknown.json",
-      "score": 57,
+      "score": 63,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/feb/05/superhoe-review-royal-court-london-nicole-lecky",
       "findings": [
@@ -77320,7 +77320,7 @@
     {
       "showId": "the-antipodes-west-end-2019",
       "file": "guardian--unknown.json",
-      "score": 58,
+      "score": 56,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/oct/31/the-antipodes-review-annie-baker-dorfman-theatre",
       "findings": [
@@ -82664,7 +82664,7 @@
     {
       "showId": "the-prisoner-west-end-2018",
       "file": "london-theatre--will-longman.json",
-      "score": 36,
+      "score": 35,
       "publishDate": "2018-09-18",
       "url": "https://www.londontheatre.co.uk/reviews/review-the-prisoner-at-the-national-theatre-dorfman",
       "findings": [
@@ -84711,7 +84711,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "guardian--unknown.json",
-      "score": 97,
+      "score": 96,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
       "findings": [
@@ -84850,10 +84850,10 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
-      "file": "daily-mail--neil-armstrong.json",
-      "score": 97,
-      "publishDate": "2022-04-09",
-      "url": "https://www.dailymail.com/home/event/article-10699737/To-Kill-Mockingbird-review-unforgettable-powerfully-moving-evening.html",
+      "file": "guardian--arifa-akbar.json",
+      "score": 82,
+      "publishDate": "2022-04-01",
+      "url": "https://www.theguardian.com/stage/2022/mar/31/to-kill-a-mockingbird-review-aaron-sorkin-rafe-spall-gielgud-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -84864,10 +84864,10 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
-      "file": "guardian--arifa-akbar.json",
-      "score": 82,
-      "publishDate": "2022-04-01",
-      "url": "https://www.theguardian.com/stage/2022/mar/31/to-kill-a-mockingbird-review-aaron-sorkin-rafe-spall-gielgud-theatre",
+      "file": "mail-on-sunday--neil-armstrong.json",
+      "score": 97,
+      "publishDate": "2022-04-09",
+      "url": "https://www.dailymail.com/home/event/article-10699737/To-Kill-Mockingbird-review-unforgettable-powerfully-moving-evening.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -85157,7 +85157,7 @@
     {
       "showId": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019",
       "file": "guardian--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/aug/09/total-immediate-collective-imminent-terrestrial-salvation-review-edinburgh",
       "findings": [
@@ -86785,10 +86785,10 @@
     },
     {
       "showId": "woman-in-mind-west-end-2025",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 78,
-      "publishDate": "2026-01-11",
-      "url": null,
+      "file": "london-box-office--stuart-king.json",
+      "score": 80,
+      "publishDate": "2026-01-07",
+      "url": "https://www.londonboxoffice.co.uk/news/post/woman-in-mind-duke-of-yorks-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -86799,10 +86799,10 @@
     },
     {
       "showId": "woman-in-mind-west-end-2025",
-      "file": "london-box-office--stuart-king.json",
-      "score": 80,
-      "publishDate": "2026-01-07",
-      "url": "https://www.londonboxoffice.co.uk/news/post/woman-in-mind-duke-of-yorks-theatre-review",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 78,
+      "publishDate": "2026-01-11",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
