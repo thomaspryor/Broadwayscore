@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T07:46:52.263Z",
+  "generatedAt": "2026-10-14T08:12:26.387Z",
   "totalScanned": 56513,
   "totalExcluded": 27080,
   "ruleCounts": {
@@ -39,14 +39,8 @@
     "personalRepost": 1,
     "suspectedMisattribution": 1
   },
-  "ruleDeltas": {
-    "wrongShow": -17,
-    "unverifiableWebSearchRow": -1,
-    "nonReview": -1,
-    "crossOutletDuplicate": 1,
-    "rejectedAt": 1
-  },
-  "previousGeneratedAt": "2026-10-14T07:34:34.647Z",
+  "ruleDeltas": {},
+  "previousGeneratedAt": "2026-10-14T07:46:52.263Z",
   "mirror": {
     "comparedShows": 2515,
     "comparedFiles": 55979,
@@ -68,7 +62,7 @@
       "rejectionReason": 1
     },
     "rebuildOnlyByReason": {
-      "skippedDuplicateText": 246,
+      "skippedDuplicateText": 245,
       "skippedUnknownCriticDedup": 231,
       "skippedNoScore": 93,
       "skippedCrossMarket": 78,
@@ -86,9 +80,9 @@
       "heldPreOpeningCorroboration": 3,
       "skippedDuplicateTextInheritedFlag": 3,
       "skippedWithinShowDupe": 3,
+      "skippedCrossOutletFingerprintDedup": 2,
       "skippedUrlPathCrossMarket": 2,
       "skippedCircularDuplicateTiebreak": 1,
-      "skippedCrossOutletFingerprintDedup": 1,
       "skippedDuplicateOfInheritedFlag": 1,
       "skippedFingerprintDedup": 1,
       "skippedMultiCriticOutletDedup": 1,
