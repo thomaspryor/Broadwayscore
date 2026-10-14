@@ -93,4 +93,5 @@ test('never overwrites a real target text, a human verdict or another critic', (
 
 test('markers compare words, ignoring case and punctuation', () => {
   assert.equal(markersMatch("If it's possible, to become a star.", 'If_it_s_possible', 'to_become_a_star').ok, true);
+  assert.equal(markersMatch('Amélie opens the café scene and then the play ends.', 'Amelie_opens_the_cafe', 'and_then_the_play_ends').ok, true);
 });

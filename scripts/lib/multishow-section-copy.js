@@ -20,6 +20,7 @@
  */
 const { buildChild } = require('./multi-show-review-fanout');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { foldDiacritics } = require('./title-match');
 
 // Flags that mean the source is not this critic's review of these shows.
 const SOURCE_BLOCKING = ['wrongAttribution', 'isNonReview', 'duplicateOf', 'wrongShow', 'wrongProduction',
@@ -31,7 +32,7 @@ const MIN_MARKER_WORDS = 4;
 const MAX_REPLACEABLE_TARGET_CHARS = 400;
 
 function normWords(s) {
-  return String(s || '').toLowerCase().replace(/[’'‘]/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+  return foldDiacritics(String(s || '')).toLowerCase().replace(/[’'‘]/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 /** Plan markers arrive with `_` for spaces (run-script args split on spaces). */
