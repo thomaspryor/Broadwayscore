@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5321-f",
   "planId": "e901731a-42a7-47b7-b25a-3d1274315933",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T05:49:51.507Z",
   "submitter": {
     "name": null,
@@ -72,5 +72,43 @@
         "description": "BRO-5321: the page carrying this text credits Joe Dziemianowicz (https://nypost.com/2019/01/25/paul-dano-fails-to-rival-ethan-hawke-in-soft-true-west-revival/)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T06:46:28.574Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/ew--kathryn-vandervalk.json duplicateOf: null -> \"ew--kathryn-vanarendonk.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/ew--kathryn-vanarendonk.json criticName: \"Kathryn VanArendonk\" -> \"Kathryn Vandervalk\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--chris-jones.json criticName: \"Chris Jones\" -> \"Joe Dziemianowicz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json wrongAttributionReason: null -> \"BRO-5321: same text as nydailynews--chris-jones.json, which holds Joe Dziemianowicz's review at https://www.nydailynews.com/2013/11/24/no-mans-land-and-waiting-for-godot-theater-review/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/telegraph--benji-wilson.json criticName: \"Benji Wilson\" -> \"Dominic Cavendish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "true-west-2019/nypost--paul-dziemianowicz.json criticName: \"Paul Dziemianowicz\" -> \"Joe Dziemianowicz\""
+    }
+  ]
 }
