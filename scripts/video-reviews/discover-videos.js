@@ -52,7 +52,14 @@ function scanCreator(creator, limit) {
 
   {
     const cmd = `yt-dlp --flat-playlist --print "%(id)s\t%(title)s\t%(upload_date)s\t%(duration_string)s\t%(view_count)s" "${url}" --playlist-items 1-${limit} --sleep-interval 1 2>&1`;
-    const listing = runWithRetries(() => execSync(cmd, { encoding: 'utf8', timeout: 300000 }), {
+    const listing = runWithRetries(() => {
+      const out = execSync(cmd, { encoding: 'utf8', timeout: 300000 });
+      // An empty listing that exits 0 would overwrite the creator's good discovery file with 0 videos.
+      if (!out.split('\n').some(l => !/WARNING|ERROR|Downloading|Extracting/.test(l) && l.includes('\t'))) {
+        throw new Error('ERROR: yt-dlp returned no videos');
+      }
+      return out;
+    }, {
       pause: (n) => {
         console.log(`  listing attempt ${n} failed, retrying in ${n * 30}s...`);
         execSync(`sleep ${n * 30}`);
