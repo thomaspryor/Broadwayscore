@@ -746,7 +746,6 @@ function isVisitorFacingRow(row) {
   return !!(row && row.fromHealth) && startNowHealthRowReason(row) === null;
 }
 
-
 // Detached headless dispatch — byte-for-byte the backlog drain's pattern
 // (stdio to a log file so a refusal is debuggable, unref so the digest exits).
 // `model`, when set, escalates the dispatch past bsc-next's own resolution

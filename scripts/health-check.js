@@ -3505,7 +3505,7 @@ function checkDeployFreshness() {
 // counted cards that were long closed in Linear or never migrated. Linear
 // covers both states itself: linear-reclaim-abandoned.js hands idle In
 // Progress cards back hourly, and a paused report moves a card to Backlog
-// (linear-drain-parked.js). The last snapshot is in
+// (linear-session-reporting.js). The last snapshot is in
 // docs/notion-linear-residue-sweep.md.
 
 // --- Category J: API Credits ---

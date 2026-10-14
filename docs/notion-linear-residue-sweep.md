@@ -107,7 +107,7 @@ BRO-4717, BRO-3488, BRO-4718 and BRO-5072 were already Done on main.
 
 | Finding | What it did | Fix |
 |---|---|---|
-| `health-check.js` `checkStuckWork` | Daily digest read the frozen Notion board: 53 "stuck" cards on 2026-10-14, 48 with no exact Linear twin, most `BRO-N:` ones already Done/Canceled in Linear | Rows retired; `scripts/lib/stuck-work*.js` deleted. Linear covers both states: `linear-reclaim-abandoned.js` (hourly) and paused → Backlog (`linear-drain-parked.js`). Snapshot below |
+| `health-check.js` `checkStuckWork` | Daily digest read the frozen Notion board: 53 "stuck" cards on 2026-10-14, 48 with no exact Linear twin, most `BRO-N:` ones already Done/Canceled in Linear | Rows retired; `scripts/lib/stuck-work*.js` deleted. Linear covers both states: `linear-reclaim-abandoned.js` (hourly) and a paused report moves the card to Backlog (`lib/linear-session-reporting.js`). Snapshot below |
 | `generate-remediation-plan.js` `escalatePlanRefusal` | After filing in Linear, ran `notion-tasks-sync.js pull` in CI | Removed |
 | `lib/digest-autofix.js` `syncTasks` | Dead export that shelled `notion-tasks-sync.js pull` | Removed |
 | `cloud-bootstrap-data.sh` `ensure_notion_client` | Every cloud session npm-installed `@notionhq/client` | Removed |

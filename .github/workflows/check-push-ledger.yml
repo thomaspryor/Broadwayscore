@@ -55,7 +55,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          # routeAlert(disposition:'auto') — files a Notion Action Queue card
+          # routeAlert(disposition:'auto') — files a Linear issue
           # for any reverted push (see scripts/lib/owner-alert-router.js).
         run: node scripts/check-push-ledger.js
 

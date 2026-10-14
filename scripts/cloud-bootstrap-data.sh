@@ -12,9 +12,6 @@
 #   3. Neither                 -> synthesize a buildable STUB from the committed
 #                                 public/data/mobile-shows.json (cloud-stub-data.js)
 #
-# It also installs @notionhq/client on demand so notion-brain.js works when
-# NOTION_API_KEY is set (the module is not in the committed node_modules).
-#
 # Safe to run repeatedly and from any environment: it never overwrites tracked
 # files (the stub generator guards on `git ls-files`) and fast-exits when data
 # is already there. Always exits 0 so it can be wired into a SessionStart hook
