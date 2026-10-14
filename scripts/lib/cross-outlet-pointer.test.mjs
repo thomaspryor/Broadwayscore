@@ -33,3 +33,10 @@ test('an unflagged row is never skipped', () => {
   assert.equal(skipAsAlreadyFlagged({ outletId: 'variety' }, 'variety--x.json', read), false);
   assert.equal(crossOutletPointer({ outletId: 'variety' }, 'variety--x.json', read), null);
 });
+
+test('detect-cross-outlet-duplicates: a pointer row never becomes the Layer 1 primary', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../detect-cross-outlet-duplicates.js', import.meta.url), 'utf8');
+  // The primary is picked from rows without a cross-outlet pointer.
+  assert.match(src, /const plain = group\.filter\(r => !r\.pointerAcross\);\s*const primary = plain\[0\];/);
+});

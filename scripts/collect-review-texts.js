@@ -4871,7 +4871,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       const primary = JSON.parse(fs.readFileSync(path.join(CONFIG.reviewTextsDir, data.crossOutletPrimaryFile), 'utf8'));
       primaryFingerprint = primary.fullText ? computeContentFingerprint(primary.fullText) : null;
     } catch { /* unreadable primary: keep the flag */ }
-    if (staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplicate: true, newFingerprint: computeContentFingerprint(cleanedText), primaryFingerprint })) {
+    if (staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplicate: true, crossOutletMethod: data.crossOutletMethod, newFingerprint: computeContentFingerprint(cleanedText), primaryFingerprint })) {
       const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
       console.log(`    → Cleared crossOutletDuplicate: forced refetch text no longer matches ${data.crossOutletPrimaryFile} (BRO-5348)`);
       clearCrossOutletFields(data, `forced refetch from own url replaced the text; no longer matches ${data.crossOutletPrimaryFile} (BRO-5348)`);

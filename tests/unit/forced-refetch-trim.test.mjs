@@ -74,10 +74,11 @@ test('skipCrossOutletSelfDemote: real registry says variety.com is Variety', () 
 // crossOutletDuplicate flag set while it held another outlet's text.
 test('staleCrossOutletFlagAfterRefetch: cleared only when the refetched text no longer matches the primary', () => {
   const { staleCrossOutletFlagAfterRefetch } = require('../../scripts/lib/review-filter.js');
-  const base = { forcedReplacement: true, crossOutletDuplicate: true, newFingerprint: 'aaa', primaryFingerprint: 'bbb' };
+  const base = { forcedReplacement: true, crossOutletDuplicate: true, crossOutletMethod: 'fingerprint', newFingerprint: 'aaa', primaryFingerprint: 'bbb' };
   assert.equal(staleCrossOutletFlagAfterRefetch(base), true);
   assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, primaryFingerprint: 'aaa' }), false, 'still the same text');
   assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, forcedReplacement: false }), false, 'routine fetch leaves the flag');
   assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, primaryFingerprint: null }), false, 'unreadable primary keeps the flag');
   assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletDuplicate: false }), false);
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletMethod: 'similarity' }), false, 'a similarity flag differs by fingerprint already');
 });

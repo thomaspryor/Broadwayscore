@@ -260,14 +260,17 @@ async function main() {
 
       // Choose primary: higher tier, more text, then alphabetical
       group.sort((a, b) => getTier(a.outletId) - getTier(b.outletId) || b.text.length - a.text.length);
-      const primary = group[0];
+      // Rows pointing at another outlet's file are reported, never a primary or
+      // a flagged copy (BRO-5348); the rest still dedupe among themselves.
+      for (const p of group.filter(r => r.pointerAcross)) {
+        const other = group.find(r => r !== p && r.outletId !== p.outletId) || group.find(r => r !== p);
+        pointerPairs.push({ showId, method: 'fingerprint', files: [p.file, other.file], outlets: [p.outlet, other.outlet], critics: [p.criticName, other.criticName] });
+      }
+      const plain = group.filter(r => !r.pointerAcross);
+      const primary = plain[0];
 
-      for (let i = 1; i < group.length; i++) {
-        const secondary = group[i];
-        if (primary.pointerAcross || secondary.pointerAcross) {
-          pointerPairs.push({ showId, method: 'fingerprint', files: [primary.file, secondary.file], outlets: [primary.outlet, secondary.outlet], critics: [primary.criticName, secondary.criticName] });
-          continue;
-        }
+      for (let i = 1; i < plain.length; i++) {
+        const secondary = plain[i];
         duplicates.push({
           showId,
           method: 'fingerprint',
