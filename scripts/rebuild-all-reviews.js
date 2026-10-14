@@ -109,6 +109,7 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./lib/run-contamination');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
+const { resolveBackfillPublishDate } = require('./lib/backfill-publish-date');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -5257,8 +5258,13 @@ showDirs.forEach(showId => {
         // BRO-3366: a winner with no URL inherits its duplicateOf loser's URL.
         url: data.url || inheritUrlFromDuplicateLosers(file, data, allJsonFiles, _loadDupCycleSibling) || null,
         publishDate: normalizePublishDate(data.publishDate) || (() => {
-          // Backfill: extract date from URL when source file has no publishDate
-          const urlDate = extractDateFromUrl(data.url);
+          // Backfill when source file has no publishDate; text dateline beats URL digits (BRO-4252)
+          const backfill = resolveBackfillPublishDate(data);
+          const urlDate = backfill && backfill.source === 'text-dateline' ? null : backfill;
+          if (backfill && !urlDate) {
+            stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
+            return backfill.date;
+          }
           if (urlDate && urlDate.date) {
             stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
             // Validate: if extracted date year is before show opens, log warning
