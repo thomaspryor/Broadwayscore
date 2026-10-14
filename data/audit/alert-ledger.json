@@ -3265,13 +3265,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-14T01:40:58.324Z",
+      "lastSeen": "2026-10-14T02:44:59.810Z",
       "lastNotifiedAt": "2026-10-13T15:32:14.535Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.818Z",
       "notifyCount": 24,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3279,13 +3279,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-14T01:40:58.340Z",
+      "lastSeen": "2026-10-14T02:44:59.827Z",
       "lastNotifiedAt": "2026-10-13T15:32:14.552Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.835Z",
       "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3958,12 +3958,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-14T01:40:58.305Z",
+      "lastSeen": "2026-10-14T02:44:59.794Z",
       "lastNotifiedAt": "2026-10-14T01:40:58.305Z",
       "lastSurfacedAt": "2026-10-14T01:40:58.305Z",
       "notifyCount": 22,
       "cardId": null,
-      "linearIdentifier": "BRO-4795"
+      "linearIdentifier": "BRO-4795",
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4360,13 +4361,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-09T12:26:41.876Z",
-      "lastSeen": "2026-10-14T01:40:58.294Z",
+      "lastSeen": "2026-10-14T02:44:59.782Z",
       "lastNotifiedAt": "2026-10-13T15:32:14.505Z",
       "lastSurfacedAt": "2026-10-09T12:26:41.876Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": "BRO-4932",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5954,13 +5955,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-07T01:51:51.676Z",
-      "lastSeen": "2026-10-14T01:40:56.092Z",
+      "lastSeen": "2026-10-14T02:44:59.743Z",
       "lastNotifiedAt": "2026-10-13T15:32:14.475Z",
       "lastSurfacedAt": "2026-10-13T15:32:14.475Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -6019,12 +6020,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-14T01:40:56.113Z",
+      "lastSeen": "2026-10-14T02:44:59.765Z",
       "lastNotifiedAt": "2026-10-14T01:40:56.113Z",
       "lastSurfacedAt": "2026-10-14T01:40:56.113Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-5314"
+      "linearIdentifier": "BRO-5314",
+      "silentRefires": 1
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9277,7 +9279,7 @@
       "linearIdentifier": null
     },
     "corpus-drift:outlet-identity-hygiene": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
@@ -9287,7 +9289,8 @@
       "lastSurfacedAt": "2026-10-14T01:40:58.315Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-14T02:44:59.802Z"
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -15160,13 +15163,13 @@
       "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
       "firstSeen": "2026-10-13T03:27:49.763Z",
       "incidentOpenedAt": "2026-10-13T18:12:08.276Z",
-      "lastSeen": "2026-10-14T01:40:58.357Z",
+      "lastSeen": "2026-10-14T02:44:59.843Z",
       "lastNotifiedAt": "2026-10-13T18:12:08.276Z",
       "lastSurfacedAt": "2026-10-13T18:12:08.276Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "review-gap:opening-window:red-riding-hood-off-broadway-2026": {
       "status": "open",
@@ -16024,13 +16027,13 @@
       "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
       "firstSeen": "2026-10-13T19:33:47.105Z",
       "incidentOpenedAt": "2026-10-13T19:33:47.105Z",
-      "lastSeen": "2026-10-14T01:40:56.102Z",
+      "lastSeen": "2026-10-14T02:44:59.754Z",
       "lastNotifiedAt": "2026-10-13T19:33:47.105Z",
       "lastSurfacedAt": "2026-10-13T19:33:47.105Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5288-dtli-ingest-guards": {
       "status": "resolved",
