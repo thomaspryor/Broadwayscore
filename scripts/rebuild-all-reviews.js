@@ -1604,7 +1604,7 @@ const crossShowFingerprints = new Map();
         // LLM-guessed dates never sole basis for a stamp (BRO-4473)
         let reviewDate = parseDate(guardPublishDate(d, showRecord).publishDate);
         if (!reviewDate && d.url) {
-          const urlDate = extractDateFromUrl(d.url);
+          const urlDate = resolveBackfillPublishDate(d);
           if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
             const parsed = parseDate(urlDate.date);
             if (parsed && !isNaN(parsed.getTime())) reviewDate = parsed;
@@ -5258,13 +5258,9 @@ showDirs.forEach(showId => {
         // BRO-3366: a winner with no URL inherits its duplicateOf loser's URL.
         url: data.url || inheritUrlFromDuplicateLosers(file, data, allJsonFiles, _loadDupCycleSibling) || null,
         publishDate: normalizePublishDate(data.publishDate) || (() => {
-          // Backfill when source file has no publishDate; text dateline beats URL digits (BRO-4252)
-          const backfill = resolveBackfillPublishDate(data);
-          const urlDate = backfill && backfill.source === 'text-dateline' ? null : backfill;
-          if (backfill && !urlDate) {
-            stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
-            return backfill.date;
-          }
+          // Backfill when source file has no publishDate (BRO-4252: article-id URL digits lose to a later text date)
+          const urlDate = resolveBackfillPublishDate(data);
+          if (urlDate && urlDate.source === 'text-over-url-compact') stats.textDateBackfills = (stats.textDateBackfills || 0) + 1;
           if (urlDate && urlDate.date) {
             stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
             // Validate: if extracted date year is before show opens, log warning
