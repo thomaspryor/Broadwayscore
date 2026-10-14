@@ -4265,7 +4265,17 @@ function isUnverifiableWebSearchRow(data, opts) {
   // step wrote itself: 0 of 34 reachable review pages contained the excerpt
   // ("Despite handsome design elements...", a TheaterMania review credited to
   // David Rooney). SERP-sourced url rows keep the old rule.
-  if (data.url && !isLegacyWebSearchOnly(data)) return false;
+  if (data.url && !isLegacyWebSearchOnly(data)) {
+    // BRO-5220: but a SERP url row that never saw its page also counts without
+    // proof. Under 300 chars of text and no star rating read from the page (an
+    // originalScore with its extractor source) means any score came from the
+    // search snippet (live 2026-10-14: mj-2022 broadwaynews, excerpt-scored 43).
+    // It stays out until the page is fetched; Stage/Telegraph star rows keep
+    // their score, and human scores keep the row.
+    if (data.humanReviewScore || data.adjudicatedScore) return false;
+    if (data.originalScore && data.originalScoreSource) return false;
+    return String(data.fullText || '').trim().length < 300;
+  }
   // That step also copied its one-sentence summary into fullText (175 live rows
   // of 50-299 chars, all "X is a show that knows exactly what it wants..."), so
   // a url row needs a real page's worth of text to count as checkable.

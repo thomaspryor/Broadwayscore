@@ -143,3 +143,15 @@ test('whenever the scorer takes a legacy row, it reads only the page (BRO-5222)'
     assert.ok(!best.text.includes(require('../../scripts/lib/text-quality.js').EXCERPT_APPENDIX_MARKER));
   }
 });
+
+// BRO-5220: a SERP url row with no page text and no page-read star rating was scored from the snippet.
+test('SERP url row under 300 chars with no page-read rating stays out until its page is fetched', () => {
+  const serp = { showId: 'mj-2022', outletId: 'broadwaynews', source: 'serp-discovery', sources: ['serp-discovery'],
+    url: 'https://www.broadwaynews.com/x', fullText: '', assignedScore: 43, llmMetadata: { textSource: { type: 'excerpt' } } };
+  assert.equal(isUnverifiableWebSearchRow(serp), true, 'excerpt-scored, no page');
+  assert.equal(isUnverifiableWebSearchRow({ ...serp, originalScore: '3/5 stars', originalScoreSource: 'stage-star-svg' }), false, 'real star rating read from the page');
+  assert.equal(isUnverifiableWebSearchRow({ ...serp, originalScore: '3/5 stars' }), true, 'bare originalScore has no extractor');
+  assert.equal(isUnverifiableWebSearchRow({ ...serp, humanReviewScore: 60 }), false, 'human score');
+  assert.equal(isUnverifiableWebSearchRow({ ...serp, fullText: 'p '.repeat(600) }), false, 'real page text keeps the row');
+  assert.equal(isUnverifiableWebSearchRow({ ...serp, sources: ['serp-discovery', 'dtli'] }), false, 'aggregator-backed row');
+});
