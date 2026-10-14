@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-10-14T14:50:00.724Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5137: split The Sunday Times (sunday-times, splitFrom times-uk) out of times-uk"
+    "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
   "outlets": {
     "westendtheatre": {
@@ -8126,8 +8126,7 @@
         "dailymail",
         "the daily mail",
         "the-daily-mail",
-        "mail",
-        "mail-on-sunday"
+        "mail"
       ],
       "domain": "dailymail.co.uk",
       "domainAliases": [
@@ -8136,6 +8135,35 @@
       ],
       "accessModel": "free",
       "starScale": 5
+    },
+    "mail-on-sunday": {
+      "displayName": "The Mail on Sunday",
+      "tier": 1,
+      "isDualMarket": true,
+      "aliases": [
+        "mail-on-sunday",
+        "mailonsunday",
+        "mail on sunday",
+        "the mail on sunday",
+        "the-mail-on-sunday",
+        "themailonsunday",
+        "The Mail on Sunday"
+      ],
+      "domain": "dailymail.co.uk",
+      "domainAliases": [
+        "dailymail.com",
+        "mailplus.co.uk"
+      ],
+      "region": "london",
+      "accessModel": "free",
+      "starScale": 5,
+      "splitFrom": "daily-mail",
+      "splitCritics": [
+        "Robert Gore-Langton",
+        "Mark Cook",
+        "Neil Armstrong"
+      ],
+      "splitNote": "BRO-5373 (parent decision per the BRO-5137 owner decision 2026-10-13: a Sunday edition is its own critic vote): The Mail on Sunday counts as its own critic vote, separate from the Daily Mail. Both publish on dailymail.co.uk, so the url never names the paper (daily-mail keeps the domain; edition pair). A daily-mail file moves here when its stored outlet label names the Mail on Sunday, or when the label is only the generic display name and the critic is in splitCritics: critics whose daily-mail rows in the 2026-10-13 reviews.json were Sunday-dated print pieces (Gore-Langton 118 of 136 Sunday, Mark Cook 10 of 10, Neil Armstrong 6 of 7). Georgina Brown is left at daily-mail: her linked pieces are dailymail.co.uk tvshowbiz articles and 16 of 21 rows are Friday-dated."
     },
     "afterelton": {
       "displayName": "AfterElton",

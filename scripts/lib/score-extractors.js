@@ -1392,6 +1392,7 @@ const OUTLET_EXTRACTORS = {
   'financial-times-uk': extractUKStarRating,
   'financialtimes': extractUKStarRating,
   'daily-mail': extractUKStarRating,
+  'mail-on-sunday': extractUKStarRating, // BRO-5373 split
   'dailymail': extractUKStarRating,
   'the-arts-desk': extractUKStarRating,
   'artsdesk': extractUKStarRating,
@@ -1793,7 +1794,7 @@ const KNOWN_STAR_OUTLETS = new Set([
   'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'sunday-times', 'standard',
   // NOTE: nysr (New York Stage Review) publishes unicode stars ★★★☆☆ at start of each review.
   'nysr',
-  'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
+  'independent', 'i-paper', 'financialtimes', 'daily-mail', 'mail-on-sunday', 'the-express',
   'artsdesk', 'thestage', 'whatsonstage',
   // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
   // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet

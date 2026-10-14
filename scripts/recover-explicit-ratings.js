@@ -133,6 +133,7 @@ const RATED_OUTLETS = new Map([
   ['financial-times-uk', { format: 'stars/5', api: null }],
   ['financialtimes', { format: 'stars/5', api: null }],
   ['daily-mail', { format: 'stars/5', api: null }],
+  ['mail-on-sunday', { format: 'stars/5', api: null }],
   ['dailymail', { format: 'stars/5', api: null }],
   ['the-arts-desk', { format: 'stars/5', api: null }],
   ['artsdesk', { format: 'stars/5', api: null }],

@@ -17,6 +17,7 @@ const EDITION_PAIRS = [
   ['telegraph', 'sunday-telegraph'],   // telegraph.co.uk
   ['express-uk', 'sunday-express'],    // express.co.uk
   ['times-uk', 'sunday-times'],        // thetimes.co.uk / thetimes.com (BRO-5137)
+  ['daily-mail', 'mail-on-sunday'],    // dailymail.co.uk / dailymail.com / mailplus.co.uk (BRO-5373)
   ['timeout', 'timeout-london'],       // timeout.com (path-split /london)
 ];
 

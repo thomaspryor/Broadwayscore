@@ -25,7 +25,7 @@ export const METHODOLOGY_TIER_OUTLETS: Record<MethodologyMarket, Record<1 | 2, r
   },
   london: {
     1: ['guardian', 'times-uk', 'sunday-times', 'telegraph', 'standard', 'financialtimes', 'thestage', 'timeout-london',
-      'independent', 'observer', 'daily-mail', 'i-paper'],
+      'independent', 'observer', 'daily-mail', 'mail-on-sunday', 'i-paper'],
     2: ['whatsonstage', 'london-theatre', 'thereviewshub', 'artsdesk', 'british-theatre', 'britishtheatrecom', 'the-spectator-uk',
       'london-box-office', 'broadwayworld', 'nytimes'],
   },

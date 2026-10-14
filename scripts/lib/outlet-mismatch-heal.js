@@ -63,6 +63,7 @@ const CROSS_PUBLICATION_ALLOW = {
   observer: ['guardian'],            // Observer reviews live on theguardian.com
   'the-sun': ['times-uk'],           // News UK sister titles
   'sunday-times': ['times-uk'],
+  'mail-on-sunday': ['daily-mail'],
   'slash-film': ['film-festival-traveler'], // same critic, both sites
   'film-festival-traveler': ['slash-film'],
   'sunday-telegraph': ['telegraph'],
@@ -184,6 +185,10 @@ function isGenericLabel(label, parentId) {
   if (!label) return true;
   if (normalizeOutlet(label) !== parentId) return false;
   const display = getOutletDisplayName(parentId) || '';
+  // Our writers stamp the display name verbatim. When it has no qualifier it
+  // IS the bare masthead ("Daily Mail", BRO-5373), so the exact stamp says
+  // nothing about the edition; other spellings of the masthead still do.
+  if (label === display) return true;
   const masthead = compactId(display.replace(/\([^)]*\)\s*$/, ''));
   const bare = [masthead, masthead.replace(/^the/, '')].filter(Boolean);
   return !bare.includes(compactId(label));
