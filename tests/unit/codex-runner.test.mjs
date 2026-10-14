@@ -476,8 +476,9 @@ test('comment reads keep the newest page: shared query uses first:, nothing quer
   assert.match(q, /comments\(first: 50, orderBy: createdAt\)/);
   assert.doesNotMatch(q, /\blast:/);
   // Built from parts so this file does not match itself.
-  const pattern = 'comments\\(' + '[^)]*\\blast:\\s*[0-9]';
-  const g = spawnSync('git', ['grep', '-nE', pattern, '--', '*.js', '*.mjs', '*.cjs', '*.ts', '*.md', '*.sh', '*.yml'], { cwd: ROOT, encoding: 'utf8' });
+  // cloud-memory/ is the Mac's synced mirror (quotes, not code a session runs).
+  const pattern = 'comments\\(' + '[^)]*\\blast:\\s*[0-9$]';
+  const g = spawnSync('git', ['grep', '-nE', pattern, '--', '*.js', '*.mjs', '*.cjs', '*.ts', '*.tsx', '*.md', '*.sh', '*.yml', ':!cloud-memory/'], { cwd: ROOT, encoding: 'utf8' });
   if (g.status !== 0 && g.status !== 1) { t.skip(`git grep unavailable: ${(g.stderr || g.error || '').toString().slice(0, 200)}`); return; }
   assert.equal(g.stdout.trim(), '', `Linear comment reads with last: return the OLDEST comments; use first: (newest first) or listIssueComments:\n${g.stdout}`);
 });

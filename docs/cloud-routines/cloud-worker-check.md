@@ -46,8 +46,10 @@ health row uses ("Codex runner: landing cards"):
 
     node -e "const L=require('./scripts/lib/linear-client.js'),R=require('./scripts/lib/codex-runner.js');L.listIssueComments(['BRO-4745']).then(m=>{const c=m.get('BRO-4745')||[];console.log(JSON.stringify(R.runnerHealth(c,Date.now())));for(const n of c.filter(x=>x.body.startsWith('## Codex runner 2')).slice(0,6))console.log(n.createdAt,'|',(n.body.match(/Landed and Done: (.*)/)||[])[1],'| crashed:',(n.body.match(/Runner error mid-card \(back to Todo\): (.*)/)||[])[1]);})"
 
-Unhealthy if `status` is `error` (no summary in 24h, a run stopped on its lock,
-or nothing landed in 24h); name the crashed cards from the lines below it. Never
+Unhealthy if `status` is `error`. Quote its `message` in the finding as is: it
+says which failure it is (no summary in 24h, a run stopped on its lock, or
+nothing landed in 24h), and a lock stop while cards still land is not "lands
+nothing". Name any crashed cards from the six newest runs printed below it. Never
 query the comments with a raw GraphQL `last:` page: Linear's comment pages are
 newest first, so `last: N` returns the OLDEST N, and past 50 comments on BRO-4745
 that would freeze this check on old summaries (BRO-5287). If an open
