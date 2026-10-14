@@ -255,6 +255,19 @@
     "queuedAt": "2026-10-14T09:47:59.000Z"
   },
   {
+    "conditionKey": "express-retry-still-thin:the-ask-off-broadway-2026",
+    "title": "Opening Night Express retry still found thin review coverage for the-ask-off-broadway-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T11:09:14.986Z"
+  },
+  {
     "conditionKey": "land:land/bro-5254-review",
     "title": "Landing blocked: rebase red on land/bro-5254-review",
     "description": "land.yml did not land land/bro-5254-review: the rebase gate went red at bab80c2de4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5254-review @ bab80c2de4 (origin/land/bro-5254-review) → origin/main @ 5ed7ed92e4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ cb67576eae: Rebasing (1/1) error: could not apply bab80c2de44... fix(bro-5254): review follow-ups on the cross-outlet 1C guard hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", the Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38547643517",
