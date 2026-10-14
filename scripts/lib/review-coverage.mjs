@@ -19,9 +19,22 @@
 //
 // One implementation for both enforcement points:
 //   - land gate:   land-preflight.mjs runHook -> landGateDecision (blocks a land/* push)
-//   - Stop hook:   .claude/hooks/stop-review-coverage.sh -> `--stop-hook` (SAFE TO EXIT after a
-//                  ship-check whose reviewers never ran is refused). Its own repo-only hook, not
-//                  verify-edits.sh, which is a copy of a Mac master (cloud-parity.json).
+//   - Stop hook:   .claude/hooks/lib/stop-review-coverage.sh runs `--stop-hook` (a final 'SAFE TO EXIT'
+//                  after a hollow ship-check is refused). Deliberately not verify-edits.sh, which is a
+//                  copy of a Mac master (cloud-parity.json), and in hooks/lib so the top-level hook-file
+//                  ceiling (V1-V3-dispatch-status.test.mjs) is untouched.
+//
+// Rules (cloud only, CLAUDE_CODE_REMOTE=true):
+//   land gate  - a `git push ... land/*` over 30 gated lines needs complete ship-check coverage, plus
+//                `npm run build` when the diff touches src/. Bypass: `# NO-SHIP-CHECK: <15+ chars>` inside
+//                the push command. Kill switches: SHIP_CHECK_LAND_GATE_DISABLE=1; LAND_PREFLIGHT_DISABLE=1
+//                turns off the whole land hook. Events are logged to .claude/land-preflight.jsonl.
+//   Stop hook  - for a session with a /ship-check run: reviewers ran; /did-it-work printed its TESTED
+//                block; /what-else printed 5 ordered LENSES lines and read the roadmap (issue 1 of
+//                broadway-scorecard-data); the Linear Done close-out came after the last land push.
+//                Bypass lines in the closing message: NO-SHIP-CHECK / NO-DID-IT-WORK / NO-WHAT-ELSE /
+//                NO-WRAP-UP: <reason, 10+ chars>, each waiving only its own check. Kill switch
+//                SHIP_CHECK_COVERAGE_DISABLE=1. Blocks at most 3 times per session.
 // and it produces the evidence BRO-4277 wanted (`--record`), so a pass verdict is only
 // written when coverage is complete.
 //
