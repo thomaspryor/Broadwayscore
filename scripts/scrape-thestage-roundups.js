@@ -47,7 +47,7 @@ const EXTRACT_ONLY = process.argv.includes('--extract-only');
 const showsArg = process.argv.find(a => a.startsWith('--shows='));
 const TARGET_SHOWS = showsArg ? showsArg.split('=')[1].split(',') : null;
 
-const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, filesSkipped: 0, errors: 0 };
+const stats = { pagesChecked: 0, cached: 0, reviewsExtracted: 0, filesCreated: 0, filesUpdated: 0, filesSkipped: 0, errors: 0 };
 
 // ─── Browser Setup ───────────────────────────────────────────────────────────
 
@@ -215,6 +215,7 @@ async function scrapeRoundups(page, urls, weShows) {
     if (!FORCE && fs.existsSync(archivePath)) {
       console.log(`  [CACHED] ${match.show.title}`);
       matched.push({ showId, show: match.show, archivePath });
+      stats.cached++;
       continue;
     }
 
@@ -383,21 +384,37 @@ async function main() {
   }
 
   console.log('\n=== Summary ===');
-  console.log(`  Pages checked: ${stats.pagesChecked}`);
+  console.log(`  Pages checked: ${stats.pagesChecked} (cached: ${stats.cached})`);
   console.log(`  Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`  Files created: ${stats.filesCreated}`);
   console.log(`  Files updated: ${stats.filesUpdated}`);
   console.log(`  Files skipped (guard-rejected): ${stats.filesSkipped}`);
   console.log(`  Errors: ${stats.errors}`);
 
-  // Zero-data guard: if no pages were checked, the scraper couldn't reach The Stage
-  if (stats.pagesChecked === 0 && !TARGET_SHOWS) {
-    console.error('❌ ZERO pages checked from The Stage — likely blocked or site change. Failing.');
+  const zeroData = zeroDataFailure({
+    pagesChecked: stats.pagesChecked, cached: stats.cached, reviewsExtracted: stats.reviewsExtracted,
+    targetShows: TARGET_SHOWS, extractOnly: EXTRACT_ONLY,
+  });
+  if (zeroData) {
+    console.error(`❌ ${zeroData} Failing.`);
     process.exit(1);
   }
 }
 
-module.exports = { extractReviews, writeReviewFiles };
+// Zero-data guard (BRO-5288). A full run that neither fetched nor found a
+// cached roundup could not reach The Stage; cached roundups prove discovery
+// worked. --extract-only never fetches, so there the signal is whether any
+// review came out of the archives. Targeted runs are exempt.
+// Returns the failure message, or null.
+function zeroDataFailure({ pagesChecked, cached, reviewsExtracted, targetShows, extractOnly }) {
+  if (targetShows) return null;
+  if (extractOnly) {
+    return reviewsExtracted === 0 ? 'ZERO reviews extracted from the archived roundups (archive missing or template drift).' : null;
+  }
+  return pagesChecked + cached === 0 ? 'ZERO roundup pages fetched or found cached from The Stage (likely blocked or site change).' : null;
+}
+
+module.exports = { extractReviews, writeReviewFiles, zeroDataFailure };
 
 if (require.main === module) {
   main().catch(err => {
