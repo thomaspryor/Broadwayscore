@@ -54,6 +54,7 @@
 
 const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild, isRoundupPageAsReview } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
+const { hasApprovedFlag } = require('./approved-fix-flag');
 const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
 const { getBestScore } = require('./rebuild-helpers');
 
@@ -193,6 +194,14 @@ function detectCvFlagContradiction(file) {
 
   const cv = file.contentVerification;
   if (!cv || cv.isValid !== true || cv.confidence !== 'high') return null;
+  // BRO-2356: a 'heuristic' CV (content-verifier heuristicVerify, the
+  // provider-outage fallback) checks length, title and junk only and HARDCODES
+  // wrongProduction:false ("Heuristics can't reliably detect this"), so it
+  // cannot contradict any exclusion flag (reverify-era-venue-wrongprod.js
+  // refuses to clear on it for the same reason). Seen on a 2008 Variety In the
+  // Heights review and a 2018 blog review of Miles for Mary, both correctly
+  // flagged against their 2026 revivals.
+  if (cv.verifiedBy === 'heuristic') return null;
 
   const wordCount = file.textWordCount ?? file.wordCount ?? 0;
   if (wordCount <= 300) return null;
@@ -212,8 +221,14 @@ function detectCvFlagContradiction(file) {
   // reason says nothing about whether a co-occurring wrongShow flag is also
   // legitimate (ship-check finding, ~0 corpus instances today but not a
   // structural guarantee).
+  //
+  // BRO-2356: a flag an approved-fix plan set is a reviewed ruling, exempt with
+  // the same fall-through. Same test wrong-production-autoclear.js uses to
+  // protect it (hasApprovedFlag). Kramer/Fauci TWI-NY (bro-5239-b).
   const wrongProductionExempt = file.wrongProduction === true
-    && DATE_ONLY_AUTO_REASONS.has(file.wrongProductionReason);
+    && (DATE_ONLY_AUTO_REASONS.has(file.wrongProductionReason)
+      || hasApprovedFlag(file, 'wrongProduction'));
+  const wrongShowExempt = file.wrongShow === true && hasApprovedFlag(file, 'wrongShow');
 
   // Same posture as wrongProductionExempt above, for the roundup flag: when the
   // record IS the roundup page ingested as a review, isRoundupArticle is
@@ -252,7 +267,7 @@ function detectCvFlagContradiction(file) {
     && isRoundupPageAsReview(file);
 
   const flag = (file.wrongProduction === true && !wrongProductionExempt) ? 'wrongProduction'
-    : file.wrongShow === true ? 'wrongShow'
+    : (file.wrongShow === true && !wrongShowExempt) ? 'wrongShow'
     : (file.isRoundupArticle === true && !roundupUrlExempt) ? 'isRoundupArticle'
     : null;
   if (!flag) return null;

@@ -184,3 +184,59 @@ describe('isIncludableForRebuild — stale roundup flag override', () => {
     assert.strictEqual(isIncludableForRebuild(data), false);
   });
 });
+
+// BRO-2356 Signal C: a URL-pattern roundup reason on a file whose url is not a
+// roundup page (a roundup write merged onto an existing single review).
+describe('isLikelyStaleRoundupFlag — Signal C (URL-pattern reason, non-roundup url)', () => {
+  const base = {
+    isRoundupArticle: true,
+    roundupArticleReason: 'auto: URL matches BWW Review-Roundup page pattern',
+    fullText: longReviewText,
+    contentTier: 'complete',
+    url: 'https://www.broadwayworld.com/westend/article/Review-THE-STANDARD-OF-LIVING-Starring-Rory-Kinnear-20260930',
+  };
+
+  test('the-standard-of-living BWW single review: stale', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag(base), true);
+  });
+
+  test('LBO Guard E2 reason on a per-show LBO review url: stale', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base,
+      roundupArticleReason: 'auto: URL matches LBO Review-Round-Up page pattern',
+      url: 'https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review' }), true);
+  });
+
+  test('url still the BWW Review-Roundup page: not stale', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base,
+      url: 'https://www.broadwayworld.com/article/Review-Roundup-THE-PASS-Opens-at-La-MaMa-20260804' }), false);
+  });
+
+  test('url still an LBO Review-Round-Up post: not stale', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base,
+      roundupArticleReason: 'auto: URL matches LBO Review-Round-Up page pattern',
+      url: 'https://www.londonboxoffice.co.uk/news/post/Review-Round-Up%3A-PARANORMAL-ACTIVITY' }), false);
+  });
+
+  test('content-based reason (digest/compilation) never qualifies', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base,
+      roundupArticleReason: 'auto: WET roundup digest: text opens with review-roundup phrasing' }), false);
+  });
+
+  test('text that reads as a pull-quote compilation keeps its flag', () => {
+    // Same prose-compilation shape tests/unit/roundup-digest.test.mjs flags.
+    const compilation = "It's a real scream, and here's a sampling of the reaction. "
+      + 'Entertainment Weekly\'s Emlyn Travis got the shivers, raving that the show is "jam-packed with jaw-dropping illusions." '
+      + 'Variety\'s Frank Rizzo agrees, writing: "The stage version delivers more thrills and chills than Broadway has seen in years." '
+      + 'And Time Out New York\'s Raven Snook pens a four-star rave, adding: "The whole show is a scream." '
+      + 'The production runs through the spring at the theatre. '.repeat(16);
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base, fullText: compilation }), false);
+  });
+
+  test('short fullText (< 800 chars) never qualifies', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base, fullText: 'short' }), false);
+  });
+
+  test('non-complete contentTier never qualifies', () => {
+    assert.strictEqual(isLikelyStaleRoundupFlag({ ...base, contentTier: 'truncated' }), false);
+  });
+});

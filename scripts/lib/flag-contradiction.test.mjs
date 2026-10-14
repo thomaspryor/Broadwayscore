@@ -252,6 +252,69 @@ test('null/undefined data → null (never throws)', () => {
   assert.equal(detectCvFlagContradiction(undefined), null);
 });
 
+// --- BRO-2356: wrongProduction exemptions in detectCvFlagContradiction ---
+test('BRO-2356: heuristic CV cannot contradict wrongProduction (it hardcodes wrongProduction:false)', () => {
+  const f = {
+    wrongProduction: true, wrongProductionReason: 'dateless-revival', textWordCount: 804,
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false, verifiedBy: 'heuristic' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('BRO-2356: heuristic CV cannot contradict a roundup flag either', () => {
+  const f = {
+    isRoundupArticle: true, textWordCount: 900,
+    url: 'https://example.com/a-single-review',
+    contentVerification: { isValid: true, confidence: 'high', verifiedBy: 'heuristic' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('BRO-2356: approved-fix wrongProduction falls through to a co-occurring roundup flag', () => {
+  const f = {
+    wrongProduction: true, isRoundupArticle: true, textWordCount: 900,
+    url: 'https://example.com/a-single-review',
+    approvedFixes: [{ field: 'wrongProduction', newValue: true }],
+    contentVerification: { isValid: true, confidence: 'high', verifiedBy: 'llm:claude-haiku' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('BRO-2356: approved-fix wrongShow is a ruling too', () => {
+  const f = {
+    wrongShow: true, textWordCount: 900,
+    approvedFixes: [{ field: 'wrongShow', newValue: true }],
+    contentVerification: { isValid: true, confidence: 'high', verifiedBy: 'llm:claude-haiku' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('BRO-2356: LLM CV still contradicts an auto wrongProduction flag', () => {
+  const f = {
+    wrongProduction: true, wrongProductionReason: 'dateless-revival', textWordCount: 618,
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false, verifiedBy: 'llm:claude-haiku' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongProduction');
+});
+
+test('BRO-2356: wrongProduction set by an approved-fix plan is a ruling, not a contradiction', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 1588,
+    approvedFixes: [{ fixId: 'x', field: 'wrongProduction', at: '2026-10-13T07:54:13.799Z', newValue: true }],
+    contentVerification: { isValid: true, confidence: 'high', verifiedBy: 'llm:claude-haiku' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('BRO-2356: approved-fix edit of an unrelated field does not exempt wrongProduction', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    approvedFixes: [{ field: 'publishDate', newValue: '2026-10-01' }],
+    contentVerification: { isValid: true, confidence: 'high', verifiedBy: 'llm:claude-haiku' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongProduction');
+});
+
 // BRO-2244: anticipatory ingest gate (wrongProductionReason:
 // 'anticipatory_pre_opening_post') flags on temporal grounds a content-only CV
 // pass cannot evaluate — rebuild-all-reviews.js and wrong-production-autoclear.js

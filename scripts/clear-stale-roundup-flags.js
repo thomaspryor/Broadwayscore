@@ -106,7 +106,7 @@ if (!APPLY) {
     const raw = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(raw);
     data.isRoundupArticle = false;
-    data.roundupArticleClearedNote = `[${today} cleared stale isRoundupArticle — file has substantial fullText + isFullReview + non-roundup URL — Notion 34e637c5]`;
+    data.roundupArticleClearedNote = `[${today} cleared stale isRoundupArticle (isLikelyStaleRoundupFlag: substantial fullText on a non-roundup URL; was: ${data.roundupArticleReason || 'no reason'}) — Notion 34e637c5, BRO-2356]`;
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + (raw.endsWith('\n') ? '\n' : ''));
   }
   console.log(`\nAPPLIED — cleared ${stale} files.`);

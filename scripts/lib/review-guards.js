@@ -1723,7 +1723,34 @@ function isLikelyStaleRoundupFlag(data) {
     }
   }
 
+  // Signal C (BRO-2356): the flag's own reason says it was stamped from a
+  // roundup URL pattern (review-file-writer Guards E / E1 / E2), but the
+  // file's url is not a roundup page. The verdict describes a page this file
+  // does not point at: a roundup write merged onto an existing single review
+  // kept the file's url but filled the flag (BRO-5169, fixed forward via
+  // URL_BODY_FIELDS; the-standard-of-living BWW Aliya Al-Hassan, Pride LBO
+  // Stuart King, Romeo & Juliet 2026 Times Clive Davis). Content-based reasons
+  // (digest / pull-quote compilation) never match, and a text that reads as a
+  // pull-quote compilation keeps its flag. contentTier gate as Signal B.
+  if (url && data.contentTier === 'complete'
+      && isUrlPatternRoundupReason(data.roundupArticleReason)
+      && !isRoundupUrl(url).isRoundup
+      && !/\/article\/Review-Roundup-/i.test(url)
+      && !LBO_ROUNDUP_POST_RE.test(url)) {
+    const { detectPullQuoteCompilation } = require('./roundup-digest'); // lazy: keep load order flat
+    if (!detectPullQuoteCompilation(data)) return true;
+  }
+
   return false;
+}
+
+// roundupArticleReason values review-file-writer stamps from the write's URL
+// alone (Guard E, E1, E2 and their audit back-fills).
+const URL_PATTERN_ROUNDUP_REASON_RE = /^auto: (?:URL matches (?:BWW Review-Roundup|LBO Review-Round-Up) page pattern|roundup page ingested as review \()/;
+// review-file-writer Guard E2's LBO roundup post pattern.
+const LBO_ROUNDUP_POST_RE = /\/news\/post\/(?:review-round[-_ ]?up|Review-Round-?Up)/i;
+function isUrlPatternRoundupReason(reason) {
+  return typeof reason === 'string' && URL_PATTERN_ROUNDUP_REASON_RE.test(reason);
 }
 
 /**
