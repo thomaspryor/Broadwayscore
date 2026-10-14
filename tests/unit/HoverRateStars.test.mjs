@@ -75,7 +75,7 @@ test('rate controls decide after mount through one hook, never during render (hy
   assert.match(stars, /if \(!seeable\) return null;/);
   const hero = readFileSync('src/components/show-page/ShowHeroRedesign.tsx', 'utf8');
   assert.match(hero, /const seeable = useCouldHaveSeenShow\(show\);/);
-  assert.match(hero, /if \(!autoRate \|\| ratePanelOpen \|\| !seeable\) return;/);
+  assert.match(hero, /if \(!autoRate \|\| ratePanelOpen \|\| !showRateButton\) return;/);
   assert.match(hero, /\{showRateButton && \(/);
   for (const src of [stars, hero]) assert.doesNotMatch(src, /couldHaveSeenShow\(/, 'components call the hook, not the clock-reading helper');
 });

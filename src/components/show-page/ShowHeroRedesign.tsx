@@ -267,7 +267,8 @@ function Inner({
 
   // ?rate=1 — auto-open rate panel (deferred-auth target for inline-stars CTAs)
   useEffect(() => {
-    if (!autoRate || ratePanelOpen || !seeable) return;
+    // Same rule as the Rate button: seeable, or already rated ("Log another viewing").
+    if (!autoRate || ratePanelOpen || !showRateButton) return;
     // The pending-action effect above runs first (the deep link is read after
     // mount, so this runs a commit later) and sets this ref when it consumed a
     // draft for this show — without this guard, a stale ratePanelOpen=false read here would let us clobber
@@ -288,7 +289,7 @@ function Inner({
       setRatePanelOpen(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoRate, isAuthenticated, authLoading, seeable]);
+  }, [autoRate, isAuthenticated, authLoading, showRateButton]);
 
   // ?edit=1 — auto-open edit on latest review (diary edit pencil entry point)
   useEffect(() => {

@@ -98,7 +98,11 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
         // A UK house's production can transfer too (detect-regional-transfers.js sets
         // transferredTo): link it, naming the market it went to (BRO-5103 retro).
         const transfer = show.transferredTo ? getShowById(show.transferredTo) : null;
-        const where = transfer ? (isLondonMarket(transfer.category) ? 'the West End' : 'Broadway') : '';
+        const where = !transfer ? ''
+          : transfer.category === 'off-west-end' ? 'Off-West End'
+          : isLondonMarket(transfer.category) ? 'the West End'
+          : transfer.category === 'off-broadway' ? 'Off-Broadway'
+          : 'Broadway';
         return (
           <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
             <span className="font-semibold">UK regional production</span>
@@ -106,7 +110,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
               <span className="text-gray-400">
                 {hasReachedStage(transfer.status) ? ` — this production transferred to ${where}. ` : ` — this production is transferring to ${where}. `}
                 <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
-                  See the {where === 'Broadway' ? 'Broadway' : 'West End'} production →
+                  See the {where.replace(/^the /, '')} production →
                 </Link>
               </span>
             ) : (
