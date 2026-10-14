@@ -9,6 +9,10 @@
 // fs.mkdtempSync isolated only the TASKS dir, so the ledger write escaped into
 // the real file every time the suite ran locally — 17-19 rows on a busy day.
 //
+// Since BRO-5261 (retro-review of BRO-2664) appendEntry/readEntries default to a
+// per-pid tmp file in any test run (scripts/lib/test-run-guard.js), so this
+// static check is now the second layer, not the only one.
+//
 // Those rows carried `workspaceRef: "workspace:1"` (the literal string in the
 // test's launchCmux stub), which read exactly like a dispatcher adopting an
 // unrelated live owner workspace. Two sessions chased that ghost.
