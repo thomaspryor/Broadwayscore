@@ -2579,6 +2579,45 @@
     "queuedAt": "2026-10-14T01:17:03.794Z"
   },
   {
+    "conditionKey": "corpus-drift:duplicate-shows",
+    "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff) — escalated after 15 notifications",
+    "description": "Filed BRO-5314 for owner triage after 15 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"duplicate-shows\" (node scripts/audit-duplicate-shows.js --strict) has been drifting. Latest output:\n\nFound 4 duplicate-show cluster(s), 4 pair(s) (baselined: 0, new: 4):\n\n  [shared-venue-token:shakespeare] as you like it|2026\n    as-you-like-it-globe-west-end-2026  (Shakespeare's Globe, 70 review files)\n    all-male-as-you-like-it-regional-2026  (Royal Shakespeare Theatre, Stratford-upon-Avon, 28 review files)\n  [incomplete-stub] fly you fools|2026\n    fly-you-fools-off-broadway-2026  (SoHo Playhouse, 1 review files)\n    fly-you-fools-off-west-end-2026  (Southwark Playhouse, 0 review files)\n  [incomplete-stub] triumph|2026\n    triumph-off-west-end-2026  (Almeida Theatre, 0 review files)\n    triumph-off-broadway-2026  (The Public Theater, 4 review files)\n  [title-fragment] title-fragment@nyu skirball\n    anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027  (NYU Skirball, 0 review files)\n    anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027  (NYU Skirball, 0 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [shared-venue-token:shakespeare] as you like it|2026: as-you-like-it-globe-west-end-2026 <-> all-male-as-you-like-it-regional-2026\n  [incomplete-stub] fly you fools|2026: fly-you-fools-off-broadway-2026 <-> fly-you-fools-off-west-end-2026\n  [incomplete-stub] triumph|2026: triumph-off-west-end-2026 <-> triumph-off-broadway-2026\n  [title-fragment] title-fragment@nyu skirball: anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 <-> anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5314",
+    "fields": [],
+    "queuedAt": "2026-10-14T01:40:58.280Z"
+  },
+  {
+    "conditionKey": "corpus-drift:aggregator-archive-integrity",
+    "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff) (still open — BRO-4795)",
+    "description": "Still firing after 22 notifications since it was filed. Tracked at BRO-4795.\n\ncheck-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 6682 files\n  Skipped (no show in shows.json): 262\n  Bad: 15\n\n❌ NEW bad archives (13):\n   - bww-roundups/la-traviata-off-broadway-2026\n   - bww-roundups/mean-girls-west-end-2024\n   - bww-roundups/old-friends-west-end-2023\n   - bww-roundups/richard-ii-off-west-end-2026\n   - dtli/mean-girls-west-end-2024\n   - lbo-roundups/a-christmas-carol-west-end-2022\n   - lbo-roundups/a-christmas-carol-west-end-2023\n   - lbo-roundups/and-juliet-west-end-2019\n   - lbo-roundups/cuckoo-west-end-2023\n   - show-score/just-for-one-day-west-end-2024\n   - show-score/old-friends-west-end-2023\n   - show-score/the-old-man-and-the-pool-west-end-2023\n   - theatre-reviews/the-hungry-ghost-off-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4795",
+    "fields": [],
+    "queuedAt": "2026-10-14T01:40:58.306Z"
+  },
+  {
+    "conditionKey": "corpus-drift:outlet-identity-hygiene",
+    "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
+    "description": "check-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 28886\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 1 outlet(s)\ncorpus files scanned: 56561; provisional outlets without a decision: 8\n  should-appeal-to-two-audiences (1) e.g. angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json\n  frank-rizzo (1) e.g. summer-1976-2023/frank-rizzo--frank-rizzo.json\n  left-me-wondering-two-things-first (1) e.g. the-bridges-of-madison-county-2014/left-me-wondering-two-things-first--schoenfeld-theatre.json\n  clive-davis (1) e.g. the-lehman-trilogy-west-end-2023/clive-davis--unknown.json\n  nick-curtis (1) e.g. the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json\n  richard-maguire (1) e.g. the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json\n  london-theatre-direct (1) e.g. the-shark-is-broken-west-end-2021/london-theatre-direct--kay-johal.json\n  her-voice-is-not-ideally-tuned (1) e.g. wit-2012/her-voice-is-not-ideally-tuned--for-wit.json\nPROBLEMS: 9",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T01:40:58.316Z"
+  },
+  {
     "conditionKey": "llm-scoring:cost-breach",
     "title": "LLM scoring spend over budget",
     "description": "GitHub run 38490603674: cumulative LLM scoring cost $7.59 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
