@@ -354,20 +354,25 @@ function textDateline(text) {
 }
 
 /**
- * Every complete numeric date (dd/mm/yyyy or yyyy-mm-dd) in the first 1500 characters
+ * Every complete numeric date (dd/mm/yyyy or yyyy-mm-dd) in the first 600 characters
  * of the article text, as YYYY-MM-DD. Used by guardPublishDate to find a page byline
  * that disagrees with a widget/schedule date the scoring model copied (BRO-4198:
  * boxofficeradio "09 JUL 2024" radio-schedule line above a "18/09/2026" byline).
  */
 function textNumericDates(text) {
   if (typeof text !== 'string' || !text) return [];
-  const head = text.slice(0, 1500);
+  const head = text.slice(0, 600);
   const out = [];
   const re = /\b(\d{1,2})[\/.](\d{1,2})[\/.]((?:19|20)\d{2})\b|\b((?:19|20)\d{2})-(\d{2})-(\d{2})\b/g;
   let m;
   while ((m = re.exec(head))) {
     const [y, mo, d] = m[4] ? [+m[4], +m[5], +m[6]] : [+m[3], +m[2], +m[1]];
     const t = Date.UTC(y, mo - 1, d);
+    // Unambiguous day-first only (day > 12), and never a run/booking/updated stamp.
+    if (d <= 12 && !m[4]) continue;
+    const before = head.slice(Math.max(0, m.index - 25), m.index);
+    const after = head.slice(m.index + m[0].length, m.index + m[0].length + 4);
+    if (/(updated|modified|edited|until|through|from|tickets?|previews?|on sale|runs?|to|-|\u2013)\s*:?\s*$/i.test(before) || /^\s*[-\u2013]/.test(after)) continue;
     if (mo >= 1 && mo <= 12 && new Date(t).getUTCDate() === d) out.push(new Date(t).toISOString().slice(0, 10));
   }
   return out;
@@ -411,7 +416,8 @@ function guardPublishDate(review, show) {
   // horrible-histories "Tuesday, August 7 2018") is the page's own evidence and wins.
   // BRO-4198: a byline date inside the run window (and not after the fetch) outranks a
   // pre-window dateline: that dateline is a widget/schedule line, the byline is the post.
-  const byline = textNumericDates(review.fullText).find(d => {
+  // Only when the model's date is the text's own pre-window dateline (it copied the widget).
+  const byline = textDateline(review.fullText) !== String(orig).slice(0, 10) ? undefined : textNumericDates(review.fullText).find(d => {
     const t = Date.parse(d);
     return t >= winStart && t <= winEnd && t <= fetched + DAY;
   });

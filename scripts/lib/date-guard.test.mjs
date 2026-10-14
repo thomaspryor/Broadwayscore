@@ -301,3 +301,13 @@ test('guardPublishDate: widget date copied by the model loses to an in-window by
   const g2 = guardPublishDate({ ...review, fullText: 'Tuesday, August 7 2018\n\nbody' }, show);
   assert.equal(g2.publishDate, '2018-08-07');
 });
+
+test('guardPublishDate: BRO-4198 byline ignores run dates, updated stamps, ambiguous dd/mm', () => {
+  const { guardPublishDate } = require('./date-guard.js');
+  const show = { openingDate: '2026-09-17', previewsStartDate: '2026-09-10', closingDate: '2026-12-31' };
+  const mk = fullText => guardPublishDate({ publishDate: '2008-03-12', dateSource: 'llm-scoring', textFetchedAt: '2026-09-27T00:00:00Z', fullText }, show).publishDate;
+  assert.equal(mk('Wednesday, March 12 2008\nReview. Now playing 10/09/2026 - 31/12/2026'), '2008-03-12');
+  assert.equal(mk('March 12, 2008\nUpdated 2026-09-20\nOld review'), '2008-03-12');
+  assert.equal(mk('March 12, 2008\nReview posted 10/09/2026'), '2008-03-12');
+  assert.equal(mk('March 12, 2008\nTickets on sale 18/09/2026'), '2008-03-12');
+});
