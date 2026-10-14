@@ -213,7 +213,9 @@ function validateShowScoreArchive(showId, show, html, file) {
     }
   }
 
-  if (html.toLowerCase().includes('off-broadway') && !html.toLowerCase().includes('broadway-shows')) {
+  // Only a Broadway show's page mentioning Off-Broadway is suspicious; an OB
+  // show's page saying so is expected (BRO-5261 retro-review).
+  if (!isOffBroadway && html.toLowerCase().includes('off-broadway') && !html.toLowerCase().includes('broadway-shows')) {
     out.warnings.push({
       showId,
       source: 'show-score',

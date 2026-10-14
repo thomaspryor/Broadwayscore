@@ -13,6 +13,7 @@ const path = require('path');
 // only does the I/O and the printing.
 const {
   MARKETS,
+  THRESHOLD_SOURCES,
   findSlugMarkerMisses,
   findIdMarkerMisses,
   findShowsWithoutSlug,
@@ -41,6 +42,11 @@ function info(msg) { console.log(`ℹ️  ${msg}`); }
 // Parse args
 const marketArg = process.argv.find(a => a.startsWith('--market='));
 const targetMarket = marketArg ? marketArg.split('=')[1] : 'all';
+if (targetMarket !== 'all' && !MARKETS.includes(targetMarket)) {
+  // An unknown market filtered zero shows and printed a pass for nothing.
+  console.error(`Unknown --market=${targetMarket}; expected one of: all, ${MARKETS.join(', ')}`);
+  process.exit(2);
+}
 
 // Load data
 const showsData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'shows.json'), 'utf8'));
@@ -107,7 +113,7 @@ console.log('\n--- Scoring Threshold Checks ---');
 
 // Check that score-buckets.ts handles each market
 try {
-  const scoreBucketsContent = fs.readFileSync(path.join(SRC_DIR, 'config', 'score-buckets.ts'), 'utf8');
+  const scoreBucketsContent = THRESHOLD_SOURCES.map((f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf8')).join('\n');
   for (const market of marketsToCheck) {
     if (sourceHandlesMarket(scoreBucketsContent, market)) {
       ok(`score-buckets.ts handles '${market}'`);

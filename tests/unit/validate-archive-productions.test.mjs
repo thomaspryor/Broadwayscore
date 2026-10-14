@@ -190,3 +190,10 @@ test('exceedsMismatchThreshold fails only strictly above 80', () => {
   assert.equal(exceedsMismatchThreshold(81), true);
   assert.equal(exceedsMismatchThreshold(0), false);
 });
+
+test('Show Score: an "off-broadway" mention on an OB show is expected, not a warning (BRO-5261)', () => {
+  const ob = { id: 'the-gin-game-2026', category: 'off-broadway' };
+  const r = validateShowScoreArchive(ob.id, ob, '<p>the Off-Broadway revival</p>', 'g.html');
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.warnings, []);
+});

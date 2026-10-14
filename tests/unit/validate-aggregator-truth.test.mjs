@@ -98,3 +98,13 @@ test('empty / missing shows map classifies to all-empty buckets', () => {
     for (const bucket of Object.values(r)) assert.deepEqual(bucket, []);
   }
 });
+
+test('a missing or NaN ratio is derived from the counts, never "healthy" by default (BRO-5261)', () => {
+  const r = classifyAggregatorTruth({
+    'no-ratio': { maxAggregator: 12, localCount: 40 },
+    'nan-ratio': { maxAggregator: 12, localCount: 40, ratio: NaN },
+    'null-entry': null,
+  });
+  assert.deepEqual(ids(r.definiteDuplicates).sort(), ['nan-ratio', 'no-ratio']);
+  assert.deepEqual(ids(r.noAggregatorData), ['null-entry']);
+});

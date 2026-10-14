@@ -18,14 +18,20 @@ const MARKETS = ['west-end', 'off-west-end', 'off-broadway'];
 // itself has a chance to run before the gate fires (2026-04-26 incident).
 const CLOSING_GRACE_DAYS = 7 + 1;
 
+// Where the per-market review-count threshold lives. score-buckets.ts
+// re-exports hasEnoughReviews from min-reviews.js since BRO-4312, so the market
+// names must be looked for in both (the script read only score-buckets.ts and
+// failed on every run after that move; BRO-5261 retro-review).
+const THRESHOLD_SOURCES = ['src/config/score-buckets.ts', 'scripts/lib/min-reviews.js'];
+
 // Shows of this market whose slug lacks the market marker. Off-west-end shows
 // keep legacy "west-end" slugs (renaming breaks URLs/SEO), so "west-end" is
 // accepted there.
 function findSlugMarkerMisses(marketShows, market) {
   return marketShows.filter(s => {
-    const slug = s.slug || '';  // slug-less shows are reported by findShowsWithoutSlug
-    if (market === 'off-west-end') return !slug.includes('west-end');
-    return !slug.includes(market);
+    if (!s.slug) return false;  // slug-less shows are reported once, by findShowsWithoutSlug
+    if (market === 'off-west-end') return !s.slug.includes('west-end');
+    return !s.slug.includes(market);
   });
 }
 
@@ -180,6 +186,7 @@ function summarize(errors, warnings) {
 }
 
 module.exports = {
+  THRESHOLD_SOURCES,
   MARKETS,
   CLOSING_GRACE_DAYS,
   findSlugMarkerMisses,

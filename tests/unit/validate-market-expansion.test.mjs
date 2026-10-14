@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const {
   MARKETS,
+  THRESHOLD_SOURCES,
   CLOSING_GRACE_DAYS,
   findSlugMarkerMisses,
   findIdMarkerMisses,
@@ -88,8 +89,8 @@ test('slug-less shows: reported by findShowsWithoutSlug, skipped by collision/ma
   assert.deepEqual(findShowsWithoutSlug(shows).map(s => s.id), ['no-slug-a', 'no-slug-b']);
   // two empty/missing slugs must not be reported as a collision with each other
   assert.deepEqual(findSlugCollisions(shows), []);
-  // and must not crash the marker check (they surface as misses, the no-slug error is the real signal)
-  assert.deepEqual(findSlugMarkerMisses(shows, 'west-end').map(s => s.id), ['no-slug-a', 'no-slug-b']);
+  // and must not crash the marker check; they are reported once, as the no-slug error
+  assert.deepEqual(findSlugMarkerMisses(shows, 'west-end').map(s => s.id), []);
   assert.deepEqual(findShowsWithoutSlug([{ id: 'x', slug: 'x' }]), []);
 });
 
@@ -227,8 +228,7 @@ test('summarize: any error fails (exit 1); warnings alone pass (exit 0)', () => 
 // it cannot make this advisory gate's data checks blocking (CLAUDE.md §19).
 test('structural: score-buckets.ts handles every market and the browse page serializes category', () => {
   // The display gate score-buckets.ts re-exports lives in scripts/lib/min-reviews.js (BRO-4312).
-  const scoreBuckets = fs.readFileSync(path.join(ROOT, 'src', 'config', 'score-buckets.ts'), 'utf8')
-    + fs.readFileSync(path.join(ROOT, 'scripts', 'lib', 'min-reviews.js'), 'utf8');
+  const scoreBuckets = THRESHOLD_SOURCES.map((f) => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
   for (const market of MARKETS) {
     assert.ok(sourceHandlesMarket(scoreBuckets, market), `score-buckets.ts / min-reviews.js do not handle '${market}'`);
   }

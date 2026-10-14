@@ -42,10 +42,16 @@ function classifyAggregatorTruth(shows, exceptions = HIGH_COVERAGE_EXCEPTIONS) {
   const healthy = [];
 
   for (const showId of Object.keys(shows || {})) {
-    const { maxAggregator, localCount, ratio } = shows[showId];
+    const entry = shows[showId] || {};
+    const { maxAggregator, localCount } = entry;
+    // Derive the ratio when the stored one is missing or not a number, so a
+    // generator regression cannot drop a 3x duplicate into "healthy"
+    // (BRO-5261 retro-review).
+    const ratio = Number.isFinite(entry.ratio) ? entry.ratio
+      : (Number.isFinite(localCount) && maxAggregator > 0 ? localCount / maxAggregator : null);
 
     // New shows / not yet indexed by aggregators
-    if (ratio === null || maxAggregator === 0) {
+    if (ratio === null || !(maxAggregator > 0)) {
       noAggregatorData.push({ showId, localCount, maxAggregator });
       continue;
     }
