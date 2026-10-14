@@ -947,11 +947,16 @@ function decideInclusion(review, show, guards) {
       wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
     }
 
-    // Stale dated pre-opening guard auto-clear — mirrors rebuild-all-reviews.js:
-    // 1461-1464's outer gate (own-flag note prefix + no manual/human override)
-    // and 1463's evaluateDateGuard(...).flag === false ctx.
+    // Stale dated guard auto-clear — mirrors rebuild-all-reviews.js's block:
+    // isDatedGuardNote (both 'Pre-opening guard:' and 'Date guard:' notes), no
+    // manual/human override, evaluateDateGuard on the CURRENT run only
+    // (priorRuns/tourLegs: null, BRO-5261 retro-review) and the
+    // inheritReviews:false prior-run refusal (BRO-5285).
+    const isDatedNote = typeof autoClear.isDatedGuardNote === 'function'
+      ? autoClear.isDatedGuardNote(review.wrongProductionNote)
+      : String(review.wrongProductionNote || '').startsWith('Pre-opening guard:');
     if (!wrongProductionCleared && review.wrongProduction === true
-        && String(review.wrongProductionNote || '').startsWith('Pre-opening guard:')
+        && isDatedNote
         && !review.wrongProductionManualClear
         && review.humanReviewedWrongProduction !== false
         && !review.allowEarlyDate
@@ -959,8 +964,10 @@ function decideInclusion(review, show, guards) {
         && typeof guards.__dateGuard?.evaluateDateGuard === 'function') {
       const reviewDate = resolveReviewDate(review);
       if (reviewDate) {
-        const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId });
-        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false });
+        const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId, priorRuns: null, tourLegs: null });
+        const optOutRun = typeof autoClear.isWithinOptOutPriorRun === 'function'
+          && autoClear.isWithinOptOutPriorRun(reviewDate, show?.priorRuns);
+        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false && !optOutRun });
       }
     }
 
