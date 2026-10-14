@@ -250,3 +250,19 @@ test('a Reddit % returned is skipped when the record holds a cited % returned', 
     assert.equal(filterByConfidence([pct([70, 70])], commercialWith(record)).applied.length, 1, JSON.stringify(record));
   }
 });
+
+// A trade % the update writes is protected the following week too: the stored
+// "Section F: Deadline" label alone reads as inference (BRO-5311 review).
+test('a trade % returned replaces a cited one, is marked reported, and then holds against Reddit', () => {
+  const pct = (newValue, source) => ({ slug: 'some-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue, confidence: 'high', source });
+  const data = commercialWith({ estimatedRecoupmentPct: [55, 60], estimatedRecoupmentSource: 'Broadway Journal (Oct 12, 2026): investors had been paid back 60% of their stakes.' });
+  const { applied } = filterByConfidence([pct([80, 80], 'Section F: Deadline')], data);
+  assert.equal(applied.length, 1);
+  applyChanges(applied, [], data, undefined);
+  assert.equal(data.shows['some-show'].estimatedRecoupmentTruthClass, 'reported');
+  assert.equal(filterByConfidence([pct([90, 90], 'Reddit Grosses Analysis (u/Boring_Waltz_9545)')], data).applied.length, 0);
+  // A Reddit % on an uncited record clears any stale class.
+  const reddit = commercialWith({ estimatedRecoupmentTruthClass: 'reported' });
+  applyChanges([pct([40, 40], 'Reddit Grosses Analysis (u/Boring_Waltz_9545)')], [], reddit, undefined);
+  assert.equal(reddit.shows['some-show'].estimatedRecoupmentTruthClass, undefined);
+});

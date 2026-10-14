@@ -1459,13 +1459,6 @@ const DERIVED_FIELD_FIGURES = {
 };
 
 /**
- * True when the record's figure is reported: only trade or SEC evidence may
- * replace it. Any capitalization not flagged as an estimate counts (producer
- * announcements and press releases are reported too). That is deliberately
- * wider than /biz, which also marks an uncited one "~": a Reddit figure never
- * overwrites a capitalization someone entered, cited or not.
- */
-/**
  * Does the record hold a trade-, producer- or filing-cited % returned? Read the
  * same way the recoupment ground truth reads it, so a figure the backtest
  * grades on is the one this update protects (BRO-5311).
@@ -1476,6 +1469,13 @@ function holdsReportedRecoupmentPct(rec) {
   return truthClassOf(rec, 'reported-pct', rec.estimatedRecoupmentSource || rec.notes || '').truthClass === 'reported';
 }
 
+/**
+ * True when the record's figure is reported: only trade or SEC evidence may
+ * replace it. Any capitalization not flagged as an estimate counts (producer
+ * announcements and press releases are reported too). That is deliberately
+ * wider than /biz, which also marks an uncited one "~": a Reddit figure never
+ * overwrites a capitalization someone entered, cited or not.
+ */
 function holdsReportedFigure(rec, field) {
   if (field === 'weeklyRunningCost') return isReportedWeeklyCost(rec);
   return rec?.capitalization != null && rec.isEstimate?.capitalization !== true;
@@ -1789,6 +1789,11 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     if (field === 'estimatedRecoupmentPct') {
       commercial.shows[slug].estimatedRecoupmentSource = change.source || 'Automated update';
       commercial.shows[slug].estimatedRecoupmentDate = new Date().toISOString().split('T')[0];
+      // The stored source is a section label ("Section F: Deadline") that the
+      // ground truth reads as inference, so a trade % written here would not be
+      // protected next week (BRO-5311). Record its class explicitly.
+      if (isReportedSource(change.source)) commercial.shows[slug].estimatedRecoupmentTruthClass = 'reported';
+      else delete commercial.shows[slug].estimatedRecoupmentTruthClass;
     }
 
     // Sprint 3: a capitalization change names costMethodology only for a
