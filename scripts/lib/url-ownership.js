@@ -58,6 +58,12 @@ function _isBlockingOwnerCopy(data) {
   if (!data || typeof data !== 'object') return false;
   if (data.wrongShow === true || data.wrongProduction === true) return false;
   if (data.isCombinedReview === true || data.isRoundupArticle === true) return false;
+  // A duplicate pointer defers to the file it names; that file is the owner
+  // (and blocks on its own when live). BRO-5373: a leftover
+  // broadwayworld--unknown stub pointing at the review being moved made the
+  // push gate drop the moved review, and the move's source delete went through,
+  // so the review was lost.
+  if (data.duplicateOf || data.duplicateTextOf) return false;
   return true;
 }
 

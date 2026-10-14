@@ -72,6 +72,20 @@ describe('_isBlockingOwnerCopy semantics', () => {
     assert.equal(_isBlockingOwnerCopy({ url: SOHO_URL, isCombinedReview: true }), false);
     assert.equal(_isBlockingOwnerCopy({ url: SOHO_URL, isRoundupArticle: true }), false);
   });
+  // BRO-5373: christmas-carol-goes-wrong-west-end-2026/broadwayworld--unknown.json
+  // (no text, duplicateOf the review being moved to the Apollo show) made the push
+  // gate drop the moved review; the source delete went through and it was lost.
+  test('a duplicate-pointer stub never owns the url', () => {
+    assert.equal(_isBlockingOwnerCopy({ url: SOHO_URL, duplicateOf: 'broadwayworld--kat-mokrynski.json' }), false);
+    assert.equal(_isBlockingOwnerCopy({ url: SOHO_URL, duplicateTextOf: 'x--y.json' }), false);
+  });
+  test('a moved review is not blocked by a stub pointing at its old name', () => {
+    const stubShow = path.join(tmpDir, SIBLING_SHOW);
+    fs.mkdirSync(stubShow, { recursive: true });
+    fs.writeFileSync(path.join(stubShow, 'guardian--unknown.json'), JSON.stringify({ url: SOHO_URL, duplicateOf: 'guardian--a-critic.json', fullText: '' }));
+    const owners = findCrossShowOwners(SOHO_URL, OWNER_SHOW, tmpDir);
+    assert.equal(shouldBlockCrossShowCreate(owners).block, false);
+  });
 });
 
 describe('index + createOrMergeReviewFile integration (tender replay)', () => {
