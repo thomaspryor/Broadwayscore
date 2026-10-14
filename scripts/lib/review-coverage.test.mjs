@@ -179,7 +179,7 @@ test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check bloc
   assert.equal(d({ env: { ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '1' } }), 'allow');
 });
 
-test('stop hook wrapper: exit 2 for a thin run, 0 for a full one, blocks stop after 3 tries', () => {
+test('verify-edits.sh (the Stop hook wired in every cloud container) runs the gate: exit 2 for a thin run, 0 for a full one, 3 blocks then lets go', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-stop-'));
   const row = (type, content) => JSON.stringify({ type, message: { content } }) + '\n';
   const use1 = (id, name, input) => row('assistant', [{ type: 'tool_use', name, id, input }]);
@@ -190,28 +190,26 @@ test('stop hook wrapper: exit 2 for a thin run, 0 for a full one, blocks stop af
   fs.writeFileSync(thin, base);
   const dwi = use1('d1', 'Skill', { skill: 'did-it-work' }) + out1('d1', 'ok') + row('assistant', [{ type: 'text', text: '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501' }]);
   fs.writeFileSync(full, dwi + base + use1('a1', 'Agent', { subagent_type: 'review-panelist', prompt: 'Review the diff carefully for wedge risks and silent failures. '.repeat(6) }) + out1('a1', 'Findings: nothing blocking in the diff, two warnings.') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/req.json' }) + out1('b1', 'Findings: the gate fails open on a missing transcript, which is fine.'));
-  const settings = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude', 'settings.json'), 'utf8'));
-  const inline = settings.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command)).find((c) => c.includes('hooks/stop-review-coverage.sh'));
-  assert.ok(inline, 'the Stop hook is registered in settings.json');
-  // Run the REAL registered command string, with this checkout as the project dir.
-  const run = (tr) => spawnSyncStdinFile('bash', ['-c', inline], { input: JSON.stringify({ transcript_path: tr, last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, CLAUDE_PROJECT_DIR: ROOT, SHIP_CHECK_COVERAGE_DISABLE: '' } });
-  assert.equal(run(full).status, 0);
-  const codes = [run(thin).status, run(thin).status, run(thin).status, run(thin).status];
-  assert.deepEqual(codes, [2, 2, 2, 0], 'blocks three times, then lets the session end rather than loop');
-  assert.match(run(thin).stderr + '', /^$|BLOCKED/);
+  const hook = path.join(ROOT, '.claude', 'hooks', 'verify-edits.sh');
+  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-home-')); // defeats the Mac-master self-skip
+  const run = (tr) => spawnSyncStdinFile('bash', [hook], { input: JSON.stringify({ transcript_path: tr, session_id: 'rc-test', last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, HOME: fakeHome, SHIP_CHECK_COVERAGE_DISABLE: '' } });
+  const codes = [run(thin), run(thin), run(thin), run(thin)].map((r) => r.status);
+  assert.deepEqual(codes.slice(0, 3), [2, 2, 2], 'blocks three times');
+  assert.match(run(thin).stderr, /^(?:(?!BLOCKED \(BRO-5359\)).)*$/s, 'after its budget the review-coverage gate stops blocking (other verify-edits gates may still speak)');
+  assert.doesNotMatch(run(full).stderr, /BRO-5359/, 'a fully covered chain is not blocked by this gate');
+  const first = spawnSyncStdinFile('bash', [hook], { input: JSON.stringify({ transcript_path: thin, session_id: 'rc-test', last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, HOME: fakeHome, SHIP_CHECK_COVERAGE_DISABLE: '' } });
+  assert.ok(first.status === 0 || first.status === 2);
   fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(fakeHome, { recursive: true, force: true });
   for (const f of fs.readdirSync(os.tmpdir())) if (f.startsWith('review-coverage-stop-')) fs.rmSync(path.join(os.tmpdir(), f), { force: true });
 });
 
-test('settings.json keeps verify-edits and registers the review-coverage stop hook, fail-open', () => {
+test('verify-edits.sh keeps the review-coverage call (a Mac-master sync must not silently drop it)', () => {
+  const src = fs.readFileSync(path.join(ROOT, '.claude', 'hooks', 'verify-edits.sh'), 'utf8');
+  assert.match(src, /review-coverage\.mjs" --stop-hook/);
+  assert.match(src, /CLAUDE_CODE_REMOTE:-\}" = "true"/);
   const st = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude', 'settings.json'), 'utf8'));
-  const cmds = st.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command));
-  assert.ok(cmds.some((c) => c.includes('verify-edits.sh')));
-  const inline = cmds.find((c) => c.includes('hooks/stop-review-coverage.sh'));
-  assert.ok(inline);
-  const bare = spawnSyncStdinFile('bash', ['-c', inline], { input: '{}', encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: '/nonexistent-dir' } });
-  assert.equal(bare.status, 0, 'a missing lib fails open');
-  assert.ok(fs.existsSync(path.join(ROOT, '.claude', 'hooks', 'stop-review-coverage.sh')), 'top-level: the home installer wires only .claude/hooks/<name>.sh');
+  assert.ok(st.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command)).some((c) => c.includes('verify-edits.sh')), 'verify-edits.sh is registered as a Stop hook');
 });
 
 test('code-review is trusted: it neither needs the reviewers nor resets an earlier full ship-check', () => {
