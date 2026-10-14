@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-10-14T08:40:52.991Z",
+  "runDate": "2026-10-14T08:46:10.831Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "american-buffalo-2022,gutenberg-2023,mother-play-2024,on-your-feet-2015,prayer-for-the-french-republic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 23,
+    "processed": 4,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "8.0%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
     "playwright": 2,
@@ -23,203 +23,96 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 3,
     "tier1Success": 2,
-    "ampAttempts": 2,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 4,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 7,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 9,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 10,
-    "tier3Success": 4,
-    "tier3_6Attempts": 5,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 1,
-    "totalFailed": 21,
-    "scrapingBeePageCredits": 20,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 2.4,
-    "urlDiscoveryAttempts": 10,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 23,
+    "processed": 4,
+    "failed": 1,
     "shows": [
-      "_superseded-misattributed",
-      "a-history-of-water-in-the-middle-east-west-end-2019",
-      "all-the-way-2014",
-      "amelie-west-end-2021",
-      "an-oak-tree-off-west-end-2026",
-      "bitter-wheat-west-end-2019",
-      "bleak-expectations-west-end-2023",
-      "brief-encounter-2010",
-      "grease-2007",
-      "ill-eat-you-last-a-chat-with-sue-mengers-2013",
-      "la-bete-2010",
-      "network-2018",
-      "oedipus-west-end-2024",
-      "operation-mincemeat-2025",
-      "patriots-west-end-2023",
-      "talk-radio-2007",
-      "the-big-knife-2013",
-      "the-book-of-mormon-west-end-2024",
-      "the-comedy-about-spies-west-end-2026",
-      "the-play-that-goes-wrong-2017",
-      "the-river-2014",
-      "the-winslow-boy-2013",
-      "therese-raquin-2015",
-      "wicked-2003"
+      "american-buffalo-2022",
+      "gutenberg-2023",
+      "mother-play-2024",
+      "on-your-feet-2015",
+      "prayer-for-the-french-republic-2024"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 3,
-      "failed": 7
+      "processed": 0,
+      "failed": 0
     }
   },
   "processed": [
-    "the-river-2014/vulture--jesse-green.json",
-    "talk-radio-2007/variety--charles-isherwood.json"
+    "mother-play-2024/queerty--matthew-wexler.json",
+    "prayer-for-the-french-republic-2024/amny--matt-windman.json",
+    "gutenberg-2023/amny--matt-windman.json",
+    "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
-    "therese-raquin-2015/peconic-public-broadcasting--david-richardson.json",
-    "a-history-of-water-in-the-middle-east-west-end-2019/times-uk--clive-davis.json",
-    "operation-mincemeat-2025/londontheatre1--unknown.json",
-    "patriots-west-end-2023/times-uk--clive-davis.json",
-    "brief-encounter-2010/newsday--linda-winer.json",
-    "la-bete-2010/wsj--terry-teachout.json",
-    "the-book-of-mormon-west-end-2024/washpost--unknown.json",
-    "grease-2007/standard--nick-curtis.json",
-    "oedipus-west-end-2024/times-uk--unknown.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/huffpost--mark-kennedy.json",
-    "the-play-that-goes-wrong-2017/exeunt-magazine--kev-berry.json",
-    "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json",
-    "amelie-west-end-2021/times-uk--clive-davis.json",
-    "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1791910634384.json",
-    "the-big-knife-2013/huffpost--mark-kennedy.json",
-    "wicked-2003/standard--unknown.json",
-    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "the-winslow-boy-2013/wsj--terry-teachout.json",
-    "bleak-expectations-west-end-2023/whatsonstage--theo-bosanquet.json",
-    "network-2018/guardian--jesse-green.json",
-    "bitter-wheat-west-end-2019/times-uk--dominic-maxwell.json",
-    "all-the-way-2014/ap--mark-kennedy.json",
-    "_superseded-misattributed/good-time-charlie-off-broadway-2026--talkinbroadway--unknown--forum-thread-url-2026-10-12.json"
+    "on-your-feet-2015/backstage-barbie--backstage-barbie.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
-      "the-river-2014/vulture--jesse-green.json",
-      "talk-radio-2007/variety--charles-isherwood.json"
+      "mother-play-2024/queerty--matthew-wexler.json",
+      "prayer-for-the-french-republic-2024/amny--matt-windman.json",
+      "gutenberg-2023/amny--matt-windman.json",
+      "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
     ],
     "failed": [
-      "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
-      "nina-off-west-end-2026/guardian--kate-wyver.json",
-      "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
-      "fish-off-broadway-2026/timeout--unknown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
-      "therese-raquin-2015/peconic-public-broadcasting--david-richardson.json",
-      "a-history-of-water-in-the-middle-east-west-end-2019/times-uk--clive-davis.json",
-      "operation-mincemeat-2025/londontheatre1--unknown.json",
-      "patriots-west-end-2023/times-uk--clive-davis.json",
-      "brief-encounter-2010/newsday--linda-winer.json",
-      "la-bete-2010/wsj--terry-teachout.json",
-      "the-book-of-mormon-west-end-2024/washpost--unknown.json",
-      "grease-2007/standard--nick-curtis.json",
-      "oedipus-west-end-2024/times-uk--unknown.json",
-      "ill-eat-you-last-a-chat-with-sue-mengers-2013/huffpost--mark-kennedy.json",
-      "the-play-that-goes-wrong-2017/exeunt-magazine--kev-berry.json",
-      "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json",
-      "amelie-west-end-2021/times-uk--clive-davis.json",
-      "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1791910634384.json",
-      "the-big-knife-2013/huffpost--mark-kennedy.json",
-      "wicked-2003/standard--unknown.json",
-      "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "the-winslow-boy-2013/wsj--terry-teachout.json",
-      "bleak-expectations-west-end-2023/whatsonstage--theo-bosanquet.json",
-      "network-2018/guardian--jesse-green.json",
-      "bitter-wheat-west-end-2019/times-uk--dominic-maxwell.json",
-      "all-the-way-2014/ap--mark-kennedy.json",
-      "_superseded-misattributed/good-time-charlie-off-broadway-2026--talkinbroadway--unknown--forum-thread-url-2026-10-12.json"
+      "on-your-feet-2015/backstage-barbie--backstage-barbie.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json"
+      "prayer-for-the-french-republic-2024/amny--matt-windman.json",
+      "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "oedipus-west-end-2024/times-uk--unknown.json",
-      "the-river-2014/vulture--jesse-green.json",
-      "talk-radio-2007/variety--charles-isherwood.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json"
+      "mother-play-2024/queerty--matthew-wexler.json",
+      "gutenberg-2023/amny--matt-windman.json"
     ]
   },
   "failuresByOutlet": {
-    "Peconic Public Broadcasting": {
+    "BackStage Barbie": {
       "count": 1,
-      "domain": "peconicpublicbroadcasting.org",
+      "domain": "backstagebarbie.blogspot.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "The Times (UK)": {
-      "count": 3,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "HuffPost": {
-      "count": 2,
-      "domain": "huffpost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Exeunt Magazine": {
-      "count": 1,
-      "domain": "exeuntmagazine.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "online.wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
