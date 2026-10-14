@@ -31,7 +31,6 @@ Usage:
   node scripts/audit-identical-text-across-critics.js --live-author [--show=id1,id2]
   node scripts/audit-identical-text-across-critics.js --ratchet
 `;
-if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
 
 const arg = (name) => {
   const a = process.argv.find(x => x === `--${name}` || x.startsWith(`--${name}=`));
@@ -155,6 +154,7 @@ async function main() {
 }
 
 if (require.main === module) {
+  if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
   main().then(code => process.exit(code), e => { console.error(e); process.exit(1); });
 }
 

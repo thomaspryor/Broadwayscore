@@ -31,13 +31,13 @@ const arg = (name) => {
 // A scraper call that never settles leaves nothing on the event loop, so Node
 // exits 0 mid-run and the output just stops (BRO-5321: 3 of 4 cloud batches
 // ended at 8-63 of ~100 groups). The ref'd timer keeps the process alive and
-// turns the hang into a recorded 'error' page.
-const FETCH_DEADLINE_MS = Number(process.env.VERIFY_FETCH_DEADLINE_MS) || 120000;
-function withDeadline(promise, ms, label) {
-  let t;
-  const timeout = new Promise((_, reject) => { t = setTimeout(() => reject(new Error(`timeout after ${ms}ms: ${label}`)), ms); });
-  return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
-}
+// turns the hang into the best partial evidence. Only the paid fetch is
+// bounded: get() and wayback() settle on their own socket timeouts, and their
+// results are kept when the fetch times out.
+const { withDeadline } = require('./lib/cron-deadline');
+const envDeadline = Number(process.env.VERIFY_FETCH_DEADLINE_MS);
+const FETCH_DEADLINE_MS = Number.isFinite(envDeadline) && envDeadline >= 1000 ? envDeadline : 120000;
+let fetchTimeouts = 0;
 
 /** Fetch candidates in order; stop at the first that names an author and carries the text. */
 async function evidence(url, text, scrape) {
@@ -56,12 +56,20 @@ async function evidence(url, text, scrape) {
     if (wb) ok = consider('wayback', wb.body, wb.snapshot);
   }
   if (!ok && scrape && !tried.some((t) => structuredAuthors(t.authors).length)) {
-    const { fetchPage } = require('./lib/scraper.js');
+    const { fetchPage, cleanup } = require('./lib/scraper.js');
     try {
-      const r = await withDeadline(fetchPage(url), FETCH_DEADLINE_MS, url);
+      const r = await withDeadline(() => fetchPage(url), FETCH_DEADLINE_MS, url);
       const body = (r && (r.content || r.html || r.text)) || '';
       ok = consider(`fetchPage:${r && r.source ? r.source : '?'}`, body);
-    } catch { /* falls through to the best partial below */ }
+    } catch (e) {
+      // A timed-out fetch keeps running; reset the shared browser so the next
+      // url does not share a page with it. Otherwise falls through to the best
+      // partial below.
+      if (/wall-clock timeout/.test(String(e && e.message))) {
+        fetchTimeouts++;
+        if (typeof cleanup === 'function') await cleanup().catch(() => {});
+      }
+    }
   }
   if (ok) return ok;
   // Best partial: most text overlap, then any structured author.
@@ -86,7 +94,7 @@ async function main() {
     for (const m of g) if (m.d.url && !byCanon.has(canonUrl(m.d.url))) byCanon.set(canonUrl(m.d.url), m.d.url);
     const pages = [];
     for (const url of byCanon.values()) {
-      try { pages.push(await withDeadline(evidence(url, text, scrape), FETCH_DEADLINE_MS * 2, url)); } catch (e) { pages.push({ url, via: 'error', authors: [], overlap: null, error: String(e.message || e).slice(0, 80) }); }
+      try { pages.push(await evidence(url, text, scrape)); } catch (e) { pages.push({ url, via: 'error', authors: [], overlap: null, error: String(e.message || e).slice(0, 80) }); }
       await new Promise((r) => setTimeout(r, 1200));
     }
     console.log(JSON.stringify({
@@ -96,7 +104,7 @@ async function main() {
     }));
     if (++done % 25 === 0) console.error(`[verify-identical] ${done}/${groups.length}`);
   }
-  console.error(`[verify-identical] done ${done}/${groups.length}`);
+  console.error(`[verify-identical] done ${done}/${groups.length} (${fetchTimeouts} paid fetches timed out)`);
   return 0;
 }
 
@@ -107,5 +115,11 @@ if (require.main === module) {
   process.on('beforeExit', () => {
     if (!settled) { console.error('[verify-identical] event loop drained before the run finished; output is incomplete'); process.exit(1); }
   });
-  main().finally(() => { settled = true; }).then((c) => process.exit(c), (e) => { console.error(e); process.exit(1); });
+  const { runMain } = require('./lib/run-main');
+  // Teardown closes the scraper's browser and prints its cost summary.
+  const scraperCleanup = () => {
+    const mod = require.cache[require.resolve('./lib/scraper.js')];
+    return mod && typeof mod.exports.cleanup === 'function' ? mod.exports.cleanup() : undefined;
+  };
+  runMain(() => main().finally(() => { settled = true; }), { teardown: [scraperCleanup] });
 }
