@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-10-14T20:31:44.151Z",
-  "processed": 369,
-  "failed": 341,
-  "successRate": "52.0%",
+  "updatedAt": "2026-10-14T21:00:21.641Z",
+  "processed": 374,
+  "failed": 339,
+  "successRate": "52.5%",
   "tierBreakdown": {
-    "playwright": 122,
+    "playwright": 125,
     "amp": 5,
-    "browserbase": 13,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingdog": 15,
     "scrapingbee": 21,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 44
+    "archive": 45
   },
   "browserbaseSessions": 4,
   "recentActivity": [
+    {
+      "t": "2026-10-14T17:33:11.846Z",
+      "event": "bb-session",
+      "session": "61d938cf",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-10-14T17:33:12.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T17:40:04.492Z",
+      "event": "bb-session",
+      "session": "2c90d94a",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-10-14T17:40:05.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-10-14T18:02:33.145Z",
       "event": "bb-session",
@@ -103,30 +125,6 @@
       "t": "2026-10-14T18:59:35.889Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-14T20:24:05.546Z",
-      "event": "bb-session",
-      "session": "223af58e",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
-    {
-      "t": "2026-10-14T20:24:14.032Z",
-      "event": "bb-session",
-      "session": "1dab6f83",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
-    {
-      "t": "2026-10-14T20:28:29.901Z",
-      "event": "bb-session",
-      "session": "ddd9fcae",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
-    },
-    {
-      "t": "2026-10-14T20:28:49.346Z",
-      "event": "bb-session",
-      "session": "85f4ceea",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
     }
   ]
 }
