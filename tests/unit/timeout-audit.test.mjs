@@ -93,7 +93,18 @@ test('scanner: http module aliases are resolved per file (BRO-5261)', () => {
 
 test('scanner: an unrelated later .destroy( does not count as the timeout handler (BRO-5261)', () => {
   const { checkSource } = require('../../scripts/audit-fetch-timeouts.js');
-  const filler = '  const pad = 1;\n'.repeat(30);
+  const filler = '  const pad = 1;\n'.repeat(60); // past the 800-char handler window
   const src = `function f(u) {\n  const req = https.request(u, () => {});\n  req.setTimeout(0);\n  req.on('error', () => {});\n${filler}  res2.destroy();\n}\n`;
   assert.equal(checkSource('x.js', src).length, 1);
+});
+
+test('scanner: a multi-line `https\\n  .get(` call is seen, and its request variable is not an alias (BRO-5261)', () => {
+  const { checkSource } = require('../../scripts/audit-fetch-timeouts.js');
+  const multiline = "function f(url) {\n  return new Promise((res, rej) => {\n    https\n      .get(url, {}, () => {})\n      .on('error', rej);\n  });\n}\n";
+  assert.equal(checkSource('x.js', multiline).length, 1);
+  const bounded = multiline.replace(".on('error', rej);", ".on('error', rej)\n      .setTimeout(60000, function () { this.destroy(new Error('t')); });");
+  assert.deepEqual(checkSource('x.js', bounded), []);
+  // `const req = https\n  .get(...)` binds the request, not the module.
+  const reqVar = "function f(u, m) {\n  const req = https\n    .get(u, { timeout: 5000 }, () => {});\n  req.on('timeout', () => req.destroy());\n  req.on('error', () => {});\n  return m.get(u);\n}\nfunction g(req) { return req.get('x'); }\n";
+  assert.deepEqual(checkSource('x.js', reqVar), []);
 });

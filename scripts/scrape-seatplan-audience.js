@@ -411,6 +411,9 @@ async function main() {
   // URL-pattern-change signal (same exemption as #369/#415's fix).
   if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit && bdCapped) {
     console.warn('\n⚠️  ZERO shows matched while Bright Data was capped (breaker/budget) — deferring, not a URL-pattern change.');
+    // Results are already saved above. Stop here: the coverage block below
+    // would treat every show as missing and SERP each one (BRO-5261).
+    process.exit(0);
   } else if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit) {
     console.error('\n❌ ZERO shows matched — possible URL pattern change. Aborting.');
     process.exit(1);

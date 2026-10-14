@@ -80,7 +80,8 @@ function fetchCCPage() {
         res.on('data', (c) => (body += c));
         res.on('end', () => resolve(body));
       })
-      .on('error', reject);
+      .on('error', reject)
+      .setTimeout(60000, function () { this.destroy(new Error(`timed out after 60s: ${CC_URL}`)); }); // BRO-5261
   });
 }
 

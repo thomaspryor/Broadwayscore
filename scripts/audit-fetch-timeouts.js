@@ -105,7 +105,7 @@ function listScannableFiles(dir) {
 // preceding word char or dot immediately before "fetch(" (same shape as
 // RISKY_CALL_RE in audit-help-flag-safety.js).
 const FETCH_RE = /(?<![.\w])fetch\(/g;
-const HTTP_GET_RE = /\bhttps?\.get\(/g;
+const HTTP_GET_RE = /\bhttps?\s*\.get\(/g; // \s*: `https\n  .get(` (BRO-5261)
 // https.request()/http.request() — same underlying http.ClientRequest as
 // https.get(), just used for non-GET methods (POST bodies especially, which
 // https.get() can't send at all): options-object shape, destroy-handler
@@ -121,7 +121,7 @@ const HTTP_GET_RE = /\bhttps?\.get\(/g;
 // `timeout:` text anywhere in the call's own args, identifier-based options
 // lookup, destroy-handler search) is already position-agnostic, so no
 // separate logic is needed for that shape difference.
-const HTTP_REQUEST_RE = /\bhttps?\.request\(/g;
+const HTTP_REQUEST_RE = /\bhttps?\s*\.request\(/g;
 
 // BRO-5261 (BRO-3603/3840 retro-review): the two regexes above only see a
 // literal `https.`/`http.` receiver, so `const client = u.protocol ===
@@ -132,7 +132,7 @@ const HTTP_REQUEST_RE = /\bhttps?\.request\(/g;
 const HTTP_MOD_EXPR = String.raw`(?:https?|require\(\s*['"](?:node:)?https?['"]\s*\))`;
 const HTTP_ALIAS_DECL_RES = [
   // const x = require('https') / const x = https
-  new RegExp(String.raw`\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*${HTTP_MOD_EXPR}\s*[;\n]`, 'g'),
+  new RegExp(String.raw`\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*${HTTP_MOD_EXPR}\s*(?:;|\n(?!\s*\.))`, 'g'), // not `const req = https\n  .get(`
   // [const] x = <cond> ? https : http   (either side may be a require)
   new RegExp(String.raw`(?:\b(?:const|let|var)\s+|(?<![.\w$]))([A-Za-z_$][\w$]*)\s*=(?!=)\s*[^;\n]*?\?\s*${HTTP_MOD_EXPR}\s*:\s*${HTTP_MOD_EXPR}`, 'g'),
   // import x from 'https' / import * as x from 'node:http'
@@ -140,7 +140,7 @@ const HTTP_ALIAS_DECL_RES = [
 ];
 // require('https').get(...) / .request(...) — matched on the strings-intact
 // view (the module name is a string), then confirmed as code on the blanked one.
-const REQUIRE_HTTP_CALL_RE = /\brequire\(\s*['"](?:node:)?https?['"]\s*\)\.(get|request)\(/g;
+const REQUIRE_HTTP_CALL_RE = /\brequire\(\s*['"](?:node:)?https?['"]\s*\)\s*\.(get|request)\(/g;
 
 /** Identifiers bound to the http/https module in this file (never `http`/`https` themselves — HTTP_GET_RE/HTTP_REQUEST_RE cover those). */
 function httpModuleAliases(scopeSrc) {
@@ -583,7 +583,7 @@ function checkSource(file, source) {
   const aliases = httpModuleAliases(scopeSrc);
   if (aliases.length) {
     const esc = aliases.map((a) => a.replace(/[$]/g, '\\$&'));
-    const aliasCallRe = new RegExp(`(?<![.\\w$])(?:${esc.join('|')})\\.(get|request)\\(`, 'g');
+    const aliasCallRe = new RegExp(`(?<![.\\w$])(?:${esc.join('|')})\\s*\\.(get|request)\\(`, 'g');
     for (const match of scanSrc.matchAll(aliasCallRe)) {
       const label = match[1] === 'get' ? 'https.get()/http.get()' : 'https.request()/http.request()';
       checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, label, findings); // same label as the literal scans: the CI gate filters on f.call
@@ -649,15 +649,15 @@ function checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, callLabe
   if (varName) {
     destroySearchText = enclosingFunctionScope(scopeSrc, extents, match.index);
     const identRe = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]{0,300}?\\.destroy\\(`);
-    setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]{0,300}?\\.destroy\\(`);
+    destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]{0,800}?\\.destroy\\(`);
+    setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]{0,800}?\\.destroy\\(`);
   } else {
     const chainEnd = chainedCallSpanEnd(scanSrc, openParenIdx);
     destroySearchText = scopeSrc.slice(match.index, chainEnd);
-    destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]{0,300}?\.destroy\(/;
-    setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]{0,300}?\.destroy\(/;
+    destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]{0,800}?\.destroy\(/;
+    setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]{0,800}?\.destroy\(/;
   }
-  // {0,300}: the destroy() must sit in the timeout handler itself, not be any
+  // {0,800}: the destroy() must sit in the timeout handler itself, not be any
   // later `.destroy(` in the enclosing function (BRO-5261: `req.setTimeout(0);
   // ... res2.destroy()` used to pass).
   const hasOnTimeoutDestroy = destroyRe.test(destroySearchText);
