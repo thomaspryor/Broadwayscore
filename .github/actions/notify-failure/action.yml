@@ -120,6 +120,8 @@ runs:
           const minConsecutive = parseInt(process.env.INPUT_MIN_CONSECUTIVE_FAILURES) || 1;
 
           try {
+            // Inside the try: a missing helper falls through to the fail-open catch below.
+            const { isRecentOtherFailure, createdFilterDate } = require('./scripts/lib/notify-cooldown.js');
             // context.workflow is the display name (e.g., "Test Suite"), but
             // listWorkflowRuns needs the filename or numeric ID. Extract the
             // filename from the workflow_ref which looks like:
@@ -193,14 +195,15 @@ runs:
               workflow_id: workflowFile,
               status: 'failure',
               per_page: 5,
-              created: `>=${cutoff.toISOString().split('T')[0]}`
+              created: `>=${createdFilterDate(cutoff)}`
             }).catch(() => ({ data: { workflow_runs: [] } }));
 
-            // Count how many failed runs happened in the cooldown window
-            const recentFailures = (runs.data.workflow_runs || []).filter(r => {
-              const created = new Date(r.created_at);
-              return created >= cutoff && r.id !== context.runId;
-            });
+            // Count how many failed runs FINISHED failing in the cooldown window (completion
+            // time, not creation: a 5h orchestrator run created long before its sibling failed
+            // must still suppress the duplicate page, BRO-5302).
+            const recentFailures = (runs.data.workflow_runs || []).filter(
+              r => isRecentOtherFailure(r, cutoff, context.runId)
+            );
 
             if (recentFailures.length > 0) {
               // Another failure already happened in the cooldown window — it would have alerted
