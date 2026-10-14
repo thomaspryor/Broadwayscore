@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5343",
   "planId": "48904a9d-bd26-4c0c-992f-e540a6926e52",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T06:10:22.000Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,18 @@
         "description": "Brixton House's own Baby page (BRO-5343)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T07:00:57.607Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for peter-pan-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for baby-off-west-end-2026"
+    }
+  ]
 }
