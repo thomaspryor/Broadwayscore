@@ -46,7 +46,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { normalizeCritic, normalizeUrl } = require('./lib/review-normalization');
+const { normalizeCritic, canonicalArticleKey } = require('./lib/review-normalization');
 const { SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS } = require('./lib/review-write-guard');
 
 const USAGE = `validate-added-review-ownership.js — post-rebase cross-show ownership gate.
@@ -244,10 +244,10 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
  * ("thousands of files") is N x M parses inside the push retry loop.
  */
 function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
-  // normalizeUrl (BRO-3249), NOT sameUrlKey: this branch's own writer-side
+  // canonicalArticleKey (BRO-5321; normalizeUrl before it, BRO-3249), NOT sameUrlKey: this branch's own writer-side
   // counterpart — review-write-guard.js's checkUrlCollision, which is what
   // stamps duplicateOf on exactly the files this gate is supposed to catch —
-  // identifies "same URL" via normalizeUrl (strips scheme + www, not just
+  // identifies "same URL" via that same key (strips scheme + www, not just
   // lowercase + fragment + trailing slash). The cross-show branch above
   // (findCrossShowOwners -> url-ownership.js) already uses normalizeUrl too;
   // this branch used the weaker validate-data.js key instead, so it silently
@@ -262,7 +262,7 @@ function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
   // ran. Not a byline-detection gap (criticName here was null, which
   // normalizeCritic already treats as 'unknown') — a URL-identity mismatch
   // between the writer and this gate.
-  const key = normalizeUrl(url);
+  const key = canonicalArticleKey(url);
   if (!key) return [];
   let byUrl = cache.get(showId);
   if (!byUrl) {
@@ -277,7 +277,7 @@ function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
       try {
         d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       } catch { continue; }
-      const k = normalizeUrl(d && d.url);
+      const k = canonicalArticleKey(d && d.url);
       if (!k) continue;
       if (!byUrl.has(k)) byUrl.set(k, []);
       byUrl.get(k).push({ file: f, data: d });

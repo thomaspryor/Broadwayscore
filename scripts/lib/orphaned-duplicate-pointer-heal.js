@@ -38,7 +38,9 @@ const { isEffectivelyWrongProductionOrShow } = require('./content-quality.js');
 // validate-data.js's duplicate gate applies) would miss a collision basis that
 // differs only by protocol/www/tracking params, which is exactly the
 // operation-mincemeat-2025 Time Out pair.
-const { normalizeUrl } = require('./review-normalization.js');
+// canonicalArticleKey: the write guard's own same-article key (BRO-5321), so a
+// pointer this heal restores is one checkUrlCollision would also have set.
+const { canonicalArticleKey } = require('./review-normalization.js');
 // The write-time collision verdict. Required here (not just relied on inside
 // safeWriteReview) because that function's collision branch only ever SETS
 // duplicateOf — when it declines, it logs "keeping primary" and leaves whatever
@@ -275,8 +277,8 @@ function findUnjustifiedHealClears(records) {
     if (!targetData) continue; // target gone — the clear stands
     if (isTargetInvalidated(targetData)) continue; // clear was justified
     if (wouldCloseDuplicateCycle(file, targetFile, byFile)) continue; // never restore into a loop
-    const ownUrl = typeof data.url === 'string' ? normalizeUrl(data.url) : null;
-    const targetUrl = typeof targetData.url === 'string' ? normalizeUrl(targetData.url) : null;
+    const ownUrl = typeof data.url === 'string' ? canonicalArticleKey(data.url) : null;
+    const targetUrl = typeof targetData.url === 'string' ? canonicalArticleKey(targetData.url) : null;
     if (!ownUrl || !targetUrl || ownUrl !== targetUrl) continue;
     // Defer to the write-time decision the guard would make for this exact
     // pair, rather than re-suppressing on URL identity alone. This is what
@@ -332,14 +334,14 @@ function findChainPointersThrough(records, throughFile) {
   if (!terminus || terminus === throughFile) return []; // no chain to flatten
   const terminusData = byFile.get(terminus);
   if (!terminusData) return [];
-  const terminusUrl = typeof terminusData.url === 'string' ? normalizeUrl(terminusData.url) : null;
+  const terminusUrl = typeof terminusData.url === 'string' ? canonicalArticleKey(terminusData.url) : null;
   if (!terminusUrl) return [];
 
   const out = [];
   for (const { file, data } of records || []) {
     if (!data || file === terminus) continue;
     if (data.duplicateOf !== throughFile) continue;
-    const ownUrl = typeof data.url === 'string' ? normalizeUrl(data.url) : null;
+    const ownUrl = typeof data.url === 'string' ? canonicalArticleKey(data.url) : null;
     if (!ownUrl || ownUrl !== terminusUrl) continue;
     if (wouldCloseDuplicateCycle(file, terminus, byFile)) continue;
     out.push({
@@ -471,11 +473,11 @@ function hasStaleClearBreadcrumb(data, field) {
  */
 function pickRetargetSibling(loser, targetFile, siblings, isExcluded) {
   if (!loser || !loser.url) return null;
-  const want = normalizeUrl(loser.url);
+  const want = canonicalArticleKey(loser.url);
   if (!want) return null;
   for (const s of siblings || []) {
     if (!s || !s.data || s.file === loser.file || s.file === targetFile) continue;
-    if (!s.data.url || normalizeUrl(s.data.url) !== want) continue;
+    if (!s.data.url || canonicalArticleKey(s.data.url) !== want) continue;
     if (s.data.duplicateOf || s.data.duplicateTextOf) continue; // point at a canonical, not another loser
     if (isExcluded(s.data)) continue;
     return s.file;
@@ -529,7 +531,7 @@ function pickTextTwinSibling(loser, targetFile, siblings, isExcluded) {
 function pickOrphanGroupWinners(orphans, publishedKeys, isExcluded) {
   const groups = new Map();
   for (const o of orphans || []) {
-    const u = o && o.url ? normalizeUrl(o.url) : '';
+    const u = o && o.url ? canonicalArticleKey(o.url) : '';
     if (!u) continue;
     const k = `${o.showId}|${o.targetFile}|${u}`;
     if (!groups.has(k)) groups.set(k, []);

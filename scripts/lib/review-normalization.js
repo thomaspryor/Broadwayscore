@@ -2465,6 +2465,77 @@ function stripTrivial(u) {
   return u.split(/[?&]/)[0].replace(/(?:%20|\s|\/)+$/gi, '');
 }
 
+// Domain-alias map: alias hostname -> canonical hostname, from the registry's
+// domainAliases (theater.nytimes.com -> nytimes.com). An alias that is ANOTHER
+// outlet's own primary domain (the "ap" entry lists abcnews.go.com) is a
+// registry data error, not syndication, and is dropped so a real ABC News url
+// never folds onto AP's host. Moved here from audit-duplicate-of-url-mismatch.js
+// (BRO-5321) so every "same article" comparator shares one map.
+let _domainAliasToCanonical = null;
+function domainAliasToCanonical() {
+  if (_domainAliasToCanonical) return _domainAliasToCanonical;
+  const registry = loadOutletRegistry() || {};
+  const primaryDomains = new Set();
+  for (const o of Object.values(registry.outlets || {})) {
+    if (o.domain) primaryDomains.add(String(o.domain).toLowerCase());
+  }
+  const map = {};
+  for (const o of Object.values(registry.outlets || {})) {
+    if (!o.domain || !Array.isArray(o.domainAliases)) continue;
+    const canonical = String(o.domain).toLowerCase();
+    for (const alias of o.domainAliases) {
+      const a = String(alias).toLowerCase();
+      if (a === canonical || primaryDomains.has(a)) continue;
+      map[a] = canonical;
+    }
+  }
+  _domainAliasToCanonical = map;
+  return map;
+}
+
+/**
+ * Rewrite the leading hostname of an already-normalized (scheme/www-free) url
+ * to its registered canonical domain. A no-op for hosts not in the registry.
+ * @param {string} u
+ * @returns {string}
+ */
+function canonicalizeHost(u) {
+  if (!u) return u;
+  const map = domainAliasToCanonical();
+  return u.replace(/^[a-z0-9.-]+/i, (host) => map[host.toLowerCase()] || host);
+}
+
+/**
+ * One key for "is this the same article?" (BRO-5321), shared by every
+ * comparator that sets or clears a duplicate pointer between two copies:
+ * normalizeUrl() (scheme, www, trailing slash, tracking params), the
+ * registry's domain aliases, and Variety's article id. A Variety article keeps
+ * its trailing id across slug and path rewrites (legacy /review/VE1117933618,
+ * /2007/legit/reviews/deuce-1200558823), so two urls ending in the same id are
+ * one article whatever the rest of the path says.
+ *
+ * ignoreQuery also drops the whole query string (stripTrivial). Use it only
+ * where a false "same" errs safe (deciding whether to CLEAR a pointer); the
+ * setter keeps query params, since some sites carry the article id there. A
+ * key equal without ignoreQuery is always equal with it, so the setter and the
+ * clearer can never disagree in the direction that oscillates.
+ *
+ * @param {string} url
+ * @param {{ignoreQuery?: boolean}} [opts]
+ * @returns {string}
+ */
+function canonicalArticleKey(url, { ignoreQuery = false } = {}) {
+  let k = normalizeUrl(url);
+  if (!k) return k;
+  if (ignoreQuery) k = stripTrivial(k);
+  k = canonicalizeHost(k);
+  const q = k.indexOf('?');
+  const pathPart = (q === -1 ? k : k.slice(0, q)).replace(/\/+$/, '');
+  const variety = pathPart.match(/^variety\.com\/.*[^\d](\d{9,})$/);
+  if (variety) return `variety.com/#${variety[1]}${q === -1 ? '' : k.slice(q)}`;
+  return k;
+}
+
 /**
  * Normalize an outlet name and return both the canonical ID and display name.
  * Convenience wrapper combining normalizeOutlet() + getOutletDisplayName().
@@ -2869,6 +2940,8 @@ module.exports = {
   normalizePublishDate,
   normalizeUrl,
   stripTrivial,
+  canonicalizeHost,
+  canonicalArticleKey,
   generateReviewFilename,
   generateReviewKey,
   slugify,

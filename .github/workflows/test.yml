@@ -6148,6 +6148,18 @@ jobs:
         # prevention is review-write-guard's URL-collision detector, daily heal is
         # dedupe-same-url-bylines.yml. Run --fix locally to repair.
 
+      - name: Audit same-text different-critic copies (BRO-5321, advisory)
+        if: always()
+        continue-on-error: true
+        run: node scripts/audit-identical-text-across-critics.js --ratchet
+        # Fails when more shows hold one article's identical text under 2+
+        # critics with 2+ copies still eligible to count than
+        # data/audit/identical-text-critics-baseline.json allows. Write-time
+        # prevention: review-write-guard.js sets duplicateTextOf on such a copy
+        # (scripts/lib/identical-text-sibling.js); this catches writers that
+        # bypass safeWriteReview. Advisory first (CLAUDE.md §19); lower the
+        # baseline as byline fixes land, then drop continue-on-error.
+
       - name: Audit stale duplicateOf flags
         if: always()
         run: node scripts/audit-duplicate-of-url-mismatch.js --gate

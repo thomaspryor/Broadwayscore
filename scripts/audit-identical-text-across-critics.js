@@ -12,6 +12,10 @@
  *   node scripts/audit-identical-text-across-critics.js            groups + count by outlet
  *   node scripts/audit-identical-text-across-critics.js --live-author [--show=a,b]
  *       also fetch each url and print the live page's author signals
+ *   node scripts/audit-identical-text-across-critics.js --ratchet
+ *       exit 1 when more groups are unresolved (2+ copies still eligible to
+ *       count) than data/audit/identical-text-critics-baseline.json allows
+ *       (BRO-5321). Lower the baseline when byline fixes bring the count down.
  */
 const fs = require('fs');
 const path = require('path');
@@ -25,6 +29,7 @@ const USAGE = `audit-identical-text-across-critics.js — same text filed under 
 Usage:
   node scripts/audit-identical-text-across-critics.js
   node scripts/audit-identical-text-across-critics.js --live-author [--show=id1,id2]
+  node scripts/audit-identical-text-across-critics.js --ratchet
 `;
 if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
 
@@ -61,6 +66,18 @@ function identicalTextGroups(rows) {
   return groups;
 }
 
+/**
+ * Pure: is this group still unresolved, i.e. do 2+ copies remain eligible to
+ * count? A copy is settled when it is excluded (wrongAttribution, duplicateOf,
+ * ...) or its duplicateTextOf points at another copy in the group.
+ */
+function isUnresolvedGroup(members) {
+  const files = new Set(members.map(m => m.file));
+  return members.filter(m => !isExcludedRow(m.d) && !(m.d.duplicateTextOf && files.has(m.d.duplicateTextOf))).length > 1;
+}
+
+const BASELINE = path.join(__dirname, '..', 'data', 'audit', 'identical-text-critics-baseline.json');
+
 function loadRows(onlyShows) {
   const rows = [];
   for (const showId of listShowDirs(DIR)) {
@@ -90,12 +107,23 @@ function describe(r) {
 async function main() {
   const shows = arg('show');
   const groups = identicalTextGroups(loadRows(shows ? new Set(shows.split(',')) : null));
+  if (arg('ratchet') !== null) {
+    const unresolved = groups.filter(isUnresolvedGroup).length;
+    const max = JSON.parse(fs.readFileSync(BASELINE, 'utf8')).maxUnresolvedGroups;
+    console.log(`identical text under 2+ critics: ${groups.length} groups, ${unresolved} unresolved (baseline ${max})`);
+    if (unresolved > max) {
+      console.log(`::error::${unresolved - max} more same-text-different-critic groups than the baseline. A writer stored one article under a second critic; see BRO-5321 and run this audit without --ratchet for the list.`);
+      return 1;
+    }
+    if (unresolved < max) console.log(`Below baseline: lower maxUnresolvedGroups in ${path.relative(process.cwd(), BASELINE)} to ${unresolved}.`);
+    return 0;
+  }
   const byOutlet = {};
   let liveTwice = 0;
   for (const g of groups) {
     const outlet = g[0].file.split('--')[0];
     byOutlet[outlet] = (byOutlet[outlet] || 0) + 1;
-    if (g.filter(m => !isExcludedRow(m.d)).length > 1) liveTwice++;
+    if (isUnresolvedGroup(g)) liveTwice++;
   }
   groups.sort((a, b) => a[0].rel.localeCompare(b[0].rel));
   for (const g of groups) {
@@ -126,4 +154,4 @@ if (require.main === module) {
   main().then(code => process.exit(code), e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { identicalTextGroups, loadRows, MIN_CHARS };
+module.exports = { identicalTextGroups, isUnresolvedGroup, loadRows, MIN_CHARS };

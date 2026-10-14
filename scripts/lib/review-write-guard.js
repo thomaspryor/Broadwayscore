@@ -2407,6 +2407,35 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-5321: a write that introduces a body a same-show sibling already holds
+  // word for word under a different named critic is the same article filed
+  // twice (show-score/BWW/DTLI/domain-redirect copies). Point it at that
+  // sibling with the existing duplicateTextOf so it cannot double count; the
+  // text stays, and the rebuild re-admits it if the sibling goes away.
+  if (!force && newData.fullText && !newData.duplicateTextOf && !newData.duplicateOf) {
+    try {
+      const { findIdenticalTextSibling, MIN_IDENTICAL_CHARS } = require('./identical-text-sibling');
+      if (String(newData.fullText).length >= MIN_IDENTICAL_CHARS) {
+        const dir = path.dirname(filePath);
+        const thisFile = path.basename(filePath);
+        let existingData = null;
+        try { existingData = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { /* new file */ }
+        const siblings = [];
+        for (const f of fs.readdirSync(dir)) {
+          if (!f.endsWith('.json') || f === thisFile || f === 'failed-fetches.json') continue;
+          try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* skip unreadable */ }
+        }
+        const twin = findIdenticalTextSibling({ thisFile, newData, existingData, siblings });
+        if (twin) {
+          console.warn(`[review-write-guard] identical text: ${thisFile} carries the same body as ${twin} under a different critic — setting duplicateTextOf (BRO-5321)`);
+          newData.duplicateTextOf = twin;
+        }
+      }
+    } catch (e) {
+      console.warn(`[review-write-guard] identical-text check skipped for ${path.basename(filePath)}: ${e.message}`);
+    }
+  }
+
   // BRO-3470: the #1655 retraction above only runs on non-force writes, but the
   // duplicateOf setters that must force (a same-URL pair re-fires the collision
   // detector otherwise) are exactly the ones that leave the contradiction
@@ -3008,10 +3037,15 @@ function checkUrlCollision(filePath, newData) {
 // Inlining a second normalizer here was the design problem flagged in
 // tonight's plan-review — two normalizers drift over time. Single source
 // of truth: review-normalization.normalizeUrl.
+//
+// BRO-5321: canonicalArticleKey (normalizeUrl + registry domain aliases +
+// Variety's trailing article id), so theater.nytimes.com vs nytimes.com and
+// legacy vs modern Variety slugs of one article collide too. 143 same-show
+// pairs in the corpus differed only that way, every one the same article.
 function _normalizeUrlForCollision(url) {
   // Lazy require to avoid circular dep at module load.
-  const { normalizeUrl } = require('./review-normalization');
-  return normalizeUrl(url);
+  const { canonicalArticleKey } = require('./review-normalization');
+  return canonicalArticleKey(url);
 }
 
 // BRO-2409: normalizeUrl() PLUS a full query-string strip (review-normalization's
@@ -3024,23 +3058,12 @@ function _normalizeUrlForCollision(url) {
 // noise there too, but a false NEGATIVE just means a real dupe goes unflagged
 // until the next write, not a live review getting silently dropped).
 //
-// KNOWN RESIDUAL GAP (ship-check finding, not fixed here): audit-duplicate-of-
-// url-mismatch.js's own comparator additionally applies canonicalizeHost()
-// (folds a registered domain alias, e.g. theater.nytimes.com -> nytimes.com,
-// via outlet-registry.json). This does NOT. A pair whose URLs differ ONLY by
-// such a domain alias could still hit the exact race this fix closes for
-// query-string variance. Not ported here because canonicalizeHost requires
-// loading outlet-registry.json, and review-write-guard.js is loaded by nearly
-// every script in the repo — pulling registry I/O into its module-scope
-// self-heal path is a broader change than this ticket's confirmed failure
-// mode warrants. Zero of the 22 real corpus clusters BRO-2409 was filed
-// against involved a domain-alias mismatch; if one surfaces, promote
-// canonicalizeHost (and its registry load) into review-normalization.js
-// alongside stripTrivial so both comparators share it, rather than
-// duplicating the domain-alias map here.
+// Same key as _normalizeUrlForCollision (BRO-5321 closed the domain-alias gap
+// noted here before), so anything the setter calls one article the clearer
+// does too: equal without ignoreQuery implies equal with it.
 function _trivialCanonUrl(url) {
-  const { normalizeUrl, stripTrivial } = require('./review-normalization');
-  return stripTrivial(normalizeUrl(url));
+  const { canonicalArticleKey } = require('./review-normalization');
+  return canonicalArticleKey(url, { ignoreQuery: true });
 }
 
 /**
