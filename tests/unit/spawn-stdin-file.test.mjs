@@ -41,6 +41,8 @@ test('stdin from a file: child that reads gets the exact payload', () => {
   assert.equal(r.stdout, '{"a":1}\n');
 });
 
+const SHELL_CALL = /(spawnSync|execFileSync)\(\s*['"](?:\/bin\/)?(?:bash|sh)['"]/;
+
 // Guard: hook tests must not pipe a payload with spawnSync('bash', [...], { input }).
 // Hooks commonly exit (self-skip, kill switch) before reading stdin.
 test('no hook test pipes stdin into bash with plain spawnSync', () => {
@@ -54,15 +56,27 @@ test('no hook test pipes stdin into bash with plain spawnSync', () => {
       if (!/hooks/.test(src)) continue;
       const lines = src.split('\n');
       lines.forEach((line, i) => {
-        if (!/(^|[^\w.])(spawnSync|execFileSync)\($/.test(line.trimEnd()) && !/(^|[^\w.])(spawnSync|execFileSync)\(\s*['"]bash['"]/.test(line)) return;
+        // cp.spawnSync / child_process.execFileSync count too; so do sh and /bin/bash.
+        if (!/(^|[^\w])(spawnSync|execFileSync)\($/.test(line.trimEnd()) && !SHELL_CALL.test(line)) return;
         // Call may wrap; options may sit a few lines below.
         const call = lines.slice(i, i + 8).join('\n');
-        if (!/(spawnSync|execFileSync)\(\s*['"]bash['"]/.test(call)) return;
+        if (!SHELL_CALL.test(call)) return;
         if (/\binput\b\s*[:,}]/.test(call)) offenders.push(`${path.relative(ROOT, p)}:${i + 1}`);
       });
     }
   };
+  // tests/ and all of scripts/: CI also runs scripts/*.test.mjs and
+  // scripts/lib/*.test.mjs (scripts/lib/unit-test-collection.js), which the
+  // first version of this scan never looked at (BRO-5261 retro-review).
   walk(path.join(ROOT, 'tests'));
-  walk(path.join(ROOT, 'scripts', 'tests'));
+  walk(path.join(ROOT, 'scripts'));
   assert.deepEqual(offenders, [], 'use spawnSyncStdinFile from tests/helpers/spawn-stdin-file.mjs');
+});
+
+test('helper matches spawnSync on input: null, non-utf8 encoding and extra fds (BRO-5261)', () => {
+  assert.equal(spawnSyncStdinFile('bash', ['-c', 'cat'], { input: null, encoding: 'utf8' }).status, 0);
+  const hex = spawnSyncStdinFile('bash', ['-c', 'od -An -tx1'], { input: '\u00e9', encoding: 'latin1' }).stdout.trim();
+  assert.equal(hex, 'e9');
+  const r = spawnSyncStdinFile('bash', ['-c', 'cat >/dev/null; echo hi >&3'], { input: 'x', encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe', 'pipe'] });
+  assert.equal(r.output[3], 'hi\n');
 });

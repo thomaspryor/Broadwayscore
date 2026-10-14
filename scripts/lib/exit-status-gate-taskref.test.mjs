@@ -31,6 +31,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { mkdtempSync, writeFileSync, rmSync, mkdirSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -117,7 +118,7 @@ function runGate(lastAssistantMessage, extraEnv = {}) {
     last_assistant_message: lastAssistantMessage,
   });
   try {
-    const result = spawnSync('bash', [HOOK_PATH], {
+    const result = spawnSyncStdinFile('bash', [HOOK_PATH], {
       input, encoding: 'utf8', env: { ...hookEnv(sbx), ...extraEnv },
     });
     return { status: result.status, stderr: result.stderr || '' };

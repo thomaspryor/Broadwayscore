@@ -31,6 +31,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../tests/helpers/spawn-stdin-file.mjs';
 import { randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { checkByteCap } from './lib/check-claude-md-byte-cap.js';
@@ -429,7 +430,7 @@ const skipNoHookClone = { get skip() { return (!hookWorktreeDir || !shaUntouched
 
 function runFullHook(sha, branchName) {
   const stdin = `refs/heads/${branchName} ${sha} refs/heads/${branchName} 0000000000000000000000000000000000000000\n`;
-  return spawnSync('bash', [HOOK_PATH], {
+  return spawnSyncStdinFile('bash', [HOOK_PATH], {
     cwd: hookWorktreeDir,
     input: stdin,
     encoding: 'utf8',

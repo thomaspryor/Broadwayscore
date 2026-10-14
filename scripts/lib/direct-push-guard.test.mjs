@@ -13,6 +13,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const HERE = path.resolve(new URL('.', import.meta.url).pathname);
 const REPO_ROOT = path.resolve(HERE, '..', '..');
@@ -96,7 +97,7 @@ function scratchRepo() {
 }
 
 function runHook(cwd, spec, env = {}) {
-  return spawnSync('bash', [HOOK, 'origin', 'https://example.invalid/repo.git'], {
+  return spawnSyncStdinFile('bash', [HOOK, 'origin', 'https://example.invalid/repo.git'], {
     cwd,
     input: `${spec}\n`,
     encoding: 'utf8',
