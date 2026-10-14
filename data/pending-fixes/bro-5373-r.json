@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5373-r",
   "planId": "da5bb62d-7993-4bc5-a560-13b14116b288",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T21:38:52.000Z",
   "submitter": {
     "name": null,
@@ -157,5 +157,116 @@
         "description": "Text is the express.co.uk review at the stored url (.../burlesque-review-neil-norman), byline Neil Norman."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T23:12:04.706Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved america-who-hurt-you-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json → america-who-hurt-you-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved kimberly-akimbo-2022/theater-scene--victor-gluck-editor-in-chief.json → kimberly-akimbo-2022/theater-scene--joel-benjamin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json → the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved lost-in-del-valle-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json → lost-in-del-valle-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved death-of-a-salesman-2026/theater-scene--victor-gluck.json → death-of-a-salesman-2026/theater-scene--samuel-l-leiter.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/theater-scene--samuel-l-leiter.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved fallen-angels-2026/theater-scene--victor-gluck.json → fallen-angels-2026/theater-scene--samuel-l-leiter.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fallen-angels-2026/theater-scene--samuel-l-leiter.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved school-girls-or-the-african-mean-girls-play-2026/theater-scene--victor-gluck.json → school-girls-or-the-african-mean-girls-play-2026/theater-scene--samuel-l-leiter.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/theater-scene--samuel-l-leiter.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hughie-2016/huffpost--michael-glitz.json → hughie-2016/huffpost--steven-suskin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/huffpost--steven-suskin.json criticName: \"Michael Glitz\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved noises-off-2016/huffpost--fern-siegel.json → noises-off-2016/huffpost--steven-suskin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved she-loves-me-2016/huffpost--fern-siegel.json → she-loves-me-2016/huffpost--steven-suskin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved beautiful-the-carole-king-musical-2014/huffpost--danny-groner.json → beautiful-the-carole-king-musical-2014/huffpost--david-finkle.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-little-life-west-end-2023/daily-mail--laura-fox.json → a-little-life-west-end-2023/daily-mail--luke-jones.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-life-west-end-2023/daily-mail--luke-jones.json criticName: \"Laura Fox\" -> \"Luke Jones\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved burlesque-west-end-2026/express-uk--stefan-kyriazis.json → burlesque-west-end-2026/express-uk--neil-norman.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burlesque-west-end-2026/express-uk--neil-norman.json criticName: \"Stefan Kyriazis\" -> \"Neil Norman\""
+    }
+  ]
 }
