@@ -142,8 +142,24 @@ test('a blocklisted URL is a terminal skip for the recovery loop, not a retry', 
   // audit-t1-silent-gaps.recoverFromOwnUrl returns before the exec and before
   // the aggUrlRecoveryCount bump on any non-'recover' action.
   const src = fs.readFileSync(path.join(HERE, '..', '..', 'scripts', 'audit-t1-silent-gaps.js'), 'utf8');
+  const dec = src.slice(src.indexOf('function ownUrlRecoveryDecision'), src.indexOf('function recoverFromOwnUrl'));
+  assert.ok(dec.includes('blocked: !!'), 'blocklist consulted in the decision');
   const fn = src.slice(src.indexOf('function recoverFromOwnUrl'));
-  assert.ok(fn.indexOf('blocked: !!') < fn.indexOf("if (decision.action !== 'recover') return"), 'blocklist consulted in the decision');
+  assert.ok(fn.indexOf("if (decision.action !== 'recover') return") > 0, 'recoverFromOwnUrl honours the decision');
   assert.ok(fn.indexOf("if (decision.action !== 'recover') return") < fn.indexOf('nextRecoveryCount'), 'skip returns before the counter bump');
+  // BRO-5261: the decision runs BEFORE the circuit breaker spends a slot, so a
+  // blocklisted (or otherwise skipped) file never burns the daily budget.
+  const live = src.slice(src.indexOf('isRefetchCandidate && DO_RECOVER && !DRY_RUN'));
+  assert.ok(live.indexOf('ownUrlRecoveryDecision(') > 0, 'live branch decides first');
+  assert.ok(live.indexOf('ownUrlRecoveryDecision(') < live.indexOf('decideRefetch('), 'decision before the breaker');
+  assert.ok(live.indexOf('ownUrlRecoveryDecision(') < live.indexOf('recordRefetch('), 'decision before the spend');
   assert.equal(decideEmptyBodyRecovery({ file, url: BLOCKED }).action, 'recover', 'unblocked URL still recovers');
+});
+
+test('audit-show-review-gap drops blocklisted urls before the per-show budget slice (BRO-5261)', () => {
+  const src = fs.readFileSync(path.join(HERE, '..', '..', 'scripts', 'audit-show-review-gap.js'), 'utf8');
+  const rec = src.slice(src.indexOf('const recoverables = r.flaggedMisses'));
+  assert.ok(rec.indexOf('isRecoveryUrlBlocklisted(') >= 0 && rec.indexOf('isRecoveryUrlBlocklisted(') < rec.indexOf('recoverables.slice(0, recBudget)'), 'cited recoverables filtered before slicing');
+  const unc = src.slice(src.indexOf('const uncited = dirAll.filter'));
+  assert.ok(unc.indexOf('isRecoveryUrlBlocklisted(') >= 0 && unc.indexOf('isRecoveryUrlBlocklisted(') < unc.indexOf('uncited.slice(0, uncitedBudget)'), 'uncited stubs filtered before slicing');
 });

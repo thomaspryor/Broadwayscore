@@ -168,9 +168,13 @@ function showBlocklist(showId) {
   return _blocklistByShow.get(showId);
 }
 
-function recoverFromOwnUrl(showId, fileName, d, show) {
+// The cap/url/blocklist decision, made BEFORE the circuit breaker spends a
+// refetch slot: a file that is going to be skipped (blocklisted, human-
+// protected, capped ...) must not burn the global daily budget or its own
+// per-file counter (BRO-5261 retro-review of BRO-3403).
+function ownUrlRecoveryDecision(showId, fileName, d) {
   const outletId = fileName.split('--')[0];
-  const decision = decideEmptyBodyRecovery({
+  return decideEmptyBodyRecovery({
     file: d,
     outletId,
     critic: d.criticName && d.criticName !== 'Unknown' ? d.criticName : null,
@@ -180,6 +184,10 @@ function recoverFromOwnUrl(showId, fileName, d, show) {
     // counter every hour until the cap (BRO-3403).
     blocked: !!(d.url && findBlockedEntry(showBlocklist(showId), d.url)),
   });
+}
+
+function recoverFromOwnUrl(showId, fileName, d, show, decision = ownUrlRecoveryDecision(showId, fileName, d)) {
+  const outletId = fileName.split('--')[0];
   if (decision.action !== 'recover') return { attempted: false, reason: decision.reason };
 
   const iargs = [path.join(ROOT, 'scripts', 'ingest-review-from-url.js'),
@@ -413,17 +421,25 @@ async function main() {
       if (isRefetchCandidate && DO_RECOVER && DRY_RUN) {
         // Dry-run: count what WOULD refetch (consult the breaker read-only so
         // the count reflects the real budget, but never mutate/persist state).
-        const dec = decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() });
+        const dec = ownUrlRecoveryDecision(show.id, f, d).action === 'recover'
+          ? decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() })
+          : { allowed: false, skipped: true };
         attemptedUrls.add(d.url);
-        if (dec.allowed) dryRunCandidates++;
+        if (dec.skipped) { /* would be skipped before any fetch; no budget either way */ }
+        else if (dec.allowed) dryRunCandidates++;
         else breakerDenied.push({ showId: show.id, file: f, reason: dec.reason });
       } else if (isRefetchCandidate && DO_RECOVER && !DRY_RUN && fetches < FETCH_CAP) {
         attemptedUrls.add(d.url);
         // GLOBAL daily budget + per-file cap (audit-side state), checked BEFORE
         // the per-run --fetch-cap fires. A denied refetch is logged (never a
         // silent no-op) and the file still reports as a gap below.
-        const dec = decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() });
-        if (!dec.allowed) {
+        const ownDecision = ownUrlRecoveryDecision(show.id, f, d);
+        const dec = ownDecision.action === 'recover'
+          ? decideRefetch(recoveryState, { showId: show.id, fileName: f, now: new Date() })
+          : null;
+        if (!dec) {
+          recovery = { attempted: false, reason: ownDecision.reason };
+        } else if (!dec.allowed) {
           recovery = { attempted: false, reason: `circuit-breaker:${dec.reason}` };
           breakerDenied.push({ showId: show.id, file: f, reason: dec.reason });
         } else {
@@ -431,7 +447,7 @@ async function main() {
           // fetch — a crash mid-fetch must still count the spend.
           recoveryState = recordRefetch(dec.state, { showId: show.id, fileName: f, now: new Date() });
           persistRecoveryState();
-          recovery = recoverFromOwnUrl(show.id, f, d, show);
+          recovery = recoverFromOwnUrl(show.id, f, d, show, ownDecision);
           if (recovery.attempted) fetches++;
         // Healed only if a re-classification agrees — a re-ingest that lands
         // another bot stub must NOT suppress the gap (Codex review finding).

@@ -66,3 +66,24 @@ test('a link inside the name (not a prefix/suffix fragment) keeps the link text'
   ), 'show');
   assert.equal(r.outlet, 'i');
 });
+
+test('filler words before a whole linked outlet are not part of the outlet (BRO-5261)', () => {
+  for (const lead of ['Over at ', 'And ', 'Writing in ']) {
+    const [r] = extractReviews(page(
+      `<p>${lead}<a href="https://www.thestage.co.uk/reviews/x">The Stage</a>&#8217;s Dave Fargnoli said: &#8216;a sharp, funny and well-acted revival of an old favourite.&#8217;</p>`,
+    ), 'show');
+    assert.equal(r.outlet, 'The Stage', lead);
+  }
+});
+
+test('a link over whole words of the name still takes the full prose name (BRO-5261 ship-check)', () => {
+  const cases = [
+    ['<p>Financial <a href="https://www.ft.com/content/x">Times</a>&#8217; Sarah Hemming wrote: &#8216;a long, fine and well acted evening of theatre.&#8217;</p>', 'Financial Times'],
+    ['<p><a href="https://www.timeout.com/london/x">Time</a> Out&#8217;s Andrzej Lukowski wrote: &#8216;a long, fine and well acted evening of theatre.&#8217;</p>', 'Time Out'],
+    ['<p>The <a href="https://www.theguardian.com/stage/x">Guardian</a>&#8217;s Arifa Akbar wrote: &#8216;a long, fine and well acted evening of theatre.&#8217;</p>', 'The Guardian'],
+  ];
+  for (const [html, outlet] of cases) {
+    const [r] = extractReviews(page(html), 'show');
+    assert.equal(r.outlet, outlet);
+  }
+});

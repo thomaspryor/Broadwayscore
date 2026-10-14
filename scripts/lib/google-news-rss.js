@@ -86,7 +86,9 @@ async function discoverGoogleNewsReviews(show, options = {}) {
     let items = parseGoogleNewsItems(feed?.content || '').filter(item =>
       Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
       && item.pubDate.getTime() <= new Date(now).getTime()
-      && titleMatchesShow(item.title, show.title)
+      // fuzzy: the outlet may misspell the title (CATERINA, BRO-4001); the
+      // feed is already scoped to this one show, so a near match can't steal another's.
+      && titleMatchesShow(item.title, show.title, { fuzzy: true })
       && /\breview\b/i.test(item.title)
       && !/\b(interview|preview|tickets|roundup)\b/i.test(item.title)
       && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl));

@@ -34,6 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { isAggregatorUrlMismatch, hostnameOf } = require('./lib/aggregator-domains');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 
 function arg(name, def) {
   const hit = process.argv.find(a => a.startsWith(`--${name}=`));
@@ -148,7 +149,7 @@ function main() {
   for (const show of listShowDirs(REVIEW_TEXTS_DIR)) {
     const sd = path.join(REVIEW_TEXTS_DIR, show);
     for (const f of fs.readdirSync(sd)) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === '_blocklist.json') continue;
+      if (!isReviewTextFile(f)) continue;
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(sd, f), 'utf8')); } catch { continue; }
       report.totalFiles++;

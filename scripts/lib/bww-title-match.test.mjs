@@ -36,3 +36,38 @@ test('real names and non-author URLs are untouched', () => {
   assert.equal(nameFromAuthorUrl('https://example.com/review/foo'), 'https://example.com/review/foo');
   assert.equal(resolveCritic({ criticArg: 'Jesse Green' }), 'Jesse Green');
 });
+
+test('word-match channels tolerate the outlet typo only when asked (BRO-5261 retro of BRO-4001)', () => {
+  const { titleMatchesShow, urlSlugMatchesShow } = require('./rss-discovery.js');
+  const HEAD = 'Review: CATERINA AND THE BEAUTY OF KILLING FASCISTS, National Theatre';
+  assert.equal(titleMatchesShow(HEAD, TITLE), false, 'strict callers unchanged');
+  assert.equal(titleMatchesShow(HEAD, TITLE, { fuzzy: true }), true);
+  assert.equal(urlSlugMatchesShow(TYPO, TITLE, { fuzzy: true }), true);
+  assert.equal(urlSlugMatchesShow(OTHER, TITLE, { fuzzy: true }), false);
+  // A generic word is never the fuzzy word ("/musicals/" path vs "Musical").
+  assert.equal(urlSlugMatchesShow('https://example.com/musicals/a-bronx-tale/review', 'A Bronx Tale The Musical', { fuzzy: true }), false);
+  // Short titles stay exact; only one typo'd word per match.
+  assert.equal(titleMatchesShow('Hamiltn review', 'Hamilton', { fuzzy: true }), false);
+  assert.equal(titleMatchesShow('Review: CATERINA AND THE BEAUTI OF KILLIN FASCISTS', TITLE, { fuzzy: true }), false);
+});
+
+test('apostrophes fold on both sides of the word match', () => {
+  const { titleMatchesShow, urlSlugMatchesShow } = require('./rss-discovery.js');
+  assert.equal(titleMatchesShow('Review: A Midsummer Nights Dream at the Globe', "A Midsummer Night's Dream"), true);
+  assert.equal(titleMatchesShow('Review: A Midsummer Night’s Dream', "A Midsummer Night's Dream"), true);
+  assert.equal(urlSlugMatchesShow('https://example.com/disneys-beauty-and-the-beast-review', "Disney's Beauty and the Beast"), true);
+});
+
+test("the 'n' of Rock 'n' Roll still has to match after the apostrophe fold", () => {
+  const { titleMatchesShow } = require('./rss-discovery.js');
+  assert.equal(titleMatchesShow("Review: Rock 'n' Roll at the Royal Court", "Rock 'n' Roll"), true);
+  assert.equal(titleMatchesShow('The Heart of Rock and Roll review', "Rock 'n' Roll"), false);
+});
+
+test('possessive headlines still match after the apostrophe fold (ship-check)', () => {
+  const { titleMatchesShow } = require('./rss-discovery.js');
+  assert.equal(titleMatchesShow("Review: Hadestown's Eva Noblezada returns", 'Hadestown'), true);
+  assert.equal(titleMatchesShow('Tru’s triumph: review', 'Tru'), true);
+  assert.equal(titleMatchesShow('Review: Blowing Louis Armstrong’s Horn Isn’t Enough in ‘A Wonderful World’', 'A Wonderful World: The Louis Armstrong Musical'), true);
+  assert.equal(titleMatchesShow('Trump review', 'Tru'), false);
+});

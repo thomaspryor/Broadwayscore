@@ -31,7 +31,10 @@ const GENERIC_WORDS = new Set(['the', 'a', 'an', 'of', 'and', 'to', 'in', 'at', 
 // vs the post "I'll Be Back" — and blocks the match.
 const ALLOWED_EXTRA = new Set(['musical', 'play', 'part', 'parts', 'live', 'concert', 'show']);
 
+const fs = require('fs');
+const path = require('path');
 const { foldDiacritics } = require('./title-match');
+const { normalizeUrl } = require('./poller-blocklist');
 
 function decodeEntities(s) {
   return String(s || '')
@@ -142,4 +145,31 @@ function matchPostToShow(showTitle, shows, opts = {}) {
   return { showId: best.showId, confidence: best.confidence };
 }
 
-module.exports = { parseReviewPost, matchPostToShow, titleMatch, normalizeTitle, decodeEntities };
+/**
+ * Every LouReviews url already on disk, under ANY show. The writer can re-route
+ * a post to a cross-market or tour sibling, so the file never lands under the
+ * show matchPostToShow picked and the per-show exists check below never passes:
+ * without this the post was re-fetched on every poll (BRO-5261 retro of BRO-2926).
+ * @param {string} reviewTextsDir data/review-texts
+ * @returns {Set<string>} poller-blocklist normalizeUrl keys
+ */
+function loureviewsUrlsOnDisk(reviewTextsDir) {
+  const urls = new Set();
+  let shows = [];
+  try { shows = fs.readdirSync(reviewTextsDir); } catch { return urls; }
+  for (const s of shows) {
+    if (s.startsWith('_') || s.startsWith('.')) continue;
+    let files = [];
+    try { files = fs.readdirSync(path.join(reviewTextsDir, s)); } catch { continue; }
+    for (const f of files) {
+      if (!f.startsWith('loureviews--') || !f.endsWith('.json')) continue;
+      try {
+        const u = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, s, f), 'utf8')).url;
+        if (u) urls.add(normalizeUrl(u));
+      } catch { /* unreadable file: the per-show check still applies */ }
+    }
+  }
+  return urls;
+}
+
+module.exports = { parseReviewPost, matchPostToShow, titleMatch, normalizeTitle, decodeEntities, loureviewsUrlsOnDisk };
