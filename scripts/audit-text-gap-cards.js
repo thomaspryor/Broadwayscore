@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+/**
+ * Read-only scan of data/review-texts for the review-text-gap cards
+ * (BRO-4426 textless needsRefetch, BRO-4564 truncated-fetch exclusions,
+ * BRO-4301 producers). Prints metadata only, never article text.
+ *   node scripts/audit-text-gap-cards.js --card=4426|4564|4301 [--show=ID]
+ */
+const fs = require('fs');
+const path = require('path');
+const { isCvVerdictFromTruncatedFetch } = require('./lib/content-verifier');
+const { isTextlessNeedsRefetch } = require('./lib/collection-priority');
+
+const arg = (k) => (process.argv.find(a => a.startsWith(`--${k}=`)) || '').split('=')[1];
+const card = arg('card');
+const only = arg('show');
+const root = path.join(__dirname, '..', 'data', 'review-texts');
+if (!fs.existsSync(root)) { console.error('data/review-texts missing'); process.exit(2); }
+
+const liveKey = new Set();
+try {
+  const r = require('../data/reviews.json');
+  for (const v of (r.reviews || r)) liveKey.add(`${v.showId}|${v.outletId}|${(v.criticName || '').toLowerCase()}`);
+} catch {}
+
+let failed = {};
+try {
+  for (const f of JSON.parse(fs.readFileSync(path.join(root, 'failed-fetches.json'), 'utf8'))) failed[f.reviewId || `${f.showId}/${f.file}`] = f;
+} catch {}
+
+const rows = [];
+for (const showId of fs.readdirSync(root)) {
+  const dir = path.join(root, showId);
+  if (!fs.statSync(dir).isDirectory() || (only && showId !== only)) continue;
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.json')) continue;
+    let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
+    const id = `${showId}/${file}`;
+    if (card === '4426' && isTextlessNeedsRefetch(d) && !d.fullText) {
+      const shipped = liveKey.has(`${showId}|${d.outletId}|${(d.criticName || '').toLowerCase()}`);
+      const f = failed[id];
+      rows.push({ id, shipped, urlCorrected: !!d.urlCorrectedFrom, flags: ['wrongShow', 'wrongProduction', 'duplicateOf', 'isNonReview', 'fabricatedEntry'].filter(k => d[k]).join(','), incompleteReason: d.incompleteReason || '', fails: f ? `${f.failureCount}:${f.failureReason}` : '', tier: d.contentTier || '', url: d.url });
+    }
+    if (card === '4564') {
+      const cv = d.contentVerification;
+      const hit = cv && isCvVerdictFromTruncatedFetch(cv, d.fullText || d.wrongFullText || '', d.url);
+      if (hit && (d.wrongShow || d.isNonReview || d.rejectionReason === 'not_a_review')) {
+        rows.push({ id, flags: ['wrongShow', 'isNonReview'].filter(k => d[k]).join(','), rej: d.rejectionReason || '', cleared: !!(d.humanReviewedWrongProduction === false || d.manualClear), publishDate: d.publishDate || '', textLen: (d.fullText || d.wrongFullText || '').length, excerpt: !!(d.aggregatorExcerpt || d.excerpt), url: d.url, cvType: cv.articleType, cvSaid: String(cv.reasoning || '').slice(0, 160) });
+      }
+    }
+    if (card === '4301' && only) {
+      rows.push({ id, criticName: d.criticName, publishDate: d.publishDate, textLen: (d.fullText || '').length, url: d.url, wrongProduction: !!d.wrongProduction, flags: Object.keys(d).filter(k => /wrong|priorRun|dateSource|publishDateSource/i.test(k)).join(',') });
+    }
+  }
+}
+console.log(JSON.stringify({ card, count: rows.length }));
+for (const r of rows) console.log(JSON.stringify(r));
