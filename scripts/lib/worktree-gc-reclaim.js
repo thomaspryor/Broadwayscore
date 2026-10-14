@@ -75,7 +75,11 @@ function decideWorktreeReclaim({ isAncestorOfMain, hasUnmergedCommits, hasLiveLe
  *   unknown        snapshot inconsistent (pid missing, cycle, unparseable age)
  * Accepted residual risk (plan review): a session rooted OUTSIDE the worktree
  * that `cd`s in and leaves a background server orphaned for >= minAgeHours,
- * in a worktree untouched for STALE_DAYS, whose work is already merged.
+ * in a worktree untouched for STALE_DAYS, whose work is already merged; and a
+ * GUI editor launched from inside the worktree (`code .`, reparented to init,
+ * no tty) left untouched that long. Neither loses work: the branch is merged
+ * and git still refuses a dirty tree; the process is left pointing at a
+ * deleted directory.
  */
 const CWD_PIN_CLASSES = ['none', 'stale-process', 'live-session', 'foreign-process', 'unknown'];
 

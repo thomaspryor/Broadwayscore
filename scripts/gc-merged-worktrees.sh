@@ -586,7 +586,7 @@ flush() {
   else
     unmerged=$(echo "$cherry_raw" | grep -c '^+')
   fi
-  local is_ancestor has_unmerged has_live_lease removable
+  local is_ancestor has_unmerged has_live_lease removable cwd_pin worktree_idle pin_blocked decide_rc
   is_ancestor=0
   [ "$landed_status" = "0" ] && is_ancestor=1
   has_unmerged=0
