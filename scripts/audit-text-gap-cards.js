@@ -76,3 +76,12 @@ for (const showId of fs.readdirSync(root)) {
 }
 console.log(JSON.stringify({ card, count: rows.length }));
 for (const r of rows) console.log(JSON.stringify(r));
+// BRO-4426 acceptance: textless reviews a fetch can still fix. A dead url (3+
+// recorded failures) or a flagged file needs URL rediscovery, not the drain.
+if (card === '4426' && arg('max-eligible') !== undefined && arg('max-eligible') !== '') {
+  const fails = (r) => (r.fails ? Number(r.fails.split(':')[0]) : 0);
+  const eligible = rows.filter(r => r.shipped && !r.flags && fails(r) < 3).length;
+  const max = Number(arg('max-eligible'));
+  console.log(JSON.stringify({ shippedEligibleTextless: eligible, max }));
+  process.exit(eligible <= max ? 0 : 1);
+}
