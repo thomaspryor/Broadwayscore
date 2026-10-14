@@ -1,3 +1,10 @@
+// timebomb-audit-exempt: the fixture stamps note mtimes via utimesSync(Date.now()
+//   - 3h), then spawns gc-merged-worktrees.sh (a separate bash/find process on
+//   the REAL clock). Under audit-time-bomb-tests.js the in-process clock is
+//   shifted +Nd but the filesystem/child clock is not, so the notes' mtimes sit
+//   N days in the future and the GC correctly treats them as fresh. Both clocks
+//   agree in production; this is the "shim-backdated mtime + spawned child"
+//   variant documented in audit-time-bomb-tests.js (KNOWN LIMITATION).
 /**
  * BRO-4815 — landed worktrees whose only dirt is untracked session notes must
  * be salvaged (notes copied out) and removed by gc-merged-worktrees.sh, while
