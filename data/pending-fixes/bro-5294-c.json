@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5294-c",
   "planId": "4bd98ccd-c1c0-4401-978b-e65b1988ae7c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T01:10:00.000Z",
   "submitter": {
     "name": null,
@@ -55,5 +55,38 @@
         "description": "BRO-5294: restore the full pre-trim file (and its earlier score) from the commit before the multi-show flagging. The section trim was incomplete: 92 -> 91: the review continues after the box cluster ('...what Mr. Page did to coax such magnificent performances...')."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T01:20:01.396Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted master-class-2011/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored master-class-2011/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> master-class-2011/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-free-man-of-color-2010/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored a-free-man-of-color-2010/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> a-free-man-of-color-2010/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted waiting-for-godot-2009/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored waiting-for-godot-2009/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> waiting-for-godot-2009/wsj--terry-teachout.json"
+    }
+  ]
 }
