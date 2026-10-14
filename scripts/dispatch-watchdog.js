@@ -190,9 +190,11 @@ const { loadTasksUnioned } = require('./audit-dispatch-outcomes.js');
 let ledgerCache = { mtimeMs: 0, size: 0, entries: [] };
 function readLedgerCached() {
   try {
-    const st = fs.statSync(dispatchLedger.LEDGER_PATH);
+    // One resolved path for the cache key and the read (BRO-5261 retro-review).
+    const ledgerPath = dispatchLedger.defaultLedgerPath();
+    const st = fs.statSync(ledgerPath);
     if (st.mtimeMs === ledgerCache.mtimeMs && st.size === ledgerCache.size) return ledgerCache.entries;
-    const entries = dispatchLedger.readEntries();
+    const entries = dispatchLedger.readEntries(ledgerPath);
     ledgerCache = { mtimeMs: st.mtimeMs, size: st.size, entries };
     return entries;
   } catch {

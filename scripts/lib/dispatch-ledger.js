@@ -47,7 +47,11 @@ const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'dispatch-ledger.jsonl');
 // directly, are unchanged.
 let _testLedgerCleanup = false;
 function defaultLedgerPath() {
+  // DISPATCH_LEDGER_PATH also redirects a production process: nothing sets it
+  // today except audit-false-dead-ledger-rows.js's own reader.
   if (process.env.DISPATCH_LEDGER_PATH) return process.env.DISPATCH_LEDGER_PATH;
+  // Older tests redirect by assigning module.exports.LEDGER_PATH; honour it.
+  if (module.exports.LEDGER_PATH && module.exports.LEDGER_PATH !== LEDGER_PATH) return module.exports.LEDGER_PATH;
   if (isTestRun()) {
     const p = path.join(require('os').tmpdir(), `dispatch-ledger.test-${process.pid}.jsonl`);
     if (!_testLedgerCleanup) {

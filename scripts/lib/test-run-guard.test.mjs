@@ -73,7 +73,6 @@ process.stdout.write(JSON.stringify({ def: dl.defaultLedgerPath(), real: dl.LEDG
   assert.equal(fs.readFileSync(pinned, 'utf8').trim().split('\n').length, 1);
 });
 
-test('under node --test the guard leaves BSC_TEST_RUN unset (children simulating a real run stay real)', () => {
-  assert.ok(process.env.NODE_TEST_CONTEXT, 'this file runs under node --test');
+test('under node --test the guard leaves BSC_TEST_RUN unset (children simulating a real run stay real)', { skip: !process.env.NODE_TEST_CONTEXT && 'only meaningful under node --test' }, () => {
   assert.equal(process.env.BSC_TEST_RUN, undefined);
 });
