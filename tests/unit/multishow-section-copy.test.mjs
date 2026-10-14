@@ -95,3 +95,28 @@ test('markers compare words, ignoring case and punctuation', () => {
   assert.equal(markersMatch("If it's possible, to become a star.", 'If_it_s_possible', 'to_become_a_star').ok, true);
   assert.equal(markersMatch('Amélie opens the café scene and then the play ends.', 'Amelie_opens_the_cafe', 'and_then_the_play_ends').ok, true);
 });
+
+test('a filled web-search stub records the split as a source, so it is not an unverifiable web-search row (venus-in-fur-2011)', () => {
+  const target = { showId: 'target-show', criticName: 'Pat Critic', url: 'https://www.wsj.com/articles/SB999', fullText: 'x', source: 'web-search', sources: ['web-search'] };
+  const r = planSectionCopy(base({ target }));
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(r.row.sources, ['web-search', 'multi-show-split']);
+  const { isUnverifiableWebSearchRow } = require('../../scripts/lib/review-guards.js');
+  if (typeof isUnverifiableWebSearchRow === 'function') {
+    assert.equal(isUnverifiableWebSearchRow({ ...target, fullText: 'y'.repeat(900) }), true, 'the stub alone is unverifiable');
+    assert.equal(isUnverifiableWebSearchRow({ ...r.row, fullText: 'y'.repeat(900) }), false);
+  }
+});
+
+test('a re-run on a row already filed from this column only refreshes its provenance', () => {
+  const first = planSectionCopy(base({ target: { showId: 'target-show', criticName: 'Pat Critic', url: 'u', fullText: 'x', sources: ['web-search'] } }));
+  const filed = { ...first.row, sources: ['web-search'], llmScore: { score: 80 } };
+  const r = planSectionCopy(base({ target: filed }));
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.action, 'refresh');
+  assert.deepEqual(r.row.sources, ['web-search', 'multi-show-split']);
+  assert.deepEqual(r.row.llmScore, { score: 80 }, 'nothing else changes');
+  assert.equal(r.parent.multiShowSplitMethod, 'venue-box');
+  // A different section in that row is still refused.
+  assert.match(planSectionCopy(base({ target: { ...filed, fullText: 'z'.repeat(900) } })).reason, /already holds/);
+});

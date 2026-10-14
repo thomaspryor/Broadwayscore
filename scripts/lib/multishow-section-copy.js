@@ -63,6 +63,18 @@ function markersMatch(section, expectStart, expectEnd) {
  * @param {string} p.expectEnd     last words of the section
  * @returns {{ok:false, reason:string} | {ok:true, reason:string, row:object, parent:object, action:'create'|'fill'}}
  */
+/**
+ * The row's text now comes from a stored column, not from wherever the stub
+ * was found: record it, or a stub found by the legacy web-search step stays an
+ * "unverifiable web-search row" and is never scored (review-guards.js
+ * isUnverifiableWebSearchRow; venus-in-fur-2011, BRO-5325).
+ */
+function withSplitSource(target) {
+  const sources = new Set([].concat(target.sources || [], target.source || []).filter((x) => typeof x === 'string' && x));
+  sources.add('multi-show-split');
+  return [...sources];
+}
+
 function planSectionCopy({ source, sourceShowId, section, target, targetShowId, expectStart, expectEnd, now = new Date().toISOString() }) {
   if (!source || typeof source !== 'object') return { ok: false, reason: 'source row missing' };
   if (!targetShowId || targetShowId === sourceShowId) return { ok: false, reason: 'target show must differ from the source show' };
@@ -72,6 +84,16 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   if (!section || !section.ok || typeof section.text !== 'string') return { ok: false, reason: `no unambiguous section: ${(section && section.reason) || 'none'}` };
   const m = markersMatch(section.text, expectStart, expectEnd);
   if (!m.ok) return m;
+
+  // A row this tool already filed from this column with this exact section:
+  // only its provenance is brought up to date (a re-run of the plan).
+  const ids = new Set(Array.isArray(source.multiShowSplitChildShowIds) ? source.multiShowSplitChildShowIds : []);
+  ids.add(targetShowId);
+  // multiShowSplitMethod keeps the BRO-4431 fan-out from re-cutting the column.
+  const parent = { ...source, multiShowSplitParent: true, multiShowSplitMethod: 'venue-box', multiShowSplitChildShowIds: [...ids].sort() };
+  if (target && target.multiShowSectionCopy && target.multiShowSectionCopy.fromShowId === sourceShowId && target.fullText === section.text) {
+    return { ok: true, reason: `refresh: ${section.text.length}-char section already filed`, row: { ...target, sources: withSplitSource(target) }, parent, action: 'refresh' };
+  }
 
   let action = 'create';
   if (target) {
@@ -94,7 +116,7 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   let row = child;
   if (target) {
     // null, not delete: safeWriteReview's merge pass copies a missing key back from disk.
-    row = { ...target, ...child, source: target.source || child.source };
+    row = { ...target, ...child, source: target.source || child.source, sources: withSplitSource(target) };
     const replaced = { url: target.url || null, fullText: target.fullText || null };
     const sectionWords = ` ${normWords(section.text)} `;
     for (const f of EXCERPT_FIELDS) {
@@ -114,10 +136,6 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
     }
   }
 
-  const ids = new Set(Array.isArray(source.multiShowSplitChildShowIds) ? source.multiShowSplitChildShowIds : []);
-  ids.add(targetShowId);
-  // multiShowSplitMethod keeps the BRO-4431 fan-out from re-cutting the column.
-  const parent = { ...source, multiShowSplitParent: true, multiShowSplitMethod: 'venue-box', multiShowSplitChildShowIds: [...ids].sort() };
   return { ok: true, reason: `${action}: ${section.text.length}-char section`, row, parent, action };
 }
 
