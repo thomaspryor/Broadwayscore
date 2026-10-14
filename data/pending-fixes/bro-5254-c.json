@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5254-c",
   "planId": "41e07c44-2e5e-4f5b-bb51-356dd1aec244",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T23:51:48.408Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,28 @@
         "description": "BRO-5254: strip promo modules and duplicated lead paragraphs from the remaining live Variety review texts (batch 3 of 3)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T00:30:02.604Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
 }
