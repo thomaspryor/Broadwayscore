@@ -376,5 +376,44 @@
       }
     ],
     "queuedAt": "2026-10-14T05:53:08.688Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-sea-wall-off-broadway-2026",
+    "title": "Placeholder synopsis on Sea Wall",
+    "description": "synopsis for sea-wall-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T06:14:56.426Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:unconditional-a-new-musical-memoir-off-broadway-2026",
+    "title": "Auto-remediation gave up on unconditional-a-new-musical-memoir-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"unconditional-a-new-musical-memoir-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T06:14:56.432Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:doll-day-afternoon-off-broadway-2026",
+    "title": "Auto-remediation gave up on doll-day-afternoon-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"doll-day-afternoon-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T06:14:56.442Z"
   }
 ]
