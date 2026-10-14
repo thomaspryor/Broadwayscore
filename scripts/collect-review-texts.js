@@ -137,7 +137,7 @@ const {
   NO_DATE_SENTINEL,
   buildShowRecencyMap,
   NEEDS_REFETCH_DRAIN_PER_RUN,
-  isTextlessNeedsRefetch,
+  isNeedsRefetchDrainCandidate,
   promoteNeedsRefetch,
   compareReviewPriority,
 } = require('./lib/collection-priority');
@@ -6735,7 +6735,7 @@ function findReviewsToProcess() {
           _forceRefetch: forcedRefetch,
           // What the file already holds (BRO-5222): a Time Out refetch that
           // finds a listing blurb keeps a stored review instead of failing it.
-          _needsRefetch: isTextlessNeedsRefetch(data),
+          _needsRefetch: isNeedsRefetchDrainCandidate(data, failedFetchesByReviewId.get(reviewId)),
           _storedTier: data.contentTier || null,
           _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
           // Stored text that may not be this url's review (repointed url, show

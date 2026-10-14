@@ -37,3 +37,15 @@ test('cap bounds spend, cheapest tier first, input untouched', () => {
   assert.equal(promoteNeedsRefetch(queue, 0).length, 4);
   assert.ok(NEEDS_REFETCH_DRAIN_PER_RUN > 0 && NEEDS_REFETCH_DRAIN_PER_RUN <= 50);
 });
+
+test('dead or protected reviews never take a drain slot', () => {
+  const { isNeedsRefetchDrainCandidate } = require('./collection-priority.js');
+  const base = { needsRefetch: true };
+  assert.equal(isNeedsRefetchDrainCandidate(base, null), true);
+  assert.equal(isNeedsRefetchDrainCandidate(base, { failureCount: 2 }), true);
+  assert.equal(isNeedsRefetchDrainCandidate(base, { failureCount: 48 }), false, 'url_dead_404 x48');
+  assert.equal(isNeedsRefetchDrainCandidate({ ...base, fetchAttempts: [1, 2, 3] }, null), false);
+  assert.equal(isNeedsRefetchDrainCandidate({ ...base, _locked: true }, null), false);
+  assert.equal(isNeedsRefetchDrainCandidate({ ...base, manualContentTier: 'complete' }, null), false);
+  assert.equal(isNeedsRefetchDrainCandidate({ needsRefetch: true, fullText: 'x'.repeat(900) }, null), false);
+});
