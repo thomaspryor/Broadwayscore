@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-14T02:39:47.757Z",
+  "timestamp": "2026-10-14T02:51:01.779Z",
   "stats": {
     "totalReviews": 56476,
     "alreadyFlagged": 21063,
     "dateGuardCatches": 210,
-    "directorMismatch": 1884,
+    "directorMismatch": 1885,
     "tvFilmSignals": 1567,
-    "londonSignals": 2243,
-    "offBroadwaySignals": 509,
-    "yearMismatch": 140,
+    "londonSignals": 2249,
+    "offBroadwaySignals": 511,
+    "yearMismatch": 141,
     "noPublishDate": 5243
   },
   "findings": [
@@ -15607,6 +15607,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -29159,6 +29164,25 @@
       ]
     },
     {
+      "showId": "orlando-west-end-2022",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-orlando-garrick-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2022 (1x). 2024 matches production: orlando-off-broadway-2026"
+        }
+      ]
+    },
+    {
       "showId": "othello-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -30901,6 +30925,19 @@
       "score": 73,
       "publishDate": "January 29th, 2024",
       "url": "https://www.broadwayworld.com/article/Review-PLAZA-SUITE-Savoy-Theatre-20240128",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/article/Review-PLAZA-SUITE-Savoy-Theatre-20240129",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37633,7 +37670,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -54410,6 +54447,20 @@
     },
     {
       "showId": "bluets-west-end-2024",
+      "file": "everything-theatre--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://everything-theatre.co.uk/2024/05/review-bluets-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bluets-west-end-2024",
       "file": "express-uk--holly-omahony.json",
       "score": 58,
       "publishDate": "2024-05-28",
@@ -59408,6 +59459,19 @@
     },
     {
       "showId": "faith-hope-and-charity-west-end-2019",
+      "file": "britishtheatrecom--julian-eaves.json",
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-faith-hope-and-charity-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "faith-hope-and-charity-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
       "score": 91,
       "publishDate": "2019-09-20",
@@ -59425,6 +59489,19 @@
       "file": "london-theatre--mark-shenton.json",
       "score": 72,
       "publishDate": "September 19th, 2019",
+      "url": "https://www.londontheatre.co.uk/reviews/review-faith-hope-and-charity-at-the-national-theatre-dorfman",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "faith-hope-and-charity-west-end-2019",
+      "file": "london-theatre--unknown.json",
+      "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/review-faith-hope-and-charity-at-the-national-theatre-dorfman",
       "findings": [
         {
@@ -65081,6 +65158,20 @@
     },
     {
       "showId": "jews-in-their-own-words-west-end-2022",
+      "file": "everything-theatre--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://everything-theatre.co.uk/2022/09/review-jews-in-their-own-words-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "jews-in-their-own-words-west-end-2022",
       "file": "london-theatre--unknown.json",
       "score": 62,
       "publishDate": "September 29th, 2022",
@@ -69450,6 +69541,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "london-theatre--unknown.json",
+      "score": 84,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/next-to-normal-review-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -80634,6 +80739,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-2017",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "score": 87,
+      "publishDate": "April 3rd, 2017",
+      "url": "http://thebroadwayblog.com/?s=the+play+that+goes+wrong",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },

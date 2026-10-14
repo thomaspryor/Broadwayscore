@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-14T02:32:44.082Z",
+    "generatedAt": "2026-10-14T02:43:44.862Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 93,
+    "totalFlagged": 94,
     "highConfidence": 5,
-    "mediumConfidence": 88,
+    "mediumConfidence": 89,
     "lowConfidence": 0,
-    "reassignable": 37
+    "reassignable": 38
   },
   "results": [
     {
@@ -1172,6 +1172,22 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "https://www.nytimes.com/2004/11/19/theater/reviews/a-torn-land-of-torn-hearts-lost-in-a-mist-of-deception.htmlShare full articleAdvertisement\n\nYou can start salivating now. After many months of servin"
+    },
+    {
+      "showId": "pacific-overtures-2004",
+      "showTitle": "Pacific Overtures",
+      "showYear": 2004,
+      "file": "hollywood-reporter--unknown.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "pacific-overtures-1976",
+      "signals": [
+        "year 1976 in text matches revival pacific-overtures-1976",
+        "modern references: covid"
+      ],
+      "textSnippet": "Alvin Ing, the Honolulu native who starred on Broadway in a revival of Flower Drum Song and appeared in two editions of Stephen Sondheim’s Pacific Overtures, has died. He was 89.\n\nIng died Saturday of"
     },
     {
       "showId": "pacific-overtures-2004",
