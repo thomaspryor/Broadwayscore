@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-14T06:19:19.873Z",
+  "timestamp": "2026-10-14T06:56:38.632Z",
   "stats": {
-    "totalReviews": 56436,
-    "alreadyFlagged": 21065,
+    "totalReviews": 56421,
+    "alreadyFlagged": 21067,
     "dateGuardCatches": 204,
-    "directorMismatch": 1880,
-    "tvFilmSignals": 1562,
+    "directorMismatch": 1879,
+    "tvFilmSignals": 1561,
     "londonSignals": 2246,
-    "offBroadwaySignals": 510,
+    "offBroadwaySignals": 509,
     "yearMismatch": 142,
     "noPublishDate": 5232
   },
@@ -6158,20 +6158,6 @@
     },
     {
       "showId": "caroline-or-change-2021",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 94,
-      "publishDate": "2021-10-28",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. wolfe\" from caroline-or-change-2004"
-        }
-      ]
-    },
-    {
-      "showId": "caroline-or-change-2021",
       "file": "nydailynews--chris-jones.json",
       "score": 78,
       "publishDate": "2021-10-28",
@@ -11480,20 +11466,6 @@
       "score": 11,
       "publishDate": "2015-04-22",
       "url": "https://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "doctor-zhivago-2015",
-      "file": "vulture--jesse-green.json",
-      "score": 11,
-      "publishDate": "April 21, 2015",
-      "url": "http://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -62136,6 +62108,20 @@
       ]
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 25,
+      "publishDate": "2016-08-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "hay-fever-west-end-2026",
       "file": "adventuresintheatreland--julie-fisher-sheher.json",
       "score": 78,
@@ -79065,20 +79051,6 @@
       ]
     },
     {
-      "showId": "the-inheritance-2019",
-      "file": "variety--marilyn-stasio.json",
-      "score": 81,
-      "publishDate": "November 17, 2019",
-      "url": "https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203406810/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-inheritance-west-end-2018",
       "file": "london-box-office--phil-willmott.json",
       "score": 97,
@@ -79362,20 +79334,6 @@
       "score": 91,
       "publishDate": "October 14, 2021",
       "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lehman-trilogy-2021",
-      "file": "variety--marilyn-stasio.json",
-      "score": 93,
-      "publishDate": "2021-10-15",
-      "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235088743/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
