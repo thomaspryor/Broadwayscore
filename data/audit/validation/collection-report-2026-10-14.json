@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-10-14T14:38:35.293Z",
+  "runDate": "2026-10-14T15:11:36.376Z",
   "config": {
-    "batchSize": 25,
-    "maxReviews": 25,
+    "batchSize": 16,
+    "maxReviews": 16,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,71 +11,94 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 1,
+    "failed": 15,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "6.3%"
   },
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 95,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 11,
+    "scrapingdog": 7,
     "scrapingbee": 4,
-    "brightdata": 1,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 27
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 9,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 4,
-    "tier1_9Success": 0,
-    "tier2Attempts": 3,
+    "tier1_5Attempts": 32,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 14,
+    "tier1_9Success": 3,
+    "tier2Attempts": 14,
     "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier3_6Attempts": 3,
+    "tier3Attempts": 16,
+    "tier3Success": 10,
+    "tier3_6Attempts": 13,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
+    "tier4Attempts": 16,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 12,
+    "scrapingBeePageCredits": 40,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 4.5,
+    "browserbaseSessionsUsed": 32,
+    "browserbaseMinutesUsed": 20.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 5,
+    "processed": 1,
+    "failed": 15,
     "shows": [
-      "book-of-mormon-2011",
-      "ifthen-2014",
-      "la-bete-2010",
-      "the-winslow-boy-2013",
-      "wolf-hall-parts-one-and-two-2015"
+      "1984-2017",
+      "amelie-a-new-musical-2017",
+      "annie-2012",
+      "caroline-or-change-2021",
+      "cat-on-a-hot-tin-roof-2013",
+      "fun-home-2015",
+      "machinal-2014",
+      "masquerade-off-broadway-2025",
+      "oh-hello-on-broadway-2016",
+      "side-show-2014",
+      "summer-2018",
+      "sweat-2017",
+      "the-boys-in-the-band-2018",
+      "the-last-ship-2014",
+      "the-testament-of-mary-2013",
+      "wicked-2003"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 193,
-      "failed": 160
+      "processed": 200,
+      "failed": 164
     }
   },
-  "processed": [],
+  "processed": [
+    "annie-2012/wsj--terry-teachout.json"
+  ],
   "failed": [
-    "ifthen-2014/wsj--terry-teachout.json",
-    "wolf-hall-parts-one-and-two-2015/wsj--terry-teachout.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "the-winslow-boy-2013/wsj--terry-teachout.json",
-    "la-bete-2010/wsj--terry-teachout.json"
+    "masquerade-off-broadway-2025/wsj--dominic-green.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "caroline-or-change-2021/wsj--terry-teachout.json",
+    "the-boys-in-the-band-2018/wsj--terry-teachout.json",
+    "summer-2018/wsj--terry-teachout.json",
+    "1984-2017/wsj--terry-teachout.json",
+    "amelie-a-new-musical-2017/wsj--terry-teachout.json",
+    "sweat-2017/wsj--terry-teachout.json",
+    "oh-hello-on-broadway-2016/wsj--terry-teachout.json",
+    "fun-home-2015/wsj--terry-teachout.json",
+    "side-show-2014/wsj--terry-teachout.json",
+    "the-last-ship-2014/wsj--terry-teachout.json",
+    "machinal-2014/wsj--terry-teachout.json",
+    "the-testament-of-mary-2013/wsj--terry-teachout.json",
+    "cat-on-a-hot-tin-roof-2013/wsj--terry-teachout.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -269,9 +292,17 @@
       "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "the-cherry-orchard-west-end-2026/financialtimes--tim-bano.json",
-      "nina-off-west-end-2026/guardian--kate-wyver.json",
-      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "annie-2012/wsj--terry-teachout.json"
     ],
     "failed": [
       "the-book-of-mormon-west-end-2024/washpost--unknown.json",
@@ -437,7 +468,22 @@
       "ifthen-2014/wsj--terry-teachout.json",
       "wolf-hall-parts-one-and-two-2015/wsj--terry-teachout.json",
       "the-winslow-boy-2013/wsj--terry-teachout.json",
-      "la-bete-2010/wsj--terry-teachout.json"
+      "la-bete-2010/wsj--terry-teachout.json",
+      "masquerade-off-broadway-2025/wsj--dominic-green.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "caroline-or-change-2021/wsj--terry-teachout.json",
+      "the-boys-in-the-band-2018/wsj--terry-teachout.json",
+      "summer-2018/wsj--terry-teachout.json",
+      "1984-2017/wsj--terry-teachout.json",
+      "amelie-a-new-musical-2017/wsj--terry-teachout.json",
+      "sweat-2017/wsj--terry-teachout.json",
+      "oh-hello-on-broadway-2016/wsj--terry-teachout.json",
+      "fun-home-2015/wsj--terry-teachout.json",
+      "side-show-2014/wsj--terry-teachout.json",
+      "the-last-ship-2014/wsj--terry-teachout.json",
+      "machinal-2014/wsj--terry-teachout.json",
+      "the-testament-of-mary-2013/wsj--terry-teachout.json",
+      "cat-on-a-hot-tin-roof-2013/wsj--terry-teachout.json"
     ]
   },
   "tierDetails": {
@@ -530,9 +576,13 @@
       "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "the-cherry-orchard-west-end-2026/financialtimes--tim-bano.json",
-      "nina-off-west-end-2026/guardian--kate-wyver.json",
-      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -546,11 +596,7 @@
       "what-the-animals-say-off-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "table-17-off-west-end-2026/rolandcat--roviews.json",
-      "twenty-thousand-streets-off-west-end-2026/plays-to-see--jad-adams.json",
-      "twenty-thousand-streets-off-west-end-2026/rolandcat--roviews.json",
-      "the-story-west-end-2026/ground--unknown.json",
-      "paddington-the-musical-west-end-2025/matineemouse--matinee-mouse.json",
-      "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -559,7 +605,9 @@
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
     ],
     "brightdata": [
-      "jack-absolute-flies-again-west-end-2022/telegraph--fiona-mountford.json"
+      "jack-absolute-flies-again-west-end-2022/telegraph--fiona-mountford.json",
+      "wicked-2003/wsj--terry-teachout.json",
+      "annie-2012/wsj--terry-teachout.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -575,12 +623,26 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "the-book-of-mormon-west-end-2024/mirror--alun-palmer.json",
-      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json"
+      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+      "the-first-year-off-west-end-2026/liamodell--unknown.json",
+      "the-turn-of-the-screw-off-west-end-2026/islingtontribune--unknown.json",
+      "the-cook-regional-2026/broadwayworld--steve-murray.json",
+      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
+      "the-vessel-off-broadway-2026/broadwayworld--marina-kennedy.json",
+      "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
+      "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+      "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "slaughterhouse-five-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "failuresByOutlet": {
     "The Wall Street Journal": {
-      "count": 1,
+      "count": 4,
       "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
