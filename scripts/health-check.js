@@ -3906,7 +3906,10 @@ function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
 // a day of 6 correct refusals among ~22 landings. The gate itself is broken
 // only when it stops landing anything: no green run in the window, or
 // GATE_BROKEN_STREAK+ reds in a row at the head (interleaved refusals in
-// practice run at most 2 deep).
+// practice run at most 2 deep). Cancelled/skipped runs are neutral, so
+// Land's own queue-park cancels cannot reset a crash streak. A crash that hits
+// only some branches is still routed: land-retry-cancelled.yml escalates every
+// red land/** ref to its card hourly (scripts/lib/land-stranded-refs.js).
 const GATE_WORKFLOWS = new Set(['Land']);
 const GATE_BROKEN_STREAK = 4;
 // Pure (no I/O). @param {string[]} conclusionsNewestFirst - completed runs, newest first
@@ -3915,8 +3918,8 @@ function isGateWorkflowBroken(conclusionsNewestFirst) {
   if (!cs.includes('success')) return true;
   let leadingFailures = 0;
   for (const c of cs) {
-    if (c !== 'failure') break;
-    leadingFailures++;
+    if (c === 'success') break;
+    if (c === 'failure') leadingFailures++;
   }
   return leadingFailures >= GATE_BROKEN_STREAK;
 }

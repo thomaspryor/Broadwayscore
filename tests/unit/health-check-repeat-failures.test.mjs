@@ -539,6 +539,11 @@ test('isGateWorkflowBroken: no green in the window, or 4+ reds at the head, is b
   assert.equal(isGateWorkflowBroken(['failure', 'failure']), true);
   assert.equal(isGateWorkflowBroken(['failure', 'cancelled', 'failure']), true);
   assert.equal(isGateWorkflowBroken(['failure', 'failure', 'failure', 'failure', 'success', 'success']), true);
+  // Land's queue-park and superseded-push cancels must not reset the streak.
+  assert.equal(isGateWorkflowBroken(['cancelled', 'failure', 'failure', 'failure', 'failure', 'success']), true);
+  assert.equal(isGateWorkflowBroken(['failure', 'cancelled', 'failure', 'skipped', 'failure', 'failure', 'success']), true);
+  // Exactly 3 reds at the head with a green further back is still a working gate.
+  assert.equal(isGateWorkflowBroken(['failure', 'cancelled', 'failure', 'failure', 'cancelled', 'success']), false);
   assert.equal(isGateWorkflowBroken([]), true);
   assert.equal(isGateWorkflowBroken(undefined), true);
 });
@@ -553,6 +558,11 @@ test('summarizeRepeatFailures: Land refusals among greens are dropped; a Land th
   // Non-gate workflows keep the old behaviour even when greens interleave.
   const flappy = refusingLand.map(r => ({ ...r, name: 'Test Suite' }));
   assert.deepEqual(summarizeRepeatFailures(flappy).map(r => r.name), ['Test Suite']);
+  // selfHealed annotation survives the extraction (2 trailing greens).
+  const healed = [run('Test Suite', 'success', 1), run('Test Suite', 'success', 2),
+    run('Test Suite', 'failure', 3), run('Test Suite', 'failure', 4)];
+  assert.equal(summarizeRepeatFailures(healed)[0].selfHealed, true);
+  assert.equal(summarizeRepeatFailures(flappy)[0].selfHealed, false);
   // A Land that stopped landing anything is still surfaced.
   const deadLand = [run('Land', 'failure', 1), run('Land', 'failure', 2), run('Land', 'failure', 3)];
   const out = summarizeRepeatFailures(deadLand);
