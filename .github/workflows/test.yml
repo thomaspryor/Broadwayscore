@@ -1689,6 +1689,7 @@ on:
       - 'tests/unit/cv-promoted-nonreview-backlog.test.mjs'
       - 'scripts/lib/cv-promoted-nonreview-selector.js'
       - 'scripts/reverify-stale-cv-promoted.js'
+      - 'scripts/reclassify-invalid-reviews.js'
       - 'scripts/reverify-nulled-cv-promoted.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
