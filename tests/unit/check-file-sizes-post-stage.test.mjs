@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: data/*.json paths here are sparse fixture files inside a throwaway git repo, never the real derived data
 // BRO-5335: .github/actions/check-file-sizes read only `git diff --cached`,
 // but 16 of its 18 call sites run before their commit step stages anything,
 // so it always passed. scripts/lib/check-file-sizes.sh now looks at every
@@ -132,7 +133,7 @@ test('a repo with no HEAD commit still reports new big files', () => {
     assert.equal(r.status, 0);
     assert.match(r.stdout, /no HEAD commit/);
     assert.match(r.stdout, /data\/a\.db: new file/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('a clean tree passes and says how many files it checked', () => {

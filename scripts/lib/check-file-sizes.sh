@@ -52,7 +52,7 @@ while IFS= read -r -d '' f; do add "$f"; done < <(git ls-files --others --exclud
 
 errors=""
 warnings=""
-for file in "${CANDIDATES[@]}"; do
+for file in ${CANDIDATES[@]+"${CANDIDATES[@]}"}; do
   [ -f "$file" ] || continue
   size=$(size_of "$file")
   base=$(basename "$file")
@@ -88,4 +88,4 @@ if [ -n "$errors" ]; then
   echo "If this is a legitimate data file, add it to the private core-data repo instead (or to ALLOW_LARGE in scripts/lib/check-file-sizes.sh)."
   exit 1
 fi
-echo "File size check passed (${#CANDIDATES[@]} changed or new data/ file(s) checked)"
+echo "File size check passed (${#CANDIDATES[@]} changed or new data/ file(s) checked)"  # set-u-safe: ${#arr[@]} is defined for an empty array
