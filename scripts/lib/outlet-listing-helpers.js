@@ -153,8 +153,13 @@ function headlineIsTitle(headline, show) {
   return !!norm && !!h && (h === norm || h === `review ${norm}` || h === `${norm} review`);
 }
 
+// The poller FILES whatever matches, so a venue credit also needs the item to call
+// itself a review: "Soon to open at St. Luke's Theatre" is news, not a review.
+const REVIEW_WORD_RE = /\b(review|reviews|reviewed)\b/i;
+
 function namesShowVenue(combined, rawText, show, nowMs = Date.now()) {
   if (creditNames(show, nowMs).length > 0) return false;
+  if (!REVIEW_WORD_RE.test(`${rawText || ''} ${combined}`)) return false;
   const norm = venuePhrase(show);
   if (!norm) return false;
   if (!` ${combined} `.includes(` ${norm} `)) return false;

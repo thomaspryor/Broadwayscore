@@ -110,8 +110,18 @@ function reconcileFeedItems({ activeShows, targetShows, items, knownUrls = {}, n
     for (const show of targetShows) {
       if (known.get(show.id).has(urlKey(item.url))) continue;
       let level = null;
-      if (matchedIds.has(show.id)) level = 'matched';
-      else if (titleInText(show, item) && inOpeningWindow(show, item, windowDays) && looksTheatrical(show, item)) level = 'possible';
+      if (matchedIds.has(show.id)) {
+        // A title match says nothing about WHICH production: standard.co.uk's old
+        // "Midnight at the Never Get" review matched the new Midnight (live run,
+        // 2026-10-14). A dated item must fall inside the opening window; an undated
+        // one (sitemaps, some listings) can only be "possible".
+        const pub = toDateMs(item.publishDate);
+        const open = toDateMs(show.openingDate);
+        if (Number.isNaN(pub)) level = 'possible';
+        else if (!Number.isNaN(open) && pub < open - PRE_OPENING_DAYS * DAY_MS) continue;
+        else level = 'matched';
+      }
+      if (!level && titleInText(show, item) && inOpeningWindow(show, item, windowDays) && looksTheatrical(show, item)) level = 'possible';
       if (!level) continue;
       const key = `${show.id}|${urlKey(item.url)}`;
       if (seen.has(key)) continue;

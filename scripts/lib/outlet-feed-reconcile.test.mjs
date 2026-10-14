@@ -83,3 +83,13 @@ test('readinessVerdict: warn on matched gaps, pass when clean, skip when nothing
   assert.equal(readinessVerdict({ shows: [], skipped: [{ reason: 'no data/review-texts directory for this show' }], gaps: [] }).status, 'skip');
   assert.equal(readinessVerdict(null).status, 'skip');
 });
+
+// Live run 2026-10-14: an undated standard.co.uk review of an older "Midnight at the Never Get"
+// matched the new Midnight as a gap.
+test('an item dated before the opening window is dropped; an undated match is only "possible"', () => {
+  const midnight = { id: 'midnight-off-broadway-2026', title: 'Midnight', status: 'open', venue: 'X Theatre', openingDate: '2026-10-08', creativeTeam: [], cast: [] };
+  const mk = (url, publishDate) => ({ outletId: 'standard', url, headline: 'Midnight review', publishDate });
+  const r = reconcileFeedItems({ activeShows: [midnight], targetShows: [midnight], knownUrls: {}, nowMs: NOW,
+    items: [mk('https://s.co.uk/old', '2019-03-01'), mk('https://s.co.uk/undated', null), mk('https://s.co.uk/new', '2026-10-09')] });
+  assert.deepEqual(r.gaps.map((g) => [g.url, g.level]), [['https://s.co.uk/new', 'matched'], ['https://s.co.uk/undated', 'possible']]);
+});

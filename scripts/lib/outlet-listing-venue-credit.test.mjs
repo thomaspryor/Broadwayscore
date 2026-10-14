@@ -20,7 +20,7 @@ const all = [soon, rope, baby, myth];
 
 test('each credit-less short-title show matches with its own venue', () => {
   assert.deepEqual(ids(find("Review: Soon at St. Luke's Theatre", 'review-soon-st-lukes-theatre', all)), [soon.id]);
-  assert.deepEqual(ids(find("Rope at Theatre at St. Clement's is tense", 'rope-theatre-at-st-clements', all)), [rope.id]);
+  assert.deepEqual(ids(find("Rope review: tense at Theatre at St. Clement's", 'rope-review-theatre-at-st-clements', all)), [rope.id]);
   assert.deepEqual(ids(find('Baby review: Brixton House', 'baby-review', all)), [baby.id]);
   assert.deepEqual(ids(find('MYTH review: a night at JACK', 'myth-review-jack', all)), [myth.id]);
 });
@@ -94,4 +94,10 @@ test('the bare-title path needs the run window and an exact headline', () => {
 test('a common-word show with credits still never uses the bare-title path', () => {
   const six = { id: 'six-broadway', title: 'SIX', venue: 'Lena Horne Theatre', status: 'open', previewsStartDate: '2026-09-30', openingDate: '2026-10-05', cast: [{ name: 'Jane Roe', role: 'Anne' }], creativeTeam: [] };
   assert.equal(find('SIX', '/six', [six], '', '2026-10-06').length, 0);
+});
+
+test('venue credit needs the item to call itself a review (news about the venue is not filed)', () => {
+  assert.equal(find("Soon to open at St. Luke's Theatre", 'soon-to-open-st-lukes-theatre', all).length, 0);
+  assert.equal(find("Soon at St. Luke's Theatre: tickets on sale", 'soon-st-lukes-tickets', all).length, 0);
+  assert.equal(find("Soon at St. Luke's Theatre", 'soon-st-lukes', all, 'Our review of the new musical.').length, 1);
 });
