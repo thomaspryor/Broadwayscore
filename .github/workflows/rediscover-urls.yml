@@ -145,7 +145,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Rediscover Review URLs — Final commit and push"
       - name: Trigger collection for newly-discovered URLs
-        if: always()
+        # !cancelled(), not always(): a cancelled or timed-out run must not
+        # start the paid collection chain (BRO-5261 retro-review cousin of the
+        # rebuild-reviews scoring dispatch).
+        if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
