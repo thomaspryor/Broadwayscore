@@ -26,8 +26,6 @@ const ALLOW = {
   'scripts/autonomous-triage.js': 'dead',
   'scripts/audit-archived-in-progress.js': 'dead',       // manual, no scheduler
   'scripts/audit-orphan-inprogress.js': 'dead',
-  'scripts/notify-pending-commercial-notion.js': 'dead', // workflows call the -linear twin
-  'scripts/sync-pending-review-to-notion.js': 'dead',
   'scripts/bsc-prune.js': 'mirror-update',               // local task store -> Notion card updates, never creates
   'scripts/bsc-reconcile.js': 'mirror-update',
   'scripts/reconcile-dead-completions.js': 'mirror-update',
