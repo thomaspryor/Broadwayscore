@@ -53,6 +53,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write # dispatch-deploy composite runs `gh workflow run`; without it the dispatch 403s (BRO-5302, rule w)
 
 jobs:
   scrape-mezzanine:

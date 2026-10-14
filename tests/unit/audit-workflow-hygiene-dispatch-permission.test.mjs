@@ -16,7 +16,7 @@ import { spawnSync } from 'node:child_process';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { findDispatchWithoutActionsWrite } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
+const { findDispatchWithoutActionsWrite, DISPATCH_COMPOSITES } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const DISPATCH_STEP = `      - name: Dispatch
@@ -68,7 +68,7 @@ describe('findDispatchWithoutActionsWrite', () => {
   });
 
   test('cancel, rerun and a /dispatches API call are all dispatch-class calls', () => {
-    for (const cmd of ['gh run cancel 123', 'gh run rerun 123 --failed', 'gh api repos/o/r/dispatches -f event_type=x']) {
+    for (const cmd of ['gh run cancel 123', 'gh run rerun 123 --failed', 'gh api repos/o/r/actions/workflows/9/dispatches -f ref=main']) {
       const steps = `      - name: D\n        run: ${cmd}\n`;
       assert.equal(findDispatchWithoutActionsWrite(wf({ top: 'permissions:\n  contents: read\n', steps })).length, 1, cmd);
     }
@@ -86,11 +86,78 @@ describe('findDispatchWithoutActionsWrite', () => {
   });
 });
 
+describe('composites, token provenance, repository_dispatch', () => {
+  const read = 'permissions:\n  contents: write\n';
+
+  test('uses: of a dispatching composite is a dispatch (dispatch-deploy, the update-theatr case)', () => {
+    const steps = '      - name: Deploy\n        uses: ./.github/actions/dispatch-deploy # after scrape\n';
+    const hits = findDispatchWithoutActionsWrite(wf({ top: read, steps }));
+    assert.equal(hits.length, 1);
+    assert.match(hits[0].text, /dispatch-deploy/);
+    const ok = findDispatchWithoutActionsWrite(wf({ top: `${read}  actions: write\n`, steps }));
+    assert.equal(ok.length, 0);
+  });
+
+  test('secrets.GITHUB_TOKEN is the workflow token, not a PAT, so it does not exempt the step', () => {
+    const steps = `      - name: D
+        env:
+          GH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run other.yml
+`;
+    assert.equal(findDispatchWithoutActionsWrite(wf({ top: read, steps })).length, 1);
+  });
+
+  test('a PAT set at job level or workflow level exempts the job steps', () => {
+    const steps = '      - name: D\n        run: gh workflow run other.yml\n';
+    const job = '    env:\n      GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}\n';
+    assert.equal(findDispatchWithoutActionsWrite(wf({ top: read, job, steps })).length, 0);
+    const top = `${read}env:\n  GH_TOKEN: \${{ secrets.REVIEW_TEXTS_TOKEN }}\n`;
+    assert.equal(findDispatchWithoutActionsWrite(wf({ top, steps })).length, 0);
+  });
+
+  test('repository_dispatch (repos/o/r/dispatches) needs contents: write, not actions: write', () => {
+    const steps = '      - name: D\n        run: gh api repos/o/r/dispatches -f event_type=x\n';
+    assert.equal(findDispatchWithoutActionsWrite(wf({ top: read, steps })).length, 0);
+    const wfd = '      - name: D\n        run: gh api repos/o/r/actions/workflows/123/dispatches -f ref=main\n';
+    assert.equal(findDispatchWithoutActionsWrite(wf({ top: read, steps: wfd })).length, 1);
+  });
+
+  test('every composite action that runs a dispatch-class gh call with the workflow token is listed', () => {
+    const dir = path.join(ROOT, '.github/actions');
+    const dispatchRe = /\bgh\s+(?:workflow\s+run|run\s+(?:cancel|rerun))\b/;
+    const unlisted = fs
+      .readdirSync(dir)
+      .filter((name) => fs.existsSync(path.join(dir, name, 'action.yml')))
+      .filter((name) => {
+        const body = fs.readFileSync(path.join(dir, name, 'action.yml'), 'utf8');
+        const calls = body.split('\n').some((l) => !l.trim().startsWith('#') && dispatchRe.test(l));
+        const pat = /\b(?:GH_TOKEN|GITHUB_TOKEN)\s*:\s*\$\{\{\s*secrets\.(?!GITHUB_TOKEN\b)/.test(body);
+        const inputToken = /\b(?:GH_TOKEN|GITHUB_TOKEN)\s*:\s*\$\{\{\s*inputs\./.test(body);
+        return calls && !pat && !inputToken;
+      })
+      .filter((name) => !DISPATCH_COMPOSITES.includes(name));
+    assert.deepEqual(
+      unlisted,
+      [],
+      `composite(s) dispatch with the workflow token but are not in DISPATCH_COMPOSITES ` +
+        `(scripts/lib/audit-workflow-hygiene-rules.js): ${unlisted.join(', ')}`,
+    );
+  });
+});
+
 describe('real workflows', () => {
   test('stripping the job-level actions: write from a real dispatcher is caught (rule has teeth)', () => {
     const raw = fs.readFileSync(path.join(ROOT, '.github/workflows/finance-ingest.yml'), 'utf8');
     assert.deepEqual(findDispatchWithoutActionsWrite(raw), [], 'unmodified finance-ingest.yml is clean');
     const mutated = raw.replace(/^ {6}actions: write.*$/m, '');
+    assert.notEqual(mutated, raw, 'mutation must apply');
+    assert.equal(findDispatchWithoutActionsWrite(mutated).length, 1);
+  });
+
+  test('update-theatr.yml: the swallowed deploy-dispatch 403 comes back if actions: write is removed', () => {
+    const raw = fs.readFileSync(path.join(ROOT, '.github/workflows/update-theatr.yml'), 'utf8');
+    assert.deepEqual(findDispatchWithoutActionsWrite(raw), []);
+    const mutated = raw.replace(/^ {2}actions: write.*$/m, '');
     assert.notEqual(mutated, raw, 'mutation must apply');
     assert.equal(findDispatchWithoutActionsWrite(mutated).length, 1);
   });

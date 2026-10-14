@@ -1117,13 +1117,25 @@ function findPushWithoutWritePermission(raw) {
  * in memory/roadmap.md was the first instance). Same effective-permissions
  * semantics as rule (v): job-level wins, no block anywhere = repo default, skipped.
  */
-const DISPATCH_RE = /\bgh\s+(?:workflow\s+run|run\s+(?:cancel|rerun))\b|\bgh\s+api\b[^\n]*\/dispatches\b/;
+// `gh api .../actions/workflows/<id>/dispatches` only: repository_dispatch (`repos/o/r/dispatches`) needs
+// contents: write, not actions: write.
+const DISPATCH_RE = /\bgh\s+(?:workflow\s+run|run\s+(?:cancel|rerun))\b|\bgh\s+api\b[^\n]*\/workflows\/[^/\s]+\/dispatches\b/;
+// Composites that run `gh workflow run` with the workflow token (their action.yml sets
+// GH_TOKEN: ${{ github.token }}). `uses:` of one counts as a dispatch in the calling job.
+// Pinned by the unit test against every .github/actions/*/action.yml.
+const DISPATCH_COMPOSITES = ['dispatch-deploy'];
+// A PAT, not the workflow token: GH_TOKEN/GITHUB_TOKEN from a secret other than secrets.GITHUB_TOKEN.
+const PAT_ENV_RE = /\b(?:GH_TOKEN|GITHUB_TOKEN)\s*:\s*\$\{\{\s*secrets\.(?!GITHUB_TOKEN\b)/;
 function findDispatchWithoutActionsWrite(raw) {
   const lines = raw.split('\n');
   const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
   if (jobsIdx === -1) return [];
   const topIdx = lines.findIndex((l) => /^permissions\s*:/.test(l));
   const top = topIdx === -1 ? null : readPermissionsGrant(lines, topIdx, 'actions');
+  const workflowEnvPat = PAT_ENV_RE.test(lines.slice(0, jobsIdx).join('\n'));
+  const compositeUse = new RegExp(
+    `^\\s*-?\\s*uses:\\s*\\./\\.github/actions/(${DISPATCH_COMPOSITES.join('|')})\\s*(#.*)?$`,
+  );
   const starts = findJobBoundaries(lines, jobsIdx);
   const steps = splitWorkflowSteps(raw);
   const hits = [];
@@ -1133,11 +1145,12 @@ function findDispatchWithoutActionsWrite(raw) {
     const permOffset = body.findIndex((l) => indentOf(l) === 4 && /^\s*permissions\s*:/.test(l));
     const grants = permOffset !== -1 ? readPermissionsGrant(body, permOffset, 'actions') : top;
     if (grants === null || grants === true) continue;
+    const stepsAt = body.findIndex((l) => /^ {4}steps\s*:/.test(l));
+    const jobEnvPat = PAT_ENV_RE.test(body.slice(0, stepsAt === -1 ? 0 : stepsAt).join('\n'));
     for (const step of steps.filter((s) => s.startLine > starts[j] && s.startLine < starts[j + 1])) {
-      const text = step.lines.join('\n');
-      if (/\b(?:GH_TOKEN|GITHUB_TOKEN)\s*:\s*\$\{\{\s*secrets\./.test(text)) continue; // PAT, not the workflow token
+      if (workflowEnvPat || jobEnvPat || PAT_ENV_RE.test(step.lines.join('\n'))) continue;
       step.lines.forEach((l, k) => {
-        if (!l.trim().startsWith('#') && DISPATCH_RE.test(l)) {
+        if (!l.trim().startsWith('#') && (DISPATCH_RE.test(l) || compositeUse.test(l))) {
           hits.push({ job: jobKey, lineNum: step.startLine + k + 1, text: l.trim() });
         }
       });
@@ -1148,6 +1161,7 @@ function findDispatchWithoutActionsWrite(raw) {
 
 module.exports = {
   findDispatchWithoutActionsWrite,
+  DISPATCH_COMPOSITES,
   findCompositeShellHazards,
   splitWorkflowSteps,
   findNodeTeeWithoutPipefail,
