@@ -105,35 +105,65 @@ function coreDataDir(files) {
   return dir;
 }
 
+// shows.json + reviews.json are always required and must hold rows.
+const SOUND = { 'shows.json': '{"shows":[{"id":"a"}]}', 'reviews.json': '{"reviews":[{"id":"r"}]}' };
+const BASE = Object.keys(SOUND);
+const rm = (t, dir) => t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+
 test('verifyCoreDataCopy: a complete copy has no problems', (t) => {
-  const core = ['shows.json', 'opening-night-sent.json'];
-  const dir = coreDataDir({ 'shows.json': '{"shows":[]}', 'opening-night-sent.json': '{"shows":{}}', 'extra.json': '[]' });
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const core = [...BASE, 'opening-night-sent.json'];
+  const dir = coreDataDir({ ...SOUND, 'opening-night-sent.json': '{"shows":{}}', 'extra.json': '[]' });
+  rm(t, dir);
   assert.deepEqual(verifyCoreDataCopy({ checkoutNames: [...core, 'extra.json'], plannedCopy: [...core, 'extra.json'], coreFiles: core, dataDir: dir }), []);
 });
 
-test('verifyCoreDataCopy: a core file missing from the clone is named with the seed-or-drop fix', (t) => {
-  const core = ['shows.json', 'opening-night-sent.json'];
-  const dir = coreDataDir({ 'shows.json': '{}' });
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
-  const problems = verifyCoreDataCopy({ checkoutNames: ['shows.json'], plannedCopy: ['shows.json'], coreFiles: core, dataDir: dir });
+test('verifyCoreDataCopy: a lost core file says restore from history, never seed empty', (t) => {
+  const core = [...BASE, 'opening-night-sent.json'];
+  const dir = coreDataDir(SOUND);
+  rm(t, dir);
+  const problems = verifyCoreDataCopy({ checkoutNames: BASE, plannedCopy: BASE, coreFiles: core, dataDir: dir });
   assert.equal(problems.length, 1);
-  assert.match(problems[0], /opening-night-sent\.json .*missing from the private core-data repo.*Seed it there/);
+  assert.match(problems[0], /opening-night-sent\.json is required core data but missing from the private core-data repo/);
+  assert.match(problems[0], /restore it from that repo's git history.*never seed an empty value/);
 });
 
 test('verifyCoreDataCopy: a planned file absent from data/ after the copy is a problem', (t) => {
-  const dir = coreDataDir({ 'shows.json': '{}' });
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
-  const problems = verifyCoreDataCopy({ checkoutNames: ['shows.json', 'extra.json'], plannedCopy: ['shows.json', 'extra.json'], coreFiles: ['shows.json'], dataDir: dir });
+  const dir = coreDataDir(SOUND);
+  rm(t, dir);
+  const problems = verifyCoreDataCopy({ checkoutNames: [...BASE, 'extra.json'], plannedCopy: [...BASE, 'extra.json'], coreFiles: BASE, dataDir: dir });
   assert.deepEqual(problems, ['extra.json was planned for copy but is not in data/ after the copy.']);
 });
 
 test('verifyCoreDataCopy: a truncated core file fails the JSON parse', (t) => {
-  const dir = coreDataDir({ 'shows.json': '{"shows": [' });
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
-  const problems = verifyCoreDataCopy({ checkoutNames: ['shows.json'], plannedCopy: ['shows.json'], coreFiles: ['shows.json'], dataDir: dir });
+  const dir = coreDataDir({ ...SOUND, 'shows.json': '{"shows": [' });
+  rm(t, dir);
+  const problems = verifyCoreDataCopy({ checkoutNames: BASE, plannedCopy: BASE, coreFiles: BASE, dataDir: dir });
   assert.equal(problems.length, 1);
   assert.match(problems[0], /data\/shows\.json is not valid JSON/);
+});
+
+test('verifyCoreDataCopy: shows.json and reviews.json stay required even if CORE_FILES drops them', (t) => {
+  const dir = coreDataDir({ 'opening-night-sent.json': '{}' });
+  rm(t, dir);
+  const problems = verifyCoreDataCopy({ checkoutNames: ['opening-night-sent.json'], plannedCopy: ['opening-night-sent.json'], coreFiles: ['opening-night-sent.json'], dataDir: dir });
+  assert.equal(problems.length, 2);
+  assert.ok(problems[0].startsWith('shows.json ') && problems[1].startsWith('reviews.json '));
+});
+
+for (const [f, body] of [['shows.json', '{}'], ['shows.json', '{"shows":[]}'], ['reviews.json', '{"reviews":[]}'], ['reviews.json', 'null'], ['reviews.json', '[]']]) {
+  test(`verifyCoreDataCopy: an emptied ${f} (${body}) is a problem`, (t) => {
+    const dir = coreDataDir({ ...SOUND, [f]: body });
+    rm(t, dir);
+    const problems = verifyCoreDataCopy({ checkoutNames: BASE, plannedCopy: BASE, coreFiles: BASE, dataDir: dir });
+    assert.equal(problems.length, 1, problems.join(' | '));
+    assert.match(problems[0], new RegExp(`data/${f.replace('.', '\\.')} parses but holds no`));
+  });
+}
+
+test('verifyCoreDataCopy: a bare-array reviews.json with rows is accepted', (t) => {
+  const dir = coreDataDir({ ...SOUND, 'reviews.json': '[{"id":"r"}]' });
+  rm(t, dir);
+  assert.deepEqual(verifyCoreDataCopy({ checkoutNames: BASE, plannedCopy: BASE, coreFiles: BASE, dataDir: dir }), []);
 });
 
 test('verifyCoreDataCopy defaults to the live push-core-data CORE_FILES (19+ names, incl. opening-night-sent.json)', (t) => {

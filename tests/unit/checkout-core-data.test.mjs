@@ -50,7 +50,9 @@ function runCopyStep(t, { drop = null, corrupt = null } = {}) {
   fs.symlinkSync(path.join(ROOT, 'scripts'), path.join(repo, 'scripts'));
   for (const f of getShippedCoreFiles()) {
     if (f === drop) continue;
-    fs.writeFileSync(path.join(checkout, f), f === corrupt ? '{"truncated": ' : '{}');
+    // shows/reviews must hold rows: an emptied one is itself a canary failure.
+    const body = f === 'shows.json' ? '{"shows":[{"id":"a"}]}' : f === 'reviews.json' ? '{"reviews":[{"id":"r"}]}' : '{}';
+    fs.writeFileSync(path.join(checkout, f), f === corrupt ? '{"truncated": ' : body);
   }
   fs.writeFileSync(path.join(checkout, 'untracked-extra.json'), '[]');
 
@@ -76,7 +78,7 @@ for (const drop of ['opening-night-sent.json', 'subscribers.json', 'critic-conse
   test(`a checkout missing ${drop} fails at the canary and names the file`, (t) => {
     const r = runCopyStep(t, { drop });
     assert.equal(r.status, 1, `expected the step to fail; stderr:\n${r.stderr}`);
-    assert.match(r.stderr, new RegExp(`::error::Core data checkout FAILED: ${drop.replace('.', '\\.')} is in push-core-data CORE_FILES`));
+    assert.match(r.stderr, new RegExp(`::error::Core data checkout FAILED: ${drop.replace('.', '\\.')} is required core data but missing`));
   });
 }
 

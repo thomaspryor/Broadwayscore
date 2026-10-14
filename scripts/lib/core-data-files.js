@@ -91,6 +91,10 @@ function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) 
   return stale;
 }
 
+const ALWAYS_REQUIRED = ['shows.json', 'reviews.json'];
+// An emptied shows/reviews file parses fine and every consumer reads zero rows.
+const NON_EMPTY_ARRAYS = { 'shows.json': 'shows', 'reviews.json': 'reviews' };
+
 /**
  * BRO-2937: the canary after checkout-core-data's copy. It used to check only
  * shows.json and reviews.json, so a private repo that lost any other core file
@@ -104,21 +108,34 @@ function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles() }) 
 function verifyCoreDataCopy({ checkoutNames, plannedCopy, coreFiles = getShippedCoreFiles(), dataDir }) {
   const problems = [];
   const inCheckout = new Set(checkoutNames);
-  for (const f of coreFiles) {
+  // shows.json + reviews.json were the whole old canary: keep them required even
+  // if a CORE_FILES edit (or a parse miss) ever drops them (BRO-5261 retro-review).
+  const required = [...new Set([...ALWAYS_REQUIRED, ...coreFiles])];
+  for (const f of required) {
     if (!inCheckout.has(f)) {
-      problems.push(`${f} is in push-core-data CORE_FILES but missing from the private core-data repo. Seed it there ({} or []) or drop it from CORE_FILES.`);
+      // Never advise an empty seed for a file that existed: an empty
+      // opening-night-sent.json or subscribers file is the silent default this
+      // canary exists to stop, and it would parse clean.
+      problems.push(`${f} is required core data but missing from the private core-data repo. If it was lost, restore it from that repo's git history (git log --diff-filter=D -- ${f}); never seed an empty value. Only a NEW CORE_FILES name is seeded ({} or []) before it is added.`);
     }
   }
   for (const f of plannedCopy) {
     if (!fs.existsSync(path.join(dataDir, f))) problems.push(`${f} was planned for copy but is not in data/ after the copy.`);
   }
-  for (const f of coreFiles) {
+  for (const f of required) {
     const p = path.join(dataDir, f);
     if (!inCheckout.has(f) || !fs.existsSync(p)) continue;
+    let parsed;
     try {
-      JSON.parse(fs.readFileSync(p, 'utf8'));
+      parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
     } catch (e) {
       problems.push(`data/${f} is not valid JSON (${e.message}).`);
+      continue;
+    }
+    const key = NON_EMPTY_ARRAYS[f];
+    if (key) {
+      const rows = Array.isArray(parsed) ? parsed : parsed && parsed[key];
+      if (!Array.isArray(rows) || rows.length === 0) problems.push(`data/${f} parses but holds no ${key} (emptied file).`);
     }
   }
   return problems;
