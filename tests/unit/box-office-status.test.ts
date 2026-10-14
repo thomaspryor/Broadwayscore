@@ -47,6 +47,10 @@ import {
 } from '../../src/lib/box-office-status';
 import { ESTIMATED_COST_METHODS } from '../../src/lib/commercial-display';
 import { getShowsAtRisk, getRunningBoxOfficeV2, getShowBoxOfficeV2, getV2CostBasis } from '../../src/lib/data-commercial';
+import { pinBoxOfficeClockToData } from '../helpers/box-office-data-clock';
+
+// Real-data tests check status shape, not wall-clock freshness (BRO-5202).
+pinBoxOfficeClockToData();
 
 const ROOT = path.join(__dirname, '..', '..');
 

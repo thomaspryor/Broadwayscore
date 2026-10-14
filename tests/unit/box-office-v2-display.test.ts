@@ -21,6 +21,7 @@ import {
   trendText,
 } from '../../src/lib/box-office-v2-display';
 import { getRunningBoxOfficeV2, getBoxOfficeCostCoverage } from '../../src/lib/data-commercial';
+import { pinBoxOfficeClockToData } from '../helpers/box-office-data-clock';
 import { formatShare } from '../../src/lib/box-office-v2-display';
 import CostCoverageCard from '../../src/components/box-office/CostCoverageCard';
 import React from 'react';
@@ -28,6 +29,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 // tsx compiles JSX with the classic runtime, which needs React in scope.
 (globalThis as unknown as { React: typeof React }).React = React;
+
+// Real-data tests check card shape, not wall-clock freshness (BRO-5202).
+pinBoxOfficeClockToData();
 
 test('costPill: bands and special states', () => {
   assert.deepEqual(costPill({ availability: 'ok', band: 'below', closingDate: null }), { label: 'Below Break-even', tone: 'below' });
