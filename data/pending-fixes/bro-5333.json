@@ -2,7 +2,7 @@
   "createdAt": "2026-10-14T04:50:00Z",
   "issueNumber": "bro-5333",
   "planId": "5d0b6a8e-3c1f-4f7e-9a52-5333c1a5e2b1",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -22,5 +22,14 @@
         "description": "Review published 2025-05-13 is of the 2025 production (opened 2025-05-06); the 2026 entry opened ~450 days later."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T05:36:45.356Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/soundsandstage--sounds-and-stage.json → the-comedy-about-spies-west-end-2025/soundsandstage--sounds-and-stage.json",
+      "cleared": []
+    }
+  ]
 }
