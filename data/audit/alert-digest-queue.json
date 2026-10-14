@@ -796,5 +796,35 @@
       }
     ],
     "queuedAt": "2026-10-14T17:53:26.728Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4190-theatrevibe",
+    "title": "Landing blocked: rebase red on land/bro-4190-theatrevibe",
+    "description": "land.yml did not land land/bro-4190-theatrevibe: the rebase gate went red at d3665ca422. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38186834566",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4190-theatrevibe"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "d3665ca42225666a1dd9ba6995025d4d2665e8c4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38186834566"
+      }
+    ],
+    "queuedAt": "2026-10-14T18:48:19.169Z"
   }
 ]
