@@ -529,11 +529,12 @@ const OLD_URL_WRONG_REASONS = new Set(['wrong_content', 'url_content_mismatch', 
  * @param {{preserveFields?: Set<string>, oldUrlProvenWrong?: boolean}} [opts]
  * @returns {boolean}
  */
-// A wrongFullText identical to the live fullText is a released body that was
-// put back (quarantine-body.js restoreReleasedBody), not evidence the url is
+// A released body that was put back (quarantine-body.js restoreReleasedBody
+// stamps releasedBodyRestoredAt; quarantineBody clears it on a new verdict)
+// leaves its audit copy in wrongFullText. That copy is not evidence the url is
 // wrong (BRO-5261 S11).
 function restoredBodyCopy(existing, k) {
-  return k === 'wrongFullText' && typeof existing.fullText === 'string' && existing.fullText === existing.wrongFullText;
+  return k === 'wrongFullText' && !!existing.releasedBodyRestoredAt;
 }
 
 function wouldDiscardScore(existing, opts = {}) {

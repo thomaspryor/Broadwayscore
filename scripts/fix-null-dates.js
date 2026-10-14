@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./lib/date-utils');
 
 /**
  * fix-null-dates.js
@@ -37,7 +38,7 @@ function extractDateFromUrl(url) {
     if (match) {
       const dateStr = pattern.format(match);
       const date = new Date(dateStr);
-      if (!isNaN(date.getTime()) && date.getFullYear() >= 1990 && date.getFullYear() <= 2030) {
+      if (!isNaN(date.getTime()) && date.getFullYear() >= 1990 && date.getFullYear() <= maxPlausibleYear({ atLeast: 2030 })) {
         return dateStr;
       }
     }
@@ -52,7 +53,7 @@ function extractDateFromArchiveTimestamp(timestamp) {
   if (!match) return null;
   const dateStr = `${match[1]}-${match[2]}-${match[3]}`;
   const d = new Date(dateStr);
-  if (isNaN(d.getTime()) || d.getFullYear() < 1990 || d.getFullYear() > 2030) return null;
+  if (isNaN(d.getTime()) || d.getFullYear() < 1990 || d.getFullYear() > maxPlausibleYear({ atLeast: 2030 })) return null;
   return dateStr;
 }
 

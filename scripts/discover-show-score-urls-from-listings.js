@@ -140,10 +140,10 @@ function validateUrlWithArchive(url, show) {
   const datePattern = /(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}(?:st|nd|rd|th)?,?\s*\d{4}/gi;
   const rawDates = archiveHtml.match(datePattern) || [];
   const dates = [];
-  const { parseDate: parseDateUtil } = require('./lib/date-utils');
+  const { parseDate: parseDateUtil, maxPlausibleYear } = require('./lib/date-utils');
   for (const m of rawDates) {
     const d = parseDateUtil(m);
-    if (d && d.getFullYear() >= 2000 && d.getFullYear() <= 2030) {
+    if (d && d.getFullYear() >= 2000 && d.getFullYear() <= maxPlausibleYear({ atLeast: 2030 })) {
       dates.push(d);
     }
   }

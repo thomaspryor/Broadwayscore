@@ -99,11 +99,14 @@ test('released with no live text: restore, and the tier is re-derived from the f
   assert.equal(releasedBodyRestoreVerdict(d, deps).ok, true);
   restoreReleasedBody(d, () => ({ contentTier: 'complete', tierReason: 'Full review text', wordCount: 240 }), '2026-10-13T00:00:00Z');
   assert.equal(d.fullText, REVIEW);
-  assert.equal(d.wrongFullText, null, 'identical copy cleared, so url-change-invariant does not read it as a wrong url');
+  assert.equal(d.wrongFullText, REVIEW, 'audit copy kept');
+  assert.ok(d.releasedBodyRestoredAt, 'stamped as released');
   assert.equal(d.quarantinedWordCount, null);
   assert.equal(d.contentTier, 'complete');
   assert.equal(d.incompleteReason, null);
   assert.equal(describeTextState(d).state, 'present');
+  quarantineBody(d);
+  assert.equal(d.releasedBodyRestoredAt, null, 'a later verdict clears the release stamp');
 });
 
 test('quarantineBody: a whitespace-only body is emptied and an older quarantined body is left alone (BRO-5261 S11)', () => {

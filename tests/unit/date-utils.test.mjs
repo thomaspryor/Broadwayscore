@@ -87,7 +87,7 @@ describe('maxPlausibleYear', () => {
     const fs = await import('node:fs');
     const path = await import('node:path');
     const root = path.join(import.meta.dirname, '..', '..', 'scripts');
-    const CAP = /\b(?:y|yr|year)\s*(?:<=?|>)\s*20(?:2[6-9]|[3-8]\d|9[0-8])\b/;
+    const CAP = /(?:\b(?:y|yr|year)|getFullYear\(\))\s*(?:<=?|>)\s*20(?:2[6-9]|[3-8]\d|9[0-8])\b/;
     const offenders = [];
     const walk = (dir) => {
       for (const e of fs.readdirSync(dir, { withFileTypes: true })) {

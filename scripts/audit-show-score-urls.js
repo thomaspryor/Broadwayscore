@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { maxPlausibleYear } = require('./lib/date-utils');
 /**
  * audit-show-score-urls.js
  *
@@ -110,7 +111,7 @@ function extractReviewDates(html) {
     const matches = html.match(datePattern) || [];
     for (const m of matches) {
       const d = new Date(m);
-      if (!isNaN(d.getTime()) && d.getFullYear() >= 2000 && d.getFullYear() <= 2030) {
+      if (!isNaN(d.getTime()) && d.getFullYear() >= 2000 && d.getFullYear() <= maxPlausibleYear({ atLeast: 2030 })) {
         dates.push(d);
       }
     }

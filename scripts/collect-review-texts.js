@@ -5269,7 +5269,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
         delete data.showNotMentioned;
         delete data._showNotMentionedDiscoveryAttempted;
-        if (data.wrongFullText) {
+        if (data.wrongFullText && data.fullText && !data.wrongProduction && !data.wrongShow) {
           delete data.wrongFullText;
           console.log(`    → Cleared stale wrongFullText (LLM-verified content restored to fullText)`);
         }
@@ -5308,8 +5308,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         }
         // Restore fullText from wrongFullText if a prior run nulled it. Not
         // when a live wrong-content verdict quarantined it (this run's
-        // anticipatory gate, BRO-5261 S11). null, not delete: the write
-        // guard's merge copies a missing key back from disk.
+        // anticipatory gate, BRO-5261 S11).
         if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow) {
           data.fullText = data.wrongFullText;
           data.wrongFullText = null;

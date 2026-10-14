@@ -37,6 +37,8 @@ function quarantineBody(data) {
   data.wrongFullText = data.fullText;
   data.fullText = null;
   data.quarantinedWordCount = countWords(data.wrongFullText);
+  // A new verdict: the body parked now is wrong content again (BRO-5261 S11).
+  if (data.releasedBodyRestoredAt) data.releasedBodyRestoredAt = null;
   return true;
 }
 
@@ -112,15 +114,15 @@ function releasedBodyRestoreVerdict(data, deps) {
 }
 
 /**
- * Put the quarantined body back. Mutates `data`. wrongFullText is cleared: it
- * would only be an identical copy, and readers such as url-change-invariant's
- * wouldDiscardScore take a set wrongFullText as evidence the url is wrong
- * (BRO-5261 S11). The tier is re-derived so the scorer and rebuild see the
- * full text.
+ * Put the quarantined body back. Mutates `data`. wrongFullText stays as the
+ * audit copy (it is write-guard protected, so a null would not stick anyway);
+ * releasedBodyRestoredAt marks it as released, so readers such as
+ * url-change-invariant's wouldDiscardScore do not take it as wrong-url
+ * evidence (BRO-5261 S11). quarantineBody clears the stamp on the next
+ * verdict. The tier is re-derived so the scorer and rebuild see the full text.
  */
 function restoreReleasedBody(data, classifyContentTier, nowIso) {
   data.fullText = data.wrongFullText;
-  data.wrongFullText = null;
   // null, not delete: safeWriteReview's merge pass copies a missing key back from disk.
   data.quarantinedWordCount = null;
   data.releasedBodyRestoredAt = nowIso || new Date().toISOString();

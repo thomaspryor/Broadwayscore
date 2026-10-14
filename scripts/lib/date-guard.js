@@ -375,8 +375,9 @@ function textNumericDates(text) {
     const before = head.slice(Math.max(0, m.index - 25), m.index);
     const after = head.slice(m.index + m[0].length, m.index + m[0].length + 4);
     // Whole words only ("Toronto 18/09/2026" is a byline), and a dash marks a
-    // range only after another date ("By Jane Doe – 18/09/2026" is a byline).
-    if (/(?:\b(?:updated|modified|edited|until|through|from|tickets?|previews?|on sale|runs?|to)|\d\s*[-\u2013])\s*:?\s*$/i.test(before) || /^\s*[-\u2013]/.test(after)) continue;
+    // range only after another date or a month ("By Jane Doe – 18/09/2026" is a
+    // byline; "10 Sept – 18/09/2026" is a range).
+    if (/(?:\b(?:updated|modified|edited|until|through|from|tickets?|previews?|on sale|runs?|to)|(?:\d|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?)\s*[-\u2013\u2014])\s*:?\s*$/i.test(before) || /^\s*[-\u2013\u2014]/.test(after)) continue;
     if (mo >= 1 && mo <= 12 && new Date(t).getUTCDate() === d) out.push(new Date(t).toISOString().slice(0, 10));
   }
   return out;

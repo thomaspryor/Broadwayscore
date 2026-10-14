@@ -339,4 +339,7 @@ test('textNumericDates: whole-word reject list, dash is a range only after a dat
   assert.deepEqual(textNumericDates('Deep Heat, Toronto 18/09/2026'), ['2026-09-18']);
   assert.deepEqual(textNumericDates('Now playing 10/09/2026 - 31/12/2026'), []);
   assert.deepEqual(textNumericDates('runs to 18/09/2026'), []);
+  assert.deepEqual(textNumericDates('10 Sept \u2013 18/09/2026'), []);
+  assert.deepEqual(textNumericDates('September \u2014 18/09/2026'), []);
+  assert.deepEqual(textNumericDates('Now playing 10/09/2026 \u2014 31/12/2026'), []);
 });
