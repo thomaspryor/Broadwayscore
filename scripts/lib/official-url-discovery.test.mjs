@@ -38,3 +38,21 @@ test('buildSearchQuery: west-end show gets "west end" market term', () => {
   const q = buildSearchQuery({ title: 'Test Show', category: 'west-end' });
   assert.match(q, /west end/);
 });
+
+// BRO-5343: a title-only match attached another production's site to two London rows.
+const { domainMatchesTitle } = require('./official-url-discovery.js');
+
+test('domainMatchesTitle: Peter Pan does not take Peter Pan Goes Wrong', () => {
+  assert.equal(domainMatchesTitle('https://pangoeswrongbway.com/', 'Peter Pan', 'off-west-end'), false);
+  assert.equal(domainMatchesTitle('https://pangoeswrongbway.com/', 'Peter Pan', 'broadway'), false);
+});
+
+test('domainMatchesTitle: a London play does not take a "<title>broadway" site', () => {
+  assert.equal(domainMatchesTitle('https://babybroadway.co.uk/', 'Baby', 'off-west-end'), false);
+});
+
+test('domainMatchesTitle: genuine show sites still match', () => {
+  assert.equal(domainMatchesTitle('https://www.hamiltonmusical.com', 'Hamilton', 'broadway'), true);
+  assert.equal(domainMatchesTitle('https://www.hadestown.com', 'Hadestown', 'west-end'), true);
+  assert.equal(domainMatchesTitle('https://www.somemusical.com', 'Some Musical', 'broadway'), true);
+});

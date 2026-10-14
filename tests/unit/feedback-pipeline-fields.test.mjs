@@ -15,6 +15,7 @@ const {
   buildShowSnapshot,
   castValueProblem,
   rejectedUrlsValueProblem,
+  officialUrlValueProblem,
 } = require('../../scripts/lib/feedback-pipeline-fields.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -195,4 +196,21 @@ test('a reported "% returned" figure is editable only on the human-approved path
     assert.ok(human['commercial.json'].includes(f), f);
     assert.ok(!auto['commercial.json'].includes(f), f);
   }
+});
+
+describe('officialUrl (BRO-5343)', () => {
+  test('is editable by the human-approved path but not the unattended auto-fix', () => {
+    assert.ok(FEEDBACK_EDITABLE_FIELDS['shows.json'].includes('officialUrl'));
+    assert.ok(!AUTO_FIX_EDITABLE_FIELDS['shows.json'].includes('officialUrl'));
+  });
+  test('officialUrlValueProblem accepts null and a venue https URL', () => {
+    assert.equal(officialUrlValueProblem(null), null);
+    assert.equal(officialUrlValueProblem('https://polkatheatre.com/event/peter-pan/'), null);
+    assert.equal(officialUrlValueProblem('https://brixtonhouse.co.uk/shows/baby/'), null);
+  });
+  test('officialUrlValueProblem refuses non-https, junk and ticket/review domains', () => {
+    for (const v of ['', 'polkatheatre.com', 'http://polkatheatre.com/', 'https://x', 42, undefined, 'https://www.todaytix.com/x', 'https://playbill.com/y']) {
+      assert.ok(officialUrlValueProblem(v), `expected a problem for ${String(v)}`);
+    }
+  });
 });

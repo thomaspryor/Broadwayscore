@@ -354,6 +354,12 @@ function executeDataEdit(action) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    if (field === 'officialUrl') {
+      const { officialUrlValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const problem = officialUrlValueProblem(newValue);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     if (field === 'priorRuns') {
       const { priorRunsValueProblem } = require('./lib/feedback-pipeline-fields.js');
       const problem = priorRunsValueProblem(newValue, oldValue);

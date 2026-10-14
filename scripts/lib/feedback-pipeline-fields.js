@@ -44,6 +44,10 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // priorRunsValueProblem refuses any other difference: priorRuns windows are
     // scoring inputs and are not re-dated through a plan.
     'priorRuns',
+    // BRO-5343: an https URL or null, human-approved plans only. A SERP
+    // title match attached another production's site to two London rows;
+    // officialUrlValueProblem refuses ticket/review/aggregator domains.
+    'officialUrl',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The
@@ -184,6 +188,17 @@ function rejectedUrlsValueProblem(newValue, oldValue) {
   return null;
 }
 
+// shows.json officialUrl check for the human-approved data-edit path (BRO-5343):
+// null (clear) or an https URL on a dedicated site, never a ticket, review or
+// listing domain (the discovery blocklist). Returns an error string or null.
+function officialUrlValueProblem(newValue) {
+  if (newValue === null) return null;
+  if (typeof newValue !== 'string' || !/^https:\/\/[^\s/]+\.[^\s/]+(\/\S*)?$/i.test(newValue)) return 'officialUrl: newValue must be null or an https URL';
+  const { isBlockedDomain } = require('./official-url-discovery.js');
+  if (isBlockedDomain(newValue)) return 'officialUrl: ticket, review and listing sites are not official sites';
+  return null;
+}
+
 // shows.json priorRuns check for the human-approved data-edit path (BRO-5000): same
 // entries in the same order, differing only in a boolean inheritReviews.
 // Returns an error string or null.
@@ -212,4 +227,5 @@ module.exports = {
   castValueProblem,
   rejectedUrlsValueProblem,
   priorRunsValueProblem,
+  officialUrlValueProblem,
 };

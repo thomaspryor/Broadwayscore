@@ -131,11 +131,36 @@ function buildSearchQuery(show) {
   return `"${show.title}" ${market} official website`;
 }
 
+// Words a show's own site may add to its title in the domain. "broadway"/"nyc"
+// are generic only for a New York show: babybroadway.co.uk is a London concert
+// series, not the Brixton House play "Baby" (BRO-5343).
+const GENERIC_DOMAIN_WORDS = ['the', 'official', 'tickets', 'show', 'play', 'musical', 'theatre', 'theater', 'live', 'on', 'stage', 'uk', 'london', 'westend', 'tour'];
+const NEW_YORK_DOMAIN_WORDS = ['broadway', 'offbroadway', 'nyc', 'ny', 'newyork'];
+
+function domainHasForeignWords(domainNorm, words, isNewYork) {
+  let rest = domainNorm.replace(/(com|net|org|co|uk|nyc|london)$/, '');
+  const known = [...words, ...GENERIC_DOMAIN_WORDS, ...(isNewYork ? NEW_YORK_DOMAIN_WORDS : [])].sort((a, b) => b.length - a.length);
+  for (const w of known) rest = rest.split(w).join('');
+  return rest.length > 3;
+}
+
+// True when the domain carries every significant title word and nothing else
+// that names another production.
+function domainMatchesTitle(url, showTitle, category) {
+  const domainNorm = getDomain(url).replace(/[.-]/g, '');
+  const showNorm = normalizeShowName(showTitle);
+  const primaryTitle = showTitle.includes(':') ? normalizeShowName(showTitle.split(':')[0]) : showNorm;
+  const isNewYork = !isLondonMarket(category || 'broadway');
+  return [showNorm, primaryTitle].map(t => t.split(' ').filter(w => w.length > 2)).some(words =>
+    words.length > 0 && words.every(w => domainNorm.includes(w)) &&
+    !domainHasForeignWords(domainNorm, words, isNewYork));
+}
+
 /**
  * Check if a SERP result looks like a dedicated show website.
  * Prefer domains that contain the show name or common patterns.
  */
-function scoreCandidate(url, serpTitle, showTitle) {
+function scoreCandidate(url, serpTitle, showTitle, category) {
   const domain = getDomain(url);
   const showNorm = normalizeShowName(showTitle);
   // Try both full title and primary title (before colon/subtitle) to avoid
@@ -144,13 +169,11 @@ function scoreCandidate(url, serpTitle, showTitle) {
   const wordSets = [showNorm, primaryTitle].map(t => t.split(' ').filter(w => w.length > 2));
   let score = 0;
 
-  // Domain contains show name words (strong signal)
-  const domainNorm = domain.replace(/[.-]/g, '');
-  const domainMatches = wordSets.some(words => {
-    const matchCount = words.filter(w => domainNorm.includes(w)).length;
-    return words.length > 0 && matchCount >= Math.ceil(words.length * 0.5);
-  });
-  if (domainMatches) {
+  // Domain contains show name words (strong signal). Every title word must
+  // appear: half-matching let "Peter Pan" take pangoeswrongbway.com ("pan")
+  // and a lone "Baby" take babybroadway.co.uk (BRO-5343). A domain that also
+  // carries a word the title lacks ("goeswrong") names another production.
+  if (domainMatchesTitle(url, showTitle, category)) {
     score += 3;
   }
 
@@ -192,7 +215,7 @@ async function discoverOfficialUrl(show) {
       if (!url) continue;
       if (isBlockedDomain(url)) continue;
 
-      const s = scoreCandidate(url, r.title || '', show.title);
+      const s = scoreCandidate(url, r.title || '', show.title, show.category);
       // Off-Broadway/off-west-end shows need a higher threshold — most fringe
       // productions don't have a dedicated website, so a lower bar lets SERP's
       // listing/review-site noise through as false "official sites" (BRO-166
@@ -200,7 +223,9 @@ async function discoverOfficialUrl(show) {
       // looser threshold was originally tuned and is safe to keep).
       const cat = show.category || 'broadway';
       const threshold = (cat === 'off-broadway' || cat === 'off-west-end') ? 5 : 3;
-      if (s >= threshold) {
+      // The title must be in the domain itself: a SERP title that says
+      // "official" is not enough to pick a site (BRO-5343).
+      if (s >= threshold && domainMatchesTitle(url, show.title, cat)) {
         candidates.push({ url, title: r.title, score: s });
       }
     }
@@ -239,5 +264,6 @@ module.exports = {
   isBlockedDomain,
   buildSearchQuery,
   scoreCandidate,
+  domainMatchesTitle,
   discoverOfficialUrl,
 };
