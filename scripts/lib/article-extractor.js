@@ -27,6 +27,7 @@
 'use strict';
 
 const { foldDiacritics } = require('./title-match');
+const { decodeBloxRot47 } = require('./blox-rot47-decode');
 
 function stripHtml(s) {
   return (s || '')
@@ -780,6 +781,7 @@ function extractArticleText(html, hostname, criticHint) {
 
 function extractArticleTextUnchecked(html, hostname, criticHint) {
   if (!html || typeof html !== 'string') return null;
+  html = decodeBloxRot47(html); // BRO-4221: BLOX CMS ROT47-scrambled paragraphs
   const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
   const isDedicatedHost = DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d));
 

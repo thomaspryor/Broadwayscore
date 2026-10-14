@@ -510,6 +510,10 @@ function cleanText(text) {
   // Step 3d: Strip JSON-LD blocks (schema.org structured data that leaks into scraped text)
   cleaned = cleaned.replace(/\{[^{}]*"@context"\s*:\s*"https?:\/\/schema\.org"[^{}]*\}/g, '');
 
+  // Step 3e: Strip the video.js modal-dialog boilerplate that leaks from player markup (BRO-4221)
+  cleaned = cleaned.replace(/Beginning of dialog window\. Escape will cancel and close the window\.?/gi, '')
+    .replace(/\bEnd of dialog window\.?/gi, '');
+
   // Step 4: Collapse whitespace runs
   // Multiple spaces/tabs on same line → single space
   cleaned = cleaned.replace(/[^\S\n\r]+/g, ' ');
