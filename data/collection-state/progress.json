@@ -1,20 +1,42 @@
 {
   "processed": [
-    "just-in-time-2025/deadline--greg-evans.json",
-    "titanique-west-end-2024/financialtimes--sarah-hemming.json",
-    "six-2021/vulture--helen-shaw.json",
-    "days-of-wine-and-roses-2024/amny--matt-windman.json",
-    "merrily-we-roll-along-2023/amny--matt-windman.json",
-    "kiss-me-kate-2019/broadwayworld--michael-dale.json",
-    "head-over-heels-2018/broadwayworld--michael-dale.json",
-    "come-from-away-2017/huffpost--christian-lewis.json",
-    "noises-off-2016/huffpost--fern-siegel.json",
-    "king-charles-iii-2015/huffpost--michael-giltz.json",
-    "dames-at-sea-2015/broadwayworld--michael-dale.json"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
+    "the-river-2014/vulture--jesse-green.json",
+    "talk-radio-2007/variety--charles-isherwood.json"
   ],
   "failed": [
-    "the-boys-in-the-band-2018/talkinbroadway--matthew-murray.json",
-    "airline-highway-2015/huffpost--michael-giltz.json"
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
+    "therese-raquin-2015/peconic-public-broadcasting--david-richardson.json",
+    "a-history-of-water-in-the-middle-east-west-end-2019/times-uk--clive-davis.json",
+    "operation-mincemeat-2025/londontheatre1--unknown.json",
+    "patriots-west-end-2023/times-uk--clive-davis.json",
+    "brief-encounter-2010/newsday--linda-winer.json",
+    "la-bete-2010/wsj--terry-teachout.json",
+    "the-book-of-mormon-west-end-2024/washpost--unknown.json",
+    "grease-2007/standard--nick-curtis.json",
+    "oedipus-west-end-2024/times-uk--unknown.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/huffpost--mark-kennedy.json",
+    "the-play-that-goes-wrong-2017/exeunt-magazine--kev-berry.json",
+    "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json",
+    "amelie-west-end-2021/times-uk--clive-davis.json",
+    "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1791910634384.json",
+    "the-big-knife-2013/huffpost--mark-kennedy.json",
+    "wicked-2003/standard--unknown.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-winslow-boy-2013/wsj--terry-teachout.json",
+    "bleak-expectations-west-end-2023/whatsonstage--theo-bosanquet.json",
+    "network-2018/guardian--jesse-green.json",
+    "bitter-wheat-west-end-2019/times-uk--dominic-maxwell.json",
+    "all-the-way-2014/ap--mark-kennedy.json",
+    "_superseded-misattributed/good-time-charlie-off-broadway-2026--talkinbroadway--unknown--forum-thread-url-2026-10-12.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -32,7 +54,9 @@
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [
-      "six-2021/vulture--helen-shaw.json"
+      "oedipus-west-end-2024/times-uk--unknown.json",
+      "the-river-2014/vulture--jesse-green.json",
+      "talk-radio-2007/variety--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -44,7 +68,52 @@
       "dames-at-sea-2015/broadwayworld--michael-dale.json"
     ]
   },
-  "startTime": "2026-10-14T08:29:01.752Z",
-  "lastProcessed": "airline-highway-2015/huffpost--michael-giltz.json",
-  "log": []
+  "startTime": "2026-10-14T08:12:40.214Z",
+  "lastProcessed": "talk-radio-2007/variety--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-10-14T08:28:24.751Z",
+      "event": "bb-session",
+      "session": "26bac0b6",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-14T08:28:25.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:28:42.797Z",
+      "event": "bb-session",
+      "session": "6d11074a",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-14T08:28:43.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:34:48.714Z",
+      "event": "bb-session",
+      "session": "95033ede",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-14T08:34:49.277Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:35:06.810Z",
+      "event": "bb-session",
+      "session": "5f2b3c89",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-14T08:35:07.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
