@@ -354,6 +354,26 @@ function textDateline(text) {
 }
 
 /**
+ * Every complete numeric date (dd/mm/yyyy or yyyy-mm-dd) in the first 1500 characters
+ * of the article text, as YYYY-MM-DD. Used by guardPublishDate to find a page byline
+ * that disagrees with a widget/schedule date the scoring model copied (BRO-4198:
+ * boxofficeradio "09 JUL 2024" radio-schedule line above a "18/09/2026" byline).
+ */
+function textNumericDates(text) {
+  if (typeof text !== 'string' || !text) return [];
+  const head = text.slice(0, 1500);
+  const out = [];
+  const re = /\b(\d{1,2})[\/.](\d{1,2})[\/.]((?:19|20)\d{2})\b|\b((?:19|20)\d{2})-(\d{2})-(\d{2})\b/g;
+  let m;
+  while ((m = re.exec(head))) {
+    const [y, mo, d] = m[4] ? [+m[4], +m[5], +m[6]] : [+m[3], +m[2], +m[1]];
+    const t = Date.UTC(y, mo - 1, d);
+    if (mo >= 1 && mo <= 12 && new Date(t).getUTCDate() === d) out.push(new Date(t).toISOString().slice(0, 10));
+  }
+  return out;
+}
+
+/**
  * Date the wrongProduction date guards should read for a review (BRO-4473).
  *
  * ensemble-scorer fills a MISSING publishDate with the model's guess
@@ -389,6 +409,13 @@ function guardPublishDate(review, show) {
   // BRO-5000: the fetch date is only a stand-in when the page prints no date. A dateline
   // before the run window (arias-with-a-twist, "through December 31" under a 2008 review;
   // horrible-histories "Tuesday, August 7 2018") is the page's own evidence and wins.
+  // BRO-4198: a byline date inside the run window (and not after the fetch) outranks a
+  // pre-window dateline: that dateline is a widget/schedule line, the byline is the post.
+  const byline = textNumericDates(review.fullText).find(d => {
+    const t = Date.parse(d);
+    return t >= winStart && t <= winEnd && t <= fetched + DAY;
+  });
+  if (byline) return { publishDate: byline, substituted: true, original: orig, bylineFromText: true };
   const dateline = textDateline(review.fullText);
   if (dateline && Date.parse(dateline) < winStart) return { publishDate: dateline, substituted: false, original: orig, datelineFromText: true };
   return { publishDate: new Date(fetched).toISOString().slice(0, 10), substituted: true, original: orig };
@@ -396,6 +423,7 @@ function guardPublishDate(review, show) {
 
 module.exports = {
   textDateline,
+  textNumericDates,
   guardPublishDate,
   evaluateLlmYearMisdate,
   evaluateDateGuard,

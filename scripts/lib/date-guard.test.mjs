@@ -286,3 +286,18 @@ test("a show's own priorRuns apply when the caller passes none (Amélie, The Oth
   const explicit = evaluateDateGuard({ pubDate: new Date('2019-12-04'), show: amelie, outletId: 'telegraph', priorRuns: [] });
   assert.equal(explicit.flag, true);
 });
+
+test('guardPublishDate: widget date copied by the model loses to an in-window byline (BRO-4198)', () => {
+  const { guardPublishDate } = require('./date-guard.js');
+  const show = { openingDate: '2026-09-17', previewsStartDate: '2026-09-10' };
+  const review = {
+    publishDate: '2024-07-09', dateSource: 'llm-scoring', textFetchedAt: '2026-09-27T21:50:06Z',
+    fullText: '18:00 - The Wonderful World Of Musicals (Adrian & Fizz) 09 JUL 2024\n\nDeep Heat review 18/09/2026\n\nForget Strictly.',
+  };
+  const g = guardPublishDate(review, show);
+  assert.equal(g.publishDate, '2026-09-18');
+  assert.equal(g.bylineFromText, true);
+  // no in-window byline: the old dateline behaviour is unchanged
+  const g2 = guardPublishDate({ ...review, fullText: 'Tuesday, August 7 2018\n\nbody' }, show);
+  assert.equal(g2.publishDate, '2018-08-07');
+});
