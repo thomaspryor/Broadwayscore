@@ -203,4 +203,12 @@ test('Cititour /NYC_Events/ and THR /lists/ are listings; their review paths are
   assert.equal(listingPageUrlReason('https://www.thereviewshub.com/author/jane-doe/'), 'tag-index-page');
   assert.equal(listingPageUrlReason('https://www.thereviewshub.com/catarina-and-the-beauty-of-killing-fascists-gate-theatre-london/'), null);
   assert.equal(listingPageUrlReason('https://www.twi-ny.com/tag/golden-boy/'), null);
+  // Same archive shape on major outlets seen in the gap audits.
+  assert.equal(listingPageUrlReason('https://deadline.com/tag/death-of-a-salesman/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://www.vulture.com/tags/theater-reviews/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://www.theatermania.com/tags/silver-manhattan/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://www.whatsonstage.com/tags/national-theatre/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://theatreweekly.com/tag/what-the-animals-say/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://deadline.com/2026/09/golden-boy-review-josh-oconnor-1236512345/'), null);
+  assert.equal(listingPageUrlReason('https://www.vulture.com/article/theater-review-golden-boy.html'), null);
 });
