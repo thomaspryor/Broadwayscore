@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-14T16:52:07.017Z",
-  "processed": 80,
-  "failed": 70,
-  "successRate": "53.3%",
+  "updatedAt": "2026-10-14T17:10:19.512Z",
+  "processed": 276,
+  "failed": 267,
+  "successRate": "50.8%",
   "tierBreakdown": {
-    "playwright": 53,
-    "amp": 1,
-    "browserbase": 0,
+    "playwright": 69,
+    "amp": 2,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 5,
-    "brightdata": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 14,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 20
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-10-14T15:06:43.073Z",
+      "event": "bb-session",
+      "session": "dfd72b9a",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-14T15:06:43.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:07:55.060Z",
+      "event": "bb-session",
+      "session": "3da52bed",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:07:55.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:08:13.710Z",
+      "event": "bb-session",
+      "session": "0e4b7195",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:08:14.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:27.191Z",
+      "event": "bb-session",
+      "session": "a7e7c17c",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:27.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:45.713Z",
+      "event": "bb-session",
+      "session": "c71ca3ff",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:46.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T16:12:10.510Z",
+      "event": "bb-session",
+      "session": "29cf67c3",
+      "url": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed"
+    },
+    {
+      "t": "2026-10-14T16:12:11.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-14T16:34:26.955Z",
+      "event": "bb-session",
+      "session": "775f932a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-14T16:34:27.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T16:36:40.175Z",
+      "event": "bb-session",
+      "session": "0b9ced7d",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-14T16:36:41.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T17:05:24.684Z",
+      "event": "bb-session",
+      "session": "004ba162",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-14T17:05:25.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T17:05:44.469Z",
+      "event": "bb-session",
+      "session": "7912389d",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-14T17:05:45.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
