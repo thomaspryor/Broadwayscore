@@ -16,16 +16,16 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const CLI = path.join(ROOT, 'scripts', 'lib', 'review-coverage.mjs');
 
 let n = 0;
-const use = (name, input) => ({ kind: 'assistant_tool_use', name, input, id: `t${++n}` });
+const tool = (name, input) => ({ kind: 'assistant_tool_use', name, input, id: `t${++n}` });
 const res = (u, content = 'ok', isError = false) => ({ kind: 'tool_result', tool_use_id: u.id, content, isError });
-const skill = (s = 'ship-check') => use('Skill', { skill: s });
-const agent = () => use('Agent', { subagent_type: 'review-panelist', prompt: 'review' });
-const curl = () => use('Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $K" -d @/tmp/x' });
+const skill = (s = 'ship-check') => tool('Skill', { skill: s });
+const agent = () => tool('Agent', { subagent_type: 'review-panelist', prompt: 'review' });
+const curl = () => tool('Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $K" -d @/tmp/x' });
 const ev = (...pairs) => pairs.flatMap((u) => [u, res(u)]);
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true' };
 
 test('no ship-check run: incomplete', () => {
-  const c = evaluateCoverage(ev(use('Bash', { command: 'ls' })));
+  const c = evaluateCoverage(ev(tool('Bash', { command: 'ls' })));
   assert.equal(c.ran, false);
   assert.equal(c.complete, false);
 });
@@ -52,7 +52,7 @@ test('review-panelist plus external reviewer after the skill: complete, with evi
 });
 
 test('codex exec counts as the external reviewer; code-review counts as a strong run', () => {
-  const codex = use('Bash', { command: 'cat p | codex exec --sandbox read-only -C "$PWD"' });
+  const codex = tool('Bash', { command: 'cat p | codex exec --sandbox read-only -C "$PWD"' });
   assert.equal(evaluateCoverage(ev(skill('code-review'), agent(), codex)).complete, true);
 });
 
@@ -61,7 +61,7 @@ test('reviewers launched BEFORE the skill call do not count', () => {
 });
 
 test('a grep for the host, or a curl that errored, is not a review', () => {
-  const grep = use('Bash', { command: 'grep -rn api.openai.com scripts/' });
+  const grep = tool('Bash', { command: 'grep -rn api.openai.com scripts/' });
   assert.equal(evaluateCoverage(ev(skill(), agent(), grep)).complete, false);
   const [s, a, bad] = [skill(), agent(), curl()];
   assert.equal(evaluateCoverage([s, res(s), a, res(a), bad, res(bad, 'HTTP 401', true)]).complete, false);
@@ -75,7 +75,7 @@ test('an Agent call that never got a result does not count', () => {
 
 test('failed Skill call plus reading the command file by hand counts as the run', () => {
   const s = skill();
-  const read = use('Read', { file_path: '/x/.claude/commands/ship-check.md' });
+  const read = tool('Read', { file_path: '/x/.claude/commands/ship-check.md' });
   const events = [s, res(s, 'Unknown skill: ship-check', true), read, res(read), ...ev(agent(), curl())];
   assert.equal(findRuns(events).length, 1);
   assert.equal(evaluateCoverage(events).complete, true);
@@ -163,7 +163,7 @@ test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check bloc
   assert.equal(d({ lastMessage: 'Working.\n\nNOT SAFE TO EXIT' }), 'allow');
   assert.equal(d({ lastMessage: 'No review needed.\nNO-SHIP-CHECK: reviewers cannot run in this container\n\nSAFE TO EXIT' }), 'allow');
   assert.equal(d({ lastMessage: 'NO-SHIP-CHECK: short\n\nSAFE TO EXIT' }), 'block');
-  assert.equal(d({ events: ev(use('Bash', { command: 'ls' })) }), 'allow', 'no strong run: verify-edits asks for the review itself');
+  assert.equal(d({ events: ev(tool('Bash', { command: 'ls' })) }), 'allow', 'no strong run: verify-edits asks for the review itself');
   assert.equal(d({ events: null }), 'allow');
   assert.equal(d({ env: {} }), 'allow');
   assert.equal(d({ env: { ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '1' } }), 'allow');
