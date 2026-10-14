@@ -199,6 +199,9 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   if (field === 'duplicateOf' && newValue === null && !record.duplicateClearReason) {
     return { ok: false, reason: 'clearing duplicateOf needs a duplicateClearReason edit first (else the write guard restores it)' };
   }
+  if (field === 'crossOutletDuplicate' && newValue === false && !record.crossOutletClearReason) {
+    return { ok: false, reason: 'clearing crossOutletDuplicate needs a crossOutletClearReason edit first' };
+  }
   const next = { ...record, [field]: newValue };
   // A human verdict setting the flag must retract any earlier machine
   // auto-clear, or isEffectivelyWrongProductionOrShow keeps reading the flag

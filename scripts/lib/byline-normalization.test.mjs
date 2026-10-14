@@ -61,3 +61,12 @@ test('extractBylineFromText: falls back to the trailing credit for any outlet', 
   assert.equal(extractBylineFromText('london-theatre-reviews', 'Great show with no credit.'), null);
   assert.deepEqual(extractBylineFromText('plays-international', 'Mark Shenton in the West End ★★★★☆ 22 July 2026 Great.'), { name: 'Mark Shenton', known: true });
 });
+
+test('otherNamedCriticAtOutlet: an Unknown file beside a different named critic stays Unknown (heart-wall)', () => {
+  const { otherNamedCriticAtOutlet } = require('./byline-from-text.js');
+  const seen = new Set(['london-theatre|julia-rank', 'timeout-london|isobel-lewis']);
+  assert.equal(otherNamedCriticAtOutlet(seen, 'london-theatre', 'jack-shaw'), true);
+  assert.equal(otherNamedCriticAtOutlet(seen, 'london-theatre', 'julia-rank'), false, 'same critic still dedups as exact');
+  assert.equal(otherNamedCriticAtOutlet(seen, 'london-theatre-reviews', 'jack-shaw'), false);
+  assert.equal(otherNamedCriticAtOutlet(new Set(['x|unknown']), 'x', 'jack-shaw'), false);
+});

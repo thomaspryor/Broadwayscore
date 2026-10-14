@@ -528,7 +528,8 @@ test('crossOutletDuplicate: clear-only, with a non-empty breadcrumb (BRO-3870)',
   const why = applyReviewFieldEdit({ ...rec }, { field: 'crossOutletClearReason', oldValue: null, newValue: 'primary gone, twin wrongProduction' }, stamp);
   assert.equal(why.ok, true, why.reason);
   assert.equal(applyReviewFieldEdit({ ...rec }, { field: 'crossOutletClearReason', oldValue: null, newValue: ' ' }, stamp).ok, false);
-  const res = applyReviewFieldEdit({ ...rec }, { field: 'crossOutletDuplicate', oldValue: true, newValue: false }, stamp);
+  assert.equal(applyReviewFieldEdit({ ...rec }, { field: 'crossOutletDuplicate', oldValue: true, newValue: false }, stamp).ok, false, 'reason must come first');
+  const res = applyReviewFieldEdit({ ...rec, crossOutletClearReason: 'why' }, { field: 'crossOutletDuplicate', oldValue: true, newValue: false }, stamp);
   assert.equal(res.ok, true, res.reason);
   assert.equal(res.record.crossOutletDuplicate, false);
 });

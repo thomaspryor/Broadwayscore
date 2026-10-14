@@ -261,8 +261,9 @@ const BODY_BYLINE_RE = new RegExp(
  * show's own title. Returns the normalized name or null.
  *
  * Callers fill criticName from it ONLY when the stored name is Unknown/empty.
- * A disagreement with a stored real name is reported, never overwritten (that
- * is how a sibling outlet's critic got onto london-theatre-reviews rows).
+ * A disagreement with a stored real name is never overwritten here (that is
+ * how a sibling outlet's critic got onto london-theatre-reviews rows); fix
+ * those by hand through an approved-fix plan.
  *
  * @param {string} text - review fullText.
  * @param {{showTitle?: string}} [opts]

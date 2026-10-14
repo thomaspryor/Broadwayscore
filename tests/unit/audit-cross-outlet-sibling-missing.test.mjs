@@ -121,13 +121,33 @@ test('self-reference with no other copy is cleared; with a same-URL copy it stay
   assert.equal(read(root, 's1', 'self2.json').crossOutletDuplicate, true);
 });
 
-test('crossOutletRenamedAction decides clear / repoint / report', async () => {
+test('crossOutletRenamedAction: a live twin wins over one that defers; pointers must name this exact show/file', async () => {
   const { crossOutletRenamedAction } = load(mkFixture({ s1: {} }));
-  assert.equal(crossOutletRenamedAction('a.json', { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/a.json' }, false), 'clear');
-  assert.equal(crossOutletRenamedAction('a.json', { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/c.json' }, false), null);
-  assert.equal(crossOutletRenamedAction('a.json', {}, true), 'repoint');
-  assert.equal(crossOutletRenamedAction('a.json', {}, false), null);
-  assert.equal(crossOutletRenamedAction('a.json', null, true), null);
+  const defers = { showId: 's', data: { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/a.json' }, live: false };
+  const live = { showId: 's', data: {}, live: true };
+  assert.equal(crossOutletRenamedAction('s', 'a.json', [defers]).action, 'clear');
+  assert.equal(crossOutletRenamedAction('s', 'a.json', [defers, live]).action, 'repoint', 'a live copy blocks the clear (no double count)');
+  assert.equal(crossOutletRenamedAction('s', 'a.json', [defers, live]).twin, live);
+  // same file name in ANOTHER show dir is not us
+  assert.equal(crossOutletRenamedAction('s', 'a.json', [{ showId: 't', data: { crossOutletDuplicate: true, crossOutletPrimaryFile: 'a.json' }, live: false }]).action, null);
+  assert.equal(crossOutletRenamedAction('s', 'a.json', [{ showId: 's', data: { crossOutletDuplicate: true, crossOutletPrimaryFile: 's/c.json' }, live: false }]).action, null);
+  assert.equal(crossOutletRenamedAction('s', 'a.json', [{ showId: 's', data: {}, live: false }]).action, null);
+  assert.equal(crossOutletRenamedAction('s', 'a.json', []).action, null);
+});
+
+test('ship-check: C defers to A but A\'s renamed primary B is live: A is repointed to B, not cleared', () => {
+  const root = mkFixture({
+    s1: {
+      'a--x.json': xo('s1/gone.json', { url: 'https://p.com/1' }),
+      // C sorts before B and points back at A
+      'b0--c.json': xo('s1/a--x.json', { url: 'https://p.com/1' }),
+      'b1--live.json': live('https://p.com/1'),
+    },
+  });
+  assert.equal(run(root, '--fix').status, 0);
+  const a = read(root, 's1', 'a--x.json');
+  assert.equal(a.crossOutletDuplicate, true, 'A stays excluded: B already scores the article');
+  assert.equal(a.crossOutletPrimaryFile, 's1/b1--live.json');
 });
 
 test('--fix clears crossOutlet fields, leaves duplicateTextOf untouched, skips pointer-missing', () => {

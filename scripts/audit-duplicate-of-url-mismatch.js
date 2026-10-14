@@ -173,9 +173,10 @@ function sameCriticSlug(a, b) {
 // URL, a known syndication pair, or the same named critic under another outlet.
 // Searches this show dir and the pointer's show dir. Returns {ref, data, showId,
 // file} or null.
-function findCrossOutletTwin(data, showDir, file, targetShow, load) {
+function findCrossOutletTwins(data, showDir, file, targetShow, load) {
   const mine = canonUrl(data.url);
   const dirs = new Set([showDir, path.join(REVIEW_TEXTS_DIR, targetShow)]);
+  const twins = [];
   for (const dir of dirs) {
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
@@ -183,30 +184,42 @@ function findCrossOutletTwin(data, showDir, file, targetShow, load) {
       let o;
       try { o = dir === showDir ? load(f) : JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); } catch { o = null; }
       if (o && ((o.url && mine && canonUrl(o.url) === mine) || isCrossOutletSyndicationPair(data, o, normalizeOutlet) || sameCriticSlug(file, f))) {
-        return { ref: `${path.basename(dir)}/${f}`, data: o, showId: path.basename(dir), file: f };
+        twins.push({ ref: `${path.basename(dir)}/${f}`, data: o, showId: path.basename(dir), file: f });
       }
     }
   }
-  return null;
+  return twins;
+}
+
+// Does `twin`'s crossOutletPrimaryFile name exactly <showId>/<file>? A bare
+// pointer resolves against the twin's own show dir.
+function twinPointsAt(twin, showId, file) {
+  const ptr = twin.data && twin.data.crossOutletDuplicate === true ? twin.data.crossOutletPrimaryFile : null;
+  if (typeof ptr !== 'string') return false;
+  const ptrShow = ptr.includes('/') ? ptr.split('/')[0] : twin.showId;
+  return ptrShow === showId && path.basename(ptr) === file;
 }
 
 /**
  * BRO-3870: what --fix does with a crossOutletDuplicate whose primary was renamed
- * (a twin copy survives). Pure.
- *   'clear'   — the twin is itself crossOutletDuplicate pointing at US: the pair
- *               excludes each other and the review vanishes. The twin's own
- *               verdict names us the primary, so clearing us scores exactly one copy.
- *   'repoint' — the twin is live in the rebuild: point at it. Score-neutral (we
- *               stay excluded), and the ref stops dangling.
- *   null      — anything else (the twin is excluded for its own reasons, or is a
- *               duplicate of a third file): report-only, a person decides.
+ * (one or more twin copies survive). Pure over its inputs.
+ *   'repoint' — some twin is live in the rebuild: point at it. Score-neutral (we
+ *               stay excluded), and the ref stops dangling. Checked FIRST: a live
+ *               copy means clearing us would score the article twice.
+ *   'clear'   — no twin is live, and a twin is itself crossOutletDuplicate naming
+ *               exactly this file: the pair excluded each other and the review
+ *               vanished; the twin's own verdict names us the primary.
+ *   null      — anything else: report-only, a person decides.
+ * @param {string} showId @param {string} file
+ * @param {Array<{data: object, showId: string, live: boolean}>} twins
+ * @returns {{action: 'repoint'|'clear'|null, twin: object|null}}
  */
-function crossOutletRenamedAction(file, twinData, twinLive) {
-  if (!twinData) return null;
-  if (twinData.crossOutletDuplicate === true && typeof twinData.crossOutletPrimaryFile === 'string'
-    && path.basename(twinData.crossOutletPrimaryFile) === file) return 'clear';
-  if (twinLive) return 'repoint';
-  return null;
+function crossOutletRenamedAction(showId, file, twins) {
+  const live = (twins || []).find((t) => t && t.live);
+  if (live) return { action: 'repoint', twin: live };
+  const defers = (twins || []).find((t) => t && twinPointsAt(t, showId, file));
+  if (defers) return { action: 'clear', twin: defers };
+  return { action: null, twin: (twins && twins[0]) || null };
 }
 
 let _showsById = null;
@@ -225,7 +238,8 @@ function isTwinLive(twin) {
   const { isIncludableForRebuild } = require('./lib/review-guards');
   try {
     return !!isIncludableForRebuild(twin.data, showById(twin.showId), path.join(REVIEW_TEXTS_DIR, twin.showId, twin.file));
-  } catch {
+  } catch (e) {
+    console.warn(`::warning::isTwinLive(${twin.showId}/${twin.file}) failed: ${e.message} — treated as not live (report-only)`);
     return false;
   }
 }
@@ -309,9 +323,9 @@ function audit() {
             // pointer along), so the old primary's text now lives in THIS file.
             // With no other copy left it is the only one and must score (BRO-3870);
             // a surviving same-URL/syndication/same-critic copy keeps it report-only.
-            const twin = findCrossOutletTwin(data, showDir, file, targetShow, load);
-            mismatches.push(twin
-              ? { ...base, reason: 'self-reference', siblingUrl: twin.ref }
+            const twins = findCrossOutletTwins(data, showDir, file, targetShow, load);
+            mismatches.push(twins.length
+              ? { ...base, reason: 'self-reference', siblingUrl: twins[0].ref }
               : { ...base, reason: 'self-reference', action: 'clear' });
           } else if (!exists) {
             // A missing primary is not proof the review is unique: the primary is
@@ -319,9 +333,10 @@ function audit() {
             // and a same-URL or syndication-pair twin still sits next to us. Clearing then would score
             // the same article twice, so that case never clears unless the twin itself
             // defers to us (see crossOutletRenamedAction).
-            const twin = findCrossOutletTwin(data, showDir, file, targetShow, load);
-            if (twin) {
-              const action = crossOutletRenamedAction(file, twin.data, isTwinLive(twin));
+            const twins = findCrossOutletTwins(data, showDir, file, targetShow, load);
+            if (twins.length) {
+              for (const t of twins) t.live = isTwinLive(t);
+              const { action, twin } = crossOutletRenamedAction(showId, file, twins);
               mismatches.push({ ...base, reason: 'primary-renamed', siblingUrl: twin.ref, ...(action ? { action } : {}) });
             } else {
               mismatches.push({ ...base, reason: 'sibling-missing', action: 'clear' });

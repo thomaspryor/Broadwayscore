@@ -66,7 +66,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
-const { extractBylineFromText } = require('./lib/byline-from-text');
+const { extractBylineFromText, otherNamedCriticAtOutlet } = require('./lib/byline-from-text');
 const { isPlaceholderByline } = require('./lib/placeholder-byline');
 const { isBylineAttestedInText } = require('./lib/byline-attestation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
@@ -4720,7 +4720,15 @@ showDirs.forEach(showId => {
         const crit = (data.criticName || '').trim().toLowerCase();
         if (!crit || crit === 'unknown' || crit === 'unnamed' || crit === 'ri-admin' || isPlaceholderByline(data.criticName, data.outlet, { defaultCritic: (outletRegistry.outlets[oid] || {}).defaultCritic })) {
           const parsed = extractBylineFromText(oid, data.fullText, { showTitle: showById[showId] && showById[showId].title });
-          if (parsed && parsed.known) {
+          // An Unknown file at an outlet that already has a DIFFERENT named critic in
+          // this show collapses into it in the unknown-critic dedup below. Naming it
+          // from its text would turn it into a second scored review at that outlet
+          // (heart-wall-west-end-2026: a misfiled London Theatre Reviews text under
+          // london-theatre beside Julia Rank). Named files sort first, so seenKeys
+          // already holds them here.
+          const parsedKey = parsed && parsed.known ? normalizeCriticCanonical(parsed.name) : null;
+          const otherNamedAtOutlet = parsedKey && otherNamedCriticAtOutlet(seenKeys, oid, parsedKey);
+          if (parsed && parsed.known && !otherNamedAtOutlet) {
             data.criticName = parsed.name;
             stats.resolvedBylineFromText = (stats.resolvedBylineFromText || 0) + 1;
           }

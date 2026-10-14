@@ -91,7 +91,25 @@ function extractBylineFromText(outletId, text, opts = {}) {
   return tail ? { name: tail, known: true } : null;
 }
 
+/**
+ * True when the rebuild's seen dedup keys ("<outlet>|<critic>") already hold a
+ * named critic at `outletKey` other than `criticKey`. The rebuild then keeps an
+ * Unknown file Unknown, so it still collapses into that critic instead of
+ * scoring as a second review at the outlet (BRO-3919 ship-check).
+ * @param {Iterable<string>} seenKeys
+ * @param {string} outletKey
+ * @param {string} criticKey
+ */
+function otherNamedCriticAtOutlet(seenKeys, outletKey, criticKey) {
+  for (const k of seenKeys) {
+    const [o, c] = k.split("|");
+    if (o === outletKey && c !== criticKey && !/^(unknown|unnamed)$/.test(c)) return true;
+  }
+  return false;
+}
+
 module.exports = {
+  otherNamedCriticAtOutlet,
   extractBylineFromText,
   extractPlaysInternationalByline,
   PI_KNOWN_CRITICS,
