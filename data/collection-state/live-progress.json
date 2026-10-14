@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-14T14:56:40.334Z",
-  "processed": 35,
-  "failed": 35,
-  "successRate": "50.0%",
+  "updatedAt": "2026-10-14T15:10:46.580Z",
+  "processed": 201,
+  "failed": 179,
+  "successRate": "52.9%",
   "tierBreakdown": {
     "playwright": 28,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 4,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 27
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 32,
+  "recentActivity": [
+    {
+      "t": "2026-10-14T15:03:22.930Z",
+      "event": "bb-session",
+      "session": "459af1aa",
+      "url": "https://www.wsj.com/articles/theater-review-the-last-ship-1414020603"
+    },
+    {
+      "t": "2026-10-14T15:03:23.678Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:03:41.556Z",
+      "event": "bb-session",
+      "session": "cdf6b4a1",
+      "url": "https://www.wsj.com/articles/theater-review-the-last-ship-1414020603"
+    },
+    {
+      "t": "2026-10-14T15:03:42.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:04:53.599Z",
+      "event": "bb-session",
+      "session": "87c8b4ba",
+      "url": "https://www.wsj.com/articles/theater-review-machinal-1389305827"
+    },
+    {
+      "t": "2026-10-14T15:04:54.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:05:13.513Z",
+      "event": "bb-session",
+      "session": "f87e6927",
+      "url": "https://www.wsj.com/articles/theater-review-machinal-1389305827"
+    },
+    {
+      "t": "2026-10-14T15:05:14.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:06:24.535Z",
+      "event": "bb-session",
+      "session": "14f9b675",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-14T15:06:25.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:06:43.073Z",
+      "event": "bb-session",
+      "session": "dfd72b9a",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-14T15:06:43.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:07:55.060Z",
+      "event": "bb-session",
+      "session": "3da52bed",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:07:55.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:08:13.710Z",
+      "event": "bb-session",
+      "session": "0e4b7195",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:08:14.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:27.191Z",
+      "event": "bb-session",
+      "session": "a7e7c17c",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:27.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:45.713Z",
+      "event": "bb-session",
+      "session": "c71ca3ff",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:46.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
