@@ -409,7 +409,7 @@ const US_THEATRE_HOSTNAMES = new Set([
 const US_OUTLET_DOMAINS = new Set([
   'mdtheatreguide.com', 'dctheatrearts.org', 'dctheatrescene.com', 'bgindependentmedia.org',
   'newyorktheatreguide.com', 'nytheatreguide.com', 'nytheatre.com', 'nytheatre-wire.com',
-  'nyctheatreaddict.com', 'theatreweekly.com', 'theatrereviews.com', 'jkstheatrescene.com',
+  'nyctheatreaddict.com', 'theatrereviews.com', 'jkstheatrescene.com',
   'jkstheatrescene.blogspot.com', 'buffalotheatreguide.com', 'leagueofcincytheatres.info',
   'localtheatreny.com', 'vegastheatrescene.com', 'nwtheatre.org', 'netheatregeek.com',
   'newhavenindependent.org', 'independent.com', 'recliningstandards.com', 'recliningstandards.org',
