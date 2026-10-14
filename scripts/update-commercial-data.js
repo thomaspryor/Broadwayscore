@@ -33,6 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isRelevantPost } = require('./lib/reddit-grosses');
+const { truthClassOf } = require('./lib/recoupment-ground-truth');
 const {
   isReportedWeeklyCost, citedSections, costSourceBasis, methodologyForCostSource, isReportedSource,
   isPrintableReportedCitation, isPlausibleWeeklyCost,
@@ -1464,6 +1465,17 @@ const DERIVED_FIELD_FIGURES = {
  * wider than /biz, which also marks an uncited one "~": a Reddit figure never
  * overwrites a capitalization someone entered, cited or not.
  */
+/**
+ * Does the record hold a trade-, producer- or filing-cited % returned? Read the
+ * same way the recoupment ground truth reads it, so a figure the backtest
+ * grades on is the one this update protects (BRO-5311).
+ */
+function holdsReportedRecoupmentPct(rec) {
+  const est = rec && rec.estimatedRecoupmentPct;
+  if (!Array.isArray(est) || est.length !== 2) return false;
+  return truthClassOf(rec, 'reported-pct', rec.estimatedRecoupmentSource || rec.notes || '').truthClass === 'reported';
+}
+
 function holdsReportedFigure(rec, field) {
   if (field === 'weeklyRunningCost') return isReportedWeeklyCost(rec);
   return rec?.capitalization != null && rec.isEstimate?.capitalization !== true;
@@ -1564,6 +1576,13 @@ function filterByConfidence(proposedChanges, commercialData) {
     if (CITATION_FIELD[field] && !isReportedSource(change.source) && holdsReportedFigure(commercialData?.shows?.[slug], field)) {
       const what = field === 'weeklyRunningCost' ? `weekly cost (${commercialData.shows[slug].costMethodology})` : 'capitalization';
       skipped.push({ ...change, skipReason: `Only a trade or SEC source may replace a reported ${what}` });
+      continue;
+    }
+
+    // A cited % returned (Hell's Kitchen: Broadway Journal, 55-60%) is never
+    // replaced by a Reddit grosses estimate, like a reported cost above (BRO-5311).
+    if (field === 'estimatedRecoupmentPct' && !isReportedSource(change.source) && holdsReportedRecoupmentPct(commercialData?.shows?.[slug])) {
+      skipped.push({ ...change, skipReason: 'Only a trade or SEC source may replace a reported % returned' });
       continue;
     }
 

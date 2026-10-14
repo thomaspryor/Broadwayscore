@@ -236,3 +236,17 @@ test('extractSourceType rates "Section X:" sources by what they are', () => {
   assert.equal(extractSourceType('Section H: SEC Form D'), 'SEC Form D');
   assert.equal(extractSourceType('Section B: box office math'), 'estimate');
 });
+
+// BRO-5311: Hell's Kitchen's 55-60% is cited to Broadway Journal; next week's
+// Reddit grosses post must not replace it, though it may still fill a gap or
+// replace an earlier Reddit figure.
+test('a Reddit % returned is skipped when the record holds a cited % returned', () => {
+  const pct = (newValue) => ({ slug: 'some-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue, confidence: 'high', source: 'Reddit Grosses Analysis (u/Boring_Waltz_9545)' });
+  const cited = commercialWith({ estimatedRecoupmentPct: [55, 60], estimatedRecoupmentSource: 'Broadway Journal (Oct 12, 2026): investors had been paid back 60% of their stakes.' });
+  const { applied, skipped } = filterByConfidence([pct([70, 70])], cited);
+  assert.equal(applied.length, 0);
+  assert.match(skipped[0].skipReason, /reported % returned/);
+  for (const record of [{}, { estimatedRecoupmentPct: [60, 60], estimatedRecoupmentSource: 'Reddit Grosses Analysis post states recoup=60%' }]) {
+    assert.equal(filterByConfidence([pct([70, 70])], commercialWith(record)).applied.length, 1, JSON.stringify(record));
+  }
+});
