@@ -416,3 +416,21 @@ test('daily targets include a not-closed tour that cannot inherit a synopsis', (
   assert.deepEqual(selectDailyTargets(shows).filter(isSynopsisOnlyTarget).map(s => s.id), ['standalone-upcoming', 'child-cannot-inherit'],
     'an upcoming tour gets only the synopsis step, never creative team / tickets / images');
 });
+
+// BRO-3574: daily-mode mass-rewrite circuit breaker.
+test('checkDailyStability passes a normal run and aborts a mass rewrite', () => {
+  const { checkDailyStability, STABILITY_THRESHOLDS } = require('./auto-fix-show-data.js');
+  const quiet = { warn() {}, error() {}, log() {} };
+  const ids = (n) => new Set(Array.from({ length: n }, (_, i) => `show-${i}`));
+  assert.equal(STABILITY_THRESHOLDS.absoluteChanges, 25);
+  // steady state: a handful of fixes out of ~60 targets
+  assert.equal(checkDailyStability(ids(3), 60, { snapshotPath: null, log: quiet }).ok, true);
+  // percent breach: 13/30 = 43% > 40%
+  assert.equal(checkDailyStability(ids(13), 30, { snapshotPath: null, log: quiet }).ok, false);
+  // absolute breach: 26 > 25 even when the percent is low
+  assert.equal(checkDailyStability(ids(26), 200, { snapshotPath: null, log: quiet }).ok, false);
+  // explicit --force bypass is allowed but reported
+  const forced = checkDailyStability(ids(40), 60, { force: true, snapshotPath: null, log: quiet });
+  assert.equal(forced.ok, true);
+  assert.equal(forced.bypass, 'force');
+});

@@ -26,6 +26,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { verifyCreativeTeamViaSerp: verifyCreativeTeamViaSerpLib } = require('./lib/creative-team-verify');
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { validateChangeStability } = require('./lib/change-stability-guard');
 const { cleanup: cleanupScraper } = require('./lib/scraper');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
@@ -37,6 +38,7 @@ const USAGE = `auto-fix-show-data.js — Automatically fixes show data issues - 
 Usage:
   node scripts/auto-fix-show-data.js [options]
   node scripts/auto-fix-show-data.js --help, -h    print this usage and exit
+  node scripts/auto-fix-show-data.js --force       bypass the daily-mode stability guard (>25 shows or >40% fixed in one run)
 `;
 // hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -70,6 +72,25 @@ const results = {
   triggeredWorkflows: [],
   errors: []
 };
+
+// BRO-3574: daily-mode circuit breaker. The daily run only touches open/preview
+// shows and normally fixes 0-3 of them; a classifier/scraper regression that
+// "fixes" most of the board would otherwise be saved and committed by CI.
+// Operator-driven runs (--show=, --backfill-historical) are exempt by design.
+const ABORT_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'auto-fix-show-data-aborted.json');
+const STABILITY_THRESHOLDS = { absoluteChanges: 25, changePercent: 0.4 };
+
+function checkDailyStability(changedShowIds, candidateCount, opts = {}) {
+  return validateChangeStability({
+    name: 'auto-fix-show-data',
+    changes: [...changedShowIds].map(id => ({ id })),
+    candidateCount,
+    thresholds: STABILITY_THRESHOLDS,
+    forceFlag: !!opts.force,
+    snapshotPath: opts.snapshotPath === undefined ? ABORT_SNAPSHOT_PATH : opts.snapshotPath,
+    log: opts.log || console,
+  });
+}
 
 function loadShows() {
   return showsWriteGuard.loadShows();
@@ -741,6 +762,7 @@ async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const backfillHistorical = args.includes('--backfill-historical');
+  const force = args.includes('--force');
   const limitArg = args.find(a => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;
   const showArg = args.find(a => a.startsWith('--show='));
@@ -782,6 +804,7 @@ async function main() {
 
   let showsWithMissingImages = [];
   let changesMade = false;
+  const changedShowIds = new Set();
   let checkpointCount = 0;
 
   for (let i = 0; i < targetShows.length; i++) {
@@ -798,6 +821,7 @@ async function main() {
       results.fixed.push(synopsisFix);
       console.log(`    ✓ ${synopsisFix}`);
       changesMade = true;
+      changedShowIds.add(show.id);
       await sleep(1000); // Rate limit
     }
 
@@ -809,6 +833,7 @@ async function main() {
       results.fixed.push(creativeFix);
       console.log(`    ✓ ${creativeFix}`);
       changesMade = true;
+      changedShowIds.add(show.id);
       await sleep(1000); // Rate limit
     }
 
@@ -819,6 +844,7 @@ async function main() {
         results.fixed.push(ticketFix);
         console.log(`    ✓ ${ticketFix}`);
         changesMade = true;
+        changedShowIds.add(show.id);
       }
     }
 
@@ -840,6 +866,18 @@ async function main() {
       saveShows(data);
       checkpointCount++;
       console.log(`\n--- Checkpoint ${checkpointCount}: saved ${results.fixed.length} fixes ---\n`);
+    }
+  }
+
+  // Daily mode only: refuse to save a run that rewrote an implausible share of
+  // the board (in-memory data is simply dropped; nothing was written yet).
+  if (changesMade && !backfillHistorical && !showIds) {
+    const guard = checkDailyStability(changedShowIds, targetShows.length, { force });
+    if (!guard.ok) {
+      console.error(`\n❌ Stability guard aborted the save (${guard.reason}). shows.json NOT modified. Snapshot: ${guard.snapshotPath || ABORT_SNAPSHOT_PATH}`);
+      results.errors.push(`stability-guard-abort: ${guard.reason}`);
+      changesMade = false;
+      process.exitCode = 1;
     }
   }
 
@@ -916,4 +954,6 @@ module.exports = {
   buildSynopsisPrompt,
   selectDailyTargets,
   isSynopsisOnlyTarget,
+  checkDailyStability,
+  STABILITY_THRESHOLDS,
 };
