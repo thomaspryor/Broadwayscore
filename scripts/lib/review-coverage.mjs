@@ -63,18 +63,18 @@ export const NO_SHIP_CHECK_RE = /#\s*NO-SHIP-CHECK:\s*(\S.{14,})/;
 const skillName = (s) => String(s || '').split(':').pop().replace(/^\//, '');
 
 /** Indices (into events) of real ship-check/code-review runs, with the skill name. */
-export function findRuns(events) {
+export function findRuns(events, skills = STRONG_SKILLS) {
   const results = new Map();
   for (const e of events) if (e.kind === 'tool_result') results.set(e.tool_use_id, e);
   const runs = [];
   const failed = new Set();
   events.forEach((e, i) => {
     if (e.kind === 'user_text') {
-      const m = /<command-name>\/?(ship-check|code-review)<\/command-name>/.exec(e.text || '');
-      if (m) runs.push({ i, skill: m[1], id: `typed-${i}` });
+      const m = /<command-name>\/?([a-z-]+)<\/command-name>/.exec(e.text || '');
+      if (m && skills.includes(m[1])) runs.push({ i, skill: m[1], id: `typed-${i}` });
     } else if (e.kind === 'assistant_tool_use' && e.name === 'Skill') {
       const sk = skillName(e.input?.skill);
-      if (!STRONG_SKILLS.includes(sk)) return;
+      if (!skills.includes(sk)) return;
       const r = results.get(e.id);
       if (r && (r.isError || /unknown skill/i.test(r.content || ''))) failed.add(sk);
       else runs.push({ i, skill: sk, id: e.id });
@@ -167,6 +167,53 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
 }
 
 
+const ROADMAP_READ_RE = /issue\s+view\s+1\b[^\n]*broadway-scorecard-data|broadway-scorecard-data[^\n]*issue\s+view\s+1\b/;
+const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state\s+Done|linear-session\.js\s+report\b/;
+const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
+
+/**
+ * The rest of the finish chain, checked for substance (BRO-5359 /what-else): the same
+ * "invoked but hollow" failure as /ship-check. Only called for a session that did code work
+ * (a /ship-check or /code-review run exists). verify-edits.sh already asks for a MISSING
+ * /what-else or /wrap-up; this checks what the ones that ran actually did.
+ * -> string[] of problems
+ */
+export function evaluateChain(events, { lastMessage = '' } = {}) {
+  const problems = [];
+  const bypass = (tok) => new RegExp(`^\\s*${tok}:\\s*(\\S.{9,})`, 'm').test(lastMessage);
+  const texts = (from) => events.slice(from + 1).filter((e) => e.kind === 'assistant_text').map((e) => e.text || '').join('\n');
+
+  const dwi = findRuns(events, ['did-it-work']);
+  if (!bypass('NO-DID-IT-WORK')) {
+    if (dwi.length === 0) problems.push('/did-it-work was never run (it comes before /ship-check: run the real thing against real data)');
+    else if (!/[\u2501\-]{2,}\s*TESTED\b/.test(texts(dwi[dwi.length - 1].i))) problems.push('/did-it-work printed no TESTED block (real data, 3 diverse cases) after it ran');
+  }
+
+  const we = findRuns(events, ['what-else']);
+  if (we.length && !bypass('NO-WHAT-ELSE')) {
+    const after = texts(we[we.length - 1].i);
+    const lenses = (after.split(/LENSES:/)[1] || '').split('\n').filter((l) => /^\s*[1-5]\.\s+\S/.test(l));
+    if (lenses.length < 5) problems.push(`/what-else printed ${lenses.length} of 5 lens lines in a LENSES: block, each citing a concrete check`);
+    const readRoadmap = events.some((e) => e.kind === 'assistant_tool_use' && (
+      (e.name === 'mcp__github__issue_read' && e.input?.repo === 'broadway-scorecard-data' && Number(e.input?.issue_number) === 1) ||
+      (e.name === 'Bash' && ROADMAP_READ_RE.test(String(e.input?.command || '')))));
+    if (!readRoadmap) problems.push('/what-else never read the real roadmap (GitHub issue 1 of broadway-scorecard-data, via mcp__github__issue_read; the local memory/roadmap.md is stale)');
+  }
+
+  if (!bypass('NO-WRAP-UP')) {
+    let lastLand = -1;
+    let lastDone = -1;
+    events.forEach((e, i) => {
+      if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
+      const c = String(e.input?.command || '');
+      if (LAND_PUSH_RE.test(c)) lastLand = i;
+      if (LINEAR_DONE_RE.test(c)) lastDone = i;
+    });
+    if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');
+  }
+  return problems;
+}
+
 const MAX_STOP_BLOCKS = 3;
 
 /**
@@ -184,15 +231,21 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (/^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text)) return { decision: 'allow', reason: 'NO-SHIP-CHECK bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   const cov = evaluateCoverage(events);
-  if (!cov.ran || cov.complete) return { decision: 'allow', reason: cov.ran ? 'coverage complete' : 'no strong review run' };
+  // Only a session that did reviewed code work is held to the rest of the chain.
+  const problems = [];
+  if (cov.ran && !cov.complete) problems.push(...cov.missing.map((m) => `/${cov.skill} did not run its reviewers: ${m}`));
+  // The newest message is not flushed to the transcript when the Stop hook runs (verify-edits.sh
+  // has the same note), so add it: a LENSES/TESTED block in the closing message must count.
+  if (cov.ran) problems.push(...evaluateChain([...events, { kind: 'assistant_text', text: String(lastMessage || '') }], { lastMessage: text }));
+  if (problems.length === 0) return { decision: 'allow', reason: cov.ran ? 'coverage complete' : 'no strong review run' };
   return {
     decision: 'block',
-    reason: 'review coverage incomplete',
+    reason: 'finish chain incomplete',
     message: [
-      `BLOCKED (BRO-5359): you ran /${cov.skill} but its reviewers never ran, so it does not count as a review. Missing:`,
-      ...cov.missing.map((m) => `  - ${m}`),
-      'Finish the real /ship-check (cloud profile in .claude/CLOUD.md), fix what it finds, then close out again.',
-      'If a reviewer truly cannot run, say why on a line `NO-SHIP-CHECK: <reason>` in the closing message.',
+      'BLOCKED (BRO-5359): the finish chain was invoked but not done. A skill call that skips its substance does not count:',
+      ...problems.map((m) => `  - ${m}`),
+      'Do the missing parts for real (cloud profile in .claude/CLOUD.md), then close out again.',
+      'If a step truly cannot run, say why on a line `NO-SHIP-CHECK:` / `NO-DID-IT-WORK:` / `NO-WHAT-ELSE:` / `NO-WRAP-UP: <reason, 10+ chars>` in the closing message.',
     ].join('\n'),
   };
 }
@@ -219,7 +272,7 @@ function stopHookMain() {
   const counter = path.join(os.tmpdir(), `review-coverage-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
   if (d.decision !== 'block') {
     // Coverage is complete (or not claimed): reset the block budget for any later uncovered review.
-    if (d.reason === 'coverage complete') fs.rmSync(counter, { force: true });
+    if (d.decision === 'allow' && d.reason === 'coverage complete') fs.rmSync(counter, { force: true });
     return 0;
   }
   // Cap blocks per transcript so an unsatisfiable gate can never loop a session.

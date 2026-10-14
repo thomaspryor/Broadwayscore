@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
-import { evaluateCoverage, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
+import { evaluateCoverage, evaluateChain, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
 import { checkReviewCoverage } from './land-preflight.mjs';
 import { landPushTargets } from './push-command.mjs';
 
@@ -23,6 +23,12 @@ const agent = (prompt = 'Review this diff for correctness and design problems. '
 const curl = () => tool('Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $K" -d @/tmp/x' });
 const ev = (...pairs) => pairs.flatMap((u) => [u, res(u)]);
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true' };
+const text = (t) => ({ kind: 'assistant_text', text: t });
+const TESTED = text('\u2501\u2501\u2501 TESTED \u2501\u2501\u2501\nReal data: yes');
+const LENSES = text('LENSES:\n1. Pattern: grepped x -> clean\n2. Edges: read y -> empty\n3. User impact: z -> empty\n4. Data: q -> spark\n5. Compounding: w -> empty');
+const roadmap = () => tool('mcp__github__issue_read', { method: 'get', owner: 'thomaspryor', repo: 'broadway-scorecard-data', issue_number: 1 });
+// did-it-work (with its TESTED block) then a fully covered ship-check
+const fullChain = () => [...ev(skill('did-it-work')), TESTED, ...ev(skill(), agent(), curl())];
 
 test('no ship-check run: incomplete', () => {
   const c = evaluateCoverage(ev(tool('Bash', { command: 'ls' })));
@@ -155,7 +161,7 @@ test('findSessionTranscript locates <home>/.claude/projects/*/<id>.jsonl', () =>
 
 test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check blocks', () => {
   const thin = ev(skill());
-  const full = ev(skill(), agent(), curl());
+  const full = fullChain();
   const done = 'All landed.\n\nSAFE TO EXIT';
   const d = (o) => stopHookDecision({ lastMessage: done, events: thin, env: CLOUD, ...o }).decision;
   assert.equal(d({}), 'block');
@@ -178,7 +184,8 @@ test('stop hook wrapper: exit 2 for a thin run, 0 for a full one, blocks stop af
   const full = path.join(dir, 'full.jsonl');
   const base = use1('s1', 'Skill', { skill: 'ship-check' }) + out1('s1', 'ok');
   fs.writeFileSync(thin, base);
-  fs.writeFileSync(full, base + use1('a1', 'Agent', { subagent_type: 'review-panelist', prompt: 'Review the diff carefully for wedge risks and silent failures. '.repeat(6) }) + out1('a1', 'Findings: nothing blocking in the diff, two warnings.') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/req.json' }) + out1('b1', 'Findings: the gate fails open on a missing transcript, which is fine.'));
+  const dwi = use1('d1', 'Skill', { skill: 'did-it-work' }) + out1('d1', 'ok') + row('assistant', [{ type: 'text', text: '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501' }]);
+  fs.writeFileSync(full, dwi + base + use1('a1', 'Agent', { subagent_type: 'review-panelist', prompt: 'Review the diff carefully for wedge risks and silent failures. '.repeat(6) }) + out1('a1', 'Findings: nothing blocking in the diff, two warnings.') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/req.json' }) + out1('b1', 'Findings: the gate fails open on a missing transcript, which is fine.'));
   const hook = path.join(ROOT, '.claude', 'hooks', 'stop-review-coverage.sh');
   const run = (t) => spawnSync('bash', [hook], { input: JSON.stringify({ transcript_path: t, last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '' } });
   assert.equal(run(full).status, 0);
@@ -219,4 +226,42 @@ test('cheap fakes do not count as the reviewers', () => {
 test('stop hook: bold SAFE TO EXIT is matched; the 10-char message bypass is documented behavior', () => {
   const thin = ev(skill());
   assert.equal(stopHookDecision({ lastMessage: 'Done.\n\n**SAFE TO EXIT**', events: thin, env: CLOUD }).decision, 'block');
+});
+
+test('finish chain: did-it-work must have run and printed its TESTED block', () => {
+  const noDwi = ev(skill(), agent(), curl());
+  assert.match(evaluateChain(noDwi).join('|'), /did-it-work was never run/);
+  assert.match(evaluateChain([...ev(skill('did-it-work')), ...noDwi]).join('|'), /no TESTED block/);
+  assert.deepEqual(evaluateChain(fullChain()), []);
+  assert.deepEqual(evaluateChain(noDwi, { lastMessage: 'NO-DID-IT-WORK: pure hook revert, nothing to run\n\nSAFE TO EXIT' }), []);
+});
+
+test('finish chain: a hollow /what-else (one lens, no roadmap read) is flagged', () => {
+  const base = fullChain();
+  const hollow = [...base, ...ev(skill('what-else')), text('LENSES:\n1. Pattern: found cousins')];
+  const p = evaluateChain(hollow).join('|');
+  assert.match(p, /1 of 5 lens lines/);
+  assert.match(p, /never read the real roadmap/);
+  const good = [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), LENSES];
+  assert.deepEqual(evaluateChain(good), []);
+  const viaGh = [...base, ...ev(skill('what-else')), LENSES, tool('Bash', { command: 'gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body' })];
+  assert.deepEqual(evaluateChain(viaGh), [], 'the gh form of the roadmap read (Mac) counts too');
+  const wrongRepo = [...base, ...ev(skill('what-else')), LENSES, tool('mcp__github__issue_read', { method: 'get', owner: 'thomaspryor', repo: 'broadwayscore', issue_number: 1 })];
+  assert.match(evaluateChain(wrongRepo).join('|'), /never read the real roadmap/);
+});
+
+test('finish chain: a Linear close-out posted before the last landing is flagged', () => {
+  const done = tool('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done --comment x' });
+  const land = tool('Bash', { command: 'git push origin HEAD:refs/heads/land/bro-1-x' });
+  const base = fullChain();
+  assert.match(evaluateChain([...base, done, res(done), land, res(land)]).join('|'), /close-out was posted before the last landing/);
+  assert.deepEqual(evaluateChain([...base, land, res(land), done, res(done)]), []);
+  assert.deepEqual(evaluateChain([...base, done, res(done), land, res(land)], { lastMessage: 'NO-WRAP-UP: closed by hand after the landing\n\nSAFE TO EXIT' }), []);
+});
+
+test('stop hook: a LENSES/TESTED block that only exists in the closing message (not yet flushed) counts', () => {
+  const base = [...ev(skill('did-it-work')), ...ev(skill(), agent(), curl()), roadmap(), res(roadmap()), ...ev(skill('what-else'))];
+  const closing = '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501\n```\nLENSES:\n1. a: b\n2. a: b\n3. a: b\n4. a: b\n5. a: b\n```\n\nSAFE TO EXIT';
+  assert.equal(stopHookDecision({ lastMessage: closing, events: base, env: CLOUD }).decision, 'allow');
+  assert.equal(stopHookDecision({ lastMessage: 'Done.\n\nSAFE TO EXIT', events: base, env: CLOUD }).decision, 'block');
 });
