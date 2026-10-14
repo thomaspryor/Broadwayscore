@@ -14,16 +14,18 @@
 //
 // One implementation for both enforcement points:
 //   - land gate:   land-preflight.mjs runHook -> landGateDecision (blocks a land/* push)
-//   - Stop chain:  verify-edits.sh shells out to `--json` (a ship-check without coverage
-//                  does not count as the review)
+//   - Stop hook:   .claude/hooks/stop-review-coverage.sh -> `--stop-hook` (SAFE TO EXIT after a
+//                  ship-check whose reviewers never ran is refused). Its own repo-only hook, not
+//                  verify-edits.sh, which is a copy of a Mac master (cloud-parity.json).
 // and it produces the evidence BRO-4277 wanted (`--record`), so a pass verdict is only
 // written when coverage is complete.
 //
 // CLI:
 //   node scripts/lib/review-coverage.mjs --transcript=<path> [--json]
 //   node scripts/lib/review-coverage.mjs --record [--transcript=<path>]   (session transcript auto-found)
+//   node scripts/lib/review-coverage.mjs --stop-hook          (Stop hook JSON on stdin; exit 2 blocks)
 // Exit: 0 complete, 3 incomplete, 2 transcript not found. Fails open (exit 0) on internal error
-// only when called as a hook helper (--json), never for --record.
+// for hook use (--json, --stop-hook), never for --record.
 
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
@@ -142,6 +144,71 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
   };
 }
 
+
+const MAX_STOP_BLOCKS = 3;
+
+/**
+ * Pure Stop-hook decision. Blocks only a final "SAFE TO EXIT" message when the session's last
+ * /ship-check or /code-review run lacks its reviewers. A session with no strong review run at
+ * all is left to verify-edits.sh's chain gate (it asks for the review itself).
+ * -> { decision: 'allow'|'block', reason, message? }
+ */
+export function stopHookDecision({ lastMessage = '', events = null, env = process.env }) {
+  if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
+  if (env.SHIP_CHECK_COVERAGE_DISABLE === '1') return { decision: 'allow', reason: 'SHIP_CHECK_COVERAGE_DISABLE=1' };
+  const text = String(lastMessage || '').replace(/```[\s\S]*?```/g, '');
+  const lines = text.split('\n').map((l) => l.trim()).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
+  if (!lines.length || !/^SAFE TO EXIT\b/.test(lines[lines.length - 1])) return { decision: 'allow', reason: 'not claiming SAFE TO EXIT' };
+  if (/^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text)) return { decision: 'allow', reason: 'NO-SHIP-CHECK bypass' };
+  if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
+  const cov = evaluateCoverage(events);
+  if (!cov.ran || cov.complete) return { decision: 'allow', reason: cov.ran ? 'coverage complete' : 'no strong review run' };
+  return {
+    decision: 'block',
+    reason: 'review coverage incomplete',
+    message: [
+      `BLOCKED (BRO-5359): you ran /${cov.skill} but its reviewers never ran, so it does not count as a review. Missing:`,
+      ...cov.missing.map((m) => `  - ${m}`),
+      'Finish the real /ship-check (cloud profile in .claude/CLOUD.md), fix what it finds, then close out again.',
+      'If a reviewer truly cannot run, say why on a line `NO-SHIP-CHECK: <reason>` in the closing message.',
+    ].join('\n'),
+  };
+}
+
+function readStdin() {
+  try {
+    return fs.readFileSync(0, 'utf8');
+  } catch {
+    return '';
+  }
+}
+
+/** --stop-hook entry: hook JSON on stdin; exit 2 + stderr blocks. Always fails open. */
+function stopHookMain() {
+  let input = {};
+  try {
+    input = JSON.parse(readStdin() || '{}');
+  } catch {
+    return 0;
+  }
+  const tp = input.transcript_path;
+  if (!tp || !fs.existsSync(tp)) return 0;
+  const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp) });
+  if (d.decision !== 'block') return 0;
+  // Cap blocks per transcript so an unsatisfiable gate can never loop a session.
+  const counter = path.join(os.tmpdir(), `review-coverage-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
+  let n = 0;
+  try {
+    n = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0;
+  } catch { /* first block */ }
+  if (n >= MAX_STOP_BLOCKS) return 0;
+  try {
+    fs.writeFileSync(counter, String(n + 1));
+  } catch { /* best effort */ }
+  process.stderr.write(d.message + '\n');
+  return 2;
+}
+
 /** Find this session's transcript (cloud keeps them under ~/.claude/projects/*). */
 export function findSessionTranscript(sessionId, home = os.homedir()) {
   if (!sessionId) return null;
@@ -160,6 +227,7 @@ export function findSessionTranscript(sessionId, home = os.homedir()) {
 }
 
 async function main(argv) {
+  if (argv.includes('--stop-hook')) return stopHookMain();
   const arg = (n) => argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
   const record = argv.includes('--record');
   const transcript = arg('transcript') || findSessionTranscript(process.env.CLAUDE_CODE_SESSION_ID);

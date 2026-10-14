@@ -19,6 +19,19 @@ Run `/ship-check` after completing a feature or significant change, before deplo
 
 **MANDATORY for any feature or change that touches src/ files.** Do not skip this. Do not tell yourself "it's a small change." The bugs it catches are exactly the ones that seem too small to review. If you built something and are about to push, run `/ship-check` first.
 
+## Cloud profile (CLAUDE_CODE_REMOTE=true) — BRO-5359, hook-enforced
+
+Sessions kept invoking this skill and then running a reduced version (one cheap reviewer, nothing else), after the code had already landed. There is no reduced ship-check. In a cloud session:
+
+1. **Run it BEFORE `git push … land/<name>`.** A land push of more than 30 gated lines is blocked until this skill's reviewers have run (`pre-push-land-preflight.sh`), and "SAFE TO EXIT" is refused after a ship-check without them (`stop-review-coverage.sh`). A review of already-landed code can stop nothing.
+2. **It applies to every code change**, not only `src/`: `scripts/`, `.github/workflows/`, `.claude/hooks/`, `supabase/`, tests. "Nothing under src/" is not a reason to skip Phase 5.
+3. **Phase 5 is required in full.** Both of these must run AFTER you invoke the skill, or the hooks do not count it: (a) a Claude reviewer, an `Agent` call with `subagent_type: "review-panelist"` (a general agent called "review" does not count); (b) an external adversarial reviewer, `curl` to `api.openai.com` (the gpt-5.4-mini fallback below is fine in cloud, there is no Codex CLI) or `codex exec`. The fresh-eyes UX reviewer is required only when the diff touches UI files.
+4. **Phase 2 (tsc, lint, build) may be left to `land.yml`**, which runs them strictly on the rebased tree. Say so in the report; do not present it as run. Phase 3 and Phase 4 may be skipped only when the diff has no data or UI effect, and the report must say that.
+5. **Finish with a `COVERAGE:` block**, one line per phase 2 to 5: `ran: <the command or Agent>` or `skipped: <reason>`. A skipped Phase 5 reviewer is a failure, not an option.
+6. **Record the verdict with the coverage-checked command**, not a bare `--query=record`: `node scripts/lib/review-coverage.mjs --record`. It refuses to record a pass unless both reviewers ran, and attaches evidence when they did.
+
+If a reviewer truly cannot run (no `OPENAI_API_KEY`, API down), say why on a `NO-SHIP-CHECK: <reason>` line. That is logged; it is not a silent skip.
+
 ## Instructions
 
 ### Phase 1: Understand what was built
@@ -357,6 +370,8 @@ For anything genuinely blocked: file it as a Linear issue (`node scripts/linear-
 
 ```bash
 node scripts/lib/review-gate.mjs --query=record --reviewer=ship-check --result=pass
+# Cloud sessions: use the coverage-checked form instead (refuses to record unless both reviewers ran):
+# node scripts/lib/review-coverage.mjs --record
 ```
 
 (`--result=fail` if P0/P1s remain unfixed.) This writes the push-boundary breadcrumb (`.claude/review-verdicts.jsonl`) that `pre-push-review-gate.sh` checks on every `git push` touching >30 lines of src/scripts/workflow code. Without it the push is BLOCKED even though ship-check ran — the gate is prose-independent and only trusts the ledger. Run it from the worktree you reviewed in (the ledger lands at the canonical root automatically); if you fix findings after recording, re-run it so the verdict covers the fixed code.

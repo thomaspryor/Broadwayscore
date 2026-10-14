@@ -75,6 +75,8 @@ a /what-else pass real rather than performative):
 gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body -q '.body' 2>/dev/null || cat memory/roadmap.md
 ```
 
+**Cloud (no `gh` CLI): the `|| cat memory/roadmap.md` fallback above reads a stale local file and is NOT the roadmap.** Read issue 1 with `mcp__github__issue_read` (`method: get`, `owner: thomaspryor`, `repo: broadway-scorecard-data`, `issue_number: 1`). The body is about 60k characters, so the tool saves it to a file: `grep -n -i` that file for each spark's keywords and quote the matching lines in the "already covered" call. If the read fails, say so; do not substitute the local file silently.
+
 From all the sparks generated, keep only the ones that are:
 - **Actionable** — someone could start on this in the next session
 - **Valuable** — worth the effort, not just interesting

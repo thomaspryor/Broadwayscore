@@ -301,6 +301,8 @@ The user pastes the prompt into a fresh session and it works with zero extra con
 
 **Close with a plain-English message for the owner, and record the machine block separately** (owner escalation 2026-09-20, BRO-3914; `exit-status-gate.sh` reads the recorded block, never the chat, when one is fresh):
 
+**Cloud sessions: `wrapup-block` does not exist and nothing reads it. Skip step 1 and Phase 7 (cmux). Close with the plain-English message and the final `SAFE TO EXIT` / `NOT SAFE TO EXIT` line instead (.claude/CLOUD.md). Post the Linear close-out AFTER your last landing is verified, not before: a later landing makes an earlier close-out stale.**
+
 1. Write the machine block to a file (scratchpad is fine), then record it as your LAST tool call: `wrapup-block --file <path>`. Lines, plain prose, never in a code fence:
 
 ──────────────────────────────────────────
