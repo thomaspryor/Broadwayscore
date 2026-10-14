@@ -23,6 +23,7 @@
  * research and our own synthesis. The excluded count is printed. Under the
  * default the inference rows are still scored, on their own Advisory line
  * (owner 2026-10-13): they never count toward --strict or the CI annotations.
+ * --timing has no Advisory line: it leaves inference rows out and says so.
  *
  * Two lines gate any shadow-to-live switch (checker, 2026-10-10):
  *   New false recouped: rows the truth says never recouped that the new side

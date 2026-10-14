@@ -24,15 +24,16 @@
  *   node scripts/audit-run-contamination.js --class=2,3
  *   node scripts/audit-run-contamination.js --out=path.json
  *
- * Exit 0 always (advisory, CLAUDE.md rule 19); exit 3 only when the corpus
- * cannot be read.
+ * Exit 0 unless --max-actionable=N is given (1 above the ceiling, 2 when no gated class
+ * ran); exit 3 when the corpus cannot be read.
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
 const { earliestShowDate } = require('./lib/date-guard');
-const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const { isScriptWrongProductionClear } = require('./lib/review-write-guard');
+const { isWithinPriorRun, isWithinOptOutPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const {
   republishMarker, evaluateRepublishedReview, wrongProductionFlagVsClear,
 } = require('./lib/run-contamination');
@@ -51,6 +52,10 @@ const ONLY = argVal('class') ? new Set(argVal('class').split(',').map(Number)) :
 const TODAY = argVal('today') || new Date().toISOString().slice(0, 10);
 const RECENT_SINCE = '2026-06-01';
 const DAY = 86400000;
+// Class 5 shared-article window: a review lands at most ~a month before the first preview of the run
+// it covers (press previews, out-of-town notices) and a late notice up to ~6 months after it closes.
+const SHARED_PRE_RUN_DAYS = 45;
+const SHARED_POST_RUN_DAYS = 180;
 
 const want = (n) => !ONLY || ONLY.has(n);
 const norm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -163,10 +168,15 @@ function class2(ctx) {
     const days = daysBetween(earliest, r.publishDate);
     if (days <= 1) continue;
     const f = matchFile(r, files.get(r.showId));
-    const priorRun = !!isWithinPriorRun(r.publishDate, (s.priorRuns || []).filter((p) => p && typeof p === 'object'));
+    const runs = (s.priorRuns || []).filter((p) => p && typeof p === 'object');
+    // A prior run marked inheritReviews:false is a run whose reviews are NOT this entry's
+    // (BRO-5285), so its window explains nothing: those rows are contamination (BRO-5261).
+    const optOutRun = !!isWithinOptOutPriorRun(r.publishDate, runs);
+    const priorRun = !optOutRun && !!isWithinPriorRun(r.publishDate, runs);
     const tourLeg = !!isWithinTourLeg(r.publishDate, (s.tourLegs || []).filter((p) => p && typeof p === 'object'));
     let why = 'undeclared';
-    if (priorRun) why = 'declared-prior-run';
+    if (optOutRun) why = 'opt-out-prior-run';
+    else if (priorRun) why = 'declared-prior-run';
     else if (tourLeg) why = 'declared-tour-leg';
     else if (f && (f.allowEarlyDate || f.humanReviewedWrongProduction === true)) why = 'human-allow';
     else if (f && (f.wrongProductionManualClear || f.wrongProductionOverride)) why = 'cleared-flag';
@@ -178,7 +188,7 @@ function class2(ctx) {
     });
   }
   const tally = (key) => out.reduce((m, o) => { m[o[key]] = (m[o[key]] || 0) + 1; return m; }, {});
-  const unexplained = out.filter((o) => o.why === 'undeclared' || o.why === 'llm-guessed-date');
+  const unexplained = out.filter((o) => o.why === 'undeclared' || o.why === 'llm-guessed-date' || o.why === 'opt-out-prior-run');
   const perShow = new Map();
   for (const o of unexplained) perShow.set(o.showId, (perShow.get(o.showId) || 0) + 1);
   return {
@@ -203,7 +213,10 @@ function class3(ctx) {
     if (!f || seen.has(`${r.showId}/${f.file}`)) continue;
     seen.add(`${r.showId}/${f.file}`);
     // A human clear (ManualClear without a script setBy) is a recorded verdict, not a miss.
-    const humanCleared = f.wrongProductionManualClear && !/\.js$/.test(String(f.overrideSetBy || ''));
+    // Same rule as the write guard (BRO-5261: the bare /\.js$/ test called the guard's known script
+    // labels, e.g. clear-own-venue-tour-fps-2026-10, human verdicts and hid their republished hits).
+    const humanCleared = f.wrongProductionManualClear
+      && !isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: f.overrideSetBy });
     if (f.republish && f.republish.exclude && !humanCleared) {
       hits.push({ showId: r.showId, file: f.file, outletId: r.outletId, markerYear: f.republish.markerYear, snippet: f.republish.snippet, pub: r.publishDate, inherited: !!r.inheritedFromShowId });
     }
@@ -244,7 +257,9 @@ function class5(ctx) {
     if (!c) continue;
     if (!byUrl.has(c)) byUrl.set(c, new Set());
     byUrl.get(c).add(r.showId);
-    dateOf.set(`${c}|${r.showId}`, r.publishDate && String(r.publishDate).length >= 10 ? String(r.publishDate) : null);
+    // Keep the first day-level date: a second month-only row for the same url must not erase it.
+    const day = r.publishDate && String(r.publishDate).length >= 10 ? String(r.publishDate) : null;
+    if (!dateOf.get(`${c}|${r.showId}`)) dateOf.set(`${c}|${r.showId}`, day);
   }
   const linkedMulti = [...byUrl.entries()].filter(([, set]) => {
     const ids = [...set];
@@ -254,9 +269,20 @@ function class5(ctx) {
   });
   // One article that reviews several shows (a double bill, a "critic's notebook") legitimately counts
   // on each of them. Its rows then carry dates within two weeks of each other, or no day-level date to
-  // compare. Only a url whose rows are dated further apart is a suspect copy on the wrong run.
+  // compare. A copy on the wrong run carries the same article date too, so the date must also sit in
+  // every show's own run (BRO-5261: a 2020 Leopoldstadt review copied onto the 2021 run read as shared).
+  const outsideRun = (id, d) => {
+    const s = byId.get(id);
+    if (!s || !d) return false;
+    const first = earliestShowDate(s);
+    if (first && daysBetween(first, d) > SHARED_PRE_RUN_DAYS) return true;
+    return !!(s.closingDate && daysBetween(d, s.closingDate) > SHARED_POST_RUN_DAYS);
+  };
   const isSharedArticle = ([u, set]) => {
-    const ds = [...set].map((id) => dateOf.get(`${u}|${id}`)).filter(Boolean).sort();
+    const ids = [...set];
+    const ds = ids.map((id) => dateOf.get(`${u}|${id}`)).filter(Boolean).sort();
+    // An undated row takes the article's date from its dated twin.
+    if (ids.some((id) => outsideRun(id, dateOf.get(`${u}|${id}`) || ds[0]))) return false;
     return ds.length < 2 || daysBetween(ds[ds.length - 1], ds[0]) <= 14;
   };
   const multi = linkedMulti.filter((e) => !isSharedArticle(e));
@@ -358,15 +384,15 @@ function main() {
 
   const out = argVal('out');
   if (out) fs.writeFileSync(out, JSON.stringify(result, null, 2) + '\n');
-  if (JSON_OUT) { console.log(JSON.stringify(result, null, 2)); return; }
-
   const c = result.classes;
+  if (JSON_OUT) { console.log(JSON.stringify(result, null, 2)); applyGate(c, true); return; }
+
   const L = [];
   if (c.inherited) L.push(`1 inherited: ${c.inherited.count} rows on ${c.inherited.shows} shows; ${c.inherited.undecided} link(s) on the automatic rule (no recorded carry/no-carry) decision`);
   if (c.preWindow) L.push(`2 pre-window: ${c.preWindow.count} rows dated >1d before earliest show date (${JSON.stringify(c.preWindow.byBucket)}); by cause ${JSON.stringify(c.preWindow.byWhy)}; unexplained ${c.preWindow.unexplained} rows on ${c.preWindow.unexplainedShows} shows, since ${RECENT_SINCE}: ${c.preWindow.recentUnexplained} rows on ${c.preWindow.recentUnexplainedShows} shows; worst ${c.preWindow.worst.slice(0, 5).join(', ')}`);
   if (c.republished) L.push(`3 republished-marker: ${c.republished.count} counted rows on ${c.republished.shows} shows name an earlier year; worst ${c.republished.worst.slice(0, 5).join(', ')}`);
   if (c.flagVsClear) L.push(`4 flag-vs-clear: ${c.flagVsClear.count} files carry wrongProduction=true AND a clear marker (${c.flagVsClear.flaggedAfterClear} flagged by a plan AFTER the clear)`);
-  if (c.duplicates) L.push(`5 duplicates: ${c.duplicates.sameUrlTwoShows} URLs counted on 2+ unlinked shows with dates >14d apart (suspect), ${c.duplicates.sharedArticles} more are one article reviewing several shows; ${c.duplicates.urllessBesideUrl} url-less rows beside a url row on ${c.duplicates.urllessShows} shows`);
+  if (c.duplicates) L.push(`5 duplicates: ${c.duplicates.sameUrlTwoShows} URLs counted on 2+ unlinked shows with dates >14d apart or outside a show's run (suspect), ${c.duplicates.sharedArticles} more are one article reviewing several shows; ${c.duplicates.urllessBesideUrl} url-less rows beside a url row on ${c.duplicates.urllessShows} shows`);
   if (c.showDates) L.push(`6 show-dates: ${c.showDates.reviewsBeforeStoredOpening} shows with 2+ outlets reviewing 1-14d before the stored opening (${c.showDates.reviewsBeforeStoredOpeningPlaybill} Playbill-derived); ${c.showDates.openNoReviews} open shows 2-30d past opening with zero reviews (${c.showDates.openNoReviewsPlaybill} Playbill-derived)`);
   if (c.stars) L.push(`7 stars: ${c.stars.count} numeric-star ratings on ${c.stars.shows} shows with no star evidence in the text (heuristic candidates)`);
   console.log(L.join('\n'));
@@ -383,16 +409,26 @@ function main() {
     openNoReviews: c.showDates && c.showDates.openNoReviews,
     stars: c.stars && c.stars.count,
   })}`);
-  // Advisory gate for check-corpus-drift: new contamination (a recent pre-window row,
-  // a counted republished page, a human flag beaten by a clear) above the agreed ceiling.
+  applyGate(c, false);
+}
+
+// Advisory gate for check-corpus-drift: new contamination (a recent pre-window row,
+// a counted republished page, a human flag beaten by a clear) above the agreed ceiling.
+// Sums the classes that ran, so `--class=2 --max-actionable=0` gates class 2 alone (before BRO-5239 it
+// needed classes 2, 3 and 4 together and silently passed otherwise). A class selection with none of
+// 2, 3, 4 cannot be gated and exits 2 rather than pass silently; --json no longer skips the gate.
+function applyGate(c, quiet) {
   const max = argVal('max-actionable');
-  // Sums the classes that ran, so `--class=2 --max-actionable=0` gates class 2 alone (before BRO-5239 it
-  // needed classes 2, 3 and 4 together and silently passed otherwise).
-  if (max !== undefined && max !== null && (c.preWindow || c.republished || c.flagVsClear)) {
-    const actionable = (c.preWindow ? c.preWindow.recentUnexplained : 0) + (c.republished ? c.republished.count : 0) + (c.flagVsClear ? c.flagVsClear.flaggedAfterClear : 0);
-    console.log(`ACTIONABLE ${actionable} (ceiling ${max}): recent unexplained pre-window + counted republished + human flag beaten by clear`);
-    if (actionable > Number(max)) process.exitCode = 1;
+  if (max === undefined || max === null) return;
+  const log = quiet ? console.error : console.log;
+  if (!(c.preWindow || c.republished || c.flagVsClear)) {
+    console.error('[audit-run-contamination] --max-actionable needs class 2, 3 or 4 in --class');
+    process.exitCode = 2;
+    return;
   }
+  const actionable = (c.preWindow ? c.preWindow.recentUnexplained : 0) + (c.republished ? c.republished.count : 0) + (c.flagVsClear ? c.flagVsClear.flaggedAfterClear : 0);
+  log(`ACTIONABLE ${actionable} (ceiling ${max}): recent unexplained pre-window + counted republished + human flag beaten by clear`);
+  if (actionable > Number(max)) process.exitCode = 1;
 }
 
 if (require.main === module) main();

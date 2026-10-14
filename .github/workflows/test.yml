@@ -94,6 +94,8 @@ on:
       - 'scripts/add-verified-tours.js'
       # BRO-2237: report-only essay-intro sweep + its manifest test (run daily by check-corpus-drift.yml).
       - 'scripts/audit-exclusion-flags.js'
+      # tests/unit/run-contamination.test.mjs requires class2/3/5 from this audit (BRO-5261).
+      - 'scripts/audit-run-contamination.js'
       # BRO-2268: backfill CLI + its manifest test; a solo edit would otherwise trigger ZERO CI.
       - 'scripts/backfill-fetch-abandonment.js'
       # tests/unit/tour-lifecycle.test.mjs requires reopenTour and

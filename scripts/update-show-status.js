@@ -959,7 +959,8 @@ async function updateShowStatuses() {
     }
 
     // A row listed with any status but 'announced' needs a type
-    // (validate-market-expansion.js). Stubs promoted out of 'announced' by
+    // (validate-market-expansion.js; an upcoming venue-page stub is exempt until
+    // previews, and the validator warns 30 days ahead). Stubs promoted out of 'announced' by
     // Check 2e / 2d, or dated by a venue-listing backfill, never got one
     // (46 rows, 2026-10-01): give them the shared title rule's type.
     const listedType = typeForListedShow(show, (changes.status && changes.status.to) || show.status);

@@ -16,13 +16,12 @@ exitOnHelp(module);
 const ARGV = process.argv.slice(2);
 const val = (n) => { const a = ARGV.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3).split(',') : null; };
 const class7 = ARGV.includes('--class7'); // the audit's class-7 candidates, with rating context
-const shows = val('show') || (class7 ? fs.readdirSync(path.join(__dirname, '..', 'data', 'review-texts')) : null);
+const root = path.join(__dirname, '..', 'data', 'review-texts');
+if (!fs.existsSync(root)) { console.error('data/review-texts missing'); process.exit(3); }
+const shows = val('show') || (class7 ? fs.readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : null);
 const outlets = val('outlet');
 const fileSub = val('file');
 if (!shows) { console.error('usage: inspect-review-files.js --show=a,b [--outlet=x] [--file=sub]'); process.exit(2); }
-
-const root = path.join(__dirname, '..', 'data', 'review-texts');
-if (!fs.existsSync(root)) { console.error('data/review-texts missing'); process.exit(3); }
 const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf'];
 for (const show of shows) {
   const dir = path.join(root, show);

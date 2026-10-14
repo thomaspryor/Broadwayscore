@@ -140,3 +140,60 @@ test('batch-script setBy labels without .js count as script clears; owner does n
   }
   assert.equal(guard.isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'owner' }), false);
 });
+
+// BRO-5261 retro-review of BRO-5239: audit class 5 and class 3 decisions.
+const audit = require('../../scripts/audit-run-contamination.js');
+
+test('class 5: a same-date copy on a later, unlinked run is a suspect, not a shared article', () => {
+  const shows = [
+    { id: 'play-2020', previewsStartDate: '2020-01-25', openingDate: '2020-02-12', closingDate: '2020-03-14' },
+    { id: 'play-2021', previewsStartDate: '2021-08-07', openingDate: '2021-08-07', closingDate: '2021-10-30' },
+    { id: 'double-a', previewsStartDate: '2024-03-01', openingDate: '2024-03-10' },
+    { id: 'double-b', previewsStartDate: '2024-03-02', openingDate: '2024-03-10' },
+  ];
+  const rows = [
+    { showId: 'play-2020', url: 'https://x.com/play-review', publishDate: '2020-02-13' },
+    { showId: 'play-2021', url: 'https://x.com/play-review', publishDate: null },
+    { showId: 'double-a', url: 'https://x.com/double-bill', publishDate: '2024-03-11' },
+    { showId: 'double-b', url: 'https://x.com/double-bill', publishDate: '2024-03-11' },
+  ];
+  const r = audit.class5({ shows, rows });
+  assert.equal(r.sameUrlTwoShows, 1);
+  assert.equal(r.sharedArticles, 1);
+  assert.match(r.sameUrlSample[0], /play-review/);
+});
+
+test('class 5: a month-only second row does not erase the day-level date', () => {
+  const shows = [
+    { id: 'a', previewsStartDate: '2019-03-01', openingDate: '2019-03-20', closingDate: '2019-06-01' },
+    { id: 'b', previewsStartDate: '2023-03-01', openingDate: '2023-03-20', closingDate: '2023-06-01' },
+  ];
+  const rows = [
+    { showId: 'a', url: 'https://x.com/r', publishDate: '2019-03-21' },
+    { showId: 'b', url: 'https://x.com/r', publishDate: '2023-03-21' },
+    { showId: 'b', url: 'https://x.com/r', publishDate: '2023-03' },
+  ];
+  assert.equal(audit.class5({ shows, rows }).sameUrlTwoShows, 1);
+});
+
+test('class 3: a clear stamped with a known batch-script label is not a human verdict', () => {
+  const republish = { exclude: true, markerYear: 2019, snippet: 'This review is from 2019' };
+  const rows = [{ showId: 's', url: 'https://x.com/a', outletId: 'o', criticName: 'C' }];
+  const file = (setBy) => new Map([['s', [{ file: 'o--c.json', url: 'https://x.com/a', outletId: 'o', criticName: 'C', republish, wrongProductionManualClear: true, overrideSetBy: setBy }]]]);
+  assert.equal(audit.class3({ rows, files: file('clear-own-venue-tour-fps-2026-10') }).count, 1);
+  assert.equal(audit.class3({ rows, files: file('fix-thing.js') }).count, 1);
+  assert.equal(audit.class3({ rows, files: file('owner') }).count, 0);
+  assert.equal(audit.class3({ rows, files: file(undefined) }).count, 0);
+});
+
+test('class 2: a prior run marked inheritReviews:false does not explain its reviews (BRO-5261)', () => {
+  const prior = { openingDate: '2025-04-14', closingDate: '2025-08-03' };
+  const mk = (inheritReviews) => [{ id: 'spies-2026', previewsStartDate: '2026-08-01', openingDate: '2026-08-06', priorRuns: [{ ...prior, ...(inheritReviews === undefined ? {} : { inheritReviews }) }] }];
+  const rows = [{ showId: 'spies-2026', outletId: 'thestage', criticName: 'X', publishDate: '2025-05-14' }];
+  const optOut = audit.class2({ shows: mk(false), rows, files: new Map() });
+  assert.equal(optOut.rows[0].why, 'opt-out-prior-run');
+  assert.equal(optOut.unexplained, 1);
+  const carried = audit.class2({ shows: mk(undefined), rows, files: new Map() });
+  assert.equal(carried.rows[0].why, 'declared-prior-run');
+  assert.equal(carried.unexplained, 0);
+});

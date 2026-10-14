@@ -73,14 +73,29 @@ function findStaleOpenShows(marketShows, now = new Date(), graceDays = CLOSING_G
 // discovery fix): exempt while status='announced', and while a provisional
 // venue-page stub is 'upcoming' because the venue listed dates but no genre
 // (BRO-4396 gives dated stubs the status their dates imply; knownShowType()
-// leaves type null rather than guess). Enrichment fills it before previews.
+// leaves type null rather than guess). Nothing fills it automatically: the
+// status flip at previews keeps refusing to guess (announced-promotion.js
+// typeForListedShow), so findUntypedStubsNearPreviews warns ahead of that date.
+// The exemption names the venue-page source (BRO-5261): other provisional
+// sources (manual requests, tour schedules, roundups) still need a type.
 function typeExempt(s) {
-  return s.status === 'announced' || (s.status === 'upcoming' && s.provisional === true);
+  if (s.status === 'announced') return true;
+  return s.status === 'upcoming' && s.provisional === true
+    && String(s.discoverySource || '').startsWith('venue-page');
 }
 function findMissingRequiredFields(marketShows) {
   return marketShows.filter(
     (s) => !s.title || !s.category || !s.status || (!typeExempt(s) && !s.type),
   );
+}
+
+// Exempt upcoming stubs with no type whose first preview is within `days`:
+// on that date the row turns 'previews' and findMissingRequiredFields fails.
+const UNTYPED_STUB_WARN_DAYS = 30;
+function findUntypedStubsNearPreviews(marketShows, now = new Date(), days = UNTYPED_STUB_WARN_DAYS) {
+  const horizon = new Date(now.getTime() + days * 86400000).toISOString().slice(0, 10);
+  return marketShows.filter((s) => s.status === 'upcoming' && !s.type && typeExempt(s)
+    && s.previewsStartDate && String(s.previewsStartDate).slice(0, 10) <= horizon);
 }
 
 // outlet-registry.json → { outletDomains: {id: domain}, outletDomainAliases: {id: [domains]} }
@@ -188,6 +203,8 @@ function summarize(errors, warnings) {
 module.exports = {
   THRESHOLD_SOURCES,
   MARKETS,
+  UNTYPED_STUB_WARN_DAYS,
+  findUntypedStubsNearPreviews,
   CLOSING_GRACE_DAYS,
   findSlugMarkerMisses,
   findIdMarkerMisses,

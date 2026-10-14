@@ -20,6 +20,7 @@ const {
   findSlugCollisions,
   findStaleOpenShows,
   findMissingRequiredFields,
+  findUntypedStubsNearPreviews,
   buildOutletDomainMaps,
   scanShowReviews,
   sourceHandlesMarket,
@@ -162,12 +163,18 @@ for (const market of marketsToCheck) {
     ok(`No ${market} shows with open status and past closingDate`);
   }
 
-  // Required fields (type exempt while announced or a provisional upcoming stub; see the lib).
+  // Required fields (type exempt while announced or an upcoming venue-page stub; see the lib).
   const missingFields = findMissingRequiredFields(marketShows);
   if (missingFields.length > 0) {
-    error(`${missingFields.length} ${market} shows missing required fields (title/category/status, or type once past announced / provisional-upcoming)`);
+    const ids = missingFields.slice(0, 10).map((s) => `${s.id || s.title}${s.type ? '' : ` (${s.status || 'no status'}, no type)`}`).join(', ');
+    error(`${missingFields.length} ${market} shows missing required fields (title/category/status, or a type once past the announced / upcoming venue-stub stage): ${ids}${missingFields.length > 10 ? ', ...' : ''}`);
   } else {
     ok(`All ${market} shows have required fields`);
+  }
+  // An untyped venue stub fails the check above the day its previews start; name it while there is time.
+  for (const s of findUntypedStubsNearPreviews(marketShows)) {
+    warn(`${market} stub ${s.id} has no type and previews ${s.previewsStartDate}; set "type" in shows.json before then or this check fails`);
+    if (process.env.GITHUB_ACTIONS) console.log(`::warning title=Untyped show stub::${s.id} previews ${s.previewsStartDate} with no type; set it in shows.json before then`);
   }
 }
 

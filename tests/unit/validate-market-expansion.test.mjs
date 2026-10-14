@@ -108,21 +108,23 @@ test('findStaleOpenShows respects the 7+1 day auto-close grace window', () => {
   assert.deepEqual(findStaleOpenShows(shows, now).map(s => s.id), ['stale']);
 });
 
-test('findMissingRequiredFields: type is exempt while announced, or upcoming as a provisional stub', () => {
+test('findMissingRequiredFields: type is exempt while announced, or upcoming as a provisional venue-page stub', () => {
   const shows = [
     { id: 'ok', title: 'T', category: 'off-broadway', status: 'open', type: 'play' },
     { id: 'announced-no-type', title: 'T', category: 'off-broadway', status: 'announced' },
     { id: 'upcoming-no-type', title: 'T', category: 'off-broadway', status: 'upcoming', type: null },
     // A dated venue-page stub (BRO-4396): genre not listed yet, so type stays null.
-    { id: 'provisional-upcoming-no-type', title: 'T', category: 'off-broadway', status: 'upcoming', type: null, provisional: true },
-    { id: 'provisional-previews-no-type', title: 'T', category: 'off-broadway', status: 'previews', type: null, provisional: true },
+    { id: 'provisional-upcoming-no-type', title: 'T', category: 'off-broadway', status: 'upcoming', type: null, provisional: true, discoverySource: 'venue-page:here-arts-center' },
+    { id: 'provisional-previews-no-type', title: 'T', category: 'off-broadway', status: 'previews', type: null, provisional: true, discoverySource: 'venue-page:here-arts-center' },
+    // BRO-5261: only the venue-page stub class is exempt, not every provisional source.
+    { id: 'manual-upcoming-no-type', title: 'T', category: 'off-broadway', status: 'upcoming', type: null, provisional: true, discoverySource: 'manual-user-request' },
     { id: 'no-title', category: 'off-broadway', status: 'open', type: 'musical' },
     { id: 'no-status', title: 'T', category: 'off-broadway', type: 'musical' },
     { id: 'no-category', title: 'T', status: 'open', type: 'musical' },
   ];
   assert.deepEqual(
     findMissingRequiredFields(shows).map(s => s.id),
-    ['upcoming-no-type', 'provisional-previews-no-type', 'no-title', 'no-status', 'no-category'],
+    ['upcoming-no-type', 'provisional-previews-no-type', 'manual-upcoming-no-type', 'no-title', 'no-status', 'no-category'],
   );
 });
 
@@ -234,4 +236,18 @@ test('structural: score-buckets.ts handles every market and the browse page seri
   }
   const browse = fs.readFileSync(path.join(ROOT, 'src', 'app', 'browse', '[slug]', 'page.tsx'), 'utf8');
   assert.ok(browseSerializesCategory(browse), 'browse page no longer serializes category');
+});
+
+test('findUntypedStubsNearPreviews names exempt untyped stubs inside the warning window (BRO-5261)', () => {
+  const { findUntypedStubsNearPreviews } = require('../../scripts/lib/market-expansion-validator.js');
+  const stub = (id, previewsStartDate, extra = {}) => ({ id, title: 'T', category: 'off-broadway', status: 'upcoming', type: null, provisional: true, discoverySource: 'venue-page:x', previewsStartDate, ...extra });
+  const now = new Date('2027-03-20T12:00:00Z');
+  const shows = [
+    stub('soon', '2027-04-08'),
+    stub('late', '2027-09-09'),
+    stub('typed', '2027-04-01', { type: 'play' }),
+    stub('undated', null),
+    stub('overdue', '2027-03-01'),
+  ];
+  assert.deepEqual(findUntypedStubsNearPreviews(shows, now).map((s) => s.id), ['soon', 'overdue']);
 });
