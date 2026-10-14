@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-13T12:07:11.544Z",
-    "completedAt": "2026-10-13T12:10:13.907Z",
-    "totalReviews": 56371,
-    "processed": 94,
-    "skipped": 56203,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 795904,
-      "output": 38126,
-      "total": 2151937
-    },
-    "costUsd": 1.932864725,
-    "runId": "38394291304",
-    "errorDetails": [
-      {
-        "showId": "groundhog-day-west-end-2023",
-        "outletId": "oldvictheatrecom",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-13T12:12:33.944Z",
-    "completedAt": "2026-10-13T12:17:01.524Z",
-    "totalReviews": 56371,
-    "processed": 49,
-    "skipped": 54187,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 252941,
-      "output": 15755,
-      "total": 669552
-    },
-    "costUsd": 1.124428,
-    "runId": "38394291304",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-13T12:17:03.707Z",
     "completedAt": "2026-10-13T12:21:16.741Z",
     "totalReviews": 107,
@@ -975975,6 +975932,38 @@
     },
     "costUsd": 0.705224,
     "runId": "38630565166",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-14T22:41:53.787Z",
+    "completedAt": "2026-10-14T22:42:06.345Z",
+    "totalReviews": 25,
+    "processed": 1,
+    "skipped": 23,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 31169,
+      "output": 466,
+      "total": 57885
+    },
+    "costUsd": 0.1114841,
+    "runId": "38648903457",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-14T22:42:08.020Z",
+    "completedAt": "2026-10-14T22:42:08.023Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38648903457",
     "errorDetails": []
   }
 ]
