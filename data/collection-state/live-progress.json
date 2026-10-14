@@ -1,19 +1,49 @@
 {
-  "updatedAt": "2026-10-14T07:14:04.010Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-14T07:51:24.811Z",
+  "processed": 12,
+  "failed": 12,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-14T07:41:42.541Z",
+      "event": "bb-session",
+      "session": "f6a801a4",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T07:42:42.272Z",
+      "event": "bb-session",
+      "session": "f21aa298",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T07:42:50.552Z",
+      "event": "bb-session",
+      "session": "de6be842",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T07:46:03.754Z",
+      "event": "bb-session",
+      "session": "44258995",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T07:46:04.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
