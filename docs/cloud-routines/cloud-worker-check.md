@@ -37,6 +37,20 @@ If `origin/codex-runner-lock` exists, read its commit time
 (`git log -1 --format=%cI origin/codex-runner-lock`). Older than 4 hours means a
 runner died holding it: unhealthy.
 
+## 3b. Is Codex landing anything?
+
+A fresh lock does not mean Codex works: a runner that errors on every card
+restarts each firing and keeps the lock young (2026-10-06..14: 25 runs, 2 cards
+landed, and this check still read healthy). Read the newest "## Codex runner"
+comments on BRO-4745:
+
+    node -e "require('./scripts/lib/linear-client.js').graphql('{ issue(id: \"BRO-4745\") { comments(last: 50) { nodes { createdAt body } } } }').then(r => { const c = r.issue.comments.nodes.filter(n => n.body.includes('## Codex runner')).sort((a, b) => a.createdAt < b.createdAt ? 1 : -1).slice(0, 6); for (const n of c) console.log(n.createdAt, '|', (n.body.match(/Landed and Done: (.*)/) || [])[1]); })"
+
+Unhealthy if the 6 newest runs all show "Landed and Done: none" and they span
+more than 12 hours. Name the newest runner-error cards in the finding. If an
+open card already covers it (search "Codex runner lands nothing"), comment
+there instead of filing.
+
 ## 4. Record
 
 If everything is healthy, make no changes. If anything is unhealthy, first
