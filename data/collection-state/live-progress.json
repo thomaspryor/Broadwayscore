@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-14T22:26:18.550Z",
-  "processed": 42,
-  "failed": 49,
-  "successRate": "46.2%",
+  "updatedAt": "2026-10-14T23:01:45.741Z",
+  "processed": 91,
+  "failed": 70,
+  "successRate": "56.5%",
   "tierBreakdown": {
-    "playwright": 26,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 56,
+    "amp": 5,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 1,
+    "scrapingdog": 9,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 17
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-14T21:57:01.753Z",
@@ -37,6 +37,28 @@
       "t": "2026-10-14T21:57:13.189Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T22:56:08.789Z",
+      "event": "bb-session",
+      "session": "5510560a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-14T22:56:09.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T22:59:00.532Z",
+      "event": "bb-session",
+      "session": "e7801703",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-14T22:59:01.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
