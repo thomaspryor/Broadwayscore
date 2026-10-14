@@ -98,6 +98,21 @@ function staleConsensusIds(consensusShows, counts) {
 }
 
 /**
+ * Delete stale (and, when `showIds` is given, orphaned) consensus entries in
+ * place. Stale entries over MAX_STALE_PRUNE mean reviews.json is probably
+ * truncated: nothing is deleted then and `capped` is true (BRO-4960).
+ * @returns {{stale: string[], orphans: string[], capped: boolean}}
+ */
+function pruneConsensusEntries(consensusShows, counts, showIds = null) {
+  const stale = staleConsensusIds(consensusShows, counts);
+  if (stale.length > MAX_STALE_PRUNE) return { stale, orphans: [], capped: true };
+  for (const id of stale) delete consensusShows[id];
+  const orphans = showIds ? Object.keys(consensusShows).filter((id) => !showIds.has(id)) : [];
+  for (const id of orphans) delete consensusShows[id];
+  return { stale, orphans, capped: false };
+}
+
+/**
  * `${showId}|${outletId}` for every live scored row: the outlets the site shows
  * per show. The generator only summarises review texts from these.
  */
@@ -111,4 +126,4 @@ function liveOutletKeys(reviewsJson) {
   return keys;
 }
 
-module.exports = { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, liveOutletKeys };
+module.exports = { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys };
