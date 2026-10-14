@@ -57,7 +57,7 @@ const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thr
 // pattern as LEDGER above).
 const DAILY_AGG = path.join(REPO, 'data', 'audit', 'scraper-spend-daily-agg.jsonl');
 
-if (hasHelpFlag(process.argv)) {
+if (require.main === module && hasHelpFlag(process.argv)) {
   console.log('Usage: node scripts/check-provider-spend.js [--dry-run] [--day=YYYY-MM-DD]\n'
     + 'Daily scraping-spend reconciliation against provider billing APIs.\n'
     + 'Default day is YESTERDAY (UTC) — the last COMPLETE day. Reconciling the\n'

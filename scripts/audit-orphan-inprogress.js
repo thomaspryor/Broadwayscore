@@ -55,7 +55,6 @@ Usage:
   node scripts/audit-orphan-inprogress.js --fix [--dry-run]   apply FINISHED/LOST/STALE, leave NEEDS-REVIEW
 `;
 
-if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
 
 const REPO = path.resolve(__dirname, '..');
 const MARKER = '[orphan-triage-1705 ';
@@ -366,6 +365,9 @@ function run(argv) {
   return { orphans, decisions, buckets };
 }
 
-if (require.main === module) run(process.argv.slice(2));
+if (require.main === module) {
+  if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
+  run(process.argv.slice(2));
+}
 
 module.exports = { run, findOrphans, loadLiveTasks, tasksDir, buildGitEvidenceIndex, applyDecision, writeVerified, MARKER };

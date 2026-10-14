@@ -46,7 +46,6 @@ Options:
   --help, -h              print this usage and exit
 `;
 
-if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
 
 function parseArgs(argv) {
   const args = {};
@@ -127,5 +126,8 @@ function main() {
   process.exit(ok ? 0 : 1);
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
+  main();
+}
 module.exports = { readAllTaskEntries, notionStatus };
