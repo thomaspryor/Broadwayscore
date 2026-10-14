@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5254-e",
   "planId": "01cdb48e-cc29-451c-b821-f5be317f6c91",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T03:30:08.884Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,28 @@
         "description": "BRO-5254: drop the repeated lead paragraph where the copies differ only in quote style (4 rows, no rescore)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T04:38:27.155Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heidi-chronicles-2015/variety--marilyn-stasio.json humanReviewScore: null -> 55"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heidi-chronicles-2015/variety--marilyn-stasio.json humanReviewNote: null -> \"BRO-5254 reader check 2026-10-14: Mixed-negative. Moss praised; production called shoddy and cheap, the girlfriends' portrayals an embarrassment. Pre-strip 65 and rescore 70 both too high.\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
 }
