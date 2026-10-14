@@ -333,5 +333,35 @@
       }
     ],
     "queuedAt": "2026-10-14T05:45:15.757Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3574-autofix-breaker",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3574-autofix-breaker",
+    "description": "land.yml did not land land/bro-3574-autofix-breaker: the scripts-lib-tests gate went red at 523aea8ea7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38516069162",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3574-autofix-breaker"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "523aea8ea7cae533888b3f8cf31e2ea2eec0ff56"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38516069162"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:53:08.688Z"
   }
 ]
