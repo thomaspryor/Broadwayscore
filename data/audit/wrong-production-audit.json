@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T13:59:46.022Z",
+  "timestamp": "2026-10-14T14:39:52.328Z",
   "stats": {
-    "totalReviews": 56479,
-    "alreadyFlagged": 21020,
-    "dateGuardCatches": 205,
-    "directorMismatch": 1905,
-    "tvFilmSignals": 1569,
-    "londonSignals": 2338,
+    "totalReviews": 56506,
+    "alreadyFlagged": 21030,
+    "dateGuardCatches": 209,
+    "directorMismatch": 1904,
+    "tvFilmSignals": 1572,
+    "londonSignals": 2341,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5244
+    "noPublishDate": 5233
   },
   "findings": [
     {
@@ -2104,7 +2104,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 78,
+      "score": 81,
       "publishDate": "February 28th, 2025",
       "url": "https://www.theguardian.com/stage/2025/feb/28/alterations-review-tailoring-comedy-remade-to-measure-at-the-national-theatre",
       "findings": [
@@ -2123,7 +2123,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
-      "score": 84,
+      "score": 87,
       "publishDate": "February 28th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/alterations-review-national-theatre",
       "findings": [
@@ -20469,22 +20469,8 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.islingtontribune.co.uk/article/review-into-the-woods-at-bridge-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2026-10-08",
       "url": "https://www.jolienstheatrediary.com/reviews/review-into-the-woods-noel-coward-theatre",
       "findings": [
@@ -20536,7 +20522,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -20630,7 +20616,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--david-wootton.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -20644,7 +20630,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -20780,7 +20766,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 87,
+      "score": 89,
       "publishDate": "2026-10-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-woods-review-noel-coward-theatre-jordan-fein-stephen-sondheim-6r2kfzqln",
       "findings": [
@@ -35414,6 +35400,20 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "score": 81,
+      "publishDate": "2024-10-26",
+      "url": "https://ayoungishperspective.co.uk/2024/10/26/review-stories-a-tap-dance-sensation/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 718d before show (2024-10-26 vs 2026-10-14)"
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 84,
       "publishDate": "2024-10-28",
@@ -35423,6 +35423,68 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 716d before show (2024-10-28 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 78,
+      "publishDate": "2024-10-24",
+      "url": "https://theatreandtonic.co.uk/blog/stories-a-tap-dance-sensation-peacock-theatre-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 720d before show (2024-10-24 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 87,
+      "publishDate": "2024-10-25",
+      "url": "https://www.thereviewshub.com/stories-the-tap-dance-sensation-peacock-theatre-london/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 719d before show (2024-10-25 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": 78,
+      "publishDate": "2024-10-30",
+      "url": "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 714d before show (2024-10-30 vs 2026-10-14)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -47353,6 +47415,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -47958,7 +48025,7 @@
       "showId": "waitress-west-end-2019",
       "file": "thestage--tim-bano.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2019-03-07",
       "url": "https://www.thestage.co.uk/reviews/waitress-review-at-adelphi-theatre-london--sweet-as-the-best-homemade-pie",
       "findings": [
         {
@@ -51419,7 +51486,7 @@
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
       "file": "guardian--anya-ryan.json",
-      "score": 75,
+      "score": 82,
       "publishDate": "October 3rd, 2024",
       "url": "https://www.theguardian.com/stage/2024/oct/03/a-tupperware-of-ashes-review-dorfman-theatre-meera-syal",
       "findings": [
@@ -53969,7 +54036,7 @@
     {
       "showId": "best-of-enemies-west-end-2022",
       "file": "guardian--arifa-akbar.json",
-      "score": 75,
+      "score": 82,
       "publishDate": "November 30th, 2022",
       "url": "https://www.theguardian.com/stage/2022/nov/29/best-of-enemies-review-gore-vidal-william-f-buckley-jr",
       "findings": [
@@ -54903,7 +54970,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "May 24th, 2024",
       "url": "https://www.theguardian.com/stage/article/2024/may/24/bluets-review-maggie-nelsons-blue-riffs-become-left-field-cine-theatre",
       "findings": [
@@ -55185,7 +55252,7 @@
     {
       "showId": "brace-brace-west-end-2024",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 39,
+      "score": 35,
       "publishDate": "October 10th, 2024",
       "url": "https://theartsdesk.com/theatre/brace-brace-royal-court-review-too-slender-satisfy",
       "findings": [
@@ -57375,7 +57442,7 @@
     {
       "showId": "curtains-west-end-2019",
       "file": "guardian--mark-lawson.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "December 18th, 2019",
       "url": "https://www.theguardian.com/stage/2019/dec/18/curtains-review-wyndhams-theatre-kander-and-ebb",
       "findings": [
@@ -58607,6 +58674,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "file": "flicker-magazine--unknown.json",
+      "publishDate": null,
+      "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -75711,7 +75791,7 @@
       "showId": "stories-west-end-2018",
       "file": "thestage--rosemary-waugh.json",
       "score": 39,
-      "publishDate": null,
+      "publishDate": "2018-10-17",
       "url": "https://www.thestage.co.uk/reviews/stories-review-at-national-theatre-london--nina-raines-frustrating-new-play",
       "findings": [
         {
@@ -82387,7 +82467,7 @@
       "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
       "file": "thestage--the-stage.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2026-10-12",
       "url": "https://www.thestage.co.uk/reviews/the-prime-of-miss-jean-brodie-review-royal-lyceum-theatre-edinburgh",
       "findings": [
         {
