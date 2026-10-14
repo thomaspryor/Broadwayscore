@@ -1298,22 +1298,6 @@ def _chain_result():
     # session (Mac BIG_SESSION_EDITS) needs a strong review; /second-opinion
     # is for small diffs only.
     big = len(edits) > CHAIN_BIG_SESSION_EDITS
-    # BRO-5359: a /ship-check or /code-review only counts when its reviewers really ran
-    # (scripts/lib/review-coverage.mjs, shared with the land gate). A bare Skill call is
-    # not a review. Fails open: any error or a missing lib leaves the review counted.
-    strong_runs = [r for r in reviews if r[1] in CHAIN_STRONG_REVIEWS]
-    if strong_runs and os.environ.get('SHIP_CHECK_COVERAGE_DISABLE') != '1':
-        try:
-            import subprocess as _rc_sp
-            lib = os.path.join(os.environ.get('VE_REPO_ROOT', '.'), 'scripts', 'lib', 'review-coverage.mjs')
-            if os.path.isfile(lib):
-                cp = _rc_sp.run(['node', lib, '--transcript=' + sys.argv[1], '--json'],
-                                    capture_output=True, text=True, timeout=20)
-                cov = json.loads(cp.stdout.strip().splitlines()[-1]) if cp.stdout.strip() else None
-                if cov and cov.get('ran') and not cov.get('complete'):
-                    reviews = [r for r in reviews if r != max(strong_runs)]
-        except Exception:
-            pass
     usable = [i for i, sk in reviews if not big or sk in CHAIN_STRONG_REVIEWS]
     last_review = usable[-1] if usable else None
     after = [e for e in edits if last_review is None or e[0] > last_review]
@@ -2055,8 +2039,8 @@ if [[ "$result" == NOCHAIN:* ]]; then
   todo=""
   bypass=""
   case ",$steps," in
-    *,review-strong,*) todo="/ship-check (or /code-review; this session is too big for /second-opinion). A ship-check only counts once BOTH reviewers ran after it: an Agent with subagent_type review-panelist AND an external one (curl api.openai.com or codex exec)"; bypass="NO-SHIP-CHECK: <why no review is needed>" ;;
-    *,review,*) todo="/ship-check (or /second-opinion for a small diff). A ship-check only counts once BOTH reviewers ran after it: an Agent with subagent_type review-panelist AND an external one (curl api.openai.com or codex exec)"; bypass="NO-SHIP-CHECK: <why no review is needed>" ;;
+    *,review-strong,*) todo="/ship-check (or /code-review; this session is too big for /second-opinion)"; bypass="NO-SHIP-CHECK: <why no review is needed>" ;;
+    *,review,*) todo="/ship-check (or /second-opinion for a small diff)"; bypass="NO-SHIP-CHECK: <why no review is needed>" ;;
   esac
   for s in what-else wrap-up; do
     case ",$steps," in *,$s,*)

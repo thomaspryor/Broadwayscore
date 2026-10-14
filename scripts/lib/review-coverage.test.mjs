@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
-import { evaluateCoverage, landGateDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
+import { evaluateCoverage, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
 import { checkReviewCoverage } from './land-preflight.mjs';
 import { landPushTargets } from './push-command.mjs';
 
@@ -151,4 +151,47 @@ test('findSessionTranscript locates <home>/.claude/projects/*/<id>.jsonl', () =>
   assert.equal(findSessionTranscript('zzz', home), null);
   assert.equal(findSessionTranscript('', home), null);
   fs.rmSync(home, { recursive: true, force: true });
+});
+
+test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check blocks', () => {
+  const thin = ev(skill());
+  const full = ev(skill(), agent(), curl());
+  const done = 'All landed.\n\nSAFE TO EXIT';
+  const d = (o) => stopHookDecision({ lastMessage: done, events: thin, env: CLOUD, ...o }).decision;
+  assert.equal(d({}), 'block');
+  assert.equal(d({ events: full }), 'allow');
+  assert.equal(d({ lastMessage: 'Working.\n\nNOT SAFE TO EXIT' }), 'allow');
+  assert.equal(d({ lastMessage: 'No review needed.\nNO-SHIP-CHECK: reviewers cannot run in this container\n\nSAFE TO EXIT' }), 'allow');
+  assert.equal(d({ lastMessage: 'NO-SHIP-CHECK: short\n\nSAFE TO EXIT' }), 'block');
+  assert.equal(d({ events: ev(use('Bash', { command: 'ls' })) }), 'allow', 'no strong run: verify-edits asks for the review itself');
+  assert.equal(d({ events: null }), 'allow');
+  assert.equal(d({ env: {} }), 'allow');
+  assert.equal(d({ env: { ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '1' } }), 'allow');
+});
+
+test('stop hook wrapper: exit 2 for a thin run, 0 for a full one, blocks stop after 3 tries', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-stop-'));
+  const row = (type, content) => JSON.stringify({ type, message: { content } }) + '\n';
+  const use1 = (id, name, input) => row('assistant', [{ type: 'tool_use', name, id, input }]);
+  const out1 = (id, c) => row('user', [{ type: 'tool_result', tool_use_id: id, content: c }]);
+  const thin = path.join(dir, 'thin.jsonl');
+  const full = path.join(dir, 'full.jsonl');
+  const base = use1('s1', 'Skill', { skill: 'ship-check' }) + out1('s1', 'ok');
+  fs.writeFileSync(thin, base);
+  fs.writeFileSync(full, base + use1('a1', 'Agent', { subagent_type: 'review-panelist' }) + out1('a1', 'done') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/x' }) + out1('b1', '{}'));
+  const hook = path.join(ROOT, '.claude', 'hooks', 'stop-review-coverage.sh');
+  const run = (t) => spawnSync('bash', [hook], { input: JSON.stringify({ transcript_path: t, last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '' } });
+  assert.equal(run(full).status, 0);
+  const codes = [run(thin).status, run(thin).status, run(thin).status, run(thin).status];
+  assert.deepEqual(codes, [2, 2, 2, 0], 'blocks three times, then lets the session end rather than loop');
+  assert.match(run(thin).stderr + '', /^$|BLOCKED/);
+  fs.rmSync(dir, { recursive: true, force: true });
+  for (const f of fs.readdirSync(os.tmpdir())) if (f.startsWith('review-coverage-stop-')) fs.rmSync(path.join(os.tmpdir(), f), { force: true });
+});
+
+test('settings.json registers the stop hook beside verify-edits', () => {
+  const st = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude', 'settings.json'), 'utf8'));
+  const cmds = st.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command));
+  assert.ok(cmds.some((c) => c.includes('verify-edits.sh')));
+  assert.ok(cmds.some((c) => c.includes('stop-review-coverage.sh')));
 });
