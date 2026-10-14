@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-14T02:49:41.992Z",
+  "generatedAt": "2026-10-14T07:40:49.735Z",
   "shadow": true,
-  "checkoutSha": "bd98ffa5f59505dbcacc57b3e7bd5d36277ce169",
-  "totalCandidates": 586,
-  "eligibleCandidates": 84,
+  "checkoutSha": "ed38d5f483635722651775137d3e91dff9ccfea7",
+  "totalCandidates": 580,
+  "eligibleCandidates": 72,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 23,
+    "pass": 21,
     "fail": 2,
-    "unverifiable": 5
+    "unverifiable": 7
   },
   "alreadyDone": [
     {
@@ -35,12 +35,6 @@
       "id": "BRO-5220",
       "name": "Exclude live SERP-found review rows scored without page text (about 7 rows)",
       "verifyCmd": "node --test tests/unit/web-search-recovery-bro5183.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5196",
-      "name": "land.yml Land jobs sleep-poll the landing mutex, one runner each (14 deep 2026-10-12)",
-      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
       "detail": null
     },
     {
@@ -80,18 +74,6 @@
       "detail": null
     },
     {
-      "id": "BRO-4978",
-      "name": "National tour pages show wrong information: 1 page problem(s) (stops-before-opening)",
-      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4976",
-      "name": "Outlet ids stage 2: observer (NY vs UK) split, medium (Christian Lewis blog), zeal-nyc personal-blog row",
-      "verifyCmd": "node --test tests/unit/outlet-id-migrations.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-4869",
       "name": "Critics' Take: Wicked tour refused by the model; audit drift false positives on text-light shows",
       "verifyCmd": "node --test tests/unit/critic-consensus-eligibility.test.mjs",
@@ -128,18 +110,6 @@
       "detail": null
     },
     {
-      "id": "BRO-4818",
-      "name": "Codex cross-checks Claude worker fixes before Done (reverse of the Codex runner's Claude check)",
-      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4813",
-      "name": "Triage 24 stranded land/** refs that name no card (interactive-session branches)",
-      "verifyCmd": "node --test scripts/lib/land-stranded-refs.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-4775",
       "name": "Launch video critics: enable videoReviews on prod (+ cloud-operable set-prod-feature workflow)",
       "verifyCmd": "node --test scripts/lib/prod-held-flags-guard.test.mjs",
@@ -150,6 +120,24 @@
       "name": "show-score-proxy runs with JWT verification off: forged tokens reach the function",
       "verifyCmd": "node --test tests/unit/show-score-proxy-jwt-verification.test.mjs",
       "detail": null
+    },
+    {
+      "id": "BRO-4509",
+      "name": "Add NYT fall-2026 US regional runs that have enough reviews + Oh, Mary! tour",
+      "verifyCmd": "node --test scripts/lib/regional-serp-discovery.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4451",
+      "name": "Backfill 54 Reviews Hub reviews filed under the house byline; add The Stage to the outlet ground-truth audit",
+      "verifyCmd": "node --test scripts/lib/multi-show-review-fanout.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4408",
+      "name": "Opening-night poller never drains _pending no-byline strands; in-window reviews wait up to 6h for enrich-reviews",
+      "verifyCmd": "node --test scripts/replay-pending-bylines.test.mjs",
+      "detail": null
     }
   ],
   "failing": [
@@ -157,7 +145,7 @@
       "id": "BRO-5166",
       "name": "Major-outlet reviews not counted in scores: Data: T1/T2 silent review gaps (11 reviews, 3 T1)",
       "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
-      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-14T02:45:34.602Z health snapshot\n"
+      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-14T07:38:45.270Z health snapshot\n"
     },
     {
       "id": "BRO-4623",
@@ -196,6 +184,18 @@
       "name": "Older Broadway pages behind spring 2027 revivals: contamination, false flags, junk rows (Evita, Osage, Cat, Private Lives, Dreamgirls 1981)",
       "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-older-broadway.test.mjs"
+    },
+    {
+      "id": "BRO-4530",
+      "name": "user_show_stubs.created_by (an account id) is readable by anon",
+      "verifyCmd": "node --test tests/unit/stubs-created-by-grant.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/stubs-created-by-grant.test.mjs"
+    },
+    {
+      "id": "BRO-4457",
+      "name": "T1/T2 review stuck >24h: School Girls; Or, The African Mean Girls Play — nydailynews",
+      "verifyCmd": "node --test scripts/lib/backstop-condition-resolution.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/backstop-condition-resolution.test.mjs"
     }
   ],
   "landedButOpen": [
@@ -228,13 +228,6 @@
       "landedAt": "2026-10-11T22:48:20.985Z"
     },
     {
-      "id": "BRO-4978",
-      "name": "National tour pages show wrong information: 1 page problem(s) (stops-before-opening)",
-      "branch": "land/job/linear-BRO-4978-mv4hklfz",
-      "sha": "6ca5a3e3b9bf75d3210249d4de93650681128be7",
-      "landedAt": "2026-10-12T11:44:40.391Z"
-    },
-    {
       "id": "BRO-4835",
       "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
       "branch": "land/codex-bro-4835",
@@ -247,6 +240,20 @@
       "branch": "land/bro-4631-verify-jwt",
       "sha": "c1bae0c860a49ded62d18df624866ebe587dd596",
       "landedAt": "2026-10-12T21:33:07.834Z"
+    },
+    {
+      "id": "BRO-4509",
+      "name": "Add NYT fall-2026 US regional runs that have enough reviews + Oh, Mary! tour",
+      "branch": "land/bro-4509-regional-tour-add",
+      "sha": "759e56f24b2c232e05043d80d2ae971d75c46a77",
+      "landedAt": "2026-10-09T15:57:18.034Z"
+    },
+    {
+      "id": "BRO-4408",
+      "name": "Opening-night poller never drains _pending no-byline strands; in-window reviews wait up to 6h for enrich-reviews",
+      "branch": "land/bro-4408-newest-first",
+      "sha": "43c6af7178b3321e9dcfb80381b4564ac1b54a20",
+      "landedAt": "2026-10-13T02:20:16.710Z"
     }
   ]
 }
