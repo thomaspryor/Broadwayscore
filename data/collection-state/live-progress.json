@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-14T09:13:39.274Z",
-  "processed": 14,
-  "failed": 13,
-  "successRate": "51.9%",
+  "updatedAt": "2026-10-14T10:13:19.449Z",
+  "processed": 39,
+  "failed": 58,
+  "successRate": "40.2%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 27,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 3,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 8
   },
   "browserbaseSessions": 4,
   "recentActivity": [
@@ -44,6 +44,50 @@
       "t": "2026-10-14T09:08:58.109Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T09:44:02.690Z",
+      "event": "bb-session",
+      "session": "b3d819b6",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-14T09:44:03.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T09:44:21.998Z",
+      "event": "bb-session",
+      "session": "d2abe77f",
+      "url": "https://online.wsj.com/article/SB10001424052748704361504575551990855593242.html?"
+    },
+    {
+      "t": "2026-10-14T09:44:22.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T09:50:16.034Z",
+      "event": "bb-session",
+      "session": "608100c5",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-14T09:50:16.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T09:50:35.623Z",
+      "event": "bb-session",
+      "session": "51b524f2",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-14T09:50:36.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
