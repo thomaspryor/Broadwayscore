@@ -56,3 +56,38 @@ test('reclassify-invalid-reviews --file retiers only the named rows', () => {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 });
   }
 });
+
+// BRO-5367: the same rule at write time, for every writer (rebuild auto-clears included).
+const { retierStaleWrongContentTier } = require('../../scripts/lib/stale-wrong-content-tier.js');
+const cleared = (over = {}) => flagged({ wrongShow: false, wrongShowManualClear: undefined, wrongProduction: false,
+  contentTierReason: 'Wrong production', wrongProductionAutoCleared: 'rebuild: priorRuns/tourLegs covers publishDate', wrongProductionAutoClearedAt: '2026-09-29', ...over });
+
+test('a rebuild-auto-cleared row is retiered; an absent flag with no clear evidence is not (BRO-4432 contamination signal)', () => {
+  const r = cleared(); assert.ok(retierStaleWrongContentTier(r).length); assert.notEqual(r.contentTier, 'invalid');
+  const noEvidence = cleared({ wrongProductionAutoCleared: undefined, wrongProductionAutoClearedAt: undefined });
+  assert.deepEqual(retierStaleWrongContentTier(noEvidence), []);
+  assert.equal(noEvidence.contentTier, 'invalid');
+});
+
+test('rejected or garbage rows stay invalid', () => {
+  assert.deepEqual(retierStaleWrongContentTier(cleared({ rejectionReason: 'wrong_show' })), []);
+  assert.deepEqual(retierStaleWrongContentTier(cleared({ incompleteReason: 'scraper_garbage' })), []);
+  assert.deepEqual(retierStaleWrongContentTier(cleared({ wrongProduction: 'yes' })), [], 'a truthy flag still blocks');
+});
+
+test('safeWriteReview retiers a cleared row it writes, but never a locked file without force', () => {
+  const { safeWriteReview } = require('../../scripts/lib/review-write-guard.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retier-write-'));
+  try {
+    const fp = path.join(dir, 'a-show-2025', 'standard--a-critic.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    safeWriteReview(fp, cleared({ showId: 'a-show-2025' }));
+    assert.notEqual(JSON.parse(fs.readFileSync(fp, 'utf8')).contentTier, 'invalid');
+    const lp = path.join(dir, 'a-show-2025', 'times--b-critic.json');
+    fs.writeFileSync(lp, JSON.stringify(cleared({ showId: 'a-show-2025', _locked: true, url: 'https://example.com/b' })));
+    safeWriteReview(lp, cleared({ showId: 'a-show-2025', _locked: true, url: 'https://example.com/b' }));
+    assert.equal(JSON.parse(fs.readFileSync(lp, 'utf8')).contentTier, 'invalid', 'locked, no force');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 });
+  }
+});

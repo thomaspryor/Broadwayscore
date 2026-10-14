@@ -2567,6 +2567,23 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-5367: a cleared wrongShow/wrongProduction leaves the 'invalid' tier it
+  // caused; reclassify it here, after every step that can set those flags
+  // again, so the review does not drop off the site when an auto-clear stamp
+  // ages out. Rules (clear evidence required; rejected/garbage skipped):
+  // stale-wrong-content-tier.js. A locked file changes only with force.
+  if (newData && newData.contentTier === 'invalid') {
+    let lockedOnDisk = false;
+    try { lockedOnDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'))._locked === true; } catch { /* new or unreadable */ }
+    if (force || !(lockedOnDisk || newData._locked === true)) {
+      const retier = { ...newData };
+      if (require('./stale-wrong-content-tier').retierStaleWrongContentTier(retier).length) {
+        console.log(`[review-write-guard] ${path.basename(filePath)}: wrong-content flag cleared, contentTier invalid -> ${retier.contentTier}`);
+        newData = retier;
+      }
+    }
+  }
+
   // BRO-4403: last stop before disk — no writer can (re)introduce an
   // HTML-escaped url or a leaked leading <img> in fullText.
   newData = require('./review-url-entity-decode').sanitizeReviewRecord(newData);

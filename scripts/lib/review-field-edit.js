@@ -167,28 +167,9 @@ function splitRelabelUndo(record, newUrl) {
 // refetch markers set below.
 const URL_EDIT_SIDE_EFFECT_KEYS = ['_urlChangedClear', 'duplicateClearReason', 'needsRefetch', 'urlCorrectedFrom', 'urlCorrectedReason'];
 
-/**
- * BRO-5356: clearing wrongShow/wrongProduction left contentTier 'invalid'
- * ('Wrong show' / 'Wrong production'), and the rebuild drops invalid rows, so
- * the cleared review stayed off the site (spamalot-2023, the-whos-tommy-2024
- * NYSR). Once neither flag is set, recompute a tier that the flag caused.
- * Returns the keys it changed.
- */
+// BRO-5356: the rule lives in stale-wrong-content-tier.js (shared with safeWriteReview).
 function retierAfterFlagClear(record) {
-  if (record.contentTier !== 'invalid' || record.wrongShow === true || record.wrongProduction === true) return [];
-  if (!/^wrong (show|production)$/i.test(String(record.contentTierReason || record.tierReason || '').trim())) return [];
-  const t = require('./content-quality').classifyContentTier({ ...record, contentTier: undefined });
-  if (!t || !t.contentTier || t.contentTier === 'invalid') return [];
-  record.contentTier = t.contentTier;
-  record.contentTierReason = t.tierReason;
-  record.tierReason = t.tierReason;
-  const changed = ['contentTier', 'contentTierReason', 'tierReason'];
-  if (record.incompleteReason === 'wrong_content') {
-    record.incompleteReason = null;
-    record.incompleteDetail = null;
-    changed.push('incompleteReason', 'incompleteDetail');
-  }
-  return changed;
+  return require('./stale-wrong-content-tier').retierStaleWrongContentTier(record);
 }
 
 function isScalar(v) {
@@ -311,12 +292,12 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     if (!r.ok) return { ok: false, reason: r.reason };
     sideEffectKeys = unexpectedChanges(beforeRating, next, field);
   }
+  const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
+  next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
   if ((field === 'wrongShow' || field === 'wrongProduction') && newValue === false) {
     const retiered = retierAfterFlagClear(next);
     if (retiered.length) sideEffectKeys = [...new Set([...sideEffectKeys, ...retiered])].sort();
   }
-  const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
-  next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
   const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
   return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
 }
