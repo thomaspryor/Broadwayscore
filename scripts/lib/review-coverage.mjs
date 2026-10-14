@@ -11,6 +11,9 @@
 //   1. a Claude codebase review: an Agent call with subagent_type review-panelist
 //   2. an external adversarial review: curl to api.openai.com / Gemini, or `codex exec`
 // tsc/lint/build are NOT checked here: land.yml runs them strictly on the rebased tree.
+// Known limits (accepted, BRO-5359 ship-check): this sets a floor, not proof of review quality;
+// coverage is not tied to the pushed diff hash (verify-edits.sh's fixup budget covers edits made
+// after the review); /code-review runs are trusted, not coverage-checked.
 //
 // One implementation for both enforcement points:
 //   - land gate:   land-preflight.mjs runHook -> landGateDecision (blocks a land/* push)
@@ -40,7 +43,21 @@ export const STRONG_SKILLS = ['ship-check', 'code-review'];
 const FALLBACK_FILES = {
   'ship-check': ['.claude/commands/ship-check.md', '.agents/skills/ship-check/SKILL.md'],
 };
-const EXTERNAL_CALL_RE = /\bcurl\b[\s\S]*?(?:api\.openai\.com|generativelanguage\.googleapis\.com)|\bcodex\s+exec\b/;
+// A real external review POSTs a prompt: curl with a request body to a model endpoint, or `codex exec`,
+// in command position. Not `echo curl api.openai.com`, not `curl .../v1/models`, not a grep for the host.
+const MODEL_ENDPOINT_RE = /api\.openai\.com\/v1\/(?:chat\/completions|responses)|generativelanguage\.googleapis\.com\/\S*:generateContent/;
+const DATA_FLAG_RE = /\s(?:-d|--data(?:-[a-z]+)?|--json)\b/;
+const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:\\w+=\\S*\\s+)*${word}\\b`);
+const CURL_POS_RE = cmdPos('curl');
+const CODEX_POS_RE = cmdPos('codex\\s+exec');
+const unquoted = (cmd) => cmd.replace(/'[^']*'/g, "''").replace(/"[^"]*"/g, '""');
+const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
+const MIN_RESULT_CHARS = 40;
+const isExternalReviewCall = (cmd) => {
+  const bare = unquoted(cmd);
+  return (CURL_POS_RE.test(bare) && MODEL_ENDPOINT_RE.test(cmd) && DATA_FLAG_RE.test(cmd)) || CODEX_POS_RE.test(bare);
+};
+const substantiveResult = (r) => !!r && !r.isError && String(r.content || '').trim().length >= MIN_RESULT_CHARS && !/"error"\s*:/.test(String(r.content));
 export const NO_SHIP_CHECK_RE = /#\s*NO-SHIP-CHECK:\s*(\S.{14,})/;
 
 const skillName = (s) => String(s || '').split(':').pop().replace(/^\//, '');
@@ -84,25 +101,30 @@ export function evaluateCoverage(events) {
     return { ran: false, complete: false, skill: null, missing: ['no /ship-check or /code-review run in this session'], evidence: null };
   }
   const last = runs[runs.length - 1];
+  // /code-review has its own procedure (it never launches these reviewers), so it is not
+  // coverage-checked; verify-edits.sh already accepts it as a strong review. A later
+  // /code-review therefore also covers an earlier thin ship-check.
+  if (last.skill !== 'ship-check') return { ran: true, complete: true, skill: last.skill, missing: [], evidence: null };
   const results = new Map();
   for (const e of events) if (e.kind === 'tool_result') results.set(e.tool_use_id, e);
   const answered = (id) => {
     const r = results.get(id);
     return !!r && !r.isError;
   };
+  const answeredWell = (id) => substantiveResult(results.get(id));
   const claude = [];
   const external = [];
   for (const e of events.slice(last.i + 1)) {
     if (e.kind !== 'assistant_tool_use') continue;
     if (e.name === 'Agent' || e.name === 'Task') {
-      if (e.input?.subagent_type === 'review-panelist' && answered(e.id)) claude.push(e);
-    } else if (e.name === 'Bash' && EXTERNAL_CALL_RE.test(String(e.input?.command || '')) && answered(e.id)) {
+      if (e.input?.subagent_type === 'review-panelist' && String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && answered(e.id)) claude.push(e);
+    } else if (e.name === 'Bash' && isExternalReviewCall(String(e.input?.command || '')) && answeredWell(e.id)) {
       external.push(e);
     }
   }
   const missing = [];
-  if (claude.length === 0) missing.push('Claude codebase review (Agent with subagent_type "review-panelist")');
-  if (external.length === 0) missing.push('external adversarial review (curl to api.openai.com or Gemini, or `codex exec`)');
+  if (claude.length === 0) missing.push('Claude codebase review (Agent with subagent_type "review-panelist" and a real review prompt)');
+  if (external.length === 0) missing.push('external adversarial review (curl -d to api.openai.com /v1/chat/completions, Gemini generateContent, or `codex exec`) with a real response');
   const complete = missing.length === 0;
   let evidence = null;
   if (complete) {
@@ -157,7 +179,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.SHIP_CHECK_COVERAGE_DISABLE === '1') return { decision: 'allow', reason: 'SHIP_CHECK_COVERAGE_DISABLE=1' };
   const text = String(lastMessage || '').replace(/```[\s\S]*?```/g, '');
-  const lines = text.split('\n').map((l) => l.trim()).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
+  const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
   if (!lines.length || !/^SAFE TO EXIT\b/.test(lines[lines.length - 1])) return { decision: 'allow', reason: 'not claiming SAFE TO EXIT' };
   if (/^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text)) return { decision: 'allow', reason: 'NO-SHIP-CHECK bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
@@ -194,9 +216,13 @@ function stopHookMain() {
   const tp = input.transcript_path;
   if (!tp || !fs.existsSync(tp)) return 0;
   const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp) });
-  if (d.decision !== 'block') return 0;
-  // Cap blocks per transcript so an unsatisfiable gate can never loop a session.
   const counter = path.join(os.tmpdir(), `review-coverage-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
+  if (d.decision !== 'block') {
+    // Coverage is complete (or not claimed): reset the block budget for any later uncovered review.
+    if (d.reason === 'coverage complete') fs.rmSync(counter, { force: true });
+    return 0;
+  }
+  // Cap blocks per transcript so an unsatisfiable gate can never loop a session.
   let n = 0;
   try {
     n = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0;

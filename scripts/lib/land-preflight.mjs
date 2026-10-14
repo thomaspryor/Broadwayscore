@@ -35,9 +35,12 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { landPushTargets } from './push-command.mjs';
-import { walkTranscript } from './transcript-scan.mjs';
-import { gatedDiffStats, GATE_LINE_BUDGET } from './review-gate.mjs';
-import { landGateDecision } from './review-coverage.mjs';
+// BRO-5359: the review-coverage gate is optional machinery. If any of these fail to load, the
+// rebase/test-registry preflight below must keep working, so load them tolerantly (checkReviewCoverage
+// fails open when `rc` is null).
+const rc = await Promise.all([import('./transcript-scan.mjs'), import('./review-gate.mjs'), import('./review-coverage.mjs')])
+  .then(([t, g, c]) => ({ walkTranscript: t.walkTranscript, gatedDiffStats: g.gatedDiffStats, GATE_LINE_BUDGET: g.GATE_LINE_BUDGET, landGateDecision: c.landGateDecision }))
+  .catch(() => null);
 
 const require = createRequire(import.meta.url);
 const { isPromisorFetchFailure } = require('./promisor-fetch-failure.js');
@@ -686,9 +689,9 @@ function pushDir(cwd, p) {
  * refusals, not for skipping review). Fails open on any error or missing transcript.
  */
 export function checkReviewCoverage({ command, cwd, targets, env = process.env, transcriptPath = null, seams = {} }) {
-  if (env.CLAUDE_CODE_REMOTE !== 'true' || env.SHIP_CHECK_LAND_GATE_DISABLE === '1') return null;
+  if (!rc || env.CLAUDE_CODE_REMOTE !== 'true' || env.SHIP_CHECK_LAND_GATE_DISABLE === '1') return null;
   try {
-    const events = seams.events !== undefined ? seams.events : transcriptPath && fs.existsSync(transcriptPath) ? walkTranscript(transcriptPath) : null;
+    const events = seams.events !== undefined ? seams.events : transcriptPath && fs.existsSync(transcriptPath) ? rc.walkTranscript(transcriptPath) : null;
     let gatedLines = 0;
     let root = null;
     for (const t of targets) {
@@ -697,10 +700,10 @@ export function checkReviewCoverage({ command, cwd, targets, env = process.env, 
       const top = git(pushDir(cwd, p), ['rev-parse', '--show-toplevel']);
       if (!ok(top)) continue;
       root = out(top);
-      const stats = seams.stats || gatedDiffStats(root, 'origin/main', t.src || 'HEAD');
+      const stats = seams.stats || rc.gatedDiffStats(root, 'origin/main', t.src || 'HEAD');
       if (!stats.error) gatedLines = Math.max(gatedLines, stats.totalLines);
     }
-    const v = landGateDecision({ command, events, gatedLines, budget: GATE_LINE_BUDGET, env });
+    const v = rc.landGateDecision({ command, events, gatedLines, budget: rc.GATE_LINE_BUDGET, env });
     if (root) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines });
     return v;
   } catch {
