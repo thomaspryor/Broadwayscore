@@ -123,6 +123,7 @@ const { isRunningInCI } = require('./lib/regression-guard');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
+const { mergePendingRecord } = require('./lib/pending-review-health');
 const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
 const {
   llmFallbackExtract,
@@ -4249,7 +4250,12 @@ function createReviewFile(showId, reviewData, options = {}) {
     })();
     const pendingFilename = `${normalizedOutletId}--${urlHash}.json`;
     const pendingPath = path.join(pendingDir, pendingFilename);
-    fs.writeFileSync(pendingPath, JSON.stringify({ ...review, pendingReason: 'no-byline' }, null, 2));
+    // BRO-2735: merge over the existing stub instead of rewriting it from scratch
+    // every run — the rewrite dropped firstSeenAt (the _pending age guard's clock)
+    // and replay bookkeeping (promoteSkippedReason → re-fetched junk every run).
+    let existingPending = null;
+    try { existingPending = JSON.parse(fs.readFileSync(pendingPath, 'utf8')); } catch { /* new stub */ }
+    fs.writeFileSync(pendingPath, JSON.stringify(mergePendingRecord(existingPending, review), null, 2));
     console.log(`    → no byline — routing to pending: _pending/${showId}/${pendingFilename}`);
     return true;
   }

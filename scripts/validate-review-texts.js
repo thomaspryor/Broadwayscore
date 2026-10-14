@@ -34,7 +34,9 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
-const { shouldBlockReviewTextsGate, HEALABLE_CHECKS } = require('./lib/review-texts-gate');
+const { shouldBlockReviewTextsGate, HEALABLE_CHECKS, REPORT_ONLY_CHECKS } = require('./lib/review-texts-gate');
+// BRO-2735 monitor-independent age guard for the _pending sink (rebuild never reads it).
+const { findStalePendingEntries, resolveStaleHours, STALE_PENDING_CHECK } = require('./lib/pending-review-health');
 // aggregator_url_mismatch is decided by the CANONICAL predicate in
 // lib/aggregator-url-latent.js — audit-aggregator-url-latent.js ratchets the latent
 // population that predicate hides, so a second copy here would drift from the ratchet
@@ -59,9 +61,12 @@ const GATE = args.includes('--gate');
 const GATE_HEALABLE_FLOOR = 10;
 
 // Paths
-const DATA_DIR = path.join(__dirname, '..', 'data');
+// VALIDATE_REVIEW_TEXTS_DATA_DIR: fixture override for CLI tests (BRO-2735
+// scripts/replay-pending-bylines.test.mjs runs default vs --gate on a temp tree).
+const DATA_DIR = process.env.VALIDATE_REVIEW_TEXTS_DATA_DIR || path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 
 // Registry alias index — built once at load for canonical outlet resolution
 let registryAliasIndex = {};
@@ -314,6 +319,31 @@ function getShowDirectories() {
 }
 
 /**
+ * stale_pending errors (BRO-2735): a _pending/<show>/ entry older than
+ * STALE_PENDING_HOURS (default 24) for a show 0..7 days AFTER opening. The
+ * _pending sink is never read by rebuild, so such an entry is a review the site
+ * is silently missing. Report-only under --gate (REPORT_ONLY_CHECKS); the
+ * default validator fails on it. Pure decision: scripts/lib/pending-review-health.js.
+ */
+function stalePendingErrors({ reviewTextsDir = REVIEW_TEXTS_DIR, showsPath = SHOWS_PATH, showFilter: only = null,
+  nowMs = Date.now(), staleHours = resolveStaleHours() } = {}) {
+  let shows;
+  try {
+    const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    shows = raw.shows || raw;
+  } catch (err) {
+    console.warn(`stale_pending check skipped: cannot read ${path.relative(process.cwd(), showsPath)} (${err.message})`);
+    return [];
+  }
+  if (only) shows = shows.filter(s => s && s.id === only);
+  return findStalePendingEntries({ reviewTextsRoot: reviewTextsDir, shows, nowMs, staleHours }).map(e => ({
+    file: e.relPath,
+    check: STALE_PENDING_CHECK,
+    message: `_pending entry ${e.ageHours}h old (clock: ${e.clock}, ${e.zeroText ? 'zero-text' : 'has text'}) for a show within 7 days after opening — not on the site; run replay-pending-bylines.js --show=${e.showId} or recover by hand (${e.url || 'no url'})`,
+  }));
+}
+
+/**
  * Main validation function
  */
 function main() {
@@ -352,13 +382,16 @@ function main() {
     }
   }
 
-  // Calculate summary
+  // Calculate summary (scanned files only — _pending entries are not in totalFiles)
   const errorFiles = new Set(allErrors.map(e => e.file)).size;
+  const stalePending = stalePendingErrors({ showFilter });
+  allErrors.push(...stalePending);
   const summary = {
     total: totalFiles,
     passed: totalFiles - errorFiles,
     failed: errorFiles,
-    warnings: allWarnings.length
+    warnings: allWarnings.length,
+    stalePending: stalePending.length
   };
 
   // Output results
@@ -389,7 +422,7 @@ function main() {
       console.log('');
     }
 
-    console.log(`Summary: ${summary.passed}/${summary.total} passed, ${summary.failed} errors, ${summary.warnings} warnings`);
+    console.log(`Summary: ${summary.passed}/${summary.total} passed, ${summary.failed} errors, ${summary.warnings} warnings, ${summary.stalePending} stale _pending`);
   }
 
   // --gate: catastrophe floor only. Catastrophic classes (corrupt JSON, aggregator
@@ -399,8 +432,12 @@ function main() {
   // floor. Any UNKNOWN error check defaults to catastrophic (fail-safe). Decision is
   // the pure scripts/lib/review-texts-gate.js (unit-tested, CLAUDE.md §15).
   if (GATE) {
-    const healableErrors = allErrors.filter(e => HEALABLE_CHECKS.has(e.check)).length;
-    const catastrophicErrors = allErrors.length - healableErrors;
+    // REPORT_ONLY_CHECKS (stale_pending) are printed above but never counted here.
+    const gateErrors = allErrors.filter(e => !REPORT_ONLY_CHECKS.has(e.check));
+    const reportOnly = allErrors.length - gateErrors.length;
+    if (reportOnly > 0) console.log(`ℹ️  GATE: ${reportOnly} report-only error(s) (${[...REPORT_ONLY_CHECKS].join(', ')}) — surfaced, not counted.`);
+    const healableErrors = gateErrors.filter(e => HEALABLE_CHECKS.has(e.check)).length;
+    const catastrophicErrors = gateErrors.length - healableErrors;
     if (shouldBlockReviewTextsGate({ catastrophicErrors, healableErrors, floor: GATE_HEALABLE_FLOOR })) {
       console.error(`\n❌ GATE: ${catastrophicErrors} catastrophic error(s) (zero-tolerance) + ${healableErrors} auto-healable duplicate error(s) vs floor ${GATE_HEALABLE_FLOOR}. Failing the trunk.`);
       process.exit(1);
@@ -413,7 +450,7 @@ function main() {
   process.exit(allErrors.length > 0 ? 1 : 0);
 }
 
-module.exports = { validateReviewFile };
+module.exports = { validateReviewFile, stalePendingErrors };
 
 // Run (guarded so tests can require() this file's exports without triggering
 // the CLI's process.exit — BRO-913: json-conflict-marker.test.mjs calls

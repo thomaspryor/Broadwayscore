@@ -382,6 +382,7 @@ on:
       - 'scripts/record-push-retry-failure.js'
       # tests/unit/pending-promote-validation.test.mjs
       - 'scripts/replay-pending-bylines.js'
+      - 'scripts/replay-pending-bylines.test.mjs'
       # tests/unit/cast-changes-validate-event.test.mjs
       - 'scripts/scrape-cast-changes.js'
       # tests/unit/mezzanine-override-collision-auditor.test.mjs +

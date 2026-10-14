@@ -68,4 +68,14 @@ const HEALABLE_CHECKS = new Set([
   'duplicate_review',
 ]);
 
-module.exports = { shouldBlockReviewTextsGate, CATASTROPHIC_CHECKS, HEALABLE_CHECKS };
+// REPORT-ONLY (BRO-2735): surfaced (and failing) in the default validator, but
+// excluded from --gate's counts entirely, so neither the catastrophic fail-safe
+// nor the healable floor sees them. stale_pending is a pipeline-latency signal
+// about the private _pending sink (a review sat >N hours after opening), not a
+// corrupt record: blocking every unrelated push on it would redden main for a
+// condition no code push can clear.
+const REPORT_ONLY_CHECKS = new Set([
+  'stale_pending',
+]);
+
+module.exports = { shouldBlockReviewTextsGate, CATASTROPHIC_CHECKS, HEALABLE_CHECKS, REPORT_ONLY_CHECKS };

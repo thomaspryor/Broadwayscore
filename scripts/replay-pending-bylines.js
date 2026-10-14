@@ -14,6 +14,13 @@
  *   4. If byline found: rename file to {outlet}--{critic-slug}.json, move to
  *      data/review-texts/{showId}/, remove from _pending
  *   5. If not found: leave in _pending, log
+ *   6. (BRO-2735) A stub with a URL but no body is rebuilt from the fetch
+ *      (empty-body-retry recoveryPatch → buildRefetchedPendingRecord), not
+ *      repaired in place. A stub that still has NO body and NO byline after
+ *      all that is "pending-unrecoverable": it emits a stage-latency event
+ *      (once per stub, stamped pendingUnrecoverableAt) and routes an owner
+ *      alert (disposition 'human') for shows in their first post-opening week
+ *      or named explicitly with --show/--shows — instead of a quiet "keep".
  *
  * Usage:
  *   node scripts/replay-pending-bylines.js --show=eugene-onegin-off-broadway-2026
@@ -36,7 +43,11 @@ const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { findExistingFileForUrl: findExistingFileForUrlShared } = require('./lib/review-url-clusters');
 const { isRecentlyLive } = require('./lib/show-liveness');
-const { markEmptyBodyForRetry } = require('./lib/empty-body-retry');
+const { markEmptyBodyForRetry, recoveryPatch } = require('./lib/empty-body-retry');
+const { emitStage } = require('./lib/stage-latency');
+const {
+  isUnrecoverablePendingStub, isZeroTextPendingStub, isInPostOpeningWindow, buildRefetchedPendingRecord,
+} = require('./lib/pending-review-health');
 const { retryEmptyBodyReviews } = require('./retry-empty-body-reviews');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -243,8 +254,45 @@ const NON_MET_OPERA_URL_MARKERS = require('./lib/content-filters').NON_MET_OPERA
 // findExistingFileForUrl + its terminal-canonical resolution live in
 // scripts/lib/review-url-clusters.js so collect-review-texts.js's write path
 // (BRO-3550) shares the exact same logic instead of a second, divergent copy.
-function findExistingFileForUrl(showId, outletId, url) {
-  return findExistingFileForUrlShared(REVIEW_TEXTS_ROOT, showId, outletId, url);
+function findExistingFileForUrl(showId, outletId, url, root = REVIEW_TEXTS_ROOT) {
+  return findExistingFileForUrlShared(root, showId, outletId, url);
+}
+
+const PENDING_UNRECOVERABLE_STAGE = 'pending-unrecoverable';
+
+// Lazy: the router pulls in Resend/Linear plumbing; tests inject a fake.
+async function defaultRouteAlert(opts) {
+  return require('./lib/owner-alert-router').routeAlert(opts);
+}
+
+/**
+ * Pure: should this show's unrecoverable stubs page/digest the owner? Only in
+ * the first post-opening week (when a missing T1/T2 review costs the most and
+ * the stub is new) or when an operator/poller named the show explicitly. The
+ * weekly --all-pending backlog sweep over hundreds of closed shows must not
+ * open one alert condition per show.
+ */
+function shouldAlertUnrecoverable(show, { explicitScope = false, nowMs = Date.now() } = {}) {
+  // Before opening, outlet review pages do not exist yet: an empty stub is
+  // expected (the opening-night poller names pre-opening shows via --shows).
+  const opening = show && show.openingDate ? Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(show.openingDate) ? `${show.openingDate}T00:00:00Z` : show.openingDate) : NaN;
+  if (Number.isFinite(opening) && nowMs < opening) return false;
+  return !!explicitScope || isInPostOpeningWindow(show, nowMs);
+}
+
+/** Pure: the routeAlert payload for one show's unrecoverable stubs. */
+function unrecoverableAlertPayload(showId, entries) {
+  const lines = entries.slice(0, 15).map(e => `- ${e.file} (${e.outletId || '?'}): ${e.reason} ${e.url || ''}`.trim());
+  if (entries.length > 15) lines.push(`- …and ${entries.length - 15} more`);
+  return {
+    conditionKey: `${PENDING_UNRECOVERABLE_STAGE}:${showId}`,
+    title: `${entries.length} review(s) for ${showId} stuck in _pending with no text and no byline`,
+    description: `replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n${lines.join('\n')}`,
+    hint: `Open each URL, add the critic + text by hand (or fix the fetch), then rerun: node scripts/replay-pending-bylines.js --show=${showId}`,
+    disposition: 'human',
+    severity: 'warning',
+    cooldownHours: 24,
+  };
 }
 
 /**
@@ -263,25 +311,73 @@ function isRedundantPendingStub(data, landedFile) {
   return !hasByline && !hasText && !hasScore && !hasExcerpt;
 }
 
-async function processShow(showId, orderedFiles) {
-  const pendingDir = path.join(PENDING_ROOT, showId);
+/**
+ * @param {string} showId
+ * @param {object} [deps] injectable for tests (BRO-2735): root, show, fetch
+ *   (fetchPage-compatible), alert (routeAlert-compatible), emit (emitStage-
+ *   compatible), dryRun, budget, explicitScope, now (() => Date), log,
+ *   files (BRO-4408: newest-first file order from planPendingWork).
+ */
+async function processShow(showId, deps = {}) {
+  const root = deps.root || REVIEW_TEXTS_ROOT;
+  const fetchPageImpl = deps.fetch || fetchPage;
+  const alert = deps.alert || defaultRouteAlert;
+  const emit = deps.emit || emitStage;
+  const dry = deps.dryRun !== undefined ? deps.dryRun : dryRun;
+  const budget = deps.budget || timeBudget;
+  const explicitScope = deps.explicitScope !== undefined ? deps.explicitScope : !!(showArg || showsArg);
+  const now = deps.now || (() => new Date());
+  const pendingDir = path.join(root, '_pending', showId);
   if (!fs.existsSync(pendingDir)) {
     console.log(`[${showId}] no _pending dir`);
-    return { promoted: 0, kept: 0, rejected: 0 };
+    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0 };
   }
-  const show = loadShow(showId);
+  const show = deps.show !== undefined ? deps.show : loadShow(showId);
   const openingYear = show?.openingDate ? new Date(show.openingDate).getFullYear() : null;
-  const files = orderedFiles || fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
+  const files = deps.files || fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
-  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0;
+  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0;
+  // Zero-text + no-byline stubs replay could not recover (BRO-2735). Reported
+  // after the loop — never a silent "keep".
+  const unrecoverable = [];
+  const noteUnrecoverable = (file, filepath, data, reason) => {
+    console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
+    unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
+  };
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, ...reportUnrecoverable(), ...extra });
+  const reportUnrecoverable = () => {
+    if (unrecoverable.length === 0) return { unrecoverable: 0 };
+    const alertable = shouldAlertUnrecoverable(show, { explicitScope, nowMs: now().getTime() });
+    console.log(`  ⚠ [${showId}] ${unrecoverable.length} pending-unrecoverable stub(s)${alertable ? '' : ' (outside post-opening week — logged, not alerted)'}`);
+    if (!alertable) return { unrecoverable: unrecoverable.length, alerted: false };
+    for (const u of unrecoverable) {
+      if (u.data.pendingUnrecoverableAt) continue; // one stage event per stub, not per run
+      if (dry) { console.log(`  DRY → would emit ${PENDING_UNRECOVERABLE_STAGE} for ${u.file}`); continue; }
+      emit({
+        showId, stage: PENDING_UNRECOVERABLE_STAGE,
+        reviewKey: `${u.outletId || 'unknown'}:unknown:${u.url || u.file}`,
+        metadata: { file: u.file, reason: u.reason, outletId: u.outletId, url: u.url, source: 'replay-pending-bylines' },
+      });
+      u.data.pendingUnrecoverableAt = now().toISOString();
+      try { fs.writeFileSync(u.filepath, JSON.stringify(u.data, null, 2)); } catch (e) { console.log(`  [${u.file}] could not stamp: ${e.message}`); }
+    }
+    const payload = unrecoverableAlertPayload(showId, unrecoverable);
+    if (dry) {
+      console.log(`  DRY → would routeAlert(${payload.conditionKey}, disposition ${payload.disposition})`);
+      return { unrecoverable: unrecoverable.length, alerted: false };
+    }
+    // Fire-and-record; an alert failure must not abort the drain of other shows.
+    const sent = Promise.resolve().then(() => alert(payload)).catch(e => console.log(`  alert failed: ${e.message}`));
+    return { unrecoverable: unrecoverable.length, alerted: true, alertPromise: sent };
+  };
   for (const file of files) {
-    if (timeBudget.exceeded()) {
-      console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — remaining files (and shows) deferred to next run.`);
-      return { promoted, kept, rejected, droppedRedundant, budgetExceeded: true };
+    if (budget.exceeded()) {
+      console.log(`  ⏱ Time budget (${budget.minutes} min) reached — remaining files (and shows) deferred to next run.`);
+      return finish({ budgetExceeded: true });
     }
     const filepath = path.join(pendingDir, file);
-    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    let data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
     // Already evaluated and skipped on a prior run — don't re-fetch the URL.
     if (data.promoteSkippedReason) {
       kept++;
@@ -299,6 +395,7 @@ async function processShow(showId, orderedFiles) {
     const url = data.url;
     if (!url) {
       console.log(`  [${file}] no URL — skip`);
+      if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'no URL to re-fetch');
       kept++;
       continue;
     }
@@ -308,26 +405,26 @@ async function processShow(showId, orderedFiles) {
     // review. School Girls 2026 kept two such nysr--<hash> stubs after the BWW
     // roundup created nysr--steven-suskin / nysr--frank-scheck from the same
     // urls; they had to be deleted by hand. A stub with text is kept.
-    const landed = findExistingFileForUrl(showId, data.outletId, url);
+    const landed = findExistingFileForUrl(showId, data.outletId, url, root);
     if (isRedundantPendingStub(data, landed)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
-      if (!dryRun) fs.unlinkSync(filepath);
+      if (!dry) fs.unlinkSync(filepath);
       droppedRedundant++;
       continue;
     }
 
     // Pre-promotion filters: don't bother fetching wrong-production URLs.
     if (NON_MET_OPERA_URL_MARKERS && NON_MET_OPERA_URL_MARKERS.some(m => url.toLowerCase().includes(m))) {
-      console.log(`  [${file}] REJECT: non-Met opera house URL — deleting`);
-      fs.unlinkSync(filepath);
+      console.log(`  [${file}] REJECT: non-Met opera house URL — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+      if (!dry) fs.unlinkSync(filepath);
       rejected++;
       continue;
     }
     if (openingYear) {
       const m = url.match(/\/((?:19|20)\d{2})\b/);
       if (m && Math.abs(parseInt(m[1], 10) - openingYear) > 1) {
-        console.log(`  [${file}] REJECT: URL year ${m[1]} > ±1y from ${openingYear} — deleting`);
-        fs.unlinkSync(filepath);
+        console.log(`  [${file}] REJECT: URL year ${m[1]} > ±1y from ${openingYear} — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+        if (!dry) fs.unlinkSync(filepath);
         rejected++;
         continue;
       }
@@ -336,11 +433,14 @@ async function processShow(showId, orderedFiles) {
     let byline = null;
     let html = null;
     let publishDate = null;
+    let fetchResult = null;
     try {
-      const result = await fetchPage(url);
+      const result = await fetchPageImpl(url);
+      fetchResult = result;
       html = result?.content;
       if (!html) {
         console.log(`  [${file}] fetch returned no content — keep`);
+        if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'fetch returned no content');
         kept++;
         continue;
       }
@@ -361,7 +461,7 @@ async function processShow(showId, orderedFiles) {
         console.log(`  [${file}] SKIP (kept in _pending): ${rejectReason}`);
         data.promoteSkippedReason = rejectReason;
         data.promoteSkippedAt = new Date().toISOString();
-        if (!dryRun) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+        if (!dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
         kept++;
         continue;
       }
@@ -372,13 +472,37 @@ async function processShow(showId, orderedFiles) {
       const raw = hcRaw || fallbackRaw;
       byline = raw ? (typeof raw === 'string' ? raw : raw.name || null) : null;
     } catch (e) {
-      console.log(`  [${file}] fetch failed: ${e.message.slice(0, 80)} — keep`);
+      const msg = String((e && e.message) || e).slice(0, 80);
+      console.log(`  [${file}] fetch failed: ${msg} — keep`);
+      if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, `fetch failed: ${msg}`);
       kept++;
       continue;
     }
 
+    // Re-fetch path (BRO-2735): a stub with a URL but no body is REBUILT from
+    // this fetch — a fresh record carrying only the stub's identity/provenance
+    // fields plus the recovered body — never patched field-by-field. The
+    // recoveryPatch gates (show-match, production window, tier) are the same
+    // ones the landed-stub empty-body retry uses.
+    if (isZeroTextPendingStub(data)) {
+      const hasNamedByline = byline && byline !== 'Unknown';
+      const patch = recoveryPatch(hasNamedByline ? { ...data, criticName: byline } : data, fetchResult, show);
+      if (patch) {
+        data = buildRefetchedPendingRecord(data, patch, now().toISOString());
+        refetched++;
+        console.log(`  [${file}] re-fetched body rebuilt (${patch.wordCount || '?'} words, ${patch.contentTier})`);
+      }
+    }
+
     if (!byline || byline === 'Unknown') {
-      console.log(`  [${file}] no byline detected — keep in pending`);
+      if (isUnrecoverablePendingStub(data, null)) {
+        noteUnrecoverable(file, filepath, data, 'no byline in page and no recoverable body');
+      } else {
+        console.log(`  [${file}] no byline detected — keep in pending`);
+        // A rebuilt body is still progress: persist it so the next run (or a
+        // human) starts from the text, not an empty stub.
+        if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+      }
       kept++;
       continue;
     }
@@ -386,11 +510,12 @@ async function processShow(showId, orderedFiles) {
     // Promote: rename to {outlet}--{critic-slug}.json + move to review-texts/{showId}/
     const criticSlug = normalizeCritic(byline);
     const newFilename = `${data.outletId}--${criticSlug}.json`;
-    const newPath = path.join(REVIEW_TEXTS_ROOT, showId, newFilename);
+    const newPath = path.join(root, showId, newFilename);
 
     // Don't overwrite an existing real file
     if (fs.existsSync(newPath)) {
       console.log(`  [${file}] would-be target ${newFilename} already exists — keep pending`);
+      if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); // keep the rebuilt body
       kept++;
       continue;
     }
@@ -398,7 +523,7 @@ async function processShow(showId, orderedFiles) {
     // Same URL already promoted under a DIFFERENT critic name (rotating-byline
     // outlets like Times UK / WhatsOnStage) — file this as a duplicate instead
     // of a second primary. Prevents byline-explosion clusters at the source.
-    const existingSameUrl = findExistingFileForUrl(showId, data.outletId, url);
+    const existingSameUrl = findExistingFileForUrl(showId, data.outletId, url, root);
     if (existingSameUrl && existingSameUrl !== newFilename) {
       data.criticName = byline;
       data.bylineSource = 'replay-pending-bylines';
@@ -407,7 +532,7 @@ async function processShow(showId, orderedFiles) {
       data.duplicateTextOf = existingSameUrl;
       data.duplicateReason = 'same-url-different-byline-extraction';
       if (publishDate && !data.publishDate) data.publishDate = publishDate;
-      if (dryRun) {
+      if (dry) {
         console.log(`  [${file}] DRY → would file as duplicateOf ${existingSameUrl} (byline: ${byline}, same URL already promoted)`);
         promoted++;
         continue;
@@ -430,7 +555,7 @@ async function processShow(showId, orderedFiles) {
     // here closes both the promotion gate AND that second-layer gap.
     if (publishDate && !data.publishDate) data.publishDate = publishDate;
 
-    if (dryRun) {
+    if (dry) {
       console.log(`  [${file}] DRY → would promote to ${newFilename} (byline: ${byline})`);
       promoted++;
       continue;
@@ -443,7 +568,7 @@ async function processShow(showId, orderedFiles) {
     promoted++;
   }
 
-  return { promoted, kept, rejected, droppedRedundant };
+  return finish();
 }
 
 module.exports = {
@@ -457,6 +582,11 @@ module.exports = {
   pendingDrainLivenessOptions,
   isPendingDrainEligible,
   parseClosedWithinDays,
+  // BRO-2735
+  processShow,
+  shouldAlertUnrecoverable,
+  unrecoverableAlertPayload,
+  PENDING_UNRECOVERABLE_STAGE,
 };
 
 if (require.main === module) {
@@ -476,21 +606,28 @@ if (require.main === module) {
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0;
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0;
+    const alertPromises = [];
     for (const { showId: id, files } of planPendingWork(ids)) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded } = await processShow(id, files);
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, alertPromise } = await processShow(id, { files });
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
       totalDropped += droppedRedundant || 0;
+      totalUnrecoverable += unrecoverable || 0;
+      totalRefetched += refetched || 0;
+      if (alertPromise) alertPromises.push(alertPromise);
       if (budgetExceeded) break;
     }
+    await Promise.all(alertPromises);
 
     console.log(`\n━━━ Replay complete ━━━`);
     console.log(`Promoted: ${totalPromoted}`);
     console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
     console.log(`Dropped (url already filed, stub had nothing extra): ${totalDropped}`);
     console.log(`Kept in _pending: ${totalKept}`);
+    console.log(`  of which re-fetched body rebuilt: ${totalRefetched}`);
+    console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
   })().catch(e => {
     console.error(e);
     process.exitCode = 1;
