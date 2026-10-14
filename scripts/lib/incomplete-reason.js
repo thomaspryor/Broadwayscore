@@ -248,8 +248,29 @@ function classifyIncompleteReason(review, failedFetchEntry) {
   };
 }
 
+/**
+ * Set or remove incompleteReason/incompleteDetail on `review` from
+ * classifyIncompleteReason, the way rebuild-all-reviews.js re-derives them: a
+ * null result removes a reason left on the file (BRO-5261 retro-review of
+ * BRO-2241: the collector kept a stale reason the classifier had just dropped).
+ * Mutates `review`.
+ * @returns {{ incompleteReason: string, incompleteDetail: string } | null}
+ */
+function applyIncompleteReason(review, failedFetchEntry) {
+  const result = classifyIncompleteReason(review, failedFetchEntry);
+  if (result) {
+    review.incompleteReason = result.incompleteReason;
+    review.incompleteDetail = result.incompleteDetail;
+  } else {
+    delete review.incompleteReason;
+    delete review.incompleteDetail;
+  }
+  return result;
+}
+
 module.exports = {
   isManuallyVerifiedAfterFetch,
   classifyIncompleteReason,
+  applyIncompleteReason,
   KNOWN_PAYWALL_DOMAINS,
 };

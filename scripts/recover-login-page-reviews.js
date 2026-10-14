@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { chooseArticleBody } = require('./lib/jsonld-body-choice');
+const { chooseArticleBody, jsonLdBodyToText } = require('./lib/jsonld-body-choice');
 const { extractVarietyBody } = require('./lib/article-extractor');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -88,9 +88,9 @@ function extractFromJsonLd(html) {
         );
         if (article) data = article;
       }
-      if (data.articleBody) return data.articleBody;
-      if (data.reviewBody) return data.reviewBody;
-      if (data.text) return data.text;
+      // Markup inside the body is stripped like wayback recovery (BRO-5261).
+      const body = jsonLdBodyToText(data.articleBody) || jsonLdBodyToText(data.reviewBody) || jsonLdBodyToText(data.text);
+      if (body) return body;
     } catch (e) { /* ignore parse errors */ }
   }
   return null;
@@ -99,16 +99,17 @@ function extractFromJsonLd(html) {
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
-  // Try JSON-LD first. A short body can be a teaser of the page prose
-  // (Variety, BRO-5222): chooseArticleBody prefers the page text only when
-  // it is the same article, clearly longer.
-  // Variety: dedicated extractor strips the mid-article promo modules the
-  // generic paragraph scrape picks up (BRO-5222).
+  // Variety first: the dedicated extractor strips the mid-article promo
+  // modules the generic paragraph scrape picks up, and its JSON-LD body is a
+  // 100-300 char teaser (BRO-5222).
   if (url && url.includes('variety.com')) {
     const varietyText = extractVarietyBody(html);
     if (varietyText && varietyText.length > 500) return varietyText;
   }
 
+  // Then JSON-LD. A short body can be a teaser of the page prose:
+  // chooseArticleBody prefers the page text only when it is the same
+  // article, clearly longer.
   const jsonLdText = extractFromJsonLd(html);
   if (jsonLdText && jsonLdText.length > 500) {
     return chooseArticleBody(jsonLdText, extractPageText(html, url)).text;

@@ -67,3 +67,17 @@ describe('extractTextFromHtml Variety promo modules (BRO-5222)', () => {
     assert.match(out, /Review/);
   });
 });
+
+// BRO-5261 retro-review of BRO-5222: markup inside articleBody.
+it('jsonLdBodyToText strips markup and keeps paragraphs; the teaser fallback then fires', () => {
+  const { jsonLdBodyToText, chooseArticleBody } = require('../../scripts/lib/jsonld-body-choice.js');
+  const raw = '<p>The Farnsworth Invention is Aaron Sorkin&#8217;s first Broadway play since A Few Good Men and it moves fast.</p><p>Second.</p>';
+  const text = jsonLdBodyToText(raw);
+  assert.equal(text, 'The Farnsworth Invention is Aaron Sorkin’s first Broadway play since A Few Good Men and it moves fast.\n\nSecond.');
+  const page = `${text.split('\n\n')[0]} ${'More of the same review text. '.repeat(40)}`;
+  assert.equal(chooseArticleBody(text, page).source, 'paragraphs');
+  assert.equal(jsonLdBodyToText(undefined), '');
+  // Prose with a literal or escaped '<' is not markup.
+  assert.equal(jsonLdBodyToText('Ratings: 3 &lt; 4 stars, and the cast &gt; the book.'), 'Ratings: 3 < 4 stars, and the cast > the book.');
+  assert.equal(jsonLdBodyToText('I <3 this show. Act two -> better.'), 'I <3 this show. Act two -> better.');
+});

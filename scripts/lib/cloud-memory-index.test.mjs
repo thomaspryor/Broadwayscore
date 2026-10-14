@@ -38,6 +38,24 @@ test('empty frontmatter, block scalars and emoji truncation are handled', () => 
   assert.ok(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/.test(line), 'no lone high surrogate');
 });
 
+// BRO-5261 retro-review of BRO-2684.
+test('a cut that lands inside emoji keeps whole code points', () => {
+  const line = idx.indexLine('t.md', `---\ndescription: ${'a'.repeat(295)}${'🎭'.repeat(10)}\n---\n`);
+  assert.ok(line.endsWith('...'), 'truncated');
+  assert.ok(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(line), 'no lone surrogate');
+});
+
+test('frontmatter closing on the last line, block-scalar indicators and their lines', () => {
+  assert.equal(idx.parseNoteFrontmatter('---\ntype: project\n---').body, '');
+  assert.equal(idx.indexLine('n.md', '---\ntype: project\n---'), 'n.md | project | (no description)');
+  assert.equal(idx.indexLine('i.md', '---\nname: Ind\ndescription: >-2\n  text\n---\n'), 'i.md | - | Ind');
+  assert.equal(idx.indexLine('c.md', '---\nname: Com\ndescription: > # folded\n  text\n---\n'), 'c.md | - | Com');
+  // Prose inside a block scalar is not a nested key.
+  assert.equal(idx.indexLine('k.md', '---\ndescription: |\n  type: secret\n  archived: true\n---\n# H'), 'k.md | - | H');
+  // A key after the block scalar is still read.
+  assert.equal(idx.parseNoteFrontmatter('---\ndescription: |\n  x\ntype: feedback\n---\n').type, 'feedback');
+});
+
 test('a note with no frontmatter falls back to its first heading', () => {
   assert.equal(idx.indexLine('loop.md', '# Autonomous Loop — Cron Map\n\ntext'), 'loop.md | - | Autonomous Loop — Cron Map');
 });

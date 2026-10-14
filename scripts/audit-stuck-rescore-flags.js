@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { isStuckRescoreFlag, isScoredButStillQueued } = require('./lib/stuck-rescore-flag');
+const { isStuckRescoreFlag, isScoredButStillQueued, isRebuildHoldFlag } = require('./lib/stuck-rescore-flag');
 const { showContext } = require('./lib/scoring-queue-counts');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -90,7 +90,9 @@ function findStuck(reviewTextsDir, titleById) {
           path: fp,
           rel: `${showDir}/${file}`,
           reason: data.rescoreReason || '(none)',
-          kind: 'not-scoreable',
+          // The flag itself may be what holds the row out of the rebuild
+          // (BRO-5261): report it, never clear it.
+          kind: isRebuildHoldFlag(data, show, fp) ? 'rebuild-hold' : 'not-scoreable',
         });
       } else if (isScoredButStillQueued(data)) {
         // Sibling half of the seam: already scored, flag never retired, so the
@@ -143,10 +145,15 @@ function main() {
   // needsRescore, which would silently cancel that real rescore. The producing
   // bug is already fixed at source (rescore-lifecycle.js markRescoreComplete on
   // every success path), so this class only needs to be VISIBLE, never auto-fixed.
-  const fixable = stuck.filter((s) => s.kind !== 'scored-but-queued');
+  // REPORT-ONLY for kind==='rebuild-hold' too (BRO-5261): needsRescore holds a
+  // legacy web-search row's excerpt-read score out of the rebuild until it is
+  // rescored on page text. Clearing it publishes that score. These never
+  // clear on their own, so they also stay out of the --gate count.
+  const fixable = stuck.filter((s) => s.kind !== 'scored-but-queued' && s.kind !== 'rebuild-hold');
   const reportOnly = stuck.length - fixable.length;
+  const holds = stuck.filter((s) => s.kind === 'rebuild-hold').length;
   if (opts.fix && reportOnly) {
-    console.log(`[stuck-rescore] ${reportOnly} scored-but-queued flag(s) reported but NOT auto-fixed (see comment above --fix)`);
+    console.log(`[stuck-rescore] ${reportOnly} flag(s) reported but NOT auto-fixed: ${reportOnly - holds} scored-but-queued, ${holds} rebuild-hold (see comments above)`);
   }
   if (opts.fix && fixable.length) {
     // Lazy-require so the pure/report path has no write-guard dependency.
@@ -172,23 +179,24 @@ function main() {
   if (opts.json) {
     console.log(JSON.stringify({
       totalFlagged, stuckCount: stuck.length, max: opts.max, byReason,
-      fixed: opts.fix ? stuck.length : 0,
-      examples: stuck.slice(0, 20).map((s) => ({ rel: s.rel, reason: s.reason })),
+      fixed: opts.fix ? fixable.length : 0,
+      rebuildHolds: holds,
+      examples: stuck.slice(0, 20).map((s) => ({ rel: s.rel, reason: s.reason, kind: s.kind })),
     }, null, 2));
   } else {
     console.log(`[stuck-rescore] ${stuck.length} stuck needsRescore flag(s) (non-scoreable) of ${totalFlagged} flagged; threshold --max=${opts.max}`);
     for (const [reason, n] of Object.entries(byReason).sort((a, b) => b[1] - a[1])) {
       console.log(`  ${String(n).padStart(4)}  ${reason}`);
     }
-    for (const s of stuck.slice(0, 20)) console.log(`    - ${s.rel}  [${s.reason}]`);
+    for (const s of stuck.slice(0, 20)) console.log(`    - ${s.rel}  [${s.reason}]${s.kind === 'rebuild-hold' ? ' (rebuild-hold: report only)' : ''}`);
     if (stuck.length > 20) console.log(`    … +${stuck.length - 20} more`);
-    if (opts.fix) console.log(`[stuck-rescore] --fix cleared ${stuck.length} flag(s).`);
-    if (stuck.length > opts.max && !opts.fix) {
+    if (opts.fix) console.log(`[stuck-rescore] --fix cleared ${fixable.length} flag(s).`);
+    if (stuck.length - holds > opts.max && !opts.fix) {
       console.log(`[stuck-rescore] A dominant single reason usually means a producer flagged non-includable reviews — fix that producer to gate on isScoreable/isIncludableForRebuild, then --fix the residue.`);
     }
   }
 
-  const over = stuck.length > opts.max;
+  const over = stuck.length - holds > opts.max;
   process.exit(opts.gate && over && !opts.fix ? 1 : 0);
 }
 

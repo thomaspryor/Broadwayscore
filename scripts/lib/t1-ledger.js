@@ -95,6 +95,22 @@ function canonicalTierId(outlets, outletId) {
 }
 
 /**
+ * Group outlet ids by canonicalTierId, keeping first-seen order (BRO-2486).
+ * @param {object} outlets  outlet-registry map
+ * @param {string[]} ids
+ * @returns {Map<string, string[]>} canonical id -> the raw spellings present
+ */
+function groupByCanonicalTierId(outlets, ids) {
+  const groups = new Map();
+  for (const id of ids) {
+    const canon = canonicalTierId(outlets, id);
+    if (!groups.has(canon)) groups.set(canon, []);
+    groups.get(canon).push(id);
+  }
+  return groups;
+}
+
+/**
  * Classify a single missing (show, outlet) cell. Pure.
  * @param {object} c
  *   { noReviewExpected:boolean, suppressed:boolean, clockAgeHours:number|null,
@@ -182,19 +198,17 @@ function computeDispatchDecision({ censusMissing, outlets, censusExtractorBroken
   // censusMissingT12 / circuitOpenIds keep every raw spelling (they feed the
   // alert text, which derives the T3 list as censusMissing minus T12), but the
   // breaker check and the actionable list work per canonical group: a breaker
-  // open on ANY spelling suppresses the whole group, and the group counts once
-  // toward the >=3 major threshold, represented by its first-seen spelling.
+  // open on any spelling THIS SHOW is missing suppresses the group, and the
+  // group counts once toward the >=3 major threshold, represented by its
+  // first-seen spelling. Only present spellings are asked: 'timeout' is Time
+  // Out New York, so its breaker must not pause a lone Time Out London miss
+  // (BRO-5261 retro-review).
   const censusMissingT12 = censusMissing.filter((id) => isDispatchTierOutlet(outlets, id));
-  const groups = new Map();
-  for (const id of censusMissingT12) {
-    const canon = canonicalTierId(outlets, id);
-    if (!groups.has(canon)) groups.set(canon, []);
-    groups.get(canon).push(id);
-  }
+  const groups = groupByCanonicalTierId(outlets, censusMissingT12);
   const circuitOpenIds = [];
   const censusMissingActionable = [];
-  for (const [canon, ids] of groups) {
-    if (isTripped(canon) || ids.some((id) => isTripped(id))) circuitOpenIds.push(...ids);
+  for (const ids of groups.values()) {
+    if (ids.some((id) => isTripped(id))) circuitOpenIds.push(...ids);
     else censusMissingActionable.push(ids[0]);
   }
   const dispatchable = censusMissingActionable.length > 0;
@@ -258,6 +272,6 @@ function serializeLedger(ledger) {
 
 module.exports = {
   classifyCell, classifyCellDetailed, isActionableState,
-  mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId,
+  mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, groupByCanonicalTierId,
   GRACE_HOURS, CELL_DISPOSITION, CELL_REASON,
 };

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId } = require('./t1-ledger.js');
+const { classifyCell, classifyCellDetailed, isActionableState, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, groupByCanonicalTierId } = require('./t1-ledger.js');
 
 test('isDispatchTierOutlet: T1/T2 only, unregistered/junk excluded', () => {
   const outlets = {
@@ -255,6 +255,19 @@ test('computeDispatchDecision: timeout + timeout-london missing together count a
   assert.equal(severity, 'minor', 'two logical outlets must not reach the >=3 major threshold');
 });
 
+test('computeDispatchDecision: a breaker on Time Out NY does not pause a lone Time Out London miss (BRO-5261)', () => {
+  const london = computeDispatchDecision({
+    censusMissing: ['timeout-london'], outlets: ALIAS_OUTLETS, isTripped: (id) => id === 'timeout',
+  });
+  assert.deepEqual(london.circuitOpenIds, []);
+  assert.deepEqual(london.censusMissingActionable, ['timeout-london']);
+  assert.equal(london.dispatchable, true);
+  const ny = computeDispatchDecision({
+    censusMissing: ['timeout'], outlets: ALIAS_OUTLETS, isTripped: (id) => id === 'timeout-london',
+  });
+  assert.deepEqual(ny.censusMissingActionable, ['timeout'], 'symmetric: London breaker does not pause NY');
+});
+
 test('computeDispatchDecision: a breaker open on one spelling suppresses the alias too', () => {
   for (const trippedId of ['timeout', 'timeout-london']) {
     const { circuitOpenIds, censusMissingActionable, dispatchable } = computeDispatchDecision({
@@ -267,8 +280,20 @@ test('computeDispatchDecision: a breaker open on one spelling suppresses the ali
 });
 
 test('computeDispatchDecision: unrelated -london ids are not merged', () => {
-  const { censusMissingT12 } = computeDispatchDecision({
+  const { censusMissingT12, censusMissingActionable, severity } = computeDispatchDecision({
     censusMissing: ['south-london', 'nytimes', 'variety'], outlets: ALIAS_OUTLETS, isTripped: () => false,
   });
   assert.deepEqual(censusMissingT12, ['south-london', 'nytimes', 'variety']);
+  assert.deepEqual(censusMissingActionable, ['south-london', 'nytimes', 'variety'], 'three distinct outlets stay three');
+  assert.equal(severity, 'major');
+  // 'south' unregistered: a breaker on it must not reach 'south-london'.
+  const { circuitOpenIds } = computeDispatchDecision({
+    censusMissing: ['south-london'], outlets: ALIAS_OUTLETS, isTripped: (id) => id === 'south',
+  });
+  assert.deepEqual(circuitOpenIds, []);
+});
+
+test('groupByCanonicalTierId keeps first-seen order and present spellings only', () => {
+  const g = groupByCanonicalTierId(ALIAS_OUTLETS, ['timeout-london', 'nytimes', 'timeout']);
+  assert.deepEqual([...g.entries()], [['timeout', ['timeout-london', 'timeout']], ['nytimes', ['nytimes']]]);
 });

@@ -36,7 +36,7 @@ const { generateReviewFilename } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
-const { chooseArticleBody } = require('./lib/jsonld-body-choice');
+const { chooseArticleBody, jsonLdBodyToText } = require('./lib/jsonld-body-choice');
 const { extractVarietyBody } = require('./lib/article-extractor');
 
 const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
@@ -285,8 +285,10 @@ function extractJsonLdArticleBody(html) {
         const parsed = JSON.parse(jsonContent);
         const articleBody = parsed.articleBody ||
           (parsed['@graph'] && parsed['@graph'].find(item => item.articleBody)?.articleBody);
-        if (articleBody && articleBody.length > 200) {
-          return articleBody;
+        // Some CMSs put markup in articleBody (BRO-5261 retro of BRO-5222).
+        const body = jsonLdBodyToText(articleBody);
+        if (body.length > 200) {
+          return body;
         }
       } catch {}
     }

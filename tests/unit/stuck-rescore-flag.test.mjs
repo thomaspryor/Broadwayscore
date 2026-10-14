@@ -56,3 +56,33 @@ describe('isStuckRescoreFlag', () => {
     assert.equal(isStuckRescoreFlag({}), false);
   });
 });
+
+// BRO-5261 retro-review of BRO-5222: a legacy web-search row whose score was
+// read from the invented excerpt is held out of the rebuild by needsRescore
+// alone. If the scorer cannot take it, the flag looks stuck; clearing it would
+// publish the excerpt score, so it must be reported, never auto-cleared.
+const { isRebuildHoldFlag } = require('../../scripts/lib/stuck-rescore-flag.js');
+const legacyHeld = (over = {}) => ({
+  source: 'web-search',
+  url: 'https://example.com/2009/review-demo',
+  outletId: 'variety', outlet: 'Variety', criticName: 'Jane Critic',
+  fullText: 'Demo review. '.repeat(120),
+  contentTier: 'complete', textStatus: 'complete', isFullReview: true,
+  contentVerification: { isValid: true, verifiedBy: 'llm-haiku' },
+  dtliExcerpt: 'Demo is a show that knows exactly what it wants.',
+  llmScore: { score: 70 }, assignedScore: 70,
+  needsRescore: true,
+  ...over,
+});
+
+describe('isRebuildHoldFlag', () => {
+  test('the flag that alone holds a legacy excerpt score out of the rebuild is a hold', () => {
+    assert.equal(isRebuildHoldFlag(legacyHeld(), { title: 'Demo' }, 'demo-2009/variety--jane-critic.json'), true);
+  });
+  test('a row another guard also excludes is not a hold (clearing changes nothing)', () => {
+    assert.equal(isRebuildHoldFlag(legacyHeld({ wrongAttribution: true }), { title: 'Demo' }, 'demo-2009/variety--jane-critic.json'), false);
+  });
+  test('an ordinary flagged review is not a hold', () => {
+    assert.equal(isRebuildHoldFlag(flaggedScoreable(), { title: 'Demo' }, 'demo/timeout--jane.json'), false);
+  });
+});

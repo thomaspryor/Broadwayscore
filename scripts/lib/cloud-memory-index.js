@@ -59,14 +59,25 @@ function parseNoteFrontmatter(text) {
   // instead of swallowing the body up to its first horizontal rule.
   const end = normalized.indexOf('\n---', 3);
   if (end === -1) return out;
-  out.body = normalized.slice(normalized.indexOf('\n', end + 1) + 1);
+  // A closing `---` on the last line (no newline after it) leaves no body.
+  const bodyStart = normalized.indexOf('\n', end + 1);
+  out.body = bodyStart === -1 ? '' : normalized.slice(bodyStart + 1);
   const top = {};
   const nested = {};
+  let blockIndent = -1; // indent of a block-scalar key whose lines we are skipping
   for (const line of normalized.slice(4, end).split('\n')) {
+    const indent = line.match(/^\s*/)[0].length;
+    // Lines of a block scalar are more indented than its key: prose, not keys.
+    if (blockIndent >= 0) {
+      if (!line.trim() || indent > blockIndent) continue;
+      blockIndent = -1;
+    }
     const m = line.match(/^(\s*)([A-Za-z0-9_-]+):\s*(.*)$/);
-    // A block scalar (`description: >`) continues on lines this flat reader
-    // does not follow; leave it empty so the name/heading fallback applies.
-    if (!m || m[3] === '' || /^[>|][-+]?$/.test(m[3].trim())) continue;
+    if (!m || m[3] === '') continue;
+    // A block scalar (`description: >`, `|-2`, `> # note`) continues on lines
+    // this flat reader does not follow; leave it empty so the name/heading
+    // fallback applies.
+    if (/^[>|](?:[-+]?\d?|\d[-+])?(?:\s+#.*)?$/.test(m[3].trim())) { blockIndent = indent; continue; }
     const target = m[1].length ? nested : top;
     if (!(m[2] in target)) target[m[2]] = unquote(m[3]);
   }

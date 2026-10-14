@@ -121,3 +121,12 @@ test('applyReviewedTenureFlags: evidence-backed entries resolve flags, stale and
   const moved = applyReviewedTenureFlags([{ ...flags[0], criticSlug: 'other' }], [{ key: 'a-2009/variety--x.json#unsupported_pair:x', evidence: 'https://variety.com/2009/x' }]);
   assert.strictEqual(moved.unresolved.length, 1);
 });
+
+// BRO-5261 retro-review of BRO-5222: prose dates carry their own year.
+test('reviewYear reads the year from prose dates and ignores junk', () => {
+  assert.equal(reviewYear('chicago-1996', { publishDate: 'March 3rd, 2016' }), 2016);
+  assert.equal(reviewYear('x-2007', { publishDate: '9 May 2008' }), 2008);
+  assert.equal(reviewYear('x-2007', { publishDate: '2009-01-02' }), 2009);
+  assert.equal(reviewYear('x-2007', { publishDate: 'Act 1' }), 2007, 'no year written: falls back to the show id');
+  assert.equal(reviewYear('x-2007', {}), 2007);
+});

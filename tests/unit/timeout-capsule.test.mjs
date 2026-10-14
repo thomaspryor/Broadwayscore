@@ -90,3 +90,14 @@ test('a stored full review survives a refetch that finds the listing blurb (the-
   assert.equal(keepsStoredTimeoutReview({ tier: 'complete', textLength: 400 }), false);
   assert.equal(keepsStoredTimeoutReview({}), false);
 });
+
+// BRO-5261 retro-review of BRO-5222.
+test('a signature with an encoded apostrophe parses (O&#039;Brien)', () => {
+  const html = `<p>Time Out says</p><p>${'word '.repeat(30)}&mdash;Ben O&#039;Brien</p> Details`;
+  assert.equal(parseTimeoutPage(html).capsuleSigner, "Ben O'Brien");
+});
+
+test('stored text flagged as not this url\'s review is never kept over a capsule', () => {
+  assert.equal(keepsStoredTimeoutReview({ tier: 'complete', textLength: 3000 }), true);
+  assert.equal(keepsStoredTimeoutReview({ tier: 'complete', textLength: 3000, suspect: true }), false);
+});

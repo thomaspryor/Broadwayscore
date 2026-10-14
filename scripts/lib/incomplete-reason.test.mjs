@@ -82,3 +82,29 @@ test('BRO-4317: a wrongShow flag cleared by wrongShowManualClear/Override is not
   assert.equal(classifyIncompleteReason({ ...base, wrongShow: true }, null).incompleteReason, 'wrong_content');
   assert.equal(classifyIncompleteReason({ ...base, wrongShow: true, wrongShowManualClear: true, wrongProduction: true }, null).incompleteReason, 'wrong_content');
 });
+
+// BRO-5261 retro-review of BRO-2241: the collector re-derives the reason the
+// way rebuild does, so a null classifier result removes a stale one.
+const { applyIncompleteReason } = require('./incomplete-reason.js');
+
+test('applyIncompleteReason sets a fresh reason', () => {
+  const d = { ...base };
+  const r = applyIncompleteReason(d, garbage);
+  assert.equal(r.incompleteReason, 'scraper_garbage');
+  assert.equal(d.incompleteReason, 'scraper_garbage');
+  assert.equal(d.incompleteDetail, 'cookie wall');
+});
+
+test('applyIncompleteReason removes a stale reason when the classifier gives none', () => {
+  // A manual verification newer than the fetch makes the classifier return null.
+  const d = { ...base, manuallyVerified: true, manualVerifiedAt: '2026-09-06T00:00:00Z', incompleteReason: 'paywall', incompleteDetail: 'old' };
+  assert.equal(applyIncompleteReason(d, null), null);
+  assert.equal('incompleteReason' in d, false);
+  assert.equal('incompleteDetail' in d, false);
+});
+
+test('applyIncompleteReason keeps a collector reason a manual verification preserves', () => {
+  const d = { ...base, manuallyVerified: true, manualVerifiedAt: '2026-09-06T00:00:00Z', incompleteReason: 'non_review', incompleteDetail: 'x' };
+  applyIncompleteReason(d, null);
+  assert.equal(d.incompleteReason, 'non_review');
+});

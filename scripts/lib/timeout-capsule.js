@@ -14,20 +14,18 @@
  */
 'use strict';
 
+const { decodeHtmlEntities } = require('./text-cleaning');
+
 const CAPSULE_MAX_WORDS = 150;
 const LISTING_CAPSULE_FROM_YEAR = 2014;
 const STORED_REVIEW_MIN_CHARS = 1500;
 
 function htmlToText(html) {
-  return String(html || '')
+  // The shared decoder covers every numeric/named entity (O&#039;Brien
+  // bylines broke signature parsing, BRO-5261).
+  return decodeHtmlEntities(String(html || '')
     .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&mdash;|&#8212;|&#x2014;/gi, '—')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&#8217;|&rsquo;/gi, '’')
-    .replace(/&ldquo;|&rdquo;|&quot;|&#8220;|&#8221;/gi, '"')
-    .replace(/&#x27;|&#39;|&lsquo;/gi, "'")
+    .replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -109,9 +107,12 @@ function classifyTimeoutPage({ html, critic, showYear }) {
  * True when the row already holds review text a listing capsule cannot
  * contradict: Time Out replaces a closed show's review with a blurb at the
  * same url, so a refetch finding the blurb must not discard the stored text.
- * @param {{tier?: string|null, textLength?: number}} stored - the file's contentTier and fullText length
+ * @param {{tier?: string|null, textLength?: number, suspect?: boolean}} stored - the file's contentTier and fullText length; suspect when the file flags its text as not this url's review
  */
-function keepsStoredTimeoutReview({ tier, textLength } = {}) {
+function keepsStoredTimeoutReview({ tier, textLength, suspect } = {}) {
+  // Text flagged as not this url's review (repointed url, wrong show) says
+  // nothing a capsule cannot contradict (BRO-5261).
+  if (suspect) return false;
   return (tier === 'complete' || tier === 'truncated') && (textLength || 0) >= STORED_REVIEW_MIN_CHARS;
 }
 

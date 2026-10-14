@@ -101,7 +101,11 @@ function isBylineAt(head, i, len) {
  * @returns {number|null}
  */
 function reviewYear(showId, data) {
-  const m = String((data && data.publishDate) || '').match(/^(\d{4})/);
+  // Any year written in the date, not only an ISO prefix: a third of stored
+  // dates are prose ('March 3rd, 2016'), and falling back to the show id's
+  // year put a 2016 cast-change review of chicago-1996 in 1996 (BRO-5261).
+  // Read the digits, not a date parser: new Date('Act 1') is 2001.
+  const m = String((data && data.publishDate) || '').match(/(?:^|\D)((?:19|20)\d{2})(?!\d)/);
   if (m) return Number(m[1]);
   const s = String(showId || '').match(/-(\d{4})$/);
   return s ? Number(s[1]) : null;

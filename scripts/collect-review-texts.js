@@ -130,7 +130,7 @@ const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, norm
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { discardNoRatingOutletScore } = require('./lib/no-rating-outlet-score');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
-const { classifyIncompleteReason } = require('./lib/incomplete-reason');
+const { classifyIncompleteReason, applyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const {
@@ -5835,15 +5835,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Set incompleteReason if content is not complete
-  let setFreshIncompleteReason = false;
+  // Re-derive incompleteReason for this text, as rebuild does: set it, or
+  // remove one the classifier no longer gives (BRO-5261).
   if (data.contentTier && data.contentTier !== 'complete') {
-    const reasonResult = classifyIncompleteReason(data, null);
-    if (reasonResult) {
-      data.incompleteReason = reasonResult.incompleteReason;
-      data.incompleteDetail = reasonResult.incompleteDetail;
-      setFreshIncompleteReason = true;
-    }
+    applyIncompleteReason(data, null);
   } else {
     delete data.incompleteReason;
     delete data.incompleteDetail;
@@ -5851,8 +5846,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Pattern Card #1: clear stale failure-state flags proactively on the success path.
   // safeWriteReview's merge behavior would copy them back from disk if not explicitly set.
-  // skipIncompleteReasonClear: don't null the reason set a few lines above (BRO-2241).
-  clearFailureFlags(data, { skipIncompleteReasonClear: setFreshIncompleteReason });
+  // skipIncompleteReasonClear: the reason was just re-derived above, so the
+  // generic stale-clear must not null it on the same write (BRO-2241).
+  clearFailureFlags(data, { skipIncompleteReasonClear: true });
 
   // NOTE: Do NOT extract years from URLs to flag wrong production.
   // URL patterns are inconsistent across outlets (republished content, migrated URLs,
@@ -6722,6 +6718,10 @@ function findReviewsToProcess() {
           // finds a listing blurb keeps a stored review instead of failing it.
           _storedTier: data.contentTier || null,
           _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
+          // Stored text that may not be this url's review (repointed url, show
+          // never named) must not be kept over a refetch (BRO-5261). Not
+          // wrongFullText: that holds an old quarantined text, not this one.
+          _storedTextSuspect: data.needsRefetch === true || !!data.showNotMentioned,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -7546,8 +7546,11 @@ async function processReview(review) {
       // Time Out swaps a closed show's review for a listing blurb at the same
       // url (the-present-2017 stores the 3,140-char review; the page is now a
       // 2-line capsule). The blurb says nothing against text already held.
-      if (timeoutPage.verdict === 'listing_capsule' && keepsStoredTimeoutReview({ tier: review._storedTier, textLength: review._storedTextLength })) {
+      if (timeoutPage.verdict === 'listing_capsule' && keepsStoredTimeoutReview({ tier: review._storedTier, textLength: review._storedTextLength, suspect: review._storedTextSuspect })) {
         console.log(`  ↷ TIME OUT PAGE: ${timeoutPage.reason}; keeping the stored ${review._storedTier} text`);
+        // Feed the BRO-787 retry gate like the BRO-4334 keep path, else every
+        // run re-picks a truncated row and re-runs the paid chain (BRO-5261).
+        recordFailedFetch(review, 'partial_no_improvement', { storedLength: review._storedTextLength, newLength: result.text.length, method: result.method, timeoutPage: timeoutPage.reason });
         return { success: false, error: 'timeout_listing_capsule_kept_existing', reason: timeoutPage.reason };
       }
       if (timeoutPage.verdict === 'wrong_critic' || timeoutPage.verdict === 'listing_capsule') {

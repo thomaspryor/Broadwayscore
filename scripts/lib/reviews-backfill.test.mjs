@@ -21,11 +21,17 @@ const STUBS = [
 ];
 const IMAGE_RE = /\.(?:jpe?g|png|webp|avif)$/i;
 
-
-test('every BRO-155 stub has art committed in public/images (any image format)', () => {
+// Both kinds, each in any format: Matchbook had a thumbnail and no poster,
+// which is the 404 BRO-2684 fixed (BRO-5261 retro-review).
+test('every BRO-155 stub has thumbnail and poster art committed in public/images (any image format)', () => {
   for (const id of STUBS) {
     const dir = path.join(REPO, 'public', 'images', 'shows', id);
     const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => IMAGE_RE.test(f)) : [];
-    assert.ok(files.some((f) => fs.statSync(path.join(dir, f)).size > 1000), `${id} has no image in public/images/shows`);
+    for (const kind of ['thumbnail', 'poster']) {
+      assert.ok(
+        files.some((f) => f.startsWith(`${kind}.`) && fs.statSync(path.join(dir, f)).size > 1000),
+        `${id} has no ${kind} image in public/images/shows`,
+      );
+    }
   }
 });

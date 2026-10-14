@@ -52,3 +52,12 @@ test('skipIncompleteReasonClear also keeps wrong_content and no_url reasons', ()
   clearFailureFlags(b, { skipIncompleteReasonClear: true });
   assert.equal(b.incompleteReason, 'no_url');
 });
+
+// The collector's success path re-derives incompleteReason right before this
+// call, so it must pass the skip; without it the fresh reason self-nulls
+// (BRO-2241). updateReviewJson is not exported, so pin the call site.
+test('collect-review-texts success path re-derives the reason and skips the generic clear', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../collect-review-texts.js', import.meta.url), 'utf8');
+  assert.match(src, /applyIncompleteReason\(data, null\);[\s\S]{0,600}clearFailureFlags\(data, \{ skipIncompleteReasonClear: true \}\)/);
+});

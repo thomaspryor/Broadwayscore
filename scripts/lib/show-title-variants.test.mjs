@@ -185,3 +185,13 @@ test('common-word short titles are not on the proper-noun list', () => {
   const text = `Act One drags. Act Two soars. Red lights. Red curtains. Art Garfunkel. Art Deco. Six actors. Six songs.${FILLER}`;
   for (const t of ['The Act', 'Act', 'Red', 'Art', 'Six', 'SIX', 'Big', 'Ann']) assert.equal(textMentionsShortTitle(text, t), null, t);
 });
+
+// BRO-5261 retro-review of BRO-5222: the censored-word fold covers the other
+// two words shows.json titles censor, and leaves plain asterisks alone.
+test('normalizeForMention reads asterisk-censored s**t and c*ck titles as the full word', () => {
+  assert.equal(normalizeForMention('Meat Suit, or the s**tshow of motherhood'), normalizeForMention('Meat Suit, or the Shitshow of Motherhood'));
+  assert.equal(normalizeForMention('Jordan Gray: Is That A C*ck In Your Pocket'), 'jordan gray is that a cock in your pocket');
+  assert.equal(normalizeForMention('sh*t happens'), 'shit happens');
+  assert.equal(normalizeForMention('a * b'), 'a b');
+  assert.ok(!normalizeForMention('**s**tar of the show').includes('shit'), 'Markdown bold is not a censor');
+});

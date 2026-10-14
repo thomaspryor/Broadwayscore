@@ -62,6 +62,15 @@ const GENERIC_PREFIX_WORDS = new Set([
  * @returns {string}
  */
 const CENSORED_F_WORD_RE = /\b(mother)?f[*‐‑‒–—―−\-#@!]{1,4}(c?k(?:ers?|ing|in|ed|s)?|ers?|ing|in|ed)\b/gi;
+// Asterisk-only censors of two more words that show titles carry ("Meat Suit,
+// or the s**tshow of motherhood", "Is That A C*ck In Your Pocket"). No trailing
+// \b: the word can open a compound (s**tshow). Dashes are left out: an
+// initial and a dashed word ("S—T", "C—K") is ordinary text (BRO-5261).
+const CENSORED_OTHER_WORDS = [
+  // Not after another '*': Markdown bold ("**s**tar") is not a censor.
+  [/(?<!\*)\b(?:s\*{2,3}t|sh\*{1,2}t)/gi, 'shit'],
+  [/(?<!\*)\b(?:c\*{1,2}ck|c\*{2,3}k)/gi, 'cock'],
+];
 
 function normalizeForMention(s) {
   if (!s) return '';
@@ -71,6 +80,8 @@ function normalizeForMention(s) {
     // Motherfucker with the Hat" (BRO-5222), while shows.json itself carries
     // "What's the F**king Point?".
     .replace(CENSORED_F_WORD_RE, (m, mother, rest) => `${mother || ''}fuck${rest.replace(/^c?k/i, '')}`)
+    .replace(CENSORED_OTHER_WORDS[0][0], CENSORED_OTHER_WORDS[0][1])
+    .replace(CENSORED_OTHER_WORDS[1][0], CENSORED_OTHER_WORDS[1][1])
     .replace(/[‘’‚‛ʼ＇`´]/g, "'")
     .replace(/[“”„‟"]/g, ' ')
     .replace(/[‐‑]/g, '-')

@@ -40,4 +40,24 @@ function chooseArticleBody(jsonLdText, paragraphText) {
   return { text: ld, source: 'jsonld' };
 }
 
-module.exports = { chooseArticleBody, SHORT_JSONLD_MAX, PARAGRAPH_RATIO, OPENING_CHARS };
+/**
+ * A JSON-LD articleBody as prose. Some CMSs put markup in it; left in, the
+ * stored text keeps raw tags and chooseArticleBody's length and same-opening
+ * checks read tag text, so the teaser fallback never fires (Wayback
+ * recovery, BRO-5261 retro-review of BRO-5222). Paragraph breaks are kept.
+ * @param {*} articleBody
+ * @returns {string}
+ */
+function jsonLdBodyToText(articleBody) {
+  if (typeof articleBody !== 'string') return '';
+  // Strip real tags BEFORE decoding, and only tag-shaped ones, so prose like
+  // "3 &lt; 4 stars" or "I <3 this show" survives.
+  return decodeHtmlEntities(articleBody
+    .replace(/<\/(?:p|div|h[1-6]|li|blockquote)>|<br\s*\/?>/gi, '\n\n')
+    .replace(/<\/?[a-z][a-z0-9-]*(?:\s[^<>]*)?\/?>/gi, ' '))
+    .replace(/[ \t]+/g, ' ')
+    .replace(/ *\n\s*\n */g, '\n\n')
+    .trim();
+}
+
+module.exports = { chooseArticleBody, jsonLdBodyToText, SHORT_JSONLD_MAX, PARAGRAPH_RATIO, OPENING_CHARS };

@@ -20,7 +20,7 @@ const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
-const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, GRACE_HOURS } = require('./lib/t1-ledger');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, groupByCanonicalTierId, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
@@ -241,7 +241,7 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   // B3 scoreboard input: total dispatch-tier (T1/T2) outlets this show's census
   // expects, regardless of covered/missing — the denominator the scoreboard
   // needs and the ledger (missing-only, by design) doesn't carry.
-  // Deduped by canonical id (strip '-london'): censusVerdict's variants() below
+  // Deduped by canonical id ('-london' folded onto a registered base id): censusVerdict's variants() below
   // treats e.g. 'timeout'/'timeout-london' as the same outlet for covered/missing
   // purposes, but unionCensus() dedupes only exact ids — if two census sources
   // ever emit both spellings as separate entries, an ungapped count here would
@@ -268,13 +268,33 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   // `totalTier`, so `covered = totalTier - cells.length` counted it as covered).
   let coverageMissing = 0;
   let noReviewExpectedCount = 0;
+  // Alias spellings ('timeout'/'timeout-london') are one outlet in totalTier,
+  // so the numerator counts each canonical group once too (first-seen spelling
+  // decides noReviewExpected), and a cell's breaker state is the group's: the
+  // same rule computeDispatchDecision uses, so the ledger and the dispatch
+  // alert agree about a cell (BRO-5261 retro-review of BRO-2486).
+  const countedGroups = new Set();
+  const countMissing = (outletId, noReviewExpected) => {
+    const canon = canonicalTierId(outlets, outletId);
+    if (countedGroups.has(canon)) return;
+    countedGroups.add(canon);
+    if (noReviewExpected) noReviewExpectedCount++; else coverageMissing++;
+  };
+  // Same hard set dispatch groups over: a supplementary-only (soft) spelling
+  // is not in censusMissing, so it must not trip its alias's cell either.
+  const missingGroups = groupByCanonicalTierId(outlets, cVerdict.missing
+    .filter((m) => isDispatchTierOutlet(outlets, m.outletId))
+    .filter((m) => !((m.sources || []).length > 0 && m.sources.every((src) => SUPPLEMENTARY_CENSUS_SOURCES.has(src))))
+    .map((m) => m.outletId));
+  const groupTripped = (outletId) => !!breakerCtx
+    && (missingGroups.get(canonicalTierId(outlets, outletId)) || [outletId]).some((id) => isOutletTripped(breakerCtx.breaker, id));
   for (const m of cVerdict.missing) {
     // T1 ledger means T1/T2: a roundup-named T3 blog (or unregistered junk id)
     // is not a retrieval SLA cell — same scoping as the audit's dispatch triggers,
     // and the same gate totalTier itself uses (so coverage math stays consistent).
     if (!isDispatchTierOutlet(outlets, m.outletId)) continue;
     const noReviewExpected = outletNoReviewExpected(outlets, m.outletId, nowMs);
-    if (noReviewExpected) noReviewExpectedCount++; else coverageMissing++;
+    countMissing(m.outletId, noReviewExpected);
 
     const srcs = m.sources || [];
     if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip from the LEDGER only
@@ -309,7 +329,7 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
       noReviewExpected,
       suppressed: false,
       clockAgeHours,
-      circuitOpen: !!(breakerCtx && isOutletTripped(breakerCtx.breaker, m.outletId)),
+      circuitOpen: groupTripped(m.outletId),
     });
     cells.push({ outletId: m.outletId, state, url: m.url || '' });
   }
@@ -324,8 +344,7 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
     // against coverageMissing here, contradicting the stated rule that such
     // outlets affect neither numerator nor denominator.
     if (isDispatchTierOutlet(outlets, m.outletId)) {
-      if (outletNoReviewExpected(outlets, m.outletId, nowMs)) noReviewExpectedCount++;
-      else coverageMissing++;
+      countMissing(m.outletId, outletNoReviewExpected(outlets, m.outletId, nowMs));
     }
   }
   // NO_REVIEW_EXPECTED entries are excluded from BOTH numerator and denominator

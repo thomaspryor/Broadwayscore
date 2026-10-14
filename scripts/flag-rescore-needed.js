@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
+const { isRebuildHoldFlag } = require('./lib/stuck-rescore-flag');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -81,8 +82,9 @@ if (cleanupMode) {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         scanned++;
         if (!data.needsRescore) continue;
-        // Check if unscorable
-        if (!isScoreable(data, showFor(data), filePath)) {
+        // Check if unscorable. Never clear a flag that is what holds a legacy
+        // excerpt-read score out of the rebuild (BRO-5261).
+        if (!isScoreable(data, showFor(data), filePath) && !isRebuildHoldFlag(data, showFor(data), filePath)) {
           cleaned++;
           cleanedFiles.push(`${show}/${file}`);
           if (!dryRun) {

@@ -33,6 +33,7 @@
  */
 
 const { isScoreable } = require('./is-scoreable');
+const { isIncludableForRebuild } = require('./review-guards');
 
 /**
  * @param {object} data - review-text record
@@ -46,6 +47,24 @@ const { isScoreable } = require('./is-scoreable');
 function isStuckRescoreFlag(data, show, filePath) {
   if (!data || data.needsRescore !== true) return false;
   return !isScoreable(data, show, filePath);
+}
+
+/**
+ * True when needsRescore is the ONLY thing keeping this review out of the
+ * rebuild. A legacy web-search row whose score was read from the invented
+ * excerpt is held out while its rescore is pending (review-guards.js
+ * isUnverifiableWebSearchRow, BRO-5183); if the scorer cannot take it, the
+ * flag looks stuck, and clearing it would publish the excerpt score
+ * (BRO-5261 retro-review of BRO-5222). Such flags are reported, never auto-cleared.
+ * @param {object} data - review-text record
+ * @param {object} [show]
+ * @param {string} [filePath]
+ * @returns {boolean}
+ */
+function isRebuildHoldFlag(data, show, filePath) {
+  if (!data || data.needsRescore !== true) return false;
+  return !isIncludableForRebuild(data, show, filePath)
+    && isIncludableForRebuild({ ...data, needsRescore: false }, show, filePath);
 }
 
 /**
@@ -118,4 +137,4 @@ function isAfter(a, b) {
   return String(a) > String(b);
 }
 
-module.exports = { isStuckRescoreFlag, isScoredButStillQueued };
+module.exports = { isStuckRescoreFlag, isScoredButStillQueued, isRebuildHoldFlag };

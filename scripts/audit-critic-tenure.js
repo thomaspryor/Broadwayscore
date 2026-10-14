@@ -27,6 +27,12 @@ function main() {
   }
 
   const { critics, totalFiles } = scanReviewTexts();
+  // An empty or unsynced corpus would report 0 flags and pass --max (the
+  // same guard audit-critic-outlets.js runs after this scan, BRO-5261).
+  if (!totalFiles) {
+    console.error('No review-text files scanned: data/review-texts is empty or not synced.');
+    process.exit(2);
+  }
   const r = applyReviewedTenureFlags(findTenureFlags(critics), reviewed);
   const flags = r.unresolved;
   for (const f of flags) {

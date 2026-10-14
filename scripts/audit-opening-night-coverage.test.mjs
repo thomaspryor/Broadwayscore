@@ -241,6 +241,28 @@ test('coverage math: totalTier dedupes London-alias pairs (timeout/timeout-londo
   censusOpts.sources[1].dir = 'dtli';
   const { coverage } = computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts);
   assert.equal(coverage.totalTier, 1, 'timeout + timeout-london are the same logical outlet — must count once');
+  // BRO-5261: the numerator counts the pair once too, so covered never goes below 0.
+  assert.equal(coverage.covered, 0);
+  assert.equal(coverage.denominator, 1);
+
+  // A breaker open on one spelling marks both of this show's cells, the same
+  // rule computeDispatchDecision uses, so the ledger and the alert agree.
+  const breakerCtx = { breaker: { outlets: { timeout: { state: 'open' } } }, observations: [] };
+  const { cells } = computeShowCells(s, [], OUTLETS, NOW_MS, null, censusOpts, breakerCtx);
+  assert.deepEqual(cells.map((c) => [c.outletId, c.state]).sort(), [['timeout', 'CIRCUIT_OPEN'], ['timeout-london', 'CIRCUIT_OPEN']]);
+});
+
+test('a Time Out NY breaker does not mark a lone Time Out London cell (BRO-5261)', () => {
+  const fixture = makeArchiveFixture();
+  const censusOpts = {
+    archiveDir: fixture.archiveDir,
+    sources: [fixture.realSource('bww-roundup', [
+      { outlet: 'Time Out (London)', outletId: 'timeout-london', critic: 'Unknown', stars: null, url: '' },
+    ])],
+  };
+  const breakerCtx = { breaker: { outlets: { timeout: { state: 'open' } } }, observations: [] };
+  const { cells } = computeShowCells(show(), [], OUTLETS, NOW_MS, null, censusOpts, breakerCtx);
+  assert.deepEqual(cells.map((c) => [c.outletId, c.state]), [['timeout-london', 'GAP']]);
 });
 
 

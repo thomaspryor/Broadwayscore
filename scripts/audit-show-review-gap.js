@@ -1271,9 +1271,12 @@ async function auditShow(show, opts = {}) {
           if (d && d.url && d.publishDate && d.pendingReason === 'date_implausible') pending.push({ url: normalizeReviewUrl(d.url), publishDate: d.publishDate });
         } catch { /* unreadable pending file: no evidence */ }
       }
-      const priorByUrl = pendingPriorRunUrls(pending, show);
+      // Keyed by gapUrlIdentity so a www / trailing-slash / host-case variant of
+      // the stored url still matches the listed one (BRO-5261 retro of BRO-4680).
+      // pendingPriorRunUrls itself needs the full urls (host counting, url year).
+      const priorByUrl = new Map([...pendingPriorRunUrls(pending, show)].map(([u, d]) => [gapUrlIdentity(u), d]));
       for (const m of [...result.missing, ...result.flaggedMisses]) {
-        const date = priorByUrl.get(normalizeReviewUrl(m.url));
+        const date = priorByUrl.get(gapUrlIdentity(m.url));
         if (m.priorRun || !date) continue;
         m.priorRun = true;
         m.priorRunSource = `pending-file-date:${date}`;
