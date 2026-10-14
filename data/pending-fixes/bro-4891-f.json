@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4891",
   "planId": "51abb175-352d-4ad3-a718-f5ba50c33948",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T21:04:31.692Z",
   "submitter": {
     "name": null,
@@ -187,5 +187,78 @@
         "description": "The 15-name cast is the 1981 original Broadway cast copied verbatim from dreamgirls-1981 (Babatunde, Derricks, Devine, Holliday, Ralph...); the delayed revival has announced no cast (Playbill 2026-08-25)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T21:45:27.111Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json syndicatedPrimaryFile: \"paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--robert-gore-langton.json duplicateOf: null -> \"daily-mail--patrick-marmion.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/nytimes--ben-brantley.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/nytimes--ben-brantley.json syndicatedPrimaryFile: \"three-days-of-rain-2006/nytimes--ben-brantley.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gutenberg-2023/chicagotribune--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gutenberg-2023/chicagotribune--chris-jones.json syndicatedPrimaryFile: \"gutenberg-2023/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-and-boy-2011/bloomberg--jeremy-gerard.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-and-boy-2011/bloomberg--jeremy-gerard.json syndicatedPrimaryFile: \"man-and-boy-2011/bloomberg--jeremy-gerard.json\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted john-proctor-is-the-villain-west-end-2026/guardian--emma-john.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted john-proctor-is-the-villain-west-end-2026/guardian--emma-johns.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted john-proctor-is-the-villain-west-end-2026/whatsonstage--alun-hood.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-full-monty-2000/nytimes--ben-brantley.json originalScore: \"4/4 stars\" -> null (retracted originalRating, originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for dreamgirls-2026"
+    }
+  ]
 }
