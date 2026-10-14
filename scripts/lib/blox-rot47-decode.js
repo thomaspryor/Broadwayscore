@@ -7,7 +7,10 @@
 const ENTITIES = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&#x27;': "'", '&#34;': '"' };
 
 function unescapeEntities(s) {
-  return s.replace(/&(?:amp|lt|gt|quot|#39|#x27|#34);/g, m => ENTITIES[m]);
+  return s
+    .replace(/&#(\d+);/g, (m, n) => String.fromCharCode(+n))
+    .replace(/&#x([0-9a-f]+);/gi, (m, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/&(?:amp|lt|gt|quot);/g, m => ENTITIES[m]);
 }
 
 function rot47(s) {
@@ -21,7 +24,7 @@ function rot47(s) {
 
 function decodeBloxRot47(html) {
   if (typeof html !== 'string' || !html.includes('kAm')) return html;
-  return html.replace(/kAm[\s\S]*?k\^Am/g, block => {
+  return html.replace(/kAm[^<>]*?k\^Am/g, block => {
     const decoded = rot47(unescapeEntities(block));
     return /^<p>[\s\S]*<\/p>$/.test(decoded) ? decoded : block;
   });

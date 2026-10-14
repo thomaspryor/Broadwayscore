@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { decodeBloxRot47, rot47 } = require('./blox-rot47-decode.js');
+const esc = x => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const { cleanText } = require('./text-cleaning.js');
 
 test('rot47 is its own inverse and maps <p> to kAm', () => {
@@ -12,7 +13,7 @@ test('rot47 is its own inverse and maps <p> to kAm', () => {
 });
 
 test('decodes scrambled paragraphs in place and leaves normal markup alone', () => {
-  const html = `<div><p>Free lede.</p>${rot47('<p>Paywalled paragraph one.</p>')}${rot47('<p>Two &amp; more.</p>')}</div>`;
+  const html = `<div><p>Free lede.</p>${esc(rot47('<p>Paywalled paragraph one.</p>'))}${esc(rot47('<p>Two &amp; more.</p>'))}</div>`;
   const out = decodeBloxRot47(html);
   assert.ok(out.includes('<p>Paywalled paragraph one.</p>'));
   assert.ok(out.includes('<p>Two &amp; more.</p>'));
@@ -35,4 +36,18 @@ test('cleanText strips the video.js modal and app-prompt boilerplate', () => {
   const out = cleanText(t);
   assert.ok(!/dialog window/i.test(out));
   assert.ok(out.includes('Great show.') && out.includes('Still great.'));
+});
+
+test('a stray kAm earlier in real markup does not swallow the page (review finding)', () => {
+  const html = `<script>x="base64,QkAmZz"</script><p>Free lede by critic.</p>${esc(rot47('<p>Paid paragraph.</p>'))}`;
+  const out = decodeBloxRot47(html);
+  assert.ok(out.includes('<p>Free lede by critic.</p>'));
+  assert.ok(out.includes('<p>Paid paragraph.</p>'));
+  assert.ok(out.includes('QkAmZz'));
+});
+
+test('numeric entities (&#039; &#60;) in scrambled text are unescaped before rot47', () => {
+  const plain = "<p>It's V</p>";
+  const scrambled = rot47(plain).replace(/'/g, '&#039;').replace(/</g, '&#60;');
+  assert.equal(decodeBloxRot47(scrambled), plain);
 });
