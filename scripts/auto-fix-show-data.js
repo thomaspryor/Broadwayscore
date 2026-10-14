@@ -876,6 +876,8 @@ async function main() {
     if (!guard.ok) {
       console.error(`\n❌ Stability guard aborted the save (${guard.reason}). shows.json NOT modified. Snapshot: ${guard.snapshotPath || ABORT_SNAPSHOT_PATH}`);
       results.errors.push(`stability-guard-abort: ${guard.reason}`);
+      // The aborted fixes were never saved: don't report them as fixed (would trigger a 'fixed N' commit with no shows.json change).
+      results.aborted = results.fixed.splice(0);
       changesMade = false;
       process.exitCode = 1;
     }
