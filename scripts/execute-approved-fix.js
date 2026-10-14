@@ -117,6 +117,10 @@ const ALLOWED_SCRIPTS = [
   // another show into its own row (rules: scripts/lib/multishow-section-copy.js;
   // refuses ambiguous sections; --expect-start/--expect-end use `_` for spaces).
   'copy-multishow-section.js',
+  // BRO-5243: re-run the content verifier on named rows' stored text after a
+  // byline/text fix left a stale verdict. Plans pass --file=<show>/<file>.json
+  // (lib/reverify-file-mode.js: flagged rows and excluding verdicts are not written).
+  'reverify-stale-cv-promoted.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
