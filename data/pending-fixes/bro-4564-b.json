@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4564-b",
   "planId": "0d64fc1a-83d6-4c92-a6bb-ce0c1921c594",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T05:52:15.808Z",
   "submitter": {
     "name": null,
@@ -143,5 +143,88 @@
         "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T07:38:16.478Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/wsj--charles-isherwood.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/wsj--charles-isherwood.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/wsj--charles-isherwood.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/wsj--terry-teachout.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/wsj--terry-teachout.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/wsj--terry-teachout.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dracula-west-end-2025/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dracula-west-end-2025/times-uk--clive-davis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dracula-west-end-2025/times-uk--clive-davis.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json wrongArticleManualClear: null -> true"
+    }
+  ]
 }
