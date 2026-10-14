@@ -2,7 +2,7 @@
 'use strict';
 /**
  * scripts/install-home-claude-config.js: give cloud sessions that start in
- * /home/user this repo's hooks, slash commands and skills (BRO-5221).
+ * /home/user this repo's hooks, slash commands, skills and agents (BRO-5221).
  *
  * A cloud session's working directory is /home/user whenever it holds more than
  * one repo (the usual phone setup: each repo is passed with --add-dir, which
@@ -16,7 +16,8 @@
  * This writes <target>/.claude/settings.json with every hook in this repo's
  * .claude/settings.json, each routed through .claude/hooks/lib/home-hook-runner.sh
  * (which keeps tool hooks off the other repos' work), and symlinks
- * <target>/.claude/commands and skills to this repo's. A session whose working
+ * <target>/.claude/commands, skills and agents (review-panelist,
+ * repo-sweeper: /ship-check needs them) to this repo's. A session whose working
  * directory is this checkout never reads <target>/.claude, so it is unaffected.
  * The hook commands find the checkout at run time, so a re-clone or a rename of
  * the checkout's directory case does not break them; the hook LIST is fixed at
@@ -40,7 +41,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const MARK_KEY = '_generatedBy';
 const MARK = 'Broadwayscore scripts/install-home-claude-config.js (BRO-5221). Regenerated on install; do not edit by hand.';
 const RUNNER_REL = '.claude/hooks/lib/home-hook-runner.sh';
-const LINKS = ['commands', 'skills'];
+const LINKS = ['commands', 'skills', 'agents'];
 const HOOK_RE = /\.claude\/hooks\/([A-Za-z0-9._-]+\.sh)/;
 
 // Shell that finds the checkout under <target> at run time and runs one hook through
