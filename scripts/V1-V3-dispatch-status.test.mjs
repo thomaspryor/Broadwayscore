@@ -17,7 +17,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const HOOKS = path.join(ROOT, '.claude', 'hooks');
 
 // Measured on main 2026-10-06: 18 top-level hook scripts, 5049 lines across all hook files including lib/.
-const MAX_HOOK_FILES = 18;
+const MAX_HOOK_FILES = 19; // BRO-5359: +stop-review-coverage.sh. A Stop hook must be top-level: install-home-claude-config.js (home-rooted cloud sessions) wires only .claude/hooks/<name>.sh, and a hooks/lib one was silently never run in live sessions.
 const MAX_HOOK_LINES = 5302; // BRO-5228: +9 create_session model guard (an omitted model inherited the parent's Opus); BRO-5221: +lib/home-hook-runner.sh (multi-repo sessions ran no hooks at all); BRO-2394: +3 in github-main-guard.sh calling scripts/lib/mcp-push-visual-gate.sh (the logic stays out of hooks/)
 
 // Retired hooks whose script must STAY: old cloud snapshots still call them, so they are unregistered but never

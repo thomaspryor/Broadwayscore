@@ -191,7 +191,7 @@ test('stop hook wrapper: exit 2 for a thin run, 0 for a full one, blocks stop af
   const dwi = use1('d1', 'Skill', { skill: 'did-it-work' }) + out1('d1', 'ok') + row('assistant', [{ type: 'text', text: '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501' }]);
   fs.writeFileSync(full, dwi + base + use1('a1', 'Agent', { subagent_type: 'review-panelist', prompt: 'Review the diff carefully for wedge risks and silent failures. '.repeat(6) }) + out1('a1', 'Findings: nothing blocking in the diff, two warnings.') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/req.json' }) + out1('b1', 'Findings: the gate fails open on a missing transcript, which is fine.'));
   const settings = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude', 'settings.json'), 'utf8'));
-  const inline = settings.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command)).find((c) => c.includes('lib/stop-review-coverage.sh'));
+  const inline = settings.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command)).find((c) => c.includes('hooks/stop-review-coverage.sh'));
   assert.ok(inline, 'the Stop hook is registered in settings.json');
   // Run the REAL registered command string, with this checkout as the project dir.
   const run = (tr) => spawnSyncStdinFile('bash', ['-c', inline], { input: JSON.stringify({ transcript_path: tr, last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, CLAUDE_PROJECT_DIR: ROOT, SHIP_CHECK_COVERAGE_DISABLE: '' } });
@@ -207,11 +207,11 @@ test('settings.json keeps verify-edits and registers the review-coverage stop ho
   const st = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude', 'settings.json'), 'utf8'));
   const cmds = st.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command));
   assert.ok(cmds.some((c) => c.includes('verify-edits.sh')));
-  const inline = cmds.find((c) => c.includes('lib/stop-review-coverage.sh'));
+  const inline = cmds.find((c) => c.includes('hooks/stop-review-coverage.sh'));
   assert.ok(inline);
   const bare = spawnSyncStdinFile('bash', ['-c', inline], { input: '{}', encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: '/nonexistent-dir' } });
   assert.equal(bare.status, 0, 'a missing lib fails open');
-  assert.ok(!fs.existsSync(path.join(ROOT, '.claude', 'hooks', 'stop-review-coverage.sh')), 'lives in hooks/lib, not top-level (hook-file ceiling)');
+  assert.ok(fs.existsSync(path.join(ROOT, '.claude', 'hooks', 'stop-review-coverage.sh')), 'top-level: the home installer wires only .claude/hooks/<name>.sh');
 });
 
 test('code-review is trusted: it neither needs the reviewers nor resets an earlier full ship-check', () => {
