@@ -146,7 +146,9 @@ test('the exemption registry has no stale entries and no entry that is also wire
 
 test('"unscheduled" exemptions really are not run by any workflow', () => {
   const wfDir = path.join(ROOT, '.github/workflows');
-  const text = fs.readdirSync(wfDir).filter((f) => /\.ya?ml$/.test(f)).map((f) => fs.readFileSync(path.join(wfDir, f), 'utf8')).join('\n');
+  // A push-trigger path entry (- 'scripts/x.js') lists a file, it does not run it (BRO-5261).
+  const text = fs.readdirSync(wfDir).filter((f) => /\.ya?ml$/.test(f)).map((f) => fs.readFileSync(path.join(wfDir, f), 'utf8')).join('\n')
+    .split('\n').filter((l) => !/^\s*-\s*['"]?[\w./*-]+['"]?\s*(#.*)?$/.test(l)).join('\n');
   const scheduled = Object.entries(reg.LANE_EXEMPT)
     .filter(([, v]) => v.kind === 'unscheduled')
     .filter(([f]) => text.includes(f))
