@@ -1,21 +1,49 @@
 {
-  "updatedAt": "2026-10-14T17:43:15.733Z",
-  "processed": 277,
-  "failed": 277,
-  "successRate": "50.0%",
+  "updatedAt": "2026-10-14T17:44:02.994Z",
+  "processed": 321,
+  "failed": 312,
+  "successRate": "50.7%",
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 94,
     "amp": 2,
-    "browserbase": 2,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 15,
-    "brightdata": 0,
+    "scrapingdog": 10,
+    "scrapingbee": 17,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 32
   },
   "browserbaseSessions": 7,
   "recentActivity": [
+    {
+      "t": "2026-10-14T15:08:13.710Z",
+      "event": "bb-session",
+      "session": "0e4b7195",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:08:14.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:27.191Z",
+      "event": "bb-session",
+      "session": "a7e7c17c",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:27.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:45.713Z",
+      "event": "bb-session",
+      "session": "c71ca3ff",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
     {
       "t": "2026-10-14T15:09:46.359Z",
       "event": "bb-cookie-inject",
@@ -77,56 +105,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-14T17:34:15.070Z",
+      "t": "2026-10-14T17:33:11.846Z",
       "event": "bb-session",
-      "session": "8a28c506",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+      "session": "61d938cf",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
     },
     {
-      "t": "2026-10-14T17:40:05.580Z",
-      "event": "bb-session",
-      "session": "66a57ea2",
-      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
-    },
-    {
-      "t": "2026-10-14T17:40:26.389Z",
-      "event": "bb-session",
-      "session": "c608f5e6",
-      "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0"
-    },
-    {
-      "t": "2026-10-14T17:40:41.394Z",
-      "event": "bb-session",
-      "session": "94f0b929",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-14T17:40:42.258Z",
+      "t": "2026-10-14T17:33:12.818Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-14T17:42:44.050Z",
+      "t": "2026-10-14T17:40:04.492Z",
       "event": "bb-session",
-      "session": "073847b6",
-      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+      "session": "2c90d94a",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
     },
     {
-      "t": "2026-10-14T17:42:50.478Z",
-      "event": "bb-session",
-      "session": "2cc80782",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
-    },
-    {
-      "t": "2026-10-14T17:42:51.334Z",
+      "t": "2026-10-14T17:40:05.382Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-14T17:42:52.441Z",
-      "event": "bb-session",
-      "session": "57180373",
-      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+      "domain": "wsj.com"
     }
   ]
 }
