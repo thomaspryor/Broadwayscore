@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T19:32:12.654Z",
+  "generatedAt": "2026-10-14T20:00:56.943Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -380,9 +380,9 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 68.69,
-      "liveScore": 69,
-      "scoreDrift": 0.3100000000000023,
+      "siteScore": 68.49,
+      "liveScore": 68,
+      "scoreDrift": -0.4899999999999949,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -396,7 +396,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -405,8 +405,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "preview-sent",
+        "detail": "Preview sent to thomas.pryor@gmail.com at 7:43:37 PM"
       },
       "missingT1": [
         {
@@ -596,6 +596,18 @@
           "m": 5,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-14T20:00:56.943Z",
+          "rc": 13,
+          "s": 68.49,
+          "t1": 6,
+          "t2": 3,
+          "t3": 4,
+          "p": 7,
+          "m": 5,
+          "n": 1,
+          "bc": "preview-sent"
         }
       ]
     },
