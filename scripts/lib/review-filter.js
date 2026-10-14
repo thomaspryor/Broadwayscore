@@ -98,7 +98,11 @@ function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, tex
  * returns the same text must still be able to clear the wrong pointer.
  */
 function skipCrossOutletSelfDemote({ forcedRefetch, outletId, siblingOutletId, hostMatches }) {
-  return !!(forcedRefetch && hostMatches === true && outletId && siblingOutletId && outletId !== siblingOutletId);
+  if (!(forcedRefetch && hostMatches === true && outletId && siblingOutletId)) return false;
+  // Alias ids (nymag/vulture, variety-frank-rizzo/variety) are one outlet: a
+  // same-outlet copy must still dedupe.
+  const canon = (id) => require('./review-normalization').normalizeOutlet(id) || String(id).toLowerCase();
+  return canon(outletId) !== canon(siblingOutletId);
 }
 
 /**
@@ -116,4 +120,31 @@ function staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplic
     && newFingerprint && primaryFingerprint && newFingerprint !== primaryFingerprint);
 }
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote, staleCrossOutletFlagAfterRefetch };
+
+const CROSS_OUTLET_CLEAR_PREFIX = 'forced refetch from own domain;';
+
+/**
+ * 1C dedupe wiring for skipCrossOutletSelfDemote. Returns true when this
+ * sibling must be skipped. A pointer at that sibling is dropped; the clear
+ * note (the push restore's breadcrumb for duplicateTextOf) is written only
+ * when no duplicateOf is present, since any non-empty duplicateClearReason
+ * also licenses dropping duplicateOf (review-write-guard CLEAR_BREADCRUMBS).
+ */
+function applyCrossOutletSkip(data, sibling, siblingData, { forcedRefetch, hostMatches }) {
+  if (!skipCrossOutletSelfDemote({ forcedRefetch, outletId: data.outletId, siblingOutletId: siblingData && siblingData.outletId, hostMatches })) return false;
+  if (data.duplicateTextOf === sibling) {
+    delete data.duplicateTextOf;
+    if (!data.duplicateOf) data.duplicateClearReason = `${CROSS_OUTLET_CLEAR_PREFIX} ${sibling} is another outlet holding this text (BRO-5254)`;
+  }
+  return true;
+}
+
+/** Sets the 1C pointer and drops a cross-outlet clear note from this same pass:
+ *  a stale clear note beside a live pointer would let a later write drop it. */
+function setDuplicateTextOf(data, sibling) {
+  data.duplicateTextOf = sibling;
+  if (typeof data.duplicateClearReason === 'string' && data.duplicateClearReason.startsWith(CROSS_OUTLET_CLEAR_PREFIX)) data.duplicateClearReason = null;
+}
+
+
+module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch };

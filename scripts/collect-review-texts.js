@@ -57,7 +57,7 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, skipCrossOutletSelfDemote, staleCrossOutletFlagAfterRefetch } = require('./lib/review-filter');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, applyCrossOutletSkip, setDuplicateTextOf, staleCrossOutletFlagAfterRefetch } = require('./lib/review-filter');
 const { hostMatchesOutletDomain } = require('./lib/outlet-domain-validation');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -5545,21 +5545,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           if (siblingData.fullText) {
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {
-              if (skipCrossOutletSelfDemote({
+              if (applyCrossOutletSkip(data, sibling, siblingData, {
                 forcedRefetch: review._forceRefetch === true,
-                outletId: data.outletId,
-                siblingOutletId: siblingData.outletId,
                 hostMatches: hostMatchesOutletDomain(data.url, data.outletId, loadOutletRegistryForDedupe()),
               })) {
                 console.log(`    ⚠ Same text as ${sibling} (${siblingData.outletId}); fresh fetch from this outlet's own domain, so not marking this file the copy (BRO-5254)`);
-                if (data.duplicateTextOf === sibling) {
-                  // Protected field: the clear needs its breadcrumb or the push restore puts it back.
-                  delete data.duplicateTextOf;
-                  data.duplicateClearReason = `forced refetch from own domain; ${sibling} is another outlet holding this text (BRO-5254)`;
-                }
                 continue;
               }
-              data.duplicateTextOf = sibling;
+              setDuplicateTextOf(data, sibling);
               console.log(`    ⚠ Duplicate text of ${sibling}`);
               break;
             }

@@ -82,3 +82,29 @@ test('staleCrossOutletFlagAfterRefetch: cleared only when the refetched text no 
   assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletDuplicate: false }), false);
   assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletMethod: 'similarity' }), false, 'a similarity flag differs by fingerprint already');
 });
+
+// 1C loop wiring (BRO-5254 review): the helpers in the order the loop calls them.
+test('cross-outlet skip then a same-outlet match: pointer set, clear note dropped', () => {
+  const { applyCrossOutletSkip, setDuplicateTextOf } = require('../../scripts/lib/review-filter.js');
+  const opts = { forcedRefetch: true, hostMatches: true };
+  const data = { outletId: 'variety', duplicateTextOf: 'vulture--john-simon.json' };
+  assert.equal(applyCrossOutletSkip(data, 'vulture--john-simon.json', { outletId: 'vulture' }, opts), true);
+  assert.equal(data.duplicateTextOf, undefined);
+  assert.match(data.duplicateClearReason, /^forced refetch from own domain;/);
+  assert.equal(applyCrossOutletSkip(data, 'variety--other.json', { outletId: 'variety' }, opts), false, 'same outlet is not skipped');
+  setDuplicateTextOf(data, 'variety--other.json');
+  assert.equal(data.duplicateTextOf, 'variety--other.json');
+  assert.equal(data.duplicateClearReason, null, 'a stale clear note must not sit beside a live pointer');
+});
+
+test('alias outlet ids count as one outlet; a duplicateOf file gets no clear note', () => {
+  const { applyCrossOutletSkip, setDuplicateTextOf } = require('../../scripts/lib/review-filter.js');
+  const opts = { forcedRefetch: true, hostMatches: true };
+  assert.equal(applyCrossOutletSkip({ outletId: 'vulture' }, 'nymag--x.json', { outletId: 'nymag' }, opts), false);
+  const d = { outletId: 'variety', duplicateOf: 'variety--a.json', duplicateTextOf: 'vulture--b.json' };
+  assert.equal(applyCrossOutletSkip(d, 'vulture--b.json', { outletId: 'vulture' }, opts), true);
+  assert.equal(d.duplicateClearReason, undefined, 'the note would also license dropping duplicateOf');
+  const keep = { duplicateClearReason: 'manual: owner cleared (BRO-1)' };
+  setDuplicateTextOf(keep, 'x.json');
+  assert.equal(keep.duplicateClearReason, 'manual: owner cleared (BRO-1)', 'only this guard\'s own note is dropped');
+});
