@@ -33,6 +33,7 @@ const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-writ
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
 const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = require('./lib/show-score-url-map');
 const { recordSbCall, recordBdCall } = require('./lib/provider-telemetry');
+const { consultBrightData } = require('./lib/brightdata-caps');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -252,6 +253,15 @@ function fetchViaBrightData(url) {
   if (!token) return Promise.resolve(null);
 
   const zone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
+  // BRO-5261 (BRO-3067 cousin): daily breaker / per-run budget, same consult
+  // as scraper.js fetchWithBrightData. A capped call is a BD miss, not a bill.
+  const bdVerdict = consultBrightData({ zone: zone });
+  if (!bdVerdict.allowed) {
+    if (bdVerdict.firstBlock) {
+      try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
+    }
+    return Promise.resolve(null);
+  }
   const apiUrl = 'https://api.brightdata.com/request';
   const body = JSON.stringify({ zone, url, format: 'raw' });
 

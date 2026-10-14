@@ -328,9 +328,12 @@ function readBreakerState(env = process.env, now = Date.now()) {
 }
 
 /**
- * THE enforcement helper. Called from exactly two chokepoints —
- * scraper.js fetchWithBrightData() and url-discovery.js _serpViaBrightData() —
- * because those are the only two places a BD request is actually issued.
+ * THE enforcement helper. Called at every place a BD request is actually
+ * issued: scraper.js fetchWithBrightData(), url-discovery.js
+ * _serpViaBrightData(), collect-review-texts.js, reddit-api.js and the
+ * inlined BD fetchers in scrape-{ltd,lbo,seatplan,show-score}-audience.js and
+ * scrape-lottery-rush.js. scripts/lib/bd-consult-coverage.test.mjs fails when
+ * a file calls api.brightdata.com without it.
  *
  * Enforcing at the outer fetchPage()/fetchJSON() gates instead was explicitly
  * rejected in review: that is the same placement that left BD SERP spend 99%

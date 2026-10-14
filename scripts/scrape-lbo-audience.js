@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { recordBdCall } = require('./lib/provider-telemetry');
+const { consultBrightData } = require('./lib/brightdata-caps');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
@@ -36,9 +37,22 @@ const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-writ
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
+// Set once BD refuses a call for the breaker/budget: a zero-match run is then
+// a deferral, not a URL-pattern change.
+let bdCapped = false;
 
 function fetchWithBrightData(url) {
   if (!BRIGHTDATA_TOKEN) return Promise.resolve(null);
+  // BRO-5261 (BRO-3067 cousin): daily breaker / per-run budget, same consult
+  // as scraper.js fetchWithBrightData. A capped call is a BD miss, not a bill.
+  const bdVerdict = consultBrightData({ zone: BRIGHTDATA_ZONE });
+  if (!bdVerdict.allowed) {
+    if (bdVerdict.firstBlock) {
+      try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
+    }
+    bdCapped = true;
+    return Promise.resolve(null);
+  }
   const body = JSON.stringify({ zone: BRIGHTDATA_ZONE, url, format: 'raw' });
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.brightdata.com/request', {
@@ -547,7 +561,9 @@ async function main() {
 
   // Skip when the budget exit fired early — that's a clean deferral, not a
   // URL-pattern-change signal (same exemption as #369's pagination fix).
-  if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit) {
+  if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit && bdCapped) {
+    console.warn('\n⚠️  ZERO shows matched while Bright Data was capped (breaker/budget) — deferring, not a URL-pattern change.');
+  } else if (stats.found === 0 && toProcess.length > 3 && !stats.budgetExit) {
     console.error('\n❌ ZERO shows matched — possible URL pattern change. Aborting.');
     process.exit(1);
   }

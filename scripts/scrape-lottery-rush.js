@@ -31,6 +31,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { fetchPage } = require('./lib/scraper');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { consultBrightData } = require('./lib/brightdata-caps');
 
 // ==================== Configuration ====================
 
@@ -133,8 +134,14 @@ async function fetchContent(url, { renderJs = true, premiumProxy = false } = {})
  * is the zone currently configured in .env for cheap HTML fetches.
  */
 async function fetchJson(url) {
-  // Bright Data web_unlocker2 — cheap residential proxy that bypasses Cloudflare
-  if (BRIGHTDATA_TOKEN) {
+  // Bright Data web_unlocker2 — cheap residential proxy that bypasses Cloudflare.
+  // BRO-5261 (BRO-3067 cousin): consult the daily breaker / per-run budget
+  // first, like scraper.js; a capped call skips to ScrapingBee.
+  const bdVerdict = BRIGHTDATA_TOKEN ? consultBrightData({ zone: 'web_unlocker2' }) : null;
+  if (bdVerdict && !bdVerdict.allowed && bdVerdict.firstBlock) {
+    try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
+  }
+  if (bdVerdict && bdVerdict.allowed) {
     try {
       const result = await httpsRequest('https://api.brightdata.com/request', {
         method: 'POST',

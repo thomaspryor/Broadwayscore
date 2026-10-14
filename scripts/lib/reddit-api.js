@@ -59,6 +59,9 @@ const OAUTH_DELAY = 700; // Reddit OAuth allows 100/min; keep a small gap
 
 // Proxy state
 let brightDataDown = false;
+// BRO-5261: the per-run BD budget cannot refill inside a process, so once
+// consultBrightData says 'budget' every later call would only throw and warn.
+let brightDataCapped = false;
 let scrapingDogDown = false; // Latched on 401/403 (bad key / no credits)
 
 // Scrapingdog tier escalation for reddit: plain (1cr) 400s with "try enabling
@@ -496,6 +499,7 @@ async function fetchViaBrightData(url) {
     if (bdVerdict.firstBlock) {
       try { recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' }); } catch (_) {}
     }
+    if (bdVerdict.reason === 'budget') brightDataCapped = true;
     throw new Error(`Bright Data ${bdVerdict.reason} cap reached — skipping for this call`);
   }
 
@@ -748,7 +752,7 @@ async function _fetchWithFallbackInner(url, retryCount = 0, opts = {}) {
   // If in proxy mode, try proxies first
   if (useScrapingBee) {
     // Try Bright Data (primary proxy)
-    if (process.env.BRIGHTDATA_TOKEN && !brightDataDown) {
+    if (process.env.BRIGHTDATA_TOKEN && !brightDataDown && !brightDataCapped) {
       try {
         return await fetchViaBrightData(url);
       } catch (e) {
@@ -775,7 +779,7 @@ async function _fetchWithFallbackInner(url, retryCount = 0, opts = {}) {
   }
 
   // All proxy sources down — fail fast instead of looping
-  if (useScrapingBee && scrapingBeeDown && brightDataDown && scrapingDogDown) {
+  if (useScrapingBee && scrapingBeeDown && (brightDataDown || brightDataCapped) && scrapingDogDown) {
     stats.errors++;
     throw new Error('All sources unavailable: Reddit (403), Bright Data (down), Scrapingdog (down), ScrapingBee (down — see prior 401/402 reason)');
   }
@@ -837,7 +841,7 @@ async function switchToProxy(url, opts = {}) {
   scrapingBeeSwitchTime = Date.now();
 
   // Try Bright Data first (subject to the BD daily breaker/per-run budget)
-  if (process.env.BRIGHTDATA_TOKEN && !brightDataDown) {
+  if (process.env.BRIGHTDATA_TOKEN && !brightDataDown && !brightDataCapped) {
     try {
       console.warn('  Switching to Bright Data proxy (will retry Reddit direct after 5 min cooldown)');
       return await fetchViaBrightData(url);
@@ -866,6 +870,7 @@ async function switchToProxy(url, opts = {}) {
   stats.errors++;
   const reasons = [];
   if (brightDataDown) reasons.push('Bright Data (auth/quota)');
+  if (brightDataCapped) reasons.push('Bright Data (per-run budget spent)');
   if (scrapingDogDown) reasons.push('Scrapingdog (down — invalid key or credits; see prior 401/403)');
   if (scrapingBeeDown) reasons.push('ScrapingBee (down — invalid key or credits; see prior 401/402)');
   if (!process.env.BRIGHTDATA_TOKEN) reasons.push('Bright Data (no token)');
@@ -1011,6 +1016,7 @@ function resetFallbackState() {
   useScrapingBee = false;
   scrapingBeeDown = false;
   brightDataDown = false;
+  brightDataCapped = false;
   scrapingDogDown = false;
   sdTierIndex = 0;
   sdConsecutiveFailures = 0;
