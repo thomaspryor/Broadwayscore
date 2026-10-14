@@ -407,3 +407,13 @@ test('lock pushes skip git hooks: the pre-push code audits refused bookkeeping s
   assert.ok(pushes.length > 0, 'found the lock push');
   for (const p of pushes) assert.ok(p.includes("'--no-verify'"), p);
 });
+
+test('assessRunnerSummaries: 3 runs, none stopped on the lock, something landed', () => {
+  const run = (landed, stop) => `## Codex runner 2026-10-14: 1 card(s) worked in 61 min\n- Landed and Done: ${landed}\n- Landed part, back to Todo with what is left: none\n- Stopped early: ${stop}`;
+  assert.deepEqual(r.assessRunnerSummaries([run('BRO-1', 'no'), run('none', 'time budget of 105 min used'), run('none', 'under 75 min left before the 112-min hard stop')]),
+    { ok: true, runs: 3, landed: 1, problems: [] });
+  const bad = r.assessRunnerSummaries([run('none', 'lost the run lock (see the run log)'), run('none', 'another run took the lock'), 'unrelated comment']);
+  assert.equal(bad.ok, false);
+  assert.equal(bad.runs, 2);
+  assert.ok(bad.problems.some((p) => p.includes('stopped on the lock')) && bad.problems.includes('no card landed'));
+});

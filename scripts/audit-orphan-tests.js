@@ -73,6 +73,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-5287 live acceptance: reads the Codex runner's run summaries on Linear (needs LINEAR_API_KEY).
+  'scripts/verify-codex-runner-health.test.mjs': 'BRO-5287',
   // BRO-3490 RECHECK-AFTER probe: live data, red until Saturday's deep-research run researches the six stuck closures.
   'scripts/verify-bro-3490-recheck.test.mjs': 'BRO-3490',
   // BRO-4993 live-data check of hand-verified director credits; reads data/shows.json.
