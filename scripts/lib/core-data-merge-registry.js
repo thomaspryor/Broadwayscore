@@ -56,6 +56,7 @@ const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require(
 const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeOweVenueCandidates } = require('./merge-owe-venue-candidates');
 const { mergeOutletRegistryStaging } = require('./merge-outlet-registry-staging');
+const { mergeOutletRegistry } = require('./merge-outlet-registry');
 const { mergeSocialPostHistory } = require('./merge-social-post-history');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
@@ -1972,8 +1973,13 @@ const CORE_DATA_MERGE_REGISTRY = [
   {
     file: 'outlet-registry.json',
     surface: 'public-repo',
-    status: 'single-writer',
-    note: 'BRO-1084: moved from private-core-data to public-repo — the private copy was routinely stale because the only real writer is a human running scripts/audit-outlet-registry.js --update/--auto locally (CI only ever runs --json/--update-baseline/--strict, never the write branch), and every new outlet addition depended on a manual gh api PUT to the private repo before the next checkout-core-data run silently overwrote it. No CI workflow writes this file, so there is no concurrency group to declare.' + ' CORRECTION (BRO-3514, BRO-1084 follow-up): CI DOES write it: rebuild-all-reviews.js\'s AUTO-REGISTER NEW OUTLETS block rewrites it whenever an included review names an unregistered outlet, and workflows that stage with a bare scripts/lib/stage-data-changes.sh sweep commit that rewrite. Concurrent rebuilds can therefore race on it; a registration lost to the race is re-made by the next rebuild (the outlet is still unregistered), and human edits go through the normal rebase.',
+    status: 'active',
+    merge: mergeOutletRegistry,
+    format: 'json',
+    newline: false,
+    apiFallbackMerge: true,
+    verifiedBy: '2026-10-14 (BRO-4405): writer scripts/rebuild-all-reviews.js (AUTO-REGISTER NEW OUTLETS block, JSON.stringify(registry, null, 2) with no trailing newline), reached by every workflow that runs the rebuild; committed by push-core-data/action.yml "Sync outlet-registry.json + staging list" (PUSH_RECONCILE_MERGED_JSON=1) and, for the five rebuild callers that bypass that action, by their own commit steps. Humans also edit it via scripts/audit-outlet-registry.js --update/--auto (normal rebase). Merge: union outlets and _aliasIndex by key (ours wins the whole entry), later _meta.lastUpdated wins. Known limit: a remote-only outlet is re-added, so a deletion made on our side of a race is undone until the next push that carries it.',
+    note: 'BRO-1084 moved this from private-core-data to public-repo. BRO-4405: CI writes it from ~20 workflows (rebuild-all-reviews.js AUTO-REGISTER, committed by push-core-data and the rebuild callers), so concurrent registrations are union-merged by outlet id.',
   },
 
   // ── private-core-data surface (push-core-data/action.yml, CORE_FILES) ────
