@@ -16,7 +16,8 @@ const MB = 1024 * 1024;
 
 function makeRepo() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-sizes-'));
-  const git = (...a) => execFileSync('git', ['-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', '-c', 'gc.auto=0', ...a], { cwd: dir, stdio: 'pipe' });
+  const gitEnv = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_')));
+  const git = (...a) => execFileSync('git', ['-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', '-c', 'gc.auto=0', ...a], { cwd: dir, stdio: 'pipe', env: gitEnv });
   git('init', '-q');
   git('config', 'user.email', 't@t');
   git('config', 'user.name', 't');
@@ -26,11 +27,14 @@ function makeRepo() {
   const sized = (rel, bytes) => { const p = path.join(dir, rel); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, 'x'); fs.truncateSync(p, bytes); };
   sized('data/audit/big-ledger.jsonl', 13 * MB);   // known-large tracked ledger
   sized('data/audit/small.json', 1000);
+  sized('data/audit/mid.json', 4 * MB);
   git('add', '-A');
   git('commit', '-qm', 'base');
   const run = (env = {}) => {
     const summary = path.join(dir, 'summary.md');
-    const r = spawnSync('bash', [SCRIPT], { cwd: dir, encoding: 'utf8', env: { ...process.env, GITHUB_STEP_SUMMARY: summary, CHECK_FILE_SIZES_ENFORCE_ALL: '', ...env } });
+    // Inherited GIT_* (e.g. inside a hook or land gate) would point git at the real repo.
+    const clean = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_')));
+    const r = spawnSync('bash', [SCRIPT], { cwd: dir, encoding: 'utf8', env: { ...clean, GITHUB_STEP_SUMMARY: summary, CHECK_FILE_SIZES_ENFORCE_ALL: '', ...env } });
     return { ...r, summary: fs.existsSync(summary) ? fs.readFileSync(summary, 'utf8') : '' };
   };
   return { dir, git, sized, run, cleanup: () => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }) };
@@ -84,6 +88,15 @@ test('a small tracked file that crosses 5MB, or a big one that jumps by more tha
   } finally { r.cleanup(); }
 });
 
+test('crossing 5MB with a small step (4MB -> 6MB) is reported: the crossing rule, not the growth rule', () => {
+  const r = makeRepo();
+  try {
+    fs.truncateSync(path.join(r.dir, 'data/audit/mid.json'), 6 * MB);
+    const out = r.run();
+    assert.match(out.stdout, /data\/audit\/mid\.json: grew from 4194304/);
+  } finally { r.cleanup(); }
+});
+
 test('allowlisted names and gitignored files are not reported', () => {
   const r = makeRepo();
   try {
@@ -103,7 +116,23 @@ test('anything over the 90MiB hard cap is reported even when allowlisted, and fa
     assert.match(out.stdout, /stage-latency\.jsonl: .*90MiB hard cap/);
     assert.equal(out.status, 0);
     assert.equal(r.run({ CHECK_FILE_SIZES_ENFORCE_ALL: '1' }).status, 1, 'the enforce switch makes unstaged findings fail');
+    r.git('add', 'data/audit/stage-latency.jsonl');
+    assert.equal(r.run().status, 1, 'staged over the hard cap fails');
   } finally { r.cleanup(); }
+});
+
+test('a repo with no HEAD commit still reports new big files', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-sizes-nohead-'));
+  try {
+    const gitEnv = Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_')));
+    execFileSync('git', ['init', '-q'], { cwd: dir, env: gitEnv });
+    fs.mkdirSync(path.join(dir, 'data'));
+    fs.writeFileSync(path.join(dir, 'data/a.db'), 'x'); fs.truncateSync(path.join(dir, 'data/a.db'), 6 * MB);
+    const r = spawnSync('bash', [SCRIPT], { cwd: dir, encoding: 'utf8', env: { ...gitEnv, GITHUB_STEP_SUMMARY: '/dev/null' } });
+    assert.equal(r.status, 0);
+    assert.match(r.stdout, /no HEAD commit/);
+    assert.match(r.stdout, /data\/a\.db: new file/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
 test('a clean tree passes and says how many files it checked', () => {
@@ -117,7 +146,7 @@ test('a clean tree passes and says how many files it checked', () => {
 
 test('the action only calls the tested script, and every workflow still uses the action', () => {
   const action = fs.readFileSync(path.join(ROOT, '.github/actions/check-file-sizes/action.yml'), 'utf8');
-  assert.match(action, /run: bash scripts\/lib\/check-file-sizes\.sh/);
+  assert.match(action, /run: bash "\$\{GITHUB_WORKSPACE:-\.\}\/scripts\/lib\/check-file-sizes\.sh"/);
   assert.doesNotMatch(action, /git diff/, 'logic belongs in the script, where it is tested');
   const users = fs.readdirSync(path.join(ROOT, '.github/workflows')).filter((f) => /\.ya?ml$/.test(f))
     .filter((f) => fs.readFileSync(path.join(ROOT, '.github/workflows', f), 'utf8').includes('./.github/actions/check-file-sizes'));

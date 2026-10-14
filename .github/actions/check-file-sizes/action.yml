@@ -7,4 +7,4 @@ runs:
       shell: bash
       # Logic and rules live in the script so they are unit-tested
       # (tests/unit/check-file-sizes-post-stage.test.mjs, BRO-5335).
-      run: bash scripts/lib/check-file-sizes.sh
+      run: bash "${GITHUB_WORKSPACE:-.}/scripts/lib/check-file-sizes.sh"
