@@ -104,4 +104,17 @@ test('a run-date tail never swallows the next sentence on the same line', () => 
   const r = extractVenueBoxSection(text, SHOWS[0], SHOWS);
   assert.equal(r.ok, true, r.reason);
   assert.match(r.text, /Mr\. Smith, 45, plays the lead/);
+test('title mentions are whole words: "Rent" is not counted inside "different" or "current" (BRO-5261)', () => {
+  const shows = [
+    { id: 'rent-2030', title: 'Rent', venue: 'Nederlander Theatre', openingDate: '2030-04-01' },
+    { id: 'the-nance-2030', title: 'The Nance', venue: 'Lyceum Theatre', openingDate: '2030-04-02' },
+  ];
+  const rentReview = P('Rent is back and this Rent revival sings with real fire.', 8) + P('The cast is young and fierce.', 20);
+  const other = P('A different evening with current concerns and parents who differ.', 10) + P('The Nance is a careful play.', 8);
+  const rentBox = 'Nederlander Theatre, 208 W. 41st St. ($59-$199), 877-250-2929';
+  const text = `${rentReview} ${rentBox} ${other} ${BOX_N}`;
+  const r = extractVenueBoxSection(text, shows[0], shows);
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.text, /Rent revival sings/);
+  assert.doesNotMatch(r.text, /different evening/);
 });

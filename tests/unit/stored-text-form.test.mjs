@@ -42,8 +42,11 @@ test('textAsStored keeps only this show\'s section of a multi-show post, like th
   assert.doesNotMatch(out, /surreal/);
   const pre = preCleanForStorage(post);
   assert.equal(out, stripTrailingJunk(isolateMultiShowSection(url, pre, 'Pen Pals').text));
-  // a refusal stores nothing on the save path; the un-isolated body is returned
-  assert.equal(textAsStored(post, { url, showTitle: 'Stereophonic' }), textAsStored(post));
+  // a refusal stores nothing on the save path, so nothing is returned to verify (BRO-5261)
+  assert.equal(textAsStored(post, { url, showTitle: 'Stereophonic' }), null);
+  const { storedTextForm } = require('../../scripts/lib/stored-text-form.js');
+  assert.deepEqual(storedTextForm(post, { url, showTitle: 'Stereophonic' }), { text: null, refused: true });
+  assert.equal(storedTextForm(post, { url, showTitle: 'Pen Pals' }).refused, false);
   // a single-review host is untouched
   assert.equal(textAsStored(post, { url: 'https://www.wsj.com/articles/x', showTitle: 'Pen Pals' }), textAsStored(post));
 });

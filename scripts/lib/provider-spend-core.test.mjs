@@ -375,3 +375,16 @@ test('attributionWindowVerdict (BRO-4215): the whole alert window must be clear;
   assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.5), rec('2026-09-27', 0.9), rec('2026-09-28', 0.9)], 'scrapingdog', three).verdict, 'open', 'days=3 window');
   assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.9), rec('2026-09-27', 0.9), rec('2026-09-28', 0.9)], 'scrapingdog', three).verdict, 'clear');
 });
+
+test('renderSnapshot: a boosted day names the bulk ceiling and the Tier-1 boost (BRO-5261)', () => {
+  const base = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const at = (day, sessions) => {
+    const record = { ...base, day, providers: { ...base.providers, browserbase: { ...base.providers.browserbase, status: 'ok', sessions } } };
+    const snap = renderSnapshot({ record, streak: 0, breaches: budgetBreaches(record, THRESHOLDS), generatedAt: `${day}T06:45:00Z`, maxSessionsPerDay: 250 });
+    return (snap.items.find((i) => /CAP EXHAUSTED/.test(i.title)) || {}).title || '';
+  };
+  assert.match(at('2026-10-20', 260), /260\/250 sessions \(bulk ceiling; Tier-1 boost to 350 active\)/);
+  assert.match(at('2026-10-20', 350), /also exhausted/);
+  assert.doesNotMatch(at('2026-11-02', 260), /boost/, 'no note once the boost has expired');
+  assert.match(at('2026-11-02', 260), /CAP EXHAUSTED: 260\/250 sessions —/);
+});

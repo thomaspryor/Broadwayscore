@@ -335,6 +335,13 @@ console.log(`Unknown-critic outlet-pair matches: ${unknownPairsFlagged}`);
 // --- AP content scan (catches misattributed AP wire stories) ---
 console.log('\n--- AP Content Scan ---');
 let apFlagged = 0;
+const apWithoutPrimary = [];
+function isLiveApPrimary(showDir, f) {
+  try {
+    const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+    return !(d.isSyndicatedDuplicate || d.duplicateOf || d.wrongShow || d.wrongProduction || d.isNonReview || d.wrongAttribution);
+  } catch { return false; }
+}
 const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
   if (SHOW_FILTER && d !== SHOW_FILTER) return false;
   return true;
@@ -355,9 +362,13 @@ for (const showId of showDirs) {
       if (data.wrongShow || data.wrongProduction) continue;
 
       if (detectAPContent(data.fullText, data.url)) {
-        // Find the AP file for this show
-        const apFile = files.find(f => f.startsWith('ap--'));
+        // The AP row that carries this review for the show: a live one only (a
+        // flagged ap-- file is not a primary). With none, the copy is still
+        // excluded (AP's verdict under another outlet's name is the worse
+        // error) and listed, so the missing AP row gets filed (BRO-5261).
+        const apFile = files.find((f) => f.startsWith('ap--') && isLiveApPrimary(showDir, f));
         const apRef = apFile ? `${showId}/${apFile}` : null;
+        if (!apRef) apWithoutPrimary.push(`${showId}/${file}`);
 
         console.log(`  AP content in non-AP file: ${showId}/${file}${apRef ? ' → primary: ' + apRef : ''}`);
 
@@ -393,6 +404,10 @@ for (const showId of showDirs) {
   }
 }
 console.log(`AP content detected in ${apFlagged} non-AP files`);
+if (apWithoutPrimary.length) {
+  console.log(`  ${apWithoutPrimary.length} AP cop${apWithoutPrimary.length === 1 ? 'y has' : 'ies have'} no live ap-- row on its show (excluded; file the AP review under the show to bring AP's verdict back):`);
+  for (const f of apWithoutPrimary) console.log(`    - ${f}`);
+}
 
 // --- Results ---
 console.log(`\n=== RESULTS ===`);

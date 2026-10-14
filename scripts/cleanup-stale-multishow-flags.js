@@ -2,9 +2,7 @@
 /**
  * Cleanup stale isMultiShowReview flags.
  *
- * The multi-show detector's SKIP_TITLES list has been expanded. Many reviews
- * were flagged by the old detector using common English words ("well", "the first",
- * "parade", etc.) that are now in SKIP_TITLES. This script re-runs the detector
+ * Re-runs the scorer's multi-show detector (scripts/llm-scoring/multi-show-detector.ts)
  * and clears flags that would no longer trigger.
  *
  * Usage: node scripts/cleanup-stale-multishow-flags.js [--dry-run] [--verbose]
@@ -17,67 +15,10 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
 
-// Import the current SKIP_TITLES and detector logic inline
-// (We can't import TS directly, so replicate the skip set here — keep in sync with multi-show-detector.ts)
-const SKIP_TITLES = new Set([
-  'six', 'cats', 'rent', 'hair', 'fame', 'nine', 'once', 'annie', 'grease',
-  'chicago', 'oliver', 'company', 'pippin',
-  'well', 'good', 'home', 'high', 'spring', 'summer', 'november',
-  'broadway', 'giant', 'molly',
-  'baby', 'brothers', 'doubt', 'dream', 'race', 'rain', 'rose',
-  'the audience', 'the performers', 'the news', 'the price', 'the visit',
-  // Mar 2026 audit additions
-  'the first', 'parade', 'just in time', 'english', 'holiday', 'care',
-  'dorothy', 'working', 'emily', 'wanted', 'buddy', 'stanley', 'jackie',
-  'fosse', 'sugar', 'irene', 'data', 'brooklyn', 'mail', 'marilyn',
-  'legend', 'bent', 'contact', 'stomp', 'stages', 'raisin', 'betty',
-  'lenny', 'sylvia', 'carrie',
-]);
-
-// Load all show titles for re-detection
-const showsPath = path.join(__dirname, '../data/shows.json');
-const showsRaw = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
-const shows = showsRaw.shows || showsRaw;
-const showTitleMap = new Map();
-for (const show of shows) {
-  if (show.title && show.title.length > 2) {
-    showTitleMap.set(show.title.toLowerCase(), show.id || show.slug);
-  }
-}
-
-function countMentions(text, title) {
-  if (title.length <= 3) return 0;
-  if (SKIP_TITLES.has(title.toLowerCase())) return 0;
-  const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
-  const matches = text.match(regex);
-  return matches ? matches.length : 0;
-}
-
-function reDetect(text, targetShowId) {
-  if (!text || text.length < 200) return { isMultiShowReview: false, otherShows: [] };
-
-  const lowerText = text.toLowerCase();
-  const targetTitle = [...showTitleMap.entries()].find(([, id]) => id === targetShowId)?.[0];
-  const targetIdWords = targetShowId.replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3);
-
-  const otherShows = [];
-  for (const [title, showId] of showTitleMap) {
-    if (showId === targetShowId) continue;
-    if (title === targetTitle) continue;
-    const titleWords = title.split(/\s+/).filter(w => w.length > 3);
-    const overlap = titleWords.filter(w => targetIdWords.includes(w)).length;
-    if (overlap > 0 && overlap >= titleWords.length * 0.5) continue;
-    const mentions = countMentions(lowerText, title);
-    if (mentions >= 5) otherShows.push({ title, mentions });
-  }
-
-  otherShows.sort((a, b) => b.mentions - a.mentions);
-
-  if (otherShows.length >= 2) return { isMultiShowReview: true, otherShows, recommendation: 'skip' };
-  if (otherShows.length === 1 && otherShows[0].mentions >= 7) return { isMultiShowReview: true, otherShows, recommendation: 'warn' };
-  return { isMultiShowReview: false, otherShows };
-}
+// The scorer's own detector (BRO-5261): a second copy here drifted (it lacked
+// the production-box signal and cleared every box-detected WSJ column).
+require('module').createRequire(__filename)('tsx/cjs');
+const { detectMultiShow } = require('./llm-scoring/multi-show-detector.ts');
 
 // Walk review-texts directory
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -98,7 +39,7 @@ function walkDir(dir) {
         total++;
 
         const text = data.fullText || '';
-        const result = reDetect(text, data.showId);
+        const result = detectMultiShow(text, data.showId);
 
         if (!result.isMultiShowReview) {
           cleared++;
@@ -113,9 +54,7 @@ function walkDir(dir) {
         } else {
           stillFlagged++;
           // Update reason if it changed
-          const newReason = result.recommendation === 'skip'
-            ? `Roundup article: ${result.otherShows.length} other shows mentioned 5+ times (${result.otherShows.slice(0, 3).map(s => s.title).join(', ')})`
-            : `Comparison article: "${result.otherShows[0].title}" mentioned ${result.otherShows[0].mentions} times`;
+          const newReason = result.reason || data.multiShowReason;
           if (!dryRun && newReason !== data.multiShowReason) {
             data.multiShowReason = newReason;
             fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n');
