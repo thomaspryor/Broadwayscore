@@ -7,10 +7,12 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const SCRIPT = path.join(ROOT, 'scripts', 'check-sb-breaker.js');
-const today = new Date().toISOString().slice(0, 10);
+// Child process runs on the REAL clock; stamp from it (BRO-5206).
+const today = new Date(realNowMs()).toISOString().slice(0, 10);
 
 function daysBefore(n) {
   return new Date(Date.parse(`${today}T00:00:00Z`) - n * 86400000).toISOString().slice(0, 10);
@@ -60,7 +62,7 @@ function run({ usage, prevState = null, env = {}, history = [] }) {
 }
 
 const usage = (cycleUsed, cap = 1000000) => ({ cycleUsed, cap, renewalDate: daysBefore(-20) });
-const prev = (lastCycleUsed, extra = {}) => ({ day: today, dayBaseline: 100000, lastCycleUsed, updatedAt: new Date().toISOString(), ...extra });
+const prev = (lastCycleUsed, extra = {}) => ({ day: today, dayBaseline: 100000, lastCycleUsed, updatedAt: new Date(realNowMs()).toISOString(), ...extra });
 const history = Array.from({ length: 10 }, (_, k) => ({
   day: daysBefore(k + 1), capturedAt: `${daysBefore(k + 1)}T23:00:00Z`,
   providers: { scrapingbee: { status: 'ok', cycleUsed: 100000, cap: 1000000, dayCredits: 30000 } },
@@ -115,7 +117,7 @@ test('ENFORCED loosen-only: a pinned ceiling below the 14d median is lifted to t
 });
 
 test('ENFORCED: a trip recorded today stays tripped when the pack then runs out (BRO-3010 review)', () => {
-  const tripped = prev(900000, { dayBaseline: 100000, trippedAt: new Date().toISOString() });
+  const tripped = prev(900000, { dayBaseline: 100000, trippedAt: new Date(realNowMs()).toISOString() });
   const r = run({ usage: usage(1000005), prevState: tripped, history, env: { SB_BREAKER_SHADOW: '0' } });
   assert.equal(r.code, 0, r.out);
   assert.equal(r.state.packExhausted, true);
@@ -124,7 +126,7 @@ test('ENFORCED: a trip recorded today stays tripped when the pack then runs out 
 });
 
 test('switching back to SHADOW resolves an open enforced incident (BRO-3010 review)', () => {
-  const tripped = prev(250000, { trippedAt: new Date().toISOString() });
+  const tripped = prev(250000, { trippedAt: new Date(realNowMs()).toISOString() });
   const r = run({ usage: usage(260000), prevState: tripped, history });
   assert.equal(r.code, 0, r.out);
   assert.equal(r.state.trippedAt, null);
