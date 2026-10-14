@@ -48,6 +48,7 @@ import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
+import { useCouldHaveSeenShow } from '@/hooks/useCouldHaveSeenShow';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
@@ -189,6 +190,9 @@ function Inner({
   const autoRate = deepLink.rate;
   const autoRateStars = deepLink.stars;
   const autoEditLatest = deepLink.edit;
+  // No rating for a show nobody could have seen yet (BRO-77): the Rate button
+  // and the ?rate=1 deep link follow the same gate as the poster hover stars.
+  const seeable = useCouldHaveSeenShow(show);
 
   // ─── Derived state ─────────────────────────────────────────────────────
 
@@ -199,6 +203,8 @@ function Inner({
   const latestReview = sortedReviews[0] ?? null;
   const ratingCount = showReviews.length;
   const hasRating = ratingCount > 0;
+  // Keep "Log another viewing" for a show already rated; hide a first "Rate it" until it could have been seen.
+  const showRateButton = seeable || hasRating;
   const isMulti = ratingCount > 1;
   const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   // Signed out, "Want to See" saves on this device (BRO-4616).
@@ -261,7 +267,7 @@ function Inner({
 
   // ?rate=1 — auto-open rate panel (deferred-auth target for inline-stars CTAs)
   useEffect(() => {
-    if (!autoRate || ratePanelOpen) return;
+    if (!autoRate || ratePanelOpen || !seeable) return;
     // The pending-action effect above runs first (the deep link is read after
     // mount, so this runs a commit later) and sets this ref when it consumed a
     // draft for this show — without this guard, a stale ratePanelOpen=false read here would let us clobber
@@ -282,7 +288,7 @@ function Inner({
       setRatePanelOpen(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoRate, isAuthenticated, authLoading]);
+  }, [autoRate, isAuthenticated, authLoading, seeable]);
 
   // ?edit=1 — auto-open edit on latest review (diary edit pencil entry point)
   useEffect(() => {
@@ -668,7 +674,9 @@ function Inner({
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
       {userFeaturesEnabled && (
-        <div className={`grid gap-2 ${isAuthenticated ? 'grid-cols-[1fr_1fr_auto]' : 'grid-cols-2'}`}>
+        <div className={`grid gap-2 ${showRateButton
+          ? (isAuthenticated ? 'grid-cols-[1fr_1fr_auto]' : 'grid-cols-2')
+          : (isAuthenticated ? 'grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
           <button
             type="button"
             onClick={handleWantToSee}
@@ -683,6 +691,7 @@ function Inner({
             </svg>
             <span className="text-xs sm:text-sm font-semibold">{getWatchlistCtaLabel({ onWatchlist, hasRating, isClosed })}</span>
           </button>
+          {showRateButton && (
           <button
             type="button"
             ref={rateBtnRef}
@@ -696,6 +705,7 @@ function Inner({
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
+          )}
           {/* Custom lists, signed-in only: for signed-out visitors it was a third
               control that led straight to a sign-in wall (owner, 2026-10-06).
               Icon-only below sm so the two primary buttons keep their width. */}

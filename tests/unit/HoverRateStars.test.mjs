@@ -62,14 +62,22 @@ test('every <HoverRateStars> usage passes a show prop', () => {
   assert.deepEqual(offenders, []);
 });
 
-test('HoverRateStars decides after mount, never during render (hydration)', () => {
+test('rate controls decide after mount through one hook, never during render (hydration)', () => {
   // Deciding during render made cached server HTML (UTC clock, 24h ISR on
   // show pages) and the first client render disagree on preview day.
-  const src = readFileSync('src/components/user/HoverRateStars.tsx', 'utf8');
-  assert.match(src, /useEffect\(\(\) => \{\s*if \(dateDependent\) setSeenAfterMount\(couldHaveSeenShow\(/);
-  assert.match(src, /const seeable = dateDependent \? seenAfterMount : true;/);
-  assert.match(src, /if \(!seeable\) return null;/);
-  assert.doesNotMatch(src, /if \(!couldHaveSeenShow\(/);
+  const hook = readFileSync('src/hooks/useCouldHaveSeenShow.ts', 'utf8');
+  assert.match(hook, /useEffect\(\(\) => \{\s*if \(dateDependent\) setAfterMount\(\{ key, seeable: couldHaveSeenShow\(/);
+  // Every rate entry point gates on the hook: poster/card stars, the show-page
+  // Rate button and the ?rate=1 deep link (BRO-5261 retro: the button and the
+  // deep link still opened the editor for unseeable shows).
+  const stars = readFileSync('src/components/user/HoverRateStars.tsx', 'utf8');
+  assert.match(stars, /const seeable = useCouldHaveSeenShow\(show\);/);
+  assert.match(stars, /if \(!seeable\) return null;/);
+  const hero = readFileSync('src/components/show-page/ShowHeroRedesign.tsx', 'utf8');
+  assert.match(hero, /const seeable = useCouldHaveSeenShow\(show\);/);
+  assert.match(hero, /if \(!autoRate \|\| ratePanelOpen \|\| !seeable\) return;/);
+  assert.match(hero, /\{showRateButton && \(/);
+  for (const src of [stars, hero]) assert.doesNotMatch(src, /couldHaveSeenShow\(/, 'components call the hook, not the clock-reading helper');
 });
 
 test('dependsOnDate: only upcoming/announced need the viewer clock', async () => {
@@ -94,4 +102,19 @@ test('hasLocalDateArrived compares by local calendar date, not UTC midnight', as
   assert.equal(hasLocalDateArrived('2026-10-01T19:00:00Z', '2026-10-13'), true);
   assert.equal(hasLocalDateArrived(null, '2026-10-13'), true);
   assert.equal(hasLocalDateArrived('TBA', '2026-10-13'), true);
+});
+
+test('useCouldHaveSeenShow: server render hides date-dependent shows, fixed statuses decide at once', async () => {
+  const React = (await import('react')).default;
+  const { renderToString } = await import('react-dom/server');
+  const { useCouldHaveSeenShow } = await import('../../src/hooks/useCouldHaveSeenShow.ts');
+  const Probe = ({ show }) => React.createElement('i', null, String(useCouldHaveSeenShow(show)));
+  const html = (show) => renderToString(React.createElement(Probe, { show }));
+  // Effects never run on the server, so upcoming/announced render as not seeable
+  // whatever their dates; the client decides after mount with the viewer's clock.
+  assert.match(html({ status: 'upcoming', previewsStartDate: '2000-01-01' }), />false</);
+  assert.match(html({ status: 'announced' }), />false</);
+  assert.match(html({ status: 'previews', previewsStartDate: '2099-01-01' }), />true</);
+  assert.match(html({ status: 'open' }), />true</);
+  assert.match(html(null), />true</);
 });

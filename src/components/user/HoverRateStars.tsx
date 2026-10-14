@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMyRating } from '@/hooks/useMyRating';
 import StarRating from './StarRating';
 import { featureFlags } from '@/config/feature-flags';
-import { couldHaveSeenShow, dependsOnDate, type RateabilitySource } from '@/lib/show-rateability';
+import { type RateabilitySource } from '@/lib/show-rateability';
+import { useCouldHaveSeenShow } from '@/hooks/useCouldHaveSeenShow';
 
 interface HoverRateStarsProps {
   showId: string;
@@ -48,15 +48,8 @@ export default function HoverRateStars({ showId, show, showHref, starSize = 'xs'
   // (ship-check, BRO-77). Every other status is decided during render, the
   // same on both sides, so most cards skip the extra effect render. The
   // strip is invisible until hover, so starting hidden changes nothing.
-  const { status, previewsStartDate, openingDate } = show;
-  const dateDependent = dependsOnDate(status);
-  const [seenAfterMount, setSeenAfterMount] = useState(false);
-  useEffect(() => {
-    if (dateDependent) setSeenAfterMount(couldHaveSeenShow({ status, previewsStartDate, openingDate }));
-  }, [dateDependent, status, previewsStartDate, openingDate]);
-  // Derived, not stored: a reused card that switches to an open show is
-  // seeable immediately instead of keeping a stale false.
-  const seeable = dateDependent ? seenAfterMount : true;
+  // Date-dependent statuses decide after mount (hydration-safe, BRO-77).
+  const seeable = useCouldHaveSeenShow(show);
 
   if (!featureFlags.userAccounts) return null;
   if (!seeable) return null;

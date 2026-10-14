@@ -57,7 +57,8 @@ function ServerMiniShowCard({ show, priority }: { show: ServerShelfShow; priorit
       <div className="relative mb-1.5">
         <div className="relative rounded-lg overflow-hidden bg-surface-overlay aspect-[2/3]">
           <ShowPageBookmark showId={show.id} size="sm" />
-          <HoverRateStars showId={show.id} show={show} showHref={`/show/${show.slug}`} />
+          {/* Server component: pass only the gate's fields, not the whole show, into the client payload. */}
+          <HoverRateStars showId={show.id} show={{ status: show.status, previewsStartDate: show.previewsStartDate, openingDate: show.openingDate }} showHref={`/show/${show.slug}`} />
           {imgSrc ? (
             <img
               src={imgSrc}

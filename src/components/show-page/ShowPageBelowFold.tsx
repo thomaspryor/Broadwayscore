@@ -444,7 +444,9 @@ export default function ShowPageBelowFold({
             return dur ? (
               <div>
                 <dt className="text-gray-500">Running</dt>
-                <dd className="text-white mt-0.5">{dur}</dd>
+                {/* Reads today's date: the cached page (24h ISR) can be a month boundary
+                    behind the viewer, so keep the server text rather than fail hydration. */}
+                <dd className="text-white mt-0.5" suppressHydrationWarning>{dur}</dd>
               </div>
             ) : null;
           })()}
@@ -509,10 +511,13 @@ export default function ShowPageBelowFold({
             <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
               <dt className="text-gray-500">Data Last Updated</dt>
               <dd className="text-gray-400 mt-0.5 text-xs">
+                {/* UTC on both sides: the viewer's zone moved a date-only value back a day
+                    and made server and client text differ (hydration). */}
                 {new Date(lastUpdated).toLocaleDateString('en-US', {
                   month: 'long',
                   day: 'numeric',
-                  year: 'numeric'
+                  year: 'numeric',
+                  timeZone: 'UTC',
                 })}
               </dd>
             </div>
