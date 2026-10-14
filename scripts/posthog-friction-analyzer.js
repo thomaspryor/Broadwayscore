@@ -100,10 +100,16 @@ async function createFrictionIssue(issue, hash) {
     title: issue.title,
     description: notes.slice(0, 2000),
     priority,
-    park: 'Weekly PostHog friction scan finding — needs human triage before work starts',
+    park: FRICTION_PARK_REASON,
   });
   return result.issue.url;
 }
+
+// Park reasons (BRO-5372): worded so they do not read as an owner hold.
+// auto-fix-friction-card.js picks friction cards by priority and the parked clamp
+// marker (friction-fix-eligibility.js), not by this text.
+const FRICTION_PARK_REASON = 'Weekly PostHog friction scan finding: urgent ones go to auto-fix-friction-card.js, the rest wait for board triage';
+const MISSING_SHOW_PARK_REASON = 'Candidate missing production from zero-results search: add only after validate-show-venue.js confirms venue and date (CLAUDE.md Rule 3, never auto-add)';
 
 // Missing-show issue: a real production users searched for but the site doesn't
 // cover. NOT auto-committed — CLAUDE.md Rule 3 requires validate-show-venue.js
@@ -134,7 +140,7 @@ async function createMissingShowIssue(show, hash) {
     title: `Missing show: ${show.canonical_title}`.slice(0, 100),
     description: notes.slice(0, 2000),
     priority: PRIORITY_MAP['P1 Next'],
-    park: 'Candidate missing production from zero-results search — needs manual venue/date validation before any shows.json entry (CLAUDE.md Rule 3)',
+    park: MISSING_SHOW_PARK_REASON,
   });
   return result.issue.url;
 }
@@ -490,4 +496,8 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+if (require.main === module) {
+  main().catch(e => { console.error(e); process.exit(1); });
+}
+
+module.exports = { FRICTION_PARK_REASON, MISSING_SHOW_PARK_REASON };

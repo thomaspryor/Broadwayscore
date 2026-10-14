@@ -241,6 +241,29 @@ function isDrainableSessionParked(notes) {
   return reasons.length > 0 && reasons.every((r) => r && TECHNICAL_PARK_RE.test(r) && !OWNER_HOLD_PARK_RE.test(r));
 }
 
+// BRO-5372: OWNER_HOLD_PARK_RE is a deliberately wide deny list, so a technical
+// park worded "per-outlet naming judgment" or "needs human triage" reads as the
+// owner's call and no worker ever takes the card (72 such cards on 2026-10-14,
+// about 50 of them plain technical work). The words below name what only the
+// owner can supply: money, a login or account, a product/taste call, an
+// irreversible bulk change, their calendar, or their Mac. Used only to keep the
+// advisory quiet; it never widens what drains.
+const OWNER_ONLY_PARK_RE = /\bmac\b|launchd|simulator|money|spend|subscription|credits|\bpaid\b|payment|price|login|log[- ]in|sign[- ]?in|oauth|cookie|password|account|calendar|schedul|taste|visual-qa approval|owner-review|product (?:call|decision)|irreversib|bulk/i;
+
+/**
+ * Warn-only filing advisory: the park reason reads as an owner hold but names
+ * nothing only the owner can supply. Returns the warning text, or null.
+ */
+function parkReasonAdvisory(reason) {
+  const r = String(reason || '').trim();
+  if (!r || isAutomationParked(`PARKED: ${r}`)) return null;
+  const hit = r.match(OWNER_HOLD_PARK_RE);
+  if (!hit || OWNER_ONLY_PARK_RE.test(r)) return null;
+  return `PARK-ADVISORY: the park reason contains "${hit[0]}", so every worker reads this card as waiting on the owner and never takes it. `
+    + 'If a worker can do it, file it with --dispatch and a VERIFY line instead. Park for the owner only when it needs money, '
+    + "a login or account only the owner has, a product or taste call, an irreversible bulk change, or the owner's Mac (BRO-5372).";
+}
+
 // BRO-3536: which classifier blockers actually still refuse a headless
 // dispatch once the caller's flags are applied. --force / --allow-automation-
 // parked / --allow-session-parked waive PARKED_SENTINEL ONLY; every other
@@ -373,6 +396,7 @@ module.exports = {
   UI_CARD_CLASS_RE,
   isAutomationParked,
   isDrainableSessionParked,
+  parkReasonAdvisory,
   OWNER_HOLD_PARK_RE,
   TECHNICAL_PARK_RE,
   // Exported so a test can assert this array holds the SHARED owner-judgment

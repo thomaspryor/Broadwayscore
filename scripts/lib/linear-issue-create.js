@@ -229,6 +229,16 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   if (filed.clamped) {
     console.warn(`[linear-issue-create] parked issue filed at Medium, not P0/P1 (BRO-4487): "${title}"`);
   }
+  if (disposition.mode === 'park') {
+    // BRO-5372, warn-only: an advisory must never fail the filing. Lazy require:
+    // headless-dispatchability.js pulls in linear-drain-parked.js.
+    try {
+      const advisory = require('./headless-dispatchability').parkReasonAdvisory(disposition.reason);
+      if (advisory) console.warn(`[linear-issue-create] ${advisory}`);
+    } catch (e) {
+      console.warn(`[linear-issue-create] park-reason advisory failed (filing continues): ${e.message}`);
+    }
+  }
   const clampNote = filed.clamped
     ? `\n\n${PARKED_CLAMP_MARKER} A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.`
     : '';

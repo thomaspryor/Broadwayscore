@@ -223,7 +223,7 @@ async function notifyLinear(ambiguous, todayStr) {
     brain, 'create', title,
     '--priority', '2',
     '--notes', notes,
-    '--park', 'Daily WE closing-date audit finding — needs human verification before any shows.json edit',
+    '--park', 'Daily WE closing-date audit finding: a worker checks press sources before any shows.json edit',
   ], { encoding: 'utf8', timeout: 60_000 });
 
   if (create.status !== 0) {

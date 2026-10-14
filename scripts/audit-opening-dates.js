@@ -151,7 +151,7 @@ async function notifyLinear(flagged, todayStr) {
     brain, 'create', title,
     '--priority', '2',
     '--notes', notes,
-    '--park', 'Daily opening-date audit finding — suggestion-only, needs human verification against press sources before any shows.json edit',
+    '--park', 'Daily opening-date audit finding — suggestion-only: a worker checks press sources before any shows.json edit',
   ], { encoding: 'utf8', timeout: 60_000 });
 
   // This assertion IS the fix (BRO-3430): a refused/failed create used to be

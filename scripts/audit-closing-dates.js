@@ -312,7 +312,7 @@ async function notifyLinear(ambiguous, todayStr) {
     brain, 'create', title,
     '--priority', '2',
     '--notes', notes,
-    '--park', 'Daily closing-date audit finding — needs human verification against press sources before any shows.json edit',
+    '--park', 'Daily closing-date audit finding: a worker checks press sources before any shows.json edit',
   ], { encoding: 'utf8', timeout: 60_000 });
 
   // This assertion IS the fix (BRO-3430 class): a refused/failed create used
