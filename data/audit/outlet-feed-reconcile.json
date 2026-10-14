@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T19:12:41.227Z",
+  "generatedAt": "2026-10-14T22:26:03.894Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -54,11 +54,6 @@
       "openingDate": "2026-10-09"
     },
     {
-      "id": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "openingDate": "2026-10-13"
-    },
-    {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
@@ -91,6 +86,10 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -127,12 +126,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 692,
-  "matchedGaps": 1,
+  "itemsScanned": 672,
+  "matchedGaps": 3,
   "possibleGaps": 6,
   "gaps": [
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/a-ghost-in-your-ear-audibles-minetta-lane-theatre/",
+      "headline": "A Ghost In Your Ear &#8211; Audible’s Minetta Lane Theatre",
+      "publishDate": "2026-10-14"
+    },
     {
       "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
@@ -141,6 +153,24 @@
       "url": "https://www.britishtheatreguide.info/reviews/the-banality-of-arcola-theatre-26112",
       "headline": "The Banality of Evil: Hannah Arendt, France, 1940",
       "publishDate": "2026-10-14"
+    },
+    {
+      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "title": "The Prime of Miss Jean Brodie",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/the-prime-of-miss-jean-brodie-2/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-prime-of-miss-jean-brodie-2",
+      "headline": "The Prime of Miss Jean Brodie",
+      "publishDate": "2026-10-14"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+      "headline": "Review: A Ghost in Your Ear, the Curse of Daddy Issues in an Audiobook",
+      "publishDate": null
     },
     {
       "showId": "midnight-off-broadway-2026",
@@ -177,15 +207,6 @@
       "url": "https://www.afridiziak.com/reviews/rent-the-musical-tom-stoppard-theatre/",
       "headline": "Rent the Musical – review",
       "publishDate": "2026-10-14"
-    },
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-application-39-aviva-studios-tour",
-      "headline": "Review: APPLICATION 39, Aviva Studios - Tour",
-      "publishDate": "2026-10-10"
     },
     {
       "showId": "triumph-off-broadway-2026",

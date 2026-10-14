@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-14T14:23:10.736Z",
+  "generatedAt": "2026-10-14T22:25:50.531Z",
   "phase": "done",
   "days": 21,
   "shows": 66,
   "sources": {
     "theatermania": {
       "queries": 35,
-      "listed": 12,
+      "listed": 13,
       "errors": 0
     },
     "whatsonstage": {
@@ -16,7 +16,7 @@
     },
     "nysr": {
       "queries": 35,
-      "listed": 10,
+      "listed": 12,
       "errors": 0
     },
     "newyorktheater": {
@@ -36,7 +36,32 @@
     }
   },
   "listingTruncated": false,
-  "listed": 94,
-  "ingested": [],
-  "missing": []
+  "listed": 97,
+  "ingested": [
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+      "ok": false,
+      "error": "Command failed: node /home/runner/work/Broadwayscore/Broadwayscore/scripts/ingest-review-from-url.js --show=a-ghost-in-your-ear-off-broadway-2026 --url=https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/ --stub-on-failure"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "url": "https://nystagereview.com/2026/10/14/a-ghost-in-your-ear-who-wants-a-nice-piece-of-halloween-candy/",
+      "ok": true
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "url": "https://nystagereview.com/2026/10/14/a-ghost-in-your-ear-horror-to-hear-as-well-as-see/",
+      "ok": true
+    }
+  ],
+  "missing": [
+    {
+      "source": "theatermania",
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+      "date": "2026-10-14"
+    }
+  ]
 }

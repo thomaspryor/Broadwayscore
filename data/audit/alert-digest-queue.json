@@ -699,19 +699,6 @@
     "queuedAt": "2026-10-14T17:37:57.467Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 2 cited review(s)",
-    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-14T17:37:58.350Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-cherry-orchard-west-end-2026:telegraph",
     "title": "Auto-remediation gave up on the-cherry-orchard-west-end-2026",
     "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-cherry-orchard-west-end-2026\",\"outlet\":\"telegraph\",\"phases\":\"0,1,2,3\"}",
@@ -963,6 +950,71 @@
       }
     ],
     "queuedAt": "2026-10-14T20:22:54.866Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-ghost-in-your-ear-off-broadway-2026",
+    "title": "Review gap — \"A Ghost In Your Ear\" missing 1 cited review(s)",
+    "description": "A Ghost In Your Ear (a-ghost-in-your-ear-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-ghost-in-your-ear-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T22:22:35.201Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:hay-fever-west-end-2026",
+    "title": "Review gap — \"Hay Fever\" missing 1 cited review(s) — escalated after 15 notifications",
+    "description": "Filed BRO-5376 for owner triage after 15 repeats with no tracker.\n\nHay Fever (hay-fever-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=hay-fever-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5376",
+    "fields": [],
+    "queuedAt": "2026-10-14T22:22:38.474Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jena-friedman-motherfucker-off-broadway-2026",
+    "title": "Review gap — \"Jena Friedman: Motherfucker\" missing 4 cited review(s) — escalated after 15 notifications",
+    "description": "Filed BRO-5377 for owner triage after 15 repeats with no tracker.\n\nJena Friedman: Motherfucker (jena-friedman-motherfucker-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jena-friedman-motherfucker-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5377",
+    "fields": [],
+    "queuedAt": "2026-10-14T22:22:39.811Z"
+  },
+  {
+    "conditionKey": "outlet-ground-truth:a-ghost-in-your-ear-off-broadway-2026:https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+    "title": "Missing review from a tracked outlet: a-ghost-in-your-ear-off-broadway-2026 — theatermania",
+    "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/), and automatic ingest did not recover it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-14T22:25:50.525Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard (still open — BRO-3030)",
+    "description": "Still firing after 67 notifications since it was filed. Tracked at BRO-3030.\n\nbroadway: 45.1% (437/968)\noff-broadway: 48.6% (173/356)\nwest-end: 80.9% (452/559)\n\nOldest gaps:\nABBA Voyage — independent (1476h)\nAladdin — ew (1476h)\n& Juliet — nydailynews (1476h)\nAs You Like It — i-paper (1476h)\nAs You Like It — standard (1476h)\n… 358 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nHeathers The Musical — dailybeast (1476h)\nThe Book of Mormon — washpost (366h)\nBuena Vista Social Club — dailybeast (366h)\nMaybe Happy Ending — washpost (366h)\nMrs. Doubtfire — dailybeast (366h)\n… 7 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-3030",
+    "fields": [],
+    "queuedAt": "2026-10-14T22:26:00.210Z"
   },
   {
     "conditionKey": "land:land/bro-5373-mail-on-sunday",
