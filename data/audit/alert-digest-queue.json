@@ -481,5 +481,35 @@
       }
     ],
     "queuedAt": "2026-10-14T14:22:55.739Z"
+  },
+  {
+    "conditionKey": "land:land/cloud-md-force-add-2",
+    "title": "Landing blocked: unit-tests-node red on land/cloud-md-force-add-2",
+    "description": "land.yml did not land land/cloud-md-force-add-2: the unit-tests-node gate went red at 20c6f03ffb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38575170119",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/cloud-md-force-add-2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "20c6f03ffbacd0489a0217f7bfdef0ac8908d6d7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38575170119"
+      }
+    ],
+    "queuedAt": "2026-10-14T14:27:47.159Z"
   }
 ]
