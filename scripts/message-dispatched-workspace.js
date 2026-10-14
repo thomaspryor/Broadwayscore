@@ -95,8 +95,15 @@ function main() {
     return;
   }
 
-  cmux(['send', '--workspace', resolved.ref, '--', message]);
-  cmux(['send-key', '--workspace', resolved.ref, '--', 'enter']);
+  // Through sendToWorkspace, not a raw `cmux send` (BRO-5261 S15): it refuses
+  // multi-line text (cmux would submit it half-typed, BRO-3013) and re-checks
+  // the tab title right before typing (BRO-4140 wrong-tab guard).
+  try {
+    cmuxws.sendToWorkspace(resolved.ref, cmuxws.flattenToSingleLine(message), { expectedTitle: resolved.title });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
   console.error(`Sent message to ${resolved.ref}.`);
 }
 
