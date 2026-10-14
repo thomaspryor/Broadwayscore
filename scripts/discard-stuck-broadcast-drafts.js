@@ -87,8 +87,12 @@ async function dismissWithoutDraft(raw, shows) {
 
   const why = dismissBlockReason(shows, SHOW_IDS, { openingDates, today, goneDraftIds });
   if (why) refuse(why);
-  const writes = planNoDraftDismissal(shows, SHOW_IDS, { nowIso: new Date().toISOString(), reason: REASON });
+  const writes = planNoDraftDismissal(shows, SHOW_IDS, { nowIso: new Date().toISOString(), reason: REASON, goneDraftIds });
   console.log(`Shows: ${SHOW_IDS.join(', ')} (no draft to delete)`);
+  if (!Object.keys(writes).length) {
+    console.log('Already recorded as "will not send". Nothing to change.');
+    return;
+  }
   console.log(`Tracker keys to mark discarded: ${Object.keys(writes).join(', ')}`);
   if (!EXECUTE) {
     console.log('\n[DRY RUN] Would record these shows as "will not send". Re-run with --execute.');

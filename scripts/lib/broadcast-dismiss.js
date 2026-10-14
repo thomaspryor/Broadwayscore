@@ -12,33 +12,37 @@
  * ids a live GET just confirmed gone (404).
  */
 
-const { classifyBroadcastState, classifyShowBroadcastState } = require('./missed-broadcasts');
+const { classifyBroadcastState, classifyShowBroadcastState, isSideKey, keyShowIds } = require('./missed-broadcasts');
 const { markDraftDiscarded } = require('./broadcast-state');
-
-const SIDE_KEY_RE = /^(preview|overdue-alert):/;
-
-/** Show ids a tracker key covers: 'a' -> [a], 'broadway:a+b' -> [a, b]. */
-function keyShowIds(key) {
-  const m = /^[a-z-]+:([^:]+)$/.exec(key);
-  return m ? m[1].split('+') : [key];
-}
 
 /** Every tracker key (side keys excluded) that names this show. */
 function recordKeysForShow(sentShows, showId) {
-  return Object.keys(sentShows || {}).filter((k) => !SIDE_KEY_RE.test(k) && keyShowIds(k).includes(showId));
+  return Object.keys(sentShows || {}).filter((k) => !isSideKey(k) && keyShowIds(k).includes(showId));
+}
+
+/** A show already settled on its own (sent, or recorded "won't send"). */
+function isSettled(sentShows, showId) {
+  const state = classifyShowBroadcastState(sentShows, showId);
+  return state === 'sent' || state === 'discarded';
 }
 
 /**
  * Every show that shares a Resend draft with this one (the show itself
  * included). A combo draft can only be discarded with all its shows named.
+ * With `skipSettled`, other shows already sent or discarded on their own are
+ * left out: --no-draft deletes nothing, so it need not name them, and naming
+ * a sent one is refused (BRO-3087 retro-review, BRO-5261).
  */
-function draftShowIds(sentShows, showId) {
+function draftShowIds(sentShows, showId, { skipSettled = false } = {}) {
   const shows = sentShows || {};
   const draftIds = new Set(recordKeysForShow(shows, showId).map((k) => shows[k] && shows[k].draftId).filter(Boolean));
   const ids = new Set([showId]);
   for (const [k, rec] of Object.entries(shows)) {
-    if (SIDE_KEY_RE.test(k) || !rec || !draftIds.has(rec.draftId)) continue;
-    for (const id of keyShowIds(k)) ids.add(id);
+    if (isSideKey(k) || !rec || !draftIds.has(rec.draftId)) continue;
+    for (const id of keyShowIds(k)) {
+      if (skipSettled && id !== showId && isSettled(shows, id)) continue;
+      ids.add(id);
+    }
   }
   return [...ids];
 }
@@ -61,7 +65,9 @@ function dismissBlockReason(sentShows, showIds, { openingDates, today, goneDraft
     for (const key of recordKeysForShow(shows, id)) {
       const rec = shows[key];
       if (!rec || rec.discardedAt) continue;
-      const others = keyShowIds(key).filter((s) => !named.has(s));
+      // A show settled on its own (sent later, or already skipped) does not
+      // need naming: stamping this leftover record cannot unsend or resend it.
+      const others = keyShowIds(key).filter((s) => !named.has(s) && !isSettled(shows, s));
       if (others.length) return `${key} also covers ${others.join(', ')}; name every show of that broadcast`;
       const state = classifyBroadcastState(rec);
       if (state === 'sent') return `${key} was already sent; nothing to dismiss`;
@@ -79,12 +85,18 @@ function dismissBlockReason(sentShows, showIds, { openingDates, today, goneDraft
  * since the send filter and the sweep read the per-show record first.
  * Returns { [key]: newRecord } and does not mutate sentShows.
  */
-function planNoDraftDismissal(sentShows, showIds, { nowIso, reason } = {}) {
+function planNoDraftDismissal(sentShows, showIds, { nowIso, reason, goneDraftIds = new Set() } = {}) {
   const shows = sentShows || {};
   const out = {};
   for (const id of showIds) {
     for (const key of recordKeysForShow(shows, id)) {
-      if (shows[key] && !shows[key].discardedAt) out[key] = markDraftDiscarded(shows[key], { nowIso, reason });
+      const rec = shows[key];
+      if (!rec || rec.discardedAt) continue;
+      // A draft Resend 404s may have been sent and reaped (broadcast-state.js);
+      // keep that on the record so the status pages do not say "skipped" as
+      // if it certainly never went out (BRO-3087 retro-review, BRO-5261).
+      const unverified = classifyBroadcastState(rec) === 'draft-unknown' || (rec.draftId && goneDraftIds.has(rec.draftId));
+      out[key] = { ...markDraftDiscarded(rec, { nowIso, reason }), ...(unverified ? { sendUnverified: true } : {}) };
     }
     if (!shows[id] && !out[id]) out[id] = markDraftDiscarded({}, { nowIso, reason });
   }
@@ -99,7 +111,7 @@ function planNoDraftDismissal(sentShows, showIds, { nowIso, reason } = {}) {
  */
 function wontSendCommand(sentShows, showId, state) {
   const noDraft = state === 'never-drafted' || state === 'draft-unknown';
-  const ids = draftShowIds(sentShows, showId).join(',');
+  const ids = draftShowIds(sentShows, showId, { skipSettled: noDraft }).join(',');
   return `gh workflow run discard-broadcast-draft.yml -f shows=${ids}${noDraft ? ' -f no_draft=true' : ''} -f dry_run=false`;
 }
 
