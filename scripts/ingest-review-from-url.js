@@ -646,6 +646,18 @@ if (!show) {
     }
   }
 
+  // BRO-4042: a merge into an existing file that leaves a body with no score
+  // signal, which the scorer will also skip, must be visible, not silent
+  // (see auditMergedReviewWithoutScore).
+  if (!dryRun && result.action === 'updated' && result.filepath) {
+    try {
+      const { auditMergedReviewWithoutScore } = require('./lib/ingest-html-score');
+      auditMergedReviewWithoutScore(JSON.parse(fs.readFileSync(result.filepath, 'utf8')), result.filepath, { show, submittedUrl: url });
+    } catch (e) {
+      console.warn(`  ⚠ no-score audit skipped: ${e.message}`);
+    }
+  }
+
   // BRO-4431: a multi-show article (Vulture/New Yorker double reviews,
   // Theatrely capsule round-ups) is filed under every show it reviews, not
   // only the one it was submitted for.

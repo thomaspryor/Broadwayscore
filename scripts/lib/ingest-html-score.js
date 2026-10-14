@@ -60,4 +60,60 @@ function existingRatingCleared(existingData) {
   return !!existingData && typeof existingData === 'object' && existingData.originalScoreCleared === true;
 }
 
-module.exports = { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared };
+/**
+ * BRO-4042: record a merge that left a review file holding a body with no
+ * score signal that the LLM scorer will also skip. Before this, a complete,
+ * unflagged review merged into a poller-created canonical file could sit
+ * unscored with no trace anywhere (Catarina, The Reviews Hub, 2026-09-22), and
+ * triage-review-gap.js reported it as a gate rejection.
+ *
+ * A body with no score yet is the normal state of every review waiting for the
+ * scoring cron, so this fires only when unscoredSkipReason (the scorer's own
+ * selection filter, scripts/lib/scoring-queue-counts.js) says the file will NOT
+ * be picked up. Emits a 'review-text-collected' stage-latency row tagged
+ * reason 'merge-fulltext-no-score' with the skip reason, plus a warning.
+ * Never throws.
+ *
+ * @param {object} review   the file's data as it landed on disk
+ * @param {string} filepath
+ * @param {{show?: object, submittedUrl?: string}} [ctx]  submittedUrl keys the
+ *   row like the writer's review-first-seen row, even if the merge kept or
+ *   upgraded a different url.
+ * @returns {boolean} true when the row was emitted
+ */
+function auditMergedReviewWithoutScore(review, filepath, ctx = {}) {
+  try {
+    const { hasValidScore } = require('./review-guards');
+    if (!review || typeof review.fullText !== 'string' || !review.fullText.trim()
+        || hasValidScore(review)) return false;
+    const { unscoredSkipReason } = require('./scoring-queue-counts');
+    const show = ctx.show || null;
+    const skipReason = unscoredSkipReason(review, {
+      show, showTitle: show && show.title ? show.title : undefined, filePath: filepath,
+    });
+    if (skipReason === null) return false; // the scorer will pick it up
+    const path = require('path');
+    const { emitStage } = require('./stage-latency');
+    const { normalizeCritic } = require('./review-normalization');
+    emitStage({
+      showId: review.showId,
+      reviewKey: `${review.outletId}:${normalizeCritic(review.criticName)}:${ctx.submittedUrl || review.url || ''}`,
+      stage: 'review-text-collected',
+      metadata: {
+        source: 'ingest-review-from-url',
+        reason: 'merge-fulltext-no-score',
+        skipReason,
+        file: path.basename(filepath),
+        outletId: review.outletId || null,
+        contentTier: review.contentTier || null,
+      },
+    });
+    console.warn(`  ⚠ Merged body has no score signal and the scorer will skip it (${skipReason}): ${filepath} (merge-fulltext-no-score; recorded in stage-latency log). It needs a recorded rating or a manual fix before it can count.`);
+    return true;
+  } catch (e) {
+    process.stderr.write(`[ingest-html-score] no-score audit failed: ${e.message}\n`);
+    return false;
+  }
+}
+
+module.exports = { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared, auditMergedReviewWithoutScore };
