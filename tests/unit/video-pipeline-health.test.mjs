@@ -78,3 +78,15 @@ test('runWithRetries gives up after the last attempt and reports the yt-dlp ERRO
   assert.match(r.error, /Failed to parse JSON/);
   assert.equal(scanErrorLine(new Error('plain\nsecond')), 'plain');
 });
+
+test('runWithRetries does not retry a timeout and never pauses after the last attempt', () => {
+  let calls = 0;
+  const t = runWithRetries(() => { calls++; throw Object.assign(new Error('spawnSync ETIMEDOUT'), { code: 'ETIMEDOUT' }); });
+  assert.equal(calls, 1);
+  assert.equal(t.ok, false);
+  const pauses = [];
+  runWithRetries(() => { throw Object.assign(new Error('x'), { stderr: 'ERROR: from stderr' }); }, { attempts: 2, pause: n => pauses.push(n) });
+  assert.deepEqual(pauses, [1]);
+  assert.equal(scanErrorLine(Object.assign(new Error('x'), { stderr: 'ERROR: from stderr' })), 'ERROR: from stderr');
+  assert.equal(scanErrorLine(null), '');
+});

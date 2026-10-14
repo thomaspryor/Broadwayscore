@@ -88,6 +88,9 @@ function runWithRetries(fn, { attempts = SCAN_ATTEMPTS, pause = () => {} } = {})
       return { ok: true, value: fn(i), attempts: i };
     } catch (err) {
       error = scanErrorLine(err);
+      // A timeout already burned the whole budget (300s); retrying it x3 would
+      // push 10 creators past the job's 180-minute limit.
+      if (err && (err.code === 'ETIMEDOUT' || err.signal === 'SIGTERM')) return { ok: false, error, attempts: i };
       if (i < attempts) pause(i);
     }
   }
