@@ -53,7 +53,8 @@ const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:\\w+=\\S*\\s+)
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
 const unquoted = (cmd) => cmd.replace(/'[^']*'/g, "''").replace(/"[^"]*"/g, '""');
-const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
+const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|time\s+|timeout\s+\S+\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
+const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-l?c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
 const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
 const MIN_RESULT_CHARS = 40;
 const isExternalReviewCall = (cmd) => {
@@ -84,7 +85,8 @@ export function findRuns(events, skills = STRONG_SKILLS) {
     } else if (e.kind === 'assistant_tool_use' && (e.name === 'Read' || e.name === 'Bash') && failed.size) {
       const target = e.name === 'Read' ? e.input?.file_path || '' : String(e.input?.command || '');
       for (const sk of [...failed]) {
-        if ((FALLBACK_FILES[sk] || []).some((f) => target.endsWith(f) || target.includes(f))) {
+        const files = FALLBACK_FILES[sk] || [`.claude/commands/${sk}.md`, `.agents/skills/${sk}/SKILL.md`];
+        if (files.some((f) => target.endsWith(f) || target.includes(f))) {
           runs.push({ i, skill: sk, id: e.id });
           failed.delete(sk);
         }
@@ -120,13 +122,14 @@ export function evaluateCoverage(events, { requireBuild = false } = {}) {
   for (const e of events.slice(last.i + 1)) {
     if (e.kind !== 'assistant_tool_use') continue;
     if (e.name === 'Agent' || e.name === 'Task') {
-      if (String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && /review|audit|adversar|qa\b/i.test(String(e.input?.prompt)) && answered(e.id)) claude.push(e);
+      if (String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && /\b(?:review|audit|adversar\w*)\b/i.test(String(e.input?.prompt)) && answered(e.id)) claude.push(e);
     } else if (e.name === 'Bash' && isExternalReviewCall(String(e.input?.command || '')) && answeredWell(e.id)) {
       external.push(e);
     }
   }
   // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
-  const built = events.slice(last.i + 1).some((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash' && BUILD_RE.test(unquoted(String(e.input?.command || ''))) && answered(e.id));
+  // Any build in the session counts (did-it-work often builds before ship-check is invoked).
+  const built = events.some((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash' && answered(e.id) && (BUILD_RE.test(unquoted(String(e.input?.command || ''))) || SHELL_C_BUILD_RE.test(String(e.input?.command || ''))));
   const missing = [];
   if (requireBuild && !built) missing.push('the build (`npm run build`, Phase 2 of ship-check): land.yml does not run it and this diff touches src/');
   if (claude.length === 0) missing.push('Claude codebase review (an Agent call, subagent_type review-panelist, with a real review prompt of 200+ characters)');
@@ -173,8 +176,32 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
 }
 
 
+const TESTED_RE = /(?:^|\n)[\s*#>_`=\u2500-\u257f-]*TESTED\b/;
+/** Numbers 1-5 found IN ORDER as lines under the LAST `LENSES:` header; items may wrap (max 3 lines between). */
+function lensNumbers(text) {
+  const lines = String(text).split('\n');
+  let h = -1;
+  lines.forEach((l, i) => {
+    if (/^[\s*#>_`-]*LENSES\s*:/i.test(l)) h = i;
+  });
+  const found = new Set();
+  if (h < 0) return found;
+  let want = 1;
+  let prev = h;
+  for (let i = h + 1; i < Math.min(lines.length, h + 40) && want <= 5; i++) {
+    const m = /^[\s*_>`-]*\**\s*([1-5])[.)]\**\s+\S/.exec(lines[i]);
+    if (m && Number(m[1]) === want && i - prev <= 4) {
+      found.add(m[1]);
+      want += 1;
+      prev = i;
+    } else if (i - prev > 4) {
+      break;
+    }
+  }
+  return found;
+}
 const ROADMAP_READ_RE = /issue\s+view\s+1\b[^\n]*broadway-scorecard-data|broadway-scorecard-data[^\n]*issue\s+view\s+1\b/;
-const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state\s+Done|linear-session\.js\s+report\b/;
+const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b/;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
 
 /**
@@ -192,14 +219,13 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
   const dwi = findRuns(events, ['did-it-work']);
   if (!bypass('NO-DID-IT-WORK')) {
     if (dwi.length === 0) problems.push('/did-it-work was never run (it comes before /ship-check: run the real thing against real data)');
-    else if (!/[\u2501\-]{2,}\s*TESTED\b/.test(texts(dwi[dwi.length - 1].i))) problems.push('/did-it-work printed no TESTED block (real data, 3 diverse cases) after it ran');
+    else if (!TESTED_RE.test(texts(dwi[dwi.length - 1].i))) problems.push('/did-it-work printed no TESTED block (real data, 3 diverse cases) after it ran');
   }
 
   const we = findRuns(events, ['what-else']);
   if (we.length && !bypass('NO-WHAT-ELSE')) {
-    const after = texts(we[we.length - 1].i);
-    const lenses = (after.split(/LENSES:/)[1] || '').split('\n').filter((l) => /^\s*[1-5]\.\s+\S/.test(l));
-    if (lenses.length < 5) problems.push(`/what-else printed ${lenses.length} of 5 lens lines in a LENSES: block, each citing a concrete check`);
+    const found = lensNumbers(texts(we[we.length - 1].i));
+    if (found.size < 5) problems.push(`/what-else printed ${found.size} of 5 numbered lens lines directly under a LENSES: header, each citing a concrete check`);
     const readRoadmap = events.some((e) => e.kind === 'assistant_tool_use' && (
       (e.name === 'mcp__github__issue_read' && e.input?.repo === 'broadway-scorecard-data' && Number(e.input?.issue_number) === 1) ||
       (e.name === 'Bash' && ROADMAP_READ_RE.test(String(e.input?.command || '')))));
@@ -212,7 +238,7 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
     events.forEach((e, i) => {
       if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
       const c = String(e.input?.command || '');
-      if (LAND_PUSH_RE.test(c)) lastLand = i;
+      if (LAND_PUSH_RE.test(c) && !/--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(c)) lastLand = i;
       if (LINEAR_DONE_RE.test(c)) lastDone = i;
     });
     if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');
@@ -234,16 +260,17 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const text = String(lastMessage || '').replace(/```[\s\S]*?```/g, '');
   const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
   if (!lines.length || !/^SAFE TO EXIT\b/.test(lines[lines.length - 1])) return { decision: 'allow', reason: 'not claiming SAFE TO EXIT' };
-  if (/^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text)) return { decision: 'allow', reason: 'NO-SHIP-CHECK bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   const cov = evaluateCoverage(events);
   // Only a session that did reviewed code work is held to the rest of the chain.
   const problems = [];
-  if (cov.ran && !cov.complete) problems.push(...cov.missing.map((m) => `/${cov.skill} did not run its reviewers: ${m}`));
+  const noShipCheck = /^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text);
+  if (cov.ran && !cov.complete && !noShipCheck) problems.push(...cov.missing.map((m) => `/${cov.skill} did not run its reviewers: ${m}`));
   // The newest message is not flushed to the transcript when the Stop hook runs (verify-edits.sh
   // has the same note), so add it: a LENSES/TESTED block in the closing message must count.
-  if (cov.ran) problems.push(...evaluateChain([...events, { kind: 'assistant_text', text: String(lastMessage || '') }], { lastMessage: text }));
-  if (problems.length === 0) return { decision: 'allow', reason: cov.ran ? 'coverage complete' : 'no strong review run' };
+  // The chain checks apply to sessions that ran /ship-check; a pure /code-review (PR review) is not held to them.
+  if (findRuns(events, ['ship-check']).length) problems.push(...evaluateChain([...events, { kind: 'assistant_text', text: String(lastMessage || '') }], { lastMessage: text }));
+  if (problems.length === 0) return { decision: 'allow', reason: cov.ran ? 'chain complete' : 'no strong review run' };
   return {
     decision: 'block',
     reason: 'finish chain incomplete',
@@ -278,7 +305,7 @@ function stopHookMain() {
   const counter = path.join(os.tmpdir(), `review-coverage-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
   if (d.decision !== 'block') {
     // Coverage is complete (or not claimed): reset the block budget for any later uncovered review.
-    if (d.decision === 'allow' && d.reason === 'coverage complete') fs.rmSync(counter, { force: true });
+    if (d.decision === 'allow' && d.reason === 'chain complete') fs.rmSync(counter, { force: true });
     return 0;
   }
   // Cap blocks per transcript so an unsatisfiable gate can never loop a session.

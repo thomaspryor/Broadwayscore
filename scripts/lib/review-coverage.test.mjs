@@ -167,7 +167,10 @@ test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check bloc
   assert.equal(d({}), 'block');
   assert.equal(d({ events: full }), 'allow');
   assert.equal(d({ lastMessage: 'Working.\n\nNOT SAFE TO EXIT' }), 'allow');
-  assert.equal(d({ lastMessage: 'No review needed.\nNO-SHIP-CHECK: reviewers cannot run in this container\n\nSAFE TO EXIT' }), 'allow');
+  const dwiThin = [...ev(skill('did-it-work')), TESTED, ...thin]; // chain fine, ship-check reviewers missing
+  assert.equal(d({ events: dwiThin }), 'block');
+  assert.equal(d({ events: dwiThin, lastMessage: 'No review needed.\nNO-SHIP-CHECK: reviewers cannot run in this container\n\nSAFE TO EXIT' }), 'allow');
+  assert.equal(d({ lastMessage: 'NO-SHIP-CHECK: reviewers cannot run in this container\n\nSAFE TO EXIT' }), 'block', 'one bypass must not waive did-it-work');
   assert.equal(d({ lastMessage: 'NO-SHIP-CHECK: short\n\nSAFE TO EXIT' }), 'block');
   assert.equal(d({ events: ev(tool('Bash', { command: 'ls' })) }), 'allow', 'no strong run: verify-edits asks for the review itself');
   assert.equal(d({ events: null }), 'allow');
@@ -240,7 +243,7 @@ test('finish chain: a hollow /what-else (one lens, no roadmap read) is flagged',
   const base = fullChain();
   const hollow = [...base, ...ev(skill('what-else')), text('LENSES:\n1. Pattern: found cousins')];
   const p = evaluateChain(hollow).join('|');
-  assert.match(p, /1 of 5 lens lines/);
+  assert.match(p, /1 of 5 numbered lens lines/);
   assert.match(p, /never read the real roadmap/);
   const good = [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), LENSES];
   assert.deepEqual(evaluateChain(good), []);
@@ -280,4 +283,47 @@ test('general-purpose reviewer accepted when it has a real review prompt; a buil
   const gate = { command: 'git push origin HEAD:refs/heads/land/x', gatedLines: 90, env: CLOUD, events: full };
   assert.equal(landGateDecision({ ...gate, touchesSrc: false }).decision, 'allow');
   assert.equal(landGateDecision({ ...gate, touchesSrc: true }).decision, 'block');
+});
+
+test('review-ship-check ship-check findings: honest formats are not blocked', () => {
+  const base = fullChain();
+  const withLenses = (t) => [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), text(t)];
+  const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'];
+  assert.deepEqual(evaluateChain(withLenses(`LENSES:\n${five.join('\n')}`)), []);
+  assert.deepEqual(evaluateChain(withLenses(`**LENSES:**\n${five.map((l) => l.replace('. ', ') ')).join('\n')}`)), [], '1) numbering');
+  assert.deepEqual(evaluateChain(withLenses(`I will print the LENSES: block now.\n\nLENSES:\n${five.map((l) => `**${l.slice(0, 2)}**${l.slice(2)}`).join('\n')}`)), [], 'earlier mention + bold numbers');
+  assert.match(evaluateChain(withLenses('LENSES:\n1. a: b\n\nOther notes:\n- one\n- two\n- three\n- four\n\nSummary:\n2. x\n3. y\n4. z\n5. w')).join('|'), /of 5 numbered lens lines/, 'numbered summary far below the block does not count');
+  assert.deepEqual(evaluateChain(withLenses('LENSES:\n1. a: b\n   wrapped line one\n   wrapped line two\n2. a: b\n3. a: b\n   wrapped\n4. a: b\n5. a: b')), [], 'wrapped items count');
+  for (const g of ['\u2550\u2550\u2550 TESTED \u2550\u2550\u2550', '\u2500\u2500 TESTED', '**TESTED**', '## TESTED', 'TESTED:']) {
+    assert.deepEqual(evaluateChain([...ev(skill('did-it-work')), text(g), ...ev(skill(), agent(), curl())]), [], g);
+  }
+});
+
+test('review-ship-check findings: preview is not a review, pushes that delete land refs are not landings, fallbacks count', () => {
+  const preview = tool('Agent', { subagent_type: 'general-purpose', prompt: 'Take a screenshot of the local preview page and describe the layout in detail. '.repeat(4) });
+  assert.equal(evaluateCoverage(ev(skill(), preview, curl())).complete, false);
+  const done = tool('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state=Done' });
+  const land = tool('Bash', { command: 'git push origin HEAD:refs/heads/land/bro-1-x' });
+  const del = tool('Bash', { command: 'git push origin --delete land/bro-1-x' });
+  assert.deepEqual(evaluateChain([...fullChain(), land, res(land), done, res(done), del, res(del)]), [], 'cleanup after the close-out');
+  // did-it-work failing with Unknown skill, then read by hand
+  const s = skill('did-it-work');
+  const read = tool('Read', { file_path: '/x/.claude/commands/did-it-work.md' });
+  const events = [s, res(s, 'Unknown skill: did-it-work', true), read, res(read), TESTED, ...ev(skill(), agent(), curl())];
+  assert.deepEqual(evaluateChain(events), []);
+});
+
+test('review-ship-check findings: build recognition, code-review-only sessions, counter reset on a completed chain', () => {
+  const full = ev(skill(), agent(), curl());
+  for (const c of ['timeout 900 npm run build', 'time npm run build 2>&1 | tail -5', 'bash -c "cd x && npm run build"', 'NEXT_PUBLIC_A=1 npx next build']) {
+    assert.equal(evaluateCoverage([...ev(tool('Bash', { command: c })), ...full], { requireBuild: true }).complete, true, `${c} (a build before the skill call counts)`);
+  }
+  const cr = ev(skill('code-review'));
+  assert.equal(stopHookDecision({ lastMessage: 'Reviewed.\n\nSAFE TO EXIT', events: cr, env: CLOUD }).decision, 'allow', 'pure code-review is not held to the ship-check chain');
+  const src = { files: [{ path: 'src/lib/x.ts', added: 40, deleted: 0 }], totalLines: 40 };
+  const cmd = 'git push origin HEAD:refs/heads/land/bro-1-x';
+  const res1 = checkReviewCoverage({ command: cmd, cwd: ROOT, targets: landPushTargets(cmd), env: CLOUD, seams: { events: full, stats: src } });
+  assert.equal(res1.decision, 'block', 'src diff without a build is blocked through checkReviewCoverage');
+  assert.match(res1.message, /npm run build/);
+  assert.equal(checkReviewCoverage({ command: cmd, cwd: ROOT, targets: landPushTargets(cmd), env: CLOUD, seams: { events: [...full, ...ev(tool('Bash', { command: 'npm run build' }))], stats: src } }).decision, 'allow');
 });
