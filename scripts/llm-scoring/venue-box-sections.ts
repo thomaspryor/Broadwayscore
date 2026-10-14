@@ -84,8 +84,10 @@ export function titleVariants(title: string): string[] {
 }
 
 function mentions(text: string, title: string): number {
+  // Whole words only: "Rent" must not count inside "different" (BRO-5261).
   const lower = text.toLowerCase().replace(/[’‘]/g, "'");
-  return Math.max(0, ...titleVariants(title).map(v => lower.split(v).length - 1));
+  return Math.max(0, ...titleVariants(title).map(v =>
+    (lower.match(new RegExp(`(?<![a-z0-9])${v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'g')) || []).length));
 }
 
 function days(a?: string | null, b?: string | null): number {

@@ -18,8 +18,6 @@
  * existing SERP search remains as a final fallback.
  */
 
-const { fetchLiveBrowserbaseSessionsToday } = require('./browserbase-live-usage');
-const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
 const { createTtlCache } = require('./ttl-cache');
 
 // Per-run anchor memo (Scraping v2 Sprint 1 T5): the SAME reviews.php / market
@@ -281,20 +279,10 @@ async function _fetchReviewsPageAnchorsUncached() {
   if (process.env.BROWSERBASE_KILL_SWITCH === 'true') {
     throw new Error('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
   }
-  // #312: this path (opening-night-poller.js, watch-aggregator-urls.js,
-  // audit-show-review-gap.js) had NO session-count cap at all — only "cadence
-  // gated at the caller side" per the module docstring, which in practice
-  // meant nothing actually stopped it. Enforce the SAME account-wide daily
-  // ceiling collect-review-texts.js uses, checked against the live API so it
-  // reflects real total spend regardless of which script is calling.
-  // Resolved from THE shared constant, not a second hard-coded 250 — the
-  // "same ceiling as collect-review-texts.js" invariant this comment used to
-  // only assert is now mechanical (Scraping v2 T13, see browserbase-caps.js).
-  const maxPerDay = resolveMaxSessionsPerDay();
-  const liveSessionsToday = await fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
-  if (liveSessionsToday !== null && liveSessionsToday >= maxPerDay) {
-    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${maxPerDay}) — BWW RR discovery skipped`);
-  }
+  // #312 / BRO-5261: the account-wide ceiling is enforced by createBbSession
+  // below, per caller (opening-night callers get the Tier-1 boost too). A
+  // second pre-check here against the raw ceiling was stricter than the
+  // chokepoint during the boost and blocked opening-night discovery.
 
   let browser = null;
   let sessionId = null;

@@ -173,24 +173,35 @@ function sanitizeMetadataValue(value) {
  * @param {Object} [opts.body] - extra session-create fields merged in (keepAlive, timeout, browserSettings, proxies, ...)
  * @returns {Promise<{id: string, connectUrl: string, raw: Object}>}
  */
+/**
+ * A refusal raised before the session-create POST: no session exists, so a
+ * caller that counted the attempt up front can give the count back
+ * (collect-review-texts.js, BRO-5261).
+ */
+function refusal(message) {
+  const err = new Error(message);
+  err.bbNoSession = true;
+  return err;
+}
+
 async function createBbSession(opts) {
   if (process.env.BROWSERBASE_KILL_SWITCH === 'true') {
-    throw new Error('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
+    throw refusal('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
   }
   const apiKey = opts.apiKey || process.env.BROWSERBASE_API_KEY;
   const projectId = opts.projectId || process.env.BROWSERBASE_PROJECT_ID;
   if (!apiKey || !projectId) {
-    throw new Error('createBbSession: BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
+    throw refusal('createBbSession: BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
   }
   if (!opts.caller) {
-    throw new Error('createBbSession: opts.caller is required (attribution would be lost otherwise)');
+    throw refusal('createBbSession: opts.caller is required (attribution would be lost otherwise)');
   }
   // BRO-3097 ship-check finding: required (not merely validated-if-present) —
   // an omitted category would silently fall into the ledger's null bucket,
   // defeating the review-text/discovery split for any future or regressed
   // call site exactly the way a missing `caller` would defeat attribution.
   if (!BB_CATEGORIES.includes(opts.category)) {
-    throw new Error(`createBbSession: opts.category is required and must be one of ${BB_CATEGORIES.join('/')}, got ${JSON.stringify(opts.category)}`);
+    throw refusal(`createBbSession: opts.category is required and must be one of ${BB_CATEGORIES.join('/')}, got ${JSON.stringify(opts.category)}`);
   }
 
   // BRO-5243: never spend a session on a host that is never a review (ticket
@@ -199,7 +210,7 @@ async function createBbSession(opts) {
   // (failed-fetch-policy.js routeCapFromBrowserbaseError).
   if (isDeniedHost(opts.host)) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'host-denied' });
-    throw new Error(`Browserbase host denied (${opts.host}): not a review host, session create blocked for ${opts.caller}`);
+    throw refusal(`Browserbase host denied (${opts.host}): not a review host, session create blocked for ${opts.caller}`);
   }
 
   // Account-wide daily ceiling (#1248). Live count already reflects every
@@ -253,18 +264,18 @@ async function createBbSession(opts) {
   if (!exempt && liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay
     && hostCeiling === effectiveMaxPerDay && activeTier1Boost(boostNow) > 0) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
-    throw new Error(`Browserbase recovery reserve held (${liveSessionsToday}/${effectiveMaxPerDay}, the rest held for the Tier-1 boost) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+    throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${effectiveMaxPerDay}, the rest held for the Tier-1 boost) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
   }
   if (liveSessionsToday !== null && liveSessionsToday >= hostCeiling) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'day-cap-reached' });
     const reserveNote = hostCeiling < maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
-    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${hostCeiling}${reserveNote}) — session create blocked for ${opts.caller}`);
+    throw refusal(`Browserbase daily cap reached (${liveSessionsToday}/${hostCeiling}${reserveNote}) — session create blocked for ${opts.caller}`);
   }
   // A distinct message: this refusal holds only non-Tier-1 hosts, so callers
   // must not latch the whole run shut on it (collect-review-texts.js).
   if (liveSessionsToday !== null && liveSessionsToday >= hostLimit) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
-    throw new Error(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${hostCeiling - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+    throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${hostCeiling - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
   }
 
   const rawUserMetadata = { ...(opts.body && opts.body.userMetadata) };
