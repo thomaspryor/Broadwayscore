@@ -15,13 +15,17 @@ function daysBetween(isoA, isoB) {
   return Math.round((new Date(isoB) - new Date(isoA)) / 86400000);
 }
 
-/** Records whose lastVerified is absent or not an ISO YYYY-MM-DD date. */
-function findMissingLastVerified(records) {
+/**
+ * Records whose lastVerified is absent, not an ISO YYYY-MM-DD date, or (when
+ * `today` is given) in the future: a typo like '2062-10-13' never ages, the
+ * same dead alarm as a missing stamp (BRO-3040 retro-review, BRO-5261).
+ */
+function findMissingLastVerified(records, today) {
   // A real calendar date: '2026-02-30' matches the shape but never ages.
   const valid = (s) => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s)
     && Number.isFinite(Date.parse(`${s}T00:00:00Z`))
     && new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s;
-  return records.filter((r) => !valid(r.lastVerified));
+  return records.filter((r) => !valid(r.lastVerified) || (today && r.lastVerified > today));
 }
 
 /**

@@ -46,3 +46,11 @@ test('an impossible calendar date counts as missing, not as a date that never ag
   const missing = findMissingLastVerified([{ label: 'x', end: '2027-04-25', lastVerified: '2026-02-30' }, { label: 'y', end: '2027-04-25', lastVerified: '2026-02-28' }]);
   assert.deepEqual(missing.map((r) => r.label), ['x']);
 });
+
+// BRO-3040 retro-review (BRO-5261): a future stamp (typo) never ages, so it
+// counts as invalid when the caller passes today.
+test('a lastVerified in the future is invalid', () => {
+  const recs = [{ label: 'f', end: '2027-04-25', lastVerified: '2062-10-13' }, { label: 'ok', end: '2027-04-25', lastVerified: '2026-10-13' }];
+  assert.deepEqual(findMissingLastVerified(recs, '2026-10-14').map((r) => r.label), ['f']);
+  assert.deepEqual(findMissingLastVerified(recs).map((r) => r.label), []);
+});

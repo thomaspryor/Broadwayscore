@@ -18,7 +18,7 @@
  *
  * `lastVerified`: ISO date the entry was last cross-checked against an
  * authoritative SOLT/Wikipedia source. The check-cutoff-freshness CI gate
- * warns when the current ceremony's `end` is within 60 days AND `lastVerified`
+ * fails (exit 1) when the current ceremony's `end` is within 60 days AND `lastVerified`
  * is more than 60 days old.
  *
  * Update annually when SOLT announces the next season's calendar (typically
