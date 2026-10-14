@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5325-b",
   "planId": "556cd1a8-14e0-4b6a-b071-b0b6ae396948",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T07:50:00.000Z",
   "submitter": {
     "name": null,
@@ -22,5 +22,13 @@
         "description": "Refresh provenance on the row filed by bro-5325-a: sources gains 'multi-show-split'; text, url and date unchanged. Refuses unless the stored section is identical."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T08:12:37.884Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ]
 }
