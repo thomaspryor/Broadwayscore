@@ -48,4 +48,17 @@ function reconcileAudienceBuzz(current, remote, opts = {}) {
   return { recovered, skippedOrphans: dropped };
 }
 
-module.exports = { reconcileAudienceBuzz };
+/**
+ * Remove a source from a show record AND leave the tombstone the reconcile above honours.
+ * A bare `delete show.sources[src]` is silently undone by the next push-core-data rebase
+ * (the reconcile refills any source our side lacks from remote). BRO-5276.
+ * @param {object} show audience-buzz show record (mutated)
+ * @param {string} src source key
+ * @param {string} reason why it was removed
+ */
+function removeSourceWithTombstone(show, src, reason) {
+  if (show.sources) delete show.sources[src];
+  show.sourcesRemoved = { ...(show.sourcesRemoved || {}), [src]: reason };
+}
+
+module.exports = { reconcileAudienceBuzz, removeSourceWithTombstone };

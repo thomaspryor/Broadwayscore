@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation, isBroadwayComMarket, isRedditMarket } = require('./lib/audience-weighting');
 const { createAudienceBuzzWriteGuard } = require('./lib/audience-buzz-write-guard');
+const { removeSourceWithTombstone } = require('./lib/reconcile-audience-buzz');
 
 // Resolve data dir: --data-dir flag > DATA_DIR env > default
 const cliDataDir = process.argv.find(a => a.startsWith('--data-dir='));
@@ -60,12 +61,12 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   let droppedSource = false;
   if (show.sources?.broadwayCom && showData && !isBroadwayComMarket(showData.category)) {
     console.log(`${showId}: dropping Broadway.com source (${showData.category} show, score ${show.sources.broadwayCom.score})`);
-    delete show.sources.broadwayCom;
+    removeSourceWithTombstone(show, 'broadwayCom', `not a Broadway.com market (${showData.category})`);
     droppedSource = true;
   }
   if (show.sources?.reddit && showData && !isRedditMarket(showData.category)) {
     console.log(`${showId}: dropping Reddit source (${showData.category} show, score ${show.sources.reddit.score})`);
-    delete show.sources.reddit;
+    removeSourceWithTombstone(show, 'reddit', `not a Reddit market (${showData.category})`);
     droppedSource = true;
   }
   const { score, weights } = calculateCombinedScore(show.sources, showInfo);

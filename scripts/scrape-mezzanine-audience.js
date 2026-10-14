@@ -895,7 +895,7 @@ async function main() {
     // delete (not null) — a lingering key, even null-valued, still makes
     // src/app/show/[slug]/page.tsx:366 emit a dead "View on Mezzanine" link
     // for a show with confirmed-zero real data.
-    delete audienceBuzz.shows[s.id].sources.mezzanine;
+    require('./lib/reconcile-audience-buzz').removeSourceWithTombstone(audienceBuzz.shows[s.id], 'mezzanine', 'stale Mezzanine data no longer confirms the current production');
     const showInfo = { closingDate: s.closingDate, status: s.status, category: s.category };
     const { score } = calculateCombinedScore(audienceBuzz.shows[s.id].sources, showInfo);
     audienceBuzz.shows[s.id].combinedScore = score;

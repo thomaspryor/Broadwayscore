@@ -58,3 +58,14 @@ test('BRO-5276: a source we removed on purpose (sourcesRemoved) is not refilled;
   assert.equal(current.shows['show-1'].sources.mezzanine.score, 70);
   assert.equal(r.recovered, 1);
 });
+
+test('BRO-5276: removeSourceWithTombstone deletes the source and the reconcile then leaves it out', async () => {
+  const { removeSourceWithTombstone } = require('./reconcile-audience-buzz.js');
+  const show = { sources: { reddit: { score: 50, reviewCount: 20 }, showScore: { score: 80, reviewCount: 99 } } };
+  removeSourceWithTombstone(show, 'reddit', 'not a Reddit market');
+  assert.equal(show.sources.reddit, undefined);
+  assert.equal(show.sourcesRemoved.reddit, 'not a Reddit market');
+  const current = { shows: { 'show-1': show } };
+  reconcileAudienceBuzz(current, { shows: { 'show-1': { sources: { reddit: { score: 50, reviewCount: 20 } } } } }, { liveIds: live() });
+  assert.equal(current.shows['show-1'].sources.reddit, undefined);
+});

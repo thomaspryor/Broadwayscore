@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { closedBeforeTheatr } = require('./lib/theatr-stale-attachment');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { removeSourceWithTombstone } = require('./lib/reconcile-audience-buzz');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
@@ -53,10 +54,7 @@ function planStaleTheatrRemoval(buzzShows, shows) {
 function applyStaleTheatrRemoval(buzzShows, plan) {
   for (const p of plan) {
     const rec = buzzShows[p.id];
-    delete rec.sources.theatr;
-    // Tombstone: push-core-data's reconcile refills any source we lack from remote
-    // (reconcile-audience-buzz.js) unless it is named here.
-    rec.sourcesRemoved = { ...(rec.sourcesRemoved || {}), theatr: 'closed before Theatr existed (BRO-5276)' };
+    removeSourceWithTombstone(rec, 'theatr', 'closed before Theatr existed (BRO-5276)');
     rec.combinedScore = p.after;
     rec.designation = p.designation;
   }
