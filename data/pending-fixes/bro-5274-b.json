@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5274-b",
   "planId": "fe35f015-74b8-4c02-90f0-cc22b2ba487b",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-14T01:33:02.756287Z",
   "submitter": {
     "name": null,
@@ -179,5 +179,133 @@
         "description": "BRO-5274: same article as variety--marilyn-stasio.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T03:28:01.093Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted affluenza-off-west-end-2026/timeout-london--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted all-about-eve-west-end-2019/whatsonstage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted anything-goes-2011/variety--steven-suskin.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "choir-boy-2019/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted degenerates-off-broadway-2026/talkinbroadway--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted escape-to-margaritaville-2018/broadwaynews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted eureka-day-west-end-2022/whatsonstage--sarah-crompton.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "funny-girl-2022/variety--aramide-tinubu.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ghetto-klown-2011/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hadestown-west-end-2024/broadwayworld--cindy-marcolina.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hughie-2016/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jajas-african-hair-braiding-2023/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jerusalem-west-end-2022/whatsonstage--sarah-crompton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted linda-vista-2019/nydailynews--chris-jones-bway.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted my-name-is-lucy-barton-2020/broadwaynews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted one-man-two-guvnors-2012/timeout--david-cote.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted only-fools-and-horses-west-end-2019/whatsonstage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-west-end-2025/london-box-office--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "pass-over-2021/nytg--david-gordon.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rosmersholm-west-end-2019/thestage--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soul-doctor-2013/vulture--scott-brown.json duplicateOf: null -> \"vulture--jesse-green.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-anarchist-2012/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-encounter-2016/variety--matt-trueman.json duplicateOf: null -> \"variety--marilyn-stasio.json\""
+    }
+  ]
 }
