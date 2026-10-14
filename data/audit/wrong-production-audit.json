@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-14T05:50:41.999Z",
+  "timestamp": "2026-10-14T06:08:32.859Z",
   "stats": {
-    "totalReviews": 56431,
-    "alreadyFlagged": 21057,
-    "dateGuardCatches": 209,
-    "directorMismatch": 1881,
+    "totalReviews": 56430,
+    "alreadyFlagged": 21062,
+    "dateGuardCatches": 204,
+    "directorMismatch": 1880,
     "tvFilmSignals": 1562,
-    "londonSignals": 2248,
-    "offBroadwaySignals": 511,
+    "londonSignals": 2246,
+    "offBroadwaySignals": 510,
     "yearMismatch": 142,
     "noPublishDate": 5231
   },
@@ -17256,67 +17256,6 @@
       ]
     },
     {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "observer--susannah-clapp.json",
-      "score": 88,
-      "publishDate": "2016-07-31",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "sunday-times--maxie-szalwinska.json",
-      "score": 88,
-      "publishDate": "2016-07-31",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-harry-potter-and-the-cursed-child-parts-one-and-two-tvg33p33g",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "the-spectator-uk--lloyd-evans.json",
-      "score": 25,
-      "publishDate": "2016-08-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3716d before show (2016-08-06 vs 2026-10-09)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 84,
-      "publishDate": "2016-08-02",
-      "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3720d before show (2016-08-02 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
       "showId": "harry-potter-tour-2024",
       "file": "equality365--eric-andrews-katz.json",
       "score": 75,
@@ -20689,30 +20628,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "variety--naman-ramachandran.json",
-      "score": null,
-      "publishDate": "2026-03-05",
-      "url": "https://variety.com/2026/theater/news/paddington-into-the-woods-2026-olivier-awards-nominations-1236680111/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 201d before show (2026-03-05 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -81383,20 +81298,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-shark-is-broken-2023",
-      "file": "nyt-theater--david-nounou.json",
-      "score": 60,
-      "publishDate": "August 5, 2023",
-      "url": "https://newyorktheater.me/2023/08/10/the-shark-is-broken-broadway-review-waiting-for-jaws/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
