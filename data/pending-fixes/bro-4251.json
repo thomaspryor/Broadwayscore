@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4251",
   "planId": "cc1fe48b-a259-467d-99bd-56c8cd6a21d1",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T21:06:48.710Z",
   "submitter": {
     "name": null,
@@ -71,5 +71,28 @@
         "description": "BRO-4251: NYC Theatre excerpt ends with Fat Ham review text and is printed as the Shucked Variety quote; clear it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T20:54:19.871Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "rejectedImageUrls: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shucked-2023/variety--aramide-tinubu.json nycTheatreExcerpt: \"\\\"The funniest and most invigorating new show on Broadway...Winner of the 2022 Pulitzer Prize, \\\"Fat Ham\\\" recasts its source material to imagine what Shakespeare did not  how people might overcome circumstances, expectations and their own demons to forge new paths through life.\\\"\" -> null"
+    }
+  ]
 }
