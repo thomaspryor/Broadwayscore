@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-10-14T06:54:26.757Z",
+  "runDate": "2026-10-14T07:11:27.612Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 5,
+    "batchSize": 10,
+    "maxReviews": 25,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,72 +11,111 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 5,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 268,
-    "amp": 9,
-    "browserbase": 21,
+    "playwright": 271,
+    "amp": 10,
+    "browserbase": 23,
     "directCookies": 0,
     "scrapingdog": 48,
     "scrapingbee": 35,
     "brightdata": 10,
     "archiveToday": 0,
-    "archive": 88
+    "archive": 90
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 3,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 3,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 14,
+    "tier4Success": 4,
+    "totalFailed": 18,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 10,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 5,
+    "failed": 20,
     "shows": [
-      "elling-2010",
-      "lucky-guy-2013",
+      "beaches-2026",
+      "born-yesterday-2011",
+      "brokeback-mountain-west-end-2023",
+      "buena-vista-social-club-off-broadway-2023",
+      "constellations-2015",
+      "endgame-west-end-2020",
+      "every-brilliant-thing-2026",
+      "gigi-2015",
+      "grand-horizons-2020",
+      "jack-absolute-flies-again-west-end-2022",
+      "mary-poppins-west-end-2019",
       "next-to-normal-2009",
-      "the-scottsboro-boys-2010",
+      "operation-mincemeat-2025",
+      "patriots-west-end-2023",
+      "romeo-and-juliet-west-end-2026",
+      "seagull-true-story-off-broadway-2026",
+      "the-addams-family-2010",
+      "the-gin-game-2015",
+      "the-importance-of-being-earnest-2011",
+      "the-last-ship-2014",
+      "the-road-to-mecca-2012",
+      "titanique-west-end-2024",
+      "west-side-story-2009",
       "wicked-2003"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 442,
+      "processed": 446,
       "failed": 26
     }
   },
   "processed": [
-    "lucky-guy-2013/guardian--alexis-soloski.json",
-    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
-    "elling-2010/bloomberg--jeremy-gerard.json",
-    "next-to-normal-2009/neontommy--jason-kehe.json"
+    "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+    "the-importance-of-being-earnest-2011/nypost--elisabeth-vincentelli.json",
+    "the-last-ship-2014/nytimes--charles-isherwood.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+    "born-yesterday-2011/playbill--robert-simonson.json"
   ],
   "failed": [
-    "wicked-2003/variety--peter-debruge.json"
+    "wicked-2003/variety--peter-debruge.json",
+    "operation-mincemeat-2025/londontheatre1--unknown.json",
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "constellations-2015/ew--melissa-maerz.json",
+    "gigi-2015/washpost--peter-marks.json",
+    "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+    "constellations-2015/ny1--roma-torre.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "mary-poppins-west-end-2019/times-uk--clive-davis.json",
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "jack-absolute-flies-again-west-end-2022/telegraph--fiona-mountford.json",
+    "the-addams-family-2010/variety--steven-suskin.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+    "brokeback-mountain-west-end-2023/times-uk--clive-davis.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "patriots-west-end-2023/standard--nick-curtis.json",
+    "west-side-story-2009/ew--leah-greenblatt.json",
+    "endgame-west-end-2020/times-uk--clive-davis.json",
+    "buena-vista-social-club-off-broadway-2023/nysr--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -525,7 +564,12 @@
       "lucky-guy-2013/guardian--alexis-soloski.json",
       "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
       "elling-2010/bloomberg--jeremy-gerard.json",
-      "next-to-normal-2009/neontommy--jason-kehe.json"
+      "next-to-normal-2009/neontommy--jason-kehe.json",
+      "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+      "the-importance-of-being-earnest-2011/nypost--elisabeth-vincentelli.json",
+      "the-last-ship-2014/nytimes--charles-isherwood.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
+      "born-yesterday-2011/playbill--robert-simonson.json"
     ],
     "failed": [
       "the-outsiders-2024/hollywood-reporter--angie-han.json",
@@ -553,7 +597,26 @@
       "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
       "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
       "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+      "operation-mincemeat-2025/londontheatre1--unknown.json",
+      "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+      "constellations-2015/ew--melissa-maerz.json",
+      "gigi-2015/washpost--peter-marks.json",
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+      "constellations-2015/ny1--roma-torre.json",
+      "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+      "mary-poppins-west-end-2019/times-uk--clive-davis.json",
+      "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+      "jack-absolute-flies-again-west-end-2022/telegraph--fiona-mountford.json",
+      "the-addams-family-2010/variety--steven-suskin.json",
+      "the-gin-game-2015/vulture--jesse-green.json",
+      "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+      "brokeback-mountain-west-end-2023/times-uk--clive-davis.json",
+      "beaches-2026/chicago-critic--tom-williams.json",
+      "patriots-west-end-2023/standard--nick-curtis.json",
+      "west-side-story-2009/ew--leah-greenblatt.json",
+      "endgame-west-end-2020/times-uk--clive-davis.json",
+      "buena-vista-social-club-off-broadway-2023/nysr--unknown.json"
     ]
   },
   "tierDetails": {
@@ -825,7 +888,10 @@
       "nina-off-west-end-2026/guardian--kate-wyver.json",
       "the-cherry-orchard-west-end-2026/timeout-london--unknown.json",
       "harry-potter-and-the-cursed-child-one-part-west-end-2026/britishtheatrecom--unknown.json",
-      "lucky-guy-2013/guardian--alexis-soloski.json"
+      "lucky-guy-2013/guardian--alexis-soloski.json",
+      "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+      "the-importance-of-being-earnest-2011/nypost--elisabeth-vincentelli.json",
+      "every-brilliant-thing-2026/theatermania--kenji-fujishima.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -836,7 +902,8 @@
       "data/review-texts/the-great-gatsby-tour-2026/deadline--baz-bamigboye.json",
       "the-great-gatsby-tour-2026/deadline--baz-bamigboye.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
-      "book-of-mormon-2011/variety--marilyn-stasio.json"
+      "book-of-mormon-2011/variety--marilyn-stasio.json",
+      "data/review-texts/the-addams-family-2010/variety--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
@@ -859,7 +926,9 @@
       "becky-shaw-2026/wsj--charles-isherwood.json",
       "data/review-texts/dog-day-afternoon-2026/wsj--charles-isherwood.json",
       "dog-day-afternoon-2026/wsj--charles-isherwood.json",
-      "data/review-texts/the-cherry-orchard-west-end-2026/theatremonkey--unknown.json"
+      "data/review-texts/the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+      "data/review-texts/the-last-ship-2014/nytimes--charles-isherwood.json",
+      "the-last-ship-2014/nytimes--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1050,9 +1119,33 @@
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
       "elling-2010/bloomberg--jeremy-gerard.json",
-      "next-to-normal-2009/neontommy--jason-kehe.json"
+      "next-to-normal-2009/neontommy--jason-kehe.json",
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+      "born-yesterday-2011/playbill--robert-simonson.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "manhattan.ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
