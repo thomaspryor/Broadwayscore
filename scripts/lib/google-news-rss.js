@@ -2,7 +2,7 @@
 
 const cheerio = require('cheerio');
 const { fetchPage, domainMatchesExpected } = require('./scraper');
-const { titleMatchesShow } = require('./rss-discovery');
+const { titleMatchesShow, isWithinOpeningWindow } = require('./rss-discovery');
 const { normalizeUrl, resolveOutletFromUrl, resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { isLondonMarket } = require('./venue-classification');
 const { isInOpeningWindow } = require('./opening-window-backoff');
@@ -33,6 +33,22 @@ function parseGoogleNewsItems(xml) {
       sourceUrl: item.find('source').attr('url') || '',
     };
   }).get();
+}
+
+// Nationals often headline a review without the word (Telegraph: "Kristin
+// Scott Thomas is hypnotic in a riveting Cherry Orchard"; Independent, FT),
+// which is how the Telegraph review was missed (BRO-3998). Like
+// openingWindowFeedAccepts in rss-discovery, a same-show headline needs no
+// "review" on opening day or the 2 days after (UTC calendar days), when press
+// embargoes lift. Outside that, and always for feature/roundup shapes, it must.
+const REVIEW_FREE_POST_DAYS = 2;
+const NON_REVIEW_HEADLINE = /\b(interviews?|previews?|tickets|roundups?|reviews|first[- ]look|photos?|images|pictures|trailer|cast announced|full cast|meet the cast|best shows|to book|what the critics|critics (?:praise|say|react)|box office|grosses|lottery)\b/i;
+
+function isReviewHeadline(item, show) {
+  if (!titleMatchesShow(item.title, show.title, { fuzzy: true })) return false;
+  if (NON_REVIEW_HEADLINE.test(item.title)) return false;
+  if (/\breview\b/i.test(item.title)) return true;
+  return isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
 }
 
 function outletMatchesMarket(info, show) {
@@ -86,11 +102,9 @@ async function discoverGoogleNewsReviews(show, options = {}) {
     let items = parseGoogleNewsItems(feed?.content || '').filter(item =>
       Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
       && item.pubDate.getTime() <= new Date(now).getTime()
-      // fuzzy: the outlet may misspell the title (CATERINA, BRO-4001); the
-      // feed is already scoped to this one show, so a near match can't steal another's.
-      && titleMatchesShow(item.title, show.title, { fuzzy: true })
-      && /\breview\b/i.test(item.title)
-      && !/\b(interview|preview|tickets|roundup)\b/i.test(item.title)
+      // fuzzy title match: the outlet may misspell the title (CATERINA, BRO-4001);
+      // the feed is already scoped to this one show, so a near match can't steal another's.
+      && isReviewHeadline(item, show)
       && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl));
     // Prioritize nationals and rotate bounded batches across poll cycles so
     // already-known links cannot permanently starve the remaining publishers.
@@ -157,4 +171,4 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   return results;
 }
 
-module.exports = { discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage };
+module.exports = { discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 const require = createRequire(import.meta.url);
-const { googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, discoverGoogleNewsReviews } = require('./google-news-rss');
+const { googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, discoverGoogleNewsReviews, isReviewHeadline } = require('./google-news-rss');
 const show = { id: 'catarina-west-end-2026', title: 'Catarina and the Beauty of Killing Fascists', category: 'west-end', openingDate: '2026-09-21', previewsStartDate: '2026-09-19' };
 const now = new Date('2026-09-22T02:00:00Z');
 const publisher = 'https://www.telegraph.co.uk/theatre/what-to-see/catarina-review/';
@@ -152,4 +152,75 @@ test('rotates batches so duplicate nationals do not starve later items on subseq
   const wrappers = new Set(first.calls.slice(1).map(c => c.url));
   assert.equal(next.calls.slice(1).filter(c => wrappers.has(c.url)).length, 0);
   assert.equal(next.calls.length, 13);
+});
+
+// Realistic Google News RSS shape (channel metadata, guid, entity-escaped HTML
+// description, "<headline> - <Outlet>" titles). One item per filter branch.
+const realisticFeed = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rss xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel>
+<generator>NFE/5.0</generator><title>"${show.title}" review - Google News</title>
+<link>https://news.google.com/search?q=%22Catarina%22+review&amp;hl=en-GB&amp;gl=GB&amp;ceid=GB:en</link>
+<language>en-GB</language><webMaster>news-webmaster@google.com</webMaster>
+<copyright>2026 Google LLC. All rights reserved.</copyright><lastBuildDate>Tue, 22 Sep 2026 01:58:00 GMT</lastBuildDate>
+<description>Google News</description>
+<item><title>${show.title} review – a bracing, furious evening - The Guardian</title><link>https://news.google.com/rss/articles/CBMiGuardian?oc=5</link><guid isPermaLink="false">CBMiGuardian</guid><pubDate>Sun, 20 Sep 2026 21:10:00 GMT</pubDate><description>&lt;a href="https://news.google.com/rss/articles/CBMiGuardian?oc=5" target="_blank"&gt;${show.title} review&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;The Guardian&lt;/font&gt;</description><source url="https://www.theguardian.com">The Guardian</source></item>
+<item><title>${show.title} review: Chilean dark comedy - The Telegraph</title><link>https://news.google.com/rss/articles/CBMiTelegraphA?oc=5</link><guid isPermaLink="false">CBMiTelegraphA</guid><pubDate>Mon, 21 Sep 2026 23:35:00 GMT</pubDate><description>&lt;a href="https://news.google.com/rss/articles/CBMiTelegraphA?oc=5"&gt;review&lt;/a&gt;</description><source url="https://www.telegraph.co.uk">The Telegraph</source></item>
+<item><title>${show.title} review: Chilean dark comedy - The Telegraph</title><link>https://news.google.com/rss/articles/CBMiTelegraphAMP?oc=5</link><guid isPermaLink="false">CBMiTelegraphAMP</guid><pubDate>Mon, 21 Sep 2026 23:40:00 GMT</pubDate><description>dup</description><source url="https://www.telegraph.co.uk">The Telegraph</source></item>
+<item><title>${show.title} review – Edinburgh fringe run - The Guardian</title><link>https://news.google.com/rss/articles/CBMiGuardianOld?oc=5</link><guid isPermaLink="false">CBMiGuardianOld</guid><pubDate>Fri, 18 Sep 2026 12:00:00 GMT</pubDate><description>old</description><source url="https://www.theguardian.com">The Guardian</source></item>
+<item><title>Hamilton review – still the room where it happens - The Guardian</title><link>https://news.google.com/rss/articles/CBMiHamilton?oc=5</link><guid isPermaLink="false">CBMiHamilton</guid><pubDate>Mon, 21 Sep 2026 22:00:00 GMT</pubDate><description>other</description><source url="https://www.theguardian.com">The Guardian</source></item>
+</channel></rss>`;
+
+test('realistic feed: keeps post-preview reviews, drops pre-preview, other-show and duplicate items', async () => {
+  const targets = {
+    'https://news.google.com/rss/articles/CBMiGuardian?oc=5': 'https://www.theguardian.com/stage/2026/sep/20/catarina-review',
+    'https://news.google.com/rss/articles/CBMiTelegraphA?oc=5': publisher,
+    'https://news.google.com/rss/articles/CBMiTelegraphAMP?oc=5': `${publisher}?utm_source=googlenews&utm_medium=rss#comments`,
+  };
+  const resolve = async url => {
+    const dest = targets[url] || (url.startsWith('https://news.google.com/') ? null : url);
+    if (!dest) throw new Error(`unexpected redirect fetch ${url}`);
+    return { finalUrl: dest, content: `<link rel="canonical" href="${dest.split(/[?#]/)[0]}"><meta name="author" content="Arifa Akbar">` };
+  };
+  const parsed = parseGoogleNewsItems(realisticFeed);
+  assert.equal(parsed.length, 5, 'channel-level <title>/<link> must not become items');
+  assert.equal(parsed[0].sourceUrl, 'https://www.theguardian.com');
+
+  const { results, calls } = await discover(realisticFeed, {}, resolve);
+  const urls = results.map(r => r.url).sort();
+  // 2026-09-20 is after previewsStartDate (09-19) but before openingDate (09-21):
+  // the bound must be previews, not opening night.
+  assert.deepEqual(urls, [publisher, 'https://www.theguardian.com/stage/2026/sep/20/catarina-review'].sort());
+  assert.ok(results.every(r => r.source === 'google-news-rss' && r.dateSource === 'google-news-rss'));
+  assert.equal(results.find(r => r.outletId === 'guardian').publishDate, '2026-09-20');
+  // Pre-preview and other-show items are filtered before any redirect fetch.
+  assert.ok(!calls.some(c => /CBMiGuardianOld|CBMiHamilton/.test(c.url)));
+
+  // Dedupe against URLs already on file in review-texts (knownUrls).
+  const known = await discover(realisticFeed, { knownUrls: new Set([publisher]) }, resolve);
+  assert.deepEqual(known.results.map(r => r.outletId), ['guardian']);
+});
+
+// Headline shapes copied from the live Google News feed for The Cherry Orchard
+// (West End, opened 2026-10-13), where the Telegraph and Independent reviews
+// carry no "review" in the headline (BRO-3998).
+test('accepts review-free same-show headlines only from opening day to +2 days, never feature shapes', () => {
+  const orchard = { title: 'The Cherry Orchard', openingDate: '2026-10-13', previewsStartDate: '2026-10-03' };
+  const h = (title, date) => isReviewHeadline({ title, pubDate: new Date(date) }, orchard);
+  assert.equal(h('Kristin Scott Thomas is hypnotic in a riveting Cherry Orchard - The Telegraph', '2026-10-13T23:01:00Z'), true);
+  assert.equal(h('The Cherry Orchard with Kristin Scott Thomas is very, very funny... until it’s not - The Independent', '2026-10-14T09:04:00Z'), true);
+  assert.equal(h('Kristin Scott Thomas is hypnotic in a riveting Cherry Orchard - The Telegraph', '2026-10-16T09:00:00Z'), false, 'day +3 needs the word review');
+  assert.equal(h('The Cherry Orchard review at the Harold Pinter Theatre, London - The Stage', '2026-10-20T08:11:00Z'), true);
+  assert.equal(h('Kristin Scott Thomas rehearses a new Cherry Orchard - The Times', '2026-10-12T09:00:00Z'), false, 'previews need the word review');
+  assert.equal(h("First look at Kristin Scott Thomas in 'The Cherry Orchard' in the West End - London Theatre", '2026-10-13T17:52:03Z'), false);
+  assert.equal(h('The Cherry Orchard Reviews: critics praise Kristin Scott Thomas, but split on Stephen Mangan - West End Theatre', '2026-10-14T10:22:32Z'), false);
+  assert.equal(h('The 12 best shows to book this autumn — from The Cherry Orchard to Rent - The Times', '2026-10-13T07:00:00Z'), false);
+  assert.equal(h('Nina at Battersea Arts Centre Council Chamber, London: searing experience - The Stage', '2026-10-14T10:30:00Z'), false);
+});
+
+test('discovers a Telegraph review whose headline omits the word review', async () => {
+  const headline = 'Lorca-tinged black comedy grips in Catarina and the Beauty of Killing Fascists - The Telegraph';
+  const { results } = await discover(feed(item({ title: headline })));
+  assert.equal(results.length, 1);
+  assert.equal(results[0].outletId, 'telegraph');
+  assert.equal(results[0].url, publisher);
 });
