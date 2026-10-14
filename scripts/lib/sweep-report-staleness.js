@@ -53,9 +53,6 @@ function sweepReportStalenessResult({ report = null, parseError = null } = {}, n
   if (!value) {
     return { name, status: 'error', message: 'No generatedAt field', hint };
   }
-  if (report.fetchError) {
-    return { name, status: 'warn', message: `Latest sweep wrote a failure report (fetchError: ${String(report.fetchError).slice(0, 80)}); the watchdog reads an empty result set`, hint };
-  }
   const age = hoursAgo(value, nowMs);
   if (age === Infinity) {
     return { name, status: 'error', message: `Unparseable date: ${value}`, hint };
@@ -65,6 +62,9 @@ function sweepReportStalenessResult({ report = null, parseError = null } = {}, n
   }
   if (age > SWEEP_REPORT_WARN_H) {
     return { name, status: 'warn', message: `${formatAge(age)} old (warn threshold: ${formatAge(SWEEP_REPORT_WARN_H)})`, hint };
+  }
+  if (report.fetchError) {
+    return { name, status: 'warn', message: `Latest sweep wrote a failure report (fetchError: ${String(report.fetchError).slice(0, 80)}); the watchdog reads an empty result set`, hint };
   }
   return { name, status: 'pass', message: `${formatAge(age)} old` };
 }

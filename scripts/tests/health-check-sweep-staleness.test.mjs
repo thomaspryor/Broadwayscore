@@ -118,3 +118,9 @@ test('row sits inside computeCoreHealthResults so the health-row probe sees it',
   assert.ok(start > 0 && end > start);
   assert.match(src.slice(start, end), /checkSweepReportStaleness\(\)/);
 });
+
+test('a stale report that also carries fetchError still escalates to error at >96h', () => {
+  const now = Date.parse('2026-10-14T12:00:00Z');
+  const r = sweepReportStalenessResult({ report: { generatedAt: '2026-10-08T12:00:00Z', fetchError: 'bad key' } }, now);
+  assert.equal(r.status, 'error');
+});
