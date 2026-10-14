@@ -417,3 +417,10 @@ test('assessRunnerSummaries: 3 runs, none stopped on the lock, something landed'
   assert.equal(bad.runs, 2);
   assert.ok(bad.problems.some((p) => p.includes('stopped on the lock')) && bad.problems.includes('no card landed'));
 });
+
+test('runner pushes of land/codex-* refs skip the session pre-push hook (BRO-5287, BRO-4530 crash)', () => {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
+  const pushes = src.match(/git\(\['push',[^\]]*refs\/heads\/\$\{ref\}[^\]]*\]/g) || [];
+  assert.ok(pushes.length > 0, 'found the land push');
+  for (const p of pushes) assert.ok(p.includes("'--no-verify'"), p);
+});
