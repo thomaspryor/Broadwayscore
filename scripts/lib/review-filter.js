@@ -101,4 +101,15 @@ function skipCrossOutletSelfDemote({ forcedRefetch, outletId, siblingOutletId, h
   return !!(forcedRefetch && hostMatches === true && outletId && siblingOutletId && outletId !== siblingOutletId);
 }
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote };
+/**
+ * BRO-5348: a crossOutletDuplicate flag set while the row held another
+ * outlet's text outlives a forced refetch that restored the row's own text,
+ * and keeps the real review hidden (merrily-we-roll-along-2023 amNY). Clear it
+ * when the refetch replaced the text and the new text no longer matches the
+ * flagged primary. An unreadable primary (no fingerprint) keeps the flag.
+ */
+function staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplicate, newFingerprint, primaryFingerprint }) {
+  return !!(forcedReplacement && crossOutletDuplicate === true && newFingerprint && primaryFingerprint && newFingerprint !== primaryFingerprint);
+}
+
+module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote, staleCrossOutletFlagAfterRefetch };

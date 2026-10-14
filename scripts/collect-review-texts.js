@@ -57,7 +57,7 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, skipCrossOutletSelfDemote } = require('./lib/review-filter');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, skipCrossOutletSelfDemote, staleCrossOutletFlagAfterRefetch } = require('./lib/review-filter');
 const { hostMatchesOutletDomain } = require('./lib/outlet-domain-validation');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -4864,6 +4864,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     markRescoreFlagged(data);
     data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
     console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
+  }
+  if (forcedReplacement && data.crossOutletDuplicate === true && data.crossOutletPrimaryFile) {
+    let primaryFingerprint = null;
+    try {
+      const primary = JSON.parse(fs.readFileSync(path.join(CONFIG.reviewTextsDir, data.crossOutletPrimaryFile), 'utf8'));
+      primaryFingerprint = primary.fullText ? computeContentFingerprint(primary.fullText) : null;
+    } catch { /* unreadable primary: keep the flag */ }
+    if (staleCrossOutletFlagAfterRefetch({ forcedReplacement, crossOutletDuplicate: true, newFingerprint: computeContentFingerprint(cleanedText), primaryFingerprint })) {
+      const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
+      console.log(`    → Cleared crossOutletDuplicate: forced refetch text no longer matches ${data.crossOutletPrimaryFile} (BRO-5348)`);
+      clearCrossOutletFields(data, `forced refetch from own url replaced the text; no longer matches ${data.crossOutletPrimaryFile} (BRO-5348)`);
+    }
   }
   if (!data.needsRescore && shouldRescoreCompletedTruncated({
     tierBefore: contentTierBeforeUpdate,

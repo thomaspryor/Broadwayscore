@@ -69,3 +69,15 @@ test('skipCrossOutletSelfDemote: real registry says variety.com is Variety', () 
   const reg = JSON.parse(readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8'));
   assert.equal(hostMatchesOutletDomain('https://variety.com/1997/legit/reviews/the-lion-king-new-amsterdam-theater-1117339958/', 'variety', reg), true);
 });
+
+// BRO-5348: a forced refetch that restored the row's own text clears a
+// crossOutletDuplicate flag set while it held another outlet's text.
+test('staleCrossOutletFlagAfterRefetch: cleared only when the refetched text no longer matches the primary', () => {
+  const { staleCrossOutletFlagAfterRefetch } = require('../../scripts/lib/review-filter.js');
+  const base = { forcedReplacement: true, crossOutletDuplicate: true, newFingerprint: 'aaa', primaryFingerprint: 'bbb' };
+  assert.equal(staleCrossOutletFlagAfterRefetch(base), true);
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, primaryFingerprint: 'aaa' }), false, 'still the same text');
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, forcedReplacement: false }), false, 'routine fetch leaves the flag');
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, primaryFingerprint: null }), false, 'unreadable primary keeps the flag');
+  assert.equal(staleCrossOutletFlagAfterRefetch({ ...base, crossOutletDuplicate: false }), false);
+});
