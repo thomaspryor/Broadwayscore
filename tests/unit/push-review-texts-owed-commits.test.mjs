@@ -22,7 +22,10 @@ const SCRIPT = step.run.split('\n').filter((l) => !l.includes('opening-night-lea
 const TOKEN = 'test-token';
 const URL_IN_ACTION = `https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git`;
 
-const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+// Inside a git hook or land gate GIT_DIR/GIT_WORK_TREE/GIT_INDEX_FILE are set
+// and would point every git call here at the real repo.
+const CLEAN_ENV = Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^GIT_(DIR|WORK_TREE|INDEX_FILE|OBJECT_DIRECTORY|COMMON_DIR|PREFIX)$/.test(k)));
+const git = (cwd, ...a) => execFileSync('git', a, { cwd, env: CLEAN_ENV, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 
 function setup() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-rt-owed-'));
@@ -51,7 +54,7 @@ function runAction({ ws, rt, out, origin }) {
     encoding: 'utf8',
     timeout: 120000,
     env: {
-      ...process.env,
+      ...CLEAN_ENV,
       GITHUB_WORKSPACE: ws,
       GITHUB_OUTPUT: out,
       REVIEW_TEXTS_TOKEN: TOKEN,
