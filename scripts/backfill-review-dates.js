@@ -466,4 +466,5 @@ async function main() {
   process.exit(0);
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+// Never run on require() (BRO-5261 S11: a load test wrote corpus files).
+if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });

@@ -45,6 +45,10 @@ Usage:
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266/#498/#638/#545 — see scripts/lib/cli-help.js).
+// Writes review files from top-level code: never run on require() (BRO-5261 S11:
+// a reviewer's load test rewrote 342 local corpus files).
+if (require.main !== module) return;
+
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const DRY_RUN = process.argv.includes('--dry-run');
