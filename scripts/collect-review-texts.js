@@ -57,7 +57,8 @@ const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim } = require('./lib/review-filter');
+const { matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, skipCrossOutletSelfDemote } = require('./lib/review-filter');
+const { hostMatchesOutletDomain } = require('./lib/outlet-domain-validation');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -584,6 +585,21 @@ const UNCOLLECTABLE_OUTLETS = (() => {
   }
   return set;
 })();
+
+// Registry for the 1C dedupe's own-domain check (BRO-5254). Read once, lazily;
+// null (unreadable) makes hostMatchesOutletDomain return null, which keeps the
+// old always-mark behaviour.
+let _dedupeOutletRegistry;
+function loadOutletRegistryForDedupe() {
+  if (_dedupeOutletRegistry === undefined) {
+    try {
+      _dedupeOutletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+    } catch {
+      _dedupeOutletRegistry = null;
+    }
+  }
+  return _dedupeOutletRegistry;
+}
 
 // BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") stand down for the
 // classifiers and the headline backstop below; laneBypasses is the one predicate, this only adds openingDate.
@@ -5496,6 +5512,20 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           if (siblingData.fullText) {
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {
+              if (skipCrossOutletSelfDemote({
+                forcedReplacement,
+                outletId: data.outletId,
+                siblingOutletId: siblingData.outletId,
+                hostMatches: hostMatchesOutletDomain(data.url, data.outletId, loadOutletRegistryForDedupe()),
+              })) {
+                console.log(`    ⚠ Same text as ${sibling} (${siblingData.outletId}); fresh fetch from this outlet's own domain, so not marking this file the copy (BRO-5254)`);
+                if (data.duplicateTextOf === sibling) {
+                  // Protected field: the clear needs its breadcrumb or the push restore puts it back.
+                  delete data.duplicateTextOf;
+                  data.duplicateClearReason = `forced refetch from own domain; ${sibling} is another outlet holding this text (BRO-5254)`;
+                }
+                continue;
+              }
               data.duplicateTextOf = sibling;
               console.log(`    ⚠ Duplicate text of ${sibling}`);
               break;
