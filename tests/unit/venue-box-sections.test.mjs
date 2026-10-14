@@ -76,3 +76,16 @@ test('the scorer trim and detector use the box section (master-class / godot gap
   assert.equal(trimMultiShowText('', 'X', 'x').trimFailed, true);
   assert.equal(trimMultiShowText(null, 'X', 'x').trimFailed, true);
 });
+
+test("a section does not end with the next show's caption, credit and theatre lines (act-one-2014 tail)", async () => {
+  const { dropTrailingShortLines } = await import(path.resolve(here, '../../scripts/llm-scoring/venue-box-sections.ts'));
+  const body = P('The revival is a pleasure from start to finish and the cast is in fine form.', 3);
+  const tail = "\nChris Somebody, left, and Jim Other in 'Of Mice and Men.'\nA. Photographer\nLongacre Theatre, 220 W. 48th St.";
+  assert.equal(dropTrailingShortLines(body + tail), body.trim());
+  assert.equal(dropTrailingShortLines(body), body.trim());
+  // A short closing verdict stays.
+  assert.equal(dropTrailingShortLines(body + "\nDon't miss it."), (body + "\nDon't miss it.").trim());
+  // Hard-wrapped prose (every line under 100 chars) is not eaten.
+  const wrapped = 'The revival is a pleasure from start to finish\nand the cast is in fine form all night long.\nI loved it.';
+  assert.equal(dropTrailingShortLines(wrapped), wrapped);
+});

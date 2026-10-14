@@ -93,6 +93,35 @@ function days(a?: string | null, b?: string | null): number {
   return Number.isFinite(x) && Number.isFinite(y) ? Math.abs(x - y) / 86400000 : Infinity;
 }
 
+/**
+ * The next show's photo caption, photo credit and theatre/address lines sit on
+ * short lines right before its box (act-one-2014 ended with "Chris O'Dowd ...
+ * in 'Of Mice and Men.' / Richard Phibbs / Longacre Theatre, 220 W. 48th St.").
+ * Only lines that look like a caption, a photo credit or a box line go (at
+ * most 4), so a short closing verdict ("Don't miss it.") or hard-wrapped
+ * prose stays.
+ */
+const CAPTION = /\b(?:left|right|center|centre|top|above|below)\b.{0,80}\bin\s+['"“‘]|\bin\s+['"“‘][^'"”’]{2,60}\.?['"”’]\s*$/i;
+const ADDRESS_LINE = /\b\d{1,4}\s+(?:[NSEW]\.?\s+)?[\w.']+(?:\s+[\w.']+)?\s+(?:St|Street|Ave|Avenue|Blvd|Place|Pl|Square|Broadway)\b\.?,?\s*$|^[^.!?]*\b(?:Theat(?:re|er)|Playhouse|Stages?|Company|Center|Club|Hall|Studio)\b[^.!?]*,?\s*$/;
+function isCaptionOrBoxLine(line: string): boolean {
+  const l = line.trim();
+  if (!l || l.length >= 100) return false;
+  if (CAPTION.test(l) || ADDRESS_LINE.test(l)) return true;
+  // A photo credit: a short bare name, up to 4 words, no sentence punctuation.
+  return l.length <= 40 && !/[.!?:;"“”]/.test(l.replace(/\b[A-Z]\./g, '')) && l.split(/\s+/).length <= 4 && /^[A-Z]/.test(l);
+}
+
+export function dropTrailingShortLines(section: string): string {
+  const lines = section.split('\n');
+  let dropped = 0;
+  for (;;) {
+    while (lines.length > 1 && !lines[lines.length - 1].trim()) lines.pop();
+    if (lines.length <= 1 || dropped >= 4 || !isCaptionOrBoxLine(lines[lines.length - 1])) break;
+    lines.pop(); dropped++;
+  }
+  return lines.join('\n').trim();
+}
+
 /** Pure: the target show's section of a multi-review column, or a refusal. */
 export function extractVenueBoxSection(text: string, target: VenueShow, allShows: VenueShow[]): VenueBoxResult {
   const boxes = findPriceBoxes(text || '');
@@ -135,7 +164,9 @@ export function extractVenueBoxSection(text: string, target: VenueShow, allShows
       }
     }
   }
-  return { ok: true, text: best.trim(), reason: `venue-box section (${boxes.length} boxes)`, boxes: boxes.length };
+  const section = dropTrailingShortLines(best.trim());
+  if (section.length < MIN_SECTION) return { ok: false, reason: 'section too short after dropping caption lines', boxes: boxes.length };
+  return { ok: true, text: section, reason: `venue-box section (${boxes.length} boxes)`, boxes: boxes.length };
 }
 
 let cachedShows: VenueShow[] | null = null;
