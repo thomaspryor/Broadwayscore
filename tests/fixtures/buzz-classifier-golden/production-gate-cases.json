@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "purpose": "Reproducible A/B for the production-reference gate. Each show carries realistic comments WITH the Reddit thread title they came from. CONTAMINATED cases are off-topic reactions in threads about a same-named novel/film/phrase — the OLD classifier (no thread context) marks them relevant; the NEW gate must drop them. ON-TOPIC cases are real audience reactions in staging threads — both arms must keep them. Used by scripts/ab-reddit-relevance.js --fixture. No live Reddit needed.",
+    "created": "2026-07-11"
+  },
+  "shows": [
+    {
+      "id": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+      "title": "La Breve y Maravillosa Vida de Oscar Wao",
+      "context": { "venue": "Repertorio Español", "market": "Off-Broadway", "type": "play", "openingDate": "2024-02-17" },
+      "expectStable": false,
+      "_note": "Contaminated bodies are deliberately AMBIGUOUS — no 'book/read/novel' giveaway. The ONLY off-topic signal is the thread title. This is the vector the OLD classifier misses (it is told to assume ambiguous 'it' = target) and the NEW gate must catch.",
+      "comments": [
+        { "label": "contaminated", "postTitle": "The Brief Wondrous Life of Oscar Wao — novel discussion thread", "body": "I finally got around to it last week and honestly loved it. Easily a 10 out of 10, the ending completely destroyed me." },
+        { "label": "contaminated", "postTitle": "Oscar Wao appreciation thread", "body": "It's a masterpiece. I've gone through it three times now and I get something new every time. Cannot recommend it enough." },
+        { "label": "contaminated", "postTitle": "Best Latin American fiction of the 2000s?", "body": "Oscar Wao, no contest. I was completely blown away, one of the best things I've experienced in years." },
+        { "label": "contaminated", "postTitle": "What Pulitzer winner should I check out first?", "body": "Start with Oscar Wao. I checked it out on a whim and it wrecked me in the best way, absolutely worth it." },
+        { "label": "contaminated", "postTitle": "Junot Díaz megathread", "body": "Saw it recommended everywhere so I gave it a shot and wow, incredible. The footnotes are a stroke of genius." },
+        { "label": "contaminated", "postTitle": "2026 Broadway/off Broadway shows!", "body": "Just saw Mexodus and LOVED it! So talented, so glad I went, one of the best nights out this year." },
+        { "label": "contaminated", "postTitle": "What did everyone see this week?", "body": "Caught a matinee on Saturday and was blown away — 10/10, would see it again in a heartbeat." },
+        { "label": "on-topic", "postTitle": "Saw the stage adaptation of Oscar Wao at Repertorio Español", "body": "Just saw it last night and it was phenomenal — the staging of the fukú curse gave me chills. Highly recommend." },
+        { "label": "on-topic", "postTitle": "La Breve y Maravillosa Vida de Oscar Wao — Repertorio Español", "body": "We went on Saturday. The bilingual production is gorgeous and the lead performance blew me away." },
+        { "label": "on-topic", "postTitle": "Off-Broadway recs this month", "body": "I saw the Oscar Wao play at Repertorio Español and it was the best thing I've seen off-Broadway all year." }
+      ]
+    },
+    {
+      "id": "pied-a-terre-off-broadway-2026",
+      "title": "Pied à Terre",
+      "context": { "venue": "The Theater Center", "market": "Off-Broadway", "type": "play", "openingDate": "2026-03-04" },
+      "expectStable": false,
+      "_note": "Ambiguous bodies; off-topic signal lives only in the thread title (a Manhattan apartment, not the play).",
+      "comments": [
+        { "label": "contaminated", "postTitle": "Renting a pied-à-terre in Manhattan — worth it?", "body": "Honestly one of the best decisions we've made. We love it and go every chance we get, totally worth it." },
+        { "label": "contaminated", "postTitle": "NYC second-home advice thread", "body": "We got ours near the park last year and adore it. So convenient for weekends, would recommend it to anyone." },
+        { "label": "contaminated", "postTitle": "Small city apartments — show me yours", "body": "Mine is tiny but I absolutely love it. Best money I've spent, I use it constantly." },
+        { "label": "contaminated", "postTitle": "Is a Manhattan crash pad worth the cost?", "body": "100% worth it for us. We were on the fence but after a year we couldn't be happier with it." },
+        { "label": "on-topic", "postTitle": "Just saw Pied à Terre at The Theater Center", "body": "Saw it last night — surprisingly moving two-hander, the writing is sharp and I'd recommend it." },
+        { "label": "on-topic", "postTitle": "Pied à Terre off-Broadway — anyone been?", "body": "I caught the Sunday matinee. The performances carry it; I was underwhelmed by the ending but glad I went." }
+      ]
+    },
+    {
+      "id": "drunk-shakespeare-off-broadway-2022",
+      "title": "Drunk Shakespeare",
+      "context": { "venue": "The Ruby Theatre", "market": "Off-Broadway", "type": "play", "openingDate": "2022-10-05" },
+      "expectStable": true,
+      "comments": [
+        { "label": "on-topic", "postTitle": "Saw Drunk Shakespeare last night — hilarious", "body": "We had a blast, the cast is quick and the audience interaction is a riot. Went with friends and we're already planning to go back." },
+        { "label": "on-topic", "postTitle": "Is Drunk Shakespeare worth it?", "body": "100% yes. Saw it for a birthday and it was the funniest night out we've had in ages, the King's Cup bit killed." },
+        { "label": "on-topic", "postTitle": "Drunk Shakespeare thoughts", "body": "Loved it — got pulled into the show and it was so much fun. The Ruby Theatre is a cool intimate space." },
+        { "label": "on-topic", "postTitle": "Fun off-Broadway shows in NYC", "body": "Drunk Shakespeare is a great time. Saw it twice now, different every night. Bring cash for the tips." },
+        { "label": "on-topic", "postTitle": "Best interactive theater experiences", "body": "We saw Drunk Shakespeare and it was chaotic in the best way. The actor who was 'drunk' was incredible." },
+        { "label": "on-topic", "postTitle": "Date night ideas near Times Square", "body": "Did Drunk Shakespeare for date night — genuinely enjoyed it, funny and unpretentious, would recommend." }
+      ]
+    }
+  ]
+}

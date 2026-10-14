@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-5239-e",
+  "planId": "580bab13-db4a-4ac1-b195-828d85063b9b",
+  "status": "partial",
+  "createdAt": "2026-10-13T08:13:56.197Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5239 class 7: star ratings checked against the outlet page (25 files).",
+    "steps": [
+      "Re-stamp each rating as manual-verified (same value) or correct/clear it where the page differs"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-west-end-2025/firstnightmagazine--unknown.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-west-end-2025/liamodell--liam-odell.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/north-west-end--michelle-knight.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flush-off-west-end-2026/a-youngish-perspective--unknown.json",
+        "field": "originalScore",
+        "oldValue": "4.5/5",
+        "newValue": "4.5/5",
+        "description": "Rating checked against the outlet page: 4.5/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024/a-youngish-perspective--beatriz-do.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/north-west-end--zain-russell.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": "5/5",
+        "description": "Rating checked against the outlet page: 5/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "get-up-stand-up-the-bob-marley-story-west-end-2021/a-youngish-perspective--claude-graham.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamlet-west-end-2025/liamodell--liam-odell.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hay-fever-west-end-2026/a-youngish-perspective--antonia-constantin.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": "5/5",
+        "description": "Rating checked against the outlet page: 5/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/liamodell--liam-odell.json",
+        "field": "originalScore",
+        "oldValue": "1/5",
+        "newValue": "1/5",
+        "description": "Rating checked against the outlet page: 1/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-society-west-end-2026/readaboutstuff--dan-english.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holy-fool-off-west-end-2026/a-youngish-perspective--unknown.json",
+        "field": "originalScore",
+        "oldValue": "2.5/5",
+        "newValue": "2.5/5",
+        "description": "Rating checked against the outlet page: 2.5/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holy-fool-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "originalScore",
+        "oldValue": "2/5",
+        "newValue": "2/5",
+        "description": "Rating checked against the outlet page: 2/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holy-fool-off-west-end-2026/liamodell--liam-odell.json",
+        "field": "originalScore",
+        "oldValue": "2/5",
+        "newValue": "2/5",
+        "description": "Rating checked against the outlet page: 2/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holy-fool-off-west-end-2026/liamodell--unknown.json",
+        "field": "originalScore",
+        "oldValue": "2/5",
+        "newValue": "2/5",
+        "description": "Rating checked against the outlet page: 2/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holy-fool-off-west-end-2026/north-west-end--unknown.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "idiots-assemble-spitting-image-the-musical-west-end-2023/firstnightmagazine--unknown.json",
+        "field": "originalScore",
+        "oldValue": "3.5/5",
+        "newValue": "3.5/5",
+        "description": "Rating checked against the outlet page: 3.5/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "imitations-off-west-end-2026/loureviews--louise-penn.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "indian-ink-off-west-end-2025/loureviews--louise-penn.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": "5/5",
+        "description": "Rating checked against the outlet page: 5/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/readaboutstuff--unknown.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-me-off-west-end-2026/a-youngish-perspective--ben-breen.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": "4/5",
+        "description": "Rating checked against the outlet page: 4/5. The stored text omits the star line."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/north-west-end--helen-jones.json",
+        "field": "originalScore",
+        "oldValue": "3/5",
+        "newValue": "3/5",
+        "description": "Rating checked against the outlet page: 3/5. The stored text omits the star line."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T10:05:36.969Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/firstnightmagazine--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/liamodell--liam-odell.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/north-west-end--michelle-knight.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "flamenc-oh-off-west-end-2026/the-spy-in-the-stalls--unknown.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "flush-off-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"4.5/5\" -> \"4.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024/a-youngish-perspective--beatriz-do.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/north-west-end--zain-russell.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/the-spy-in-the-stalls--unknown.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "get-up-stand-up-the-bob-marley-story-west-end-2021/a-youngish-perspective--claude-graham.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamlet-west-end-2025/liamodell--liam-odell.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hay-fever-west-end-2026/a-youngish-perspective--antonia-constantin.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/liamodell--liam-odell.json originalScore: \"1/5\" -> \"1/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-society-west-end-2026/readaboutstuff--dan-english.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holy-fool-off-west-end-2026/a-youngish-perspective--unknown.json originalScore: \"2.5/5\" -> \"2.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holy-fool-off-west-end-2026/firstnightmagazine--unknown.json originalScore: \"2/5\" -> \"2/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holy-fool-off-west-end-2026/liamodell--liam-odell.json originalScore: \"2/5\" -> \"2/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "holy-fool-off-west-end-2026/liamodell--unknown.json originalScore applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "holy-fool-off-west-end-2026/north-west-end--unknown.json originalScore applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "idiots-assemble-spitting-image-the-musical-west-end-2023/firstnightmagazine--unknown.json originalScore: \"3.5/5\" -> \"3.5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "imitations-off-west-end-2026/loureviews--louise-penn.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indian-ink-off-west-end-2025/loureviews--louise-penn.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/the-spy-in-the-stalls--unknown.json originalScore: \"5/5\" -> \"5/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/readaboutstuff--unknown.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "invisible-me-off-west-end-2026/a-youngish-perspective--ben-breen.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jane-eyre-off-west-end-2026/north-west-end--helen-jones.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
+    }
+  ]
+}

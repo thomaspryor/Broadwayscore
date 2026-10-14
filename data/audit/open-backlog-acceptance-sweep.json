@@ -1,0 +1,201 @@
+{
+  "generatedAt": "2026-10-13T09:35:40.995Z",
+  "shadow": true,
+  "checkoutSha": "96d96004bdec18b6022f09c4df1a4e2700b3a2b7",
+  "totalCandidates": 645,
+  "eligibleCandidates": 122,
+  "checked": 30,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 23,
+    "fail": 1,
+    "unverifiable": 6
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-5224",
+      "name": "human-review-fixes.json: add criticName to 2 same-outlet fixes now skipped as ambiguous",
+      "verifyCmd": "node --test scripts/apply-human-review-fixes.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5223",
+      "name": "unicode-stars-fallthrough extractor reads stars from page chrome about other shows",
+      "verifyCmd": "node --test tests/unit/score-extractors.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5220",
+      "name": "Exclude live SERP-found review rows scored without page text (about 7 rows)",
+      "verifyCmd": "node --test tests/unit/web-search-recovery-bro5183.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5167",
+      "name": "Audience ratings never linked: Mezzanine An Oak Tree (Audience coverage: open-show gaps)",
+      "verifyCmd": "node --test tests/unit/audience-coverage-gaps.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5142",
+      "name": "Write guard BRO-4383 flags real reviews wrongShow on historical shows with no cast/creative data (67 files)",
+      "verifyCmd": "node --test tests/unit/review-write-guard.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5088",
+      "name": "Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "verifyCmd": "node --test scripts/lib/broadway-theaters-studio54.test.mjs scripts/lib/ibdb-directed-by.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5064",
+      "name": "P1: weekly-integrity 'P0 score integrity check' hard-fails: 22 london-theatre files carry originalScore (no-star outlet)",
+      "verifyCmd": "node --test tests/unit/review-write-guard-no-rating-outlet.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5047",
+      "name": "Cut AI scoring cost: batch mode for non-urgent scoring runs and skip runs with nothing to score",
+      "verifyCmd": "node --test tests/unit/sticky-not-a-review-rejection.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5028",
+      "name": "Weekly commercial update: regex grosses parser is dead, every run falls back to Sonnet",
+      "verifyCmd": "node --test tests/unit/reddit-grosses.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4980",
+      "name": "National tour pages show wrong information: 273 page problem(s) (schedule-city-unlinked)",
+      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4976",
+      "name": "Outlet ids stage 2: observer (NY vs UK) split, medium (Christian Lewis blog), zeal-nyc personal-blog row",
+      "verifyCmd": "node --test tests/unit/outlet-id-migrations.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4909",
+      "name": "Land preflight: run lint-workflow-guards + DEPENDENCIES.md check when a push touches .github/workflows",
+      "verifyCmd": "node --test tests/unit/land-preflight.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4869",
+      "name": "Critics' Take: Wicked tour refused by the model; audit drift false positives on text-light shows",
+      "verifyCmd": "node --test tests/unit/critic-consensus-eligibility.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4868",
+      "name": "Make linear-next, the watchdog and the classifier honour the NO-DISPATCH marker, and anchor its regex",
+      "verifyCmd": "node --test scripts/lib/cloud-worker-pick.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4855",
+      "name": "Rebuild guard: drop a dateless review first seen before its show's first preview",
+      "verifyCmd": "node --test scripts/lib/show-matching.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4840",
+      "name": "Star-band drift triage: human-review overrides, relayed ratings, letter-grade extraction, and a daily published-score audit in the health digest",
+      "verifyCmd": "node --test tests/unit/published-score-star-band.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4835",
+      "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
+      "verifyCmd": "node --test scripts/lib/opening-night-lane-inline-score.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4820",
+      "name": "Lane discovery follow-ups: Show Score, Playbill Verdict, Google News (redirect unwrap), Talkin' Broadway, SERP adapter, 2-min loop driver, feed date confirmation",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-discovery.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4818",
+      "name": "Codex cross-checks Claude worker fixes before Done (reverse of the Codex runner's Claude check)",
+      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4813",
+      "name": "Triage 24 stranded land/** refs that name no card (interactive-session branches)",
+      "verifyCmd": "node --test scripts/lib/land-stranded-refs.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4775",
+      "name": "Launch video critics: enable videoReviews on prod (+ cloud-operable set-prod-feature workflow)",
+      "verifyCmd": "node --test scripts/lib/prod-held-flags-guard.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4730",
+      "name": "Other workflows mask push-with-retry.sh failures with || echo / || true (BRO-3342 cousins)",
+      "verifyCmd": "node --test tests/unit/push-failure-masking.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4631",
+      "name": "show-score-proxy runs with JWT verification off: forged tokens reach the function",
+      "verifyCmd": "node --test tests/unit/show-score-proxy-jwt-verification.test.mjs",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-5166",
+      "name": "Major-outlet reviews not counted in scores: Data: T1/T2 silent review gaps (11 reviews, 3 T1)",
+      "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
+      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-13T09:28:34.882Z health snapshot\n"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-5236",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no image file carries a hash rejected by eye\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 145507ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4960",
+      "name": "Critics' Take blurb outlives its reviews for up to 7 days after a wrongShow/removal (prune only runs weekly)",
+      "verifyCmd": "node --test tests/unit/critic-consensus-prune-only.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
+    },
+    {
+      "id": "BRO-4891",
+      "name": "Older musicals and missing prior-production pages for revival promo (Dreamgirls 2016, Sound of Music tour, Full Monty, JP, Paddington, director data)",
+      "verifyCmd": "node --test tests/unit/revival-promo-musicals-and-missing-pages.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-musicals-and-missing-pages.test.mjs"
+    },
+    {
+      "id": "BRO-4889",
+      "name": "Older Broadway pages behind spring 2027 revivals: contamination, false flags, junk rows (Evita, Osage, Cat, Private Lives, Dreamgirls 1981)",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-older-broadway.test.mjs"
+    },
+    {
+      "id": "BRO-4751",
+      "name": "P2: burn down the 24 baselined blanket-sweep audit writes in 8 workflows (BRO-2805 findings)",
+      "verifyCmd": "node --test scripts/lib/audit-blanket-sweep-baseline-empty.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/audit-blanket-sweep-baseline-empty.test.mjs"
+    },
+    {
+      "id": "BRO-4674",
+      "name": "P1: audit-sibling-title-misroute --strict fails on main: arcadia-west-end-2026/timeout-london--unknown.json belongs to arcadia-duke-of-yorks-west-end-2026",
+      "verifyCmd": "node --test scripts/audit-sibling-title-misroute.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-sibling-title-misroute.test.mjs"
+    }
+  ]
+}

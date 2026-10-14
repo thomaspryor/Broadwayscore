@@ -1,0 +1,338 @@
+{
+  "issueNumber": "bro-4317-b-05",
+  "planId": "5f33bb54-44fd-48ec-b1ae-08cdb9bd42a2",
+  "status": "applied",
+  "createdAt": "2026-10-13T01:56:27.498Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 5/9: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "move the-play-that-goes-wrong-2019/frontmezzjunkies--steven-ross.json -> the-play-that-goes-wrong-2017/frontmezzjunkies--steven-ross.json",
+      "move the-play-that-goes-wrong-2019/huffpost--christian-lewis.json -> the-play-that-goes-wrong-2017/huffpost--christian-lewis.json",
+      "move the-play-that-goes-wrong-2019/huffpost--michael-glitz.json -> the-play-that-goes-wrong-2017/huffpost--michael-glitz.json",
+      "move the-play-that-goes-wrong-2019/lighting-and-sound-america--david-barbour.json -> the-play-that-goes-wrong-2017/lighting-and-sound-america--david-barbour.json",
+      "move the-play-that-goes-wrong-2019/ny1--david-cote.json -> the-play-that-goes-wrong-2017/ny1--david-cote.json",
+      "move the-play-that-goes-wrong-2019/out-magazine--michael-musto.json -> the-play-that-goes-wrong-2017/out-magazine--michael-musto.json",
+      "move the-play-that-goes-wrong-2019/scribicide--aaron-botwick.json -> the-play-that-goes-wrong-2017/scribicide--aaron-botwick.json",
+      "move the-play-that-goes-wrong-2019/talkinbroadway--matthew-murray.json -> the-play-that-goes-wrong-2017/talkinbroadway--matthew-murray.json",
+      "move the-play-that-goes-wrong-2019/theater-life--david-sheward.json -> the-play-that-goes-wrong-2017/theater-life--david-sheward.json",
+      "delete the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json",
+      "move the-play-that-goes-wrong-2019/theater-pizzazz--carol-rocamora.json -> the-play-that-goes-wrong-2017/theater-pizzazz--carol-rocamora.json",
+      "move the-play-that-goes-wrong-2019/theater-pizzazz--sandi-durell.json -> the-play-that-goes-wrong-2017/theater-pizzazz--sandi-durell.json",
+      "move the-play-that-goes-wrong-2019/theater-scene--david-kaufman.json -> the-play-that-goes-wrong-2017/theater-scene--david-kaufman.json",
+      "move the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json -> the-play-that-goes-wrong-2017/theatermania--zachary-stewart.json",
+      "move the-play-that-goes-wrong-2019/theatre-is-easy--gabriella-steinberg.json -> the-play-that-goes-wrong-2017/theatre-is-easy--gabriella-steinberg.json",
+      "move the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json -> the-play-that-goes-wrong-2017/theatre-reviews-limited--david-roberts.json",
+      "delete the-play-that-goes-wrong-2019/this-week-in-new-york--mark-rifkin.json",
+      "move the-play-that-goes-wrong-2019/upstage-downstage--howard-miller.json -> the-play-that-goes-wrong-2017/upstage-downstage--howard-miller.json",
+      "move the-play-that-goes-wrong-2019/wolf-entertainment-guide--william-wolf.json -> the-play-that-goes-wrong-2017/wolf-entertainment-guide--william-wolf.json",
+      "delete the-reservoir-2026/nyt-theater--jonathan-mandell.json",
+      "delete the-reservoir-2026/theatermania--zachary-stewart.json",
+      "delete the-tragedy-of-coriolanus-2026/nytg--amelia-merrill.json",
+      "delete the-unknown-2026/lighting-and-sound-america--david-barbour.json",
+      "delete the-unknown-2026/nytg--joe-dziemianowicz.json",
+      "delete the-unknown-2026/nytimes--helen-shaw.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/frontmezzjunkies--steven-ross.json",
+        "destPath": "the-play-that-goes-wrong-2017/frontmezzjunkies--steven-ross.json",
+        "description": "publishDate April 2nd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/huffpost--christian-lewis.json",
+        "destPath": "the-play-that-goes-wrong-2017/huffpost--christian-lewis.json",
+        "description": "publishDate April 3rd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/huffpost--michael-glitz.json",
+        "destPath": "the-play-that-goes-wrong-2017/huffpost--michael-glitz.json",
+        "description": "publishDate April 10th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/lighting-and-sound-america--david-barbour.json",
+        "destPath": "the-play-that-goes-wrong-2017/lighting-and-sound-america--david-barbour.json",
+        "description": "publishDate April 7th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/ny1--david-cote.json",
+        "destPath": "the-play-that-goes-wrong-2017/ny1--david-cote.json",
+        "description": "publishDate April 8th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/out-magazine--michael-musto.json",
+        "destPath": "the-play-that-goes-wrong-2017/out-magazine--michael-musto.json",
+        "description": "publishDate April 3rd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/scribicide--aaron-botwick.json",
+        "destPath": "the-play-that-goes-wrong-2017/scribicide--aaron-botwick.json",
+        "description": "publishDate April 2nd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/talkinbroadway--matthew-murray.json",
+        "destPath": "the-play-that-goes-wrong-2017/talkinbroadway--matthew-murray.json",
+        "description": "publishDate April 2nd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theater-life--david-sheward.json",
+        "destPath": "the-play-that-goes-wrong-2017/theater-life--david-sheward.json",
+        "description": "publishDate April 6th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json",
+        "description": "same-url copy already in the-play-that-goes-wrong-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theater-pizzazz--carol-rocamora.json",
+        "destPath": "the-play-that-goes-wrong-2017/theater-pizzazz--carol-rocamora.json",
+        "description": "publishDate April 6th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theater-pizzazz--sandi-durell.json",
+        "destPath": "the-play-that-goes-wrong-2017/theater-pizzazz--sandi-durell.json",
+        "description": "publishDate April 6th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theater-scene--david-kaufman.json",
+        "destPath": "the-play-that-goes-wrong-2017/theater-scene--david-kaufman.json",
+        "description": "publishDate April 12th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json",
+        "destPath": "the-play-that-goes-wrong-2017/theatermania--zachary-stewart.json",
+        "description": "publishDate April 2nd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theatre-is-easy--gabriella-steinberg.json",
+        "destPath": "the-play-that-goes-wrong-2017/theatre-is-easy--gabriella-steinberg.json",
+        "description": "publishDate April 2nd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json",
+        "destPath": "the-play-that-goes-wrong-2017/theatre-reviews-limited--david-roberts.json",
+        "description": "publishDate April 10th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-2019/this-week-in-new-york--mark-rifkin.json",
+        "description": "same-url copy already in the-play-that-goes-wrong-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/upstage-downstage--howard-miller.json",
+        "destPath": "the-play-that-goes-wrong-2017/upstage-downstage--howard-miller.json",
+        "description": "publishDate April 2nd, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/wolf-entertainment-guide--william-wolf.json",
+        "destPath": "the-play-that-goes-wrong-2017/wolf-entertainment-guide--william-wolf.json",
+        "description": "publishDate April 7th, 2017 within 14d of the-play-that-goes-wrong-2017 opening 2017-04-02 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-reservoir-2026/nyt-theater--jonathan-mandell.json",
+        "description": "same-url copy already in the-reservoir-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-reservoir-2026/theatermania--zachary-stewart.json",
+        "description": "same-url copy already in the-reservoir-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-tragedy-of-coriolanus-2026/nytg--amelia-merrill.json",
+        "description": "same-url copy already in the-tragedy-of-coriolanus-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-unknown-2026/lighting-and-sound-america--david-barbour.json",
+        "description": "same-url copy already in the-unknown-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-unknown-2026/nytg--joe-dziemianowicz.json",
+        "description": "same-url copy already in the-unknown-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-unknown-2026/nytimes--helen-shaw.json",
+        "description": "same-url copy already in the-unknown-off-broadway-2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:35:16.652Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/frontmezzjunkies--steven-ross.json → the-play-that-goes-wrong-2017/frontmezzjunkies--steven-ross.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/huffpost--christian-lewis.json → the-play-that-goes-wrong-2017/huffpost--christian-lewis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/huffpost--michael-glitz.json → the-play-that-goes-wrong-2017/huffpost--michael-glitz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/lighting-and-sound-america--david-barbour.json → the-play-that-goes-wrong-2017/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/ny1--david-cote.json → the-play-that-goes-wrong-2017/ny1--david-cote.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/out-magazine--michael-musto.json → the-play-that-goes-wrong-2017/out-magazine--michael-musto.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/scribicide--aaron-botwick.json → the-play-that-goes-wrong-2017/scribicide--aaron-botwick.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/talkinbroadway--matthew-murray.json → the-play-that-goes-wrong-2017/talkinbroadway--matthew-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theater-life--david-sheward.json → the-play-that-goes-wrong-2017/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theater-pizzazz--carol-rocamora.json → the-play-that-goes-wrong-2017/theater-pizzazz--carol-rocamora.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theater-pizzazz--sandi-durell.json → the-play-that-goes-wrong-2017/theater-pizzazz--sandi-durell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theater-scene--david-kaufman.json → the-play-that-goes-wrong-2017/theater-scene--david-kaufman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theatermania--zachary-stewart.json → the-play-that-goes-wrong-2017/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theatre-is-easy--gabriella-steinberg.json → the-play-that-goes-wrong-2017/theatre-is-easy--gabriella-steinberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json → the-play-that-goes-wrong-2017/theatre-reviews-limited--david-roberts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2019/this-week-in-new-york--mark-rifkin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/upstage-downstage--howard-miller.json → the-play-that-goes-wrong-2017/upstage-downstage--howard-miller.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/wolf-entertainment-guide--william-wolf.json → the-play-that-goes-wrong-2017/wolf-entertainment-guide--william-wolf.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-reservoir-2026/nyt-theater--jonathan-mandell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-reservoir-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-tragedy-of-coriolanus-2026/nytg--amelia-merrill.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/nytg--joe-dziemianowicz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/nytimes--helen-shaw.json"
+    }
+  ]
+}

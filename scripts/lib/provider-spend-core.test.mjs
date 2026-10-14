@@ -1,0 +1,377 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, isNextUtcDay,
+  aggregateLedgerByDay, bbCost,
+  ledgerFreshnessHours, lastLedgerDay,
+} = require('./provider-spend-core.js');
+
+const THRESHOLDS = {
+  browserbaseDailyUsd: 4, brightdataDailyUsd: 2.5,
+  scrapingbeeDailyCredits: 35000, scrapingdogDailyCredits: 45000,
+};
+
+const okReadings = {
+  day: '2026-07-30',
+  bb: { sessions: 25, minutes: 30 },
+  bd: { serp: { cost: 0.8, reqs: 500 }, unlocker: { cost: 0.6, reqs: 400 } },
+  sb: { cycleUsed: 100500, cap: 1000000 },
+  sd: { cycleUsed: 210000, limit: 1000000 },
+};
+
+const prevRecord = {
+  day: '2026-07-29',
+  providers: {
+    browserbase: { status: 'ok', sessions: 30, cost: 3 },
+    brightdata: { status: 'ok', cost: 1.1, serpReqs: 300, unlockerReqs: 200 },
+    scrapingbee: { status: 'ok', cycleUsed: 100000 },
+    scrapingdog: { status: 'ok', cycleUsed: 200000 },
+  },
+};
+
+test('utcYesterday and isNextUtcDay', () => {
+  assert.equal(utcYesterday(new Date('2026-07-31T06:45:00Z')), '2026-07-30');
+  assert.equal(utcYesterday(new Date('2026-08-01T00:10:00Z')), '2026-07-31');
+  assert.equal(isNextUtcDay('2026-07-30', '2026-07-31'), true);
+  assert.equal(isNextUtcDay('2026-07-31', '2026-08-01'), true);
+  assert.equal(isNextUtcDay('2026-07-28', '2026-07-30'), false);
+  assert.equal(isNextUtcDay(null, '2026-07-30'), false);
+});
+
+test('computeDayRecord: deltas vs adjacent previous day, BB priced per browser-minute (amortized base + measured overage)', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  assert.equal(rec.providers.browserbase.cost, 0.73); // 0.67 base + (30/60)*0.12 overage
+  assert.equal(rec.providers.browserbase.sessions, 25);
+  assert.equal(rec.providers.browserbase.minutes, 30);
+  assert.equal(rec.providers.brightdata.cost, 1.4);
+  assert.equal(rec.providers.scrapingbee.dayCredits, 500);
+  assert.equal(rec.providers.scrapingdog.dayCredits, 10000);
+});
+
+test('bbCost: a heavy-session, low-duration day stays near the amortized baseline, not driven by session count', () => {
+  // Real-world shape (BRO-3240): 92 sessions in 19.2 minutes — session COUNT
+  // is high but real browser-time is tiny. The old per-session model would
+  // have priced this at 92 * $0.10 = $9.20; the fix must not reproduce that.
+  const { cost, costBase, costOverage } = bbCost({ sessions: 92, minutes: 19.2 });
+  assert.equal(costBase, 0.67);
+  assert.ok(costOverage < 0.05, `overage should be near-zero for 19.2 real minutes, got ${costOverage}`);
+  assert.ok(cost < 1, `total cost should stay near the flat baseline, got ${cost}`);
+});
+
+test('bbCost: a genuine multi-hour burst still crosses a real dollar figure (alarm stays reachable)', () => {
+  const { cost } = bbCost({ sessions: 80, minutes: 2000 }); // 33.3 browser-hours in one day
+  assert.equal(cost, 4.67);
+});
+
+test('computeDayRecord: counter reset = cycle renewal, day usage is the new counter', () => {
+  const rec = computeDayRecord({ ...okReadings, sb: { cycleUsed: 1200, cap: 1000000 }, prev: prevRecord });
+  assert.equal(rec.providers.scrapingbee.dayCredits, 1200);
+});
+
+test('computeDayRecord: NON-adjacent prev (cron outage gap) degrades deltas to baseline, never multi-day false breach', () => {
+  const gapPrev = { ...prevRecord, day: '2026-07-27' };
+  const rec = computeDayRecord({ ...okReadings, prev: gapPrev });
+  assert.equal(rec.providers.scrapingbee.status, 'baseline');
+  assert.equal(rec.providers.scrapingbee.dayCredits, undefined);
+  assert.equal(rec.providers.browserbase.status, 'ok'); // BB/BD are per-day API reads, unaffected by gaps
+});
+
+test('computeDayRecord: null reading is unknown, missing prev is baseline', () => {
+  const rec = computeDayRecord({ ...okReadings, bb: null, prev: undefined });
+  assert.equal(rec.providers.browserbase.status, 'unknown');
+  assert.equal(rec.providers.scrapingbee.status, 'baseline');
+});
+
+test('budgetBreaches separates overspend from unmeasured', () => {
+  const rec = computeDayRecord({ ...okReadings, bb: { sessions: 80, minutes: 2000 }, bd: null, prev: prevRecord });
+  const { overspend, unmeasured } = budgetBreaches(rec, THRESHOLDS);
+  assert.equal(overspend.length, 1);
+  assert.match(overspend[0], /browserbase \$4\.67 > \$4 \(80 sessions, 2000min\)/);
+  assert.deepEqual(unmeasured, ['brightdata']);
+});
+
+test('budgetBreaches: baseline day is neither overspend nor unmeasured', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: undefined });
+  const { overspend, unmeasured } = budgetBreaches(rec, THRESHOLDS);
+  assert.equal(overspend.length, 0);
+  assert.equal(unmeasured.length, 0);
+});
+
+// Real consecutive UTC dates — computeStreak now requires calendar adjacency.
+function greenOn(day, prevDay) {
+  const prev = { ...prevRecord, day: prevDay };
+  return computeDayRecord({ ...okReadings, day, prev });
+}
+
+test('computeStreak counts trailing consecutive proven-green calendar days', () => {
+  const r28 = greenOn('2026-07-28', '2026-07-27');
+  const r29 = greenOn('2026-07-29', '2026-07-28');
+  const r30 = greenOn('2026-07-30', '2026-07-29');
+  assert.equal(computeStreak([r28, r29, r30], THRESHOLDS), 3);
+});
+
+test('computeStreak: a missing calendar day (cron outage) breaks the streak', () => {
+  const r27 = greenOn('2026-07-27', '2026-07-26');
+  const r30 = greenOn('2026-07-30', '2026-07-29'); // 28th+29th never recorded
+  assert.equal(computeStreak([r27, r30], THRESHOLDS), 1);
+});
+
+test('computeStreak: unknown or baseline day resets/blocks the streak', () => {
+  const r28 = greenOn('2026-07-28', '2026-07-27');
+  const unknown29 = computeDayRecord({ ...okReadings, day: '2026-07-29', bb: null, prev: { ...prevRecord, day: '2026-07-28' } });
+  const r30 = greenOn('2026-07-30', '2026-07-29');
+  assert.equal(computeStreak([r28, unknown29, r30], THRESHOLDS), 1);
+  assert.equal(computeStreak([r28, r30.day ? { ...r30, day: '2026-07-29' } : r30, unknown29], THRESHOLDS), 0);
+  const baseline = computeDayRecord({ ...okReadings, day: '2026-07-30', prev: undefined });
+  assert.equal(computeStreak([baseline], THRESHOLDS), 0);
+});
+
+test('renderSnapshot: items are {title} objects (renderer drops bare strings)', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+  });
+  assert.equal(snap.items.length, 4);
+  for (const item of snap.items) {
+    assert.equal(typeof item.title, 'string');
+    assert.ok(item.title.length > 0);
+  }
+  assert.match(snap.items[0].title, /2026-07-30 · Browserbase: \$0\.73/);
+  assert.match(snap.bannerText, /streak 4 of 7/);
+});
+
+test('renderSnapshot: unmeasured day never reads as green', () => {
+  const rec = computeDayRecord({ ...okReadings, bd: null, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 0,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+  });
+  assert.match(snap.bannerText, /Could not measure: brightdata/);
+});
+
+// ---------- renderSnapshot: attribution coverage degrades, never suppresses (S0-T7) ----------
+
+test('renderSnapshot: attribution line names "top callers (covers N% of billed credits)" for a credit-based provider', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+    attribution: {
+      scrapingbee: {
+        pct: 0.92, unit: 'credits', topCoveragePct: 0.6,
+        top: [{ script: 'a.js', amount: 300 }, { script: 'b.js', amount: 150 }],
+      },
+    },
+    attributionCoverageMin: 0.8,
+  });
+  const line = snap.items.find((i) => i.title.startsWith('ScrapingBee attribution'));
+  assert.ok(line, 'expected a ScrapingBee attribution line');
+  assert.match(line.title, /top callers \(covers 60% of billed credits\): a\.js 300cr, b\.js 150cr/);
+});
+
+test('renderSnapshot: below attributionCoverageMin adds a warning naming BRO-2961, does not suppress the line', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+    attribution: {
+      scrapingbee: { pct: 0.92, unit: 'credits', topCoveragePct: 0.5, top: [{ script: 'a.js', amount: 500 }] },
+    },
+    attributionCoverageMin: 0.8,
+  });
+  assert.ok(snap.items.some((i) => i.title.startsWith('ScrapingBee attribution')), 'attribution line must still be present');
+  assert.ok(snap.items.some((i) => i.title.includes('BRO-2961') && i.title.includes('coverage low')), 'warning must name BRO-2961');
+});
+
+test('renderSnapshot: at/above attributionCoverageMin adds no warning', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
+  const snap = renderSnapshot({
+    record: rec, streak: 4,
+    breaches: budgetBreaches(rec, THRESHOLDS),
+    generatedAt: '2026-07-31T06:45:00Z',
+    attribution: {
+      scrapingbee: { pct: 0.92, unit: 'credits', topCoveragePct: 0.85, top: [{ script: 'a.js', amount: 850 }] },
+    },
+    attributionCoverageMin: 0.8,
+  });
+  assert.ok(!snap.items.some((i) => i.title.includes('BRO-2961')), 'no warning when coverage is healthy');
+});
+
+// ---------- aggregateLedgerByDay (S0-T6: daily aggregation for a 7-day window) ----------
+
+test('aggregateLedgerByDay: only picks up rows for the requested day, two-day fixture', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 1 },
+    { ts: '2026-09-02T01:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 999 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].day, '2026-09-01');
+  assert.equal(rows[0].credits, 1);
+});
+
+test('aggregateLedgerByDay: same (provider,workflow,script,fn) sums credits and counts calls', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: 'Gather Review Data', script: 'gather-reviews.js', fn: 'page', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].credits, 2);
+});
+
+test('aggregateLedgerByDay: rows differing only in fn produce separate groups', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: null, script: 'sweep-we-aggregators.js', fn: 'render', credits: 5 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: null, script: 'sweep-we-aggregators.js', fn: 'json', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 2);
+  assert.ok(rows.some((r) => r.fn === 'render' && r.credits === 5));
+  assert.ok(rows.some((r) => r.fn === 'json' && r.credits === 1));
+});
+
+test('aggregateLedgerByDay: missing/non-numeric credits count as 0, never NaN', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'brightdata', workflow: null, script: 'x.js', fn: 'web-unlocker', credits: null },
+    { ts: '2026-09-01T02:00:00Z', provider: 'brightdata', workflow: null, script: 'x.js', fn: 'web-unlocker' },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].credits, 0);
+  assert.ok(!Number.isNaN(rows[0].credits));
+});
+
+test('aggregateLedgerByDay: sorted by credits descending, most expensive grouping first', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: null, script: 'cheap.js', fn: 'page', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: null, script: 'expensive.js', fn: 'stealth', credits: 75 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows[0].script, 'expensive.js');
+  assert.equal(rows[1].script, 'cheap.js');
+});
+
+// ---------- aggregateLedgerByDay host/category split (BRO-3097) ----------
+
+test('aggregateLedgerByDay: browserbase rows with the same script/fn but different host stay separate rows', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'browserbase', workflow: null, script: 'collect-review-texts.js', fn: 'session', host: 'nytimes.com', category: 'review-text', credits: 0 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'browserbase', workflow: null, script: 'collect-review-texts.js', fn: 'session', host: 'wsj.com', category: 'review-text', credits: 0 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 2);
+  assert.ok(rows.some((r) => r.host === 'nytimes.com' && r.calls === 1));
+  assert.ok(rows.some((r) => r.host === 'wsj.com' && r.calls === 1));
+});
+
+test('aggregateLedgerByDay: browserbase rows with the same host/category merge and sum calls', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'browserbase', workflow: null, script: 'bww-rr-discover.js', fn: 'session', host: 'broadwayworld.com', category: 'discovery', credits: 0 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'browserbase', workflow: null, script: 'bww-rr-discover.js', fn: 'session', host: 'broadwayworld.com', category: 'discovery', credits: 0 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].host, 'broadwayworld.com');
+  assert.equal(rows[0].category, 'discovery');
+});
+
+test('aggregateLedgerByDay: non-browserbase rows ignore `host` in the grouping key — different hosts still merge, output host is null', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', workflow: null, script: 'gather-reviews.js', fn: 'page', host: 'nytimes.com', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', workflow: null, script: 'gather-reviews.js', fn: 'page', host: 'vulture.com', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows.length, 1, 'host must not fragment the aggregate for non-HOST_DIMENSION_PROVIDERS');
+  assert.equal(rows[0].calls, 2);
+  assert.equal(rows[0].host, null);
+});
+
+test('aggregateLedgerByDay: category is null for providers that never set it', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'brightdata', workflow: null, script: 'x.js', fn: 'web-unlocker', credits: 1 },
+  ];
+  const rows = aggregateLedgerByDay(records, '2026-09-01');
+  assert.equal(rows[0].category, null);
+});
+
+// --- BRO-3349: freshness helpers moved here from check-provider-spend.js ---
+
+test('ledgerFreshnessHours: a shape-valid but UNREAL day is dropped, never propagated as NaN', () => {
+  // "2026-99-99" matches /^\d{4}-\d{2}-\d{2}$/ but is Invalid Date. The old
+  // lexical-max-then-convert order let it outrank every real day and return
+  // NaN, which callers read as "no usable data" (WARN) instead of staleness —
+  // one garbage row silenced the dead-man permanently (ship-check/Codex P1).
+  const now = new Date('2026-09-25T00:00:00Z');
+  const hours = ledgerFreshnessHours([{ day: '2026-09-19' }, { day: '2026-99-99' }], now);
+  assert.ok(Number.isFinite(hours), `expected a finite age, got ${hours}`);
+  assert.ok(Math.abs(hours - 120) < 0.01, `expected ~120h from 2026-09-19's end-of-day, got ${hours}`);
+});
+
+test('ledgerFreshnessHours: an entirely unreal ledger is Infinity (maximally stale), not NaN', () => {
+  const hours = ledgerFreshnessHours([{ day: '2026-99-99' }, { day: 'zzz' }, { day: null }], new Date());
+  assert.equal(hours, Infinity);
+});
+
+test('lastLedgerDay: reports the newest REAL day, ignoring unreal and malformed ones', () => {
+  assert.equal(lastLedgerDay([{ day: '2026-09-17' }, { day: '2026-99-99' }, { day: '2026-09-19' }]), '2026-09-19');
+  assert.equal(lastLedgerDay([{ day: '2026-99-99' }]), null);
+  assert.equal(lastLedgerDay([]), null);
+  assert.equal(lastLedgerDay(null), null);
+});
+
+test('lastLedgerDay agrees with ledgerFreshnessHours about which day is newest', () => {
+  const records = [{ day: '2026-09-17' }, { day: '2026-99-99' }, { day: '2026-09-19' }];
+  const now = new Date('2026-09-21T13:25:11.107Z');
+  const day = lastLedgerDay(records);
+  assert.equal(ledgerFreshnessHours(records, now), ledgerFreshnessHours([{ day }], now));
+});
+
+test('attributionGaps (BRO-4215): flags a provider under min on every one of the last N consecutive days', () => {
+  const { attributionGaps } = require('./provider-spend-core.js');
+  const opts = { min: 0.8, days: 2, providers: ['scrapingbee', 'scrapingdog', 'brightdata'] };
+  const series = [
+    { day: '2026-09-25', attributedPct: { scrapingbee: 0.19, scrapingdog: 0.9, brightdata: 0.5 } },
+    { day: '2026-09-26', attributedPct: { scrapingbee: 0.13, scrapingdog: 0.95, brightdata: 0.85 } },
+    { day: '2026-09-27', attributedPct: { scrapingbee: 0.17, scrapingdog: 0.4, brightdata: 0.6 } },
+  ];
+  assert.deepEqual(attributionGaps(series, opts), [{ provider: 'scrapingbee', pcts: [0.13, 0.17] }],
+    'scrapingdog/brightdata dipped for only one of the two days');
+  // A null (unmeasured) day breaks the run.
+  const withNull = [series[0], { ...series[1], attributedPct: { scrapingbee: null } }, series[2]];
+  assert.deepEqual(attributionGaps(withNull, opts), []);
+  // A calendar gap between the last two records breaks the run.
+  assert.deepEqual(attributionGaps([series[0], series[2]], opts), []);
+  // Not enough history.
+  assert.deepEqual(attributionGaps([series[2]], opts), []);
+  // Providers not listed are never flagged.
+  assert.deepEqual(attributionGaps(series, { ...opts, providers: ['browserbase'] }), []);
+});
+
+test('attributionWindowVerdict (BRO-4215): the whole alert window must be clear; shared by resolve + VERIFY', () => {
+  const { attributionWindowVerdict } = require('./provider-spend-core.js');
+  const rec = (day, p) => ({ day, attributedPct: { scrapingdog: p } });
+  const two = { min: 0.8, days: 2 };
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', 0.43), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'open', 'one good day does not close it');
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', 0.85), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'clear');
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', 0.8), rec('2026-09-28', 0.8)], 'scrapingdog', two).verdict, 'clear', 'exactly min counts as clear');
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.85), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'non-consecutive');
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.40), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'gap checked before under-min');
+  assert.equal(attributionWindowVerdict([rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'too little history');
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', null), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'unmeasured day');
+  assert.equal(attributionWindowVerdict([rec('2026-09-28', 0.91), rec('2026-09-27', 0.85)], 'scrapingdog', two).verdict, 'clear', 'order irrelevant');
+  const three = { min: 0.8, days: 3 };
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.5), rec('2026-09-27', 0.9), rec('2026-09-28', 0.9)], 'scrapingdog', three).verdict, 'open', 'days=3 window');
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.9), rec('2026-09-27', 0.9), rec('2026-09-28', 0.9)], 'scrapingdog', three).verdict, 'clear');
+});

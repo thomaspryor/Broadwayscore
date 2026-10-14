@@ -1,0 +1,15 @@
+{
+  "system": "push-retry deadman",
+  "status": "error",
+  "lastChecked": "2026-10-13T09:28:28.742Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Push-retry deadman",
+      "status": "error",
+      "message": "3 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x1, Deep Research Commercial x1, Collect Review Texts x1]. Most recent reason: api-fallback-exhausted(race-or-other,early-fallback). 2 committed file(s) discarded across 1 run(s). 136 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+    }
+  ]
+}

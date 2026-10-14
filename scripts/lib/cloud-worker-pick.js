@@ -1,0 +1,567 @@
+/**
+ * cloud-worker-pick — choose the one P0/P1 card (or, when none is eligible, a
+ * P2 card, then a P3 card) a cloud worker session takes on a firing (BRO-4535).
+ *
+ * WHY: every dispatcher that works the board (dispatch-watchdog.js,
+ * linear-drain-parked.js, bsc-next.js) runs on the owner's Mac. When the Mac
+ * is asleep or off, urgent cards wait. A scheduled cloud routine fires a fresh
+ * session every few hours; this picks the card it works, using the same
+ * card-text guards the Mac dispatchers use (priority, state, safe VERIFY,
+ * headless blockers).
+ *
+ * NOT applied here: the Mac's dispatch-ledger guards (attempt memory, spend
+ * breaker, per-card retry limits). The ledger lives on the Mac. What keeps a
+ * cloud worker from looping on one card is the routine prompt: the worker
+ * claims the card first (linear-session.js claim), which moves it to a started
+ * state, so the next firing's state filter skips it. A card that fails ends
+ * In Review or Blocked, never back in Todo, unless the stuck-card closer
+ * bounces it (at most MAX_BOUNCES times).
+ *
+ * WHY THESE RULES:
+ *   - P0/P1 first, highest first then oldest: the owner asked for urgent-card
+ *     throughput, and one card per firing is the usage cap.
+ *   - P2 FALLBACK: P2 (Linear priority 3) Todo cards, under every other rule
+ *     here, but only after every P0/P1 card (pickCloudCard returns them in
+ *     orderedP2; the CLI queues them after the P0/P1 queue, so one is reached
+ *     only when no P0/P1 card survives the history and Codex-bounce skips
+ *     too). Measured 2026-10-11: 76 eligible P0/P1 cards, about 3-4 days of
+ *     work, and 17 P2 Todo cards nothing could ever reach, so the workers
+ *     would sit idle once P0/P1 drained. Todo only: parked P2 cards stay
+ *     parked (the Mac drain and the stale-automation rule unpark P0/P1 only).
+ *     START-NOW does not apply to P2 (linear-issue-create refuses to file a
+ *     START-NOW P2 card), so a P2 card always waits out IDLE_MS. A refused
+ *     P2 landing is resumed too (findResumeCandidates includeP2), after every
+ *     P0/P1 entry.
+ *   - P3 FALLBACK: Low (Linear priority 4) Todo cards, one tier further down,
+ *     under the same rules as P2 (Todo only, IDLE_MS, START-NOW ignored,
+ *     every guard), reached only after every P0/P1 and P2 entry (orderedP3;
+ *     the CLI queues P3 resumes and P3 cards last). The owner wants every card
+ *     handled, not only urgent ones (2026-10-11). The Codex runner (--list=N)
+ *     reads the same queue, so it takes Low cards too, last. No-priority
+ *     (Linear 0) cards are never picked: nobody has triaged them.
+ *   - Todo (unstarted) only, plus parked P0/P1 session cards the Mac drain
+ *     would also unpark (isSessionParkedDrainable). Every Mac dispatch moves
+ *     its card to a started state (linear-next.js), so the state filter alone
+ *     keeps the cloud off cards the Mac already holds.
+ *   - Machine-filed parked P0/P1 cards (digest-autofix, owner-alert-router)
+ *     once quiet for AUTOMATION_PARK_STALE_MS. Their PARKED line is a filer's
+ *     note ("runAutofix dispatches via linear-next separately"), not an owner
+ *     hold, and only the Mac ever dispatched them. Measured 2026-10-04: 281
+ *     such cards, idle 10 to 20+ days, because that same-pass dispatch never
+ *     happened and nothing retried it. Three days leaves the Mac drain and the
+ *     strict resolved-alert sweep their turn first.
+ *   - Idle for IDLE_MS: a P0 filed minutes ago is usually being dispatched at
+ *     creation by the session that filed it. Six hours gives that path, and
+ *     the Mac watchdog, first claim.
+ *   - A safe VERIFY command and no headless blocker other than the PARKED
+ *     sentinel on a drainable card: a cloud worker has no owner to approve
+ *     visual QA, wait out an async effect, or make a judgment call, and needs
+ *     a machine-checkable definition of done.
+ *
+ * RESUME BEFORE PICK (BRO-4565): the state filter above also means a worker
+ * that ended its turn before its Land run finished never comes back. When
+ * Land refuses, the card stays In Progress with its land/ ref still on the
+ * remote (Land deletes the ref only on success), and every later firing skips
+ * it. Seen live on BRO-2311 (2026-10-03). findResumeCard hands such a card
+ * back first: an open P0/P1 card in a started state, a land/ ref naming it
+ * (bro-N anywhere in the ref), and that ref's latest Land run, for the ref's
+ * current tip, refused between STRANDED_MS and RESUME_WINDOW_MS ago, with the
+ * card itself quiet for IDLE_MS (the same idle rule as a new pick) and fit for
+ * a headless worker (safe VERIFY, no headless blocker). The quiet period
+ * leaves a live Mac or cloud session room to fix its own refusal; the window
+ * keeps long-abandoned refs out. A card with any ref still landing (queued,
+ * running, a tip pushed after its last run, or a ref with no run yet) is left
+ * alone, and so is every card while a dispatched Land run is in flight
+ * (dispatched runs report head_branch main, so they can't be tied to a ref).
+ * A ref that has been through MAX_LAND_RUNS runs, or whose last run has been
+ * re-run that many times, is not resumed again: the same card would otherwise
+ * win every firing ahead of fresh work. A `cancelled` run was cancelled before
+ * it did any work (an eviction under the pre-BRO-5112 shared landing group).
+ * land-retry-cancelled.yml re-runs those, one per sweep, so one still cancelled
+ * here is waiting for the sweep or was declined; its resume kind is 'evicted':
+ * nothing to fix, the retry decides (re-run now or re-push).
+ *
+ * PAUSE MEMORY (BRO-4574): the card text above can't tell whether a worker
+ * already tried this card and stopped. Seen on the first two live firings
+ * (2026-10-04): one took a card whose fix was already on main but whose VERIFY
+ * (the whole unit suite) can't pass from the cloud, the next resumed a card
+ * held for an owner decision; both paused, and both would have won again six
+ * hours later. So the CLI reads each candidate's comments in pick order and
+ * pausedHistorySkipReason skips a card whose latest session report is a pause
+ * waiting on the owner (until someone comments after it, or for at most
+ * AWAITING_OWNER_MAX_MS), or any pause less than RECENT_PAUSE_MS old. A VERIFY the cloud can't run is a card-text rule
+ * (CLOUD_UNRUNNABLE_VERIFY_RE, in headlessUnfitReason).
+ *
+ * Pure functions only. The CLI is scripts/cloud-worker-pick.js.
+ */
+
+'use strict';
+
+const HOUR_MS = 60 * 60 * 1000;
+const IDLE_MS = 6 * HOUR_MS;
+// A session with no human in it (routine, worker) that would have started a
+// worker session files the card with a "START-NOW: <why>" line instead
+// (create_session prompts the owner; sessions the owner is in start their own,
+// BRO-5040). Such a Todo card is a handoff, so it skips the idle wait and goes
+// to the front of the queue. Only for START_NOW_MAX_AGE_MS after filing, so a
+// card bounced back to Todo later, or an over-eager filer, can't hold the front
+// for good; and not in its first START_NOW_MIN_AGE_MS, so the filer can finish
+// writing it.
+const START_NOW_RE = /^\s*START-NOW\s*:/im;
+const START_NOW_MIN_AGE_MS = 10 * 60 * 1000;
+const START_NOW_MAX_AGE_MS = 48 * HOUR_MS;
+function hasStartNowLine(issue) {
+  return !!(issue && START_NOW_RE.test(issue.description || ''));
+}
+function isStartNow(issue, nowMs) {
+  if (!hasStartNowLine(issue) || !issue.state || issue.state.type !== 'unstarted') return false;
+  const age = nowMs - Date.parse(issue.createdAt);
+  return Number.isFinite(age) && age >= START_NOW_MIN_AGE_MS && age < START_NOW_MAX_AGE_MS;
+}
+const PRIORITIES = new Set([1, 2]);
+// Linear priority 3 = Medium = P2: the fallback tier (see WHY THESE RULES).
+const P2_PRIORITY = 3;
+const TIER_P0P1 = 'p0p1';
+const TIER_P2 = 'p2-fallback';
+// Linear priority 4 = Low = P3: the last fallback tier, after P2.
+const P3_PRIORITY = 4;
+const TIER_P3 = 'p3-fallback';
+// The fallback tiers skipReason accepts as `{ tier }`: Linear priority by tier.
+const FALLBACK_TIER_PRIORITY = { p2: P2_PRIORITY, p3: P3_PRIORITY };
+const STRANDED_MS = 90 * 60 * 1000;
+const RESUME_WINDOW_MS = 7 * 24 * HOUR_MS;
+const MAX_LAND_RUNS = 6;
+const LAND_REF_CARD_RE = /(?:^|[^a-z0-9])bro-(\d+)(?![0-9])/i;
+const RECENT_PAUSE_MS = 72 * HOUR_MS;
+// The whole unit suite: 17 tests fail in a cloud container for reasons unrelated
+// to any card, and the Done gate's 90s budget can't run it (BRO-4265, 2026-10-04).
+const CLOUD_UNRUNNABLE_VERIFY_RE = /^node\s+scripts\/run-unit-tests\.js\s*$/;
+// iOS app cards live in the BroadwayScorecard-app repo, which the cloud worker
+// session does not check out (and add_repo prompts), so it would burn a firing.
+// Also gates resume (findResumeCandidates), so a land ref for one isn't retried.
+// "iOS Safari ..." is a web bug, not an app card.
+const IOS_APP_CARD_RE = /^\W*iOS\b(?!\s+Safari)/i;
+// A paused report that names the owner's call as the blocker.
+// Comments automation posts on its own: dispatch receipts (linear-dispatch.js
+// buildDispatchComment, with or without a correlation id), auto-corrections,
+// tag markers like [auto-fix-attempted:fail] (auto-fix-friction-card.js) and
+// acceptance re-arms (enrich-card-acceptance.js). One of these after a pause
+// is not an answer to it.
+const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b)/i;
+// Machine tags are lowercase and hyphenated ([auto-fix-attempted:fail], [red-first follow-up]).
+// Case-sensitive, and not a markdown link, so "[x] approved", "[Approved] go ahead"
+// and "[the fix](url) looks right" still count as human answers.
+const MACHINE_TAG_RE = /^\[[a-z][a-z0-9 ]*-[a-z0-9 -]*(?::[a-z0-9-]+)?\](?!\()/;
+const AWAITING_OWNER_RE = /\bowner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|judg(?:e)?ment|call)\b|\b(?:waiting|wait|held|hold|pending|blocked)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b(?!['\u2019]s)|\bpending\s+(?:the\s+)?owner\b(?!['\u2019]s)|\bneeds?\s+(?:an?\s+|the\s+)?owner\b(?!['\u2019]s)|\bDECISION NEEDED\b/gi;
+// "not an owner decision", "no DECISION NEEDED", "owner decision not required".
+const OWNER_NEGATED_BEFORE_RE = /\b(?:not|no|without)\s+(?:an?\s+|the\s+|any\s+)?$/i;
+const OWNER_NEGATED_AFTER_RE = /^\s*(?:is\s+|was\s+)?(?:not|no\s+longer)\s+(?:required|needed)\b/i;
+// An owner hold still gets one more worker after this long, so a card the
+// owner never answers in Linear (or a misread report) can't wait forever.
+const AWAITING_OWNER_MAX_MS = 14 * 24 * HOUR_MS;
+const AUTOMATION_PARK_STALE_MS = 3 * 24 * HOUR_MS;
+const MACHINE_PARK_LINE_RE = /Auto-filed by (?:digest-autofix|owner-alert-router)/;
+
+/** A machine-filed parked P0/P1 card nobody has touched for AUTOMATION_PARK_STALE_MS. */
+function isStaleAutomationParked(issue, nowMs) {
+  const hd = require('./headless-dispatchability.js');
+  const type = issue && issue.state && issue.state.type;
+  if (type !== 'backlog' && type !== 'unstarted') return false;
+  if (!PRIORITIES.has(Number(issue.priority))) return false;
+  const notes = issue.description || '';
+  if (!hd.isAutomationParked(notes)) return false;
+  // isAutomationParked reads only the leading machine line; a hold a person
+  // added on a later PARKED line still keeps the card parked.
+  // Only the first PARKED line is the machine's; a later line that merely
+  // quotes the marker is still a person's hold.
+  const extraHold = [...notes.matchAll(/^\s*PARKED\s*:(.*)$/gim)]
+    .some((m, i) => !(i === 0 && MACHINE_PARK_LINE_RE.test(m[1])) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
+  if (extraHold) return false;
+  const updatedMs = Date.parse(issue.updatedAt);
+  return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
+}
+
+/** Why a headless worker can't finish this card (no safe VERIFY, or a headless blocker), or null. */
+function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
+  const hd = require('./headless-dispatchability.js');
+  const drain = require('./linear-drain-parked.js');
+  if (IOS_APP_CARD_RE.test(String(issue.title || ''))) return 'ios-app-repo';
+  // BRO-2204: a card marked "NO-DISPATCH:" must not be launched by any
+  // dispatcher; the cloud worker picked one that said it needs the owner's
+  // answer before any code. Description only: comments quote the marker.
+  if (require('./no-dispatch-marker.js').hasNoDispatchMarker(issue.description)) return 'no-dispatch-marker';
+  const cmd = drain.verifyCommand(issue);
+  if (!cmd) return 'no-safe-verify';
+  if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(cmd).trim())) {
+    return 'verify-not-cloud-runnable';
+  }
+  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' }, { verifyCmd: cmd });
+  const blocking = blockers.filter((b) => !(allowParkedSentinel && b.code === hd.BLOCKERS.PARKED_SENTINEL));
+  return blocking.length ? `blocker-${blocking[0].code}` : null;
+}
+
+// What the filer should change for each reason a START-NOW card can't be picked.
+const START_NOW_FIX_HINTS = {
+  'parked-or-backlog': 'file it with --dispatch, not --park',
+  'not-p0-p1': 'file it with --priority 1 or 2',
+  'no-safe-verify': 'add a safe-form "VERIFY: <cmd>" line (node --test <path>.test.mjs, npx tsc --noEmit, npx next lint, test -f <path>)',
+  'verify-not-cloud-runnable': 'use a narrower VERIFY than the whole unit suite',
+  'no-dispatch-marker': 'drop NO-DISPATCH or drop START-NOW',
+  'ios-app-repo': 'the cloud worker cannot check out the app repo; drop START-NOW',
+};
+
+/**
+ * PURE. Why a card filed now with a START-NOW line would never be picked by the
+ * cloud worker, or null (BRO-5017: filed with prose acceptance criteria, it sat
+ * in Todo under startNowSkipped, which nobody reads). Same checks skipReason
+ * applies to a fresh unstarted card, on the description as it will be stored.
+ * @param {{title: string, description: string, priority: (number|undefined), mode: string}} card
+ * @returns {{reason: string, hint: string}|null}
+ */
+function startNowUnpickableReason({ title, description, priority, mode }) {
+  const issue = { title, description };
+  if (!hasStartNowLine(issue)) return null;
+  let reason = null;
+  if (mode !== 'dispatch') reason = 'parked-or-backlog';
+  else if (!PRIORITIES.has(Number(priority))) reason = 'not-p0-p1';
+  else reason = headlessUnfitReason(issue);
+  if (!reason) return null;
+  return { reason, hint: START_NOW_FIX_HINTS[reason] || 'remove what the reason names from the notes, or drop START-NOW' };
+}
+
+/**
+ * Why this card can't be picked in a tier, or null. The default tier is
+ * P0/P1 ('not-p0-p1' for anything else). `{ tier: 'p2' }` checks the P2
+ * fallback: priority 3 only ('not-p2' otherwise), Todo only (no parked
+ * paths), every other rule the same. `{ tier: 'p3' }` is the same for
+ * priority 4 ('not-p3').
+ */
+function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
+  const drain = require('./linear-drain-parked.js');
+  if (!issue || !issue.identifier) return 'malformed';
+  const fallbackPriority = FALLBACK_TIER_PRIORITY[tier];
+  const fallback = fallbackPriority != null;
+  if (fallback ? Number(issue.priority) !== fallbackPriority : !PRIORITIES.has(Number(issue.priority))) return fallback ? `not-${tier}` : 'not-p0-p1';
+  const type = issue.state && issue.state.type;
+  const parkedDrainable = !fallback && (drain.isSessionParkedDrainable(issue) || isStaleAutomationParked(issue, nowMs));
+  if (type !== 'unstarted' && !parkedDrainable) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
+  const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
+  if (unfit) return unfit;
+  const updatedMs = Date.parse(issue.updatedAt);
+  if (!Number.isFinite(updatedMs)) return 'no-updatedAt';
+  if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs))) return 'recent-activity';
+  return null;
+}
+
+/** True for a P2 card that is a fallback candidate at all (Todo). */
+function isP2FallbackCandidate(issue, nowMs) {
+  const r = skipReason(issue, nowMs, { tier: 'p2' });
+  return !/^(malformed|not-p2|parked-or-backlog|state-.*)$/.test(r || '');
+}
+
+/** True for a P3 (Low) card that is a fallback candidate at all (Todo). */
+function isP3FallbackCandidate(issue, nowMs) {
+  const r = skipReason(issue, nowMs, { tier: 'p3' });
+  return !/^(malformed|not-p3|parked-or-backlog|state-.*)$/.test(r || '');
+}
+
+/**
+ * Cards the CLI must read comments for before picking: every P0/P1 card the
+ * state rules don't rule out (parked and started/resume ones included), every
+ * P2 and P3 Todo card, and every P2/P3 card a land ref could resume. Comments carry a
+ * VERIFY that arms or corrects the card (BRO-4642), pause history, the Codex
+ * bounce marker and the retry signal pickModel reads.
+ */
+function needsComments(issue, nowMs) {
+  if (!/^(malformed|not-p0-p1)$/.test(skipReason(issue, nowMs) || '')) return true;
+  if (isP2FallbackCandidate(issue, nowMs) || isP3FallbackCandidate(issue, nowMs)) return true;
+  const { issueNumber } = require('./linear-drain-parked.js');
+  return !!(issue && issue.identifier)
+    && resumableCardsByNumber([issue], { includeP2: true, includeP3: true }).has(issueNumber(issue.identifier));
+}
+
+/**
+ * @param {Array<object>} issues - open Linear issues ({identifier, title, description, priority, state, updatedAt})
+ * @param {{nowMs:number}} opts
+ * @returns {{ pick: object|null, pickTier: ('p0p1'|'p2-fallback'|'p3-fallback'|null), ordered: object[], eligible: number,
+ *   skipped: Record<string, number>, orderedP2: object[], eligibleP2: number, skippedP2: Record<string, number>,
+ *   orderedP3: object[], eligibleP3: number, skippedP3: Record<string, number>,
+ *   startNowSkipped: Record<string, string> }}
+ *   `ordered`/`eligible`/`skipped` are the P0/P1 tier, as before (a P2 or P3 card still counts as
+ *   'not-p0-p1' there); `orderedP2`/`eligibleP2`/`skippedP2` are the P2 fallback tier and
+ *   `orderedP3`/`eligibleP3`/`skippedP3` the P3 (Low) fallback tier.
+ */
+function pickCloudCard(issues, { nowMs }) {
+  const { priorityRank } = require('./linear-dispatch.js');
+  const { issueNumber } = require('./linear-drain-parked.js');
+  const skipped = {};
+  const eligible = [];
+  const skippedP2 = {};
+  const eligibleP2 = [];
+  const skippedP3 = {};
+  const eligibleP3 = [];
+  // START-NOW Todo cards that won't run (no safe VERIFY, a blocker, too new or
+  // too old), by id: a filer told the owner they were queued, so say why not.
+  const startNowSkipped = {};
+  for (const iss of Array.isArray(issues) ? issues : []) {
+    const reason = skipReason(iss, nowMs);
+    if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
+    else eligible.push(iss);
+    let fallbackEligible = false;
+    if (reason === 'not-p0-p1' && Number(iss.priority) === P2_PRIORITY) {
+      const r2 = skipReason(iss, nowMs, { tier: 'p2' });
+      if (r2) skippedP2[r2] = (skippedP2[r2] || 0) + 1;
+      else { eligibleP2.push(iss); fallbackEligible = true; }
+    } else if (reason === 'not-p0-p1' && Number(iss.priority) === P3_PRIORITY) {
+      const r3 = skipReason(iss, nowMs, { tier: 'p3' });
+      if (r3) skippedP3[r3] = (skippedP3[r3] || 0) + 1;
+      else { eligibleP3.push(iss); fallbackEligible = true; }
+    }
+    // A P2/P3 card the fallback can pick is not "skipped", though its START-NOW line is ignored.
+    if (hasStartNowLine(iss) && iss.state && iss.state.type === 'unstarted' && !fallbackEligible && (reason || !isStartNow(iss, nowMs))) {
+      startNowSkipped[iss.identifier] = reason || 'start-now-outside-age-window';
+    }
+  }
+  // Within a priority, the old machine-filed backlog goes after cards a person
+  // filed or a session parked, so ~280 stale autofix cards can't starve them.
+  const machineTier = (iss) => (iss.state && iss.state.type === 'unstarted') || !isStaleAutomationParked(iss, nowMs) ? 0 : 1;
+  const startTier = (iss) => (isStartNow(iss, nowMs) ? 0 : 1);
+  eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
+    || (issueNumber(a.identifier) - issueNumber(b.identifier)));
+  // P2 and P3 are Todo only and START-NOW doesn't apply to them: oldest first.
+  eligibleP2.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));
+  eligibleP3.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));
+  const pick = eligible[0] || eligibleP2[0] || eligibleP3[0] || null;
+  const pickTier = eligible.length ? TIER_P0P1 : (eligibleP2.length ? TIER_P2 : (eligibleP3.length ? TIER_P3 : null));
+  return {
+    pick, pickTier, ordered: eligible, eligible: eligible.length, skipped, startNowSkipped,
+    orderedP2: eligibleP2, eligibleP2: eligibleP2.length, skippedP2,
+    orderedP3: eligibleP3, eligibleP3: eligibleP3.length, skippedP3,
+  };
+}
+
+/**
+ * PURE. The CLI's pick queue, in the order it is worked: P0/P1 resumes, P0/P1
+ * cards, P2 resumes, P2 cards, P3 resumes, P3 cards, each entry tagged with its
+ * tier. Resumes are split by their own priority, so a P2/P3 landing never rides
+ * in the P0/P1 block (where mayTakeUnchecked would skip its history check); a
+ * resume of any other priority is dropped.
+ * @param {Array<{issue: object}>} resumes - findResumeCandidates output
+ * @param {{ordered: object[], orderedP2: object[], orderedP3: object[]}} tiers - pickCloudCard output
+ * @returns {Array<{issue: object, resume: object|null, tier: string}>}
+ */
+function buildPickQueue(resumes, { ordered = [], orderedP2 = [], orderedP3 = [] } = {}) {
+  const rs = Array.isArray(resumes) ? resumes : [];
+  const resumesAt = (match, tier) => rs.filter((r) => r && r.issue && match(Number(r.issue.priority)))
+    .map((r) => ({ issue: r.issue, resume: r, tier }));
+  const fresh = (list, tier) => list.map((iss) => ({ issue: iss, resume: null, tier }));
+  return [
+    ...resumesAt((p) => PRIORITIES.has(p), TIER_P0P1),
+    ...fresh(ordered, TIER_P0P1),
+    ...resumesAt((p) => p === P2_PRIORITY, TIER_P2),
+    ...fresh(orderedP2, TIER_P2),
+    ...resumesAt((p) => p === P3_PRIORITY, TIER_P3),
+    ...fresh(orderedP3, TIER_P3),
+  ];
+}
+
+/**
+ * PURE. Earlier worker runs on this card that left no "Dispatched ..." comment
+ * and no Mac ledger row: a cloud worker's session report that did not close it
+ * (paused, blocked, in-review), and a Codex runner bounce. Mac dispatches are
+ * already counted by pickLinearModel (comments and ledger).
+ */
+function cloudPriorAttempts(issue) {
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  const { BOUNCED_MARKER } = require('./codex-runner.js');
+  const nodes = (issue && issue.comments && issue.comments.nodes) || [];
+  return nodes.filter((c) => {
+    const body = String((c && c.body) || '');
+    const status = parseSessionReportStatus(body);
+    return (status && status !== 'done') || body.startsWith(BOUNCED_MARKER);
+  }).length;
+}
+
+/**
+ * The model a cloud worker should run this card on, by the same policy as a
+ * Mac dispatch (linear-next.js -> bsc-next-model.js pickLinearModel): a retry
+ * escalates, a filer's "Model:" line is honored on the first attempt, a P0
+ * gets Opus, within the 24h Opus cap the ledger can see. Cloud retries
+ * (cloudPriorAttempts) count as prior launches; they are added as ledger rows
+ * with no model, so they never count against the Opus cap. A ledger read that
+ * throws makes the cap count as reached (Sonnet), as on the Mac.
+ * @param {object} issue - Linear issue, with prefetched comments
+ * @param {{nowMs?:number, readEntries?:Function, env?:object}} [opts] - readEntries defaults to the dispatch ledger
+ * @returns {{ model: string, reason: string }}
+ */
+function pickModel(issue, { nowMs = Date.now(), readEntries, env = process.env } = {}) {
+  const { pickLinearModel } = require('./bsc-next-model.js');
+  const baseRead = readEntries || require('./dispatch-ledger.js').readEntries;
+  const taskId = `linear:${issue && issue.identifier}`;
+  const prior = cloudPriorAttempts(issue);
+  const read = () => [...baseRead(), ...Array.from({ length: prior }, () => ({ event: 'launch', taskId, model: null }))];
+  return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read, nowMs, env });
+}
+
+/**
+ * pickModel with the dispatch ledger read once per run. The ledger is the Mac's
+ * (gitignored); in a cloud container it is absent and reads as [], so the 24h
+ * Opus cap sees no launches. The reason says so rather than implying a check.
+ * Shared by scripts/cloud-worker-pick.js and scripts/session-model.js.
+ */
+function modelPicker(nowMs = Date.now()) {
+  const ledger = require('./dispatch-ledger.js');
+  const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
+  let entries;
+  const readEntries = () => {
+    if (entries === undefined) entries = ledger.readEntries();
+    return entries;
+  };
+  return (issue) => {
+    const m = pickModel(issue, { nowMs, readEntries });
+    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
+  };
+}
+
+/**
+ * The create_session `model` for a worker session given its cards' picks
+ * (BRO-5228). Sonnet unless EVERY card needs Opus: a mixed batch runs on Sonnet
+ * and hands each Opus card to an Opus subagent, as the board worker does
+ * (docs/cloud-routines/board-workers.md step 4), so one retry card does not
+ * put the whole batch on Opus. No cards (owner-asked work with no card): Sonnet.
+ * @param {Array<{model: string}>} picks - modelPicker results, short aliases
+ * @returns {{ model: string, opusCards: number }} model is the full id create_session takes
+ */
+function sessionModelFor(picks) {
+  const { DISPATCH_SONNET, DISPATCH_OPUS } = require('./models.js');
+  const list = Array.isArray(picks) ? picks : [];
+  const opusCards = list.filter((p) => p && p.model === 'opus').length;
+  const allOpus = list.length > 0 && opusCards === list.length;
+  return { model: allOpus ? DISPATCH_OPUS : DISPATCH_SONNET, opusCards };
+}
+
+/** Past the history-check budget, only a P0/P1 entry may be taken unchecked; P2/P3 entries are always checked. */
+function mayTakeUnchecked(entry) {
+  return !!entry && entry.tier === TIER_P0P1;
+}
+
+/**
+ * Why an earlier worker's pause should keep this card out of the pick, or null.
+ * @param {Array<{body:string, createdAt:string}>} comments - the card's comments, any order
+ * @param {number} nowMs
+ * @returns {'awaiting-owner'|'recently-paused'|null}
+ */
+function pausedHistorySkipReason(comments, nowMs) {
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  const sorted = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const idx = sorted.findIndex((c) => parseSessionReportStatus(c.body) != null);
+  if (idx < 0) return null;
+  const report = sorted[idx];
+  if (parseSessionReportStatus(report.body) !== 'paused') return null;
+  // A comment after the pause (the owner's answer, a human note) re-opens it to the idle rule.
+  const answered = sorted.slice(0, idx).some((c) => !isMachineComment(c.body));
+  const ageMs = nowMs - Date.parse(report.createdAt);
+  if (!answered && ageMs < AWAITING_OWNER_MAX_MS && namesOwnerHold(report.body)) return 'awaiting-owner';
+  return ageMs < RECENT_PAUSE_MS ? 'recently-paused' : null;
+}
+
+function isMachineComment(body) {
+  const text = String(body || '').trim();
+  return MACHINE_COMMENT_RE.test(text) || MACHINE_TAG_RE.test(text);
+}
+
+/** True when a paused report names the owner's call as its blocker (a negated mention doesn't count). */
+function namesOwnerHold(text) {
+  const body = String(text || '');
+  for (const m of body.matchAll(AWAITING_OWNER_RE)) {
+    const before = body.slice(Math.max(0, m.index - 30), m.index);
+    const after = body.slice(m.index + m[0].length, m.index + m[0].length + 40);
+    if (!OWNER_NEGATED_BEFORE_RE.test(before) && !OWNER_NEGATED_AFTER_RE.test(after)) return true;
+  }
+  return false;
+}
+
+/** Card number named by a land ref ('land/bro-2311-x' -> 2311), or null. */
+function landRefCardNumber(ref) {
+  const name = String(ref || '').replace(/^refs\/heads\//, '');
+  if (!name.startsWith('land/')) return null;
+  const m = name.slice('land/'.length).match(LAND_REF_CARD_RE);
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * Open P0/P1 cards (and P2 with includeP2, P3 with includeP3: the fallback
+ * tiers' landings, which the Codex runner leaves In Progress for this resume) someone holds (started,
+ * not In Review): the only ones a land ref can resume. In Review already has an owner, the stuck-card closer, which
+ * runs the card's check and closes it or bounces it back to Todo.
+ */
+function resumableCardsByNumber(issues, { includeP2 = false, includeP3 = false } = {}) {
+  const { issueNumber } = require('./linear-drain-parked.js');
+  const byNum = new Map();
+  for (const iss of Array.isArray(issues) ? issues : []) {
+    const p = Number(iss && iss.priority);
+    if (!iss || !iss.identifier || !(PRIORITIES.has(p) || (includeP2 && p === P2_PRIORITY) || (includeP3 && p === P3_PRIORITY))) continue;
+    if (!iss.state || iss.state.type !== 'started' || /review/i.test(iss.state.name || '')) continue;
+    const n = issueNumber(iss.identifier);
+    if (Number.isFinite(n)) byNum.set(n, iss);
+  }
+  return byNum;
+}
+
+/**
+ * @param {Array<object>} issues - open Linear issues
+ * @param {Array<{ref:string, sha:string, lastRun:?{status:string, conclusion:?string, headSha:string, updatedAt:string, id:number, url?:string, attempts?:number}}>} landRefs
+ *   remote land/ refs with the latest Land run on each (null when none ran);
+ *   attempts is how many Land runs the ref has had
+ * @param {{nowMs:number, landDispatchInFlight?:boolean, includeP2?:boolean, includeP3?:boolean}} opts
+ * @returns {Array<{ issue: object, ref: string, sha: string, lastRun: object, kind: 'refused'|'evicted' }>} best first
+ */
+function findResumeCandidates(issues, landRefs, { nowMs, landDispatchInFlight = false, includeP2 = false, includeP3 = false }) {
+  if (landDispatchInFlight) return [];
+  const { priorityRank } = require('./linear-dispatch.js');
+  const { issueNumber } = require('./linear-drain-parked.js');
+  const cards = resumableCardsByNumber(issues, { includeP2, includeP3 });
+  const refsByCard = new Map();
+  for (const r of Array.isArray(landRefs) ? landRefs : []) {
+    const n = landRefCardNumber(r && r.ref);
+    if (n == null || !cards.has(n)) continue;
+    if (!refsByCard.has(n)) refsByCard.set(n, []);
+    refsByCard.get(n).push(r);
+  }
+  const candidates = [];
+  for (const [n, refs] of refsByCard) {
+    const iss = cards.get(n);
+    const cardMs = Date.parse(iss.updatedAt);
+    if (!Number.isFinite(cardMs) || nowMs - cardMs < IDLE_MS) continue;
+    if (headlessUnfitReason(iss)) continue;
+    // Still landing: no run yet, a run queued or in progress, or a tip pushed after the last run.
+    if (refs.some((r) => !r.lastRun || r.lastRun.status !== 'completed' || r.lastRun.headSha !== r.sha)) continue;
+    const refused = refs
+      .filter((r) => r.lastRun.conclusion !== 'success'
+        && !(Number(r.lastRun.attempts) >= MAX_LAND_RUNS) && !(Number(r.lastRun.runAttempt) >= MAX_LAND_RUNS))
+      .map((r) => ({ r, ms: Date.parse(r.lastRun.updatedAt) }))
+      .filter(({ ms }) => Number.isFinite(ms) && nowMs - ms >= STRANDED_MS && nowMs - ms <= RESUME_WINDOW_MS)
+      .sort((a, b) => b.ms - a.ms);
+    if (!refused.length) continue;
+    const { r } = refused[0];
+    const kind = r.lastRun.conclusion === 'cancelled' ? 'evicted' : 'refused';
+    candidates.push({ issue: iss, ref: r.ref.replace(/^refs\/heads\//, ''), sha: r.sha, lastRun: r.lastRun, kind });
+  }
+  candidates.sort((a, b) => (priorityRank(a.issue) - priorityRank(b.issue))
+    || (issueNumber(a.issue.identifier) - issueNumber(b.issue.identifier)));
+  return candidates;
+}
+
+/** The first of findResumeCandidates, or null. */
+function findResumeCard(issues, landRefs, opts) {
+  return findResumeCandidates(issues, landRefs, opts)[0] || null;
+}
+
+module.exports = {
+  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
+  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
+  findResumeCandidates, findResumeCard,
+};

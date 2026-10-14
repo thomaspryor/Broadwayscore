@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-10-13T23:45:32.052Z",
+  "windowDays": 45,
+  "showsScanned": 164,
+  "gaps": [
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "title": "Così fan tutte",
+      "openingDate": "2026-09-23",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 4,
+      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
+      "firstSeen": "2026-10-08T17:44:48.110Z",
+      "fileAgeHours": 126.01141722222222,
+      "gapSeenAt": "2026-10-08T22:46:44.413Z",
+      "nonTerminalAgeHours": 120.97989944444444
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "rejected-unscoreable",
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-22T16:40:31.606Z",
+      "fileAgeHours": 511.08301916666665,
+      "gapSeenAt": "2026-10-11T09:39:23.002Z",
+      "nonTerminalAgeHours": 62.102513611111114
+    }
+  ],
+  "contradictions": []
+}

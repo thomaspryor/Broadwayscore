@@ -1,0 +1,714 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const require = createRequire(import.meta.url);
+const { MIRROR_FMT, mapStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, allocateFreeId, nextId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock, isPushEligible } = require('./notion-tasks-sync.js');
+
+function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
+
+// cmdPush's own push-eligibility predicate (card #1779 test-extraction),
+// tested directly here since cmdPush itself is never exercised end-to-end
+// (it makes live Notion writes). scripts/reconcile-dead-completions.test.mjs
+// chains this same require()'d function after resetPushedFlag's output for
+// the cross-module regression the card is actually about.
+test('isPushEligible: false when entry.pushed is true, regardless of task status', () => {
+  assert.equal(isPushEligible({ pushed: true }, { status: 'completed' }), false);
+});
+test('isPushEligible: false when the task is missing or not completed', () => {
+  assert.equal(isPushEligible({ pushed: false }, null), false);
+  assert.equal(isPushEligible({ pushed: false }, { status: 'in_progress' }), false);
+});
+test('isPushEligible: false when entry itself is missing', () => {
+  assert.equal(isPushEligible(null, { status: 'completed' }), false);
+});
+test('isPushEligible: true when pushed is false and the task is completed', () => {
+  assert.equal(isPushEligible({ pushed: false }, { status: 'completed' }), true);
+});
+
+test('mapStatus maps Notion → native task status', () => {
+  assert.equal(mapStatus('In progress'), 'in_progress');
+  assert.equal(mapStatus('Done'), 'completed');
+  assert.equal(mapStatus('Not started'), 'pending');
+  assert.equal(mapStatus('Paused'), 'pending');
+  assert.equal(mapStatus(undefined), 'pending');
+});
+
+test('#794: mapCardToTask maps an archived/trashed card to pending, not its frozen raw status', () => {
+  const card = { id: 'abc123', url: 'https://n/x', name: 'Trashed card', status: 'In progress', archived: true, notes: '' };
+  const t = mapCardToTask(card, 8);
+  assert.equal(t.status, 'pending');
+});
+
+test('#794: mapCardToTask does NOT let archived override a literal Done status', () => {
+  const card = { id: 'abc123', url: 'https://n/x', name: 'Done and trashed', status: 'Done', archived: true, notes: '' };
+  const t = mapCardToTask(card, 9);
+  assert.equal(t.status, 'completed');
+});
+
+test('mapCardToTask embeds notion page id and traces back', () => {
+  const card = { id: 'abc123', url: 'https://n/x', name: 'Fix scoring', status: 'In progress', priority: 'P0 Now', notes: 'a\n\n  b   c' };
+  const t = mapCardToTask(card, 7);
+  assert.equal(t.id, '7');
+  assert.equal(t.subject, 'Fix scoring');
+  assert.equal(t.status, 'in_progress');
+  assert.match(t.description, /\[notion:abc123\]/);
+  assert.match(t.description, /P0 Now/);
+  assert.match(t.description, /a b c/); // whitespace collapsed
+  assert.deepEqual(t.blocks, []);
+  assert.deepEqual(t.blockedBy, []);
+});
+
+// The mirror's description is the ONLY text isExcludedCategory() sees, and
+// enrich-card-acceptance.js appends "VERIFY: owner-judgment" to the END of a
+// card's notes — so on a long card the marker fell past the 400-char cut and
+// the dispatch-time exclusion silently stopped applying (task #1154).
+test('#1154: owner-judgment marker survives the 400-char notes truncation', () => {
+  const { isExcludedCategory } = require('./lib/autonomous-eligibility.js');
+  const longNotes = `${'x'.repeat(900)}\n\nVERIFY: owner-judgment (owner must read the report)`;
+  const card = { id: 'abc', url: 'https://n/x', name: 'Quarterly relationship check-in', status: 'Not started', priority: 'P1 Next', category: 'Admin', notes: longNotes };
+  const t = mapCardToTask(card, 11);
+
+  assert.ok(t.description.length < longNotes.length, 'notes should still be truncated, not inlined whole');
+  assert.match(t.description, /VERIFY: owner-judgment/);
+  assert.equal(isExcludedCategory(t), true, 'a long-notes owner-judgment card must not be default-pickable');
+});
+
+test('#1154: the marker line is added only when truncation actually drops it', () => {
+  // Short notes: the marker is already inside the 400 chars, so no duplicate.
+  const short = mapCardToTask({ id: 'a', name: 'n', notes: 'do the thing\n\nVERIFY: owner-judgment' }, 1);
+  assert.equal(short.description.match(/VERIFY: owner-judgment/g).length, 1);
+  // No marker at all: nothing appended, and the card stays pickable.
+  const none = mapCardToTask({ id: 'b', name: 'n', category: 'Engineering', notes: 'y'.repeat(900) }, 2);
+  assert.equal(/VERIFY: owner-judgment/.test(none.description), false);
+});
+
+test('planPull creates unmapped cards, updates on status change, else unchanged', () => {
+  const cards = [
+    { id: 'new', status: 'Not started' },
+    { id: 'moved', status: 'In progress' },
+    { id: 'same', status: 'In progress' },
+  ];
+  const map = {
+    moved: { taskId: '2', syncedStatus: 'Not started', fmt: MIRROR_FMT },
+    same: { taskId: '3', syncedStatus: 'In progress', fmt: MIRROR_FMT },
+  };
+  const plan = planPull(cards, map);
+  assert.deepEqual(plan.toCreate.map(x => x.card.id), ['new']);
+  assert.deepEqual(plan.toUpdate.map(x => ({ id: x.card.id, taskId: x.taskId })), [{ id: 'moved', taskId: '2' }]);
+  assert.deepEqual(plan.unchanged, ['same']);
+});
+
+test('planPull is idempotent: re-running with a fully-synced map is a no-op', () => {
+  const cards = [{ id: 'a', status: 'In progress' }, { id: 'b', status: 'Not started' }];
+  const map = { a: { taskId: '1', syncedStatus: 'In progress', fmt: MIRROR_FMT }, b: { taskId: '2', syncedStatus: 'Not started', fmt: MIRROR_FMT } };
+  const plan = planPull(cards, map);
+  assert.equal(plan.toCreate.length, 0);
+  assert.equal(plan.toUpdate.length, 0);
+  assert.deepEqual(plan.unchanged.sort(), ['a', 'b']);
+});
+
+// Bumping MIRROR_FMT is the ONLY thing that makes a mapCardToTask change reach
+// cards that are already mirrored — planPull otherwise re-maps only on a Notion
+// status change, so the #1154 truncation fix would have been a no-op for every
+// existing long-notes owner-judgment card (ship-check catch).
+test('#1154: an old-fmt mirror is rewritten even when its status is unchanged', () => {
+  assert.ok(MIRROR_FMT > 2, 'MIRROR_FMT must be bumped past 2 for the #1154 rewrite to fire');
+  const cards = [{ id: 'old', status: 'In progress' }];
+  const plan = planPull(cards, { old: { taskId: '5', syncedStatus: 'In progress', fmt: 2 } });
+  assert.deepEqual(plan.toUpdate.map(x => x.taskId), ['5']);
+  assert.equal(plan.unchanged.length, 0);
+});
+
+test('allocateFreeId skips ids a live session already occupies', () => {
+  const dir = tmpDir();
+  writeTask(dir, mapCardToTask({ id: 'x', name: 'a session task' }, 3));
+  writeTask(dir, mapCardToTask({ id: 'y', name: 'another' }, 4));
+  assert.equal(allocateFreeId(dir, 3), 5); // 3 and 4 taken → 5
+  assert.equal(allocateFreeId(dir, 1), 1); // 1 free
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Card #1410: a freshly minted id must never land on an already-archived
+// task's id — that would permanently orphan the archived record (a
+// different live task now "owns" the id, and mergeWithArchive's
+// live-wins-on-collision rule hides the archived content forever).
+test('allocateFreeId also skips ids present in archive/', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '5.json'), JSON.stringify({ id: '5', status: 'completed' }));
+  assert.equal(allocateFreeId(dir, 5), 6, 'id 5 is taken by an archived task, not just a live one');
+  assert.equal(allocateFreeId(dir, 1), 1); // unaffected when free
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('nextId considers archive/ maxFile too, not just the live dir', () => {
+  const dir = tmpDir();
+  writeTask(dir, mapCardToTask({ id: 'x', name: 'live task' }, 3));
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '20.json'), JSON.stringify({ id: '20', status: 'completed' }));
+  // No .highwatermark written — nextId must fall back to the max across BOTH
+  // dirs (20), not just the live dir's max (3), or it would hand out ids
+  // that collide with already-archived tasks.
+  assert.equal(nextId(dir), 21);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Card #1410: producers of "BSC Daily:"-titled Notion cards moved to Linear
+// (BRO-286 Phase 2) — these must never re-enter the mirror, or archiving
+// them just causes planSelfHeal to re-mint a fresh id on the next pull.
+test('isMirrorableCard excludes "BSC Daily:"-titled cards, includes everything else', () => {
+  assert.equal(isMirrorableCard({ name: 'BSC Daily: Stuck pipeline items' }), false);
+  assert.equal(isMirrorableCard({ name: 'BSC Daily: 2026-08-01 digest' }), false);
+  assert.equal(isMirrorableCard({ name: 'Fix scoring bug' }), true);
+  // The pre-BRO-286 "Fix this" digest button's legacy title family (2 live
+  // files at the time this was found: 834.json, 1166.json) shares the same
+  // self-heal re-minting exposure — must be excluded too.
+  assert.equal(isMirrorableCard({ name: 'Fix: BSC Daily: legacy fix-this card' }), false);
+  assert.equal(isMirrorableCard({ name: 'A card that mentions Fix: BSC Daily: mid-sentence' }), true, 'prefix must be anchored, not a substring match');
+  assert.equal(isMirrorableCard({ name: undefined }), true);
+  assert.equal(isMirrorableCard({}), true);
+});
+
+test('taskBelongsTo proves ownership via the [notion:<pageId>] marker', () => {
+  const dir = tmpDir();
+  writeTask(dir, mapCardToTask({ id: 'pageA', name: 'mine' }, 7));
+  assert.equal(taskBelongsTo(dir, 7, 'pageA'), true);
+  assert.equal(taskBelongsTo(dir, 7, 'pageB'), false); // reused id, different card
+  assert.equal(taskBelongsTo(dir, 99, 'pageA'), false); // missing file
+  // a stranger's task (no marker) is never claimed
+  writeTask(dir, { id: '8', subject: 's', description: 'unrelated work', status: 'completed', blocks: [], blockedBy: [] });
+  assert.equal(taskBelongsTo(dir, 8, 'pageA'), false);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('writeHwm never regresses below a concurrent bump', () => {
+  const dir = tmpDir();
+  writeHwm(dir, 10);
+  assert.equal(readHwm(dir), 10);
+  writeHwm(dir, 5); // stale/lower value must not win
+  assert.equal(readHwm(dir), 10);
+  writeHwm(dir, 12);
+  assert.equal(readHwm(dir), 12);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('notionMarker format is stable', () => {
+  assert.equal(notionMarker('abc-123'), '[notion:abc-123]');
+});
+
+test('mapCardToTask mirrors category as third meta segment', () => {
+  const t = mapCardToTask({ id: 'x', name: 'N', status: 'Not started', priority: 'P0 Now', category: 'Marketing', notes: '' }, 1);
+  assert.match(t.description.split('\n')[0], /· Marketing$/);
+  const t2 = mapCardToTask({ id: 'y', name: 'N', status: 'Not started' }, 2);
+  assert.match(t2.description.split('\n')[0], /· no-category$/);
+});
+
+test('planPull upgrades stale-fmt entries even when status unchanged', () => {
+  const cards = [{ id: 'a', status: 'Not started', category: 'Product' }];
+  const oldMap = { a: { taskId: '1', syncedStatus: 'Not started' } };                   // no fmt
+  const newMap = { a: { taskId: '1', syncedStatus: 'Not started', fmt: MIRROR_FMT } };  // current
+  assert.equal(planPull(cards, oldMap).toUpdate.length, 1);  // format upgrade
+  assert.equal(planPull(cards, newMap).unchanged.length, 1); // idempotent after
+});
+
+// ── Autonomous-loop claim protection (Sprint-2 carry-forward #1) ────────────
+// notion-tasks-sync deliberately ignores the Auto property; the executor's
+// Status→"In progress" flip is the ONLY thing keeping a claimed card from
+// being double-picked via the task mirror. Lock both halves of that contract.
+
+test('executor claim: a card flipped to In progress mirrors as in_progress, never pending', () => {
+  const { mergeStatus } = require('./notion-tasks-sync.js');
+  // The claimed card syncs with Notion status "In progress"
+  const task = mapCardToTask({ id: 'c', name: 'Claimed card', status: 'In progress', category: 'Product' }, 7);
+  assert.equal(task.status, 'in_progress');
+  // and a pull can never downgrade an in-progress task back to pending
+  assert.equal(mergeStatus('in_progress', 'pending'), 'in_progress');
+  assert.equal(mergeStatus('completed', 'pending'), 'completed');
+  assert.equal(mergeStatus('completed', 'in_progress'), 'completed');
+  // forward progress still flows
+  assert.equal(mergeStatus('pending', 'in_progress'), 'in_progress');
+  assert.equal(mergeStatus('pending', 'completed'), 'completed');
+  assert.equal(mergeStatus(undefined, 'pending'), 'pending');
+});
+
+// Task #1691: planStatusDrift is the pure decision behind `sync-drift` —
+// fixes the case measured on the live backlog 2026-08-16 where 99 of 139
+// "in_progress, no live workspace" tasks were already Done in Notion, stuck
+// only because `pull`'s own fetch filter never re-queries a card once its
+// Status leaves In progress/Not started.
+test('#1691: planStatusDrift flips an in_progress mirror to completed once Notion says Done', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Done', name: 'Shipped work', notes: '' };
+  const drift = planStatusDrift(task, card);
+  assert.deepEqual(drift, { newStatus: 'completed', cardStatus: 'Done' });
+});
+
+test('#1691: planStatusDrift is a no-op when Notion still says In progress', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'In progress', name: 'Still going', notes: '' };
+  assert.equal(planStatusDrift(task, card), null);
+});
+
+test('#1691: planStatusDrift does NOT downgrade in_progress for Paused/Not started/Archived/Cancelled — all four map to mapStatus()\'s "pending" default, which mergeStatus() refuses over in_progress (needs a liveness check, not this function)', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  for (const status of ['Paused', 'Not started', 'Archived', 'Cancelled']) {
+    assert.equal(planStatusDrift(task, { status, name: 'x', notes: '' }), null, `expected no drift for Notion status "${status}"`);
+  }
+});
+
+test('#1691: planStatusDrift degrades to no-op on a failed fetch (null card), never guesses', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  assert.equal(planStatusDrift({ id: '42', status: 'in_progress' }, null), null);
+});
+
+// ── #794 (recurring "Stuck pipeline items"): a page moved to Notion's trash
+// keeps its Status property frozen (task #1811) — tasks #1857/#1859 kept
+// zombie-flipping in_progress->pending every ~6-8h for days because
+// planStatusDrift's mapStatus(card.status) alone couldn't see a trashed
+// card's stale "In progress" and kept re-promoting the reclaimed 'pending'
+// mirror straight back to 'in_progress' on every pull/sync-drift cycle.
+test('#794: planStatusDrift does NOT re-promote a reclaimed pending mirror when Notion is archived/trashed but its frozen Status still says "In progress"', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '1859', status: 'pending' };
+  const card = { status: 'In progress', archived: true, name: 'x', notes: '' };
+  assert.equal(planStatusDrift(task, card), null);
+});
+
+test('#794: planStatusDrift still closes a Done card even when also archived — Done keeps its precedence', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Done', archived: true, name: 'x', notes: '' };
+  const drift = planStatusDrift(task, card);
+  assert.deepEqual(drift, { newStatus: 'completed', cardStatus: 'Done' });
+});
+
+// ── #1697: planLivenessDowngrade — the liveness check planStatusDrift's own
+// comment says belongs elsewhere, applied to the residual Paused/Not
+// started/Archived/Cancelled population left stuck by the #1691 fix above.
+
+test('#1697: planLivenessDowngrade is a no-op outside its scope (not in_progress, no card, or Done/In progress)', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'pending' }, { status: 'Paused' }), null);
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'in_progress' }, null), null);
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'in_progress' }, { status: 'Done' }), null, 'Done is planStatusDrift\'s job');
+  assert.equal(planLivenessDowngrade({ id: '1', status: 'in_progress' }, { status: 'In progress' }), null, 'not drift at all');
+});
+
+test('#1697: a live lease always wins — never downgrade a task a live claude process holds', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', lastEditedAt: new Date(0).toISOString() }; // ancient — idle alone would pass
+  const result = planLivenessDowngrade(task, card, { leaseAliveOf: () => true, now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-live/);
+});
+
+test('#1697: a live cmux workspace always wins — never downgrade a task with a live tab', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Not started', lastEditedAt: new Date(0).toISOString() };
+  const result = planLivenessDowngrade(task, card, { liveWorkspaceOf: () => ({ ref: 'ws-1', title: 'x' }), now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-live/);
+});
+
+test('#1697: a card with a filled Outcome never auto-downgrades (the #383 class)', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', outcome: 'Shipped the fix already.', lastEditedAt: new Date(0).toISOString() };
+  const result = planLivenessDowngrade(task, card, { now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-outcome/);
+});
+
+test('#1697: a recently-edited card is left alone — someone may still be on it', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const card = { status: 'Paused', lastEditedAt: new Date(now - 3600e3).toISOString() }; // 1h ago
+  const result = planLivenessDowngrade(task, card, { now });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-fresh/);
+});
+
+test('#1697: no live lease/tab/Outcome, card idle past the threshold — Paused/Not started downgrade to pending', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const stale = new Date(now - 72 * 3600e3).toISOString(); // 72h ago, past the 48h bar
+  for (const status of ['Paused', 'Not started']) {
+    const card = { status, lastEditedAt: stale };
+    const result = planLivenessDowngrade(task, card, { now });
+    assert.deepEqual(result, { newStatus: 'pending', cardStatus: status, reason: result.reason });
+    assert.match(result.reason, /liveness-checked/);
+  }
+});
+
+test('#1697: Archived/Cancelled never become re-dispatchable — close to completed, not reopened to pending', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const stale = new Date(now - 72 * 3600e3).toISOString();
+  for (const status of ['Archived', 'Cancelled']) {
+    const card = { status, lastEditedAt: stale };
+    const result = planLivenessDowngrade(task, card, { now });
+    assert.equal(result.newStatus, 'completed', `${status} must close, not reopen`);
+    assert.match(result.reason, /closing \(terminal status/);
+  }
+});
+
+test('#794: planLivenessDowngrade closes an archived/trashed card to completed even though its frozen Status still says "In progress"', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '1859', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const stale = new Date(now - 72 * 3600e3).toISOString();
+  const card = { status: 'In progress', archived: true, lastEditedAt: stale };
+  const result = planLivenessDowngrade(task, card, { now });
+  assert.equal(result.newStatus, 'completed');
+  assert.match(result.reason, /closing \(terminal status/);
+});
+
+// ── BRO-2998: resolveLiveWorkspace — reconcileStaleMirrors's cmux-outage
+// fail-closed logic (same bug class BRO-2993 fixed in bsc-reconcile.js's
+// sweepUntrackedInProgress, but here it runs on every `pull`). A failed
+// cmux listing must not read as "cmux confirmed zero workspaces" — that
+// empty array otherwise feeds straight into planLivenessDowngrade's
+// liveWorkspaceOf() as if it were real evidence no live tab exists.
+
+test('BRO-2998: resolveLiveWorkspace synthesizes a live marker when cmux is unavailable, regardless of wsList', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some task' };
+  const result = resolveLiveWorkspace(task, [], 'unavailable', () => false);
+  assert.deepEqual(result, { ref: 'cmux-unavailable:unavailable' });
+});
+
+test('BRO-2998: resolveLiveWorkspace synthesizes a live marker even when wsList would otherwise genuinely match', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some task' };
+  const wsList = [{ ref: 'workspace:1', title: 'Some task' }];
+  const result = resolveLiveWorkspace(task, wsList, 'timeout', () => false);
+  assert.deepEqual(result, { ref: 'cmux-unavailable:timeout' }, 'unavailable always wins — never trust wsList once the listing itself is suspect');
+});
+
+test('BRO-2998: resolveLiveWorkspace with no unavailable flag delegates to the real lookup — a genuinely empty list returns null, not a synthetic marker', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some long task subject for #42' };
+  assert.equal(resolveLiveWorkspace(task, [], null, () => false), null, 'a REAL empty listing must still mean no live workspace');
+});
+
+test('BRO-2998: resolveLiveWorkspace with no unavailable flag finds a real match in wsList', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some long task subject for #42' };
+  const wsList = [{ ref: 'workspace:1', title: 'Some long task subject for #42' }];
+  const result = resolveLiveWorkspace(task, wsList, null, () => false);
+  assert.equal(result && result.ref, 'workspace:1');
+});
+
+test('BRO-2998: planLivenessDowngrade skip-live fires off a synthesized cmux-unavailable marker, same as a real live workspace', () => {
+  const { planLivenessDowngrade, resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', lastEditedAt: new Date(0).toISOString() }; // ancient — idle alone would pass
+  const result = planLivenessDowngrade(task, card, {
+    liveWorkspaceOf: (t) => resolveLiveWorkspace(t, [], 'unavailable', () => false),
+    now: Date.now(),
+  });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-live/);
+});
+
+// reconcileStaleMirrors's own wiring: listWorkspacesFn is injectable so a
+// cmux-down run is exercisable without a live cmux process. With zero
+// candidates in the map, this only proves the throw is caught and reported
+// rather than propagating out of reconcileStaleMirrors — the full
+// downgrade-skipping path is covered by the resolveLiveWorkspace/
+// planLivenessDowngrade tests above (reconcileStaleMirrors's own
+// downgrade path additionally shells out to notion-brain.js per candidate,
+// which isn't mockable from this test file — see cmdPush/cmdPull's own
+// "never exercised end-to-end" note above).
+test('BRO-2998: reconcileStaleMirrors does not throw when listWorkspacesFn throws (empty map)', () => {
+  const { reconcileStaleMirrors } = require('./notion-tasks-sync.js');
+  const dir = tmpDir();
+  fs.writeFileSync(path.join(dir, '.notion-map.json'), '{}');
+  const result = reconcileStaleMirrors(dir, {
+    listWorkspacesFn: () => { throw new Error('cmux socket closed'); },
+  });
+  assert.equal(result.fixed.length, 0);
+});
+
+// #1697 ship-check catch: sync-drift's liveness-checked terminal closure
+// writes local status:'completed' for a card whose Notion status is ALREADY
+// Archived/Cancelled — that must never be read as "newly-finished local
+// work ready to push to Notion", or cmdPush would overwrite a deliberate
+// Archived/Cancelled with Done. cmdPush checks this off entry.syncedStatus
+// (re-evaluated every run) rather than a permanent unresettable stamp, so a
+// card a human later reopens is never locked out forever.
+test('#1697: NEVER_OVERWRITE_WITH_DONE covers Archived/Cancelled but not Done', () => {
+  const { NEVER_OVERWRITE_WITH_DONE } = require('./notion-tasks-sync.js');
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Archived'), true);
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Cancelled'), true);
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Done'), false, 'Done->Done is a harmless idempotent re-confirm, must stay pushable');
+});
+
+// #1778 ship-check catch (gpt-5.4-mini adversarial pass): 'Paused' is
+// deliberately NOT added to NEVER_OVERWRITE_WITH_DONE, unlike Archived/
+// Cancelled. An entry can carry syncedStatus:'Paused' from planLivenessDowngrade's
+// OWN non-terminal downgrade (in_progress -> pending while Notion says
+// Paused) and later be genuinely completed by a real session — a global
+// Paused guard would silently block THAT legitimate push too. The narrower
+// fix (reconcileStaleMirrors stamping pushed:true only on entries it itself
+// closes via planPendingClosure) can't be unit-tested as a pure function
+// since it lives inside the I/O loop — this test documents the contract at
+// the boundary planPendingClosure controls: the shared helper never asserts
+// anything about NEVER_OVERWRITE_WITH_DONE membership for Paused.
+test('#794: mustNeverPushDone catches a syncedArchived entry even when syncedStatus is a non-terminal string', () => {
+  const { mustNeverPushDone } = require('./notion-tasks-sync.js');
+  assert.equal(mustNeverPushDone({ syncedStatus: 'In progress', syncedArchived: true }), true);
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Not started', syncedArchived: true }), true);
+});
+
+test('#794: mustNeverPushDone still catches literal Archived/Cancelled strings with no syncedArchived flag (pre-existing behavior preserved)', () => {
+  const { mustNeverPushDone } = require('./notion-tasks-sync.js');
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Archived' }), true);
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Cancelled' }), true);
+});
+
+test('#794: mustNeverPushDone is false for an ordinary completed entry (In progress, not archived) — must stay pushable', () => {
+  const { mustNeverPushDone } = require('./notion-tasks-sync.js');
+  assert.equal(mustNeverPushDone({ syncedStatus: 'In progress', syncedArchived: false }), false);
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Not started' }), false);
+});
+
+test('#1778: NEVER_OVERWRITE_WITH_DONE does NOT cover Paused — pushed:true at the reconcile write site handles it precisely instead', () => {
+  const { NEVER_OVERWRITE_WITH_DONE } = require('./notion-tasks-sync.js');
+  assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Paused'), false);
+});
+
+// ── #1778: planPendingClosure — sync-drift's `entries` filter was broadened
+// from in_progress-only to also cover 'pending' mirrors (the SAME bug class
+// #1691/#1697 fixed for in_progress: a card whose Notion status moves past
+// In progress/Not started never gets re-fetched by `pull`). planStatusDrift
+// already unsticks the Done case for a pending mirror (mapStatus('done')
+// beats mergeStatus's fallthrough even from 'pending') — this function is
+// the narrow remaining gap: Paused collapses into the same 'pending' bucket
+// as Not started via mapStatus()'s default case, so mergeStatus never
+// reports drift for it. Repro: bash scripts/tests/repro-stale-mirror.sh
+// 1312 1346 1450 1455 1617 1622 1623 1667 1686 1620 (2 of the 9 stale cards,
+// #1455 and #1667, are Paused — the other 7 are Done, already covered).
+
+test('#1778: planStatusDrift already closes a pending mirror when Notion says Done', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '1312', status: 'pending' };
+  const card = { status: 'Done', name: 'Shipped work', notes: '' };
+  assert.deepEqual(planStatusDrift(task, card), { newStatus: 'completed', cardStatus: 'Done' });
+});
+
+test('#1778: planPendingClosure closes a pending mirror when Notion says Paused', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const task = { id: '1455', status: 'pending' };
+  const card = { status: 'Paused', name: 'On hold', notes: '' };
+  assert.deepEqual(planPendingClosure(task, card), { newStatus: 'completed', cardStatus: 'Paused' });
+});
+
+test('#1778: planPendingClosure is a no-op when Notion still says Not started', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const task = { id: '1620', status: 'pending' };
+  const card = { status: 'Not started', name: 'x', notes: '' };
+  assert.equal(planPendingClosure(task, card), null);
+});
+
+test('#1778: planPendingClosure is a no-op for Done (that\'s planStatusDrift\'s job, not this function\'s)', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  assert.equal(planPendingClosure({ id: '1', status: 'pending' }, { status: 'Done' }), null);
+});
+
+test('#1778: planPendingClosure only ever applies to a pending mirror, never in_progress/completed', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const card = { status: 'Paused', name: 'x', notes: '' };
+  assert.equal(planPendingClosure({ id: '1', status: 'in_progress' }, card), null);
+  assert.equal(planPendingClosure({ id: '1', status: 'completed' }, card), null);
+});
+
+test('#1778: planPendingClosure degrades to no-op on a failed fetch (null card) — same fail-open convention as planStatusDrift, never infers closure from absence', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  assert.equal(planPendingClosure({ id: '1', status: 'pending' }, null), null);
+});
+
+test('#794: planPendingClosure closes a pending mirror for an archived/trashed card even when its frozen Status never literally says Paused', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const task = { id: '1859', status: 'pending' };
+  const card = { status: 'In progress', archived: true, name: 'x', notes: '' };
+  assert.deepEqual(planPendingClosure(task, card), { newStatus: 'completed', cardStatus: 'In progress' });
+});
+
+test('#1697: an unusable lastEditedAt skips rather than guessing', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', lastEditedAt: null };
+  const result = planLivenessDowngrade(task, card, { now: Date.now() });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /no usable lastEditedAt/);
+});
+
+// ── #485: .sync-lock staleness must use its own acquiredAt, not fs mtime ────
+// Same bug class as json-write-guard.js and #476's monitor.lock: mtime is
+// trivially reset by any unrelated process touching the lock file.
+
+test('#485: a live lock (fresh acquiredAt) is NOT stolen even if its mtime is old', () => {
+  const dir = tmpDir();
+  const lockPath = path.join(dir, '.sync-lock');
+  fs.writeFileSync(lockPath, JSON.stringify({ pid: process.pid, acquiredAt: new Date().toISOString() }));
+  const old = new Date(Date.now() - 10 * 60 * 1000); // 10 min old mtime, well past the 2-min TTL
+  fs.utimesSync(lockPath, old, old);
+  const release = acquireLock(dir);
+  assert.equal(release, null, 'a fresh acquiredAt must block acquisition regardless of stale mtime');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#485: a stale lock (old acquiredAt) is stolen even if its mtime was just touched', () => {
+  const dir = tmpDir();
+  const lockPath = path.join(dir, '.sync-lock');
+  fs.writeFileSync(lockPath, JSON.stringify({ pid: process.pid, acquiredAt: new Date(Date.now() - 3 * 60 * 1000).toISOString() }));
+  fs.utimesSync(lockPath, new Date(), new Date()); // unrelated touch resets mtime to "now"
+  const release = acquireLock(dir);
+  assert.ok(typeof release === 'function', 'a stale acquiredAt must be stolen despite a fresh mtime');
+  release();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#485: an old-format lock (bare PID, no acquiredAt) falls back to mtime staleness', () => {
+  const dir = tmpDir();
+  const lockPath = path.join(dir, '.sync-lock');
+  fs.writeFileSync(lockPath, String(process.pid)); // pre-fix format
+  const old = new Date(Date.now() - 3 * 60 * 1000);
+  fs.utimesSync(lockPath, old, old);
+  const release = acquireLock(dir);
+  assert.ok(typeof release === 'function', 'old-format lock past the mtime TTL must still be stealable');
+  release();
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ── Card #854: readTask falls back to archive/ ──────────────────────────────
+const { readTask } = require('./notion-tasks-sync.js');
+
+test('readTask: falls back to archive/<id>.json when the live copy has been archived', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed', description: '[notion:abc] P1 · Done · eng' }));
+  const task = readTask(dir, '9');
+  assert.equal(task.status, 'completed');
+  assert.equal(readTask(dir, '999'), null);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('readTask: live copy wins over an archive copy with the same id', () => {
+  const dir = tmpDir();
+  fs.writeFileSync(path.join(dir, '9.json'), JSON.stringify({ id: '9', status: 'in_progress' }));
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed' }));
+  assert.equal(readTask(dir, '9').status, 'in_progress');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ship-check adversarial finding (2026-08-02): taskBelongsTo's default
+// (archive-aware) mode is correct for cmdPush/cmdStatus, but wrong for
+// cmdPull — a card reopened in Notion after its mirrored task was archived
+// must NOT resolve via taskBelongsTo({liveOnly:true}), or planPull's
+// toUpdate branch reads the archive's stale status:'completed' and
+// mergeStatus's sticky-completed rule resurrects a permanently-stuck
+// live file instead of routing to doCreate (fresh task, correct status).
+const { readLiveTask } = require('./notion-tasks-sync.js');
+
+test('taskBelongsTo: liveOnly:true does not see an archive-only match (cmdPull ownership check)', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed', description: '[notion:abc] P1 · Done · eng' }));
+  assert.equal(taskBelongsTo(dir, '9', 'abc'), true, 'default (cmdPush) mode sees the archived copy');
+  assert.equal(taskBelongsTo(dir, '9', 'abc', { liveOnly: true }), false, 'liveOnly mode (cmdPull) must not');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('readLiveTask: never falls back to archive/ (cmdPull\'s `existing` read)', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed' }));
+  assert.equal(readLiveTask(dir, '9'), null);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('planPull + readLiveTask/taskBelongsTo(liveOnly): a reopened card whose mirrored task was archived is NOT resurrected as stuck-completed', () => {
+  // Simulates the exact bug: card was archived (completed >48h ago), then
+  // reopened in Notion (status back to "In progress"). cmdPull's toUpdate
+  // path must treat this as "id no longer belongs to us" (liveOnly check
+  // fails, since the file only exists in archive/) and mint a fresh task
+  // via doCreate — never write a resurrected completed copy into the live dir.
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  const pageId = 'abc-123';
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({
+    id: '9', status: 'completed', description: `[notion:${pageId}] P1 Next · Done · eng`,
+  }));
+  const belongsLive = taskBelongsTo(dir, '9', pageId, { liveOnly: true });
+  assert.equal(belongsLive, false, 'ownership check must fail for an archive-only file — this is what routes cmdPull to doCreate');
+  // If this were true (the pre-fix bug), the caller would instead do:
+  //   const existing = readTask(dir, '9') || {};  // status:'completed' from archive
+  //   mapped.status = mergeStatus('completed', 'pending'); // -> 'completed' (sticky)
+  //   writeTask(dir, {...mapped, status: 'completed'});    // resurrected, stuck forever
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#1351: planSelfHeal recreates an "unchanged" card whose live mirror was archived (pending-population gap)', () => {
+  const pageId = 'p-1';
+  const map = { [pageId]: { taskId: '5' } };
+  const cardsById = new Map([[pageId, { id: pageId, name: 'Still-open backlog card', status: 'Not started' }]]);
+  // liveOnly miss (archived away), but the non-liveOnly check confirms the
+  // archived copy still belongs to this card — matches the real
+  // taskBelongsTo(dir, taskId, pageId, {liveOnly}) contract.
+  const ownershipCheck = (taskId, checkedPageId, liveOnly) => {
+    assert.equal(taskId, '5');
+    assert.equal(checkedPageId, pageId);
+    return liveOnly ? false : true;
+  };
+  const { toRecreate, stillUnchanged } = planSelfHeal([pageId], map, cardsById, ownershipCheck);
+  assert.deepEqual(stillUnchanged, []);
+  assert.equal(toRecreate.length, 1);
+  assert.equal(toRecreate[0].taskId, '5');
+  assert.equal(toRecreate[0].hasPriorOwnership, true);
+  assert.equal(toRecreate[0].card.id, pageId);
+});
+
+test('#1351: planSelfHeal leaves a genuinely unchanged card alone (live file still present)', () => {
+  const pageId = 'p-2';
+  const map = { [pageId]: { taskId: '6' } };
+  const cardsById = new Map([[pageId, { id: pageId, name: 'Live card', status: 'Not started' }]]);
+  const ownershipCheck = () => true; // liveOnly check passes — file is still live
+  const { toRecreate, stillUnchanged } = planSelfHeal([pageId], map, cardsById, ownershipCheck);
+  assert.deepEqual(toRecreate, []);
+  assert.deepEqual(stillUnchanged, [pageId]);
+});
+
+test('#1351: planSelfHeal does not claim prior ownership when the id was reused by an unrelated task', () => {
+  const pageId = 'p-3';
+  const map = { [pageId]: { taskId: '7' } };
+  const cardsById = new Map([[pageId, { id: pageId, name: 'Orphaned mirror entry', status: 'Not started' }]]);
+  // Neither the live nor the archive copy at id 7 belongs to this page —
+  // it was reused by a completely different card. Must recreate at a fresh
+  // id WITHOUT claiming prior ownership (no blocks/blockedBy carry-over).
+  const ownershipCheck = () => false;
+  const { toRecreate, stillUnchanged } = planSelfHeal([pageId], map, cardsById, ownershipCheck);
+  assert.deepEqual(stillUnchanged, []);
+  assert.equal(toRecreate.length, 1);
+  assert.equal(toRecreate[0].hasPriorOwnership, false);
+});
+
+test('#1351: planSelfHeal skips a page id with no map entry or no matching fetched card', () => {
+  const cardsById = new Map(); // card no longer in the fetched set (e.g. archived in Notion too)
+  const { toRecreate, stillUnchanged } = planSelfHeal(['ghost-page'], { 'ghost-page': { taskId: '8' } }, cardsById, () => false);
+  assert.deepEqual(toRecreate, []);
+  assert.deepEqual(stillUnchanged, ['ghost-page']);
+});

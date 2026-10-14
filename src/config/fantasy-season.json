@@ -1,0 +1,44 @@
+{
+  "_comment": "Single source of truth for the Broadway Fantasy League season. Read by src/config/fantasy.ts (site + API) AND scripts/generate-fantasy-config.js / compute-fantasy-scores.js (weekly pipeline). tests/unit/broadway-fantasy-league.test.mjs asserts data/fantasy-league.json was generated from these values and that tonyWindow matches src/lib/tony-cutoffs.ts.",
+  "season": "2026-2027",
+  "tonyCeremonyYear": 2027,
+  "tonyWindow": {
+    "label": "2026-27",
+    "start": "2026-04-27",
+    "end": "2027-04-25"
+  },
+  "draftOpens": "2026-09-29",
+  "draftDeadline": "2027-04-01T03:59:59Z",
+  "scoringStart": "2026-10-05",
+  "earlyBirdCutoff": "2026-10-25",
+  "scoringEnd": "2027-06-13",
+  "scoringEndNote": "PROVISIONAL: the 80th Tony Awards ceremony date has not been announced (Sept 2026). Update when it is, and add the 80th ceremony to data/tony-ceremony-dates.json; the unit test pins the two together.",
+  "budget": 100,
+  "teamSize": 8,
+  "prize": "$500 to spend on TodayTix",
+  "scoring": {
+    "criticScore": {
+      "Critical Gold": 30,
+      "Recommended": 20,
+      "Worth Seeing": 12,
+      "Skippable": 4,
+      "Critical Miss": 0
+    },
+    "audienceGrade": {
+      "A+": 25, "A": 20, "A-": 16,
+      "B+": 10, "B": 6, "B-": 3,
+      "C+": 1, "C": 0, "C-": 0,
+      "D": 0, "F": 0
+    },
+    "boxOffice": { "pointsPer100K": 0.30 },
+    "awards": {
+      "tonyNom": 5, "tonyWin": 20, "tonyBestMusical": 30, "tonyBestPlay": 30,
+      "dramaLeagueNom": 2, "dramaLeagueWin": 5,
+      "outerCriticsNom": 2, "outerCriticsWin": 5,
+      "dramaDeskNom": 3, "dramaDeskWin": 6,
+      "nydccWin": 5,
+      "lortelNom": 2, "lortelWin": 5,
+      "obieAward": 4
+    }
+  }
+}

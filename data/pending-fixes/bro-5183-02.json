@@ -1,0 +1,357 @@
+{
+  "issueNumber": "bro-5183-02",
+  "planId": "870173a0-73bf-4100-a5b2-74f3334ab786",
+  "status": "partial",
+  "createdAt": "2026-10-12T19:00:46.384Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183: repair made-up urls of legacy web-search reviews to the real review url (and byline), and mark web-search phantoms whose outlet review is already on file as duplicates of that record.",
+    "steps": [
+      "a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/ABronxTale2016.html",
+      "a-christmas-story-the-musical-2012/ew--thom-geier.json: duplicateOf -> ew--tanner-stransky.json",
+      "a-delicate-balance-2014/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/DelicateBalance2014.html",
+      "a-man-for-all-seasons-2008/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/ManAllSeasons.html",
+      "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/ViewBridge2010.html",
+      "aint-no-mo-2022/nysr--bart-greenberg.json: duplicateOf -> nysr--michael-sommers.json",
+      "almost-famous-2022/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/AlmostFamous.html",
+      "almost-famous-2022/talkinbroadway--matthew-murray.json: criticName -> James Wilson",
+      "american-buffalo-2008/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/AmBuffalo.html",
+      "annie-2012/wsj--terry-teachout.json: url -> https://www.wsj.com/articles/SB10001424127887323894704578106924093403596",
+      "anything-goes-2011/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/AnythingGoes2011.html",
+      "arcadia-2011/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/Arcadia2011.html",
+      "baby-its-you-2011/variety--david-rooney.json: duplicateOf -> variety--steven-suskin.json",
+      "baby-its-you-2011/wsj--terry-teachout.json: url -> https://www.wsj.com/articles/SB10001424052748704132204576285292479553876",
+      "chinglish-2011/theatermania--david-finkle.json: duplicateOf -> theatermania--dan-bacalzo.json",
+      "chinglish-2011/washpost--peter-marks.json: url -> https://www.washingtonpost.com/blogs/arts-post/post/chinglish-a-comedy-of-miscommunication/2011/10/28/gIQAA6DWPM_blog.html",
+      "company-2021/nysr--tulis-mccall.json: duplicateOf -> nysr--melissa-rose-bernardo.json",
+      "cult-of-love-2024/washpost--peter-marks.json: duplicateOf -> washpost--naveen-kumar.json",
+      "driving-miss-daisy-2010/variety--charles-isherwood.json: duplicateOf -> variety--joe-dziemianowicz.json",
+      "enron-2010/observer--rex-reed.json: duplicateOf -> observer--jesse-oxfeld.json",
+      "evita-2012/ew--thom-geier.json: duplicateOf -> ew--melissa-rose-bernardo.json",
+      "groundhog-day-2017/theatermania--adam-feldman.json: duplicateOf -> theatermania--david-gordon.json",
+      "here-lies-love-2023/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--howard-miller.json",
+      "ifthen-2014/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/IfThen2014.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "http://talkinbroadway.com/page2/world3204.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/ABronxTale2016.html",
+        "description": "Stored url http://talkinbroadway.com/page2/world3204.html came from the legacy LLM web-search step (bot_blocked). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/ABronxTale2016.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-story-the-musical-2012/ew--thom-geier.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--tanner-stransky.json",
+        "description": "The outlet's real review of this production (http://www.ew.com/ew/article/0,,20364394_20649655,00.html, Tanner Stransky) is already on file as ew--tanner-stransky.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://ew.com/article/2012/11/20/a-christmas-story-the-musical-broadway-review, Thom Geier), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-delicate-balance-2014/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/DelicateBalance.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/DelicateBalance2014.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/DelicateBalance.html came from the legacy LLM web-search step (scraper_timeout). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/DelicateBalance2014.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-man-for-all-seasons-2008/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/AManforAllSeasons.html",
+        "newValue": "https://talkinbroadway.com/page/world/ManAllSeasons.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/AManforAllSeasons.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://talkinbroadway.com/page/world/ManAllSeasons.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/AViewFromtheBridge.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/ViewBridge2010.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/AViewFromtheBridge.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/ViewBridge2010.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/nysr--bart-greenberg.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nysr--michael-sommers.json",
+        "description": "The outlet's real review of this production (https://nystagereview.com/2022/12/15/aint-no-mo-satirical-beauty-languishes-amid-a-beastly-broadway, Michael Sommers) is already on file as nysr--michael-sommers.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.nystagereview.com/2022/12/aint-no-mo-broadway-review.html, Bart Greenberg), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://talkinbroadway.com/page3/116.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/AlmostFamous.html",
+        "description": "Stored url https://talkinbroadway.com/page3/116.html came from the legacy LLM web-search step (scraper_timeout). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/AlmostFamous.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/talkinbroadway--matthew-murray.json",
+        "field": "criticName",
+        "oldValue": "Matthew Murray",
+        "newValue": "James Wilson",
+        "description": "Byline of https://www.talkinbroadway.com/page/world/AlmostFamous.html is James Wilson; Matthew Murray came from the legacy web-search step. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-buffalo-2008/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/AmericanBuffalo.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/AmBuffalo.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/AmericanBuffalo.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/AmBuffalo.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-2012/wsj--terry-teachout.json",
+        "field": "url",
+        "oldValue": "https://www.wsj.com/articles/SB10001424127887324735104578147043471091112",
+        "newValue": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596",
+        "description": "Stored url https://www.wsj.com/articles/SB10001424127887324735104578147043471091112 came from the legacy LLM web-search step (paywall). The outlet's real review of this production is https://www.wsj.com/articles/SB10001424127887323894704578106924093403596. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-2011/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/AnythingGoes.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/AnythingGoes2011.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/AnythingGoes.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/AnythingGoes2011.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "arcadia-2011/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/Arcadia.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/Arcadia2011.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/Arcadia.html came from the legacy LLM web-search step (scraper_timeout). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/Arcadia2011.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "baby-its-you-2011/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "The outlet's real review of this production (http://www.variety.com/review/VE1117945106, Steven Suskin) is already on file as variety--steven-suskin.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2011/legit/reviews/baby-it-s-you-1117945046/, David Rooney), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "baby-its-you-2011/wsj--terry-teachout.json",
+        "field": "url",
+        "oldValue": "https://www.wsj.com/articles/SB10001424052748704461304576216˘622142567668",
+        "newValue": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876",
+        "description": "Stored url https://www.wsj.com/articles/SB10001424052748704461304576216˘622142567668 came from the legacy LLM web-search step (paywall). The outlet's real review of this production is https://www.wsj.com/articles/SB10001424052748704132204576285292479553876. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chinglish-2011/theatermania--david-finkle.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--dan-bacalzo.json",
+        "description": "The outlet's real review of this production (http://www.theatermania.com/broadway/reviews/10-2011/chinglish_43496.html, Dan Bacalzo) is already on file as theatermania--dan-bacalzo.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.theatermania.com/broadway/reviews/chinglish_38916.html, David Finkle), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chinglish-2011/washpost--peter-marks.json",
+        "field": "url",
+        "oldValue": "https://www.washingtonpost.com/lifestyle/style/chinglish-at-longacre-theatre/2011/10/28/gIQAoYWsOM_story.html",
+        "newValue": "https://www.washingtonpost.com/blogs/arts-post/post/chinglish-a-comedy-of-miscommunication/2011/10/28/gIQAA6DWPM_blog.html",
+        "description": "Stored url https://www.washingtonpost.com/lifestyle/style/chinglish-at-longacre-theatre/2011/10/28/gIQAoYWsOM_story.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.washingtonpost.com/blogs/arts-post/post/chinglish-a-comedy-of-miscommunication/2011/10/28/gIQAA6DWPM_blog.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "company-2021/nysr--tulis-mccall.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nysr--melissa-rose-bernardo.json",
+        "description": "The outlet's real review of this production (http://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/, Melissa Rose Bernardo) is already on file as nysr--melissa-rose-bernardo.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://nystagereview.com/2021/12/16/company-broadway-review/, Tulis McCall), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cult-of-love-2024/washpost--peter-marks.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "washpost--naveen-kumar.json",
+        "description": "The outlet's real review of this production (https://www.washingtonpost.com/entertainment/theater/2024/12/12/cult-of-love-broadway-shailene-woodley-zachary-quinto/, Naveen Kumar) is already on file as washpost--naveen-kumar.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.washingtonpost.com/theater-dance/2024/12/12/cult-of-love-broadway-review/, Peter Marks), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "driving-miss-daisy-2010/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--joe-dziemianowicz.json",
+        "description": "The outlet's real review of this production (http://www.variety.com/review/VE1117943921.html, Marilyn Stasio) is already on file as variety--joe-dziemianowicz.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944054/, Charles Isherwood), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "enron-2010/observer--rex-reed.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--jesse-oxfeld.json",
+        "description": "The outlet's real review of this production (http://www.observer.com/2010/culture/there%E2%80%99s-no-business-show-about-business, Jesse Oxfeld) is already on file as observer--jesse-oxfeld.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://observer.com/2010/04/the-enron-play-is-energetic-entertaining-and-empty/, Rex Reed), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/ew--thom-geier.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--melissa-rose-bernardo.json",
+        "description": "The outlet's real review of this production (http://www.ew.com/ew/article/0,,20364394_20584060,00.html, Melissa Rose Bernardo) is already on file as ew--melissa-rose-bernardo.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://ew.com/article/2012/04/06/evita-broadway-review/, Thom Geier), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "groundhog-day-2017/theatermania--adam-feldman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--david-gordon.json",
+        "description": "The outlet's real review of this production (https://www.theatermania.com/broadway/reviews/groundhog-day_80742.html, byline per page) is already on file as theatermania--david-gordon.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.theatermania.com/new-york-city-theater/reviews/groundhog-day_79326.html, Adam Feldman), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "The outlet's real review of this production (https://talkinbroadway.com/page/world/HereLiesLove.html, Howard Miller) is already on file as talkinbroadway--howard-miller.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.talkinbroadway.com/page/regional/ny/ny721.html, Matthew Murray), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ifthen-2014/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/IfThen.html",
+        "newValue": "https://talkinbroadway.com/page/world/IfThen2014.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/IfThen.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://talkinbroadway.com/page/world/IfThen2014.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T22:42:38.682Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-bronx-tale-the-musical-2016/talkinbroadway--matthew-murray.json url: \"http://talkinbroadway.com/page2/world3204.html\" -> \"https://www.talkinbroadway.com/page/world/ABronxTale2016.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "a-christmas-story-the-musical-2012/ew--thom-geier.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-delicate-balance-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/DelicateBalance.html\" -> \"https://www.talkinbroadway.com/page/world/DelicateBalance2014.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-man-for-all-seasons-2008/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/AManforAllSeasons.html\" -> \"https://talkinbroadway.com/page/world/ManAllSeasons.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/AViewFromtheBridge.html\" -> \"https://www.talkinbroadway.com/page/world/ViewBridge2010.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "aint-no-mo-2022/nysr--bart-greenberg.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/talkinbroadway--matthew-murray.json url: \"https://talkinbroadway.com/page3/116.html\" -> \"https://www.talkinbroadway.com/page/world/AlmostFamous.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"James Wilson\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-buffalo-2008/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/AmericanBuffalo.html\" -> \"https://www.talkinbroadway.com/page/world/AmBuffalo.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "annie-2012/wsj--terry-teachout.json url: \"https://www.wsj.com/articles/SB10001424127887324735104578147043471091112\" -> \"https://www.wsj.com/articles/SB10001424127887323894704578106924093403596\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anything-goes-2011/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/AnythingGoes.html\" -> \"https://www.talkinbroadway.com/page/world/AnythingGoes2011.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-2011/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Arcadia.html\" -> \"https://www.talkinbroadway.com/page/world/Arcadia2011.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "baby-its-you-2011/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "baby-its-you-2011/wsj--terry-teachout.json url: \"https://www.wsj.com/articles/SB10001424052748704461304576216˘622142567668\" -> \"https://www.wsj.com/articles/SB10001424052748704132204576285292479553876\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "chinglish-2011/theatermania--david-finkle.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chinglish-2011/washpost--peter-marks.json url: \"https://www.washingtonpost.com/lifestyle/style/chinglish-at-longacre-theatre/2011/10/28/gIQAoYWsOM_story.html\" -> \"https://www.washingtonpost.com/blogs/arts-post/post/chinglish-a-comedy-of-miscommunication/2011/10/28/gIQAA6DWPM_blog.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "company-2021/nysr--tulis-mccall.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "cult-of-love-2024/washpost--peter-marks.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "driving-miss-daisy-2010/variety--charles-isherwood.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "enron-2010/observer--rex-reed.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "evita-2012/ew--thom-geier.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "groundhog-day-2017/theatermania--adam-feldman.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "here-lies-love-2023/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ifthen-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/IfThen.html\" -> \"https://talkinbroadway.com/page/world/IfThen2014.html\""
+    }
+  ]
+}

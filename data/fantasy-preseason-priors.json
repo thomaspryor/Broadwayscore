@@ -1,0 +1,270 @@
+{
+  "_meta": {
+    "season": "2026-2027",
+    "description": "Hand-set buzz tiers (1-5) + one-line reasons that drive pre-season fantasy prices via scripts/lib/fantasy-pricing.js. Edit tiers here, then re-run `node scripts/generate-fantasy-config.js --refreeze` BEFORE the draft opens. After the draft opens prices are frozen (data/fantasy-league-frozen.json) and this file only prices shows announced later (append-only). Per-show keys: tier (awards + reviews expectation), boxOfficeTier (optional, when the box-office outlook differs), runWeeks (optional, assumed run length when no closing date is announced), awardsEligible:false (special events, solo shows, holiday spectaculars), exclude:true (never draftable).",
+    "tierGuide": {
+      "5": "Best Musical/Play/Revival frontrunner with strong box office expectations",
+      "4": "Likely top-category nominee or a major box-office draw",
+      "3": "Credible contender, unknown quantity",
+      "2": "Long shot for awards, modest grosses",
+      "1": "Closed early, special event, or very unlikely to earn awards points"
+    },
+    "weeklyGrossPriors": {
+      "_note": "Median weekly gross over each show's first 20 reporting weeks, 2025-26 Broadway season (data/grosses-history.json, computed 2026-09-29). Multiplied by the tier's gross multiplier and capped by the house (seats x 8 x $150 x 95%).",
+      "musical-new": 830000,
+      "musical-revival": 1250000,
+      "play-new": 455000,
+      "play-revival": 870000
+    },
+    "categorySlots": {
+      "Best Musical": 4,
+      "Best Play": 4,
+      "Best Revival of a Musical": 4,
+      "Best Revival of a Play": 5
+    },
+    "sources": "Research pass 2026-09-29: Gold Derby early-2027 previews, Playbill, Deadline, Variety, NYTG, TDF fall preview, Broadway League opening-night calendar, Broadway Scorecard scores for prior productions.",
+    "updatedAt": "2026-09-29"
+  },
+  "shows": {
+    "paranormal-activity-2026": {
+      "tier": 2,
+      "note": "Opened Aug 25 to Recommended-range reviews (78) and sells out the August Wilson; its awards path is the design categories (sound, lighting, scenic), not Best Play. Closes Jan 3."
+    },
+    "school-girls-or-the-african-mean-girls-play-2026": {
+      "tier": 3,
+      "note": "MTC's revival of Jocelyn Bioh's comedy opened Sept 28 to strong reviews (82); Denée Benton and Patina Miller are the acting-nom hopes, but the run ends Nov 1 so almost no grosses are left."
+    },
+    "celebrity-autobiography-2026": {
+      "tier": 1,
+      "note": "Five-week return engagement at the Shubert that closed in June with mixed reviews (68); a pure awards long shot."
+    },
+    "other-desert-cities-2026": {
+      "tier": 5,
+      "note": "Julia Louis-Dreyfus, Ed Harris, Allison Janney, Joe Keery and Lily Rabe in Jon Robin Baitz's Pulitzer finalist; the starriest play of the fall and a Best Revival favorite. 16 weeks, closes Jan 17."
+    },
+    "billy-crystal-860-2026": {
+      "tier": 3,
+      "boxOfficeTier": 5,
+      "awardsEligible": false,
+      "note": "Billy Crystal's solo show at the Imperial, directed by Scott Ellis: a near-certain sellout, but solo shows are not Best Play contenders. 14 weeks, closes Jan 2."
+    },
+    "the-imaginary-invalid-2026": {
+      "tier": 2,
+      "note": "Bill Irwin adapts and stars in Roundabout's Molière, with Rachel Bloom's Broadway debut; closes Nov 22, five months before nominations."
+    },
+    "a-few-good-men-2026": {
+      "tier": 3,
+      "boxOfficeTier": 4,
+      "note": "Bradley Whitford and Tom Blyth in the first Broadway revival of Aaron Sorkin's courtroom drama, directed by Michael Arden at Lincoln Center's Beaumont. 13 weeks, closes Jan 10."
+    },
+    "wanted-2022": {
+      "tier": 3,
+      "note": "New musical (formerly Gun & Powder, whose Signature and Paper Mill runs scored 83 and 86) with Solea Pfeiffer and Ledisi; Gold Derby calls it the homegrown show that could challenge Paddington. Open run."
+    },
+    "here-there-are-blueberries-2026": {
+      "tier": 3,
+      "note": "Tectonic Theater Project's Pulitzer-finalist docudrama, a Lortel winner Off-Broadway; its London run scored 72. Ten-week run at the Barrymore through Jan 10."
+    },
+    "now-you-see-me-live-2026": {
+      "tier": 1,
+      "boxOfficeTier": 3,
+      "awardsEligible": false,
+      "note": "Holiday magic spectacle spun off the film franchise; the London run scored 72. Box office only, eight weeks through Jan 3."
+    },
+    "downstate-2026": {
+      "tier": 4,
+      "runWeeks": 12,
+      "note": "Bruce Norris's NY Drama Critics' Circle Best Play winner, directed by Joe Mantello with K. Todd Freeman and Francis Guinan; the best-reviewed play text of the fall. 12 weeks, closes Jan 10."
+    },
+    "the-fantasticks-2026": {
+      "tier": 2,
+      "note": "First Broadway production of the world's longest-running musical, reimagined by Christopher Gattelli at the 597-seat Hayes with Ruthie Ann Miles; a thin revival field is its main path. Closes Feb 7."
+    },
+    "blue-man-group-a-new-holiday-surprise-2026": {
+      "tier": 1,
+      "awardsEligible": false,
+      "note": "Holiday special at the Lunt-Fontanne; box office only, closes Jan 3."
+    },
+    "much-ado-about-nothing-2026": {
+      "tier": 4,
+      "boxOfficeTier": 5,
+      "note": "Tom Hiddleston and Hayley Atwell in Jamie Lloyd's Olivier-nominated Drury Lane production, already close to sold out at the Winter Garden. Strictly 10 weeks, closes Jan 10."
+    },
+    "inter-alia-2026": {
+      "tier": 4,
+      "note": "Rosamund Pike's Olivier-winning Broadway debut in Suzie Miller's follow-up to Prima Facie; the National Theatre run scored 83 with raves for the performance and doubts about the script. Closes Feb 21."
+    },
+    "galileo-2026": {
+      "tier": 3,
+      "note": "Raúl Esparza's first Broadway musical since 2012, directed by Michael Mayer at the Shubert; the Berkeley Rep tryout scored 60. Open run."
+    },
+    "awake-and-sing-2026": {
+      "tier": 2,
+      "runWeeks": 8,
+      "note": "Danny Burstein, Jessica Hecht and Micaela Diamond in MTC's Odets revival; a strong cast, but an eight-week engagement ending Feb 7 in a crowded revival year."
+    },
+    "dolly-an-original-musical-2026": {
+      "tier": 4,
+      "boxOfficeTier": 5,
+      "note": "Dolly Parton's autobiographical musical, directed by Bartlett Sher; the Nashville tryout scored 83 and Parton will sell the St. James. Awards upside is capped by the bio-jukebox format."
+    },
+    "mix-and-master-2027": {
+      "tier": 3,
+      "note": "World premiere from Dominique Morisseau with Kara Young and Ruben Santiago-Hudson, directed by Kamilah Forbes at Roundabout; eight weeks, closes Feb 28."
+    },
+    "small-mouth-sounds-2027": {
+      "tier": 5,
+      "note": "Julia Roberts, Paul Rudd, Sarah Paulson, Martin Freeman and Greta Lee in Bess Wohl's silent-retreat comedy, directed by Joe Mantello: the season's biggest star package."
+    },
+    "evita-2026": {
+      "tier": 5,
+      "note": "Rachel Zegler's Olivier-winning turn in Jamie Lloyd's Palladium production (scored 82 in London) transfers to the Winter Garden; the consensus Best Revival of a Musical frontrunner."
+    },
+    "gloria-2026": {
+      "tier": 3,
+      "note": "Branden Jacobs-Jenkins's Pulitzer-finalist office thriller at the Hayes, directed by Evan Cabnet; no cast announced yet."
+    },
+    "purple-rain-2026": {
+      "tier": 3,
+      "boxOfficeTier": 5,
+      "note": "Prince's film on stage at the Majestic after a mixed Minneapolis tryout; a new director (Saheem Ali) and book writer came aboard for Broadway. The catalog guarantees grosses."
+    },
+    "the-sound-of-music-2027": {
+      "tier": 4,
+      "note": "Lincoln Center Theater revival directed by Lear deBessonet with Jasmine Amy Rogers as Maria; LCT's Rodgers & Hammerstein revivals have won Best Revival before. Runs through July."
+    },
+    "paddington-the-musical-2026": {
+      "tier": 5,
+      "note": "Seven Olivier wins including Best New Musical; the Savoy production scored 89 in London and Gold Derby calls it the de facto Best Musical frontrunner. Open run at the Hirschfeld."
+    },
+    "damn-yankees-2027": {
+      "tier": 4,
+      "note": "Neil Patrick Harris and Julianne Hough in Sergio Trujillo's rewritten revival, which swept the Helen Hayes Awards at Arena Stage. Open run at the Marquis."
+    },
+    "the-full-monty-2027": {
+      "tier": 2,
+      "note": "Roundabout's revival of the Yazbek and McNally musical opens on the eligibility cutoff day with no cast announced; limited run through June 20."
+    },
+
+    "imitation-of-life-off-broadway-2026": {
+      "tier": 5,
+      "note": "Lynn Nottage and John Legend's new musical at The Shed with Adrienne Warren and Jessica Vosk, directed by Whitney White; the Off-Broadway musical to beat."
+    },
+    "seven-guitars-off-broadway-2026": {
+      "tier": 4,
+      "note": "August Wilson at Lincoln Center's Newhouse, directed by Ruben Santiago-Hudson with John Douglas Thompson and Russell Hornsby."
+    },
+    "the-curious-case-of-benjamin-button-off-broadway-2026": {
+      "tier": 4,
+      "note": "The Olivier-winning London musical lands at the Public."
+    },
+    "msblackforpresident-off-broadway-2026": {
+      "tier": 4,
+      "note": "Tarell Alvin McCraney and Tina Landau's new play at the Vineyard with Wayne Brady."
+    },
+    "the-heart-off-broadway-2026": {
+      "tier": 3,
+      "note": "New musical at Roundabout directed by Christopher Ashley with Joaquina Kalukango."
+    },
+    "the-visitors-off-broadway-2026": {
+      "tier": 3,
+      "note": "Bryna Turner world premiere at Second Stage with Celia Keenan-Bolger."
+    },
+    "king-of-the-yees-off-broadway-2026": {
+      "tier": 3,
+      "note": "Lauren Yee's comedy at Signature with Kelly Marie Tran and Francis Jue."
+    },
+    "clifford-odets-waiting-for-lefty-off-broadway-2026": {
+      "tier": 3,
+      "note": "Classic Stage revival directed by Steven Pasquale with Conrad Ricamora."
+    },
+    "the-ripple-the-wave-that-carried-me-home-off-broadway-2026": {
+      "tier": 3,
+      "note": "Christina Anderson's play at Playwrights Horizons with Crystal Lucas-Perry."
+    },
+    "spring-awakening-off-broadway-2026": {
+      "tier": 3,
+      "note": "Commercial revival at Studio Seaview opening in December."
+    },
+    "good-time-charlie-off-broadway-2026": {
+      "tier": 3,
+      "note": "New play at the Public's Martinson Hall."
+    },
+    "sea-wall-off-broadway-2026": {
+      "tier": 3,
+      "note": "Simon Stephens's monologue at Studio Seaview."
+    },
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026": {
+      "tier": 3,
+      "note": "Anne Washburn at MCC, directed by Anne Kauffman, with Jeremy Shamos."
+    },
+    "the-unbelievers-off-broadway-2026": {
+      "tier": 3,
+      "note": "Nick Payne's American premiere at MTC with Lauren Ambrose and Tom Riley."
+    },
+    "in-the-heights-off-broadway-2026": {
+      "exclude": true,
+      "note": "Encores! concert staging at City Center; not awards-eligible."
+    },
+    "kramerfauci-st-anns-off-broadway-2026": {
+      "tier": 4,
+      "note": "Daniel Fish (Oklahoma!) stages the 1993 Larry Kramer and Anthony Fauci confrontation at St. Ann's Warehouse with Will Brill and Thomas Jay Ryan."
+    },
+    "creation-stories-and-all-the-important-importants-off-broadway-2026": { "tier": 3, "note": "New play at LCT3's Claire Tow Theater." },
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026": { "tier": 3, "note": "O'Neill revival at Irish Rep." },
+    "slam-frank-off-broadway-2026": { "tier": 2, "note": "Commercial musical parody at the Orpheum." },
+    "miles-for-mary-off-broadway-2026": { "tier": 3, "note": "The Mad Ones' comedy returns at the Signature Center in February." },
+    "the-kings-critique-off-broadway-2026": { "tier": 2, "note": "New musical at the Signature Center." },
+    "the-good-thief-off-broadway-2026": { "tier": 2, "note": "Conor McPherson monologue at Irish Rep." },
+    "a-ghost-in-your-ear-off-broadway-2026": { "tier": 2, "note": "Audible's Minetta Lane production." },
+    "fish-off-broadway-2026": { "tier": 2, "note": "New play at WP Theater." },
+    "we'll-see-off-broadway-2026": { "tier": 3, "note": "New play at the Public." },
+    "well-see-off-broadway-2026": { "tier": 3, "note": "New play at the Public." },
+    "the-verge-off-broadway-2026": { "tier": 3, "note": "Revival at the Public's LuEsther Hall." },
+    "i-became-we-off-broadway-2026": { "tier": 3, "note": "New play at Atlantic Theater Company." },
+    "la-distance-bam-off-broadway-2026": { "tier": 3, "note": "Tiago Rodrigues at BAM's Harvey Theater." }
+  },
+  "byTitle": {
+    "_note": "Shows announced for 2026-27 that are not in shows.json yet. Keyed by normalized title (lowercase, letters and digits only); the generator uses these when the show id is unknown at freeze time, so a mid-season addition is priced at the right tier instead of the default.",
+    "warriors": {
+      "tier": 5,
+      "note": "Lin-Manuel Miranda and Eisa Davis's new musical, produced by Kail and Seller with Andy Blankenbuehler choreographing; a Best Musical contender the moment it is dated (April 2027, Lunt-Fontanne)."
+    },
+    "threedaysofrain": {
+      "tier": 3,
+      "note": "David Corenswet, Yvonne Strahovski and François Arnaud in the Richard Greenberg revival directed by Anna D. Shapiro; previews February 2027."
+    },
+    "catonahottinroof": {
+      "tier": 4,
+      "note": "Sam Gold directs Tennessee Williams for Seaview in spring 2027; cast to be announced."
+    },
+    "montauk": {
+      "tier": 3,
+      "note": "Laura Linney in David Hare's world premiere at MTC's Friedman, directed by Daniel Sullivan, spring 2027."
+    },
+    "wildrose": {
+      "tier": 4,
+      "note": "John Tiffany directs Nicole Taylor's musical at New York Theatre Workshop with Madeline Brewer."
+    },
+    "aviewfromthebridge": {
+      "tier": 4,
+      "note": "Sam Rockwell, Marin Ireland and Alfred Molina at La MaMa, directed by Neil Pepe."
+    },
+    "oldactress": {
+      "tier": 4,
+      "note": "Lucas Hnath, Les Waters and Deirdre O'Connell reunite at Atlantic in March 2027."
+    },
+    "borninthedirt": {
+      "tier": 4,
+      "note": "Kimberly Belflower and Danya Taymor, the John Proctor Is the Villain team, at Lincoln Center's Newhouse in April 2027."
+    },
+    "welcometable": {
+      "tier": 4,
+      "note": "James Ijames's new play about the Baldwin and RFK meeting, directed by Rachel Chavkin at the Public, winter 2027."
+    },
+    "playingburton": {
+      "tier": 3,
+      "note": "Matthew Rhys as Richard Burton at Lincoln Center's Newhouse, directed by Bartlett Sher."
+    }
+  }
+}

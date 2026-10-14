@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-10-13T16:59:33.824Z",
+  "summary": {
+    "reviewsJsonLastUpdated": "2026-10-13T16:32:34.850Z",
+    "reviewsJsonAgeHours": 0.4,
+    "freshnessBreach": false,
+    "showsScanned": 25,
+    "allShowsScanned": 2591,
+    "filesScanned": 56408,
+    "showsOverThreshold": 0,
+    "newOffenders": 0,
+    "blindShows": 24,
+    "orphanReviews": 6
+  },
+  "thresholds": {
+    "suppressedPerShow": 3,
+    "windowDays": 7,
+    "maxAgeHours": 30
+  },
+  "showsOverThreshold": [],
+  "newOffenders": [],
+  "staleBaseline": [
+    {
+      "showDir": "into-the-woods-1997",
+      "gone": [
+        "washpost--peter-marks.json"
+      ]
+    }
+  ],
+  "orphanReviews": [
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "count": 24
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "count": 21
+    },
+    {
+      "showId": "the-apple-boys-regional-2025",
+      "count": 4
+    },
+    {
+      "showId": "gun-and-powder-signature-regional-2020",
+      "count": 6
+    },
+    {
+      "showId": "bull-durham-paper-mill-regional-2025",
+      "count": 6
+    },
+    {
+      "showId": "gun-and-powder-regional-2020",
+      "count": 12
+    }
+  ],
+  "perShow": [
+    {
+      "showDir": "an-oak-tree-off-west-end-2026",
+      "actual": 17,
+      "scanned": 32,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "blood-of-my-blood-west-end-2026",
+      "actual": 17,
+      "scanned": 44,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "actual": 6,
+      "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "fences-off-west-end-2026",
+      "actual": 13,
+      "scanned": 33,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "fish-off-broadway-2026",
+      "actual": 4,
+      "scanned": 12,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "from-the-heart-west-end-2026",
+      "actual": 25,
+      "scanned": 33,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "good-time-charlie-off-broadway-2026",
+      "actual": 14,
+      "scanned": 22,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "cititour--brian-scott.json",
+          "outletId": "cititour",
+          "criticName": "Brian Scott",
+          "publishDate": "2026-10-09",
+          "url": "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "hound-of-the-baskervilles-off-west-end-2026",
+      "actual": 1,
+      "scanned": 7,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "into-the-woods-noel-coward-west-end-2026",
+      "actual": 31,
+      "scanned": 54,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "king-lear-royal-exchange-regional-2026",
+      "actual": 8,
+      "scanned": 15,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "rent-west-end-2026",
+      "actual": 35,
+      "scanned": 51,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "school-pictures-off-broadway-2026",
+      "actual": 6,
+      "scanned": 1,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "actual": 13,
+      "scanned": 16,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-virtuous-burglar-off-west-end-2026",
+      "actual": 2,
+      "scanned": 4,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "triumph-off-broadway-2026",
+      "actual": 1,
+      "scanned": 4,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    }
+  ]
+}

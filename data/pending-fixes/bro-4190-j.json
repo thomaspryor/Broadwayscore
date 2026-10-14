@@ -1,0 +1,33 @@
+{
+  "createdAt": "2026-10-13T04:43:22Z",
+  "issueNumber": "bro-4190-j",
+  "planId": "46bf3b06-28a0-4fb4-89ab-d75af0959867",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4915: New York Classical Review's 2026-10 review of the Met's current La Bohème (alternate cast) sits in _pending as a no-byline stub and never reached the show. Ingest it from the URL (CI fetcher), stub on failure.",
+    "steps": [
+      "Ingest https://newyorkclassicalreview.com/2026/10/alternate-cast-keeps-the-romance-and-comedy-alight-in-mets-boheme/ into la-boheme-off-broadway-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=la-boheme-off-broadway-2026 --url=https://newyorkclassicalreview.com/2026/10/alternate-cast-keeps-the-romance-and-comedy-alight-in-mets-boheme/ --stub-on-failure",
+        "description": "Current-run NYCR review (2026-10, Met Bohème alternate cast)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T06:38:22.338Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=la-boheme-off-broadway-2026 --url=https://newyorkclassicalreview.com/2026/10/alternate-cast-keeps-the-romance-and-comedy-alight-in-mets-boheme/ --stub-on-failure"
+    }
+  ]
+}

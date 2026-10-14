@@ -1,0 +1,20 @@
+{
+  "system": "infra",
+  "status": "pass",
+  "lastChecked": "2026-10-13T09:28:28.744Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Infra: disk space",
+      "status": "ok",
+      "message": "79GB free (46% used)"
+    },
+    {
+      "name": "Infra: notion-schedule-coupling audit",
+      "status": "pass",
+      "message": "No live schedules coupled to the frozen Notion mirror (4h ago)"
+    }
+  ]
+}

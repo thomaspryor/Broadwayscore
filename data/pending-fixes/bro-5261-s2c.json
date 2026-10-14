@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5261-s2c",
+  "planId": "9d4cc172-b0ed-4728-88ea-8a6f325e00ec",
+  "status": "applied",
+  "createdAt": "2026-10-13T21:28:17.746Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5261 retro-review of BRO-2716: the Louder Than War ABBA Voyage review (in-window: the show opened 2022-05-28, the review is dated 2022-06-13) was flagged wrongAttribution \"until it is re-filed under its real outlet\", but nothing re-filed it. The same change registers louder-than-war (louderthanwar.com, T3 london, the same tier as click-liverpool), so the rebuild outlet-mismatch pass relabels the file by its url (publisherDomainCorrection). Clearing the flag lets it score under its own outlet.",
+    "steps": [
+      "abba-voyage-off-west-end-2026/louder-than-war--filthy-dirty.json: set wrongAttribution false and supersede its reason (replaces bro-5261-s2/s2b: the rebuild already relabelled the file to louder-than-war, so their path no longer exists). The next rebuild relabels it to louder-than-war--filthy-dirty.json (its url resolves to the newly registered louderthanwar.com)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/louder-than-war--filthy-dirty.json",
+        "field": "wrongAttributionReason",
+        "oldValue": "BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)",
+        "newValue": "superseded (BRO-5261): louderthanwar.com is now a registered outlet; the rebuild re-files this review under louder-than-war",
+        "description": "The outlet is now registered; the rebuild relabels by url."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/louder-than-war--filthy-dirty.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Re-filed under louder-than-war by the rebuild publisher-domain relabel."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T22:09:06.826Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "abba-voyage-off-west-end-2026/louder-than-war--filthy-dirty.json wrongAttributionReason: \"BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)\" -> \"superseded (BRO-5261): louderthanwar.com is now a registered outlet; the rebuild re-files this review under louder-than-war\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "abba-voyage-off-west-end-2026/louder-than-war--filthy-dirty.json wrongAttribution: true -> false"
+    }
+  ]
+}

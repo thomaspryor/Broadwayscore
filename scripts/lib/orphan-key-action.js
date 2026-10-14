@@ -1,0 +1,44 @@
+'use strict';
+
+/**
+ * drop-orphan-key — remove (or move) one audience-buzz.json key whose id is
+ * no longer a shows.json row, for execute-approved-fix.js (BRO-3248).
+ *
+ *   { type: 'drop-orphan-key', file: 'audience-buzz.json', showId, reason, renameTo? }
+ *
+ * Pure: takes the parsed file's `shows` map, the live and retired id sets,
+ * mutates the map, returns {ok, msg} or {ok:false, reason}. Guardrails:
+ *   - showId must NOT be a live shows.json id (this never deletes a real
+ *     show's data) and must be a key in the file;
+ *   - renameTo must be a live, non-retired id with no entry of its own, and a
+ *     retired showId is never moved onto a live show (its data was judged not
+ *     to belong anywhere);
+ *   - reason is required (it is the plan's record of the judgment).
+ * The push-core-data reconcile (scripts/lib/reconcile-audience-buzz.js) no
+ * longer re-adds a non-live key, so the drop sticks.
+ */
+
+const FILES = new Set(['audience-buzz.json']);
+const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
+
+function applyDropOrphanKey(map, action, { liveIds, retiredIds = new Set() }) {
+  const { file, showId, renameTo, reason } = action || {};
+  if (!FILES.has(file)) return { ok: false, reason: `drop-orphan-key: unsupported file ${file}` };
+  if (!showId || !ID_RE.test(showId)) return { ok: false, reason: 'drop-orphan-key: showId missing or malformed' };
+  if (!reason || String(reason).trim().length < 10) return { ok: false, reason: `drop-orphan-key ${showId}: reason (>=10 chars) required` };
+  if (!liveIds || liveIds.size === 0) return { ok: false, reason: 'drop-orphan-key: shows.json ids unavailable' };
+  if (liveIds.has(showId)) return { ok: false, reason: `drop-orphan-key ${showId}: is a live shows.json id, refusing` };
+  if (!map || !Object.prototype.hasOwnProperty.call(map, showId)) return { ok: false, reason: `drop-orphan-key ${showId}: no such key in ${file}` };
+  if (renameTo !== undefined && renameTo !== null) {
+    if (retiredIds.has(showId)) return { ok: false, reason: `drop-orphan-key ${showId}: retired id, its data is not moved onto ${renameTo}` };
+    if (!liveIds.has(renameTo) || retiredIds.has(renameTo)) return { ok: false, reason: `drop-orphan-key ${showId}: renameTo ${renameTo} is not a live show` };
+    if (Object.prototype.hasOwnProperty.call(map, renameTo)) return { ok: false, reason: `drop-orphan-key ${showId}: ${renameTo} already has an entry` };
+    map[renameTo] = map[showId];
+    delete map[showId];
+    return { ok: true, msg: `${file}: moved ${showId} -> ${renameTo}` };
+  }
+  delete map[showId];
+  return { ok: true, msg: `${file}: dropped orphan key ${showId}` };
+}
+
+module.exports = { applyDropOrphanKey };

@@ -1,0 +1,20 @@
+{
+  "system": "autofix",
+  "status": "warn",
+  "lastChecked": "2026-10-13T09:28:28.744Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Autofix: jobs actually succeeding",
+      "status": "pass",
+      "message": "Only 0 auto-fix outcome(s) in the last 7d from 0 launch(es) (need 3 to judge)"
+    },
+    {
+      "name": "Autofix: persistent visitor rows with no open card",
+      "status": "warn",
+      "message": "3 visitor-facing row(s) red for 4+ days with no open card: Sync: baseline drift (81d, BRO-3164 closed); Quality: corpus drift (81d, BRO-3081 closed); Quality: DMARC deliverability (28d, BRO-4093 closed)"
+    }
+  ]
+}

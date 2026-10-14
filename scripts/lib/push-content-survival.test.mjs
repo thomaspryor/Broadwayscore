@@ -1,0 +1,989 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  classifyFileSurvival,
+  classifyFileSurvivalDeep,
+  extractAddedLines,
+  computeAddedLines,
+  addedLinesSurvived,
+  classifyAll,
+  anyReverted,
+  CONTENT_SURVIVAL_EXEMPT_LEDGERS,
+  isContentSurvivalExempt,
+  isDeepCheckExempt,
+} = require('./push-content-survival.js');
+const CLI = join(dirname(fileURLToPath(import.meta.url)), 'push-content-survival.js');
+
+// ── Pure classifier ──────────────────────────────────────────────────────
+test('classifyFileSurvival: final matches local -> survived', () => {
+  assert.equal(classifyFileSurvival({ baseBlob: 'A', localBlob: 'B', finalBlob: 'B' }), 'survived');
+});
+
+test('classifyFileSurvival: final matches base (not local) -> reverted (task #619 signature)', () => {
+  assert.equal(classifyFileSurvival({ baseBlob: 'A', localBlob: 'B', finalBlob: 'A' }), 'reverted');
+});
+
+test('classifyFileSurvival: local === base -> unchanged (nothing was really at risk)', () => {
+  assert.equal(classifyFileSurvival({ baseBlob: 'A', localBlob: 'A', finalBlob: 'A' }), 'unchanged');
+});
+
+test('classifyFileSurvival: local === base even if final differs -> still unchanged, not reverted', () => {
+  assert.equal(classifyFileSurvival({ baseBlob: 'A', localBlob: 'A', finalBlob: 'C' }), 'unchanged');
+});
+
+test('classifyFileSurvival: final differs from both base and local -> ambiguous (legitimate concurrent merge)', () => {
+  assert.equal(classifyFileSurvival({ baseBlob: 'A', localBlob: 'B', finalBlob: 'C' }), 'ambiguous');
+});
+
+test('classifyAll + anyReverted: flags a run with at least one reverted file', () => {
+  const classified = classifyAll([
+    { file: 'ok.txt', baseBlob: 'A', localBlob: 'B', finalBlob: 'B' },
+    { file: 'CLAUDE.md', baseBlob: 'A', localBlob: 'B', finalBlob: 'A' },
+  ]);
+  assert.equal(anyReverted(classified), true);
+});
+
+test('classifyAll + anyReverted: clean run with no reversions', () => {
+  const classified = classifyAll([
+    { file: 'ok.txt', baseBlob: 'A', localBlob: 'B', finalBlob: 'B' },
+    { file: 'merged.txt', baseBlob: 'A', localBlob: 'B', finalBlob: 'D' },
+  ]);
+  assert.equal(anyReverted(classified), false);
+});
+
+// ── Deep (line-level) check for the 'ambiguous' bucket (task #833) ──────────
+// A file-level blob comparison can't tell "a legitimate 3-way merge combined
+// our edit with an unrelated concurrent one" from "our edit was clobbered by
+// a concurrent write that also touched this file" — both produce final !=
+// base AND final != local. This extracts the lines OUR commit added and
+// checks whether they're still present verbatim in the final content, which
+// answers "is MY change there" directly instead of inferring it from
+// whole-file identity.
+test('extractAddedLines: pulls + lines from a unified diff, skips the +++ header and blanks', () => {
+  const patch = [
+    '--- a/test.yml', '+++ b/test.yml', '@@ -1,3 +1,5 @@',
+    ' line1', '+MAPFILE-LINE-1', '+MAPFILE-LINE-2', '+', ' line2', ' line3',
+  ].join('\n');
+  assert.deepEqual(extractAddedLines(patch), ['MAPFILE-LINE-1', 'MAPFILE-LINE-2']);
+});
+
+test('extractAddedLines: empty/null patch -> no added lines', () => {
+  assert.deepEqual(extractAddedLines(''), []);
+  assert.deepEqual(extractAddedLines(null), []);
+});
+
+// ── computeAddedLines (task BRO-2449) ────────────────────────────────────
+// extractAddedLines(patch) reads raw '+' lines out of diff TEXT, which can
+// include a line base and local agree on verbatim, re-emitted as a redundant
+// -/+ pair purely from hunk realignment elsewhere in the file. computeAddedLines
+// answers "does local have MORE occurrences of this line than base" straight
+// from full file content instead — immune to that diff-text artifact. This is
+// what the CLI now feeds into addedLinesSurvived (see the CLI section below).
+test('computeAddedLines: only lines local has strictly more of than base count as added', () => {
+  assert.deepEqual(computeAddedLines('A\n', 'A\nB\n'), ['B']);
+});
+
+test('computeAddedLines: a line unchanged between base and local is never "added", even if the file differs elsewhere', () => {
+  // Same registryPath line on both sides; only the unrelated 'header' line changed.
+  const base = 'header\nconst registryPath = OLD;\nfooter\n';
+  const local = 'header-branch-edit\nconst registryPath = OLD;\nfooter\n';
+  assert.deepEqual(computeAddedLines(base, local), ['header-branch-edit']);
+});
+
+test('computeAddedLines: nets duplicates correctly (base has 1, local has 3 -> 2 net-new)', () => {
+  const base = 'x\nx\n';
+  const local = 'x\nx\nx\nx\n';
+  assert.deepEqual(computeAddedLines(base, local), ['x', 'x']);
+});
+
+test('computeAddedLines: null localContent -> empty (file absent from our own commit)', () => {
+  assert.deepEqual(computeAddedLines('base', null), []);
+});
+
+// The old patch-based extraction relied on `git diff` text, which degrades to
+// "Binary files differ" (no '+' lines, fails open) for binary content. The
+// new content-based path reads raw `git show <blob>` output directly, so it
+// must not throw or hang on binary-looking content — a null byte is just
+// another character to String#split('\n').
+test('computeAddedLines: does not throw on binary-looking content (null bytes)', () => {
+  const binary = 'PK\x00\x00\x03\x04\nsome-binary-line\x00\n';
+  assert.doesNotThrow(() => computeAddedLines(binary, binary + 'extra\n'));
+  assert.deepEqual(computeAddedLines(binary, binary + 'extra\n'), ['extra']);
+});
+
+test('addedLinesSurvived: true when every added line is present in final content', () => {
+  assert.equal(
+    addedLinesSurvived(['MAPFILE-LINE-1', 'MAPFILE-LINE-2'], 'line1\nline2\nline3\n', 'line1\nMAPFILE-LINE-1\nMAPFILE-LINE-2\nline2\n'),
+    true
+  );
+});
+
+test('addedLinesSurvived: false when an added line is missing (task #833 signature)', () => {
+  assert.equal(
+    addedLinesSurvived(['MAPFILE-LINE-1', 'MAPFILE-LINE-2'], 'line1\nline2\n', 'line1\nMAPFILE-LINE-1\nline2\n'),
+    false
+  );
+});
+
+test('addedLinesSurvived: fails OPEN with no added lines (pure deletion) or missing final content', () => {
+  assert.equal(addedLinesSurvived([], 'base', 'anything'), true);
+  assert.equal(addedLinesSurvived(['x'], 'base', null), true);
+});
+
+// Adversarial review finding (task #833 follow-up): a naive set-membership
+// check would report "survived" whenever the added line's text ALSO occurs
+// somewhere else in the file — even when the actual occurrence our commit
+// introduced was clobbered. Occurrence-COUNT comparison against base catches
+// this: the line already existed once at base, so surviving at count 1 in
+// final (not 2) proves our added occurrence specifically is gone.
+test('addedLinesSurvived: false when the added line text pre-existed elsewhere and our occurrence was clobbered (duplicate-line false-negative fix)', () => {
+  const addedLines = ['- run: npm test'];
+  const baseContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n'; // one pre-existing occurrence
+  // final still has exactly ONE occurrence (the pre-existing one) — our
+  // ADDED occurrence in a second job never made it in.
+  const finalContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n  b:\n    steps:\n      - run: something-else\n';
+  assert.equal(addedLinesSurvived(addedLines, baseContent, finalContent), false);
+});
+
+test('addedLinesSurvived: true when the added line text pre-existed elsewhere AND our new occurrence also survived', () => {
+  const addedLines = ['- run: npm test'];
+  const baseContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n'; // one pre-existing occurrence
+  // final has TWO occurrences: the pre-existing one plus ours.
+  const finalContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n  b:\n    steps:\n      - run: npm test\n';
+  assert.equal(addedLinesSurvived(addedLines, baseContent, finalContent), true);
+});
+
+// Adversarial review finding: a byte-exact comparison would false-positive
+// 'reverted' on a legitimate 3-way merge where a concurrent formatter only
+// changed INTERNAL whitespace (indentation, double-spacing) on our own added
+// line. Internal-whitespace normalization tolerates pure reformatting while
+// still catching real content differences.
+test('addedLinesSurvived: tolerates internal-whitespace-only reformatting of our own added line', () => {
+  const addedLines = ['  key:   value'];
+  const finalContent = 'key: value\n'; // formatter collapsed the double-space and indentation
+  assert.equal(addedLinesSurvived(addedLines, '', finalContent), true);
+});
+
+test('classifyFileSurvivalDeep: non-ambiguous statuses pass through unchanged (no extra work needed)', () => {
+  assert.equal(classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'B', finalBlob: 'B' }), 'survived');
+  assert.equal(classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'B', finalBlob: 'A' }), 'reverted');
+  assert.equal(classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'A', finalBlob: 'A' }), 'unchanged');
+});
+
+test('classifyFileSurvivalDeep: ambiguous + added lines present -> stays ambiguous (legitimate concurrent merge)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['MAPFILE-LINE-1', 'MAPFILE-LINE-2'],
+    baseContent: 'line1\nline2\nline3\n',
+    finalContent: 'line1\nMAPFILE-LINE-1\nMAPFILE-LINE-2\nunrelated-concurrent-edit\n',
+  });
+  assert.equal(status, 'ambiguous');
+});
+
+test('classifyFileSurvivalDeep: ambiguous + added lines MISSING -> downgraded to reverted (task #833 signature)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['MAPFILE-LINE-1', 'MAPFILE-LINE-2'],
+    baseContent: 'line1\nline2\n',
+    finalContent: 'line1\nsome-other-concurrent-edit\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+// Task BRO-2500: skipDeepCheck must short-circuit BEFORE addedLinesSurvived
+// ever runs — same inputs as the task #833 test directly above (which
+// downgrades to 'reverted' without it) must stay 'ambiguous' with it set.
+test('classifyFileSurvivalDeep: skipDeepCheck stays ambiguous even with added lines MISSING (deep-only exemption, BRO-2500)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C', skipDeepCheck: true,
+    addedLines: ['MAPFILE-LINE-1', 'MAPFILE-LINE-2'],
+    baseContent: 'line1\nline2\n',
+    finalContent: 'line1\nsome-other-concurrent-edit\n',
+  });
+  assert.equal(status, 'ambiguous');
+});
+
+test('classifyFileSurvivalDeep: skipDeepCheck does NOT bypass the cheap check — a genuine revert to base is still caught', () => {
+  const status = classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'B', finalBlob: 'A', skipDeepCheck: true });
+  assert.equal(status, 'reverted');
+});
+
+// Task BRO-2449: stale-branch shape at the classifier level. The branch never
+// touched `const registryPath = OLD;` (base and local agree on it); it only
+// added an unrelated line elsewhere. Origin/main has since replaced the
+// registryPath line with an improved version while carrying the branch's
+// genuinely-new line forward (a legitimate merge outcome). addedLines here is
+// exactly what computeAddedLines would produce for this shape — it does NOT
+// include the registryPath line, so its disappearance from final must not
+// downgrade this to 'reverted'.
+test('classifyFileSurvivalDeep: stale-branch shape (unrelated line legitimately superseded on main) stays ambiguous, not reverted', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['branch-new-line'], // registryPath line correctly excluded — base and local agree on it
+    baseContent: 'header\nconst registryPath = OLD;\nfooter\n',
+    finalContent: 'header\nconst registryPath = NEW_IMPROVED;\nfooter\nbranch-new-line\n',
+  });
+  assert.equal(status, 'ambiguous');
+});
+
+// ── CLI: full end-state repro of the task #833 signature ────────────────────
+// Builds the documented end-state directly (same convention as the task #619
+// repro below): our commit adds 2 lines to a file; the ref we "pushed" to has
+// a THIRD version — neither pre-edit base nor our intended content — that is
+// missing our 2 added lines. The pre-fix classifier would call this
+// 'ambiguous' and exit 0; the deep check must catch it.
+test('CLI: catches the task #833 signature (ambiguous merge that silently clobbered our added lines)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-833-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // our run's commit: adds 2 "mapfile" lines (the task #833 incident's own shape)
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nMAPFILE-LINE-1\\nMAPFILE-LINE-2\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: restore mapfile lines');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // "origin" after the buggy resolution: a genuine ref-update landed (real new
+  // commit, matching the reported "Push succeeded" symptom), but this file's
+  // final content is a THIRD version — a concurrent edit that touched the same
+  // file elsewhere and, in doing so, clobbered our 2-line insertion. This is
+  // neither pure base nor pure local, so the old blob-only check calls it
+  // 'ambiguous' and lets it through.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nCONCURRENT-EDIT\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: unrelated edit that clobbered our insertion');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 1, `expected the deep check to catch the missing added lines and exit 1. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+  assert.match(out, /test\.yml/);
+  assert.match(out, /task #833 signature/);
+});
+
+test('CLI: a genuine 3-way merge (our lines AND a concurrent edit both survive) stays ambiguous, exits 0', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-833-ok-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nMAPFILE-LINE-1\\nMAPFILE-LINE-2\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: restore mapfile lines');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Final content legitimately combines OUR added lines with an unrelated
+  // concurrent edit elsewhere in the file — nothing was lost.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nMAPFILE-LINE-1\\nMAPFILE-LINE-2\\nline2\\nline3\\nCONCURRENT-APPEND\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: unrelated append, our lines untouched');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected a clean exit — our lines survived alongside the concurrent edit. Output:\n${out}`);
+  assert.match(out, /AMBIGUOUS/);
+});
+
+// Task BRO-2449: CLI end-to-end repro of the live incident (2026-08-26,
+// job/linear-BRO-736 merging scripts/lib/url-discovery.js). The branch never
+// touches the registryPath line — base and local are byte-identical there —
+// it only adds genuinely-new unrelated content elsewhere. Origin/main has
+// independently replaced the registryPath line with an improved version by
+// the time we check, while the merge outcome still carries the branch's
+// genuinely-new content forward. This must NOT be reported REVERTED/FAILED,
+// and the CLI must exit 0 (which is what suppresses merge-worktree-to-main.sh's
+// harmful "re-apply our version: git checkout $BRANCH -- <file>" recovery text).
+test('CLI: stale-branch shape (branch never touched the line main later improved) is NOT reported reverted, exits 0', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-stale-branch-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  const registryLine = "const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');";
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'url-discovery.js'))}, ${JSON.stringify(`const path = require('path');\n${registryLine}\nfunction unrelatedFn() { return 1; }\n`)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Branch's own commit: leaves registryPath completely untouched, adds a
+  // genuinely new unrelated function (this is the branch's real contribution).
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'url-discovery.js'))}, ${JSON.stringify(`const path = require('path');\n${registryLine}\nfunction unrelatedFn() { return 1; }\nfunction branchNewFn() { return 2; }\n`)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'stale branch: add branchNewFn');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Origin/main by the time of the merge: independently replaced registryPath
+  // with a worktree-aware fallback (the real #983 shape), and the merge outcome
+  // carries the branch's genuinely-new function forward.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  const improved = "const CANONICAL_REPO = '/x';\nconst registryPath = fs.existsSync(local) ? local : path.join(CANONICAL_REPO, 'data', 'outlet-registry.json');";
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'url-discovery.js'))}, ${JSON.stringify(`const path = require('path');\nconst fs = require('fs');\n${improved}\nfunction unrelatedFn() { return 1; }\nfunction branchNewFn() { return 2; }\n`)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'main: #983 worktree-aware fallback (independent, legitimate improvement) + merge of branch');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected the stale-branch shape to pass, not be reported reverted. Output:\n${out}`);
+  assert.doesNotMatch(out, /REVERTED/);
+  assert.doesNotMatch(out, /FAILED/);
+});
+
+// ── CLI + a real repo reproducing the incident's own end-state ──────────
+// This does not attempt to reproduce the exact internal git-conflict-resolution
+// trigger (unconfirmed under real concurrent-CI load) — it reproduces the
+// documented END-STATE from the task #619 evidence: a push landed, and the
+// file's content on the ref we just "succeeded" against is byte-identical to
+// its PRE-EDIT content, with our commit's actual edit nowhere on that ref.
+function gitc(dir, ...args) {
+  return execFileSync('git', ['-C', dir, ...args], { encoding: 'utf8' });
+}
+
+function buildIncidentRepro() {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  // base: pre-edit content (what the byte-cap fix was trying to shrink)
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'CLAUDE.md'))}, 'a'.repeat(200) + '\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  // `git init`'s default initial branch name is NOT guaranteed across
+  // environments (init.defaultBranch varies; the CI runner's git produced a
+  // different name than this machine's, breaking the later `checkout main`
+  // with "pathspec 'main' did not match any file(s) known to git"). Force it
+  // explicitly rather than assuming.
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // our run's commit: the actual fix (shrinks the file)
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'CLAUDE.md'))}, 'a'.repeat(50) + '\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: trim CLAUDE.md byte cap');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // "origin" after the buggy resolution: a NEW commit landed (real ref-update,
+  // matching the reported symptom) but this file's content is back to base.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'unrelated.txt'))}, 'other run landed fine\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'unrelated: some other concurrent commit');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  return { dir, baseSha, beforeSha, originTip };
+}
+
+function runCli(dir, args) {
+  try {
+    const out = execFileSync('node', [CLI, ...args], { cwd: dir, encoding: 'utf8' });
+    return { out: out.trim(), code: 0 };
+  } catch (e) {
+    return { out: String(e.stdout || '').trim() + String(e.stderr || ''), code: e.status };
+  }
+}
+
+test('CLI: catches the task #619 incident end-state (reverted-to-base content) that the old guards miss', () => {
+  const { dir, baseSha, beforeSha, originTip } = buildIncidentRepro();
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 1);
+  assert.match(out, /REVERTED/);
+  assert.match(out, /CLAUDE\.md/);
+});
+
+test('CLI: a clean run where the file legitimately survives exits 0', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-clean-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'CLAUDE.md'))}, 'base\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'CLAUDE.md'))}, 'fixed\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${beforeSha}`,
+  ]);
+  assert.equal(code, 0);
+  assert.match(out, /OK/);
+});
+
+test('CLI: missing args fail OPEN (skip, exit 0) rather than blocking an otherwise-good push', () => {
+  const { code, out } = runCli(process.cwd(), []);
+  assert.equal(code, 0);
+  assert.match(out, /SKIP/);
+});
+
+// ── 'superseded' (Opening Night Poller incident, Aug 7-9 2026) ──────────────
+
+test('classifyFileSurvivalDeep: ambiguous + added lines missing + pushedBlob === finalBlob -> superseded (own resolution integrated a sibling version)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C', pushedBlob: 'C',
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\nSIBLING-VERSION\n',
+  });
+  assert.equal(status, 'superseded');
+});
+
+test('classifyFileSurvivalDeep: no pushedBlob -> unchanged pre-existing behavior (reverted)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\nSIBLING-VERSION\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+test('classifyFileSurvivalDeep: null pushedBlob and null finalBlob must NOT satisfy the superseded comparison (deleted-file guard)', () => {
+  // finalContent is non-null here (unlike a real deleted file) purely to force
+  // the missing-added-lines path — addedLinesSurvived fails open on null.
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: null, pushedBlob: null,
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+test('classifyFileSurvivalDeep: pushedBlob differs from finalBlob (post-push clobber) still fails -> reverted (task #833 detection preserved)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'D', pushedBlob: 'B',
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\nCLOBBERED\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+// CLI end-state repro of the poller incident: our rebase integrated the
+// sibling pipeline's already-pushed version of the same review file, so the
+// commit we pushed (which IS the check-ref tip) lacks our exact added lines.
+// With --pushed-sha this must pass with a SUPERSEDED warning; without it, the
+// pre-fix behavior (exit 1) is preserved.
+function buildSupersedeRepro() {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-supersede-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // our run's commit: the poller's version of the review
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"POLLER-COLLECTED-TEXT"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'poller: collected review');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // what our rebase actually produced and pushed: the sibling pipeline's
+  // version of the same review won during integration — our exact line is gone
+  gitc(dir, 'branch', 'pushed-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'pushed-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"SIBLING-COLLECTED-TEXT","scored":true}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'rebased: sibling version integrated');
+  const pushedTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  return { dir, baseSha, beforeSha, pushedTip };
+}
+
+test('CLI: poller incident shape WITH --pushed-sha -> SUPERSEDED warning, exit 0', () => {
+  const { dir, baseSha, beforeSha, pushedTip } = buildSupersedeRepro();
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${pushedTip}`,
+    `--pushed-sha=${pushedTip}`,
+  ]);
+  assert.equal(code, 0, `expected superseded to pass. Output:\n${out}`);
+  assert.match(out, /SUPERSEDED/);
+  assert.match(out, /review\.json/);
+});
+
+test('CLI: poller incident shape WITHOUT --pushed-sha -> pre-existing behavior preserved (exit 1)', () => {
+  const { dir, baseSha, beforeSha, pushedTip } = buildSupersedeRepro();
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${pushedTip}`,
+  ]);
+  assert.equal(code, 1, `expected old behavior without the flag. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+});
+
+// ── Task #1539: full-function-body-replacement revert (investigation) ──────
+// Card hypothesis: a rebase-conflict auto-resolution that reverts an ENTIRE
+// function body (many old lines back, few new lines gone) — as opposed to a
+// small in-place edit — might slip through addedLinesSurvived() as a false
+// 'ambiguous'/non-reverted verdict, because the multiset line-count check
+// could be satisfied by coincidental text overlap between the old and new
+// implementations (shared boilerplate, or a call signature that also occurs
+// in a sibling function elsewhere in the same file).
+//
+// Investigated via direct forensic diff of the actual incident commits
+// (BRO-218, 2026-08-14): the merge-fallback commit b7cafba1322's own diff
+// against ITS FIRST PARENT (SCRIPT_ENTRY_HEAD, commit 2cce8893917) touched
+// ONLY data/audit/alert-ledger.json — scrape-cast-changes.js and test.yml
+// were BYTE-IDENTICAL between SCRIPT_ENTRY_HEAD and the pushed ref. The
+// reverted content was already present in 2cce8893917 itself (a single-
+// parent, non-merge commit, timestamped BEFORE push-with-retry.sh's own
+// auto-resolution ran) — i.e. the conflict-resolution mistake happened
+// upstream of push-content-survival.js's scope (during the session's own
+// pre-push rebase/merge of the feature branch), not inside push-with-retry's
+// internal retry cycle. classifyFileSurvival's 'survived'/'unchanged'
+// verdict for those 2 files was factually correct: local content (already
+// wrong) faithfully reached origin. push-content-survival.js cannot detect
+// a conflict resolved wrongly BEFORE it ever sees SCRIPT_ENTRY_HEAD — by
+// design it only proves "did MY committed content survive", not "was my
+// committed content itself correct".
+//
+// Corroborating evidence (addresses an adversarial-review challenge to the
+// forensic argument above): push-with-retry.sh's own resolve_conflicts()
+// default case (generic files like .js/.yml, ~line 507-549) already refuses
+// to silently discard content that differs from ours — it only auto-accepts
+// remote when the blob is BYTE-IDENTICAL to our side; otherwise it leaves the
+// conflict UNRESOLVED so a safer fallback (merge -X ours / reset+cherry-pick,
+// which replays our FULL commit range) integrates it instead. That makes it
+// structurally implausible for push-with-retry's own auto-resolution to have
+// silently reverted scrape-cast-changes.js/test.yml in the real incident —
+// independent confirmation that the corruption predates SCRIPT_ENTRY_HEAD.
+//
+// Caveat (also from the adversarial review): the 2 tests below are
+// hand-crafted end-states (same convention as every other CLI test in this
+// file, including the original #619/#833 repros) — they prove the deep
+// check's occurrence-count logic handles this SHAPE of revert correctly, not
+// that real `git rebase -X theirs`/resolve_conflicts() output is guaranteed
+// to always take this shape. A fully faithful end-to-end repro would need to
+// sandbox push-with-retry.sh itself (network push, GH auth, disk-floor
+// checks, mutex) — out of scope here. The genuine, acknowledged scope gap
+// this investigation surfaces — push-content-survival.js can only verify
+// "did MY committed content survive", never "was my committed content
+// correct" — is carded separately for owner judgment on whether it's worth
+// a new guard (see Notion card linked from #1539's outcome).
+//
+// These 2 tests instead stress-test the hypothesis directly: does the deep
+// check correctly classify a genuine full-function-body revert introduced by
+// OUR OWN run's conflict resolution (combined with an unrelated legitimate
+// concurrent edit, forcing the 'ambiguous' bucket)? Both pass — no gap found.
+test('CLI: full-function-body replacement reverted by our own run + unrelated concurrent edit -> caught as REVERTED, not a false ambiguous pass', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-fullbody-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  const OLD_FN = [
+    'async function fetchViaScrapingBee(url, options = {}) {',
+    "  if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');",
+    '  let lastError;',
+    '  for (let attempt = 0; attempt <= 2; attempt++) {',
+    '    try {',
+    "      return await doFetch('https://app.scrapingbee.com/api/v1/?url=' + url);",
+    '    } catch (e) { lastError = e; }',
+    '  }',
+    '  throw lastError;',
+    '}',
+    '',
+  ].join('\n');
+  const NEW_FN = [
+    'async function fetchViaScrapingBee(url, options = {}) {',
+    '  const result = await fetchPage(url, { renderJs: !!options.renderJs });',
+    '  return result.content;',
+    '}',
+    '',
+  ].join('\n');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'scrape.js'))}, ${JSON.stringify(OLD_FN + 'const MARKER = "base";\n')})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'scrape.js'))}, ${JSON.stringify(NEW_FN + 'const MARKER = "base";\n')})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: migrate fetchViaScrapingBee to fetchPage()');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Simulated auto-resolution outcome: the whole function reverted to OLD_FN
+  // AND an unrelated concurrent origin edit landed on MARKER — final matches
+  // neither pure base nor pure local, forcing the 'ambiguous' bucket.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'scrape.js'))}, ${JSON.stringify(OLD_FN + 'const MARKER = "concurrent-origin-edit";\n')})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: auto-resolution reverted fn body + unrelated marker edit');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 1, `expected the full-function-body revert to be caught. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+  assert.match(out, /scrape\.js/);
+});
+
+test('CLI: reverted function whose new one-line call duplicates a pre-existing sibling occurrence -> still caught (occurrence-count check, not naive substring match)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-dupline-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  // A sibling function already calls fetchPage() with the EXACT same line our
+  // migrated function would add — real-world plausible under the project's
+  // "all new scraping must use fetchPage()" convention.
+  const SHARED_LINE = '  const result = await fetchPage(url, { renderJs: false });';
+  const SIBLING_FN = `async function fetchOtherThing(url) {\n${SHARED_LINE}\n  return result.content;\n}\n`;
+  const OLD_TARGET_FN = 'async function fetchViaScrapingBee(url) {\n  let lastError;\n  for (let a = 0; a <= 2; a++) {\n    try { return await doFetch(url); } catch (e) { lastError = e; }\n  }\n  throw lastError;\n}\n';
+  const NEW_TARGET_FN = `async function fetchViaScrapingBee(url) {\n${SHARED_LINE}\n  return result.content;\n}\n`;
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'scrape.js'))}, ${JSON.stringify(SIBLING_FN + OLD_TARGET_FN)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'scrape.js'))}, ${JSON.stringify(SIBLING_FN + NEW_TARGET_FN)})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: migrate target fn to fetchPage() too');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'scrape.js'))}, ${JSON.stringify(SIBLING_FN + OLD_TARGET_FN + '\nconst MARKER = "concurrent";\n')})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: revert target fn + unrelated marker');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 1, `expected the revert to be caught despite the duplicate line elsewhere in the file. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+});
+
+test('CLI: post-push clobber (check-ref moved past what we pushed, our lines gone) still fails WITH --pushed-sha', () => {
+  const { dir, baseSha, beforeSha } = buildSupersedeRepro();
+  // pushed commit carries OUR content (a healthy resolution)...
+  gitc(dir, 'branch', 'healthy-pushed', baseSha);
+  gitc(dir, 'checkout', '-q', 'healthy-pushed');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"POLLER-COLLECTED-TEXT"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'pushed: our content intact');
+  const healthyPushed = gitc(dir, 'rev-parse', 'HEAD').trim();
+  // ...but the ref tip afterwards holds a clobbered third version
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"STALE-CLOBBER"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: stale write clobbered us post-push');
+  const clobberTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${clobberTip}`,
+    `--pushed-sha=${healthyPushed}`,
+  ]);
+  assert.equal(code, 1, `expected post-push clobber to still fail. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+});
+
+// ── Task BRO-2500: append-only multi-writer ledgers ──────────────────────
+// BRO-2449 fixed the STALE-BRANCH false positive (a branch that never
+// touched a line main has since legitimately replaced). This is a SECOND,
+// structurally different variant: files with many independent writers (or,
+// for deploy-watermark.json, a single writer that fully overwrites a
+// snapshot every run) where BOTH the branch and main routinely add/change
+// content the other side never had, in the same push window, with no clobber
+// involved. addedLinesSurvived() correctly reports "the branch's lines
+// aren't in final" — they genuinely aren't — but that's expected divergence
+// for these specific files, not evidence of loss.
+//
+// Two exemption modes (adversarial review finding — a single blanket
+// exclusion was too strong for deploy-watermark.json, whose value IS a real
+// regression baseline elsewhere in the codebase, unlike the alert-* ledgers
+// whose loss is explicitly pre-accepted by owner-alert-router.js):
+//   'full'      — data/audit/alert-{ledger,digest-queue}.json and
+//                 alert-router-attempts.jsonl skip classification entirely.
+//   'deep-only' — deploy-watermark.json still runs the cheap blob check (a
+//                 genuine full revert to base is still caught), only the
+//                 line-level addedLinesSurvived downgrade is skipped.
+
+test('isContentSurvivalExempt: true only for \'full\'-mode entries, false for \'deep-only\' and ordinary files', () => {
+  // BRO-2413 (2026-09-04): the 3 alert-* ledgers downgraded from 'full' to
+  // 'deep-only' when core-data-merge-registry.js gained real merge coverage
+  // for them (see their CONTENT_SURVIVAL_EXEMPT_LEDGERS reason text) — no
+  // 'full'-mode ledger entries remain today, only deploy-watermark.json's
+  // pre-existing 'deep-only' one plus these 3. This test asserts the
+  // CURRENT full-mode set is empty and everything else is NOT full-exempt,
+  // rather than hardcoding a stale "at least 3" floor.
+  const fullModeFiles = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.mode === 'full').map((e) => e.file);
+  assert.deepEqual(fullModeFiles, [], 'no ledger is currently \'full\'-mode exempt');
+  assert.equal(isContentSurvivalExempt('data/audit/alert-ledger.json'), false, "alert-ledger.json is now 'deep-only', not 'full'");
+  assert.equal(isContentSurvivalExempt('data/audit/deploy-watermark.json'), false, "deploy-watermark.json is 'deep-only', not 'full'");
+  assert.equal(isContentSurvivalExempt('scripts/lib/push-content-survival.js'), false);
+  assert.equal(isContentSurvivalExempt('data/shows.json'), false);
+});
+
+test('isContentSurvivalExempt: matches by exact path, not suffix (avoids future basename collisions)', () => {
+  // A same-basename file living somewhere else must NOT be treated as exempt.
+  assert.equal(isContentSurvivalExempt('some/other/dir/alert-ledger.json'), false);
+  assert.equal(isContentSurvivalExempt('alert-ledger.json'), false);
+});
+
+test('isDeepCheckExempt: true for deploy-watermark.json and the 3 apiFallbackMerge-covered alert ledgers (\'deep-only\' mode)', () => {
+  assert.equal(isDeepCheckExempt('data/audit/deploy-watermark.json'), true);
+  assert.equal(isDeepCheckExempt('data/audit/alert-ledger.json'), true, "downgraded from 'full' to 'deep-only' by BRO-2413's apiFallbackMerge coverage");
+  assert.equal(isDeepCheckExempt('data/audit/alert-digest-queue.json'), true);
+  assert.equal(isDeepCheckExempt('data/audit/alert-router-attempts.jsonl'), true);
+  assert.equal(isDeepCheckExempt('data/shows.json'), false);
+});
+
+// Drift guard: the 3 ledger paths here are exempt specifically BECAUSE
+// core-data-merge-registry.js deliberately leaves them out of its
+// active/merge-fn coverage (see that file's "NOT added, deliberately"
+// comment). If the registry ever gains a real merge function for one of
+// these paths, this exemption's own justification no longer holds and it
+// needs to be revisited alongside that change — not silently keep excluding
+// a file that now has real reconciliation. Checks BOTH 'active' (a real
+// generic merge fn) and 'special' (bespoke-but-real reconciliation, e.g.
+// shows.json's per-field logic) statuses — a migration to either would mean
+// this file is no longer "genuinely unreconciled by design" (adversarial
+// review finding: 'active' alone would miss a 'special' migration).
+// deploy-watermark.json is deliberately excluded from this check: it isn't
+// in the registry at all (full-overwrite snapshot, not a merge-registry
+// concern), exempt for an unrelated reason documented in its own entry above.
+//
+// BRO-2413 (2026-09-04): this guard already did its job once — it's what
+// caught that the 3 alert-* ledgers needed downgrading from 'full' to
+// 'deep-only' when they gained real apiFallbackMerge coverage (see their
+// updated reason text above). No 'full'-mode entries remain today, so this
+// loop is currently vacuous; it stays here as a live tripwire for the NEXT
+// file that gets exempted 'full' and later gains registry coverage.
+test('CONTENT_SURVIVAL_EXEMPT_LEDGERS: \'full\'-mode entries stay in sync with core-data-merge-registry.js (must still be un-reconciled there)', () => {
+  const { findEntry } = require('./core-data-merge-registry.js');
+  const registrySourced = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.mode === 'full');
+  for (const { file } of registrySourced) {
+    const basename = file.replace(/^data\//, ''); // registry paths are relative to data/ for public-repo entries
+    const entry = findEntry(basename, 'public-repo');
+    assert.ok(
+      !entry || (entry.status !== 'active' && entry.status !== 'special'),
+      `${file} is exempt from content-survival because core-data-merge-registry.js leaves it un-reconciled — ` +
+        `but the registry now has a '${entry && entry.status}' entry for it. Re-examine whether this exemption should still apply.`
+    );
+  }
+});
+
+test('CLI: append-only multi-writer ledger — base has lines 1-10, branch appends 11-18, main independently appends 19-41 — NOT reported reverted', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-append-only-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+  gitc(dir, 'config', 'core.hooksPath', '/dev/null'); // isolated repo — no host hooks should fire
+
+  const ledgerDir = join(dir, 'data', 'audit');
+  execFileSync('node', ['-e', `require('fs').mkdirSync(${JSON.stringify(ledgerDir)}, { recursive: true })`]);
+  const ledgerPath = join(ledgerDir, 'alert-ledger.json');
+  const lines = (from, to) => Array.from({ length: to - from + 1 }, (_, i) => `line-${from + i}`).join('\n') + '\n';
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(ledgerPath)}, ${JSON.stringify(lines(1, 10))})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base: lines 1-10');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Branch appends lines 11-18 (its own writer's contribution).
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(ledgerPath)}, ${JSON.stringify(lines(1, 10) + lines(11, 18))})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'branch: append lines 11-18');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Main independently appends lines 19-41 (a DIFFERENT writer, never sees
+  // the branch's 11-18) — this is the origin ref at the moment of the check.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(ledgerPath)}, ${JSON.stringify(lines(1, 10) + lines(19, 41))})`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'main: independently append lines 19-41');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected the append-only ledger shape to pass, not be reported reverted. Output:\n${out}`);
+  // Only the literal failure banner counts as a real alarm — not the word
+  // "REVERTED" appearing inside the exemption's OWN historical-incident text.
+  assert.doesNotMatch(out, /\[content-survival\] FAILED/);
+  // BRO-2413 (2026-09-04): alert-ledger.json downgraded from 'full' to
+  // 'deep-only' exemption mode — the deep line-level check is skipped
+  // ("DEEP-CHECK EXEMPT" + "AMBIGUOUS ... not checked"), not the whole file.
+  assert.match(out, /DEEP-CHECK EXEMPT/);
+  assert.match(out, /alert-ledger\.json/);
+  // Must NOT reuse the genuinely-vacuous-diff message: merge-worktree-to-
+  // main.sh pattern-matches "no modified files to check" to print its own
+  // "compared NOTHING — check by hand" warning whenever VERIFY_FILES is
+  // non-empty, which an exempt ledger the branch touched always is. Reusing
+  // that string here would trade the #619 hard-failure alarm for a softer
+  // but still spurious warning on the exact same files (ship-check finding).
+  assert.doesNotMatch(out, /no modified files to check/);
+  // BRO-2413: 'deep-only' mode means the file IS classified (as AMBIGUOUS,
+  // never checked further) rather than early-returning via the all-'full'-
+  // exempt "nothing left to check" summary path — so the ordinary per-file
+  // OK summary applies here, not the all-exemptions-only one.
+  assert.match(out, /OK — 0\/1 modified file\(s\) confirmed surviving/);
+});
+
+// deploy-watermark.json ('deep-only' mode, adversarial review finding):
+// unlike the 3 alert-* ledgers, this file's value is a real regression
+// baseline elsewhere (pre-deploy-check.js, corpus-determinism.js), so a
+// blanket exclusion would also hide a genuine full revert. These 2 tests
+// prove BOTH halves of the surgical fix: the false-positive from a
+// concurrent independent watermark write is gone, AND a true full revert to
+// the pre-edit base is still caught.
+
+function buildWatermarkDir(dir) {
+  const auditDir = join(dir, 'data', 'audit');
+  execFileSync('node', ['-e', `require('fs').mkdirSync(${JSON.stringify(auditDir)}, { recursive: true })`]);
+  return join(auditDir, 'deploy-watermark.json');
+}
+
+test('CLI: deploy-watermark.json — a concurrent independent watermark write (different showCount/updatedAt) is NOT reported reverted', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-watermark-ambiguous-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+  const wmPath = buildWatermarkDir(dir);
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2900,"reviewCount":20000,"updatedAt":"2026-08-25T00:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base watermark');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Our run's own watermark write.
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2910,"reviewCount":20050,"updatedAt":"2026-08-26T10:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'our watermark write');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // A DIFFERENT deploy's watermark write landed on origin instead — neither
+  // base nor ours, but not a clobber either, just a fresher independent write.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2925,"reviewCount":20133,"updatedAt":"2026-08-26T23:44:27.922Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'a different, later deploy watermark write');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected the concurrent-watermark-write shape to pass, not be reported reverted. Output:\n${out}`);
+  assert.doesNotMatch(out, /\[content-survival\] FAILED/);
+  assert.match(out, /DEEP-CHECK EXEMPT/);
+  assert.match(out, /deploy-watermark\.json/);
+  assert.match(out, /AMBIGUOUS/);
+});
+
+test('CLI: deploy-watermark.json — a genuine full revert to pre-edit base is STILL caught (deep-only exemption does not disable the cheap check)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-watermark-reverted-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+  const wmPath = buildWatermarkDir(dir);
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2900,"reviewCount":20000,"updatedAt":"2026-08-25T00:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base watermark');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(wmPath)}, '{"showCount":2910,"reviewCount":20050,"updatedAt":"2026-08-26T10:00:00.000Z"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'our watermark write');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Origin ends up byte-identical to pre-edit base — nothing new landed at
+  // all, the narrow true-positive signal this exemption mode preserves.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${baseSha}`,
+  ]);
+  assert.equal(code, 1, `expected the true full revert to still fail. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+  assert.match(out, /deploy-watermark\.json/);
+});

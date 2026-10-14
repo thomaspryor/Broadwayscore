@@ -1,0 +1,161 @@
+name: Fetch Tour Schedules
+
+on:
+  schedule:
+    # Daily at 07:47 UTC (jittered off the hour).
+    - cron: '47 7 * * *'
+  workflow_dispatch: {}
+
+# National-tour engagement lists from Tours To You (BRO-4601), for the
+# "Now in / Next" card line and the Tour Schedule card. Plain GETs to a public
+# HTML site with a pause between tours: no scraping secrets, no fetchPage().
+# The data file is committed only when a tour's stops changed. The site picks
+# it up on the next deploy (the deploy gate does not watch data/*.json, so up
+# to its 6h backstop on a quiet day).
+#
+# Tour key art (BRO-4726): right after the schedules refresh,
+# fetch-tour-images.js finds each tour's own poster/thumbnail (TodayTix
+# listings and presenter pages matched to the tour's stops, Gemini-verified),
+# archives WebP under public/images/shows/<tour>/ and points shows.json at it.
+# shows.json lives in the private core-data repo, so the images commit here
+# first and core data is pushed only after that push lands.
+#
+# Tour runtimes (BRO-4750): after the tickets step, enrich-tour-runtimes.js
+# fills the runtime of every tour that has none from the tour's own Tours To You
+# page (never the Broadway parent's runtime). A tour with a runtime is never
+# fetched again, so a normal day reads no pages. A change there rides the same
+# shows.json comparison, commit step and core-data push as the tour art.
+
+concurrency:
+  group: fetch-tour-schedules
+  # concurrency-cancel-ok: idempotent refresh, latest run wins (BRO-934 audit)
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    # ~2 min of schedules, up to 5 min of tour runtimes (run budget), up to 20
+    # min of tour art (--max-minutes), and the 900s image push deadline.
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # sharp (WebP) for the tour-art step.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch tour schedules
+        id: schedules
+        run: node scripts/fetch-tour-schedules.js
+
+      # TodayTix ticket links per stop (BRO-4601). Its failure must not hold
+      # back a good schedule update, so the steps below run on the schedule
+      # step's outcome; a failed schedule run still commits nothing.
+      - name: Fetch tour ticket links
+        id: tickets
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        run: node scripts/fetch-tour-tickets.js
+
+      # Runtime for every tour without one (BRO-4750). Its failure must not hold
+      # back the schedule update or the tour art, so the steps after it run on
+      # the schedule step's outcome; shows.json changes here are shipped by the
+      # change check and the core-data push below.
+      - name: Fill tour runtimes
+        id: runtimes
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        run: node scripts/enrich-tour-runtimes.js
+
+      # Own key art for each tour (BRO-4726). The steps below run on
+      # !cancelled(), so a failure here still commits the schedule update and
+      # the tours it finished (saved per tour), then turns the run red for the
+      # digest. Bounded by --max-minutes; the shell timeout is the backstop
+      # (a step timeout-minutes would report "cancelled" and skip the commit).
+      - name: Fetch tour images
+        id: images
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          status=0
+          timeout 1800 node scripts/fetch-tour-images.js --max-minutes=20 || status=$?
+          if [ "$status" -ne 0 ]; then
+            echo "::error::fetch-tour-images.js exited $status; tours keep their current art until the next run"
+            exit 1
+          fi
+
+      - name: Check for changes
+        id: changes
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        run: |
+          # status, not diff: covers new image dirs and a not-yet-created
+          # attempts file (a missing path makes `git diff` exit 128).
+          # shows.json is gitignored (private repo): compare it to the
+          # checkout's snapshot, or a run whose re-archived images are
+          # byte-identical would never ship the shows.json that points at them.
+          shows_changed=false
+          if ! cmp -s data/shows.json /tmp/core-data-snapshot/shows.json; then shows_changed=true; fi
+          if [ "$shows_changed" = false ] && [ -z "$(git status --porcelain -- data/tour-schedules.json data/tour-tickets.json data/image-sources.json data/tour-art-attempts.json public/images/shows/)" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        id: webpush
+        if: ${{ !cancelled() && steps.changes.outputs.has_changes == 'true' }}
+        env:
+          # WebP binaries in the commit: same budget as fetch-all-image-formats.yml.
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_DISABLE: '1'
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/tour-schedules.json data/tour-tickets.json
+          # Whole dirs: one missing pathspec makes the helper stage nothing.
+          bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
+          # Drop an aspect violator instead of losing the whole batch.
+          node scripts/check-image-aspect.js --staged --quarantine
+          # Nothing staged (quarantine dropped it all, or only shows.json
+          # changed): skip the commit and push; this step still succeeds so
+          # core data follows (any image it points at is already on main).
+          if git diff --cached --quiet; then
+            echo "No public files to commit"
+            exit 0
+          fi
+          git commit -m "data: Update tour schedules, ticket links and tour art [skip ci]"
+          bash scripts/lib/push-with-retry.sh 10 HEAD:$BRANCH
+
+      # shows.json now points at /images/shows/<tour>/ files that exist only
+      # once the web push above has landed; never push core data without it.
+      # Before the deploy dispatch so the build sees both.
+      - name: Push core data to private repo
+        if: ${{ !cancelled() && steps.webpush.outcome == 'success' }}
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Tour runtimes and key art (enrich-tour-runtimes, fetch-tour-images)'
+
+      - name: Dispatch deploy
+        if: ${{ !cancelled() && steps.webpush.outcome == 'success' }}
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fetch Tour Schedules Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

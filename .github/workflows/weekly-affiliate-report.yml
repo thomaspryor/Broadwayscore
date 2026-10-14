@@ -1,0 +1,78 @@
+name: Weekly Affiliate Report
+
+on:
+  schedule:
+    # Every Monday at 9 AM ET (1 PM UTC)
+    - cron: '0 13 * * 1'
+  workflow_dispatch: {}
+
+# One job only: this run's conclusion means "the email was delivered" (the
+# send step exits 1 when Resend returns no email id), so check-cron-health's
+# CRITICAL_CRONS can watch it. The link-integrity probe that used to be a
+# second job here lives in affiliate-link-integrity.yml (BRO-4951): its push
+# failures made delivered weeks look red, and the 2026-10-05 report was lost
+# to a never-started job with nothing watching.
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    # A normal run takes under a minute. Without a cap a hung provider call or
+    # curl would hold the revenue email for GitHub's 6h default.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Generate affiliate report
+        id: report
+        env:
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          PARTNERIZE_APP_KEY: ${{ secrets.PARTNERIZE_APP_KEY }}
+          PARTNERIZE_API_KEY: ${{ secrets.PARTNERIZE_API_KEY }}
+          PARTNERIZE_PUBLISHER_ID: ${{ secrets.PARTNERIZE_PUBLISHER_ID }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+        run: |
+          # stderr goes to a file to keep it out of the HTML body; print it on
+          # failure so the run log says why the email was not sent.
+          node scripts/affiliate-report.js --days 7 --html > /tmp/report.html 2>/tmp/report-stderr.txt \
+            || { cat /tmp/report-stderr.txt; exit 1; }
+          node scripts/affiliate-report.js --days 7 > /tmp/report.txt 2>&1
+          cat /tmp/report.txt
+
+      - name: Send email via Resend
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          SUBJECT="Affiliate Report — Week of $(date -u +'%B %d, %Y')"
+          # Send HTML email with plain-text fallback. The step FAILS on a
+          # Resend API error (affiliate hardening 2026-08-03, Codex review
+          # finding: this used to print the error and exit 0, so a run could
+          # look green while the report silently never arrived).
+          RESPONSE=$(jq -n \
+            --arg from "Broadway Scorecard <notifications@broadwayscorecard.com>" \
+            --arg to "thomas.pryor@gmail.com" \
+            --arg subject "$SUBJECT" \
+            --arg html "$(cat /tmp/report.html)" \
+            --arg text "$(cat /tmp/report.txt)" \
+            '{from: $from, to: $to, subject: $subject, html: $html, text: $text}' \
+          | curl -s --max-time 60 -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @-)
+          echo "$RESPONSE" | jq '{id: .id, error: .error}'
+          if [ "$(echo "$RESPONSE" | jq -r '.id // empty')" = "" ]; then
+            echo "::error::Resend did not return an email id — report was NOT delivered"
+            exit 1
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Affiliate Report Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,20 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "error",
+  "lastChecked": "2026-10-13T09:28:28.744Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Land",
+      "status": "error",
+      "message": "Land failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget",
+      "status": "warn",
+      "message": "Check Performance Budget failed 2 times in the last 24h — likely broken, not transient."
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+// Subject-line length cap for the weekly newsletter.
+//
+// Regression guard for the 2026-08-02 Sunday review catch: buildSubjectFromCandidates
+// trimmed multi-candidate subjects down to 80 chars but its loop stopped at
+// parts.length === 1, so a single long headline sailed past the cap. That made
+// pre-send-check inject its red "PRE-SEND ISSUES" banner into the draft BODY —
+// subscriber-visible if the owner hits Send without noticing.
+//
+// Per CLAUDE.md §15 these import the real functions; no logic is copied here.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { buildSubjectFromCandidates, buildLedeSentences, trimToWordBoundary, scoreCandidates, formatClosingDay } from './newsworthiness.mjs';
+
+const show = (id) => ({ id, slug: id, title: id });
+const cand = (kind, headline, id = kind) => ({ kind, headline, show: show(id) });
+
+test('single over-length headline is capped at 80 chars', () => {
+  // The real 2026-07-27 Broadway subject: 83 chars from one candidate.
+  const headline = 'Les Misérables: The Arena Concert Spectacular opens off-Broadway to strong reviews';
+  const { subject } = buildSubjectFromCandidates([cand('opening', headline, 'les-mis-arena')]);
+  assert.ok(subject.length <= 80, `expected <= 80, got ${subject.length}: ${subject}`);
+  assert.ok(subject.startsWith('Les Misérables: The Arena Concert Spectacular'), subject);
+  assert.ok(subject.endsWith('…'), subject);
+});
+
+test('short single headline is left untouched', () => {
+  const { subject } = buildSubjectFromCandidates([cand('opening', 'Tao of Glass opens to strong reviews')]);
+  assert.equal(subject, 'Tao of Glass opens to strong reviews.');
+});
+
+test('multi-candidate subjects still drop parts before truncating', () => {
+  const long = (n) => `Show ${n} opens off-Broadway to strong reviews`;
+  const { subject } = buildSubjectFromCandidates([
+    cand('opening', long(1), 's1'),
+    cand('closing', long(2), 's2'),
+    cand('recoupment', long(3), 's3'),
+  ]);
+  assert.ok(subject.length <= 80, `expected <= 80, got ${subject.length}: ${subject}`);
+  // Dropping whole candidates is preferred, so the surviving one stays intact
+  // (no ellipsis) rather than being cut mid-phrase.
+  assert.ok(!subject.endsWith('…'), subject);
+});
+
+test('showRefs only cover the candidates that survived trimming', () => {
+  // Titles match their headline prefix, so "named in the subject" is checkable.
+  const c = (kind, title) => ({
+    kind,
+    headline: `${title} opens off-Broadway to strong reviews`,
+    show: { id: title, slug: title, title },
+  });
+  const { subject, showRefs } = buildSubjectFromCandidates([
+    c('opening', 'Alpha'),
+    c('closing', 'Beta'),
+    c('recoupment', 'Gamma'),
+  ]);
+  // showRefs feeds the lede-⊆-body pre-send gate (card #482). NOTE: this
+  // "every ref is named in the subject" property holds only when no truncation
+  // happened — these titles are short enough that candidates are dropped whole
+  // rather than trimmed. It is NOT a general invariant: a trimmed subject can
+  // stop naming a show that showRefs still lists, which is safe because the
+  // gate tests refs against the body, not the subject.
+  assert.ok(showRefs.length >= 1);
+  assert.ok(!subject.endsWith('…'), `expected no truncation in this fixture: ${subject}`);
+  for (const r of showRefs) assert.ok(subject.includes(r.title), `${r.title} missing from: ${subject}`);
+});
+
+test('empty candidate list falls back to the generic subject', () => {
+  const { subject, showRefs } = buildSubjectFromCandidates([]);
+  assert.equal(subject, 'This week in NYC theatre.');
+  assert.deepEqual(showRefs, []);
+});
+
+test('trimToWordBoundary cuts at a space and never exceeds the limit', () => {
+  const out = trimToWordBoundary('the quick brown fox jumps over the lazy dog', 20);
+  assert.ok(out.length <= 20, `${out.length}: ${out}`);
+  assert.ok(out.endsWith('…'));
+  assert.ok(!out.includes('  '));
+  // Cut landed on a word boundary, so no partial word before the ellipsis.
+  assert.ok('the quick brown fox jumps over the lazy dog'.startsWith(out.slice(0, -1)), out);
+});
+
+test('trimToWordBoundary hard-cuts an unbroken token', () => {
+  const out = trimToWordBoundary('x'.repeat(200), 80);
+  assert.ok(out.length <= 80, `${out.length}`);
+  assert.ok(out.endsWith('…'));
+});
+
+test('trimToWordBoundary is a no-op under the limit', () => {
+  assert.equal(trimToWordBoundary('short enough', 80), 'short enough');
+});
+
+// ── closing-final headlines must name the day ────────────────────────────────
+// Regression guard for the 2026-08-09 Sunday review catch. `closingsThisWeek`
+// is the 7 days AFTER the issue window (it was repointed there on 2026-07-12 to
+// match the body's "Closing this Week" card), but the headline still read a
+// bare "X plays final performance" — so the Broadway lede announced Ragtime's
+// final performance on Aug 9 when the actual last show was Aug 16.
+test('closing-final headline names the closing day', () => {
+  const [c] = scoreCandidates({
+    closingsThisWeek: [{ id: 'ragtime-2025', slug: 'ragtime', title: 'Ragtime', closingDate: '2026-08-16' }],
+  }).filter(x => x.kind === 'closing-final');
+  assert.ok(c, 'expected a closing-final candidate');
+  assert.equal(c.headline, 'Ragtime plays its final performance Sun Aug 16');
+  // The undated phrasing is the bug — it reads as "happening now".
+  assert.notEqual(c.headline, 'Ragtime plays final performance');
+});
+
+test('closing-final headline degrades cleanly when the date is missing', () => {
+  const [c] = scoreCandidates({
+    closingsThisWeek: [{ id: 'x', slug: 'x', title: 'Some Show', closingDate: null }],
+  }).filter(x => x.kind === 'closing-final');
+  assert.equal(c.headline, 'Some Show plays its final performance');
+  assert.ok(!/undefined|null|NaN|Invalid/.test(c.headline), c.headline);
+});
+
+test('formatClosingDay renders the NY-local day, not the UTC-midnight one', () => {
+  // Bare YYYY-MM-DD parses as UTC midnight, which is the PREVIOUS evening in
+  // New York — "Sun Aug 16" would render "Sat Aug 15" without the noon anchor.
+  assert.equal(formatClosingDay('2026-08-16'), 'Sun Aug 16');
+  assert.equal(formatClosingDay('2026-08-15'), 'Sat Aug 15');
+  assert.equal(formatClosingDay('2026-08-16T00:00:00Z'), 'Sun Aug 16');
+});
+
+test('formatClosingDay returns empty string for unusable input', () => {
+  for (const bad of [null, undefined, '', 'soon', 12345, {}]) {
+    assert.equal(formatClosingDay(bad), '', `input: ${JSON.stringify(bad)}`);
+  }
+});
+
+// ── two distinct shows opening the same week must both survive dedupe ───────
+// Regression guard for 2026-08-16: two WE openings (Death Note 74/"decent",
+// How the Other Half Loves 79/"strong") tied on weight, so dedupeByKind's
+// per-KIND (not per-show) key kept only the most-reviewed one and dropped the
+// better-reviewed show entirely — the lede's second sentence fell through to
+// an unrelated closing instead of naming the second opening. Opens must
+// outrank closes when both are candidates.
+test('two same-kind openings for different shows both survive dedupe, ahead of a closing', () => {
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'death-note', slug: 'death-note', title: 'Death Note: The Musical' } },
+      { show: { id: 'how-the-other-half-loves', slug: 'how-the-other-half-loves', title: 'How the Other Half Loves' } },
+    ],
+    closingsThisWeek: [{ id: 'enormous-crocodile', slug: 'enormous-crocodile', title: 'The Enormous Crocodile', closingDate: '2026-08-22' }],
+  });
+  const { sentences, kinds } = buildLedeSentences(candidates, 3);
+  assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'closing-final'], kinds.join(', '));
+  assert.ok(sentences.some(s => s.includes('Death Note')), sentences.join(' '));
+  assert.ok(sentences.some(s => s.includes('How the Other Half Loves')), sentences.join(' '));
+});
+
+test('a single recurring kind (recoupment) still dedupes to one — no per-show explosion', () => {
+  const candidates = scoreCandidates({
+    recoupments: [
+      { show: { id: 'a', slug: 'a', title: 'Show A' }, weeksToRecoup: 10 },
+      { show: { id: 'b', slug: 'b', title: 'Show B' }, weeksToRecoup: 20 },
+    ],
+  });
+  const { kinds } = buildLedeSentences(candidates, 3);
+  assert.deepEqual(kinds, ['recoupment']);
+});
+
+// ── Delacorte Theater is Free Shakespeare in the Park, not off-Broadway ─────
+// Regression guard for 2026-08-16: the OB opening headline unconditionally
+// said "opens off-Broadway", which misdescribes an outdoor, seasonal Public
+// Theater production at the Delacorte as a commercial off-Broadway house.
+test('Delacorte Theater openings say Shakespeare in the Park, not off-Broadway', () => {
+  const [c] = scoreCandidates({
+    obOpenings: [{ show: { id: 'winters-tale', slug: 'winters-tale', title: "The Winter's Tale", venue: 'Delacorte Theater' } }],
+  });
+  assert.equal(c.headline, "The Winter's Tale opens at Free Shakespeare in the Park");
+  assert.ok(!/off-Broadway/.test(c.headline), c.headline);
+});
+
+test('other off-Broadway venues are unaffected by the Delacorte special-case', () => {
+  const [c] = scoreCandidates({
+    obOpenings: [{ show: { id: 'x', slug: 'x', title: 'Some Show', venue: 'Lucille Lortel Theatre' } }],
+  });
+  assert.equal(c.headline, 'Some Show opens off-Broadway');
+});
+
+// The canonical festival-venue check (scripts/lib/review-guards.js
+// FESTIVAL_VENUE_SHOW_RE) also matches "Shakespeare in the Park" without the
+// word "Delacorte" — proving this uses the shared predicate, not a narrower
+// local reinvention (second-opinion review, 2026-08-16: a local /delacorte/i
+// regex would have missed this).
+test('a venue string saying "Shakespeare in the Park" (no "Delacorte") also gets the festival phrasing', () => {
+  const [c] = scoreCandidates({
+    obOpenings: [{ show: { id: 'y', slug: 'y', title: 'Some Play', venue: 'Free Shakespeare in the Park' } }],
+  });
+  assert.equal(c.headline, 'Some Play opens at Free Shakespeare in the Park');
+});
+
+// ── 3+ same-week openings must not silently crowd out the whole lede ────────
+// weOpeningStories() is uncapped and generate.mjs already has dedicated
+// _weOpener logic for 3+-opening weeks, so this is a real scenario, not a
+// hypothetical. With the per-show dedupe fix, three tied-weight WE openings
+// now all survive dedupeByKind — confirm the lede's maxSentences cap still
+// applies (openings fill it; that's the intended "opens > closes" behavior,
+// not a bug — see the closing-final loses-out assertion below).
+test('3 same-week openings fill the lede cap; a same-week closing does not displace them', () => {
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'a', slug: 'a', title: 'Show A' } },
+      { show: { id: 'b', slug: 'b', title: 'Show B' } },
+      { show: { id: 'c', slug: 'c', title: 'Show C' } },
+    ],
+    closingsThisWeek: [{ id: 'd', slug: 'd', title: 'Show D', closingDate: '2026-08-22' }],
+  });
+  const { kinds, showRefs } = buildLedeSentences(candidates, 3);
+  assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'we-gold-opening']);
+  assert.deepEqual(showRefs.map(s => s.id), ['a', 'b', 'c']);
+});
+
+// ── BRO-2589: 3+ same-shaped openings must not stack N identical sentences ──
+// Owner report 2026-08-31: the real 2026-08-24 week (Paranormal Activity BW +
+// The House of the Negro Insane OB + The Real Ivanov OB) produced three
+// back-to-back "[Title] opens [market] to [adjective] reviews." sentences —
+// same rigid template shape three times, reads robotic even though the text
+// isn't literally duplicated. dedupeByKind correctly keeps all three (that's
+// intentional, PER_SHOW_KINDS) — buildLedeSentences must vary the STRUCTURE
+// when a run gets that long.
+test('3 opening-kind candidates in one week: the opens-to-reviews template appears at most twice, not stacked three times', () => {
+  const scores = { paranormal: 78, negro: 68, ivanov: 45 }; // strong / decent / rough
+  const candidates = scoreCandidates({
+    bwOpenings: [{ show: { id: 'paranormal', slug: 'paranormal', title: 'Paranormal Activity', category: 'broadway' } }],
+    obOpenings: [
+      { show: { id: 'negro', slug: 'negro', title: 'The House of the Negro Insane', category: 'off-broadway' } },
+      { show: { id: 'ivanov', slug: 'ivanov', title: 'The Real Ivanov', category: 'off-broadway' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const { sentences, showRefs } = buildLedeSentences(candidates, 3);
+  const openingShapeRe = /\bopens\b[^.]*\bto\b[^.]*\breviews\b\.?$/i;
+  const shapedCount = sentences.filter((s) => openingShapeRe.test(s)).length;
+  assert.ok(shapedCount <= 2, `expected at most 2 "opens...to...reviews" sentences, got ${shapedCount}: ${sentences.join(' ')}`);
+  // All three shows must still be nameable in the body via showRefs — the
+  // lede-⊆-body invariant (scripts/lib/lede-body-invariant.js) checks this
+  // list against the rendered body, not the compressed prose itself.
+  assert.deepEqual(showRefs.map((s) => s.id).sort(), ['ivanov', 'negro', 'paranormal']);
+  // The two folded-in shows must still be named somewhere in the lede text.
+  const joined = sentences.join(' ');
+  assert.ok(joined.includes('Negro Insane'), joined);
+  assert.ok(joined.includes('Real Ivanov'), joined);
+  // Exact real-world shape (matches the 2026-08-24 repro render): one anchor
+  // sentence plus a venue-grouped "alongside" clause, tier words in parens.
+  assert.equal(sentences.length, 1);
+  assert.equal(
+    sentences[0],
+    "<em>Paranormal Activity</em> opens to strong reviews, alongside off-Broadway's <em>The House of the Negro Insane</em> (decent) and <em>The Real Ivanov</em> (rough)."
+  );
+});
+
+test('a 4-candidate opening run still compresses to one anchor sentence, not two', () => {
+  const scores = { a: 90, b: 78, c: 68, d: 58 };
+  const candidates = scoreCandidates({
+    bwOpenings: [{ show: { id: 'a', slug: 'a', title: 'Show A', category: 'broadway' } }],
+    obOpenings: [
+      { show: { id: 'b', slug: 'b', title: 'Show B', category: 'off-broadway' } },
+      { show: { id: 'c', slug: 'c', title: 'Show C', category: 'off-broadway' } },
+      { show: { id: 'd', slug: 'd', title: 'Show D', category: 'off-broadway' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const { sentences, showRefs } = buildLedeSentences(candidates, 4);
+  assert.equal(sentences.length, 1, sentences.join(' '));
+  assert.deepEqual(showRefs.map((s) => s.id).sort(), ['a', 'b', 'c', 'd']);
+  for (const title of ['Show A', 'Show B', 'Show C', 'Show D']) {
+    assert.ok(sentences[0].includes(title), sentences[0]);
+  }
+});
+
+// An unscored opening ("Title opens on Broadway" — no score yet, so no "to
+// <verdict> reviews" tail) is a DIFFERENT shape than the scored ones, so it
+// must not be swept into a compression run and must not lose its own
+// sentence.
+test('an unscored opening breaks the run instead of being folded in', () => {
+  const scores = { negro: 68, ivanov: 58 }; // paranormal has no score entry
+  const candidates = scoreCandidates({
+    bwOpenings: [{ show: { id: 'paranormal', slug: 'paranormal', title: 'Paranormal Activity', category: 'broadway' } }],
+    obOpenings: [
+      { show: { id: 'negro', slug: 'negro', title: 'The House of the Negro Insane', category: 'off-broadway' } },
+      { show: { id: 'ivanov', slug: 'ivanov', title: 'The Real Ivanov', category: 'off-broadway' } },
+    ],
+    aggregateScore: (id) => (id in scores ? { avg: scores[id] } : { avg: null }),
+  });
+  const { sentences } = buildLedeSentences(candidates, 3);
+  // No verdict for paranormal means only 2 candidates share the scored-opening
+  // shape — below the 3+ threshold, so nothing compresses and every show gets
+  // its own sentence.
+  assert.equal(sentences.length, 3, sentences.join(' '));
+  assert.equal(sentences[0], '<em>Paranormal Activity</em> opens on Broadway.');
+});
+
+// Globe productions rely on "at the Globe" to disambiguate generic classic
+// titles (As You Like It, The Tempest) once "in London" is dropped in the WE
+// edition — the compressed clause must keep that suffix, not just show.title.
+test('a Globe production keeps its "at the Globe" suffix when folded into a compressed clause', () => {
+  const scores = { headliner: 80, globe: 70, third: 60 };
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'headliner', slug: 'headliner', title: 'Show Headliner', category: 'west-end' } },
+      { show: { id: 'globe', slug: 'globe', title: 'As You Like It', category: 'west-end', venue: "Shakespeare's Globe" } },
+      { show: { id: 'third', slug: 'third', title: 'Show Third', category: 'west-end' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const { sentences } = buildLedeSentences(candidates, 3);
+  assert.equal(sentences.length, 1, sentences.join(' '));
+  assert.ok(sentences[0].includes('<em>As You Like It</em> at the Globe'), sentences[0]);
+});
+
+// ── weGoldOpenings list order must survive a later item's gold bump ────────
+// Regression guard for BRO-273 (2026-08-02): a later-ranked West End opening
+// with a Critical Gold score used to be able to outweigh an earlier-ranked,
+// more-reviewed, non-gold show — reordering the subject/lede pick away from
+// weOpeningStories()'s (generate.mjs) most-reviewed-first order, which the
+// card stack (londonSection()) always follows. Reproduces the shape directly
+// against scoreCandidates() with a mocked aggregateScore, independent of live
+// data — scripts/newsletter/we-opening-stories.test.mjs covers the same
+// invariant end-to-end against the real, mutable 2026-07-27 corpus.
+test('a later item\'s Critical Gold score cannot outrank an earlier, non-gold weGoldOpenings entry', () => {
+  const scores = { first: 83, second: 87 }; // "first" is non-gold (<85), "second" is gold (>=85)
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [
+      { show: { id: 'first', slug: 'first', title: 'Show First', category: 'west-end' } },
+      { show: { id: 'second', slug: 'second', title: 'Show Second', category: 'west-end' } },
+    ],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  const weCandidates = candidates.filter((c) => c.kind === 'we-gold-opening');
+  assert.deepEqual(weCandidates.map((c) => c.show.id), ['first', 'second']);
+  assert.ok(weCandidates[0].weight > weCandidates[1].weight, `expected 'first' to outweigh 'second' despite its gold bump; got ${JSON.stringify(weCandidates.map((c) => c.weight))}`);
+});
+
+// ── BRO-2598: Broadway can lead the WE edition's subject/lede, but only when
+// there's no real West End/Off West End story that week (owner decision,
+// 2026-09-07) — mirrors how weGoldOpenings is already secondary-weighted in
+// the Broadway edition (WE_OPENING_SECONDARY_BASE, above).
+test('a quiet West End week with a Broadway opening leads the WE subject/lede with Broadway', () => {
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Big Broadway Hit', category: 'broadway' };
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [], // no West End or Off West End opening this week
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: () => ({ avg: 80 }),
+  });
+  assert.equal(candidates[0].kind, 'bw-opening');
+  assert.equal(candidates[0].show.id, 'bw-show');
+  assert.match(candidates[0].headline, /on Broadway/);
+});
+
+test('a real West End opening still leads the WE subject/lede over a bigger Broadway opening', () => {
+  const weShow = { id: 'we-show', slug: 'we-show', title: 'Modest West End Opening', category: 'west-end' };
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Huge Broadway Smash', category: 'broadway' };
+  const scores = { 'we-show': 76, 'bw-show': 98 }; // Broadway show reviews far better...
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [{ show: weShow }], // ...but this is a real West End story
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  assert.equal(candidates[0].kind, 'we-gold-opening');
+  assert.equal(candidates[0].show.id, 'we-show');
+});
+
+test('a non-gold Off West End opening still beats a Broadway opening — the tightest real margin (70 vs 66)', () => {
+  const oweShow = { id: 'owe-show', slug: 'owe-show', title: 'Small Off West End Show', category: 'off-west-end' };
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Huge Broadway Smash', category: 'broadway' };
+  const scores = { 'owe-show': 76, 'bw-show': 98 }; // Off West End is non-gold and reviews far worse...
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [{ show: oweShow }], // ...but it's still a real West End-market story
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  assert.equal(candidates[0].kind, 'we-gold-opening');
+  assert.equal(candidates[0].show.id, 'owe-show');
+});
+
+test('Broadway is never secondary-weighted in the Broadway edition itself', () => {
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Big Broadway Hit', category: 'broadway' };
+  const candidates = scoreCandidates({
+    edition: 'broadway',
+    bwOpenings: [{ show: broadwayShow }],
+    aggregateScore: () => ({ avg: 80 }),
+  });
+  assert.equal(candidates[0].weight, 85); // WEIGHTS.BW_OPENING_BASE, unaffected by BRO-2598
+  assert.doesNotMatch(candidates[0].headline, /on Broadway/);
+});

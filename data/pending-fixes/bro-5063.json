@@ -1,0 +1,373 @@
+{
+  "issueNumber": "bro-5063",
+  "planId": "99e5be34-7465-46c2-ba9a-9dc327758418",
+  "status": "applied",
+  "createdAt": "2026-10-11T15:50:28.004Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 1 of 3. Synopsis cleanup (BRO-5063). 71 live synopses carried Wikipedia scrape debris (image captions, \";Act I\" headings, cut-off song lists) or producer pitch copy (\"Don’t miss\", \"Join us\", \"invites you\", press quotes, cast billing). This part trims 13 to their story text and clears 12 with no usable story so the verified writer refills them (backfill-historical-metadata.yml, shows= the cleared ids).",
+    "steps": [
+      "Trim 13 synopses to their story text",
+      "Clear 12 pitch/billing/song-list synopses"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hay-fever-1985",
+        "field": "synopsis",
+        "oldValue": "The action is set in the Hall of David Bliss's house at Cookham, Berkshire, by the River Thames. ;A Saturday afternoon in June ) strikes a pose, 1925 thumb alt=middle aged white woman, extravagantly dressed, striking a theatrical pose Sorel and Simon Bliss, a brother and sister, exchange artistic and bohemian dialogue.",
+        "newValue": "The action is set in the Hall of David Bliss's house at Cookham, Berkshire, by the River Thames. Sorel and Simon Bliss, a brother and sister, exchange artistic and bohemian dialogue.",
+        "description": "Trimmed to the story text: Wikipedia image caption and scene heading glued into the text (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hay-fever-1970",
+        "field": "synopsis",
+        "oldValue": "The action is set in the Hall of David Bliss's house at Cookham, Berkshire, by the River Thames. ;A Saturday afternoon in June ) strikes a pose, 1925 thumb alt=middle aged white woman, extravagantly dressed, striking a theatrical pose Sorel and Simon Bliss, a brother and sister, exchange artistic and bohemian dialogue.",
+        "newValue": "The action is set in the Hall of David Bliss's house at Cookham, Berkshire, by the River Thames. Sorel and Simon Bliss, a brother and sister, exchange artistic and bohemian dialogue.",
+        "description": "Trimmed to the story text: Wikipedia image caption and scene heading glued into the text (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "taking-sides-1996",
+        "field": "synopsis",
+        "oldValue": "(at center) as Tamara Sachs in Taking Sides (Stamford Theatre Works, Connecticut, 1999). Taking Sides is a 1995 play by British playwright Ronald Harwood, about the post-war United States denazification investigation of the German conductor and composer Wilhelm Furtwängler on charges of having served the Nazi regime.",
+        "newValue": "Taking Sides is a 1995 play by British playwright Ronald Harwood, about the post-war United States denazification investigation of the German conductor and composer Wilhelm Furtwängler on charges of having served the Nazi regime.",
+        "description": "Trimmed to the story text: leading Wikipedia photo caption (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lestat-2006",
+        "field": "synopsis",
+        "oldValue": "This synopsis reflects the final, New York version. ;Act I Lestat leaves his mother Gabrielle to go to Paris to live with his boyfriend Nicolas (\"My Beautiful Boy\"). He finds Nicolas working as an actor in a small theater, happy with his life (\"In Paris\"). They go to Nicolas' flat and it becomes clear they're in love with each other (\"The Bugs and the Bears\").",
+        "newValue": "Lestat leaves his mother Gabrielle to go to Paris to live with his boyfriend Nicolas (\"My Beautiful Boy\"). He finds Nicolas working as an actor in a small theater, happy with his life (\"In Paris\"). They go to Nicolas' flat and it becomes clear they're in love with each other (\"The Bugs and the Bears\").",
+        "description": "Trimmed to the story text: editor note and \";Act I\" heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chita-rivera-the-dancers-life-2005",
+        "field": "synopsis",
+        "oldValue": "The show is divided into thematic sections during which \"Chita\" (Chita Rivera) shares anecdotes from her life. Members of the ensemble play the part of various figures in her life. ;Act I Chita remembers her father, a professional saxophonist who died when she was seven years old, playing \"Perfidia\" for her.",
+        "newValue": "The show is divided into thematic sections during which Chita Rivera shares anecdotes from her life. Members of the ensemble play the part of various figures in her life. Chita remembers her father, a professional saxophonist who died when she was seven years old, playing \"Perfidia\" for her.",
+        "description": "Trimmed to the story text: \";Act I\" heading mid-text"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-me-1982",
+        "field": "synopsis",
+        "oldValue": "The libretto was revised heavily for both of the subsequent revivals, with songs cut, added, or moved (most notably \"Little Me\"). ;Act I Belle Poitrine (née Schlumpfert) writes her autobiography with the help of Patrick Dennis (\"The Truth\").",
+        "newValue": "Belle Poitrine (née Schlumpfert) writes her autobiography with the help of Patrick Dennis (\"The Truth\"). As a child from Venezuela, Illinois, she lived in Drifter's Row, the poor side of town, and dreamed of living on The Bluff, the rich part of town (\"The Other Side of the Tracks\").",
+        "description": "Trimmed to the story text: editor note and \";Act I\" heading; plot continued from the same Wikipedia section (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "betrayal-1980",
+        "field": "synopsis",
+        "oldValue": "The years between 1968 and 1977 occur in reverse order; scenes within years 1977 and 1973 move forward. ;1977 Scene One: Pub. :Emma and Jerry meet for the first time in two years. For seven years they had an affair and a secret flat, and Jerry says no one else knew. Now Emma is having an affair with Casey, an author whose agent is Jerry and whose publisher is Robert, Emma's husband.",
+        "newValue": "The years between 1968 and 1977 occur in reverse order; scenes within years 1977 and 1973 move forward. Emma and Jerry meet for the first time in two years. For seven years they had an affair and a secret flat, and Jerry says no one else knew. Now Emma is having an affair with Casey, an author whose agent is Jerry and whose publisher is Robert, Emma's husband.",
+        "description": "Trimmed to the story text: definition-list scene headings mid-text (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amahl-and-the-night-visitors-1970",
+        "field": "synopsis",
+        "oldValue": "Place: Near Bethlehem. :Time: The first century, just after the birth of Christ Amahl, a disabled boy who can walk only with a crutch, has a problem with telling tall tales. He is sitting outside playing his shepherd's pipe when his mother calls for him (\"Amahl! Later that night, Amahl's mother weeps, praying that Amahl not become a beggar (\"Don't Cry Mother Dear\").",
+        "newValue": "Near Bethlehem in the first century, just after the birth of Christ, Amahl, a disabled boy who can walk only with a crutch, has a problem with telling tall tales.",
+        "description": "Trimmed to the story text: \"Place:\"/\":Time:\" headings and a sentence cut at a song title (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-merchant-1977",
+        "field": "synopsis",
+        "oldValue": "- a Study by Joseph Keiley The Merchant is a 1976 play in two acts by the English dramatist Arnold Wesker. It is based on William Shakespeare's The Merchant of Venice, and focuses on the Jewish Shylock character, that play's principal antagonist. Wesker began writing the play after seeing a 1973 performance by Laurence Olivier.",
+        "newValue": "The Merchant is a 1976 play in two acts by the English dramatist Arnold Wesker. It is based on William Shakespeare's The Merchant of Venice, and focuses on the Jewish Shylock character, that play's principal antagonist. Wesker began writing the play after seeing a 1973 performance by Laurence Olivier.",
+        "description": "Trimmed to the story text: leading image-caption scrap (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noises-off-2001",
+        "field": "synopsis",
+        "oldValue": "Each of the three acts of Noises Off contains a performance of the first act of a play within a play, a sex farce called Nothing On. stethoscope, hospital trolley, and straitjacket). Nothing is seen of the rest of Nothing On except for the ending of its Act 2. Nothing On is the type of farce in which young women run about in their underwear, men drop their trousers, and many doors continually bang open and shut.",
+        "newValue": "Each of the three acts of Noises Off contains a performance of the first act of a play within a play, a sex farce called Nothing On. Nothing is seen of the rest of Nothing On except for the ending of its Act 2. Nothing On is the type of farce in which young women run about in their underwear, men drop their trousers, and many doors continually bang open and shut.",
+        "description": "Trimmed to the story text: orphaned list fragment"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doonesbury-1983",
+        "field": "synopsis",
+        "oldValue": "The play takes place over the course of two days, represented by two acts. During scene transitions, a backdrop of the White House descends in front of the stage and unseen voice actors engage in brief skits parodying the Reagan administration. , campus radio host Mark Slackmeyer, stoner Zonker Harris, and B.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: ends on a cut-off cast list; the rest describes staging, not story (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "synopsis",
+        "oldValue": "Schmigadoon! is a stage musical adaptation of the first season of the musical television series Schmigadoon!, with book, music, and lyrics by Cinco Paul.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: credit line only, no story"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-misanthrope-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Sandra Oh takes the title role in a razor-sharp reimagining of Molière’s classic.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: cast billing only"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comedy-about-spies-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Mischief’s most critically acclaimed adventure THE COMEDY ABOUT SPIES is back, ‘bigger, better and more brilliantly bungling than ever’ (Daily Mail), with a limited 8-week mission recommencing this summer in London’s West End at the Adelphi Theatre.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: producer copy with a press quote"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2027",
+        "field": "synopsis",
+        "oldValue": "This ‘deliciously funny, superbly cast and expertly constructed, 90-minutes of sharp-witted entertainment’ (Smooth Radio) peels back the lies we tell the people we love, and the ones we tell ourselves.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: press quote wrapped around one line of story"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ceilidh-the-musical-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "CEILIDH is a brand new musical that invites you to step into the heart of one of Scotland's oldest and most beloved traditions.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"invites you\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Company XIV invites you to fall down the rabbit hole with this reimagining of Lewis Carroll’s \"Alice’s Adventures in Wonderland\" featuring their signature blend of circus, opera, magic, baroque dance, and cocktails. The XIV beauties will transport you to a decadent dreamworld replete with exotic curiosities and sensual strip-tease.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"invites you\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-seuss-how-the-grinch-stole-christmas-2007",
+        "field": "synopsis",
+        "oldValue": "You’ll find your heart growing a few sizes when you watch Dr. Seuss’ whimsical holiday classic come to life on stage! Inspired by the original children’s book and featuring hit songs “You’re A Mean One, Mr. Grinch” and “Welcome Christmas,” the Grinch, his sidekick Max and Cindy Lou Who help remind us of the true meaning of the holiday season. See Dr. Seuss’ How The Grinch Stole Christmas! The Musical at the Hulu Theater at Madison Square Garden, December 13-30.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch and a 2020s venue/date line on a 2007 row (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-2013",
+        "field": "synopsis",
+        "oldValue": "Join us to revel in the midsummer madness as twins Sebastian and Viola survive shipwreck, revenge plots, and the trick doors of love. The Public’s Associate Artistic Director and Resident Director, Tony Award nominee Saheem Ali directs this joyful romp welcoming all of New York back to the magic of Central Park’s beloved theater.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Join us\") and director billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tender-by-dave-harris-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Welcome to the club. Red lights. Oiled abs. Dollar bills. Three men about to make you feel things you weren’t expecting. Grab front row seats to get up close and very personal.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Welcome to the club\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "My Son’s a Queer (But What Can You Do?) is the joyous autobiographical story of West End Musical Theatre star and social-media sensation Rob Madge, as they set out to recreate that parade - and this time, nobody, no, nobody is gonna rain on it.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: billing; \"that parade\" refers to text that was cut"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "truly-howard-hughes-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A musical portrait of Howard Hughes reflecting on love, ambition, and legacy. In the final moments of his life, Howard Robard Hughes Jr.—the aviator, filmmaker, businessman, and famously reclusive billionaire—looks back on the events that shaped his extraordinary journey. As memories of personal relationships, professional triumphs, and missed opportunities resurface, he confronts a question that neither wealth nor influence could resolve. Framed as an unconventional love story, the musical traces Hughes's reflections on a life lived at the center of American celebrity, industry, and innovation. The musical features a score by James Scully, with a book by Frank Evans, Jennifer Paulson-Lee, and James Scully. Lyrics are by Frank Evans and Chad Gorn. The production is directed and choreogr...",
+        "newValue": "A musical portrait of Howard Hughes reflecting on love, ambition, and legacy. In the final moments of his life, Howard Robard Hughes Jr.—the aviator, filmmaker, businessman, and famously reclusive billionaire—looks back on the events that shaped his extraordinary journey. As memories of personal relationships, professional triumphs, and missed opportunities resurface, he confronts a question that neither wealth nor influence could resolve. Framed as an unconventional love story, the musical traces Hughes's reflections on a life lived at the center of American celebrity, industry, and innovation.",
+        "description": "Trimmed to the story text: credits tail cut off mid-word (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-estate-west-end-2025",
+        "field": "synopsis",
+        "oldValue": "The Estate is about Angad Singh, who becomes the political frontrunner when the opposition leader resigns amid a scandal. But when his home life starts to unravel dramatically, he must ask himself how far he will go to maintain his sparkling public persona. This is a gripping political satire that highlights the lies we tell ourselves, as well as the dynamics of power and family. ), and Helena Wilson (The Hills of California).",
+        "newValue": "The Estate is about Angad Singh, who becomes the political frontrunner when the opposition leader resigns amid a scandal. But when his home life starts to unravel dramatically, he must ask himself how far he will go to maintain his sparkling public persona. This is a gripping political satire that highlights the lies we tell ourselves, as well as the dynamics of power and family.",
+        "description": "Trimmed to the story text: orphaned cast-list fragment"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-fair-lady-2018",
+        "field": "synopsis",
+        "oldValue": "Don’t miss Lerner & Loewe’s MY FAIR LADY at Lincoln Center Theater, now playing through July 7 only! Directed by Tony® winner Bartlett Sher, this “enchanting and incandescent” (The Washington Post) revival was named the best Broadway musical of 2018 by The New York Times, Entertainment Weekly and Time Magazine. NY1 raves, “it reminds you how indispensable great theater can be.” The New York Times calls it “thrilling, glorious and better than it ever was.”",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch and press quotes only"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "american-psycho-2016",
+        "field": "synopsis",
+        "oldValue": "This synopsis reflects the 2016 Broadway production. Act I Patrick Bateman is a 26-year-old investment banker living in New York City at the end of the 1980s. Bateman documents his morning routine, which involves fastidious grooming, tanning, and carefully selecting a designer suit, before travelling to Wall Street (\"Opening (Morning Routine)\"/\"Selling Out\").",
+        "newValue": "Patrick Bateman is a 26-year-old investment banker living in New York City at the end of the 1980s. Bateman documents his morning routine, which involves fastidious grooming, tanning, and carefully selecting a designer suit, before travelling to Wall Street (\"Opening (Morning Routine)\"/\"Selling Out\").",
+        "description": "Trimmed to the story text: editor note and act heading"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T16:36:50.065Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for hay-fever-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for hay-fever-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for taking-sides-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lestat-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for chita-rivera-the-dancers-life-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for little-me-1982"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for betrayal-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for amahl-and-the-night-visitors-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-merchant-1977"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for noises-off-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for doonesbury-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-misanthrope-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-comedy-about-spies-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-truth-a-comedy-by-florian-zeller-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for ceilidh-the-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dr-seuss-how-the-grinch-stole-christmas-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for twelfth-night-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for tender-by-dave-harris-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for my-sons-a-queer-but-what-can-you-do-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for truly-howard-hughes-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-estate-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for my-fair-lady-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for american-psycho-2016"
+    }
+  ]
+}

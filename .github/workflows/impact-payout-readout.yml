@@ -1,0 +1,51 @@
+name: Impact Payout Readout
+
+# On-demand, READ-ONLY breakdown of Impact actions that carry a real sale but
+# $0.00 commission (BRO-4967). Built when those orders went from 0-1/week to
+# 9/week starting ~2026-09-28 and nothing could see WHY: the Impact keys are
+# CI-only secrets and every scheduled job reads totals only.
+#
+# Makes no commits, no pushes, no Impact or PostHog writes, no email:
+# scripts/impact-payout-readout.js prints aggregate tables to stdout and the
+# run Summary. This repo's Actions logs are public, so the script never prints
+# a customer, order or visitor identifier (pinned by
+# scripts/lib/impact-payout-readout.test.mjs).
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Days back to read (max 44: Impact caps a request at 45 days)'
+        required: false
+        default: '44'
+        type: string
+
+concurrency:
+  group: impact-payout-readout
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  readout:
+    name: Break down $0-commission orders
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-node
+
+      - name: Run readout
+        env:
+          DAYS: ${{ inputs.days }}
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: node scripts/impact-payout-readout.js --days="${DAYS:-44}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Impact Payout Readout Failed'
+          severity: 'low'

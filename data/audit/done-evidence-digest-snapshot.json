@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-10-13T09:35:55.766Z",
+  "bannerText": "310/360 Done(14d) verified on main · 14 FAILED · 1 vacuous · 12 stuck-but-done — PARTIAL RUN: 29 checks not re-run (ran out of time), so these numbers understate the board",
+  "items": [
+    {
+      "title": "FAILED BRO-2851 — P2: two genuine New Statesman West End reviews stay suppressed by a second flag, incompleteReason wrong_content",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/feedback_manual_review_protection_fields.md",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2851/p2-two-genuine-new-statesman-west-end-reviews-stay-suppressed-by-a"
+    },
+    {
+      "title": "FAILED BRO-2360 — P1: WSJ URL re-discovery + refetch for 33 recent wrong_content files (finish owner mandate: all WSJ full texts)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/wsj_urls_recovered_from_wrong_content.jsonl",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2360/p1-wsj-url-re-discovery-refetch-for-33-recent-wrong-content-files"
+    },
+    {
+      "title": "FAILED BRO-2257 — Audit all --update-baseline CI gates for stale 'permanent exception' entries",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-stale-baseline-exceptions.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2257/audit-all-update-baseline-ci-gates-for-stale-permanent-exception"
+    },
+    {
+      "title": "FAILED BRO-447 — BSC Daily: Workflow repeat-failure: Check Corpus Drift",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/checkCorpusDrift.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-447/bsc-daily-workflow-repeat-failure-check-corpus-drift"
+    },
+    {
+      "title": "FAILED BRO-5170 — Digest 'Dispatch a fix' button fails: LINEAR_API_KEY missing from Vercel production env (BRO-4718 follow-up)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-vercel-required-env.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5170/digest-dispatch-a-fix-button-fails-linear-api-key-missing-from-vercel"
+    },
+    {
+      "title": "FAILED BRO-5096 — P1: main-red fixes starve in the one-pending landing queue (BRO-5079 evicted 3x, main red 3h)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-admit.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5096/p1-main-red-fixes-starve-in-the-one-pending-landing-queue-bro-5079"
+    },
+    {
+      "title": "FAILED BRO-5063 — Synopses: 29 live rows show pitch copy, billing or broken wiki text",
+      "detail": "TAP version 13 # Subtest: no card or plan row still holds wikitext debris or audience pitch ok 1 - no card or plan row still holds wikitext debris or audience pitch --- duration_m…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5063/synopses-29-live-rows-show-pitch-copy-billing-or-broken-wiki-text"
+    },
+    {
+      "title": "FAILED BRO-5020 — Review held commercial research rows (BRO-4990 46 + BRO-5017) by truth-class rule before release",
+      "detail": "TAP version 13 # ⚠️ Rejected non-canonical designation \"bogus\" (valid: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit, Tour Stop) # ⚠️ Rejected non-canonica…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
+    }
+  ],
+  "moreCount": 19
+}

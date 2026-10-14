@@ -1,0 +1,158 @@
+'use strict';
+
+const cheerio = require('cheerio');
+const { fetchPage, domainMatchesExpected } = require('./scraper');
+const { titleMatchesShow } = require('./rss-discovery');
+const { normalizeUrl, resolveOutletFromUrl, resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
+const { isLondonMarket } = require('./venue-classification');
+const { isInOpeningWindow } = require('./opening-window-backoff');
+const { isBroadwayLocalRegion, isWestEndLocalRegion } = require('./outlet-region-map');
+const { extractByline } = require('./byline-extraction');
+const { resolveCritic } = require('./resolve-critic');
+
+function googleNewsRssUrl(show) {
+  const london = isLondonMarket(show.category);
+  const params = new URLSearchParams({
+    q: `"${show.title}" review`,
+    hl: london ? 'en-GB' : 'en-US',
+    gl: london ? 'GB' : 'US',
+    ceid: london ? 'GB:en' : 'US:en',
+  });
+  return `https://news.google.com/rss/search?${params}`;
+}
+
+function parseGoogleNewsItems(xml) {
+  const $ = cheerio.load(xml, { xmlMode: true });
+  return $('item').map((_, node) => {
+    const item = $(node);
+    return {
+      title: item.find('title').text().trim(),
+      link: item.find('link').text().trim(),
+      pubDate: new Date(item.find('pubDate').text().trim()),
+      sourceName: item.find('source').text().trim(),
+      sourceUrl: item.find('source').attr('url') || '',
+    };
+  }).get();
+}
+
+function outletMatchesMarket(info, show) {
+  return info && (info.isDualMarket || (isLondonMarket(show.category)
+    ? isWestEndLocalRegion(info.region) : isBroadwayLocalRegion(info.region)));
+}
+
+// Google RSS links can redirect in JavaScript. Read the rendered destination's
+// canonical URL, or the interstitial's publisher link. Never ingest the wrapper
+// or use its opaque token to infer article metadata.
+function publisherUrlFromPage(content, sourceUrl, finalUrl) {
+  let expected;
+  try { expected = new URL(sourceUrl).hostname; } catch { return null; }
+  const $ = cheerio.load(content);
+  const accept = value => {
+    try {
+      const url = new URL(value);
+      if (!['https:', 'http:'].includes(url.protocol)
+          || !domainMatchesExpected(expected, url.hostname)
+          || url.hostname === 'news.google.com' || url.pathname === '/') return null;
+      return url.href;
+    } catch { return null; }
+  };
+  const redirected = accept(finalUrl);
+  if (redirected) return redirected;
+  for (const selector of ['link[rel="canonical"]', 'meta[property="og:url"]']) {
+    const url = accept($(selector).attr(selector.startsWith('link') ? 'href' : 'content'));
+    if (url) return url;
+  }
+  const links = new Set();
+  $('a[href], [data-n-au]').each((_, node) => {
+    const url = accept($(node).attr('data-n-au') || $(node).attr('href'));
+    if (url) links.add(url);
+  });
+  return links.size === 1 ? [...links][0] : null;
+}
+
+/** Per-show opening-window discovery, shared by the poller and gather-reviews.
+ * fetchPageImpl is a test seam; production always uses the shared scraper.
+ */
+async function discoverGoogleNewsReviews(show, options = {}) {
+  const { knownUrls = new Set(), now = new Date(), verbose = false, fetchPageImpl = fetchPage } = options;
+  // Missing dates cannot safely bound either polling or publication eligibility.
+  if (!show.openingDate || !isInOpeningWindow(show, now)) return [];
+  const since = new Date(show.previewsStartDate || show.openingDate).getTime();
+  if (!Number.isFinite(since)) return [];
+  const seen = new Set([...knownUrls].map(normalizeUrl));
+  const results = [];
+  try {
+    const feed = await fetchPageImpl(googleNewsRssUrl(show), { skipVerify: true, preferPlaywright: true, fast: true });
+    let items = parseGoogleNewsItems(feed?.content || '').filter(item =>
+      Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
+      && item.pubDate.getTime() <= new Date(now).getTime()
+      && titleMatchesShow(item.title, show.title)
+      && /\breview\b/i.test(item.title)
+      && !/\b(interview|preview|tickets|roundup)\b/i.test(item.title)
+      && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl));
+    // Prioritize nationals and rotate bounded batches across poll cycles so
+    // already-known links cannot permanently starve the remaining publishers.
+    const registry = require('../../data/outlet-registry.json').outlets;
+    items.sort((a, b) => (registry[resolveOutletFromUrl(a.sourceUrl).outletId]?.tier || 3)
+      - (registry[resolveOutletFromUrl(b.sourceUrl).outletId]?.tier || 3));
+    const wrappers = new Set();
+    items = items.filter(item => {
+      const sourceOutlet = resolveOutletFromUrl(item.sourceUrl);
+      const info = registry[sourceOutlet.outletId];
+      // A shared-domain source (Time Out) needs the resolved article edition
+      // before its market can be determined. Recheck every resolved URL below.
+      if (!info || (!resolveOutletFromUrlIfPathInformed(item.sourceUrl)
+          && !outletMatchesMarket(info, show))) return false;
+      if (wrappers.has(item.link)) return false;
+      wrappers.add(item.link);
+      return true;
+    });
+    const batches = Math.ceil(items.length / 12);
+    const offset = batches ? (Math.floor(new Date(now).getTime() / (15 * 60000)) % batches) * 12 : 0;
+    for (const item of items.slice(offset, offset + 12)) {
+      try {
+        const wrapper = new URL(item.link);
+        if (wrapper.protocol !== 'https:' || wrapper.hostname !== 'news.google.com') continue;
+        const publisherHost = new URL(item.sourceUrl).hostname.replace(/^www\./, '');
+        let page = await fetchPageImpl(item.link, {
+          skipVerify: true, preferPlaywright: true,
+          // Wait for the publisher or its interstitial link, not analytics
+          // network-idle on the destination (which often never settles).
+          playwrightWaitForSelector: `link[rel="canonical"][href*="${publisherHost}"], meta[property="og:url"][content*="${publisherHost}"], a[href*="${publisherHost}"]`,
+        });
+        const url = publisherUrlFromPage(page?.content || '', item.sourceUrl, page?.finalUrl);
+        if (!url) {
+          if (verbose) console.log(`  google-news-rss: unresolved publisher link (${item.sourceName})`);
+          continue;
+        }
+        const outlet = resolveOutletFromUrl(url);
+        if (!outlet || !outletMatchesMarket(registry[outlet.outletId], show) || seen.has(normalizeUrl(url))) continue;
+        seen.add(normalizeUrl(url));
+        // An interstitial has no publisher byline. Fetch the resolved article
+        // through the same scraper rather than trust Google page metadata.
+        const $ = cheerio.load(page?.content || '');
+        const canonical = $('link[rel="canonical"]').attr('href') || $('meta[property="og:url"]').attr('content');
+        if (normalizeUrl(page?.finalUrl || canonical || '') !== normalizeUrl(url)) {
+          try { page = await fetchPageImpl(url, { preferPlaywright: true, fast: true }); }
+          catch { page = null; } // Keep the resolved URL for the normal byline recovery path.
+        }
+        results.push({
+          showId: show.id, url, outletId: outlet.outletId,
+          outlet: outlet.displayName || item.sourceName,
+          criticName: resolveCritic({ byline: extractByline(page?.content || ''), outletEntry: registry[outlet.outletId] }), title: item.title,
+          publishDate: item.pubDate.toISOString().slice(0, 10),
+          dateSource: 'google-news-rss', source: 'google-news-rss',
+        });
+        if (verbose) console.log(`  google-news-rss candidate: ${outlet.outletId} ${url}`);
+      } catch (err) {
+        if (verbose) console.log(`  google-news-rss: redirect failed (${item.sourceName}): ${err.message}`);
+      }
+    }
+  } catch (err) {
+    if (verbose) console.log(`  google-news-rss error: ${err.message}`);
+  }
+  if (verbose) console.log(`  [google-news-rss Total] ${results.length} new review candidate(s)`);
+  return results;
+}
+
+module.exports = { discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage };

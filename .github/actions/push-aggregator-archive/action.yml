@@ -1,0 +1,140 @@
+name: Push aggregator-archive
+description: Commits and pushes aggregator-archive changes to the private repo
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  message:
+    description: Commit message
+    required: false
+    default: 'data: Update aggregator archive'
+
+runs:
+  using: composite
+  steps:
+    - name: Sync and push aggregator-archive
+      shell: bash
+      env:
+        REPO_TOKEN: ${{ inputs.token }}
+        COMMIT_MSG: ${{ inputs.message }}
+      run: |
+        if [ ! -d "/tmp/aggregator-archive-checkout/.git" ]; then
+          echo "::warning::Aggregator archive checkout not found - skipping push"
+          exit 0
+        fi
+
+        # Copy ONLY files this workflow actually changed during the run.
+        # Baseline: /tmp/aggregator-archive-snapshot/ — written by
+        # checkout-aggregator-archive at checkout time. A file identical to
+        # its snapshot was NOT touched by this workflow; copying it back (the
+        # old `rsync -a --delete` did, unconditionally) would push stale
+        # content and could delete files a concurrent workflow added mid-run.
+        # Same incident class as push-core-data's P0 2026-07-13 revert (see
+        # .github/actions/push-core-data/action.yml and
+        # scripts/lib/core-data-sync-decision.js — same decision table, shared
+        # implementation here via scripts/lib/sync-changed-files.sh, tested in
+        # tests/unit/sync-changed-files.test.mjs). NOT `rsync --compare-dest`:
+        # compare-dest was tried and rejected — when source matches the
+        # snapshot baseline but the destination already differs (i.e. exactly
+        # the concurrent-push case this fix exists to protect), it deletes
+        # the destination file outright instead of leaving it alone.
+        #
+        # --allow-delete: unlike push-core-data's core files, data/aggregator-
+        # archive/ is entirely gitignored in the public repo (0 tracked files),
+        # so there is no `git checkout -- .` collateral-damage vector — a file
+        # missing from data/ here always means THIS run deleted it. That matters
+        # because scripts/lib/lbo-roundup-discover.js quarantines a bad archive
+        # page by renaming it to `.mismatch` on validation failure; without
+        # delete propagation the stale file would never leave the private repo
+        # and would keep resurrecting on every checkout, silently defeating the
+        # quarantine (adversarial review finding, 2026-07-14).
+        mkdir -p /tmp/aggregator-archive-checkout/aggregator-archive
+        if [ ! -d "/tmp/aggregator-archive-snapshot" ]; then
+          echo "::warning::/tmp/aggregator-archive-snapshot missing — cannot detect workflow-modified files; falling back to copy-all with deletion (may revert concurrent data pushes). Ensure checkout-aggregator-archive ran in this job."
+          rsync -a --delete data/aggregator-archive/ /tmp/aggregator-archive-checkout/aggregator-archive/
+        else
+          bash scripts/lib/sync-changed-files.sh --allow-delete \
+            data/aggregator-archive \
+            /tmp/aggregator-archive-snapshot \
+            /tmp/aggregator-archive-checkout/aggregator-archive
+        fi
+
+        cd /tmp/aggregator-archive-checkout
+
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git remote set-url origin "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
+
+        git add aggregator-archive/
+
+        if git diff --staged --quiet; then
+          echo "No aggregator-archive changes to push"
+          exit 0
+        fi
+
+        CHANGED=$(git diff --staged --stat | tail -1)
+        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+
+        # Push with retry — newer local scrape always wins on conflicts
+        # In rebase context, -X theirs = keep our commits being replayed (local changes)
+        for i in 1 2 3 4 5; do
+          PUSH_STDERR_FILE=$(mktemp)
+          if git push origin main 2>"$PUSH_STDERR_FILE"; then
+            cat "$PUSH_STDERR_FILE" >&2
+            echo "Aggregator archive pushed successfully (attempt $i)"
+            rm -f "$PUSH_STDERR_FILE"
+            exit 0
+          fi
+          cat "$PUSH_STDERR_FILE" >&2
+
+          echo "Push attempt $i failed, pulling and rebasing..."
+          # Separate temp file for the pull — a successful pull (rebase applies
+          # cleanly) must NOT clobber the push's stderr with its own empty/benign
+          # output before the rate-limit decision below reads it (that emptied
+          # the actual rate-limit signal in an earlier version of this fix).
+          PULL_STDERR_FILE=$(mktemp)
+          if ! git pull --rebase -X theirs origin main 2>"$PULL_STDERR_FILE"; then
+            cat "$PULL_STDERR_FILE" >&2
+            git rebase --abort 2>/dev/null || true
+          else
+            cat "$PULL_STDERR_FILE" >&2
+          fi
+
+          # BRO-66 sibling (card #1850): the decision is always based on the
+          # PUSH's stderr — that's the call being retried, and a rate-limited
+          # push means the shared PAT is throttled regardless of whether the
+          # recovery pull that follows happens to succeed. A rate-limit-shaped
+          # failure gets exponential backoff instead of the flat jitter sleep;
+          # a real conflict (non-rate-limit stderr) falls through unchanged.
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing flat-jitter retry below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(PUSH_STDERR_FILE="$PUSH_STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.PUSH_STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+          rm -f "$PUSH_STDERR_FILE" "$PULL_STDERR_FILE"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Aggregator archive push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            *)
+              sleep $((RANDOM % 10 + 5))
+              ;;
+          esac
+        done
+
+        echo "WARNING: Failed to push aggregator-archive after 5 attempts"
+        exit 1

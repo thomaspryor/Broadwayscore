@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-10-13T23:47:38.649Z",
+  "base": "https://broadwayscorecard.com",
+  "daysChecked": 21,
+  "skippedForBudget": 0,
+  "checked": 229,
+  "clean": 228,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: co"
+        }
+      ],
+      "missingFromProd": [
+        "co"
+      ],
+      "localCount": 36,
+      "deployedCount": 36,
+      "firstDefectAt": "2026-10-13T23:47:36.107Z"
+    }
+  ],
+  "persistentDefective": 0,
+  "staleGraceHours": 6
+}
