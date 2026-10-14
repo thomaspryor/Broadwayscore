@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5243-h",
   "planId": "daba3bfe-12d2-45d6-98e4-e64d99715352",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T12:30:00.000Z",
   "submitter": {
     "name": null,
@@ -109,5 +109,86 @@
         "description": "BRO-5243: re-verify the 3 rows whose verdicts still judge them against Isherwood (plan g refused 2 because the file name said Isherwood)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T12:40:29.653Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved aint-too-proud-2019/wsj--charles-isherwood.json → aint-too-proud-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-christmas-carol-2019/wsj--charles-isherwood.json → a-christmas-carol-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved clydes-2021/wsj--charles-isherwood.json → clydes-2021/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted all-my-sons-2019/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved all-my-sons-2019/wsj--charles-isherwood.json → all-my-sons-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted linda-vista-2019/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved linda-vista-2019/wsj--charles-isherwood.json → linda-vista-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted grand-horizons-2020/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved grand-horizons-2020/wsj--charles-isherwood.json → grand-horizons-2020/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted is-this-a-room-2021/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved is-this-a-room-2021/wsj--charles-isherwood.json → is-this-a-room-2021/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted company-2021/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved company-2021/wsj--charles-isherwood.json → company-2021/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reverify-stale-cv-promoted.js successfully"
+    }
+  ]
 }
