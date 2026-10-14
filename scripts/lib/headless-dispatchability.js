@@ -288,7 +288,7 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   if (hasNoDispatchMarker(notes)) {
     blockers.push({
       code: BLOCKERS.NO_DISPATCH_MARKER,
-      detail: 'description carries the NO-DISPATCH: marker — the card was filed to not be launched by any dispatcher; override with --force or --allow-human-gated',
+      detail: 'description carries the NO-DISPATCH: marker — the card was filed to not be launched by any dispatcher; override with --allow-human-gated',
     });
   }
 

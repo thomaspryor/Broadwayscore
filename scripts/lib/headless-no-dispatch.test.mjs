@@ -37,3 +37,12 @@ test("owner-decision gate catches \"needs the owner's answer\" phrasings", () =>
   }
   assert.ok(!codes('The owner approved this plan; implement it.').includes(BLOCKERS.OWNER_DECISION_GATE));
 });
+
+test('hand-typed decorations of the marker still match', () => {
+  for (const t of ['**NO-DISPATCH:** x', '- NO-DISPATCH: x', '> NO-DISPATCH: x']) assert.equal(hasNoDispatchMarker(t), true, t);
+});
+
+test('detail text does not promise a --force waiver the shared filter does not give', () => {
+  const d = classifyHeadlessDispatchability({ subject: 's', notes: 'NO-DISPATCH: r' }, VERIFY).blockers[0].detail;
+  assert.ok(!/--force/.test(d));
+});

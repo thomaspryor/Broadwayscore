@@ -33,9 +33,11 @@
 
 // BRO-4868: anchored to a line start (multiline: mirrored cards carry generated
 // header lines before the marker, same shape as PARKED_SENTINEL_RE), so a card
-// that merely QUOTES "NO-DISPATCH:" mid-sentence is not held back. Both
-// writers (notion-brain.js:573, linear-issue-create) emit it at line start.
-const NO_DISPATCH_RE = /^[ \t]*NO-DISPATCH[ \t]*:/m;
+// that merely QUOTES "NO-DISPATCH:" mid-sentence is not held back. notion-brain.js:573
+// emits it at line start; Linear cards carry it by hand.
+// Optional markdown decoration ("- ", "> ", "**") is tolerated: Linear-native
+// cards have no writer, so the marker is typed by hand.
+const NO_DISPATCH_RE = /^[ \t>*_-]*NO-DISPATCH[ \t*_]*:/m;
 
 /**
  * Does this text (card notes / task-mirror description) carry the
