@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-10-13T09:48:14.130Z",
-  "scanned": 2590,
-  "showsWithViolations": 70,
-  "totalViolations": 70,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-14T03:01:43.539Z",
+  "scanned": 2601,
+  "showsWithViolations": 72,
+  "totalViolations": 72,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "six-2021",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -17,6 +20,7 @@
     "the-outsiders-2024",
     "and-juliet-2022",
     "mj-2022",
+    "six-2021",
     "hadestown-2019",
     "harry-potter-2021",
     "wicked-2003",
@@ -75,7 +79,8 @@
     "mamma-mia-tour-2026",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
     "shucked-tour-2027",
-    "the-whos-tommy-tour-2026"
+    "the-whos-tommy-tour-2026",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
   ],
   "hits": [
     {
@@ -173,6 +178,15 @@
       "title": "MJ The Musical",
       "openingDate": "2022-02-01",
       "message": "mj-2022 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "six-2021",
+      "title": "SIX",
+      "openingDate": "2021-10-03",
+      "message": "six-2021 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -595,7 +609,7 @@
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 48x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 49x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -640,7 +654,7 @@
       "showId": "beauty-and-the-beast-tour-2025",
       "title": "Beauty and the Beast",
       "openingDate": "2025-06-25",
-      "message": "beauty-and-the-beast-tour-2025 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "beauty-and-the-beast-tour-2025 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -658,7 +672,7 @@
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 33x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 40x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -667,7 +681,7 @@
       "showId": "the-music-man-tour-2026",
       "title": "The Music Man",
       "openingDate": "2026-01-12",
-      "message": "the-music-man-tour-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-music-man-tour-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -704,6 +718,15 @@
       "title": "The Who's Tommy",
       "openingDate": "2026-10-06",
       "message": "the-whos-tommy-tour-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "title": "The Prime of Miss Jean Brodie",
+      "openingDate": "2026-10-11",
+      "message": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
