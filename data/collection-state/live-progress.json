@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-14T16:34:46.169Z",
-  "processed": 49,
-  "failed": 39,
-  "successRate": "55.7%",
+  "updatedAt": "2026-10-14T16:38:58.333Z",
+  "processed": 237,
+  "failed": 226,
+  "successRate": "51.2%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 4,
-    "brightdata": 0,
+    "scrapingdog": 4,
+    "scrapingbee": 9,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-14T15:05:13.513Z",
+      "event": "bb-session",
+      "session": "f87e6927",
+      "url": "https://www.wsj.com/articles/theater-review-machinal-1389305827"
+    },
+    {
+      "t": "2026-10-14T15:05:14.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:06:24.535Z",
+      "event": "bb-session",
+      "session": "14f9b675",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-14T15:06:25.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:06:43.073Z",
+      "event": "bb-session",
+      "session": "dfd72b9a",
+      "url": "https://online.wsj.com/article/SB10001424127887323809304578435260356300032.html?"
+    },
+    {
+      "t": "2026-10-14T15:06:43.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:07:55.060Z",
+      "event": "bb-session",
+      "session": "3da52bed",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:07:55.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:08:13.710Z",
+      "event": "bb-session",
+      "session": "0e4b7195",
+      "url": "https://online.wsj.com/article/SB10001424127887323468604578245982491627090.html"
+    },
+    {
+      "t": "2026-10-14T15:08:14.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:27.191Z",
+      "event": "bb-session",
+      "session": "a7e7c17c",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:27.850Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T15:09:45.713Z",
+      "event": "bb-session",
+      "session": "c71ca3ff",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596"
+    },
+    {
+      "t": "2026-10-14T15:09:46.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T16:12:10.510Z",
+      "event": "bb-session",
+      "session": "29cf67c3",
+      "url": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed"
+    },
+    {
+      "t": "2026-10-14T16:12:11.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-14T16:34:26.955Z",
+      "event": "bb-session",
+      "session": "775f932a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-14T16:34:27.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-14T16:36:40.175Z",
+      "event": "bb-session",
+      "session": "0b9ced7d",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-14T16:36:41.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
