@@ -963,5 +963,35 @@
       }
     ],
     "queuedAt": "2026-10-14T20:22:54.866Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5373-mail-on-sunday",
+    "title": "Landing blocked: unit-tests-e2e red on land/bro-5373-mail-on-sunday",
+    "description": "land.yml did not land land/bro-5373-mail-on-sunday: the unit-tests-e2e gate went red at e35c7224f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38640176127",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5373-mail-on-sunday"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-e2e"
+      },
+      {
+        "name": "tip",
+        "value": "e35c7224f98b51a2da62df0ceec868cf044f1088"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38640176127"
+      }
+    ],
+    "queuedAt": "2026-10-14T22:06:59.547Z"
   }
 ]
