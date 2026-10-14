@@ -114,11 +114,16 @@ jobs:
       - name: Backfill null show dates from roundup evidence
         if: inputs.dry_run != true
         continue-on-error: true
+        # BRO-5261: 10-min budget + its 2.5-min loop-head reserve inside an
+        # 11-min step cap, so a slow checkout or audit before it can never let
+        # this step run the 15-min job out before validate + push. A capped
+        # step only loses this run's backfill (continue-on-error).
+        timeout-minutes: 11
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
-        run: node scripts/backfill-dates-from-roundups.js --time-budget-min=12
+        run: node scripts/backfill-dates-from-roundups.js --time-budget-min=10
 
       # ALWAYS validate before push-core-data (same gate scrape-new-aggregators
       # uses) — a bad backfill must never reach the private repo.

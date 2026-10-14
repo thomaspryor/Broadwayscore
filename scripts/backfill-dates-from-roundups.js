@@ -64,8 +64,8 @@ async function main(argv = process.argv.slice(2)) {
   const onlyShow = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
   const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
   // BRO-3340: audit-reverse-discovery.yml runs this as a late step of a
-  // 15-min job with --time-budget-min=12, so slack is under 3 min and shrinks
-  // with the steps before it. Each item is one fetchPage(); a fetchPage()
+  // 15-min job with --time-budget-min=10 inside an 11-min step cap
+  // (BRO-5261), so slack is ~1 min and the cap absorbs the rest. Each item is one fetchPage(); a fetchPage()
   // chain can take ~2.5 min (provider timeouts + the 90s Playwright tier
   // deadline).
   const MIN_REMAINING_MS_TO_START = 2.5 * 60_000;

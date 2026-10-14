@@ -139,6 +139,12 @@ test('findBudgetParamIndex finds a budget param that is actually checked via .ex
   assert.equal(findBudgetParamIndex(fn), 2);
 });
 
+test('findBudgetParamIndex accepts the canStartItem() loop-head form (BRO-5261)', () => {
+  const src = `async function f(a, timeBudget) {\n  for (const x of a) {\n    if (!timeBudget.canStartItem(150000)) break;\n  }\n}`;
+  const [fn] = extractFunctionSignatures(src);
+  assert.equal(findBudgetParamIndex(fn), 1);
+});
+
 test('findBudgetParamIndex returns -1 when no param looks budget-shaped', () => {
   const src = `async function f(a, b) {\n  return a + b;\n}`;
   const [fn] = extractFunctionSignatures(src);

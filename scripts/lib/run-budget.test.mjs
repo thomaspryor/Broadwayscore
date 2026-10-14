@@ -76,5 +76,8 @@ test('canStartItem never stops a disabled budget, and ignores a bad reserve', ()
   t += 100 * 60_000;
   assert.equal(off.canStartItem(150_000), true);
   const on = createRunBudget(1, () => t);
-  for (const bad of [NaN, -5, undefined, Infinity]) assert.equal(on.canStartItem(bad), true, String(bad));
+  for (const bad of [NaN, -5, undefined]) assert.equal(on.canStartItem(bad), true, String(bad));
+  // BRO-5261: an impossible (Infinity) reserve must not read as "no reserve".
+  assert.equal(on.canStartItem(Infinity), false);
+  assert.equal(off.canStartItem(Infinity), true, 'a disabled budget still never stops');
 });

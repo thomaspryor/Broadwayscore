@@ -236,10 +236,16 @@ function clusterDates(extractions, opts = {}) {
  * Generic field discovery. fieldType in {'closing','opening','previews-start'}.
  * `budget` (optional) is a scripts/lib/run-budget.js budget object — when it
  * reports exceeded(), the per-candidate fetch/extract loop below stops early
- * instead of working through the remaining candidates.
+ * instead of working through the remaining candidates. `minRemainingMs`
+ * (optional, BRO-5261) makes both checks stop while that much budget is
+ * still left (budget.canStartItem): pass one SERP + fetchPage() worst case so
+ * the last fetch never starts with seconds to go and overruns the step.
  * @returns null OR { date: 'YYYY-MM-DD', sources: [{url, title, quote}], extractions: [...], fieldType }
  */
-async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = null) {
+async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = null, minRemainingMs = 0) {
+  const budgetStops = () => !!budget && (minRemainingMs > 0 && typeof budget.canStartItem === 'function'
+    ? !budget.canStartItem(minRemainingMs)
+    : budget.exceeded());
   // Fail fast on missing/unknown fieldType — silently defaulting to 'closing'
   // would run a closing-date SERP/prompt on an opening-date call site and
   // return plausibly-wrong data. Caller MUST pass an explicit fieldType.
@@ -249,8 +255,8 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
   // calls it once for 'opening', once for 'previews-start') would otherwise
   // fire a fresh SERP query on the second call even though the budget
   // already expired during the first.
-  if (budget && budget.exceeded()) {
-    log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) already exceeded — skipping`);
+  if (budgetStops()) {
+    log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) reached — skipping`);
     return null;
   }
   const cfg = getFieldConfig(fieldType);
@@ -281,7 +287,7 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
   const extractions = [];
   for (let ci = 0; ci < candidates.length; ci++) {
     const c = candidates[ci];
-    if (budget && budget.exceeded()) {
+    if (budgetStops()) {
       log(`  [discovery:${fieldType}] time budget (${budget.minutes} min) reached — ${candidates.length - ci} candidate(s) skipped`);
       break;
     }

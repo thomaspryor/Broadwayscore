@@ -64,6 +64,9 @@ function createRunBudget(minutes, now = Date.now) {
       if (!enabled) return true;
       const remaining = Math.max(0, budgetMs - (now() - startedAt));
       if (remaining <= 0) return false;
+      // Infinity is an impossible reserve: never start (BRO-5261; it used to
+      // read as 0 and always start). NaN / negative still mean "no reserve".
+      if (minRemainingMs === Infinity) return false;
       return remaining >= (Number.isFinite(minRemainingMs) && minRemainingMs > 0 ? minRemainingMs : 0);
     },
   };

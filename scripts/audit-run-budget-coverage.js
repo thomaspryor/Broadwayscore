@@ -677,14 +677,15 @@ function extractFunctionSignatures(src) {
 
 /**
  * 0-based index of a budget-shaped parameter that the function body actually
- * checks (`<name>.exceeded(` or `<name>?.exceeded(`) — i.e. a real budget
+ * checks (`<name>.exceeded(` / `<name>?.exceeded(`, or the BRO-3340
+ * `<name>.canStartItem(` loop-head form) — i.e. a real budget
  * param, not just a coincidentally-named one that's ignored. -1 if none.
  */
 function findBudgetParamIndex(fn) {
   const idx = fn.params.findIndex((p) => /budget/i.test(p));
   if (idx === -1) return -1;
   const name = fn.params[idx];
-  return new RegExp(`\\b${name}\\??\\.exceeded\\s*\\(`).test(fn.body) ? idx : -1;
+  return new RegExp(`\\b${name}\\??\\.(?:exceeded|canStartItem)\\s*\\(`).test(fn.body) ? idx : -1;
 }
 
 /**

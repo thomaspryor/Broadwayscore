@@ -628,6 +628,13 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
     // Without this, a stale cache becomes a permanent miss loop — the show
     // stays audit-only forever even though a fresh SERP would find the new
     // URL. Codex ship-check finding 2026-04-30.
+    // BRO-5261: the rot retry is a second SERP + fetchPage() chain; only start
+    // it with a full item's reserve left, else retry the cached URL next run.
+    if (!result.ok && usedCache && !timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      console.warn(`  ${show.id}: cached URL failed (${result.reason}) — rot retry deferred to next run (time budget)`);
+      misses.push({ showId: show.id, reason: `${result.reason}-rot-retry-deferred`, url });
+      continue;
+    }
     if (!result.ok && usedCache) {
       console.warn(`  ${show.id}: cached URL failed (${result.reason}) — evicting + retry SERP`);
       delete urlCache.shows[show.id];

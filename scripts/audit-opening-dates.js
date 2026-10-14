@@ -57,6 +57,11 @@ const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
 // a fetchPage() chain can take ~2.5 min (provider timeouts + the 90s
 // Playwright tier deadline)), so do not START one with less than 3 min left.
 const MIN_REMAINING_MS_TO_START = 3 * 60_000;
+// BRO-5261: each candidate runs two discoveries of up to 5 article fetches,
+// so the loop-head reserve alone let the last fetch start with seconds left.
+// discoverAnnouncedDate also stops starting fetches below one fetchPage()
+// chain's worst case.
+const FETCH_WORST_CASE_MS = 2.5 * 60_000;
 
 // Cap discovery attempts per run to bound cost. Each show needing both
 // opening + previews-start checks costs up to 2 SERP + ~10 article fetches +
@@ -208,7 +213,7 @@ async function main() {
       const storedKey = fieldType === 'opening' ? 'openingDate' : 'previewsStartDate';
       const stored = show[storedKey] || null;
       try {
-        const discovered = await discoverAnnouncedDate(title, fieldType, { log: msg => console.log(msg) }, timeBudget);
+        const discovered = await discoverAnnouncedDate(title, fieldType, { log: msg => console.log(msg) }, timeBudget, FETCH_WORST_CASE_MS);
         if (!discovered) {
           continue;  // No press signal; can't conclude anything
         }

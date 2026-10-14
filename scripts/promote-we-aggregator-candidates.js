@@ -351,7 +351,7 @@ async function collectCandidates(opts) {
  * @param {Set<string>} ctx.existingIds (mutated: promoted ids are added)
  * @param {object} ctx.venueVocabulary from buildVenueVocabulary()
  * @param {number} ctx.limit LBO date-fetch cap this run
- * @param {{exceeded(): boolean, minutes: number}} [ctx.timeBudget]
+ * @param {{exceeded(): boolean, canStartItem(minRemainingMs?: number): boolean, minutes: number}} [ctx.timeBudget]
  * @param {Function} [ctx.log]
  * @param {object} [ctx.rejectedStore] from loadRejectedCandidates()
  * @param {Function} [ctx.fetchLboArticleDate] injectable for tests / offline runs
