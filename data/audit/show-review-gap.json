@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-13T23:45:26.813Z",
+  "generatedAt": "2026-10-14T02:28:29.917Z",
   "windowDays": 1095,
-  "targets": 655,
-  "auditedThisRun": 14,
-  "carriedForward": 715,
+  "targets": 652,
+  "auditedThisRun": 12,
+  "carriedForward": 719,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 411,
-    "missingCurrentRun": 870,
+    "missingCurrentRun": 869,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 964,
+    "totalFlaggedMisses": 961,
     "totalRecoverable": 6,
     "totalRecovered": 14,
     "humanExcluded": 0,
-    "automatedExcluded": 113,
-    "automatedExcludedListed": 113,
-    "priorProductionCitations": 5011
+    "automatedExcluded": 110,
+    "automatedExcludedListed": 110,
+    "priorProductionCitations": 5009
   },
   "results": [
     {
@@ -11335,35 +11335,145 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"ANON – a tempest at our kitchen table\" review newman",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "aggregator-internal-nav": 5,
+          "production-database-listing": 3,
+          "non-review-host": 7,
+          "bare-host": 1,
+          "census-junk-host": 3,
+          "ticketing-listing": 1,
+          "venue-production-page": 1,
+          "ticketing-reseller": 8,
+          "news-article": 1,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-13T22:54:31.321Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -21583,10 +21693,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 15,
         "byReason": {
           "non-review-host": 14,
-          "bare-host": 2
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -21600,7 +21710,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-13T19:50:25.664Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
@@ -27124,17 +27234,13 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatredirect.com/de/play/buffy-revamped-tickets",
         "https://www.flickermagazine.art/queer-events/buffy-revamped-lyric-theatre",
         "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
         "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
-        "https://www.thereviewshub.com/buffy-revamped-harrogate-theatre/",
-        "https://fairypoweredproductions.com/buffy-revamped-review/",
         "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
-        "https://broadwaybaby.com/shows/buffy-revamped/760593",
-        "https://www.londontheatredirect.com/play/buffy-revamped-tickets"
+        "https://fairypoweredproductions.com/buffy-revamped-review/"
       ],
-      "dirFiles": 1,
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -27155,11 +27261,11 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.thereviewshub.com/buffy-revamped-harrogate-theatre/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
+          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
+          "host": "on-magazine.co.uk",
+          "knownOutletId": "on-magazine",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-03-13",
+          "priorRunSource": "pending-file-date:2023-04-13",
           "serpCensus": true
         },
         {
@@ -27169,54 +27275,10 @@
           "priorRun": true,
           "priorRunSource": "pending-file-date:2023-04-14",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
-          "host": "on-magazine.co.uk",
-          "knownOutletId": "on-magazine",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-04-13",
-          "serpCensus": true
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/buffy-revamped/760593",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/play/buffy-revamped-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.londontheatredirect.com/de/play/buffy-revamped-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatredirect.com/de/play/buffy-revamped-tickets"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -27233,7 +27295,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -27274,7 +27336,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -27314,30 +27376,30 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 38,
         "byReason": {
           "aggregator-internal-nav": 2,
-          "non-review-host": 23,
+          "non-review-host": 25,
           "bare-host": 1,
+          "ticket-seller-product-page": 3,
+          "non-review-path": 2,
           "ticketing-listing": 2,
-          "write-path-blocked": 1,
-          "non-review-path": 1,
           "ticketing-reseller": 2,
           "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [
         {
           "url": "https://www.flickermagazine.art/queer-events/buffy-revamped-lyric-theatre",
@@ -27361,8 +27423,8 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.thereviewshub.com/buffy-revamped-harrogate-theatre/",
-          "host": "thereviewshub.com",
+          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
+          "host": "on-magazine.co.uk",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -27371,115 +27433,20 @@
           "host": "fairypoweredproductions.com",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
-          "host": "on-magazine.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.flickermagazine.art/queer-events/buffy-revamped-lyric-theatre",
-          "host": "flickermagazine.art",
-          "outletId": "flicker-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/buffy-revamped/760593",
-          "host": "broadwaybaby.com",
-          "outletId": "broadway-baby",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatredirect.com/play/buffy-revamped-tickets",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "broadway-baby",
-            "outlet": "broadway-baby",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaybaby.com/shows/buffy-revamped/760593"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/play/buffy-revamped-tickets"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/de/play/buffy-revamped-tickets"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://broadwaybaby.com/shows/buffy-revamped/760593",
-            "outletId": "broadway-baby",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T19:50:25.664Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/buffy-revamped-tickets",
-            "outletId": "londontheatredirect",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/de/play/buffy-revamped-tickets",
-            "outletId": "londontheatredirect",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-13T19:50:25.664Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-13T22:54:31.428Z",
-        "lastAt": "2026-10-13T22:54:31.428Z"
-      }
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "bug-2026",
@@ -30154,7 +30121,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-13T23:45:26.813Z"
+      "computedAt": "2026-10-13T23:45:26.813Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46555,6 +46527,43 @@
       "computedAt": "2026-10-11T20:52:53.418Z"
     },
     {
+      "showId": "doll-day-afternoon-off-broadway-2026",
+      "title": "Doll Day Afternoon",
+      "openingDate": "2026-10-15",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-14T02:28:29.917Z"
+    },
+    {
       "showId": "don-giovanni-off-broadway-2025",
       "title": "Don Giovanni",
       "openingDate": "2025-09-24",
@@ -54442,9 +54451,9 @@
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-FISH-IN-THE-DARK-Opens-on-Broadway-Updating-LIVE-20150305",
+        "https://www.broadwayworld.com/article/Review-Roundup-NICE-FISH-Starring-Mark-Rylance-Opens-at-St-Anns-Warehouse-20160222",
         "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-at-The-Other-Palace-What-Did-the-Critics-Think-20171109",
         "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
-        "https://www.broadwayworld.com/article/Review-Roundup-NICE-FISH-Starring-Mark-Rylance-Opens-at-St-Anns-Warehouse-20160222",
         "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Fights-the-Dragons-in-London-20171112",
         "https://www.broadwayworld.com/article/Review-Roundup-Broadway-Bound-BIG-FISH-Starring-Norbert-Leo-Butz-and-Kate-Baldwin-20130422"
       ],
@@ -54474,6 +54483,15 @@
         "http://www.ew.com/article/2015/03/05/larry-david-fish-dark-ew-review",
         "http://www.huffingtonpost.com/steven-suskin/aisle-view-whose-fish-is-it-anyway-_b_6813108.html",
         "http://flavorwire.com/507874/curb-your-enthusiasm-meets-moliere-in-larry-davids-fish-in-the-dark",
+        "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
+        "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
+        "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
+        "http://www.timeout.com/newyork/theater/nice-fish",
+        "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
+        "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
+        "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
+        "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
+        "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
         "http://www.telegraph.co.uk/theatre/what-to-see/evening-battered-schmaltz-big-fish-palace-review/",
         "https://www.thestage.co.uk/reviews/2017/big-fish-starring-kelsey-grammer-review-palace-london/",
         "https://www.thetimes.co.uk/article/theatre-review-big-fish-at-the-other-palace-sw1-8b80gpzdn",
@@ -54493,15 +54511,6 @@
         "http://www.thewrap.com/line-edit-big-fish-theater-review-it-sings-it-dances-but-does-it-swim-on-broadway/",
         "http://www.nydailynews.com/entertainment/music-arts/big-fish-theater-review-article-1.1476529",
         "http://www.amny.com/urbanite-1.812039/theater-review-big-fish-2-stars-1.6208030",
-        "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
-        "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
-        "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
-        "http://www.timeout.com/newyork/theater/nice-fish",
-        "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
-        "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
-        "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
-        "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
-        "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
         "http://www.express.co.uk/entertainment/theatre/877887/Big-Fish-The-Musical-review-London-The-Other-Palace",
         "http://variety.com/2013/legit/reviews/legit-review-big-fish-1200405489/",
         "http://articles.chicagotribune.com/2013-04-21/entertainment/ct-ent-0422-big-fish-review-20130420_1_kate-baldwin-bobby-steggert-tim-burton",
@@ -54513,7 +54522,6 @@
         "https://pagesonstages.wordpress.com/2024/04/12/fish/",
         "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/",
         "https://www.theatermania.com/news/review-fish-a-coming-of-age-comedy-about-isis_1856705/",
-        "https://www.theatermania.com/news/interview-talking-about-fish-a-coming-of-age-comedy-where-teen-girls-and-isis-meet-on-twitter_1856424/",
         "https://www.timeout.com/newyork/theater/fish"
       ],
       "dirFiles": 12,
@@ -54696,6 +54704,69 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/nice-fish",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "http://www.telegraph.co.uk/theatre/what-to-see/evening-battered-schmaltz-big-fish-palace-review/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
@@ -54811,69 +54882,6 @@
           "url": "http://www.amny.com/urbanite-1.812039/theater-review-big-fish-2-stars-1.6208030",
           "host": "amny.com",
           "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/nice-fish",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -55054,29 +55062,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.theatermania.com/news/interview-talking-about-fish-a-coming-of-age-comedy-where-teen-girls-and-isis-meet-on-twitter_1856424/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--hayley-levitt.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/interview-talking-about-fish-a-coming-of-age-comedy-where-teen-girls-and-isis-meet-on-twitter_1856424/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
           "url": "https://www.timeout.com/newyork/theater/fish",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
@@ -55124,7 +55109,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -55160,21 +55145,20 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1782,
+        "count": 1777,
         "byReason": {
           "aggregator-internal-nav": 1326,
           "not-http-url": 307,
           "production-database-listing": 2,
           "aggregator-section-root": 26,
-          "non-review-host": 111,
+          "non-review-host": 107,
           "bare-host": 3,
-          "ticketing-listing": 1,
-          "census-junk-host": 1,
           "write-path-blocked": 3,
+          "ticketing-listing": 1,
           "show-listing-page": 1,
           "unparseable-url": 1
         }
@@ -55194,16 +55178,16 @@
           "publishDate": "2015-03-05"
         },
         {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-NICE-FISH-Starring-Mark-Rylance-Opens-at-St-Anns-Warehouse-20160222",
+          "publishDate": "2016-02-22"
+        },
+        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-at-The-Other-Palace-What-Did-the-Critics-Think-20171109",
           "publishDate": "2017-11-09"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
           "publishDate": "2013-10-06"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-NICE-FISH-Starring-Mark-Rylance-Opens-at-St-Anns-Warehouse-20160222",
-          "publishDate": "2016-02-22"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Fights-the-Dragons-in-London-20171112",
@@ -55214,7 +55198,7 @@
           "publishDate": "2013-04-22"
         }
       ],
-      "automatedExcludedListed": 6,
+      "automatedExcludedListed": 5,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -55368,6 +55352,60 @@
           "reason": "prior-run"
         },
         {
+          "url": "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/nice-fish",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "http://www.telegraph.co.uk/theatre/what-to-see/evening-battered-schmaltz-big-fish-palace-review/",
           "host": "telegraph.co.uk",
           "priorRun": true,
@@ -55470,60 +55508,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "http://www.nytimes.com/2016/02/22/theater/review-nice-fish-mark-rylance-and-louis-jenkinss-quirky-ice-fishing-tale.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/mark-rylances-nice-fish-theater-868076",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/nice-fish",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/nice-fish-review-mark-rylance-reliant-on-louis-jenkins-poetry-1.11496431",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.vulture.com/2016/02/theater-review-nice-fish.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://deadline.com/2016/02/mark-rylance-bridge-of-spies-oscar-nominee-nice-fish-review-1201706733/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.thewrap.com/nice-fish-theater-review-mark-rylance-takes-the-plunge-as-actor-and-author/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2016/feb/22/nice-fish-review-mark-rylance-icy-absurdist-drama",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "http://www.express.co.uk/entertainment/theatre/877887/Big-Fish-The-Musical-review-London-The-Other-Palace",
           "host": "express.co.uk",
           "priorRun": true,
@@ -55582,13 +55566,6 @@
             "url": "https://www.theaterpizzazz.com/fish/"
           },
           {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/interview-talking-about-fish-a-coming-of-age-comedy-where-teen-girls-and-isis-meet-on-twitter_1856424/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -55645,13 +55622,6 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
-            "url": "https://www.theatermania.com/news/interview-talking-about-fish-a-coming-of-age-comedy-where-teen-girls-and-isis-meet-on-twitter_1856424/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T19:50:25.664Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/fish",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -55663,7 +55633,7 @@
         "liveCount": 3,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-13T19:50:25.664Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -80792,9 +80762,9 @@
       },
       "computedAt": "2026-10-13T19:50:25.664Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-13T22:54:31.428Z",
-        "lastAt": "2026-10-13T22:54:31.428Z"
+        "nextState": "incomplete:1:8",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
       }
     },
     {
@@ -89937,7 +89907,12 @@
         "liveCount": 0,
         "candidateCount": 21
       },
-      "computedAt": "2026-10-13T22:54:31.321Z"
+      "computedAt": "2026-10-13T22:54:31.321Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -97480,7 +97455,12 @@
         "liveCount": 8,
         "candidateCount": 23
       },
-      "computedAt": "2026-10-13T19:50:25.664Z"
+      "computedAt": "2026-10-13T19:50:25.664Z",
+      "quarantine": {
+        "nextState": "incomplete:9:21",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -114626,8 +114606,8 @@
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
-      "openingDate": null,
-      "status": "upcoming",
+      "openingDate": "2026-10-15",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -114648,15 +114628,17 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
+        "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-22T00:36:35.717Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -116131,7 +116113,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-03T23:39:15.002Z"
+      "computedAt": "2026-10-03T23:39:15.002Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -125336,9 +125323,9 @@
       },
       "computedAt": "2026-10-13T19:50:25.664Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-13T22:54:31.428Z",
-        "lastAt": "2026-10-13T22:54:31.428Z"
+        "nextState": "incomplete:0:8",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
       }
     },
     {
@@ -128100,7 +128087,12 @@
         "liveCount": 5,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-13T22:54:31.321Z"
+      "computedAt": "2026-10-13T22:54:31.321Z",
+      "quarantine": {
+        "nextState": "incomplete:6:7",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -145688,7 +145680,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -145729,12 +145721,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 33,
         "byReason": {
           "aggregator-internal-nav": 2,
-          "non-review-host": 26,
-          "census-junk-host": 1,
-          "write-path-blocked": 1
+          "non-review-host": 29,
+          "write-path-blocked": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -145748,7 +145740,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-13T19:50:25.664Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -148302,7 +148294,12 @@
         "liveCount": 33,
         "candidateCount": 37
       },
-      "computedAt": "2026-10-13T19:50:25.664Z"
+      "computedAt": "2026-10-13T19:50:25.664Z",
+      "quarantine": {
+        "nextState": "incomplete:34:36",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
@@ -160384,7 +160381,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T02:07:28.826Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -167162,7 +167159,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-13T22:54:31.321Z"
+      "computedAt": "2026-10-13T22:54:31.321Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -171893,7 +171895,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -171934,14 +171936,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 20,
         "byReason": {
           "aggregator-internal-nav": 2,
           "production-database-listing": 1,
-          "non-review-host": 13,
-          "bare-host": 4,
-          "venue-production-page": 1,
+          "non-review-host": 9,
+          "bare-host": 3,
+          "non-review-path": 1,
           "ticketing-listing": 1,
+          "venue-production-page": 1,
           "ticketing-reseller": 1,
           "review-hub-page": 1
         }
@@ -172061,36 +172064,36 @@
           {
             "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
             "outletId": "exeunt-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/the-ask",
             "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
             "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
             "outletId": "theatrebeyondbroadway.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
             "outletId": "theatrely",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
             "outletId": "theater-scene",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           }
         ],
@@ -172098,12 +172101,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-13T19:50:25.664Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-13T22:54:31.428Z",
-        "lastAt": "2026-10-13T22:54:31.428Z"
-      }
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -173358,7 +173356,7 @@
         "http://www.heraldscotland.com/arts-ents/stage/the-bodyguard-adelphi-theatre-london.19599460",
         "http://www.thestage.co.uk/reviews/review.php/37808/the-bodyguard"
       ],
-      "dirFiles": 0,
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -173443,6 +173441,7 @@
           "publishDate": "2012-12-06"
         }
       ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -173505,7 +173504,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T02:07:28.826Z"
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -174697,12 +174696,16 @@
         "http://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
         "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
         "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
+        "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
+        "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
         "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
-        "https://markaspen.com/2026/10/12/cherry-orchard-ttc/",
-        "https://peterviney.com/stage/the-cherry-orchard/",
-        "https://theatreweekly.com/production-images-released-for-the-cherry-orchard-starring-kristin-scott-thomas-and-stephen-mangan/",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+        "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
         "https://www.thetimes.com/culture/theatre-dance/article/stephen-mangan-interview-actor-cherry-orchard-harold-pinter-theatre-08gsj7k57",
-        "https://www.londontheatredirect.com/play/the-cherry-orchard-tickets",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
+        "https://peterviney.com/stage/the-cherry-orchard/",
+        "https://www.aol.co.uk/articles/cherry-orchard-review-kristin-scott-230138000.html",
         "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
         "https://www.theguardian.com/stage/2026/jun/24/ive-seen-chekhov-cherry-orchard-20-times-blossoms-british",
         "https://www.haroldpintertheatre.co.uk/shows/the-cherry-orchard",
@@ -174710,12 +174713,12 @@
         "https://www.theatremonkey.com/show/the-cherry-orchard-2/",
         "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
         "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-donmar-warehouse",
-        "https://www.reviewsgate.co.uk/all-reviews/cherry-orchard-by-anton-chekhov-translation-by-lara-wadersc-swan",
+        "https://mycritik.com/en/artist/8334-the-cherry-orchard",
         "https://www.londonboxoffice.co.uk/news/post/review-the-cherry-orchard-riverside-studios"
       ],
-      "dirFiles": 39,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 45,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [
         {
           "url": "http://www.nytimes.com/2016/10/17/theater/the-cherry-orchard-review.html",
@@ -174767,16 +174770,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreweekly.com/production-images-released-for-the-cherry-orchard-starring-kristin-scott-thomas-and-stephen-mangan/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
           "serpCensus": true
         },
         {
@@ -174786,21 +174782,21 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.aol.co.uk/articles/cherry-orchard-review-kristin-scott-230138000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
           "host": "thereviewshub.com",
           "knownOutletId": "thereviewshub",
           "serpCensus": true
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-donmar-warehouse",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/cherry-orchard-by-anton-chekhov-translation-by-lara-wadersc-swan",
-          "host": "reviewsgate.co.uk",
-          "knownOutletId": "reviewsgate",
+          "url": "https://mycritik.com/en/artist/8334-the-cherry-orchard",
+          "host": "mycritik.com",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -174980,9 +174976,9 @@
           "reverify": true
         },
         {
-          "url": "https://markaspen.com/2026/10/12/cherry-orchard-ttc/",
-          "host": "markaspen.com",
-          "knownOutletId": "markaspen",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+          "host": "thetimes.com",
+          "knownOutletId": "sunday-times",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -174990,9 +174986,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "markaspen--markaspen.json",
+              "file": "times-uk--clive-davis.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://markaspen.com/2026/10/12/cherry-orchard-ttc/"
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -175016,29 +175012,6 @@
               "file": "peterviney--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://peterviney.com/stage/the-cherry-orchard/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/play/the-cherry-orchard-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatredirect.com/play/the-cherry-orchard-tickets?srsltid=AU7gw4WFCMXElps1_s6ZrRUaLZ_nf8BvNxLD21Ej0bo2fM5d9XBR3sdz"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -175208,7 +175181,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -175253,8 +175226,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -175263,8 +175236,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -175273,8 +175246,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -175283,8 +175256,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -175294,7 +175267,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -175310,21 +175283,21 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 14,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 320,
+        "count": 312,
         "byReason": {
-          "aggregator-internal-nav": 227,
+          "aggregator-internal-nav": 226,
           "not-http-url": 43,
           "aggregator-section-root": 4,
-          "non-review-host": 39,
+          "non-review-host": 32,
           "bare-host": 1,
-          "ticketing-listing": 1,
-          "ticket-seller-product-page": 1,
           "write-path-blocked": 2,
-          "non-review-path": 2
+          "non-review-path": 2,
+          "show-hub": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -175334,7 +175307,7 @@
           "publishDate": "2016-10-16"
         }
       ],
-      "automatedExcludedListed": 10,
+      "automatedExcludedListed": 9,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -175378,19 +175351,13 @@
           "host": "nj.com",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [
         {
-          "url": "https://theatreweekly.com/production-images-released-for-the-cherry-orchard-starring-kristin-scott-thomas-and-stephen-mangan/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -175414,6 +175381,19 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
+          "url": "https://www.aol.co.uk/articles/cherry-orchard-review-kristin-scott-230138000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
           "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
           "host": "thereviewshub.com",
           "outletId": "thereviewshub",
@@ -175427,23 +175407,10 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-donmar-warehouse",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with london-theatre--matt-wolf.json\n   reason: stale-flag-on-existi"
-        },
-        {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/cherry-orchard-by-anton-chekhov-translation-by-lara-wadersc-swan",
-          "host": "reviewsgate.co.uk",
-          "outletId": "reviewsgate",
-          "provisional": false,
+          "url": "https://mycritik.com/en/artist/8334-the-cherry-orchard",
+          "host": "mycritik.com",
+          "outletId": "mycritik",
+          "provisional": true,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -175458,11 +175425,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreweekly.com/production-images-released-for-the-cherry-orchard-starring-kristin-scott-thomas-and-stephen-mangan/"
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre"
           },
           {
             "outletId": "sunday-times",
@@ -175472,6 +175439,13 @@
             "url": "https://www.thetimes.com/culture/theatre-dance/article/stephen-mangan-interview-actor-cherry-orchard-harold-pinter-theatre-08gsj7k57"
           },
           {
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.co.uk/articles/cherry-orchard-review-kristin-scott-230138000.html"
+          },
+          {
             "outletId": "thereviewshub",
             "outlet": "thereviewshub",
             "critic": "Unknown",
@@ -175479,18 +175453,11 @@
             "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
+            "outletId": "mycritik.com",
+            "outlet": "mycritik.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-donmar-warehouse"
-          },
-          {
-            "outletId": "reviewsgate",
-            "outlet": "reviewsgate",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.reviewsgate.co.uk/all-reviews/cherry-orchard-by-anton-chekhov-translation-by-lara-wadersc-swan"
+            "url": "https://mycritik.com/en/artist/8334-the-cherry-orchard"
           },
           {
             "outletId": "monstagigz",
@@ -175500,11 +175467,11 @@
             "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/"
           },
           {
-            "outletId": "markaspen",
-            "outlet": "markaspen",
+            "outletId": "sunday-times",
+            "outlet": "sunday-times",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://markaspen.com/2026/10/12/cherry-orchard-ttc/"
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6"
           },
           {
             "outletId": "peterviney.com",
@@ -175512,13 +175479,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://peterviney.com/stage/the-cherry-orchard/"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/play/the-cherry-orchard-tickets"
           },
           {
             "outletId": "timeout-london",
@@ -175566,121 +175526,145 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://theatreweekly.com/production-images-released-for-the-cherry-orchard-starring-kristin-scott-thomas-and-stephen-mangan/",
-            "outletId": "theatre-weekly",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "url": "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-donmar-warehouse",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-10-13T19:50:25.664Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/stephen-mangan-interview-actor-cherry-orchard-harold-pinter-theatre-08gsj7k57",
             "outletId": "sunday-times",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
+          },
+          {
+            "url": "https://www.aol.co.uk/articles/cherry-orchard-review-kristin-scott-230138000.html",
+            "outletId": "aol.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
             "outletId": "thereviewshub",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-donmar-warehouse",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T19:50:25.664Z"
-          },
-          {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/cherry-orchard-by-anton-chekhov-translation-by-lara-wadersc-swan",
-            "outletId": "reviewsgate",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T19:50:25.664Z"
+            "url": "https://mycritik.com/en/artist/8334-the-cherry-orchard",
+            "outletId": "mycritik.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
             "outletId": "monstagigz",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
-            "url": "https://markaspen.com/2026/10/12/cherry-orchard-ttc/",
-            "outletId": "markaspen",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+            "outletId": "sunday-times",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://peterviney.com/stage/the-cherry-orchard/",
             "outletId": "peterviney.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/the-cherry-orchard-tickets",
-            "outletId": "londontheatredirect",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
             "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/jun/24/ive-seen-chekhov-cherry-orchard-20-times-blossoms-british",
             "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.haroldpintertheatre.co.uk/shows/the-cherry-orchard",
             "outletId": "haroldpintertheatre.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.soniafriedman.com/productions/the-cherry-orchard",
             "outletId": "soniafriedman.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.theatremonkey.com/show/the-cherry-orchard-2/",
             "outletId": "theatremonkey",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/review-the-cherry-orchard-riverside-studios",
             "outletId": "london-box-office",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 15
+        "liveCount": 4,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-13T19:50:25.664Z",
-      "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-10-13T22:54:31.428Z",
-        "lastAt": "2026-10-13T22:54:31.428Z"
-      }
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -200201,7 +200185,12 @@
         "liveCount": 12,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-13T19:50:25.664Z"
+      "computedAt": "2026-10-13T19:50:25.664Z",
+      "quarantine": {
+        "nextState": "incomplete:10:13",
+        "since": "2026-10-14T02:28:30.013Z",
+        "lastAt": "2026-10-14T02:28:30.013Z"
+      }
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -219236,6 +219225,43 @@
         "candidateCount": 31
       },
       "computedAt": "2026-08-31T14:43:54.309Z"
+    },
+    {
+      "showId": "unconditional-a-new-musical-memoir-off-broadway-2026",
+      "title": "UNCONDITIONAL, a new musical memoir",
+      "openingDate": "2026-10-15",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-14T02:28:29.917Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",

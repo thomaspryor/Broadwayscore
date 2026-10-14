@@ -1,44 +1,10 @@
 {
-  "generatedAt": "2026-10-13T23:47:26.522Z",
+  "generatedAt": "2026-10-14T02:28:45.681Z",
   "maxAgeHours": 12,
-  "showsAffected": 30,
-  "strandedFiles": 43,
+  "showsAffected": 28,
+  "strandedFiles": 39,
   "blackoutShows": [],
   "findings": [
-    {
-      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "title": "Thelma & Louise: A New Musical",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "express-uk--jess-phillips.json",
-          "url": "https://www.express.co.uk/entertainment/theatre/2249862/thelma-louise-musical-review",
-          "outlet": "Daily Express",
-          "ageHours": null
-        },
-        {
-          "file": "plays-international--unknown.json",
-          "url": "https://playsinternational.org.uk/thelma-and-louise-young-vic/",
-          "outlet": "Plays International",
-          "ageHours": null
-        },
-        {
-          "file": "tickets-available-from-the-theatre--unknown.json",
-          "url": "https://www.youngvic.org/",
-          "outlet": "Tickets available from the theatre",
-          "ageHours": null
-        },
-        {
-          "file": "timeout-london--andrjez-lukowski.json",
-          "url": "https://www.timeout.com/london/theatre/thelma-louise-review",
-          "outlet": "Time Out London",
-          "ageHours": null
-        }
-      ],
-      "usable": 38,
-      "discovered": 45,
-      "totalBlackout": false
-    },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "title": "Little Shop of Horrors",
@@ -48,19 +14,19 @@
           "file": "stageandcinema--unknown.json",
           "url": "https://stageandcinema.com/2026/09/26/little-shop-of-horrors-nctc-review/",
           "outlet": "Stage and Cinema",
-          "ageHours": 294.50628611111114
+          "ageHours": 297.1949413888889
         },
         {
           "file": "thestage--unknown.json",
           "url": "https://thestage.co.uk/reviews/little-shop-of-horrors-review-hope-mill-theatre-manchester-liverpool-playhouse",
           "outlet": "The Stage",
-          "ageHours": 79.77530138888889
+          "ageHours": 82.46395666666666
         },
         {
           "file": "whatsonstage--unknown.json",
           "url": "https://www.whatsonstage.com/news/little-shop-of-horrors-at-hope-mill-theatre-review_1734574/",
           "outlet": "WhatsOnStage",
-          "ageHours": 102.50648666666666
+          "ageHours": 105.19514194444444
         }
       ],
       "usable": 47,
@@ -91,7 +57,7 @@
           "ageHours": null
         }
       ],
-      "usable": 46,
+      "usable": 47,
       "discovered": 57,
       "totalBlackout": false
     },
@@ -110,7 +76,7 @@
           "file": "londonlivinglarge--unknown.json",
           "url": "https://www.londonlivinglarge.com/2026/09/kimberly-akimbo-hampstead-theatre-aug.html",
           "outlet": "Londonlivinglarge",
-          "ageHours": 585.6210597222222
+          "ageHours": 588.309715
         },
         {
           "file": "timeout-london--andrezej-lukowski.json",
@@ -154,13 +120,13 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 801.0564833333333
+          "ageHours": 803.7451386111111
         },
         {
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-the-mousetrap-the-alexandra-tour",
           "outlet": "West End Best Friend",
-          "ageHours": 680.4194030555556
+          "ageHours": 683.1080583333334
         }
       ],
       "usable": 31,
@@ -198,17 +164,39 @@
           "file": "pinkprincetheatre--unknown.json",
           "url": "https://www.pinkprincetheatre.com/post/review-a-super-happy-story-about-feeling-super-sad-young-vic",
           "outlet": "Pinkprincetheatre",
-          "ageHours": 174.63690472222223
+          "ageHours": 177.32556
         },
         {
           "file": "times-square-chronicles--unknown.json",
           "url": "https://t2conline.com/theatre-and-film-review-from-a-cramped-bombay-apartment-to-a-1977-disability-rights-occupation-in-san-francisco-two-stories-make-history-feel-remarkably-close/",
           "outlet": "Times Square Chronicles",
-          "ageHours": 561.3362738888889
+          "ageHours": 564.0249291666667
         }
       ],
       "usable": 78,
       "discovered": 116,
+      "totalBlackout": false
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "title": "Thelma & Louise: A New Musical",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "plays-international--unknown.json",
+          "url": "https://playsinternational.org.uk/thelma-and-louise-young-vic/",
+          "outlet": "Plays International",
+          "ageHours": null
+        },
+        {
+          "file": "timeout-london--andrjez-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/thelma-louise-review",
+          "outlet": "Time Out London",
+          "ageHours": null
+        }
+      ],
+      "usable": 39,
+      "discovered": 44,
       "totalBlackout": false
     },
     {
@@ -220,7 +208,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 1712.6908508333333
+          "ageHours": 1715.3795061111111
         }
       ],
       "usable": 48,
@@ -236,7 +224,7 @@
           "file": "musical-theatre-review--unknown.json",
           "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
           "outlet": "Musical Theatre Review",
-          "ageHours": 585.6778002777778
+          "ageHours": 588.3664555555556
         }
       ],
       "usable": 75,
@@ -252,7 +240,7 @@
           "file": "stannswarehouseorg--unknown.json",
           "url": "https://stannswarehouse.org/show/kramer-fauci/",
           "outlet": "Stannswarehouseorg",
-          "ageHours": 194.34670833333334
+          "ageHours": 197.0353636111111
         }
       ],
       "usable": 18,
@@ -273,22 +261,6 @@
       ],
       "usable": 57,
       "discovered": 118,
-      "totalBlackout": false
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "title": "Hamilton",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "independent--unknown.json",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hamilton-victoria-palace-theatre-london-review-a-magnificent-achievement-thomas-kail-the-book-of-mormon-a8122091.html",
-          "outlet": "Independent",
-          "ageHours": null
-        }
-      ],
-      "usable": 39,
-      "discovered": 54,
       "totalBlackout": false
     },
     {
@@ -316,7 +288,7 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/mamma-mia-sheffield-lyceum-theatre/",
           "outlet": "North West End",
-          "ageHours": 561.3398905555556
+          "ageHours": 564.0285458333333
         }
       ],
       "usable": 29,
@@ -372,22 +344,6 @@
       "totalBlackout": false
     },
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "title": "Paranormal Activity",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "whatsonstage--unknown.json",
-          "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
-          "outlet": "WhatsOnStage",
-          "ageHours": null
-        }
-      ],
-      "usable": 28,
-      "discovered": 41,
-      "totalBlackout": false
-    },
-    {
       "showId": "six-the-musical-west-end-2021",
       "title": "SIX the Musical",
       "status": "open",
@@ -412,7 +368,7 @@
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-as-you-like-it-rsc",
           "outlet": "West End Best Friend",
-          "ageHours": 55.295650555555554
+          "ageHours": 57.98430583333333
         }
       ],
       "usable": 57,
@@ -428,11 +384,11 @@
           "file": "londontheatre1--unknown.json",
           "url": "https://www.londontheatre1.com/reviews/man-to-man-royal-court/",
           "outlet": "LondonTheatre1",
-          "ageHours": 464.16396194444445
+          "ageHours": 466.85261722222225
         }
       ],
       "usable": 69,
-      "discovered": 79,
+      "discovered": 78,
       "totalBlackout": false
     },
     {
@@ -444,7 +400,7 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/operation-mincemeat-wycombe-swan-high-wycombe/",
           "outlet": "The Reviews Hub",
-          "ageHours": 319.21541
+          "ageHours": 321.90406527777776
         }
       ],
       "usable": 44,
@@ -452,19 +408,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "abba-voyage-off-west-end-2026",
-      "title": "ABBA Voyage",
-      "status": "open",
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "status": "previews",
       "stranded": [
         {
-          "file": "times-uk--unknown.json",
-          "url": "https://www.thetimes.com/uk/article/abba-voyage-review-holograms-are-fine-but-the-real-thing-is-still-best-skrzc5nsh",
-          "outlet": "The Times",
+          "file": "times-uk--ann-treneman.json",
+          "url": "https://www.thetimes.com/life-style/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+          "outlet": "The Times (UK)",
           "ageHours": null
         }
       ],
-      "usable": 30,
-      "discovered": 34,
+      "usable": 9,
+      "discovered": 17,
       "totalBlackout": false
     },
     {
@@ -476,11 +432,11 @@
           "file": "broadwayworld--greg-kerestan.json",
           "url": "https://www.broadwayworld.com/baltimore/article/Review-JULIET-at-the-Hippodrome-20240926",
           "outlet": "BroadwayWorld",
-          "ageHours": 51.58581916666667
+          "ageHours": 54.274474444444444
         }
       ],
-      "usable": 58,
-      "discovered": 63,
+      "usable": 61,
+      "discovered": 66,
       "totalBlackout": false
     },
     {
@@ -492,11 +448,11 @@
           "file": "broadwayworld--katrina-fageol.json",
           "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
           "outlet": "BroadwayWorld",
-          "ageHours": 218.14041805555556
+          "ageHours": 220.82907333333333
         }
       ],
-      "usable": 63,
-      "discovered": 62,
+      "usable": 64,
+      "discovered": 63,
       "totalBlackout": false
     },
     {
@@ -508,7 +464,7 @@
           "file": "musical-theatre-review--unknown.json",
           "url": "https://musicaltheatrereview.com/london-production-of-the-phantom-of-the-opera-to-be-captured-on-film-for-the-first-time/",
           "outlet": "Musical Theatre Review",
-          "ageHours": 79.74624944444444
+          "ageHours": 82.43490472222223
         }
       ],
       "usable": 21,
@@ -524,7 +480,7 @@
           "file": "stageandcinema--unknown.json",
           "url": "https://stageandcinema.com/2026/10/05/topdog-underdog-old-globe/",
           "outlet": "Stage and Cinema",
-          "ageHours": 150.1286352777778
+          "ageHours": 152.81729055555556
         }
       ],
       "usable": 17,
@@ -540,7 +496,7 @@
           "file": "broadwayworld--marie-reiter.json",
           "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-San-Diego-Civic-Theatre-20261002",
           "outlet": "BroadwayWorld",
-          "ageHours": 99.5031
+          "ageHours": 102.19175527777777
         }
       ],
       "usable": 13,
@@ -556,7 +512,7 @@
           "file": "theatermania--unknown.json",
           "url": "https://www.theatermania.com/news/review-dirty-dancing-has-the-moves-but-its-book-needs-a-lift_1856695/",
           "outlet": "TheaterMania",
-          "ageHours": 79.76899388888889
+          "ageHours": 82.45764916666667
         }
       ],
       "usable": 17,
