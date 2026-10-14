@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-14T02:45:30.492Z",
+  "lastChecked": "2026-10-14T07:38:42.218Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "11h ago, success"
+      "message": "16h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -18,8 +18,8 @@
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
@@ -44,7 +44,7 @@
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "6h ago, success"
+      "message": "11h ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -54,27 +54,27 @@
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "11h ago, success (newest run failure — superseded, not a failure)"
+      "message": "15h ago, success (newest run failure — superseded, not a failure)"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "14h ago, success"
+      "message": "19h ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "6h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "8h ago, ran (success; liveness-only check)"
+      "message": "13h ago, ran (success; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
@@ -84,12 +84,12 @@
     {
       "name": "Cron: Cloud Memory Reconcile",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "3 of 125 exempt scheduled workflow(s) stopped starting: recollect-for-scores.yml (last start 220h ago, limit 192h); reverify-cv-promoted-weekly.yml (no scheduled start in last 5 runs, limit 192h); scrape-dtli-show-score.yml (last start 561h ago, limit 192h). Disabled on purpose: codex-runner.yml."
+      "message": "3 of 125 exempt scheduled workflow(s) stopped starting: recollect-for-scores.yml (last start 225h ago, limit 192h); reverify-cv-promoted-weekly.yml (no scheduled start in last 5 runs, limit 192h); scrape-dtli-show-score.yml (last start 566h ago, limit 192h). Disabled on purpose: codex-runner.yml."
     }
   ]
 }

@@ -1,20 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-10-14T02:45:30.592Z",
+  "status": "error",
+  "lastChecked": "2026-10-14T07:38:42.220Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Workflow repeat-failure: Execute Approved Fix",
-      "status": "warn",
-      "message": "Execute Approved Fix failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Land",
-      "status": "warn",
-      "message": "Land failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "status": "error",
+      "message": "Execute Approved Fix failed 4 times in the last 24h — likely broken, not transient."
     }
   ]
 }
