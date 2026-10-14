@@ -460,3 +460,10 @@ test('runnerHealth: a lapsed Codex login reads as such, and the row is internal-
   const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
   assert.notEqual(classifyHealthCheck({ name: 'Codex runner: landing cards', status: 'error' }), 'visitors');
 });
+
+test('runnerSummaryFacts: one parser for the acceptance probe and the daily row', () => {
+  const b = '## Codex runner 2026-10-14: 2 card(s) worked in 90 min\n- Landed and Done: BRO-1, \n- Landed part, back to Todo with what is left: BRO-2\n- Runner error mid-card (back to Todo): BRO-3, BRO-4\n- Stopped early: no';
+  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, crashed: 2, stop: 'no' });
+  assert.equal(r.assessRunnerSummaries([b, b, b]).landed, 6);
+  assert.match(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: b }], Date.parse('2026-10-14T10:00:00Z')).message, /2 card\(s\) landed, 2 crashed/);
+});

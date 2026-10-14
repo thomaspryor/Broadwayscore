@@ -431,17 +431,27 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
  * at least `minRuns` summaries, none whose "Stopped early" line names the lock, and at least one
  * card landed. -> { ok, runs, landed, problems[] }
  */
+/** The counts one "## Codex runner" summary body reports: { landed, crashed, stop }. */
+function runnerSummaryFacts(body) {
+  const list = (label) => {
+    const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
+    return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
+  };
+  return {
+    landed: list('Landed and Done').length + list('Landed part, back to Todo with what is left').length,
+    crashed: list('Runner error mid-card \\(back to Todo\\)').length,
+    stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',
+  };
+}
+
 function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {
   const runs = (Array.isArray(bodies) ? bodies : []).filter((b) => /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(b || '')));
   const problems = [];
   let landed = 0;
   for (const b of runs) {
-    const stop = (b.match(/^- Stopped early: (.*)$/m) || [])[1] || '';
-    if (/lock/i.test(stop)) problems.push(`stopped on the lock: ${stop}`);
-    for (const label of ['Landed and Done', 'Landed part, back to Todo with what is left']) {
-      const list = (b.match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
-      if (list !== 'none') landed += list.split(',').length;
-    }
+    const f = runnerSummaryFacts(b);
+    if (/lock/i.test(f.stop)) problems.push(`stopped on the lock: ${f.stop}`);
+    landed += f.landed;
   }
   if (runs.length < minRuns) problems.push(`only ${runs.length} run summaries (want ${minRuns})`);
   if (!landed) problems.push('no card landed');
@@ -469,16 +479,12 @@ function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
       ? 'Codex runner could not start in the last 24h: its Codex login is not usable (see "## Codex runner did not start" on BRO-4745).'
       : 'No Codex runner summary in the last 24h: the runner is not running (it should post one every 2 hours).' };
   }
-  const list = (b, label) => {
-    const v = (String(b).match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
-    return v === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
-  };
   let landed = 0; let crashed = 0; const lockStops = [];
   for (const c of recent) {
-    landed += list(c.body, 'Landed and Done').length + list(c.body, 'Landed part, back to Todo with what is left').length;
-    crashed += list(c.body, 'Runner error mid-card \\(back to Todo\\)').length;
-    const stop = (String(c.body).match(/^- Stopped early: (.*)$/m) || [])[1] || '';
-    if (/lock/i.test(stop)) lockStops.push(c.createdAt.slice(0, 16));
+    const f = runnerSummaryFacts(c.body);
+    landed += f.landed;
+    crashed += f.crashed;
+    if (/lock/i.test(f.stop)) lockStops.push(String(c.createdAt).slice(0, 16));
   }
   const facts = `${recent.length} run(s), ${landed} card(s) landed, ${crashed} crashed mid-card in the last 24h`;
   if (lockStops.length) return { status: 'error', message: `Codex runner stopped on its run lock (${lockStops.join(', ')}): ${facts}.` };
@@ -558,6 +564,7 @@ module.exports = {
   lockStampTooOld,
   landWaitMinutes,
   assessRunnerSummaries,
+  runnerSummaryFacts,
   runnerHealth,
   codexExitTransient,
   stripHookNoise,
