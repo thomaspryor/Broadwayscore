@@ -62,3 +62,22 @@ test('url naming this show without its leading article is kept', () => {
   const d = { ...incident(), url: 'https://www.thestage.co.uk/reviews/month-in-the-country-and-care-review' };
   assert.equal(isCombinedReviewOfOtherMemberOnly(d, MONTH), false);
 });
+
+test('a double bill reviewed with its halves in the other order is kept (2026-10-14 scoring-delta)', () => {
+  const show = { id: 'the-human-voice-the-seven-deadly-sins-west-end-2026', title: 'The Human Voice / The Seven Deadly Sins', venue: 'Charing Cross Theatre' };
+  const d = {
+    url: 'https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/',
+    fullText: '', dtliExcerpt: 'A bold pairing of Weill and Poulenc.',
+    isCombinedReview: true, combinedWith: ['the-seven-deadly-sins-west-end-2026'],
+  };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, show), false);
+});
+
+test('a joint review whose url names a distinctive word of this title is kept (Bloomberg Orphans + Jekyll & Hyde)', () => {
+  const show = { id: 'jekyll-and-hyde-2013', title: 'Jekyll & Hyde', venue: 'Marquis Theatre' };
+  const d = {
+    url: 'https://www.bloomberg.com/news/2013-04-19/skinny-baldwin-pales-in-orphans-booming-hyde-stage.html',
+    fullText: '', isCombinedReview: true, combinedWith: ['orphans-2013'],
+  };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, show), false);
+});

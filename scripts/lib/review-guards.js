@@ -4345,9 +4345,19 @@ function isCombinedReviewOfOtherMemberOnly(data, show) {
   let hay;
   try { hay = `-${slugify(decodeURIComponent(new URL(data.url).pathname))}-`; } catch { return false; }
   const own = slugify(show.title);
-  const ownNoArticle = own.replace(/^(?:the|a|an)-/, '');
+  // A double bill ("The Human Voice / The Seven Deadly Sins") is often written
+  // in either order: each half names this show too.
+  const parts = String(show.title).split(/\s+\/\s+/).filter(Boolean);
+  const ownSlugs = [own, ...(parts.length > 1 ? parts.map(slugify) : [])];
   const ownBase = baseId(show.id || '');
-  if ([own, ownNoArticle, ownBase].some((t) => t && t.length >= 3 && hay.includes(`-${t}-`))) return false;
+  if ([...ownSlugs, ...ownSlugs.map((t) => t.replace(/^(?:the|a|an)-/, '')), ownBase]
+    .some((t) => t && t.length >= 3 && hay.includes(`-${t}-`))) return false;
+  // A distinctive word of this show's title in the url is joint coverage too:
+  // Bloomberg's ".../skinny-baldwin-pales-in-orphans-booming-hyde-stage" reviews
+  // Orphans AND Jekyll & Hyde. Generic words never count.
+  const GENERIC = new Set(['the', 'and', 'musical', 'play', 'show', 'review', 'reviews', 'theatre', 'theater',
+    'broadway', 'london', 'west', 'new', 'york', 'story', 'life', 'love', 'night', 'house', 'live', 'part', 'with', 'from', 'this', 'that']);
+  if (own.split('-').some((w) => w.length >= 4 && !GENERIC.has(w) && hay.includes(`-${w}-`))) return false;
   const namesMember = data.combinedWith.some((id) => {
     const b = baseId(id);
     if (b.length < 3 || (own && (own.includes(b) || b.includes(own)))) return false;
@@ -4358,7 +4368,8 @@ function isCombinedReviewOfOtherMemberOnly(data, show) {
     .filter((v) => typeof v === 'string' && v.trim()).join(' ');
   if (!text) return true;
   const titles = require('./show-title-variants');
-  return !(titles.textMentionsTitle(text, show.title) || titles.textMentionsShortTitle(text, show.title, 1));
+  const names = parts.length > 1 ? [show.title, ...parts] : [show.title];
+  return !names.some((t) => titles.textMentionsTitle(text, t) || titles.textMentionsShortTitle(text, t, 1));
 }
 
 /**
