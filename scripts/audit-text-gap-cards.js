@@ -30,6 +30,16 @@ try {
   for (const f of JSON.parse(fs.readFileSync(path.join(root, 'failed-fetches.json'), 'utf8'))) failed[f.reviewId || `${f.showId}/${f.file}`] = f;
 } catch {}
 
+function restoreTargets() {
+  const dir = path.join(__dirname, '..', 'data', 'pending-fixes');
+  const out = new Set();
+  for (const f of fs.readdirSync(dir)) {
+    if (!/^bro-4564-[a-d]\.json$/.test(f)) continue;
+    for (const a of JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')).plan.actions) out.add(a.file.replace(/\.json$/, '') + '.json');
+  }
+  return out;
+}
+
 const rows = [];
 for (const showId of fs.readdirSync(root)) {
   const dir = path.join(root, showId);
@@ -68,6 +78,14 @@ for (const showId of fs.readdirSync(root)) {
       const t = (d.fullText || d.wrongFullText || '').replace(/\s+/g, ' ');
       const dates = (t.match(/\b(?:\d{1,2}\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(?:\d{1,2},?\s+)?20\d\d\b/g) || []).slice(0, 8);
       rows.push({ id, scalars, head: t.slice(0, 200), dates });
+    }
+    if (card === '4564-live') {
+      const planFiles = restoreTargets();
+      if (planFiles.has(id)) {
+        const live = liveKey.has(`${showId}|${d.outletId}|${(d.criticName || '').toLowerCase()}`);
+        const keep = Object.entries(d).filter(([k, v]) => /^(source|contentTier|rejectedAt|rejectionReason|wrongShow|wrongProduction|isNonReview|fabricatedEntry|crossOutletDuplicate|duplicateOf|roundupArticle|unverifiable\w*|textStatus|textQuality)$/.test(k) && v !== null && v !== false && v !== undefined).map(([k, v]) => `${k}=${String(v).slice(0, 40)}`);
+        rows.push({ id, live, why: keep.join(', ') });
+      }
     }
     if (card === '4301' && only) {
       rows.push({ id, criticName: d.criticName, publishDate: d.publishDate, textLen: (d.fullText || '').length, url: d.url, wrongProduction: !!d.wrongProduction, flags: Object.keys(d).filter(k => /wrong|priorRun|dateSource|publishDateSource/i.test(k)).join(',') });
