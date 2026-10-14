@@ -141,3 +141,34 @@ test('recordDraftCompletion accepts a draftStatus override for an adopted sent b
     if (savedGA === undefined) delete process.env.GITHUB_ACTIONS; else process.env.GITHUB_ACTIONS = savedGA;
   }
 });
+
+// ── BRO-3493 retro-review (BRO-5261) ────────────────────────────────────────
+
+test('a revival does not adopt the earlier production\'s sent broadcast of the same title', async () => {
+  const revival = [{ showId: 'our-town-2026', showTitle: 'Our Town', openingDate: '2026-10-10' }];
+  const name = buildBroadcastName('Broadway Scorecard', revival);
+  const store = [{ id: 'bc_old', name, status: 'sent', created_at: '2026-07-01 20:00:00.000000+00' }];
+  const r = fakeResend(store);
+  const out = await upsertBroadcastDraft({
+    payload: { name }, request: r.request, ignoreStatuses: OPENING_NIGHT_IGNORE, notBefore: mod.broadcastNotBefore(revival),
+  });
+  assert.equal(out.action, 'created');
+  // an orphan from THIS production (created after opening) is still reused
+  const again = await upsertBroadcastDraft({
+    payload: { name }, request: fakeResend(store.map((b) => (b.id === out.id ? { ...b, created_at: '2026-10-11T00:00:00Z' } : b))).request,
+    ignoreStatuses: OPENING_NIGHT_IGNORE, notBefore: mod.broadcastNotBefore(revival),
+  });
+  assert.equal(again.action, 'updated');
+});
+
+test('broadcastNotBefore is a day before the earliest opening, null without dates', () => {
+  assert.equal(mod.broadcastNotBefore([{ openingDate: '2026-10-10' }, { openingDate: '2026-10-08' }]), '2026-10-07T00:00:00.000Z');
+  assert.equal(mod.broadcastNotBefore([{}]), null);
+});
+
+test('every Resend request carries a timeout signal', async () => {
+  let seen;
+  const req = makeResendRequest('re_test', async (url, opt) => { seen = opt.signal; return { ok: true, status: 200, text: async () => '{}' }; });
+  await req('GET', RESEND_BROADCASTS_LIST_URL);
+  assert.ok(seen instanceof AbortSignal);
+});
