@@ -74,11 +74,12 @@ test('install writes settings + command/skill links; --check passes; re-install 
   assert.equal(r.status, 0, r.stderr);
   const s = JSON.parse(fs.readFileSync(path.join(target, '.claude', 'settings.json'), 'utf8'));
   assert.ok(s[MARK_KEY]);
-  for (const name of ['commands', 'skills']) {
+  for (const name of ['commands', 'skills', 'agents']) {
     assert.equal(fs.readlinkSync(path.join(target, '.claude', name)), path.join(REPO_ROOT, '.claude', name));
   }
   assert.ok(fs.existsSync(path.join(target, '.claude', 'commands', 'what-else.md')), '/what-else reachable');
   assert.ok(fs.existsSync(path.join(target, '.claude', 'commands', 'wrap-up.md')), '/wrap-up reachable');
+  assert.ok(fs.existsSync(path.join(target, '.claude', 'agents', 'review-panelist.md')), 'review-panelist agent reachable (ship-check reviewers)');
   const mtime = fs.statSync(path.join(target, '.claude', 'settings.json')).mtimeMs;
   assert.equal(run(['--target', target]).status, 0);
   assert.equal(fs.statSync(path.join(target, '.claude', 'settings.json')).mtimeMs, mtime, 'unchanged output is not rewritten');
@@ -138,6 +139,12 @@ test('refuses $HOME as target, a hand-written settings.json, and a real commands
   const realdir = run(['--target', t2]);
   assert.equal(realdir.status, 2);
   assert.match(realdir.stderr, /not a symlink/);
+
+  const { target: t3 } = makeTarget('t-realagents');
+  fs.mkdirSync(path.join(t3, '.claude', 'agents'), { recursive: true });
+  const realAgents = run(['--target', t3]);
+  assert.equal(realAgents.status, 2);
+  assert.match(realAgents.stderr, /agents exists and is not a symlink/);
 });
 
 test('--check reports drift; --uninstall removes only what it installed', () => {
@@ -154,6 +161,7 @@ test('--check reports drift; --uninstall removes only what it installed', () => 
   assert.equal(run(['--target', target, '--uninstall']).status, 0);
   assert.ok(!fs.existsSync(p));
   assert.ok(!fs.existsSync(path.join(target, '.claude', 'commands')));
+  assert.ok(!fs.existsSync(path.join(target, '.claude', 'agents')), 'agents link removed too');
   assert.ok(fs.existsSync(path.join(REPO_ROOT, '.claude', 'commands', 'wrap-up.md')), 'the repo copy is untouched');
 });
 

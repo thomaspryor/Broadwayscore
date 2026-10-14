@@ -79,11 +79,14 @@ if [ -n "$tool_event" ] && [ "${REPO_SCOPED#* "$hook" }" != "$REPO_SCOPED" ]; th
   in_other_repo "$target" && exit 0
 fi
 
-# The hook list was fixed when the container's setup script ran. Say so at
-# startup when the repo has moved on (a hook added since is not running here).
-if [ "$hook" = session-start.sh ] && command -v node >/dev/null 2>&1 \
-  && ! node "$R/scripts/install-home-claude-config.js" --check --target "$(dirname -- "$R")" >/dev/null 2>&1; then
-  echo "⚠️ BRO-5221: /home/user/.claude is out of date with this repo's .claude/settings.json (node scripts/install-home-claude-config.js --check). Hooks added since this container was set up are NOT running; follow CLOUD.md § Multi-repo by hand for them."
+# The setup script's result is cached, so the wiring can lag the repo (a hook,
+# command or agent folder added since). Repair it at startup; links added now
+# serve this session's later lookups and every later start in this container.
+if [ "$hook" = session-start.sh ] && command -v node >/dev/null 2>&1; then
+  I="$R/scripts/install-home-claude-config.js"; H="$(dirname -- "$R")"
+  node "$I" --check --target "$H" >/dev/null 2>&1 || node "$I" --target "$H" >/dev/null 2>&1
+  node "$I" --check --target "$H" >/dev/null 2>&1 \
+    || echo "⚠️ BRO-5221: /home/user/.claude could not be brought up to date (node scripts/install-home-claude-config.js --check). Hooks added since this container was set up are NOT running; follow CLOUD.md § Multi-repo by hand for them."
 fi
 
 export CLAUDE_PROJECT_DIR="$R"
