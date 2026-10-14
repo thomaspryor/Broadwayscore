@@ -1,58 +1,5 @@
 [
   {
-    "recordedAt": "2026-10-01T03:01:55.181Z",
-    "showId": "tru-off-west-end-2026",
-    "newFile": "theatermania--zachary-stewart.json",
-    "ok": false,
-    "file": "theatermania--zachary-stewart.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": null,
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-10-01T03:03:43.147Z",
-    "showId": "million-dollar-quartet-off-west-end-2026",
-    "newFile": "guardian--michael-billington.json",
-    "ok": false,
-    "file": "guardian--unknown.json",
-    "reason": "publish-date-gap-exceeds-365-days",
-    "detail": {
-      "existingPublishDate": "2026-09-17",
-      "incomingPublishDate": "2011-02-28",
-      "diffDays": 5680,
-      "existingUrl": "https://www.theguardian.com/stage/2026/sep/17/million-dollar-quartet-review-the-arts-at-marble-arch-london",
-      "incomingUrl": "https://www.westendtheatre.com/10576/news/reviews/million-dollar-quartet-reviews-round-up/"
-    }
-  },
-  {
-    "recordedAt": "2026-10-01T04:20:45.082Z",
-    "showId": "la-boheme-off-broadway-2026",
-    "newFile": "seen-and-heard-international--unknown.json",
-    "ok": false,
-    "file": "seen-and-heard-international--daniel-meyer.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://seenandheard-international.com/2026/07/thoughtfully-beautiful-staging-of-la-boheme-in-krefeld/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-07-27",
-      "incomingUrl": "https://seenandheard-international.com/2026/05/cameron-menzies-anne-marabini-young-and-mary-mccabe-discuss-nio-and-diva-operas-new-la-boheme/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-10-01T04:22:06.202Z",
     "showId": "cosi-fan-tutte-off-broadway-2026",
     "newFile": "seen-and-heard-international--unknown.json",
@@ -9480,6 +9427,63 @@
       },
       "existingPublishDate": "2018-04-23",
       "incomingUrl": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-10-14T17:22:27.696Z",
+    "showId": "la-boheme-off-broadway-2026",
+    "newFile": "seen-and-heard-international--unknown.json",
+    "ok": false,
+    "file": "seen-and-heard-international--daniel-meyer.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://seenandheard-international.com/2026/07/thoughtfully-beautiful-staging-of-la-boheme-in-krefeld/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2026-07-27",
+      "incomingUrl": "https://seenandheard-international.com/2026/05/cameron-menzies-anne-marabini-young-and-mary-mccabe-discuss-nio-and-diva-operas-new-la-boheme/",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-10-14T17:23:52.810Z",
+    "showId": "cosi-fan-tutte-off-broadway-2026",
+    "newFile": "seen-and-heard-international--unknown.json",
+    "ok": false,
+    "file": "seen-and-heard-international--michael-cookson.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://seenandheard-international.com/2026/03/enos-concert-staging-of-cosi-fan-tutte-provided-the-audience-with-enjoyment-in-spades/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": null,
+      "incomingUrl": "https://seenandheard-international.com/2026/10/fairground-thrills-and-emotional-truth-in-the-mets-coney-island-cosi-fan-tutte/",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-10-14T17:23:52.992Z",
+    "showId": "cosi-fan-tutte-off-broadway-2026",
+    "newFile": "seen-and-heard-international--unknown.json",
+    "ok": false,
+    "file": "seen-and-heard-international--michael-cookson.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://seenandheard-international.com/2026/03/enos-concert-staging-of-cosi-fan-tutte-provided-the-audience-with-enjoyment-in-spades/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": null,
+      "incomingUrl": "https://seenandheard-international.com/2026/09/the-met-live-in-hd-2026-27-season-starts-with-cosi-fan-tutte-on-3-october/",
       "incomingPublishDate": null
     }
   }
