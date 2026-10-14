@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T12:16:24.568Z",
+  "timestamp": "2026-10-14T13:13:00.507Z",
   "stats": {
-    "totalReviews": 56439,
-    "alreadyFlagged": 21065,
+    "totalReviews": 56445,
+    "alreadyFlagged": 21014,
     "dateGuardCatches": 205,
-    "directorMismatch": 1883,
-    "tvFilmSignals": 1562,
+    "directorMismatch": 1898,
+    "tvFilmSignals": 1564,
     "londonSignals": 2249,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5216
+    "noPublishDate": 5218
   },
   "findings": [
     {
@@ -4700,6 +4700,19 @@
       "score": 94,
       "publishDate": "2026-07-12",
       "url": "https://theaterpizzazz.com/dialogue-sings-in-jonathan-spectors-new-play-birthright/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "black-superhero-west-end-2023",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2023-03-23",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17972,6 +17985,104 @@
       ]
     },
     {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 50,
+      "publishDate": "2026-02-12",
+      "url": "https://www.broadwayworld.com/westend/article/Review-HERE-THERE-ARE-BLUEBERRIES-Stratford-East-20260212",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 95,
+      "publishDate": "2026-02-13",
+      "url": "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 76,
+      "publishDate": "2026-02-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "theatre-weekly--mia-bai.json",
+      "score": 82,
+      "publishDate": "2026-02-12",
+      "url": "https://theatreweekly.com/review-here-there-are-blueberries-at-stratford-east/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 41,
+      "publishDate": "2026-02-12",
+      "url": "https://www.thestage.co.uk/reviews/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "timeout-london--anya-ryan.json",
+      "score": 44,
+      "publishDate": "February 12th, 2026",
+      "url": "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 79,
+      "publishDate": "2026-02-12",
+      "url": "https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
       "showId": "high-noon-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 55,
@@ -20236,24 +20347,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "bestoftheatre--cecil-glover.json",
-      "publishDate": "2026-09-10",
-      "url": "https://www.bestoftheatre.co.uk/blog/post/into-the-woods-noel-coward-theatre-trailer",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -43436,6 +43529,19 @@
     },
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2024-02-16",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13089133/Sarah-Snook-plays-succession-26-characters-Wilde-success-PATRICK-MARMION-reviews-TV-stars-West-End-debut-Picture-Dorian-Gray.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 92,
       "publishDate": "2024-02-18",
@@ -43469,6 +43575,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": null,
+      "publishDate": "2024-02-16T04:34:27+00:00",
+      "url": "https://www.theguardian.com/stage/2024/feb/15/the-picture-of-dorian-gray-review-sarah-snook-succession",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
         }
       ]
     },
@@ -43530,6 +43650,33 @@
     },
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 79,
+      "publishDate": "February 15th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/the-picture-of-dorian-gray-theatre-royal-haymarket-review-sarah-snook-b1139380.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "sunday-express--stefan-kyriazis.json",
+      "publishDate": "2024-02-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
       "score": 99,
       "publishDate": "February 15th, 2024",
@@ -43572,10 +43719,71 @@
     },
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "thestage--sam-marlowe.json",
+      "score": 82,
+      "publishDate": "2024-02-16T04:34:27+00:00",
+      "url": "https://www.thestage.co.uk/reviews/the-picture-of-dorian-gray-review-theatre-royal-haymarket-london-sarah-snook-succession",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 79,
+      "publishDate": "2024-02-16T04:34:27+00:00",
+      "url": "https://www.timeout.com/london/theatre/the-picture-of-dorian-gray-1-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 42,
+      "publishDate": "2024-02-16T04:34:27+00:00",
+      "url": "https://www.thetimes.co.uk/article/the-picture-of-dorian-gray-review-sarah-snook-rs6tg950w",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "variety--david-benedict.json",
       "score": 87,
       "publishDate": "2024-02-16",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kip williams\" from the-picture-of-dorian-gray-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 81,
+      "publishDate": "February 15th, 2024",
+      "url": "https://www.whatsonstage.com/news/the-picture-of-dorian-gray-review-sarah-snook-goes-wilde-in-the-west-end_1577119/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46270,9 +46478,14 @@
       "showId": "tru-off-west-end-2026",
       "file": "london-box-office--francesca-shaw.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2026-10-14",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-tru-menier-chocolate-factory",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -65794,6 +66007,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
+      "file": "british-theatre--robert-tanitch.json",
+      "publishDate": "2023-02-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
