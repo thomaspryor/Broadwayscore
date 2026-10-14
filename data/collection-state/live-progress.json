@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-14T08:14:48.392Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-10-14T08:33:52.011Z",
+  "processed": 13,
+  "failed": 12,
+  "successRate": "52.0%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 19,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 20,
+  "recentActivity": [
+    {
+      "t": "2026-10-14T08:27:33.720Z",
+      "event": "bb-session",
+      "session": "3c98c25b",
+      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
+    },
+    {
+      "t": "2026-10-14T08:27:34.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:27:55.992Z",
+      "event": "bb-session",
+      "session": "e9719c63",
+      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
+    },
+    {
+      "t": "2026-10-14T08:27:56.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:28:21.697Z",
+      "event": "bb-session",
+      "session": "16ea6af1",
+      "url": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876"
+    },
+    {
+      "t": "2026-10-14T08:28:22.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:28:39.585Z",
+      "event": "bb-session",
+      "session": "a9c2b14b",
+      "url": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876"
+    },
+    {
+      "t": "2026-10-14T08:28:40.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:29:55.149Z",
+      "event": "bb-session",
+      "session": "0441e1d2",
+      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
+    },
+    {
+      "t": "2026-10-14T08:29:55.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:30:14.368Z",
+      "event": "bb-session",
+      "session": "fb07d367",
+      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
+    },
+    {
+      "t": "2026-10-14T08:30:14.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:30:53.123Z",
+      "event": "bb-session",
+      "session": "d3f52ea7",
+      "url": "https://online.wsj.com/article/SB10001424052748703806304576241223565148298.html"
+    },
+    {
+      "t": "2026-10-14T08:30:53.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:31:11.907Z",
+      "event": "bb-session",
+      "session": "57bb2fcb",
+      "url": "https://online.wsj.com/article/SB10001424052748703806304576241223565148298.html"
+    },
+    {
+      "t": "2026-10-14T08:31:12.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:32:23.895Z",
+      "event": "bb-session",
+      "session": "42b6875d",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html"
+    },
+    {
+      "t": "2026-10-14T08:32:24.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:32:41.987Z",
+      "event": "bb-session",
+      "session": "50ab7108",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html"
+    },
+    {
+      "t": "2026-10-14T08:32:42.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

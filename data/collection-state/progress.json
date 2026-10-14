@@ -2,7 +2,17 @@
   "processed": [
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
+    "camelot-2023/wsj--charles-isherwood.json",
+    "dana-h-2021/wsj--terry-teachout.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "a-christmas-carol-2019/wsj--charles-isherwood.json",
+    "american-son-2018/wsj--terry-teachout.json",
+    "prince-of-broadway-2017/wsj--terry-teachout.json",
+    "the-price-2017/wsj--terry-teachout.json",
+    "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+    "holler-if-ya-hear-me-2014/wsj--terry-teachout.json",
+    "stick-fly-2011/wsj--terry-teachout.json"
   ],
   "failed": [
     "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
@@ -11,7 +21,12 @@
     "fish-off-broadway-2026/timeout--unknown.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
+    "is-this-a-room-2021/wsj--charles-isherwood.json",
+    "baby-its-you-2011/wsj--terry-teachout.json",
+    "jerusalem-2011/wsj--matthew-oshinsky.json",
+    "anything-goes-2011/wsj--unknown.json",
+    "lend-me-a-tenor-2010/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,17 +35,261 @@
       "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/camelot-2023/wsj--charles-isherwood.json",
+      "camelot-2023/wsj--charles-isherwood.json",
+      "data/review-texts/dana-h-2021/wsj--terry-teachout.json",
+      "dana-h-2021/wsj--terry-teachout.json",
+      "data/review-texts/is-this-a-room-2021/wsj--charles-isherwood.json",
+      "data/review-texts/a-soldiers-play-2020/wsj--terry-teachout.json",
+      "a-soldiers-play-2020/wsj--terry-teachout.json",
+      "data/review-texts/a-christmas-carol-2019/wsj--charles-isherwood.json",
+      "a-christmas-carol-2019/wsj--charles-isherwood.json",
+      "data/review-texts/american-son-2018/wsj--terry-teachout.json",
+      "american-son-2018/wsj--terry-teachout.json",
+      "data/review-texts/prince-of-broadway-2017/wsj--terry-teachout.json",
+      "prince-of-broadway-2017/wsj--terry-teachout.json",
+      "data/review-texts/the-price-2017/wsj--terry-teachout.json",
+      "the-price-2017/wsj--terry-teachout.json",
+      "data/review-texts/a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "a-bronx-tale-the-musical-2016/wsj--terry-teachout.json",
+      "data/review-texts/holler-if-ya-hear-me-2014/wsj--terry-teachout.json",
+      "holler-if-ya-hear-me-2014/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "baby-its-you-2011/wsj--terry-teachout.json"
+    ],
     "archiveToday": [],
     "archive": [
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json"
+      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/telegraph--mark-brown.json",
+      "stick-fly-2011/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-10-14T08:12:40.214Z",
-  "lastProcessed": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--joyce-mcmillan.json",
-  "log": []
+  "lastProcessed": "lend-me-a-tenor-2010/wsj--terry-teachout.json",
+  "log": [
+    {
+      "t": "2026-10-14T08:22:33.841Z",
+      "event": "bb-session",
+      "session": "0aa3c8c1",
+      "url": "https://www.wsj.com/articles/camelot-review-aaron-sorkins-round-table-rewrite-14"
+    },
+    {
+      "t": "2026-10-14T08:22:34.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:22:55.123Z",
+      "event": "bb-session",
+      "session": "c1261644",
+      "url": "https://www.wsj.com/articles/dana-h-review-lucas-knath-dana-higginbotham-1163484"
+    },
+    {
+      "t": "2026-10-14T08:22:55.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:24:00.060Z",
+      "event": "bb-session",
+      "session": "e02168cd",
+      "url": "https://www.wsj.com/articles/is-this-a-room-review-under-the-bare-lightbulb-tina"
+    },
+    {
+      "t": "2026-10-14T08:24:00.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:24:35.325Z",
+      "event": "bb-session",
+      "session": "5aa0fd94",
+      "url": "https://www.wsj.com/articles/a-soldiers-play-review-race-relations-and-wartime-w"
+    },
+    {
+      "t": "2026-10-14T08:24:35.827Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:24:55.644Z",
+      "event": "bb-session",
+      "session": "221d5488",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-review-a-cold-weather-favorite-lo"
+    },
+    {
+      "t": "2026-10-14T08:24:56.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:25:14.968Z",
+      "event": "bb-session",
+      "session": "aabdff53",
+      "url": "https://www.wsj.com/articles/american-son-review-living-while-black-1541711143"
+    },
+    {
+      "t": "2026-10-14T08:25:15.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:26:11.757Z",
+      "event": "bb-session",
+      "session": "a73aaaa9",
+      "url": "https://www.wsj.com/articles/prince-of-broadway-and-company-reviews-a-broadway-i"
+    },
+    {
+      "t": "2026-10-14T08:26:12.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:26:33.382Z",
+      "event": "bb-session",
+      "session": "d230ffd7",
+      "url": "https://www.wsj.com/articles/the-price-review-a-major-miller-back-on-broadway-14"
+    },
+    {
+      "t": "2026-10-14T08:26:33.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:26:53.823Z",
+      "event": "bb-session",
+      "session": "96fc21f1",
+      "url": "https://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1"
+    },
+    {
+      "t": "2026-10-14T08:26:54.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:27:13.804Z",
+      "event": "bb-session",
+      "session": "2cf91a77",
+      "url": "http://online.wsj.com/articles/theater-review-holler-if-ya-hear-me-1403230337?te"
+    },
+    {
+      "t": "2026-10-14T08:27:14.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:27:33.720Z",
+      "event": "bb-session",
+      "session": "3c98c25b",
+      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
+    },
+    {
+      "t": "2026-10-14T08:27:34.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:27:55.992Z",
+      "event": "bb-session",
+      "session": "e9719c63",
+      "url": "https://online.wsj.com/article/SB10001424052970203413304577086522425150292.html"
+    },
+    {
+      "t": "2026-10-14T08:27:56.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:28:21.697Z",
+      "event": "bb-session",
+      "session": "16ea6af1",
+      "url": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876"
+    },
+    {
+      "t": "2026-10-14T08:28:22.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:28:39.585Z",
+      "event": "bb-session",
+      "session": "a9c2b14b",
+      "url": "https://www.wsj.com/articles/SB10001424052748704132204576285292479553876"
+    },
+    {
+      "t": "2026-10-14T08:28:40.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:29:55.149Z",
+      "event": "bb-session",
+      "session": "0441e1d2",
+      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
+    },
+    {
+      "t": "2026-10-14T08:29:55.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:30:14.368Z",
+      "event": "bb-session",
+      "session": "fb07d367",
+      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
+    },
+    {
+      "t": "2026-10-14T08:30:14.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:30:53.123Z",
+      "event": "bb-session",
+      "session": "d3f52ea7",
+      "url": "https://online.wsj.com/article/SB10001424052748703806304576241223565148298.html"
+    },
+    {
+      "t": "2026-10-14T08:30:53.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:31:11.907Z",
+      "event": "bb-session",
+      "session": "57bb2fcb",
+      "url": "https://online.wsj.com/article/SB10001424052748703806304576241223565148298.html"
+    },
+    {
+      "t": "2026-10-14T08:31:12.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:32:23.895Z",
+      "event": "bb-session",
+      "session": "42b6875d",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html"
+    },
+    {
+      "t": "2026-10-14T08:32:24.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T08:32:41.987Z",
+      "event": "bb-session",
+      "session": "50ab7108",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html"
+    },
+    {
+      "t": "2026-10-14T08:32:42.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
