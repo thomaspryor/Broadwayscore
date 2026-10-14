@@ -20,8 +20,8 @@ function decodeHtmlEntities(text) {
   if (!text) return text;
   return text
     // Numeric entities
-    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
+    .replace(/&#(\d+);/g, (m, code) => { const c = parseInt(code, 10); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
+    .replace(/&#x([0-9a-fA-F]+);/g, (m, code) => { const c = parseInt(code, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
     // Named entities - common ones
     .replace(/&quot;/g, '"')
     .replace(/&amp;/g, '&')
@@ -512,7 +512,9 @@ function cleanText(text) {
 
   // Step 3e: Strip the video.js modal-dialog boilerplate that leaks from player markup (BRO-4221)
   cleaned = cleaned.replace(/Beginning of dialog window\. Escape will cancel and close the window\.?/gi, '')
-    .replace(/\bEnd of dialog window\.?/gi, '');
+    .replace(/\bEnd of dialog window\.?/gi, '')
+    .replace(/\bThis is a modal window\.?/gi, '')
+    .replace(/\bThis modal can be closed by pressing the Escape key or activating the close button\.?/gi, '');
 
   // Step 4: Collapse whitespace runs
   // Multiple spaces/tabs on same line → single space

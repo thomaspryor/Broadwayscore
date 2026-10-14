@@ -277,7 +277,7 @@ function feedText(body, tags) {
     return m[1].replace(/<!\[CDATA\[|\]\]>/g, '')
       .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
       .replace(/<[^>]+>/g, ' ')
-      .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+      .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
       .replace(/&nbsp;/g, ' ').replace(/[\u00a0\u2007\u202f]/g, ' ')
       .replace(/\s+/g, ' ').trim().slice(0, 800);
   }

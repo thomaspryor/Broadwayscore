@@ -13,7 +13,7 @@ const { stripBylineSuffixes } = require('./byline-normalization');
 
 function decodeEntities(s) {
   return (s || '')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
+    .replace(/&#(\d+);/g, (m, n) => { const c = parseInt(n, 10); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
     .replace(/&amp;/g, '&')
     .replace(/&quot;|&ldquo;|&rdquo;/g, '"')
     .replace(/&apos;|&lsquo;|&rsquo;/g, "'")

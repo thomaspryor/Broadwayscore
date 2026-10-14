@@ -83,3 +83,26 @@ test('gather-reviews gates every Show Score source before foundReviews', () => {
   assert.match(src, /gateShowScore\(extractShowScoreReviews\(/);
   assert.match(src, /gateShowScore\(paginatedReviews, 'pagination'\)/);
 });
+
+test('partition gates the raw Show Score link when the url was nulled (urlOf)', () => {
+  // BRO-5261 retro-review: the page-HTML fallback's validateUrl nulls a link
+  // whose slug misses the title BEFORE the gate ran, so a 2016 notice passed
+  // with url null. The gate must see the raw link.
+  const RAW = Symbol('raw');
+  const nulled = { outlet: 'The New York Times', url: null, [RAW]: STALE, source: 'show-score' };
+  const fine = { outlet: 'Variety', url: SLUG_ONLY, [RAW]: SLUG_ONLY, source: 'show-score' };
+  const urlOf = (r) => r[RAW] || r.url;
+  const { kept, blocked } = partitionShowScoreReviews([nulled, fine], revival, { urlOf });
+  assert.deepStrictEqual(kept, [fine]);
+  assert.strictEqual(blocked[0].review, nulled);
+  // Without urlOf the nulled row slips through (the old behaviour).
+  assert.strictEqual(partitionShowScoreReviews([nulled], revival).kept.length, 1);
+});
+
+test('gather-reviews gates the raw link and skips slug guessing for an older production', () => {
+  const src = fs.readFileSync(path.join(here, 'gather-reviews.js'), 'utf8');
+  assert.match(src, /partitionShowScoreReviews\(reviews, show, \{ urlOf \}\)/);
+  assert.strictEqual((src.match(/\[SS_RAW_URL\]: /g) || []).length, 3, 'every extractShowScoreReviews push keeps the raw link');
+  assert.match(src, /const bareUnsafe = allShowsForSlugs \? bareSlugGuessUnsafe\(show, allShowsForSlugs\) : true;/);
+  assert.match(src, /if \(bareUnsafe && !\(yearTag && slug\.includes\(yearTag\)\)\)/);
+});

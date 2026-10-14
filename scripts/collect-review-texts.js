@@ -4108,6 +4108,7 @@ function isPaywalled(html) {
 // it lived inline). The function is serialized and injected into the
 // Playwright browser context via page.evaluate.
 const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor');
+const { decodeBloxRot47, decodeBloxRot47InDocument } = require('./lib/blox-rot47-decode');
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
@@ -4116,6 +4117,9 @@ async function extractArticleText(page) {
   // page URL is passed through so BRO-912's talkinbroadway.com bail-out
   // (dom-article-extractor.js) can domain-scope itself.
   const currentUrl = page.url();
+  // BRO-4221: BLOX ROT47-scrambled paragraphs are one text node in the DOM;
+  // decode them in place first, or the extractor saves the gibberish.
+  await page.evaluate(`(${decodeBloxRot47InDocument.toString()})(document)`).catch(() => 0);
   return await page.evaluate(
     `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
   );
@@ -4173,6 +4177,9 @@ function extractFromJsonLd(html) {
 // result is short, and wins only if it recovers more text.
 const DEDICATED_FALLBACK_MIN_CHARS = 500;
 function extractTextFromHtml(html, url) {
+  // BLOX CMS hosts (Tulsa World, Buffalo News, ...) ship paywalled paragraphs
+  // ROT47-scrambled; decode before either extractor runs (BRO-4221).
+  html = decodeBloxRot47(html);
   const generic = extractTextFromHtmlGeneric(html, url);
   if (!url || generic.length >= DEDICATED_FALLBACK_MIN_CHARS || !isDedicatedExtractorHost(url)) return generic;
   let dedicated = null;

@@ -91,7 +91,7 @@ function pageIsTour(html, tour) {
   const m = String(html || '').match(/<title>([^<]*)<\/title>/i);
   if (!m) return false;
   const decoded = m[1]
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
+    .replace(/&#(\d+);/g, (m, n) => { const c = parseInt(n, 10); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
     .replace(/&ndash;|&mdash;/g, '-').replace(/&rsquo;/g, "'").replace(/&amp;/g, '&')
     .replace(/[\u2013\u2014]/g, '-').replace(/\u2019/g, "'");
   const title = decoded.replace(/\s*-\s*Tours To You.*$/i, '');
