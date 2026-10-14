@@ -243,5 +243,35 @@
       }
     ],
     "queuedAt": "2026-10-14T05:28:59.800Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5254-shipcheck",
+    "title": "Landing blocked: bash-integration red on land/bro-5254-shipcheck",
+    "description": "land.yml did not land land/bro-5254-shipcheck: the bash-integration gate went red at f380d2b007. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38513549267",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5254-shipcheck"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "f380d2b007d7aa5400461aaf3a12e05df0058a3d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38513549267"
+      }
+    ],
+    "queuedAt": "2026-10-14T05:30:15.237Z"
   }
 ]
