@@ -397,3 +397,30 @@ test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and 
 
 // BRO-4234's printed owner banner was replaced by the installed global
 // instructions (BRO-4237): see scripts/tests/global-instructions.test.mjs.
+
+// ── BRO-5359: a slow fetch used to fail silently, leaving cloud hooks a day old ─────────────────────
+
+test('fetch timeout: cloud gets the long budget, the default stays 5s, and a failed fetch is reported (not swallowed)', () => {
+  const { CLOUD_FETCH_TIMEOUT_MS, FETCH_TIMEOUT_MS, fetchOriginMain, formatFetchFailedMessage } = require('../lib/code-checkout-staleness.js');
+  assert.equal(FETCH_TIMEOUT_MS, 5000);
+  assert.ok(CLOUD_FETCH_TIMEOUT_MS >= 30000, 'a cold cloud fetch of this repo needs far more than 5s');
+  const seen = [];
+  const slow = (cmd, args, opts) => { seen.push(opts.timeout); if (opts.timeout < 30000) { const e = new Error('ETIMEDOUT'); e.code = 'ETIMEDOUT'; throw e; } return ''; };
+  assert.equal(fetchOriginMain('/x', slow), false, 'the default 5s budget fails against a slow remote');
+  assert.equal(fetchOriginMain('/x', slow, CLOUD_FETCH_TIMEOUT_MS), true, 'the cloud budget succeeds');
+  assert.deepEqual(seen, [5000, CLOUD_FETCH_TIMEOUT_MS]);
+
+  const r = runCodeCheckoutStalenessCheck({ repoDir: '/x', execFn: (cmd, args) => { if (args.includes('fetch')) throw new Error('timeout'); return args.includes('rev-list') ? '0' : ''; } });
+  assert.equal(r.fetched, false, 'the check says the fetch failed');
+  const msg = formatFetchFailedMessage('/home/user/broadwayscore', 'Tue Oct 13 13:18:36 2026');
+  assert.match(msg, /HOOKS MAY BE STALE/);
+  assert.match(msg, /Tue Oct 13 13:18:36 2026/);
+  assert.match(msg, /merge --ff-only origin\/main/);
+});
+
+test('session-start.sh passes the cloud budget and prints the stale-hooks warning when the fetch fails', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
+  assert.match(src, /fetchTimeoutMs: cloud \? lib\.CLOUD_FETCH_TIMEOUT_MS : undefined/);
+  assert.match(src, /r\.fetched === false/);
+  assert.match(src, /formatFetchFailedMessage/);
+});

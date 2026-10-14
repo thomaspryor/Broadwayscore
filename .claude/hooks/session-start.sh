@@ -380,8 +380,14 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
   CODE_STALE_MSG=$(node -e '
     const lib = require(process.argv[1]);
     const repoDir = process.argv[2];
-    const r = lib.runCodeCheckoutStalenessCheck({ repoDir });
-    if (process.argv[3] === "yes" && r.behind > 0) {
+    const cloud = process.argv[3] === "yes";
+    const r = lib.runCodeCheckoutStalenessCheck({ repoDir, fetchTimeoutMs: cloud ? lib.CLOUD_FETCH_TIMEOUT_MS : undefined });
+    if (cloud && r.fetched === false) {
+      let d = "";
+      try { d = require("child_process").execFileSync("git", ["-C", repoDir, "log", "-1", "--format=%cd"], { encoding: "utf8" }).trim(); } catch {}
+      console.log(lib.formatFetchFailedMessage(repoDir, d));
+    }
+    if (cloud && r.behind > 0) {
       const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
       const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
       if (synced) { console.log(synced); process.exit(0); }
