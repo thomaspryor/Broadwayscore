@@ -6,7 +6,9 @@ if (!process.env.SHOWS_SANDBOX_FILE) throw new Error('shows-sandbox-preload: SHO
 const Module = require('module');
 const fs = require('fs');
 const path = require('path');
-const realShows = path.join(__dirname, '..', '..', 'data', 'shows.json');
+// SHOWS_SANDBOX_GUARD_PATH lets the preload's own test aim the guard at a
+// decoy, so a broken guard can never damage the real file.
+const realShows = process.env.SHOWS_SANDBOX_GUARD_PATH || path.join(__dirname, '..', '..', 'data', 'shows.json');
 // Resolved once: the real file (through a symlink) and its directory.
 let realShowsResolved = realShows;
 try { realShowsResolved = fs.realpathSync(realShows); } catch {}
@@ -36,22 +38,25 @@ const PATH_ARGS = {
   openSync: [0], open: [0],
 };
 const WRITE_FLAG = /[wa+]/;
+const C = fs.constants;
+const WRITE_BITS = C.O_WRONLY | C.O_RDWR | C.O_APPEND | C.O_CREAT | C.O_TRUNC;
+const opensForWrite = (flags) => (typeof flags === 'number' ? (flags & WRITE_BITS) !== 0 : WRITE_FLAG.test(typeof flags === 'string' ? flags : 'r'));
 for (const [fn, idxs] of Object.entries(PATH_ARGS)) {
   const orig = fs[fn];
   if (typeof orig !== 'function') continue;
   fs[fn] = function guarded(...a) {
     if (fn === 'openSync' || fn === 'open') {
-      const flags = typeof a[1] === 'string' ? a[1] : 'r';
-      if (WRITE_FLAG.test(flags) && isRealShows(a[0])) refuse();
+      if (opensForWrite(a[1]) && isRealShows(a[0])) refuse();
     } else if (idxs.some((i) => isRealShows(a[i]))) refuse();
     return orig.apply(this, a);
   };
 }
-for (const fn of ['writeFile', 'appendFile', 'rename', 'copyFile', 'unlink', 'rm']) {
+for (const fn of ['writeFile', 'appendFile', 'rename', 'copyFile', 'unlink', 'rm', 'open']) {
   const orig = fs.promises[fn];
   const idxs = PATH_ARGS[fn];
   fs.promises[fn] = function guarded(...a) {
-    if (idxs.some((i) => isRealShows(a[i]))) return Promise.reject(new Error('sandbox: refusing to write real shows.json'));
+    const hit = fn === 'open' ? opensForWrite(a[1]) && isRealShows(a[0]) : idxs.some((i) => isRealShows(a[i]));
+    if (hit) return Promise.reject(new Error('sandbox: refusing to write real shows.json'));
     return orig.apply(this, a);
   };
 }
@@ -73,7 +78,8 @@ Module._load = function patched(request, parent, isMain) {
         saveShows: g.saveShows,
         // A script that builds its own guard (createShowsWriteGuard(SHOWS_PATH))
         // gets the sandbox one too, whatever path it passes.
-        createShowsWriteGuard: () => g,
+        // Options (e.g. { dryRun: true }) are honoured on the sandbox file.
+        createShowsWriteGuard: (_p, opts) => (opts ? real.createShowsWriteGuard(process.env.SHOWS_SANDBOX_FILE, opts) : g),
       };
     }
     return sandboxed;

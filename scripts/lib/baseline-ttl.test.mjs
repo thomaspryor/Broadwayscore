@@ -111,6 +111,8 @@ test('per-key renew re-acks only the named keys (BRO-5261)', () => {
   assert.deepEqual(stats, { kept: 1, renewed: 1, added: 0, dropped: 0 });
   assert.deepEqual(unknownRenewKeys(new Set(['a', 'typo']), ['a', 'b']), ['typo']);
   assert.deepEqual(unknownRenewKeys(true, ['a']), []);
+  assert.deepEqual(unknownRenewKeys(parseRenewArg(['--renew-baseline=']), ['a']), ['(no key given)']);
+  assert.deepEqual([...parseRenewArg(['--renew-baseline=a', '--renew-baseline=b'])].sort(), ['a', 'b']);
 });
 
 test('the expiry note names the per-key renew inside the command backticks', () => {

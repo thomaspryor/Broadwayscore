@@ -42,7 +42,7 @@ function parseArgs(argv) {
     else if (a === '--all') { args.all = true; }
     else if (a === '--json') { args.json = true; }
     else if (a === '--write-baseline') { args.writeBaseline = true; }
-    else if (a === '--renew-baseline' || a.startsWith('--renew-baseline=')) { args.writeBaseline = true; args.renewBaseline = parseRenewArg([a]); }
+    else if (a === '--renew-baseline' || a.startsWith('--renew-baseline=')) { args.writeBaseline = true; args.renewBaseline = parseRenewArg(argv); }
     else if (a.startsWith('--threshold=')) { args.threshold = parseFloat(a.slice(12)); }
     else if (a.startsWith('--show=')) { args.show = a.slice(7); }
   }

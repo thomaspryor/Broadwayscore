@@ -3,14 +3,19 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync, rmSync, existsSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const PRELOAD = join(here, 'shows-sandbox-preload.cjs');
-const REAL = join(here, '..', '..', 'data', 'shows.json');
+// The guard is aimed at a decoy "real" shows.json (SHOWS_SANDBOX_GUARD_PATH),
+// so even a broken guard cannot touch data/shows.json.
+const decoyDir = mkdtempSync(join(tmpdir(), 'shows-sandbox-decoy-'));
+const REAL = join(decoyDir, 'shows.json');
+writeFileSync(REAL, '{"decoy":true}');
+process.on('exit', () => rmSync(decoyDir, { recursive: true, force: true }));
 
 function inSandbox(code) {
   const dir = mkdtempSync(join(tmpdir(), 'shows-sandbox-test-'));
@@ -19,7 +24,7 @@ function inSandbox(code) {
   try {
     const r = spawnSync(process.execPath, ['-r', PRELOAD, '-e', code], {
       cwd: join(here, '..', '..'),
-      env: { ...process.env, SHOWS_SANDBOX_FILE: file, REAL },
+      env: { ...process.env, SHOWS_SANDBOX_FILE: file, SHOWS_SANDBOX_GUARD_PATH: REAL, REAL },
       encoding: 'utf8',
       timeout: 30000,
     });
@@ -40,16 +45,14 @@ test('every write shape aimed at the real shows.json (or a shows.json* sibling) 
     "fs.unlinkSync(process.env.REAL)",
     "fs.rmSync(process.env.REAL, { force: true })",
     "fs.openSync(process.env.REAL, 'w')",
+    "fs.openSync(process.env.REAL, fs.constants.O_WRONLY | fs.constants.O_CREAT)",
     "fs.writeFileSync(Buffer.from(process.env.REAL), 'x')",
     "fs.writeFileSync(new URL('file://' + process.env.REAL), 'x')",
   ];
   const r = inSandbox(`const fs = require('fs');\n${cases.map(tryWrite).join('\n')}`);
-  try {
-    assert.equal(r.status, 0, r.stderr);
-    assert.deepEqual(r.stdout.trim().split('\n'), cases.map(() => 'REFUSED'), r.stdout);
-  } finally {
-    rmSync(`${REAL}.tmp.123`, { force: true });
-  }
+  assert.equal(r.status, 0, r.stderr);
+  assert.deepEqual(r.stdout.trim().split('\n'), cases.map(() => 'REFUSED'), r.stdout);
+  assert.equal(readFileSync(REAL, 'utf8'), '{"decoy":true}');
 });
 
 test('a script that builds its own guard from a literal data/shows.json path still gets the sandbox file', () => {
@@ -62,7 +65,21 @@ test('a script that builds its own guard from a literal data/shows.json path sti
 });
 
 test('reads of the real file are not blocked (only writes are)', () => {
-  const r = inSandbox(`const fs = require('fs'); try { fs.openSync(process.env.REAL, 'r'); } catch (e) { if (/sandbox/.test(e.message)) { console.log('BLOCKED'); process.exit(0); } } console.log('OK');`);
-  assert.equal(r.stdout.trim(), 'OK');
-  assert.equal(existsSync(`${REAL}.tmp.123`), false);
+  const r = inSandbox(`const fs = require('fs'); console.log(fs.readFileSync(fs.openSync(process.env.REAL, 'r'), 'utf8'));`);
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(r.stdout.trim(), '{"decoy":true}');
+});
+
+test('fs.promises.open for write is refused; guard options such as dryRun are kept', () => {
+  const r = inSandbox(`
+    const fs = require('fs');
+    fs.promises.open(process.env.REAL, 'w').then(() => console.log('WROTE'), (e) => console.log(/sandbox/.test(e.message) ? 'REFUSED' : 'OTHER'))
+      .then(() => {
+        const { createShowsWriteGuard } = require('./scripts/lib/shows-write-guard');
+        const g = createShowsWriteGuard(process.env.REAL, { dryRun: true });
+        const d = g.loadShows(); d.shows.push({ id: 'added' }); g.saveShows(d);
+        console.log(JSON.stringify(createShowsWriteGuard(process.env.REAL).loadShows().shows.map((s) => s.id)));
+      });`);
+  assert.equal(r.status, 0, r.stderr);
+  assert.deepEqual(r.stdout.trim().split('\n'), ['REFUSED', '["sandbox-only"]']);
 });

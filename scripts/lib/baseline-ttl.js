@@ -116,9 +116,13 @@ function parseRenewArg(argv) {
   return out;
 }
 
-/** Keys named for renewal that are not in `keys` (a typo would renew nothing). */
+/**
+ * Keys named for renewal that are not in `keys` (a typo would renew nothing).
+ * An empty `--renew-baseline=` reports '(no key given)' so callers refuse it.
+ */
 function unknownRenewKeys(renew, keys) {
   if (!(renew instanceof Set)) return [];
+  if (renew.size === 0) return ['(no key given)'];
   const have = new Set(keys);
   return [...renew].filter((k) => !have.has(k));
 }

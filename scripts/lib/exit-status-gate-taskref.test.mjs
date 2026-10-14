@@ -30,7 +30,6 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { mkdtempSync, writeFileSync, rmSync, mkdirSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
