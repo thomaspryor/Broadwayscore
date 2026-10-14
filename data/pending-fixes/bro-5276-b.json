@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5276-b",
   "planId": "d17c66e4-3142-49b6-8bb1-d605d11aa8d4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T01:40:38.501488Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,13 @@
         "description": "BRO-5276: drop stale Theatr source on pre-2021 closures with a sourcesRemoved tombstone."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T03:29:09.452Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran neutralize-stale-theatr-buzz.js successfully"
+    }
+  ]
 }
