@@ -246,7 +246,7 @@ const BROADWAY_THEATERS = {
     canonical: 'Vivian Beaumont Theater',
     address: '150 W 65th St',
     seats: 1080,
-    aliases: ['Beaumont Theatre', 'Beaumont Theater']
+    aliases: ['Beaumont Theatre', 'Beaumont Theater', 'Vivian Beaumont Theater - Lincoln Center Theater']
   },
 
   // === SECOND STAGE ===
@@ -361,7 +361,9 @@ function normalizeVenueName(name) {
 }
 
 /**
- * Find theater by name (handles aliases and variations)
+ * Find theater by name: exact match on the normalized canonical name or an alias.
+ * No substring matching (BRO-5088: 'Theatre' hit Ambassador, '54' hit Studio 54).
+ * Add a short form as an alias in BROADWAY_THEATERS instead.
  */
 function findTheater(venueName) {
   const normalized = normalizeVenueName(venueName);
@@ -377,12 +379,6 @@ function findTheater(venueName) {
       if (normalizeVenueName(alias) === normalized) {
         return { key, ...theater };
       }
-    }
-
-    // Check partial match (e.g., "Booth" matches "Booth Theatre")
-    const canonicalNorm = normalizeVenueName(theater.canonical);
-    if (canonicalNorm.includes(normalized) || normalized.includes(canonicalNorm.replace(' theater', ''))) {
-      return { key, ...theater };
     }
   }
 
