@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4233",
   "planId": "a6299b65-cd6e-4106-afe7-f1c583c3f9cd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-13T21:25:55.184Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,23 @@
         "description": "BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T07:01:36.475Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateClearReason: \"BRO-4898: this is the genuine review text; the row it pointed at holds only a cookie banner and is now flagged\" -> \"BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateOf: \"whatsonstage--sarah-crompton.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--miriam-sallon.json\""
+    }
+  ]
 }
