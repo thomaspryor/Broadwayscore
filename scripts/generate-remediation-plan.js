@@ -159,9 +159,9 @@ function maybeTrackContentFix(diagnosis, issueNumber) {
 // old dead end of just emailing the owner "needs your attention" with nothing
 // actionable behind it (task #755). This runner has no cmux/bsc-next available
 // (GitHub Actions), so filing the card is the CI-side half of the dispatch;
-// notion-tasks-sync.js pull + the Mac-side loop do the rest. Fail-soft: a
-// broken Notion call must never crash the workflow — the fallback email still
-// fires either way (with different wording depending on whether this worked).
+// the board workers pick it up from Linear. Fail-soft: a broken Linear call
+// must never crash the workflow — the fallback email still fires either way
+// (with different wording depending on whether this worked).
 function escalatePlanRefusal({ diagnosis, planReason, issueNumber, issueUrl }) {
   const card = buildEscalationCard({ diagnosis, planReason, issueNumber, issueUrl });
   const scriptsDir = path.join(ROOT, 'scripts');
@@ -185,14 +185,6 @@ function escalatePlanRefusal({ diagnosis, planReason, issueNumber, issueUrl }) {
   } catch (err) {
     console.error('escalatePlanRefusal: linear-brain create failed:', err.message);
     return { filed: false };
-  }
-  try {
-    execFileSync('node', [path.join(scriptsDir, 'notion-tasks-sync.js'), 'pull'],
-      { cwd: ROOT, encoding: 'utf8', timeout: 120000 });
-  } catch (err) {
-    // Card is filed either way — a later scheduled sync picks it up. This
-    // just shortens the dispatch latency when it works.
-    console.error('escalatePlanRefusal: notion-tasks-sync pull failed (card still filed):', err.message);
   }
   console.log(`escalatePlanRefusal: filed P1 card "${card.title}"`);
   return { filed: true, title: card.title };
