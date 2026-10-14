@@ -617,7 +617,41 @@ function otherProductionUrlSignal(u, show, serpTitle) {
     { only: venueTextApplies ? ['url-edition-market', 'venue-text'] : ['url-edition-market'], useText: true },
   );
   if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
-  return sig;
+  if (sig) return sig;
+  return edinburghFringeUrlSignal(u, show);
+}
+
+// BRO-5132: a New York show that transferred from the Edinburgh Fringe drags its
+// August Fringe reviews into the census ("<title> review" returns them first).
+// Elf Lyons at SoHo Playhouse alerted on bingefringe.com/.../edfringe-2026-...
+// A slug naming the Fringe is the Fringe run's review: a New York review of the
+// transfer names the venue it is playing, not "edfringe-2026". Slug only, never
+// the SERP title ("the Edinburgh Fringe hit arrives in New York" is a NYC
+// review), and never for a show that declares prior runs.
+const EDINBURGH_FRINGE_SLUG_RE = /(^|[\/\-_])(edfringe|edinburgh[\/\-_](?:festival[\/\-_])?fringe|fringe[\/\-_]edinburgh)([\/\-_]|$)|^\/edinburgh\//i;
+function edinburghFringeUrlSignal(u, show) {
+  if (!show || !['broadway', 'off-broadway'].includes(show.category)) return null;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return null;
+  if (/edinburgh|fringe/i.test(`${show.title || ''} ${show.venue || ''}`)) return null;
+  let pathname = '';
+  try { pathname = decodeURIComponent(new URL(u).pathname); } catch { return null; }
+  return EDINBURGH_FRINGE_SLUG_RE.test(pathname)
+    ? { signal: 'edinburgh-fringe-url', detail: 'url names the Edinburgh Fringe; show is a New York run' }
+    : null;
+}
+
+// BRO-5132: the show's own venue website (sohoplayhouse.com/shows/<slug>) is a
+// promo page, not a review, and the census keeps finding it under new paths
+// (/see-a-show/, /shows/). Match the registrable host label against the venue
+// name with spaces/punctuation and a leading "the" stripped.
+function isOwnVenueUrl(u, show) {
+  const norm = (s) => String(s || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+  const venue = norm(show && show.venue);
+  if (venue.length < 6) return false;
+  const host = registrableHost(u);
+  if (!host) return false;
+  const label = norm(host.split('.')[0]);
+  return label === venue || label === `the${venue}`;
 }
 
 // Pure per-result acceptance decision for the SERP review census (#371 —
@@ -651,6 +685,7 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
     if (!tokens.every(t => segs.has(t) || hay.has(t))) return null;
   }
   if (isBookPageUrl(u)) return null;
+  if (isOwnVenueUrl(u, show)) return null;
   // Stale-production guard (#872). The naive census arm runs WITHOUT the
   // after:/before: window on purpose (undated blog posts are exactly what it
   // exists to catch), which lets long-running titles drag their own history
