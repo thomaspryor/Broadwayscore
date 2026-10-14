@@ -43,7 +43,8 @@ function escapeRegex(s) {
  * @param {string} headline - Article headline/title from listing page
  * @param {string} urlSlug  - URL slug/path of the article
  * @param {Array}  activeShows - Shows with status open or previews
- * @param {string} [creditText] - feed description/summary; only used to find a cast, director or writer name for one-word titles under 5 letters
+ * @param {string} [creditText] - feed description/summary; only used to find a cast or director name (or, for a brand-new production, a writer name) for one-word titles under 5 letters
+ * @param {{nowMs?: number}} [opts]
  * @returns {Array} subset of activeShows that match
  */
 // normalizeTitle JOINS hyphenated words ("Grown-Ups" → "grownups", deliberate
@@ -71,13 +72,37 @@ function hyphenSpaced(s) {
 // (found by review, reproduced, reverted). Composer/lyricist/source credits are
 // excluded for the same reason, and because they can be a biopic's subject
 // (MJ lists "Michael Jackson" under Music & Lyrics).
-const CREDIT_ROLE_RE = /playwright|writer|book|director|author|creator/i;
-function namesShowCredit(combined, show) {
+// Two kinds of credit, because they identify different things:
+//  - Cast and directors belong to ONE production. They always count.
+//  - Playwright, book and author credits belong to EVERY production of the play
+//    ("Patrick Hamilton's Rope at Theatre Royal Bath" is not Rope off-Broadway),
+//    so they count only while the show is a brand-new production (previews began
+//    within YOUNG_PRODUCTION_DAYS, not a revival): the play is new, so no other
+//    production exists yet. That is Fish: a world premiere, reviewed under
+//    "Melis Aker's Fish".
+// Not counted: casting, music and associate/assistant directors (named across many
+// productions), composers, lyricists and songwriters, choreographers.
+const PRODUCTION_ROLE_RE = /\bdirector\b/i;
+const SHARED_ROLE_RE = /\b(playwright|writer|book|author|creator)\b/i;
+const NOT_A_CREDIT_RE = /casting|music(al)?\s+director|associate|assistant|co-?director|song|compos|lyric|choreograph/i;
+const YOUNG_PRODUCTION_DAYS = 120;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function isYoungProduction(show, nowMs) {
+  if (!show || show.isRevival === true) return false;
+  const t = Date.parse(show.previewsStartDate || show.openingDate || '');
+  return !Number.isNaN(t) && nowMs - t <= YOUNG_PRODUCTION_DAYS * DAY_MS && nowMs - t >= -DAY_MS * 365;
+}
+
+function namesShowCredit(combined, show, nowMs = Date.now()) {
   const hay = ` ${combined} `;
-  const people = [
-    ...(show.creativeTeam || []).filter((p) => CREDIT_ROLE_RE.test(String((p && p.role) || ''))),
-    ...(show.cast || []),
-  ];
+  const young = isYoungProduction(show, nowMs);
+  const roleOk = (p) => {
+    const role = String((p && p.role) || '');
+    if (NOT_A_CREDIT_RE.test(role)) return false;
+    return PRODUCTION_ROLE_RE.test(role) || (young && SHARED_ROLE_RE.test(role));
+  };
+  const people = [...(show.creativeTeam || []).filter(roleOk), ...(show.cast || [])];
   for (const p of people) {
     const name = hyphenSpaced(p && p.name);
     // Full names only: a first or last name alone ("Mark") would match anything.
@@ -102,7 +127,7 @@ function looksLikeBookReview(headline, urlSlug) {
   return (BOOK_REVIEW_RE.test(text) || BOOKS_SECTION_RE.test(String(urlSlug || ''))) && !THEATRE_WORD_RE.test(text);
 }
 
-function findMatchingShows(headline, urlSlug, activeShows, creditText = '') {
+function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now() } = {}) {
   if (!headline && !urlSlug) return [];
   if (looksLikeBookReview(headline, urlSlug)) return [];
   // Slug separators become spaces too (hyphenSpaced handles the dashes):
@@ -170,7 +195,7 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '') {
           return next === '' || /[0-9A-Z]/.test(next);
         }));
     }
-    if (ok && needsCredit && !namesShowCredit(creditHay, show)) ok = false;
+    if (ok && needsCredit && !namesShowCredit(creditHay, show, nowMs)) ok = false;
     if (ok) {
       matches.push(show);
     }
