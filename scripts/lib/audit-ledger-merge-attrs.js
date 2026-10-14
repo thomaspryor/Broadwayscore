@@ -6,7 +6,10 @@
  * checked reason. A union-declared *.jsonl OUTSIDE data/audit/ must also be
  * covered by a VERIFIED_UNION_LEDGERS entry naming its checked-safe reader
  * (data/audit/'s union set was reviewed file by file in BRO-2493 and is
- * documented inline in .gitattributes).
+ * documented inline in .gitattributes). That carve-out holds only for a
+ * data/audit file .gitattributes names by its exact path: one covered only by
+ * a glob rule (data/audit/fact-check/*.jsonl) was never reviewed, so it needs
+ * a VERIFIED_UNION_LEDGERS entry like any other (BRO-5261 retro-review).
  *
  * WHY REPO-WIDE (BRO-2497): the original gate only listed `data/audit`, but
  * the union-recovery stage in sync-audit-checkout.sh reads
@@ -306,7 +309,8 @@ const VERIFIED_UNION_LEDGERS = [
       'scripts/generate-status-page.js (appendFileSync, CI rebuild-reviews.yml ' +
       'commits them). Readers checked by grepping "opening-night-timeline" ' +
       'across scripts/, src/, .github/: only generate-status-page.js reads the ' +
-      'rows (show-id-keyed-files.js and rebuild-reviews.yml only name the path). ' +
+      'rows (show-id-keyed-files.js and rebuild-reviews.yml only name the path; ' +
+      'show-id-rename.js rewrites each line in place, order-preserving). ' +
       'Criterion (a): nothing sums or aggregates by key; rows are plotted as a ' +
       'sparkline. Criterion (b): BOTH reads trusted file order (dedupe against ' +
       'the last line; sparkline + date label from [0]/[length-1]) — fixed in ' +
@@ -314,6 +318,19 @@ const VERIFIED_UNION_LEDGERS = [
       'parseTimelineJsonl(), which re-sorts by the explicit `t` timestamp and ' +
       'collapses exact-duplicate lines. Worst case after that is one redundant ' +
       'snapshot row, a cosmetic sparkline point on a noindex status page.',
+  },
+  {
+    pattern: 'data/audit/fact-check/*.jsonl',
+    reason:
+      '2026-10-14 (BRO-5261 retro-review of BRO-2497): declared union by the ' +
+      '.gitattributes glob (BRO-5080), so never reviewed per file. Readers ' +
+      'checked by grepping "fact-check/", "-checks.jsonl" and "bro-5089" across ' +
+      'scripts/, src/, .github/: the <cohort>-checks.jsonl files are read only by ' +
+      'scripts/fact-check-historical-sample.js readChecks() (also reached via ' +
+      'plan-we-historical-opening-repair.js triage()); the bro-5089-*.jsonl ' +
+      'files have no code reader. Criterion (b): readChecks kept the LAST row per ' +
+      'id, so a union-reordered older check could win; fixed here to keep the ' +
+      'row with the newest checkedAt. Criterion (a): nothing sums by key.',
   },
 ];
 
@@ -329,20 +346,36 @@ function isVerifiedUnionPath(file) {
 }
 
 /**
- * BRO-2497: a merge=union *.jsonl outside data/audit/ with no
- * VERIFIED_UNION_LEDGERS entry — union declared, but nobody checked whether
+ * BRO-2497: a merge=union *.jsonl (outside data/audit/, or inside it but
+ * covered only by a glob rule) with no VERIFIED_UNION_LEDGERS entry — union declared, but nobody checked whether
  * its readers survive unordered/duplicated rows.
  *
  * @param {string[]} files repo-relative tracked *.jsonl paths
  * @param {(file: string) => string|null|undefined} mergeAttrOf
  * @returns {{file: string}[]}
  */
-function findUnverifiedUnionLedgers(files, mergeAttrOf) {
+function findUnverifiedUnionLedgers(files, mergeAttrOf, perFileDeclared = new Set()) {
   if (!Array.isArray(files)) throw new TypeError('files must be an array');
   if (typeof mergeAttrOf !== 'function') throw new TypeError('mergeAttrOf must be a function');
   return files
-    .filter((f) => !f.startsWith('data/audit/') && mergeAttrOf(f) === 'union' && !isVerifiedUnionPath(f))
+    .filter((f) => !(f.startsWith('data/audit/') && perFileDeclared.has(f)) && mergeAttrOf(f) === 'union' && !isVerifiedUnionPath(f))
     .map((file) => ({ file }));
+}
+
+/**
+ * Paths .gitattributes declares merge=union by EXACT path (no glob): the
+ * per-file BRO-2493 review set.
+ * @param {string} gitattributesText
+ * @returns {Set<string>}
+ */
+function perFileUnionDeclarations(gitattributesText) {
+  const out = new Set();
+  for (const line of String(gitattributesText).split('\n')) {
+    if (/^\s*#/.test(line)) continue;
+    const m = line.match(/^\s*(\S+)\s+(?:\S+\s+)*merge=union\b/);
+    if (m && !/[*?[]/.test(m[1])) out.add(m[1]);
+  }
+  return out;
 }
 
 /**
@@ -356,6 +389,7 @@ function findStaleVerifiedUnionPatterns(files) {
 }
 
 module.exports = {
+  perFileUnionDeclarations,
   EXEMPT_LEDGERS,
   VERIFIED_UNION_LEDGERS,
   isVerifiedUnionPath,

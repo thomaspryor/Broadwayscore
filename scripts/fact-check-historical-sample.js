@@ -73,7 +73,12 @@ function readChecks(file) {
   const m = new Map();
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
     if (!line.trim()) continue;
-    try { const r = JSON.parse(line); m.set(r.id, r); } catch (e) { /* skip torn line */ }
+    let r;
+    try { r = JSON.parse(line); } catch (e) { continue; /* skip torn line */ }
+    // merge=union can reorder rows (BRO-5261 retro-review): keep the newest
+    // check per id by checkedAt, not whichever row happens to come last.
+    const prev = m.get(r.id);
+    if (!prev || !(Date.parse(prev.checkedAt) > Date.parse(r.checkedAt))) m.set(r.id, r);
   }
   return m;
 }

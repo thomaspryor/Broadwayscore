@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -11,6 +12,7 @@ import {
   VERIFIED_UNION_LEDGERS,
   isVerifiedUnionPath,
   findUnverifiedUnionLedgers,
+  perFileUnionDeclarations,
   findStaleVerifiedUnionPatterns,
 } from './audit-ledger-merge-attrs.js';
 
@@ -87,7 +89,8 @@ test('EXEMPT_LEDGERS has no duplicate file entries', () => {
 test('findUnverifiedUnionLedgers flags a union *.jsonl outside data/audit with no VERIFIED_UNION_LEDGERS entry', () => {
   const gaps = findUnverifiedUnionLedgers(
     ['data/new-thing/log.jsonl', 'data/audit/stage-latency.jsonl', 'data/opening-night-timeline/x.jsonl', 'data/plain.jsonl'],
-    (f) => (f === 'data/plain.jsonl' ? 'unspecified' : 'union')
+    (f) => (f === 'data/plain.jsonl' ? 'unspecified' : 'union'),
+    new Set(['data/audit/stage-latency.jsonl'])
   );
   // data/audit/ union files were reviewed by BRO-2493; the opening-night
   // timeline is verified; a non-union file is the coverage check's job.
@@ -100,15 +103,22 @@ test('isVerifiedUnionPath: `*` matches one path segment only', () => {
   assert.equal(isVerifiedUnionPath('data/opening-night-timeline/beaches-2026.json'), false);
 });
 
+test('a data/audit union ledger declared only by a glob still needs a VERIFIED entry (BRO-5261)', () => {
+  const attrs = 'data/audit/a.jsonl merge=union\ndata/audit/g/*.jsonl merge=union\n# data/audit/c.jsonl merge=union\n';
+  const perFile = perFileUnionDeclarations(attrs);
+  assert.deepEqual([...perFile], ['data/audit/a.jsonl']);
+  const gaps = findUnverifiedUnionLedgers(['data/audit/a.jsonl', 'data/audit/g/x.jsonl'], () => 'union', perFile);
+  assert.deepEqual(gaps, [{ file: 'data/audit/g/x.jsonl' }]);
+});
+
 test('findStaleVerifiedUnionPatterns flags a pattern matching no tracked file', () => {
   assert.deepEqual(findStaleVerifiedUnionPatterns([]), VERIFIED_UNION_LEDGERS.map((e) => e.pattern));
-  assert.deepEqual(findStaleVerifiedUnionPatterns(['data/opening-night-timeline/x.jsonl']), []);
+  assert.deepEqual(findStaleVerifiedUnionPatterns(['data/opening-night-timeline/x.jsonl', 'data/audit/fact-check/x.jsonl']), []);
 });
 
 test('VERIFIED_UNION_LEDGERS entries are well-formed', () => {
   for (const entry of VERIFIED_UNION_LEDGERS) {
     assert.match(entry.pattern, /\.jsonl$/, `pattern must target *.jsonl: ${entry.pattern}`);
-    assert.ok(!entry.pattern.startsWith('data/audit/'), `data/audit/ is covered by .gitattributes review, not this list: ${entry.pattern}`);
     assert.ok(entry.reason && entry.reason.length > 40, `verified-union reason too thin for ${entry.pattern}`);
   }
 });
@@ -137,19 +147,16 @@ test('REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union o
     'sanity: discovery reaches *.jsonl outside data/audit/ (BRO-2497 widening)'
   );
 
-  const attrOut = execFileSync('git', ['check-attr', 'merge', '--stdin'], {
+  // -z on both ends: a path git would C-quote (non-ASCII) must still match
+  // its ls-files spelling. Output is NUL-separated <path> <attr> <value> triples.
+  const attrOut = execFileSync('git', ['check-attr', '-z', 'merge', '--stdin'], {
     cwd: REPO_ROOT,
     encoding: 'utf8',
-    input: tracked.join('\n') + '\n',
+    input: tracked.join('\0') + '\0',
   });
   const mergeAttrByFile = new Map();
-  for (const line of attrOut.split('\n')) {
-    // "<path>: merge: <value>" — split on the LAST two ": " so a path
-    // containing ": " (none today) would still parse correctly.
-    const m = line.match(/^(.*): merge: (.*)$/);
-    if (!m) continue;
-    mergeAttrByFile.set(m[1], m[2]);
-  }
+  const parts = attrOut.split('\0');
+  for (let i = 0; i + 2 < parts.length; i += 3) mergeAttrByFile.set(parts[i], parts[i + 2]);
 
   const attrOf = (f) => mergeAttrByFile.get(f) || null;
 
@@ -170,11 +177,12 @@ test('REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union o
     `EXEMPT_LEDGERS entry(ies) that are ALSO declared merge=union in .gitattributes — remove the union declaration or remove the exemption: ${JSON.stringify(contradictions)}`
   );
 
-  const unverified = findUnverifiedUnionLedgers(tracked, attrOf);
+  const perFile = perFileUnionDeclarations(fs.readFileSync(path.join(REPO_ROOT, '.gitattributes'), 'utf8'));
+  const unverified = findUnverifiedUnionLedgers(tracked, attrOf, perFile);
   assert.deepEqual(
     unverified,
     [],
-    `merge=union *.jsonl outside data/audit/ with no VERIFIED_UNION_LEDGERS entry (check its readers for order/duplicate sensitivity, then add one or exempt it): ${JSON.stringify(unverified)}`
+    `merge=union *.jsonl not reviewed per file (outside data/audit/, or glob-declared inside it) with no VERIFIED_UNION_LEDGERS entry (check its readers for order/duplicate sensitivity, then add one or exempt it): ${JSON.stringify(unverified)}`
   );
 
   const stalePatterns = findStaleVerifiedUnionPatterns(tracked);
