@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-14T17:37:56.841Z",
+  "generatedAt": "2026-10-14T19:12:18.919Z",
   "windowDays": 1095,
-  "targets": 664,
-  "auditedThisRun": 18,
-  "carriedForward": 713,
+  "targets": 651,
+  "auditedThisRun": 5,
+  "carriedForward": 726,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 412,
-    "missingCurrentRun": 863,
+    "missingCurrentRun": 866,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 963,
+    "totalFlaggedMisses": 960,
     "totalRecoverable": 6,
     "totalRecovered": 14,
-    "humanExcluded": 0,
-    "automatedExcluded": 114,
-    "automatedExcludedListed": 114,
-    "priorProductionCitations": 5036
+    "humanExcluded": 1,
+    "automatedExcluded": 117,
+    "automatedExcludedListed": 117,
+    "priorProductionCitations": 5035
   },
   "results": [
     {
@@ -8545,7 +8545,12 @@
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "incomplete:16:19",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -11507,7 +11512,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-14T17:37:56.841Z"
+      "computedAt": "2026-10-14T17:37:56.841Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -15571,9 +15581,9 @@
       },
       "computedAt": "2026-10-14T06:00:40.129Z",
       "quarantine": {
-        "nextState": "incomplete:0:6",
-        "since": "2026-10-14T17:37:56.945Z",
-        "lastAt": "2026-10-14T17:37:56.945Z"
+        "nextState": "incomplete:0:7",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
       }
     },
     {
@@ -28968,9 +28978,9 @@
       },
       "computedAt": "2026-10-10T09:05:38.747Z",
       "quarantine": {
-        "nextState": "incomplete:8:11",
-        "since": "2026-10-14T08:20:40.595Z",
-        "lastAt": "2026-10-14T08:20:40.595Z"
+        "nextState": "incomplete:8:10",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
       }
     },
     {
@@ -30242,7 +30252,12 @@
         "liveCount": 1,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-14T17:37:56.841Z"
+      "computedAt": "2026-10-14T17:37:56.841Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46951,7 +46966,12 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -55585,18 +55605,19 @@
       "candidatesRejected": {
         "count": 1779,
         "byReason": {
+          "aggregator-internal-nav": 1322,
           "not-http-url": 307,
-          "non-review-host": 109,
-          "aggregator-internal-nav": 1323,
+          "production-database-listing": 2,
           "aggregator-section-root": 26,
-          "ticketing-listing": 1,
-          "bare-host": 4,
-          "census-junk-host": 1,
-          "write-path-blocked": 3,
-          "unparseable-url": 1,
+          "non-review-host": 107,
           "roundup-page": 1,
-          "show-listing-page": 1,
-          "production-database-listing": 2
+          "write-path-blocked": 3,
+          "bare-host": 4,
+          "ticketing-listing": 2,
+          "census-junk-host": 2,
+          "non-review-path": 1,
+          "unparseable-url": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [
@@ -56069,12 +56090,7 @@
         "liveCount": 3,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-14T11:31:16.425Z",
-      "quarantine": {
-        "nextState": "incomplete:3:7",
-        "since": "2026-10-14T17:37:56.945Z",
-        "lastAt": "2026-10-14T17:37:56.945Z"
-      }
+      "computedAt": "2026-10-14T19:12:18.919Z"
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -57784,7 +57800,12 @@
         "liveCount": 23,
         "candidateCount": 24
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "incomplete:22:23",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -76141,7 +76162,7 @@
       "quarantine": {
         "nextState": "incomplete:0:45",
         "since": "2026-10-14T17:37:56.945Z",
-        "lastAt": "2026-10-14T17:37:56.945Z"
+        "lastAt": "2026-10-14T19:12:19.059Z"
       }
     },
     {
@@ -81278,7 +81299,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -90364,7 +90390,12 @@
         "liveCount": 0,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-14T17:37:56.841Z"
+      "computedAt": "2026-10-14T17:37:56.841Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -97766,7 +97797,12 @@
         "liveCount": 9,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "complete:4:4",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -98679,21 +98715,28 @@
         "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
         "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
         "https://www.theguardian.com/stage/2026/oct/03/kramer-fauci-aids-play-brookyn-new-york",
+        "https://www.amny.com/entertainment/theater/review-kramer-fauci/",
+        "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
         "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
         "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
-        "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
-        "https://www.show-score.com/off-broadway-shows/kramer-fauci",
-        "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse",
-        "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/"
+        "https://theaterscene.com/reviews/kramer-fauci/",
+        "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
+        "https://gaycitynews.com/kramer-fauci-revives-30-year-hiv-aids-relevance/"
       ],
-      "dirFiles": 21,
-      "dirClean": 15,
+      "dirFiles": 22,
+      "dirClean": 14,
       "inReviewsJson": 15,
       "missing": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci",
-          "host": "show-score.com",
-          "knownOutletId": null,
+          "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
+          "host": "theatlantic.com",
+          "knownOutletId": "theatlantic",
           "serpCensus": true
         },
         {
@@ -98701,19 +98744,25 @@
           "host": "1minutecritic.com",
           "knownOutletId": "one-minute-critic",
           "serpCensus": true
+        },
+        {
+          "url": "https://gaycitynews.com/kramer-fauci-revives-30-year-hiv-aids-relevance/",
+          "host": "gaycitynews.com",
+          "knownOutletId": "gay-city-news",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
         {
           "host": "lightingandsoundamerica.com",
           "count": 1
         },
         {
           "host": "offoffonline.com",
-          "count": 1
-        },
-        {
-          "host": "twi-ny.com",
           "count": 1
         }
       ],
@@ -98734,25 +98783,12 @@
               "urlInDir": "https://www.theguardian.com/stage/2026/oct/03/kramer-fauci-aids-play-brookyn-new-york"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse",
-          "host": "frombroadway.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frombroadway--helen-shaw.json",
-              "flag": "clean",
-              "urlInDir": "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
           ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -98769,7 +98805,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -98788,8 +98824,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 4,
             "error": null
           },
           {
@@ -98799,7 +98835,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -98809,7 +98845,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -98819,42 +98855,57 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 408,
+        "count": 405,
         "byReason": {
-          "non-review-host": 56,
-          "aggregator-internal-nav": 267,
-          "not-http-url": 67,
+          "aggregator-internal-nav": 259,
+          "not-http-url": 66,
+          "production-database-listing": 9,
           "aggregator-section-root": 11,
-          "roundup-page": 5,
-          "venue-production-page": 1,
-          "census-junk-host": 1
+          "non-review-host": 52,
+          "roundup-page": 6,
+          "show-listing-page": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
+          "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+        },
+        {
+          "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
+          "host": "theatlantic.com",
+          "outletId": "theatlantic",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+          "reason": "⚠️  Cross-market reroute: kramerfauci-st-anns-off-broadway-2026 → kramerfauci-off-broadway-2026 (sib"
         },
         {
           "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
@@ -98868,12 +98919,39 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "kramerfauci-st-anns-off-broadway-2026: https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/ is already owned by kramerfauci-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/kramerfauci-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://gaycitynews.com/kramer-fauci-revives-30-year-hiv-aids-relevance/",
+          "host": "gaycitynews.com",
+          "outletId": "gay-city-news",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/"
+          },
+          {
+            "outletId": "theatlantic",
+            "outlet": "theatlantic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/"
+          },
           {
             "outletId": "one-minute-critic",
             "outlet": "one-minute-critic",
@@ -98882,18 +98960,18 @@
             "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/"
           },
           {
+            "outletId": "gay-city-news",
+            "outlet": "gay-city-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://gaycitynews.com/kramer-fauci-revives-30-year-hiv-aids-relevance/"
+          },
+          {
             "outletId": "guardian",
             "outlet": "guardian",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/2026/oct/03/kramer-fauci-aids-play-brookyn-new-york"
-          },
-          {
-            "outletId": "frombroadway.com",
-            "outlet": "frombroadway.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse"
           }
         ],
         "suppressedMissing": [],
@@ -98953,16 +99031,16 @@
             "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
-            "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
-            "outletId": "exeuntnyc.com",
+            "url": "https://www.amny.com/entertainment/theater/review-kramer-fauci/",
+            "outletId": "amny.com",
             "state": "live",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
           },
           {
-            "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
-            "outletId": "theatlantic.com",
+            "url": "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
+            "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-10-08T02:35:40.501Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
@@ -98971,10 +99049,24 @@
             "firstSeenAt": "2026-10-10T16:31:40.157Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
-            "outletId": "theatermania.com",
+            "url": "https://theaterscene.com/reviews/kramer-fauci/",
+            "outletId": "theaterscene.com",
             "state": "live",
-            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
+            "outletId": "theatlantic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-08T02:35:40.501Z"
           },
           {
             "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
@@ -98984,30 +99076,25 @@
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
+            "url": "https://gaycitynews.com/kramer-fauci-revives-30-year-hiv-aids-relevance/",
+            "outletId": "gay-city-news",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/oct/03/kramer-fauci-aids-play-brookyn-new-york",
             "outletId": "guardian",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse",
-            "outletId": "frombroadway.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-09T21:34:59.683Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 11,
-        "candidateCount": 14
+        "candidateCount": 16
       },
-      "computedAt": "2026-10-10T23:14:28.891Z",
-      "quarantine": {
-        "nextState": "incomplete:9:13",
-        "since": "2026-10-14T08:20:40.595Z",
-        "lastAt": "2026-10-14T08:20:40.595Z"
-      }
+      "computedAt": "2026-10-14T19:12:18.919Z"
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -125709,7 +125796,12 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -125860,75 +125952,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Music for 18 Musicians: Staged Variations\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Music for 18 Musicians: Staged Variations\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Music for 18 Musicians: Staged Variations\" review avenue",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Music for 18 Musicians: Staged Variations Park Avenue Armory review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Music for 18 Musicians: Staged Variations Park Avenue Armory review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Music for 18 Musicians: Staged Variations Park Avenue Armory review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 25,
-        "byReason": {
-          "non-review-host": 20,
-          "ticketing-listing": 1,
-          "aggregator-internal-nav": 1,
-          "event-listing": 2,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -125941,7 +125970,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T19:12:18.919Z"
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -128649,7 +128678,12 @@
         "liveCount": 8,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -148799,7 +148833,12 @@
         "liveCount": 34,
         "candidateCount": 36
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "incomplete:33:34",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
@@ -159834,23 +159873,24 @@
         "https://www.theatermania.com/news/review-in-slam-frank-anne-frank-gets-the-hamilton-treatment_1806777/",
         "https://culturesauce.com/slam-frank-off-broadway-review/",
         "https://www.offoffonline.com/offoffonline/2026/10/1/slam-frank",
+        "https://www.nytimes.com/2026/10/13/theater/slam-frank-review.html",
+        "https://exeuntnyc.com/reviews/review-slam-frank-at-the-orpheum/",
         "https://www.theguardian.com/stage/2026/sep/25/slam-frank-musical-off-broadway",
+        "https://artsfuse.org/335678/theater-review-slam-frank-nobody-is-safe-and-thats-the-point/",
         "https://nyunews.com/2026/10/05/10-05-arts-performing-slam-frank/",
         "https://www.theatermirror.net/slam-frank-a-wild-ride-through-identity-politics/",
-        "https://www.thewrap.com/creative-content/theater/slam-frank-off-broadway-review/",
-        "https://www.yahoo.com/entertainment/music/articles/slam-frank-off-broadway-review-010000828.html",
-        "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
+        "https://totaltheater1.wordpress.com/2026/10/05/slam-frank/",
         "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/",
-        "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/"
+        "https://1minutecritic.substack.com/p/review-slam-frank-orpheum-theatre"
       ],
-      "dirFiles": 29,
-      "dirClean": 18,
-      "inReviewsJson": 17,
+      "dirFiles": 32,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [
         {
-          "url": "https://www.yahoo.com/entertainment/music/articles/slam-frank-off-broadway-review-010000828.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
+          "url": "https://totaltheater1.wordpress.com/2026/10/05/slam-frank/",
+          "host": "totaltheater1.wordpress.com",
+          "knownOutletId": "totaltheater1",
           "serpCensus": true
         }
       ],
@@ -159868,30 +159908,11 @@
           "count": 1
         },
         {
-          "host": "timeout.com",
+          "host": "thewrap.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "show-score-url-year"
-        },
         {
           "url": "https://www.theatermania.com/news/review-in-slam-frank-anne-frank-gets-the-hamilton-treatment_1806777/",
           "host": "theatermania.com",
@@ -159907,7 +159928,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/news/review-in-slam-frank-anne-frank-gets-the-hamilton-treatment_1806777/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.theguardian.com/stage/2026/sep/25/slam-frank-musical-off-broadway",
@@ -159925,25 +159951,12 @@
               "urlInDir": "https://www.theguardian.com/stage/2026/sep/25/slam-frank-musical-off-broadway"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
-          "host": "thejewishvoiceandopinion.com",
-          "knownOutletId": "the-jewish-voice-and-opinion",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-jewish-voice-and-opinion--two-sues-on-the.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
           ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/",
@@ -159961,25 +159974,12 @@
               "urlInDir": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/",
-          "host": "andersonvision.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "andersonvision--troy-anderson.json",
-              "flag": "clean",
-              "urlInDir": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/"
-            }
+          "exclusion": "humanExcluded",
+          "basis": [
+            "rejectionReason"
           ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -159995,8 +159995,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 5,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -160005,8 +160005,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -160015,7 +160015,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -160026,7 +160026,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -160036,7 +160036,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
@@ -160046,33 +160046,44 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 409,
+        "count": 405,
         "byReason": {
-          "aggregator-internal-nav": 261,
+          "aggregator-internal-nav": 253,
           "not-http-url": 78,
+          "production-database-listing": 10,
           "aggregator-section-root": 11,
-          "non-review-host": 51,
-          "roundup-page": 5,
-          "non-review-path": 1,
+          "non-review-host": 45,
+          "roundup-page": 3,
+          "bare-host": 2,
           "ticketing-listing": 1,
-          "venue-production-page": 1
+          "ticketing-reseller": 1,
+          "show-listing-page": 1
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://1minutecritic.substack.com/p/review-slam-frank-orpheum-theatre",
+          "host": "1minutecritic.substack.com",
+          "matchedUrl": "https://1minutecritic.com/slam-frank-review-off-broadway/",
+          "outletId": "one-minute-critic",
+          "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
+        }
+      ],
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.yahoo.com/entertainment/music/articles/slam-frank-off-broadway-review-010000828.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
+          "url": "https://totaltheater1.wordpress.com/2026/10/05/slam-frank/",
+          "host": "totaltheater1.wordpress.com",
+          "outletId": "totaltheater1",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -160080,11 +160091,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "yahoo",
-            "outlet": "yahoo",
+            "outletId": "totaltheater1",
+            "outlet": "totaltheater1",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.yahoo.com/entertainment/music/articles/slam-frank-off-broadway-review-010000828.html"
+            "url": "https://totaltheater1.wordpress.com/2026/10/05/slam-frank/"
           },
           {
             "outletId": "theatermania",
@@ -160101,25 +160112,11 @@
             "url": "https://www.theguardian.com/stage/2026/sep/25/slam-frank-musical-off-broadway"
           },
           {
-            "outletId": "the-jewish-voice-and-opinion",
-            "outlet": "the-jewish-voice-and-opinion",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/"
-          },
-          {
             "outletId": "beautynewsnycofficial",
             "outlet": "beautynewsnycofficial",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/"
-          },
-          {
-            "outletId": "andersonvision.com",
-            "outlet": "andersonvision.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/"
           }
         ],
         "suppressedMissing": [],
@@ -160179,6 +160176,12 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
+            "url": "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
+          },
+          {
             "url": "https://culturesauce.com/slam-frank-off-broadway-review/",
             "outletId": "culturesauce.com",
             "state": "live",
@@ -160189,6 +160192,24 @@
             "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/13/theater/slam-frank-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-slam-frank-at-the-orpheum/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
+          },
+          {
+            "url": "https://artsfuse.org/335678/theater-review-slam-frank-nobody-is-safe-and-thats-the-point/",
+            "outletId": "artsfuse.org",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
           },
           {
             "url": "https://nyunews.com/2026/10/05/10-05-arts-performing-slam-frank/",
@@ -160203,17 +160224,17 @@
             "firstSeenAt": "2026-10-10T16:31:40.157Z"
           },
           {
-            "url": "https://www.thewrap.com/creative-content/theater/slam-frank-off-broadway-review/",
-            "outletId": "thewrap.com",
+            "url": "https://1minutecritic.substack.com/p/review-slam-frank-orpheum-theatre",
+            "outletId": "1minutecritic.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
           },
           {
-            "url": "https://www.yahoo.com/entertainment/music/articles/slam-frank-off-broadway-review-010000828.html",
-            "outletId": "yahoo",
+            "url": "https://totaltheater1.wordpress.com/2026/10/05/slam-frank/",
+            "outletId": "totaltheater1",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-in-slam-frank-anne-frank-gets-the-hamilton-treatment_1806777/",
@@ -160230,37 +160251,18 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
-            "outletId": "the-jewish-voice-and-opinion",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
-          },
-          {
             "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/",
             "outletId": "beautynewsnycofficial",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
-          },
-          {
-            "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/",
-            "outletId": "andersonvision.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-10T16:31:40.157Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 14,
-        "candidateCount": 20
+        "liveCount": 17,
+        "candidateCount": 21
       },
-      "computedAt": "2026-10-10T16:31:40.157Z",
-      "quarantine": {
-        "nextState": "incomplete:15:19",
-        "since": "2026-10-14T08:20:40.595Z",
-        "lastAt": "2026-10-14T08:20:40.595Z"
-      }
+      "computedAt": "2026-10-14T19:12:18.919Z"
     },
     {
       "showId": "small-off-broadway-2026",
@@ -166405,7 +166407,12 @@
         "liveCount": 1,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -168031,7 +168038,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-14T17:37:56.841Z"
+      "computedAt": "2026-10-14T17:37:56.841Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -172710,6 +172722,7 @@
         "https://www.timeout.com/newyork/theater/the-ask",
         "https://www.theatrebeyondbroadway.com/reviews/the-ask",
         "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
+        "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
         "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/"
       ],
       "dirFiles": 0,
@@ -172738,6 +172751,12 @@
           "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
+          "serpCensus": true
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
           "serpCensus": true
         },
         {
@@ -172793,24 +172812,26 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
         "count": 24,
         "byReason": {
-          "non-review-host": 13,
           "aggregator-internal-nav": 3,
-          "bare-host": 4,
-          "non-review-path": 1,
-          "ticketing-reseller": 2,
-          "review-hub-page": 1
+          "production-database-listing": 1,
+          "non-review-host": 11,
+          "bare-host": 5,
+          "ticketing-listing": 1,
+          "review-hub-page": 1,
+          "ticketing-reseller": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -172870,9 +172891,9 @@
           "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/theatrely--andrew-martini.json → qu"
         },
         {
-          "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -172880,10 +172901,16 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/theatermania--zachary-stewart.json "
+          "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/theater-scene--tony-marinelli.json "
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -172914,6 +172941,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/"
           },
           {
             "outletId": "theatermania",
@@ -172954,6 +172988,13 @@
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T19:12:18.919Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/",
             "outletId": "theatermania",
             "state": "GAP",
@@ -172963,14 +173004,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-14T11:31:16.425Z",
-      "quarantine": {
-        "nextState": "incomplete:0:3",
-        "since": "2026-10-14T17:37:56.945Z",
-        "lastAt": "2026-10-14T17:37:56.945Z"
-      }
+      "computedAt": "2026-10-14T19:12:18.919Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -173810,9 +173846,9 @@
       },
       "computedAt": "2026-10-14T08:20:40.493Z",
       "quarantine": {
-        "nextState": "incomplete:9:14",
-        "since": "2026-10-14T17:37:56.945Z",
-        "lastAt": "2026-10-14T17:37:56.945Z"
+        "nextState": "incomplete:9:13",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
       }
     },
     {
@@ -176592,7 +176628,12 @@
         "liveCount": 7,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "incomplete:6:11",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -201113,7 +201154,12 @@
         "liveCount": 9,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-14T14:20:53.735Z"
+      "computedAt": "2026-10-14T14:20:53.735Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
+      }
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -225960,9 +226006,9 @@
       },
       "computedAt": "2026-10-10T10:36:33.884Z",
       "quarantine": {
-        "nextState": "incomplete:12:19",
-        "since": "2026-10-14T08:20:40.595Z",
-        "lastAt": "2026-10-14T08:20:40.595Z"
+        "nextState": "incomplete:14:20",
+        "since": "2026-10-14T19:12:19.059Z",
+        "lastAt": "2026-10-14T19:12:19.059Z"
       }
     },
     {
