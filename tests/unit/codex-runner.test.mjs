@@ -388,3 +388,15 @@ test('landWaitMinutes: landing waits never run past the hard stop', () => {
   assert.equal(r.landWaitMinutes({ hardEndMs: hard, wrapUpMs: 480_000, nowMs: now }), 5);
   assert.ok(r.landWaitMinutes({ hardEndMs: hard, wrapUpMs: 480_000, nowMs: hard - 60_000 }) < 1, 'inside the wrap-up time: do not wait');
 });
+
+test('recovery git calls run in ROOT: they run before the runner worktree exists (BRO-5287)', () => {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
+  for (const fn of ['function landedOnMain', 'async function recoverOrphans', 'async function reconcileLanded']) {
+    const start = src.indexOf(fn);
+    assert.ok(start >= 0, fn);
+    const body = src.slice(start, src.indexOf('\n}\n', start));
+    const calls = body.match(/\bgit\(\[[^\]]*\][^)]*\)/g) || [];
+    assert.ok(calls.length > 0, `${fn} has git calls`);
+    for (const c of calls) assert.match(c, /,\s*ROOT\)$/, `${fn}: ${c} must pass ROOT`);
+  }
+});

@@ -429,11 +429,14 @@ async function moveCard(id, state, comment) {
 }
 
 /** The card's runner commit is on origin/main (a landing that outlived wait-for-land). */
+// ROOT, not WT: recoverOrphans runs before setupWorktree, and in a fresh container the runner
+// worktree does not exist yet, so a WT git call threw and read as "not on main" (BRO-5287:
+// BRO-4233's landed fix was handed back as "nothing reached main" on 2026-10-14).
 function landedOnMain(id, sinceMs) {
   try {
-    git(['fetch', 'origin', 'main']);
+    git(['fetch', 'origin', 'main'], ROOT);
     const since = Number.isFinite(sinceMs) ? new Date(sinceMs).toISOString() : '4.days';
-    return git(['log', 'origin/main', `--since=${since}`, '--author=Codex runner', '--format=%H', '-F', `--grep=fix(${id}):`]) !== '';
+    return git(['log', 'origin/main', `--since=${since}`, '--author=Codex runner', '--format=%H', '-F', `--grep=fix(${id}):`], ROOT) !== '';
   } catch { return false; }
 }
 
@@ -921,9 +924,9 @@ async function recoverOrphans(stats) {
     const ref = `land/codex-${id.toLowerCase()}`;
     let landRefMs = NaN;
     try {
-      if (git(['ls-remote', 'origin', `refs/heads/${ref}`]) !== '') {
-        git(['fetch', '-q', 'origin', `refs/heads/${ref}`]);
-        landRefMs = Number(git(['log', '-1', '--format=%ct', 'FETCH_HEAD'])) * 1000;
+      if (git(['ls-remote', 'origin', `refs/heads/${ref}`], ROOT) !== '') {
+        git(['fetch', '-q', 'origin', `refs/heads/${ref}`], ROOT); // unbounded-fetch-ok: one land ref
+        landRefMs = Number(git(['log', '-1', '--format=%ct', 'FETCH_HEAD'], ROOT)) * 1000;
       }
     } catch { /* treat as no landing */ }
     const action = R.orphanAction({
