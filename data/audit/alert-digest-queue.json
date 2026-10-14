@@ -826,5 +826,35 @@
       }
     ],
     "queuedAt": "2026-10-14T18:48:19.169Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-5206-mv8g5589",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-5206-mv8g5589",
+    "description": "land.yml did not land land/job/linear-BRO-5206-mv8g5589: the rebase gate went red at 28e258a13d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5206-mv8g5589 @ 28e258a13d (origin/land/job/linear-BRO-5206-mv8g5589) → origin/main @ 15a6565c15 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 34806c9d46: Rebasing (1/2) error: could not apply c9761fd07ab... test: stamp alert-absent ledger from the real clock so it survives clock shift (BRO-5206) hint: Resolve all conflicts manually, mark them as re Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38617229284",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5206-mv8g5589"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "28e258a13d596ed745a66c0c7a29e2841f0d2cae"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38617229284"
+      }
+    ],
+    "queuedAt": "2026-10-14T19:04:07.543Z"
   }
 ]
