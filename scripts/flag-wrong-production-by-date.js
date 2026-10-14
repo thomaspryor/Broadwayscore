@@ -255,7 +255,8 @@ function run() {
         continue;
       }
 
-      const decision = evaluateDateGuard({ pubDate, show, outletId: data.outletId });
+      // Current run only; the continuity exemption below counts prior-run skips.
+      const decision = evaluateDateGuard({ pubDate, show, outletId: data.outletId, priorRuns: null, tourLegs: null });
       let issue = decision.issue;
       let diffDays = decision.diffDays;
 

@@ -1690,9 +1690,13 @@ const crossShowFingerprints = new Map();
             isDatedGuardNote(d.wrongProductionNote) &&
             !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
             !d.allowEarlyDate) {
-          const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId });
-          // evaluateDateGuard exempts every priorRuns window; one marked
-          // inheritReviews:false is not a reason to clear (BRO-5285).
+          // Current run only: a date inside a priorRun/tourLeg is cleared by
+          // the prior-run block above, which refuses operator reasons and
+          // high-confidence CV wrongArticle. Letting evaluateDateGuard's
+          // show.priorRuns fallback clear it here would bypass those refusals.
+          const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId, priorRuns: null, tourLegs: null });
+          // Belt and braces: a priorRuns window marked inheritReviews:false is
+          // never a reason to clear (BRO-5285).
           const nowInWindow = dgDecision.flag === false && !isWithinOptOutPriorRun(reviewDate, showRecord?.priorRuns);
           if (shouldAutoClearStaleDateGuard(d, { nowInWindow })) {
             const wasNote = d.wrongProductionNote;

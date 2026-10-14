@@ -53,13 +53,15 @@ function earliestShowDate(show) {
 }
 
 function evaluateDateGuard({ pubDate, show, outletId, priorRuns, tourLegs }) {
-  // The show's own declared runs apply when the caller does not pass them.
-  // Three callers (the rebuild's stale-guard auto-clear, url-downgrade-guard,
-  // audit-we-historical-season) passed only the show, so a review of a
-  // declared prior run (Amélie at The Other Palace, 2019) read as out of
-  // window to them (BRO-4884).
-  if (priorRuns == null && show) priorRuns = show.priorRuns;
-  if (tourLegs == null && show) tourLegs = show.tourLegs;
+  // The show's own declared runs apply when the caller does not pass them, so
+  // a review of a declared prior run (Amélie at The Other Palace, 2019) is not
+  // read as out of window by a caller that forgot them (BRO-4884). Only an
+  // omitted argument falls back: callers that must judge the current run alone
+  // pass null or [] (the rebuild's stale-guard auto-clear, whose prior-run
+  // clears belong to shouldAutoClearWrongProductionPriorRun and its operator /
+  // CV refusals; flag-wrong-production-by-date, which counts its own skips).
+  if (priorRuns === undefined && show) priorRuns = show.priorRuns;
+  if (tourLegs === undefined && show) tourLegs = show.tourLegs;
   // NOTE: 'observer' deliberately excluded. observer.com is flagged
   // isDualMarket:true in outlet-registry.json — both NY Observer (US/Broadway
   // critics like David Cote) and The Observer UK share the outletId. Giving

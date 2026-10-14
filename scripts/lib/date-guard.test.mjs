@@ -311,3 +311,23 @@ test('guardPublishDate: BRO-4198 byline ignores run dates, updated stamps, ambig
   assert.equal(mk('March 12, 2008\nReview posted 10/09/2026'), '2008-03-12');
   assert.equal(mk('March 12, 2008\nTickets on sale 18/09/2026'), '2008-03-12');
 });
+
+// BRO-4884 retro-review: the tourLegs fallback, and null as an explicit opt-out.
+test("a show's own tourLegs apply when the caller passes none; null opts out of both fallbacks", () => {
+  const tour = {
+    id: 'example-uk-tour-2025', category: 'west-end',
+    previewsStartDate: '2025-09-01', openingDate: '2025-09-10', closingDate: '2025-12-20',
+    tourLegs: [{ city: 'Leeds', startDate: '2025-03-01', endDate: '2025-04-15' }],
+  };
+  const inLeg = evaluateDateGuard({ pubDate: new Date('2025-03-20'), show: tour, outletId: 'telegraph' });
+  assert.equal(inLeg.flag, false);
+  const legOptOut = evaluateDateGuard({ pubDate: new Date('2025-03-20'), show: tour, outletId: 'telegraph', priorRuns: null, tourLegs: null });
+  assert.equal(legOptOut.flag, true);
+  const amelie = {
+    id: 'amelie-west-end-2021', category: 'west-end',
+    previewsStartDate: '2021-06-17', openingDate: '2021-06-17', closingDate: '2021-09-25',
+    priorRuns: [{ openingDate: '2019-11-29', closingDate: '2020-02-01', venue: 'The Other Palace' }],
+  };
+  const runOptOut = evaluateDateGuard({ pubDate: new Date('2019-12-04'), show: amelie, outletId: 'telegraph', priorRuns: null, tourLegs: null });
+  assert.equal(runOptOut.flag, true);
+});
