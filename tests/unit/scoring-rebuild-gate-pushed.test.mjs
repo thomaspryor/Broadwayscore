@@ -21,7 +21,7 @@ test('push-review-texts exposes a pushed output from an id-ed step', () => {
   const step = action.runs.steps.find(s => s.id === 'push');
   assert.ok(step, 'composite step with id: push');
   // Every successful git push path records pushed=true before exiting.
-  const pushes = (step.run.match(/if git push origin main/g) || []).length;
+  const pushes = (step.run.match(/if git(?:_net \d+)? push origin main/g) || []).length; // git_net: BRO-5261
   const marks = (step.run.match(/echo "pushed=true" >> "\$GITHUB_OUTPUT"/g) || []).length;
   assert.ok(pushes >= 2);
   assert.equal(marks, pushes);

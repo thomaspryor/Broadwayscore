@@ -82,3 +82,12 @@ test('hang on attempt 1 then success on attempt 2 passes', { skip: !hasTimeout &
   assert.equal(r.attempts, 2);
   assert.match(r.stdout, /Core data cloned fresh/);
 });
+
+test('a clone that ignores SIGTERM is SIGKILLed (rc 137) and retried like a hang', { skip: !hasTimeout && 'no timeout binary' }, () => {
+  // Ignored signals survive exec, so the sleep ignores timeout's TERM and
+  // only the -k 10 KILL ends it (~11s).
+  const r = runStep('if [ "$n" -eq 1 ]; then trap "" TERM; exec /bin/sleep 30; fi; mkdir -p "${@: -1}"; exit 0');
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.equal(r.attempts, 2);
+  assert.match(r.stdout, /killed after 1s \(attempt 1\/3, rc=137\)/);
+});

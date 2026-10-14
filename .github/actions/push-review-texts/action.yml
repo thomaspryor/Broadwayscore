@@ -26,6 +26,10 @@ runs:
         REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
         COMMIT_MSG: ${{ inputs.message }}
       run: |
+        # BRO-5261: pushes run through git_net (scripts/lib/git-net-timeout.sh) so a
+        # transport hang is a failed attempt, not a wait for the job timeout.
+        # Fail-open: without the helper, git_net is plain git.
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
         # Configure git for this nested repo
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
@@ -375,7 +379,7 @@ runs:
             # Fail-open: a validator crash must never block a data push.
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
-            if git push origin main 2>"$STDERR_FILE"; then
+            if git_net 120 push origin main 2>"$STDERR_FILE"; then
               cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully (attempt $i)"
               echo "pushed=true" >> "$GITHUB_OUTPUT"
@@ -536,7 +540,7 @@ runs:
             node ../../scripts/validate-added-review-ownership.js --base=origin/main \
               || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
 
-            if git push origin main 2>"$STDERR_FILE"; then
+            if git_net 120 push origin main 2>"$STDERR_FILE"; then
               cat "$STDERR_FILE" >&2
               echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
               echo "pushed=true" >> "$GITHUB_OUTPUT"

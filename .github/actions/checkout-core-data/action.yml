@@ -62,7 +62,7 @@ runs:
         # 10s sleep this used to give every failure regardless of cause.
         MAX_RETRIES=3
         . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
-        NET_SEC="${CHECKOUT_CORE_DATA_NET_TIMEOUT_SEC:-120}"
+        NET_SEC="${CHECKOUT_CORE_DATA_NET_TIMEOUT_SEC:-150}"
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           START=$(date +%s)
@@ -87,10 +87,16 @@ runs:
           # checkout-review-texts/action.yml:44 already pins the same way.
           rm -rf /tmp/core-data-checkout
           # BRO-3074: bound the clone with git_net so a transport hang counts as
-          # a failed attempt instead of blocking until the job timeout. 120s is
-          # ~5x the 24s upper bound measured above and fits the 5-10 min
-          # timeout-minutes most callers have. `|| CLONE_RC=$?` because this
-          # step runs under bash -e.
+          # a failed attempt instead of blocking until the job timeout. A true
+          # stall is caught sooner by git_net's http.lowSpeed flags (45s under
+          # 1000 B/s); the wall clock only has to outlast a slow but working
+          # clone. 150s covers the 534 MB repo down to ~3.5 MB/s (the 24s
+          # measured above is ~22 MB/s). 3 hung attempts cost about
+          # 3x(150+10 kill grace) + 2x10s sleep = ~8.3 min: inside the 10-min
+          # jobs only if little runs before this step, so a triple hang there
+          # can still end as a job timeout; the 15+ min callers (most of ~265)
+          # always see this step's own error (BRO-5261 retro-review; was 120s). `|| CLONE_RC=$?`
+          # because this step runs under bash -e.
           CLONE_RC=0
           git_net "$NET_SEC" clone --depth 1 --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE" || CLONE_RC=$?
           if [ "$CLONE_RC" -eq 0 ]; then
@@ -103,18 +109,19 @@ runs:
             break
           fi
 
+          cat "$STDERR_FILE" >&2
+
           if [ "$CLONE_RC" -eq 124 ] || [ "$CLONE_RC" -eq 137 ]; then
-            cat "$STDERR_FILE" >&2
-            rm -rf /tmp/core-data-checkout
             if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
-              echo "::warning::Core data clone hung, killed after ${NET_SEC}s (attempt $ATTEMPT/$MAX_RETRIES, rc=$CLONE_RC) — retrying"
+              echo "::warning::Core data clone hung, killed after ${NET_SEC}s (attempt $ATTEMPT/$MAX_RETRIES, rc=$CLONE_RC) — retrying in 10s"
+              # Same spacing as a generic failure: hangs come in GitHub git
+              # incidents, when parallel jobs retrying in lockstep make it worse.
+              sleep 10
               continue
             fi
             echo "::error::Core data clone hung on all $MAX_RETRIES attempts (killed after ${NET_SEC}s each)"
             exit 1
           fi
-
-          cat "$STDERR_FILE" >&2
 
           # Guarded with `|| DECISION=stop:decision-error`: this step runs
           # under bash -e, and an unguarded command substitution assigned to

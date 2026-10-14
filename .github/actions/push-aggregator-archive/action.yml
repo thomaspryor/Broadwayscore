@@ -19,6 +19,10 @@ runs:
         REPO_TOKEN: ${{ inputs.token }}
         COMMIT_MSG: ${{ inputs.message }}
       run: |
+        # BRO-5261: pushes run through git_net (scripts/lib/git-net-timeout.sh) so a
+        # transport hang is a failed attempt, not a wait for the job timeout.
+        # Fail-open: without the helper, git_net is plain git.
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
         if [ ! -d "/tmp/aggregator-archive-checkout/.git" ]; then
           echo "::warning::Aggregator archive checkout not found - skipping push"
           exit 0
@@ -80,7 +84,7 @@ runs:
         # In rebase context, -X theirs = keep our commits being replayed (local changes)
         for i in 1 2 3 4 5; do
           PUSH_STDERR_FILE=$(mktemp)
-          if git push origin main 2>"$PUSH_STDERR_FILE"; then
+          if git_net 120 push origin main 2>"$PUSH_STDERR_FILE"; then
             cat "$PUSH_STDERR_FILE" >&2
             echo "Aggregator archive pushed successfully (attempt $i)"
             rm -f "$PUSH_STDERR_FILE"
