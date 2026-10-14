@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5261-s12-a",
   "planId": "eeb280e0-615b-4d60-ae2b-72098f48c9c1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T04:47:58.817Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "Byline on the live article and in the stored text: By Lucy Popescu (Friday, 2nd October 2026)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T06:00:41.910Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    }
+  ]
 }
