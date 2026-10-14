@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T10:32:26.207Z",
+  "timestamp": "2026-10-14T10:55:15.747Z",
   "stats": {
-    "totalReviews": 56427,
+    "totalReviews": 56430,
     "alreadyFlagged": 21061,
     "dateGuardCatches": 204,
-    "directorMismatch": 1881,
+    "directorMismatch": 1882,
     "tvFilmSignals": 1562,
     "londonSignals": 2248,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5217
+    "noPublishDate": 5219
   },
   "findings": [
     {
@@ -46240,6 +46240,20 @@
       "score": null,
       "publishDate": "2026-09-27",
       "url": "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "london-box-office--francesca-shaw.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-tru-menier-chocolate-factory",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
