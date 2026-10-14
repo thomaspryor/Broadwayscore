@@ -1,21 +1,26 @@
 {
-  "updatedAt": "2026-10-14T14:19:30.383Z",
-  "processed": 252,
+  "updatedAt": "2026-10-14T14:26:06.739Z",
+  "processed": 259,
   "failed": 204,
-  "successRate": "55.3%",
+  "successRate": "55.9%",
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 6,
+    "scrapingdog": 7,
     "scrapingbee": 26,
     "brightdata": 8,
     "archiveToday": 0,
-    "archive": 47
+    "archive": 49
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-10-14T11:36:41.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-10-14T11:41:18.446Z",
       "event": "bb-session",
@@ -105,28 +110,21 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-14T14:16:35.591Z",
+      "t": "2026-10-14T14:17:30.224Z",
       "event": "bb-session",
-      "session": "00a4ef9e",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+      "session": "c418bdbe",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
     },
     {
-      "t": "2026-10-14T14:16:48.564Z",
+      "t": "2026-10-14T14:21:12.876Z",
       "event": "bb-session",
-      "session": "c21e5e02",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+      "session": "5ca25a02",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
     },
     {
-      "t": "2026-10-14T14:18:53.141Z",
-      "event": "bb-session",
-      "session": "513401c7",
-      "url": "https://www.thereviewshub.com/tag/affluenza/"
-    },
-    {
-      "t": "2026-10-14T14:19:00.911Z",
-      "event": "bb-session",
-      "session": "e61f1172",
-      "url": "https://www.thereviewshub.com/tag/affluenza/"
+      "t": "2026-10-14T14:21:13.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
