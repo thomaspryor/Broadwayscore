@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-13T09:46:24.840Z",
+  "generatedAt": "2026-10-14T02:59:52.373Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3724,
+  "scannedShows": 3733,
   "flaggedShows": 65,
-  "flaggedFiles": 226,
+  "flaggedFiles": 209,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -14,263 +14,6 @@
     "needs-human-review": 30
   },
   "shows": [
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Harold Pinter Theatre",
-      "previewsStartDate": "2026-10-03",
-      "openingDate": "2026-10-13",
-      "verdict": "likely-contamination",
-      "reasoning": "18/18 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 18,
-        "distinctYears": [
-          2024
-        ],
-        "spanDays": 10,
-        "flaggedCount": 18,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "british-theatre--vera-liber.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "british-theatre",
-          "criticName": "Vera Liber",
-          "publishDate": "2024-05-05",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "broadwayworld--alexander-cohen.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexander Cohen",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "daily-mail--patrick-marmion.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "daily-mail",
-          "criticName": "Patrick Marmion",
-          "publishDate": "2024-05-10",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "financialtimes--sarah-hemming.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "Sarah Hemming",
-          "publishDate": "2024-05-08",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--tim-bano.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Tim Bano",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-theatre--matt-wolf.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-theatre",
-          "criticName": "Matt Wolf",
-          "publishDate": "2024-05-10",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "observer--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "observer",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2024-05-12",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "sunday-times--dominic-maxwell.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "sunday-times",
-          "criticName": "Dominic Maxwell",
-          "publishDate": "2024-05-12",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--claire-allfree.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Claire Allfree",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "the-spectator-uk--lloyd-evans.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "the-spectator-uk",
-          "criticName": "Lloyd Evans",
-          "publishDate": "2024-05-09",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "theatre-weekly--greg-stewart.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "theatre-weekly",
-          "criticName": "Greg Stewart",
-          "publishDate": "2024-05-02",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "theatrecat--libby-purves.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "theatrecat",
-          "criticName": "Libby Purves",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thereviewshub--richard-maguire.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thereviewshub",
-          "criticName": "Richard Maguire",
-          "publishDate": "2024-05-04",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--dave-fargnoli.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Dave Fargnoli",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2024-05-03",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
@@ -1476,7 +1219,7 @@
       "showId": "the-unbelievers-off-broadway-2026",
       "title": "The Unbelievers",
       "market": "broadway",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "New York City Center",
       "previewsStartDate": "2026-10-13",
       "openingDate": "2026-11-05",
@@ -1818,124 +1561,6 @@
       ]
     },
     {
-      "showId": "stick-man-off-west-end-2026",
-      "title": "Stick Man",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Bloomsbury Theatre",
-      "previewsStartDate": "2026-12-03",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "6/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 7,
-        "distinctYears": [
-          2011,
-          2016,
-          2017,
-          2024,
-          2025
-        ],
-        "spanDays": 5237,
-        "flaggedCount": 6,
-        "venueMentionCount": 2
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "hampstead-highgate-express--bridget-galton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "hampstead-highgate-express",
-          "criticName": "Bridget Galton",
-          "publishDate": "2016-11-24",
-          "url": "https://www.hamhigh.co.uk/things-to-do/21364219.stick-man-leicester-square-theatre-review-kept-five-year-old-companions-enchanted-delighted/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--emmie-newitt.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "bodylessAggregatorScoreUncorroborated",
-          "outletId": "london-box-office",
-          "criticName": "Emmie Newitt",
-          "publishDate": "2024-03-06",
-          "url": "https://www.londonboxoffice.co.uk/news/post/stick-man-bloomsbury-theatre",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "londonpubtheatres--paula-david.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "londonpubtheatres",
-          "criticName": "Paula David",
-          "publishDate": "2025-12-07",
-          "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "londontheatre1--laura-jane-foley.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "londontheatre1",
-          "criticName": "Laura-Jane Foley",
-          "publishDate": "2017-10-29",
-          "url": "https://www.londontheatre1.com/reviews/review-stick-man-leicester-square-theatre/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "musicaltheatremusings--sarah-mcpartlan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "musicaltheatremusings",
-          "criticName": "Sarah McPartlan",
-          "publishDate": "2025-12-07",
-          "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "plays-to-see--rivka-jacobson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "plays-to-see",
-          "criticName": "Rivka Jacobson",
-          "publishDate": "2025-12-08",
-          "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--michael-coveney.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Michael Coveney",
-          "publishDate": "2011-08-07",
-          "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "a-view-from-the-bridge-off-broadway-2026",
       "title": "A View from the Bridge",
       "market": "broadway",
@@ -2131,6 +1756,110 @@
           "criticName": "Elyse Trevers",
           "publishDate": "2025-06-03",
           "url": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "stick-man-off-west-end-2026",
+      "title": "Stick Man",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Bloomsbury Theatre",
+      "previewsStartDate": "2026-12-03",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 6,
+        "distinctYears": [
+          2011,
+          2016,
+          2017,
+          2025
+        ],
+        "spanDays": 5237,
+        "flaggedCount": 6,
+        "venueMentionCount": 2
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "hampstead-highgate-express--bridget-galton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "hampstead-highgate-express",
+          "criticName": "Bridget Galton",
+          "publishDate": "2016-11-24",
+          "url": "https://www.hamhigh.co.uk/things-to-do/21364219.stick-man-leicester-square-theatre-review-kept-five-year-old-companions-enchanted-delighted/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "londonpubtheatres--paula-david.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "londonpubtheatres",
+          "criticName": "Paula David",
+          "publishDate": "2025-12-07",
+          "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "londontheatre1--laura-jane-foley.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "londontheatre1",
+          "criticName": "Laura-Jane Foley",
+          "publishDate": "2017-10-29",
+          "url": "https://www.londontheatre1.com/reviews/review-stick-man-leicester-square-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "musicaltheatremusings--sarah-mcpartlan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "musicaltheatremusings",
+          "criticName": "Sarah McPartlan",
+          "publishDate": "2025-12-07",
+          "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "plays-to-see--rivka-jacobson.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "plays-to-see",
+          "criticName": "Rivka Jacobson",
+          "publishDate": "2025-12-08",
+          "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--michael-coveney.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Michael Coveney",
+          "publishDate": "2011-08-07",
+          "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3154,6 +2883,56 @@
       ]
     },
     {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Bush Theatre",
+      "previewsStartDate": "2026-10-28",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2023,
+          2024
+        ],
+        "spanDays": 207,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--emmie-newitt.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Emmie Newitt",
+          "publishDate": "2024-01-30",
+          "url": "https://www.londonboxoffice.co.uk/news/post/a-view-from-the-bridge-west-end",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2023-07-07",
+          "url": "https://www.londonboxoffice.co.uk/news/post/guys-and-dolls-bridge-review",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "nine-night-off-west-end-2026",
       "title": "Nine Night",
       "market": "west-end",
@@ -3979,42 +3758,6 @@
       ]
     },
     {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Bush Theatre",
-      "previewsStartDate": "2026-10-28",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Bush Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2024
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--emmie-newitt.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Emmie Newitt",
-          "publishDate": "2024-01-30",
-          "url": "https://www.londonboxoffice.co.uk/news/post/a-view-from-the-bridge-west-end",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "august-osage-county-west-end-2026",
       "title": "August: Osage County",
       "market": "west-end",
@@ -4260,6 +4003,42 @@
           "criticName": "Emlyn Travis",
           "publishDate": "2023-03-24",
           "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "jane-eyre-rose-kingston-off-west-end-2026",
+      "title": "Jane Eyre",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "Rose Theatre Kingston",
+      "previewsStartDate": "2026-10-13",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Rose Theatre Kingston\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "everything-theatre--mike-carter.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "everything-theatre",
+          "criticName": "Mike Carter",
+          "publishDate": "2026-06-10",
+          "url": "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

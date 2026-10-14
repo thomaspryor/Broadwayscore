@@ -1,15 +1,15 @@
 {
   "system": "commercial model",
-  "status": "pass",
-  "lastChecked": "2026-10-13T09:28:28.740Z",
+  "status": "warn",
+  "lastChecked": "2026-10-14T02:45:30.491Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial model: stored vs fresh run",
-      "status": "pass",
-      "message": "272 records match a fresh run"
+      "status": "warn",
+      "message": "1 of 272 records differ from a fresh run (0 same-day, 1 drift, 0 method): schmigadoon [drift] last run 2026-10-13 stored -169.3%, now 13.8%"
     },
     {
       "name": "Commercial model: Boring Waltz fit",

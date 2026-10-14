@@ -1,7 +1,7 @@
 {
   "system": "data",
-  "status": "warn",
-  "lastChecked": "2026-10-13T09:28:28.740Z",
+  "status": "error",
+  "lastChecked": "2026-10-14T02:45:30.491Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -58,18 +58,18 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "status": "warn",
+      "status": "error",
       "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 1 newer still in flight"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "34 discovered review URL(s) across 24 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
+      "message": "39 discovered review URL(s) across 28 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Nina\" (guardian-review — missing 0d)"
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 0d)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -79,7 +79,7 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "267 of 775 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5165 Newsletter /cast links ignore the site's -2 collision suffix"
+      "message": "221 of 619 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5258 audit-provisional-venues red 33 of 34 runs: Playbill match picks a different production (school-pictures, mystic-pizza)"
     }
   ]
 }

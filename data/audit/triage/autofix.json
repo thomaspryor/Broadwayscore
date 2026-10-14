@@ -1,7 +1,7 @@
 {
   "system": "autofix",
-  "status": "warn",
-  "lastChecked": "2026-10-13T09:28:28.744Z",
+  "status": "pass",
+  "lastChecked": "2026-10-14T02:45:30.591Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,8 +13,8 @@
     },
     {
       "name": "Autofix: persistent visitor rows with no open card",
-      "status": "warn",
-      "message": "3 visitor-facing row(s) red for 4+ days with no open card: Sync: baseline drift (81d, BRO-3164 closed); Quality: corpus drift (81d, BRO-3081 closed); Quality: DMARC deliverability (28d, BRO-4093 closed)"
+      "status": "pass",
+      "message": "Every visitor-facing row red for 96h+ has an open card"
     }
   ]
 }
