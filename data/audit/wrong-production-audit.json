@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T21:55:03.083Z",
+  "timestamp": "2026-10-14T22:37:40.412Z",
   "stats": {
-    "totalReviews": 56532,
-    "alreadyFlagged": 21049,
-    "dateGuardCatches": 208,
-    "directorMismatch": 1905,
-    "tvFilmSignals": 1575,
-    "londonSignals": 2342,
+    "totalReviews": 56546,
+    "alreadyFlagged": 21053,
+    "dateGuardCatches": 210,
+    "directorMismatch": 1906,
+    "tvFilmSignals": 1578,
+    "londonSignals": 2345,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5193
+    "noPublishDate": 5196
   },
   "findings": [
     {
@@ -21015,6 +21015,24 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "london-box-office--emmie-newitt.json",
+      "publishDate": "2025-12-10",
+      "url": "https://www.londonboxoffice.co.uk/news/post/into-the-woods-bridge-theatre-production-images",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "publishDate": "2025-12-12",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-into-the-woods-bridge-theatre",
@@ -22794,6 +22812,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "file": "visitmanchester--unknown.json",
+      "publishDate": null,
+      "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -35421,6 +35457,42 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 716d before show (2024-10-28 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "londonlivinglarge--unknown.json",
+      "publishDate": "2024-10-24",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 720d before show (2024-10-24 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "ratedreviewed--christine-stanton.json",
+      "publishDate": "2024-10-29",
+      "url": "https://ratedreviewed.co.uk/2024/10/29/stories-the-tap-dance-sensation-peacock-theatre-holborn/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 715d before show (2024-10-29 vs 2026-10-14)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -63152,6 +63224,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "britishtheatrecom--british-theatre.json",
+      "score": null,
+      "publishDate": "2026-10-12",
+      "url": "https://www.britishtheatre.com/posts/cursed-child-one-show-palace-theatre-first-cast",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

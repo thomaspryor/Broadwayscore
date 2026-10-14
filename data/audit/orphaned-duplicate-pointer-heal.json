@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-14T21:48:29.612Z",
+  "generated": "2026-10-14T22:30:30.987Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 26,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -22,13 +22,6 @@
       "loserFile": "london-theatre--unknown.json",
       "targetFile": "london-theatre--holly-omahony.json",
       "reason": "orphaned-duplicate-heal: london-theatre--holly-omahony.json was flagged invalid after london-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cat-on-a-hot-tin-roof-2013",
-      "loserFile": "about-entertainment--ben-brantley.json",
-      "targetFile": "nytimes--ben-brantley.json",
-      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after about-entertainment--ben-brantley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
