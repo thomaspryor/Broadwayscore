@@ -174,3 +174,15 @@ test('vulture-nysd rule moves only the newyorksocialdiary.com row (BRO-5133)', (
   assert.equal(nysd.newData.outlet, 'New York Social Diary');
   assert.equal(plan({ outletId: 'vulture', url: 'https://www.vulture.com/article/x.html' }, 'vulture--jackson-mchenry.json'), null);
 });
+
+test('observer rows on other publications move out; real Observer rows stay (BRO-4976)', () => {
+  const fordham = planOutletMigration({ outletId: 'observer', url: 'https://fordhamobserver.com/2020/x/' }, 'observer--jane-doe.json');
+  assert.equal(fordham.to, 'fordham-observer');
+  assert.equal(fordham.newFilename, 'fordham-observer--jane-doe.json');
+  const tno = planOutletMigration({ outletId: 'theater-news-online', url: 'https://www.theaternewsonline.com/r/1' }, 'observer--unknown.json');
+  assert.equal(tno.to, 'theater-news-online');
+  assert.equal(tno.newData.outlet, 'Theater News Online');
+  for (const url of ['https://observer.com/2020/x/', 'https://www.theguardian.com/stage/x', 'https://observer.co.uk/x', null]) {
+    assert.equal(planOutletMigration({ outletId: 'observer', url }, 'observer--rex-reed.json'), null, String(url));
+  }
+});

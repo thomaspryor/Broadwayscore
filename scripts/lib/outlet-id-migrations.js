@@ -52,6 +52,22 @@ const MIGRATIONS = [
     match: (r) => hostOf(r.url) === 'newyorksocialdiary.com',
   },
   {
+    id: 'observer-fordham-host-to-fordham-observer',
+    note: 'A Fordham University student paper review filed under observer (BRO-4976). The NY and UK Observer ids are NOT split: the registry models observer as dual-market and applies the NYC or London tier per show market already.',
+    from: ['observer'],
+    to: 'fordham-observer',
+    toName: 'Fordham Observer',
+    match: (r) => hostOf(r.url) === 'fordhamobserver.com',
+  },
+  {
+    id: 'observer-theater-news-online-host-to-theater-news-online',
+    note: 'A Theater News Online review filed under observer (BRO-4976).',
+    from: ['observer'],
+    to: 'theater-news-online',
+    toName: 'Theater News Online',
+    match: (r) => hostOf(r.url) === 'theaternewsonline.com',
+  },
+  {
     id: 'gotham-playgoer-to-bobs-theater-blog',
     note: 'Same Blogspot blog, renamed in 2017.',
     from: ['gotham-playgoer'],
