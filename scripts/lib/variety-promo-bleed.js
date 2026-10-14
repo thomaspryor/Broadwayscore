@@ -110,7 +110,15 @@ const normPara = (t) => t.replace(/\s+/g, ' ').trim();
 // A near repeat: Variety's older excerpt of the opening, lightly edited, ahead of
 // the full opening ("Doctorow's novel" vs "Doctorow's brilliant 1975 novel").
 const NEAR_DUP_MIN_SHARE = 0.85;
-const leadTokens = (p) => p.toLowerCase().split(/[^\p{L}\p{N}']+/u).filter(Boolean);
+// Words that carry the match: function words would let any two sentences on the
+// same subject line up (review finding: "It is the kind of show that is ..." hit 86%).
+const LEAD_STOPWORDS = new Set(('the and that this with from have has had was were are its it\'s for not but '
+  + 'into than then them they their there what when which who whom whose will would could should about '
+  + 'over also just more most some such very been being out all any can may our your his her him she '
+  + 'you one ones only own same too off yet nor how why where while').split(' '));
+const MIN_LEAD_WORDS = 8;
+const leadTokens = (p) => p.normalize('NFC').toLowerCase().replace(/\u2019/g, "'")
+  .split(/[^\p{L}\p{N}']+/u).filter(w => w.length >= 3 && !LEAD_STOPWORDS.has(w));
 
 /** Longest common subsequence length of two token arrays. */
 function lcsLength(a, b) {
@@ -146,7 +154,7 @@ function duplicatedLead(text) {
   if (p1.length >= p2.length) return null;
   const a = leadTokens(p1);
   const b = leadTokens(p2).slice(0, Math.ceil(a.length * 1.5) + 5);
-  if (!a.length) return null;
+  if (a.length < MIN_LEAD_WORDS) return null;
   const share = lcsLength(a, b) / a.length;
   return share >= NEAR_DUP_MIN_SHARE ? { end, kind: 'near', share } : null;
 }
@@ -223,7 +231,14 @@ function applyVarietyPromoStrip(record, newText, { at, rescore = true } = {}) {
   // A second strip (a refetch brought a marker back, or a duplicated lead) keeps the
   // first baseline score; newLength follows the text so restoreBigMove can tell a
   // rescore of this text from one of a later refetch.
-  out.varietyPromoStrip = record.varietyPromoStrip ? { ...record.varietyPromoStrip, newLength: newText.length } : {
+  // A lead-only strip queues no rescore, so it records no score baseline: restoreBigMove
+  // and the A/B would otherwise read the next unrelated rescore as the strip's.
+  const prior = record.varietyPromoStrip && !record.varietyPromoStrip.leadOnly ? record.varietyPromoStrip : null;
+  if (!rescore && !prior) {
+    out.varietyPromoStrip = { at: stamp, previousLength, newLength: newText.length, leadOnly: true };
+    return out;
+  }
+  out.varietyPromoStrip = prior ? { ...prior, newLength: newText.length } : {
     at: stamp,
     previousLength,
     newLength: newText.length,

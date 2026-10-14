@@ -203,6 +203,21 @@ test('a strip that only drops a repeated lead does not queue a rescore', () => {
   assert.equal(out.needsRescore, undefined);
   assert.equal(out.rescoreReason, undefined);
   assert.equal(out.fullText, r.text);
-  assert.equal(out.varietyPromoStrip.newLength, r.text.length);
+  // no score baseline: a later unrelated rescore must not be read as the strip's
+  assert.deepEqual(out.varietyPromoStrip, { at: 't', previousLength: rec.fullText.length, newLength: r.text.length, leadOnly: true });
+  const rescored = { ...out, llmScore: { score: 50, bucket: 'Mixed' }, llmMetadata: { scoredAt: 'later' } };
+  assert.equal(restoreBigMove(rescored, { at: 'u' }), null);
+  // a promo strip after a lead-only one takes the baseline then
+  const later = applyVarietyPromoStrip({ ...out, assignedScore: 70, llmScore: { score: 70, bucket: 'Positive' } }, 'x', { at: 'v' });
+  assert.equal(later.needsRescore, true);
+  assert.equal(later.varietyPromoStrip.previousScore, 70);
+  assert.equal(later.varietyPromoStrip.leadOnly, undefined);
   assert.equal(applyVarietyPromoStrip(rec, r.text, { at: 't' }).needsRescore, true);
+});
+
+test('function words alone never make a near repeat', () => {
+  const p1 = 'It is the kind of show that is in the end about the way that we are with each other when it is over.';
+  const p2 = 'It is, in the end, a show about grief: the way a family that is falling apart is held together '
+    + 'by a song that we have all heard before, and the way it lingers when it is over and done.';
+  assert.equal(duplicatedLead(`${p1}\n\n${p2}\n\n${para('third')}`), null);
 });
