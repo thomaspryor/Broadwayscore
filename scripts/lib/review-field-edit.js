@@ -55,6 +55,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // For a hand-adjudicated dangling crossOutletPrimaryFile the audit's --fix
   // leaves report-only (the surviving copy is excluded for its own reasons).
   'crossOutletDuplicate', 'crossOutletClearReason',
+  // syndication flag (BRO-4891): CLEAR ONLY, and only when the record's
+  // syndicatedPrimaryFile points at the record itself. A file cannot be a
+  // syndicated copy of itself; the stale self-pointer (left by a rename or
+  // merge) drops the outlet's only review from reviews.json.
+  'isSyndicatedDuplicate', 'syndicatedPrimaryFile',
   // score override (BRO-4275): humanReviewScore is the one score the rebuild
   // always honours (rebuild-helpers.js P0), so a cloud session can correct an
   // LLM misread without touching llmScore/ensemble bookkeeping.
@@ -79,8 +84,21 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   ...EXCERPT_FIELDS,
 ];
 
+// True when a record's syndication pointer names the record's own file
+// ("<folder>/<file>" or a bare "<file>"). ctx.folder and ctx.file come from
+// the on-disk path, so a plan cannot claim a pointer is stale.
+function isSelfSyndicationPointer(record, ctx = {}) {
+  const ptr = record && record.syndicatedPrimaryFile;
+  if (typeof ptr !== 'string' || !ctx.folder || !ctx.file) return false;
+  return ptr === `${ctx.folder}/${ctx.file}` || ptr === ctx.file;
+}
+
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && isSelfSyndicationPointer(record, ctx)
+    ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file'),
+  syndicatedPrimaryFile: (v, record, ctx = {}) => (v === null && isSelfSyndicationPointer(record, ctx)
+    ? null : 'syndicatedPrimaryFile may only be cleared (null), and only when it points at this same file'),
   crossOutletDuplicate: (v) => (v === false ? null : 'crossOutletDuplicate may only be cleared (false)'),
   crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0
     ? null : 'crossOutletClearReason must be a non-empty string'),
@@ -400,7 +418,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
   // url edits (BRO-4430) may repair a url that a sibling file holds for a
   // different named critic; that needs the show dir, so it is computed here.
-  const ctx = { folder: path.basename(path.dirname(abs)) };
+  const ctx = { folder: path.basename(path.dirname(abs)), file: path.basename(abs) };
   if (action.field === 'url' && record.url) {
     const { urlOwnedByOtherCritic } = require('./review-slot-guards');
     ctx.currentUrlOwnedByOtherCritic = !!urlOwnedByOtherCritic({
@@ -463,4 +481,4 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
 }
 
 module.exports = {
-  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag };
+  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer };
