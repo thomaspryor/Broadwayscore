@@ -107,19 +107,54 @@ const PARA_BREAK_RE = /\n[^\S\n]*\n\s*/;
 const MIN_DUP_LEAD_CHARS = 80;
 const normPara = (t) => t.replace(/\s+/g, ' ').trim();
 
-/** Index where the second paragraph starts when paragraph 1 repeats exactly as paragraph 2, else -1. */
-function duplicatedLeadEnd(text) {
-  if (typeof text !== 'string') return -1;
+// A near repeat: Variety's older excerpt of the opening, lightly edited, ahead of
+// the full opening ("Doctorow's novel" vs "Doctorow's brilliant 1975 novel").
+const NEAR_DUP_MIN_SHARE = 0.85;
+const leadTokens = (p) => p.toLowerCase().split(/[^\p{L}\p{N}']+/u).filter(Boolean);
+
+/** Longest common subsequence length of two token arrays. */
+function lcsLength(a, b) {
+  let prev = new Array(b.length + 1).fill(0);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = new Array(b.length + 1).fill(0);
+    for (let j = 1; j <= b.length; j++) cur[j] = a[i - 1] === b[j - 1] ? prev[j - 1] + 1 : Math.max(prev[j], cur[j - 1]);
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+/**
+ * { end, kind, share } when paragraph 1 repeats paragraph 2's opening, else null.
+ * end is the index where paragraph 2 starts. kind 'exact': the two paragraphs are
+ * equal. kind 'near': paragraph 1 is shorter and NEAR_DUP_MIN_SHARE of its words
+ * appear in order in paragraph 2's first sentences (a window a bit longer than
+ * paragraph 1). Both need paragraph 1 >= MIN_DUP_LEAD_CHARS and a third paragraph.
+ */
+function duplicatedLead(text) {
+  if (typeof text !== 'string') return null;
   const t = text.replace(/^\s+/, '');
   const m1 = t.match(PARA_BREAK_RE);
-  if (!m1) return -1;
+  if (!m1) return null;
   const p1 = normPara(t.slice(0, m1.index));
   const rest = t.slice(m1.index + m1[0].length);
   const m2 = rest.match(PARA_BREAK_RE);
-  if (!m2) return -1; // the "repeat" would be the whole rest of the text
+  if (!m2) return null; // the "repeat" would be the whole rest of the text
   const p2 = normPara(rest.slice(0, m2.index));
-  if (p1.length < MIN_DUP_LEAD_CHARS || p1 !== p2) return -1;
-  return text.length - rest.length;
+  if (p1.length < MIN_DUP_LEAD_CHARS) return null;
+  const end = text.length - rest.length;
+  if (p1 === p2) return { end, kind: 'exact', share: 1 };
+  if (p1.length >= p2.length) return null;
+  const a = leadTokens(p1);
+  const b = leadTokens(p2).slice(0, Math.ceil(a.length * 1.5) + 5);
+  if (!a.length) return null;
+  const share = lcsLength(a, b) / a.length;
+  return share >= NEAR_DUP_MIN_SHARE ? { end, kind: 'near', share } : null;
+}
+
+/** Index where the second paragraph starts when paragraph 1 repeats it (see duplicatedLead), else -1. */
+function duplicatedLeadEnd(text) {
+  const d = duplicatedLead(text);
+  return d ? d.end : -1;
 }
 
 function hasDuplicatedLead(text) { return duplicatedLeadEnd(text) >= 0; }
@@ -166,7 +201,7 @@ function stripVarietyPromoBleed(text) {
  * on text with the promo lines), pre-strip score kept for the A/B, pull quote
  * dropped when no longer in the text. Returns a new object.
  */
-function applyVarietyPromoStrip(record, newText, { at } = {}) {
+function applyVarietyPromoStrip(record, newText, { at, rescore = true } = {}) {
   const out = { ...record };
   const stamp = at || new Date().toISOString();
   const previousLength = (record.fullText || '').length;
@@ -176,10 +211,13 @@ function applyVarietyPromoStrip(record, newText, { at } = {}) {
   if ('wordCount' in out) out.wordCount = wc;
   const norm = (s) => String(s).replace(/\s+/g, ' ').trim().toLowerCase();
   if (out.llmPullQuote && !norm(newText).includes(norm(out.llmPullQuote))) out.llmPullQuote = null;
-  out.needsRescore = true;
-  out.rescoreReason = RESCORE_REASON;
-  require('./rescore-lifecycle').markRescoreFlagged(out, stamp);
-  delete out.rescoreCompletedAt;
+  // rescore false: only a repeated lead paragraph went, the verdict text is unchanged.
+  if (rescore) {
+    out.needsRescore = true;
+    out.rescoreReason = RESCORE_REASON;
+    require('./rescore-lifecycle').markRescoreFlagged(out, stamp);
+    delete out.rescoreCompletedAt;
+  }
   // Push restore must not read the old (longer) copy as richer text (review-write-guard _deliberateTextTrim).
   out.fullTextTrimmed = { reason: RESCORE_REASON, fromLength: previousLength, toLength: newText.length, at: stamp };
   // A second strip (a refetch brought a marker back, or a duplicated lead) keeps the
@@ -239,6 +277,6 @@ function isExcludedRow(d) {
 
 module.exports = {
   findVarietyPromoBleed, hasVarietyPromoBleed, stripVarietyPromoBleed, applyVarietyPromoStrip,
-  hasDuplicatedLead, dropDuplicatedLead, restoreBigMove,
+  hasDuplicatedLead, dropDuplicatedLead, duplicatedLead, restoreBigMove,
   isProseLine, isExcludedRow, RESCORE_REASON, MIN_CLEAN_LENGTH, BIG_MOVE_POINTS,
 };

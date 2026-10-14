@@ -19,7 +19,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   stripVarietyPromoBleed, applyVarietyPromoStrip, hasVarietyPromoBleed, isExcludedRow,
-  hasDuplicatedLead, restoreBigMove,
+  hasDuplicatedLead, duplicatedLead, restoreBigMove,
 } = require('./lib/variety-promo-bleed');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
@@ -35,6 +35,7 @@ Usage:
   node scripts/strip-variety-promo-bleed.js --verify-live [--limit=N|--files=]  removed lines vs the live article (exit 1 on a hit)
   node scripts/strip-variety-promo-bleed.js --ab            A/B of stripped rows: pre-strip score vs rescore
   node scripts/strip-variety-promo-bleed.js --restore-big-moves [--apply]  keep the pre-strip score where the rescore moved 5+ or changed bucket
+  node scripts/strip-variety-promo-bleed.js --dup-leads     live rows whose first paragraph repeats the second (exact or near), lengths only
   node scripts/strip-variety-promo-bleed.js --dump[=N]      marker stats and N context samples (read-only)
 `;
 if (hasHelpFlag(process.argv)) { console.log(USAGE); process.exit(0); }
@@ -181,7 +182,8 @@ function run({ apply, limit, files, verbose, refetchOnly }) {
       continue;
     }
     const file = path.join(DIR, rel);
-    const res = safeWriteReview(file, applyVarietyPromoStrip(d, r.text), { force: true });
+    // Only a repeated lead paragraph went: the verdict text is the same, no rescore.
+    const res = safeWriteReview(file, applyVarietyPromoStrip(d, r.text, { rescore: r.blocks.length > 0 }), { force: true });
     const after = JSON.parse(fs.readFileSync(file, 'utf8'));
     if ((res && res.wrote === false) || after.fullText !== r.text) {
       failed++;
@@ -297,7 +299,24 @@ function restoreBigMoves({ apply }) {
   return failed ? 1 : 0;
 }
 
-if (arg('restore-big-moves') !== null) {
+/** Live rows with a repeated lead paragraph. Prints lengths and word counts only (logs are public). */
+function dupLeads() {
+  const kinds = {};
+  for (const x of varietyFiles()) {
+    if (isExcludedRow(x.d)) continue;
+    const dl = duplicatedLead(x.d.fullText);
+    if (!dl) continue;
+    kinds[dl.kind] = (kinds[dl.kind] || 0) + 1;
+    const t = x.d.fullText;
+    console.log(`  ${dl.kind} ${x.rel}: lead ${dl.end} chars dropped of ${t.length}, ${Math.round(dl.share * 100)}% of its words in order in paragraph 2${x.d._locked ? ' (locked)' : ''}`);
+  }
+  console.log('duplicated leads:', JSON.stringify(kinds));
+  return 0;
+}
+
+if (arg('dup-leads') !== null) {
+  process.exit(dupLeads());
+} else if (arg('restore-big-moves') !== null) {
   process.exit(restoreBigMoves({ apply: arg('apply') !== null }));
 } else if (arg('dump') !== null) {
   dump(Number(arg('dump')) || 20);

@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   findVarietyPromoBleed, hasVarietyPromoBleed, stripVarietyPromoBleed, applyVarietyPromoStrip, isProseLine, isExcludedRow, RESCORE_REASON,
+  duplicatedLead,
 } = require('../../scripts/lib/variety-promo-bleed.js');
 
 const para = (tag, n = 8) => Array.from({ length: n }, (_, i) => `The ${tag} production keeps its nerve in scene ${i}, and the cast plays it straight.`).join(' ');
@@ -110,8 +111,8 @@ test('drops an exactly repeated lead paragraph and nothing else', () => {
   assert.equal(dropDuplicatedLead(`${lead}\n\n${lead}\n\n${body}`), `${lead}\n\n${body}`);
   // whitespace differences still count as the same paragraph
   assert.equal(hasDuplicatedLead(`${lead}\n\n${lead.replace(/ /g, '  ')}\n\n${body}`), true);
-  // a lead that only starts the next paragraph is not an exact repeat
-  assert.equal(hasDuplicatedLead(`${lead}\n\n${lead} More words.\n\n${body}`), false);
+  // a lead that starts the next paragraph is a near repeat (the older excerpt)
+  assert.equal(duplicatedLead(`${lead}\n\n${lead} More words.\n\n${body}`).kind, 'near');
   // a short lead (a dek or a kicker) is left alone
   assert.equal(hasDuplicatedLead(`Short.\n\nShort.\n\n${body}`), false);
   // no third paragraph: the repeat would be the whole remaining text
@@ -120,7 +121,7 @@ test('drops an exactly repeated lead paragraph and nothing else', () => {
 });
 
 test('the strip also drops a duplicated lead, with or without a promo block', () => {
-  const lead = para('lead', 2);
+  const lead = 'Opening night brought a starry crowd and a long ovation for a revival that had been years in the making.';
   const promo = `${lead}\n\n${lead}\n\n${para('second')}\n\nRelated Stories\n\nSome Other Show Gets a Revival Date\n\n${para('third')}\n\n${para('fourth')}`;
   const r = stripVarietyPromoBleed(promo);
   assert.equal(r.refused, null);
@@ -163,4 +164,45 @@ test('a second strip keeps the first baseline score but tracks the new text leng
   const second = applyVarietyPromoStrip({ ...first, assignedScore: 55 }, para('x', 20), { at: 'B' });
   assert.equal(second.varietyPromoStrip.previousScore, 70);
   assert.equal(second.varietyPromoStrip.newLength, para('x', 20).length);
+});
+
+// Synthetic text in the shape of the ragtime-1998 row: paragraph 1 is Variety's older
+// excerpt of the opening, lightly edited, ahead of the full opening.
+const OPENING = 'The new musical drawn from the brilliant 1975 novel arrives on Broadway as a sweeping, '
+  + 'handsome pageant of three families at the turn of the century, and it is often moving. '
+  + 'Its second act is less sure of itself.';
+const EXCERPT = 'The new musical drawn from the novel lands on Broadway as a sweeping, handsome pageant '
+  + 'of three families at the turn of the century, and it is often moving.';
+
+test('drops a lightly edited excerpt of the opening ahead of the full opening (ragtime shape)', () => {
+  const body = `${OPENING}\n\n${para('third')}\n\n${para('fourth')}`;
+  const dl = duplicatedLead(`${EXCERPT}\n\n${body}`);
+  assert.equal(dl.kind, 'near');
+  assert.ok(dl.share >= 0.85 && dl.share < 1);
+  assert.equal(dropDuplicatedLead(`${EXCERPT}\n\n${body}`), body);
+  // a near repeat that is longer than the paragraph it repeats is left alone
+  assert.equal(hasDuplicatedLead(`${OPENING} And more.\n\n${EXCERPT}\n\n${body}`), false);
+});
+
+test('keeps a real two-paragraph opening that shares words but is not a repeat', () => {
+  const p1 = 'Few musicals have aged as gracefully as this one, which returns to Broadway in a lavish '
+    + 'new staging at a big house this season.';
+  const p2 = 'The production opens on a bare stage and builds slowly toward a first-act finale that lands '
+    + 'with real force, though the musical itself shows its age in places this season on Broadway.';
+  const text = `${p1}\n\n${p2}\n\n${para('third')}`;
+  assert.equal(duplicatedLead(text), null);
+  assert.equal(dropDuplicatedLead(text), text);
+  assert.equal(stripVarietyPromoBleed(text).text, text);
+});
+
+test('a strip that only drops a repeated lead does not queue a rescore', () => {
+  const rec = { fullText: `${EXCERPT}\n\n${OPENING}\n\n${para('third')}`, assignedScore: 70, llmScore: { score: 70, bucket: 'Positive' } };
+  const r = stripVarietyPromoBleed(rec.fullText);
+  assert.equal(r.blocks.length, 0);
+  const out = applyVarietyPromoStrip(rec, r.text, { at: 't', rescore: r.blocks.length > 0 });
+  assert.equal(out.needsRescore, undefined);
+  assert.equal(out.rescoreReason, undefined);
+  assert.equal(out.fullText, r.text);
+  assert.equal(out.varietyPromoStrip.newLength, r.text.length);
+  assert.equal(applyVarietyPromoStrip(rec, r.text, { at: 't' }).needsRescore, true);
 });
