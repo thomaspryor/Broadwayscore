@@ -385,7 +385,16 @@
     "the-authenticator-west-end-2026/north-west-end--michelle-knight.json",
     "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
     "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+    "romeo-and-juliet-west-end-2026/thestage--sam-marlowe.json",
+    "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "romeo-and-juliet-west-end-2026/whatsonstage--sarah-crompton.json",
+    "dog-day-afternoon-2026/wsj--charles-isherwood.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
@@ -676,9 +685,16 @@
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ny1--unknown.json"
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "john-proctor-is-the-villain-west-end-2026/guardian--arifa-akbar.json",
+    "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json",
+    "teeth-n-smiles-west-end-2026/sunday-times--dominic-maxwell.json",
+    "every-brilliant-thing-2026/deadline--greg-evans.json",
+    "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
+    "every-brilliant-thing-2026/theatermania--kenji-fujishima.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -917,7 +933,11 @@
       "cats-the-jellicle-ball-2026/exeunt-magazine--lane-williamson.json",
       "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
       "copenhagen-west-end-2026/thestage--tom-wicker.json",
-      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+      "romeo-and-juliet-west-end-2026/thestage--sam-marlowe.json",
+      "romeo-and-juliet-west-end-2026/whatsonstage--sarah-crompton.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -948,7 +968,9 @@
       "data/review-texts/archduke-west-end-2026/nytimes--juan-a-ramirez.json",
       "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
       "data/review-texts/becky-shaw-2026/wsj--charles-isherwood.json",
-      "becky-shaw-2026/wsj--charles-isherwood.json"
+      "becky-shaw-2026/wsj--charles-isherwood.json",
+      "data/review-texts/dog-day-afternoon-2026/wsj--charles-isherwood.json",
+      "dog-day-afternoon-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1029,7 +1051,8 @@
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
       "pride-west-end-2026/broadwayworld--jay-irwin.json",
       "the-name-off-west-end-2026/daily-mail--unknown.json",
-      "death-of-a-salesman-2026/cititour--unknown.json"
+      "death-of-a-salesman-2026/cititour--unknown.json",
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
     ],
     "brightdata": [
       "tender-off-west-end-2026/deadline--zac-ntim.json",
@@ -1110,11 +1133,14 @@
       "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
       "dear-jack-dear-louise-off-west-end-2026/londonpubtheatres--phoebe-constantine.json",
       "the-authenticator-west-end-2026/north-west-end--michelle-knight.json",
-      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
+      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+      "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+      "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+  "lastProcessed": "every-brilliant-thing-2026/theatermania--kenji-fujishima.json",
   "log": [
     {
       "t": "2026-10-13T19:44:44.248Z",
@@ -1686,6 +1712,17 @@
     },
     {
       "t": "2026-10-14T02:58:41.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T03:05:25.353Z",
+      "event": "bb-session",
+      "session": "fe0dd7db",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-10-14T03:05:25.907Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

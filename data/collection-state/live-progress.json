@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-14T03:03:15.562Z",
-  "processed": 386,
-  "failed": 289,
-  "successRate": "57.2%",
+  "updatedAt": "2026-10-14T03:13:22.099Z",
+  "processed": 395,
+  "failed": 297,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 236,
+    "playwright": 240,
     "amp": 9,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingdog": 45,
-    "scrapingbee": 31,
+    "scrapingbee": 32,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 69
+    "archive": 72
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-10-13T22:15:13.260Z",
-      "event": "bb-session",
-      "session": "0914e348",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-13T22:15:14.193Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-13T22:19:09.105Z",
       "event": "bb-session",
@@ -123,6 +112,17 @@
     },
     {
       "t": "2026-10-14T02:58:41.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T03:05:25.353Z",
+      "event": "bb-session",
+      "session": "fe0dd7db",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-10-14T03:05:25.907Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
