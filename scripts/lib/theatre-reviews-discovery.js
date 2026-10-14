@@ -43,4 +43,23 @@ function pickTheatreReviewsRoundup(posts, showTitle) {
   return null;
 }
 
-module.exports = { pickTheatreReviewsRoundup };
+/**
+ * Homepage variant of pickTheatreReviewsRoundup (BRO-4828): anchors are
+ * [{ href, text }] from `a[href*="/reviews-roundup/"]`. The scan used to match
+ * on the first 8 characters of the title, so "The Hungry Ghost" ("the hung")
+ * accepted "The Hunger Games On Stage". Same every-title-word rule as the
+ * WP-API picker; returns an absolute URL or null.
+ */
+function pickTheatreReviewsRoundupFromAnchors(anchors, showTitle) {
+  if (!Array.isArray(anchors)) return null;
+  const posts = anchors
+    .filter((a) => a && typeof a.href === 'string')
+    .map((a) => ({
+      link: a.href.startsWith('http') ? a.href : `https://theatre.reviews${a.href}`,
+      title: { rendered: a.text || '' },
+      slug: a.href.replace(/\/+$/, '').split('/').pop(),
+    }));
+  return pickTheatreReviewsRoundup(posts, showTitle);
+}
+
+module.exports = { pickTheatreReviewsRoundup, pickTheatreReviewsRoundupFromAnchors };

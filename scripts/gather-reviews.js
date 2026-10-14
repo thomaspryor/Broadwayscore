@@ -5018,15 +5018,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         if (!roundupUrl && homepageHtml) {
           const cheerio = require('cheerio');
           const $ = cheerio.load(homepageHtml);
-          const titleLower = searchTitle.toLowerCase();
-          $('a[href*="/reviews-roundup/"]').each((_, el) => {
-            const href = $(el).attr('href');
-            const text = $(el).text().toLowerCase();
-            if (text.includes(titleLower.substring(0, 8)) && href.includes('/reviews-roundup/')) {
-              roundupUrl = href.startsWith('http') ? href : `https://theatre.reviews${href}`;
-              return false;
-            }
-          });
+          // BRO-4828: every title word must match, not the first 8 characters.
+          const anchors = [];
+          $('a[href*="/reviews-roundup/"]').each((_, el) => anchors.push({ href: $(el).attr('href'), text: $(el).text() }));
+          roundupUrl = require('./lib/theatre-reviews-discovery').pickTheatreReviewsRoundupFromAnchors(anchors, searchTitle);
         }
 
         {

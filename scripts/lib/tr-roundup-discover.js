@@ -27,6 +27,7 @@
  */
 
 const { verifyAggregatorUrl } = require('./show-match-verifier');
+const { pickTheatreReviewsRoundup } = require('./theatre-reviews-discovery');
 const { cleanSearchTitle } = require('./title-normalization');
 
 const { foldDiacritics } = require('./title-match');
@@ -88,7 +89,10 @@ async function discoverTrRoundupHtml(show, opts = {}) {
     const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
     const posts = await fetchJSON(wpApiUrl);
     if (posts && Array.isArray(posts)) {
-      const roundup = posts.find(p => p.link && p.link.includes('/reviews-roundup/'));
+      // BRO-4828: the first /reviews-roundup/ hit for a stemmed search ("Hungry
+      // Ghost" -> hunger) is often another show; require every title word.
+      const roundupLink = pickTheatreReviewsRoundup(posts, show.title);
+      const roundup = roundupLink ? posts.find(p => p.link === roundupLink) : null;
       if (roundup) {
         log(`    WP API found: ${roundup.link}`);
         const pageResult = await fetchPage(roundup.link, { renderJs: false });
