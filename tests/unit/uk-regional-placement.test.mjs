@@ -113,3 +113,21 @@ test('related shows never mix UK flagship shows with US tryouts', () => {
     }
   }
 });
+
+test('second stages of listed UK houses count as UK, and the scoring prompt agrees (BRO-5103 retro)', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const { isUkRegionalVenue } = require('../../scripts/lib/market-label.js');
+  for (const venue of ['Swan Theatre, Stratford-upon-Avon', 'The Other Place, Stratford-upon-Avon', 'Minerva Theatre, Chichester', 'Sheffield Crucible', 'Royal Exchange Manchester']) {
+    assert.equal(isUkRegionalShow({ category: 'regional', venue }), true, `site: ${venue}`);
+    assert.equal(isUkRegionalVenue(venue), true, `pipeline: ${venue}`);
+  }
+  // Same-named houses elsewhere stay US tryouts.
+  assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Swan Theatre, Worcester' }), false);
+});
+
+test('show page <title> labels a UK house "in the UK", not as a regional (US) production', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync('src/app/show/[slug]/page.tsx', 'utf8');
+  assert.match(src, /isUkRegionalMeta \? 'in the UK' : isRegionalMeta \? 'in a regional production'/);
+});

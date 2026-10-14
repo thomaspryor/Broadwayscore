@@ -113,6 +113,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const isOffWestEndMeta = show.category === 'off-west-end';
   const isOffBroadwayMeta = show.category === 'off-broadway';
   const isRegionalMeta = show.category === 'regional';
+  // UK flagship houses (RSC, Chichester, ...) are filed under Beyond London, not Broadway tryouts (BRO-5103).
+  const isUkRegionalMeta = isRegionalMeta && isUkRegionalShow(show);
   const isTourMeta = show.category === 'tour';
   // A tour shares its Broadway parent's title; the <title>/OG name must tell them apart.
   const seoTitle = isTourMeta ? `${show.title} National Tour` : show.title;
@@ -120,7 +122,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
   // labelled "on Broadway" — use a neutral, honest market label in titles/meta.
   const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
+  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isUkRegionalMeta ? 'in the UK' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
@@ -281,7 +283,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // Beyond London shelf (BRO-5103): back/breadcrumb go there, and no Broadway
   // browse list is a mismatched middle level.
   const isUkRegional = isUkRegionalShow(show);
-  const homeHref = isWestEnd || isUkRegional ? '/west-end' : isOffBroadway ? '/off-broadway' : '/';
+  // /west-end 404s when the westEnd flag is off; fall back to home there.
+  const homeHref = isWestEnd || (isUkRegional && featureFlags.westEnd) ? '/west-end' : isOffBroadway ? '/off-broadway' : '/';
   const browseSlug = isUkRegional ? null : getBrowseSlug(show.category, show.type);
   const breadcrumbHome = { name: 'Home', url: `${BASE_URL}${homeHref === '/' ? '' : homeHref}` };
   const breadcrumbSchema = isOpera

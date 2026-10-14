@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { getShowById, getTourStops, getToursOf } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-core';
 import { featureFlags } from '@/config/feature-flags';
-import { hasReachedStage, isUkRegionalShow } from '@/lib/market-utils';
+import { hasReachedStage, isLondonMarket, isUkRegionalShow } from '@/lib/market-utils';
 import { getTourParentLabel, describeTourScores } from '@/lib/tour-display';
 import { isTourScored } from '@/lib/tour-listing';
 import { hasEnoughReviews, applyCoverageFloor } from '@/config/score-buckets';
@@ -94,12 +94,27 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           since the detail page is reachable directly). Explains why a non-Broadway show
           lives on Broadway Scorecard so first-time search arrivals don't bounce.
           When the tryout has a linked Broadway transfer (transferredTo), say so. */}
-      {isRegional && isUkRegionalShow(show) && (
-        <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
-          <span className="font-semibold">UK regional production</span>
-          <span className="text-gray-400"> — a major house outside London, tracked alongside the West End.</span>
-        </p>
-      )}
+      {isRegional && isUkRegionalShow(show) && (() => {
+        // A UK house's production can transfer too (detect-regional-transfers.js sets
+        // transferredTo): link it, naming the market it went to (BRO-5103 retro).
+        const transfer = show.transferredTo ? getShowById(show.transferredTo) : null;
+        const where = transfer ? (isLondonMarket(transfer.category) ? 'the West End' : 'Broadway') : '';
+        return (
+          <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
+            <span className="font-semibold">UK regional production</span>
+            {transfer ? (
+              <span className="text-gray-400">
+                {hasReachedStage(transfer.status) ? ` — this production transferred to ${where}. ` : ` — this production is transferring to ${where}. `}
+                <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
+                  See the {where === 'Broadway' ? 'Broadway' : 'West End'} production →
+                </Link>
+              </span>
+            ) : (
+              <span className="text-gray-400"> — a major house outside London, tracked alongside the West End.</span>
+            )}
+          </p>
+        );
+      })()}
 
       {isRegional && !isUkRegionalShow(show) && (() => {
         // A leg of a multi-venue tour doesn't carry transferredTo itself

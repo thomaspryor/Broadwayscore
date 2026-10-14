@@ -92,9 +92,13 @@ function ukRegionalVenueMatches() {
     }
     return [];
   }
-  _ukRegionalVenues = rows
-    .map((r) => String((r && r.match) || '').trim().toLowerCase())
-    .filter(Boolean);
+  // `match` plus `aliases`, the same strings src/lib/market-utils.ts accepts
+  // (findUkRegionalVenue), so the site and the scoring prompt never disagree on
+  // 'Sheffield Crucible' or a second stage such as the Swan (BRO-5103 retro).
+  _ukRegionalVenues = [...new Set(rows
+    .flatMap((r) => [r && r.match, ...((r && Array.isArray(r.aliases)) ? r.aliases : [])])
+    .map((m) => String(m || '').trim().toLowerCase())
+    .filter(Boolean))];
   return _ukRegionalVenues;
 }
 
