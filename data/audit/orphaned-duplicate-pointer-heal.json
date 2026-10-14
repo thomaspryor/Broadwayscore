@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-14T13:08:25.895Z",
+  "generated": "2026-10-14T13:41:17.844Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 26,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -120,13 +120,6 @@
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
       "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "loserFile": "daily-mail--unknown.json",
-      "targetFile": "daily-mail--patrick-marmion.json",
-      "reason": "orphaned-duplicate-heal: daily-mail--patrick-marmion.json was flagged invalid after daily-mail--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
