@@ -28,19 +28,25 @@ const { execFileSync } = require('child_process');
 // Matches the CORE-DATA block's perl-alarm timeout (session-start.sh) — a
 // network hang here must not block every session start indefinitely.
 const FETCH_TIMEOUT_MS = 5000;
+// BRO-5359: a cold cloud container fetching origin/main for the 35k-file repo can take well over 5s. The
+// 5s budget made the fetch fail silently, the checkout stayed a day old, and every hook and lib (the review
+// gates included) ran from stale code for the whole session. Cloud pays up to this once at startup.
+const CLOUD_FETCH_TIMEOUT_MS = 40000;
 
 /**
  * Best-effort update of the local origin/main tracking ref. Fail-open: a
  * network hiccup or missing remote must not block session start — a stale
  * cached ref (whatever was last fetched) is strictly better than hanging.
  */
-function fetchOriginMain(repoDir, execFn = execFileSync) {
+function fetchOriginMain(repoDir, execFn = execFileSync, timeoutMs = FETCH_TIMEOUT_MS) {
   try {
     execFn('git', ['-C', repoDir, 'fetch', 'origin', '+refs/heads/main:refs/remotes/origin/main', '-q'], {
-      timeout: FETCH_TIMEOUT_MS,
+      timeout: timeoutMs,
       stdio: 'ignore',
     });
+    return true;
   } catch { /* fail-open */ }
+  return false;
 }
 
 /**
@@ -117,11 +123,21 @@ function formatCodeCheckoutStaleMessage({ behind, ahead, branch = '' }, repoDir)
 }
 
 /** Convenience wrapper: fetches (unless skipFetch), counts, formats. */
-function runCodeCheckoutStalenessCheck({ repoDir, execFn = execFileSync, skipFetch = false } = {}) {
-  if (!skipFetch) fetchOriginMain(repoDir, execFn);
+function runCodeCheckoutStalenessCheck({ repoDir, execFn = execFileSync, skipFetch = false, fetchTimeoutMs = FETCH_TIMEOUT_MS } = {}) {
+  const fetched = skipFetch ? true : fetchOriginMain(repoDir, execFn, fetchTimeoutMs);
   const { behind, ahead } = getBehindAheadCounts(repoDir, 'refs/remotes/origin/main', execFn);
   const branch = getCurrentBranch(repoDir, execFn);
-  return { behind, ahead, branch, message: formatCodeCheckoutStaleMessage({ behind, ahead, branch }, repoDir) };
+  return { behind, ahead, branch, fetched, message: formatCodeCheckoutStaleMessage({ behind, ahead, branch }, repoDir) };
+}
+
+/** Pure: the cloud warning when origin/main could not be fetched, so the checkout (and its hooks) may be stale. */
+function formatFetchFailedMessage(repoDir, headDate) {
+  return [
+    `⚠️ HOOKS MAY BE STALE: could not fetch origin/main for ${repoDir} within ${CLOUD_FETCH_TIMEOUT_MS / 1000}s.`,
+    `   This session's hooks, gates and scripts run from that checkout${headDate ? ` (HEAD is from ${headDate})` : ''}, so newer fixes`,
+    `   (review gates, landing checks) may not be active. Refresh it now:`,
+    `     git -C ${repoDir} fetch origin main && git -C ${repoDir} merge --ff-only origin/main`,
+  ].join('\n');
 }
 
 // ── Auto-sync (BRO-4229, CLOUD ONLY) ────────────────────────────────────────
@@ -231,6 +247,8 @@ function formatCodeCheckoutSyncMessage(result, repoDir) {
 
 module.exports = {
   FETCH_TIMEOUT_MS,
+  CLOUD_FETCH_TIMEOUT_MS,
+  formatFetchFailedMessage,
   SYNC_TIMEOUT_MS,
   fetchOriginMain,
   UNPUSHED_BACKLOG_THRESHOLD,
