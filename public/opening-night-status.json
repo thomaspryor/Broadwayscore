@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T11:12:03.277Z",
+  "generatedAt": "2026-10-14T11:41:15.697Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -384,24 +384,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 73.09,
-      "liveScore": 73,
-      "scoreDrift": -0.09000000000000341,
+      "siteScore": 74.5,
+      "liveScore": 75,
+      "scoreDrift": 0.5,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
-      "t1": 2,
+      "total": 6,
+      "t1": 3,
       "t2": 2,
       "t3": 1,
-      "positive": 3,
+      "positive": 4,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
-          "T1:2/3",
+          "6/8 total",
           "hi-conf:5/6"
         ],
         "highConfidence": 5,
@@ -430,28 +429,12 @@
           "isDualMarket": true
         },
         {
-          "name": "The Sunday Times",
-          "isDualMarket": true
-        },
-        {
           "name": "Evening Standard",
           "isDualMarket": false
         },
         {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "The i",
           "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
         },
         {
           "name": "The Stage",
@@ -549,6 +532,18 @@
           "t2": 2,
           "t3": 1,
           "p": 3,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-14T11:41:15.697Z",
+          "rc": 6,
+          "s": 74.5,
+          "t1": 3,
+          "t2": 2,
+          "t3": 1,
+          "p": 4,
           "m": 2,
           "n": 0,
           "bc": "waiting"
