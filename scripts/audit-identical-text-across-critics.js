@@ -38,6 +38,7 @@ const arg = (name) => {
   if (!a) return null;
   return a.includes('=') ? a.slice(name.length + 3) : '';
 };
+const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 // Short texts (stubs, one-line excerpts) collide for dull reasons.
 const MIN_CHARS = 400;
@@ -106,8 +107,11 @@ function describe(r) {
 
 async function main() {
   const shows = arg('show');
-  const groups = identicalTextGroups(loadRows(shows ? new Set(shows.split(',')) : null));
+  const rows = fs.existsSync(DIR) ? loadRows(shows ? new Set(shows.split(',')) : null) : [];
+  const groups = identicalTextGroups(rows);
   if (arg('ratchet') !== null) {
+    // An absent or empty corpus would read as 0 unresolved and pass.
+    assertCorpusScanned(rows.length, { gate: true, corpusRootMissing: !fs.existsSync(DIR) });
     const unresolved = groups.filter(isUnresolvedGroup).length;
     const max = JSON.parse(fs.readFileSync(BASELINE, 'utf8')).maxUnresolvedGroups;
     console.log(`identical text under 2+ critics: ${groups.length} groups, ${unresolved} unresolved (baseline ${max})`);

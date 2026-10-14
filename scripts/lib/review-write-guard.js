@@ -2427,8 +2427,9 @@ function safeWriteReview(filePath, newData, options = {}) {
         }
         const twin = findIdenticalTextSibling({ thisFile, newData, existingData, siblings });
         if (twin) {
-          console.warn(`[review-write-guard] identical text: ${thisFile} carries the same body as ${twin} under a different critic — setting duplicateTextOf (BRO-5321)`);
+          console.warn(`[review-write-guard] identical text: ${thisFile} carries the same body as ${twin} under a different critic, setting duplicateTextOf (BRO-5321)`);
           newData.duplicateTextOf = twin;
+          newData.duplicateClearReason = null; // a stale clear note would contradict the live pointer
         }
       }
     } catch (e) {
@@ -3009,7 +3010,7 @@ function checkUrlCollision(filePath, newData) {
   } catch {
     return null;
   }
-  const normNew = _normalizeUrlForCollision(newData.url);
+  const normNew = _sameArticleKey(newData.url);
   // BRO-4192: prefer a VALID same-URL sibling. The write-time decision now
   // declines to bury a valid record under an invalid collider, so returning an
   // invalid sibling first would hide a valid twin and admit a double count
@@ -3018,7 +3019,7 @@ function checkUrlCollision(filePath, newData) {
   for (const f of files) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
-      if (data.url && typeof data.url === 'string' && _normalizeUrlForCollision(data.url) === normNew) {
+      if (data.url && typeof data.url === 'string' && _sameArticleKey(data.url) === normNew) {
         if (!data.showId && !path.basename(dir).startsWith('_')) data.showId = path.basename(dir);
         if (!isExcludedIgnoringDuplicate(data)) return f;
         if (!firstInvalid) firstInvalid = f;
@@ -3038,12 +3039,22 @@ function checkUrlCollision(filePath, newData) {
 // tonight's plan-review — two normalizers drift over time. Single source
 // of truth: review-normalization.normalizeUrl.
 //
-// BRO-5321: canonicalArticleKey (normalizeUrl + registry domain aliases +
-// Variety's trailing article id), so theater.nytimes.com vs nytimes.com and
-// legacy vs modern Variety slugs of one article collide too. 143 same-show
-// pairs in the corpus differed only that way, every one the same article.
+// Deliberately NOT the lenient same-article key: the url-lock, flip-flop and
+// url-change-era checks use this, and url-change-invariant.js compares with
+// plain normalizeUrl. A looser key here let an alias rewrite of a urlVerified
+// url skip the lock and then have its text and score wiped (BRO-5321 review).
 function _normalizeUrlForCollision(url) {
   // Lazy require to avoid circular dep at module load.
+  const { normalizeUrl } = require('./review-normalization');
+  return normalizeUrl(url);
+}
+
+// BRO-5321: the same-article key for duplicate POINTERS only (checkUrlCollision
+// and the stale-pointer clearer): normalizeUrl + registry domain aliases +
+// Variety's trailing article id, so theater.nytimes.com vs nytimes.com and
+// legacy vs modern Variety slugs of one article collide. 143 same-show pairs
+// in the corpus differed only that way, every one the same article.
+function _sameArticleKey(url) {
   const { canonicalArticleKey } = require('./review-normalization');
   return canonicalArticleKey(url);
 }
@@ -3058,9 +3069,9 @@ function _normalizeUrlForCollision(url) {
 // noise there too, but a false NEGATIVE just means a real dupe goes unflagged
 // until the next write, not a live review getting silently dropped).
 //
-// Same key as _normalizeUrlForCollision (BRO-5321 closed the domain-alias gap
-// noted here before), so anything the setter calls one article the clearer
-// does too: equal without ignoreQuery implies equal with it.
+// Same key as the collision setter (_sameArticleKey; BRO-5321 closed the
+// domain-alias gap noted here before), so anything the setter calls one
+// article the clearer does too: equal without ignoreQuery implies equal with it.
 function _trivialCanonUrl(url) {
   const { canonicalArticleKey } = require('./review-normalization');
   return canonicalArticleKey(url, { ignoreQuery: true });

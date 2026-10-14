@@ -38,6 +38,13 @@ test('never points at a non-canonical, a wrongAttribution row, or back at a file
   }
 });
 
+test('same outlet only, and never points at an excluded sibling', () => {
+  assert.equal(run({ siblings: [{ file: 'nytimes--david-rooney.json', data: { ...rooney.data, outletId: 'nytimes' } }] }), null);
+  for (const extra of [{ wrongProduction: true }, { isNonReview: true }, { contentTier: 'invalid' }]) {
+    assert.equal(run({ siblings: [{ ...rooney, data: { ...rooney.data, ...extra } }] }), null);
+  }
+});
+
 test('honours an explicit clear and short or different text', () => {
   assert.equal(run({ newData: { ...incoming, duplicateTextOfCleared: true } }), null);
   assert.equal(run({ newData: { ...incoming, fullText: 'short text' } }), null);
@@ -55,6 +62,23 @@ test('safeWriteReview sets duplicateTextOf on a cross-critic copy and keeps the 
   const written = JSON.parse(fs.readFileSync(target, 'utf8'));
   assert.equal(written.duplicateTextOf, 'variety--david-rooney.json');
   assert.ok(written.fullText.length > 400);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('a urlVerified url stays locked against an alias-host rewrite (no wipe)', async () => {
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5321-lock-'));
+  const show = path.join(dir, 'x-2010');
+  fs.mkdirSync(show);
+  const target = path.join(show, 'nytimes--ben-brantley.json');
+  const url = 'https://www.nytimes.com/2010/10/13/theater/reviews/13life.html';
+  const rec = { showId: 'x-2010', outlet: 'The New York Times', outletId: 'nytimes', criticName: 'Ben Brantley', url, urlVerified: true, fullText: text, assignedScore: 80, publishDate: '2010-10-13' };
+  fs.writeFileSync(target, JSON.stringify(rec));
+  await safeWriteReview(target, { ...rec, url: 'http://theater.nytimes.com/2010/10/13/theater/reviews/13life.html' }, { skipGitLog: true });
+  const written = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(written.url, url);
+  assert.equal(written.assignedScore, 80);
+  assert.ok(written.fullText);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

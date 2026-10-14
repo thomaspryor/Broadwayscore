@@ -1308,6 +1308,8 @@ on:
       - 'scripts/audit-critic-outlets.js'
       - 'data/audit/critic-outlets-baseline.json'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
+      - 'scripts/audit-identical-text-across-critics.js'
+      - 'data/audit/identical-text-critics-baseline.json'
       # Guard + its pin: an edit to either must run CI, or the floor could move
       # in a push whose paths never trigger the job that checks it (#1002).
       - 'scripts/audit-duplicate-of-floor.js'

@@ -11,13 +11,18 @@
  * pointer. The text is kept (merge-then-delete flows need it), and the rebuild
  * re-admits the row if the sibling later goes away or is excluded.
  *
+ * Same outlet only: one body under two OUTLETS is usually a contaminated
+ * fetch (china-doll-2015: five outlets, one body), where pointing the newcomer
+ * at the sibling would drop a real, distinct review. Those stay audit and
+ * byline work (audit-identical-text-across-critics.js).
+ *
  * Pure: the caller does the I/O.
  */
 'use strict';
 
 const { normalizeCritic, normalizeOutlet } = require('./review-normalization');
-const { isCrossOutletSyndicationPair } = require('./syndication-pairs');
 const { pointsAtFile } = require('./canonical-duplicate-pointers');
+const { isExcludedRow } = require('./variety-promo-bleed');
 
 /** Same threshold and normalisation as audit-identical-text-across-critics.js. */
 const MIN_IDENTICAL_CHARS = 400;
@@ -26,6 +31,8 @@ const named = (c) => {
   const n = normalizeCritic(c || '');
   return n && n !== 'unknown' ? n : null;
 };
+
+const outletOf = (d, file) => normalizeOutlet(d.outletId || d.outlet || String(file || '').split('--')[0]);
 
 /**
  * @param {object} args
@@ -49,15 +56,18 @@ function findIdenticalTextSibling({ thisFile, newData, existingData, siblings })
   // same-outlet fingerprint dedup already handles those.
   const critic = named(newData.criticName);
   if (!critic) return null;
+  const outlet = outletOf(newData, thisFile);
   for (const s of siblings || []) {
     if (!s || !s.data || s.file === thisFile) continue;
     const d = s.data;
-    if (d.wrongAttribution || d.duplicateOf || d.duplicateTextOf) continue; // point at a canonical only
+    // Point at an includable canonical only: the rebuild inherits an excluded
+    // target's exclusion, which would drop this row for the sibling's reason.
+    if (d.duplicateTextOf || isExcludedRow(d)) continue;
+    if (outletOf(d, s.file) !== outlet) continue;
     if (pointsAtFile(d, thisFile)) continue; // would close a cycle (BRO-3102)
     const other = named(d.criticName);
     if (!other || other === critic) continue;
     if (body(d.fullText) !== text) continue;
-    if (isCrossOutletSyndicationPair(newData, d, normalizeOutlet)) continue;
     return s.file;
   }
   return null;
