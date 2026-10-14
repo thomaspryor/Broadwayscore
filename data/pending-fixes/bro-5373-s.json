@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5373/5374/5375 (s): Shadowlands mis-credited copy excluded and Marmion restored; 3 Apollo-run reviews un-flagged on the Apollo show; 6 wrong urls cleared keeping text; a search-results page flagged non-review.",
+    "summary": "BRO-5373/5374/5375 (s): Shadowlands mis-credited copy excluded and Marmion restored; 3 Apollo-run reviews un-flagged on the Apollo show; 6 wrong urls cleared keeping text.",
     "steps": [
       "see actions"
     ],
@@ -149,22 +149,6 @@
         "oldValue": "http://Entertainment%20Weekly",
         "newValue": "",
         "description": "BRO-5374: the stored url is not a url (a scraped sentence). Cleared to ''; text and score kept."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-play-that-goes-wrong-2017/broadway-blog--samuel-l-leiter.json",
-        "field": "isNonReviewReason",
-        "oldValue": null,
-        "newValue": "BRO-5375: the stored text is the BroadwayBlog's search results page ('You searched for the play that goes wrong - The BroadwayBlog', url /?s=the+play+that+goes+wrong), not a review; it was scored 87 and shown live.",
-        "description": "BRO-5375: the stored text is the BroadwayBlog's search results page ('You searched for the play that goes wrong - The BroadwayBlog', url /?s=the+play+that+goes+wrong), not a review; it was scored 87 and shown live."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-play-that-goes-wrong-2017/broadway-blog--samuel-l-leiter.json",
-        "field": "isNonReview",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-5375: the stored text is the BroadwayBlog's search results page ('You searched for the play that goes wrong - The BroadwayBlog', url /?s=the+play+that+goes+wrong), not a review; it was scored 87 and shown live."
       }
     ]
   }
