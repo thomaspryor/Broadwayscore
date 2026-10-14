@@ -610,7 +610,11 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
     if (decision === 'held') { held++; continue; }
     if (dryRun || decision === 'skip' || decision === 'blocked') continue;
     const child = buildChild(data, sec, ownShowId, now);
-    const toWrite = decision === 'fill' ? { ...existing, ...child, source: existing.source || child.source } : child;
+    // A filled stub keeps its discovery source but records where its text came
+    // from (BRO-5325: a web-search-only stub stays unscoreable otherwise).
+    const toWrite = decision === 'fill'
+      ? { ...existing, ...child, source: existing.source || child.source, sources: [...new Set([].concat(existing.sources || [], existing.source || [], 'multi-show-split').filter(Boolean))] }
+      : child;
     fs.mkdirSync(childDir, { recursive: true });
     const w = safeWriteReview(childPath, toWrite);
     if (w && w.wrote !== false) written++;
