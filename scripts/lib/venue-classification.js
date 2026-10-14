@@ -248,7 +248,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
 /**
  * True when a venue is a SOLT West End house or one of the official Broadway
  * houses — the two lists we hold that are theatres by definition. Exact match
- * on the normalized name (not findTheater()'s partial match, which lets
+ * on the normalized name (findTheater() did partial matching before BRO-5088, which let
  * "Broadway Comedy Club" pass as the Broadway Theatre). The Off-Broadway
  * allowlist is deliberately NOT consulted: it is derived from
  * category='off-broadway' rows and already carries Joe's Pub, 54 Below and
