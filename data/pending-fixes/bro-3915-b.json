@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3915-b",
   "planId": "49b9f100-6fef-457a-9399-3743ac137afb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T00:00:00.000Z",
   "submitter": {
     "name": null,
@@ -36,5 +36,23 @@
         "reason": "scraped from ticketing pages that uppercase titles; owner approved normal casing (BRO-3915)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T01:28:10.145Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled the-listening-off-broadway-2026: \"THE LISTENING\" -> \"The Listening\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled isla-off-broadway-2026: \"ISLA\" -> \"Isla\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled vida-off-broadway-2026: \"VIDA\" -> \"Vida\""
+    }
+  ]
 }
