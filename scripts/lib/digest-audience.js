@@ -39,6 +39,7 @@ const INTERNAL_CATEGORIES = new Set([
   'cmux socket',        // terminal multiplexer reachability
   'Digest',             // this email's own content-invariant check
   'Alert Router',       // alert auto-dispatch deadman
+  'Codex runner',       // unattended Codex card runner landing cards (BRO-5287)
   'Workflow coverage',  // workflows that never ran (CI hygiene)
 ]);
 

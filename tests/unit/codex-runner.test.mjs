@@ -433,3 +433,30 @@ test('a card the hard stop leaves unjudged goes back without the bounce marker o
   assert.ok(!block.includes('BOUNCED_MARKER'), 'no 14-day Codex ban for a card nobody judged');
   assert.ok(block.includes("return 'done'") && start < src.indexOf('stats.rejectStreak ='), 'returns before the REJECT streak update');
 });
+
+test('runnerHealth: the daily row flags a dead, lock-stopped or non-landing runner (BRO-5287)', () => {
+  const now = Date.parse('2026-10-14T13:40:00Z');
+  const run = (at, { done = 'none', part = 'none', crash = 'none', stop = 'no' } = {}) => ({ createdAt: at, body: `## Codex runner 2026-10-14: 2 card(s) worked in 90 min\n- Landed and Done: ${done}\n- Landed part, back to Todo with what is left: ${part}\n- Runner error mid-card (back to Todo): ${crash}\n- Stopped early: ${stop}` });
+  // the real 2026-10-14 record after the fixes
+  const good = [run('2026-10-14T08:14:00Z', { part: 'BRO-4813' }), run('2026-10-14T09:51:00Z'), run('2026-10-14T12:25:00Z', { part: 'BRO-5028' })];
+  assert.equal(r.runnerHealth(good, now).status, 'pass');
+  assert.match(r.runnerHealth(good, now).message, /3 run\(s\), 2 card\(s\) landed, 0 crashed/);
+  assert.equal(r.runnerHealth([], now).status, 'error', 'no summaries = not running');
+  assert.equal(r.runnerHealth([run('2026-10-12T08:00:00Z', { done: 'BRO-1' })], now).status, 'error', 'older than 24h does not count');
+  assert.equal(r.runnerHealth([run('2026-10-15T08:00:00Z', { done: 'BRO-1' })], now).status, 'error', 'a later summary does not count');
+  // the 2026-10-13 failure: runs, no landings, lock stops
+  const bad = [run('2026-10-13T15:31:00Z', { crash: 'BRO-3364', stop: 'another run took the lock' })];
+  assert.equal(r.runnerHealth(bad, Date.parse('2026-10-13T18:00:00Z')).status, 'error');
+  assert.equal(r.runnerHealth([run('2026-10-14T09:00:00Z'), run('2026-10-14T11:00:00Z')], now).status, 'error', 'nothing landed');
+  assert.equal(r.runnerHealth([run('2026-10-14T09:00:00Z', { done: 'BRO-2', crash: 'BRO-3, BRO-4' })], now).status, 'warn');
+  assert.equal(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: 'a human comment' }], now).status, 'error');
+});
+
+test('runnerHealth: a lapsed Codex login reads as such, and the row is internal-only', () => {
+  const now = Date.parse('2026-10-14T13:40:00Z');
+  const row = r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: '## Codex runner did not start\n\nNo usable Codex login' }], now);
+  assert.equal(row.status, 'error');
+  assert.match(row.message, /login/);
+  const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
+  assert.notEqual(classifyHealthCheck({ name: 'Codex runner: landing cards', status: 'error' }), 'visitors');
+});

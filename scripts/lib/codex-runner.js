@@ -449,6 +449,45 @@ function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {
 }
 
 /**
+ * The daily health row for the Codex runner (BRO-5287: it broke for 19 hours on 2026-10-13
+ * and nothing noticed until a session went looking). Reads the runner's own "## Codex runner"
+ * summaries ({ createdAt, body }) from the last 24 h:
+ *  - no summary at all          -> error (the runner is not running; it fires every 2 h)
+ *  - a run stopped on the lock  -> error
+ *  - nothing landed             -> error (the original "lands nothing" failure)
+ *  - 2+ cards crashed mid-card  -> warn
+ * -> { status: 'pass'|'warn'|'error', message }
+ */
+function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
+  const recent = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(c.body || ''))
+      && Number.isFinite(Date.parse(c.createdAt)) && Date.parse(c.createdAt) <= nowMs && nowMs - Date.parse(c.createdAt) <= windowMs);
+  if (!recent.length) {
+    const noLogin = (Array.isArray(comments) ? comments : []).some((c) => c && String(c.body || '').startsWith('## Codex runner did not start')
+      && Date.parse(c.createdAt) <= nowMs && nowMs - Date.parse(c.createdAt) <= windowMs);
+    return { status: 'error', message: noLogin
+      ? 'Codex runner could not start in the last 24h: its Codex login is not usable (see "## Codex runner did not start" on BRO-4745).'
+      : 'No Codex runner summary in the last 24h: the runner is not running (it should post one every 2 hours).' };
+  }
+  const list = (b, label) => {
+    const v = (String(b).match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
+    return v === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
+  };
+  let landed = 0; let crashed = 0; const lockStops = [];
+  for (const c of recent) {
+    landed += list(c.body, 'Landed and Done').length + list(c.body, 'Landed part, back to Todo with what is left').length;
+    crashed += list(c.body, 'Runner error mid-card \\(back to Todo\\)').length;
+    const stop = (String(c.body).match(/^- Stopped early: (.*)$/m) || [])[1] || '';
+    if (/lock/i.test(stop)) lockStops.push(c.createdAt.slice(0, 16));
+  }
+  const facts = `${recent.length} run(s), ${landed} card(s) landed, ${crashed} crashed mid-card in the last 24h`;
+  if (lockStops.length) return { status: 'error', message: `Codex runner stopped on its run lock (${lockStops.join(', ')}): ${facts}.` };
+  if (!landed) return { status: 'error', message: `Codex runner landed nothing: ${facts}.` };
+  if (crashed >= 2) return { status: 'warn', message: `Codex runner crashed on ${crashed} cards: ${facts}.` };
+  return { status: 'pass', message: `${facts}.` };
+}
+
+/**
  * What to do with a card a dead run's stale lock names. Only a card still In Progress from
  * a start no later than that lock stamp is the dead run's (Linear clears startedAt when a
  * card goes back to Todo, so a later re-claim by anyone moves startedAt past the stamp).
@@ -519,6 +558,7 @@ module.exports = {
   lockStampTooOld,
   landWaitMinutes,
   assessRunnerSummaries,
+  runnerHealth,
   codexExitTransient,
   stripHookNoise,
   codexCardFit,

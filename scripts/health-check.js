@@ -2590,6 +2590,24 @@ async function checkAlertRouterDeadman(isCI) {
   }];
 }
 
+// --- Codex runner liveness (BRO-5287) ---
+// The unattended Codex card runner (scripts/codex/daily-runner.js) posts a run summary on
+// BRO-4745 every 2 hours. It landed nothing for 19 hours on 2026-10-13 and nothing alarmed;
+// several sessions then reported it fixed without anything watching whether it stayed fixed.
+// Rules live in scripts/lib/codex-runner.js runnerHealth (unit-tested); this is the I/O.
+async function checkCodexRunner() {
+  const NAME = 'Codex runner: landing cards';
+  if (!process.env.LINEAR_API_KEY) return [{ name: NAME, status: 'warn', message: 'Skipped: no LINEAR_API_KEY to read the runner summaries' }];
+  try {
+    const { listIssueComments } = require('./lib/linear-client.js');
+    const comments = (await listIssueComments(['BRO-4745'])).get('BRO-4745') || [];
+    const row = require('./lib/codex-runner.js').runnerHealth(comments, Date.now());
+    return [{ name: NAME, ...row, ...(row.status !== 'pass' && { hint: 'Read the newest "## Codex runner" summaries on BRO-4745 and the run log in that firing\'s Board workers session (the lock body names it: node scripts/codex/daily-runner.js --lock-status).' }) }];
+  } catch (err) {
+    return [{ name: NAME, status: 'warn', message: `Could not read the runner summaries: ${err.message}` }];
+  }
+}
+
 // --- Category I4: Main Red Streak (task #1748) ---
 //
 // On 2026-08-17, main's Test Suite failed continuously from 04:05 to ~15:40 —
@@ -5670,6 +5688,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAPICredits(),
     ...checkDeployFreshness(),
     ...(await checkAlertRouterDeadman(isCI)),
+    ...(await checkCodexRunner()),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
     ...checkSharedCheckoutShallow(),
