@@ -41,7 +41,9 @@
     "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
     "la-boheme-off-broadway-2026/operawire--david-salazar.json",
     "delirium-off-broadway-2026/arlekinplayers--unknown.json",
-    "falls-for-jodie-off-broadway-2026/sydneydramaturgical--unknown.json"
+    "falls-for-jodie-off-broadway-2026/sydneydramaturgical--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ],
   "failed": [
     "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
@@ -97,7 +99,6 @@
     "from-the-heart-west-end-2026/thestage--neil-norman.json",
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
     "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
-    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
     "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
     "antigone-exits-chichester-regional-2026/guardian--holly-omahony.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
@@ -106,7 +107,18 @@
     "la-boheme-off-broadway-2026/parterre-box--unknown.json",
     "la-boheme-off-broadway-2026/thestage--the-stage.json",
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
-    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
+    "from-the-heart-west-end-2026/reviewsgate--william-russell.json",
+    "from-the-heart-west-end-2026/timeout-london--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "an-oak-tree-off-west-end-2026/north-west-end--alice-rose.json",
+    "rent-west-end-2026/city-am--adam-bloodworth.json",
+    "rent-west-end-2026/jonathan-baz--unknown.json",
+    "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
+    "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -139,7 +151,9 @@
       "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
       "what-the-animals-say-off-west-end-2026/thechelseacitizen--olivia-blackman.json",
       "la-boheme-off-broadway-2026/operawire--david-salazar.json",
-      "falls-for-jodie-off-broadway-2026/sydneydramaturgical--unknown.json"
+      "falls-for-jodie-off-broadway-2026/sydneydramaturgical--unknown.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
     ],
     "amp": [],
     "browserbase": [
@@ -172,7 +186,7 @@
     ]
   },
   "startTime": "2026-10-14T08:42:53.725Z",
-  "lastProcessed": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
+  "lastProcessed": "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
   "log": [
     {
       "t": "2026-10-14T09:04:35.773Z",
@@ -281,6 +295,21 @@
       "t": "2026-10-14T10:22:48.906Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T10:39:13.213Z",
+      "event": "bb-session",
+      "session": "834e2ee7",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-14T10:39:25.849Z",
+      "event": "bb-session",
+      "session": "39a05aab",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ]
 }
