@@ -22,7 +22,7 @@ const AUDIT_DIR_JOIN = /\b\w*AUDIT_?DIR\w*\s*,\s*['"]([A-Za-z0-9_.-]+\.(?:jsonl?
 function extractAuditWrites(source) {
   if (!WRITE_CALL.test(source)) return [];
   // Drop line comments so documentation mentions do not count.
-  const code = source.replace(/^\s*(\/\/|\*|\/\*).*$/gm, '');
+  const code = source.replace(/^\s*(\/\/|\*|\/\*).*$/gm, '').replace(/\s\/\/\s.*$/gm, '');
   const found = new Set();
   for (const re of [AUDIT_LITERAL, AUDIT_JOIN, AUDIT_JOIN_SHORT, AUDIT_DIR_JOIN]) {
     re.lastIndex = 0;
@@ -32,20 +32,33 @@ function extractAuditWrites(source) {
   return [...found].sort();
 }
 
-/** Every pathspec passed to `git add` in a workflow (continuations joined, flags dropped). */
+/**
+ * Every pathspec a workflow stages: `git add` args plus the repo's staging
+ * helpers (continuations joined, flags dropped). git-add-existing.sh <paths>
+ * stages its args; stage-data-changes.sh stages its args, or all of data/
+ * when called bare (BRO-5261 retro-review: 24 of 131 baseline rows were
+ * files staged through git-add-existing.sh).
+ */
 function extractGitAddSpecs(yaml) {
   const text = yaml.replace(/\\\r?\n\s*/g, ' ');
   const specs = [];
-  const re = /git\s+add\s+([^\n;&|]*)/g;
+  const re = /(?:git\s+add|scripts\/lib\/(git-add-existing|stage-data-changes)\.sh)([^\n;&|]*)/g;
   let m;
   while ((m = re.exec(text))) {
-    for (const raw of m[1].split(/\s+/)) {
+    const cmd = [];
+    let catchAll = false;
+    for (const raw of m[2].split(/\s+/)) {
       const tok = raw.replace(/^['"]|['"]$/g, '');
-      if (!tok || tok === '2>/dev/null' || tok.startsWith('2>') || tok.startsWith('||')) break;
-      if (tok === '--all') { specs.push('-A'); continue; }
-      if (tok.startsWith('-') && tok !== '-A') continue;
-      specs.push(tok);
+      if (!tok) continue;
+      if (tok.startsWith('2>') || tok.startsWith('>') || tok.startsWith('||')) break;
+      if (tok === '-A' || tok === '--all') { catchAll = true; continue; }
+      if (tok.startsWith('-') || tok.startsWith(':!') || tok.startsWith(':(exclude)')) continue;
+      cmd.push(tok);
     }
+    // `git add -A <pathspec>` stages only the pathspec; bare -A stages everything.
+    if (!cmd.length && catchAll) specs.push('-A');
+    else if (!cmd.length && m[1] === 'stage-data-changes') specs.push('data/');
+    else specs.push(...cmd);
   }
   return specs;
 }
@@ -60,7 +73,7 @@ function commitsDirectly(yaml) {
 }
 
 function globToRegex(glob) {
-  const esc = glob.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\u0000/g, '.*');
+  const esc = glob.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\?/g, '[^/]').replace(/\u0000/g, '.*');
   return new RegExp(`^${esc}$`);
 }
 
@@ -80,7 +93,8 @@ function workflowStages(yaml, file) {
 
 function workflowInvokes(yaml, scriptRel) {
   const base = scriptRel.replace(/^scripts\//, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(^|[^\\w.-])(?:\\./)?(?:\\S*scripts/)?${base}(?![\\w.-])`, 'm').test(yaml);
+  // A bare basename must not be preceded by '/': scripts/tests/foo.js is not scripts/foo.js.
+  return new RegExp(`(^|[^\\w./-])(?:\\./)?(?:\\S*scripts/)?${base}(?![\\w.-])`, 'm').test(yaml);
 }
 
 /**
@@ -89,17 +103,21 @@ function workflowInvokes(yaml, scriptRel) {
  */
 function findOrphanedWrites(scripts, workflows, exempt = {}, gateWorkflows = GATE_WORKFLOWS) {
   const out = [];
+  // Only workflows that commit can lose a write by not staging it. Parsed once.
+  const committing = Object.entries(workflows)
+    .filter(([n]) => !gateWorkflows.some((g) => n.endsWith(`/${g}`) || n === g))
+    .map(([n, y]) => [n, stripComments(y)])
+    .filter(([, y]) => commitsDirectly(y))
+    .map(([n, y]) => ({ name: n, yaml: y, specs: extractGitAddSpecs(y) }));
   for (const [rel, source] of Object.entries(scripts)) {
     const files = extractAuditWrites(source);
     if (!files.length) continue;
-    // Only workflows that commit can lose a write by not staging it.
-    const stripped = Object.entries(workflows).filter(([n]) => !gateWorkflows.some((g) => n.endsWith(`/${g}`) || n === g)).map(([n, y]) => [n, stripComments(y)]);
-    const invokers = stripped.filter(([, y]) => commitsDirectly(y) && workflowInvokes(y, rel));
+    const invokers = committing.filter((w) => workflowInvokes(w.yaml, rel));
     if (!invokers.length) continue;
     for (const file of files) {
       if (exempt[`${rel}|${file}`]) continue;
-      if (invokers.some(([, y]) => workflowStages(y, file))) continue;
-      out.push({ script: rel, file, workflows: invokers.map(([n]) => n).sort() });
+      if (invokers.some((w) => w.specs.some((sp) => specCovers(sp, file)))) continue;
+      out.push({ script: rel, file, workflows: invokers.map((w) => w.name).sort() });
     }
   }
   return out.sort((a, b) => (a.script + a.file).localeCompare(b.script + b.file));
