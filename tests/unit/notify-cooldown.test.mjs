@@ -59,6 +59,7 @@ describe('notify-failure wiring', () => {
   test('the composite uses the helper and no longer compares created_at to the cutoff', () => {
     assert.match(action, /require\('\.\/scripts\/lib\/notify-cooldown\.js'\)/);
     assert.match(action, /isRecentOtherFailure\(/);
+    assert.match(action, /created: `>=\$\{createdFilterDate\(cutoff\)\}`/);
     assert.doesNotMatch(action, /new Date\(r\.created_at\);\s*\n\s*return created >= cutoff/);
   });
 });

@@ -120,8 +120,6 @@ runs:
           const minConsecutive = parseInt(process.env.INPUT_MIN_CONSECUTIVE_FAILURES) || 1;
 
           try {
-            // Inside the try: a missing helper falls through to the fail-open catch below.
-            const { isRecentOtherFailure, createdFilterDate } = require('./scripts/lib/notify-cooldown.js');
             // context.workflow is the display name (e.g., "Test Suite"), but
             // listWorkflowRuns needs the filename or numeric ID. Extract the
             // filename from the workflow_ref which looks like:
@@ -187,7 +185,10 @@ runs:
               return;
             }
 
-            // Default mode: 2h time cooldown per workflow.
+            // Default mode: 2h time cooldown per workflow. The helper is loaded here, inside the
+            // try and after the streak branch, so a missing file fails open without touching
+            // streak mode.
+            const { isRecentOtherFailure, createdFilterDate } = require('./scripts/lib/notify-cooldown.js');
             const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
             const runs = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
