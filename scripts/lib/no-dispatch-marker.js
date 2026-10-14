@@ -31,7 +31,11 @@
 
 'use strict';
 
-const NO_DISPATCH_RE = /NO-DISPATCH:/;
+// BRO-4868: anchored to a line start (multiline: mirrored cards carry generated
+// header lines before the marker, same shape as PARKED_SENTINEL_RE), so a card
+// that merely QUOTES "NO-DISPATCH:" mid-sentence is not held back. Both
+// writers (notion-brain.js:573, linear-issue-create) emit it at line start.
+const NO_DISPATCH_RE = /^[ \t]*NO-DISPATCH[ \t]*:/m;
 
 /**
  * Does this text (card notes / task-mirror description) carry the
