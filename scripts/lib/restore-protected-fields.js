@@ -542,17 +542,15 @@ if (require.main === module) {
         if (!fs.existsSync(f)) continue;
         const local = JSON.parse(fs.readFileSync(f, 'utf8'));
 
-        // Read remote version
-        let remoteContent;
-        try {
-          remoteContent = execSync(`git show ${remoteRef}:${f}`, {
-            encoding: 'utf8',
-            stdio: ['pipe', 'pipe', 'pipe'],
-          });
-        } catch {
-          continue; // File doesn't exist in remote — new file, skip
-        }
-        const remote = JSON.parse(remoteContent);
+        // Read remote version: this file's own history (BRO-5356: a file renamed
+        // onto this path is compared with its source path, not the old occupant).
+        const { committedHistoryFor } = require(path.join(__dirname, 'rename-identity.js'));
+        const readAt = (ref) => (p) => JSON.parse(execSync(`git show ${ref}:${p}`, {
+          encoding: 'utf8',
+          stdio: ['pipe', 'pipe', 'pipe'],
+        }));
+        const remote = committedHistoryFor(f, local, readAt(remoteRef));
+        if (!remote) continue; // new file (or renamed from an uncommitted source): nothing to restore
 
         // data/outlet-registry.json isn't shaped like a review file (no
         // top-level MANUAL_FIELDS, no fullText) — it's { outlets: { id: {} } }.
@@ -562,15 +560,8 @@ if (require.main === module) {
           ({ modified, notes } = reconcileOutletRegistry(local, remote));
         } else {
           // Pre-rebase HEAD version, when available
-          let ours = null;
-          try {
-            ours = JSON.parse(execSync(`git show ORIG_HEAD:${f}`, {
-              encoding: 'utf8',
-              stdio: ['pipe', 'pipe', 'pipe'],
-            }));
-          } catch {
-            // ORIG_HEAD not available or file didn't exist — skip
-          }
+          // ORIG_HEAD not available or file didn't exist: null.
+          const ours = committedHistoryFor(f, local, readAt('ORIG_HEAD'));
 
           // The remote-richer (stale-checkout) direction is only meaningful
           // when the diff ref is a genuine remote-tracking ref. batch-correct-

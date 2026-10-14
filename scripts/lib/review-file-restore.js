@@ -64,6 +64,11 @@ function restoreReviewFileFromCommit(reviewTextsDir, action, deps = {}) {
   // does (safeRenameReview); the rebuild groups by folder but audits read showId.
   const destShow = path.basename(path.dirname(absDest));
   if (record.showId && record.showId !== destShow) record.showId = destShow;
+  // BRO-5356: restored onto another path, its push-time history is the source's.
+  if (absDest !== absSource) {
+    const rel = path.relative(dir, absSource).split(path.sep);
+    record._renamedFrom = require('./rename-identity').renameStamp(rel[0], rel.slice(1).join('/'));
+  }
   fs.mkdirSync(path.dirname(absDest), { recursive: true });
   const written = require('./review-write-guard').safeWriteReview(absDest, record);
   if (written && written.wrote === false) {

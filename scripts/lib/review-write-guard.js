@@ -3445,6 +3445,9 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
     }
   }
   contentToWrite = require('./review-url-entity-decode').sanitizeReviewRecord(contentToWrite); // BRO-4403
+  // BRO-5356: the push-time restores compare a file with its committed history
+  // at the same path; this stamp tells them the history is the source path's.
+  contentToWrite = { ...contentToWrite, _renamedFrom: require('./rename-identity').renameStamp(path.basename(path.dirname(srcPath)), path.basename(srcPath)) };
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
   fs.unlinkSync(srcPath);
 

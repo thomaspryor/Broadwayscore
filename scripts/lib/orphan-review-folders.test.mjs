@@ -161,7 +161,11 @@ describe('moveReviewFile (approved-fix review-file-op move)', () => {
     assert.match(r.reason, /Destination exists/);
     assert.equal(fs.readFileSync(path.join(dir, 'show-2023', 'a--b.json'), 'utf8'), '{"keep":1}');
     assert.equal(moveReviewFile(dir, 'old-folder/a--b.json', 'show-2023/a--b.json', { overwrite: true }).ok, true);
-    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'show-2023', 'a--b.json'), 'utf8')), { showId: 'show-2023' });
+    const moved = JSON.parse(fs.readFileSync(path.join(dir, 'show-2023', 'a--b.json'), 'utf8'));
+    // BRO-5356: a rename stamps its source so the push restores read the right history.
+    assert.equal(moved._renamedFrom.file, 'old-folder/a--b.json');
+    delete moved._renamedFrom;
+    assert.deepEqual(moved, { showId: 'show-2023' });
   });
 
   test('moves into a new folder and refuses paths that escape the corpus', () => {

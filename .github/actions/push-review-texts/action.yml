@@ -186,6 +186,14 @@ runs:
             'rejectedTextHash',
           ];
           const PROTECTED = Array.from(new Set([...PROTECTED_FIELDS, ...ACTION_EXTRA]));
+          // BRO-5356: compare each staged file with ITS OWN committed history. A
+          // file a plan renamed onto this path (delete X, rename Y onto X) carries
+          // _renamedFrom; HEAD at the path is X's history, so read Y's instead.
+          const identityPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/rename-identity.js')
+            : path.resolve('scripts/lib/rename-identity.js');
+          const { committedHistoryFor } = require(identityPath);
+          const readHead = (p) => JSON.parse(execSync('git show HEAD:' + p, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
           let restored = 0;
           let scoreSaves = 0;
@@ -201,7 +209,8 @@ runs:
             if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
             try {
               const local = JSON.parse(fs.readFileSync(f, 'utf8'));
-              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
+              const committed = committedHistoryFor(f, local, readHead);
+              if (!committed) continue;
               const restoredFields = [];
               // Per-file _locked flag — when true on either side, ALL protected
               // fields where committed had content are restored unconditionally.
@@ -257,7 +266,8 @@ runs:
             if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
             try {
               const local = JSON.parse(fs.readFileSync(f, 'utf8'));
-              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
+              const committed = committedHistoryFor(f, local, readHead);
+              if (!committed) continue;
               if (carryNewerScoring(local, committed).changed) {
                 fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
                 scoreCarried++;
