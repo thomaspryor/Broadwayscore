@@ -344,9 +344,9 @@ const CONTENT_SURVIVAL_EXEMPT_LEDGERS = [
       'apiFallbackMerge path specifically to STOP that class of loss on the fast push path — so ' +
       'a genuine full revert to pre-edit base (the cheap blob check \'deep-only\' still runs) is ' +
       'no longer an accepted outcome to stay silent on; it would mean the new reconciliation ' +
-      'failed to run. The local flow\'s own behavior is deliberately UNCHANGED by BRO-2413 ' +
-      '(the registry entry sets optInReconcile: false) — this is not a claim that local-flow ' +
-      'divergence is now alarm-worthy, only that a FULL revert is.',
+      'failed to run. BRO-5204 also routes the local flow through mergeAlertLedger (push-with-retry.sh\'s ' +
+      'unconditional targeted reconcile call); this is still not a claim that local-flow ' +
+      'divergence is alarm-worthy, only that a FULL revert is.',
   },
   {
     file: 'data/audit/alert-digest-queue.json',

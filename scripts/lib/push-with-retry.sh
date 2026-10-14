@@ -1958,8 +1958,16 @@ reconcile_merged_json() {
   # opt-in sweep) — so without this second, targeted call it would be
   # silently unprotected on the common path. Scoped to the files named in this one call (alert-digest-queue.json, feedback-request-ledger.json; BRO-2463);
   # does not change the opt-in default for any other MANAGED file or caller.
+  # BRO-5204: alert-ledger.json and guard-escalation-state.json too. Both are
+  # multi-writer keyed objects whose writers all append new keys at the end,
+  # so the same clean -X theirs hunk dropped the other writer's keys: land.yml
+  # commit de49618478c erased the 8 time-bomb-tests:* conditions
+  # audit-time-bomb-tests.yml had added 5 min earlier (ea3aba1fe5d), leaving
+  # their cards uncheckable. Both mergers are three-way (a key we deleted
+  # stays deleted), so the empty-base fallback degrades to a no-op, not a
+  # resurrection.
   local ledger_out
-  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json) || ledger_out=""
+  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json data/audit/alert-ledger.json data/audit/guard-escalation-state.json) || ledger_out=""
   if [ -n "$ledger_out" ]; then
     out="${out}${out:+$'\n'}${ledger_out}"
   fi

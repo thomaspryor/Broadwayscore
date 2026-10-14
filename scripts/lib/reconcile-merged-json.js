@@ -255,7 +255,8 @@ function main() {
   // lookup, unfiltered by optInReconcile) rather than mergerFor()/MANAGED
   // (the no-args sweep below) — so naming a file here reconciles it even if
   // its registry entry is optInReconcile:false. Today's only caller is
-  // push-with-retry.sh's targeted alert-digest-queue.json + feedback-request-ledger.json call; any
+  // push-with-retry.sh's targeted call (alert-digest-queue, feedback-request-ledger,
+  // alert-ledger, guard-escalation-state); any
   // FUTURE explicit-arg caller gets the same "any active registry entry,
   // regardless of optInReconcile" behavior — deliberate, not scoped to one
   // filename, since a caller that names a specific file is making its own

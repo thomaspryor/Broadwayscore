@@ -64,3 +64,70 @@ test('express-retry-queue.json stays OUT of the unconditional call until it has 
   const line = PUSH.split('\n').find((l) => l.includes('reconcile-merged-json.js') && l.includes('data/audit/alert-digest-queue.json'));
   assert.ok(line && !line.includes(EXPRESS.file));
 });
+
+// BRO-5204: keyed-object ledgers. land.yml commit de49618478c erased the 8
+// time-bomb-tests:* conditions audit-time-bomb-tests.yml had appended to
+// alert-ledger.json 5 min earlier: both writers appended a key at the end of
+// the object, and the clean -X theirs hunk kept only ours.
+const KEYED = [
+  { file: 'data/audit/alert-ledger.json', wrap: (o) => ({ conditions: o }), unwrap: (d) => d.conditions, mk: (k) => ({ status: 'open', title: k, firstSeen: '2026-10-12T00:00:00Z', lastSeen: '2026-10-12T00:00:00Z' }) },
+  { file: 'data/audit/guard-escalation-state.json', wrap: (o) => o, unwrap: (d) => d, mk: () => ({ lastBlockedAt: '2026-10-12T00:00:00Z' }) },
+];
+
+function keyedRepo(c, { local, remote }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5204-'));
+  git(dir, 'init', '-q', '-b', 'main');
+  git(dir, 'config', 'user.email', 't@t'); git(dir, 'config', 'user.name', 't');
+  const f = path.join(dir, c.file);
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  const write = (keys) => fs.writeFileSync(f, JSON.stringify(c.wrap(Object.fromEntries(keys.map((k) => [k, c.mk(k)]))), null, 2) + '\n');
+  write(['seed', 'old']); git(dir, 'add', '-A'); git(dir, 'commit', '-qm', 'base');
+  const base = git(dir, 'rev-parse', 'HEAD').trim();
+  git(dir, 'checkout', '-qb', 'local');
+  write(local); git(dir, 'commit', '-qam', 'local');
+  git(dir, 'checkout', '-q', 'main');
+  write(remote); git(dir, 'commit', '-qam', 'remote');
+  git(dir, 'checkout', '-q', 'local');
+  git(dir, 'rebase', '-X', 'theirs', 'main');
+  const read = () => Object.keys(c.unwrap(JSON.parse(fs.readFileSync(f, 'utf8')))).sort();
+  const reconcile = (envBase) => execFileSync('node', [RECONCILE, 'main', c.file], { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, PUSH_RECONCILE_BASE: envBase } });
+  return { dir, base, read, reconcile, f };
+}
+
+for (const c of KEYED) {
+  test(`push-with-retry.sh reconciles ${c.file} unconditionally (BRO-5204)`, () => {
+    const line = PUSH.split('\n').find((l) => l.includes('reconcile-merged-json.js') && l.includes('"origin/$PULL_BRANCH"') && l.includes('data/audit/alert-digest-queue.json'));
+    assert.ok(line && line.includes(c.file), `${c.file} missing from the targeted reconcile call`);
+  });
+
+  test(`reconcile restores the remote's appended key a clean -X theirs rebase drops (${c.file})`, () => {
+    const r = keyedRepo(c, { local: ['seed', 'old', 'ours'], remote: ['seed', 'old', 'theirs-1', 'theirs-2'] });
+    try {
+      assert.deepEqual(r.read(), ['old', 'ours', 'seed'], 'precondition: -X theirs dropped the remote keys');
+      r.reconcile(r.base);
+      assert.deepEqual(r.read(), ['old', 'ours', 'seed', 'theirs-1', 'theirs-2']);
+    } finally { fs.rmSync(r.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+
+  test(`reconcile honours our own delete instead of resurrecting it (${c.file})`, () => {
+    const r = keyedRepo(c, { local: ['seed'], remote: ['seed', 'old', 'theirs'] });
+    try {
+      r.reconcile(r.base);
+      const keys = r.read();
+      assert.ok(!keys.includes('old'), 'locally deleted key came back');
+      assert.ok(keys.includes('theirs'), 'remote append lost');
+    } finally { fs.rmSync(r.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+
+  test(`reconcile leaves an untouched file byte-identical (${c.file})`, () => {
+    const r = keyedRepo(c, { local: ['seed', 'old', 'ours'], remote: ['seed', 'old', 'theirs'] });
+    try {
+      r.reconcile(r.base);
+      const once = fs.readFileSync(r.f, 'utf8');
+      git(r.dir, 'commit', '-qam', 'reconciled');
+      const out = r.reconcile(git(r.dir, 'rev-parse', 'main').trim());
+      assert.equal(fs.readFileSync(r.f, 'utf8'), once);
+      assert.equal(out.trim(), '', 'reported a change on a no-op pass');
+    } finally { fs.rmSync(r.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+}

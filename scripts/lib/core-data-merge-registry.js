@@ -1826,11 +1826,11 @@ const CORE_DATA_MERGE_REGISTRY = [
     // step opt into PUSH_RECONCILE_MERGED_JSON=1" gate) — same reasoning as
     // audit/feedback-request-ledger.json and audit/express-retry-queue.json
     // above: this merge fn's ONLY consumer is push-via-git-api.sh's
-    // apiFallbackMerge path. The local flow's pre-existing behavior for this
-    // file (last-writer-wins on conflict) is UNCHANGED by this entry — that
-    // was already an explicitly accepted loss (push-content-survival.js's
-    // CONTENT_SURVIVAL_EXEMPT_LEDGERS), not a new gap this task needs to
-    // close on the slow path too.
+    // apiFallbackMerge path. BRO-5204 superseded the "local flow stays
+    // last-writer-wins" half of this: push-with-retry.sh now names this file
+    // in its unconditional targeted reconcile call (explicit file args ignore
+    // optInReconcile), after a land.yml push silently erased 8 conditions
+    // another workflow had added minutes earlier (de49618478c).
     optInReconcile: false,
     verifiedBy: '2026-09-04 (BRO-2413): 12 independent writers via routeAlert() (owner-alert-router.js) — real per-conditionKey union merge (keeps the fresher lastSeen on collision) replaces the old whole-file "ours wins outright" gap. See scripts/lib/merge-alert-ledger.js for the full design note.',
   },
