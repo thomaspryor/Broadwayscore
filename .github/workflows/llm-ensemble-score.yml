@@ -491,9 +491,13 @@ jobs:
             ARGS="$ARGS --needs-rescore"
           fi
 
-          # Rescore reason filter (enables parallel runs for different reason buckets)
+          # Rescore reason filter (enables parallel runs for different reason
+          # buckets). Not added to ARGS: ARGS is word-split when the scoring
+          # step expands it, so a reason with spaces ("fullText replaced by
+          # forced refetch ...") became the prefix "fullText" and matched 1264
+          # rows (BRO-5254). The scoring step appends it as one quoted arg.
           if [ -n "${INPUT_RESCORE_REASON}" ]; then
-            ARGS="$ARGS --rescore-reason=${INPUT_RESCORE_REASON}"
+            echo "Rescore reason filter: ${INPUT_RESCORE_REASON}"
           fi
 
           # Outdated (rescore reviews with old prompt versions)
@@ -565,9 +569,15 @@ jobs:
       - name: Run ensemble scoring pipeline
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # Via env, never ${{ }} in the script: show_id is free text and would
+          # otherwise be spliced into the shell source (BRO-5254).
+          SCORING_ARGS: ${{ steps.build-args.outputs.args }}
+          INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
         if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
-          node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}
+          # SCORING_ARGS is split on purpose (flag list); the reason stays one arg.
+          # shellcheck disable=SC2086
+          node scripts/run-ensemble-scoring-guard.js $SCORING_ARGS ${INPUT_RESCORE_REASON:+"--rescore-reason=${INPUT_RESCORE_REASON}"}
 
       # Backstop for multi-show blog posts (interestedbystander etc.): every
       # text writer isolates the show's own section at write time, but a file
@@ -997,10 +1007,9 @@ jobs:
           if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f needs_rescore=true"
           fi
-          # Pass through rescore_reason filter so parallel chains stay in their lane
-          if [ -n "${INPUT_RESCORE_REASON}" ]; then
-            CHAIN_ARGS="$CHAIN_ARGS -f rescore_reason=${INPUT_RESCORE_REASON}"
-          fi
+          # rescore_reason is passed as its own quoted -f on the dispatch line
+          # below so parallel chains stay in their lane; inside CHAIN_ARGS a
+          # reason with spaces would be split (BRO-5254).
           # Pass through stale_scores flag so stale-score chains continue
           # Also pass through when scheduled run detected stale scores
           if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
@@ -1016,7 +1025,7 @@ jobs:
             CHAIN_ARGS="$CHAIN_ARGS -f retry_emergency=true"
           fi
 
-          gh workflow run llm-ensemble-score.yml $CHAIN_ARGS
+          gh workflow run llm-ensemble-score.yml $CHAIN_ARGS ${INPUT_RESCORE_REASON:+-f "rescore_reason=${INPUT_RESCORE_REASON}"}
           echo "Next batch dispatched."
 
       - name: Trigger rebuild + consensus (chain complete)
