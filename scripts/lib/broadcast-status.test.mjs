@@ -31,3 +31,7 @@ test('without a skip: sent, overdue and waiting read as before', () => {
   assert.equal(st({}), 'waiting');
   assert.equal(st({ 'preview:broadway:xy:2026-10-10': { reviewCount: 3 } }), 'waiting'); // another show's preview key
 });
+
+test('an earlier preview of a combo email counts for every show in it', () => {
+  assert.equal(st({ 'preview:west-end:a+x+b:2026-09-08': { reviewCount: 30 } }), 'preview-sent-earlier');
+});

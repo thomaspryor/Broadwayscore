@@ -619,6 +619,9 @@ function buildOwnerView({
     const seen = new Set([
       ...(Array.isArray(awaitingOwner?.items) ? awaitingOwner.items : []),
       ...(Array.isArray(needsYou?.items) ? needsYou.items : []).filter((it) => it && it.url),
+      // Hidden past the shown cap too (moreCount), or a decision card that
+      // also sits In Review counts twice.
+      ...(Array.isArray(needsYou?.cardUrls) ? needsYou.cardUrls : []).map((url) => ({ url })),
     ].filter(Boolean).map(ownerItemKey));
     const items = (Array.isArray(inReviewBacklog.items) ? inReviewBacklog.items : [])
       .filter((it) => it && !seen.has(ownerItemKey(it)));

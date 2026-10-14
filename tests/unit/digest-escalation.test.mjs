@@ -71,7 +71,7 @@ test('internal-only errors never escalate to URGENT', () => {
   const history = { consecutiveErrorDays: 61, lastErrorFingerprint: 'something else' };
   const subject = getDigestSubject(today, history, {});
   assert.ok(!subject.includes('URGENT'), subject);
-  assert.match(subject, /^BSC Daily: 2 internal issues, site unaffected \(day 61\)$/);
+  assert.match(subject, /^BSC Daily: 2 internal issues, no visitor-facing errors \(day 61\)$/);
 });
 
 test('internal churn next to a stable visitor-facing error does not re-trigger URGENT', () => {

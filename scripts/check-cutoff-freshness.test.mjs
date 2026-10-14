@@ -41,3 +41,8 @@ test('every Tony record in src/lib/tony-cutoffs.ts carries a lastVerified date',
   assert.ok(records.length >= 14, `expected 14+ records, parsed ${records.length}`);
   for (const rec of records) assert.match(rec, /lastVerified: '\d{4}-\d{2}-\d{2}'/, rec.slice(0, 80));
 });
+
+test('an impossible calendar date counts as missing, not as a date that never ages', () => {
+  const missing = findMissingLastVerified([{ label: 'x', end: '2027-04-25', lastVerified: '2026-02-30' }, { label: 'y', end: '2027-04-25', lastVerified: '2026-02-28' }]);
+  assert.deepEqual(missing.map((r) => r.label), ['x']);
+});

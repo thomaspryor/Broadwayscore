@@ -144,3 +144,17 @@ test('Linear-autolinked URLs and addresses collapse before the cap', () => {
   assert.equal(collapseSelfLinks('mail [a@b.com](<mailto:a@b.com>) now'), 'mail a@b.com now');
   assert.equal(collapseSelfLinks('[the docs](<https://x.example/>)'), '[the docs](<https://x.example/>)', 'real link text stays');
 });
+
+test('decisions section: renewal-link questions link to the link; hidden cards still dedup In Review', async () => {
+  const { buildDecisionsSection } = require('../../scripts/lib/owner-decision-notify.js');
+  const { buildOwnerView } = require('../../scripts/lib/autonomous-email-render.js');
+  const mk = (n, q) => ({ identifier: `BRO-${n}`, title: `t${n}`, url: `https://linear.app/x/BRO-${n}`, description: `DECISION NEEDED: ${q}`, priority: 2, labels: { nodes: [] } });
+  const issues = [mk(1, 'Tap https://broadwayscorecard.com/api/admin/renew?t=abc and press Allow.'), ...Array.from({ length: 11 }, (_, i) => mk(i + 2, `Pick option ${i}?`))];
+  const section = buildDecisionsSection(issues);
+  const renew = section.items.find((it) => it.detail.startsWith('BRO-1:'));
+  assert.equal(renew.url, 'https://broadwayscorecard.com/api/admin/renew?t=abc');
+  assert.equal(section.cardUrls.length, 12);
+  const inReviewBacklog = { items: issues.map((i) => ({ title: i.title, url: i.url })), moreCount: 0 };
+  const view = buildOwnerView({ needsYou: section, inReviewBacklog });
+  assert.equal(view.decisions, 12, 'each decision card counted once, even past the shown cap');
+});

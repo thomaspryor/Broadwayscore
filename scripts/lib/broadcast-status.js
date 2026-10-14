@@ -47,7 +47,7 @@ function showBroadcastStatus(sentShows, showId, market, now = new Date()) {
     return { state: 'not-sent', detail: 'Not sent (owner chose to skip this email)' };
   }
 
-  const earlier = Object.keys(sentShows).filter((k) => k.startsWith('preview:') && k.split(':')[2] === showId).sort();
+  const earlier = Object.keys(sentShows).filter((k) => k.startsWith('preview:') && String(k.split(':')[2] || '').split('+').includes(showId)).sort();
   if (earlier.length) {
     const lastKey = earlier[earlier.length - 1];
     return { state: 'preview-sent-earlier', detail: `Last preview: ${lastKey.split(':').pop()} (${sentShows[lastKey].reviewCount} reviews)` };

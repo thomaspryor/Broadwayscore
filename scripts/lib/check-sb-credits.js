@@ -55,7 +55,7 @@ async function fetchSBCreditStatus() {
  */
 function classifySBUsage(status, data, error) {
   if (status !== 200 || !data) {
-    return { ok: false, reason: 'api-error', status, error, message: `usage endpoint returned ${status}` };
+    return { ok: false, reason: 'api-error', status, error, message: status === 200 ? 'usage endpoint returned 200 with an unreadable body' : `usage endpoint returned ${status}` };
   }
   const sbFields = sbUsageFields(data);
   const maxCredits = Number(sbFields.max) || 0;

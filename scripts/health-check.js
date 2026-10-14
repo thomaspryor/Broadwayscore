@@ -4850,7 +4850,7 @@ function getDigestSubject(results, history, autoFixResults) {
   if (unfixedErrors.length > 0 && days >= 5) {
     const visitorErrors = unfixedErrors.filter(r => classifyHealthCheck(r) === 'visitors');
     if (visitorErrors.length === 0) {
-      return `BSC Daily: ${unfixedErrors.length} internal issue${unfixedErrors.length > 1 ? 's' : ''}, site unaffected (day ${days})`;
+      return `BSC Daily: ${unfixedErrors.length} internal issue${unfixedErrors.length > 1 ? 's' : ''}, no visitor-facing errors (day ${days})`;
     }
     // "New news" is judged on the visitor-facing errors alone, so internal
     // rows churning daily cannot re-trigger URGENT on a stable visitor set.

@@ -164,6 +164,11 @@ function formatEmail(plan) {
  * you". Same {generatedAt, bannerText, items, moreCount} shape as every other
  * digest section. Returns null when there is nothing to show.
  */
+function questionLink(question) {
+  const m = /https?:\/\/[^\s)>\]]+/.exec(String(question || ''));
+  return m ? m[0].replace(/[.,;:!?]+$/, '') : null;
+}
+
 function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
   const labelled = new Set((issues || [])
     .filter((i) => i && labelNames(i).includes(AWAITING_OWNER_LABEL))
@@ -174,8 +179,14 @@ function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
   return {
     generatedAt: now.toISOString(),
     bannerText: `${decisions.length} card${decisions.length === 1 ? '' : 's'} waiting on your decision`,
-    items: shown.map((d) => ({ title: d.question, detail: `${d.identifier}: ${d.title}`, url: d.url })),
+    // A question that carries its own link (signed renewal links: "Tap
+    // https://... and press Allow") links to THAT, not the card: the digest
+    // wraps the whole title in one anchor, so an inner URL is not tappable.
+    items: shown.map((d) => ({ title: d.question, detail: `${d.identifier}: ${d.title}`, url: questionLink(d.question) || d.url })),
     moreCount: decisions.length - shown.length,
+    // Every decision card's url, shown or not, so other sections (In Review)
+    // can drop the same card instead of counting it twice.
+    cardUrls: decisions.map((d) => d.url).filter(Boolean),
   };
 }
 
