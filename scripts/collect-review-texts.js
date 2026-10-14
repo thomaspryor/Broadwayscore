@@ -5882,7 +5882,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Stamped last so toLength names the text actually written (BRO-5254).
+  // Stamped at the write so toLength names the text written (BRO-5254); the
+  // multi-show fan-out below re-stamps if it cuts the text again.
   if (forcedReplacement) {
     const trim = forcedRefetchTrim(fullTextBeforeUpdate, data.fullText);
     if (trim) data.fullTextTrimmed = trim;
@@ -5898,6 +5899,17 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const fan = applyMultiShowFanoutToFile(review.filePath, { shows: loadSplitterShows() });
     if (fan.applied) {
       console.log(`    ↔ Multi-show article (${fan.strategy}): ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
+      // The fan-out may cut this file down to its own section: the trim
+      // breadcrumb must name the text now on disk (BRO-5254).
+      if (forcedReplacement) {
+        const after = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const trim = forcedRefetchTrim(fullTextBeforeUpdate, after.fullText);
+        const t = after.fullTextTrimmed;
+        if (trim && !(t && t.fromLength === trim.fromLength && t.toLength === trim.toLength)) {
+          after.fullTextTrimmed = trim;
+          fs.writeFileSync(review.filePath, JSON.stringify(after, null, 2));
+        }
+      }
     }
   } catch (e) {
     console.log(`    ⚠ multi-show fan-out failed: ${e.message}`);

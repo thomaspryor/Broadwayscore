@@ -286,7 +286,8 @@ function restoreBigMove(record, { at } = {}) {
  * Undo restoreBigMove on a row a reader judged: the rescore fits the text better
  * than the kept pre-strip score. Puts the rescore back and marks restored.undone,
  * so restoreBigMove (same scoredAt) leaves the row alone. Null when the row was
- * not restored, was already undone, or was rescored again since.
+ * not restored, was already undone, was rescored again since, or its text has
+ * changed and waits for a fresh rescore (the old rescore read other text).
  */
 function undoRestore(record, { at } = {}) {
   const s = record && record.varietyPromoStrip;
@@ -294,8 +295,10 @@ function undoRestore(record, { at } = {}) {
   const llm = record && record.llmScore;
   const scoredAt = record && record.llmMetadata && record.llmMetadata.scoredAt;
   if (!r || r.undone || !llm || scoredAt !== r.scoredAt || llm.score !== s.previousScore) return null;
+  if (record.needsRescore || typeof record.fullText !== 'string' || record.fullText.length !== s.newLength) return null;
   const out = { ...record };
-  out.llmScore = { ...llm, score: r.rescoredScore, bucket: r.rescoredBucket || llm.bucket };
+  out.llmScore = { ...llm, score: r.rescoredScore, bucket: r.rescoredBucket };
+  if (!r.rescoredBucket) delete out.llmScore.bucket;
   out.assignedScore = r.rescoredScore;
   out.varietyPromoStrip = { ...s, restored: { ...r, undone: at || new Date().toISOString() } };
   return out;
