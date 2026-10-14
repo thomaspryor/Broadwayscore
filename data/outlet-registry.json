@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-14T22:50:49.127Z",
+    "lastUpdated": "2026-10-14T23:25:06.801Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -12881,6 +12881,15 @@
       ],
       "displayNameInferred": true,
       "domain": "sarahmonaghan.com"
+    },
+    "egazette": {
+      "displayName": "Egazette",
+      "tier": 3,
+      "aliases": [
+        "egazette"
+      ],
+      "displayNameInferred": true,
+      "domain": "egazette.ai"
     }
   },
   "_aliasIndex": {
