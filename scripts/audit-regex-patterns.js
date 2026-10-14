@@ -88,6 +88,8 @@ const PATTERN_FAMILIES = [
   'NAVIGATION_PATTERNS',
   'WRONG_ARTICLE_PATTERNS',
   'HORROR_FILM_PATTERNS',
+  // Listing/search/tag-archive headers at the very start of the text (BRO-5375).
+  'LISTING_PAGE_TEXT_PATTERNS',
 ];
 
 // Per-pattern hit allowances. Default is DEFAULT_MAX_HITS. Add entries here

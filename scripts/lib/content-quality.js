@@ -344,6 +344,36 @@ const PARKED_DOMAIN_PATTERNS = [
   /\bget\s+a\s+price\s+in\s+less\s+than\s+24\s+hours\b/i,
 ];
 
+/**
+ * A listing, search or tag-archive page stored as a review (BRO-5375):
+ * the-play-that-goes-wrong-2017/broadway-blog--samuel-l-leiter.json held
+ * "You searched for the play that goes wrong - The BroadwayBlog" and was
+ * scored 87. Matched only at the very start of the text (detectListingPageText
+ * reads the first 200 chars): a review never opens with these headers, while
+ * the same words later in a page are sidebar chrome.
+ * @type {RegExp[]}
+ */
+const LISTING_PAGE_TEXT_PATTERNS = [
+  /^\W*you\s+searched\s+for\b/i,
+  /^\W*search\s+results\s+(for|:)/i,
+  /^\W*posts?\s+tagged\b/i,
+  /^\W*(tag|category)\s+archives?\s*[:\-\u2013\u2014]/i,
+  /^\W*archives?\s+for\s+(the\s+)?(tag|category)\b/i,
+];
+
+/**
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectListingPageText(text) {
+  const head = (typeof text === 'string' ? text : '').trimStart().slice(0, 200);
+  for (const pattern of LISTING_PAGE_TEXT_PATTERNS) {
+    const m = head.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
 const STRONG_CHROME_DUMP_PATTERNS = [
   // Cookie-consent / GDPR full sentences — never occur in review prose.
   /your\s+consent\s+will\s+be\s+valid/i,
@@ -1351,6 +1381,12 @@ function isGarbageContent(text) {
     } else {
       return { isGarbage: true, reason: `Newsletter form: "${newsletter.match}"` };
     }
+  }
+
+  // Listing / search / tag-archive page stored as a review (BRO-5375)
+  const listing = detectListingPageText(trimmed);
+  if (listing.detected) {
+    return { isGarbage: true, reason: `Listing/search page: "${listing.match}"` };
   }
 
   // Check for URL-only content
@@ -3732,6 +3768,8 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
 }
 
 module.exports = {
+  LISTING_PAGE_TEXT_PATTERNS,
+  detectListingPageText,
   URL_CONTENT_CHECK_VERSION,
   stripVenueListingsTrailer,
   isGarbageContent,
