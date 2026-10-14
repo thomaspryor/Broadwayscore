@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T08:41:15.029Z",
+  "timestamp": "2026-10-14T08:49:44.049Z",
   "stats": {
     "totalReviews": 56426,
-    "alreadyFlagged": 21052,
+    "alreadyFlagged": 21053,
     "dateGuardCatches": 204,
-    "directorMismatch": 1879,
+    "directorMismatch": 1881,
     "tvFilmSignals": 1562,
     "londonSignals": 2247,
-    "offBroadwaySignals": 509,
+    "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5232
+    "noPublishDate": 5227
   },
   "findings": [
     {
@@ -27630,6 +27630,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "noises-off-2016",
+      "file": "huffpost--fern-siegel.json",
+      "score": 67,
+      "publishDate": "2016-01-15",
+      "url": "https://www.huffpost.com/steven-suskin/aisle-view-splendidly-del_b_8985436.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy sams\" from noises-off-2001"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from noises-off-1983"
         }
       ]
     },
@@ -65372,6 +65391,20 @@
     },
     {
       "showId": "king-charles-iii-2015",
+      "file": "huffpost--michael-giltz.json",
+      "score": 85,
+      "publishDate": "2015-11-09",
+      "url": "https://www.huffpost.com/michael-giltz/theater-king-charles-iii_b_8508852.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "king-charles-iii-2015",
       "file": "huffpost--steven-suskin.json",
       "score": 81,
       "publishDate": "November 1, 2015",
@@ -76072,6 +76105,7 @@
     {
       "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 78,
       "publishDate": "2026-10-13",
       "url": "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review",
       "findings": [
