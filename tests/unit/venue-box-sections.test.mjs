@@ -89,3 +89,11 @@ test("a section does not end with the next show's caption, credit and theatre li
   const wrapped = 'The revival is a pleasure from start to finish\nand the cast is in fine form all night long.\nI loved it.';
   assert.equal(dropTrailingShortLines(wrapped), wrapped);
 });
+
+test('a box tail with an abbreviated month stays in the box (venus-in-fur-2011: "212-239-6200, closes Dec. 18")', () => {
+  const box = 'Lyceum Theatre, 149 W. 45th St.\n\n($67-$137), 212-239-6200, closes Dec. 18';
+  const text = `${BOX_M} ${MOTOWN}\n\n${box}\n\n${NANCE}`;
+  const r = extractVenueBoxSection(text, SHOWS[0], SHOWS);
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.text, /^The Nance is a warm play/);
+});

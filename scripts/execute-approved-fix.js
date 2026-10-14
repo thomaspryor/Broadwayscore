@@ -113,6 +113,10 @@ const ALLOWED_SCRIPTS = [
   // BRO-5294: queue named multi-review-column rows for a rescore that reads
   // only the target show's section (llm-scoring/venue-box-sections.ts).
   'flag-multishow-column-rescore.js',
+  // BRO-5325: file a show's section of a multi-review column stored under
+  // another show into its own row (rules: scripts/lib/multishow-section-copy.js;
+  // refuses ambiguous sections; --expect-start/--expect-end use `_` for spaces).
+  'copy-multishow-section.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
