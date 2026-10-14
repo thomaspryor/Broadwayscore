@@ -709,7 +709,19 @@
     "all-my-sons-west-end-2025/amny--matt-windman.json",
     "all-my-sons-west-end-2025/daily-mail--patrick-marmion.json",
     "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
-    "all-my-sons-west-end-2025/nottingham-confidential--unknown.json"
+    "all-my-sons-west-end-2025/nottingham-confidential--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -853,7 +865,9 @@
       "data/review-texts/dog-day-afternoon-2026/wsj--charles-isherwood.json",
       "dog-day-afternoon-2026/wsj--charles-isherwood.json",
       "data/review-texts/the-waterfall-off-broadway-2026/nytimes--unknown.json",
-      "the-waterfall-off-broadway-2026/nytimes--unknown.json"
+      "the-waterfall-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -871,7 +885,8 @@
       "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "jane-eyre-rose-kingston-off-west-end-2026/blackeyedtheatre--unknown.json",
-      "hay-fever-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+      "hay-fever-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -950,7 +965,7 @@
     ]
   },
   "startTime": "2026-10-14T08:42:53.725Z",
-  "lastProcessed": "all-my-sons-west-end-2025/nottingham-confidential--unknown.json",
+  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json",
   "log": [
     {
       "t": "2026-10-14T09:04:35.773Z",
@@ -1807,6 +1822,64 @@
       "t": "2026-10-14T18:59:35.889Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T20:11:41.598Z",
+      "event": "bb-session",
+      "session": "f7b9e51d",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T20:12:28.281Z",
+      "event": "bb-session",
+      "session": "a7efbc12",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T20:12:35.130Z",
+      "event": "bb-session",
+      "session": "49d91dee",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T20:17:43.376Z",
+      "event": "bb-session",
+      "session": "d638ad02",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-14T20:18:02.076Z",
+      "event": "bb-session",
+      "session": "1f4702c6",
+      "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0"
+    },
+    {
+      "t": "2026-10-14T20:18:12.248Z",
+      "event": "bb-session",
+      "session": "9617257d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T20:18:12.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T20:20:39.463Z",
+      "event": "bb-session",
+      "session": "49082e1e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-14T20:20:39.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T20:20:52.251Z",
+      "event": "bb-session",
+      "session": "d9a2b1d6",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
     }
   ],
   "recoveredAfterFailure": [
