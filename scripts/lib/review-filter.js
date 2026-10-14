@@ -93,10 +93,12 @@ function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, tex
  * the misattributed Vulture copy stayed live. Cross-outlet copies are left to
  * detect-cross-outlet-duplicates.js, which picks the primary by tier/length.
  * `hostMatches` is outlet-domain-validation's hostMatchesOutletDomain result
- * for this file (true only on a registered domain match).
+ * for this file (true only on a registered domain match). `forcedRefetch` is
+ * the operator's force: flag, whether or not the text changed: a refetch that
+ * returns the same text must still be able to clear the wrong pointer.
  */
-function skipCrossOutletSelfDemote({ forcedReplacement, outletId, siblingOutletId, hostMatches }) {
-  return !!(forcedReplacement && hostMatches === true && outletId && siblingOutletId && outletId !== siblingOutletId);
+function skipCrossOutletSelfDemote({ forcedRefetch, outletId, siblingOutletId, hostMatches }) {
+  return !!(forcedRefetch && hostMatches === true && outletId && siblingOutletId && outletId !== siblingOutletId);
 }
 
 module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote };

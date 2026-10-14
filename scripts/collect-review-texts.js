@@ -5534,7 +5534,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
             const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
             if (siblingFingerprint && siblingFingerprint === fingerprint) {
               if (skipCrossOutletSelfDemote({
-                forcedReplacement,
+                forcedRefetch: review._forceRefetch === true,
                 outletId: data.outletId,
                 siblingOutletId: siblingData.outletId,
                 hostMatches: hostMatchesOutletDomain(data.url, data.outletId, loadOutletRegistryForDedupe()),

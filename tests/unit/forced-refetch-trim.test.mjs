@@ -56,9 +56,9 @@ test('a page-bleed trim records the cut too, so the push restore keeps it', () =
 // itself duplicateTextOf a different outlet's file with the same text.
 test('skipCrossOutletSelfDemote: only a forced, own-domain, cross-outlet match is skipped', () => {
   const { skipCrossOutletSelfDemote } = require('../../scripts/lib/review-filter.js');
-  const base = { forcedReplacement: true, outletId: 'variety', siblingOutletId: 'vulture', hostMatches: true };
+  const base = { forcedRefetch: true, outletId: 'variety', siblingOutletId: 'vulture', hostMatches: true };
   assert.equal(skipCrossOutletSelfDemote(base), true);
-  assert.equal(skipCrossOutletSelfDemote({ ...base, forcedReplacement: false }), false, 'routine fetch keeps the old dedupe');
+  assert.equal(skipCrossOutletSelfDemote({ ...base, forcedRefetch: false }), false, 'routine fetch keeps the old dedupe');
   assert.equal(skipCrossOutletSelfDemote({ ...base, siblingOutletId: 'variety' }), false, 'same-outlet copies still dedupe');
   assert.equal(skipCrossOutletSelfDemote({ ...base, hostMatches: false }), false, 'off-domain url proves nothing');
   assert.equal(skipCrossOutletSelfDemote({ ...base, hostMatches: null }), false, 'unknown domain keeps the old dedupe');
