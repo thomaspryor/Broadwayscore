@@ -93,5 +93,35 @@
       }
     ],
     "queuedAt": "2026-10-14T02:58:23.674Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5287-acceptance",
+    "title": "Landing blocked: lint-workflows red on land/bro-5287-acceptance",
+    "description": "land.yml did not land land/bro-5287-acceptance: the lint-workflows gate went red at 284f477845. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38503349543",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5287-acceptance"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "284f47784576d6a909b0c15610090692ba2dd184"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38503349543"
+      }
+    ],
+    "queuedAt": "2026-10-14T03:21:14.110Z"
   }
 ]
