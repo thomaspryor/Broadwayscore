@@ -101,8 +101,33 @@ function placeholderSourceKind(rawUrl) {
   return null;
 }
 
+/**
+ * Placeholder links a write ADDS: [{ idx, kind, url }] for entries of
+ * `sources` whose url is a placeholder and is not already on `priorSources`.
+ * Counted per trimmed URL, so a second entry reusing an old placeholder link
+ * (a new claim on it) counts as added, and a whitespace change does not.
+ * Shared by the record check and the automated-writer gate so the two agree.
+ */
+function addedPlaceholderSources(sources, priorSources) {
+  const left = new Map();
+  for (const s of priorSources || []) {
+    if (s && typeof s.url === 'string') left.set(s.url.trim(), (left.get(s.url.trim()) || 0) + 1);
+  }
+  const out = [];
+  (sources || []).forEach((src, idx) => {
+    if (!src || typeof src.url !== 'string') return;
+    const url = src.url.trim();
+    const n = left.get(url) || 0;
+    if (n > 0) { left.set(url, n - 1); return; }
+    const kind = placeholderSourceKind(url);
+    if (kind) out.push({ idx, kind, url: src.url });
+  });
+  return out;
+}
+
 module.exports = {
   placeholderSourceKind,
+  addedPlaceholderSources,
   VALID_SOURCE_TYPES,
   SOURCE_DATE_REGEX,
   normalizeSource,
