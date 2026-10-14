@@ -27,14 +27,22 @@ test('old closed-show textless review is no longer stranded past the cut', () =>
   assert.ok(out.indexOf(stuck) < 300);
 });
 
-test('cap bounds spend, cheapest tier first, input untouched', () => {
-  const mk = (id, priority) => ({ reviewId: id, priority, _needsRefetch: true });
-  const queue = [mk('a', 3), mk('b', 1), mk('c', 2), { reviewId: 'plain', priority: 1 }];
+test('cap bounds spend and the draw rotates between runs', () => {
+  const queue = Array.from({ length: 60 }, (_, i) => ({ reviewId: `s/${i}.json`, priority: 2, _needsRefetch: true }));
+  queue.push({ reviewId: 'plain', priority: 1 });
   const snapshot = queue.map(r => r.reviewId);
-  const out = promoteNeedsRefetch(queue, 2);
-  assert.deepEqual(out.map(r => r.reviewId), ['b', 'c', 'a', 'plain']);
-  assert.deepEqual(queue.map(r => r.reviewId), snapshot);
-  assert.equal(promoteNeedsRefetch(queue, 0).length, 4);
+  const pick = (seed) => promoteNeedsRefetch(queue, 10, seed).slice(0, 10).map(r => r.reviewId);
+  const a = pick(1), b = pick(2);
+  assert.equal(a.length, 10);
+  assert.notDeepEqual(a, b, 'a different run draws different reviews');
+  assert.deepEqual(pick(1), a, 'same run is deterministic');
+  // every candidate is reached within a bounded number of runs
+  const seen = new Set();
+  for (let seed = 0; seed < 40; seed++) pick(seed).forEach(id => seen.add(id));
+  assert.equal(seen.size, 60, 'no review is starved');
+  assert.equal(promoteNeedsRefetch(queue, 10, 1).length, queue.length);
+  assert.deepEqual(queue.map(r => r.reviewId), snapshot, 'input untouched');
+  assert.equal(promoteNeedsRefetch(queue, 0, 1).length, queue.length);
   assert.ok(NEEDS_REFETCH_DRAIN_PER_RUN > 0 && NEEDS_REFETCH_DRAIN_PER_RUN <= 50);
 });
 

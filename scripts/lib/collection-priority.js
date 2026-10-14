@@ -123,19 +123,39 @@ function isNeedsRefetchDrainCandidate(data, ledgerEntry) {
   return Math.max(fileFails, ledgerFails) < NEEDS_REFETCH_MAX_FAILURES;
 }
 
+/** Run bucket: the collect cron fires 3x/day, so each 8h window rotates the draw. */
+function drainRotationSeed(nowMs = Date.now()) {
+  return Math.floor(nowMs / (8 * 3600 * 1000));
+}
+
+function rotationHash(id, seed) {
+  // FNV-1a over `${seed}|${id}`: stable for one run, reshuffled for the next.
+  let h = 0x811c9dc5;
+  const str = `${seed}|${id}`;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h;
+}
+
 /**
  * Move up to `cap` textless needsRefetch entries (flag `_needsRefetch`) to the
- * front of an already-sorted queue, lowest outlet tier number first, keeping the
- * queue's order within ties. Entries past the cap keep their normal position.
+ * front of an already-sorted queue. WHICH ones rotate with `seed`: a review that
+ * cannot be fixed by a fetch (wrong url, SERP finds nothing) records no failure,
+ * so a fixed ordering would hand it the same slot every run and starve the rest
+ * (seen in the 2026-10-14 CI test: Wicked/Romeo and Juliet urls on the wrong
+ * show took all 5 slots twice). Entries past the cap keep their normal position.
  * Returns a new array; does not mutate the input.
  */
-function promoteNeedsRefetch(queue, cap = NEEDS_REFETCH_DRAIN_PER_RUN) {
+function promoteNeedsRefetch(queue, cap = NEEDS_REFETCH_DRAIN_PER_RUN, seed = drainRotationSeed()) {
   const flagged = [];
   queue.forEach((r, i) => { if (r && r._needsRefetch) flagged.push({ r, i }); });
   if (!flagged.length || cap <= 0) return queue.slice();
-  flagged.sort((a, b) => ((a.r.priority ?? 9) - (b.r.priority ?? 9)) || (a.i - b.i));
-  const promoted = new Set(flagged.slice(0, cap).map(f => f.r));
-  return [...flagged.slice(0, cap).map(f => f.r), ...queue.filter(r => !promoted.has(r))];
+  flagged.sort((a, b) => (rotationHash(a.r.reviewId || a.i, seed) - rotationHash(b.r.reviewId || b.i, seed)) || (a.i - b.i));
+  const chosen = flagged.slice(0, cap).map(f => f.r);
+  const promoted = new Set(chosen);
+  return [...chosen, ...queue.filter(r => !promoted.has(r))];
 }
 
 module.exports = {
@@ -144,6 +164,7 @@ module.exports = {
   isNeedsRefetchDrainCandidate,
   NEEDS_REFETCH_MAX_FAILURES,
   promoteNeedsRefetch,
+  drainRotationSeed,
   NO_DATE_SENTINEL,
   showRecencyKey,
   buildShowRecencyMap,
