@@ -20,6 +20,10 @@ export function pinBoxOfficeClockToData(): string {
   const file = path.join(__dirname, '..', '..', 'data', 'grosses-history.json');
   const weeks = Object.keys(JSON.parse(readFileSync(file, 'utf8')).weeks ?? {}).sort();
   const asOf = weeks.at(-1) ?? new Date().toISOString().slice(0, 10);
-  getBoxOfficeV2StaleReasons(asOf);
+  // Non-empty means the files disagree with each other, or a getter ran before
+  // this pin and cached a wall-clock verdict. Say which, here: the real-data
+  // tests' 10+ row floors then fail, without taking the pure-logic tests down too.
+  const reasons = getBoxOfficeV2StaleReasons(asOf);
+  if (reasons.length) console.error(`[box-office-data-clock] v2 inputs stale at data date ${asOf}: ${reasons.join('; ')}`);
   return asOf;
 }
