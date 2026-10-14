@@ -45,9 +45,9 @@ export interface TonySeasonRecord {
   /** Citation for verifiability — URL or short description */
   source: string;
   /** ISO date this window was last checked against `source` (BRO-3040).
-   *  scripts/check-cutoff-freshness.js warns when a season's `end` is within
-   *  60 days and this is more than 60 days old, and fails on a record
-   *  without it. Re-stamp only after actually re-checking the source; a
+   *  scripts/check-cutoff-freshness.js fails (exit 1) when a season's `end`
+   *  is within 60 days and this is more than 60 days old, and on a record
+   *  without it or with a future date. Re-stamp only after actually re-checking the source; a
    *  provisional record keeps its old date so the check fires before its
    *  placeholder cutoff arrives. */
   lastVerified: string;

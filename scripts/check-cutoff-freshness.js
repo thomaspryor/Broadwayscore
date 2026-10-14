@@ -2,7 +2,7 @@
 /**
  * Check freshness of Tony + Olivier eligibility cutoff data.
  *
- * Warns (advisory v1) when:
+ * Fails (exit 1) when:
  *   - the CURRENT ceremony's `end` is within FRESHNESS_WINDOW_DAYS of today
  *   - AND the entry's `lastVerified` is more than STALE_THRESHOLD_DAYS old
  *
@@ -74,11 +74,11 @@ function main() {
   // BRO-3040: no fallback for a missing lastVerified. Defaulting it to today
   // made the Tony half report fresh forever, so a missing stamp is an error.
   const missing = [
-    ...findMissingLastVerified(tonyRecords).map((r) => `Tony ${r.label}`),
-    ...findMissingLastVerified(olivierRecords).map((r) => `Olivier ${r.label}`),
+    ...findMissingLastVerified(tonyRecords, today).map((r) => `Tony ${r.label}`),
+    ...findMissingLastVerified(olivierRecords, today).map((r) => `Olivier ${r.label}`),
   ];
   if (missing.length > 0) {
-    console.log(`::error::${missing.length} cutoff record(s) have no valid lastVerified date: ${missing.join(', ')}. Stamp each with the date it was last checked against its source.`);
+    console.log(`::error::${missing.length} cutoff record(s) have no valid lastVerified date (missing, malformed or in the future): ${missing.join(', ')}. Stamp each with the date it was last checked against its source.`);
     process.exit(1);
   }
 
