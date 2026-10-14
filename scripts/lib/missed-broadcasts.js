@@ -171,19 +171,31 @@ function classifyShowBroadcastState(sentShows, showId) {
  * can add it on top of shouldRequeueShow without inheriting this file's
  * different reading of the mirror itself.
  */
+/**
+ * Tracker key grammar, shared with lib/broadcast-dismiss.js and
+ * lib/broadcast-status.js. Side keys (previews, overdue alerts) are not
+ * broadcast records. A record key is '<id>' or '<market>:<id>[+<id>...]'.
+ */
+const SIDE_KEY_RE = /^(preview|overdue-alert):/;
+function isSideKey(key) { return SIDE_KEY_RE.test(key); }
+/** Show ids a record key covers: 'a' -> [a], 'broadway:a+b' -> [a, b]. */
+function keyShowIds(key) {
+  const m = /^[a-z-]+:([^:]+)$/.exec(key);
+  return m ? m[1].split('+') : [key];
+}
+
 function sentOnSiblingRecord(sentShows, showId) {
   const shows = sentShows || {};
   const own = shows[showId];
   for (const [key, rec] of Object.entries(shows)) {
     if (key === showId || !rec) continue;
-    if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) continue;
+    if (isSideKey(key)) continue;
     if (own) {
       if (!own.draftId || rec.draftId !== own.draftId) continue;
     } else {
       // No per-show mirror (recordDraftCompletion always writes one today,
       // but a partial merge could drop it).
-      const m = /^[a-z-]+:([^:]+)$/.exec(key);
-      if (!m || !m[1].split('+').includes(showId)) continue;
+      if (!key.includes(':') || !keyShowIds(key).includes(showId)) continue;
     }
     if (classifyBroadcastState(rec) === 'sent') return true;
   }
@@ -427,6 +439,8 @@ module.exports = {
   classifyBroadcastState,
   classifyShowBroadcastState,
   sentOnSiblingRecord,
+  isSideKey,
+  keyShowIds,
   findSentRecord,
   applyLiveBroadcastStatus,
   wasCoveredByWeeklyRoundup,

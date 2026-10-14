@@ -86,3 +86,40 @@ test('CLI --no-draft: dry run writes nothing, --execute records, no Resend key n
   assert.ok(JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows['never-a'].discardedAt);
   assert.throws(() => execFileSync(process.execPath, [cli, '--show=stuck-b', '--no-draft', '--execute'], { cwd: dir, env, stdio: 'pipe' }));
 });
+
+// BRO-3087 retro-review (BRO-5261)
+test('a leftover cancelled combo does not block a show whose partner was sent later', () => {
+  const t = {
+    'broadway:a+b': { completed: false, draftId: 'c1', draftStatus: 'cancelled' },
+    a: { completed: false, draftId: 'c1', draftStatus: 'cancelled', broadcastKey: 'broadway:a+b' },
+    b: { completed: true, draftId: 'c2', draftStatus: 'sent' },
+  };
+  const dates = new Map([['a', '2026-10-01'], ['b', '2026-10-01']]);
+  const cmd = wontSendCommand(t, 'a', 'never-drafted');
+  assert.match(cmd, /shows=a -f no_draft=true/);
+  assert.equal(dismissBlockReason(t, ['a'], { openingDates: dates, today }), null);
+  const writes = planNoDraftDismissal(t, ['a'], { nowIso: 'n', reason: 'r' });
+  assert.equal(classifyShowBroadcastState({ ...t, ...writes }, 'b'), 'sent');
+  assert.equal(classifyShowBroadcastState({ ...t, ...writes }, 'a'), 'discarded');
+});
+
+test('dismissing a draft Resend lost marks the send unverified', () => {
+  const writes = planNoDraftDismissal(tracker, ['gone-d'], { nowIso: 'n', reason: 'r' });
+  assert.equal(writes['gone-d'].sendUnverified, true);
+  const never = planNoDraftDismissal(tracker, ['never-a'], { nowIso: 'n', reason: 'r' });
+  assert.equal(never['never-a'].sendUnverified, undefined);
+});
+
+test('CLI: --no-draft on an already-dismissed show changes nothing and says so', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dismiss2-'));
+  fs.mkdirSync(path.join(dir, 'data'));
+  fs.writeFileSync(path.join(dir, 'data', 'shows.json'), JSON.stringify({ shows: [{ id: 'never-a', openingDate: '2026-10-01' }] }));
+  const sentPath = path.join(dir, 'data', 'opening-night-sent.json');
+  const body = JSON.stringify({ shows: { 'never-a': { discardedAt: 'x', draftStatus: 'deleted', completed: false } } });
+  fs.writeFileSync(sentPath, body);
+  const cli = path.join(here, '..', 'discard-stuck-broadcast-drafts.js');
+  const env = { ...process.env, RESEND_API_KEY: '', GITHUB_ACTIONS: 'true' };
+  const out = execFileSync(process.execPath, [cli, '--show=never-a', '--no-draft', '--execute'], { cwd: dir, env, encoding: 'utf8' });
+  assert.match(out, /Nothing to change/);
+  assert.equal(fs.readFileSync(sentPath, 'utf8'), body);
+});
