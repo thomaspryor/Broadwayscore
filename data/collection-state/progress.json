@@ -340,7 +340,11 @@
     "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
     "promises-promises-2010/ap--michael-kuchwara.json",
     "the-cherry-orchard-west-end-2026/daily-mail--unknown.json",
-    "the-cherry-orchard-west-end-2026/independent--alice-saville.json"
+    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -448,7 +452,8 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
-      "dirty-dancing-tour-2026/nytimes--michael-paulson.json"
+      "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -462,7 +467,8 @@
       "the-story-west-end-2026/ground--unknown.json",
       "the-lost-boys-2026/the-knockturnal--paul-chi.json",
       "paddington-the-musical-west-end-2025/matineemouse--matinee-mouse.json",
-      "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
+      "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "fences-off-west-end-2026/ground--unknown.json",
@@ -533,7 +539,7 @@
     ]
   },
   "startTime": "2026-10-14T08:42:53.725Z",
-  "lastProcessed": "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json",
   "log": [
     {
       "t": "2026-10-14T09:04:35.773Z",
@@ -706,6 +712,46 @@
       "t": "2026-10-14T12:02:29.085Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T12:48:08.227Z",
+      "event": "bb-session",
+      "session": "499f1acb",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T12:54:09.779Z",
+      "event": "bb-session",
+      "session": "bcd617a4",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-14T12:54:44.834Z",
+      "event": "bb-session",
+      "session": "99fc0b4f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T12:54:45.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T12:57:20.173Z",
+      "event": "bb-session",
+      "session": "7736bc15",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T12:57:21.269Z",
+      "event": "bb-session",
+      "session": "e2514160",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-14T12:57:21.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
