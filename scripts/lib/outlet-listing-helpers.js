@@ -17,6 +17,7 @@
 
 const { normalizeTitle, foldDiacritics } = require('./title-match');
 const { COMMON_WORD_SHOW_TITLES } = require('./multi-show-splitter');
+const { toDateMs } = require('./date-utils');
 
 /**
  * Escape a string for use inside a RegExp.
@@ -139,7 +140,7 @@ function venuePhrase(show) {
 const RUN_LEAD_DAYS = 3;
 const RUN_TAIL_DAYS = 21;
 function publishedInRunWindow(show, publishDate) {
-  const pub = Date.parse(publishDate || '');
+  const pub = toDateMs(publishDate);
   const start = Date.parse(show.previewsStartDate || show.openingDate || '');
   if (Number.isNaN(pub) || Number.isNaN(start)) return false;
   const end = Date.parse(show.openingDate || '') || start;

@@ -27,6 +27,7 @@
 const { findMatchingShows } = require('./outlet-listing-helpers');
 const { normalizeTitle } = require('./title-match');
 const { normalizeUrl } = require('./url-utils');
+const { toDateMs } = require('./date-utils');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_WINDOW_DAYS = 7;
@@ -78,7 +79,7 @@ function looksTheatrical(show, item) {
 
 function inOpeningWindow(show, item, windowDays) {
   const open = Date.parse(show.openingDate || '');
-  const pub = Date.parse(item.publishDate || '');
+  const pub = toDateMs(item.publishDate);
   if (Number.isNaN(open) || Number.isNaN(pub)) return false;
   return pub >= open - PRE_OPENING_DAYS * DAY_MS && pub <= open + (windowDays + 3) * DAY_MS;
 }
