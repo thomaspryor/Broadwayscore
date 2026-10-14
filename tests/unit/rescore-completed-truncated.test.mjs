@@ -20,8 +20,11 @@ test('no rescore when not truncated before, unscored, or barely longer', () => {
   assert.equal(shouldRescoreCompletedTruncated({ tierBefore: 'truncated', hasScore: true, textBefore: '', textAfter: full }), false);
 });
 
-test('excerpt, stub, needs-rescrape and unset tiers count as partial too (BRO-5261)', () => {
-  for (const tierBefore of ['excerpt', 'stub', 'needs-rescrape', undefined]) {
-    assert.equal(shouldRescoreCompletedTruncated({ tierBefore, hasScore: true, textBefore: short, textAfter: full }), true, String(tierBefore));
+test('excerpt, stub and needs-rescrape count as partial too; no tier or invalid do not (BRO-5261)', () => {
+  for (const tierBefore of ['excerpt', 'stub', 'needs-rescrape']) {
+    assert.equal(shouldRescoreCompletedTruncated({ tierBefore, hasScore: true, textBefore: short, textAfter: full }), true, tierBefore);
+  }
+  for (const tierBefore of [undefined, null, 'invalid', 'complete']) {
+    assert.equal(shouldRescoreCompletedTruncated({ tierBefore, hasScore: true, textBefore: short, textAfter: full }), false, String(tierBefore));
   }
 });

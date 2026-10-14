@@ -71,12 +71,13 @@ function forcedRefetchTrim(textBefore, textAfter, at) {
  * A partial row's score was read from partial text. When a fetch replaces that
  * text with a substantially longer body, the score must be redone (BRO-5243:
  * truncated WSJ rows completed by the backfill were never rescored, because the
- * excerpt trigger only fires when there was no fullText before). Any tier but
- * 'complete' counts as partial (excerpt/stub rows with 500+ chars, and
- * needs-rescrape or unset tiers, slipped through both triggers; BRO-5261).
+ * excerpt trigger only fires when there was no fullText before). Excerpt, stub
+ * and needs-rescrape rows with 500+ chars slipped through both triggers too
+ * (BRO-5261). Rows with no tier or an invalid one are left alone.
  */
+const PARTIAL_TIERS = new Set(['truncated', 'excerpt', 'stub', 'needs-rescrape']);
 function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, textAfter }) {
-  if (!hasScore || tierBefore === 'complete') return false;
+  if (!hasScore || !PARTIAL_TIERS.has(tierBefore)) return false;
   const before = String(textBefore || '').replace(/\s+/g, ' ').trim().length;
   const after = String(textAfter || '').replace(/\s+/g, ' ').trim().length;
   return before > 0 && after >= before + 500 && after >= before * 1.25;
