@@ -426,6 +426,7 @@ def _is_owner_record(r, text):
 events = []  # list of (kind, payload)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
+result_ts_by_id = {}  # tool_use_id -> transcript timestamp of its result (scoring gate)
 # Tool calls whose result the harness flagged is_error (non-zero exit, a
 # permission denial, an input error): they did not do what they asked.
 tool_error_ids = set()
@@ -522,6 +523,7 @@ try:
                             body = str(body)
                         if tid:
                             tool_results_by_id[tid] = body
+                            result_ts_by_id[tid] = str(r.get('timestamp') or '')
                             if c.get('is_error'):
                                 tool_error_ids.add(tid)
                                 if _REFUSED_RE.match(body or ''):
@@ -1044,8 +1046,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
         pass  # fail-open — never let this gate crash the rest of the script
 
 # Detect audit sweeps: sessions that edit data/review-texts/ flag fields via Bash
-# (not Edit tool). These bypass the is_scoring_edit gate because last_edit_file never
-# matches SCORING_LOGIC_SUBSTRINGS. Detect by presence of 'review-texts' in any Bash cmd.
+# (not Edit tool), so no watched-file edit triggers the scoring gate for them.
 # An "audit sweep" is a Bash command that *mutates* files under data/review-texts/.
 # Mere mention of the path (e.g., in a notion-brain --notes arg, a ls/grep, or a
 # git log string) is NOT a sweep — those tripped this flag for the entire session
@@ -1383,19 +1384,26 @@ basename = os.path.basename(last_edit_file) if last_edit_file else 'audit-sweep'
 basename_no_ext = os.path.splitext(basename)[0] if last_edit_file else 'audit-sweep'
 
 # ─── BWSC scoring-logic gate ─────────────────────────────────────────────────
-# When an edit touches a file on the SCORING_LOGIC list, generic "tests passed"
-# is NOT sufficient — the 2026-04-14 Giant incident shipped with unit tests
-# green but would have excluded 183 legitimate T1 reviews from flagship shows.
-# For these files, the session must also run the scoring-delta check (or the
-# temporal-override regression fixture, or a full rebuild + analyze-rebuild-drops).
-# See memory/feedback_scoring_delta_required.md.
-SCORING_LOGIC_SUBSTRINGS = (
-    '/scripts/lib/review-guards.js',
-    '/scripts/rebuild-all-reviews.js',
-    '/src/lib/scoring.ts',
-    '/src/lib/engine.ts',
-    '/src/lib/data-core.ts',
-)
+# When an edit touches a scoring-delta watched file, generic "tests passed" is
+# NOT sufficient — the 2026-04-14 Giant incident shipped with unit tests green
+# but would have excluded 183 legitimate T1 reviews from flagship shows. See
+# memory/feedback_scoring_delta_required.md. BRO-5270: the watchlist is the one
+# scoring-delta.js replays (scripts/lib/scoring-watchlists.js), and the verdict
+# is the exit stamp each run appends there, not output text (a pipe, --json or
+# 2>/dev/null hid exit 2). These 5 are the fallback if node can't load it.
+SCORING_LOGIC_FALLBACK = ('scripts/lib/review-guards.js', 'scripts/rebuild-all-reviews.js',
+                          'src/lib/scoring.ts', 'src/lib/engine.ts', 'src/lib/data-core.ts')
+
+def _scoring_state():
+    try:
+        import subprocess as _ss
+        js = ("const w=require(process.argv[1]);process.stdout.write(JSON.stringify({files:[...new Set(["
+              "...w.INCLUSION_FILES,...w.SCORE_VALUE_FILES])],llm:w.LLM_INPUT_FILES,stamps:w.readStamps(process.argv[2])}))")
+        lib = os.path.join(os.environ.get('VE_REPO_ROOT', '.'), 'scripts', 'lib', 'scoring-watchlists.js')
+        sid = os.path.basename(sys.argv[1]).rsplit('.', 1)[0]
+        return json.loads(_ss.run(['node', '-e', js, lib, sid], capture_output=True, text=True, timeout=8).stdout)
+    except Exception:
+        return {'files': list(SCORING_LOGIC_FALLBACK), 'llm': [], 'stamps': []}
 
 # ─── BWSC visual-QA gate (added 2026-05-24) ──────────────────────────────────
 # Edits to files producing rendered HTML require a verdict.json from
@@ -1705,16 +1713,13 @@ SHIPCHECK_TRIGGER_SUBSTRINGS = (
     '/scripts/lib/',                    # any helper in the lib dir
     '/.github/workflows/',              # any workflow YAML
 )
-SCORING_DELTA_CMD_PATTERNS = (
-    'scoring-delta',                 # the counterfactual script
-    'test-temporal-override-regression',  # fixture regression test
-    'analyze-rebuild-drops',         # post-rebuild drop analyzer
-    # NOTE: 'test-opening-night-fixes' is deliberately NOT accepted. That's the 276-case
-    # unit-test harness that was GREEN when the 2026-04-14 Giant bad fix shipped — it
-    # updates its own expectations when the code under test changes, so it can't catch
-    # behavioral regressions against real data. Only whole-dataset counterfactuals count.
-)
-is_scoring_edit = last_edit_file is not None and any(s in last_edit_file for s in SCORING_LOGIC_SUBSTRINGS)
+# The latest edit to ANY watched file this session (not just the last edit):
+# (event index, repo-relative path, result timestamp).
+_sc = _scoring_state() if (total_qualifying_edits or ran_audit_sweep) else {'files': [], 'llm': [], 'stamps': []}
+scoring_edit = next(((i, w, result_ts_by_id.get(p[2], '')) for i in range(len(events) - 1, -1, -1)
+                     for k, p in [events[i]] if k == 'tool' and p[0] in ('Edit', 'Write', 'NotebookEdit')
+                     and p[2] not in tool_refused_ids
+                     for w in _sc['files'] if (p[1].get('file_path') or '').endswith('/' + w)), None)
 is_shipcheck_edit = last_edit_file is not None and any(s in last_edit_file for s in SHIPCHECK_TRIGGER_SUBSTRINGS)
 
 VERIFICATION_CMD_PATTERNS = (
@@ -1736,26 +1741,7 @@ def qualifies(cmd: str) -> bool:
     cl = cmd.lower()
     return any(p in cl for p in VERIFICATION_CMD_PATTERNS)
 
-def qualifies_scoring(cmd: str) -> bool:
-    if not cmd:
-        return False
-    cl = cmd.lower()
-    return any(p in cl for p in SCORING_DELTA_CMD_PATTERNS)
-
-# Failure markers in the output of scoring-delta / regression test. If the command
-# ran and its result contains one of these, the counterfactual FAILED — the session
-# must either revise the change or use NO-VERIFY to override after user confirmation.
-# Just running the command with a failing result is NOT sufficient to satisfy the gate.
-SCORING_FAILURE_MARKERS = (
-    'SCORING DELTA — significant change detected',
-    'BEFORE MERGING:',
-    'FAIL — temporal override regression',
-    '❌ FAIL',
-)
-
 generic_verified = False
-scoring_verified = False   # scoring-delta-class command ran AND passed (no failure marker)
-scoring_ran_but_failed = False  # command ran but output showed a failure
 shipcheck_verified = False
 no_verify = False
 
@@ -1817,12 +1803,6 @@ for i in range(scan_start, len(events)):
             cmd = inp.get('command', '') or ''
             if qualifies(cmd):
                 generic_verified = True
-            if qualifies_scoring(cmd):
-                result_text = tool_results_by_id.get(tid, '') or ''
-                if any(marker in result_text for marker in SCORING_FAILURE_MARKERS):
-                    scoring_ran_but_failed = True
-                else:
-                    scoring_verified = True
             if any(p in cmd for p in SHIPCHECK_BASH_PATTERNS):
                 shipcheck_verified = True
         elif name == 'Skill':
@@ -1840,21 +1820,28 @@ if no_verify:
     print(_chain_or_ok())
     sys.exit(0)
 
-if is_scoring_edit or ran_audit_sweep:
-    # Stricter gate: must run a scoring-delta-class command AND its output must not
-    # contain a failure marker (or the session must explicitly NO-VERIFY after).
-    # Label so the error message tells the user which trigger fired. If the edit
-    # itself is on the scoring watchlist, blame the file; if it's an audit sweep
-    # whose only signal is the Bash mutations, blame 'audit-sweep'.
-    label = basename if is_scoring_edit else 'audit-sweep'
-    if scoring_verified:
-        print(_chain_or_ok())
-        sys.exit(0)
-    if scoring_ran_but_failed:
-        _ve_final(f"SCORING_FAILED:{label}")
-        sys.exit(0)
-    _ve_final(f"UNVERIFIED_SCORING:{label}")
-    sys.exit(0)
+if scoring_edit or ran_audit_sweep:
+    # The LATEST scoring-delta.js run after the latest watched edit / sweep
+    # write decides (a re-run after fixing data setup clears an exit 1). Exit 0
+    # counts only if that run saw the edited file (or the sweep's flag
+    # changes) in its diff: --base=HEAD after a commit reports "nothing to check".
+    label = os.path.basename(scoring_edit[1]) if scoring_edit else 'audit-sweep'
+    ref_ts = max([scoring_edit[2] if scoring_edit else ''] + [result_ts_by_id.get(p[2], '') for k, p in events
+                 if k == 'tool' and p[0] == 'Bash' and _is_review_texts_write(p[1].get('command', '') or '')])
+    runs = [r for r in _sc['stamps'] if isinstance(r, dict) and str(r.get('ts', '')) > ref_ts]
+    last = runs[-1] if runs else {}
+    code = last.get('exitCode')
+    if not runs:
+        _ve_final(f"UNVERIFIED_SCORING:{label}:none")
+    elif code == 2:
+        _ve_final(f"SCORING_FAILED:{label}:{'llm' if scoring_edit and scoring_edit[1] in _sc['llm'] else 'delta'}")
+    elif code != 0:
+        _ve_final(f"SCORING_FAILED:{label}:error")
+    elif (scoring_edit[1] in (last.get('changed') or [])) if scoring_edit else last.get('dataFlagChanges'):
+        if last_edit_idx is None or (scoring_edit and scoring_edit[0] == last_edit_idx):
+            generic_verified = True  # the counterfactual ran the edited code
+    else:
+        _ve_final(f"UNVERIFIED_SCORING:{label}:unmeasured")
 
 if is_shipcheck_edit and not shipcheck_verified:
     # Edits to scripts/lib/ or .github/workflows/ need an adversarial-reviewer pass.
@@ -1993,23 +1980,16 @@ if [[ "$result" == HUMAN_TIME_ESTIMATE:* ]]; then
   exit 2
 fi
 
-if [[ "$result" == SCORING_FAILED:* ]]; then
-  fname="${result#SCORING_FAILED:}"
-  if [[ "$fname" == "audit-sweep" ]]; then
-    echo "🛑 BLOCKED: scoring-delta found T1 flips after audit sweep. Fix flips, or NO-VERIFY: <user-approved delta + specifics>." >&2
-  else
-    echo "🛑 BLOCKED: scoring counterfactual FAILED for \`${fname}\`. Fix regression, or NO-VERIFY: <user-approved delta + specifics>." >&2
-  fi
-  exit 2
-fi
-
-if [[ "$result" == UNVERIFIED_SCORING:* ]]; then
-  fname="${result#UNVERIFIED_SCORING:}"
-  if [[ "$fname" == "audit-sweep" ]]; then
-    echo "🛑 BLOCKED: audit sweep of data/review-texts/ without scoring-delta. Run: node scripts/scoring-delta.js. Bypass: NO-VERIFY: <why these flags can't affect T1>." >&2
-  else
-    echo "🛑 BLOCKED: scoring-logic edit (\`${fname}\`) without counterfactual. Run: node scripts/scoring-delta.js (or test-temporal-override-regression.js). Bypass: NO-VERIFY: <why this can't affect scoring>." >&2
-  fi
+if [[ "$result" == SCORING_FAILED:* || "$result" == UNVERIFIED_SCORING:* ]]; then
+  fname="${result#*:}"; kind="${fname##*:}"; fname="${fname%:*}"
+  [[ "$fname" == "audit-sweep" ]] && what="audit sweep of data/review-texts/" || what="scoring-logic edit (\`${fname}\`)"
+  case "$kind" in
+    llm) echo "🛑 BLOCKED: \`${fname}\` shapes LLM scoring input, so scoring-delta.js exits 2 by design (the replay can't measure it). Re-score through the CLAUDE.md §13 A/B check, then NO-VERIFY: <A/B result: bucket shift, mean drift>." >&2 ;;
+    delta) echo "🛑 BLOCKED: scoring-delta.js exited 2 (significant delta) after ${what}. Fix the regression and re-run, or NO-VERIFY: <user-approved delta + specifics>." >&2 ;;
+    error) echo "🛑 BLOCKED: scoring-delta.js errored after ${what}, so nothing was measured. Fix the run (missing data: npm run data:check) and re-run it." >&2 ;;
+    unmeasured) echo "🛑 BLOCKED: the latest scoring-delta.js run did not see ${what} in its diff (committed already? run node scripts/scoring-delta.js --base=origin/main)." >&2 ;;
+    *) echo "🛑 BLOCKED: ${what} without a counterfactual. Run: node scripts/scoring-delta.js (its exit code is the verdict). Bypass: NO-VERIFY: <why this can't affect scoring>." >&2 ;;
+  esac
   exit 2
 fi
 

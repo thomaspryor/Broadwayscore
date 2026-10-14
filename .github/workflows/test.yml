@@ -2190,6 +2190,8 @@ on:
       # #1606), same shell-e2e class as merge-gate-hook.test.mjs above and
       # the same "scripts/tests/ is not scripts/lib/" path-list gap.
       - 'scripts/tests/verify-edits-heredoc.test.mjs'
+      # BRO-5270: the scoring-delta Stop gate's fixture suite (same gap).
+      - 'scripts/tests/verify-edits-scoring-gate.test.mjs'
       - '.claude/hooks/verify-edits.sh'
       # BRO-2258: session-start.sh's disk-space-check.js/job-log-retention.js
       # wiring is asserted by tests/unit/session-start-disk-check.test.mjs

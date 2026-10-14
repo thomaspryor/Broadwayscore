@@ -213,6 +213,9 @@ const EXCLUDED_FILES = new Set([
   // drift guard below only asserts watchlist ⊆ refused, so it could never have
   // caught the gate's own absence.
   'scripts/scoring-delta.js',
+  // BRO-5270: the watchlists themselves now live here; shrinking them
+  // un-gates files exactly as editing scoring-delta.js would.
+  'scripts/lib/scoring-watchlists.js',
   'scripts/test-temporal-override-regression.js',
   // The single sanctioned reader for external score claims (CLAUDE.md rule 3).
   // Divergence here changes what the site TELLS people its scores are, without

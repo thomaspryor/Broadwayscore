@@ -375,7 +375,7 @@ test('tier3: the scoring GATES themselves are refused, not just what they guard'
   // weaken the check protecting all of them. The drift guard asserts
   // watchlist ⊆ refused, so it structurally cannot catch the gate's absence;
   // only probing the predicate did.
-  for (const p of ['scripts/scoring-delta.js', 'scripts/test-temporal-override-regression.js']) {
+  for (const p of ['scripts/scoring-delta.js', 'scripts/lib/scoring-watchlists.js', 'scripts/test-temporal-override-regression.js']) {
     assert.equal(isCodePathAllowed(p), false, `${p} must not be self-servable`);
   }
 });
