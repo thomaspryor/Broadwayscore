@@ -66,27 +66,19 @@
       },
       {
         "type": "review-field-edit",
+        "file": "the-people-in-the-picture-2011/variety--steven-suskin.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--david-rooney.json",
+        "description": "BRO-5321: legacy VE1117945115 url of the same Variety article as variety--david-rooney.json (same text), which is renamed to the page byline Steven Suskin below. Marked duplicate first so the rename does not stamp it."
+      },
+      {
+        "type": "review-field-edit",
         "file": "the-people-in-the-picture-2011/variety--david-rooney.json",
         "field": "criticName",
         "oldValue": "David Rooney",
         "newValue": "Steven Suskin",
         "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945115/)."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-people-in-the-picture-2011/variety--steven-suskin.json",
-        "field": "wrongAttribution",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-5321"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-people-in-the-picture-2011/variety--steven-suskin.json",
-        "field": "wrongAttributionReason",
-        "oldValue": null,
-        "newValue": "BRO-5321: same text as variety--david-rooney.json, which holds Steven Suskin's review at https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945115/; this copy's byline or url is another page",
-        "description": "BRO-5321"
       },
       {
         "type": "review-field-edit",
@@ -102,22 +94,6 @@
         "field": "wrongAttributionReason",
         "oldValue": null,
         "newValue": "BRO-5321: this text is David Cote's review (timeout--david-cote.json): the page carrying this text credits David Cote (https://www.timeout.com/newyork/blog/broadway-review-in-the-present-cate-blanchett-does-chekhov-australian-style-010817)",
-        "description": "BRO-5321"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-present-2017/timeout--david-cote.json",
-        "field": "duplicateTextOf",
-        "oldValue": "timeout--adam-feldman.json",
-        "newValue": null,
-        "description": "BRO-5321"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-present-2017/timeout--david-cote.json",
-        "field": "duplicateClearReason",
-        "oldValue": null,
-        "newValue": "BRO-5321: timeout--adam-feldman.json is the misattributed copy (now wrongAttribution); this row holds David Cote's review",
         "description": "BRO-5321"
       },
       {
@@ -142,22 +118,6 @@
         "field": "wrongAttributionReason",
         "oldValue": null,
         "newValue": "BRO-5321: this text is Steven Suskin's review (nysr--steven-suskin.json): the page carrying this text credits Steven Suskin (https://nystagereview.com/2024/11/17/elf-irrepressible-holiday-hijinks-for-adults-and-kids-too/)",
-        "description": "BRO-5321"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "elf-2024/nysr--steven-suskin.json",
-        "field": "duplicateTextOf",
-        "oldValue": "nysr--bob-verini.json",
-        "newValue": null,
-        "description": "BRO-5321"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "elf-2024/nysr--steven-suskin.json",
-        "field": "duplicateClearReason",
-        "oldValue": null,
-        "newValue": "BRO-5321: nysr--bob-verini.json is the misattributed copy (now wrongAttribution); this row holds Steven Suskin's review",
         "description": "BRO-5321"
       },
       {
@@ -199,22 +159,6 @@
         "oldValue": "Phil Willmott",
         "newValue": "Shehrazade Zafar-Arif",
         "description": "BRO-5321: the page carrying this text credits Shehrazade Zafar-Arif (https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch)."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "million-dollar-quartet-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-        "field": "wrongAttribution",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-5321"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "million-dollar-quartet-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-        "field": "wrongAttributionReason",
-        "oldValue": null,
-        "newValue": "BRO-5321: same text as london-box-office--phil-willmott.json, which holds Shehrazade Zafar-Arif's review at https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch; this copy's byline or url is another page",
-        "description": "BRO-5321"
       }
     ]
   }
