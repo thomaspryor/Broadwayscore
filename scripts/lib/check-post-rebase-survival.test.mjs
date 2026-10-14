@@ -27,6 +27,7 @@ const GUARDED_FILES = [
   PUSH_WITH_RETRY,
   path.join(here, 'push-content-survival.js'),
   path.join(REPO, '.github/actions/check-file-sizes/action.yml'),
+  path.join(REPO, 'scripts/lib/check-file-sizes.sh'),
   path.join(REPO, 'scripts/data-repo-hooks/pre-commit'),
   path.join(REPO, 'scripts/hooks/pre-commit'),
 ];

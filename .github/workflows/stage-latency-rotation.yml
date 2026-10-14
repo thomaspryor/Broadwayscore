@@ -3,7 +3,7 @@
 # emitStage() (scripts/lib/stage-latency.js) already self-rotates the log at
 # 40MB on every pipeline write, so this cron is a safety net for the case
 # where no pipeline writes for a while and the file sits oversized. It's
-# already on the ALLOW_LARGE allowlist in check-file-sizes/action.yml, so
+# already on the ALLOW_LARGE allowlist in scripts/lib/check-file-sizes.sh, so
 # the 5MB gate isn't at risk — this exists to stay well clear of GitHub's
 # 100MiB hard push limit (hit once at 100.15MB on 2026-07-05, blocked every
 # data-committing workflow for a day). BRO-54.
