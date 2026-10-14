@@ -37,6 +37,8 @@ bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 ```
 Defaults: 7 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure. CI guard in `test.yml` enforces this; exempt with `# hygiene-push-ok: <reason>` (external remotes, custom retry loops).
 
+**The job also needs `contents: write`** when the workflow declares a `permissions:` block (job-level overrides workflow-level; no block inherits the repo default, which is write). Under `contents: read` every attempt 403s ("denied to github-actions[bot]"), including the Git Data API fallback; short runs hide it (no diff, no push) and `continue-on-error` ledger steps hide it forever. The orchestrator paged the owner on 2026-10-13 after a 5h poll hit it (BRO-5302). `audit-workflow-hygiene.js` rule (v) enforces it, counting the `commit-scraper-spend-ledger` and `commit-stage-latency` composites as root pushes; exempt with `# hygiene-push-perm-ok: <reason>`.
+
 ## Git Identity for Inline Commits
 
 Any job that runs an inline `git commit -m` on the ROOT checkout must configure git identity first — either via the shared composite action:

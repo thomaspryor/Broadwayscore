@@ -194,6 +194,7 @@
  *   # hygiene-core-data-push-ok: <reason>  — skip core-data-push check for this workflow
  *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
+ *   # hygiene-push-perm-ok: <reason>       — skip root-push-without-contents-write check (rule v, BRO-5302)
  *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
  *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
  *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
@@ -232,6 +233,7 @@ const {
   findGitDiffOnIgnoredPaths,
   findNodeTeeWithoutPipefail,
   findMaskedPushFailures,
+  findPushWithoutWritePermission,
   findStringInputInterpolation,
   findCompositeShellHazards,
 } = require('./lib/audit-workflow-hygiene-rules');
@@ -769,6 +771,7 @@ async function main() {
     coreDataPush: [],
     deadCommit: [],
     shortPushTimeout: [],
+    pushNoWrite: [],
     stageWithoutCommit: [],
     nodeTeeNoPipefail: [],
     maskedPush: [],
@@ -922,6 +925,12 @@ async function main() {
       if (hits.length > 0) {
         violations.shortPushTimeout.push({ file, hits });
       }
+    }
+
+    // ── Rule (v): root push in a job without contents: write (BRO-5302) ─
+    if (!raw.includes('hygiene-push-perm-ok:')) {
+      const hits = findPushWithoutWritePermission(raw);
+      if (hits.length > 0) violations.pushNoWrite.push({ file, hits });
     }
 
     // ── Rule (p): staged files pushed with no commit in between (BRO-4897) ─
@@ -1097,6 +1106,7 @@ async function main() {
     violations.coreDataPush.length +
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
+    violations.pushNoWrite.length +
     violations.stageWithoutCommit.length +
     violations.nodeTeeNoPipefail.length +
     violations.maskedPush.length +
@@ -1322,6 +1332,21 @@ async function main() {
     console.error('buffer, not just +1) — see "Acceptance recheck (shadow mode)" in');
     console.error('data-health-check.yml for the established buffer convention.');
     console.error("Exempt (legitimate): add  # hygiene-push-timeout-ok: <reason>  anywhere in the file.\n");
+  }
+
+  if (violations.pushNoWrite.length) {
+    console.error('── (v) Root push in a job whose permissions lack `contents: write` ─');
+    console.error('push-with-retry.sh (or a commit-scraper-spend-ledger / commit-stage-latency');
+    console.error('composite) pushes the root checkout with the workflow GITHUB_TOKEN. Under');
+    console.error('`contents: read` every attempt 403s ("denied to github-actions[bot]") and the');
+    console.error('Git Data API fallback 403s too. Short runs hide it (no diff, no push); a');
+    console.error('continue-on-error step hides it forever (BRO-5302).\n');
+    for (const { file, hits } of violations.pushNoWrite) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      job "${h.job}" line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: add `contents: write` to that job\'s (or the workflow\'s) permissions block.');
+    console.error('Exempt (push goes to a different token or repo): add  # hygiene-push-perm-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.quoteApostrophe.length) {

@@ -36,6 +36,9 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  # contents: write — the final ledger-commit step pushes to main via push-with-retry.sh; under
+  # `read` every attempt 403s (BRO-5302, audit-workflow-hygiene rule (v)).
+  contents: write
   actions: write
 
 jobs:

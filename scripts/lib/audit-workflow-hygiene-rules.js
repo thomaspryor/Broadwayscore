@@ -1033,6 +1033,79 @@ function findCompositeShellHazards(raw) {
   return out;
 }
 
+/**
+ * Rule (v): a root-repo push in a job whose declared permissions lack
+ * `contents: write` (BRO-5302).
+ *
+ * `push-with-retry.sh` pushes the ROOT checkout as github-actions[bot] with the
+ * actions/checkout GITHUB_TOKEN. Under `permissions: contents: read` (or a
+ * block that omits contents) every attempt 403s ("Permission to ... denied to
+ * github-actions[bot]"), and the Git Data API fallback 403s too. Short runs hide
+ * it (no diff, no push); a ledger commit step marked continue-on-error hides it
+ * forever; a long run that does reach the push fails the job and pages. The
+ * opening-night orchestrator hit it on 2026-10-13 after a 5h poll.
+ *
+ * Effective permissions: a job-level `permissions:` block wins over the
+ * workflow-level one. A workflow with NO block at either level inherits the repo
+ * default token, which is treated as write (about 60 workflows push this way and
+ * land commits), so it is skipped. If the repo default is ever flipped to read,
+ * this rule stays silent while they all break at once.
+ *
+ * Counts a push as: a real `bash|sh ... push-with-retry.sh` call (an echo that
+ * merely names the script does not match) or `uses:` of a composite that runs
+ * push-with-retry.sh on the root checkout. Composites that push OTHER repos
+ * (checkout-core-data, push-core-data) are NESTED_PUSH_COMPOSITES and ignored;
+ * the unit test pins every action.yml that mentions push-with-retry.sh to one of
+ * the two lists so a new composite cannot slip past unclassified.
+ */
+const ROOT_PUSH_COMPOSITES = ['commit-scraper-spend-ledger', 'commit-stage-latency'];
+const NESTED_PUSH_COMPOSITES = ['checkout-core-data', 'push-core-data'];
+
+function readPermissionsGrantsContentsWrite(lines, idx) {
+  const indent = indentOf(lines[idx]);
+  const inline = lines[idx].replace(/^[^:]*:/, '').replace(/#.*$/, '').trim();
+  if (inline) return inline === 'write-all';
+  for (let i = idx + 1; i < lines.length; i++) {
+    const l = lines[i];
+    if (!l.trim() || l.trim().startsWith('#')) continue;
+    if (indentOf(l) <= indent) break;
+    if (/^\s*contents\s*:\s*write\b/.test(l)) return true;
+  }
+  return false;
+}
+
+function findPushWithoutWritePermission(raw) {
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return [];
+  const topIdx = lines.findIndex((l) => /^permissions\s*:/.test(l));
+  const top = topIdx === -1 ? null : readPermissionsGrantsContentsWrite(lines, topIdx);
+  const composite = new RegExp(
+    `^\\s*-?\\s*uses:\\s*\\./\\.github/actions/(${ROOT_PUSH_COMPOSITES.join('|')})\\s*$`,
+  );
+  const direct = /\b(?:bash|sh)\s+\S*push-with-retry\.sh/;
+  const starts = findJobBoundaries(lines, jobsIdx);
+  const hits = [];
+  for (let j = 0; j < starts.length - 1; j++) {
+    const jobKey = lines[starts[j]].trim().replace(/:\s*$/, '');
+    const body = lines.slice(starts[j], starts[j + 1]);
+    const jobPermOffset = body.findIndex(
+      (l) => indentOf(l) === 4 && /^\s*permissions\s*:/.test(l),
+    );
+    const grants =
+      jobPermOffset !== -1 ? readPermissionsGrantsContentsWrite(body, jobPermOffset) : top;
+    if (grants === null || grants === true) continue; // undeclared (repo default) or write
+    for (let k = 0; k < body.length; k++) {
+      const l = body[k];
+      if (l.trim().startsWith('#')) continue;
+      if (direct.test(l) || composite.test(l)) {
+        hits.push({ job: jobKey, lineNum: starts[j] + k + 1, text: l.trim() });
+      }
+    }
+  }
+  return hits;
+}
+
 module.exports = {
   findCompositeShellHazards,
   splitWorkflowSteps,
@@ -1058,4 +1131,7 @@ module.exports = {
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
   findBareAuditDirectoryGlobs,
+  findPushWithoutWritePermission,
+  ROOT_PUSH_COMPOSITES,
+  NESTED_PUSH_COMPOSITES,
 };
