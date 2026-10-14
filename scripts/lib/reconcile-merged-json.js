@@ -151,7 +151,44 @@ function apiFallbackMergerFor(file) {
 function explicitMergerFor(file) {
   const entry = findEntry(file, 'public-repo');
   if (!entry || !entry.merge) return null;
-  return { file, merge: entry.merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
+  const merge = entry.localReconcile && entry.localReconcile.mode === 'additions-only'
+    ? additionsOnly(entry.localReconcile.under)
+    : entry.merge;
+  return { file, merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
+}
+
+/**
+ * BRO-5204: a keyed-object reconcile that only puts back keys a clean
+ * `git rebase -X theirs` dropped. Keys both sides hold keep the rebased
+ * (line-level blended) record untouched — the registry `merge` fns pick a
+ * WHOLE record by freshness on collision, which on this path would drop a
+ * cardId or resolve git's text merge had kept. A remote-only key is added
+ * back only when the base proves the remote added it (absent from base); a
+ * key the base held is our own delete and stays gone. No base, no additions:
+ * without it "remote added" and "we deleted" look identical.
+ * `under` names the object holding the keys (null = top level).
+ */
+function additionsOnly(under) {
+  const pick = (doc) => {
+    const o = doc && (under ? doc[under] : doc);
+    return o && typeof o === 'object' && !Array.isArray(o) ? o : null;
+  };
+  const merge = (local, remote, base) => {
+    const ours = pick(local);
+    const theirs = pick(remote);
+    const baseKeys = pick(base);
+    const stats = { mode: 'additions-only', restored: 0, deletesHonored: 0, baseAvailable: !!baseKeys };
+    if (!ours || !theirs || !baseKeys) return { merged: local, stats };
+    const out = { ...ours };
+    for (const [k, v] of Object.entries(theirs)) {
+      if (k in out) continue;
+      if (k in baseKeys) { stats.deletesHonored++; continue; }
+      out[k] = v;
+      stats.restored++;
+    }
+    return { merged: under ? { ...local, [under]: out } : out, stats };
+  };
+  return merge;
 }
 
 /** Blank lines are skipped; a genuinely corrupt (non-blank, unparsable) line
@@ -303,6 +340,6 @@ function main() {
   process.stdout.write(changedFiles.join('\n'));
 }
 
-module.exports = { readBase, MANAGED, mergerFor, explicitMergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
+module.exports = { readBase, MANAGED, mergerFor, explicitMergerFor, additionsOnly, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
 
 if (require.main === module) main();

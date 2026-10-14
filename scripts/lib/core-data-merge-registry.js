@@ -1830,8 +1830,12 @@ const CORE_DATA_MERGE_REGISTRY = [
     // last-writer-wins" half of this: push-with-retry.sh now names this file
     // in its unconditional targeted reconcile call (explicit file args ignore
     // optInReconcile), after a land.yml push silently erased 8 conditions
-    // another workflow had added minutes earlier (de49618478c).
+    // another workflow had added minutes earlier (de49618478c). That call
+    // runs ADDITIONS-ONLY (localReconcile below), not `merge`: a shared key
+    // keeps git's line-level blend, so mergeAlertLedger's whole-record
+    // freshness pick cannot drop our cardId/resolve on the local path.
     optInReconcile: false,
+    localReconcile: { mode: 'additions-only', under: 'conditions' },
     verifiedBy: '2026-09-04 (BRO-2413): 12 independent writers via routeAlert() (owner-alert-router.js) — real per-conditionKey union merge (keeps the fresher lastSeen on collision) replaces the old whole-file "ours wins outright" gap. See scripts/lib/merge-alert-ledger.js for the full design note.',
   },
   {
@@ -1863,6 +1867,8 @@ const CORE_DATA_MERGE_REGISTRY = [
     format: 'json',
     newline: true,
     apiFallbackMerge: true,
+    // BRO-5204: same additions-only local reconcile as audit/alert-ledger.json.
+    localReconcile: { mode: 'additions-only', under: null },
     optInReconcile: false, // see audit/alert-ledger.json's comment above
     verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js. UPDATE 2026-09-16 (BRO-2423): 3 more independent writers, same one-key-per-guard shape, no registry change needed (the merge fn is generic over top-level keys) — check-scoring-queue-guard.js: scoring-queue-scan-failed, run-ensemble-scoring-guard.js: ensemble-scoring-pipeline-crashed (both llm-ensemble-score.yml, concurrency group scoring-reviews[-reason]), check-review-count-drift-guard.js: review-count-drift-strict-breach (check-review-count-drift.yml, concurrency group check-review-count-drift) — now 6 total.',
   },

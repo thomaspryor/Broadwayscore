@@ -71,8 +71,10 @@ test('express-retry-queue.json stays OUT of the unconditional call until it has 
 // the object, and the clean -X theirs hunk kept only ours.
 const KEYED = [
   { file: 'data/audit/alert-ledger.json', wrap: (o) => ({ conditions: o }), unwrap: (d) => d.conditions, mk: (k) => ({ status: 'open', title: k, firstSeen: '2026-10-12T00:00:00Z', lastSeen: '2026-10-12T00:00:00Z' }) },
-  { file: 'data/audit/guard-escalation-state.json', wrap: (o) => o, unwrap: (d) => d, mk: () => ({ lastBlockedAt: '2026-10-12T00:00:00Z' }) },
+  // Production shape (guard-escalation.js nextGuardState): ms-epoch numbers.
+  { file: 'data/audit/guard-escalation-state.json', wrap: (o) => o, unwrap: (d) => d, mk: () => ({ consecutiveBlocks: 1, firstBlockedAt: 1760227200000, lastBlockedAt: 1760227200000, lastClearedAt: null }) },
 ];
+const { additionsOnly } = require('../../scripts/lib/reconcile-merged-json.js');
 
 function keyedRepo(c, { local, remote }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5204-'));
@@ -131,3 +133,31 @@ for (const c of KEYED) {
     } finally { fs.rmSync(r.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
   });
 }
+
+test('additions-only reconcile never overrides a shared key, even when the remote copy is fresher (BRO-5204 ship-check)', () => {
+  const merge = additionsOnly('conditions');
+  const base = { conditions: { k: { status: 'open', lastSeen: '2026-10-12T00:00:00Z', cardId: null } } };
+  const local = { conditions: { k: { status: 'resolved', lastSeen: '2026-10-12T00:00:00Z', cardId: 'c1', linearIdentifier: 'BRO-1' } } };
+  const remote = { conditions: { k: { status: 'open', lastSeen: '2026-10-13T00:00:00Z', cardId: null }, added: { status: 'open' } } };
+  const { merged, stats } = merge(local, remote, base);
+  assert.deepEqual(merged.conditions.k, local.conditions.k, 'our blended record must survive untouched');
+  assert.ok(merged.conditions.added, 'remote-only addition restored');
+  assert.equal(stats.restored, 1);
+});
+
+test('additions-only reconcile adds nothing without a readable base (cannot tell our delete from their add)', () => {
+  const merge = additionsOnly(null);
+  const local = { a: { lastBlockedAt: 1 } };
+  const remote = { a: { lastBlockedAt: 1 }, gone: { lastBlockedAt: 2 } };
+  assert.deepEqual(merge(local, remote, undefined).merged, local);
+  assert.deepEqual(merge(local, remote, null).merged, local);
+});
+
+test('the incident replay: land.yml\'s ledger plus the reconcile keeps all 8 conditions it dropped', () => {
+  const show = (rev) => { try { return JSON.parse(execFileSync('git', ['show', `${rev}:data/audit/alert-ledger.json`], { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 30, stdio: ['ignore', 'pipe', 'ignore'] })); } catch { return null; } };
+  const local = show('de49618478c'); const remote = show('ea3aba1fe5d'); const base = show('ea3aba1fe5d^');
+  if (!local || !remote || !base) return; // shallow CI checkout: history not available
+  const tb = (d) => Object.keys(d.conditions).filter((k) => k.startsWith('time-bomb-tests:'));
+  const { merged } = additionsOnly('conditions')(local, remote, base);
+  for (const k of tb(remote)) assert.ok(k in merged.conditions, `${k} dropped`);
+});

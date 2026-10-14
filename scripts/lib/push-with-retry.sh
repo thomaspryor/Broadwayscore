@@ -1963,9 +1963,9 @@ reconcile_merged_json() {
   # so the same clean -X theirs hunk dropped the other writer's keys: land.yml
   # commit de49618478c erased the 8 time-bomb-tests:* conditions
   # audit-time-bomb-tests.yml had added 5 min earlier (ea3aba1fe5d), leaving
-  # their cards uncheckable. Both mergers are three-way (a key we deleted
-  # stays deleted), so the empty-base fallback degrades to a no-op, not a
-  # resurrection.
+  # their cards uncheckable. Both run additions-only (registry localReconcile):
+  # only keys the base proves the remote added come back, shared keys keep the
+  # rebase's own blend, and with no readable base nothing is added.
   local ledger_out
   ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json data/audit/alert-ledger.json data/audit/guard-escalation-state.json) || ledger_out=""
   if [ -n "$ledger_out" ]; then
