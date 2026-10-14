@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4564-c",
   "planId": "8d0c84d1-0968-4117-ab71-041b05e1b9c7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T05:52:15.808Z",
   "submitter": {
     "name": null,
@@ -159,5 +159,98 @@
         "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T07:38:11.923Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/thestage--mark-shenton.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/thestage--mark-shenton.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/thestage--mark-shenton.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/medium--christian-lewis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/medium--christian-lewis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/medium--christian-lewis.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--terry-teachout.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--terry-teachout.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--terry-teachout.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--terry-teachout.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--terry-teachout.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--terry-teachout.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ink-2019/limelight-magazine-au--clive-paget.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ink-2019/limelight-magazine-au--clive-paget.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ink-2019/limelight-magazine-au--clive-paget.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/wsj--charles-isherwood.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/wsj--charles-isherwood.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/wsj--charles-isherwood.json wrongArticleManualClear: null -> true"
+    }
+  ]
 }
