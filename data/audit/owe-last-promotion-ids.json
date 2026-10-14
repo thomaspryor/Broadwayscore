@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-13T20:45:27.814Z",
+  "generatedAt": "2026-10-14T19:31:10.829Z",
   "promoted": [
     {
-      "id": "nina-off-west-end-2026",
-      "source": "guardian-review",
-      "sourceUrl": "https://www.theguardian.com/stage/2026/oct/12/nina-review-chekhov-seagull-battersea-arts-centre-london"
+      "id": "boys-who-dance-off-west-end-2026",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
     }
   ],
   "rejected": [
@@ -537,6 +537,22 @@
       "reason": "already in shows.json as sapling-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Shakespeare Up Close: Macbeth",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-29))"
+    },
+    {
+      "title": "Shakespeare Up Close: Romeo and Juliet",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-29))"
+    },
+    {
       "title": "Solace of Pilgrims at St Mary Magdalene Church",
       "venue": "Orange Tree Theatre",
       "source": "venue-page:orange-tree-theatre",
@@ -575,6 +591,14 @@
       "sourceUrl": null,
       "kind": "skip-retired",
       "reason": "matches retired drag-tales-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
+    },
+    {
+      "title": "Everything is",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-21))"
     },
     {
       "title": "Florence",
@@ -1033,6 +1057,14 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-07))"
     },
     {
+      "title": "Paradise Villa – A Rehearsed Reading",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-01))"
+    },
+    {
       "title": "Tinderella",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1247,22 +1279,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Shakespeare Up Close: Macbeth",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-29))"
-    },
-    {
-      "title": "Shakespeare Up Close: Romeo and Juliet",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-29))"
     }
   ]
 }
