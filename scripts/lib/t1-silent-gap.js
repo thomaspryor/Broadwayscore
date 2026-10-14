@@ -28,6 +28,30 @@ const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggrega
 // explainExclusion() reasons where a SIBLING file carries the same review into
 // the score, so this file's absence is resolved, not a gap (BRO-4457).
 const SIBLING_SHIELDED_REASONS = new Set(['knownSyndicationSecondary']);
+
+// explainExclusion's 'knownSyndicationSecondary' only checks the primary is not
+// flagged wrongShow/duplicate/etc. COLLECTED must mean the review actually
+// reaches the score, so also require a sibling primary that rebuild includes
+// AND that carries a valid score (ship-check BRO-4457: an isRoundupArticle /
+// fabricatedEntry / unscored primary must leave the card OPEN).
+function siblingPrimaryReachesScore(file, filePath, show) {
+  const fs = require('fs');
+  const path = require('path');
+  const synd = require('./syndication-pairs');
+  const { normalizeOutlet } = require('./review-normalization');
+  try {
+    const primaries = synd.getSyndicationPrimaries(file.criticName, normalizeOutlet(file.outletId || file.outlet || ''));
+    const dir = path.dirname(filePath);
+    return fs.readdirSync(dir).some((f) => {
+      if (!synd.isPrimaryFileFor(f, primaries, file.criticName)) return false;
+      try {
+        const pPath = path.join(dir, f);
+        const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+        return synd.isLiveSyndicationPrimary(p) && isIncludableForRebuild(p, show, pPath) && hasValidScore(p);
+      } catch { return false; }
+    });
+  } catch { return false; }
+}
 const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
 const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
@@ -409,7 +433,8 @@ function classifyGapCardState({ file, show, tier, outletScored, now, filePath })
   // classifySilentGap already returns null for it (filePath-aware), but this
   // function then fell through to null ("not eligible"), so a backstop card
   // filed before that classifier fix could never close. Map it to COLLECTED.
-  if (filePath && SIBLING_SHIELDED_REASONS.has(explainExclusion(file, show, filePath))) {
+  if (filePath && SIBLING_SHIELDED_REASONS.has(explainExclusion(file, show, filePath))
+      && siblingPrimaryReachesScore(file, filePath, show)) {
     return GAP_CARD_STATE.COLLECTED;
   }
   // classifySilentGap's own final branch excludes contentTier:'invalid' from

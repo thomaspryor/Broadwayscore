@@ -81,6 +81,19 @@ test('no primary on disk: unscored secondary is a real open gap', () => {
 test('without filePath the card state is never claimed COLLECTED from sibling logic', () => {
   const { args, dir } = fixture();
   const { filePath, ...noPath } = args;
-  assert.notEqual(classifyGapCardState(noPath), GAP_CARD_STATE.COLLECTED);
+  assert.equal(classifyGapCardState(noPath), GAP_CARD_STATE.OPEN);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+for (const [label, overrides] of [
+  ['isRoundupArticle', { isRoundupArticle: true }],
+  ['fabricatedEntry', { fabricatedEntry: true }],
+  ['wrongAttribution', { wrongAttribution: true }],
+  ['no valid score yet', { llmScore: null, assignedScore: null, scoreSource: null }],
+]) {
+  test(`primary with ${label} does not close the secondary's card as COLLECTED`, () => {
+    const { args, dir } = fixture({ primaryOverrides: overrides });
+    assert.notEqual(classifyGapCardState(args), GAP_CARD_STATE.COLLECTED);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+}
