@@ -20,7 +20,7 @@
  * USAGE:
  *   node scripts/audit-star-score-mismatch.js                 # NEW mismatches (not baselined); exit 1 if any
  *   node scripts/audit-star-score-mismatch.js --all           # whole corpus, ignore baseline (audit mode, exit 0)
- *   node scripts/audit-star-score-mismatch.js --renew-baseline# same, but re-ack every listed key from today (BRO-3364 expiry)
+ *   node scripts/audit-star-score-mismatch.js --renew-baseline[=<key>,...] # same, re-acking the named keys (bare: all) from today (BRO-3364 expiry)
  *   node scripts/audit-star-score-mismatch.js --write-baseline# snapshot current findings into the baseline file
  *   node scripts/audit-star-score-mismatch.js --threshold=40  # override gap threshold
  *   node scripts/audit-star-score-mismatch.js --json          # machine-readable output
@@ -33,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { scanReviewTexts, keyOf, DEFAULT_THRESHOLD } = require('./lib/star-score-mismatch');
-const { activeBaselineKeys, buildBaseline } = require('./lib/baseline-ttl');
+const { activeBaselineKeys, buildBaseline, parseRenewArg, unknownRenewKeys } = require('./lib/baseline-ttl');
 
 function parseArgs(argv) {
   const args = { all: false, json: false, threshold: DEFAULT_THRESHOLD, show: null, writeBaseline: false, renewBaseline: false };
@@ -42,7 +42,7 @@ function parseArgs(argv) {
     else if (a === '--all') { args.all = true; }
     else if (a === '--json') { args.json = true; }
     else if (a === '--write-baseline') { args.writeBaseline = true; }
-    else if (a === '--renew-baseline') { args.writeBaseline = true; args.renewBaseline = true; }
+    else if (a === '--renew-baseline' || a.startsWith('--renew-baseline=')) { args.writeBaseline = true; args.renewBaseline = parseRenewArg([a]); }
     else if (a.startsWith('--threshold=')) { args.threshold = parseFloat(a.slice(12)); }
     else if (a.startsWith('--show=')) { args.show = a.slice(7); }
   }
@@ -56,7 +56,7 @@ function usage() {
   --all              whole corpus, ignore baseline (audit mode; always exit 0)
   --write-baseline   snapshot ALL current findings into the baseline file (one-time / after triage);
                      keys already listed keep their ack date, so expired acks stay expired
-  --renew-baseline   same, but re-acks every key from today (after re-triaging them; BRO-3364)
+  --renew-baseline[=<key>,...]  same, but re-acks the named keys (bare: every key) from today (BRO-3364)
   --show=<id>        scan a single show directory
   --threshold=<n>    gap threshold in points (default ${DEFAULT_THRESHOLD})
   --json             machine-readable output
@@ -88,6 +88,10 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) { usage(); process.exit(0); }
   if (Number.isNaN(args.threshold)) { console.error('Bad --threshold'); process.exit(2); }
+  if (args.writeBaseline && args.show) {
+    console.error('--write-baseline/--renew-baseline rebuild the whole baseline from one scan; with --show they would drop every other show\'s acks. Run without --show (use --renew-baseline=<key> to re-ack one finding).');
+    process.exit(2);
+  }
 
   const RT = reviewTextsRoot();
   if (!fs.existsSync(RT)) {
@@ -110,10 +114,12 @@ function main() {
     fs.mkdirSync(path.dirname(p), { recursive: true });
     let prev = null;
     try { prev = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { /* first write */ }
+    const unknown = unknownRenewKeys(args.renewBaseline, findings.map(keyOf));
+    if (unknown.length) { console.error(`--renew-baseline names key(s) not among current findings: ${unknown.join(', ')}`); process.exit(2); }
     const { doc: payload, stats } = buildBaseline(findings.map(keyOf), prev, {
       renew: args.renewBaseline,
       meta: {
-        description: 'Known/triaged star-vs-score mismatches (card #396). The daily health check alerts only on findings NOT listed here. Regenerate after triaging with: node scripts/audit-star-score-mismatch.js --write-baseline (keeps existing acks\' dates; acks expire after ttlDays, BRO-3364; --renew-baseline re-acks every listed key)',
+        description: 'Known/triaged star-vs-score mismatches (card #396). The daily health check alerts only on findings NOT listed here. Regenerate after triaging with: node scripts/audit-star-score-mismatch.js --write-baseline (keeps existing acks\' dates; acks expire after ttlDays, BRO-3364; --renew-baseline=<key> re-acks one key, bare --renew-baseline every key)',
         threshold: args.threshold,
       },
     });

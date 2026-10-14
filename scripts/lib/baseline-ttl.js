@@ -21,7 +21,11 @@
  *     migrated with real ack dates and baseline-ttl.test.mjs keeps them so;
  *   - re-running --write-baseline KEEPS each surviving key's original
  *     timestamp, so a bulk re-ack cannot silently renew old acks. Renewing is
- *     explicit: --renew-baseline (after re-triaging the listed keys).
+ *     explicit: --renew-baseline=<key>[,<key>...] re-acks just the keys you
+ *     re-triaged; bare --renew-baseline re-acks every listed key.
+ *   - --write-baseline/--renew-baseline rebuild the WHOLE file from one scan,
+ *     so the audits refuse them together with a --show scope (a per-show
+ *     write would drop every other show's acks).
  *   - keys expiring within 7 days are named in the audit's own digest line
  *     (describeExpiry), not a separate alert: expiry itself is the alert path.
  */
@@ -74,7 +78,7 @@ function expiringSoon(doc, nowMs = Date.now(), withinDays = WARN_WITHIN_DAYS) {
 
 /**
  * Suffix for an audit's digest line, '' when nothing is expiring or expired.
- * e.g. "; 2 ack(s) expire within 7d (guardian::broadway, wsj::broadway) — re-triage, then --renew-baseline"
+ * e.g. "; 2 ack(s) expire within 7d (guardian::broadway, wsj::broadway) — re-triage, then --renew-baseline=<key> per key (bare flag renews all)"
  */
 function describeExpiry(doc, nowMs = Date.now(), { renewCommand = '--renew-baseline', maxNames = 5 } = {}) {
   const soon = expiringSoon(doc, nowMs);
@@ -84,15 +88,41 @@ function describeExpiry(doc, nowMs = Date.now(), { renewCommand = '--renew-basel
     const names = soon.slice(0, maxNames).map((r) => r.key).join(', ') + (soon.length > maxNames ? ', …' : '');
     parts.push(`${soon.length} ack(s) expire within ${WARN_WITHIN_DAYS}d (${names})`);
   }
-  if (expired.length) parts.push(`${expired.length} ack(s) expired and are alerting normally again`);
-  return parts.length ? `; ${parts.join('; ')} — re-triage, then ${renewCommand}` : '';
+  if (expired.length) parts.push(`${expired.length} ack(s) expired (those findings alert normally again if still present)`);
+  // Name the per-key form (inside the command's backticks when it has them).
+  const cmd = renewCommand.endsWith('`') ? `${renewCommand.slice(0, -1)}=<key>\`` : `${renewCommand}=<key>`;
+  return parts.length ? `; ${parts.join('; ')} — re-triage, then ${cmd} per key (bare flag renews all)` : '';
 }
 
 /**
  * Build the baseline document a --write-baseline run writes.
- * A key already in `prevDoc` keeps its timestamp/ttl unless `renew`; a key no
+ * A key already in `prevDoc` keeps its timestamp/ttl unless `renew` (true for
+ * every key, or a Set naming the keys to renew); a key no
  * longer found is dropped; a new key is stamped `nowMs`.
  */
+/**
+ * Read --renew-baseline from argv: null (absent), true (bare: renew all), or
+ * the Set of keys named in --renew-baseline=k1,k2.
+ */
+function parseRenewArg(argv) {
+  let out = null;
+  for (const a of argv) {
+    if (a === '--renew-baseline') out = true;
+    else if (a.startsWith('--renew-baseline=')) {
+      const keys = a.slice('--renew-baseline='.length).split(',').map((k) => k.trim()).filter(Boolean);
+      if (out !== true) out = new Set([...(out || []), ...keys]);
+    }
+  }
+  return out;
+}
+
+/** Keys named for renewal that are not in `keys` (a typo would renew nothing). */
+function unknownRenewKeys(renew, keys) {
+  if (!(renew instanceof Set)) return [];
+  const have = new Set(keys);
+  return [...renew].filter((k) => !have.has(k));
+}
+
 function buildBaseline(keys, prevDoc, { nowMs = Date.now(), ttlDays = DEFAULT_TTL_DAYS, renew = false, meta = {} } = {}) {
   const sorted = [...new Set(keys)].sort();
   const prevEntries = (prevDoc && prevDoc.entries) || {};
@@ -104,7 +134,8 @@ function buildBaseline(keys, prevDoc, { nowMs = Date.now(), ttlDays = DEFAULT_TT
   let added = 0;
   for (const k of sorted) {
     const prev = prevEntries[k];
-    if (!renew && prev && entryExpiresAtMs(prev) !== null) {
+    const renewThis = renew instanceof Set ? renew.has(k) : !!renew;
+    if (!renewThis && prev && entryExpiresAtMs(prev) !== null) {
       entries[k] = { timestamp: prev.timestamp, ttlDays: Number(prev.ttlDays) };
       kept++;
     } else {
@@ -127,4 +158,6 @@ module.exports = {
   expiringSoon,
   describeExpiry,
   buildBaseline,
+  parseRenewArg,
+  unknownRenewKeys,
 };

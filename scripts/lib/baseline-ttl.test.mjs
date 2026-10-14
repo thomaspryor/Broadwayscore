@@ -91,7 +91,32 @@ test('every key in the committed baseline files carries an expiry entry (no sile
     const p = path.join(root, 'data', 'audit', f);
     if (!fs.existsSync(p)) continue;
     const d = JSON.parse(fs.readFileSync(p, 'utf8'));
-    const missing = (d.keys || []).filter((k) => !d.entries || !d.entries[k] || !Number.isFinite(Date.parse(d.entries[k].timestamp)));
+    // ttlDays too: an entry with a timestamp but no ttlDays never expires.
+    const missing = (d.keys || []).filter((k) => !d.entries || !d.entries[k] || !Number.isFinite(Date.parse(d.entries[k].timestamp)) || !(Number(d.entries[k].ttlDays) > 0));
     assert.deepEqual(missing, [], `${f}: keys without an expiry entry would never expire — rewrite it with the audit's --write-baseline`);
   }
+});
+
+test('per-key renew re-acks only the named keys (BRO-5261)', () => {
+  const { buildBaseline, parseRenewArg, unknownRenewKeys } = require('./baseline-ttl.js');
+  const prev = { keys: ['a', 'b'], entries: { a: { timestamp: '2026-01-01T00:00:00Z', ttlDays: 90 }, b: { timestamp: '2026-01-01T00:00:00Z', ttlDays: 90 } } };
+  const nowMs = Date.parse('2026-10-14T00:00:00Z');
+  assert.equal(parseRenewArg(['--write-baseline']), null);
+  assert.equal(parseRenewArg(['--renew-baseline']), true);
+  const renew = parseRenewArg(['--renew-baseline=a']);
+  assert.deepEqual([...renew], ['a']);
+  const { doc, stats } = buildBaseline(['a', 'b'], prev, { nowMs, renew });
+  assert.equal(doc.entries.a.timestamp, new Date(nowMs).toISOString());
+  assert.equal(doc.entries.b.timestamp, '2026-01-01T00:00:00Z');
+  assert.deepEqual(stats, { kept: 1, renewed: 1, added: 0, dropped: 0 });
+  assert.deepEqual(unknownRenewKeys(new Set(['a', 'typo']), ['a', 'b']), ['typo']);
+  assert.deepEqual(unknownRenewKeys(true, ['a']), []);
+});
+
+test('the expiry note names the per-key renew inside the command backticks', () => {
+  const { describeExpiry } = require('./baseline-ttl.js');
+  const doc = { keys: ['a'], entries: { a: { timestamp: '2026-01-01T00:00:00Z', ttlDays: 90 } } };
+  const note = describeExpiry(doc, Date.parse('2026-10-14T00:00:00Z'), { renewCommand: '`node x.js --renew-baseline`' });
+  assert.match(note, /`node x\.js --renew-baseline=<key>` per key/);
+  assert.match(note, /alert normally again if still present/);
 });
