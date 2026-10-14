@@ -54,3 +54,29 @@ test('trimming drops exact duplicate rows left by a union merge of a moved block
   const b = row('2026-09-29T11:00:00.000Z', 2);
   assert.deepEqual(trimLedgerLines([b, a, b, a, row('2026-09-01T00:00:00.000Z', 0)], 2), [a, b]);
 });
+
+// BRO-4936: 2026-10-09 logged ~48K rows; the 45K line cap dropped that day's
+// first ~15h before the next morning's reconciliation read it, so Bright Data
+// showed 58% attributed though every call was logged.
+test('rows since 00:00Z yesterday survive a busy day that overflows the line cap', () => {
+  const now = new Date('2026-10-10T13:00:00.000Z');
+  const lines = [
+    row('2026-10-08T23:00:00.000Z', 0), // older than yesterday: trimmable
+    row('2026-10-09T00:30:00.000Z', 1), // yesterday's first rows: the check needs these
+    row('2026-10-09T06:00:00.000Z', 2),
+    row('2026-10-09T18:00:00.000Z', 3),
+    row('2026-10-10T09:00:00.000Z', 4),
+  ];
+  assert.deepEqual(trimLedgerLines(lines, 2, now).map((l) => JSON.parse(l).n), [1, 2, 3, 4]);
+});
+
+test('the hard ceiling still bounds the file when recent volume exceeds it', () => {
+  const now = new Date('2026-10-10T13:00:00.000Z');
+  const lines = [1, 2, 3, 4].map((n) => row(`2026-10-10T0${n}:00:00.000Z`, n));
+  assert.deepEqual(trimLedgerLines(lines, 1, now, 3).map((l) => JSON.parse(l).n), [2, 3, 4]);
+});
+
+test('the real ledger peak (~48K rows/day) fits two days under the hard ceiling', () => {
+  const { HARD_MAX_LEDGER_LINES } = require('./provider-telemetry.js');
+  assert.ok(HARD_MAX_LEDGER_LINES >= 2 * 48000, `HARD_MAX_LEDGER_LINES=${HARD_MAX_LEDGER_LINES}`);
+});

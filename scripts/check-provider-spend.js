@@ -50,8 +50,8 @@ const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thr
 // core.js is the file whose own docstring already claims ownership of "pure
 // decision functions" for this subsystem.
 // S0-T6: durable daily rollup of the per-call ledger. The raw ledger
-// (CALL_LEDGER_PATH, provider-telemetry.js) rotates at MAX_LEDGER_LINES —
-// under a day at unthrottled Scrapingdog volume — so it cannot answer a
+// (CALL_LEDGER_PATH, provider-telemetry.js) rotates at MAX_LEDGER_LINES (always
+// keeping every row since 00:00Z yesterday, BRO-4936), so it cannot answer a
 // 7-day attribution question by itself. This file is NEVER rotated; each
 // day's rows are written once and, on re-run, idempotently replaced (same
 // pattern as LEDGER above).

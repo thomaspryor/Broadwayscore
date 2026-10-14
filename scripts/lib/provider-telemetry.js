@@ -72,6 +72,13 @@ const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'scraper-spend-ledger.
 // ~2-3 days at 2026-09 volume (15-20K rows/day). check-provider-spend.js reads
 // yesterday's rows ~13:00Z today, so the ledger must hold ~37h at minimum.
 const MAX_LEDGER_LINES = 45000;
+// BRO-4936: a line cap alone is not a time guarantee. 2026-10-09 logged ~48K
+// rows, so by the next morning's reconciliation the 45K cap had already eaten
+// that day's first ~15h and Bright Data read 58% attributed (79/75/58% on
+// 10-07..10-09) though every call had been logged. Rows from yesterday or
+// today (UTC) are therefore never trimmed below this hard ceiling (~36MB),
+// which only binds above ~60K rows/day.
+const HARD_MAX_LEDGER_LINES = 120000;
 const TAG_BY_PROVIDER = {
   brightdata: 'BD',
   scrapingbee: 'SB',
@@ -127,7 +134,7 @@ function _ledgerPath() {
  * so the leading `{"ts":"<ISO>"` prefix sorts chronologically without a parse;
  * a line without that prefix sorts first and is dropped before any real row.
  */
-function trimLedgerLines(lines, max = MAX_LEDGER_LINES) {
+function trimLedgerLines(lines, max = MAX_LEDGER_LINES, now = new Date(), hardMax = HARD_MAX_LEDGER_LINES) {
   if (lines.length <= max) return lines;
   const key = (l) => (l.startsWith('{"ts":"') ? l.slice(7, 31) : '');
   // Exact-line dedupe (full record is the identity, as in
@@ -136,7 +143,13 @@ function trimLedgerLines(lines, max = MAX_LEDGER_LINES) {
   const sorted = [...new Set(lines)]
     .map((l, i) => [key(l), i, l])
     .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]));
-  return sorted.slice(sorted.length - max).map((e) => e[2]);
+  // Keep every row since 00:00Z yesterday (what check-provider-spend.js still
+  // has to count), at least `max` rows, at most `hardMax`.
+  const keepFrom = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)).toISOString();
+  let firstRecent = sorted.length;
+  while (firstRecent > 0 && sorted[firstRecent - 1][0] >= keepFrom) firstRecent--;
+  const keep = Math.min(Math.max(max, sorted.length - firstRecent), hardMax);
+  return sorted.slice(Math.max(0, sorted.length - keep)).map((e) => e[2]);
 }
 
 function _appendLedgerLine(record) {
@@ -435,4 +448,5 @@ module.exports = {
   LEDGER_PATH,
   MAX_LEDGER_LINES,
   trimLedgerLines,
+  HARD_MAX_LEDGER_LINES,
 };
