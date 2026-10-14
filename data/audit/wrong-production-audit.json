@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T11:41:06.210Z",
+  "timestamp": "2026-10-14T12:04:34.875Z",
   "stats": {
-    "totalReviews": 56435,
-    "alreadyFlagged": 21062,
+    "totalReviews": 56438,
+    "alreadyFlagged": 21065,
     "dateGuardCatches": 205,
-    "directorMismatch": 1882,
+    "directorMismatch": 1883,
     "tvFilmSignals": 1562,
-    "londonSignals": 2248,
+    "londonSignals": 2249,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5218
+    "noPublishDate": 5216
   },
   "findings": [
     {
@@ -20236,6 +20236,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "bestoftheatre--cecil-glover.json",
+      "publishDate": "2026-09-10",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/into-the-woods-noel-coward-theatre-trailer",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
