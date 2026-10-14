@@ -50,7 +50,10 @@ jobs:
   audit:
     name: Run reverse discovery audit
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 20 (was 15, BRO-5261): the backfill step's 11-min cap + the 4-min audit
+    # push deadline + checkout/audit must fit with margin
+    # (audit-push-retry-budgets --fail-on-job-timeout).
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -116,7 +119,7 @@ jobs:
         continue-on-error: true
         # BRO-5261: 10-min budget + its 2.5-min loop-head reserve inside an
         # 11-min step cap, so a slow checkout or audit before it can never let
-        # this step run the 15-min job out before validate + push. A capped
+        # this step run the 20-min job out before validate + push. A capped
         # step only loses this run's backfill (continue-on-error).
         timeout-minutes: 11
         env:
