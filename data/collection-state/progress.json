@@ -436,14 +436,34 @@
     "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "into-the-woods-west-end-2025/liamodell--unknown.json",
     "into-the-woods-west-end-2025/theatre-weekly--unknown.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+    "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-outsiders-2024/hollywood-reporter--angie-han.json",
     "the-outsiders-2024/hollywood-reporter--david-rooney.json",
     "mj-2022/variety--peter-marks.json",
     "book-of-mormon-2011/vulture--jesse-green.json",
-    "wicked-2003/variety--peter-debruge.json"
+    "wicked-2003/variety--peter-debruge.json",
+    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "la-boheme-off-broadway-2026/parterre-box--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -709,7 +729,9 @@
       "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
       "into-the-woods-west-end-2025/liamodell--unknown.json",
       "into-the-woods-west-end-2025/theatre-weekly--unknown.json",
-      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json"
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -792,7 +814,8 @@
       "becky-shaw-2026/cote-notices--david-cote.json",
       "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
-      "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json"
+      "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "good-time-charlie-off-broadway-2026/new-york-sun--unknown.json",
@@ -933,7 +956,7 @@
     ]
   },
   "startTime": "2026-10-13T18:32:37.450Z",
-  "lastProcessed": "wicked-2003/variety--peter-debruge.json",
+  "lastProcessed": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
   "log": [
     {
       "t": "2026-10-13T19:44:44.248Z",
@@ -1518,6 +1541,41 @@
       "t": "2026-10-14T03:05:25.907Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T05:10:03.493Z",
+      "event": "bb-session",
+      "session": "bfcb406f",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T05:10:22.858Z",
+      "event": "bb-session",
+      "session": "9a2b3eea",
+      "url": "https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-n"
+    },
+    {
+      "t": "2026-10-14T05:10:59.111Z",
+      "event": "bb-session",
+      "session": "49f92f00",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T05:13:59.999Z",
+      "event": "bb-session",
+      "session": "a5149b51",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T05:14:00.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-14T05:17:13.464Z",
+      "event": "bb-session",
+      "session": "b0472b09",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ],
   "recoveredAfterFailure": [
