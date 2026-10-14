@@ -905,6 +905,15 @@ async function runAggregators(show) {
       if (lbo) {
         const lboReviews = extractReviewsFromLBO(lbo.html, show.id, lbo.url);
         console.log(`  LBO: ${lboReviews.length} reviews found`);
+        // BRO-3121: a prior production's roundup keeps its excerpts, not its stars.
+        const lboProd = require('./lib/aggregator-page-production').checkAggregatorPageProduction({ html: lbo.html, show });
+        if (lboProd.outOfRun) {
+          console.log(`  LBO: roundup is another production (${lboProd.reason}) — none of its rows used`);
+          lboReviews.length = 0;
+        } else if (!lboProd.corroborated) {
+          console.log(`  LBO: roundup not corroborated as this production (${lboProd.reason}) — star scores dropped`);
+          for (const r of lboReviews) { r.stars = null; r.score = null; }
+        }
         for (const r of lboReviews) {
           results.push({
             showId: show.id,

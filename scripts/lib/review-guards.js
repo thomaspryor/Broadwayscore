@@ -4316,6 +4316,52 @@ function isUnverifiableWebSearchRow(data, opts) {
 
 
 /**
+ * BRO-2746: a combined-review file (isCombinedReview + combinedWith) whose url
+ * names one of its co-member shows and not the show it is filed under, and
+ * whose text (body or excerpts) never names that show either. That is another
+ * show's review attached here, not joint coverage: a-month-in-the-country-
+ * west-end-2026/thestage--sam-marlowe.json carried The Stage's CARE review url
+ * and CARE excerpts, empty body, combinedWith ['care-west-end-2026'], and shipped
+ * as a 72 for A Month in the Country (2026-09-02).
+ * Member names come from the combinedWith ids (year/market suffix stripped), so
+ * a one-word title like Care counts: the candidate set is only the file's own
+ * declared co-members, not every show. A human score or wrongShow clear wins.
+ * Everything lives inside the function so scoring-delta's toString() compare
+ * sees an edit.
+ * @param {object} data review-text record
+ * @param {object} show shows.json entry the file is filed under
+ * @returns {boolean}
+ */
+function isCombinedReviewOfOtherMemberOnly(data, show) {
+  if (!data || data.isCombinedReview !== true || !Array.isArray(data.combinedWith) || data.combinedWith.length === 0) return false;
+  if (!data.url || !show || !show.title) return false;
+  if (data.humanReviewScore >= 1 || data.wrongShowManualClear === true) return false;
+  // wrongShowOverride is also stamped by flag-combined-reviews.js's own joint
+  // recovery (wrong-production-clear.js), which is exactly the path that let the
+  // incident file ship: only an override from anything else counts as a clear.
+  if (data.wrongShowOverride === true && !/^flag-combined-reviews\.js/.test(String(data.wrongShowOverrideReason || ''))) return false;
+  const slugify = (v) => String(v || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const baseId = require('./combined-review-utils').baseSlug;
+  let hay;
+  try { hay = `-${slugify(decodeURIComponent(new URL(data.url).pathname))}-`; } catch { return false; }
+  const own = slugify(show.title);
+  const ownNoArticle = own.replace(/^(?:the|a|an)-/, '');
+  const ownBase = baseId(show.id || '');
+  if ([own, ownNoArticle, ownBase].some((t) => t && t.length >= 3 && hay.includes(`-${t}-`))) return false;
+  const namesMember = data.combinedWith.some((id) => {
+    const b = baseId(id);
+    if (b.length < 3 || (own && (own.includes(b) || b.includes(own)))) return false;
+    return hay.includes(`-${b}-`);
+  });
+  if (!namesMember) return false;
+  const text = [data.fullText, ...require('./excerpt-fields').getExcerpts(data)]
+    .filter((v) => typeof v === 'string' && v.trim()).join(' ');
+  if (!text) return true;
+  const titles = require('./show-title-variants');
+  return !(titles.textMentionsTitle(text, show.title) || titles.textMentionsShortTitle(text, show.title, 1));
+}
+
+/**
  * BRO-3126: a "first look" piece published while the show was still in previews, scored and
  * shipped as a critic review (jane-eyre-off-west-end-2026, LBO, scored 79). Its own LLM
  * content verification had already said preview / invalid at high confidence and nothing
@@ -4572,6 +4618,7 @@ function explainExclusion(data, show, filePath, opts) {
   if (isCancelledBeforeOpeningShow(show)) return 'cancelledBeforeOpening';
   if (isUnverifiableWebSearchRow(data, opts)) return 'unverifiableWebSearchRow';
   if (isPreviewFirstLookPiece(data)) return 'previewFirstLookPiece';
+  if (isCombinedReviewOfOtherMemberOnly(data, show)) return 'combinedReviewOfOtherMemberOnly';
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.
@@ -5911,6 +5958,7 @@ module.exports = {
   isUnverifiableWebSearchRow,
   isLegacyWebSearchOnly,
   isPreviewFirstLookPiece,
+  isCombinedReviewOfOtherMemberOnly,
   bodylessScoreProvenance,
   isBodylessAggregatorScoreUncorroborated,
   bodylessCorroboratedByProduction,

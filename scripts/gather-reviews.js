@@ -4699,28 +4699,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   await sleep(DELAY_MS);
 
   // Helper: extract publish date from roundup HTML (JSON-LD, meta tags, or <time>)
-  function extractRoundupDateFromHtml(html) {
-    if (!html || html.length < 100) return null;
-    // JSON-LD datePublished
-    const jsonLdMatch = html.match(/"datePublished"\s*:\s*"([^"]+)"/);
-    if (jsonLdMatch) {
-      const d = jsonLdMatch[1].substring(0, 10);
-      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
-    }
-    // article:published_time meta
-    const metaMatch = html.match(/property=["']article:published_time["'][^>]*content=["']([^"']+)["']/i);
-    if (metaMatch) {
-      const d = metaMatch[1].substring(0, 10);
-      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
-    }
-    // <time datetime="...">
-    const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["']/i);
-    if (timeMatch) {
-      const d = timeMatch[1].substring(0, 10);
-      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
-    }
-    return null;
-  }
+  // Moved to lib/aggregator-page-production.js (BRO-3121) so the LBO
+  // production check and these roundup date reads share one parser.
+  const extractRoundupDateFromHtml = require('./lib/aggregator-page-production').extractPageDateFromHtml;
 
   // 1d. London Box Office Review Roundups (West End only, archive-based)
   console.log('\n  === London Box Office Review Roundups ===');
@@ -4747,6 +4728,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       } else {
       const lboRawReviews = extractReviewsFromLBO(lboHtml, showId);
       const lboRoundupDate = extractRoundupDateFromHtml(lboHtml);
+      // BRO-3121: stars from a prior production's roundup must not score here.
+      const lboProd = require('./lib/aggregator-page-production').checkAggregatorPageProduction({ html: lboHtml, show, pageDate: lboRoundupDate });
+      if (lboProd.outOfRun) {
+        console.log(`    ✗ LBO roundup is another production (${lboProd.reason}) — none of its ${lboRawReviews.length} rows used`);
+        lboRawReviews.length = 0;
+      } else if (!lboProd.corroborated) {
+        console.log(`    ⚠️  LBO roundup not corroborated as this production (${lboProd.reason}) — excerpts kept, star scores dropped`);
+        for (const r of lboRawReviews) { r.stars = null; r.score = null; }
+      }
       health.lbo.found = true;
       console.log(`    ✓ LBO archive found, extracted ${lboRawReviews.length} reviews${lboRoundupDate ? ` (date: ${lboRoundupDate})` : ''}`);
 
@@ -5301,7 +5291,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             }
           } catch (e) { /* non-fatal */ }
 
-          if (result && result !== '__SERP_UNAVAILABLE__' && result !== data.url) {
+          // BRO-3781: this raw write bypasses safeWriteReview's url-downgrade
+          // guard, so check here too: a SERP hit dated outside the run is a
+          // prior production of a revived title, not this review.
+          const _serpRegression = result && result !== '__SERP_UNAVAILABLE__'
+            ? require('./lib/url-downgrade-guard').isUrlSwapRegression({ newUrl: result, show, outletId })
+            : { regression: false };
+          if (_serpRegression.regression) {
+            console.log(`✗ refused ${result}: ${_serpRegression.reason}`);
+          } else if (result && result !== '__SERP_UNAVAILABLE__' && result !== data.url) {
             console.log(`✓ Found: ${result}`);
             // Update the review file in-place
             const filePath = path.join(showDir, file);

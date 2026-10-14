@@ -1995,6 +1995,27 @@ function safeWriteReview(filePath, newData, options = {}) {
           || (existing.urlVerified === true && !(existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url, existing))))) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
+        } else if (normalizedUrlDiffers && !force && options.approvedUrlRepair !== true
+          && _isRegressedUrlSwap(filePath, existing, newData.url)) {
+          // BRO-3781 (#1416 class): one chokepoint for every url swap. The
+          // per-producer isUrlSwapRegression checks (maybeUpgradeUrl,
+          // mergeReviews, the file-writer) each missed a path at some point;
+          // Good Time Charlie's real /page/ob/ review was swapped to a TB forum
+          // thread and later swaps reached prior productions of revived shows.
+          // A candidate url that is a forum thread or is dated outside the
+          // show's run, replacing one that is not, is a downgrade: keep the
+          // current url and drop the fields that arrived paired with the
+          // rejected one. force / an approved repair still win.
+          console.warn(`[review-write-guard] refused url downgrade on ${path.basename(filePath)}: ${existing.url} -> ${newData.url} (wrong production or forum thread) — keeping current url (BRO-3781)`);
+          newData.url = existing.url;
+          _rollbackUrlDerivedFields(newData, existing);
+          // The producer's own swap bookkeeping describes a swap that did not
+          // happen: put it back too, or the file claims it was corrected away
+          // from the url it still holds and queues a pointless refetch.
+          for (const f of ['urlCorrectedFrom', 'urlCorrectedReason', 'urlUpdatedFrom', 'urlDiscoveredAt', 'urlDiscoveryMethod', 'needsRefetch', 'wrongUrl', 'wrongUrlReason']) {
+            if (existing[f] === undefined) delete newData[f];
+            else newData[f] = existing[f];
+          }
         } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)
           && options.approvedUrlRepair !== true
           && !_flipFlopShouldTakeIncoming(existing.url, newData.url, existing)) {
@@ -2020,12 +2041,7 @@ function safeWriteReview(filePath, newData, options = {}) {
           // change itself is being rejected, roll those fields back to their
           // genuine on-disk (existing) state too, or a score/flag that
           // belongs to the rejected url gets misattributed to the pinned one.
-          const { URL_DERIVED_FIELDS } = require('./url-change-invariant');
-          for (const field of URL_DERIVED_FIELDS) {
-            if (newData[field] === existing[field]) continue;
-            if (existing[field] === undefined) delete newData[field];
-            else newData[field] = existing[field];
-          }
+          _rollbackUrlDerivedFields(newData, existing);
           if (!newData.urlVerified) {
             newData.urlVerified = true;
             newData.urlVerifiedAuto = true;
@@ -3722,6 +3738,32 @@ function protectStagedDeletions(cwd, options = {}) {
  * Also lets an AUTO pin (urlVerifiedAuto) on such a url be corrected; a human
  * pin (urlManualOverride / urlVerified without Auto) is never overridden.
  */
+// Restore the url-derived fields (score, stars, excerpts...) to their on-disk
+// values when a write's url change is being rejected: values that arrived with
+// the rejected url describe that article, not the url the file keeps.
+function _rollbackUrlDerivedFields(newData, existing) {
+  const { URL_DERIVED_FIELDS } = require('./url-change-invariant');
+  for (const field of URL_DERIVED_FIELDS) {
+    if (newData[field] === existing[field]) continue;
+    if (existing[field] === undefined) delete newData[field];
+    else newData[field] = existing[field];
+  }
+}
+
+// BRO-3781: is moving this file from existing.url to newUrl a downgrade onto a
+// wrong-production / forum-thread url? Only when the current url is NOT itself
+// such a url (repairing one bad url to another bad one is not this guard's
+// call). Needs the show record from the file's directory; fails open without it.
+function _isRegressedUrlSwap(filePath, existing, newUrl) {
+  const showId = path.basename(path.dirname(filePath));
+  if (!showId || showId.startsWith('_') || showId.startsWith('.')) return false;
+  const { isUrlSwapRegression } = require('./url-downgrade-guard');
+  const show = _getShowById(showId);
+  const outletId = existing.outletId;
+  if (!isUrlSwapRegression({ newUrl, show, outletId }).regression) return false;
+  return !isUrlSwapRegression({ newUrl: existing.url, show, outletId }).regression;
+}
+
 function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
   // BRO-2690: never pin onto a malformed url (review body text parsed as a url,
   // e.g. 'https://So%20what?s%20needed...'): angels-in-america thewrap and

@@ -21,6 +21,7 @@ const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { isUrlSwapRegression } = require('./lib/url-downgrade-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -154,7 +155,14 @@ async function main() {
       } catch (e) { /* non-fatal */ }
     }
 
-    if (result && result !== '__SERP_UNAVAILABLE__' && result !== c.data.url) {
+    // BRO-3781: raw write, outside safeWriteReview's url-downgrade guard.
+    const serpRegression = result && result !== '__SERP_UNAVAILABLE__'
+      ? isUrlSwapRegression({ newUrl: result, show: showMeta, outletId: c.outletId })
+      : { regression: false };
+    if (serpRegression.regression) {
+      console.log(`✗ refused: ${serpRegression.reason}`);
+      failed++;
+    } else if (result && result !== '__SERP_UNAVAILABLE__' && result !== c.data.url) {
       console.log(`✓ ${result}`);
       fixed++;
 

@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { baseSlug, computeCombinedWith, shouldRecoverJointWrongShow } = require('./lib/combined-review-utils');
+const { isCombinedReviewOfOtherMemberOnly } = require('./lib/review-guards');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
 
@@ -77,6 +78,7 @@ function main() {
   const allShows = loadShows();
   const siblingIndex = buildSiblingIndex(allShows);
   const titleById = new Map(allShows.map((s) => [s.id, s.title]));
+  const showRecordById = new Map(allShows.map((s) => [s.id, s]));
 
   let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0, staleFlagsCleared = 0;
   for (const [url, entries] of urlMap) {
@@ -160,7 +162,13 @@ function main() {
         // joint coverage, not a wrong-show false positive. Clear the flag so
         // this file lands in reviews.json.
         // Refused for a human-approved flag or a body that never names this show (BRO-4599).
-        if (shouldRecoverJointWrongShow(data, titleById.get(entry.showId) || null)) {
+        // BRO-2746: never recover when the url names only a co-member show and the
+        // text never names this one: that is the other show's review misfiled here
+        // (CARE's Stage review under A Month in the Country). The rebuild excludes
+        // it through the same predicate.
+        const otherMemberOnly = isCombinedReviewOfOtherMemberOnly(data, showRecordById.get(entry.showId));
+        if (otherMemberOnly) console.log(`  [not joint: url names only a co-member] ${entry.showId}/${entry.file}`);
+        if (!otherMemberOnly && shouldRecoverJointWrongShow(data, titleById.get(entry.showId) || null)) {
           clearWrongProductionFlags(data, {
             source: 'flag-combined-reviews.js',
             reason: 'URL co-occurs across ' + (newCombinedWith.length + 1) + ' show dirs — joint review',

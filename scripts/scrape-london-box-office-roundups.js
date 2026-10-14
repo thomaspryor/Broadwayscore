@@ -35,6 +35,7 @@ const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
+const { checkAggregatorPageProduction } = require('./lib/aggregator-page-production');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
@@ -552,6 +553,29 @@ function stripTheatreFromSlug(slug) {
 // Save review data
 // ---------------------------------------------------------------------------
 
+// BRO-3121: a title-matched LBO page can describe a PRIOR production of a
+// revived show (Jane Eyre, Bristol Old Vic vs Southwark Playhouse). Its stars
+// would then score as this production's review, so drop them unless the page's
+// date or venue places it in this run. The excerpt is still kept.
+function withholdStarsUnlessCurrentProduction(reviews, html, show, url) {
+  const prod = checkAggregatorPageProduction({ html, show });
+  if (prod.outOfRun) {
+    console.warn(`  [SKIP-PAGE] ${url}: ${prod.reason} — another production, writing none of its ${reviews.length} row(s)`);
+    stats.pagesOutOfRun = (stats.pagesOutOfRun || 0) + 1;
+    reviews.length = 0;
+    return prod;
+  }
+  if (!prod.corroborated) {
+    const starred = reviews.filter((r) => r.stars !== null && r.stars !== undefined);
+    if (starred.length) {
+      console.warn(`  [NO-STARS] ${url}: ${prod.reason} — keeping ${starred.length} excerpt(s) without star scores`);
+      stats.starsWithheld = (stats.starsWithheld || 0) + starred.length;
+    }
+    for (const r of reviews) { r.stars = null; r.score = null; }
+  }
+  return prod;
+}
+
 function saveLBOReview(showId, reviewInfo) {
   const sourceName = reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup';
 
@@ -572,7 +596,11 @@ function saveLBOReview(showId, reviewInfo) {
     criticName: reviewInfo.critic,
     url: reviewInfo.url,
     source: sourceName,
+    ...(reviewInfo.publishDate ? { publishDate: reviewInfo.publishDate } : {}),
     fields: {
+      // New files are built from fields; top-level publishDate only feeds the
+      // writer's reroute guards.
+      ...(reviewInfo.publishDate ? { publishDate: reviewInfo.publishDate } : {}),
       lboRoundupExcerpt: reviewInfo.excerpt || undefined,
       ...scoreFields,
     },
@@ -875,6 +903,7 @@ async function scrapeLBORoundups() {
 
     // Extract reviews
     const reviews = extractReviewsFromLBO(html, showId, url);
+    withholdStarsUnlessCurrentProduction(reviews, html, show, url);
     stats.reviewsExtracted += reviews.length;
     console.log(`  Found ${reviews.length} reviews`);
 
@@ -934,6 +963,11 @@ async function scrapeLBORoundups() {
       // Extract single review
       const review = extractIndividualReviewFromLBO(html, showId);
       review.url = url; // The LBO page IS the review
+      const batch = [review];
+      const prod = withholdStarsUnlessCurrentProduction(batch, html, show, url);
+      if (batch.length === 0) continue; // another production's post
+      // The post is the review, so its own date is the review's publishDate.
+      if (prod.pageDate) review.publishDate = prod.pageDate;
       stats.reviewsExtracted++;
 
       const result = saveLBOReview(showId, review);

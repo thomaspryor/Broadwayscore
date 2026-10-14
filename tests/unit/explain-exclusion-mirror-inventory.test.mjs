@@ -35,6 +35,7 @@ const INVENTORY = {
   isNonReviewDemotedByFreshCV: 'live',
   isPrematureReviewForUnopenedShow: 'live',
   isPreviewFirstLookPiece: 'live',
+  isCombinedReviewOfOtherMemberOnly: 'live',
   isRejectedAtExclusion: 'live',
   isRejectedByReasonExclusion: 'live',
   isRoundupPageAsReview: 'live',

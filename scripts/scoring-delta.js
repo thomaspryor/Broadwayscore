@@ -858,6 +858,10 @@ function decideInclusion(review, show, guards) {
   if (typeof guards.isPreviewFirstLookPiece === 'function' && guards.isPreviewFirstLookPiece(review)) {
     return { included: false, reason: 'previewFirstLookPiece' };
   }
+  // BRO-2746: combined-review file carrying a co-member show's review.
+  if (typeof guards.isCombinedReviewOfOtherMemberOnly === 'function' && guards.isCombinedReviewOfOtherMemberOnly(review, show)) {
+    return { included: false, reason: 'combinedReviewOfOtherMemberOnly' };
+  }
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
   // rebuild's auto-clear paths (shouldAutoClearWrongShowUkUrl, shouldAutoClearWrongShow,
@@ -1532,6 +1536,8 @@ function main() {
         && (baseline.isLegacyWebSearchOnly?.toString() || '') === (working.isLegacyWebSearchOnly?.toString() || '')
         // BRO-3126: preview first-look piece (patterns are inside the function body, so toString() covers them).
         && (baseline.isPreviewFirstLookPiece?.toString() || '') === (working.isPreviewFirstLookPiece?.toString() || '')
+        // BRO-2746: combined review of another member only (helpers inlined, toString() covers them).
+        && (baseline.isCombinedReviewOfOtherMemberOnly?.toString() || '') === (working.isCombinedReviewOfOtherMemberOnly?.toString() || '')
         // cvLowButStrong carve-out (BRO-3512): the predicate and its marker regexes.
         && (baseline.hasStrongDifferentShowSignal?.toString() || '') === (working.hasStrongDifferentShowSignal?.toString() || '')
         && JSON.stringify((baseline.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String)) === JSON.stringify((working.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String))
