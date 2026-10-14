@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2746",
   "planId": "b71f7aca-5b54-45b8-955e-1c7a15e5c1fd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T15:01:24.579Z",
   "submitter": {
     "name": null,
@@ -45,5 +45,33 @@
         "description": "BRO-2746: empty --unknown junk (contamination class F): no url, no fullText, no score, no aggregator excerpt."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T16:00:29.272Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-taste-of-honey-west-end-2019/beyondthecurtain--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted franz-and-marie-west-end-2026/london-theatre-reviews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-west-end-2025/london-theatre-reviews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted primary-trust-off-broadway-2023/broadwayworld--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stones-in-his-pockets-2001/broadwayworld--unknown.json"
+    }
+  ]
 }
