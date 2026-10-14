@@ -772,8 +772,9 @@ test('BRO-3125: a later attempt\'s push is clamped to the time left', async () =
   const pushes = ops.filter((o) => o.sub === 'push').map((o) => o.secs);
   assert.equal(pushes.length, 2, `expected two attempts\n${res.stderr}`);
   assert.equal(pushes[0], 90, 'attempt 1 keeps the full cap');
-  // Clamped to the time left (<= 50s), never the 90s cap. No lower bound:
-  // a loaded runner spends more of the 50s before attempt 2 starts.
+  // Clamped to the time left (<= 50s), never the 90s cap. Only the 7s
+  // PUSH_OP_MIN_TIMEOUT_SEC floor bounds it below: a loaded runner spends
+  // more of the 50s before attempt 2 starts.
   assert.ok(pushes[1] <= 50 && pushes[1] >= 7, `attempt 2 must be clamped to the time left (<=50s), got ${pushes[1]}`);
   assert.match(res.stderr, /2 timed out at caps of \d+-90s/, 'mixed caps must be reported as a range');
 });

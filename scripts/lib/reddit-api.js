@@ -664,6 +664,7 @@ function getOauthToken() {
       });
     });
     req.on('error', reject);
+    req.setTimeout(30000, () => req.destroy(new Error('Reddit OAuth token request timed out after 30s'))); // BRO-5261
     req.end(body);
   });
 }
@@ -701,7 +702,7 @@ async function fetchViaOauth(url, isRetry = false) {
           reject(new Error(`Reddit OAuth HTTP ${res.statusCode}: ${data.slice(0, 80)}`));
         }
       });
-    }).on('error', reject);
+    }).on('error', reject).setTimeout(45000, function () { this.destroy(new Error('Reddit OAuth request timed out after 45s')); }); // BRO-5261
   });
 }
 

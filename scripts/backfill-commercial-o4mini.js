@@ -207,7 +207,9 @@ Respond with ONLY valid JSON (no markdown, no explanation):
         }
       });
     });
-    req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
+    // BRO-5261: 15 min. Non-streaming high-effort reasoning + web search sends no
+    // bytes until the answer is done, so an idle timer is a total cap here.
+    req.setTimeout(900000, () => req.destroy(new Error('request timed out after 900s idle')));
     req.on('error', reject);
     req.write(body);
     req.end();

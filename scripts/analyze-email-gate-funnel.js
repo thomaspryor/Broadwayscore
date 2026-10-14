@@ -43,7 +43,7 @@ const MODAL_ONLY = `JSONExtractString(properties,'trigger') != ''`;
 
 async function hogql(query) {
   const res = await fetch(`https://us.posthog.com/api/projects/${PROJECT_ID}/query/`, {
-    signal: AbortSignal.timeout(60000),
+    signal: AbortSignal.timeout(240000), // BRO-5261: PostHog queries can take minutes (same cap as scripts/lib/posthog-query.js)
     method: 'POST',
     headers: { 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query } }),

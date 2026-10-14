@@ -5035,7 +5035,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         const homepageHtml = await new Promise(r => {
           trHttp.get('https://theatre.reviews/', {
             headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', Accept: 'text/html' },
-          }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null));
+          }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null)).setTimeout(30000, function () { this.destroy(new Error('timeout')); }); // BRO-5261
         });
 
         // BRO-4431: the homepage only lists the latest ~10 posts, so a
@@ -5073,7 +5073,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             const trPageHtml = await new Promise(r => {
               trHttp.get(roundupUrl, {
                 headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
-              }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null));
+              }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null)).setTimeout(30000, function () { this.destroy(new Error('timeout')); }); // BRO-5261
             });
 
             if (trPageHtml) {

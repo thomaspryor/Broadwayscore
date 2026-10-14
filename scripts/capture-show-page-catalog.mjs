@@ -58,7 +58,8 @@ async function readCatalog() {
 }
 
 async function ensureServerUp() {
-  const res = await fetch(BASE_URL, { signal: AbortSignal.timeout(60000) }).catch(() => null);
+  // BRO-5261: 180s, a cold `next dev` compiles the first page on request.
+  const res = await fetch(BASE_URL, { signal: AbortSignal.timeout(180000) }).catch(() => null);
   if (!res || !res.ok) {
     throw new Error(
       `Dev server not reachable at ${BASE_URL}. Run \`npm run dev\` in another terminal first.`,

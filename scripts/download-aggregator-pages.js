@@ -270,7 +270,7 @@ function downloadPage(url, filepath) {
       });
     }).on('error', (err) => {
       resolve({ error: true, message: err.message });
-    });
+    }).setTimeout(60000, function () { this.destroy(new Error('request timed out after 60s')); }); // BRO-5261
   });
 }
 

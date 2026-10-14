@@ -72,3 +72,28 @@ test('scanner: the shorthand `{ timeout }` option counts as a timeout option (BR
   const noDestroy = "function f(url, timeout) {\n  const req = https.request(url, { timeout }, () => {});\n  req.on('error', () => {});\n}\n";
   assert.equal(checkSource('x.js', noDestroy).length, 1);
 });
+
+test('scanner: http module aliases are resolved per file (BRO-5261)', () => {
+  const { checkSource } = require('../../scripts/audit-fetch-timeouts.js');
+  const ternary = "const https = require('https');\nfunction f(u) {\n  const client = u.protocol === 'http:' ? require('http') : https;\n  return new Promise((res, rej) => { client.get(u, {}, () => {}).on('error', rej); });\n}\n";
+  assert.equal(checkSource('x.js', ternary).length, 1, 'ternary alias call is seen');
+  const required = "function f(u) {\n  const trHttp = require('https');\n  trHttp.get(u, {}, () => {}).on('error', () => {});\n}\n";
+  assert.equal(checkSource('x.js', required).length, 1, 'require alias call is seen');
+  const inline = "function f(o) {\n  const req = require('https').request(o, () => {});\n  req.on('error', () => {});\n  req.end();\n}\n";
+  assert.equal(checkSource('x.js', inline).length, 1, "require('https').request is seen");
+  const fixed = "function f(u) {\n  const trHttp = require('https');\n  trHttp.get(u, {}, () => {}).on('error', () => {}).setTimeout(30000, function () { this.destroy(new Error('t')); });\n}\n";
+  assert.deepEqual(checkSource('x.js', fixed), []);
+  // A Map or other object that happens to share an alias-like name is not http.
+  const notHttp = "function f(k) {\n  const client = new Map();\n  return client.get(k);\n}\n";
+  assert.deepEqual(checkSource('x.js', notHttp), []);
+  // The module name inside a string is not a call.
+  const inString = "const s = \"require('https').get(url)\";\n";
+  assert.deepEqual(checkSource('x.js', inString), []);
+});
+
+test('scanner: an unrelated later .destroy( does not count as the timeout handler (BRO-5261)', () => {
+  const { checkSource } = require('../../scripts/audit-fetch-timeouts.js');
+  const filler = '  const pad = 1;\n'.repeat(30);
+  const src = `function f(u) {\n  const req = https.request(u, () => {});\n  req.setTimeout(0);\n  req.on('error', () => {});\n${filler}  res2.destroy();\n}\n`;
+  assert.equal(checkSource('x.js', src).length, 1);
+});

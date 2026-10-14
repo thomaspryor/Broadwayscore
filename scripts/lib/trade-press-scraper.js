@@ -411,7 +411,7 @@ async function simpleFetch(url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve(data));
-    }).on('error', reject);
+    }).on('error', reject).setTimeout(60000, function () { this.destroy(new Error(`timed out after 60s: ${url}`)); }); // BRO-5261
   });
 }
 

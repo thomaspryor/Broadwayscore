@@ -858,7 +858,7 @@ function httpGet(url, maxRedirects = 5) {
         if (res.statusCode === 200) resolve(data);
         else resolve(null);
       });
-    }).on('error', reject).on('timeout', () => reject(new Error('timeout')));
+    }).on('error', reject).on('timeout', function () { this.destroy(new Error('timeout')); }); // BRO-5261: destroy, or the socket stays open
   });
 }
 

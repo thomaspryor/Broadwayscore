@@ -143,6 +143,7 @@ function postEvidenceComment(cardId, evidence) {
       },
     }, res => { res.resume(); if (res.statusCode >= 300) console.error(`[run] WARN evidence comment POST returned ${res.statusCode}`); });
     req.on('error', err => console.error(`[run] WARN evidence comment POST failed: ${err.message}`));
+    req.setTimeout(30000, () => req.destroy(new Error('Notion comment POST timed out after 30s'))); // BRO-5261
     req.write(body);
     req.end();
   } catch (err) { console.error(`[run] WARN evidence comment POST threw: ${err.message}`); }

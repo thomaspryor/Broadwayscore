@@ -123,6 +123,34 @@ const HTTP_GET_RE = /\bhttps?\.get\(/g;
 // separate logic is needed for that shape difference.
 const HTTP_REQUEST_RE = /\bhttps?\.request\(/g;
 
+// BRO-5261 (BRO-3603/3840 retro-review): the two regexes above only see a
+// literal `https.`/`http.` receiver, so `const client = u.protocol ===
+// 'http:' ? require('http') : https; client.get(...)`, `const trHttp =
+// require('https')` and `require('https').request(...)` were invisible to
+// the gate (8 unbounded calls, reddit-api's OAuth pair among them). Aliases
+// are resolved per file from how they are bound, not from a fixed name list.
+const HTTP_MOD_EXPR = String.raw`(?:https?|require\(\s*['"](?:node:)?https?['"]\s*\))`;
+const HTTP_ALIAS_DECL_RES = [
+  // const x = require('https') / const x = https
+  new RegExp(String.raw`\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*${HTTP_MOD_EXPR}\s*[;\n]`, 'g'),
+  // [const] x = <cond> ? https : http   (either side may be a require)
+  new RegExp(String.raw`(?:\b(?:const|let|var)\s+|(?<![.\w$]))([A-Za-z_$][\w$]*)\s*=(?!=)\s*[^;\n]*?\?\s*${HTTP_MOD_EXPR}\s*:\s*${HTTP_MOD_EXPR}`, 'g'),
+  // import x from 'https' / import * as x from 'node:http'
+  /\bimport\s+(?:\*\s+as\s+)?([A-Za-z_$][\w$]*)\s+from\s+['"](?:node:)?https?['"]/g,
+];
+// require('https').get(...) / .request(...) — matched on the strings-intact
+// view (the module name is a string), then confirmed as code on the blanked one.
+const REQUIRE_HTTP_CALL_RE = /\brequire\(\s*['"](?:node:)?https?['"]\s*\)\.(get|request)\(/g;
+
+/** Identifiers bound to the http/https module in this file (never `http`/`https` themselves — HTTP_GET_RE/HTTP_REQUEST_RE cover those). */
+function httpModuleAliases(scopeSrc) {
+  const names = new Set();
+  for (const re of HTTP_ALIAS_DECL_RES) {
+    for (const m of scopeSrc.matchAll(re)) if (m[1] !== 'http' && m[1] !== 'https') names.add(m[1]);
+  }
+  return [...names];
+}
+
 /** Index of the char matching src[openIdx] (openChar), by simple depth counting. Callers pass a blanked view (strings/comments space-filled) so stray brackets inside string content can't desync it. */
 function findMatchingBracket(src, openIdx, openChar, closeChar) {
   let depth = 0;
@@ -552,6 +580,21 @@ function checkSource(file, source) {
     checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, 'https.request()/http.request()', findings);
   }
 
+  const aliases = httpModuleAliases(scopeSrc);
+  if (aliases.length) {
+    const esc = aliases.map((a) => a.replace(/[$]/g, '\\$&'));
+    const aliasCallRe = new RegExp(`(?<![.\\w$])(?:${esc.join('|')})\\.(get|request)\\(`, 'g');
+    for (const match of scanSrc.matchAll(aliasCallRe)) {
+      const label = match[1] === 'get' ? 'https.get()/http.get()' : 'https.request()/http.request()';
+      checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, label, findings); // same label as the literal scans: the CI gate filters on f.call
+    }
+  }
+  for (const match of scopeSrc.matchAll(REQUIRE_HTTP_CALL_RE)) {
+    if (!scanSrc.startsWith('require(', match.index)) continue; // inside a string or comment
+    const label = match[1] === 'get' ? 'https.get()/http.get()' : 'https.request()/http.request()';
+    checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, label, findings);
+  }
+
   return findings;
 }
 
@@ -606,14 +649,17 @@ function checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, callLabe
   if (varName) {
     destroySearchText = enclosingFunctionScope(scopeSrc, extents, match.index);
     const identRe = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]*?\\.destroy\\(`);
-    setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]*?\\.destroy\\(`);
+    destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]{0,300}?\\.destroy\\(`);
+    setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]{0,300}?\\.destroy\\(`);
   } else {
     const chainEnd = chainedCallSpanEnd(scanSrc, openParenIdx);
     destroySearchText = scopeSrc.slice(match.index, chainEnd);
-    destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]*?\.destroy\(/;
-    setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]*?\.destroy\(/;
+    destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]{0,300}?\.destroy\(/;
+    setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]{0,300}?\.destroy\(/;
   }
+  // {0,300}: the destroy() must sit in the timeout handler itself, not be any
+  // later `.destroy(` in the enclosing function (BRO-5261: `req.setTimeout(0);
+  // ... res2.destroy()` used to pass).
   const hasOnTimeoutDestroy = destroyRe.test(destroySearchText);
   const hasSetTimeoutDestroy = setTimeoutRe.test(destroySearchText);
 

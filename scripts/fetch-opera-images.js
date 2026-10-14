@@ -64,7 +64,7 @@ function downloadBuffer(url) {
       res.on('data', c => chunks.push(c));
       res.on('end', () => resolve(Buffer.concat(chunks)));
       res.on('error', reject);
-    }).on('error', reject);
+    }).on('error', reject).setTimeout(60000, function () { this.destroy(new Error(`timed out after 60s: ${url}`)); }); // BRO-5261
   });
 }
 
