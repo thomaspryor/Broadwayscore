@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T15:57:28.313Z",
+  "timestamp": "2026-10-14T16:46:03.458Z",
   "stats": {
-    "totalReviews": 56532,
+    "totalReviews": 56527,
     "alreadyFlagged": 21048,
     "dateGuardCatches": 209,
     "directorMismatch": 1904,
-    "tvFilmSignals": 1572,
+    "tvFilmSignals": 1573,
     "londonSignals": 2341,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5232
+    "noPublishDate": 5226
   },
   "findings": [
     {
@@ -35400,7 +35400,7 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "file": "a-youngish-perspective--unknown.json",
+      "file": "a-youngish-perspective--mark-lloyd.json",
       "score": 81,
       "publishDate": "2024-10-26",
       "url": "https://ayoungishperspective.co.uk/2024/10/26/review-stories-a-tap-dance-sensation/",
@@ -35476,7 +35476,7 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--scarlett-bruin.json",
       "score": 78,
       "publishDate": "2024-10-30",
       "url": "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
@@ -76161,6 +76161,20 @@
       "score": 63,
       "publishDate": "December 14, 2023",
       "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html?smid=nytcore-ios-share&referringSource=articleShare",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "standard--unknown.json",
+      "score": 91,
+      "publishDate": "2023-12-15",
+      "url": "https://www.standard.co.uk/news/uk/stranger-things-the-first-shadow-west-end-theatre-louis-mccartney-b1127164.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
