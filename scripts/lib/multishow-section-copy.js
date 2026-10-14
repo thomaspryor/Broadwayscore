@@ -25,7 +25,7 @@ const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const SOURCE_BLOCKING = ['wrongAttribution', 'isNonReview', 'duplicateOf', 'wrongShow', 'wrongProduction',
   'isSyndicatedDuplicate', 'isRoundupArticle', 'multiShowSplitChild'];
 // Verdicts on the target row a copy must never overwrite.
-const TARGET_BLOCKING = ['_locked', 'manualContentTier', 'wrongAttribution', 'duplicateOf', 'isRoundupArticle'];
+const TARGET_BLOCKING = ['_locked', 'manualContentTier', 'wrongAttribution', 'duplicateOf', 'isRoundupArticle', 'wrongShow', 'wrongProduction'];
 const MIN_MARKER_WORDS = 4;
 // A target body at least this long is a real text that a person must compare.
 const MAX_REPLACEABLE_TARGET_CHARS = 400;
@@ -106,14 +106,17 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
     row.multiShowSectionCopy.replaced = replaced;
     if (target.url && target.url !== source.url) row.previousUrl = target.url;
     for (const k of ['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'incompleteReason', 'incompleteDetail',
-      'fetchDiscoveryAbandoned', 'textIssues', 'llmScore', 'ensembleData', 'contentVerification', 'truncationSignals']) {
+      'fetchDiscoveryAbandoned', 'textIssues', 'llmScore', 'ensembleData', 'contentVerification', 'truncationSignals',
+      // Scores of the stub's text must not publish against the new text before the rescore.
+      'assignedScore', 'originalScore', 'llmMetadata', 'scoreSource']) {
       if (k in row) row[k] = null;
     }
   }
 
   const ids = new Set(Array.isArray(source.multiShowSplitChildShowIds) ? source.multiShowSplitChildShowIds : []);
   ids.add(targetShowId);
-  const parent = { ...source, multiShowSplitParent: true, multiShowSplitChildShowIds: [...ids].sort() };
+  // multiShowSplitMethod keeps the BRO-4431 fan-out from re-cutting the column.
+  const parent = { ...source, multiShowSplitParent: true, multiShowSplitMethod: 'venue-box', multiShowSplitChildShowIds: [...ids].sort() };
   return { ok: true, reason: `${action}: ${section.text.length}-char section`, row, parent, action };
 }
 
