@@ -1,0 +1,932 @@
+{
+  "issueNumber": "bro-5142",
+  "planId": "b81e91fd-9f56-4bdf-aed6-8c1052e6adfa",
+  "status": "pending",
+  "createdAt": "2026-10-14T11:10:18.100Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5142: clear wrongShow on 57 real reviews of historical/sparse WE shows (no cast/creativeTeam in shows.json) that the BRO-4383 write guard flagged because the text never named the venue. Re-read by hand; 8 genuinely wrong texts stay flagged (a-kind-of-people observer/standard/scotsman, fishing-for-alaska viator, jane-eyre-off-west-end thestage (Colchester play), scenes-with-girls guardian/londontheatre1, toc-toc billboard). two-palestinians standard--nick-curtis skipped: it shares its URL with standard--unknown.json (duplicate).",
+    "steps": [
+      "Set wrongShowManualClear true, then wrongShow false, on each re-read real review (bro-4429 pattern)",
+      "Guard fix in scripts/lib/wrong-article-screen.js stops re-flagging (venue-only metadata is sparseIdentity)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "after-the-act-west-end-2025/thestage--laurie-yule.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-the-act-west-end-2025/thestage--laurie-yule.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anna-x-west-end-2021/whatsonstage--alex-wood.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anna-x-west-end-2021/whatsonstage--alex-wood.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/british-theatre--howard-loxton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/british-theatre--howard-loxton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/guardian--arifa-akbar.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/whatsonstage--sarah-crompton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/whatsonstage--sarah-crompton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/londontheatre1--chris-omaweng.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/londontheatre1--chris-omaweng.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/thestage--dave-fargnoli.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/thestage--dave-fargnoli.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/british-theatre--howard-loxton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/british-theatre--howard-loxton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/express-uk--neil-norman.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/express-uk--neil-norman.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/londontheatre1--chris-omaweng.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/londontheatre1--chris-omaweng.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/theatrecat--libby-purves.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/theatrecat--libby-purves.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/guardian--arifa-akbar.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/thestage--georgia-luckhurst.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/thestage--georgia-luckhurst.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/whatsonstage--miriam-sallon.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/whatsonstage--miriam-sallon.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glass-kill-bluebeard-and-imp-west-end-2019/i-paper--aleks-sierz.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glass-kill-bluebeard-and-imp-west-end-2019/i-paper--aleks-sierz.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/british-theatre--keith-mckenna.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/british-theatre--keith-mckenna.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/guardian--emma-john.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/guardian--emma-john.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/londontheatre1--mary-beer.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/londontheatre1--mary-beer.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/whatsonstage--verity-healey.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/whatsonstage--verity-healey.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/british-theatre--robert-tanitch.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/british-theatre--robert-tanitch.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/daily-mail--patrick-marmion.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/daily-mail--patrick-marmion.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/guardian--arifa-akbar.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/independent--jessie-thompson.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/independent--jessie-thompson.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/times-uk--dominic-maxwell.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/times-uk--dominic-maxwell.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mates-in-chelsea-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mates-in-chelsea-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "more-life-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "more-life-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-from-a-repatriation-west-end-2025/thereviewshub--monica-cox.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-from-a-repatriation-west-end-2025/thereviewshub--monica-cox.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-from-a-repatriation-west-end-2025/thestage--tom-wicker.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-from-a-repatriation-west-end-2025/thestage--tom-wicker.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/financialtimes--sarah-hemming.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/financialtimes--sarah-hemming.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/daily-mail--patrick-marmion.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/daily-mail--patrick-marmion.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/guardian--arifa-akbar.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/sunday-express--stefan-kyriazis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/sunday-express--stefan-kyriazis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/i-paper--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/i-paper--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      }
+    ]
+  }
+}
