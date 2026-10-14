@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T00:47:40.928Z",
+  "timestamp": "2026-10-14T01:39:19.768Z",
   "stats": {
-    "totalReviews": 56457,
-    "alreadyFlagged": 21050,
+    "totalReviews": 56470,
+    "alreadyFlagged": 21059,
     "dateGuardCatches": 209,
     "directorMismatch": 1875,
-    "tvFilmSignals": 1562,
-    "londonSignals": 2239,
+    "tvFilmSignals": 1563,
+    "londonSignals": 2240,
     "offBroadwaySignals": 509,
     "yearMismatch": 139,
-    "noPublishDate": 5277
+    "noPublishDate": 5272
   },
   "findings": [
     {
@@ -12051,19 +12051,6 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "publishDate": "July 15th, 2019",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-review-menier-chocolate-factory/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2489d before show (July 15th, 2019 vs 2026-05-08)"
-        }
-      ]
-    },
-    {
       "showId": "escape-to-margaritaville-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 78,
@@ -17214,6 +17201,25 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": 88,
+      "publishDate": "2018-04-30",
+      "url": "http://thefrontrowcenter.com/2018/04/harry-potter-and-the-cursed-child/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3084d before show (2018-04-30 vs 2026-10-09)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -37499,6 +37505,20 @@
       ]
     },
     {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 78,
+      "publishDate": "2026-10-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
       "showId": "the-children-2017",
       "file": "curtainup--elyse-sommer.json",
       "score": 79,
@@ -42980,6 +43000,7 @@
     {
       "showId": "the-parisian-woman-2017",
       "file": "wsj--terry-teachout.json",
+      "score": 36,
       "publishDate": "November 30th, 2017",
       "url": "https://www.wsj.com/articles/the-parisian-woman-review-a-broadway-debut-lacking-in-star-quality-1512091800",
       "findings": [
@@ -55154,20 +55175,6 @@
     },
     {
       "showId": "care-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 99,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "care-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 75,
       "publishDate": null,
@@ -63520,6 +63527,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "monstagigz--unknown.json",
+      "score": 88,
       "publishDate": "2026-10-13",
       "url": "https://monstagigz.com/2026/10/13/theatre-review-ilford-boy-starring-leo-whitfield-harris-craig-steen-ria-zmitrowicz-lindsey-coulson-at-the-donmar-warehouse/",
       "findings": [
@@ -71675,6 +71683,19 @@
     },
     {
       "showId": "pride-west-end-2026",
+      "file": "broadwayworld--jay-irwin.json",
+      "publishDate": "2026-08-25",
+      "url": "https://www.broadwayworld.com/westend/article/PRIDE-Musical-to-Transfer-to-The-Bridge-Theatre-20260825",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 84,
       "publishDate": "2026-06-26",
@@ -76332,7 +76353,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "artsdesk--matt-wolf.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "May 17th, 2025",
       "url": "https://theartsdesk.com/theatre/brightening-air-old-vic-review-chekhov-jostles-conor-mcpherson-writer-directors-latest",
       "findings": [
@@ -76374,7 +76395,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 69,
+      "score": 61,
       "publishDate": "2025-04-25",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-brightening-air-old-vic-chris-odowd-b2739382.html",
       "findings": [
@@ -76430,7 +76451,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 58,
+      "score": 64,
       "publishDate": "2025-04-25",
       "url": "https://www.thetimes.com/article/04e9157e-234c-4886-9e4b-a6ce6dbf2183",
       "findings": [
@@ -79749,7 +79770,7 @@
     {
       "showId": "the-motive-and-the-cue-west-end-2023",
       "file": "london-theatre--julia-rank.json",
-      "score": 82,
+      "score": 57,
       "publishDate": "2023-12-19",
       "url": "https://www.londontheatre.co.uk/reviews/the-motive-and-the-cue-review-noel-coward-theatre",
       "findings": [
