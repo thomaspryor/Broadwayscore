@@ -1,0 +1,219 @@
+{
+  "issueNumber": "bro-5274-b",
+  "planId": "fa9abb64-d571-443f-b2e0-f320372d4074",
+  "status": "pending",
+  "createdAt": "2026-10-14T01:33:02.756287Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5274 part 2 of 3: mark the weaker file of each duplicate (showDir|outlet|critic) pair as duplicateOf its sibling so one review counts once. reviews.json already collapses the key at rebuild, so no score changes; the files and the drift audit are cleaned up.",
+    "steps": [
+      "Set duplicateOf on the weaker file of each pair (and delete one empty BWW profile-page record in part 3)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-west-end-2025/london-box-office--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "london-box-office--shehrazade-zafar-arif.json",
+        "description": "BRO-5274: same article as london-box-office--shehrazade-zafar-arif.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/nytg--david-gordon.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytg--diep-tran.json",
+        "description": "BRO-5274: same article as nytg--diep-tran.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nyt-theater--jonathan-mandell.json",
+        "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosmersholm-west-end-2019/thestage--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thestage--natasha-tripney.json",
+        "description": "BRO-5274: same article as thestage--natasha-tripney.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soul-doctor-2013/vulture--scott-brown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--jesse-green.json",
+        "description": "BRO-5274: same article as vulture--jesse-green.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-anarchist-2012/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "BRO-5274: same article as vulture--scott-brown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/variety--matt-trueman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--marilyn-stasio.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-society-2019/nyt-theater--jonathan-mandell.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nyt-theater--david-nounou.json",
+        "description": "BRO-5274: same article as nyt-theater--david-nounou.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heidi-chronicles-2015/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5274: same article as nytimes--ben-brantley.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-shark-is-broken-2023/nyt-theater--david-nounou.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nyt-theater--jonathan-mandell.json",
+        "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-starry-messenger-west-end-2019/independent--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "independent--paul-taylor.json",
+        "description": "BRO-5274: same article as independent--paul-taylor.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/wsj--terry-teachout.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "wsj--charles-isherwood.json",
+        "description": "BRO-5274: same article as wsj--charles-isherwood.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "topdog-underdog-2022/guardian--gloria-oladipo.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--adrian-horton.json",
+        "description": "BRO-5274: same article as guardian--adrian-horton.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waitress-west-end-2019/standard--henry-hitchings.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "standard--unknown.json",
+        "description": "BRO-5274: same article as standard--unknown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waitress-west-end-2019/thestage--tim-bano.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thestage--unknown.json",
+        "description": "BRO-5274: same article as thestage--unknown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "war-horse-2011/hollywood-reporter--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "hollywood-reporter--david-rooney.json",
+        "description": "BRO-5274: same article as hollywood-reporter--david-rooney.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/timeout--helen-shaw.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--adam-feldman.json",
+        "description": "BRO-5274: same article as timeout--adam-feldman.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "you-cant-take-it-with-you-2014/timeout--david-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--adam-feldman.json",
+        "description": "BRO-5274: same article as timeout--adam-feldman.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-idiot-2010/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "BRO-5274: same Variety article id 1117942595 under two filenames; keeps the file whose name matches the stamped critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "BRO-5274: both carry criticName Steven Suskin; keeps the file whose name matches it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/independent--tom-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "independent--alice-saville.json",
+        "description": "BRO-5274: same Independent article id b3043382 under two bylines; keeps the file whose name matches the stamped critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/newyorker--conde-nast.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "newyorker--vinson-cunningham.json",
+        "description": "BRO-5274: empty New Yorker excerpt filed under the publisher name; the review is the Vinson Cunningham file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "is-this-a-room-2021/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5274: two Variety articles stamped with one criticName (Naveen Kumar); one counts per critic, keeps the earlier article id"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "magicbird-2012/timeout--davide-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--david-cote.json",
+        "description": "BRO-5274: misspelled critic filename (davide) for the same Time Out critic; truncated copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pictures-from-home-2023/newyorker--helen-shaw.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "newyorker--conde-nast.json",
+        "description": "BRO-5274: truncated copy; the complete New Yorker review text is in the other file (both stamped Helen Shaw)"
+      }
+    ]
+  }
+}

@@ -50,3 +50,18 @@ test('a real express.co.uk article is not refused by this guard', () => {
   const r = call('https://www.express.co.uk/entertainment/theatre/1769203/Oliver-review-London-2024');
   assert.doesNotMatch(String(r.reason || ''), /^listing-page-url/);
 });
+
+// BRO-4270: BroadwayWorld show hub (/shows/<Title>-<id>.html) is the production page.
+test('refuses a NEW row on a BWW show hub URL from serp-discovery; keeps real BWW article URLs', () => {
+  const hub = 'https://www.broadwayworld.com/shows/Clydes-333623.html';
+  const r = call(hub, {}, 'serp-discovery');
+  assert.equal(r.action, 'skipped');
+  assert.equal(r.reason, 'listing-page-url: bww-show-hub');
+  const article = call('https://www.broadwayworld.com/westend/article/Review-OLIVER-at-the-Gielgud-20240101', {}, 'serp-discovery');
+  assert.notEqual(article.reason, 'listing-page-url: bww-show-hub');
+});
+
+test('an aggregator-sourced write keeps its fallback hub URL (not refused by the hub guard)', () => {
+  const r = call('https://www.broadwayworld.com/shows/Clydes-333623.html', {}, 'bww-roundup');
+  assert.notEqual(r.reason, 'listing-page-url: bww-show-hub');
+});

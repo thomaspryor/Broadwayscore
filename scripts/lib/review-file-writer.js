@@ -1147,7 +1147,15 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // can still be refreshed. Pattern-matched listings only: the bare-host case
   // is left to the read side. Escape hatch: fields.allowNonReviewUrl.
   if (input.url && fields.allowNonReviewUrl !== true && !(existing && existing.data) && !fs.existsSync(filepath)) {
-    const listingReason = require('./non-review-url-patterns').listingPageUrlReason(input.url);
+    const nonReviewPatterns = require('./non-review-url-patterns');
+    // BRO-4270: a BWW show hub (/shows/<Title>-<id>.html) is the production page, not an
+    // article; serp-discovery filed 22 of 31 such rows. Aggregator and BWW roundup/stub rows keep
+    // their fallback URL by design, so only discovery-style sources are refused.
+    if (!isAggregatorReviewSource(input.source) && !/^(bww-|theatre-record|reviews-json-stub)/.test(String(input.source || '')) && nonReviewPatterns.isBwwShowHubUrl(input.url)) {
+      console.warn(`  ⛔ Skipping BroadwayWorld show hub page: ${input.url}`);
+      return { action: 'skipped', reason: 'listing-page-url: bww-show-hub', guardRefused: true };
+    }
+    const listingReason = nonReviewPatterns.listingPageUrlReason(input.url);
     if (listingReason && listingReason !== 'bare-host') {
       console.warn(`  ⛔ Skipping listing/section page: ${input.url} (${listingReason})`);
       return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };

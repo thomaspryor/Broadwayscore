@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5274-c",
+  "planId": "b96c421f-7fe7-4885-9fea-b99fe038da79",
+  "status": "pending",
+  "createdAt": "2026-10-14T01:33:02.756747Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5274 part 3 of 3: mark the weaker file of each duplicate (showDir|outlet|critic) pair as duplicateOf its sibling so one review counts once. reviews.json already collapses the key at rebuild, so no score changes; the files and the drift audit are cleaned up.",
+    "steps": [
+      "Set duplicateOf on the weaker file of each pair (and delete one empty BWW profile-page record in part 3)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "time-stands-still-2010/hollywood-reporter--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "hollywood-reporter--david-rooney.json",
+        "description": "BRO-5274: empty excerpt stamped Isherwood; the complete review is the David Rooney file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "and-juliet-tour-2024/broadwayworld--timoth-david-copney.json",
+        "description": "BRO-5274: empty record whose url is a BWW /people/ profile page (David-West-Read), not a review"
+      }
+    ]
+  }
+}

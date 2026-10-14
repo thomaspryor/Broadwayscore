@@ -727,6 +727,22 @@ function classifyReviewUrl(url) {
  * @param {string} url
  * @returns {string|null}
  */
+/**
+ * A BroadwayWorld show hub: /shows/<Title>-<numericId>.html, one path segment
+ * (BRO-4270). It is the production's landing page (description, cast, ticket
+ * links), never an article. LISTING_PAGE_URL_PATTERNS deliberately skips this
+ * single-segment form because widening that READ-time list would re-score
+ * existing files; this is used only to refuse NEW files at write time.
+ * @param {string} url
+ * @returns {boolean}
+ */
+function isBwwShowHubUrl(url) {
+  try {
+    const u = new URL(url);
+    return /(^|\.)broadwayworld\.com$/i.test(u.hostname) && /^\/shows?\/[^/]+-\d+\.html$/i.test(u.pathname);
+  } catch { return false; }
+}
+
 function submissionNonReviewReason(url) {
   if (typeof url !== 'string' || !url) return null;
   let u;
@@ -774,6 +790,7 @@ function classifyGapCandidateUrl(url) {
 }
 
 module.exports = {
+  isBwwShowHubUrl,
   siteUtilityPathReason,
   classifyGapCandidateUrl,
   submissionNonReviewReason,
