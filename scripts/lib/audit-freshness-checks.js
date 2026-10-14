@@ -50,20 +50,26 @@ const WEEKLY = { warnH: 200, errorH: 400 };
 // row is named in the digest body and its writer is dispatched instead of
 // falling into "+N low-priority"). `hint` names the job/step kill switches
 // that would also freeze the file.
+// audit-aggregator-gap.yml treats a bare workflow_dispatch as a manual run:
+// 21-day window and NO 6h throttle on the paid outlet ground-truth audit.
+// redispatched=true makes the auto-fix run behave like the cron (the same
+// input scripts/cron-redispatch.js passes). BRO-5261 retro-review.
+const CRON_LIKE_REDISPATCH = { dispatchInputs: { redispatched: 'true' } };
+
 const AUDIT_FRESHNESS_CHECKS = [
   // Writer: scripts/audit-t1-silent-gaps.js (step "T1/T2 silent-gap sweep").
   // Workflow: audit-aggregator-gap.yml, cron '37 * * * *' (hourly); committed by
   // its "Commit audit JSON (public repo)" per-file add loop.
   // Measured: 100 commits 2026-09-27..10-13, median 3.8h, p90 7.1h, max 9.8h.
   { file: 't1-silent-gaps.json', field: 'generatedAt', ...HOURLY,
-    workflow: 'audit-aggregator-gap.yml', urgency: 'this-week',
+    workflow: 'audit-aggregator-gap.yml', urgency: 'this-week', ...CRON_LIKE_REDISPATCH,
     humanFallback: 'The hourly coverage-gap check (missing top-critic reviews) has stopped updating its report.',
     hint: 'Check audit-aggregator-gap.yml (hourly) "T1/T2 silent-gap sweep" step; kill switches: repo vars AGGREGATOR_GAP_AUDIT_DISABLED (whole job), T1_SILENT_GAP_DISABLED (step)' },
   // Writer: scripts/audit-uncollected-live-reviews.js (step "Uncollected-review
   // strand guard"). Workflow: audit-aggregator-gap.yml, hourly; same commit loop.
   // Measured: identical to t1-silent-gaps (same commit), max 9.8h.
   { file: 'uncollected-live-reviews.json', field: 'generatedAt', ...HOURLY,
-    workflow: 'audit-aggregator-gap.yml', urgency: 'this-week',
+    workflow: 'audit-aggregator-gap.yml', urgency: 'this-week', ...CRON_LIKE_REDISPATCH,
     humanFallback: 'The hourly check for found-but-never-collected reviews has stopped updating its report.',
     hint: 'Check audit-aggregator-gap.yml (hourly) "Uncollected-review strand guard" step; kill switches: repo vars AGGREGATOR_GAP_AUDIT_DISABLED (whole job), UNCOLLECTED_STRAND_AUDIT_DISABLED (step)' },
   // Writer: scripts/audit-imageless-scored-shows.js. Workflow:
@@ -130,6 +136,7 @@ function auditFreshnessPlaybookEntries() {
     match: new RegExp(`^${auditFreshnessRowName(row).replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')}$`),
     urgency: row.urgency,
     workflow: row.workflow,
+    ...(row.dispatchInputs ? { dispatchInputs: row.dispatchInputs } : {}),
     humanFallback: row.humanFallback,
   }));
 }
@@ -144,6 +151,11 @@ const { hoursAgo: ageHours, formatAge } = require('./hours-ago');
  * @param {number} nowMs
  * @returns {{status: 'ok'|'warn'|'error', ageH: number|null, message: string}}
  */
+/** Dotted-path lookup ("_meta.lastUpdated") used by the evaluator and its test. */
+function auditFieldValue(data, field) {
+  return field.split('.').reduce((obj, key) => (obj && typeof obj === 'object' ? obj[key] : undefined), data);
+}
+
 function evaluateAuditFreshness(row, data, nowMs) {
   // Conventions match health-check.js checkFreshness(): missing file, missing
   // field and unparseable date are all errors (a detector that cannot prove it
@@ -151,7 +163,7 @@ function evaluateAuditFreshness(row, data, nowMs) {
   if (data === null || data === undefined) {
     return { status: 'error', ageH: null, message: 'File missing' };
   }
-  const value = row.field.split('.').reduce((obj, key) => (obj && typeof obj === 'object' ? obj[key] : undefined), data);
+  const value = auditFieldValue(data, row.field);
   if (!value) {
     return { status: 'error', ageH: null, message: `No ${row.field} field` };
   }
@@ -168,4 +180,4 @@ function evaluateAuditFreshness(row, data, nowMs) {
   return { status: 'ok', ageH: age, message: `${formatAge(age)} old` };
 }
 
-module.exports = { AUDIT_FRESHNESS_CHECKS, evaluateAuditFreshness, ageHours, auditFreshnessRowName, auditFreshnessPlaybookEntries };
+module.exports = { AUDIT_FRESHNESS_CHECKS, evaluateAuditFreshness, auditFieldValue, ageHours, auditFreshnessRowName, auditFreshnessPlaybookEntries };

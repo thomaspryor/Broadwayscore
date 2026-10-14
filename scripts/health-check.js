@@ -433,8 +433,12 @@ async function tryAutoFix(checkResult) {
 
   // Dispatch the workflow
   try {
+    // dispatchInputs: -f key=value pairs, for workflows whose bare manual
+    // dispatch differs from their cron (audit-aggregator-gap.yml's
+    // redispatched=true; BRO-5261 retro-review).
+    const fields = Object.entries(entry.dispatchInputs || {}).map(([k, v]) => ` -f ${k}=${v}`).join('');
     execSync(
-      `gh workflow run "${entry.workflow}"`,
+      `gh workflow run "${entry.workflow}"${fields}`,
       { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
     );
     console.log(`[Auto-Fix] Dispatched ${entry.workflow} for ${checkResult.name}`);
@@ -5806,7 +5810,8 @@ async function main() {
     console.log(formatResultLine(r));
   }
 
-  const totalPassed = allResults.filter(r => r.status === 'pass').length;
+  // 'ok' (off-season skips) prints with the pass icon, so count it as passed.
+  const totalPassed = allResults.filter(r => r.status === 'pass' || r.status === 'ok').length;
   const totalWarn = allResults.filter(r => r.status === 'warn').length;
   const totalError = allResults.filter(r => r.status === 'error').length;
 

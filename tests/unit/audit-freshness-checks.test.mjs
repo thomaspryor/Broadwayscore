@@ -14,7 +14,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { AUDIT_FRESHNESS_CHECKS, evaluateAuditFreshness, ageHours, auditFreshnessRowName } = require('../../scripts/lib/audit-freshness-checks.js');
+const { AUDIT_FRESHNESS_CHECKS, evaluateAuditFreshness, ageHours, auditFreshnessRowName, auditFieldValue, auditFreshnessPlaybookEntries } = require('../../scripts/lib/audit-freshness-checks.js');
 const hc = require('../../scripts/health-check.js');
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -116,7 +116,7 @@ test('table integrity: every row file is tracked in git and its field exists and
     const rel = `data/audit/${row.file}`;
     assert.ok(tracked.has(rel), `${rel} is not tracked in git`);
     const committed = JSON.parse(execFileSync('git', ['show', `HEAD:${rel}`], { cwd: REPO, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 }));
-    const value = row.field.split('.').reduce((o, k) => (o && typeof o === 'object' ? o[k] : undefined), committed);
+    const value = auditFieldValue(committed, row.field);
     assert.ok(value, `${rel} has no ${row.field} in the committed copy`);
     assert.ok(Number.isFinite(ageHours(value, NOW)), `${rel}: ${row.field}=${value} does not parse`);
   }
@@ -179,4 +179,18 @@ test("console line: 'ok' renders the pass icon, never 'undefined'", () => {
   assert.ok(!ok.includes('undefined'), ok);
   assert.equal(ok.trim().split(' ')[0], pass.trim().split(' ')[0]);
   assert.ok(!hc.formatResultLine({ name: 'X', status: 'weird', message: 'm' }).includes('undefined'));
+});
+
+// BRO-5261 retro-review: a bare `gh workflow run audit-aggregator-gap.yml` is a
+// manual run (21-day window, no 6h throttle on the paid ground-truth audit).
+// The auto-fix must pass the cron-redispatch input, and that input must exist.
+test('audit-aggregator-gap auto-fix dispatches with cron semantics', () => {
+  const fs = require('fs');
+  const wf = fs.readFileSync(new URL('../../.github/workflows/audit-aggregator-gap.yml', import.meta.url), 'utf8');
+  const entries = auditFreshnessPlaybookEntries().filter((e) => e.workflow === 'audit-aggregator-gap.yml');
+  assert.ok(entries.length >= 2);
+  for (const e of entries) {
+    assert.deepEqual(e.dispatchInputs, { redispatched: 'true' });
+    for (const k of Object.keys(e.dispatchInputs)) assert.match(wf, new RegExp(`^      ${k}:`, 'm'), `input ${k} missing from workflow_dispatch`);
+  }
 });
