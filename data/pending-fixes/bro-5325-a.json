@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5325-a",
   "planId": "82ba251d-2c91-4b44-b8e2-473d2f2cb469",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T03:45:00.000Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,18 @@
         "description": "Create of-mice-and-men-2014/wsj--terry-teachout.json from the 2564-char Of Mice and Men section (single Longacre box) of the 2014-04-17 column; same refusals."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T04:59:51.534Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ]
 }
