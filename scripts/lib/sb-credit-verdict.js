@@ -124,12 +124,20 @@ function sbCreditVerdict(status, thresholds = {}) {
  * readiness CLI (scripts/opening-night-readiness.js) prints (BRO-3039).
  * pass:true only for a status that was actually read; an unread one
  * (no key, API error, missing cap) is pass:null so it counts as unknown,
- * never as healthy.
+ * never as healthy. `minRemaining` (credits) fails a read status with
+ * fewer credits left than that.
  */
-function sbReadinessCheck(status, thresholds) {
+function sbReadinessCheck(status, thresholds, { minRemaining } = {}) {
   const v = sbCreditVerdict(status, thresholds);
   const read = !!(status && status.ok);
   if (v.level === 'fail') return { pass: false, detail: v.detail };
+  // The per-show CLI has no check 11b (the demand-aware budget gate that
+  // justifies failing only at exhaustion above), so it passes the per-show
+  // demand estimate here: fewer credits left than one opening night needs
+  // is not ready (BRO-3039 retro-review, BRO-5261).
+  if (read && Number.isFinite(minRemaining) && Number.isFinite(status.remaining) && status.remaining < minRemaining) {
+    return { pass: false, detail: `${v.detail} Fewer than the ~${minRemaining} credits one opening night uses.` };
+  }
   if (v.level === 'pass') return { pass: true, detail: v.detail };
   if (v.level === 'skip') return { pass: null, detail: v.detail };
   return read ? { pass: true, detail: v.detail, warn: true } : { pass: null, detail: v.detail, warn: true };

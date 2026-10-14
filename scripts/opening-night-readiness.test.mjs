@@ -61,3 +61,16 @@ test('CLI: real-shaped payload is read and judged', () => {
   assert.equal(runCheckWithCurl('{"max_api_credit":1000000,"used_api_credit":1000000}', 200).pass, false);
   assert.equal(runCheckWithCurl('{"message":"Unauthorized"}', 401).pass, null);
 });
+
+// BRO-3039 retro-review (BRO-5261): the per-show CLI has no demand-aware
+// budget check, so fewer credits than one opening night uses must fail it.
+test('CLI: fewer credits left than one show needs is not ready', () => {
+  const r = runCheckWithCurl('{"max_api_credit":1000000,"used_api_credit":970000}', 200);
+  assert.equal(r.pass, false);
+  assert.match(r.detail, /one opening night/);
+  assert.equal(runCheckWithCurl('{"max_api_credit":1000000,"used_api_credit":900000}', 200).pass, true);
+});
+
+test('minRemaining never fails an unread status', () => {
+  assert.equal(sbReadinessCheck({ ok: false, reason: 'no-key' }, undefined, { minRemaining: 50000 }).pass, null);
+});

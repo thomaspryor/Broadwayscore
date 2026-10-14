@@ -27,6 +27,7 @@ const { execSync } = require('child_process');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { classifySBUsage } = require('./lib/check-sb-credits');
 const { sbReadinessCheck } = require('./lib/sb-credit-verdict');
+const { DEFAULT_PER_SHOW } = require('./lib/opening-night-budget');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -88,7 +89,7 @@ function checkScrapingBeeCredits() {
   } catch (e) {
     error = e.message;
   }
-  return sbReadinessCheck(classifySBUsage(status, data, error));
+  return sbReadinessCheck(classifySBUsage(status, data, error), undefined, { minRemaining: DEFAULT_PER_SHOW.scrapingbee });
 }
 
 function checkBrightDataZone() {
