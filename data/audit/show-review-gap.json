@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-14T06:00:40.129Z",
+  "generatedAt": "2026-10-14T08:20:40.493Z",
   "windowDays": 1095,
-  "targets": 662,
-  "auditedThisRun": 16,
-  "carriedForward": 715,
+  "targets": 649,
+  "auditedThisRun": 13,
+  "carriedForward": 718,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 410,
     "missingCurrentRun": 851,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 966,
+    "totalFlaggedMisses": 967,
     "totalRecoverable": 5,
     "totalRecovered": 14,
     "humanExcluded": 0,
-    "automatedExcluded": 116,
-    "automatedExcludedListed": 116,
-    "priorProductionCitations": 5030
+    "automatedExcluded": 118,
+    "automatedExcludedListed": 118,
+    "priorProductionCitations": 5026
   },
   "results": [
     {
@@ -11474,7 +11474,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T02:28:29.917Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -21719,72 +21724,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Betty's Summer Vacation (The Heights Players)\" review john",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 15,
-        "byReason": {
-          "non-review-host": 14,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -21797,7 +21742,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
@@ -27320,50 +27265,11 @@
       "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.flickermagazine.art/queer-events/buffy-revamped-lyric-theatre",
-        "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
-        "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
-        "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
-        "https://fairypoweredproductions.com/buffy-revamped-review/"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-02-05",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-01-30",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
-          "host": "on-magazine.co.uk",
-          "knownOutletId": "on-magazine",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-04-13",
-          "serpCensus": true
-        },
-        {
-          "url": "https://fairypoweredproductions.com/buffy-revamped-review/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-04-14",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -27406,124 +27312,18 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Buffy Revamped\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Buffy Revamped\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Buffy Revamped\" review lyric",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Buffy Revamped Lyric Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Buffy Revamped Lyric Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Buffy Revamped Lyric Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 38,
-        "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 25,
-          "bare-host": 1,
-          "ticket-seller-product-page": 3,
-          "non-review-path": 2,
-          "ticketing-listing": 2,
-          "ticketing-reseller": 2,
-          "show-listing-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
-      "unextractable": [
-        {
-          "url": "https://www.flickermagazine.art/queer-events/buffy-revamped-lyric-theatre",
-          "host": "flickermagazine.art",
-          "knownOutletId": "flicker-magazine",
-          "serpCensus": true,
-          "zeroCharAttempts": 4
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
-          "host": "theatreandtonic.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
-          "host": "britishtheatreguide.info",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
-          "host": "on-magazine.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://fairypoweredproductions.com/buffy-revamped-review/",
-          "host": "fairypoweredproductions.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -27533,7 +27333,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "bug-2026",
@@ -28912,7 +28712,12 @@
         "liveCount": 9,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-10T09:05:38.747Z"
+      "computedAt": "2026-10-10T09:05:38.747Z",
+      "quarantine": {
+        "nextState": "incomplete:8:11",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -30196,7 +30001,12 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-14T06:00:40.129Z"
+      "computedAt": "2026-10-14T06:00:40.129Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46631,7 +46441,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -53981,16 +53791,16 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://liamodell.com/2026/10/09/fences-review-play-lyric-hammersmith-theatre-london-home-manchester-nottingham-playhouse/",
+        "https://www.londontheatre.co.uk/reviews/fences-review-lyric-hammersmith",
         "https://www.thereviewshub.com/fences-lyric-hammersmith-london/",
         "https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068",
         "https://www.londontheatredirect.com/news/august-wilsons-fences-review-a-powerful-portrait-of-family-prejudice-and-masculinity",
         "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
-        "https://www.timeout.com/london/theatre/fences-2-review",
-        "https://theatrevibe.co.uk/2026/10/11/review-fences-lyric-hammersmith-2026/",
         "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
+        "https://theatrevibe.co.uk/2026/10/11/review-fences-lyric-hammersmith-2026/",
+        "https://www.timeout.com/london/theatre/fences-2-review",
         "https://ayoungishperspective.co.uk/2026/10/12/review-fences-2/",
         "https://www.londontheatre1.com/reviews/fences-lyric-hammersmith-theatre/",
-        "https://www.londontheatre.co.uk/reviews/fences-review-lyric-hammersmith",
         "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
         "https://ground.news/article/review-fences-at-lyric-theatre-hammersmith-uk-tour",
         "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
@@ -54176,7 +53986,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -54186,7 +53996,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           },
           {
@@ -54196,7 +54006,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -54216,7 +54026,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -54236,10 +54046,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 20,
         "byReason": {
-          "non-review-host": 10,
           "roundup-page": 4,
+          "non-review-host": 11,
+          "event-listing": 1,
           "ticketing-listing": 1,
           "census-junk-host": 3
         }
@@ -54304,6 +54115,12 @@
             "firstSeenAt": "2026-10-13T02:55:59.865Z"
           },
           {
+            "url": "https://www.londontheatre.co.uk/reviews/fences-review-lyric-hammersmith",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-13T17:02:51.141Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/fences-lyric-hammersmith-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -54328,10 +54145,10 @@
             "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/fences-2-review",
-            "outletId": "timeout.com",
+            "url": "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-12T16:27:03.506Z"
+            "firstSeenAt": "2026-10-13T02:55:59.865Z"
           },
           {
             "url": "https://theatrevibe.co.uk/2026/10/11/review-fences-lyric-hammersmith-2026/",
@@ -54340,10 +54157,10 @@
             "firstSeenAt": "2026-10-13T02:55:59.865Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.timeout.com/london/theatre/fences-2-review",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-10-13T02:55:59.865Z"
+            "firstSeenAt": "2026-10-12T16:27:03.506Z"
           },
           {
             "url": "https://ayoungishperspective.co.uk/2026/10/12/review-fences-2/",
@@ -54356,12 +54173,6 @@
             "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T02:55:59.865Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/fences-review-lyric-hammersmith",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-13T17:02:51.141Z"
           },
           {
             "url": "https://ground.news/article/review-fences-at-lyric-theatre-hammersmith-uk-tour",
@@ -54402,7 +54213,7 @@
         "liveCount": 12,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-13T23:45:26.813Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "firewing-off-west-end-2026",
@@ -55703,7 +55514,12 @@
         "liveCount": 3,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T02:28:29.917Z",
+      "quarantine": {
+        "nextState": "incomplete:1:5",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -55722,12 +55538,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Fishing For Alaska\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Fishing For Alaska\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Fishing For Alaska\" review paradise",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Fishing For Alaska Paradise Factory Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Fishing For Alaska Paradise Factory Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Fishing For Alaska Paradise Factory Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 11,
+          "aggregator-internal-nav": 7,
+          "ticketing-listing": 1,
+          "bare-host": 1,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -55740,7 +55619,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-13T23:45:26.813Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "flamenc-oh-off-west-end-2026",
@@ -90001,7 +89880,12 @@
         "liveCount": 0,
         "candidateCount": 20
       },
-      "computedAt": "2026-10-14T06:00:40.129Z"
+      "computedAt": "2026-10-14T06:00:40.129Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -98690,7 +98574,12 @@
         "liveCount": 11,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-10T23:14:28.891Z"
+      "computedAt": "2026-10-10T23:14:28.891Z",
+      "quarantine": {
+        "nextState": "incomplete:9:13",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -114632,7 +114521,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -127045,7 +126934,12 @@
         "liveCount": 1,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-11T20:52:53.418Z"
+      "computedAt": "2026-10-11T20:52:53.418Z",
+      "quarantine": {
+        "nextState": "incomplete:2:13",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -145821,74 +145715,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Quarter Rican\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Quarter Rican\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Quarter Rican\" review hostos",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 33,
-        "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 29,
-          "write-path-blocked": 1,
-          "census-junk-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -145901,7 +145733,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -159861,9 +159693,9 @@
       },
       "computedAt": "2026-10-10T16:31:40.157Z",
       "quarantine": {
-        "nextState": "incomplete:11:12",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
+        "nextState": "incomplete:15:19",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
       }
     },
     {
@@ -160485,7 +160317,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -167296,7 +167128,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-14T06:00:40.129Z"
+      "computedAt": "2026-10-14T06:00:40.129Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -172233,7 +172070,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T02:28:29.917Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "the-balusters-2026",
@@ -172580,29 +172422,39 @@
         "https://www.looge.co.uk/event/the-banality-of-evil-hannah-arendt-france-1940-b222f3bf",
         "https://www.jamr.live/event/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre-london-2026-10-08",
         "https://www.londontheatregeek.co.uk/shows/the-banality-of-evil-hannah-arendt-france-1940",
-        "https://fullhouse.me/work/the-banality-of-evil-hannah-arendt-france-1940"
+        "https://thespyinthestalls.com/2026/10/the-banality-of-evil/",
+        "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review",
+        "https://ayoungishperspective.co.uk/2026/10/13/the-banality-of-evil-hannah-arendt-france-1940/",
+        "https://www.newstatesman.com/culture/theatre/2026/10/the-ghost-of-hannah-arendt-in-banality-of-evil"
       ],
-      "dirFiles": 13,
-      "dirClean": 6,
-      "inReviewsJson": 6,
+      "dirFiles": 14,
+      "dirClean": 7,
+      "inReviewsJson": 7,
       "missing": [
         {
-          "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
-          "host": "londonpubtheatres.com",
-          "knownOutletId": "londonpubtheatres",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "ayoungishperspective.co.uk",
-          "count": 1
+          "url": "https://thespyinthestalls.com/2026/10/the-banality-of-evil/",
+          "host": "thespyinthestalls.com",
+          "knownOutletId": "the-spy-in-the-stalls",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre"
         },
         {
-          "host": "newstatesman.com",
-          "count": 1
+          "url": "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre"
         }
       ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267",
@@ -172745,7 +172597,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 9,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -172759,7 +172611,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -172769,8 +172621,8 @@
             "fetchErrors": 0
           },
           "bestoftheatre": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 9,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -172784,9 +172636,14 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "currentRunRows": 9,
+        "corroborated": 7,
+        "perSource": {
+          "bestoftheatre": {
+            "cited": 7,
+            "corroborated": 7
+          }
+        }
       },
       "serpCensus": {
         "ran": true,
@@ -172819,7 +172676,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -172830,7 +172687,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -172846,36 +172703,40 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
         "count": 20,
         "byReason": {
+          "roundup-page": 3,
           "non-review-host": 13,
-          "write-path-blocked": 1,
-          "non-review-path": 2,
           "ticketing-reseller": 2,
-          "ticketing-listing": 1,
+          "write-path-blocked": 1,
           "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 6,
-      "unextractable": [
-        {
-          "url": "https://fullhouse.me/work/the-banality-of-evil-hannah-arendt-france-1940",
-          "host": "fullhouse.me",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "zeroCharAttempts": 3
-        }
-      ],
+      "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
-          "host": "londonpubtheatres.com",
-          "outletId": "londonpubtheatres",
+          "url": "https://thespyinthestalls.com/2026/10/the-banality-of-evil/",
+          "host": "thespyinthestalls.com",
+          "outletId": "the-spy-in-the-stalls",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -172891,11 +172752,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "londonpubtheatres",
-            "outlet": "londonpubtheatres",
+            "outletId": "the-spy-in-the-stalls",
+            "outlet": "the-spy-in-the-stalls",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026"
+            "url": "https://thespyinthestalls.com/2026/10/the-banality-of-evil/"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review"
           },
           {
             "outletId": "broadway-baby",
@@ -172943,6 +172811,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-13T23:45:26.813Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/the-banality-of-evil-hannah-arendt-france-1940-review-arcola-theatre-london",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -172967,11 +172841,30 @@
             "firstSeenAt": "2026-10-13T17:02:51.141Z"
           },
           {
-            "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
-            "outletId": "londonpubtheatres",
+            "url": "https://ayoungishperspective.co.uk/2026/10/13/the-banality-of-evil-hannah-arendt-france-1940/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T08:20:40.493Z"
+          },
+          {
+            "url": "https://www.newstatesman.com/culture/theatre/2026/10/the-ghost-of-hannah-arendt-in-banality-of-evil",
+            "outletId": "newstatesman.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T08:20:40.493Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/the-banality-of-evil/",
+            "outletId": "the-spy-in-the-stalls",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T23:45:26.813Z"
+            "firstSeenAt": "2026-10-14T08:20:40.493Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review",
+            "outletId": "theatreandtonic",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-14T08:20:40.493Z"
           },
           {
             "url": "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267",
@@ -173017,10 +172910,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 4,
-        "candidateCount": 11
+        "liveCount": 7,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-13T23:45:26.813Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -173560,10 +173453,10 @@
       "candidatesRejected": {
         "count": 331,
         "byReason": {
+          "non-review-host": 15,
           "aggregator-internal-nav": 226,
           "not-http-url": 86,
-          "aggregator-section-root": 4,
-          "non-review-host": 15
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -173636,7 +173529,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -175796,7 +175689,12 @@
         "liveCount": 4,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T02:28:29.917Z",
+      "quarantine": {
+        "nextState": "incomplete:1:2",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -181348,8 +181246,7 @@
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-sound-off-on-the-hairy-ape-at-irish-repertory-theatre",
         "https://playbill.com/article/what-did-critics-think-of-bobby-cannavale-in-the-hairy-ape",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-HAIRY-APE-at-The-Irish-Repertory-Theatre-20261006",
-        "https://www.broadwayworld.com/article/Review-Roundup-Hair-Raising-THE-HAIRY-APE-Opens-Off-Broadway-All-the-Reviews-20170401"
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-HAIRY-APE-at-The-Irish-Repertory-Theatre-20261006"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/eugene-oneill-hairy-ape-off-broadway-review/",
@@ -181373,12 +181270,12 @@
         "https://www.wsj.com/articles/the-hairy-ape-review-a-drama-of-dehumanization-at-irish-rep-c7bded03",
         "https://www.irishcentral.com/opinion/others/the-hairy-ape-irish-rep",
         "https://thefrontrowcenter.com/2026/10/the-hairy-ape/",
-        "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
+        "https://news.frombroadway.com/post/review-roundup-the-hairy-ape-irish-repertory-theatre",
         "https://www.theatrereviews.com/tag/hairy-ape/"
       ],
-      "dirFiles": 27,
-      "dirClean": 16,
-      "inReviewsJson": 16,
+      "dirFiles": 28,
+      "dirClean": 17,
+      "inReviewsJson": 17,
       "missing": [
         {
           "url": "http://www.thedailybeast.com/articles/2017/03/31/the-hairy-ape-at-the-park-avenue-armory-is-eugene-o-neill-at-his-most-epic.html",
@@ -181407,12 +181304,6 @@
           "knownOutletId": "washpost",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -181422,6 +181313,10 @@
         },
         {
           "host": "offoffonline.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
           "count": 1
         }
       ],
@@ -181442,8 +181337,13 @@
               "urlInDir": "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "http://www.hollywoodreporter.com/review/hairy-ape-review-990404",
@@ -181461,8 +181361,36 @@
               "urlInDir": "http://www.hollywoodreporter.com/review/hairy-ape-review-990404"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://news.frombroadway.com/post/review-roundup-the-hairy-ape-irish-repertory-theatre",
+          "host": "frombroadway.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frombroadway--sara-holdren.json",
+              "flag": "clean",
+              "urlInDir": "https://news.frombroadway.com/post/review-roundup-the-hairy-ape-irish-repertory-theatre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://www.theatrereviews.com/tag/hairy-ape/",
@@ -181480,7 +181408,12 @@
               "urlInDir": "https://www.theatrereviews.com/tag/hairy-ape/"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -181506,7 +181439,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -181516,7 +181449,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -181526,7 +181459,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -181537,7 +181470,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -181547,7 +181480,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -181557,15 +181490,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 804,
+        "count": 534,
         "byReason": {
-          "non-review-host": 90,
-          "aggregator-internal-nav": 569,
-          "not-http-url": 114,
-          "aggregator-section-root": 19,
-          "roundup-page": 10,
-          "venue-production-page": 1,
-          "census-junk-host": 1
+          "roundup-page": 5,
+          "non-review-host": 79,
+          "aggregator-internal-nav": 324,
+          "production-database-listing": 23,
+          "show-listing-page": 1,
+          "not-http-url": 85,
+          "aggregator-section-root": 15,
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
@@ -181573,12 +181507,9 @@
         {
           "url": "https://playbill.com/article/what-did-critics-think-of-bobby-cannavale-in-the-hairy-ape",
           "publishDate": "2017-04-04"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Hair-Raising-THE-HAIRY-APE-Opens-Off-Broadway-All-the-Reviews-20170401",
-          "publishDate": "2017-04-01"
         }
       ],
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -181606,25 +181537,18 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "frombroadway.com",
+            "outlet": "frombroadway.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://news.frombroadway.com/post/review-roundup-the-hairy-ape-irish-repertory-theatre"
+          },
           {
             "outletId": "theatre-reviews-limited",
             "outlet": "theatre-reviews-limited",
@@ -181726,6 +181650,13 @@
             "firstSeenAt": "2026-10-08T09:47:49.209Z"
           },
           {
+            "url": "https://news.frombroadway.com/post/review-roundup-the-hairy-ape-irish-repertory-theatre",
+            "outletId": "frombroadway.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-14T08:20:40.493Z"
+          },
+          {
             "url": "https://www.theatrereviews.com/tag/hairy-ape/",
             "outletId": "theatre-reviews-limited",
             "state": "GAP",
@@ -181735,9 +181666,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 13,
-        "candidateCount": 14
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-10T23:14:28.891Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "the-harder-they-come-off-west-end-2026",
@@ -214378,7 +214309,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -214419,13 +214350,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 33,
         "byReason": {
           "non-review-host": 27,
-          "aggregator-internal-nav": 1,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 2,
           "production-database-listing": 1,
-          "show-listing-page": 1,
-          "review-index-page": 1
+          "review-index-page": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -214476,7 +214408,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-13T23:45:26.813Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -219244,7 +219176,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T02:28:29.917Z"
+      "computedAt": "2026-10-14T08:20:40.493Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
@@ -225016,7 +224948,12 @@
         "liveCount": 15,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-10T10:36:33.884Z"
+      "computedAt": "2026-10-10T10:36:33.884Z",
+      "quarantine": {
+        "nextState": "incomplete:12:19",
+        "since": "2026-10-14T08:20:40.595Z",
+        "lastAt": "2026-10-14T08:20:40.595Z"
+      }
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
