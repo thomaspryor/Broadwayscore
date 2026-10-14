@@ -94,7 +94,14 @@ For each card:
    `node scripts/lib/wait-for-land.js land/<name> 58` in the background, and
    pick the next card now. When a waiter reports a refusal, read the run log,
    fix, push the same ref again.
-6. After it lands, re-run the card's VERIFY on fresh main. Passes:
+6. After it lands, re-run the card's VERIFY on fresh main. Then, before
+   closing, run the shadow Codex cross-check in the background (timeout 1800000):
+   `node scripts/codex/check-claude.js --card <id> --commit <landed sha> | tail -3`.
+   It reviews the landed diff with Codex, comments on the card on REJECT or
+   SHIP-WITH-FIXES, skips itself when the Codex weekly allowance is 70%+ or
+   unknown or the Codex runner is live, and always exits 0. It never stops or
+   delays closing the card: do not wait on it here, and ignore its failures
+   (section 3 lets it finish so it can save the Codex login). VERIFY passes:
    `node scripts/linear-brain.js update <id> --state Done --comment "<Outcome + PR-EVIDENCE: merged deployed checked (<commit url>)>"`.
    Otherwise `node scripts/linear-session.js report --issue=<id> --status=paused --summary="<what is left and why>"`
    (with `RECHECK-AFTER: YYYY-MM-DD` and a safe recheck command when the
@@ -103,9 +110,11 @@ For each card:
 ## 3. Finish
 
 Before replying, wait for every land waiter you started (finish step 6 for
-each) and for the Codex lane to exit (check /tmp/codex-run.log
+each), every Codex cross-check you started, and for the Codex lane to exit (check /tmp/codex-run.log
 every few minutes, never in a tight loop) and read its "## Codex runner"
-summary.
+summary. Then re-run, in the foreground, each cross-check from step 6 that
+skipped because the Codex runner was live (same command; it posts nothing
+twice for one commit, and its result never changes a card).
 
 Rules: never call send_later, create_trigger or any scheduling tool; never
 create sessions or dispatch other workers; skip anything irreversible,

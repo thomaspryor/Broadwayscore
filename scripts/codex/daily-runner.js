@@ -224,26 +224,9 @@ function resetWorktree(branch) {
   return provideData(WT);
 }
 
+/** Newest Codex weekly allowance reading in this container's rollouts (scripts/lib/codex-runner.js), or null. */
 function weeklyPct() {
-  const dir = path.join(CODEX_HOME, 'sessions');
-  const files = [];
-  const walk = (d) => {
-    let ents = [];
-    try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
-    for (const e of ents) {
-      const p = path.join(d, e.name);
-      if (e.isDirectory()) walk(p);
-      else if (e.name.endsWith('.jsonl')) { try { files.push({ p, m: fs.statSync(p).mtimeMs }); } catch { /* vanished */ } }
-    }
-  };
-  walk(dir);
-  // The newest rollout can be one that has not logged a rate-limit reading yet
-  // (just started, or aborted early), so fall back through the next few.
-  files.sort((a, b) => b.m - a.m);
-  for (const f of files.slice(0, 8)) {
-    try { const pct = R.latestWeeklyPercent(fs.readFileSync(f.p, 'utf8')); if (pct != null) return pct; } catch { /* unreadable */ }
-  }
-  return null;
+  return R.weeklyPctFromSessions(CODEX_HOME);
 }
 
 function saveLogin() {

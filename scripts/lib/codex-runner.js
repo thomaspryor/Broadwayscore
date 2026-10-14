@@ -99,6 +99,33 @@ function parseVerdict(text) {
   return VERDICTS.includes(last) ? last : 'NONE';
 }
 
+/**
+ * Newest weekly allowance reading in the Codex rollouts under <codexHome>/sessions, or null.
+ * Shared by the daily runner and the Claude cross-check (scripts/codex/check-claude.js), so
+ * neither has to require the other. The newest rollout can be one that has not logged a
+ * rate-limit reading yet (just started, or aborted early), so it falls back through the next few.
+ */
+function weeklyPctFromSessions(codexHome) {
+  const fs = require('fs');
+  const path = require('path');
+  const files = [];
+  const walk = (d) => {
+    let ents = [];
+    try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of ents) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith('.jsonl')) { try { files.push({ p, m: fs.statSync(p).mtimeMs }); } catch { /* vanished */ } }
+    }
+  };
+  walk(path.join(codexHome, 'sessions'));
+  files.sort((a, b) => b.m - a.m);
+  for (const f of files.slice(0, 8)) {
+    try { const pct = latestWeeklyPercent(fs.readFileSync(f.p, 'utf8')); if (pct != null) return pct; } catch { /* unreadable */ }
+  }
+  return null;
+}
+
 /** Highest weekly (secondary or primary 10080-minute) used_percent in rollout JSONL text. */
 function latestWeeklyPercent(rolloutText) {
   let pct = null;
@@ -554,6 +581,7 @@ function emptyBatchVerdict(gate, files) {
 }
 
 module.exports = {
+  weeklyPctFromSessions,
   emptyBatchVerdict,
   parseCheckOutput,
   lockMessage,
