@@ -611,7 +611,7 @@ export default function ImportShows({
       return;
     }
     const mezz = candidate.candidate;
-    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(mezz, userId)).catch(() => {});
+    supabaseRestInsert('user_show_stubs', stubRowFromCandidate(mezz, userId), { returning: 'minimal' }).catch(() => {});
     setEntries(prev => prev.map((e, i) => i === index ? {
       ...e,
       match: {
