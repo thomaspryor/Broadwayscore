@@ -11,8 +11,7 @@
  *   readmore 3+ "Read more" / "Continue reading" links
  *   dated    4+ distinct "Month D, YYYY" dates AND 2+ read-more links
  *            (several posts, each with its own date)
- * Skips files already excluded (invalid tier, non-review, wrong show or
- * production, duplicates, rejected). Prints show/file, outlet, critic, score,
+ * Skips files the rebuild already excludes (review-guards isIncludableForRebuild). Prints show/file, outlet, critic, score,
  * signals; never the text.
  *
  *   node scripts/audit-listing-page-text.js [--show=a,b] [--json]
@@ -42,9 +41,26 @@ function listingSignals(text) {
   return signals;
 }
 
-function excluded(r) {
-  return r.contentTier === 'invalid' || r.isNonReview || r.wrongShow || r.wrongProduction
-    || r.duplicateOf || r.rejectedAt || r.rejectionReason || r.isRoundupArticle;
+// The site's own inclusion rule. A shortcut on contentTier missed the
+// BroadwayBlog search page: tier 'invalid', yet an aggregator excerpt kept it
+// live at 87. Rows whose show is unknown here are scanned (fail open: this is
+// read-only).
+let _shows = null;
+function excluded(r, show, filePath) {
+  if (!_shows) {
+    _shows = new Map();
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+      for (const s of (d.shows || d)) if (s && s.id) _shows.set(s.id, s);
+    } catch { /* no shows.json: scan everything */ }
+  }
+  const meta = _shows.get(show);
+  if (!meta) return false;
+  try {
+    return !require('./lib/review-guards').isIncludableForRebuild(r, meta, filePath);
+  } catch {
+    return false;
+  }
 }
 
 function main() {
@@ -60,7 +76,7 @@ function main() {
       if (!f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
       let r;
       try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
-      if (!r.fullText || excluded(r)) continue;
+      if (!r.fullText || excluded(r, show, path.join(dir, f))) continue;
       scanned++;
       const signals = listingSignals(r.fullText);
       if (signals.length) {
