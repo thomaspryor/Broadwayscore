@@ -14,6 +14,9 @@
  *   node scripts/reclassify-invalid-reviews.js            # dry run, report only
  *   node scripts/reclassify-invalid-reviews.js --apply    # write new tier to source files
  *   node scripts/reclassify-invalid-reviews.js --sample 100  # test against subset
+ *   node scripts/reclassify-invalid-reviews.js --file=<show>/<file>.json[,...] --apply
+ *     only the named files (approved-fix run-script; BRO-5356: rows whose
+ *     wrong-content flag was cleared but kept their invalid tier)
  *
  * Exit codes:
  *   0 — audit completed (regardless of flip count)
@@ -26,12 +29,13 @@ const cq = require('./lib/content-quality.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 function parseArgs(argv) {
-  const args = { apply: false, sample: null };
+  const args = { apply: false, sample: null, files: null };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--apply') args.apply = true;
     else if (a === '--sample') args.sample = parseInt(argv[++i], 10);
     else if (a.startsWith('--sample=')) args.sample = parseInt(a.split('=')[1], 10);
+    else if (a.startsWith('--file=')) args.files = new Set(require('./lib/reverify-file-mode').parseFileSpecs(a.slice('--file='.length)).map((x) => `${x.showId}/${x.file}`));
     else if (a === '-h' || a === '--help') {
       console.log(fs.readFileSync(__filename, 'utf-8').split('\n').slice(2, 22).join('\n'));
       process.exit(0);
@@ -57,7 +61,8 @@ function main() {
   const dir = findDir();
   const showDirs = listShowDirs(dir).filter(d => d !== '_pending');
 
-  const pool = args.sample ? showDirs.slice(-args.sample) : showDirs;
+  const pool = args.files ? showDirs.filter((d) => [...args.files].some((k) => k.startsWith(`${d}/`)))
+    : args.sample ? showDirs.slice(-args.sample) : showDirs;
   const stats = {
     totalInvalid: 0,
     totalReviews: 0,
@@ -79,6 +84,7 @@ function main() {
     let files;
     try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json')); } catch { continue; }
     for (const f of files) {
+      if (args.files && !args.files.has(`${show}/${f}`)) continue;
       let review;
       const filePath = path.join(showDir, f);
       try { review = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { continue; }
@@ -120,7 +126,13 @@ function main() {
           review.contentTier = newTier;
           review.tierReason = result.tierReason;
           review.contentTierReason = result.tierReason;
+          // A wrong-content reason with no wrong-content flag left is stale too.
+          if (review.incompleteReason === 'wrong_content' && review.wrongShow !== true && review.wrongProduction !== true) {
+            review.incompleteReason = null;
+            review.incompleteDetail = null;
+          }
           fs.writeFileSync(filePath, JSON.stringify(review, null, 2) + '\n');
+          if (args.files) console.log(`  RETIERED ${show}/${f}: invalid -> ${newTier} (${result.tierReason})`);
         }
       } else {
         stats.wouldStayInvalid++;

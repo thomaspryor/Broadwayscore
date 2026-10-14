@@ -167,6 +167,30 @@ function splitRelabelUndo(record, newUrl) {
 // refetch markers set below.
 const URL_EDIT_SIDE_EFFECT_KEYS = ['_urlChangedClear', 'duplicateClearReason', 'needsRefetch', 'urlCorrectedFrom', 'urlCorrectedReason'];
 
+/**
+ * BRO-5356: clearing wrongShow/wrongProduction left contentTier 'invalid'
+ * ('Wrong show' / 'Wrong production'), and the rebuild drops invalid rows, so
+ * the cleared review stayed off the site (spamalot-2023, the-whos-tommy-2024
+ * NYSR). Once neither flag is set, recompute a tier that the flag caused.
+ * Returns the keys it changed.
+ */
+function retierAfterFlagClear(record) {
+  if (record.contentTier !== 'invalid' || record.wrongShow === true || record.wrongProduction === true) return [];
+  if (!/^wrong (show|production)$/i.test(String(record.contentTierReason || record.tierReason || '').trim())) return [];
+  const t = require('./content-quality').classifyContentTier({ ...record, contentTier: undefined });
+  if (!t || !t.contentTier || t.contentTier === 'invalid') return [];
+  record.contentTier = t.contentTier;
+  record.contentTierReason = t.tierReason;
+  record.tierReason = t.tierReason;
+  const changed = ['contentTier', 'contentTierReason', 'tierReason'];
+  if (record.incompleteReason === 'wrong_content') {
+    record.incompleteReason = null;
+    record.incompleteDetail = null;
+    changed.push('incompleteReason', 'incompleteDetail');
+  }
+  return changed;
+}
+
 function isScalar(v) {
   return v === null || ['string', 'number', 'boolean'].includes(typeof v);
 }
@@ -286,6 +310,10 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     const r = require('./verified-original-score').applyVerifiedOriginalScore(next, newValue, `approved fix ${stamp.fixId}: rating verified against the outlet page`);
     if (!r.ok) return { ok: false, reason: r.reason };
     sideEffectKeys = unexpectedChanges(beforeRating, next, field);
+  }
+  if ((field === 'wrongShow' || field === 'wrongProduction') && newValue === false) {
+    const retiered = retierAfterFlagClear(next);
+    if (retiered.length) sideEffectKeys = [...new Set([...sideEffectKeys, ...retiered])].sort();
   }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
@@ -453,4 +481,5 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   return { ok: true, msg: `${action.file} ${res.msg}${note}` };
 }
 
-module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag };
+module.exports = {
+  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag };

@@ -121,6 +121,9 @@ const ALLOWED_SCRIPTS = [
   // byline/text fix left a stale verdict. Plans pass --file=<show>/<file>.json
   // (lib/reverify-file-mode.js: flagged rows and excluding verdicts are not written).
   'reverify-stale-cv-promoted.js',
+  // BRO-5356: recompute contentTier on named invalid rows whose wrong-content
+  // flag was cleared (plans pass --file=<show>/<file>.json --apply).
+  'reclassify-invalid-reviews.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
