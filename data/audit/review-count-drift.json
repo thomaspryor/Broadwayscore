@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-13T16:59:33.824Z",
+  "generatedAt": "2026-10-14T14:23:05.114Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-13T16:32:34.850Z",
-    "reviewsJsonAgeHours": 0.4,
+    "reviewsJsonLastUpdated": "2026-10-14T14:09:08.476Z",
+    "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
-    "showsScanned": 25,
-    "allShowsScanned": 2591,
-    "filesScanned": 56408,
+    "showsScanned": 27,
+    "allShowsScanned": 2599,
+    "filesScanned": 56490,
     "showsOverThreshold": 0,
     "newOffenders": 0,
-    "blindShows": 24,
+    "blindShows": 27,
     "orphanReviews": 6
   },
   "thresholds": {
@@ -30,11 +30,11 @@
   "orphanReviews": [
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "count": 24
+      "count": 23
     },
     {
       "showId": "pride-bridge-theatre-off-west-end-2026",
-      "count": 21
+      "count": 23
     },
     {
       "showId": "the-apple-boys-regional-2025",
@@ -55,17 +55,17 @@
   ],
   "perShow": [
     {
-      "showDir": "an-oak-tree-off-west-end-2026",
-      "actual": 17,
-      "scanned": 32,
+      "showDir": "a-ghost-in-your-ear-off-broadway-2026",
+      "actual": 1,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "blood-of-my-blood-west-end-2026",
+      "showDir": "an-oak-tree-off-west-end-2026",
       "actual": 17,
-      "scanned": 44,
+      "scanned": 32,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -80,16 +80,16 @@
     },
     {
       "showDir": "fences-off-west-end-2026",
-      "actual": 13,
-      "scanned": 33,
+      "actual": 14,
+      "scanned": 30,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "fish-off-broadway-2026",
-      "actual": 4,
-      "scanned": 12,
+      "actual": 6,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -104,8 +104,8 @@
     },
     {
       "showDir": "good-time-charlie-off-broadway-2026",
-      "actual": 14,
-      "scanned": 22,
+      "actual": 16,
+      "scanned": 24,
       "suppressedCount": 1,
       "suppressed": [
         {
@@ -127,15 +127,23 @@
       "overThreshold": false
     },
     {
-      "showDir": "into-the-woods-noel-coward-west-end-2026",
-      "actual": 31,
-      "scanned": 54,
+      "showDir": "ilford-boy-west-end-2026",
+      "actual": 1,
+      "scanned": 1,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "king-lear-royal-exchange-regional-2026",
+      "actual": 11,
+      "scanned": 21,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "nina-off-west-end-2026",
       "actual": 8,
       "scanned": 15,
       "suppressedCount": 0,
@@ -145,7 +153,7 @@
     {
       "showDir": "rent-west-end-2026",
       "actual": 35,
-      "scanned": 51,
+      "scanned": 47,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -159,9 +167,33 @@
       "overThreshold": false
     },
     {
+      "showDir": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "actual": 10,
+      "scanned": 17,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-cherry-orchard-west-end-2026",
+      "actual": 8,
+      "scanned": 52,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "financialtimes--tim-bano.json",
+          "outletId": "financialtimes",
+          "criticName": "Tim Bano",
+          "publishDate": "2026-10-14",
+          "url": "https://www.ft.com/content/e36fa65e-f5e7-4d8b-aa68-4a96c4f5a8e5"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
       "showDir": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-      "actual": 13,
-      "scanned": 16,
+      "actual": 17,
+      "scanned": 21,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
