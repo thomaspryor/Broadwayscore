@@ -179,6 +179,8 @@ test('undoRestore puts the rescore back once, and restoreBigMove then leaves the
   assert.equal(undoRestore(undone), null, 'already undone');
   assert.equal(undoRestore(rescored), null, 'never restored');
   assert.equal(undoRestore({ ...restored, llmMetadata: { scoredAt: '2026-11-01T00:00:00Z' } }), null, 'rescored again since');
+  assert.equal(undoRestore({ ...restored, needsRescore: true }), null, 'text changed, waiting for a rescore');
+  assert.equal(undoRestore({ ...restored, fullText: restored.fullText + ' refetched' }), null, 'text no longer the stripped text');
 });
 
 test('a second strip keeps the first baseline score but tracks the new text length', () => {
