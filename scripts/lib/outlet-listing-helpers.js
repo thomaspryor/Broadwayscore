@@ -30,13 +30,12 @@ function escapeRegex(s) {
  * whose title appears in the combined text.
  *
  * Guards:
- *  - Titles in COMMON_WORD_SHOW_TITLES ("six", "rent", "chicago" etc.) require
- *    a word-boundary regex match AND the match must be in the URL slug (more
- *    specific than just the headline). This prevents "six actors" or "chicago
- *    theater" from triggering a stub under the show *Six* or *Chicago*.
- *  - Single-word normalized titles shorter than 7 chars and NOT in
- *    COMMON_WORD_SHOW_TITLES are also skipped — too short to match reliably
- *    (e.g. "nine" → 4 chars, would FP constantly).
+ *  - Titles in COMMON_WORD_SHOW_TITLES ("six", "rent", "chicago" etc.) are
+ *    skipped here (the per-show SERP collector handles them). One-word titles
+ *    under 5 chars ("fish", "rope") match only when the headline, slug or feed
+ *    description also names a full cast, director or writer name of that show
+ *    (namesShowCredit): "fish market" files nothing, "Melis Aker's Fish" lands
+ *    on *Fish*.
  *  - Multi-word titles (≥2 tokens) must appear as whole words after
  *    normalization, and an "&"-led title ("& Juliet" -> "and juliet") may
  *    not follow another word ("Romeo and Juliet").
@@ -44,6 +43,7 @@ function escapeRegex(s) {
  * @param {string} headline - Article headline/title from listing page
  * @param {string} urlSlug  - URL slug/path of the article
  * @param {Array}  activeShows - Shows with status open or previews
+ * @param {string} [creditText] - feed description/summary; only used to find a cast, director or writer name for one-word titles under 5 letters
  * @returns {Array} subset of activeShows that match
  */
 // normalizeTitle JOINS hyphenated words ("Grown-Ups" → "grownups", deliberate
@@ -55,6 +55,36 @@ function escapeRegex(s) {
 // both sides. Kept local — title-match's contract is unchanged.
 function hyphenSpaced(s) {
   return normalizeTitle(String(s || '').replace(/[-‐‑‒–—]/g, ' '));
+}
+
+// A one-word title under 5 letters ("Fish", "Soon", "Rope") is too ambiguous to
+// match on the title alone, and used to be skipped outright. Skipped meant never
+// matched by this outlet-first sweep: Theater Pizzazz and Off Off Online both ran
+// a Fish review in their RSS feeds the day after opening and the poller filed
+// neither (BRO-5326; 13 of 251 running shows were in this blind spot). Such a
+// title now matches when the headline, slug or feed description ALSO names a
+// full cast, director or writer name of that show.
+//
+// Deliberately NOT extended to COMMON_WORD_SHOW_TITLES (Six, Chicago, Oliver...):
+// their writers and composers are shared by every production of the title, so
+// "Kander and Ebb's Cabaret at Chicago Shakespeare" would file under Chicago
+// (found by review, reproduced, reverted). Composer/lyricist/source credits are
+// excluded for the same reason, and because they can be a biopic's subject
+// (MJ lists "Michael Jackson" under Music & Lyrics).
+const CREDIT_ROLE_RE = /playwright|writer|book|director|author|creator/i;
+function namesShowCredit(combined, show) {
+  const hay = ` ${combined} `;
+  const people = [
+    ...(show.creativeTeam || []).filter((p) => CREDIT_ROLE_RE.test(String((p && p.role) || ''))),
+    ...(show.cast || []),
+  ];
+  for (const p of people) {
+    const name = hyphenSpaced(p && p.name);
+    // Full names only: a first or last name alone ("Mark") would match anything.
+    // normalizeTitle drops the apostrophe, so "Melis Aker's Fish" reads "melis akers".
+    if (name && name.split(/\s+/).length >= 2 && (hay.includes(` ${name} `) || hay.includes(` ${name}s `))) return true;
+  }
+  return false;
 }
 
 // A book review names the musical's title or characters without being about
@@ -72,7 +102,7 @@ function looksLikeBookReview(headline, urlSlug) {
   return (BOOK_REVIEW_RE.test(text) || BOOKS_SECTION_RE.test(String(urlSlug || ''))) && !THEATRE_WORD_RE.test(text);
 }
 
-function findMatchingShows(headline, urlSlug, activeShows) {
+function findMatchingShows(headline, urlSlug, activeShows, creditText = '') {
   if (!headline && !urlSlug) return [];
   if (looksLikeBookReview(headline, urlSlug)) return [];
   // Slug separators become spaces too (hyphenSpaced handles the dashes):
@@ -91,6 +121,10 @@ function findMatchingShows(headline, urlSlug, activeShows) {
   const gluedSegments = String(urlSlug || '').split(/[/.]+/)
     .filter((s) => s && !/[-_\s]/.test(s));
 
+  // Credit context may also come from the feed item's description; the title
+  // itself must still appear in the headline or slug.
+  const creditHay = `${combined} ${hyphenSpaced(String(creditText || ''))}`;
+
   const matches = [];
 
   for (const show of activeShows) {
@@ -105,12 +139,9 @@ function findMatchingShows(headline, urlSlug, activeShows) {
       // to avoid false positives from generic theater articles.
       continue;
     }
-
-    if (tokens.length === 1 && norm.length < 5) {
-      // Very short single-word titles not in the common set (e.g. "Job", "Fur")
-      // — too risky to match without production-credit context.
-      continue;
-    }
+    // Very short single-word titles not in the common set (e.g. "Job", "Fur",
+    // "Fish") match only with production-credit context (namesShowCredit).
+    const needsCredit = tokens.length === 1 && norm.length < 5;
 
     // Multi-word titles or longer single-word distinctive titles: the title
     // must appear as whole words. A raw includes() also matched inside longer
@@ -139,6 +170,7 @@ function findMatchingShows(headline, urlSlug, activeShows) {
           return next === '' || /[0-9A-Z]/.test(next);
         }));
     }
+    if (ok && needsCredit && !namesShowCredit(creditHay, show)) ok = false;
     if (ok) {
       matches.push(show);
     }
@@ -235,6 +267,23 @@ function parseFeedDate(dateMatch) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+// Item description/summary as plain text, kept only as production-credit context
+// for findMatchingShows (never matched against titles). Off Off Online titles a
+// review just "Fish" and names the playwright only in the description.
+function feedText(body, tags) {
+  for (const tag of tags) {
+    const m = body.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
+    if (!m) continue;
+    return m[1].replace(/<!\[CDATA\[|\]\]>/g, '')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+      .replace(/&nbsp;/g, ' ').replace(/[\u00a0\u2007\u202f]/g, ' ')
+      .replace(/\s+/g, ' ').trim().slice(0, 800);
+  }
+  return '';
+}
+
 function parseRssFeed(xml, cutoff) {
   const items = [];
 
@@ -251,7 +300,7 @@ function parseRssFeed(xml, cutoff) {
     const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
-    items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null });
+    items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null, description: feedText(body, ['description']) });
   }
 
   // Atom entries
@@ -269,7 +318,7 @@ function parseRssFeed(xml, cutoff) {
     const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
-    items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null });
+    items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null, description: feedText(body, ['summary']) });
   }
 
   return items;
@@ -400,6 +449,7 @@ module.exports = {
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,
+  namesShowCredit,
   parseWpApiPosts,
   parseSitemapXml,
   extractListingUrls,

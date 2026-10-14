@@ -745,9 +745,9 @@ async function main() {
     // --- Match each article to shows ---
     let outletNewStubs = 0;
 
-    for (const { url, headline, publishDate } of articles) {
+    for (const { url, headline, publishDate, description } of articles) {
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
-      const matchedShows = findMatchingShows(headline, urlSlug, activeShows);
+      const matchedShows = findMatchingShows(headline, urlSlug, activeShows, description);
 
       if (matchedShows.length === 0) continue;
 
