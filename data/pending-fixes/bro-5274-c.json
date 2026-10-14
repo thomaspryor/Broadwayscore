@@ -145,6 +145,36 @@
         "operation": "delete",
         "sourcePath": "and-juliet-tour-2024/broadwayworld--timoth-david-copney.json",
         "description": "BRO-5274: empty record whose url is a BWW /people/ profile page (David-West-Read), not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "choir-boy-2019/vulture--jesse-green.json",
+        "description": "BRO-5274: same article as vulture--sara-holdren.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "funny-girl-2022/variety--aramide-tinubu.json",
+        "description": "BRO-5274: same article as variety--frank-rizzo.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pass-over-2021/nytg--david-gordon.json",
+        "description": "BRO-5274: same article as nytg--diep-tran.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json",
+        "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-anarchist-2012/vulture--jesse-green.json",
+        "description": "BRO-5274: same article as vulture--scott-brown.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
       }
     ]
   }
