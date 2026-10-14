@@ -3,30 +3,95 @@
     "mother-play-2024/queerty--matthew-wexler.json",
     "prayer-for-the-french-republic-2024/amny--matt-windman.json",
     "gutenberg-2023/amny--matt-windman.json",
-    "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
+    "american-buffalo-2022/nyt-theater--jonathan-mandell.json",
+    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+    "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
-    "on-your-feet-2015/backstage-barbie--backstage-barbie.json"
+    "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "prayer-for-the-french-republic-2024/amny--matt-windman.json",
-      "american-buffalo-2022/nyt-theater--jonathan-mandell.json"
+      "american-buffalo-2022/nyt-theater--jonathan-mandell.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
       "mother-play-2024/queerty--matthew-wexler.json",
-      "gutenberg-2023/amny--matt-windman.json"
+      "gutenberg-2023/amny--matt-windman.json",
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
     ]
   },
   "startTime": "2026-10-14T08:42:53.725Z",
-  "lastProcessed": "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
-  "log": []
+  "lastProcessed": "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-14T09:04:35.773Z",
+      "event": "bb-session",
+      "session": "2964c68f",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-14T09:05:30.464Z",
+      "event": "bb-session",
+      "session": "2ca56f00",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T09:05:37.799Z",
+      "event": "bb-session",
+      "session": "ef3a221b",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-14T09:08:57.565Z",
+      "event": "bb-session",
+      "session": "039b5389",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-14T09:08:58.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
