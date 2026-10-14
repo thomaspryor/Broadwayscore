@@ -104,3 +104,22 @@ test('planReportItems: a report with only closure rows (classifier report) works
   const { specs } = planReportItems({ staleClosureReviews: [{ slug: 'x', reason: 'r' }] }, 25);
   assert.equal(specs.length, 1);
 });
+
+test('every human-review branch of the classifier maps to a specific reasonKind (rewording guard)', () => {
+  // reasonKind keys off the classifier's reason prefixes, and the kind is part
+  // of the dedup title. If a branch's wording changes, this fails instead of
+  // the card silently falling into the generic 'review' bucket.
+  const now = Date.parse('2026-10-13T00:00:00Z');
+  const show = { slug: 'x', status: 'closed', closingDate: '2026-05-01', category: 'broadway' };
+  const researched = { designation: 'TBD', researchAttempts: 1 };
+  const cases = {
+    enhancement: classifyStaleClosure({ show, entry: { ...researched, productionType: 'enhancement' }, now }),
+    'late-signal': classifyStaleClosure({ show, entry: researched, now,
+      pending: { recouped: true, detectedBy: 'rss', detectedAt: '2026-10-10T00:00:00Z' } }),
+    unresearched: classifyStaleClosure({ show, entry: undefined, now }),
+  };
+  for (const [kind, result] of Object.entries(cases)) {
+    assert.equal(result.action, 'human-review', `${kind}: ${JSON.stringify(result)}`);
+    assert.equal(card.reasonKind(result.reason), kind, `reason "${result.reason}" no longer maps to ${kind}`);
+  }
+});
