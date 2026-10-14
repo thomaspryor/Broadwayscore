@@ -62,6 +62,7 @@ test('canonicalArticleKey: one article across scheme, www, legacy host and Varie
   const k = canonicalArticleKey;
   assert.equal(k('http://theater.nytimes.com/2010/10/13/theater/reviews/13life.html'), k('https://www.nytimes.com/2010/10/13/theater/reviews/13life.html'));
   assert.equal(k('https://variety.com/2007/legit/reviews/deuce-1200558823/'), k('http://www.variety.com/2007/legit/reviews/deuce-the-play-1200558823'));
+  assert.equal(k('http://www.variety.com/review/VE1117946930.html?categoryid=33&cs=1', { ignoreQuery: true }), k('https://variety.com/2012/legit/reviews/clybourne-park-2-1117946930/'));
   assert.notEqual(k('https://variety.com/2007/legit/reviews/deuce-1200558823/'), k('https://variety.com/2007/legit/reviews/deuce-1200558841/'));
   // The setter keeps query ids; only the clearer (ignoreQuery) drops them.
   assert.notEqual(k('https://example.com/r.php?id=1'), k('https://example.com/r.php?id=2'));

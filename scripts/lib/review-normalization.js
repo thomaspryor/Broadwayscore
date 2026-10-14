@@ -2531,7 +2531,7 @@ function canonicalArticleKey(url, { ignoreQuery = false } = {}) {
   k = canonicalizeHost(k);
   const q = k.indexOf('?');
   const pathPart = (q === -1 ? k : k.slice(0, q)).replace(/\/+$/, '');
-  const variety = pathPart.match(/^variety\.com\/.*[^\d](\d{9,})$/);
+  const variety = pathPart.match(/^variety\.com\/.*[^\d](\d{9,})(?:\.html?)?$/);
   if (variety) return `variety.com/#${variety[1]}${q === -1 ? '' : k.slice(q)}`;
   return k;
 }
