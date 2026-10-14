@@ -236,7 +236,7 @@ async function main(argv = process.argv.slice(2)) {
       // trustworthy. scripts/reconcile-landed-but-open.js and scripts/audit-
       // card-relevance.js both pass this; the sibling autonomous-acceptance-
       // recheck.js does not (its own pre-existing gap, not fixed here).
-      const r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)), prepared: checkout.prepared }) };
+      const r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)), prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason }) };
       results.push(r);
       console.error(`[open-backlog-sweep] ${r.cardId} ${r.name}: ${r.status}${r.detail ? ` (${String(r.detail).slice(0, 160)})` : ''}`);
     }

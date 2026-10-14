@@ -383,7 +383,7 @@ async function main(argv = process.argv.slice(2)) {
           continue;
         }
         if (!asJson) console.error(`[reconcile-landed-but-open]   re-checking ${c.identifier}: ${gate.cmd}`);
-        const result = runVerify(checkout.wt, gate.cmd, { prepared: checkout.prepared });
+        const result = runVerify(checkout.wt, gate.cmd, { prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason });
         if (result.status === 'pass') {
           // TOCTOU close: the run above could have taken up to ~10 minutes.
           // Re-derive liveness fresh before trusting a 'pass' toward closable

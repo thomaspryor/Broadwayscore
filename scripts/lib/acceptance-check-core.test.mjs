@@ -173,6 +173,39 @@ test('BRO-4830: a stale DIRTY data clone is untouched and the checkout is unveri
       assert.equal(fs.readFileSync(path.join(f.dataClone, 'shows.json'), 'utf8'), '{"v":"local-edit"}');
       const out = runVerify(co.wt, 'node --test tests/unit/x.test.mjs', { attempts: 1, prepared: co.prepared });
       assert.equal(out.status, 'unverifiable');
+      // BRO-5332: the refusal names the dirty file, not a generic sentence.
+      assert.match(co.dataClone.detail, /uncommitted changes \(shows\.json\)/);
+      const named = runVerify(co.wt, 'node --test tests/unit/x.test.mjs', { attempts: 1, prepared: co.prepared, unpreparedReason: co.unpreparedReason });
+      assert.equal(named.status, 'unverifiable');
+      assert.match(named.detail, /checkout not prepared \(data clone .*\(shows\.json\)/);
+    } finally { removeCheckout(co); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('BRO-5332: a failed ff-merge reports git\'s error line, not "Command failed"', () => {
+  const f = fixture();
+  try {
+    // upstream adds new.json; an untracked new.json in the clone blocks the ff
+    const seed = path.join(f.root, 'seed');
+    fs.writeFileSync(path.join(seed, 'new.json'), '{"up":1}');
+    sh(seed, 'add', '.'); sh(seed, ...GIT_ID, 'commit', '-m', 'add new'); sh(seed, 'push', path.join(f.root, 'origin.git'), 'main');
+    fs.writeFileSync(path.join(f.dataClone, 'new.json'), '{"local":1}');
+    const r = refreshDataClone(f.repo, { memoize: false });
+    assert.equal(r.status, 'unsafe');
+    assert.match(r.detail, /ff-only merge failed: error: .*untracked/);
+    assert.doesNotMatch(r.detail, /Command failed/);
+    assert.equal(fs.readFileSync(path.join(f.dataClone, 'new.json'), 'utf8'), '{"local":1}');
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('BRO-5332: unpreparedReason names a missing node_modules', () => {
+  const f = fixture();
+  try {
+    fs.rmSync(path.join(f.repo, 'node_modules'), { recursive: true, force: true });
+    const co = makeFreshCheckout({ repo: f.repo, prefix: 'bro5332-co-' });
+    try {
+      if (co.prepared) return; // install root resolved elsewhere: nothing to assert
+      assert.match(co.unpreparedReason, /no node_modules/);
     } finally { removeCheckout(co); }
   } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

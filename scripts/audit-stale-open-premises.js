@@ -361,7 +361,7 @@ async function main() {
         run = runVerify(checkout.wt, card.cmd, {
           attempts: 1,
           timeoutMs: CHECK_TIMEOUT_MS,
-          prepared: checkout.prepared,
+          prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason,
         });
       } catch (err) {
         // runVerify can throw (safe-form revalidation, mkdtemp for the fake
