@@ -128,7 +128,7 @@ test('walkTranscript surfaces is_error on tool results', () => {
   const [a, b] = walkTranscript(file);
   assert.equal(a.isError, true);
   assert.equal(b.isError, false);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CLI on a real JSONL transcript: thin run exits 3 and --record refuses; missing file exits 2', () => {
@@ -147,7 +147,7 @@ test('CLI on a real JSONL transcript: thin run exits 3 and --record refuses; mis
   assert.equal(rec.status, 3);
   assert.match(rec.stderr, /NOT recording a pass/);
   assert.equal(spawnSync('node', [CLI, `--transcript=${dir}/nope.jsonl`], { encoding: 'utf8' }).status, 2);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('findSessionTranscript locates <home>/.claude/projects/*/<id>.jsonl', () => {
@@ -157,7 +157,7 @@ test('findSessionTranscript locates <home>/.claude/projects/*/<id>.jsonl', () =>
   assert.ok(findSessionTranscript('abc', home).endsWith('p1/abc.jsonl'));
   assert.equal(findSessionTranscript('zzz', home), null);
   assert.equal(findSessionTranscript('', home), null);
-  fs.rmSync(home, { recursive: true, force: true });
+  fs.rmSync(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('stop hook decision: only a SAFE TO EXIT after an uncovered ship-check blocks', () => {
@@ -199,8 +199,8 @@ test('verify-edits.sh (the Stop hook wired in every cloud container) runs the ga
   assert.doesNotMatch(run(full).stderr, /BRO-5359/, 'a fully covered chain is not blocked by this gate');
   const first = spawnSyncStdinFile('bash', [hook], { input: JSON.stringify({ transcript_path: thin, session_id: 'rc-test', last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, HOME: fakeHome, SHIP_CHECK_COVERAGE_DISABLE: '' } });
   assert.ok(first.status === 0 || first.status === 2);
-  fs.rmSync(dir, { recursive: true, force: true });
-  fs.rmSync(fakeHome, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   for (const f of fs.readdirSync(os.tmpdir())) if (f.startsWith('review-coverage-stop-')) fs.rmSync(path.join(os.tmpdir(), f), { force: true });
 });
 
@@ -337,7 +337,8 @@ test('review-ship-check findings: build recognition, code-review-only sessions, 
 test('a push chained after a commit in the same command is still judged (it used to be skipped)', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-chain-'));
   const sh = (cwd, c) => spawnSync('bash', ['-c', c], { cwd, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t', GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' } });
-  sh(dir, 'git init -q --bare origin.git && git clone -q origin.git work 2>/dev/null; cd work && git checkout -q -b main && mkdir -p scripts/lib && echo base > scripts/lib/base.mjs && git add -A && git commit -q -m base && git push -q origin main');
+  const noMaint = 'git config gc.auto 0 && git config gc.autoDetach false && git config maintenance.auto false';
+  sh(dir, `git init -q --bare -b main origin.git && (cd origin.git && ${noMaint} && git config receive.autogc false) && git clone -q origin.git work 2>/dev/null; cd work && ${noMaint} && git checkout -q -B main && mkdir -p scripts/lib && echo base > scripts/lib/base.mjs && git add -A && git commit -q -m base && git push -q origin main`);
   const work = path.join(dir, 'work');
   const cmd = 'git add -A && git commit -q -m x && git push origin HEAD:refs/heads/land/bro-1-x';
   const run = (events) => checkReviewCoverage({ command: cmd, cwd: work, targets: landPushTargets(cmd), env: CLOUD, seams: { events, noLog: true } });
@@ -347,5 +348,5 @@ test('a push chained after a commit in the same command is still judged (it used
   fs.writeFileSync(path.join(work, 'scripts', 'lib', 'big.mjs'), '// a line\n'.repeat(60));
   assert.equal(run(ev(skill())).decision, 'block', 'a chained commit-and-push of 60 new lines with a hollow review is blocked');
   assert.equal(run(ev(skill(), agent(), curl())).decision, 'allow');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
