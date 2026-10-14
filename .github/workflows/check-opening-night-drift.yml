@@ -164,6 +164,16 @@ jobs:
           script: |
             const fs = require('fs');
             const { routeAlert, resolveCondition } = require('./scripts/lib/owner-alert-router.js');
+            // BRO-3475: the drift script stamped lastAlertTs before this step ran. If
+            // delivery fails, un-stamp it so the next cron retries instead of sitting
+            // out the 6h same-fingerprint cooldown with the owner never told.
+            const { isAlertDeliveryFailure, rearmFailedAlertInFile } = require('./scripts/lib/review-count-probe.js');
+            const DRIFT_STATE = 'data/audit/drift-state.json';
+            const rearmOnFailure = (r, conditionKey) => {
+              const { rearmed, error } = rearmFailedAlertInFile(DRIFT_STATE, r.showId, r.fingerprint);
+              if (rearmed) core.warning(`${conditionKey} delivery failed — drift-state cooldown re-armed, next run retries`);
+              else if (error) core.warning(`${conditionKey} delivery failed and drift-state could not be re-armed (${error})`);
+            };
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
             let rows;
@@ -258,13 +268,15 @@ jobs:
                 console.log(`[drift] ${conditionKey} -> ${result.action}`);
                 // routeAlert returns dispatchOk:false when a tracker could not be filed, which
                 // otherwise prints an encouraging action with nothing actually sent.
-                if (result.dispatchOk === false) {
+                if (isAlertDeliveryFailure({ result })) {
                   core.warning(`${conditionKey} did not file a tracker: ${result.dispatchError || 'unknown error'}`);
+                  rearmOnFailure(r, conditionKey);
                 }
               } catch (err) {
                 // Never rethrow: the remaining shows still need routing, and the commit
                 // step below still needs to persist whatever ledger state was written.
                 core.warning(`${conditionKey} could not be routed (${err && err.message}) — continuing with the remaining shows`);
+                if (r.alert && isAlertDeliveryFailure({ threw: true })) rearmOnFailure(r, conditionKey);
               }
             }
 

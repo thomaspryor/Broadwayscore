@@ -284,7 +284,54 @@ function updateState(state, showId, fingerprint, didAlert, aboveThreshold) {
   }
 }
 
+/**
+ * BRO-3475 (option c, owner-approved 2026-10-11): check-opening-night-drift.js
+ * stamps lastAlertTs at DECIDE time, before the workflow's routing step ever
+ * delivers the alert. When delivery then fails, the 6h same-fingerprint
+ * cooldown has already been consumed and the next cron run stays silent.
+ *
+ * True when a routed alert did not get through: routeAlert() threw, or it
+ * returned dispatchOk:false (a tracker it tried to file was not filed).
+ */
+function isAlertDeliveryFailure({ threw = false, result = null } = {}) {
+  if (threw) return true;
+  return !!result && result.dispatchOk === false;
+}
+
+/**
+ * Pure: un-stamp the decide-time lastAlertTs for showId so the next run (still
+ * on the same fingerprint, still above threshold) alerts again instead of
+ * sitting out the cooldown. Only touches the entry when its fingerprint still
+ * matches the row that failed to deliver. Returns true when it changed state.
+ */
+function rearmFailedAlert(state, showId, fingerprint) {
+  if (!state || typeof state !== 'object') return false;
+  const entry = state[showId];
+  if (!entry || entry.fingerprint !== fingerprint || entry.lastAlertTs == null) return false;
+  state[showId] = { ...entry, lastAlertTs: null };
+  return true;
+}
+
+/**
+ * File wrapper around rearmFailedAlert() for the workflow's routing step.
+ * Never throws (the routing step must keep going for the remaining shows);
+ * returns { rearmed, error }.
+ */
+function rearmFailedAlertInFile(stateFile, showId, fingerprint) {
+  try {
+    const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+    const rearmed = rearmFailedAlert(state, showId, fingerprint);
+    if (rearmed) fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\n');
+    return { rearmed, error: null };
+  } catch (err) {
+    return { rearmed: false, error: (err && err.message) || String(err) };
+  }
+}
+
 module.exports = {
+  isAlertDeliveryFailure,
+  rearmFailedAlert,
+  rearmFailedAlertInFile,
   countLocalIncluded,
   countAggregate,
   fetchLiveRc,
