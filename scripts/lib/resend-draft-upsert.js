@@ -31,12 +31,18 @@ const RESEND_BROADCASTS_LIST_URL = `${RESEND_BROADCASTS_URL}?limit=100`;
  * so fantasy/newsletter never redraft a week the owner chose not to send.
  * Opening night passes 'cancelled' because its tracker re-queues a
  * cancelled show on purpose (scripts/lib/broadcast-state.js).
+ * `notBefore` (ISO date/time) ignores broadcasts Resend created before it: a
+ * revival shares its title with the earlier production, so the earlier
+ * production's sent email must not be adopted as this one's (BRO-3493
+ * retro-review, BRO-5261). A broadcast with no created_at still counts.
  * @returns {{ draft: object|null, sent: object[] }}
  */
-function splitBroadcastsByName(list, name, { ignoreStatuses = [] } = {}) {
+function splitBroadcastsByName(list, name, { ignoreStatuses = [], notBefore = null } = {}) {
   const all = (list && Array.isArray(list.data)) ? list.data : [];
   const ignore = new Set(ignoreStatuses);
-  const named = all.filter((b) => b && b.name === name && !ignore.has(b.status));
+  const floorMs = notBefore ? Date.parse(notBefore) : NaN;
+  const tooOld = (b) => Number.isFinite(floorMs) && b.created_at && Date.parse(b.created_at) < floorMs;
+  const named = all.filter((b) => b && b.name === name && !ignore.has(b.status) && !tooOld(b));
   const drafts = named.filter((b) => b.status === 'draft');
   const sent = named.filter((b) => b.status !== 'draft');
   if (drafts.length > 1) {
@@ -50,9 +56,18 @@ function splitBroadcastsByName(list, name, { ignoreStatuses = [] } = {}) {
  * @param {string} apiKey
  * @param {Function} [fetchImpl] injectable for tests
  */
-function makeResendRequest(apiKey, fetchImpl = fetch) {
+// Each call ends well inside the 5-minute send lock (send-lock.js
+// DEFAULT_TTL_MS), so a hung request cannot outlive the lock that serializes
+// the lookup and the create. Same 60s the newsletter client uses.
+const REQUEST_TIMEOUT_MS = 60_000;
+
+function makeResendRequest(apiKey, fetchImpl = fetch, { timeoutMs = REQUEST_TIMEOUT_MS } = {}) {
   return async function request(method, url, payload) {
-    const opt = { method, headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' } };
+    const opt = {
+      method,
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(timeoutMs),
+    };
     if (payload !== undefined) opt.body = JSON.stringify(payload);
     const res = await fetchImpl(url, opt);
     const text = await res.text();
@@ -67,13 +82,13 @@ function makeResendRequest(apiKey, fetchImpl = fetch) {
 /**
  * Look up `payload.name` in Resend, then PATCH the existing draft, create a
  * new one, or refuse because the broadcast already went out.
- * @param {{ payload: object, request: Function, ignoreStatuses?: string[] }} opts  payload.name is required
+ * @param {{ payload: object, request: Function, ignoreStatuses?: string[], notBefore?: string|null }} opts  payload.name is required
  * @returns {Promise<{ action: 'created'|'updated'|'skipped-sent', id: string|null, sentStatus?: string }>}
  */
-async function upsertBroadcastDraft({ payload, request, ignoreStatuses = [] }) {
+async function upsertBroadcastDraft({ payload, request, ignoreStatuses = [], notBefore = null }) {
   if (!payload || !payload.name) throw new Error('upsertBroadcastDraft: payload.name is required (it is the dedup key)');
   const list = await request('GET', RESEND_BROADCASTS_LIST_URL);
-  const { draft, sent } = splitBroadcastsByName(list, payload.name, { ignoreStatuses });
+  const { draft, sent } = splitBroadcastsByName(list, payload.name, { ignoreStatuses, notBefore });
   if (sent.length) {
     return { action: 'skipped-sent', id: sent[0].id || null, sentStatus: sent[0].status };
   }
@@ -88,6 +103,7 @@ async function upsertBroadcastDraft({ payload, request, ignoreStatuses = [] }) {
 module.exports = {
   RESEND_BROADCASTS_URL,
   RESEND_BROADCASTS_LIST_URL,
+  REQUEST_TIMEOUT_MS,
   splitBroadcastsByName,
   makeResendRequest,
   upsertBroadcastDraft,

@@ -313,6 +313,18 @@ function filterShowsWithConsensus(showsForEmail) {
 // Resend name lookup must neither reuse nor treat it as sent (BRO-3493).
 const OPENING_NIGHT_IGNORE_STATUSES = ['cancelled', 'canceled'];
 
+/**
+ * Earliest moment a broadcast for these shows can exist: a day before the
+ * earliest opening. Drafts are created once reviews land, after opening, so
+ * an older broadcast with the same name belongs to an earlier production of
+ * the same title and must not be adopted or reused (BRO-3493 retro-review).
+ */
+function broadcastNotBefore(shows) {
+  const dates = (shows || []).map(s => s && s.openingDate).filter(d => typeof d === 'string' && Number.isFinite(Date.parse(d))).sort();
+  if (!dates.length) return null;
+  return new Date(Date.parse(dates[0]) - 86_400_000).toISOString();
+}
+
 function buildBroadcastName(siteName, shows) {
   const titles = (shows || []).map(s => s.showTitle).filter(Boolean);
   const prefix = `${siteName} opening night`;
@@ -552,6 +564,7 @@ async function main() {
 
     return {
       showTitle: show.title,
+      openingDate: show.openingDate || null,
       score,
       reviewCount,
       newReviewCount: stats.newReviewCount,
@@ -856,6 +869,7 @@ async function main() {
         },
         request: makeResendRequest(RESEND_API_KEY),
         ignoreStatuses: OPENING_NIGHT_IGNORE_STATUSES,
+        notBefore: broadcastNotBefore(showsForEmail),
       });
 
       if (upsert.action === 'skipped-sent') {
@@ -990,7 +1004,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, buildBroadcastName, broadcastNotBefore, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {

@@ -60,6 +60,14 @@ if (isDraft && !RESEND_FANTASY_AUDIENCE_ID) {
 const dataDir = path.join(__dirname, '..', 'data');
 const scoresData = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-scores.json'), 'utf8'));
 const leagueData = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-league.json'), 'utf8'));
+
+// The week is the Resend dedup key ("BFL weekly <week>") and the subject. A
+// missing one would mail "BFL Week undefined" and, once sent, block every
+// later run that also lacks it (BRO-3494 retro-review, BRO-5261).
+if (!/^\d{4}-\d{2}-\d{2}$/.test(String(scoresData._meta && scoresData._meta.weekEnding))) {
+  console.error(`ERROR: fantasy-scores.json _meta.weekEnding is ${JSON.stringify(scoresData._meta && scoresData._meta.weekEnding)}, not a YYYY-MM-DD date. Re-run the scorer.`);
+  process.exit(1);
+}
 const prevScoresPath = path.join(dataDir, 'fantasy-scores-prev.json');
 const prevScoresDataRaw = fs.existsSync(prevScoresPath)
   ? JSON.parse(fs.readFileSync(prevScoresPath, 'utf8'))
