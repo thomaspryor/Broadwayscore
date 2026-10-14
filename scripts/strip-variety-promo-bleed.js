@@ -19,7 +19,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   stripVarietyPromoBleed, applyVarietyPromoStrip, hasVarietyPromoBleed, isExcludedRow,
-  hasDuplicatedLead, duplicatedLead, restoreBigMove,
+  hasDuplicatedLead, duplicatedLead, restoreBigMove, undoRestore,
 } = require('./lib/variety-promo-bleed');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
@@ -35,6 +35,7 @@ Usage:
   node scripts/strip-variety-promo-bleed.js --verify-live [--limit=N|--files=]  removed lines vs the live article (exit 1 on a hit)
   node scripts/strip-variety-promo-bleed.js --ab            A/B of stripped rows: pre-strip score vs rescore
   node scripts/strip-variety-promo-bleed.js --restore-big-moves [--apply]  keep the pre-strip score where the rescore moved 5+ or changed bucket
+  node scripts/strip-variety-promo-bleed.js --use-rescore --files=show/file.json,... [--apply]  undo a restore: the rescore fits the text better
   node scripts/strip-variety-promo-bleed.js --dup-leads     live rows whose first paragraph repeats the second (exact or near), lengths only
   node scripts/strip-variety-promo-bleed.js --dump[=N]      marker stats and N context samples (read-only)
 `;
@@ -299,6 +300,27 @@ function restoreBigMoves({ apply }) {
   return failed ? 1 : 0;
 }
 
+/** Put the rescore back on named restored rows (a reader judged it fits the text better). */
+function useRescore({ files, apply }) {
+  let wrote = 0, failed = 0;
+  for (const rel of files) {
+    const file = path.join(DIR, rel);
+    let d;
+    try { d = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { failed++; console.log(`  ✗ ${rel}: not readable`); continue; }
+    const next = undoRestore(d);
+    if (!next) { failed++; console.log(`  ✗ ${rel}: not a restored row with its rescore intact`); continue; }
+    const line = `${rel}: rescore ${next.llmScore.score} ${next.llmScore.bucket || '?'} replaces kept ${d.llmScore.score}`;
+    if (!apply) { console.log(`  would use ${line}`); continue; }
+    safeWriteReview(file, next, { force: true });
+    const after = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!after.llmScore || after.llmScore.score !== next.llmScore.score) { failed++; console.log(`  ✗ ${rel}: did not stick`); continue; }
+    wrote++;
+    console.log(`  used ${line}`);
+  }
+  console.log(apply ? `use-rescore: ${wrote} written, ${failed} failed (of ${files.length})` : `use-rescore dry run: ${files.length - failed} ok, ${failed} refused`);
+  return failed ? 1 : 0;
+}
+
 /** Live rows with a repeated lead paragraph. Prints lengths and word counts only (logs are public). */
 function dupLeads() {
   const kinds = {};
@@ -314,7 +336,9 @@ function dupLeads() {
   return 0;
 }
 
-if (arg('dup-leads') !== null) {
+if (arg('use-rescore') !== null) {
+  process.exit(useRescore({ files: (arg('files') || '').split(',').filter(Boolean), apply: arg('apply') !== null }));
+} else if (arg('dup-leads') !== null) {
   process.exit(dupLeads());
 } else if (arg('restore-big-moves') !== null) {
   process.exit(restoreBigMoves({ apply: arg('apply') !== null }));

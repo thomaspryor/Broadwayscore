@@ -105,7 +105,8 @@ function hasVarietyPromoBleed(text) {
 // whose first paragraph is the same text: an exact repeat of the lead.
 const PARA_BREAK_RE = /\n[^\S\n]*\n\s*/;
 const MIN_DUP_LEAD_CHARS = 80;
-const normPara = (t) => t.replace(/\s+/g, ' ').trim();
+// Quote style differs between Variety's two copies of a lead (straight vs curly, BRO-5254 follies-2011).
+const normPara = (t) => t.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/\s+/g, ' ').trim();
 
 // A near repeat: Variety's older excerpt of the opening, lightly edited, ahead of
 // the full opening ("Doctorow's novel" vs "Doctorow's brilliant 1975 novel").
@@ -281,6 +282,25 @@ function restoreBigMove(record, { at } = {}) {
   return out;
 }
 
+/**
+ * Undo restoreBigMove on a row a reader judged: the rescore fits the text better
+ * than the kept pre-strip score. Puts the rescore back and marks restored.undone,
+ * so restoreBigMove (same scoredAt) leaves the row alone. Null when the row was
+ * not restored, was already undone, or was rescored again since.
+ */
+function undoRestore(record, { at } = {}) {
+  const s = record && record.varietyPromoStrip;
+  const r = s && s.restored;
+  const llm = record && record.llmScore;
+  const scoredAt = record && record.llmMetadata && record.llmMetadata.scoredAt;
+  if (!r || r.undone || !llm || scoredAt !== r.scoredAt || llm.score !== s.previousScore) return null;
+  const out = { ...record };
+  out.llmScore = { ...llm, score: r.rescoredScore, bucket: r.rescoredBucket || llm.bucket };
+  out.assignedScore = r.rescoredScore;
+  out.varietyPromoStrip = { ...s, restored: { ...r, undone: at || new Date().toISOString() } };
+  return out;
+}
+
 /** Rows the rebuild leaves out anyway (no live score): not worth a strip, a rescore or a place in the A/B. */
 function isExcludedRow(d) {
   if (!d) return false;
@@ -292,6 +312,6 @@ function isExcludedRow(d) {
 
 module.exports = {
   findVarietyPromoBleed, hasVarietyPromoBleed, stripVarietyPromoBleed, applyVarietyPromoStrip,
-  hasDuplicatedLead, dropDuplicatedLead, duplicatedLead, restoreBigMove,
+  hasDuplicatedLead, dropDuplicatedLead, duplicatedLead, restoreBigMove, undoRestore,
   isProseLine, isExcludedRow, RESCORE_REASON, MIN_CLEAN_LENGTH, BIG_MOVE_POINTS,
 };

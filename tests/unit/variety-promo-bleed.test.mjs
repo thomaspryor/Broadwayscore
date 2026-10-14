@@ -103,7 +103,7 @@ test('isExcludedRow skips every flag the scorer skips (no live score, nothing to
   assert.equal(isExcludedRow(null), false);
 });
 
-const { hasDuplicatedLead, dropDuplicatedLead, restoreBigMove } = require('../../scripts/lib/variety-promo-bleed.js');
+const { hasDuplicatedLead, dropDuplicatedLead, restoreBigMove, undoRestore } = require('../../scripts/lib/variety-promo-bleed.js');
 
 test('drops an exactly repeated lead paragraph and nothing else', () => {
   const lead = para('lead', 2);
@@ -157,6 +157,28 @@ test('restoreBigMove keeps the pre-strip score on a 5+ move or a bucket change o
   const noBucket = base(71, 'Positive');
   noBucket.varietyPromoStrip = { ...noBucket.varietyPromoStrip, previousBucket: null };
   assert.equal(restoreBigMove(noBucket), null, 'baseline without a bucket may not be an LLM score');
+});
+
+test('undoRestore puts the rescore back once, and restoreBigMove then leaves the row alone', () => {
+  const text = para('kept', 30);
+  const rescored = {
+    fullText: text, assignedScore: 68, needsRescore: false,
+    llmScore: { score: 68, bucket: 'Mixed', confidence: 'high' },
+    llmMetadata: { scoredAt: '2026-10-13T23:35:00Z' },
+    varietyPromoStrip: { previousScore: 86, previousBucket: 'Rave', previousScoredAt: '2025-01-01T00:00:00Z', newLength: text.length },
+  };
+  const restored = restoreBigMove(rescored, { at: 'T' });
+  assert.equal(restored.llmScore.score, 86);
+  const undone = undoRestore(restored, { at: 'U' });
+  assert.equal(undone.llmScore.score, 68);
+  assert.equal(undone.llmScore.bucket, 'Mixed');
+  assert.equal(undone.llmScore.confidence, 'high');
+  assert.equal(undone.assignedScore, 68);
+  assert.equal(undone.varietyPromoStrip.restored.undone, 'U');
+  assert.equal(restoreBigMove(undone), null, 'a later --restore-big-moves keeps the reader\'s choice');
+  assert.equal(undoRestore(undone), null, 'already undone');
+  assert.equal(undoRestore(rescored), null, 'never restored');
+  assert.equal(undoRestore({ ...restored, llmMetadata: { scoredAt: '2026-11-01T00:00:00Z' } }), null, 'rescored again since');
 });
 
 test('a second strip keeps the first baseline score but tracks the new text length', () => {
@@ -220,4 +242,13 @@ test('function words alone never make a near repeat', () => {
   const p2 = 'It is, in the end, a show about grief: the way a family that is falling apart is held together '
     + 'by a song that we have all heard before, and the way it lingers when it is over and done.';
   assert.equal(duplicatedLead(`${p1}\n\n${p2}\n\n${para('third')}`), null);
+});
+
+test('a lead repeated with straight quotes where paragraph 2 has curly ones is an exact repeat', () => {
+  const curly = 'The \u201cFollies\u201d revival is done right, and the director\u2019s cast makes the long evening fly by with real verve.';
+  const straight = curly.replace(/[\u201c\u201d]/g, '"').replace(/\u2019/g, "'");
+  const t = `${straight}\n\n${curly}\n\n${para('third', 12)}`;
+  const d = duplicatedLead(t);
+  assert.equal(d && d.kind, 'exact');
+  assert.equal(dropDuplicatedLead(t).startsWith(curly), true);
 });
