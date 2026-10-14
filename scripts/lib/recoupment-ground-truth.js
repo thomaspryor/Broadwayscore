@@ -87,9 +87,32 @@ function truthClassOf(comm, kind, sourceText) {
 // trade-announced recoupment, Just in Time). The first reported claim wins;
 // with none, the first claim stands, as before (BRO-5264).
 function groundTruth(comm, show, now = new Date()) {
-  const all = truthCandidates(comm, show, now)
-    .map((t) => ({ ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source, t.kind) }));
+  const all = classifiedCandidates(comm, show, now);
   return all.find((t) => t.truthClass === 'reported') || all[0] || null;
+}
+
+function classifiedCandidates(comm, show, now) {
+  return truthCandidates(comm, show, now)
+    .map((t) => ({ ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source, t.kind) }));
+}
+
+/**
+ * The rows a record is scored on: its groundTruth() claim in its tier and,
+ * under --truth=reported, an inference % the reported claim displaced, as an
+ * advisory row (ship-check BRO-5311: Chess's Reddit 10-20% lost to a
+ * designation-wide failed row and was scored nowhere).
+ * @returns {Array<{ truth: object, tier: 'gate'|'advisory', superseded?: true }>}
+ */
+function truthRows(comm, show, mode, now = new Date()) {
+  const truth = groundTruth(comm, show, now);
+  const tier = truthTier(truth, mode);
+  if (!tier) return [];
+  const out = [{ truth, tier }];
+  if (mode === 'reported' && tier === 'gate' && truth.kind !== 'reported-pct') {
+    const pct = classifiedCandidates(comm, show, now).find((t) => t.kind === 'reported-pct' && t.truthClass !== 'reported');
+    if (pct) out.push({ truth: pct, tier: 'advisory', superseded: true });
+  }
+  return out;
 }
 
 // Pre- or post-NY-tax-credit basis of a truth figure (BRO-5073). Post only
@@ -237,7 +260,7 @@ const newFalseRecouped = (rows) => rows.filter((r) => r.truth[1] < 100 && r.newP
  * @returns {string}
  */
 function advisoryLine(rows, { minN = 1 } = {}) {
-  const label = 'Advisory, Reddit/AI/our-estimate truth rows (not counted toward pass or fail)';
+  const label = 'Advisory, inference truth rows: Reddit, AI research, our estimates, unsourced loss labels (not counted toward pass or fail)';
   if (!rows.length) return `${label}: none scored`;
   const s = summarize(rows);
   const worse = worseGroups(s, { minN });
@@ -273,4 +296,4 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
 
 module.exports = {
   creditBasis, eitherBasis, basisLine,
-  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, truthTier, newFalseRecouped, advisoryLine, formatMarkdown, fmtTruth, OWN_INFERENCE };
+  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, truthTier, truthRows, newFalseRecouped, advisoryLine, formatMarkdown, fmtTruth, OWN_INFERENCE };

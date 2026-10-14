@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthTier, newFalseRecouped, advisoryLine, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthTier, truthRows, newFalseRecouped, advisoryLine, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
 
@@ -139,6 +139,18 @@ describe('scoring', () => {
     // minN: one-row groups are not gated.
     assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
   });
+  // BRO-5311: the inference % a reported claim displaced is still scored, as advisory.
+  test('truthRows adds the displaced inference % as an advisory row, only under --truth=reported', () => {
+    const show = { closingDate: '2026-02-22', openingDate: '2025-04-01', type: 'musical' };
+    const comm = { estimatedRecoupmentPct: [10, 20], estimatedRecoupmentSource: 'Reddit Grosses Analysis post states recoup=10-20%', recouped: false, designation: 'Fizzle', notes: 'Variety reported the show closed without recouping.' };
+    const rows = truthRows(comm, show, 'reported');
+    assert.deepEqual(rows.map((r) => [r.truth.kind, r.tier, !!r.superseded]), [['failed', 'gate', false], ['reported-pct', 'advisory', true]]);
+    assert.deepEqual(rows[1].truth.lo, 10);
+    assert.equal(truthRows(comm, show, 'all').length, 1);
+    // An inference-only record: one advisory row, nothing extra.
+    assert.deepEqual(truthRows({ ...comm, notes: 'Closed early.' }, show, 'reported').map((r) => [r.truth.kind, r.tier]), [['reported-pct', 'advisory']]);
+    assert.deepEqual(truthRows(null, show, 'reported'), []);
+  });
   // Checker 2026-10-10: inference truth never reaches the gating rows under the default.
   test('truthTier keeps inference rows off the gate unless --truth=all', () => {
     assert.equal(truthTier(null, 'reported'), null);
@@ -167,7 +179,7 @@ describe('scoring', () => {
       { kind: 'failed', type: 'play', era: 'pre-2020', truth: [0, 50], oldPct: 110, newPct: 115, oldErr: 60, newErr: 65 },
     ];
     const line = advisoryLine(rows);
-    assert.match(line, /^Advisory, Reddit\/AI\/our-estimate truth rows \(not counted toward pass or fail\): 3 rows/);
+    assert.match(line, /^Advisory, inference truth rows: .*\(not counted toward pass or fail\): 3 rows/);
     assert.match(line, /inside 2 -> 1/);
     assert.match(line, /new false recouped 1$/);
     assert.match(line, /worse in all, kind:failed/);

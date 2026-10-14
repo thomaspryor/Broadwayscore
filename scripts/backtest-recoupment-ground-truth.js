@@ -45,7 +45,7 @@ const os = require('os');
 const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { execFileSync } = require('child_process');
-const { groundTruth, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthTier, newFalseRecouped: falseRecoupedRows, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
+const { eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthRows, newFalseRecouped: falseRecoupedRows, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals'];
@@ -119,19 +119,20 @@ const rows = [];
 const advisoryRows = [];
 const skipped = { noShow: 0, noModel: 0, notDisplayable: 0, inference: 0, newOnly: 0 };
 // Advisory rows' skips are their own, so a model gap there never blocks.
-const advisorySkipped = { noModel: 0, notDisplayable: 0, newOnly: 0 };
+const advisorySkipped = { noModel: 0, notDisplayable: 0, newOnly: 0, superseded: 0 };
 const SANITY_LIMIT = 500;
 const insane = [];
 for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
   if (!show) { skipped.noShow++; continue; }
-  const truth = groundTruth(comm, show);
-  const tier = truthTier(truth, TRUTH);
-  if (!tier) { sanityCheck(key, show, comm); continue; }
+  const truthList = truthRows(comm, show, TRUTH);
+  if (!truthList.length) { sanityCheck(key, show, comm); continue; }
+  for (const { truth, tier, superseded } of truthList) {
   const advisory = tier === 'advisory';
   const skip = advisory ? advisorySkipped : skipped;
   // Sanity covers advisory records exactly as before they were scored.
-  if (advisory) { skipped.inference++; sanityCheck(key, show, comm); }
+  if (advisory && !superseded) { skipped.inference++; sanityCheck(key, show, comm); }
+  if (superseded) advisorySkipped.superseded++;
   // --as-of-report: score a dated reported range against the model as it
   // stood on that date (both sides), so later grosses don't count against it.
   const at = AS_OF_REPORT && truth.asOf ? { asOf: truth.asOf } : {};
@@ -165,8 +166,9 @@ for (const [key, comm] of Object.entries(commercial)) {
     slug: key, kind: truth.kind, truthClass: truth.truthClass, creditBasis: truth.creditBasis, ...(usedPost !== undefined ? { usedPost } : {}), ...category(show),
     truth: [truth.lo, truth.hi], oldPct, newPct,
     oldErr: rangeError(oldPct, truth), newErr: rangeError(newPct, truth),
-    source: truth.source.slice(0, 80), ...(at.asOf ? { asOf: at.asOf } : {}),
+    source: truth.source.slice(0, 80), ...(at.asOf ? { asOf: at.asOf } : {}), ...(superseded ? { superseded } : {}),
   });
+  }
 }
 
 // A recouped long-runner legitimately returns many times its capitalization
@@ -190,8 +192,8 @@ const detail = (list, fmt) => (list.length && !AGGREGATE_ONLY ? ` (${list.map(fm
 const falseRecoupedLine = `New false recouped vs truth: ${newFalseRecouped.length}${detail(newFalseRecouped, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}${newFalseRecouped.length ? '; blocks any switch' : ''}`;
 const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped): ${insane.length}${detail(insane, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}`;
 const newOnlyLine = `Rows only the new side failed to model: ${skipped.newOnly}${skipped.newOnly ? '; blocks any switch' : ''}`;
-const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported rows decide pass or fail; ${skipped.inference} inference rows are scored separately on the Advisory line (--truth=all mixes them in)` : 'reported and inference'}`;
-const advisoryOut = TRUTH === 'reported' ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}; of ${skipped.inference}, skipped ${advisorySkipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${advisorySkipped.notDisplayable} not displayable` : ''}, ${advisorySkipped.newOnly} only the new side failed to model` : null;
+const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported rows decide pass or fail; ${skipped.inference} inference-only records go to the Advisory line instead (--truth=all mixes them in)` : 'reported and inference'}`;
+const advisoryOut = TRUTH === 'reported' ? `${advisoryLine(advisoryRows, { minN: MIN_GROUP })}; of ${skipped.inference + advisorySkipped.superseded} (${advisorySkipped.superseded} an inference % a reported claim displaced), skipped ${advisorySkipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${advisorySkipped.notDisplayable} not displayable` : ''}, ${advisorySkipped.newOnly} only the new side failed to model` : null;
 
 const summary = summarize(rows);
 const worse = worseGroups(summary, { minN: MIN_GROUP });
