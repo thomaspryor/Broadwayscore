@@ -17,9 +17,9 @@ const CLI = path.join(ROOT, 'scripts', 'lib', 'review-coverage.mjs');
 
 let n = 0;
 const tool = (name, input) => ({ kind: 'assistant_tool_use', name, input, id: `t${++n}` });
-const res = (u, content = 'ok', isError = false) => ({ kind: 'tool_result', tool_use_id: u.id, content, isError });
+const res = (u, content = 'Findings: no blockers, three suggestions listed below.', isError = false) => ({ kind: 'tool_result', tool_use_id: u.id, content, isError });
 const skill = (s = 'ship-check') => tool('Skill', { skill: s });
-const agent = () => tool('Agent', { subagent_type: 'review-panelist', prompt: 'review' });
+const agent = (prompt = 'Review this diff for correctness and design problems. '.repeat(8)) => tool('Agent', { subagent_type: 'review-panelist', prompt });
 const curl = () => tool('Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $K" -d @/tmp/x' });
 const ev = (...pairs) => pairs.flatMap((u) => [u, res(u)]);
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true' };
@@ -178,7 +178,7 @@ test('stop hook wrapper: exit 2 for a thin run, 0 for a full one, blocks stop af
   const full = path.join(dir, 'full.jsonl');
   const base = use1('s1', 'Skill', { skill: 'ship-check' }) + out1('s1', 'ok');
   fs.writeFileSync(thin, base);
-  fs.writeFileSync(full, base + use1('a1', 'Agent', { subagent_type: 'review-panelist' }) + out1('a1', 'done') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/x' }) + out1('b1', '{}'));
+  fs.writeFileSync(full, base + use1('a1', 'Agent', { subagent_type: 'review-panelist', prompt: 'Review the diff carefully for wedge risks and silent failures. '.repeat(6) }) + out1('a1', 'Findings: nothing blocking in the diff, two warnings.') + use1('b1', 'Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/req.json' }) + out1('b1', 'Findings: the gate fails open on a missing transcript, which is fine.'));
   const hook = path.join(ROOT, '.claude', 'hooks', 'stop-review-coverage.sh');
   const run = (t) => spawnSync('bash', [hook], { input: JSON.stringify({ transcript_path: t, last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, SHIP_CHECK_COVERAGE_DISABLE: '' } });
   assert.equal(run(full).status, 0);
@@ -194,4 +194,29 @@ test('settings.json registers the stop hook beside verify-edits', () => {
   const cmds = st.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command));
   assert.ok(cmds.some((c) => c.includes('verify-edits.sh')));
   assert.ok(cmds.some((c) => c.includes('stop-review-coverage.sh')));
+});
+
+test('code-review is trusted: it neither needs the reviewers nor resets an earlier full ship-check', () => {
+  assert.equal(evaluateCoverage(ev(skill('code-review'))).complete, true);
+  assert.equal(evaluateCoverage(ev(skill(), agent(), curl(), skill('code-review'))).complete, true);
+  assert.equal(evaluateCoverage(ev(skill(), skill('code-review'))).complete, true, 'a later code-review covers a thin ship-check');
+});
+
+test('cheap fakes do not count as the reviewers', () => {
+  const run = (a, b) => evaluateCoverage(ev(skill(), a, b)).complete;
+  const echo = tool('Bash', { command: 'echo curl https://api.openai.com/v1/chat/completions -d x' });
+  const models = tool('Bash', { command: 'curl -s https://api.openai.com/v1/models' });
+  assert.equal(run(agent(), echo), false, 'echo is not a call');
+  assert.equal(run(agent(), models), false, 'a models listing is not a review');
+  assert.equal(run(agent('say ok'), curl()), false, 'a one-word prompt is not a review');
+  const empty = tool('Bash', { command: 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/x' });
+  assert.equal(evaluateCoverage([...ev(skill(), agent()), empty, res(empty, 'null')]).complete, false, 'null response');
+  assert.equal(evaluateCoverage([...ev(skill(), agent()), empty, res(empty, '{"error":{"message":"bad key"}}')]).complete, false, 'error payload');
+  const multi = tool('Bash', { command: 'echo key; P=$(mktemp)\ncurl -s https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $K" -d "$(jq -n x)" | jq -r .a' });
+  assert.equal(run(agent(), multi), true, 'the skill\'s real multi-line command counts');
+});
+
+test('stop hook: bold SAFE TO EXIT is matched; the 10-char message bypass is documented behavior', () => {
+  const thin = ev(skill());
+  assert.equal(stopHookDecision({ lastMessage: 'Done.\n\n**SAFE TO EXIT**', events: thin, env: CLOUD }).decision, 'block');
 });
