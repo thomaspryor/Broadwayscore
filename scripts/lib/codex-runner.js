@@ -428,7 +428,7 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
 
 /**
  * BRO-5287 acceptance over the runner's own "## Codex runner" summaries (BRO-4745 comments):
- * at least `minRuns` summaries, none stopped by a lost lock, no lock-loss crash, and at least one
+ * at least `minRuns` summaries, none whose "Stopped early" line names the lock, and at least one
  * card landed. -> { ok, runs, landed, problems[] }
  */
 function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {

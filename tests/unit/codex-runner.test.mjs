@@ -424,3 +424,12 @@ test('runner pushes of land/codex-* refs skip the session pre-push hook (BRO-528
   assert.ok(pushes.length > 0, 'found the land push');
   for (const p of pushes) assert.ok(p.includes("'--no-verify'"), p);
 });
+
+test('a card the hard stop leaves unjudged goes back without the bounce marker or the REJECT streak (BRO-5287)', () => {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
+  const start = src.indexOf('if (outOfTime) {');
+  assert.ok(start > 0, 'out-of-time path exists');
+  const block = src.slice(start, src.indexOf('\n    }\n', start));
+  assert.ok(!block.includes('BOUNCED_MARKER'), 'no 14-day Codex ban for a card nobody judged');
+  assert.ok(block.includes("return 'done'") && start < src.indexOf('stats.rejectStreak ='), 'returns before the REJECT streak update');
+});

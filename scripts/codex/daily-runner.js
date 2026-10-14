@@ -78,7 +78,7 @@ const OPTS = {
   // One card's wall clock: a fix-round exec starts only with 15+ min of exec plus the
   // review still inside it, and is cut to fit, so fix rounds cannot run past the budget.
   cardMaxMinutes: Number(arg('card-max-minutes', 120)),
-  // The wall clock the run must be fully done by (summary posted, lock released), 0 = none.
+  // The wall clock the run must be fully done by (summary posted, lock released); absent = none, else >= 30.
   // The routine's background task is killed at 120 min, and a kill during a Codex exec or a
   // check never reaches the SIGTERM handler (spawnSync blocks it): on 2026-10-13 the 20:47
   // firing's runner died mid-card, posted no summary and left its lock and BRO-4277 stranded
@@ -565,7 +565,7 @@ async function workCard(pick, stats, inFlight) {
     const LAND_CHECKS_MS = 15 * 60_000;
     const execFits = () => cardDeadline - Date.now() >= MIN_FIX_EXEC_MS + REVIEW_RESERVE_MS
       && fitsBeforeHardStop(MIN_FIX_EXEC_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS);
-    const firstExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, HARD_END_MS - WRAP_UP_MS - Date.now() - REVIEW_RESERVE_MS));
+    const firstExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, HARD_END_MS - WRAP_UP_MS - Date.now() - LAND_CHECKS_MS - REVIEW_RESERVE_MS));
     const fixExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, cardDeadline - Date.now() - REVIEW_RESERVE_MS));
     let report = '';
     let check = null;
@@ -576,6 +576,9 @@ async function workCard(pick, stats, inFlight) {
     let envRetryUsed = false;
     let envBlocked = null;
     let extra = onMain;
+    // Set when the hard stop leaves no room for the land checks or the review: the work is
+    // unjudged, so the card goes back without the bounce marker and outside the REJECT streak.
+    let outOfTime = null;
     // One Codex exec, retried (from the same commit) when it failed for a provider reason such as
     // "Selected model is at capacity" (BRO-5287, 2026-10-13 06:55), at most twice, while it fits.
     // A provider error fails within seconds, so a retry needs only the time left, not a whole exec.
@@ -604,6 +607,7 @@ async function workCard(pick, stats, inFlight) {
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
+      if (c.hasDiff && !fitsBeforeHardStop(LAND_CHECKS_MS + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
       keepLock();
       let landFails = c.hasDiff ? newLandFailures() : null;
       if (landFails && execFits()) {
@@ -622,10 +626,8 @@ async function workCard(pick, stats, inFlight) {
         log(`${id}: attempt ${attempt} land checks red`);
         step = R.nextStep({ verdict: 'REJECT', hasDiff: true, attempt });
       } else if (!fitsBeforeHardStop(REVIEW_RESERVE_MS)) {
-        // A review the hard stop would kill mid-way lands nothing and strands the card: hand it back.
-        check = { verdict: 'REJECT', text: `The run reached its ${OPTS.hardStopMinutes}-min hard stop before the independent review could run, so nothing was landed. The Codex change was not reviewed.` };
-        log(`${id}: no time left before the hard stop for the review`);
-        step = 'bounce';
+        // A review the hard stop would kill mid-way lands nothing and strands the card.
+        outOfTime = 'the review';
         break;
       } else {
         keepLock();
@@ -647,6 +649,13 @@ async function workCard(pick, stats, inFlight) {
       }
       attempt += 1;
       extra = `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (land's test batches, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
+    }
+    if (outOfTime) {
+      log(`${id}: no time left before the hard stop for ${outOfTime}; handed back unjudged`);
+      stats.outOfTime.push(id);
+      handedBack = (await moveCard(id, 'Todo', `## Codex runner: out of time before ${outOfTime}\n\nThe run reached its ${OPTS.hardStopMinutes}-min hard stop before ${outOfTime} could run, so Codex's change was not judged and nothing was landed. The card is free for any worker, Codex included.`)).code === 0;
+      disposed = true;
+      return 'done';
     }
     if (abort) {
       stats.aborted = abort;
@@ -970,7 +979,7 @@ async function recoverOrphans(stats) {
 }
 
 async function runLocked(startedMs) {
-  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
+  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], outOfTime: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
   // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
   if (!OPTS.dryRun) { await reconcileLanded(stats); await recoverOrphans(stats); }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
@@ -1017,6 +1026,7 @@ async function runLocked(startedMs) {
     `- Landed but Done gate refused (In Review): ${list(stats.inReview)}`,
     `- Landing did not finish (left In Progress for resume): ${list(stats.landFailed)}`,
     `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
+    ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
     `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
     `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,

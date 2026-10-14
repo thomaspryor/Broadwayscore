@@ -10,7 +10,7 @@ require('./lib/load-env').loadEnv();
 const linear = require('./lib/linear-client.js');
 const { assessRunnerSummaries } = require('./lib/codex-runner.js');
 
-// The 04:47 UTC firing on 2026-10-14 is the first with every BRO-5287 fix on main.
+// The 04:47 UTC firing on 2026-10-14 is the first with the lock fixes (the land-push fix landed 06:33).
 const SINCE = process.env.CODEX_HEALTH_SINCE || '2026-10-14T04:40:00Z';
 // = the card's RECHECK-AFTER. Before it the claim cannot be true yet (3 firings have not run),
 // and land's colocated-tests gate runs every changed test file, so the probe skips until then
