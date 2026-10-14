@@ -51,6 +51,21 @@ more than 12 hours. Name the newest runner-error cards in the finding. If an
 open card already covers it (search "Codex runner lands nothing"), comment
 there instead of filing.
 
+## 3c. Can the workers reach the urgent cards?
+
+Work landing (step 2) does not mean the right work: from 2026-09-19 to
+2026-10-14 the workers kept landing P3 cards while 46 P0/P1 cards sat in
+Backlog where the picker could not reach them, and this check read healthy
+(BRO-5360). Run the picker read-only and keep only its counts:
+
+    node scripts/cloud-worker-pick.js 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const p=JSON.parse(s);console.log(JSON.stringify({eligible:p.eligible,skipped:p.skipped,historySkipped:p.historySkipped}))})"
+
+Unhealthy if `skipped["parked-or-backlog"]` is 15 or more: that many urgent
+cards are parked where no worker can take them. Name the count and the top
+skip reasons in the finding. Most such cards should come back on their own
+(a paused card returns after its cooldown), so a high count means a new way
+of parking cards that the picker does not know about.
+
 ## 4. Record
 
 If everything is healthy, make no changes. If anything is unhealthy, first
