@@ -467,3 +467,17 @@ test('runnerSummaryFacts: one parser for the acceptance probe and the daily row'
   assert.equal(r.assessRunnerSummaries([b, b, b]).landed, 6);
   assert.match(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: b }], Date.parse('2026-10-14T10:00:00Z')).message, /2 card\(s\) landed, 2 crashed/);
 });
+
+// BRO-5287: Linear's comment pages run newest first, so `first: 50` keeps the latest
+// comments and `last: N` returns the OLDEST N. The runner summaries on BRO-4745 pass 50
+// comments, and a `last:` read there froze the cloud-worker check on stale summaries.
+test('comment reads keep the newest page: shared query uses first:, nothing queries comments with last:', (t) => {
+  const q = require('../../scripts/lib/linear-dispatch.js').buildIssueCommentsByNumberQuery();
+  assert.match(q, /comments\(first: 50, orderBy: createdAt\)/);
+  assert.doesNotMatch(q, /\blast:/);
+  // Built from parts so this file does not match itself.
+  const pattern = 'comments\\(' + '[^)]*\\blast:\\s*[0-9]';
+  const g = spawnSync('git', ['grep', '-nE', pattern, '--', '*.js', '*.mjs', '*.cjs', '*.ts', '*.md', '*.sh', '*.yml'], { cwd: ROOT, encoding: 'utf8' });
+  if (g.status !== 0 && g.status !== 1) { t.skip(`git grep unavailable: ${(g.stderr || g.error || '').toString().slice(0, 200)}`); return; }
+  assert.equal(g.stdout.trim(), '', `Linear comment reads with last: return the OLDEST comments; use first: (newest first) or listIssueComments:\n${g.stdout}`);
+});

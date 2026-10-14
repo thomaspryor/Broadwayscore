@@ -125,12 +125,12 @@ const ZOMBIE_RESET_MARKER = "Auto-reset by bsc-reconcile's Linear zombie sweep (
 
 // buildIssueQuery (linear-dispatch.js) fetches `comments(first: 50, orderBy:
 // createdAt)` with no pagination cursor. Hitting exactly this cap is the only
-// available signal that older/newer comments exist beyond what was fetched —
-// Linear's `orderBy: createdAt` connection default is ascending, so a
-// truncated 50-of-N thread silently drops the MOST RECENT comments, exactly
-// the ones a human intervention or a genuine report would show up in. A
-// truncated thread cannot prove "no human comment since dispatch", so it
-// must refuse rather than silently trust an incomplete view.
+// available signal that older comments exist beyond what was fetched. The
+// page is the NEWEST 50 (Linear's comment pages run newest first, verified
+// live 2026-10-14, BRO-5287), so a truncated thread drops the OLDEST
+// comments, which can include the dispatch itself. A truncated thread
+// therefore cannot prove "no human comment since dispatch", so it must
+// refuse rather than silently trust an incomplete view.
 const COMMENT_PAGE_CAP = 50;
 
 /**

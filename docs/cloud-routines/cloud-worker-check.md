@@ -41,15 +41,18 @@ runner died holding it: unhealthy.
 
 A fresh lock does not mean Codex works: a runner that errors on every card
 restarts each firing and keeps the lock young (2026-10-06..14: 25 runs, 2 cards
-landed, and this check still read healthy). Read the newest "## Codex runner"
-comments on BRO-4745:
+landed, and this check still read healthy). Ask the same reader and rule the daily
+health row uses ("Codex runner: landing cards"):
 
-    node -e "require('./scripts/lib/linear-client.js').graphql('{ issue(id: \"BRO-4745\") { comments(last: 50) { nodes { createdAt body } } } }').then(r => { const c = r.issue.comments.nodes.filter(n => n.body.includes('## Codex runner')).sort((a, b) => a.createdAt < b.createdAt ? 1 : -1).slice(0, 6); for (const n of c) console.log(n.createdAt, '|', (n.body.match(/Landed and Done: (.*)/) || [])[1]); })"
+    node -e "const L=require('./scripts/lib/linear-client.js'),R=require('./scripts/lib/codex-runner.js');L.listIssueComments(['BRO-4745']).then(m=>{const c=m.get('BRO-4745')||[];console.log(JSON.stringify(R.runnerHealth(c,Date.now())));for(const n of c.filter(x=>x.body.startsWith('## Codex runner 2')).slice(0,6))console.log(n.createdAt,'|',(n.body.match(/Landed and Done: (.*)/)||[])[1],'| crashed:',(n.body.match(/Runner error mid-card \(back to Todo\): (.*)/)||[])[1]);})"
 
-Unhealthy if the 6 newest runs all show "Landed and Done: none" and they span
-more than 12 hours. Name the newest runner-error cards in the finding. If an
-open card already covers it (search "Codex runner lands nothing"), comment
-there instead of filing.
+Unhealthy if `status` is `error` (no summary in 24h, a run stopped on its lock,
+or nothing landed in 24h); name the crashed cards from the lines below it. Never
+query the comments with a raw GraphQL `last:` page: Linear's comment pages are
+newest first, so `last: N` returns the OLDEST N, and past 50 comments on BRO-4745
+that would freeze this check on old summaries (BRO-5287). If an open
+card already covers it (search "Codex runner lands nothing"), comment there
+instead of filing.
 
 ## 3c. Can the workers reach the urgent cards?
 

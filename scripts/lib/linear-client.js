@@ -375,6 +375,9 @@ async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMa
 
 // identifier -> comment nodes for many issues of one team, 50 per request
 // (BRO-4642). Callers attach these as issue.comments for sortedCommentBodies.
+// Each issue's list is its NEWEST 50 comments, newest first: Linear's comment
+// pages run newest first, so `first: 50` keeps the latest and `last: N` would
+// return the oldest N (verified live 2026-10-14, BRO-5287).
 async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
   const prefix = `${teamKey}-`;
   const numbers = [...new Set((identifiers || [])
@@ -386,7 +389,7 @@ async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
     const data = await graphql(linearDispatch.buildIssueCommentsByNumberQuery(), { teamKey, numbers: numbers.slice(i, i + 50) });
     for (const n of (data.issues && data.issues.nodes) || []) {
       const nodes = (n.comments && n.comments.nodes) || [];
-      if (nodes.length >= 50) console.error(`[linear-client] ${n.identifier}: 50+ comments, only the first 50 read`);
+      if (nodes.length >= 50) console.error(`[linear-client] ${n.identifier}: 50+ comments, only the newest 50 read`);
       byId.set(n.identifier, nodes);
     }
   }
