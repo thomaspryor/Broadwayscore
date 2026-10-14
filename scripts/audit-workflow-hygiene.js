@@ -236,6 +236,7 @@ const {
   findMaskedPushFailures,
   findPushWithoutWritePermission,
   findDispatchWithoutActionsWrite,
+  findScriptWithoutDispatchToken,
   findStringInputInterpolation,
   findCompositeShellHazards,
 } = require('./lib/audit-workflow-hygiene-rules');
@@ -775,6 +776,7 @@ async function main() {
     shortPushTimeout: [],
     pushNoWrite: [],
     dispatchNoActionsWrite: [],
+    scriptNoDispatchToken: [],
     stageWithoutCommit: [],
     nodeTeeNoPipefail: [],
     maskedPush: [],
@@ -940,6 +942,12 @@ async function main() {
     if (!raw.includes('hygiene-dispatch-perm-ok:')) {
       const hits = findDispatchWithoutActionsWrite(raw);
       if (hits.length > 0) violations.dispatchNoActionsWrite.push({ file, hits });
+    }
+
+    // ── Rule (x): checklist-style script run without a dispatch token (BRO-2872) ─
+    if (!raw.includes('hygiene-dispatch-token-ok:')) {
+      const hits = findScriptWithoutDispatchToken(raw);
+      if (hits.length > 0) violations.scriptNoDispatchToken.push({ file, hits });
     }
 
     // ── Rule (p): staged files pushed with no commit in between (BRO-4897) ─
@@ -1117,6 +1125,7 @@ async function main() {
     violations.shortPushTimeout.length +
     violations.pushNoWrite.length +
     violations.dispatchNoActionsWrite.length +
+    violations.scriptNoDispatchToken.length +
     violations.stageWithoutCommit.length +
     violations.nodeTeeNoPipefail.length +
     violations.maskedPush.length +
@@ -1370,6 +1379,18 @@ async function main() {
     }
     console.error('\nFix: add `actions: write` to that job\'s (or the workflow\'s) permissions block, or run the step with a PAT (GH_TOKEN: ${{ secrets.… }}).');
     console.error('Exempt (legitimate): add  # hygiene-dispatch-perm-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.scriptNoDispatchToken.length) {
+    console.error('── (x) Self-healing script run without a dispatch token ─');
+    console.error('opening-night-checklist.js dispatches remediation workflows with GITHUB_TOKEN;');
+    console.error('without it every dispatch fails `no-token` and the self-heal is inert (BRO-2872).\n');
+    for (const { file, hits } of violations.scriptNoDispatchToken) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      job "${h.job}" line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: add  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  to that step\'s env (the job needs `actions: write`).');
+    console.error('Exempt (legitimate): add  # hygiene-dispatch-token-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.quoteApostrophe.length) {

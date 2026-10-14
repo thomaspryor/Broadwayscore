@@ -1159,8 +1159,47 @@ function findDispatchWithoutActionsWrite(raw) {
   return hits;
 }
 
+/**
+ * Rule (x): a step that runs a script whose self-heal dispatches workflows with
+ * `process.env.GITHUB_TOKEN || REVIEW_TEXTS_TOKEN` (scripts/lib/dispatch-*.js,
+ * opening-night-remediation.js) but has no GITHUB_TOKEN/GH_TOKEN/REVIEW_TEXTS_TOKEN
+ * in its step, job or workflow env. Every dispatch then fails `no-token` and the
+ * failure is only an annotation (BRO-2872: considered=7 dispatched=0 on 2026-09-05
+ * and 2026-10-01). Add a script to TOKEN_REQUIRED_SCRIPTS when its dispatcher
+ * reads the token from the environment.
+ */
+const TOKEN_REQUIRED_SCRIPTS = ['opening-night-checklist.js'];
+const TOKEN_ENV_RE = /\b(?:GITHUB_TOKEN|GH_TOKEN|REVIEW_TEXTS_TOKEN)\s*:/;
+function findScriptWithoutDispatchToken(raw) {
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return [];
+  const workflowEnv = TOKEN_ENV_RE.test(lines.slice(0, jobsIdx).join('\n'));
+  const scriptRe = new RegExp(`\\bnode\\s+scripts/(?:${TOKEN_REQUIRED_SCRIPTS.map((s) => s.replace(/\./g, '\\.')).join('|')})\\b`);
+  const starts = findJobBoundaries(lines, jobsIdx);
+  const steps = splitWorkflowSteps(raw);
+  const hits = [];
+  for (let j = 0; j < starts.length - 1; j++) {
+    const jobKey = lines[starts[j]].trim().replace(/:\s*$/, '');
+    const body = lines.slice(starts[j], starts[j + 1]);
+    const stepsAt = body.findIndex((l) => /^ {4}steps\s*:/.test(l));
+    const jobEnv = TOKEN_ENV_RE.test(body.slice(0, stepsAt === -1 ? 0 : stepsAt).join('\n'));
+    for (const step of steps.filter((s) => s.startLine > starts[j] && s.startLine < starts[j + 1])) {
+      if (workflowEnv || jobEnv || TOKEN_ENV_RE.test(step.lines.join('\n'))) continue;
+      step.lines.forEach((l, k) => {
+        if (!l.trim().startsWith('#') && scriptRe.test(l)) {
+          hits.push({ job: jobKey, lineNum: step.startLine + k + 1, text: l.trim() });
+        }
+      });
+    }
+  }
+  return hits;
+}
+
 module.exports = {
   findDispatchWithoutActionsWrite,
+  findScriptWithoutDispatchToken,
+  TOKEN_REQUIRED_SCRIPTS,
   DISPATCH_COMPOSITES,
   findCompositeShellHazards,
   splitWorkflowSteps,

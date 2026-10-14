@@ -836,6 +836,37 @@ describe('remediation runner', () => {
     assert.equal(ledger[0].kind, 'workflow', 'ledger entries must carry kind — one ledger, many remediation types');
   });
 
+  // BRO-2872: a missing token makes the whole self-heal inert (considered=7
+  // dispatched=0 on 2026-09-05 and again 2026-10-01); it must be an ::error::
+  // annotation, not a ::warning:: nobody reads. Other failures stay warnings.
+  for (const [err, level] of [['no-token', 'error'], ['403 forbidden', 'warning']]) {
+    it(`annotates a '${err}' dispatch failure as ::${level}::`, async () => {
+      const logged = [];
+      const origErr = console.error;
+      const origWarn = console.warn;
+      console.error = (m) => logged.push(String(m));
+      console.warn = (m) => logged.push(String(m));
+      let stats;
+      try {
+        stats = await executeRemediations(planRemediations([workflowAction], readAttempts([]), now), {
+          now,
+          dispatchWorkflow: async () => ({ ok: false, error: err }),
+          routeAlert: async () => ({ action: 'digest' }),
+          appendLedger: () => {},
+        });
+      } finally {
+        console.error = origErr;
+        console.warn = origWarn;
+      }
+      assert.equal(stats.failed, 1);
+      assert.equal(stats.dispatched, 0);
+      assert.ok(
+        logged.some(l => l.startsWith(`::${level}::opening-night remediation failed to dispatch`) && l.endsWith(err)),
+        `expected ::${level}:: annotation, got ${JSON.stringify(logged)}`,
+      );
+    });
+  }
+
   it('records a dispatch failure as failed rather than claiming success', async () => {
     const ledger = [];
     const stats = await executeRemediations(planRemediations([workflowAction], readAttempts([]), now), {

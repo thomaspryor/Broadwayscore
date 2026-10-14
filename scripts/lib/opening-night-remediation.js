@@ -450,11 +450,13 @@ async function executeRemediations(planned, deps) {
       stats.failed++;
       const why = result?.error || 'unknown dispatch failure';
       appendLedger({ ...base, action: 'failed', workflow: remediation.workflow, inputs: remediation.inputs || {}, why });
-      // Surface in the Actions log. 'no-token' especially: it means the whole
-      // self-healing layer is inert while detection keeps reporting normally —
-      // the vacuous-gate shape (looks like it ran, did nothing). Annotation
-      // only; the checklist's 0/1/3 exit contract is deliberately unchanged.
-      console.warn(`::warning::opening-night remediation failed to dispatch ${remediation.workflow} for ${remediation.showId}: ${why}`);
+      // Surface in the Actions log. 'no-token' means the whole self-healing
+      // layer is inert while detection keeps reporting normally (the
+      // vacuous-gate shape, BRO-2872), so it is an ::error:: annotation; any
+      // other failure stays a ::warning::. Annotations never change the
+      // checklist's 0/1/3 exit contract.
+      const level = why === 'no-token' ? 'error' : 'warning';
+      console.error(`::${level}::opening-night remediation failed to dispatch ${remediation.workflow} for ${remediation.showId}: ${why}`);
     }
   }
 

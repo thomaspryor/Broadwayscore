@@ -406,6 +406,11 @@ jobs:
           # BRO-2378: same checklist script as opening-night-checklist.yml (BRO-67);
           # without the key its LLM parity fallback silently no-ops in this gate.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # BRO-2872: the checklist's self-heal (opening-night-remediation.js
+          # dispatchWorkflow) needs a token; without it every remediation
+          # failed 'no-token' (considered=7 dispatched=0). The workflow's
+          # `actions: write` permission already covers the dispatch.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           FORCE="${{ inputs.force_broadcast }}"
           BLOCKED=false
