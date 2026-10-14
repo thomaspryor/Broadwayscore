@@ -29,6 +29,6 @@ test('every hook command in .claude/settings.json names a top-level .claude/hook
 test('the home installer wires every registered hook, one for one', () => {
   const { wired } = buildSettings(repoSettings, '/home/user');
   assert.equal(wired.length, commands.length, `repo registers ${commands.length} hook commands, installer wired ${wired.length}`);
-  assert.ok(wired.includes('Stop:stop-review-coverage.sh'), 'the review-coverage Stop hook is wired');
+  assert.ok(wired.includes('Stop:verify-edits.sh'), 'the Stop hook that carries the review-coverage gate is wired');
   assert.ok(wired.includes('PreToolUse:pre-push-land-preflight.sh'), 'the land gate hook is wired');
 });

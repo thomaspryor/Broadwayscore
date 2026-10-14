@@ -82,6 +82,17 @@ if [ "$stop_hook_active" = "true" ]; then
   # '|' separator: NOCHAIN keys contain commas (NOCHAIN:review,what-else).
   VE_SKIP_CODES=$(paste -sd'|' "$_ve_chain_file" 2>/dev/null)
 fi
+# BRO-5359: review-coverage gate (scripts/lib/review-coverage.mjs). Refuses SAFE TO EXIT after a hollow
+# /ship-check, a /did-it-work with no TESTED block, a hollow /what-else or an early Linear close-out. Lives HERE,
+# not in a new hook, because this is the one Stop hook wired in every cloud container (a new hook only reaches
+# containers whose cached setup was built after it landed). Cloud only; fails open; blocks at most 3 times per
+# session (the lib keeps its own budget). Kill switch SHIP_CHECK_COVERAGE_DISABLE=1. Pinned by
+# scripts/lib/review-coverage.test.mjs so a Mac-master sync cannot silently drop it.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0}" != "1" ] \
+   && [ -f "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" ] && command -v node >/dev/null 2>&1; then
+  _rc_err=$(printf '%s' "$input" | node "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" --stop-hook 2>&1 >/dev/null)
+  if [ $? -eq 2 ]; then printf '%s\n' "$_rc_err" >&2; exit 2; fi
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
 

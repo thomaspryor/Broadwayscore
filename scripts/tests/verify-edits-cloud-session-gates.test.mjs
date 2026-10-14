@@ -155,7 +155,9 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
     const r = spawnSyncStdinFile('bash', [REPO_HOOK], {
       input: stdin,
       encoding: 'utf8',
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', ...env, HOME: fakeHomeDir },
+      // BRO-5359: the review-coverage gate has its own tests (scripts/lib/review-coverage.test.mjs); these cases model
+      // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
