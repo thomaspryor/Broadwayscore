@@ -25,7 +25,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { bucketWriteResult } = require('./lib/ingest-rejection-cache');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
-const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
+const { parseBwwPostingAuthor, isMultiPersonOutlet } = require('./lib/bww-jsonld-author');
 const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 
 const dataDir = path.join(__dirname, '..', 'data');
@@ -223,6 +223,7 @@ function reExtractBWW() {
           // Shared with gather-reviews.js (BRO-3345): one parser, no phantom outlets.
           const { outletRaw, criticName } = parseBwwPostingAuthor(json);
           if (!outletRaw) continue;
+          if (isMultiPersonOutlet(outletRaw)) continue; // radio-segment name list, not an outlet (BRO-4357)
 
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);
