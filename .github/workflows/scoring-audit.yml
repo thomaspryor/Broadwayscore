@@ -121,8 +121,13 @@ jobs:
           git add data/audit/scoring-audit.json data/audit/scoring-audit.md data/audit/scoring-audit-history.json data/audit/needs-human-review.json data/audit/rebuild-score-drift.json
           # BRO-4405: the rebuild above auto-registers / stages outlets; without
           # this they were written to the runner disk and discarded.
-          git add -- data/outlet-registry.json 2>/dev/null || true
-          git add -- data/audit/outlet-registry-staging.json 2>/dev/null || true
+          for f in data/outlet-registry.json data/audit/outlet-registry-staging.json; do
+            if node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              git add -- "$f" 2>/dev/null || true
+            else
+              echo "::warning::$f missing or not valid JSON, leaving it uncommitted"
+            fi
+          done
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
