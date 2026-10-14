@@ -204,6 +204,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
   { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
+  // Section index pages stored as review urls on Theatre Record print rows
+  // (BRO-5374): dailymail.co.uk/tvshowbiz/index.html, /mailonsunday/index.html;
+  // express.co.uk/latest/theatre. Real articles are /<section>/article-<id>/...
+  // and /entertainment/theatre/<id>/<slug>.
+  { host: /(^|\.)dailymail\.(co\.uk|com)$/, path: /^\/[a-z]+\/index\.html?$/i, reason: 'section-index-page' },
+  { host: /(^|\.)express\.co\.uk$/, path: /^\/latest\/[^/]+\/?$/i, reason: 'section-index-page' },
   // Cast announcements live under /news/ beside real reviews (/news/review-...),
   // so only the announcement slug is blocked. One submitted via the review form
   // held The Body of Mary's TheaterMania slot and blocked the real review
@@ -672,6 +678,11 @@ function classifyReviewUrl(url) {
   }
   const named = namedNonReviewReason(url);
   if (named) return { ok: false, reason: named };
+  // A site search result list (WordPress /?s=...), never one review (BRO-5374).
+  try {
+    const su = new URL(url);
+    if ((su.pathname === '' || su.pathname === '/') && su.searchParams.has('s')) return { ok: false, reason: 'site-search-page' };
+  } catch { /* unparseable handled above */ }
   // Roundup hubs/articles: same policy the write path enforces
   // (review-guards.isRoundupUrl). Lazy require: keeps this module's
   // zero-heavy-deps load contract for the S5 probe and avoids any

@@ -151,7 +151,19 @@ const FIELD_VALUE_CHECKS = {
       || ctx.currentUrlOwnedByOtherShow === true
       || unverifiedSearchUrl;
     if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, another show\'s review, or an unverified legacy web-search url)';
-    if (v === '') return currentAggregator ? null : 'url: clearing to "" is only for an aggregator-page url';
+    if (v === '') {
+      // BRO-5374: '' keeps the text (it is not a url change for the invariant).
+      // Allowed for an aggregator url, a url that is not a url at all, or a
+      // provably wrong url on a Theatre Record print row, whose text never came
+      // from that url. Never over a human url lock.
+      if ((record.urlVerified === true && !record.urlVerifiedAuto) || record.urlManualOverride) {
+        return 'url: the current url carries a human lock (urlVerified/urlManualOverride)';
+      }
+      const garbage = current && ['not-http-url', 'unparseable-url'].includes(classifyReviewUrl(current).reason);
+      const printRow = record.source === 'theatre-record' || !!record.theatreRecordUrl;
+      return currentAggregator || garbage || printRow
+        ? null : 'url: clearing to "" is only for an aggregator url, a malformed url, or a wrong url on a Theatre Record print row';
+    }
     if (typeof v !== 'string' || !/^https?:\/\//i.test(v)) return 'url must be an http(s) url or ""';
     if (!classifyReviewUrl(v).ok || isAggregatorPageUrl(v)) return 'url: new value is not a review-candidate url';
     const { isCrossOutletUrl } = require('./review-normalization');
