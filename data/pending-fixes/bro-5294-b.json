@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5294-b",
   "planId": "9e2d983b-de6a-452a-8107-57f3f39def54",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T00:00:00.000Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,13 @@
         "description": "Set needsRescore (reason multi-show column) on the two rows; the script refuses anything not complete, scored, unlocked and boxed."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T00:27:46.422Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran flag-multishow-column-rescore.js successfully"
+    }
+  ]
 }
