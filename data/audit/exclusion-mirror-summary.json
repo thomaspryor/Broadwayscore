@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-14T21:29:20.252Z",
-  "totalScanned": 56632,
-  "totalExcluded": 27020,
+  "generatedAt": "2026-10-14T21:54:49.133Z",
+  "totalScanned": 56628,
+  "totalExcluded": 27011,
   "ruleCounts": {
-    "wrongProduction": 18174,
+    "wrongProduction": 18170,
     "duplicateOf": 1832,
     "wrongShow": 1761,
     "unverifiableWebSearchRow": 961,
-    "rejectionReason": 888,
+    "rejectionReason": 887,
     "noTextOrScoreSignal": 720,
     "nonReview": 463,
     "wrongAttribution": 308,
@@ -15,7 +15,7 @@
     "bodylessAggregatorScoreUncorroborated": 238,
     "isRoundupArticle": 221,
     "crossOutletDuplicate": 182,
-    "isSyndicatedDuplicate": 167,
+    "isSyndicatedDuplicate": 163,
     "previewPlaceholder": 127,
     "scoreStatusToBeCalculated": 93,
     "cvWrongArticleHighConfidence": 91,
@@ -41,36 +41,28 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 2,
-    "duplicateOf": 3,
-    "wrongShow": 1,
-    "rejectionReason": 7,
-    "noTextOrScoreSignal": -3,
-    "nonReview": 1,
-    "bodylessAggregatorScoreUncorroborated": -1,
-    "isRoundupArticle": -1,
-    "cvWrongArticleHighConfidence": 1,
-    "rejectedAt": -1
+    "wrongProduction": -4,
+    "rejectionReason": -1,
+    "isSyndicatedDuplicate": -4
   },
-  "previousGeneratedAt": "2026-10-14T20:00:31.199Z",
+  "previousGeneratedAt": "2026-10-14T21:29:20.252Z",
   "mirror": {
     "comparedShows": 2519,
-    "comparedFiles": 56094,
-    "agreeExcluded": 26242,
-    "agreeIncluded": 28777,
-    "mirrorOnly": 248,
+    "comparedFiles": 56090,
+    "agreeExcluded": 26236,
+    "agreeIncluded": 28782,
+    "mirrorOnly": 245,
     "rebuildOnly": 827,
-    "disagreements": 1075,
-    "disagreementRate": 0.0192,
+    "disagreements": 1072,
+    "disagreementRate": 0.0191,
     "mirrorOnlyByRule": {
-      "duplicateOf": 84,
+      "duplicateOf": 83,
       "cvWrongArticleHighConfidence": 60,
       "noTextOrScoreSignal": 48,
       "contentTierInvalid": 37,
-      "wrongProduction": 12,
+      "wrongProduction": 11,
       "previewPlaceholder": 3,
       "wrongShow": 2,
-      "nonReview": 1,
       "rejectionReason": 1
     },
     "rebuildOnlyByReason": {
@@ -104,5 +96,5 @@
     "notComparedShows": 83,
     "notComparedFiles": 538
   },
-  "previousDisagreementRate": 0.0196
+  "previousDisagreementRate": 0.0192
 }
