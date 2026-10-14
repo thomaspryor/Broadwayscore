@@ -49,7 +49,7 @@ test('the creation chokepoint caps parked UI cards from any filer at normal (fri
 });
 
 test('the walkthrough park note no longer promises an auto-dispatch that cannot happen', () => {
-  const src = readFileSync('scripts/ux-walkthrough.mjs', 'utf8');
+  const src = readFileSync(new URL('../../scripts/ux-walkthrough.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(src, /auto-dispatch loop picks it up/);
   assert.match(src, /needs owner visual-QA/);
   // Priority no longer carries severity, so the card text must.

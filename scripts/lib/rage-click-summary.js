@@ -28,11 +28,23 @@ function pageKeyForPath(pathname) {
   return foldDiacritics(p).replace(/^\//, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 }
 
+const clean = (v) => String(v ?? '').trim();
+
+// A row names something when any of tag, text, link or id is non-blank. The
+// filter and the description share it, so a row the filter keeps never renders
+// as a bare "(unknown element)" (BRO-5261 retro-review: a link-only row did).
+function hasNameableElement([, elementText, tag, href, nearestId]) {
+  return [elementText, tag, href, nearestId].some((v) => clean(v) !== '');
+}
+
 function describeElement(tag, href, nearestId, elementText) {
+  const [t, h, id, text] = [tag, href, nearestId, elementText].map(clean);
   const parts = [];
-  parts.push(tag ? `<${tag}${href ? ` href="${href}"` : ''}>` : '(unknown element)');
-  if (elementText) parts.push(`"${elementText}"`);
-  if (nearestId) parts.push(`near #${nearestId}`);
+  if (t) parts.push(`<${t}${h ? ` href="${h}"` : ''}>`);
+  else if (h) parts.push(`link to "${h}"`);
+  else if (!text && !id) parts.push('(unknown element)');
+  if (text) parts.push(`"${text}"`);
+  if (id) parts.push(`near #${id}`);
   return parts.join(' ');
 }
 
@@ -43,7 +55,7 @@ function describeElement(tag, href, nearestId, elementText) {
  */
 function qualifyingRageRows(rows, minUsers = MIN_RAGE_USERS) {
   return (rows || [])
-    .filter((row) => row.slice(1, 5).some((v) => String(v ?? '').trim() !== ''))
+    .filter(hasNameableElement)
     .map(([page, elementText, tag, href, nearestId, n, users]) => ({
       page: page || '',
       pageKey: pageKeyForPath(page),

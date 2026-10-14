@@ -64,3 +64,17 @@ test('rage-click issues must match a qualifying page; other types pass', () => {
 test('page match ignores case and surrounding spaces from the model', () => {
   assert.equal(isBackedRageClickIssue({ evidence_key: 'rage_click: Discount-Tickets :price-chip' }, ROWS), true);
 });
+
+test('a row the filter keeps never renders as a bare "(unknown element)" (BRO-5261)', () => {
+  assert.equal(describeElement('', '/tickets', '', ''), 'link to "/tickets"');
+  assert.equal(describeElement('div', '', '', '  \n'), '<div>');
+  assert.equal(describeElement('', '', '', ' Buy '), '"Buy"');
+  assert.equal(describeElement(' ', ' ', ' ', ' '), '(unknown element)');
+  const rows = [
+    ['/show/x', '', '', '/tickets', '', 20, 5],
+    ['/show/y', '  ', ' ', '', '', 20, 5],
+  ];
+  const q = qualifyingRageRows(rows);
+  assert.deepEqual(q.map((r) => r.page), ['/show/x']);
+  for (const r of q) assert.doesNotMatch(r.element, /unknown element/);
+});
