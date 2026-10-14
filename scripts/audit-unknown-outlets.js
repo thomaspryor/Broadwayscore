@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isRejectedNonReview } = require('./lib/review-guards');
+const { isJunkOutlet } = require('./lib/review-normalization');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -81,6 +82,10 @@ function countResolvableUnknowns(reviewTextsDir, validOutlets) {
         const outletId = (data.outletId || '').toLowerCase();
         const hyphenCount = (outletId.match(/-/g) || []).length;
         if (!outletId || outletId === 'unknown' || hyphenCount > 5) continue;
+        // BRO-5275: the rebuild never registers an id isJunkOutlet() refuses
+        // (sentence fragments, "buy tickets" CTA text), so it is not a registry
+        // gap; counting it kept this audit red for ids nobody could register.
+        if (isJunkOutlet(outletId)) continue;
 
         if (!validOutlets.has(outletId)) {
           resolvableUnknowns++;

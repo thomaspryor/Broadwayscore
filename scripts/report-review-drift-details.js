@@ -36,6 +36,15 @@ function* eachReview() {
   }
 }
 
+function bylineHit(nameOrSlug, d) {
+  const name = String(nameOrSlug || '').replace(/-/g, ' ').trim().toLowerCase();
+  if (!name || name === 'unknown') return null;
+  const body = String(d.fullText || d.text || '').toLowerCase();
+  const zone = body.slice(0, 900) + ' ' + body.slice(-500);
+  const surname = name.split(/\s+/).pop();
+  return surname.length >= 3 && zone.includes(surname);
+}
+
 const brief = (r) => {
   const d = r.data;
   const textLen = Math.max((d.fullText || '').length, (d.text || '').length);
@@ -52,6 +61,10 @@ const brief = (r) => {
     collected: d.dateCollected || d.collectedAt || null,
     src: d.source || null,
     dupOf: d.duplicateOf || null,
+    // Byline evidence without printing text: does the article's head/tail name the
+    // critic the filename claims, and the one criticName claims?
+    bylineFile: bylineHit(`${r.file}`.replace(/\.json$/, '').split('--')[1], d),
+    bylineField: bylineHit(d.criticName, d),
     locked: d._locked || undefined,
   };
 };
@@ -93,7 +106,7 @@ function bwwhub() {
     const u = r.data.url || '';
     if (HUB.test(u) || /dailymail\.co\.uk\/mailonsunday\/index\.html/.test(u)) {
       const siblings = fs.readdirSync(path.join(RT, r.showDir)).filter((f) => f.endsWith('.json') && f !== r.file && !f.startsWith('_'));
-      rows.push({ ...brief(r), outlet: r.data.outlet || null, outletId: r.data.outletId || null, excluded: !!(r.data.duplicateOf || r.data.wrongProduction || r.data.wrongShow || r.data.wrongUrl), nSiblings: siblings.length, urlCorrectedFrom: r.data.urlCorrectedFrom || null });
+      rows.push({ ...brief(r), outlet: r.data.outlet || null, outletId: r.data.outletId || null, excluded: !!(r.data.duplicateOf || r.data.wrongProduction || r.data.wrongShow || r.data.wrongUrl), nSiblings: siblings.length, head: String(r.data.fullText || r.data.text || '').replace(/\s+/g, ' ').slice(0, 220), sameTextSibling: siblings.find((sf) => { try { const o = JSON.parse(fs.readFileSync(path.join(RT, r.showDir, sf), 'utf8')); const a = String(o.fullText || '').slice(0, 300); return a && a === String(r.data.fullText || '').slice(0, 300); } catch { return false; } }) || null, urlCorrectedFrom: r.data.urlCorrectedFrom || null });
     }
   }
   console.log(JSON.stringify(rows));

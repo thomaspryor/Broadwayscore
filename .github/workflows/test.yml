@@ -1225,6 +1225,7 @@ on:
       - 'scripts/audit-cast-contamination.js'
       # BRO-4468 / BRO-5276: new top-level scripts, tests live in tests/unit/ (node --test batch).
       - 'scripts/audit-registry-slug-displaynames.js'
+      - 'scripts/audit-unknown-outlets.js'
       - 'scripts/neutralize-stale-theatr-buzz.js'
       - 'scripts/prune-orphan-cast-files.js'
       - 'scripts/report-review-drift-details.js'

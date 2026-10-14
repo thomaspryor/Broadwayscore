@@ -118,3 +118,30 @@ test('BRO-5065: isBlockedReviewUrl covers every production-database page too', (
   assert.equal(isBlockedReviewUrl('https://www.lortel.org/news/2026-nominees'), false);
   assert.equal(isBlockedReviewUrl('https://playbill.com/article/review-night-of-january-16th'), false);
 });
+
+test('BRO-5275: refuses submissions on aggregator, event and listing hosts the validator blocks (show-score, showify, broadwaylog, recast, inyougo)', () => {
+  const dir = tmp();
+  try {
+    for (const [outlet, url] of [
+      ['show-score', 'https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes'],
+      ['showify', 'https://www.showify.us/shows/how-shakespeare-saved-my-life'],
+      ['broadwaylog', 'https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026'],
+      ['recast', 'https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god'],
+      ['inyougo', 'https://inyougo.com/events/dinosaur-world-live'],
+    ]) {
+      const r = submit(dir, outlet, url);
+      assert.equal(r.guardRefused, true, url);
+      // show-score is refused earlier by the listing-page guard; the other four by this one.
+      if (!/show-score/.test(url)) assert.match(r.reason, /^submitted-non-review-url: (blocked-domain|census-junk-host)/, url);
+    }
+    assert.equal(fs.existsSync(path.join(dir, SHOW)), false, 'nothing written');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('BRO-5275: the vocal.media critique exemption survives the blocked-domain check', () => {
+  const dir = tmp();
+  try {
+    const r = submit(dir, 'vocal', 'https://vocal.media/critique/bathroom-attendant', { criticName: 'A Critic' });
+    assert.notEqual(r.guardRefused, true);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

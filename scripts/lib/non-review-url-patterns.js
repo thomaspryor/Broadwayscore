@@ -734,6 +734,12 @@ function submissionNonReviewReason(url) {
   if (/(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname)) return null;
   const named = namedNonReviewReason(url);
   if (named && named !== 'ugc-platform') return named;
+  // BRO-5275: the validator ran isBlockedReviewUrl first but this shared
+  // decision (the writer's only submission guard) did not, so 13 files for
+  // show-score, showify, broadwaylog, recast and inyougo pages, each under its
+  // host slug as a new unregistered outletId, reached disk. A named ugc-platform
+  // (vocal.media critique) stays exempt, as above.
+  if (!named && isBlockedReviewUrl(url)) return 'blocked-domain';
   // Listing shapes only. A bare host ('/' path) is left to the read side, as
   // the writer's BRO-4596 guard does: a hash-routed SPA review or a blog
   // whose only post sits at the root would otherwise be refused outright.
