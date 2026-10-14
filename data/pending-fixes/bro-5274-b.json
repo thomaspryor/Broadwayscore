@@ -1,6 +1,6 @@
 {
   "issueNumber": "bro-5274-b",
-  "planId": "fa9abb64-d571-443f-b2e0-f320372d4074",
+  "planId": "fe35f015-74b8-4c02-90f0-cc22b2ba487b",
   "status": "pending",
   "createdAt": "2026-10-14T01:33:02.756287Z",
   "submitter": {
@@ -8,19 +8,129 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5274 part 2 of 3: mark the weaker file of each duplicate (showDir|outlet|critic) pair as duplicateOf its sibling so one review counts once. reviews.json already collapses the key at rebuild, so no score changes; the files and the drift audit are cleaned up.",
+    "summary": "BRO-5274 part 2 of 3: remaining duplicate (showDir|outlet|critic) pairs. Same-url pairs get duplicateOf on the weaker file; pairs whose copies differ only by url form lose the weaker copy (the write guard refuses duplicateOf across url forms). reviews.json already collapses the key at rebuild, so no score changes.",
     "steps": [
       "Set duplicateOf on the weaker file of each pair (and delete one empty BWW profile-page record in part 3)."
     ],
     "riskLevel": "Low",
     "actions": [
       {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "affluenza-off-west-end-2026/timeout-london--unknown.json",
+        "description": "BRO-5274: same article as timeout-london--andrzej-lukowski.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "all-about-eve-west-end-2019/whatsonstage--unknown.json",
+        "description": "BRO-5274: same article as whatsonstage--sarah-crompton.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "anything-goes-2011/variety--steven-suskin.json",
+        "description": "BRO-5274: same article as variety--david-rooney.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
         "type": "review-field-edit",
-        "file": "paranormal-activity-west-end-2025/london-box-office--unknown.json",
+        "file": "choir-boy-2019/vulture--jesse-green.json",
         "field": "duplicateOf",
         "oldValue": null,
-        "newValue": "london-box-office--shehrazade-zafar-arif.json",
-        "description": "BRO-5274: same article as london-box-office--shehrazade-zafar-arif.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+        "newValue": "vulture--sara-holdren.json",
+        "description": "BRO-5274: same article as vulture--sara-holdren.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "degenerates-off-broadway-2026/talkinbroadway--unknown.json",
+        "description": "BRO-5274: same article as talkinbroadway--marc-miller.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "escape-to-margaritaville-2018/broadwaynews--unknown.json",
+        "description": "BRO-5274: same article as broadwaynews--elizabeth-bradley.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "eureka-day-west-end-2022/whatsonstage--sarah-crompton.json",
+        "description": "BRO-5274: same article as whatsonstage--unknown.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/variety--aramide-tinubu.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "BRO-5274: same article as variety--frank-rizzo.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ghetto-klown-2011/variety--unknown.json",
+        "description": "BRO-5274: same article as variety--marilyn-stasio.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
+        "description": "BRO-5274: same article as broadwayworld--michael-dale.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hughie-2016/theater-life--david-sheward.json",
+        "description": "BRO-5274: same article as theater-life--eric-march.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jajas-african-hair-braiding-2023/nysr--unknown.json",
+        "description": "BRO-5274: same article as nysr--melissa-rose-bernardo.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jerusalem-west-end-2022/whatsonstage--sarah-crompton.json",
+        "description": "BRO-5274: same article as whatsonstage--unknown.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json",
+        "description": "BRO-5274: same article as broadwayworld--aliya-al-hassan.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "linda-vista-2019/nydailynews--chris-jones-bway.json",
+        "description": "BRO-5274: same article as nydailynews--chris-jones.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "my-name-is-lucy-barton-2020/broadwaynews--unknown.json",
+        "description": "BRO-5274: same article as broadwaynews--charles-isherwood.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "one-man-two-guvnors-2012/timeout--david-cote.json",
+        "description": "BRO-5274: same article as timeout--adam-feldman.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "only-fools-and-horses-west-end-2019/whatsonstage--unknown.json",
+        "description": "BRO-5274: same article as whatsonstage--alun-hood.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "paranormal-activity-west-end-2025/london-box-office--unknown.json",
+        "description": "BRO-5274: same article as london-box-office--shehrazade-zafar-arif.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
       },
       {
         "type": "review-field-edit",
@@ -39,12 +149,10 @@
         "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
       },
       {
-        "type": "review-field-edit",
-        "file": "rosmersholm-west-end-2019/thestage--unknown.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "thestage--natasha-tripney.json",
-        "description": "BRO-5274: same article as thestage--natasha-tripney.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rosmersholm-west-end-2019/thestage--unknown.json",
+        "description": "BRO-5274: same article as thestage--natasha-tripney.json but filed under a different url form, so the write guard will not accept a duplicateOf pointer (it clears one whose url differs); the weaker copy is removed"
       },
       {
         "type": "review-field-edit",
@@ -69,150 +177,6 @@
         "oldValue": null,
         "newValue": "variety--marilyn-stasio.json",
         "description": "BRO-5274: same article as variety--marilyn-stasio.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-great-society-2019/nyt-theater--jonathan-mandell.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "nyt-theater--david-nounou.json",
-        "description": "BRO-5274: same article as nyt-theater--david-nounou.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-heidi-chronicles-2015/nytimes--charles-isherwood.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "nytimes--ben-brantley.json",
-        "description": "BRO-5274: same article as nytimes--ben-brantley.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-shark-is-broken-2023/nyt-theater--david-nounou.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "nyt-theater--jonathan-mandell.json",
-        "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-starry-messenger-west-end-2019/independent--unknown.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "independent--paul-taylor.json",
-        "description": "BRO-5274: same article as independent--paul-taylor.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "thoughts-of-a-colored-man-2021/wsj--terry-teachout.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "wsj--charles-isherwood.json",
-        "description": "BRO-5274: same article as wsj--charles-isherwood.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "topdog-underdog-2022/guardian--gloria-oladipo.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "guardian--adrian-horton.json",
-        "description": "BRO-5274: same article as guardian--adrian-horton.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "waitress-west-end-2019/standard--henry-hitchings.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "standard--unknown.json",
-        "description": "BRO-5274: same article as standard--unknown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "waitress-west-end-2019/thestage--tim-bano.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "thestage--unknown.json",
-        "description": "BRO-5274: same article as thestage--unknown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "war-horse-2011/hollywood-reporter--unknown.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "hollywood-reporter--david-rooney.json",
-        "description": "BRO-5274: same article as hollywood-reporter--david-rooney.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "what-the-constitution-means-to-me-2019/timeout--helen-shaw.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "timeout--adam-feldman.json",
-        "description": "BRO-5274: same article as timeout--adam-feldman.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "you-cant-take-it-with-you-2014/timeout--david-cote.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "timeout--adam-feldman.json",
-        "description": "BRO-5274: same article as timeout--adam-feldman.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "american-idiot-2010/variety--david-rooney.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "variety--steven-suskin.json",
-        "description": "BRO-5274: same Variety article id 1117942595 under two filenames; keeps the file whose name matches the stamped critic"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "book-of-mormon-2011/variety--david-rooney.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "variety--steven-suskin.json",
-        "description": "BRO-5274: both carry criticName Steven Suskin; keeps the file whose name matches it"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "electra-persona-west-end-2026/independent--tom-murray.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "independent--alice-saville.json",
-        "description": "BRO-5274: same Independent article id b3043382 under two bylines; keeps the file whose name matches the stamped critic"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "fat-ham-2023/newyorker--conde-nast.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "newyorker--vinson-cunningham.json",
-        "description": "BRO-5274: empty New Yorker excerpt filed under the publisher name; the review is the Vinson Cunningham file"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "is-this-a-room-2021/variety--marilyn-stasio.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "variety--charles-isherwood.json",
-        "description": "BRO-5274: two Variety articles stamped with one criticName (Naveen Kumar); one counts per critic, keeps the earlier article id"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "magicbird-2012/timeout--davide-cote.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "timeout--david-cote.json",
-        "description": "BRO-5274: misspelled critic filename (davide) for the same Time Out critic; truncated copy"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "pictures-from-home-2023/newyorker--helen-shaw.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "newyorker--conde-nast.json",
-        "description": "BRO-5274: truncated copy; the complete New Yorker review text is in the other file (both stamped Helen Shaw)"
       }
     ]
   }
