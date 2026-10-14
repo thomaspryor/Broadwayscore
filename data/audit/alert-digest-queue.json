@@ -666,5 +666,23 @@
       }
     ],
     "queuedAt": "2026-10-14T16:06:08.927Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Mezzanine",
+    "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
+    "description": "Update Mezzanine: Latest run failed (last success 2h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38596720972",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38596720972)"
+      }
+    ],
+    "queuedAt": "2026-10-14T16:18:14.022Z"
   }
 ]
