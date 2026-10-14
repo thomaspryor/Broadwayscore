@@ -1,32 +1,42 @@
 {
-  "updatedAt": "2026-10-14T22:03:41.316Z",
-  "processed": 9,
-  "failed": 12,
-  "successRate": "42.9%",
+  "updatedAt": "2026-10-14T22:26:18.550Z",
+  "processed": 42,
+  "failed": 49,
+  "successRate": "46.2%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 26,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 10
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-14T21:57:40.111Z",
+      "t": "2026-10-14T21:57:01.753Z",
       "event": "bb-session",
-      "session": "0fbd9124",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "session": "613cab81",
+      "url": "https://www.wsj.com/articles/if-then-review-idina-menzel-cant-save-this-musical-"
     },
     {
-      "t": "2026-10-14T21:57:47.989Z",
+      "t": "2026-10-14T21:57:02.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-14T21:57:12.303Z",
       "event": "bb-session",
-      "session": "37f1fd90",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "session": "adda6509",
+      "url": "https://www.wsj.com/articles/if-then-review-idina-menzel-cant-save-this-musical-"
+    },
+    {
+      "t": "2026-10-14T21:57:13.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
