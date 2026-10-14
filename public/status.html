@@ -125,7 +125,7 @@ function scoreTier(s) {
   return 'red';
 }
 function bcClass(s) { return { complete:'bc-complete', 'preview-sent':'bc-preview', 'preview-sent-earlier':'bc-preview', overdue:'bc-overdue', 'not-sent':'bc-notsent' }[s] || 'bc-waiting'; }
-function bcLabel(s) { return { complete:'SENT', 'preview-sent':'PREVIEW', 'preview-sent-earlier':'PREVIEW', overdue:'OVERDUE', 'not-sent':'NOT SENT' }[s] || 'WAITING'; }
+function bcLabel(s) { return { complete:'SENT', 'preview-sent':'PREVIEW', 'preview-sent-earlier':'PREVIEW', overdue:'OVERDUE', 'not-sent':'SKIPPED' }[s] || 'WAITING'; }
 function marketLabel(c) { return { broadway:'Broadway', 'off-broadway':'Off-Broadway', 'west-end':'West End', 'off-west-end':'Off-West End' }[c] || c; }
 function marketClass(c) { return 'market-' + (c || 'broadway'); }
 function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
