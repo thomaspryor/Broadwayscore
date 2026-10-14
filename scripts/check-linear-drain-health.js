@@ -40,7 +40,11 @@ Usage:
 
 Exits 1 when there IS queued work and the drain has recorded no dispatch for
 it inside the staleness window. Both conditions are required: an idle queue
-correctly produces no ledger rows and must not page anyone.
+correctly produces no ledger rows and must not page anyone. With LINEAR_API_KEY
+set, a silent ledger then passes when every drain-eligible card is one the
+cloud board workers can pick (or is still inside its wait), since they took
+over the drain's queue (BRO-5360); it fails, exit 1, when a card stays out of
+their reach.
 `;
 
 function readLedger(file) {
@@ -87,7 +91,40 @@ function readStdin() {
   }
 }
 
-function main(argv) {
+/**
+ * A PARKED line naming an owner hold is a deliberate park, not a stuck card:
+ * the drain's isAutoFiledParked ignores such a line, the cloud picker honours it.
+ */
+function isOwnerHeld(issue) {
+  const { hasPersonParkHold } = require('./lib/cloud-worker-pick.js');
+  return hasPersonParkHold(issue && issue.description);
+}
+
+/**
+ * The cloud-coverage verdict on live Linear data: drain-eligible cards checked
+ * against the cloud worker picker's own rules, in each card's tier.
+ */
+async function liveCloudCoverage() {
+  const { listOpenIssuesWithDescriptions } = require('./lib/linear-client.js');
+  const { selectDrainCandidates } = require('./lib/linear-drain-parked.js');
+  const { skipReason, AUTOMATION_PARK_STALE_MS } = require('./lib/cloud-worker-pick.js');
+  const { assessCloudCoverage } = require('./lib/drain-ledger-health.js');
+  const issues = await listOpenIssuesWithDescriptions();
+  const nowMs = Date.now();
+  const tierOf = { 1: 'p0p1', 2: 'p0p1', 3: 'p2', 4: 'p3' };
+  return assessCloudCoverage({
+    candidates: selectDrainCandidates(issues, { limit: Number.MAX_SAFE_INTEGER }),
+    skipReasonFor: (iss) => {
+      if (isOwnerHeld(iss)) return 'owner-hold';
+      return tierOf[Number(iss.priority)] ? skipReason(iss, nowMs, { tier: tierOf[Number(iss.priority)] }) : 'no-priority';
+    },
+    nowMs,
+    // A machine-filed park waits AUTOMATION_PARK_STALE_MS by design; a day past that, it is stuck.
+    graceMs: AUTOMATION_PARK_STALE_MS + 24 * 60 * 60 * 1000,
+  });
+}
+
+async function main(argv, { checkCloud = process.env.LINEAR_API_KEY ? liveCloudCoverage : null } = {}) {
   if (argv.includes('--help') || argv.includes('-h')) { console.log(USAGE); return 0; }
 
   let ledgerPath = LEDGER_PATH;
@@ -128,13 +165,31 @@ function main(argv) {
     }
   }
 
-  const verdict = assessDrainHealth({
+  let verdict = assessDrainHealth({
     ledgerEntries: readLedger(ledgerPath),
     eligibleCount: eligible,
     nowMs: Date.now(),
   });
 
+  // BRO-5360: the Mac drain went silent on 2026-09-19 and the cloud workers
+  // took over its queue. A silent ledger only fails when the cloud cannot reach
+  // that queue either. A failed Linear read keeps the ledger verdict.
+  if (!verdict.ok && (verdict.status === 'stale' || verdict.status === 'never-dispatched') && checkCloud) {
+    try {
+      const cloud = await checkCloud();
+      console.log(`check-linear-drain-health: Mac drain ${verdict.status} — ${verdict.reason}`);
+      verdict = cloud;
+    } catch (err) {
+      console.error(`check-linear-drain-health: cloud coverage check failed (${err && err.message ? err.message.split('\n')[0] : err}), keeping the ledger verdict`);
+    }
+  }
+
   console.log(`check-linear-drain-health: ${verdict.status} — ${verdict.reason}`);
+  if (!verdict.ok && verdict.status === 'cloud-unreachable') {
+    console.log('::warning::parked cards nobody runs: ' + verdict.reason);
+    console.log('Investigate: node scripts/cloud-worker-pick.js (skipped counts) and scripts/lib/cloud-worker-pick.js skipReason');
+    return 1;
+  }
   if (!verdict.ok) {
     console.log('::warning::linear-drain-parked.js is not dispatching: ' + verdict.reason);
     console.log('Investigate: tail -40 /tmp/linear-drain-parked-launchd.log; launchctl print gui/$(id -u)/com.broadwayscore.linear-drain-parked');
@@ -143,8 +198,11 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { readLedger };
+module.exports = { readLedger, main, isOwnerHeld };
 
 if (require.main === module) {
-  process.exit(main(process.argv.slice(2)));
+  main(process.argv.slice(2)).then((code) => process.exit(code), (err) => {
+    console.error(`check-linear-drain-health: ${err && err.stack ? err.stack : err}`);
+    process.exit(2);
+  });
 }

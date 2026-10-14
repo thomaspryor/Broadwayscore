@@ -518,17 +518,20 @@ test('P2 fallback: the same rules apply; owner-decision, parked and unfit P2 car
   assert.equal(skipReason(p2({ updatedAt: FRESH }), NOW, { tier: 'p2' }), 'recent-activity');
   assert.equal(skipReason(p2({ description: '## Acceptance criteria\nLooks right.' }), NOW, { tier: 'p2' }), 'no-safe-verify');
   assert.equal(skipReason(p2({ state: STARTED_STATE }), NOW, { tier: 'p2' }), 'state-started');
-  // Todo only: a technically parked P2 card (drainable at P0/P1) stays parked.
+  // A technically parked P2 card (drainable at P0/P1) stays parked.
   const parked = p2({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` });
   assert.equal(skipReason(parked, NOW, { tier: 'p2' }), 'parked-or-backlog');
   assert.equal(isP2FallbackCandidate(parked, NOW), false);
+  // BRO-5360: a stale machine-filed P2 card is taken (the Mac drain that ran them is gone), after Todo cards.
   const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
-  const autofix = p2({ state: { name: 'Backlog', type: 'backlog' }, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}` });
-  assert.equal(skipReason(autofix, NOW, { tier: 'p2' }), 'parked-or-backlog');
+  const autofix = p2({ identifier: 'BRO-2', state: { name: 'Backlog', type: 'backlog' }, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}` });
+  assert.equal(skipReason(autofix, NOW, { tier: 'p2' }), null);
   const res = pickCloudCard([p2({ identifier: 'BRO-1', description: `${BODY}\n\nDECISION NEEDED: owner picks.` }), parked, autofix], { nowMs: NOW });
-  assert.equal(res.pick, null);
+  assert.equal(res.pick.identifier, 'BRO-2');
   assert.equal(res.skippedP2['blocker-OWNER_DECISION_GATE'], 1);
-  assert.equal(res.skippedP2['parked-or-backlog'], 2);
+  assert.equal(res.skippedP2['parked-or-backlog'], 1);
+  const ordered = pickCloudCard([autofix, p2({ identifier: 'BRO-9' })], { nowMs: NOW }).orderedP2.map((i) => i.identifier);
+  assert.deepEqual(ordered, ['BRO-9', 'BRO-2']);
   // An owner-held pause in the comments still skips a P2 card (CLI history check).
   const held = [report('paused', 'DECISION NEEDED: owner picks the copy.', 60_000)];
   assert.equal(pausedHistorySkipReason(held, NOW), 'awaiting-owner');
@@ -568,7 +571,9 @@ test('P2 fallback: comments are read for P2 Todo and resumable P2 cards, never p
   assert.equal(needsComments(issue({ priority: 3, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
   assert.equal(needsComments(startedCard({ priority: 3 }), NOW), true);
   assert.equal(needsComments(issue({ priority: 3, state: { name: 'In Review', type: 'started' } }), NOW), false);
-  assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` }), NOW), false);
+  // A paused Backlog P2 card (no PARKED line) needs its pause history read (BRO-5360).
+  assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' } }), NOW), true);
   // P3 Todo is the next fallback tier (see the P3 tests below).
   assert.equal(needsComments(issue({ priority: 4 }), NOW), true);
   assert.equal(needsComments(issue({ priority: 0 }), NOW), false);
@@ -642,17 +647,17 @@ test('P3 fallback: the same rules apply; owner-decision, parked, started and unf
   assert.equal(skipReason(issue({ priority: 2 }), NOW, { tier: 'p3' }), 'not-p3');
   assert.equal(skipReason(p3(), NOW, { tier: 'p2' }), 'not-p2');
   assert.equal(isP3FallbackCandidate(issue({ priority: 3 }), NOW), false);
-  // Todo only: a parked P3 card stays parked, even a stale machine-filed one.
+  // A parked P3 card stays parked; a stale machine-filed one is taken (BRO-5360).
   const parked = p3({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` });
   assert.equal(skipReason(parked, NOW, { tier: 'p3' }), 'parked-or-backlog');
   assert.equal(isP3FallbackCandidate(parked, NOW), false);
   const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
-  const autofix = p3({ state: { name: 'Backlog', type: 'backlog' }, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}` });
-  assert.equal(skipReason(autofix, NOW, { tier: 'p3' }), 'parked-or-backlog');
+  const autofix = p3({ identifier: 'BRO-2', state: { name: 'Backlog', type: 'backlog' }, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}` });
+  assert.equal(skipReason(autofix, NOW, { tier: 'p3' }), null);
   const res = pickCloudCard([p3({ identifier: 'BRO-1', description: `${BODY}\n\nDECISION NEEDED: owner picks.` }), parked, autofix], { nowMs: NOW });
-  assert.equal(res.pick, null);
+  assert.equal(res.pick.identifier, 'BRO-2');
   assert.equal(res.skippedP3['blocker-OWNER_DECISION_GATE'], 1);
-  assert.equal(res.skippedP3['parked-or-backlog'], 2);
+  assert.equal(res.skippedP3['parked-or-backlog'], 1);
   // A P3 Todo card that only a comment VERIFY arms is still a prefetch candidate.
   assert.equal(isP3FallbackCandidate(p3({ description: '## Acceptance criteria\nLooks right.' }), NOW), true);
 });
@@ -705,7 +710,8 @@ test('P3 fallback: comments are read for P3 Todo and resumable P3 cards, never p
   assert.equal(needsComments(issue({ priority: 4, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
   assert.equal(needsComments(startedCard({ priority: 4 }), NOW), true);
   assert.equal(needsComments(issue({ priority: 4, state: { name: 'In Review', type: 'started' } }), NOW), false);
-  assert.equal(needsComments(issue({ priority: 4, state: { name: 'Backlog', type: 'backlog' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 4, state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 4, state: { name: 'Backlog', type: 'backlog' } }), NOW), true);
   assert.equal(needsComments(issue({ priority: undefined }), NOW), false);
 });
 
@@ -714,4 +720,100 @@ test('P3 fallback: model by pickLinearModel (Sonnet, Model: Opus honored, retry 
   assert.equal(pickModel(issue({ priority: 4 }), opts).model, 'sonnet');
   assert.equal(pickModel(issue({ priority: 4, description: `${BODY}\n\nModel: Opus` }), opts).model, 'opus');
   assert.equal(pickModel(issue({ priority: 4, comments: { nodes: [report('paused', 'Ran out of time.', 60_000)] } }), opts).model, 'opus');
+});
+
+// BRO-5360: a pause report moves a card to Backlog; only the (dead) Mac drain moved it back.
+const { isPausedBacklog, RECENT_PAUSE_URGENT_MS, MAX_PAUSES } = require('./cloud-worker-pick.js');
+const BACKLOG = { name: 'Backlog', type: 'backlog' };
+
+test('a paused Backlog card (no PARKED line) rejoins its tier; a PARKED line keeps it out', () => {
+  const paused = issue({ state: BACKLOG });
+  assert.equal(isPausedBacklog(paused), true);
+  assert.equal(skipReason(paused, NOW), null);
+  assert.equal(skipReason(issue({ state: BACKLOG, priority: 3 }), NOW, { tier: 'p2' }), null);
+  assert.equal(skipReason(issue({ state: BACKLOG, priority: 4 }), NOW, { tier: 'p3' }), null);
+  // Every other rule still applies.
+  assert.equal(skipReason(issue({ state: BACKLOG, updatedAt: FRESH }), NOW), 'recent-activity');
+  assert.equal(skipReason(issue({ state: BACKLOG, description: '## Acceptance criteria\nLooks right.' }), NOW), 'no-safe-verify');
+  assert.equal(skipReason(issue({ state: BACKLOG, description: `${BODY}\n\nDECISION NEEDED: owner picks.` }), NOW), 'blocker-OWNER_DECISION_GATE');
+  // Parked at filing or by a person: any PARKED line, owner hold or not, at any priority.
+  for (const priority of [2, 3, 4]) {
+    const tier = { 2: 'p0p1', 3: 'p2', 4: 'p3' }[priority];
+    const held = issue({ state: BACKLOG, priority, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` });
+    assert.equal(isPausedBacklog(held), false);
+    assert.equal(skipReason(held, NOW, { tier }), 'parked-or-backlog');
+  }
+  // A stale machine-filed P3 park is drained too, after the tier's other cards; a fresh one waits.
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const autofix = issue({ identifier: 'BRO-3', state: BACKLOG, priority: 4, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; x.\n\n${BODY}` });
+  assert.equal(skipReason(autofix, NOW, { tier: 'p3' }), null);
+  assert.equal(skipReason({ ...autofix, updatedAt: OLD }, NOW, { tier: 'p3' }), 'parked-or-backlog');
+  assert.deepEqual(pickCloudCard([autofix, issue({ identifier: 'BRO-8', priority: 4 })], { nowMs: NOW }).orderedP3.map((i) => i.identifier), ['BRO-8', 'BRO-3']);
+  // Todo and started cards are never "paused Backlog".
+  assert.equal(isPausedBacklog(issue()), false);
+  assert.equal(isPausedBacklog(issue({ state: STARTED_STATE })), false);
+});
+
+test('a paused Backlog card is never taken unchecked past the history budget', () => {
+  assert.equal(mayTakeUnchecked({ issue: issue(), tier: TIER_P0P1 }), true);
+  assert.equal(mayTakeUnchecked({ issue: issue({ state: BACKLOG }), tier: TIER_P0P1 }), false);
+});
+
+test('P0/P1 pauses cool down for RECENT_PAUSE_URGENT_MS, others for RECENT_PAUSE_MS', () => {
+  const between = [report('paused', 'Ran out of time in this firing.', RECENT_PAUSE_URGENT_MS + 60_000)];
+  assert.ok(RECENT_PAUSE_URGENT_MS < RECENT_PAUSE_MS);
+  assert.equal(pausedHistorySkipReason(between, NOW, { priority: 1 }), null);
+  assert.equal(pausedHistorySkipReason(between, NOW, { priority: 2 }), null);
+  assert.equal(pausedHistorySkipReason(between, NOW, { priority: 3 }), 'recently-paused');
+  assert.equal(pausedHistorySkipReason(between, NOW), 'recently-paused');
+  const fresh = [report('paused', 'Ran out of time in this firing.', 60_000)];
+  assert.equal(pausedHistorySkipReason(fresh, NOW, { priority: 2 }), 'recently-paused');
+  // The owner-hold rule is unchanged for urgent cards.
+  assert.equal(pausedHistorySkipReason([report('paused', 'DECISION NEEDED: owner picks.', RECENT_PAUSE_MS)], NOW, { priority: 2 }), 'awaiting-owner');
+});
+
+test(`after ${MAX_PAUSES} pauses with nobody answering, the card stays out until a person comments`, () => {
+  const old = RECENT_PAUSE_MS + 60_000;
+  const pauses = (n) => Array.from({ length: n }, (_, i) => report('paused', 'VERIFY times out.', old + i * 60_000));
+  assert.equal(pausedHistorySkipReason(pauses(MAX_PAUSES - 1), NOW, { priority: 2 }), null);
+  assert.equal(pausedHistorySkipReason(pauses(MAX_PAUSES), NOW, { priority: 2 }), 'paused-repeatedly');
+  assert.equal(pausedHistorySkipReason(pauses(MAX_PAUSES), NOW, { priority: 3 }), 'paused-repeatedly');
+  // A person's comment after the latest pause re-opens it.
+  const answered = [...pauses(MAX_PAUSES), { body: 'Try the cached fixture instead.', createdAt: at(60_000) }];
+  assert.equal(pausedHistorySkipReason(answered, NOW, { priority: 2 }), null);
+  // A done report after the pauses ends the pause history.
+  assert.equal(pausedHistorySkipReason([...pauses(MAX_PAUSES), report('done', 'Landed.', 60_000)], NOW, { priority: 2 }), null);
+});
+
+test('a paused Backlog card is taken only when a worker left a trace; one moved there by hand stays out', () => {
+  const old = RECENT_PAUSE_MS + 60_000;
+  const opts = { priority: 2, pausedBacklog: true };
+  assert.equal(pausedHistorySkipReason([], NOW, opts), 'backlog-unexplained');
+  assert.equal(pausedHistorySkipReason([{ body: 'Moving this aside for now.', createdAt: at(old) }], NOW, opts), 'backlog-unexplained');
+  assert.equal(pausedHistorySkipReason([report('paused', 'Ran out of time.', old)], NOW, opts), null);
+  assert.equal(pausedHistorySkipReason([report('blocked', 'Needs a fixture.', old)], NOW, opts), null);
+  assert.equal(pausedHistorySkipReason([{ body: '## Codex runner: stopped mid-card\n\nBack to Todo.', createdAt: at(old) }], NOW, opts), null);
+  assert.equal(pausedHistorySkipReason([{ body: '<!-- codex-runner-bounced -->\n## Codex runner: not landed', createdAt: at(old) }], NOW, opts), null);
+  // A Todo card with no history is unaffected.
+  assert.equal(pausedHistorySkipReason([], NOW, { priority: 2 }), null);
+});
+
+test('reclaim and Codex notes are machine comments; a reclaim to Backlog keeps the card out until a person answers', () => {
+  const old = RECENT_PAUSE_MS + 60_000;
+  const opts = { priority: 2, pausedBacklog: true };
+  const reclaimTodo = { body: 'RECLAIMED-ABANDONED: 2026-10-10 (BRO-5100 hourly sweep)\n\nThis card sat In Progress...\nMoved back to Todo so the board workers can take it again.', createdAt: at(old - 10_000) };
+  const reclaimBacklog = { body: 'RECLAIMED-ABANDONED: 2026-10-10 (BRO-5100 hourly sweep)\n\nThis card sat In Progress...\nIt has been reclaimed 3 times already, so it goes to Backlog instead of Todo: the sessions that take it keep dying.', createdAt: at(old - 20_000) };
+  const pause = report('paused', 'DECISION NEEDED: owner picks the copy.', old);
+  // Machine notes after an owner-held pause do not count as the owner's answer.
+  for (const note of [reclaimTodo, { body: '<!-- codex-runner-bounced -->\n## Codex runner: not landed', createdAt: at(1000) }, { body: '## Codex runner: stopped mid-card', createdAt: at(1000) }]) {
+    assert.equal(pausedHistorySkipReason([pause, note], NOW, opts), 'awaiting-owner', note.body.slice(0, 30));
+  }
+  // Reclaimed to Backlog after a pause: out, even past the cooldown.
+  assert.equal(pausedHistorySkipReason([report('paused', 'Ran out of time.', old), reclaimBacklog], NOW, opts), 'reclaimed-to-backlog');
+  assert.equal(pausedHistorySkipReason([reclaimBacklog], NOW, opts), 'backlog-unexplained');
+  // A person's comment after the reclaim re-opens it; a worker report after it means someone took it on since.
+  assert.equal(pausedHistorySkipReason([report('paused', 'Ran out of time.', old), reclaimBacklog, { body: 'Fixture is in place now, retry.', createdAt: at(old - 30_000) }], NOW, opts), null);
+  assert.equal(pausedHistorySkipReason([reclaimBacklog, report('paused', 'Ran out of time.', old - 30_000)], NOW, opts), null);
+  // On a Todo card the reclaim rule does not apply.
+  assert.equal(pausedHistorySkipReason([report('paused', 'Ran out of time.', old), reclaimBacklog], NOW, { priority: 2 }), null);
 });

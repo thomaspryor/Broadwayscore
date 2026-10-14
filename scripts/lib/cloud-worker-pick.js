@@ -26,14 +26,15 @@
  *     only when no P0/P1 card survives the history and Codex-bounce skips
  *     too). Measured 2026-10-11: 76 eligible P0/P1 cards, about 3-4 days of
  *     work, and 17 P2 Todo cards nothing could ever reach, so the workers
- *     would sit idle once P0/P1 drained. Todo only: parked P2 cards stay
- *     parked (the Mac drain and the stale-automation rule unpark P0/P1 only).
+ *     would sit idle once P0/P1 drained. Todo, plus paused Backlog cards and
+ *     stale machine-filed parked cards (both below); a PARKED line a person
+ *     wrote keeps a P2 card parked.
  *     START-NOW does not apply to P2 (linear-issue-create refuses to file a
  *     START-NOW P2 card), so a P2 card always waits out IDLE_MS. A refused
  *     P2 landing is resumed too (findResumeCandidates includeP2), after every
  *     P0/P1 entry.
  *   - P3 FALLBACK: Low (Linear priority 4) Todo cards, one tier further down,
- *     under the same rules as P2 (Todo only, IDLE_MS, START-NOW ignored,
+ *     under the same rules as P2 (IDLE_MS, START-NOW ignored,
  *     every guard), reached only after every P0/P1 and P2 entry (orderedP3;
  *     the CLI queues P3 resumes and P3 cards last). The owner wants every card
  *     handled, not only urgent ones (2026-10-11). The Codex runner (--list=N)
@@ -43,8 +44,18 @@
  *     would also unpark (isSessionParkedDrainable). Every Mac dispatch moves
  *     its card to a started state (linear-next.js), so the state filter alone
  *     keeps the cloud off cards the Mac already holds.
- *   - Machine-filed parked P0/P1 cards (digest-autofix, owner-alert-router)
- *     once quiet for AUTOMATION_PARK_STALE_MS. Their PARKED line is a filer's
+ *   - PAUSED BACKLOG (BRO-5360): a worker's pause report moves its card to
+ *     Backlog (linear-session-reporting.js STATUS_TO_STATE_NAME), and only the
+ *     Mac drain ever moved such cards back. That drain stopped on 2026-09-19:
+ *     on 2026-10-14, 38 of 47 Backlog P0/P1 cards had got there from In
+ *     Progress (a pause) and nothing reached them again, so the workers fell
+ *     through to P3 while 46 P0/P1 cards sat. A Backlog card with no PARKED
+ *     line was paused, not parked (--park writes the line at filing), so it
+ *     rejoins its tier; pausedHistorySkipReason still holds it for the pause
+ *     cooldown, an owner hold, or after MAX_PAUSES pauses.
+ *   - Machine-filed parked cards (digest-autofix, owner-alert-router), P0 to
+ *     P3, once quiet for AUTOMATION_PARK_STALE_MS, after a tier's other cards
+ *     (P2/P3 since BRO-5360: the Mac drain that ran them is gone). Their PARKED line is a filer's
  *     note ("runAutofix dispatches via linear-next separately"), not an owner
  *     hold, and only the Mac ever dispatched them. Measured 2026-10-04: 281
  *     such cards, idle 10 to 20+ days, because that same-pass dispatch never
@@ -89,7 +100,8 @@
  * hours later. So the CLI reads each candidate's comments in pick order and
  * pausedHistorySkipReason skips a card whose latest session report is a pause
  * waiting on the owner (until someone comments after it, or for at most
- * AWAITING_OWNER_MAX_MS), or any pause less than RECENT_PAUSE_MS old. A VERIFY the cloud can't run is a card-text rule
+ * AWAITING_OWNER_MAX_MS), or any pause less than RECENT_PAUSE_MS old
+ * (RECENT_PAUSE_URGENT_MS for P0/P1, which the owner wants worked fast). A VERIFY the cloud can't run is a card-text rule
  * (CLOUD_UNRUNNABLE_VERIFY_RE, in headlessUnfitReason).
  *
  * Pure functions only. The CLI is scripts/cloud-worker-pick.js.
@@ -133,6 +145,19 @@ const RESUME_WINDOW_MS = 7 * 24 * HOUR_MS;
 const MAX_LAND_RUNS = 6;
 const LAND_REF_CARD_RE = /(?:^|[^a-z0-9])bro-(\d+)(?![0-9])/i;
 const RECENT_PAUSE_MS = 72 * HOUR_MS;
+const RECENT_PAUSE_URGENT_MS = 24 * HOUR_MS;
+// Paused this many times with no person commenting since: retrying again is
+// churn, the card needs a person (or a re-scope), so it stays out.
+const MAX_PAUSES = 3;
+// Any PARKED line in the description: written by --park at filing or by a person.
+const PARKED_LINE_RE = /^\s*PARKED\s*:/im;
+// The Codex runner's own comments (scripts/codex/daily-runner.js moveCard): it works Backlog cards too.
+const CODEX_RUNNER_NOTE_RE = /^\s*(?:<!--[^>]*-->\s*)?## Codex runner\b/;
+
+/** A Backlog card a worker paused (no PARKED line), not one parked at filing or by a person. */
+function isPausedBacklog(issue) {
+  return !!(issue && issue.state && issue.state.type === 'backlog' && !PARKED_LINE_RE.test(issue.description || ''));
+}
 // The whole unit suite: 17 tests fail in a cloud container for reasons unrelated
 // to any card, and the Done gate's 90s budget can't run it (BRO-4265, 2026-10-04).
 const CLOUD_UNRUNNABLE_VERIFY_RE = /^node\s+scripts\/run-unit-tests\.js\s*$/;
@@ -147,7 +172,12 @@ const IOS_APP_CARD_RE = /^\W*iOS\b(?!\s+Safari)/i;
 // tag markers like [auto-fix-attempted:fail] (auto-fix-friction-card.js) and
 // acceptance re-arms (enrich-card-acceptance.js). One of these after a pause
 // is not an answer to it.
-const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b)/i;
+// Also the reclaim sweep's note (linear-reclaim-abandoned.js RECLAIM_MARKER) and
+// the Codex runner's hand-backs (scripts/codex/daily-runner.js), BRO-5360.
+const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b|RECLAIMED-ABANDONED:|<!-- codex-runner|## Codex runner\b)/i;
+// The reclaim sweep's note when it sends a card to Backlog, not Todo, after
+// MAX_RECLAIMS: "Someone should read the history before it is retried."
+const RECLAIM_TO_BACKLOG_RE = /^RECLAIMED-ABANDONED:[\s\S]*goes to Backlog instead of Todo/;
 // Machine tags are lowercase and hyphenated ([auto-fix-attempted:fail], [red-first follow-up]).
 // Case-sensitive, and not a markdown link, so "[x] approved", "[Approved] go ahead"
 // and "[the fix](url) looks right" still count as human answers.
@@ -162,21 +192,29 @@ const AWAITING_OWNER_MAX_MS = 14 * 24 * HOUR_MS;
 const AUTOMATION_PARK_STALE_MS = 3 * 24 * HOUR_MS;
 const MACHINE_PARK_LINE_RE = /Auto-filed by (?:digest-autofix|owner-alert-router)/;
 
-/** A machine-filed parked P0/P1 card nobody has touched for AUTOMATION_PARK_STALE_MS. */
+/**
+ * True when a PARKED line names an owner hold. Only the first PARKED line can be
+ * a filer's machine line (MACHINE_PARK_LINE_RE), which is not a hold; a later
+ * line that merely quotes the marker is still a person's hold.
+ */
+function hasPersonParkHold(notes) {
+  const hd = require('./headless-dispatchability.js');
+  return [...String(notes || '').matchAll(/^\s*PARKED\s*:(.*)$/gim)]
+    .some((m, i) => !(i === 0 && MACHINE_PARK_LINE_RE.test(m[1])) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
+}
+
+/** A machine-filed parked card (any triaged priority) nobody has touched for AUTOMATION_PARK_STALE_MS. */
 function isStaleAutomationParked(issue, nowMs) {
   const hd = require('./headless-dispatchability.js');
   const type = issue && issue.state && issue.state.type;
   if (type !== 'backlog' && type !== 'unstarted') return false;
-  if (!PRIORITIES.has(Number(issue.priority))) return false;
+  const priority = Number(issue.priority);
+  if (!PRIORITIES.has(priority) && priority !== P2_PRIORITY && priority !== P3_PRIORITY) return false;
   const notes = issue.description || '';
   if (!hd.isAutomationParked(notes)) return false;
   // isAutomationParked reads only the leading machine line; a hold a person
   // added on a later PARKED line still keeps the card parked.
-  // Only the first PARKED line is the machine's; a later line that merely
-  // quotes the marker is still a person's hold.
-  const extraHold = [...notes.matchAll(/^\s*PARKED\s*:(.*)$/gim)]
-    .some((m, i) => !(i === 0 && MACHINE_PARK_LINE_RE.test(m[1])) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
-  if (extraHold) return false;
+  if (hasPersonParkHold(notes)) return false;
   const updatedMs = Date.parse(issue.updatedAt);
   return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
 }
@@ -232,9 +270,10 @@ function startNowUnpickableReason({ title, description, priority, mode }) {
 /**
  * Why this card can't be picked in a tier, or null. The default tier is
  * P0/P1 ('not-p0-p1' for anything else). `{ tier: 'p2' }` checks the P2
- * fallback: priority 3 only ('not-p2' otherwise), Todo only (no parked
- * paths), every other rule the same. `{ tier: 'p3' }` is the same for
- * priority 4 ('not-p3').
+ * fallback: priority 3 only ('not-p2' otherwise), with no technically-parked
+ * path (stale machine-filed parks and paused Backlog cards still count),
+ * every other rule the same. `{ tier: 'p3' }` is the same for priority 4
+ * ('not-p3').
  */
 function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
   const drain = require('./linear-drain-parked.js');
@@ -243,8 +282,8 @@ function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
   const fallback = fallbackPriority != null;
   if (fallback ? Number(issue.priority) !== fallbackPriority : !PRIORITIES.has(Number(issue.priority))) return fallback ? `not-${tier}` : 'not-p0-p1';
   const type = issue.state && issue.state.type;
-  const parkedDrainable = !fallback && (drain.isSessionParkedDrainable(issue) || isStaleAutomationParked(issue, nowMs));
-  if (type !== 'unstarted' && !parkedDrainable) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
+  const parkedDrainable = (!fallback && drain.isSessionParkedDrainable(issue)) || isStaleAutomationParked(issue, nowMs);
+  if (type !== 'unstarted' && !parkedDrainable && !isPausedBacklog(issue)) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
   if (unfit) return unfit;
   const updatedMs = Date.parse(issue.updatedAt);
@@ -328,9 +367,9 @@ function pickCloudCard(issues, { nowMs }) {
   const startTier = (iss) => (isStartNow(iss, nowMs) ? 0 : 1);
   eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
     || (issueNumber(a.identifier) - issueNumber(b.identifier)));
-  // P2 and P3 are Todo only and START-NOW doesn't apply to them: oldest first.
-  eligibleP2.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));
-  eligibleP3.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));
+  // START-NOW doesn't apply to P2 and P3: oldest first, stale machine-filed cards last.
+  eligibleP2.sort((a, b) => (machineTier(a) - machineTier(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
+  eligibleP3.sort((a, b) => (machineTier(a) - machineTier(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
   const pick = eligible[0] || eligibleP2[0] || eligibleP3[0] || null;
   const pickTier = eligible.length ? TIER_P0P1 : (eligibleP2.length ? TIER_P2 : (eligibleP3.length ? TIER_P3 : null));
   return {
@@ -440,23 +479,40 @@ function sessionModelFor(picks) {
   return { model: allOpus ? DISPATCH_OPUS : DISPATCH_SONNET, opusCards };
 }
 
-/** Past the history-check budget, only a P0/P1 entry may be taken unchecked; P2/P3 entries are always checked. */
+/**
+ * Past the history-check budget, only a P0/P1 Todo entry may be taken unchecked;
+ * P2/P3 entries and paused Backlog cards (a pause is why they are there) are always checked.
+ */
 function mayTakeUnchecked(entry) {
-  return !!entry && entry.tier === TIER_P0P1;
+  return !!entry && entry.tier === TIER_P0P1 && !isPausedBacklog(entry.issue);
 }
 
 /**
  * Why an earlier worker's pause should keep this card out of the pick, or null.
  * @param {Array<{body:string, createdAt:string}>} comments - the card's comments, any order
  * @param {number} nowMs
- * @returns {'awaiting-owner'|'recently-paused'|null}
+ * @param {{priority?: number, pausedBacklog?: boolean}} [opts] - priority: the card's Linear priority, P0/P1
+ *   wait out RECENT_PAUSE_URGENT_MS instead. pausedBacklog: the card is a paused Backlog card
+ *   (isPausedBacklog), which is only taken when a worker's session report or a Codex runner
+ *   note shows a worker put it there; one moved to Backlog by hand is 'backlog-unexplained'.
+ * @returns {'awaiting-owner'|'backlog-unexplained'|'reclaimed-to-backlog'|'paused-repeatedly'|'recently-paused'|null}
  */
-function pausedHistorySkipReason(comments, nowMs) {
+function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = false } = {}) {
   const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  const { BOUNCED_MARKER } = require('./codex-runner.js');
   const sorted = (Array.isArray(comments) ? comments : [])
     .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const idx = sorted.findIndex((c) => parseSessionReportStatus(c.body) != null);
+  if (pausedBacklog && idx < 0 && !sorted.some((c) => CODEX_RUNNER_NOTE_RE.test(String(c.body || '')) || String(c.body || '').startsWith(BOUNCED_MARKER))) {
+    return 'backlog-unexplained';
+  }
+  // Sent to Backlog by the reclaim sweep after repeated dead sessions: out until a person comments after it.
+  const reclaimIdx = sorted.findIndex((c) => RECLAIM_TO_BACKLOG_RE.test(String(c.body || '').trim()));
+  if (pausedBacklog && reclaimIdx >= 0 && (idx < 0 || reclaimIdx < idx)
+    && !sorted.slice(0, reclaimIdx).some((c) => !isMachineComment(c.body) && parseSessionReportStatus(c.body) == null)) {
+    return 'reclaimed-to-backlog';
+  }
   if (idx < 0) return null;
   const report = sorted[idx];
   if (parseSessionReportStatus(report.body) !== 'paused') return null;
@@ -464,7 +520,10 @@ function pausedHistorySkipReason(comments, nowMs) {
   const answered = sorted.slice(0, idx).some((c) => !isMachineComment(c.body));
   const ageMs = nowMs - Date.parse(report.createdAt);
   if (!answered && ageMs < AWAITING_OWNER_MAX_MS && namesOwnerHold(report.body)) return 'awaiting-owner';
-  return ageMs < RECENT_PAUSE_MS ? 'recently-paused' : null;
+  const pauses = sorted.filter((c) => parseSessionReportStatus(c.body) === 'paused').length;
+  if (!answered && pauses >= MAX_PAUSES) return 'paused-repeatedly';
+  const cooldownMs = PRIORITIES.has(Number(priority)) ? RECENT_PAUSE_URGENT_MS : RECENT_PAUSE_MS;
+  return ageMs < cooldownMs ? 'recently-paused' : null;
 }
 
 function isMachineComment(body) {
@@ -560,8 +619,8 @@ function findResumeCard(issues, landRefs, opts) {
 }
 
 module.exports = {
-  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
-  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
+  AUTOMATION_PARK_STALE_MS, hasPersonParkHold, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard,
 };

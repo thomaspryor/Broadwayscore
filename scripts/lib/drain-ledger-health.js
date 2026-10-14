@@ -209,4 +209,41 @@ function parseEligibleCount(stdout) {
   return null;
 }
 
-module.exports = { assessDrainHealth, parseEligibleCount, STALE_AFTER_MS, DISPATCH_EVENT };
+// Skip reasons from cloud-worker-pick.js skipReason that mean no cloud worker
+// will ever take the card as it stands. Anything else is reachable (null), a
+// wait that ends on its own (recent-activity), or a gate a person must clear,
+// which the Mac drain would not have run either.
+const CLOUD_UNREACHABLE_RE = /^(?:parked-or-backlog|blocker-PARKED_SENTINEL|no-priority|not-p\S*)$/;
+
+/**
+ * BRO-5360: the Mac drain has written no dispatch row since 2026-09-19, and the
+ * cloud board workers (cloud-worker-pick.js) are what reach parked cards now.
+ * A silent Mac ledger is fine when every card the drain would run is one the
+ * cloud picker can reach, or has sat quiet for less than graceMs (machine-filed
+ * parks wait out AUTOMATION_PARK_STALE_MS by design).
+ * @param {object} opts
+ * @param {Array<object>} opts.candidates - drain-eligible issues (linear-drain-parked selectDrainCandidates)
+ * @param {(issue: object) => (string|null)} opts.skipReasonFor - the cloud picker's skip reason in the card's own tier
+ * @param {number} opts.nowMs
+ * @param {number} opts.graceMs
+ * @returns {{ok: boolean, status: string, reason: string, stuck: Array<{identifier: string, reason: string}>}}
+ */
+function assessCloudCoverage({ candidates, skipReasonFor, nowMs, graceMs }) {
+  const list = Array.isArray(candidates) ? candidates : [];
+  const stuck = [];
+  for (const c of list) {
+    const reason = skipReasonFor(c);
+    if (!reason || !CLOUD_UNREACHABLE_RE.test(reason)) continue;
+    const quietMs = nowMs - Date.parse(c.updatedAt);
+    if (Number.isFinite(quietMs) && quietMs < graceMs) continue;
+    stuck.push({ identifier: c.identifier, reason });
+  }
+  const hrs = (graceMs / 3600000).toFixed(0);
+  if (stuck.length) {
+    const named = stuck.slice(0, 8).map((s) => `${s.identifier} (${s.reason})`).join(', ');
+    return { ok: false, status: 'cloud-unreachable', reason: `${stuck.length} drain-eligible card(s) quiet for ${hrs}h+ that no cloud worker can pick: ${named}${stuck.length > 8 ? ', ...' : ''}`, stuck };
+  }
+  return { ok: true, status: 'cloud-covered', reason: `${list.length} drain-eligible card(s), each reachable by the cloud workers or quiet for under ${hrs}h`, stuck };
+}
+
+module.exports = { assessDrainHealth, parseEligibleCount, assessCloudCoverage, STALE_AFTER_MS, DISPATCH_EVENT };

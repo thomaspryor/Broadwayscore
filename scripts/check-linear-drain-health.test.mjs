@@ -26,6 +26,9 @@ import os from 'node:os';
 import path from 'node:path';
 
 const CLI = new URL('./check-linear-drain-health.js', import.meta.url).pathname;
+// No Linear key: these tests pin the ledger verdict, so the CLI must not reach
+// the live cloud-coverage check (BRO-5360; tested by injection below).
+const ENV = { ...process.env, LINEAR_API_KEY: '' };
 
 function ledgerWith(rows) {
   const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'drainhealth-')), 'l.jsonl');
@@ -36,7 +39,7 @@ function ledgerWith(rows) {
 // Run the CLI with `input` on stdin, returning {status, stdout, stderr}.
 function run(args, input) {
   try {
-    const stdout = execFileSync('node', [CLI, ...args], { input, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
+    const stdout = execFileSync('node', [CLI, ...args], { input, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], env: ENV });
     return { status: 0, stdout, stderr: '' };
   } catch (e) {
     return { status: e.status, stdout: e.stdout || '', stderr: e.stderr || '' };
@@ -54,7 +57,7 @@ test('a SLOW producer piping real output still parses — the EAGAIN regression'
   // which is why the manual spot-check passed and the real pipeline did not.
   // The delay here is what makes this a regression test rather than a tautology.
   const slow = `node -e "setTimeout(()=>process.stdout.write('[linear-drain-parked] DRY RUN: 36 candidate(s), no dispatch/ledger writes\\n'),400)"`;
-  const out = execFileSync('bash', ['-c', `${slow} | node ${CLI} --ledger ${ledgerWith(stale)} || true`], { encoding: 'utf8' });
+  const out = execFileSync('bash', ['-c', `${slow} | node ${CLI} --ledger ${ledgerWith(stale)} || true`], { encoding: 'utf8', env: ENV });
   assert.match(out, /stale/, `slow pipe must still parse the count; got: ${out}`);
   assert.match(out, /36 issue\(s\) eligible/);
 });
@@ -91,4 +94,61 @@ test('the empty-selection line reports idle, exit 0', () => {
 test('--eligible bypasses stdin entirely, and a bad value exits 2', () => {
   assert.equal(run(['--eligible', '0', '--ledger', ledgerWith(stale)], '').status, 0);
   assert.equal(run(['--eligible', 'nope', '--ledger', ledgerWith(stale)], '').status, 2);
+});
+
+// BRO-5360: the cloud workers took over the Mac drain's queue.
+import { createRequire } from 'node:module';
+const requireCjs = createRequire(import.meta.url);
+const { main } = requireCjs('./check-linear-drain-health.js');
+const { assessCloudCoverage } = requireCjs('./lib/drain-ledger-health.js');
+
+test('assessCloudCoverage: only cards no cloud worker can pick, quiet past the grace, fail', () => {
+  const NOW = Date.parse('2026-10-14T12:00:00Z');
+  const HOUR = 3600e3;
+  const card = (identifier, reason, quietH) => ({ identifier, reason, updatedAt: new Date(NOW - quietH * HOUR).toISOString() });
+  const cards = [
+    card('BRO-1', null, 500), // reachable
+    card('BRO-2', 'recent-activity', 500), // a wait that ends on its own
+    card('BRO-3', 'blocker-OWNER_DECISION_GATE', 500), // a person's gate; the drain would not run it either
+    card('BRO-4', 'parked-or-backlog', 10), // still inside its wait
+  ];
+  const by = (list) => (c) => list.find((x) => x.identifier === c.identifier).reason;
+  const ok = assessCloudCoverage({ candidates: cards, skipReasonFor: by(cards), nowMs: NOW, graceMs: 96 * HOUR });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.status, 'cloud-covered');
+  const stuckCards = [...cards, card('BRO-5', 'parked-or-backlog', 200), card('BRO-6', 'blocker-PARKED_SENTINEL', 200), card('BRO-7', 'no-priority', 200)];
+  const bad = assessCloudCoverage({ candidates: stuckCards, skipReasonFor: by(stuckCards), nowMs: NOW, graceMs: 96 * HOUR });
+  assert.equal(bad.ok, false);
+  assert.equal(bad.status, 'cloud-unreachable');
+  assert.deepEqual(bad.stuck.map((s) => s.identifier), ['BRO-5', 'BRO-6', 'BRO-7']);
+  assert.match(bad.reason, /3 drain-eligible card\(s\).*BRO-5 \(parked-or-backlog\)/);
+  // An unparseable updatedAt fails closed: it counts as stuck.
+  const odd = [card('BRO-8', 'parked-or-backlog', 0)];
+  odd[0].updatedAt = 'garbage';
+  assert.equal(assessCloudCoverage({ candidates: odd, skipReasonFor: by(odd), nowMs: NOW, graceMs: HOUR }).ok, false);
+});
+
+test('a silent Mac ledger passes when the cloud covers the queue, fails when it does not, keeps red when Linear is unreadable', async () => {
+  const args = ['--eligible', '21', '--ledger', ledgerWith(stale)];
+  const quiet = async (fn) => { const log = console.log; const err = console.error; console.log = () => {}; console.error = () => {}; try { return await fn(); } finally { console.log = log; console.error = err; } };
+  const covered = async () => ({ ok: true, status: 'cloud-covered', reason: 'x', stuck: [] });
+  const unreachable = async () => ({ ok: false, status: 'cloud-unreachable', reason: 'BRO-5 (parked-or-backlog)', stuck: [{ identifier: 'BRO-5' }] });
+  const broken = async () => { throw new Error('Linear down'); };
+  assert.equal(await quiet(() => main(args, { checkCloud: covered })), 0);
+  assert.equal(await quiet(() => main(args, { checkCloud: unreachable })), 1);
+  assert.equal(await quiet(() => main(args, { checkCloud: broken })), 1);
+  assert.equal(await quiet(() => main(args, { checkCloud: null })), 1);
+  // A fresh ledger never asks the cloud.
+  let asked = false;
+  assert.equal(await quiet(() => main(['--eligible', '21', '--ledger', ledgerWith(fresh)], { checkCloud: async () => { asked = true; return covered(); } })), 0);
+  assert.equal(asked, false);
+});
+
+test('an owner-held machine park is a deliberate park, never counted as stuck', () => {
+  const { isOwnerHeld } = requireCjs('./check-linear-drain-health.js');
+  const machine = 'PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage.';
+  assert.equal(isOwnerHeld({ description: `${machine}\n\nbody` }), false);
+  assert.equal(isOwnerHeld({ description: `${machine}\nPARKED: waiting on owner go-ahead\n\nbody` }), true);
+  assert.equal(isOwnerHeld({ description: 'no park line at all' }), false);
+  assert.equal(isOwnerHeld({}), false);
 });

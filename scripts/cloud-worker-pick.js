@@ -103,31 +103,38 @@ function findResume(issues, nowMs) {
   }
 }
 
-// Comment reads per firing (one Linear call each). Past this, take the next P0/P1
-// card unchecked; P2/P3 entries are always checked (mayTakeUnchecked).
+// Comment fetches per firing (one Linear call each) for entries main() has no
+// comments for. Past this, take the next P0/P1 Todo card unchecked; P2/P3
+// entries and paused Backlog cards are always checked (mayTakeUnchecked).
 const MAX_HISTORY_CHECKS = 15;
 
 /**
  * First candidate an earlier worker didn't pause on (BRO-4574). Counts each skip
- * in `historySkipped`. A failed comment read keeps the card: pause memory is advisory.
+ * in `historySkipped`. A failed comment read keeps a Todo card (pause memory is
+ * advisory) but skips a paused Backlog card, which is there because of a pause.
  */
 async function firstUnpaused(queue, nowMs, historySkipped) {
   const { getIssue } = require('./lib/linear-client.js');
-  const { pausedHistorySkipReason, mayTakeUnchecked } = require('./lib/cloud-worker-pick.js');
+  const { pausedHistorySkipReason, mayTakeUnchecked, isPausedBacklog } = require('./lib/cloud-worker-pick.js');
+  let fetches = 0;
   for (let i = 0; i < queue.length; i++) {
-    if (i >= MAX_HISTORY_CHECKS && mayTakeUnchecked(queue[i])) {
+    // main() already read comments for every candidate (needsComments); fetch only when it could not.
+    const pre = queue[i].issue.comments && queue[i].issue.comments.nodes;
+    if (!pre && fetches >= MAX_HISTORY_CHECKS && mayTakeUnchecked(queue[i])) {
       console.error(`[cloud-worker-pick] ${MAX_HISTORY_CHECKS} history checks used; ${queue[i].issue.identifier} taken unchecked`);
       return queue[i];
     }
     let reason = null;
     try {
-      const full = await getIssue(queue[i].issue.identifier);
-      const nodes = full && full.comments ? full.comments.nodes : [];
-      // getIssue reads 50 comments; past that the latest report may be cut off.
+      if (!pre) fetches++;
+      const full = pre ? null : await getIssue(queue[i].issue.identifier);
+      const nodes = pre || (full && full.comments ? full.comments.nodes : []);
+      // Both reads cap at 50 comments; past that the latest report may be cut off.
       if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
-      reason = pausedHistorySkipReason(nodes, nowMs);
+      reason = pausedHistorySkipReason(nodes, nowMs, { priority: queue[i].issue.priority, pausedBacklog: isPausedBacklog(queue[i].issue) });
     } catch (err) {
       console.error(`[cloud-worker-pick] history check skipped for ${queue[i].issue.identifier}: ${err && err.message ? err.message.split('\n')[0] : err}`);
+      if (isPausedBacklog(queue[i].issue)) reason = 'history-unreadable';
     }
     if (!reason) return queue[i];
     historySkipped[reason] = (historySkipped[reason] || 0) + 1;
