@@ -302,6 +302,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/experiments/
 # BRO-3018 inventory; scripts/tests/notion-live-write-paths.test.mjs reads it in CI.
 !/docs/notion-linear-residue-sweep.md
+# BRO-4813: retain the ref-by-ref Outcome so a Mac session can safely clean
+# superseded land branches and preserve the unlanded broadcast workflow.
+!/docs/bro-4813-stranded-land-refs.md
 # BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
 !/docs/audits/
 /docs/audits/*
