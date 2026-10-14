@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-14T05:03:06.201Z",
+    "generatedAt": "2026-10-14T05:19:20.448Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -17,39 +17,39 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 1045
+      "churn": 1047
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 496
+      "churn": 495
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 328
+      "churn": 331
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 328
+      "churn": 331
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 327
+      "churn": 330
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 258
+      "churn": 259
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 226
+      "churn": 228
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 154
+      "churn": 155
     },
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 97
+      "churn": 99
     },
     {
       "path": "public/data/shows/rent-west-end-2026.json",
@@ -109,7 +109,7 @@
     },
     {
       "path": "scripts/collect-review-texts.js",
-      "churn": 42
+      "churn": 41
     },
     {
       "path": "public/data/shows/a-day-in-the-death-of-joe-egg-west-end-2019.json",
@@ -247,37 +247,37 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 779,
+      "churn": 776,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 669,
+      "churn": 673,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 633,
+      "churn": 635,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 493,
+      "churn": 496,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 475,
+      "churn": 478,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 475,
+      "churn": 478,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 475,
+      "churn": 478,
       "mergeAttr": "ours"
     },
     {
@@ -292,12 +292,12 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 360,
+      "churn": 363,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 327,
+      "churn": 330,
       "mergeAttr": "ours"
     },
     {
@@ -307,27 +307,27 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 292,
+      "churn": 293,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-triumph-off-broadway-2026.json",
-      "churn": 280,
+      "churn": 283,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-from-the-heart-west-end-2026.json",
-      "churn": 258,
+      "churn": 261,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 252,
+      "churn": 254,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/alert-router-attempts.jsonl",
-      "churn": 250,
+      "churn": 249,
       "mergeAttr": "union"
     },
     {
@@ -342,32 +342,32 @@
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 154,
+      "churn": 155,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 151,
+      "churn": 152,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 151,
+      "churn": 152,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 151,
+      "churn": 152,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 151,
+      "churn": 152,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 135,
+      "churn": 136,
       "mergeAttr": "ours"
     },
     {
@@ -382,7 +382,7 @@
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
@@ -392,12 +392,12 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 86,
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 75,
+      "churn": 76,
       "mergeAttr": "ours"
     },
     {
@@ -407,12 +407,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 70,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 70,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
