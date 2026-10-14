@@ -83,4 +83,20 @@ function shouldRescoreCompletedTruncated({ tierBefore, hasScore, textBefore, tex
   return before > 0 && after >= before + 500 && after >= before * 1.25;
 }
 
-module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON };
+/**
+ * A forced refetch that just pulled this file's text from its own URL on its
+ * own outlet's domain must not mark itself `duplicateTextOf` a DIFFERENT
+ * outlet's file holding the same text: that sibling is the one carrying the
+ * wrong article. BRO-5254: the-lion-king-1997 Variety was refetched with its
+ * real text, matched a Vulture file that had held the Variety text since a
+ * March misfetch, and the rebuild then dropped the real Variety review while
+ * the misattributed Vulture copy stayed live. Cross-outlet copies are left to
+ * detect-cross-outlet-duplicates.js, which picks the primary by tier/length.
+ * `hostMatches` is outlet-domain-validation's hostMatchesOutletDomain result
+ * for this file (true only on a registered domain match).
+ */
+function skipCrossOutletSelfDemote({ forcedReplacement, outletId, siblingOutletId, hostMatches }) {
+  return !!(forcedReplacement && hostMatches === true && outletId && siblingOutletId && outletId !== siblingOutletId);
+}
+
+module.exports = { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement, shouldRescoreCompletedTruncated, forcedRefetchTrim, FORCED_REFETCH_TRIM_REASON, skipCrossOutletSelfDemote };

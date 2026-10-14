@@ -6,6 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
+import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { forcedRefetchTrim } = require('../../scripts/lib/review-filter.js');
@@ -49,4 +50,22 @@ test('a page-bleed trim records the cut too, so the push restore keeps it', () =
   const local = applyBleedTrim(committed, NEW, { at: '2026-10-14T00:00:00Z' });
   reconcileProtectedFields(local, committed, { ...committed }, { staleCheckoutGuard: true });
   assert.equal(local.fullText, NEW);
+});
+
+// BRO-5254: a forced refetch from the file's own outlet domain does not mark
+// itself duplicateTextOf a different outlet's file with the same text.
+test('skipCrossOutletSelfDemote: only a forced, own-domain, cross-outlet match is skipped', () => {
+  const { skipCrossOutletSelfDemote } = require('../../scripts/lib/review-filter.js');
+  const base = { forcedReplacement: true, outletId: 'variety', siblingOutletId: 'vulture', hostMatches: true };
+  assert.equal(skipCrossOutletSelfDemote(base), true);
+  assert.equal(skipCrossOutletSelfDemote({ ...base, forcedReplacement: false }), false, 'routine fetch keeps the old dedupe');
+  assert.equal(skipCrossOutletSelfDemote({ ...base, siblingOutletId: 'variety' }), false, 'same-outlet copies still dedupe');
+  assert.equal(skipCrossOutletSelfDemote({ ...base, hostMatches: false }), false, 'off-domain url proves nothing');
+  assert.equal(skipCrossOutletSelfDemote({ ...base, hostMatches: null }), false, 'unknown domain keeps the old dedupe');
+});
+
+test('skipCrossOutletSelfDemote: real registry says variety.com is Variety', () => {
+  const { hostMatchesOutletDomain } = require('../../scripts/lib/outlet-domain-validation.js');
+  const reg = JSON.parse(readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8'));
+  assert.equal(hostMatchesOutletDomain('https://variety.com/1997/legit/reviews/the-lion-king-new-amsterdam-theater-1117339958/', 'variety', reg), true);
 });
