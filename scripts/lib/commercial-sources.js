@@ -78,7 +78,31 @@ function normalizeSources(sources) {
   return sources.map(normalizeSource).filter(Boolean);
 }
 
+/**
+ * Why a source URL cites nothing, or null (BRO-5264, BRO-5268):
+ *   'own-site'  this site (any broadwayscorecard.com host), which republishes
+ *               commercial.json, so citing it is circular;
+ *   'wikipedia' a pointer to sources, not one (mirrors like wikiwand too);
+ *   'homepage'  a site's front page: no path beyond /, /index.*, no query.
+ * One predicate for the record check (commercial-record-checks.js) and the
+ * automated-writer gate (commercial-apply-gate.js) so they cannot drift.
+ */
+function placeholderSourceKind(rawUrl) {
+  const { isSelfUrl } = require('./commercial-self-cite');
+  const url = typeof rawUrl === 'string' ? rawUrl.trim() : '';
+  if (!url) return null;
+  let u;
+  try { u = new URL(url); } catch { return isSelfUrl(url) ? 'own-site' : null; }
+  if (!/^https?:$/.test(u.protocol)) return null;
+  if (isSelfUrl(url)) return 'own-site';
+  if (/(^|\.)(wikipedia\.org|wikiwand\.com)$/i.test(u.hostname)) return 'wikipedia';
+  const bareQuery = u.search === '' || u.search === '?';
+  if (bareQuery && /^\/?(index\.(html?|php|aspx?))?$/i.test(u.pathname)) return 'homepage';
+  return null;
+}
+
 module.exports = {
+  placeholderSourceKind,
   VALID_SOURCE_TYPES,
   SOURCE_DATE_REGEX,
   normalizeSource,
