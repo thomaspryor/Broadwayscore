@@ -10,6 +10,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/li
 import OffWestEndPageClient from '@/components/OffWestEndPageClient';
 import type { OffWestEndShow } from '@/components/OffWestEndPageClient';
 import { featureFlags } from '@/config/feature-flags';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 const currentYear = new Date().getFullYear();
 
@@ -52,7 +53,7 @@ export default function OffWestEndPage() {
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
-      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+      score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
       reviewCount: show.criticScore?.reviewCount,
       venue: show.venue,
       startDate: show.openingDate,

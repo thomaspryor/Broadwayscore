@@ -4,6 +4,7 @@ import { getOperaShows, getOperaTitleSlug } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import OperaPageClient from '@/components/OperaPageClient';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 const currentYear = new Date().getFullYear();
 const operaOgImageUrl = `${BASE_URL}/og/opera.png`;
@@ -57,7 +58,7 @@ export default function OperaPage() {
         name: show.title,
         url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}`,
         image: show.images?.hero,
-        score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+        score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
         reviewCount: show.criticScore?.reviewCount,
         venue: show.venue,
         startDate: show.openingDate,

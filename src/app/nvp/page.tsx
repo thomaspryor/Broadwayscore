@@ -51,9 +51,12 @@ export default function NVPPage() {
           poster: show.images.poster || undefined,
           hero: show.images.hero || undefined,
         } : undefined,
+        category: show.category,
         criticScore: show.criticScore ? {
           score: show.criticScore.score,
           reviewCount: show.criticScore.reviewCount,
+          tier1Count: show.criticScore.tier1Count,
+          tier2Count: show.criticScore.tier2Count,
         } : null,
         audienceCombinedScore: buzz?.combinedScore ?? null,
         audienceHasEnoughReviews: buzz ? hasEnoughAudienceReviews(buzz) : false,

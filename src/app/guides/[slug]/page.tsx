@@ -34,6 +34,7 @@ import { sortTicketLinks } from '@/lib/ticket-utils';
 import { stripInlineMarkdown } from '@/lib/formatting';
 import { formatShowDate } from '@/lib/date-utils';
 import Breadcrumb from '@/components/Breadcrumb';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export function generateStaticParams() {
   return getAllGuideSlugs().map((slug) => ({ slug }));
@@ -140,7 +141,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
           name: show.title,
           url: `${BASE_URL}/show/${show.slug}`,
           image: show.images?.hero,
-          score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+          score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
           reviewCount: show.criticScore?.reviewCount,
           venue: show.venue,
           theaterAddress: show.theaterAddress,

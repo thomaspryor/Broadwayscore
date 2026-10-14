@@ -8,8 +8,6 @@ import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import FeaturedSpot from '@/components/FeaturedSpot';
 import MarketFilterBar from '@/components/MarketFilterBar';
-import { hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 
 // Lazy-load below-fold email capture to reduce initial hydration cost
 const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
@@ -478,7 +476,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     const cutoff = twelveMonthsAgo.toISOString().slice(0, 10);
     return shows
       .filter(show => (show.type === 'musical' || show.type === 'play') && show.status === 'open' && show.openingDate >= cutoff && show.criticScore?.score
-        && hasEnoughReviews(show.criticScore.reviewCount ?? 0, show.category, (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0), CURATED_HISTORICAL_SHOWS.has(show.id)))
+        && displaysCriticScore(show))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, skipFirstMusicals]);
 

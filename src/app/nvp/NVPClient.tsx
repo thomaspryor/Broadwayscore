@@ -27,7 +27,9 @@ export interface NVPShow {
     poster?: string;
     hero?: string;
   };
-  criticScore: { score: number | null; reviewCount: number } | null;
+  /** Market category + tier counts feed displaysCriticScore (BRO-4312). */
+  category?: string;
+  criticScore: { score: number | null; reviewCount: number; tier1Count?: number; tier2Count?: number } | null;
   audienceCombinedScore: number | null;
   audienceHasEnoughReviews: boolean;
 }

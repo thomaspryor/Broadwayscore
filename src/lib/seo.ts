@@ -561,7 +561,8 @@ export function generateItemListSchema(items: {
 
       // Aggregate rating (with required reviewCount, minimum 3)
       // Uses 1-5 star scale for Google rich snippet compatibility
-      // display-gate-ok: Google ItemList rating floor; list items are already display-gated
+      // Callers pass `score` only when displaysCriticScore(show) holds, so a TBD
+      // card never gets a rating here. display-gate-ok: Google's ItemList floor.
       if (item.score && item.reviewCount && item.reviewCount >= 3) {
         event.aggregateRating = {
           '@type': 'AggregateRating',

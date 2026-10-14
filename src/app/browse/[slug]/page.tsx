@@ -14,6 +14,7 @@ import HowThisWorks from '@/components/HowThisWorks';
 import ToursByCity from '@/components/ToursByCity';
 import { getTourCities } from '@/lib/data-tour-cities';
 import type { BrowseShow } from '@/components/BrowseListClient';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 // "How This Works" default per market. The Broadway outlets (NYT, Vulture,
 // Variety) also review Off-Broadway; London and regional runs are reviewed by
@@ -148,7 +149,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
-      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+      score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
       reviewCount: show.criticScore?.reviewCount,
       venue: show.venue,
       theaterAddress: show.theaterAddress,

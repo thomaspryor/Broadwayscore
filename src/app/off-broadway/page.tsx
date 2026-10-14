@@ -16,6 +16,7 @@ import FeaturedRowServer from '@/components/FeaturedRowServer';
 import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { featureFlags } from '@/config/feature-flags';
 import { formatShowDate } from '@/lib/date-utils';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 const currentYear = new Date().getFullYear();
 
@@ -62,7 +63,7 @@ export default function OffBroadwayPage() {
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
-      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+      score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
       reviewCount: show.criticScore?.reviewCount,
       venue: show.venue,
       startDate: show.openingDate,

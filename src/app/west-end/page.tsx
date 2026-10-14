@@ -15,6 +15,7 @@ import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 import { featureFlags } from '@/config/feature-flags';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export const metadata: Metadata = {
   title: {
@@ -69,7 +70,7 @@ export default function WestEndPage() {
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
-      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+      score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
       reviewCount: show.criticScore?.reviewCount,
       venue: show.venue,
       startDate: show.openingDate,

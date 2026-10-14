@@ -9,6 +9,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
 import HowThisWorks from '@/components/HowThisWorks';
 import type { BrowseShow } from '@/components/BrowseListClient';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export function generateStaticParams() {
   return getAllBestOfCategories().map((category) => ({ category }));
@@ -64,7 +65,7 @@ export default async function BestOfPage(props: { params: Promise<{ category: st
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
-      score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+      score: show.criticScore?.score && displaysCriticScore(show) ? Math.round(show.criticScore.score) : undefined,
       reviewCount: show.criticScore?.reviewCount,
       venue: show.venue,
       theaterAddress: show.theaterAddress,
