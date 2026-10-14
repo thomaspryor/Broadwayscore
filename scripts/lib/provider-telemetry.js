@@ -69,16 +69,17 @@ function currentSpendShowId(explicit) {
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'scraper-spend-ledger.jsonl');
-// ~2-3 days at 2026-09 volume (15-20K rows/day). check-provider-spend.js reads
-// yesterday's rows ~13:00Z today, so the ledger must hold ~37h at minimum.
+// ~2-3 days at 2026-09 volume (15-20K rows/day).
 const MAX_LEDGER_LINES = 45000;
 // BRO-4936: a line cap alone is not a time guarantee. 2026-10-09 logged ~48K
-// rows, so by the next morning's reconciliation the 45K cap had already eaten
-// that day's first ~15h and Bright Data read 58% attributed (79/75/58% on
-// 10-07..10-09) though every call had been logged. Rows from yesterday or
-// today (UTC) are therefore never trimmed below this hard ceiling (~36MB),
-// which only binds above ~60K rows/day.
-const HARD_MAX_LEDGER_LINES = 120000;
+// rows, so before the next day's check-provider-spend.js reconciliation ran
+// the 45K cap had already eaten that day's first ~15h and Bright Data read 58%
+// attributed (79/75/58% on 10-07..10-09) though every call had been logged.
+// The check counts yesterday's UTC day, and SB/SD credits since the previous
+// reconciliation's capturedAt, which after one skipped run is two days back.
+// So rows since 00:00Z the day before yesterday are never trimmed below this
+// hard ceiling (~45MB at ~300 bytes/row, under GitHub's 50MB warning).
+const HARD_MAX_LEDGER_LINES = 150000;
 const TAG_BY_PROVIDER = {
   brightdata: 'BD',
   scrapingbee: 'SB',
@@ -143,9 +144,10 @@ function trimLedgerLines(lines, max = MAX_LEDGER_LINES, now = new Date(), hardMa
   const sorted = [...new Set(lines)]
     .map((l, i) => [key(l), i, l])
     .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]));
-  // Keep every row since 00:00Z yesterday (what check-provider-spend.js still
-  // has to count), at least `max` rows, at most `hardMax`.
-  const keepFrom = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)).toISOString();
+  // Keep every row since 00:00Z the day before yesterday (what
+  // check-provider-spend.js may still have to count), at least `max` rows, at
+  // most `hardMax`.
+  const keepFrom = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 2)).toISOString();
   let firstRecent = sorted.length;
   while (firstRecent > 0 && sorted[firstRecent - 1][0] >= keepFrom) firstRecent--;
   const keep = Math.min(Math.max(max, sorted.length - firstRecent), hardMax);
