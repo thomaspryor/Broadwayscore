@@ -197,4 +197,10 @@ test('Cititour /NYC_Events/ and THR /lists/ are listings; their review paths are
   assert.equal(listingPageUrlReason('https://example.com/tv/how-to-watch-the-tonys-online.html'), 'watch-guide-page');
   assert.equal(listingPageUrlReason('https://www.broadwayworld.com/chicago/regional/The-Humanities'), 'show-listing-page');
   assert.equal(listingPageUrlReason('https://www.broadwayworld.com/chicago/article/Review-THE-HUMANITIES-at-Steppenwolf-20261010'), null);
+  // The Reviews Hub archives are listings; its reviews are /<slug>/ (Nina, 2026-10-14).
+  assert.equal(listingPageUrlReason('https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://www.thereviewshub.com/category/reviews/london-reviews/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://www.thereviewshub.com/author/jane-doe/'), 'tag-index-page');
+  assert.equal(listingPageUrlReason('https://www.thereviewshub.com/catarina-and-the-beauty-of-killing-fascists-gate-theatre-london/'), null);
+  assert.equal(listingPageUrlReason('https://www.twi-ny.com/tag/golden-boy/'), null);
 });

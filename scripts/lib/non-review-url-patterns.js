@@ -557,6 +557,11 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /./, path: /\/(?![^/]*review)(?:[^/]*-)?where-to-(?:watch|stream)(?:[-.][^/]*)?\/?$/i, reason: 'watch-guide-page' },
   // Blogger label search (theaterinthenow.com/search/label/Review).
   { host: /./, path: /\/search\/label\//i, reason: 'blog-label-index' },
+  // The Reviews Hub WordPress archives (BRO-5166): /tag/<slug>/ and
+  // /category/<slug>/ list posts. A Dublin Theatre Festival tag page was
+  // ingested as an empty T2 "review" of Nina (West End). Every scored Reviews
+  // Hub row (181 on 2026-10-14) is a single-segment /<slug>/ article.
+  { host: /(^|\.)thereviewshub\.com$/, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page' },
 ];
 
 /**
