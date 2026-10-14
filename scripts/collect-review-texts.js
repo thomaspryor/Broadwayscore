@@ -136,6 +136,9 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const {
   NO_DATE_SENTINEL,
   buildShowRecencyMap,
+  NEEDS_REFETCH_DRAIN_PER_RUN,
+  isTextlessNeedsRefetch,
+  promoteNeedsRefetch,
   compareReviewPriority,
 } = require('./lib/collection-priority');
 
@@ -6716,6 +6719,7 @@ function findReviewsToProcess() {
           _forceRefetch: forcedRefetch,
           // What the file already holds (BRO-5222): a Time Out refetch that
           // finds a listing blurb keeps a stored review instead of failing it.
+          _needsRefetch: isTextlessNeedsRefetch(data),
           _storedTier: data.contentTier || null,
           _storedTextLength: typeof data.fullText === 'string' ? data.fullText.length : 0,
           // Stored text that may not be this url's review (repointed url, show
@@ -6746,6 +6750,15 @@ function findReviewsToProcess() {
       reviews.push(...salvage, ...rest);
       console.log(`  Stored-text re-verifies queued first: ${salvage.length}`);
     }
+  }
+  // BRO-4426: textless needsRefetch reviews ranked by their show's recency and
+  // sat past the max_reviews cut forever. Reserve a capped slice at the front.
+  {
+    const promoted = promoteNeedsRefetch(reviews);
+    const n = promoted.filter(r => r._needsRefetch).slice(0, NEEDS_REFETCH_DRAIN_PER_RUN).length;
+    if (n) console.log(`  needsRefetch drain: ${n} textless review(s) queued first (cap ${NEEDS_REFETCH_DRAIN_PER_RUN}/run)`);
+    reviews.length = 0;
+    reviews.push(...promoted);
   }
   // Per-run caps, applied in priority order (see DRAIN_NETWORK_PER_RUN).
   {

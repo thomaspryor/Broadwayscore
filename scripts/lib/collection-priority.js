@@ -83,7 +83,45 @@ function compareReviewPriority(a, b, { closedShowMode = false } = {}) {
   return a.priority - b.priority;
 }
 
+/**
+ * Per-run slots for textless needsRefetch reviews (BRO-4426).
+ *
+ * A review whose fullText was cleared (URL-change clear) carries needsRefetch
+ * but ranks by its SHOW's recency, so on a closed show it sat past the
+ * max_reviews cut run after run (238 shipped reviews textless, oldest ~7
+ * months). Nothing else queues them. These slots pull the cheapest-tier ones
+ * to the front of every scheduled run; the cap keeps the paid-fetch spend
+ * bounded and the rest wait for the next run.
+ */
+const NEEDS_REFETCH_DRAIN_PER_RUN = 25;
+const NEEDS_REFETCH_MIN_TEXT = 200;
+
+/** True for a review that was told to refetch and holds no usable body. */
+function isTextlessNeedsRefetch(data) {
+  if (!data || data.needsRefetch !== true) return false;
+  const len = typeof data.fullText === 'string' ? data.fullText.length : 0;
+  return len <= NEEDS_REFETCH_MIN_TEXT;
+}
+
+/**
+ * Move up to `cap` textless needsRefetch entries (flag `_needsRefetch`) to the
+ * front of an already-sorted queue, lowest outlet tier number first, keeping the
+ * queue's order within ties. Entries past the cap keep their normal position.
+ * Returns a new array; does not mutate the input.
+ */
+function promoteNeedsRefetch(queue, cap = NEEDS_REFETCH_DRAIN_PER_RUN) {
+  const flagged = [];
+  queue.forEach((r, i) => { if (r && r._needsRefetch) flagged.push({ r, i }); });
+  if (!flagged.length || cap <= 0) return queue.slice();
+  flagged.sort((a, b) => ((a.r.priority ?? 9) - (b.r.priority ?? 9)) || (a.i - b.i));
+  const promoted = new Set(flagged.slice(0, cap).map(f => f.r));
+  return [...flagged.slice(0, cap).map(f => f.r), ...queue.filter(r => !promoted.has(r))];
+}
+
 module.exports = {
+  NEEDS_REFETCH_DRAIN_PER_RUN,
+  isTextlessNeedsRefetch,
+  promoteNeedsRefetch,
   NO_DATE_SENTINEL,
   showRecencyKey,
   buildShowRecencyMap,
