@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5321-e",
   "planId": "08866e7f-2661-43ee-a52a-d8d6de6920a9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T04:13:24.508Z",
   "submitter": {
     "name": null,
@@ -80,5 +80,48 @@
         "description": "BRO-5321: the page carrying this text credits Frank Scheck (http://www.hollywoodreporter.com/review/is-youth-theater-review-732208)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-14T05:07:25.156Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-psycho-2016/guardian--jesse-green.json criticName: \"Jesse Green\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-in-paris-2015/nypost--haley-goldberg.json criticName: \"Haley Goldberg\" -> \"Elisabeth Vincentelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cost-of-living-2022/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Juan A. Ramírez\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "doctor-zhivago-2015/vulture--jeremy-gerard.json criticName: \"Jeremy Gerard\" -> \"Jesse Green\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "doctor-zhivago-2015/vulture--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "doctor-zhivago-2015/vulture--jesse-green.json wrongAttributionReason: null -> \"BRO-5321: same text as vulture--jeremy-gerard.json, which holds Jesse Green's review at https://www.vulture.com/2015/04/theater-review-doctor-zhivago.html; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json criticName: \"Ann Treneman\" -> \"Dominic Maxwell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "this-is-our-youth-2014/hollywood-reporter--david-rooney.json criticName: \"David Rooney\" -> \"Frank Scheck\""
+    }
+  ]
 }
