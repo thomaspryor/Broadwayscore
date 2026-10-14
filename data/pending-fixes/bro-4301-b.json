@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4301-b",
   "planId": "8527c0fd-5129-4cf2-b8c1-464ff073b21b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-14T07:36:06.094Z",
   "submitter": {
     "name": null,
@@ -25,12 +25,12 @@
       }
     ]
   },
-  "executedAt": "2026-10-14T07:33:58.320Z",
+  "executedAt": "2026-10-14T08:08:09.049Z",
   "results": [
     {
       "action": "review-field-edit",
-      "ok": false,
-      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+      "ok": true,
+      "msg": "the-producers-west-end-2025/guardian--arifa-akbar.json wrongProduction: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared)"
     }
   ]
 }
