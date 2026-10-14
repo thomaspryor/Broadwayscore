@@ -613,23 +613,69 @@ flush() {
     log "WARN  live-lease guard unavailable (node or worktree-live-lease-check.js missing) — skipping for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
 
+  # BRO-2694: who pins this worktree's cwd. Only gathered when the merge state
+  # could allow removal (an unmerged branch is KEEP whatever pins it), because
+  # each call snapshots every process via lsof + ps. The classifier prints the
+  # bare class on line 1; ANYTHING other than a known class (helper missing,
+  # node missing, crash, usage error) reads as 'unknown' = keep. Stricter than
+  # the pre-BRO-2694 guard, where a missing/crashing helper meant "clear".
+  cwd_pin="none"
+  worktree_idle=0
+  if [ "$is_ancestor" = "1" ] || [ "$has_unmerged" = "0" ]; then
+    cwd_pin="unknown"
+    if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ]; then
+      cwd_pin=$(node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$path" --classify 2>/dev/null | head -n 1)
+    else
+      log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — treating [$CURRENT_REPO_NAME] $(basename "$path") as pinned"
+    fi
+    case "$cwd_pin" in
+      none|stale-process|live-session|foreign-process|unknown) ;;
+      *) cwd_pin="unknown" ;;
+    esac
+    # Idle gate for the stale-process class: no source file touched for
+    # STALE_DAYS (same exclusions as the strip/digest staleness check).
+    if [ "$cwd_pin" = "stale-process" ] && is_stale "$path" "$STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}"; then
+      worktree_idle=1
+    fi
+  fi
+
   # Single decision point (worktree-gc-decide.js -> decideWorktreeReclaim in
-  # scripts/lib/worktree-gc-reclaim.js): the three signals gathered above
-  # (ancestor check, unmerged count, live-lease scan) all funnel through the
-  # SAME function this file's own unit tests exercise, instead of bash
-  # re-deciding with its own parallel `if` chain.
+  # scripts/lib/worktree-gc-reclaim.js): the signals gathered above
+  # (ancestor check, unmerged count, live-lease scan, cwd pin + idleness) all
+  # funnel through the SAME function its unit tests exercise, instead of bash
+  # re-deciding with its own parallel `if` chain. Exit 0 = removable,
+  # 3 = blocked only by the cwd pin, anything else = not removable.
   removable=1
+  pin_blocked=0
   if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/worktree-gc-decide.js" ]; then
     node "$SCRIPT_DIR/lib/worktree-gc-decide.js" \
-      --is-ancestor="$is_ancestor" --has-unmerged="$has_unmerged" --has-live-lease="$has_live_lease" >/dev/null 2>&1
-    [ "$?" != "0" ] && removable=0
+      --is-ancestor="$is_ancestor" --has-unmerged="$has_unmerged" --has-live-lease="$has_live_lease" \
+      --cwd-pin="$cwd_pin" --worktree-idle="$worktree_idle" >/dev/null 2>&1
+    decide_rc=$?
+    [ "$decide_rc" != "0" ] && removable=0
+    [ "$decide_rc" = "3" ] && pin_blocked=1
   else
-    log "WARN  decision helper unavailable (node or worktree-gc-decide.js missing) — falling back to unmerged-only check"
+    log "WARN  decision helper unavailable (node or worktree-gc-decide.js missing) — falling back to unmerged-only check, any cwd pin keeps"
     [ "$has_unmerged" = "1" ] && removable=0
+    if [ "$removable" = "1" ] && [ "$cwd_pin" != "none" ]; then
+      removable=0; pin_blocked=1
+    fi
   fi
 
   if [ "$has_live_lease" = "1" ]; then
     log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch has a live job-lease using this worktree as its cwd"
+    skipped=$((skipped+1))
+    path="" branch=""; return
+  fi
+
+  # Liveness guard (task #1709, narrowed by BRO-2694): a merged worktree that
+  # a live process has as its cwd (a claude session, a terminal, an editor,
+  # or an orphan too young / a worktree touched too recently) is never pulled
+  # out from under it. Only an ORPHANED, >=24h-old, non-session process tree
+  # rooted in a worktree untouched for STALE_DAYS is reclaimed (see
+  # classifyCwdPin). Never kills a process and never adds --force.
+  if [ "$pin_blocked" = "1" ]; then
+    log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged but a live process has this worktree as its cwd ($cwd_pin)"
     skipped=$((skipped+1))
     path="" branch=""; return
   fi
@@ -646,29 +692,8 @@ flush() {
     fi
     path="" branch=""; return
   fi
-  # Liveness guard (task #1709): git's dirty-tree refusal protects
-  # uncommitted changes, but a merged+CLEAN worktree can still be a live
-  # process's cwd (a dev server, a background watcher) — there's nothing
-  # dirty for git to refuse on, so plain `git worktree remove` would happily
-  # pull the rug out from under it. Found 2026-08-16: tony-page-season-guard
-  # was removed while pids 93138/93152 still had it as their cwd. Skip, same
-  # as the dirty-tree skip below, rather than risk that. Generic across
-  # repos, same reasoning as the live-lease guard above.
-  # Exit-code contract: the CLI wrapper is a 2-way switch, not 3-way — exit 0
-  # means "live, do not remove"; ANYTHING else (1 = clear, 2 = usage error,
-  # or an unanticipated crash) falls through to removal below. Keep it that
-  # way deliberately (an unexpected non-zero must never become a silent KEEP
-  # that masks a real bug in the checker) but don't widen it without
-  # re-reading this comment.
-  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ]; then
-    node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$path" >/dev/null 2>&1
-    if [ "$?" = "0" ]; then
-      log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged but a live process has this worktree as its cwd"
-      skipped=$((skipped+1))
-      path="" branch=""; return
-    fi
-  else
-    log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — skipping liveness check for [$CURRENT_REPO_NAME] $(basename "$path")"
+  if [ "$cwd_pin" = "stale-process" ]; then
+    log "NOTE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged; cwd pinned only by an orphaned idle non-session process tree, reclaiming (BRO-2694)"
   fi
   # Lock guard (BRO-2624): `git worktree lock` is an explicit human "leave this
   # alone" — `git worktree remove` (with or without --force) refuses on a

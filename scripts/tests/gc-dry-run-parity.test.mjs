@@ -127,8 +127,8 @@ function gcEnv(fixture, dryRun) {
   };
 }
 
-function runGc(fixture, { dryRun }) {
-  const env = gcEnv(fixture, dryRun);
+function runGc(fixture, { dryRun, extraEnv = {} }) {
+  const env = { ...gcEnv(fixture, dryRun), ...extraEnv };
 
   // PRE-FLIGHT ISOLATION GUARD — this must happen BEFORE anything destructive.
   // These tests run the GC for real (dryRun:false genuinely removes worktrees)
@@ -357,4 +357,48 @@ test('a live process rooted in a merged worktree survives the real run, and is r
   const out2 = runGc(fx, { dryRun: false });
   assert.match(decisionFor(out2, 'wt-live'), /^\[[^\]]+\] REMOVE\b/, 'once the process exits, the same merged/clean worktree must be removed on the next run');
   assert.ok(!fs.existsSync(liveDir), 'the worktree directory must actually be gone');
+});
+
+/**
+ * BRO-2694 — the GC freed 0KB because ANY cwd pin kept a merged worktree
+ * forever. End-to-end through the real script: a merged, clean worktree
+ * pinned only by an ORPHANED non-session process (reparented to init, the
+ * task #1709 `next start` shape) is reclaimed once the age and idle gates are
+ * met (both zeroed here; production defaults are 24h and STALE_DAYS), while
+ * the same shape under a process named `claude` is still SKIPped.
+ */
+test('BRO-2694: a merged worktree pinned only by an orphaned non-session process is reclaimed; a claude-session pin is kept', async (t) => {
+  const fx = buildFixture();
+  const orphanDir = path.join(fx.wtRoot, 'wt-orphan');
+  const sessDir = path.join(fx.wtRoot, 'wt-session');
+  git(fx.repo, 'worktree', 'add', '-q', '-b', 'worktree-wt-orphan', orphanDir, 'main');
+  git(fx.repo, 'worktree', 'add', '-q', '-b', 'worktree-wt-session', sessDir, 'main');
+
+  const pids = [];
+  t.after(() => { for (const p of pids) { try { process.kill(p, 'SIGKILL'); } catch { /* gone */ } } });
+  const orphanPid = Number(execFileSync('sh', ['-c', 'node -e "setInterval(()=>{},1000)" >/dev/null 2>&1 & echo $!'], { cwd: orphanDir, encoding: 'utf8' }).trim());
+  pids.push(orphanPid);
+  const binDir = fs.mkdtempSync(path.join(fx.tmp, 'bin-'));
+  const fakeClaude = path.join(binDir, 'claude');
+  fs.writeFileSync(fakeClaude, '#!/bin/sh\nnode -e "setInterval(()=>{},1000)" &\nwait\n', { mode: 0o755 });
+  const sess = spawn(fakeClaude, [], { cwd: sessDir, stdio: 'ignore', detached: true });
+  pids.push(-sess.pid, sess.pid);
+  wait(400);
+  const ppid = Number(execFileSync('ps', ['-o', 'ppid=', '-p', String(orphanPid)], { encoding: 'utf8' }).trim());
+  if (ppid !== 1) { t.skip(`orphan adopted by subreaper ${ppid}, not init`); return; }
+
+  // Production gates (24h process age, STALE_DAYS idle): a minutes-old orphan is NOT reclaimed yet.
+  const ungated = runGc(fx, { dryRun: true });
+  assert.match(decisionFor(ungated, 'wt-orphan'), /SKIP.*live process/, 'young orphan stays protected by default');
+
+  const gates = { WORKTREE_GC_PIN_MIN_AGE_HOURS: '0', WORKTREE_GC_STALE_DAYS: '0' };
+  const dry = runGc(fx, { dryRun: true, extraEnv: gates });
+  assert.match(decisionFor(dry, 'wt-orphan'), /WOULD-REMOVE\b/, 'dry-run predicts the reclaim');
+  assert.match(decisionFor(dry, 'wt-session'), /SKIP.*live process.*live-session/);
+
+  const real = runGc(fx, { dryRun: false, extraEnv: gates });
+  assert.match(decisionFor(real, 'wt-orphan'), /^\[[^\]]+\] REMOVE\b/);
+  assert.ok(!fs.existsSync(orphanDir), 'the orphan-pinned merged worktree is gone');
+  assert.match(decisionFor(real, 'wt-session'), /SKIP.*live process/);
+  assert.ok(fs.existsSync(sessDir), 'a claude-session-pinned worktree survives');
 });

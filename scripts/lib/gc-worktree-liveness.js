@@ -20,6 +20,7 @@
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { classifyCwdPin, cwdPinBlocks, parseLsofCwds, parsePsTable } = require('./worktree-gc-reclaim.js');
 
 /**
  * @param {string} worktreePath - absolute path to the worktree directory
@@ -66,12 +67,59 @@ function hasLiveProcessInDir(worktreePath) {
   return false;
 }
 
+/**
+ * BRO-2694: classify WHO pins the worktree (see classifyCwdPin in
+ * worktree-gc-reclaim.js) from one lsof cwd snapshot plus one ps snapshot.
+ * Any lsof/ps failure -> 'unknown' (keep), same fail-safe as above.
+ * hasLiveProcessInDir stays untouched: bsc-reconcile.js relies on its
+ * any-process-means-live contract.
+ *
+ * @returns {{pin: string, pids: number[], reason: string}}
+ */
+function cwdPinStatus(worktreePath, { minAgeHours = process.env.WORKTREE_GC_PIN_MIN_AGE_HOURS } = {}) {
+  let target;
+  try {
+    target = fs.realpathSync(worktreePath);
+  } catch {
+    target = path.resolve(worktreePath);
+  }
+  let lsofOut;
+  let psOut;
+  try {
+    lsofOut = execFileSync('lsof', ['-a', '-d', 'cwd', '-F', 'pn'], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 10000, maxBuffer: 64 * 1024 * 1024,
+    });
+    psOut = execFileSync('ps', ['-ww', '-A', '-o', 'pid=,ppid=,etime=,tty=,command='], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 10000, maxBuffer: 64 * 1024 * 1024,
+    });
+  } catch {
+    return { pin: 'unknown', pids: [], reason: 'lsof or ps failed' };
+  }
+  return classifyCwdPin({
+    worktreePath: target,
+    cwds: parseLsofCwds(lsofOut),
+    procs: parsePsTable(psOut),
+    minAgeHours,
+    sep: path.sep,
+  });
+}
+
 function main() {
-  const arg = process.argv.slice(2).find((a) => a.startsWith('--path='));
-  const worktreePath = arg ? arg.slice('--path='.length) : process.argv[2];
+  const argv = process.argv.slice(2);
+  const arg = argv.find((a) => a.startsWith('--path='));
+  const worktreePath = arg ? arg.slice('--path='.length) : argv.find((a) => !a.startsWith('--'));
   if (!worktreePath) {
-    console.error('usage: gc-worktree-liveness.js --path=<worktree-dir>');
+    console.error('usage: gc-worktree-liveness.js --path=<worktree-dir> [--classify]');
     process.exit(2);
+  }
+  if (argv.includes('--classify')) {
+    // Prints the bare class on line 1 (gc-merged-worktrees.sh reads it; any
+    // other output there is treated as 'unknown'), JSON detail on line 2.
+    // Exit 0 iff the class alone blocks removal.
+    const status = cwdPinStatus(worktreePath);
+    console.log(status.pin);
+    console.log(JSON.stringify({ path: worktreePath, ...status }));
+    process.exit(cwdPinBlocks(status.pin) ? 0 : 1);
   }
   const live = hasLiveProcessInDir(worktreePath);
   console.log(JSON.stringify({ path: worktreePath, live }));
@@ -81,4 +129,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { hasLiveProcessInDir };
+module.exports = { hasLiveProcessInDir, cwdPinStatus };

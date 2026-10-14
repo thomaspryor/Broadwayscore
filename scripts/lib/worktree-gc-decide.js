@@ -12,9 +12,13 @@
  * this CLI owns turning them into a verdict.
  *
  * Usage: worktree-gc-decide.js --is-ancestor=0|1 --has-unmerged=0|1 --has-live-lease=0|1
- * Exit codes: 0 = removable, 1 = not removable. Prints {removable, reason} JSON.
+ *          [--cwd-pin=<class>] [--worktree-idle=0|1]
+ * --cwd-pin is a classifyCwdPin() class from `gc-worktree-liveness.js
+ * --classify` (BRO-2694); absent = 'none', unrecognised = 'unknown' (keep).
+ * Exit codes: 0 = removable, 3 = blocked only by a cwd pin, 1 = any other
+ * not-removable. Prints {removable, blocker, reason} JSON.
  */
-const { decideWorktreeReclaim } = require('./worktree-gc-reclaim.js');
+const { decideWorktreeReclaim, CWD_PIN_CLASSES } = require('./worktree-gc-reclaim.js');
 
 function boolFlag(name, argv) {
   const pref = `--${name}=`;
@@ -22,17 +26,33 @@ function boolFlag(name, argv) {
   return a ? (a.slice(pref.length) === '1' || a.slice(pref.length) === 'true') : false;
 }
 
-function main() {
-  const argv = process.argv.slice(2);
+function stringFlag(name, argv) {
+  const pref = `--${name}=`;
+  const a = argv.find((x) => x.startsWith(pref));
+  return a === undefined ? undefined : a.slice(pref.length);
+}
+
+/** argv -> {result, exitCode}; exported so the test drives the real parsing. */
+function decideFromArgv(argv) {
+  const pinArg = stringFlag('cwd-pin', argv);
+  const cwdPin = pinArg === undefined ? 'none' : (CWD_PIN_CLASSES.includes(pinArg) ? pinArg : 'unknown');
   const result = decideWorktreeReclaim({
     isAncestorOfMain: boolFlag('is-ancestor', argv),
     hasUnmergedCommits: boolFlag('has-unmerged', argv),
     hasLiveLease: boolFlag('has-live-lease', argv),
+    cwdPin,
+    worktreeIdle: boolFlag('worktree-idle', argv),
   });
+  const exitCode = result.removable ? 0 : (result.blocker === 'cwd-pin' ? 3 : 1);
+  return { result, exitCode };
+}
+
+function main() {
+  const { result, exitCode } = decideFromArgv(process.argv.slice(2));
   console.log(JSON.stringify(result));
-  process.exit(result.removable ? 0 : 1);
+  process.exit(exitCode);
 }
 
 if (require.main === module) main();
 
-module.exports = { main };
+module.exports = { main, decideFromArgv };
