@@ -49,3 +49,12 @@ test('below the plausibility floor nothing is treated as an orphan', () => {
   reconcileAudienceBuzz(current, { shows: { b: { sources: {} } } }, { liveIds: new Set(['a']) });
   assert.ok(current.shows.b, 'tiny shows.json = old recover-everything behavior');
 });
+
+test('BRO-5276: a source we removed on purpose (sourcesRemoved) is not refilled; an untombstoned one still is', () => {
+  const current = { shows: { 'show-1': { sourcesRemoved: { theatr: 'closed before Theatr existed' }, sources: { showScore: null } } } };
+  const remote = { shows: { 'show-1': { sources: { theatr: { score: 80, reviewCount: 30 }, mezzanine: { score: 70, reviewCount: 12 } } } } };
+  const r = reconcileAudienceBuzz(current, remote, { liveIds: live() });
+  assert.equal(current.shows['show-1'].sources.theatr, undefined);
+  assert.equal(current.shows['show-1'].sources.mezzanine.score, 70);
+  assert.equal(r.recovered, 1);
+});

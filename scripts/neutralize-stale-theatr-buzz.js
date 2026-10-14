@@ -49,6 +49,19 @@ function planStaleTheatrRemoval(buzzShows, shows) {
   return plan.sort((a, b) => a.id.localeCompare(b.id));
 }
 
+/** Mutates buzzShows: drops sources.theatr, leaves the tombstone, stores the recomputed score. */
+function applyStaleTheatrRemoval(buzzShows, plan) {
+  for (const p of plan) {
+    const rec = buzzShows[p.id];
+    delete rec.sources.theatr;
+    // Tombstone: push-core-data's reconcile refills any source we lack from remote
+    // (reconcile-audience-buzz.js) unless it is named here.
+    rec.sourcesRemoved = { ...(rec.sourcesRemoved || {}), theatr: 'closed before Theatr existed (BRO-5276)' };
+    rec.combinedScore = p.after;
+    rec.designation = p.designation;
+  }
+}
+
 function main() {
   const apply = process.argv.includes('--apply');
   const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
@@ -58,16 +71,11 @@ function main() {
   console.log(`[neutralize-stale-theatr] ${plan.length} shows ${apply ? 'CLEANED' : '(dry run, use --apply)'}`);
   for (const p of plan) console.log(`  ${p.id} theatr rc=${p.rc} | combinedScore ${p.before} -> ${p.after}`);
   if (!apply || plan.length === 0) return;
-  for (const p of plan) {
-    const rec = buzz.shows[p.id];
-    delete rec.sources.theatr;
-    rec.combinedScore = p.after;
-    rec.designation = p.designation;
-  }
+  applyStaleTheatrRemoval(buzz.shows, plan);
   buzz._meta = buzz._meta || {};
   saveAudienceBuzz(buzz);
   console.log('Wrote data/audience-buzz.json');
 }
 
-module.exports = { planStaleTheatrRemoval };
+module.exports = { planStaleTheatrRemoval, applyStaleTheatrRemoval };
 if (require.main === module) main();

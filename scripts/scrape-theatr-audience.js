@@ -365,6 +365,8 @@ function updateAudienceBuzz(showId, title, score, reviewCount, stats) {
   const show = audienceBuzz.shows[showId];
   if (!show.sources) show.sources = {};
 
+  // A fresh Theatr write supersedes an earlier removal tombstone (BRO-5276).
+  if (show.sourcesRemoved) { delete show.sourcesRemoved.theatr; if (!Object.keys(show.sourcesRemoved).length) delete show.sourcesRemoved; }
   show.sources.theatr = {
     score: Math.round(score),
     reviewCount,

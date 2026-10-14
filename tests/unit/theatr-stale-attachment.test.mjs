@@ -58,3 +58,18 @@ test('audit flags Theatr on a pre-2021 closure, not on a 2022 closure; small-n d
   const again = audit({ shows, buzz, today: '2026-10-13' }).find((i) => i.id === 'new-2026');
   assert.equal(again.severity, 'info', 'a real-n platform disagreement is listed but never gated');
 });
+
+test('BRO-5276: the cleanup removes the source, leaves the tombstone, and reconcile does not refill it', () => {
+  const { planStaleTheatrRemoval, applyStaleTheatrRemoval } = require('../../scripts/neutralize-stale-theatr-buzz.js');
+  const { reconcileAudienceBuzz } = require('../../scripts/lib/reconcile-audience-buzz.js');
+  const shows = [{ id: 'old-1999', status: 'closed', closingDate: '1999-09-01', category: 'broadway' }];
+  const theatr = { score: 20, reviewCount: 40 };
+  const ours = { 'old-1999': { combinedScore: 50, sources: { theatr, showScore: { score: 90, reviewCount: 100 } } } };
+  const remote = { shows: { 'old-1999': { sources: { theatr } } } };
+  applyStaleTheatrRemoval(ours, planStaleTheatrRemoval(ours, shows));
+  assert.equal(ours['old-1999'].sources.theatr, undefined);
+  assert.ok(ours['old-1999'].sourcesRemoved.theatr);
+  reconcileAudienceBuzz({ shows: ours }, remote, {});
+  assert.equal(ours['old-1999'].sources.theatr, undefined, 'push reconcile must not bring it back');
+  assert.equal(ours['old-1999'].combinedScore, 90);
+});

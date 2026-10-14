@@ -33,7 +33,11 @@ function reconcileAudienceBuzz(current, remote, opts = {}) {
     if (remoteOnlySet.has(id)) continue;
     const ourSrc = shows[id].sources || {};
     const remoteSrc = (entry && entry.sources) || {};
+    // BRO-5276: a source our side removed on purpose (sourcesRemoved tombstone) is not refilled.
+    // Without this a deleted source came straight back on the next push (108 Theatr rows did).
+    const removed = shows[id].sourcesRemoved || {};
     for (const [src, data] of Object.entries(remoteSrc)) {
+      if (removed[src]) continue;
       if (data && data.score != null && (!ourSrc[src] || ourSrc[src].score == null)) {
         ourSrc[src] = data;
         recovered++;
