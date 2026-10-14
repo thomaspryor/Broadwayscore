@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-14T03:24:49.522Z",
+  "timestamp": "2026-10-14T03:50:37.567Z",
   "stats": {
-    "totalReviews": 56476,
-    "alreadyFlagged": 21061,
-    "dateGuardCatches": 210,
-    "directorMismatch": 1885,
-    "tvFilmSignals": 1567,
-    "londonSignals": 2249,
+    "totalReviews": 56459,
+    "alreadyFlagged": 21060,
+    "dateGuardCatches": 211,
+    "directorMismatch": 1883,
+    "tvFilmSignals": 1566,
+    "londonSignals": 2246,
     "offBroadwaySignals": 511,
-    "yearMismatch": 141,
+    "yearMismatch": 142,
     "noPublishDate": 5245
   },
   "findings": [
@@ -13739,6 +13739,19 @@
       ]
     },
     {
+      "showId": "fish-off-broadway-2026",
+      "file": "theater-pizzazz--unknown.json",
+      "publishDate": null,
+      "url": "https://theaterpizzazz.com/its-sink-or-swim-in-melis-akers-fish/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
       "score": 82,
@@ -14476,20 +14489,6 @@
       "score": 72,
       "publishDate": "March 22, 2011",
       "url": "https://variety.com/2011/legit/reviews/ghetto-klown-1117944866/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "ghetto-klown-2011",
-      "file": "variety--unknown.json",
-      "score": 66,
-      "publishDate": "March 22, 2011",
-      "url": "http://www.variety.com/review/VE1117944866",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17242,6 +17241,17 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "amny--matt-windman.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 710d before show (2024-10-29 vs 2026-10-09)"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "file": "front-row-center--tulis-mccall.json",
       "score": 90,
       "publishDate": "2018-04-30",
@@ -18444,20 +18454,6 @@
       "score": 85,
       "publishDate": "February 25, 2016",
       "url": "http://www.nytimes.com/2016/02/26/theater/review-in-hughie-with-forest-whitaker-two-desolate-lost-souls.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"al pacino\" from hughie-1996"
-        }
-      ]
-    },
-    {
-      "showId": "hughie-2016",
-      "file": "theater-life--david-sheward.json",
-      "score": 34,
-      "publishDate": null,
-      "url": "https://theaterlife.com/node/15893",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28921,25 +28917,6 @@
       ]
     },
     {
-      "showId": "only-fools-and-horses-west-end-2019",
-      "file": "whatsonstage--unknown.json",
-      "score": 66,
-      "publishDate": "2019-02-20",
-      "url": "https://www.whatsonstage.com/news/review-only-fools-and-horses-the-musical-theatre-royal-haymarket_48539/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "opening-night-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 35,
@@ -29825,19 +29802,6 @@
       "score": 81,
       "publishDate": "2025-12-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up%3A-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "file": "london-box-office--unknown.json",
-      "publishDate": "2025-12-18",
-      "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up:-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34628,6 +34592,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (3x) more than 2025 (1x). 2005 matches production: spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "theatermania--jonas-schwartz.json",
+      "publishDate": "2026-03-30",
+      "url": "https://www.theatermania.com/news/review-monty-pythons-spamalot-feels-a-bit-tired-on-the-road_1830804/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: spamalot-2023"
         }
       ]
     },
@@ -51604,20 +51581,6 @@
       ]
     },
     {
-      "showId": "all-about-eve-west-end-2019",
-      "file": "whatsonstage--unknown.json",
-      "score": 77,
-      "publishDate": "2019-02-12",
-      "url": "https://www.whatsonstage.com/news/review-all-about-eve-noel-coward-theatre_48493/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "all-in-comedy-about-love-2024",
       "file": "nysr--frank-scheck.json",
       "score": 56,
@@ -59146,7 +59109,7 @@
     },
     {
       "showId": "eureka-day-west-end-2022",
-      "file": "whatsonstage--unknown.json",
+      "file": "whatsonstage--sarah-crompton.json",
       "score": 82,
       "publishDate": "2022-09-24",
       "url": "https://www.whatsonstage.com/news/eureka-day-at-the-old-vic-review_57448/",
@@ -65007,7 +64970,7 @@
     },
     {
       "showId": "jerusalem-west-end-2022",
-      "file": "whatsonstage--unknown.json",
+      "file": "whatsonstage--sarah-crompton.json",
       "score": 98,
       "publishDate": "2022-04-29",
       "url": "https://www.whatsonstage.com/news/jerusalem-review-mark-rylances-blistering-byron-returns-to-the-west-end_56412/",
@@ -70909,20 +70872,6 @@
       "score": 97,
       "publishDate": "April 18, 2012",
       "url": "https://www.timeout.com/newyork/theater/one-man-two-guvnors",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "file": "timeout--david-cote.json",
-      "score": 97,
-      "publishDate": "April 18, 2012",
-      "url": "http://www.timeout.com/newyork/comedy/one-man-two-guvnors-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
