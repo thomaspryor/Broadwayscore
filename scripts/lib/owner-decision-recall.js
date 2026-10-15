@@ -92,7 +92,7 @@ const CLOSED_QUERY = `query($teamKey: String!, $after: String) {
   }) {
     pageInfo { hasNextPage endCursor }
     nodes { id identifier title description url updatedAt canceledAt completedAt state { type }
-      comments(last: 30) { nodes { body createdAt } } }
+      comments(first: 30, orderBy: createdAt) { nodes { body createdAt } } }
   }
 }`;
 
