@@ -335,5 +335,44 @@
       }
     ],
     "queuedAt": "2026-10-15T14:30:19.178Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+    "title": "Content mismatch on ANON – a tempest at our kitchen table",
+    "description": "culturesauce/Thom Geier (culturesauce--thom-geier.json) SHIPPED but fullText never mentions 'ANON – a tempest at our kitchen table' (303 chars): https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-15T15:07:09.196Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+    "title": "Shipped review missing publishDate on ANON – a tempest at our kitchen table",
+    "description": "culturesauce/Thom Geier SHIPPED with no publishDate — cannot confirm post-opening: https://culturesauce.com/anon-anne-washburn-off-broadway-review/\nnysr/Frank Scheck SHIPPED with no publishDate — cannot confirm post-opening: https://nystagereview.com/2026/10/14/anon-two-americas-one-uneven-play/\nnysr/Roma Torre SHIPPED with no publishDate — cannot confirm post-opening: https://nystagereview.com/2026/10/14/anon-a-storm-of-conspiracies-with-more-sound-than-fury/\ntheatermania/Zachary Stewart SHIPPED with no publishDate — cannot confirm post-opening: https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-15T15:07:09.205Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-stuffed-off-west-end-2026",
+    "title": "Placeholder synopsis on Stuffed",
+    "description": "synopsis for stuffed-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-15T15:07:11.607Z"
   }
 ]

@@ -125,18 +125,17 @@
       "silentRefires": 3
     },
     "opening-night-sla:pages-stuck": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "human",
       "title": "Opening Night SLA P0 — 2 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
-      "incidentOpenedAt": "2026-10-15T10:01:14.802Z",
-      "lastSeen": "2026-10-15T10:01:14.802Z",
-      "lastNotifiedAt": "2026-10-15T10:01:14.802Z",
-      "lastSurfacedAt": "2026-10-15T10:01:14.802Z",
-      "notifyCount": 7,
+      "incidentOpenedAt": "2026-10-15T15:07:14.167Z",
+      "lastSeen": "2026-10-15T15:07:14.167Z",
+      "lastNotifiedAt": "2026-10-15T15:07:14.167Z",
+      "lastSurfacedAt": "2026-10-15T15:07:14.167Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-15T13:22:33.330Z"
+      "linearIdentifier": null
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -16516,13 +16515,13 @@
       "title": "Placeholder synopsis on Sea Wall",
       "firstSeen": "2026-10-14T06:14:56.426Z",
       "incidentOpenedAt": "2026-10-14T06:14:56.426Z",
-      "lastSeen": "2026-10-15T10:01:14.139Z",
+      "lastSeen": "2026-10-15T15:07:13.036Z",
       "lastNotifiedAt": "2026-10-14T06:14:56.426Z",
       "lastSurfacedAt": "2026-10-14T06:14:56.426Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-remediation-exhausted-empty-cast:unconditional-a-new-musical-memoir-off-broadway-2026": {
       "status": "open",
@@ -17329,6 +17328,45 @@
       "lastSeen": "2026-10-15T14:30:19.175Z",
       "lastNotifiedAt": "2026-10-15T14:30:19.175Z",
       "lastSurfacedAt": "2026-10-15T14:30:19.175Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-fulltext-mentions-show:anon-a-tempest-at-our-kitchen-table-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Content mismatch on ANON – a tempest at our kitchen table",
+      "firstSeen": "2026-10-15T15:07:09.196Z",
+      "incidentOpenedAt": "2026-10-15T15:07:09.196Z",
+      "lastSeen": "2026-10-15T15:07:09.196Z",
+      "lastNotifiedAt": "2026-10-15T15:07:09.196Z",
+      "lastSurfacedAt": "2026-10-15T15:07:09.196Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:anon-a-tempest-at-our-kitchen-table-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on ANON – a tempest at our kitchen table",
+      "firstSeen": "2026-10-15T15:07:09.205Z",
+      "incidentOpenedAt": "2026-10-15T15:07:09.205Z",
+      "lastSeen": "2026-10-15T15:07:09.205Z",
+      "lastNotifiedAt": "2026-10-15T15:07:09.205Z",
+      "lastSurfacedAt": "2026-10-15T15:07:09.205Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-stuffed-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on Stuffed",
+      "firstSeen": "2026-10-15T15:07:11.607Z",
+      "incidentOpenedAt": "2026-10-15T15:07:11.607Z",
+      "lastSeen": "2026-10-15T15:07:11.607Z",
+      "lastNotifiedAt": "2026-10-15T15:07:11.607Z",
+      "lastSurfacedAt": "2026-10-15T15:07:11.607Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
