@@ -69,7 +69,7 @@ function exclusionFor(r, show, filePath) {
 // (rejectionReason, incompleteReason, the other non-review flags,
 // showNotMentioned, the scorer's text-gate block), so a skip can be read here.
 const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf',
-  'isNotReview', 'nonReviewFlag', 'nonReviewContent', 'nonReviewManualClear', 'rejectionReason', 'rejectedBy', 'incompleteReason', 'showNotMentioned', 'rescoreBlockedReason', 'contentTierReason'];
+  'isNotReview', 'nonReviewFlag', 'nonReviewContent', 'nonReviewManualClear', 'rejectionReason', 'rejectedBy', 'rejectedAt', 'incompleteReason', 'showNotMentioned', 'rescoreBlockedReason', 'contentTierReason'];
 for (const show of shows) {
   const dir = path.join(root, show);
   if (!fs.existsSync(dir)) { console.log(`## ${show}: no directory`); continue; }
