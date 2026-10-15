@@ -8,6 +8,9 @@
  *
  *   node scripts/inspect-review-files.js --show=a,b [--outlet=x,y] [--file=sub] [--find=term,term]
  *
+ * Each row also carries the stored LLM score and explainExclusion's verdict
+ * (the rule that keeps the file out of reviews.json, or null) (BRO-5373).
+ *
  * --find (BRO-5243): per term, the character offsets where it occurs in the
  * stored text (case-insensitive), so a two-show column can be confirmed
  * without printing the text.
@@ -38,6 +41,21 @@ function findOffsets(text, terms) {
   }
   return out;
 }
+let _showsById = null;
+function showFor(id) {
+  if (!_showsById) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+      _showsById = Object.fromEntries((Array.isArray(raw) ? raw : (raw.shows || [])).map((x) => [x.id, x]));
+    } catch { _showsById = {}; }
+  }
+  return _showsById[id] || null;
+}
+function exclusionFor(r, show, filePath) {
+  try {
+    return require('./lib/review-guards').explainExclusion(r, showFor(show), filePath);
+  } catch (e) { return `error: ${e.message}`; }
+}
 const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf'];
 for (const show of shows) {
   const dir = path.join(root, show);
@@ -65,6 +83,8 @@ for (const show of shows) {
       tier: r.contentTier || null, chars: String(r.fullText || '').length, sourceMethod: r.sourceMethod || null,
       cv: r.contentVerification ? { isValid: r.contentVerification.isValid, confidence: r.contentVerification.confidence, truncated: !!r.contentVerification.truncated, verifiedAt: r.contentVerification.verifiedAt || null } : null,
       text: String(r.fullText || '').replace(/\s+/g, ' ').slice(0, 160),
+      llmScore: r.llmScore && r.llmScore.score !== undefined ? r.llmScore.score : null,
+      excludedBy: exclusionFor(r, show, path.join(dir, f)),
       ...(findTerms ? { find: findOffsets(String(r.fullText || ''), findTerms) } : {}),
     }));
   }
