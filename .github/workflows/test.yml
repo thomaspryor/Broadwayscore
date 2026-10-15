@@ -465,6 +465,7 @@ on:
       - 'scripts/audit-errexit-unguarded-substitution.js'
       - 'scripts/check-cross-outlet-attribution-drift.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
+      - 'scripts/audit-coverage-slot-drops.js'
       # BRO-5261 (BRO-3087 retro-review): top-level scripts a collected test
       # names by path (a 'scripts/x.js' literal or path.join(here, '..', 'x.js'))
       # instead of require(); a solo edit to one ran zero CI. The 4th gap shape
