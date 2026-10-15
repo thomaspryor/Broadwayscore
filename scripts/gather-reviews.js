@@ -133,7 +133,6 @@ const {
   mergeAggregatorReviews,
 } = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
-const { wrongArticleVerdictStands } = require('./lib/wrong-article-parity');
 const { computeReplacementPreserve, AGGREGATOR_FIELDS } = require('./lib/wrongprod-replacement-preserve');
 const { applyUrlChangeInvariant } = require('./lib/url-change-invariant');
 const { safeWriteReview, preserveFlaggedFields, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
@@ -3556,7 +3555,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           || existingData.wrongShow === true
           || existingData.incompleteReason === 'wrong_content'
           || existingData.incompleteReason === 'scraper_garbage'
-          || wrongArticleVerdictStands(existingData);
+          || (existingData.contentVerification && existingData.contentVerification.wrongArticle === true);
       } catch (e) { /* file unreadable, treat as non-exception */ }
 
       if (existingIsJunk) {
