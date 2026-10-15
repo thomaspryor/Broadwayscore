@@ -181,6 +181,19 @@
     "queuedAt": "2026-10-15T09:50:55.953Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
+    "title": "2 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--235c20d0.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/baby-review-brixton-house-london-clean-break\n- nbcny--77bcfc31.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/kaley-cuoco-tom-pelphrey-welcome-2nd-baby/6559563/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-15T11:04:23.300Z"
+  },
+  {
     "conditionKey": "corpus-drift:outlet-identity-hygiene",
     "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
     "description": "check-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 29262\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 0 outlet(s)\ncorpus files scanned: 56744; provisional outlets without a decision: 1\n  matineedog (1) e.g. the-bodyguard-tour-2026/matineedog--adam-richards.json\nPROBLEMS: 1",
