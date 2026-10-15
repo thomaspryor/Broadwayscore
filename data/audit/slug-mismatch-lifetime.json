@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-10-14T07:52:23.339Z",
-  "scanned": 2601,
-  "showsWithViolations": 136,
-  "totalViolations": 172,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-15T07:43:08.459Z",
+  "scanned": 2606,
+  "showsWithViolations": 137,
+  "totalViolations": 173,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "lemons-lemons-lemons-lemons-lemons-west-end-2023::https://www.dailymail.co.uk/tvshowbiz/article-11707407/PATRICK-MARMION-mute-cute-Aidan-Jennas-lemon.html",
+    "much-ado-about-nothing-west-end-2022::https://www.thetimes.co.uk/article/five-stars-for-jack-absolute-flies-again-plus-the-shows-to-book-now-tjtpvcr8x"
+  ],
   "violationKeys": [
     "sunset-boulevard-2024::https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
     "here-lies-love-2023::https://www.northjersey.com/arts-and-entertainment/theater/a-life-set-to-a-disco-beat-1.1007620",
@@ -151,7 +154,6 @@
     "paranormal-activity-west-end-2025::https://www.londontheatrereviews.co.uk/post.cfm?p=26429",
     "all-my-sons-west-end-2025::https://www.dailymail.com/tvshowbiz/article-15314889/amp/Breaking-Dad-Bryan-Cranston-wringer-tale-family-despair-PATRICK-MARMION-reviews.html",
     "all-my-sons-west-end-2025::https://www.telegraph.co.uk/theatre/what-to-see/breaking-bads-bryan-cranstonwest-end/",
-    "stranger-things-the-first-shadow-west-end-2023::https://www.express.co.uk/latest/theatre",
     "are-you-watching-west-end-2026::https://www.britishtheatreguide.info/reviews/are-you-watchin-royal-court-the-25647",
     "man-and-boy-west-end-2026::https://www.standard.co.uk/culture/theatre/man-boy-review-rattigan-national-theatre-b1270541.html",
     "titanique-west-end-2024::https://www.broadwayworld.com/westend/article/Review-TITANQUE-Criterion-Theatre-20250110",
@@ -172,9 +174,11 @@
     "school-pictures-off-broadway-2026::https://www.talkinbroadway.com/page/ob/11_20_23b.html",
     "p-rn-play-west-end-2025::https://www.whatsonstage.com/news/prn-play-starring-ambika-mod-at-the-royal-court-review_1702687/",
     "player-kings-west-end-2024::https://www.thetimes.co.uk/article/catch-mckellen-before-the-chimes-of-midnight-sv0v3ptfm",
+    "lemons-lemons-lemons-lemons-lemons-west-end-2023::https://www.dailymail.co.uk/tvshowbiz/article-11707407/PATRICK-MARMION-mute-cute-Aidan-Jennas-lemon.html",
     "great-expectations-west-end-2023::https://www.dailymail.co.uk/tvshowbiz/article-12150471/PATRICK-MARMION-theatre-Forget-Beattie-phone-Rose-Maureen-Lipman-bloom.html",
     "all-male-as-you-like-it-regional-2026::https://theartsdesk.com/theatre/you-it-rsc-stratford-review-jonathan-groff-dress",
     "is-god-is-west-end-2021::https://theartsdesk.com/theatre/god-royal-court-review-blister-flare-and-burn-baby-burn",
+    "much-ado-about-nothing-west-end-2022::https://www.thetimes.co.uk/article/five-stars-for-jack-absolute-flies-again-plus-the-shows-to-book-now-tjtpvcr8x",
     "the-girl-who-fell-west-end-2019::https://www.thestage.co.uk/reviews/thegirlwhofell-review-trafalgar-studios-london--well-acted-and-sensitively-written",
     "9-to-5-the-musical-west-end-2019::https://www.telegraph.co.uk/theatre/what-to-see/9-5-musical-review-bonnie-langford-employee-month-feelgood-flimsy/",
     "rutherford-and-son-west-end-2019::https://www.thetimes.co.uk/article/heavy-price-to-be-paid-for-speaking-truth-to-papa-2q9brhkwg"
@@ -1923,20 +1927,6 @@
       ]
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "message": "Review URL for express-uk/Neil Norman does not mention show slug (checked: stranger-things-the-first-shadow-west-end, stranger-things-the-first-shadow, stranger-things, stranger, things, first, shadow, strangerthingsfirstshadow): https://www.express.co.uk/latest/theatre",
-      "violations": [
-        {
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "url": "https://www.express.co.uk/latest/theatre",
-          "urlSlug": "latest theatre"
-        }
-      ]
-    },
-    {
       "showId": "are-you-watching-west-end-2026",
       "title": "Are You Watching?",
       "openingDate": "2026-06-04",
@@ -2217,6 +2207,20 @@
       ]
     },
     {
+      "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
+      "title": "Lemons Lemons Lemons Lemons Lemons",
+      "openingDate": "2023-01-31",
+      "message": "Review URL for daily-mail/Patrick Marmion does not mention show slug (checked: lemons-lemons-lemons-lemons-lemons-west-end-2023, lemons-lemons-lemons-lemons-lemons, lemons-lemons-lemons-lemons-lemons-west-end, lemons, lemonslemonslemonslemonslemons): https://www.dailymail.co.uk/tvshowbiz/article-11707407/PATRICK-MARMION-mute-cute-Aidan-Jennas-lemon.html",
+      "violations": [
+        {
+          "outletId": "daily-mail",
+          "criticName": "Patrick Marmion",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-11707407/PATRICK-MARMION-mute-cute-Aidan-Jennas-lemon.html",
+          "urlSlug": "tvshowbiz article-11707407 patrick-marmion-mute-cute-aidan-jennas-lemon"
+        }
+      ]
+    },
+    {
       "showId": "great-expectations-west-end-2023",
       "title": "Great Expectations",
       "openingDate": "2023-05-29",
@@ -2255,6 +2259,20 @@
           "criticName": null,
           "url": "https://theartsdesk.com/theatre/god-royal-court-review-blister-flare-and-burn-baby-burn",
           "urlSlug": "theatre god-royal-court-review-blister-flare-and-burn-baby-burn"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2022",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2022-07-18",
+      "message": "Review URL for sunday-times/Quentin Letts does not mention show slug (checked: much-ado-about-nothing-west-end-2022, much-ado-about-nothing, much-ado-about-nothing-west-end, much, about, nothing, muchaboutnothing): https://www.thetimes.co.uk/article/five-stars-for-jack-absolute-flies-again-plus-the-shows-to-book-now-tjtpvcr8x",
+      "violations": [
+        {
+          "outletId": "sunday-times",
+          "criticName": "Quentin Letts",
+          "url": "https://www.thetimes.co.uk/article/five-stars-for-jack-absolute-flies-again-plus-the-shows-to-book-now-tjtpvcr8x",
+          "urlSlug": "article five-stars-for-jack-absolute-flies-again-plus-the-shows-to-book-now-tjtpvcr 8x"
         }
       ]
     },

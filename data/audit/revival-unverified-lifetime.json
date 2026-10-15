@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-10-14T07:52:26.373Z",
-  "scanned": 2601,
-  "showsWithViolations": 72,
-  "totalViolations": 72,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-15T07:43:11.545Z",
+  "scanned": 2606,
+  "showsWithViolations": 73,
+  "totalViolations": 73,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "the-wiz-tour-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -69,6 +71,7 @@
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
     "elektra-off-broadway-2026",
     "operation-mincemeat-tour-2026",
+    "the-wiz-tour-2026",
     "beauty-and-the-beast-tour-2025",
     "the-sound-of-music-tour-2025",
     "spamalot-tour-2025",
@@ -156,7 +159,7 @@
       "showId": "the-outsiders-2024",
       "title": "The Outsiders",
       "openingDate": "2024-04-11",
-      "message": "the-outsiders-2024 review text mentions \"revival\" 59x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-2024 review text mentions \"revival\" 61x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -648,6 +651,15 @@
       ]
     },
     {
+      "showId": "the-wiz-tour-2026",
+      "title": "The Wiz",
+      "openingDate": "2026-09-26",
+      "message": "the-wiz-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "beauty-and-the-beast-tour-2025",
       "title": "Beauty and the Beast",
       "openingDate": "2025-06-25",
@@ -669,7 +681,7 @@
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 41x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 44x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -678,7 +690,7 @@
       "showId": "the-music-man-tour-2026",
       "title": "The Music Man",
       "openingDate": "2026-01-12",
-      "message": "the-music-man-tour-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-music-man-tour-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
