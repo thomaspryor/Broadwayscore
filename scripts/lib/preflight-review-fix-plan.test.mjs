@@ -79,3 +79,29 @@ test('a rename is checked and tracked like a move (the executor treats them alik
   assert.equal(fileOpSourceProblem({ type: 'review-file-op', operation: 'rename', sourcePath: 'a/x.json', destPath: 'a/z.json' }, exists, removed, created), null);
   assert.equal(fileOpSourceProblem({ type: 'review-file-op', operation: 'delete', sourcePath: 'a/z.json' }, exists, removed, created), null);
 });
+
+// BRO-5386 regression: resolveReviewTextsDir() named /root/broadway-review-texts (HOME=/root) while the cloud clone is at
+// /home/user/broadway-review-texts, so the preflight checked a directory that did not exist and FAILed every action.
+test('pickReviewTextsTree skips a missing or empty directory and falls through to the first real tree', () => {
+  const { pickReviewTextsTree } = require('./preflight-review-fix-plan.js');
+  const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-empty-'));
+  const real = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-real-'));
+  fs.mkdirSync(path.join(real, 'show-a'));
+  const dotOnly = fs.mkdtempSync(path.join(os.tmpdir(), 'pf-dot-'));
+  fs.mkdirSync(path.join(dotOnly, '.git'));
+  assert.equal(pickReviewTextsTree(['/nonexistent/broadway-review-texts', empty, dotOnly, real]), real);
+  assert.equal(pickReviewTextsTree([real, empty]), real);
+  // nothing usable: the data/review-texts default, never undefined
+  assert.match(pickReviewTextsTree(['/nonexistent/a', empty]), /data[\\/]review-texts$/);
+});
+
+test('fileOpSourceProblem refuses a path that escapes the tree and normalizes ./ segments', () => {
+  const { fileOpSourceProblem } = require('./preflight-review-fix-plan.js');
+  const exists = (rel) => rel === 'a/x.json';
+  assert.match(fileOpSourceProblem({ type: 'review-file-op', operation: 'delete', sourcePath: '../etc/passwd' }, exists, new Set(), new Set()), /escapes/);
+  assert.match(fileOpSourceProblem({ type: 'review-file-op', operation: 'delete', sourcePath: '/abs/a.json' }, exists, new Set(), new Set()), /escapes/);
+  const removed = new Set(); const created = new Set();
+  assert.equal(fileOpSourceProblem({ type: 'review-file-op', operation: 'delete', sourcePath: 'a/./x.json' }, exists, removed, created), null);
+  // the normalized path is what was removed
+  assert.match(fileOpSourceProblem({ type: 'review-file-op', operation: 'delete', sourcePath: 'a/x.json' }, exists, removed, created), /Source not found/);
+});

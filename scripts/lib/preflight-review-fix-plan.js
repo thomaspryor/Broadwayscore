@@ -32,20 +32,43 @@ function fileOpSourceProblem(a, exists, removed, created) {
   // A restore brings the file back (at destPath when given), so a later delete/move of it has a source.
   if (a.operation === 'restore') {
     const back = a.destPath || a.sourcePath;
-    if (back) { created.add(back); removed.delete(back); }
+    if (back) { const b = path.posix.normalize(back); created.add(b); removed.delete(b); }
     return null;
   }
   // execute-approved-fix.js treats 'rename' exactly like 'move'.
   if (a.operation !== 'delete' && a.operation !== 'move' && a.operation !== 'rename') return null;
-  const src = a.sourcePath;
+  const src = path.posix.normalize(String(a.sourcePath || ''));
+  if (!src || src === '.' || src.startsWith('../') || path.posix.isAbsolute(src)) return `Source path escapes the review-texts tree: ${a.sourcePath}`;
   const present = created.has(src) || (exists(src) && !removed.has(src));
   if (!present) return `Source not found: ${src} (already moved or deleted? check the live review-texts clone)`;
   removed.add(src); created.delete(src);
-  if ((a.operation === 'move' || a.operation === 'rename') && a.destPath) { created.add(a.destPath); removed.delete(a.destPath); }
+  if ((a.operation === 'move' || a.operation === 'rename') && a.destPath) { const d = path.posix.normalize(a.destPath); created.add(d); removed.delete(d); }
   return null;
 }
 
-function preflight(planPaths, { reviewTextsDir = resolveReviewTextsDir(), log = console.log } = {}) {
+/** A directory that exists and holds at least one non-dot entry (not a bare or missing mount). */
+function hasShows(dir) {
+  try { return fs.readdirSync(dir).some((e) => !e.startsWith('.')); } catch { return false; }
+}
+
+/**
+ * The review-texts tree to check against: the canonical resolver's answer when it exists, else the cloud session's
+ * clone of the private repo (HOME can differ from the clone's /home/user, so resolveReviewTextsDir() may name a folder
+ * that does not exist: BRO-5386), else the data/review-texts snapshot. Never a missing directory, which would FAIL
+ * every action. Pure over `candidates` so tests can inject.
+ */
+function pickReviewTextsTree(candidates = [
+  resolveReviewTextsDir(),
+  path.join(os.homedir(), 'broadway-review-texts'),
+  '/home/user/broadway-review-texts',
+  path.join(ROOT, 'data', 'review-texts'),
+]) {
+  for (const dir of candidates) if (dir && hasShows(dir)) return dir;
+  return path.join(ROOT, 'data', 'review-texts');
+}
+
+function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), log = console.log } = {}) {
+  log(`  review-texts tree: ${reviewTextsDir}`);
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'preflight-fix-'));
   const copied = new Set();
   const removed = new Set();
@@ -107,7 +130,7 @@ function copyUrlOwnerFolder(reviewTextsDir, tmp, file, copied, { detect } = {}) 
   }
 }
 
-module.exports = { preflight, copyUrlOwnerFolder, fileOpSourceProblem };
+module.exports = { preflight, copyUrlOwnerFolder, fileOpSourceProblem, pickReviewTextsTree };
 
 const USAGE = 'Usage: node scripts/lib/preflight-review-fix-plan.js <plan.json> [...]';
 
