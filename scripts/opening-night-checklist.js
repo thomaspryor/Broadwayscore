@@ -132,29 +132,7 @@ function resolveTargetShows(shows, reviewsDoc, now) {
 // ---------------------------------------------------------------------------
 // Drift subscriber (reads drift-state.json, does NOT re-run drift logic)
 // ---------------------------------------------------------------------------
-function buildDriftCheckResult(show, driftState) {
-  const entry = driftState[show.id];
-  if (!entry) {
-    return {
-      name: 'drift-detector',
-      description: 'Drift detector subscription (reads data/audit/drift-state.json)',
-      ok: true,
-      severity: 'warning',
-      message: `Drift state unavailable for ${show.id} — is check-opening-night-drift.yml running?`,
-    };
-  }
-  const drift = entry.drift ?? 0;
-  return {
-    name: 'drift-detector',
-    description: 'Drift detector subscription (reads data/audit/drift-state.json)',
-    ok: drift <= 2,
-    severity: drift > 5 ? 'error' : drift > 2 ? 'warning' : 'ok',
-    message: drift <= 2
-      ? `Drift ok (${drift}%)`
-      : `Drift at ${drift}% — ${drift > 5 ? 'CRITICAL' : 'monitor'}`,
-    details: { drift, showId: show.id },
-  };
-}
+const { buildDriftCheckResult } = require('./lib/drift-check');
 
 // ---------------------------------------------------------------------------
 // Output helpers
