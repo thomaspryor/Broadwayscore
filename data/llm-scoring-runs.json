@@ -948692,22 +948692,28 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-15T18:40:55.850Z",
-    "completedAt": "2026-10-15T18:41:01.708Z",
-    "totalReviews": 19,
-    "processed": 1,
-    "skipped": 18,
-    "errors": 0,
+    "startedAt": "2026-10-15T18:48:10.087Z",
+    "completedAt": "2026-10-15T18:48:10.321Z",
+    "totalReviews": 20,
+    "processed": 0,
+    "skipped": 19,
+    "errors": 1,
     "tokensUsed": {
-      "input": 7386,
-      "output": 357,
-      "cacheRead": 3668,
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 17032
+      "total": 0
     },
-    "costUsd": 0.027383499999999998,
-    "runId": "38786929117",
-    "errorDetails": [],
+    "costUsd": 0,
+    "runId": "38787744884",
+    "errorDetails": [
+      {
+        "showId": "three-men-in-a-boat-off-west-end-2026",
+        "outletId": "theatreandtonic",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",
@@ -970229,10 +970235,10 @@
       {
         "showId": "the-bodyguard-tour-2026",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 0,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -977482,8 +977488,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-15T18:42:14.243Z",
-    "completedAt": "2026-10-15T18:42:14.259Z",
+    "startedAt": "2026-10-15T18:49:50.853Z",
+    "completedAt": "2026-10-15T18:49:50.867Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -977496,7 +977502,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "38786929117",
+    "runId": "38787744884",
     "errorDetails": []
   }
 ]
