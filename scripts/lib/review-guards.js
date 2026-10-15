@@ -3118,6 +3118,13 @@ function isRevivalByCanonicalTitle(showId, shows) {
  *     only applies to unscored reviews with substantive text)
  */
 function evaluateShowMentionGuard(review, cleanedText, cleanedWordCount, showCheck) {
+  // BRO-5395: a person checked this review against the production (url,
+  // venue, dates) and recorded why in showNotMentionedManualClear. The body
+  // describing the show without printing its title is then not evidence of a
+  // wrong page, so neither setter re-flags or quarantines it.
+  if (typeof review?.showNotMentionedManualClear === 'string' && review.showNotMentionedManualClear.trim()) {
+    return { action: 'skip', reason: 'human show-mention clear', repairStaleFlags: false };
+  }
   // Context-too-thin gate: heuristic is unreliable on short paywalled excerpts
   // where the lede may legitimately omit the show title (metaphorical opening,
   // anecdotal lede, performance-focused lede, etc.).

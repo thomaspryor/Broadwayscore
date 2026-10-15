@@ -59,6 +59,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // carrying it, so a marker stamped on an earlier fragment outlives the real
   // review recovered later (true-west-2019 WSJ, 2026-10-15).
   'nonReviewFlag',
+  // showNotMentioned (BRO-5395): CLEAR ONLY, after a showNotMentionedManualClear
+  // breadcrumb that says what was checked. evaluateShowMentionGuard honours the
+  // breadcrumb, so backfill-review-flags / the collector do not set it again.
+  'showNotMentioned', 'showNotMentionedManualClear',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
   // cross-outlet duplicate flag (BRO-3870): CLEAR ONLY, with its breadcrumb.
@@ -117,6 +121,10 @@ const FIELD_VALUE_CHECKS = {
   isNotReviewReason: (v) => (v === null ? null : 'isNotReviewReason may only be cleared (null)'),
   nonReviewFlag: (v, record) => (v === false && record.nonReviewManualClear === true
     ? null : 'nonReviewFlag may only be cleared (false), after nonReviewManualClear is set'),
+  showNotMentionedManualClear: (v) => (typeof v === 'string' && v.trim().length >= 20
+    ? null : 'showNotMentionedManualClear must say what was checked (20+ chars)'),
+  showNotMentioned: (v, record) => (v === false && typeof record.showNotMentionedManualClear === 'string' && record.showNotMentionedManualClear.trim()
+    ? null : 'showNotMentioned may only be cleared (false), after showNotMentionedManualClear records the check'),
   crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0
     ? null : 'crossOutletClearReason must be a non-empty string'),
   showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder

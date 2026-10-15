@@ -91,3 +91,16 @@ test('nonReviewFlag clears only to false and only after nonReviewManualClear', (
   assert.equal(r.ok, true, r.reason);
   assert.equal(r.record.nonReviewFlag, false);
 });
+
+// BRO-5395: a real review whose body never prints the show's title can be
+// cleared per file, after a breadcrumb that says what was checked.
+test('showNotMentioned clears only to false and only after showNotMentionedManualClear', () => {
+  const rec = tr({ showNotMentioned: true });
+  assert.equal(applyReviewFieldEdit(rec, { field: 'showNotMentioned', oldValue: true, newValue: false }, stamp, {}).ok, false, 'breadcrumb first');
+  assert.equal(applyReviewFieldEdit(rec, { field: 'showNotMentionedManualClear', oldValue: null, newValue: 'short' }, stamp, {}).ok, false, 'evidence required');
+  const withClear = { ...rec, showNotMentionedManualClear: 'url, venue and dates match this production' };
+  assert.equal(applyReviewFieldEdit(withClear, { field: 'showNotMentioned', oldValue: true, newValue: true }, stamp, {}).ok, false);
+  const r = applyReviewFieldEdit(withClear, { field: 'showNotMentioned', oldValue: true, newValue: false }, stamp, {});
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.record.showNotMentioned, false);
+});

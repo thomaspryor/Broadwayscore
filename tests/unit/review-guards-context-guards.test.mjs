@@ -165,3 +165,15 @@ describe('BRO-3584: invalid tier vs wrongProduction clear', () => {
     assert.strictEqual(g.explainExclusion(d, OLD), 'contentTierInvalid');
   });
 });
+
+describe('evaluateShowMentionGuard human clear (BRO-5395)', () => {
+  const text = 'word '.repeat(400);
+  const failing = { valid: false, confidence: 'high', reason: 'Show not mentioned' };
+  test('without a clear the guard nulls an unscored review', () => {
+    assert.strictEqual(g.evaluateShowMentionGuard({}, text, 400, failing).action, 'null-text');
+  });
+  test('a recorded human clear makes the guard skip', () => {
+    assert.strictEqual(g.evaluateShowMentionGuard({ showNotMentionedManualClear: 'url, venue and dates match' }, text, 400, failing).action, 'skip');
+    assert.strictEqual(g.evaluateShowMentionGuard({ showNotMentionedManualClear: '  ' }, text, 400, failing).action, 'null-text');
+  });
+});
