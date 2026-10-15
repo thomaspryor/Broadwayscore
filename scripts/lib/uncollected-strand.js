@@ -66,6 +66,54 @@ function isNeverAttempted(review) {
 }
 
 /**
+ * True when a never-attempted file carries a terminal verdict that means it is
+ * NOT supposed to be fetched, so leaving it unfetched is correct, not a strand.
+ *
+ * BRO-3719: 31 of the 32 "uncollected live review strands" on 2026-10-15 were
+ * duplicate pointers. When a second file for the same URL is written (e.g.
+ * `thestage--unknown.json` beside `thestage--matt-barton.json`), the writer
+ * stamps `duplicateOf` and collect-review-texts.js deliberately skips it
+ * (`skippedDuplicateOf`): the canonical sibling owns the fetch. The tombstone
+ * keeps `incompleteReason: 'not_attempted'` forever, so isNeverAttempted alone
+ * reported it as stranded every hour with no pipeline step able to clear it.
+ *
+ * A duplicate only counts as resolved when its pointer chain ends at a file
+ * that exists in the same show folder and is not itself a duplicate. If that
+ * canonical was never fetched either, the canonical is itself reported as a
+ * strand, so the URL stays visible exactly once. A dangling pointer (canonical
+ * missing) or a pointer cycle is still a strand: nothing owns that URL, and a
+ * broken pointer must not buy an exemption.
+ *
+ * The other verdicts are the explicit non-review rejections ("looked at and
+ * judged", per the isNeverAttempted doc). wrongProduction/wrongShow are left
+ * out on purpose: those can be fallible pre-fetch guesses, and the strand list
+ * is the backstop that must keep showing them.
+ *
+ * @param {object} review parsed review-text JSON
+ * @param {Map<string, object>} siblings filename -> parsed review, same show folder
+ * @returns {boolean}
+ */
+function hasTerminalVerdict(review, siblings) {
+  if (!review || typeof review !== 'object') return false;
+  if (review.rejectionReason) return true;
+  if (review.isNonReview === true || review.isNotReview === true) return true;
+  return duplicateHasCanonical(review, siblings);
+}
+
+function duplicateHasCanonical(review, siblings) {
+  const seen = new Set();
+  let ptr = review.duplicateOf;
+  while (typeof ptr === 'string' && ptr) {
+    if (seen.has(ptr) || !siblings || !siblings.has(ptr)) return false;
+    seen.add(ptr);
+    const next = siblings.get(ptr);
+    if (!next || !next.duplicateOf) return true;
+    ptr = next.duplicateOf;
+  }
+  return false;
+}
+
+/**
  * True when a discovered file is a verdict about a DIFFERENT production than
  * the one this show record tracks, so it can't be evidence of a blackout.
  *
@@ -177,11 +225,13 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
     ? datesFromDiscoveredReviews((files || []).map(f => f.review), show)
     : [];
   const today = new Date(nowMs).toISOString().slice(0, 10);
+  const siblings = new Map((files || []).map(f => [f.file, f.review]));
 
   for (const { file, review } of files || []) {
     if (review && review.url && !isOtherProductionEvidence(show, review)) discovered++;
     if (review && (review.fullText || '').length > 200) usable++;
     if (!isNeverAttempted(review)) continue;
+    if (hasTerminalVerdict(review, siblings)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     // An undatable strand still counts — a missing timestamp must not buy a
     // file an exemption, which is the same "null field silences the check"
@@ -240,6 +290,7 @@ module.exports = {
   LIVE_STATUSES,
   DEFAULT_MAX_AGE_HOURS,
   isNeverAttempted,
+  hasTerminalVerdict,
   isOtherProductionEvidence,
   strandAgeHours,
   assessShow,

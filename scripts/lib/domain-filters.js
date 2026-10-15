@@ -242,6 +242,13 @@ const VENUE_DOMAINS = new Set([
   // outletIds (`royalcourttheatre` and the URL-mangled
   // `httpsroyalcourttheatrecom`) via /submit-review.
   'royalcourttheatre.com',
+  // BRO-3719: St. Ann's Warehouse's own show page. stannswarehouse.org/show/
+  // kramer-fauci/ came in from a Playbill Verdict link as outletId
+  // `stannswarehouseorg` and sat as an "uncollected live review strand" for
+  // 10 days. It is the venue's box-office page, not criticism; 0 scored review
+  // URLs are on this host. Venue SHOW discovery (venue-listing-discover.js)
+  // does not read this list, so St. Ann's listings are still crawled.
+  'stannswarehouse.org',
 ]);
 
 // Theatre PR firms AND institutional press offices — announcements, not
