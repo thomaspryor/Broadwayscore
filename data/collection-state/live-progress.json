@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-15T11:02:31.832Z",
-  "processed": 144,
-  "failed": 115,
-  "successRate": "55.6%",
+  "updatedAt": "2026-10-15T11:18:47.505Z",
+  "processed": 159,
+  "failed": 150,
+  "successRate": "51.5%",
   "tierBreakdown": {
-    "playwright": 84,
+    "playwright": 95,
     "amp": 1,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 11,
+    "scrapingdog": 12,
     "scrapingbee": 9,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 34
+    "archive": 38
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-15T09:19:26.293Z",
@@ -48,6 +48,50 @@
       "t": "2026-10-15T10:26:10.755Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T11:07:23.506Z",
+      "event": "bb-session",
+      "session": "9d6e0eb4",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T11:07:23.890Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T11:07:41.052Z",
+      "event": "bb-session",
+      "session": "d20b3014",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T11:07:41.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T11:10:22.846Z",
+      "event": "bb-session",
+      "session": "1bb978ff",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T11:10:23.274Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T11:10:31.557Z",
+      "event": "bb-session",
+      "session": "bfedae3a",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T11:10:31.876Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
