@@ -1,13 +1,20 @@
 {
-  "generated": "2026-10-15T15:33:58.905Z",
+  "generated": "2026-10-15T16:34:12.496Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 26,
+  "count": 29,
   "orphans": [
     {
       "showId": "33-variations-2009",
       "loserFile": "usatoday--unknown.json",
       "targetFile": "usatoday--usa-today-staff.json",
       "reason": "orphaned-duplicate-heal: usatoday--usa-today-staff.json was flagged invalid after usatoday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "loserFile": "oklahoman--unknown.json",
+      "targetFile": "oklahoman--brandy-mcdonnell.json",
+      "reason": "orphaned-duplicate-heal: oklahoman--brandy-mcdonnell.json was flagged invalid after oklahoman--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -130,6 +137,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "loserFile": "standard--unknown.json",
+      "targetFile": "standard--nick-curtis.json",
+      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "the-hills-of-california-west-end-2024",
       "loserFile": "independent--unknown.json",
       "targetFile": "independent--alice-saville.json",
@@ -183,6 +197,13 @@
       "loserFile": "daily-mail--georgina-brown.json",
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "loserFile": "providence-journal--unknown.json",
+      "targetFile": "providence-journal--katie-landeck.json",
+      "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]

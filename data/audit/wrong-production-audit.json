@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T15:38:42.600Z",
+  "timestamp": "2026-10-15T16:40:26.023Z",
   "stats": {
-    "totalReviews": 56777,
-    "alreadyFlagged": 21087,
-    "dateGuardCatches": 200,
+    "totalReviews": 56778,
+    "alreadyFlagged": 21089,
+    "dateGuardCatches": 199,
     "directorMismatch": 1898,
     "tvFilmSignals": 1584,
     "londonSignals": 2359,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5267
+    "noPublishDate": 5262
   },
   "findings": [
     {
@@ -10725,17 +10725,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2012 (2x) more than 2026 (1x). 2012 matches production: death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-west-end-2019",
-      "file": "london-box-office--phil-willmott.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1620d before show (2015-05-18 vs 2019-10-24)"
         }
       ]
     },
@@ -72515,7 +72504,7 @@
     },
     {
       "showId": "pah-la-west-end-2019",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 77,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/apr/09/pah-la-review-royal-court-london",
