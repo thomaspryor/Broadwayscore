@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T15:28:19.901Z",
+  "generatedAt": "2026-10-15T16:29:36.666Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -102,10 +102,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -132,66 +128,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 700,
-  "matchedGaps": 5,
-  "possibleGaps": 4,
+  "itemsScanned": 681,
+  "matchedGaps": 0,
+  "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/14/a-ghost-in-your-ear-review-audible/",
-      "headline": "Off-Broadway Review: A GHOST IN YOUR EAR (Audible Theater at Minetta Lane Theatre)",
-      "publishDate": "2026-10-14"
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/a-ghost-in-your-ear-gets-in-your-head/",
-      "headline": "“A Ghost In Your Ear” Gets In Your Head",
-      "publishDate": "2026-10-14"
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear-ObL3Q",
-      "headline": "A Ghost in Your Ear",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "king-lear-royal-exchange-regional-2026",
-      "title": "King Lear",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/anon-sends-a-qanon-mom-raging-into-the-storm-like-king-lear-but-with-more-hate/",
-      "headline": "“Anon” Sends a QAnon Mom Raging into the Storm, Like King Lear But With More Hate",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "level": "matched",
-      "outletId": "jackstage",
-      "url": "https://www.jackstage.co.uk/post/the-cherry-orchard-review-kristin-scott-thomas-is-inspiring-in-this-beautiful-revival",
-      "headline": "The Cherry Orchard Review: Kristin Scott Thomas is inspiring in this beautiful revival",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "level": "possible",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-      "headline": "Review: A Ghost in Your Ear, the Curse of Daddy Issues in an Audiobook",
-      "publishDate": null
-    },
     {
       "showId": "king-lear-royal-exchange-regional-2026",
       "title": "King Lear",

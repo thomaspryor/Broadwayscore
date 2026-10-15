@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-15T15:28:00.413Z",
+  "generatedAt": "2026-10-15T16:27:21.493Z",
   "windowDays": 1095,
-  "targets": 662,
-  "auditedThisRun": 12,
-  "carriedForward": 721,
+  "targets": 667,
+  "auditedThisRun": 4,
+  "carriedForward": 729,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 419,
-    "missingCurrentRun": 851,
+    "withGap": 420,
+    "missingCurrentRun": 864,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 980,
+    "totalFlaggedMisses": 984,
     "totalRecoverable": 5,
     "totalRecovered": 14,
     "humanExcluded": 1,
-    "automatedExcluded": 147,
-    "automatedExcludedListed": 147,
-    "priorProductionCitations": 5051
+    "automatedExcluded": 151,
+    "automatedExcludedListed": 151,
+    "priorProductionCitations": 5060
   },
   "results": [
     {
@@ -462,7 +462,8 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-A-GHOST-IN-YOUR-EAR-at-the-Minetta-Lane-Theater-20261014"
+        "https://www.broadwayworld.com/article/Review-Roundup-A-GHOST-IN-YOUR-EAR-at-the-Minetta-Lane-Theater-20261014",
+        "https://playbill.com/article/what-are-the-reviews-for-a-ghost-in-your-ear-off-broadway"
       ],
       "aggregatorListedUrls": [
         "https://theaterpizzazz.com/a-ghost-in-your-ear-gets-in-your-head-2/",
@@ -471,23 +472,29 @@
         "https://www.newyorktheatreguide.com/reviews/a-ghost-in-your-ear-off-broadway-review",
         "https://www.slantmagazine.com/theater/a-ghost-in-your-ear-review/",
         "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
+        "https://therecs.co.uk/a-ghost-in-your-ear-audibles-minetta-lane-theatre/",
         "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
         "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear",
-        "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
-        "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/"
+        "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/",
+        "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
+        "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html"
       ],
-      "dirFiles": 17,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 23,
+      "dirClean": 11,
+      "inReviewsJson": 9,
       "missing": [
         {
-          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "knownOutletId": "partially-obstructed-view",
           "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
         {
           "host": "talkinbroadway.com",
           "count": 1
@@ -495,9 +502,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
-          "host": "nyctourism.com",
-          "knownOutletId": null,
+          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -505,14 +512,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nyctourism--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
+              "file": "theatermania--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "duplicateOf"
           ],
           "serpCensus": true,
           "reverify": true
@@ -539,6 +546,29 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--matt-minton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -555,7 +585,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -565,7 +595,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -575,7 +605,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -585,7 +615,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -595,52 +625,59 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 314,
+        "count": 410,
         "byReason": {
-          "aggregator-internal-nav": 212,
-          "not-http-url": 48,
-          "production-database-listing": 1,
-          "aggregator-section-root": 6,
-          "non-review-host": 40,
-          "venue-production-page": 1,
-          "roundup-page": 1,
-          "census-junk-host": 3,
+          "aggregator-internal-nav": 259,
+          "non-review-host": 58,
+          "bare-host": 1,
+          "not-http-url": 68,
+          "aggregator-section-root": 11,
+          "production-database-listing": 9,
           "ticketing-listing": 1,
-          "non-review-path": 1
+          "census-junk-host": 3
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "outletId": "partially-obstructed-view",
           "provisional": false,
           "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⊘ url kept: dropping fullText merged from refused https://www.theatermania.com/news/review-a-ghost-i"
+          "reason": "a-ghost-in-your-ear-off-broadway-2026: http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html is already owned by a-ghost-in-your-ear-off-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/a-ghost-in-your-ear-off-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "partially-obstructed-view",
+            "outlet": "partially-obstructed-view",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html"
+          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -649,18 +686,18 @@
             "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/"
           },
           {
-            "outletId": "nyctourism.com",
-            "outlet": "nyctourism.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
-          },
-          {
             "outletId": "ihorror.com",
             "outlet": "ihorror.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/"
           }
         ],
         "suppressedMissing": [],
@@ -702,21 +739,27 @@
             "firstSeenAt": "2026-10-15T01:10:51.119Z"
           },
           {
+            "url": "https://therecs.co.uk/a-ghost-in-your-ear-audibles-minetta-lane-theatre/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
             "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear",
             "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T23:45:26.813Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-            "outletId": "theatermania",
+            "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html",
+            "outletId": "partially-obstructed-view",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
           },
           {
-            "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
-            "outletId": "nyctourism.com",
+            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+            "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T01:10:51.119Z"
@@ -727,18 +770,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-14T17:37:56.841Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 6,
-        "candidateCount": 9
+        "liveCount": 7,
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-15T10:17:27.731Z",
-      "quarantine": {
-        "nextState": "incomplete:6:7",
-        "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
-      }
+      "computedAt": "2026-10-15T16:27:21.493Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -27415,11 +27460,65 @@
       "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.thereviewshub.com/buffy-revamped-harrogate-theatre/",
+        "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
+        "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
+        "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
+        "https://fairypoweredproductions.com/buffy-revamped-review/",
+        "https://www.voicemag.uk/review/11526/buffy-revamped"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.thereviewshub.com/buffy-revamped-harrogate-theatre/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-03-13",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2023-02-05",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-01-30",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
+          "host": "on-magazine.co.uk",
+          "knownOutletId": "on-magazine",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2023-04-13",
+          "serpCensus": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/buffy-revamped-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2023-04-14",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.voicemag.uk/review/11526/buffy-revamped",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -27462,28 +27561,165 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Buffy Revamped\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Buffy Revamped\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Buffy Revamped\" review lyric",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Buffy Revamped Lyric Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Buffy Revamped Lyric Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Buffy Revamped Lyric Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 26,
+          "bare-host": 1,
+          "ticketing-reseller": 2,
+          "ticketing-listing": 2,
+          "write-path-blocked": 1,
+          "non-review-path": 1,
+          "ticket-seller-product-page": 2,
+          "show-listing-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.thereviewshub.com/buffy-revamped-harrogate-theatre/",
+          "host": "thereviewshub.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/buffy-revamped-review",
+          "host": "theatreandtonic.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/buffy-revamped-the-lowry-salf-24119",
+          "host": "britishtheatreguide.info",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/buffy-revamped-review-york-theatre-royal/",
+          "host": "on-magazine.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://fairypoweredproductions.com/buffy-revamped-review/",
+          "host": "fairypoweredproductions.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.voicemag.uk/review/11526/buffy-revamped",
+          "host": "voicemag.uk",
+          "outletId": "voice-magazine",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.voicemag.uk/review/11526/buffy-revamped"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.voicemag.uk/review/11526/buffy-revamped",
+            "outletId": "voice-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T16:27:21.493Z"
     },
     {
       "showId": "bug-2026",
@@ -28866,7 +29102,7 @@
       "quarantine": {
         "nextState": "incomplete:8:11",
         "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -30084,7 +30320,7 @@
       "quarantine": {
         "nextState": "no-census-yet:0:0",
         "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -47466,7 +47702,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-15T15:28:00.413Z"
+      "computedAt": "2026-10-15T15:28:00.413Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "dracula-west-end-2025",
@@ -54820,7 +55061,7 @@
       "quarantine": {
         "nextState": "incomplete:11:15",
         "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -56080,7 +56321,12 @@
         "liveCount": 3,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -56099,12 +56345,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Fishing For Alaska\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Fishing For Alaska\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Fishing For Alaska\" review paradise",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Fishing For Alaska Paradise Factory Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Fishing For Alaska Paradise Factory Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Fishing For Alaska Paradise Factory Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 18,
+        "byReason": {
+          "aggregator-internal-nav": 7,
+          "non-review-host": 7,
+          "ticketing-listing": 1,
+          "merch-store": 3
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -56117,7 +56425,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T16:27:21.493Z"
     },
     {
       "showId": "flamenc-oh-off-west-end-2026",
@@ -64573,7 +64881,7 @@
       "quarantine": {
         "nextState": "incomplete:10:11",
         "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -76128,7 +76436,12 @@
         "liveCount": 0,
         "candidateCount": 45
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "incomplete:0:27",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "harry-potter-tour-2024",
@@ -81267,7 +81580,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -89640,12 +89958,119 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
+        "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
+        "https://broadwaybaby.com/shows/jane-eyre/838635",
+        "https://www.exploregloucestershire.co.uk/event/13012/Jane-Eyre-at-The-Roses-Theatre/?SID=46426",
+        "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
+        "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
+        "https://brightonsource.co.uk/reviews/jane-eyre-review/",
+        "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+        "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
+        "https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/",
+        "https://www.londontheatre.co.uk/reviews/jane-eyre",
+        "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
+        "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
+        "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
+        "https://www.thereviewshub.com/jane-eyre-convention-bread-roses-theatre-london/",
+        "https://theatresoutheast.com/jane-eyre-tour-review/",
+        "https://stateoftheart.net.au/reviews/review-jane-eyre-genesian-theatre/",
+        "https://ctxlivetheatre.com/reviews/20190213-review-jane-eyre-an-epic-musical-love-sto/",
+        "https://onin.london/jane-eyre-review/",
         "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review"
       ],
       "dirFiles": 9,
       "dirClean": 1,
       "inReviewsJson": 2,
       "missing": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.exploregloucestershire.co.uk/event/13012/Jane-Eyre-at-The-Roses-Theatre/?SID=46426",
+          "host": "exploregloucestershire.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        },
+        {
+          "url": "https://brightonsource.co.uk/reviews/jane-eyre-review/",
+          "host": "brightonsource.co.uk",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-03-09",
+          "serpCensus": true
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+          "host": "ayoungishperspective.co.uk",
+          "knownOutletId": "a-youngish-perspective",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/jane-eyre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-06-08",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thereviewshub.com/jane-eyre-convention-bread-roses-theatre-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatresoutheast.com/jane-eyre-tour-review/",
+          "host": "theatresoutheast.com",
+          "knownOutletId": "theatre-south-east",
+          "serpCensus": true
+        },
+        {
+          "url": "https://stateoftheart.net.au/reviews/review-jane-eyre-genesian-theatre/",
+          "host": "stateoftheart.net.au",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/20190213-review-jane-eyre-an-epic-musical-love-sto/",
+          "host": "ctxlivetheatre.com",
+          "knownOutletId": "ctxlivetheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://onin.london/jane-eyre-review/",
+          "host": "onin.london",
+          "knownOutletId": "onin",
+          "serpCensus": true
+        },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
           "host": "londonboxoffice.co.uk",
@@ -89664,7 +90089,127 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--anne-cox.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/jane-eyre/838635",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaybaby.com/shows/jane-eyre/838635"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "everything-theatre--mike-carter.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-10",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/",
+          "host": "artsreviewhub.com",
+          "knownOutletId": "artsreviewhub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsreviewhub--arh-admin.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-05-01",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
+          "host": "blackeyedtheatre.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "blackeyedtheatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 1,
@@ -89711,58 +90256,445 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Jane Eyre\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Jane Eyre\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Jane Eyre\" review rose",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Jane Eyre Rose Theatre Kingston review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Jane Eyre Rose Theatre Kingston review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Jane Eyre Rose Theatre Kingston review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 19,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 19,
+        "byReason": {
+          "non-review-host": 16,
+          "write-path-blocked": 3
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 3,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://brightonsource.co.uk/reviews/jane-eyre-review/",
+          "host": "brightonsource.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/jane-eyre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
       "ingestResults": [
         {
-          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
-          "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office",
+          "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "jane-eyre-rose-kingston-off-west-end-2026: https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre is already owned by jane-eyre-off-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jane-eyre-off-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.exploregloucestershire.co.uk/event/13012/Jane-Eyre-at-The-Roses-Theatre/?SID=46426",
+          "host": "exploregloucestershire.co.uk",
+          "outletId": "exploregloucestershire",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "jane-eyre-rose-kingston-off-west-end-2026: https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour is already owned by jane-eyre-off-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jane-eyre-off-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+          "host": "ayoungishperspective.co.uk",
+          "outletId": "a-youngish-perspective",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "jane-eyre-rose-kingston-off-west-end-2026: https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/ is already owned by jane-eyre-off-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jane-eyre-off-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Cross-market reroute: jane-eyre-rose-kingston-off-west-end-2026 → jane-eyre-off-west-end-2026 (s"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic"
+        },
+        {
+          "url": "https://www.thereviewshub.com/jane-eyre-convention-bread-roses-theatre-london/",
+          "host": "thereviewshub.com",
+          "outletId": "thereviewshub"
+        },
+        {
+          "url": "https://theatresoutheast.com/jane-eyre-tour-review/",
+          "host": "theatresoutheast.com",
+          "outletId": "theatre-south-east"
+        },
+        {
+          "url": "https://stateoftheart.net.au/reviews/review-jane-eyre-genesian-theatre/",
+          "host": "stateoftheart.net.au",
+          "outletId": "stateoftheart"
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/20190213-review-jane-eyre-an-epic-musical-love-sto/",
+          "host": "ctxlivetheatre.com",
+          "outletId": "ctxlivetheatre"
+        },
+        {
+          "url": "https://onin.london/jane-eyre-review/",
+          "host": "onin.london",
+          "outletId": "onin"
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
+          "host": "londonboxoffice.co.uk",
+          "outletId": "london-box-office"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre"
+          },
+          {
+            "outletId": "exploregloucestershire.co.uk",
+            "outlet": "exploregloucestershire.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.exploregloucestershire.co.uk/event/13012/Jane-Eyre-at-The-Roses-Theatre/?SID=46426"
+          },
+          {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour"
+          },
+          {
+            "outletId": "a-youngish-perspective",
+            "outlet": "a-youngish-perspective",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review"
+          },
+          {
+            "outletId": "thereviewshub",
+            "outlet": "thereviewshub",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thereviewshub.com/jane-eyre-convention-bread-roses-theatre-london/"
+          },
+          {
+            "outletId": "theatre-south-east",
+            "outlet": "theatre-south-east",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatresoutheast.com/jane-eyre-tour-review/"
+          },
+          {
+            "outletId": "stateoftheart.net.au",
+            "outlet": "stateoftheart.net.au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stateoftheart.net.au/reviews/review-jane-eyre-genesian-theatre/"
+          },
+          {
+            "outletId": "ctxlivetheatre",
+            "outlet": "ctxlivetheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ctxlivetheatre.com/reviews/20190213-review-jane-eyre-an-epic-musical-love-sto/"
+          },
+          {
+            "outletId": "onin",
+            "outlet": "onin",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://onin.london/jane-eyre-review/"
+          },
           {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/"
+          },
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/jane-eyre/838635"
+          },
+          {
+            "outletId": "blackeyedtheatre.co.uk",
+            "outlet": "blackeyedtheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://www.exploregloucestershire.co.uk/event/13012/Jane-Eyre-at-The-Roses-Theatre/?SID=46426",
+            "outletId": "exploregloucestershire.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
+            "outletId": "west-end-best-friend",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+            "outletId": "a-youngish-perspective",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
+            "outletId": "british-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
+            "outletId": "theatreandtonic",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/jane-eyre-convention-bread-roses-theatre-london/",
+            "outletId": "thereviewshub",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/jane-eyre-tour-review/",
+            "outletId": "theatre-south-east",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://stateoftheart.net.au/reviews/review-jane-eyre-genesian-theatre/",
+            "outletId": "stateoftheart.net.au",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://ctxlivetheatre.com/reviews/20190213-review-jane-eyre-an-epic-musical-love-sto/",
+            "outletId": "ctxlivetheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://onin.london/jane-eyre-review/",
+            "outletId": "onin",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
             "outletId": "london-box-office",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-13T17:02:51.141Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/jane-eyre/838635",
+            "outletId": "broadway-baby",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
+            "outletId": "blackeyedtheatre.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T16:27:21.493Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 16
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T16:27:21.493Z"
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -97266,7 +98198,12 @@
         "liveCount": 13,
         "candidateCount": 23
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "complete:4:4",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -109434,7 +110371,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-15T15:28:00.413Z"
+      "computedAt": "2026-10-15T15:28:00.413Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "marcel-on-the-train-off-broadway-2026",
@@ -114966,9 +115908,9 @@
       },
       "computedAt": "2026-10-15T10:17:27.731Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "nextState": "incomplete:0:3",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -116886,9 +117828,9 @@
       },
       "computedAt": "2026-10-15T10:17:27.731Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -126077,7 +127019,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -126386,7 +127333,12 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-15T15:28:00.413Z"
+      "computedAt": "2026-10-15T15:28:00.413Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -128747,7 +129699,12 @@
         "liveCount": 10,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -161849,9 +162806,9 @@
       },
       "computedAt": "2026-10-15T10:17:27.731Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "nextState": "incomplete:0:3",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -167290,7 +168247,7 @@
       "quarantine": {
         "nextState": "no-census-yet:0:0",
         "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -173912,9 +174869,9 @@
       },
       "computedAt": "2026-10-15T06:43:21.573Z",
       "quarantine": {
-        "nextState": "incomplete:0:4",
-        "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "nextState": "incomplete:0:5",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -174622,7 +175579,12 @@
         "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "complete:11:11",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -175771,7 +176733,7 @@
       "quarantine": {
         "nextState": "no-census-yet:0:0",
         "since": "2026-10-15T15:28:00.489Z",
-        "lastAt": "2026-10-15T15:28:00.489Z"
+        "lastAt": "2026-10-15T16:27:21.579Z"
       }
     },
     {
@@ -177935,7 +178897,12 @@
         "liveCount": 14,
         "candidateCount": 24
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "incomplete:13:15",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -202478,7 +203445,12 @@
         "liveCount": 12,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T16:27:21.579Z",
+        "lastAt": "2026-10-15T16:27:21.579Z"
+      }
     },
     {
       "showId": "the-producers-west-end-2025",
