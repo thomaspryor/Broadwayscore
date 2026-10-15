@@ -9,6 +9,9 @@
  * Usage: node scripts/lib/preflight-review-fix-plan.js data/pending-fixes/<plan>.json [...more plans]
  *   Plans are replayed in the order given, on one shared copy, so later plans see earlier plans' writes.
  *   Exit 0 when every action applies cleanly, 1 otherwise. data/review-texts is never written.
+ *   A review-file-op delete/move whose source is not in the tree FAILs here (BRO-5386: eight of seventeen actions
+ *   were refused at apply time as "Source not found" because they were planned against a two-day-old local copy
+ *   of review-texts). The tree checked is the live review-texts clone when the session has one.
  */
 const fs = require('fs');
 const os = require('os');
@@ -16,12 +19,37 @@ const path = require('path');
 const { executeReviewFieldEditIn } = require('./review-field-edit');
 const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
 const { planStatusAction } = require('./plan-status');
+const { resolveReviewTextsDir } = require('./review-texts-dir');
 
 const ROOT = path.join(__dirname, '..', '..');
 
-function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review-texts'), log = console.log } = {}) {
+/**
+ * Does a review-file-op delete/move have a source to act on, given what earlier actions in the plan removed or created?
+ * Pure: `exists` is injected. Mutates `removed`/`created`. Returns null when fine, else the failure reason.
+ */
+function fileOpSourceProblem(a, exists, removed, created) {
+  if (!a || a.type !== 'review-file-op') return null;
+  // A restore brings the file back (at destPath when given), so a later delete/move of it has a source.
+  if (a.operation === 'restore') {
+    const back = a.destPath || a.sourcePath;
+    if (back) { created.add(back); removed.delete(back); }
+    return null;
+  }
+  // execute-approved-fix.js treats 'rename' exactly like 'move'.
+  if (a.operation !== 'delete' && a.operation !== 'move' && a.operation !== 'rename') return null;
+  const src = a.sourcePath;
+  const present = created.has(src) || (exists(src) && !removed.has(src));
+  if (!present) return `Source not found: ${src} (already moved or deleted? check the live review-texts clone)`;
+  removed.add(src); created.delete(src);
+  if ((a.operation === 'move' || a.operation === 'rename') && a.destPath) { created.add(a.destPath); removed.delete(a.destPath); }
+  return null;
+}
+
+function preflight(planPaths, { reviewTextsDir = resolveReviewTextsDir(), log = console.log } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'preflight-fix-'));
   const copied = new Set();
+  const removed = new Set();
+  const created = new Set();
   let failed = 0;
   try {
     for (const planPath of planPaths) {
@@ -42,6 +70,8 @@ function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review
       }
       let ok = 0;
       for (const a of actions) {
+        const problem = fileOpSourceProblem(a, (rel) => fs.existsSync(path.join(reviewTextsDir, rel)), removed, created);
+        if (problem) { failed++; log(`  FAIL ${id} ${a.operation} ${a.sourcePath}: ${problem}`); continue; }
         if (a.type !== 'review-field-edit') { log(`  skip ${a.type} (not replayed)`); continue; }
         const showId = String(a.file || '').split('/')[0];
         if (showId && !copied.has(showId) && fs.existsSync(path.join(reviewTextsDir, showId))) {
@@ -77,7 +107,7 @@ function copyUrlOwnerFolder(reviewTextsDir, tmp, file, copied, { detect } = {}) 
   }
 }
 
-module.exports = { preflight, copyUrlOwnerFolder };
+module.exports = { preflight, copyUrlOwnerFolder, fileOpSourceProblem };
 
 const USAGE = 'Usage: node scripts/lib/preflight-review-fix-plan.js <plan.json> [...]';
 
