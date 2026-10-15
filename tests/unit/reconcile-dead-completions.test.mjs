@@ -301,3 +301,14 @@ test('retro: [linear:BRO-N] markers count as own ids only from ownTexts (descrip
   assert.ok(!ev.refs.includes('BRO-76'));
   assert.ok(ev.refs.includes('BRO-900'));
 });
+
+test('data-repo ack (BRO-5219): a landed-acked row with repo counts as landed without a probe of this repo', () => {
+  const entries = [{ event: 'landed-acked', taskId: 'linear:BRO-5416', sha: '53e633c05fbc9969', repo: 'review-texts' }];
+  const v = checkWorkLanded({ taskId: 'linear:BRO-5416', entries }, fakeGit());
+  assert.equal(v.landed, true);
+  assert.match(v.reason, /acked in review-texts at 53e633c05fbc/);
+  const ev = extractLandedEvidence({ taskId: 'linear:BRO-5416', entries });
+  assert.deepEqual(ev.shas, []);
+  // Another task's data-repo ack is never this task's evidence.
+  assert.equal(checkWorkLanded({ taskId: 'linear:BRO-5417', entries }, fakeGit()).landed, false);
+});

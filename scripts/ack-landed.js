@@ -87,7 +87,9 @@
  */
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const ledger = require('./lib/dispatch-ledger.js');
@@ -98,14 +100,38 @@ const core = require('./lib/ack-landed-core.js');
 // Canonical checkout, hardcoded for the same reason dispatch-ledger.js
 // hardcodes LEDGER_PATH: this is run from inside worktrees, and both the
 // ledger and the origin/main ancestry check must refer to ONE repo.
-const { MAIN_REPO_ROOT: REPO } = require('./lib/repo-root');
+const { MAIN_REPO_ROOT: MAIN } = require('./lib/repo-root');
+// The repo the sha is checked in. Broadwayscore unless --data-repo points it at
+// a private data repo (BRO-5219); main() reassigns it before any git call, so
+// every git()/gitOk()/`opts.cwd || REPO` site below follows. The ledger, the
+// verify run and the Linear update always stay in MAIN.
+let REPO = MAIN;
+// --data-repo names → clone paths. review-texts honours REVIEW_TEXTS_DIR (the
+// same variable validate-data.js and the gap audit read); core-data is the
+// clone data/shows.json etc. already symlink into.
+const DATA_REPOS = {
+  'review-texts': (env) => env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts'),
+  'core-data': () => require('./lib/autonomous-data-workdir').scorecardDataRoot(),
+};
 const VERIFY_TIMEOUT_MS = 10 * 60 * 1000;
 const CODE_PATHS = ['scripts', 'src', '.github', 'package.json', 'next.config.js', 'tsconfig.json'];
 
 const USAGE = `ack-landed.js — record that a stopped-short/stranded dispatch's work landed (writes the ledger row Gate O v2 accepts).
 
 Usage:
-  node scripts/ack-landed.js --id BRO-N [--sha <commit>] --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>]
+  node scripts/ack-landed.js --id BRO-N [--sha <commit>] --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>] [--data-repo review-texts|core-data]
+
+  --data-repo <name> the work landed in a private data repo, not Broadwayscore
+                     (BRO-5219): review-texts (~/broadway-review-texts, or
+                     $REVIEW_TEXTS_DIR) or core-data (~/broadway-scorecard-data).
+                     Every git check (fetch, ancestry, naming, timing) runs in
+                     that clone; --verify still runs in the main checkout, with
+                     REVIEW_TEXTS_DIR set to the clone for review-texts (core
+                     data is already symlinked into it). A job-stranded row's
+                     sha is then not usable as the tie, so the sha must instead
+                     be authored inside the job's window AND name the card.
+                     Checks derived from reviews.json may lag the clone until
+                     the next CI rebuild.
 
   --sha <commit>    optional. Omitted: derived from origin/main — the newest
                      commit naming BRO-N inside the window the chosen mode
@@ -147,6 +173,7 @@ function parseArgs(argv) {
       case '--no-linear': out.noLinear = true; break;
       case '--already-landed': out.alreadyLanded = true; break;
       case '--landed-elsewhere': out.landedElsewhere = true; break;
+      case '--data-repo': out.dataRepo = val(); break;
       default:
         return { error: `unknown argument: ${a}` };
     }
@@ -158,6 +185,24 @@ function parseArgs(argv) {
     return { error: '--already-landed cannot be combined with --job-id — "before ANY dispatch" is ledger-wide, not attempt-scoped' };
   }
   return out;
+}
+
+// Resolve a --data-repo name to its clone, refusing anything that is not a git
+// work tree with an origin/main (a missing clone must not silently fall back
+// to Broadwayscore). Exported for tests.
+function resolveDataRepo(name, env = process.env) {
+  const make = Object.prototype.hasOwnProperty.call(DATA_REPOS, name) ? DATA_REPOS[name] : null;
+  if (!make) return { error: `--data-repo must be one of: ${Object.keys(DATA_REPOS).join(', ')} (got ${JSON.stringify(name)})` };
+  const dir = make(env);
+  const inside = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: dir, encoding: 'utf8' });
+  if (inside.status !== 0 || String(inside.stdout).trim() !== 'true') return { error: `--data-repo ${name}: ${dir} is not a git work tree` };
+  const top = String(spawnSync('git', ['rev-parse', '--show-toplevel'], { cwd: dir, encoding: 'utf8' }).stdout || '').trim();
+  const real = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
+  if (real(top) !== real(dir)) return { error: `--data-repo ${name}: ${dir} is inside ${top}, not its own clone` };
+  if (spawnSync('git', ['rev-parse', '--verify', 'refs/remotes/origin/main'], { cwd: dir, encoding: 'utf8' }).status !== 0) {
+    return { error: `--data-repo ${name}: ${dir} has no origin/main` };
+  }
+  return { name, path: dir };
 }
 
 function git(args, opts = {}) {
@@ -400,7 +445,7 @@ function refuse(ref, refusals, ctx = {}) {
 // prove the accepted path actually executes the command, against a throwaway
 // cwd, through the same function main() uses.
 function runVerifyAndDecide(decide, verify, opts = {}) {
-  const run = spawnSync('bash', ['-c', verify.cmd], { cwd: opts.cwd || REPO, encoding: 'utf8', timeout: opts.timeoutMs || VERIFY_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 });
+  const run = spawnSync('bash', ['-c', verify.cmd], { cwd: opts.cwd || MAIN, env: opts.env ? { ...process.env, ...opts.env } : process.env, encoding: 'utf8', timeout: opts.timeoutMs || VERIFY_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 });
   verify.exitCode = run.status === null ? -1 : run.status;
   if (verify.exitCode !== 0) {
     const tail = `${run.stdout || ''}\n${run.stderr || ''}`.trim().split('\n').slice(-15).join('\n   | ');
@@ -421,6 +466,14 @@ function main() {
     process.exit(2);
   }
   const ackedBy = args.ackedBy || process.env.CLAUDE_CODE_SESSION_ID || 'manual';
+  let dataRepo = null;
+  if (args.dataRepo !== undefined) {
+    dataRepo = resolveDataRepo(args.dataRepo);
+    if (dataRepo.error) { console.error(dataRepo.error); process.exit(2); }
+    REPO = dataRepo.path;
+    console.error(`→ --data-repo ${dataRepo.name}: git checks run in ${REPO}; verify runs in ${MAIN}`);
+  }
+  const dataRepoName = dataRepo ? dataRepo.name : undefined;
   const jobId = args.jobId || null;
   const alreadyLanded = Boolean(args.alreadyLanded);
   const landedElsewhere = Boolean(args.landedElsewhere);
@@ -429,9 +482,9 @@ function main() {
   // runs (BRO-4069: decideAlreadyLanded asserts the OPPOSITE sha timing and
   // never accepts a jobId — see its header in ack-landed-core.js).
   const decide = (extra) => {
-    if (landedElsewhere) return core.decideLandedElsewhere({ ref, rows, landing, checkout, reason: args.reason, ackedBy, ...extra });
-    if (alreadyLanded) return core.decideAlreadyLanded({ ref, rows, landing, checkout, reason: args.reason, ackedBy, ...extra });
-    return core.decideAck({ ref, rows, jobId, landing, checkout, reason: args.reason, ackedBy, ...extra });
+    if (landedElsewhere) return core.decideLandedElsewhere({ ref, rows, landing, checkout, reason: args.reason, ackedBy, dataRepo: dataRepoName, ...extra });
+    if (alreadyLanded) return core.decideAlreadyLanded({ ref, rows, landing, checkout, reason: args.reason, ackedBy, dataRepo: dataRepoName, ...extra });
+    return core.decideAck({ ref, rows, jobId, landing, checkout, reason: args.reason, ackedBy, dataRepo: dataRepoName, ...extra });
   };
 
   // 1. Ledger precondition first — cheap, and a plainly un-ackable ref must
@@ -513,10 +566,14 @@ function main() {
   } catch (e) {
     refuse(ref, [`could not read commit ${sha}: ${String(e.stderr || e.message).trim()}`]);
   }
-  const tie = computeStrandedTie(sha, pre.stranded && pre.stranded.sha, { cwd: REPO, landed: landing.verdict === 'LANDED' });
+  // A job-stranded row's sha is a Broadwayscore worktree HEAD: it cannot tie
+  // to a data-repo commit, so --data-repo skips the tie (core then requires
+  // window + naming instead) rather than probing the clone for a foreign sha.
+  const noTie = { tiedToStranded: false, tiedToStrandedByPatch: false };
+  const tie = dataRepo ? noTie : computeStrandedTie(sha, pre.stranded && pre.stranded.sha, { cwd: REPO, landed: landing.verdict === 'LANDED' });
   landing.tiedToStranded = tie.tiedToStranded;
   landing.tiedToStrandedByPatch = tie.tiedToStrandedByPatch;
-  if (landedElsewhere) {
+  if (landedElsewhere && !dataRepo) {
     for (const st of rows.filter((r) => String(r.event) === 'job-stranded' && r.sha)) {
       if (landing.tiedToStranded || landing.tiedToStrandedByPatch) break;
       if (pre.stranded && st.sha === pre.stranded.sha) continue;
@@ -531,11 +588,15 @@ function main() {
   }
 
   // 3. The checkout the verify command runs in must already prove origin/main.
+  //    In --data-repo mode that is the clone verify reads, and "dirty" means the
+  //    files this sha changed (CODE_PATHS are Broadwayscore's, meaningless there).
+  const dirtyPaths = dataRepo ? landing.changedPaths : CODE_PATHS;
   const checkout = {
     containsSha: gitOk(['merge-base', '--is-ancestor', sha, 'HEAD']),
-    dirtyCodePaths: git(['status', '--porcelain', '--', ...CODE_PATHS])
-      .split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.replace(/^\S+\s+/, '')),
+    dirtyCodePaths: dirtyPaths.length ? git(['status', '--porcelain', '--', ...dirtyPaths])
+      .split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.replace(/^\S+\s+/, '')) : [],
   };
+  if (dataRepo && !checkout.containsSha) console.error(`→ the clone's HEAD does not contain ${sha.slice(0, 11)} — run: git -C ${REPO} pull --ff-only origin main`);
 
   // 4. Safe-form gate, then the real run. Everything above is decided BEFORE
   //    spending the run so an unsafe/untied ack never executes anything.
@@ -544,8 +605,9 @@ function main() {
   const dryRun = decide({ verify: { ...verify, exitCode: 0 } });
   if (!dryRun.ok) refuse(ref, dryRun.refusals, hintCtx);
 
-  console.error(`→ running verify in ${REPO}: ${verify.cmd}`);
-  const decision = runVerifyAndDecide(decide, verify, { cwd: REPO });
+  console.error(`→ running verify in ${MAIN}: ${verify.cmd}`);
+  const verifyEnv = dataRepo && dataRepo.name === 'review-texts' ? { REVIEW_TEXTS_DIR: REPO } : undefined;
+  const decision = runVerifyAndDecide(decide, verify, { cwd: MAIN, env: verifyEnv });
   if (!decision.ok) refuse(ref, decision.refusals, hintCtx);
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).
@@ -558,7 +620,7 @@ function main() {
 
   if (!args.noLinear) {
     const comment = `${decision.row.event} by ${ackedBy} (${written.ts}): ${sha} is on origin/main; \`${verify.cmd}\` exit 0. Reason: ${decision.row.reason}. Prior ledger row: ${decision.row.priorEvent}.`;
-    const lb = spawnSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', ref, '--comment', comment], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
+    const lb = spawnSync('node', [path.join(MAIN, 'scripts', 'linear-brain.js'), 'update', ref, '--comment', comment], { cwd: MAIN, encoding: 'utf8', timeout: 60000 });
     console.error(lb.status === 0
       ? `→ Linear comment posted on ${ref}`
       : `⚠️  Linear comment NOT posted on ${ref} (exit ${lb.status}): ${String(lb.stderr || lb.stdout || '').trim().split('\n').slice(-2).join(' ')} — the ledger row is the source of truth; re-post by hand if you want it on the card.`);
@@ -569,4 +631,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie, runVerifyAndDecide };
+module.exports = { parseArgs, resolveDataRepo, DATA_REPOS, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie, runVerifyAndDecide };

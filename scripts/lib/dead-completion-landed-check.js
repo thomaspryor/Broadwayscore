@@ -132,10 +132,11 @@ function isSafeRepoPath(p) {
  *   texts: the task's own prose (subject, description, or a Linear issue's
  *   description + comment bodies); entries: dispatch-ledger rows (only rows
  *   for this taskId are read, for their `sha`).
- * @returns {{refs: string[], shas: string[], prNumbers: number[], keyFiles: string[]}}
+ * @returns {{refs: string[], shas: string[], dataRepoAcks: {repo: string, sha: string}[], prNumbers: number[], keyFiles: string[]}}
  */
 function extractLandedEvidence({ taskId, texts = [], ownTexts = texts, entries = [], ownIds = [] } = {}) {
   const shas = new Set();
+  const dataRepoAcks = [];
   const prNumbers = new Set();
   const keyFiles = new Set();
   const rows = Array.isArray(entries) ? entries : [];
@@ -153,7 +154,12 @@ function extractLandedEvidence({ taskId, texts = [], ownTexts = texts, entries =
       const after = Number.isFinite(latestTs) && Number.isFinite(ts) && ts > latestTs;
       if (!sameJob && !after) continue;
     }
-    if (typeof e.sha === 'string' && SHA_RE.test(e.sha)) shas.add(e.sha.toLowerCase());
+    if (typeof e.sha !== 'string' || !SHA_RE.test(e.sha)) continue;
+    // ack-landed.js --data-repo (BRO-5219): the sha lives in a private data
+    // repo and was verified there, so an is-ancestor probe of THIS repo would
+    // always say no. The ack itself is the evidence.
+    if (typeof e.repo === 'string' && e.repo) dataRepoAcks.push({ repo: e.repo, sha: e.sha.toLowerCase() });
+    else shas.add(e.sha.toLowerCase());
   }
   const cleanTexts = (texts || []).map(stripOwnNotes);
   for (const t of cleanTexts) {
@@ -175,6 +181,7 @@ function extractLandedEvidence({ taskId, texts = [], ownTexts = texts, entries =
   return {
     refs: taskRefsOf(taskId, (ownTexts || []).map(stripOwnNotes), ownIds),
     shas: [...shas],
+    dataRepoAcks,
     prNumbers: [...prNumbers],
     keyFiles: [...keyFiles],
   };
@@ -188,6 +195,8 @@ function extractLandedEvidence({ taskId, texts = [], ownTexts = texts, entries =
  */
 function decideWorkLanded(evidence, git) {
   const ev = evidence || {};
+  const ack = (ev.dataRepoAcks || [])[0];
+  if (ack) return { landed: true, reason: `acked in ${ack.repo} at ${ack.sha.slice(0, 12)}` };
   if (!git) return { landed: false, reason: 'no git probe' };
   for (const sha of ev.shas || []) {
     if (safeCall(() => git.isAncestor(sha))) return { landed: true, reason: `commit ${sha.slice(0, 12)} is an ancestor of ${DEFAULT_REF}` };
