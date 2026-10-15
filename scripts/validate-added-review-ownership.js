@@ -147,6 +147,26 @@ function listNewReviewFiles(cwd) {
  * @param {string} reviewTextsDir  absolute path to the review-texts checkout
  * @returns {Array<{file:string, showId:string, url:string, owner:{showId:string,file:string}}>}
  */
+/**
+ * Share of `a`'s 8-word phrases that also appear in `b` (0..1), diacritics
+ * folded. A multi-show print column (one url, a section per show) gives each
+ * show's file a different text; a stale re-creation of the same review gives
+ * the same text (BRO-5373: the gate dropped 19 such sections, e.g. Letts's
+ * Jack Absolute / Much Ado Times column).
+ */
+const { foldDiacritics } = require('./lib/title-match');
+function sharedPhraseRatio(a, b) {
+  const words = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const shingles = (w) => { const out = new Set(); for (let i = 0; i + 8 <= w.length; i++) out.add(w.slice(i, i + 8).join(' ')); return out; };
+  const sa = shingles(words(a));
+  if (sa.size === 0) return 1;
+  const sb = shingles(words(b));
+  let hit = 0;
+  for (const x of sa) if (sb.has(x)) hit++;
+  return hit / sa.size;
+}
+const DISTINCT_SECTION_MAX_SHARE = 0.5;
+
 function decideOwnershipDrops(newFiles, reviewTextsDir) {
   const drops = [];
   const showIndexCache = new Map();
@@ -166,6 +186,16 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     // BRO-4431: sibling sections of one split multi-show article share its URL.
     const verdict = shouldBlockCrossShowCreate(owners, multiShowSplitGroup(data, showId), showId);
     if (verdict.block) {
+      // A different text under the same url is another show's section of a
+      // multi-show article, not a re-creation of the owner's review (BRO-5373).
+      let ownerText = '';
+      try { ownerText = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, verdict.owner.showId, verdict.owner.file), 'utf8')).fullText || ''; } catch { /* unreadable owner: keep the drop decision */ }
+      const mine = String(data.fullText || '');
+      if (mine.trim().length >= NEAR_EMPTY_BODY_CHARS && String(ownerText).trim().length >= NEAR_EMPTY_BODY_CHARS
+          && sharedPhraseRatio(mine, ownerText) < DISTINCT_SECTION_MAX_SHARE) {
+        console.log(`::warning::[ownership-gate] keeping ${rel}: same url as ${verdict.owner.showId}/${verdict.owner.file} but a different text (multi-show article section)`);
+        continue;
+      }
       drops.push({ file: rel, showId, url: data.url, owner: verdict.owner, kind: 'cross-show' });
       continue;
     }
@@ -427,4 +457,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { decideOwnershipDrops, listNewReviewFiles, listAddedReviewFiles, listDeletedReviewUrls };
+module.exports = { decideOwnershipDrops, listNewReviewFiles, listAddedReviewFiles, listDeletedReviewUrls, sharedPhraseRatio };

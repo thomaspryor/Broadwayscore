@@ -276,6 +276,23 @@ describe('CLI --base mode — committed re-creation dropped via git rm + commit'
   });
 });
 
+describe('decideOwnershipDrops — multi-show column sections (BRO-5373)', () => {
+  // One Times print column reviewed two shows (Letts: Jack Absolute Flies Again
+  // and Much Ado About Nothing, 2022); each show's file holds its own section
+  // under the shared url. The gate dropped the second section as a re-creation.
+  const COLUMN = 'https://www.thetimes.co.uk/article/five-stars-for-jack-absolute-flies-again-plus-the-shows';
+  const sectionA = Array.from({ length: 40 }, (_, i) => `Richard Bean's farce takes off with pilots and gags in scene ${i}.`).join(' ');
+  const sectionB = Array.from({ length: 40 }, (_, i) => `Shakespeare's comedy plays on a sunny Italian set in act ${i}.`).join(' ');
+  test('a different section of the same column is kept; a copy of the same text is still dropped', () => {
+    writeFile('jack-absolute-flies-again-west-end-2022', 'times-uk--quentin-letts.json', { url: COLUMN, criticName: 'Quentin Letts', fullText: sectionA });
+    const sec = writeFile('much-ado-about-nothing-west-end-2022', 'times-uk--quentin-letts.json', { url: COLUMN, criticName: 'Quentin Letts', fullText: sectionB });
+    assert.deepEqual(decideOwnershipDrops([sec], tmpDir), []);
+    _resetUrlOwnershipIndex();
+    const copy = writeFile('much-ado-about-nothing-west-end-2022', 'times-uk--quentin-letts.json', { url: COLUMN, criticName: 'Quentin Letts', fullText: sectionA });
+    assert.equal(decideOwnershipDrops([copy], tmpDir).length, 1);
+  });
+});
+
 describe('CLI --base mode — a move is never dropped (BRO-5373)', () => {
   const SCRIPT = path.resolve('scripts/validate-added-review-ownership.js');
   const git = (cwd, cmd) => execSync(`git ${cmd}`, { cwd, encoding: 'utf8' });
