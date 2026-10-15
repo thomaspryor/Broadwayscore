@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-15T10:17:51.717Z",
+  "generatedAt": "2026-10-15T12:26:20.821Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 237,
-  "clean": 227,
-  "defective": 10,
+  "clean": 236,
+  "defective": 1,
   "byType": {
-    "missing-from-prod": 10
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "affluenza-off-west-end-2026",
-      "title": "Affluenza",
-      "openingDate": "2026-10-05",
+      "showId": "tartuffe-remixed-off-west-end-2026",
+      "title": "Tartuffe Remixed",
+      "openingDate": "2026-09-11",
       "ok": false,
       "defects": [
         {
@@ -24,178 +24,9 @@
       "missingFromProd": [
         "partially-obstructed-view"
       ],
-      "localCount": 31,
-      "deployedCount": 30,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "mamma-mia-tour-2026",
-      "title": "Mamma Mia!",
-      "openingDate": "2026-03-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: gulf-coast"
-        }
-      ],
-      "missingFromProd": [
-        "gulf-coast"
-      ],
-      "localCount": 21,
-      "deployedCount": 20,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "the-music-man-tour-2026",
-      "title": "The Music Man",
-      "openingDate": "2026-01-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: front-range-focus"
-        }
-      ],
-      "missingFromProd": [
-        "front-range-focus"
-      ],
-      "localCount": 7,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "title": "Spamalot",
-      "openingDate": "2025-12-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: sfist"
-        }
-      ],
-      "missingFromProd": [
-        "sfist"
-      ],
       "localCount": 29,
       "deployedCount": 28,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "hells-kitchen-tour-2025",
-      "title": "Hell's Kitchen",
-      "openingDate": "2025-10-10",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: attractions, florida-theater-on-stage, south-florida-sun-sentinel"
-        }
-      ],
-      "missingFromProd": [
-        "attractions",
-        "florida-theater-on-stage",
-        "south-florida-sun-sentinel"
-      ],
-      "localCount": 23,
-      "deployedCount": 20,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "title": "Water for Elephants",
-      "openingDate": "2025-09-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: playoffthepage"
-        }
-      ],
-      "missingFromProd": [
-        "playoffthepage"
-      ],
-      "localCount": 36,
-      "deployedCount": 35,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "the-notebook-tour-2025",
-      "title": "The Notebook",
-      "openingDate": "2025-09-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: equality365, seattles-child"
-        }
-      ],
-      "missingFromProd": [
-        "equality365",
-        "seattles-child"
-      ],
-      "localCount": 34,
-      "deployedCount": 32,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "hamilton-tour-2024",
-      "title": "Hamilton",
-      "openingDate": "2024-08-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "4 scored outlet(s) absent from the deployed payload: chicago-sun-times, chicagotribune, new-city-stage, rachelweinbergreviews"
-        }
-      ],
-      "missingFromProd": [
-        "chicago-sun-times",
-        "chicagotribune",
-        "new-city-stage",
-        "rachelweinbergreviews"
-      ],
-      "localCount": 8,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "wicked-tour-2021",
-      "title": "Wicked",
-      "openingDate": "2021-08-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: heyrhody, whats-up-newp"
-        }
-      ],
-      "missingFromProd": [
-        "heyrhody",
-        "whats-up-newp"
-      ],
-      "localCount": 26,
-      "deployedCount": 24,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "title": "The Lion King",
-      "openingDate": "1997-11-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: jasonraize"
-        }
-      ],
-      "missingFromProd": [
-        "jasonraize"
-      ],
-      "localCount": 24,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-10-15T10:17:46.270Z"
+      "firstDefectAt": "2026-10-15T12:26:14.236Z"
     }
   ],
   "persistentDefective": 0,

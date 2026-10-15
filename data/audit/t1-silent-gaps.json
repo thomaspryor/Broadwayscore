@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T10:17:36.528Z",
+  "generatedAt": "2026-10-15T12:23:32.375Z",
   "windowDays": 45,
   "showsScanned": 173,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 160.54594666666668,
+      "fileAgeHours": 162.6447613888889,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 155.51447638888888
+      "nonTerminalAgeHours": 157.61332277777777
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -35,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 545.6175666666667,
+      "fileAgeHours": 547.7163911111111,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 96.63709055555556
+      "nonTerminalAgeHours": 98.73593694444445
     }
   ],
   "contradictions": []
