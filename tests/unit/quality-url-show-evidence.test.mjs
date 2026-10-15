@@ -64,7 +64,8 @@ test('a url that does not name the show changes nothing', () => {
   assert.strictEqual(cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url, publishDate: '2023-02-14' }).quality, 'garbage');
 });
 
-test('default stays off until the corpus audit flips it', () => {
+test('on by default since the corpus audit (BRO-5395)', () => {
   const url = 'https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london';
+  assert.notStrictEqual(cq.assessTextQuality(text, ID, T, { url, publishDate: '2023-02-14' }).quality, 'garbage');
   assert.strictEqual(cq.assessTextQuality(text, ID, T, { url }).quality, 'garbage');
 });

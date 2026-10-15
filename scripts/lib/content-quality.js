@@ -1535,9 +1535,10 @@ function hasReviewContent(text) {
  * @param {string} [showTitle] - Optional show title for additional checks (human readable)
  * @returns {{ quality: 'valid' | 'garbage' | 'suspicious', confidence: 'high' | 'medium' | 'low', issues: string[] }}
  */
-// Off until scripts/audit-multishow-titlecase.js --rule=url has measured and
-// a person has checked the verdict changes (BRO-5395).
-const USE_URL_SHOW_EVIDENCE = false;
+// On since 2026-10-15 (BRO-5395): scripts/audit-multishow-titlecase.js --rule=url
+// over the corpus (6 shards) listed 56 garbage -> valid changes, each read by
+// hand against its url and date (all real reviews of the filed production).
+const USE_URL_SHOW_EVIDENCE = true;
 const URL_TITLE_STOP_WORDS = new Set(['the', 'a', 'an', 'and', 'of', 'at', 'in', 'on', 'to', 'for', 'with', 'musical', 'play']);
 
 function slugTokens(s) {
