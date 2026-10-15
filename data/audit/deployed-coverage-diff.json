@@ -1,62 +1,32 @@
 {
-  "generatedAt": "2026-10-15T17:41:52.381Z",
+  "generatedAt": "2026-10-15T20:55:02.887Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 239,
-  "clean": 236,
-  "defective": 3,
+  "clean": 238,
+  "defective": 1,
   "byType": {
-    "score-drift": 3
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-10-13",
+      "showId": "jane-eyre-off-west-end-2026",
+      "title": "Jane Eyre",
+      "openingDate": "2026-09-08",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 70.17 vs local 70.02 (Δ0.15)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: west-end-best-friend"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-10-15T17:41:46.327Z"
-    },
-    {
-      "showId": "table-17-off-west-end-2026",
-      "title": "Table 17",
-      "openingDate": "2026-09-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.96 vs local 76.56 (Δ0.6)"
-        }
+      "missingFromProd": [
+        "west-end-best-friend"
       ],
-      "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-10-15T17:41:46.327Z"
-    },
-    {
-      "showId": "beauty-and-the-beast-tour-2025",
-      "title": "Beauty and the Beast",
-      "openingDate": "2025-06-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.31 vs local 84.38 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27,
-      "firstDefectAt": "2026-10-15T17:41:46.327Z"
+      "localCount": 31,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-10-15T20:54:56.858Z"
     }
   ],
   "persistentDefective": 0,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T17:41:52.765Z",
+  "generatedAt": "2026-10-15T20:55:03.373Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -54,11 +54,6 @@
       "openingDate": "2026-10-15"
     },
     {
-      "id": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "openingDate": "2026-10-13"
-    },
-    {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
@@ -91,6 +86,10 @@
   ],
   "skipped": [
     {
+      "showId": "the-ask-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
       "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -101,10 +100,6 @@
   ],
   "feedsChecked": 73,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
@@ -135,7 +130,7 @@
     }
   ],
   "itemsScanned": 701,
-  "matchedGaps": 7,
+  "matchedGaps": 6,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -145,15 +140,6 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear-ObL3Q",
       "headline": "A Ghost in Your Ear",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "nina-off-west-end-2026",
-      "title": "Nina",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/nina-battersea-arts-26117",
-      "headline": "Nina",
       "publishDate": "2026-10-15"
     },
     {

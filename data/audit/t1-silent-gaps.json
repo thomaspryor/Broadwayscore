@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T17:41:38.357Z",
+  "generatedAt": "2026-10-15T20:51:59.601Z",
   "windowDays": 45,
   "showsScanned": 172,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 167.92679972222223,
+      "fileAgeHours": 171.1137752777778,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 162.91498444444446
+      "nonTerminalAgeHours": 166.08755222222223
     },
     {
       "showId": "macbeth-off-broadway-2026",
@@ -33,15 +33,15 @@
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\nArticle extraction returned 0 chars — pattern ma"
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=macbeth-off-broadway-2026 --url=https://www.talkinbroadway.com/regional/alb/ --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:26:32.014Z",
-      "fileAgeHours": 2.248975,
+      "fileAgeHours": 5.423458888888889,
       "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 1.2056719444444444
+      "nonTerminalAgeHours": 4.378239722222222
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -57,31 +57,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 553.0160322222222,
+      "fileAgeHours": 556.1906158333334,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 104.03759861111111
-    },
-    {
-      "showId": "operation-mincemeat-tour-2026",
-      "title": "Operation Mincemeat",
-      "openingDate": "2026-09-20",
-      "file": "timeout--unknown.json",
-      "outletId": "timeout",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 1,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=operation-mincemeat-tour-2026 --url=https://timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review --outlet=timeout   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-15T15:28:04.821Z",
-      "fileAgeHours": 2.225903888888889,
-      "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 1.2056719444444444
+      "nonTerminalAgeHours": 107.2101663888889
     }
   ],
   "contradictions": []
