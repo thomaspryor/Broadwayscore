@@ -28,7 +28,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { classifyStaleClosure, undoAutoFizzleOnRunningShow } = require('./lib/classify-stale-closure');
+const { classifyStaleClosure, buildClassifiedClosureEntry, undoAutoFizzleOnRunningShow } = require('./lib/classify-stale-closure');
 const { isCommercialScope } = require('./lib/commercial-scope');
 const { LOSS_LABEL_MIN_DAYS } = require('./lib/commercial-designations');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
@@ -161,28 +161,7 @@ function main() {
   let applied = 0;
   for (const { show, entry, result } of toApply) {
     const slug = show.slug;
-    const existing = entry || {};
-    // Build minimal update: preserve everything existing, overlay Fizzle fields.
-    // Don't touch sources, capitalization, weeklyRunningCost etc. — the show
-    // might have those from prior research, we're only adding a designation.
-    const { needsLossEvidence: _flag, ...rest } = existing;
-    commercial.shows[slug] = {
-      ...rest,
-      designation: result.designation,
-      // What the label rests on; the site renders the caveat from this.
-      designationBasis: result.designationBasis,
-      // recouped:false is the affirmative no-recoup statement that drives
-      // newsletter copy. Distinct from null (unknown) and false (was-checked-
-      // and-confirmed-no).
-      recouped: existing.recouped === true ? true : false,
-      recoupedSource: existing.recoupedSource ||
-        `Inferred: closed ${Math.floor((Date.now() - Date.parse(show.closingDate)) / 86_400_000)} days ago, no trade-press recoupment found`,
-      classifiedBy: 'classify-stale-closures',
-      classifiedAt: now,
-      classifiedReason: result.reason,
-      lastUpdated: now,
-      firstAdded: existing.firstAdded || now,
-    };
+    commercial.shows[slug] = buildClassifiedClosureEntry(entry, show, result, Date.parse(now));
     applied++;
     console.log(`  ✓ ${slug}: ${result.designation} (${result.designationBasis}): ${result.reason}`);
   }

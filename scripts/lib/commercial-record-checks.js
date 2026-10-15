@@ -445,7 +445,7 @@ function stripInternalWording(text) {
  */
 // `show` is the shows.json record (undefined when unknown). A bare status
 // string is refused: it silently skipped the age rule below (BRO-5020).
-function sanitizeForPublicRecord(entry, show) {
+function sanitizeForPublicRecord(entry, show, { ownerApproved = false, now = Date.now() } = {}) {
   if (typeof show === 'string') throw new TypeError('sanitizeForPublicRecord: pass the shows.json record, not its status');
   const showRecord = show || null;
   const showStatus = showRecord ? showRecord.status : undefined;
@@ -477,12 +477,21 @@ function sanitizeForPublicRecord(entry, show) {
   // here with the show record, so a researched or released row cannot publish
   // one early (beaches, 2026-10-11). An owner-locked label is left alone, as
   // the classifier leaves it (the record checks still warn on it).
-  if (out.humanReviewedDesignation !== true && isPrematureSilenceLabel(out, showRecord)) {
+  if (out.humanReviewedDesignation !== true && isPrematureSilenceLabel(out, showRecord, now)) {
+    // BRO-5113: the public timing rule must not discard an owner's verdict.
+    // Only the explicitly approved held-row release sets this option.
+    if (ownerApproved === true && showStatus === 'closed') {
+      out.ownerDesignationAfterWindow = out.designation;
+      out.ownerDesignationReviewedAt = new Date(now).toISOString();
+    }
     out.designation = 'TBD';
     delete out.designationBasis;
     if (out.recouped === false) out.recouped = null;
     out.needsLossEvidence = true;
     changed.push('designation');
+  }
+  if (ownerApproved === true && showStatus === 'closed' && LOSS_DESIGNATIONS.includes(out.designation)) {
+    out.humanReviewedDesignation = true;
   }
   return { entry: out, changed, holdReason };
 }

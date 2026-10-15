@@ -320,7 +320,8 @@ async function main() {
     // Entries that would be held for review are held before any page is fetched: an entry stuck on a hold would
     // otherwise be re-verified (up to the per-run fetch cap) on every run.
     const keyShowRecord = keyShow && keyShow.slug === commercialKey ? keyShow : undefined;
-    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources }), keyShowRecord).holdReason;
+    const publicRecordOptions = { ownerApproved: Boolean(RELEASE_HELD && row.ownerApproved === true) };
+    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources }), keyShowRecord, publicRecordOptions).holdReason;
     if (heldBeforeFetch) {
       console.log(`  🛑 "${showId}" — left pending for review: ${heldBeforeFetch}`);
       skipped++;
@@ -357,6 +358,7 @@ async function main() {
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
       gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources, figureEvidence }),
       keyShowRecord,
+      publicRecordOptions,
     );
     if (holdReason) {
       console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);

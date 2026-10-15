@@ -103,6 +103,8 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   const maxAgeDays = t.maxAgeDays ?? MAX_AGE_DAYS_DEFAULT;
   const recentSignalDays = t.recentSignalDays ?? RECENT_SIGNAL_DAYS_DEFAULT;
   const nowMs = now ?? Date.now();
+  const ownerDesignation = ['Flop', 'Fizzle'].includes(entry?.ownerDesignationAfterWindow)
+    ? entry.ownerDesignationAfterWindow : null;
 
   if (!show) return { action: 'no-change', reason: 'no show data' };
   if (show.status !== 'closed') return { action: 'no-change', reason: `status=${show.status}` };
@@ -111,13 +113,14 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   if (!closingDate) return { action: 'no-change', reason: 'no closingDate' };
 
   const daysClosed = daysAgo(closingDate, nowMs);
+  if (!Number.isFinite(daysClosed)) return { action: 'no-change', reason: 'invalid closingDate' };
   if (daysClosed < graceDays) return { action: 'wait', reason: `grace-period (${Math.floor(daysClosed)}d < ${graceDays}d)` };
   // The age cap keeps historical shows we never researched out of the scan.
-  // A TBD record that WAS deep-researched is exempt: otherwise a show that
+  // A TBD record that WAS deep-researched or owner-reviewed is exempt: otherwise a show that
   // aged past the cap before its research landed stays TBD forever
   // (our-town, job-2024; BRO-4985).
-  const researchedTbd = entry?.designation === 'TBD' && hasBeenResearched(entry);
-  if (daysClosed > maxAgeDays && !researchedTbd) return { action: 'no-change', reason: `too-old (${Math.floor(daysClosed)}d > ${maxAgeDays}d)` };
+  const reviewedTbd = entry?.designation === 'TBD' && (hasBeenResearched(entry) || ownerDesignation);
+  if (daysClosed > maxAgeDays && !reviewedTbd) return { action: 'no-change', reason: `too-old (${Math.floor(daysClosed)}d > ${maxAgeDays}d)` };
 
   // Honor manual review locks
   if (entry?.humanReviewedDesignation === true) {
@@ -166,7 +169,8 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   // > 0 OR a researchedAt timestamp). Otherwise escalate to human review so
   // an operator can backfill. This is the User Impact reviewer's
   // producer-reputation risk mitigation.
-  if (!hasBeenResearched(entry)) {
+  // An explicitly saved owner verdict has already had that human review.
+  if (!hasBeenResearched(entry) && !ownerDesignation) {
     const tbdEntry = entry?.designation === 'TBD';
     return {
       action: 'human-review',
@@ -188,24 +192,49 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   // requireLossEvidence is the kill switch: always flag, never label on
   // silence (STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE=1).
   const lossLabelMinDays = t.lossLabelMinDays ?? LOSS_LABEL_MIN_DAYS_DEFAULT;
+  const reviewEvidence = ownerDesignation ? 'owner-reviewed' : 'deep-researched';
   if (t.requireLossEvidence) {
     return {
       action: 'flag-needs-loss-evidence',
-      reason: `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found; loss labels on silence are switched off`,
+      reason: `closed ${Math.floor(daysClosed)}d ago, ${reviewEvidence}, no trade-press recoupment found; loss labels on silence are switched off`,
     };
   }
   if (daysClosed < lossLabelMinDays) {
     return {
       action: 'flag-needs-loss-evidence',
-      reason: `closed ${Math.floor(daysClosed)}d ago (< ${lossLabelMinDays}d), deep-researched, no trade-press recoupment found yet`,
+      reason: `closed ${Math.floor(daysClosed)}d ago (< ${lossLabelMinDays}d), ${reviewEvidence}, no trade-press recoupment found yet`,
     };
   }
   return {
     action: 'classify-fizzle',
-    reason: `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found`,
-    designation: lossLabelFor(entry),
+    reason: ownerDesignation
+      ? `owner-reviewed ${ownerDesignation}; closed ${Math.floor(daysClosed)}d ago, closure window passed`
+      : `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found`,
+    designation: ownerDesignation || lossLabelFor(entry),
     designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED,
+    ...(ownerDesignation ? { humanReviewedDesignation: true } : {}),
     confidence: 'high',
+  };
+}
+
+/** Materialize the classifier's decision without changing unrelated figures or sources. */
+function buildClassifiedClosureEntry(entry, show, result, now = Date.now()) {
+  const existing = entry || {};
+  const { needsLossEvidence: _flag, ...rest } = existing;
+  const stamp = new Date(now).toISOString();
+  return {
+    ...rest,
+    designation: result.designation,
+    designationBasis: result.designationBasis,
+    ...(result.humanReviewedDesignation === true ? { humanReviewedDesignation: true } : {}),
+    recouped: existing.recouped === true ? true : false,
+    recoupedSource: existing.recoupedSource ||
+      `Inferred: closed ${Math.floor((now - Date.parse(show.closingDate)) / 86_400_000)} days ago, no trade-press recoupment found`,
+    classifiedBy: 'classify-stale-closures',
+    classifiedAt: stamp,
+    classifiedReason: result.reason,
+    lastUpdated: stamp,
+    firstAdded: existing.firstAdded || stamp,
   };
 }
 
@@ -251,6 +280,9 @@ function undoAutoFizzleOnRunningShow(entry, show) {
 function closedTbdLossAction(entry, show, { now = Date.now(), lossLabelMinDays = LOSS_LABEL_MIN_DAYS_DEFAULT, requireLossEvidence = false } = {}) {
   if (!entry || entry.designation !== 'TBD' || !show || show.status !== 'closed') return null;
   if (entry.humanReviewedDesignation === true || entry.recouped === true) return null;
+  // The daily classifier applies the saved owner verdict and review stamp.
+  // Cleanup must not preempt it with an automatic label.
+  if (['Flop', 'Fizzle'].includes(entry.ownerDesignationAfterWindow)) return null;
   // Tours and transfers keep earning elsewhere, same carve-out as the classifier.
   if (entry.productionType && SKIP_PRODUCTION_TYPES.has(entry.productionType)) return null;
   const days = daysAgo(show.closingDate, now);
@@ -272,5 +304,6 @@ module.exports = {
   SKIP_PRODUCTION_TYPES,
   SKIP_DESIGNATIONS,
   classifyStaleClosure,
+  buildClassifiedClosureEntry,
   undoAutoFizzleOnRunningShow,
 };

@@ -300,6 +300,21 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     }
   }
   stampDesignationBasis(result, entry, existing);
+  // A later automated research refresh must not erase a verdict waiting for
+  // the closure window. A verified recoupment still supersedes the loss.
+  if (result.recouped === true) {
+    delete result.ownerDesignationAfterWindow;
+    delete result.ownerDesignationReviewedAt;
+  } else if (existing && ['Flop', 'Fizzle'].includes(existing.ownerDesignationAfterWindow)) {
+    result.ownerDesignationAfterWindow = existing.ownerDesignationAfterWindow;
+    result.ownerDesignationReviewedAt = existing.ownerDesignationReviewedAt;
+    if (existing.designation === 'TBD' && entry.ownerApproved !== true) {
+      result.designation = 'TBD';
+      delete result.designationBasis;
+      if (result.recouped === false) result.recouped = null;
+      result.needsLossEvidence = true;
+    }
+  }
   applyFigureEvidence(result, entry, figureEvidence);
   return result;
 }
