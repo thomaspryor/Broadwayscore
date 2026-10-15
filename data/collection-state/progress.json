@@ -148,7 +148,17 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
-    "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json"
+    "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+    "side-show-2014/by-clicking-here--unknown.json",
+    "prima-facie-west-end-2022/times-uk--dominic-maxwell.json",
+    "the-glass-menagerie-2013/broadwayworld--michael-dale.json",
+    "gore-vidals-the-best-man-2012/nytimes--charles-isherwood.json",
+    "antigone-exits-chichester-regional-2026/egazette--unknown.json",
+    "antigone-exits-chichester-regional-2026/thestage--dave-fargnoli.json",
+    "la-boheme-off-broadway-2026/kcindependent--unknown.json",
+    "macbeth-off-broadway-2026/opera-online--unknown.json",
+    "paranormal-activity-2026/broadwaystars--unknown.json",
+    "paranormal-activity-2026/islingtontribune--unknown.json"
   ],
   "failed": [
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
@@ -302,7 +312,35 @@
     "perfect-crime-off-broadway-1987/woman-around-town--quan-lam.json",
     "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
     "evita-2026/thestage--sam-marlowe.json",
-    "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json"
+    "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json",
+    "frozen-west-end-2021/i-paper--sam-marlowe.json",
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "waiting-for-godot-2009/amny--matt-windman.json",
+    "the-crucible-west-end-2023/times-uk--unknown.json",
+    "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1791844787133.json",
+    "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1791798635708.json",
+    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "sunset-boulevard-2017/theatre-reviews-limited--david-roberts.json",
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "little-bear-ridge-road-regional-2024/hollywood-reporter--unknown.json",
+    "promises-promises-2010/bloomberg--john-simon.json",
+    "all-my-sons-west-end-2025/thewrap--robert-hofler.json",
+    "stick-fly-2011/nydailynews--joe-dziemianowicz.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "romeo-and-juliet-west-end-2026/newsday--unknown.json",
+    "promises-promises-2010/variety--steven-suskin.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/guardian--mark-fisher.json",
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
+    "mystic-pizza-tour-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/rottentomatoes--unknown.json",
+    "macbeth-off-broadway-2026/rottentomatoes--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/jonathan-baz--jonathan-baz.json",
+    "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -395,14 +433,21 @@
       "mamma-mia-west-end-2021/thereviewshub--the-reviews-hub.json",
       "the-lion-king-1997/timeout--adam-feldman.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "the-mousetrap-west-end-2021/standard--jessie-thompson.json"
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "antigone-exits-chichester-regional-2026/egazette--unknown.json",
+      "antigone-exits-chichester-regional-2026/thestage--dave-fargnoli.json",
+      "la-boheme-off-broadway-2026/kcindependent--unknown.json",
+      "macbeth-off-broadway-2026/opera-online--unknown.json",
+      "paranormal-activity-2026/broadwaystars--unknown.json",
+      "paranormal-activity-2026/islingtontribune--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
       "data/review-texts/dirty-dancing-tour-2026/variety--payton-turkeltaub.json",
       "dirty-dancing-tour-2026/variety--payton-turkeltaub.json",
       "data/review-texts/dirty-dancing-tour-2026/deadline--greg-evans.json",
-      "dirty-dancing-tour-2026/deadline--greg-evans.json"
+      "dirty-dancing-tour-2026/deadline--greg-evans.json",
+      "data/review-texts/promises-promises-2010/variety--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
@@ -436,7 +481,8 @@
       "the-phantom-of-the-opera-tour-2025/broadwayworld--jared-fessler.json",
       "water-for-elephants-tour-2025/broadwayworld--christina-mancuso.json",
       "beauty-and-the-beast-tour-2025/broadwayworld--taylor-clemons.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json"
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "gore-vidals-the-best-man-2012/nytimes--charles-isherwood.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -475,11 +521,14 @@
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
       "the-book-of-mormon-west-end-2024/mirror--alun-palmer.json",
       "wicked-2003/seatplan--unknown.json",
-      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json"
+      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+      "side-show-2014/by-clicking-here--unknown.json",
+      "prima-facie-west-end-2022/times-uk--dominic-maxwell.json",
+      "the-glass-menagerie-2013/broadwayworld--michael-dale.json"
     ]
   },
   "startTime": "2026-10-14T21:40:22.409Z",
-  "lastProcessed": "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-10-14T21:57:01.753Z",
