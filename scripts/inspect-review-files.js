@@ -65,7 +65,11 @@ function exclusionFor(r, show, filePath) {
     return require('./lib/review-guards').explainExclusion(r, showFor(show), filePath);
   } catch (e) { return `error: ${e.message}`; }
 }
-const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf'];
+// BRO-5395: every field explainExclusion / isScoreable can drop a file on
+// (rejectionReason, incompleteReason, the other non-review flags,
+// showNotMentioned, the scorer's text-gate block), so a skip can be read here.
+const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf',
+  'isNotReview', 'nonReviewFlag', 'nonReviewContent', 'nonReviewManualClear', 'rejectionReason', 'rejectedBy', 'incompleteReason', 'showNotMentioned', 'rescoreBlockedReason', 'contentTierReason'];
 for (const show of shows) {
   const dir = path.join(root, show);
   if (!fs.existsSync(dir)) { console.log(`## ${show}: no directory`); continue; }
