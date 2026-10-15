@@ -1,34 +1,13 @@
 {
-  "generatedAt": "2026-10-15T12:26:20.821Z",
+  "generatedAt": "2026-10-15T15:28:19.418Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 237,
-  "clean": 236,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "tartuffe-remixed-off-west-end-2026",
-      "title": "Tartuffe Remixed",
-      "openingDate": "2026-09-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: partially-obstructed-view"
-        }
-      ],
-      "missingFromProd": [
-        "partially-obstructed-view"
-      ],
-      "localCount": 29,
-      "deployedCount": 28,
-      "firstDefectAt": "2026-10-15T12:26:14.236Z"
-    }
-  ],
+  "checked": 239,
+  "clean": 239,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

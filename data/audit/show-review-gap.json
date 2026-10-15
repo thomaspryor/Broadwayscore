@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-15T12:23:26.665Z",
+  "generatedAt": "2026-10-15T15:28:00.413Z",
   "windowDays": 1095,
-  "targets": 666,
-  "auditedThisRun": 18,
-  "carriedForward": 715,
+  "targets": 662,
+  "auditedThisRun": 12,
+  "carriedForward": 721,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 415,
-    "missingCurrentRun": 838,
+    "withGap": 419,
+    "missingCurrentRun": 851,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 975,
-    "totalRecoverable": 6,
-    "totalRecovered": 15,
+    "totalFlaggedMisses": 980,
+    "totalRecoverable": 5,
+    "totalRecovered": 14,
     "humanExcluded": 1,
-    "automatedExcluded": 142,
-    "automatedExcludedListed": 142,
+    "automatedExcluded": 147,
+    "automatedExcludedListed": 147,
     "priorProductionCitations": 5051
   },
   "results": [
@@ -733,7 +733,12 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T10:17:27.731Z",
+      "quarantine": {
+        "nextState": "incomplete:6:7",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -11382,44 +11387,36 @@
       "openingDate": "2026-10-14",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Anne-Washburns-ANON-Opens-at-MCC-20261015"
+      ],
       "aggregatorListedUrls": [
         "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
-        "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+        "https://culturesauce.com/anon-anne-washburn-off-broadway-review/"
       ],
-      "dirFiles": 4,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 9,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
           "host": "frontmezzjunkies.com",
           "knownOutletId": "frontmezzjunkies",
-          "recoverable": true,
-          "recoverableFile": "frontmezzjunkies--ross.json",
-          "recoverableOutletId": "frontmezzjunkies",
-          "recoverableCritic": "Ross",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frontmezzjunkies--ross.json",
-              "flag": "nonReview",
-              "urlInDir": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -11427,110 +11424,36 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+              "file": "frontmezzjunkies--ross.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "wrongShow"
           ],
-          "serpCensus": true,
           "reverify": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"ANON – a tempest at our kitchen table\" review newman",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 281,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "production-database-listing": 3,
-          "non-review-host": 10,
-          "ticketing-reseller": 7,
-          "census-junk-host": 4,
-          "ticketing-listing": 1,
-          "news-article": 1
+          "non-review-host": 15,
+          "aggregator-internal-nav": 211,
+          "not-http-url": 49,
+          "aggregator-section-root": 6
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
-          "host": "frontmezzjunkies.com",
-          "file": "frontmezzjunkies--ross.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -11540,37 +11463,29 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
           {
             "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
             "outletId": "frontmezzjunkies",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T10:17:27.731Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T01:10:51.119Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
+        "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -21894,12 +21809,72 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Betty's Summer Vacation (The Heights Players)\" review john",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 16,
+        "byReason": {
+          "non-review-host": 15,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -21912,7 +21887,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
@@ -28891,7 +28866,7 @@
       "quarantine": {
         "nextState": "incomplete:8:11",
         "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-15T06:43:21.647Z"
+        "lastAt": "2026-10-15T15:28:00.489Z"
       }
     },
     {
@@ -30105,7 +30080,12 @@
         "liveCount": 1,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -45400,7 +45380,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T06:43:21.573Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -46512,13 +46492,120 @@
       "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+        "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+        "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+        "https://shouldgoto.com/theatre/dog-mom",
+        "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+        "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/"
+      ],
+      "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+          "host": "theqr.co.uk",
+          "knownOutletId": "theqr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theqr--will-quinn.json",
+              "flag": "clean",
+              "urlInDir": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+          "host": "flickermagazine.art",
+          "knownOutletId": "flicker-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "flicker-magazine--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": "readaboutstuff",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "readaboutstuff--dan-english.json",
+              "flag": "clean",
+              "urlInDir": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+          "host": "dogforum.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dogforum--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -46559,34 +46646,210 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dog Mom\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dog Mom\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dog Mom\" review southwark",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dog Mom Southwark Playhouse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dog Mom Southwark Playhouse review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dog Mom Southwark Playhouse review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "non-review-host": 25,
+          "aggregator-internal-nav": 2,
+          "write-path-blocked": 1,
+          "census-junk-host": 2,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
-      "unextractable": [],
+      "automatedExcludedListed": 4,
+      "unextractable": [
+        {
+          "url": "https://shouldgoto.com/theatre/dog-mom",
+          "host": "shouldgoto.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 4
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://shouldgoto.com/theatre/dog-mom",
+          "host": "shouldgoto.com",
+          "outletId": "shouldgoto",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/"
+          },
+          {
+            "outletId": "theqr",
+            "outlet": "theqr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+          },
+          {
+            "outletId": "flicker-magazine",
+            "outlet": "flicker-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn"
+          },
+          {
+            "outletId": "readaboutstuff",
+            "outlet": "readaboutstuff",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/"
+          },
+          {
+            "outletId": "dogforum.co.uk",
+            "outlet": "dogforum.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+            "outletId": "uktw",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+            "outletId": "theqr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+            "outletId": "flicker-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+            "outletId": "readaboutstuff",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+            "outletId": "dogforum.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
       "title": "Doll Day Afternoon",
       "openingDate": "2026-10-15",
-      "status": "upcoming",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -46599,12 +46862,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Doll Day Afternoon\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 24,
+          "aggregator-internal-nav": 6,
+          "write-path-blocked": 2,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -46617,7 +46942,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T06:43:21.573Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -46796,38 +47121,352 @@
       "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
       "title": "Double Bill: Tell Me Straight & Aggy",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479",
+        "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
+        "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
+        "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7288996"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
+          "host": "chloenelkinconsulting.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479",
+          "host": "whatnightout.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true
+        },
+        {
+          "url": "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
+          "host": "shouldgoto.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+          "host": "ticketsforgood.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7288996",
+          "host": "whatnightout.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Double Bill: Tell Me Straight and Aggy\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Double Bill: Tell Me Straight and Aggy\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Double Bill: Tell Me Straight and Aggy\" review king",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Double Bill: Tell Me Straight and Aggy King's Head Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Double Bill: Tell Me Straight and Aggy King's Head Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Double Bill: Tell Me Straight and Aggy King's Head Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 18,
+        "byReason": {
+          "non-review-host": 9,
+          "ticketing-reseller": 1,
+          "ticketing-listing": 2,
+          "write-path-blocked": 1,
+          "census-junk-host": 2,
+          "non-review-path": 1,
+          "show-hub": 1,
+          "event-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
+          "host": "chloenelkinconsulting.com",
+          "outletId": "chloenelkinconsulting",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479",
+          "host": "whatnightout.uk",
+          "outletId": "whatnightout",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
+          "host": "shouldgoto.com",
+          "outletId": "shouldgoto",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
+        },
+        {
+          "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+          "host": "ticketsforgood.co.uk",
+          "outletId": "ticketsforgood",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7288996",
+          "host": "whatnightout.uk",
+          "outletId": "whatnightout"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "chloenelkinconsulting.com",
+            "outlet": "chloenelkinconsulting.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/"
+          },
+          {
+            "outletId": "whatnightout.uk",
+            "outlet": "whatnightout.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479"
+          },
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/"
+          },
+          {
+            "outletId": "shouldgoto.com",
+            "outlet": "shouldgoto.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy"
+          },
+          {
+            "outletId": "ticketsforgood.co.uk",
+            "outlet": "ticketsforgood.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy"
+          },
+          {
+            "outletId": "whatnightout.uk",
+            "outlet": "whatnightout.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7288996"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
+            "outletId": "chloenelkinconsulting.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4987479",
+            "outletId": "whatnightout.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
+            "outletId": "uktw",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
+            "outletId": "shouldgoto.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+            "outletId": "ticketsforgood.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7288996",
+            "outletId": "whatnightout.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-12T02:07:28.826Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -54177,7 +54816,12 @@
         "liveCount": 13,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "incomplete:11:15",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "firewing-off-west-end-2026",
@@ -63925,7 +64569,12 @@
         "liveCount": 11,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "incomplete:10:11",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "gotta-dance-off-broadway-2026",
@@ -108513,38 +109162,279 @@
       "showId": "manual-cinema-the-4th-witch-off-broadway-2026",
       "title": "Manual Cinema: The 4th Witch",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://artsfuse.org/319411/theater-review-manual-cinemas-the-4th-witch-a-hallucinatory-vision-of-war-and-witchcraft/",
+        "https://www.sfchronicle.com/entertainment/theater/article/manual-cinema-4th-witch-review-21192477.php",
+        "https://www.theatermirror.net/manual-cinema-continues-to-enchant-with-the-4th-witch-at-artsemerson/",
+        "https://dailyiowan.com/2026/04/14/review-manual-cinemas-the-4th-witch-breathes-new-life-into-classic-shakespeare-tragedy/",
+        "https://hop.dartmouth.edu/events/manual-cinema-4th-witch"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://artsfuse.org/319411/theater-review-manual-cinemas-the-4th-witch-a-hallucinatory-vision-of-war-and-witchcraft/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.sfchronicle.com/entertainment/theater/article/manual-cinema-4th-witch-review-21192477.php",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermirror.net/manual-cinema-continues-to-enchant-with-the-4th-witch-at-artsemerson/",
+          "host": "theatermirror.net",
+          "knownOutletId": "theater-mirror",
+          "serpCensus": true
+        },
+        {
+          "url": "https://dailyiowan.com/2026/04/14/review-manual-cinemas-the-4th-witch-breathes-new-life-into-classic-shakespeare-tragedy/",
+          "host": "dailyiowan.com",
+          "knownOutletId": "the-daily-iowan",
+          "serpCensus": true
+        },
+        {
+          "url": "https://hop.dartmouth.edu/events/manual-cinema-4th-witch",
+          "host": "dartmouth.edu",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Manual Cinema: The 4th Witch\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Manual Cinema: The 4th Witch\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Manual Cinema: The 4th Witch\" review skirball",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Manual Cinema: The 4th Witch NYU Skirball review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Manual Cinema: The 4th Witch NYU Skirball review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Manual Cinema: The 4th Witch NYU Skirball review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "non-review-host": 21,
+          "ticketing-reseller": 2,
+          "aggregator-internal-nav": 2,
+          "institutional-press-release": 2,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://artsfuse.org/319411/theater-review-manual-cinemas-the-4th-witch-a-hallucinatory-vision-of-war-and-witchcraft/",
+          "host": "artsfuse.org",
+          "outletId": "artsfuse",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: manual-cinema-the-4th-witch-off-broadway-2026/artsfuse--rober"
+        },
+        {
+          "url": "https://www.sfchronicle.com/entertainment/theater/article/manual-cinema-4th-witch-review-21192477.php",
+          "host": "sfchronicle.com",
+          "outletId": "san-francisco-chronicle",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.theatermirror.net/manual-cinema-continues-to-enchant-with-the-4th-witch-at-artsemerson/",
+          "host": "theatermirror.net",
+          "outletId": "theater-mirror",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: manual-cinema-the-4th-witch-off-broadway-2026/theater-mirror-"
+        },
+        {
+          "url": "https://dailyiowan.com/2026/04/14/review-manual-cinemas-the-4th-witch-breathes-new-life-into-classic-shakespeare-tragedy/",
+          "host": "dailyiowan.com",
+          "outletId": "the-daily-iowan",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://hop.dartmouth.edu/events/manual-cinema-4th-witch",
+          "host": "dartmouth.edu",
+          "outletId": "dartmouth",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"dartmouth\" (not in registry) — onboard to outlet-registry.json after review."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "artsfuse",
+            "outlet": "artsfuse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://artsfuse.org/319411/theater-review-manual-cinemas-the-4th-witch-a-hallucinatory-vision-of-war-and-witchcraft/"
+          },
+          {
+            "outletId": "san-francisco-chronicle",
+            "outlet": "san-francisco-chronicle",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sfchronicle.com/entertainment/theater/article/manual-cinema-4th-witch-review-21192477.php"
+          },
+          {
+            "outletId": "theater-mirror",
+            "outlet": "theater-mirror",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermirror.net/manual-cinema-continues-to-enchant-with-the-4th-witch-at-artsemerson/"
+          },
+          {
+            "outletId": "the-daily-iowan",
+            "outlet": "the-daily-iowan",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dailyiowan.com/2026/04/14/review-manual-cinemas-the-4th-witch-breathes-new-life-into-classic-shakespeare-tragedy/"
+          },
+          {
+            "outletId": "dartmouth.edu",
+            "outlet": "dartmouth.edu",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://hop.dartmouth.edu/events/manual-cinema-4th-witch"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://artsfuse.org/319411/theater-review-manual-cinemas-the-4th-witch-a-hallucinatory-vision-of-war-and-witchcraft/",
+            "outletId": "artsfuse",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://www.sfchronicle.com/entertainment/theater/article/manual-cinema-4th-witch-review-21192477.php",
+            "outletId": "san-francisco-chronicle",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://www.theatermirror.net/manual-cinema-continues-to-enchant-with-the-4th-witch-at-artsemerson/",
+            "outletId": "theater-mirror",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://dailyiowan.com/2026/04/14/review-manual-cinemas-the-4th-witch-breathes-new-life-into-classic-shakespeare-tragedy/",
+            "outletId": "the-daily-iowan",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://hop.dartmouth.edu/events/manual-cinema-4th-witch",
+            "outletId": "dartmouth.edu",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-12T02:07:28.826Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "marcel-on-the-train-off-broadway-2026",
@@ -114074,7 +114964,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T10:17:27.731Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -115989,7 +116884,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T10:17:27.731Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -125319,7 +126219,8 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://openingnight.online/event-listing-music-for-18-musicians-staged-variations-wade-thompson-drill-hall-park-avenue-armory-oct-14-15-16-17-18-mat/"
+        "https://openingnight.online/event-listing-music-for-18-musicians-staged-variations-wade-thompson-drill-hall-park-avenue-armory-oct-14-15-16-17-18-mat/",
+        "https://oazis.app/evenements/music-for-18-musicians-staged-variations"
       ],
       "dirFiles": 0,
       "dirClean": 0,
@@ -125329,6 +126230,12 @@
           "url": "https://openingnight.online/event-listing-music-for-18-musicians-staged-variations-wade-thompson-drill-hall-park-avenue-armory-oct-14-15-16-17-18-mat/",
           "host": "openingnight.online",
           "knownOutletId": "openingnight",
+          "serpCensus": true
+        },
+        {
+          "url": "https://oazis.app/evenements/music-for-18-musicians-staged-variations",
+          "host": "oazis.app",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -125388,24 +126295,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 25,
         "byReason": {
+          "non-review-host": 19,
           "aggregator-internal-nav": 2,
           "ticketing-listing": 1,
-          "non-review-host": 18,
-          "bare-host": 1,
           "census-junk-host": 1,
-          "event-listing": 1
+          "event-listing": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -125424,6 +126331,19 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=openingnight.online): Scrapingdog HTTP 404: {\"message\""
+        },
+        {
+          "url": "https://oazis.app/evenements/music-for-18-musicians-staged-variations",
+          "host": "oazis.app",
+          "outletId": "oazis",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=oazis.app): Scrapingdog HTTP 400: Oops! Something went"
         }
       ],
       "ingestSkippedByCap": [],
@@ -125436,6 +126356,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://openingnight.online/event-listing-music-for-18-musicians-staged-variations-wade-thompson-drill-hall-park-avenue-armory-oct-14-15-16-17-18-mat/"
+          },
+          {
+            "outletId": "oazis.app",
+            "outlet": "oazis.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://oazis.app/evenements/music-for-18-musicians-staged-variations"
           }
         ],
         "suppressedMissing": [],
@@ -125446,13 +126373,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-14T22:55:22.804Z"
+          },
+          {
+            "url": "https://oazis.app/evenements/music-for-18-musicians-staged-variations",
+            "outletId": "oazis.app",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-15T06:43:21.573Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -145381,12 +146315,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Quarter Rican\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Quarter Rican\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Quarter Rican\" review hostos",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 30,
+          "aggregator-internal-nav": 2,
+          "census-junk-host": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -145399,7 +146394,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -154576,8 +155571,8 @@
       "candidatesRejected": {
         "count": 205,
         "byReason": {
-          "aggregator-internal-nav": 124,
           "non-review-host": 40,
+          "aggregator-internal-nav": 124,
           "not-http-url": 11,
           "production-database-listing": 21,
           "aggregator-section-root": 8,
@@ -154760,7 +155755,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T06:43:21.573Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -160852,7 +161847,12 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T10:17:27.731Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -166286,7 +167286,12 @@
         "liveCount": 6,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -167635,8 +168640,8 @@
     {
       "showId": "stuffed-off-west-end-2026",
       "title": "Stuffed",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-10-14",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/what-do-critics-think-of-lisa-lampanellis-stuffed"
@@ -167644,7 +168649,12 @@
       "aggregatorListedUrls": [
         "http://www.hollywoodreporter.com/review/stuffed-review-936166",
         "http://www.nytimes.com/2016/10/15/theater/review-stuffed-details-fights-women-wage-with-their-weight.html",
-        "http://www.timeout.com/newyork/blog/theater-review-in-stuffed-lisa-lampanelli-weighs-in-on-body-image-100716"
+        "http://www.timeout.com/newyork/blog/theater-review-in-stuffed-lisa-lampanelli-weighs-in-on-body-image-100716",
+        "https://www.londonpubtheatres.com/review-stuffed-at-new-diorama-theatre-13-24-october-2026",
+        "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/",
+        "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
+        "https://www.uktw.co.uk/London/The-New-Diorama-Theatre/Play/Stuffed/L0727657514/",
+        "https://www.fest-mag.com/edinburgh/theatre/review-stuffed"
       ],
       "dirFiles": 3,
       "dirClean": 1,
@@ -167670,15 +168680,65 @@
           "knownOutletId": "timeout-london",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
+        },
         {
-          "host": "londonpubtheatres.com",
-          "count": 1
+          "url": "https://www.fest-mag.com/edinburgh/theatre/review-stuffed",
+          "host": "fest-mag.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2024-08-05",
+          "serpCensus": true
         }
       ],
-      "flaggedMisses": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/",
+          "host": "redbuslondinium.uk",
+          "knownOutletId": "redbuslondinium",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "redbuslondinium--red-bus-londinium.json",
+              "flag": "clean",
+              "urlInDir": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
+          "host": "thenerve.news",
+          "knownOutletId": "thenerve",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thenerve--maddy-costa.json",
+              "flag": "clean",
+              "urlInDir": "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -167725,17 +168785,77 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Stuffed\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Stuffed\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Stuffed\" review diorama",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Stuffed New Diorama Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Stuffed New Diorama Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Stuffed New Diorama Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 108,
+        "count": 125,
         "byReason": {
+          "non-review-host": 32,
           "aggregator-internal-nav": 69,
+          "write-path-blocked": 2,
+          "census-junk-host": 1,
           "not-http-url": 5,
           "production-database-listing": 10,
           "aggregator-section-root": 4,
-          "non-review-host": 20
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -167745,8 +168865,16 @@
           "publishDate": "2016-10-17"
         }
       ],
-      "automatedExcludedListed": 0,
-      "unextractable": [],
+      "automatedExcludedListed": 2,
+      "unextractable": [
+        {
+          "url": "https://www.uktw.co.uk/London/The-New-Diorama-Theatre/Play/Stuffed/L0727657514/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true,
+          "zeroCharAttempts": 4
+        }
+      ],
       "weIngestBlocked": [
         {
           "url": "http://www.hollywoodreporter.com/review/stuffed-review-936166",
@@ -167765,20 +168893,62 @@
           "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://www.fest-mag.com/edinburgh/theatre/review-stuffed",
+          "host": "fest-mag.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "redbuslondinium",
+            "outlet": "redbuslondinium",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/"
+          },
+          {
+            "outletId": "thenerve",
+            "outlet": "thenerve",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.londonpubtheatres.com/review-stuffed-at-new-diorama-theatre-13-24-october-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/",
+            "outletId": "redbuslondinium",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
+            "outletId": "thenerve",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          }
+        ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 1,
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "suffs-2024",
@@ -172740,7 +173910,12 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-15T06:43:21.573Z"
+      "computedAt": "2026-10-15T06:43:21.573Z",
+      "quarantine": {
+        "nextState": "incomplete:0:4",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "the-balusters-2026",
@@ -174592,7 +175767,12 @@
         "liveCount": 1,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-15T12:23:26.665Z"
+      "computedAt": "2026-10-15T12:23:26.665Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T15:28:00.489Z",
+        "lastAt": "2026-10-15T15:28:00.489Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -220355,114 +221535,28 @@
       "showId": "unconditional-a-new-musical-memoir-off-broadway-2026",
       "title": "UNCONDITIONAL, a new musical memoir",
       "openingDate": "2026-10-15",
-      "status": "upcoming",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
-      ],
-      "dirFiles": 1,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-22",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"UNCONDITIONAL, a new musical memoir\" review mama",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 23,
-        "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 17,
-          "census-junk-host": 2,
-          "merch-store": 1,
-          "bare-host": 1,
-          "write-path-blocked": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -220472,7 +221566,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T10:17:27.731Z"
+      "computedAt": "2026-10-15T15:28:00.413Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
