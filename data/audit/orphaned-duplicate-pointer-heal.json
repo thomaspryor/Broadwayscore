@@ -1,20 +1,13 @@
 {
-  "generated": "2026-10-15T02:14:45.787Z",
+  "generated": "2026-10-15T04:37:40.981Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 26,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
       "loserFile": "usatoday--unknown.json",
       "targetFile": "usatoday--usa-today-staff.json",
       "reason": "orphaned-duplicate-heal: usatoday--usa-today-staff.json was flagged invalid after usatoday--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2022",
-      "loserFile": "broadwayworld--unknown.json",
-      "targetFile": "broadwayworld--aliya-al-hassan.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--aliya-al-hassan.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

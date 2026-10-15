@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T02:19:03.381Z",
+  "timestamp": "2026-10-15T04:44:26.667Z",
   "stats": {
-    "totalReviews": 56601,
-    "alreadyFlagged": 21056,
-    "dateGuardCatches": 211,
+    "totalReviews": 56611,
+    "alreadyFlagged": 21060,
+    "dateGuardCatches": 210,
     "directorMismatch": 1909,
     "tvFilmSignals": 1581,
-    "londonSignals": 2348,
+    "londonSignals": 2349,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5196
+    "noPublishDate": 5199
   },
   "findings": [
     {
@@ -7844,20 +7844,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2019 (0x). 2026 matches production: choir-boy-off-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "christmas-carol-goes-wrong-west-end-2026",
-      "file": "broadwayworld--kat-mokrynski.json",
-      "score": 86,
-      "publishDate": "2025-12-16",
-      "url": "https://www.broadwayworld.com/westend/article/Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 367d before show (2025-12-16 vs 2026-12-18)"
         }
       ]
     },
@@ -84457,6 +84443,20 @@
       "score": 92,
       "publishDate": "2026-09-16",
       "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "mycultural--unknown.json",
+      "score": 95,
+      "publishDate": "2026-09-18",
+      "url": "https://mycultural.life/theatre/thelma-louise/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
