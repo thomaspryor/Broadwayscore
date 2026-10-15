@@ -333,7 +333,9 @@ async function resolveTbObIndexUrl({ url, reviewText, showTitle, criticName, fet
   if (!isTbObIndexUrl(url)) return { found: false, reason: 'not a TB Off-Broadway index url' };
   const date = extractTbReviewDate(reviewText);
   if (!date) return { found: false, reason: 'no date line in review text' };
-  const surname = String(criticName || '').trim().split(/\s+/).pop().toLowerCase();
+  const surname = String(criticName || '').replace(/\b(?:jr|sr|ii|iii|iv)\.?$/i, '').trim().split(/\s+/).pop().replace(/[^\p{L}'-]/gu, '').toLowerCase();
+  if (!surname || surname === 'unknown') return { found: false, reason: 'no critic name to verify against' };
+  const surnameRe = new RegExp(`\\bby\\s+[^<]{0,40}\\b${surname.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
   for (const candidate of buildTbObCandidateUrls(date)) {
     let page;
     try {
@@ -345,7 +347,7 @@ async function resolveTbObIndexUrl({ url, reviewText, showTitle, criticName, fet
     if (!page || !page.content) continue;
     const v = verifyTbPage(page.content, { showTitle, openingDate: null });
     if (!v.ok) { logger.log(`    rejected ${candidate}: ${v.reason}`); continue; }
-    if (surname && !page.content.toLowerCase().includes(surname)) {
+    if (!surnameRe.test(page.content)) {
       logger.log(`    rejected ${candidate}: critic "${criticName}" not on page`);
       continue;
     }

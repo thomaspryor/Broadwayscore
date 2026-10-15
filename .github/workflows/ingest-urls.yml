@@ -80,6 +80,9 @@ jobs:
           node-version: '20'
 
       # TB (Cloudflare) needs a real browser when the proxy chain fails (BRO-4437, cousin of BRO-4326).
+      - name: Install dependencies
+        run: npm ci
+
       - uses: ./.github/actions/setup-playwright
 
       - name: Write URL file

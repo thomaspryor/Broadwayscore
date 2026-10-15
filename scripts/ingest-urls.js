@@ -66,6 +66,7 @@ if (!showId || !urlsFile) {
 
 // Verify show exists
 const showsData = require('../data/shows.json');
+const { isTbObIndexUrl, resolveTbObIndexUrl } = require('./lib/tb-direct-url');
 const show = showsData.shows.find(s => s.id === showId);
 if (!show) {
   console.error(`Show not found: ${showId}`);
@@ -117,7 +118,7 @@ async function main() {
   const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [] };
 
   for (let i = 0; i < entries.length; i++) {
-    const { url, outletOverride } = entries[i];
+    let { url, outletOverride } = entries[i];
     const prefix = `[${i + 1}/${entries.length}]`;
 
     // Resolve outlet
@@ -152,6 +153,7 @@ async function main() {
     }
 
     // Fetch text if requested
+    let originalUrl = null; // set when a TB OB index url is swapped for its dated page (BRO-4437)
     let fullText = null;
     let fetchMethod = null;
     let criticName = null;
@@ -183,6 +185,36 @@ async function main() {
             // No extractor matched. Skip rather than store raw HTML chrome.
             if (verbose) console.log(`    ⚠️  No article-body match for ${url}; skipping fullText`);
             results.warnings.push(`No article-body extractor matched ${url} — review created without fullText`);
+          }
+          // TB Off-Broadway index link (Show Score): swap in the dated review page so the
+          // stored URL is not a listing page that never publishes (BRO-4437).
+          // The index page shows whatever review TB ran last, often another show's, so its
+          // body/critic/date are never kept: re-fetch the dated page and re-extract, or drop the text.
+          if (isTbObIndexUrl(url)) {
+            const ob = fullText
+              ? await resolveTbObIndexUrl({ url, reviewText: fullText, showTitle: show.title, criticName, fetchPage })
+              : { found: false, reason: 'no text extracted from index page' };
+            let resolved = false;
+            if (ob.found) {
+              try {
+                const dated = await fetchPage(ob.url);
+                const datedText = dated && dated.content ? extractArticleTextFromUrl(dated.content, ob.url) : null;
+                if (datedText && datedText.length >= 200) {
+                  fullText = datedText;
+                  fetchMethod = dated.source;
+                  try { criticName = extractAuthorFromHtml(dated.content, datedText, { url: ob.url }) || null; } catch { criticName = null; }
+                  try { publishDate = extractPublishDate(dated.content, ob.url) || null; } catch { publishDate = null; }
+                  originalUrl = url;
+                  url = ob.url;
+                  resolved = true;
+                  if (verbose) console.log(`    ✓ TB OB index resolved to ${ob.url}`);
+                }
+              } catch { /* falls through to drop */ }
+            }
+            if (!resolved) {
+              fullText = null; criticName = null; publishDate = null;
+              results.warnings.push(`TB OB index ${url} not resolved (${ob.reason || 'dated page re-fetch failed'}); stored without text so another show's review is never saved under it`);
+            }
           }
         }
       } catch (e) {
@@ -218,7 +250,7 @@ async function main() {
     // ingest-manual-review.js / ingest-review-from-url.js).
     let preExisting = null;
     if (!dryRun) {
-      try { preExisting = findExistingReviewFile(path.join(__dirname, '..', 'data', 'review-texts', showId), outletId, criticName || 'Unknown', url); } catch { preExisting = null; }
+      try { preExisting = findExistingReviewFile(path.join(__dirname, '..', 'data', 'review-texts', showId), outletId, criticName || 'Unknown', originalUrl || url); } catch { preExisting = null; }
     }
     const writeResult = createOrMergeReviewFile(showId, input, { dryRun });
     if (!dryRun && writeResult.action === 'updated' && writeResult.filepath) {

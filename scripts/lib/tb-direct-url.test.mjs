@@ -123,7 +123,7 @@ test('resolveTbObIndexUrl takes the candidate matching title and critic, skips o
   const r = await resolveTbObIndexUrl({
     url: 'https://www.talkinbroadway.com/page/ob/index.html',
     reviewText: 'Theatre Review by Marc Miller - September 29, 2026\nbody',
-    showTitle: 'Degenerates', criticName: 'Marc Miller', fetchPage, logger: silent,
+    showTitle: 'Degenerates', criticName: "Marc Miller", fetchPage, logger: silent,
   });
   assert.equal(r.found, true);
   assert.equal(r.url, 'https://www.talkinbroadway.com/page/ob/09_29_26c.html');
@@ -133,4 +133,14 @@ test('resolveTbObIndexUrl refuses non-index urls and undated text', async () => 
   const fetchPage = async () => { throw new Error('should not fetch'); };
   assert.equal((await resolveTbObIndexUrl({ url: 'https://www.talkinbroadway.com/page/ob/03_29_26.html', reviewText: 'x', fetchPage })).found, false);
   assert.equal((await resolveTbObIndexUrl({ url: 'https://www.talkinbroadway.com/page/ob/index.html', reviewText: 'no date', fetchPage })).found, false);
+});
+
+test('resolveTbObIndexUrl needs a critic name and ignores Jr. suffix', async () => {
+  const html = `<html><head><title>Degenerates - Talkin' Broadway</title></head><body>${'x'.repeat(900)} Theatre Review by Marc Miller - September 29, 2026</body></html>`;
+  const fetchPage = async () => ({ content: html });
+  const base = { url: 'https://www.talkinbroadway.com/page/ob/index.html', reviewText: 'Theatre Review by Marc Miller - September 29, 2026', showTitle: 'Degenerates', fetchPage, logger: silent };
+  assert.equal((await resolveTbObIndexUrl({ ...base, criticName: '' })).found, false);
+  assert.equal((await resolveTbObIndexUrl({ ...base, criticName: 'Unknown' })).found, false);
+  assert.equal((await resolveTbObIndexUrl({ ...base, criticName: 'Marc Miller Jr.' })).found, true);
+  assert.equal((await resolveTbObIndexUrl({ ...base, criticName: 'Ill Mill' })).found, false);
 });
