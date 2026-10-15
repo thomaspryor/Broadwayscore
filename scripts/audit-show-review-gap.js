@@ -201,7 +201,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, flaggedFilePriorRunDate, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
@@ -1285,6 +1285,8 @@ async function auditShow(show, opts = {}) {
           dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
           exclusion,
           basis,
+          // Stored flagged files dated before this run: permanent prior-run (see policy).
+          ...(() => { const d = recoverableFile ? null : flaggedFilePriorRunDate(dirFiles, show); return d ? { priorRun: true, priorRunSource: `flagged-file-date:${d}` } : {}; })(),
         });
       }
     }

@@ -233,6 +233,26 @@ function pendingPriorRunUrls(pending, show) {
   return out;
 }
 
+/**
+ * A flagged-out gap row whose stored review file(s) are flagged wrongProduction /
+ * wrongShow AND dated before this run is a prior production's review: the
+ * validator's content verdict and the date agree, so the exclusion is permanent
+ * and correct. Fish 2026 (WP Theater): four April-2024 reviews of the Theatre Row
+ * "Fish" held the roundup-gap alert open forever. Unlike pendingPriorRunUrls there
+ * is no press-night-cluster exemption, because the content check (venue/cast)
+ * independently rejected the file rather than relying on its date alone.
+ * @param {Array<{publishDate?:string, wrongProduction?:boolean, wrongShow?:boolean}>} dirFiles files stored for the URL's host
+ * @param {object} show shows.json record
+ * @returns {string|null} the first stored publishDate when every file qualifies, else null
+ */
+function flaggedFilePriorRunDate(dirFiles, show) {
+  if (process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED === '1') return null; // kill switch
+  const files = (dirFiles || []).filter((d) => d && (d.wrongProduction || d.wrongShow));
+  if (files.length === 0 || files.length !== (dirFiles || []).length) return null; // a clean/other-state file means no verdict
+  for (const d of files) if (!isPublishDateBeforeRun(d.publishDate, show)) return null;
+  return files[0].publishDate;
+}
+
 // Roundups whose own verdict lives ONLY inside the roundup (no standalone review
 // page). Not London Box Office: it publishes standalone review pages, so its
 // URL-less self-citation usually has a collectable page (review, BRO-4790).
@@ -253,4 +273,4 @@ function isRoundupSelfCitation(row) {
   return SELF_VERDICT_ROUNDUPS.has(src) && normalizeOutlet(row.outletId || row.outletName || '') === src;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, isRoundupSelfCitation };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, flaggedFilePriorRunDate, isRoundupSelfCitation };

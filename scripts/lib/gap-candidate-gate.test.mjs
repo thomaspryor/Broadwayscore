@@ -204,3 +204,15 @@ test('a stored date that disagrees with the year in the URL gives no prior-run v
   process.env.GAP_PENDING_PRIOR_RUN_DISABLED = '1';
   try { assert.strictEqual(pendingPriorRunUrls([old], show).size, 0); } finally { delete process.env.GAP_PENDING_PRIOR_RUN_DISABLED; }
 });
+
+test('flagged wrongProduction files dated before the run are prior-run, press-night cluster included (Fish 2026 vs 2024 Theatre Row)', () => {
+  const { flaggedFilePriorRunDate } = require('./gap-ingest-policy.js');
+  const show = { previewsStartDate: '2026-09-26' };
+  const old = { publishDate: 'April 2nd, 2024', wrongProduction: true };
+  assert.strictEqual(flaggedFilePriorRunDate([old], show), 'April 2nd, 2024');
+  assert.strictEqual(flaggedFilePriorRunDate([{ publishDate: '2026-10-12', wrongProduction: true }], show), null);
+  assert.strictEqual(flaggedFilePriorRunDate([old, { publishDate: '2024-04-02' }], show), null);
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongShow: true }], show), null);
+  process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED = '1';
+  try { assert.strictEqual(flaggedFilePriorRunDate([old], show), null); } finally { delete process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED; }
+});
