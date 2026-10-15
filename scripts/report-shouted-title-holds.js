@@ -8,6 +8,7 @@
  *   node scripts/report-shouted-title-holds.js --resolve=<hash>   drop a hold once the real title is confirmed
  */
 'use strict';
+// venue-write-guard-ok: report-only listing of held candidates; no venue is written to shows.json.
 
 const fs = require('fs');
 const path = require('path');
