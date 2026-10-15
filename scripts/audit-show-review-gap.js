@@ -1715,8 +1715,13 @@ function currentRunUncollected(r, { blocklist } = {}) {
   // rejection: e.g. a Time Out listing capsule) can never be collected, so it
   // must not re-fire the alert hourly. Conflicts and unclassified skips still count.
   const refusedForGood = new Set((r.ingestResults || []).filter(x => x.expected).map(x => x.url));
+  // BRO-5252: SERP-census rows are report-only until SERP_CENSUS_INGEST=1, so
+  // this audit can never collect them. Counting them made the opening-window
+  // alert unresolvable (Alice in Wonderland: 7 un-ingestable census hits, wrong
+  // productions, re-fired hourly). They stay in r.missing / the audit JSON.
+  const reportOnly = new Set((r.weIngestBlocked || []).filter(x => x.reason === 'serp-census-gate-off').map(x => x.url));
   const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && stillCollectable(m, bl)).length;
+    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }

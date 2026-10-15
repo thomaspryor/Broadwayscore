@@ -688,3 +688,16 @@ test('the ingestResults entry carries the expected-rejection flag that currentRu
   const push = src.slice(src.indexOf('r.ingestResults.push({'));
   assert.match(push.slice(0, push.indexOf('});')), /expected: !!res\.expected/);
 });
+
+test('currentRunUncollected: serp-census-gate-off rows are report-only, not uncollected; other blocked rows still count (BRO-5252)', () => {
+  const { currentRunUncollected } = require('./audit-show-review-gap.js');
+  const census = 'https://a.example/review-1';
+  const real = 'https://b.example/review-2';
+  const row = {
+    showId: 'x',
+    missing: [{ url: census, host: 'a.example', serpCensus: true }, { url: real, host: 'b.example' }],
+    weIngestBlocked: [{ url: census, host: 'a.example', priorRun: false, reason: 'serp-census-gate-off' }],
+  };
+  assert.equal(currentRunUncollected(row, { blocklist: null }), 1);
+  assert.equal(currentRunUncollected({ ...row, weIngestBlocked: [] }, { blocklist: null }), 2);
+});
