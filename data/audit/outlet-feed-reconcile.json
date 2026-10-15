@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T16:29:36.666Z",
+  "generatedAt": "2026-10-15T17:41:52.765Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -102,6 +102,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -128,16 +132,84 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 681,
-  "matchedGaps": 0,
-  "possibleGaps": 3,
+  "itemsScanned": 701,
+  "matchedGaps": 7,
+  "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "level": "matched",
+      "outletId": "off-off-online",
+      "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear-ObL3Q",
+      "headline": "A Ghost in Your Ear",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "nina-off-west-end-2026",
+      "title": "Nina",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/nina-battersea-arts-26117",
+      "headline": "Nina",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "stuffed-off-west-end-2026",
+      "title": "Stuffed",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/stuffed-new-diorama-theatre/",
+      "headline": "Stuffed &#8211; New Diorama Theatre",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+      "headline": "Review of &#8216;The Cherry Orchard&#8217; (2026, Harold Pinter Theatre): &#8220;Connor McPherson&#8217;s sapped adaptation is too green to blossom&#8221;",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+      "headline": "The Cherry Orchard &#8211; Harold Pinter Theatre",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/the-cherry-orchard-the-harold-pinter-theatre/",
+      "headline": "The Cherry Orchard &#8211; The Harold Pinter Theatre ★★★★",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
+      "headline": "The Cherry Orchard",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+      "headline": "Review: A Ghost in Your Ear, the Curse of Daddy Issues in an Audiobook",
+      "publishDate": null
+    },
     {
       "showId": "king-lear-royal-exchange-regional-2026",
       "title": "King Lear",
