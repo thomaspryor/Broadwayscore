@@ -1,19 +1,86 @@
 {
-  "updatedAt": "2026-10-15T21:47:18.565Z",
-  "processed": 62,
-  "failed": 8,
-  "successRate": "88.6%",
+  "updatedAt": "2026-10-15T21:49:57.005Z",
+  "processed": 1,
+  "failed": 29,
+  "successRate": "3.3%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 3,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-10-15T21:13:42.090Z",
+      "event": "bb-session",
+      "session": "521bd21f",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T21:13:42.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T21:13:52.268Z",
+      "event": "bb-session",
+      "session": "b02ddca9",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T21:13:53.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T21:14:46.314Z",
+      "event": "bb-session",
+      "session": "a16a601f",
+      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
+    },
+    {
+      "t": "2026-10-15T21:14:47.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T21:14:56.439Z",
+      "event": "bb-session",
+      "session": "608b217c",
+      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
+    },
+    {
+      "t": "2026-10-15T21:14:57.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T21:15:46.443Z",
+      "event": "bb-session",
+      "session": "73ebba70",
+      "url": "https://www.wsj.com/articles/oh-hello-on-broadway-review-an-evening-of-inspired-"
+    },
+    {
+      "t": "2026-10-15T21:15:47.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T21:15:59.124Z",
+      "event": "bb-session",
+      "session": "0dd943cd",
+      "url": "https://www.wsj.com/articles/oh-hello-on-broadway-review-an-evening-of-inspired-"
+    },
+    {
+      "t": "2026-10-15T21:16:00.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
