@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5373-s",
   "planId": "3e1d2660-7fee-427a-aec2-11e04ebd23de",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-14T23:21:26.000Z",
   "submitter": {
     "name": null,
@@ -151,5 +151,93 @@
         "description": "BRO-5374: the stored url is not a url (a scraped sentence). Cleared to ''; text and score kept."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T01:12:09.284Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/mail-on-sunday--robert-gore-langton.json wrongAttributionReason: null -> \"BRO-5373: this file's text is Patrick Marmion's dailymail.co.uk review (same opening and 'Published: 13 February 2026', his url /PATRICK-MARMION-review-Shadowlands...), not a Gore-Langton review; the Theatre Record text was overwritten by a fetch of Marmion's url. Plan q's pointer flip was refused by the write guard's cycle rule because both files share the url.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/mail-on-sunday--robert-gore-langton.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "url: the current url is not provably wrong (aggregator, non-review page, another critic's review, another show's review, or an unverified legacy web-search url)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json duplicateClearReason: null -> \"BRO-5373: Marmion's own review; the file it pointed at is a mis-credited copy of it, now flagged wrongAttribution with its url cleared.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json duplicateOf: \"mail-on-sunday--robert-gore-langton.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/standard--nick-curtis.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/whatsonstage--alun-hood.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/whatsonstage--alun-hood.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2025/mail-on-sunday--robert-gore-langton.json url: \"https://www.dailymail.co.uk/tvshowbiz/index.html\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/mail-on-sunday--robert-gore-langton.json url: \"https://www.dailymail.co.uk/mailonsunday/index.html\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json url: \"https://www.express.co.uk/latest/theatre\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "url: the current url is not provably wrong (aggregator, non-review page, another critic's review, another show's review, or an unverified legacy web-search url)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-story-the-musical-2012/vulture--scott-brown.json url: \"https://Check%20back%20in%20the%20AM%20for%20additional%20reviews!\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rocky-2014/ew--thom-geier.json url: \"http://Entertainment%20Weekly\" -> \"\""
+    }
+  ]
 }
