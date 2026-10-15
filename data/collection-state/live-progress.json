@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-15T18:58:04.719Z",
-  "processed": 335,
-  "failed": 322,
-  "successRate": "51.0%",
+  "updatedAt": "2026-10-15T19:25:16.049Z",
+  "processed": 352,
+  "failed": 334,
+  "successRate": "51.3%",
   "tierBreakdown": {
-    "playwright": 207,
+    "playwright": 213,
     "amp": 4,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 31,
-    "scrapingbee": 26,
-    "brightdata": 9,
+    "scrapingdog": 34,
+    "scrapingbee": 27,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 84
+    "archive": 91
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-10-15T16:50:07.980Z",
-      "event": "bb-session",
-      "session": "e8567337",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-15T16:50:08.499Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T16:50:28.990Z",
-      "event": "bb-session",
-      "session": "cb693533",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-15T16:50:29.476Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-15T16:53:21.872Z",
       "event": "bb-session",
@@ -61,13 +39,13 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T18:26:13.835Z",
+      "t": "2026-10-15T18:17:15.317Z",
       "event": "bb-session",
-      "session": "91cb61a5",
-      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+      "session": "4a09b107",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-10-15T18:26:14.412Z",
+      "t": "2026-10-15T18:17:15.974Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-10-15T18:39:29.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T19:11:07.590Z",
+      "event": "bb-session",
+      "session": "babc8a7d",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-10-15T19:11:08.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T19:14:30.103Z",
+      "event": "bb-session",
+      "session": "943bd906",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-10-15T19:14:30.843Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
