@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-14T22:55:22.804Z",
+  "generatedAt": "2026-10-15T01:10:51.119Z",
   "windowDays": 1095,
-  "targets": 653,
-  "auditedThisRun": 18,
-  "carriedForward": 713,
+  "targets": 649,
+  "auditedThisRun": 14,
+  "carriedForward": 719,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 411,
-    "missingCurrentRun": 840,
+    "withGap": 416,
+    "missingCurrentRun": 868,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 962,
-    "totalRecoverable": 5,
+    "totalFlaggedMisses": 959,
+    "totalRecoverable": 6,
     "totalRecovered": 14,
     "humanExcluded": 1,
-    "automatedExcluded": 119,
-    "automatedExcludedListed": 119,
-    "priorProductionCitations": 5021
+    "automatedExcluded": 126,
+    "automatedExcludedListed": 126,
+    "priorProductionCitations": 5052
   },
   "results": [
     {
@@ -463,16 +463,38 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
+        "https://www.newyorktheatreguide.com/reviews/a-ghost-in-your-ear-off-broadway-review",
+        "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
         "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear",
         "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
+        "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
         "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/",
-        "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/",
+        "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
         "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html"
       ],
-      "dirFiles": 9,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 11,
+      "dirClean": 3,
+      "inReviewsJson": 3,
       "missing": [
+        {
+          "url": "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/a-ghost-in-your-ear-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
+        {
+          "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
+          "host": "hauntedattractionnetwork.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html",
           "host": "partially-obstructed-view.blogspot.com",
@@ -480,8 +502,36 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        }
+      ],
       "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": true,
+          "recoverableFile": "theatermania--unknown.json",
+          "recoverableOutletId": "theatermania",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 2,
+          "dirFlags": [
+            {
+              "file": "theatermania--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatermania.com/tags/a-ghost-in-your-ear/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "listingPageUrl"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
           "host": "variety.com",
@@ -501,6 +551,29 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
+          "host": "nyctourism.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyctourism--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
           ],
           "serpCensus": true,
           "reverify": true
@@ -527,29 +600,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/",
-          "host": "voiceoverherald.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "voiceoverherald--jordan-pike.json",
-              "flag": "clean",
-              "urlInDir": "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -566,7 +616,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           },
           {
@@ -586,7 +636,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -596,7 +646,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -612,25 +662,65 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 40,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 30,
+          "aggregator-internal-nav": 1,
+          "production-database-listing": 1,
+          "non-review-host": 24,
           "ticketing-reseller": 1,
-          "non-review-path": 1,
           "census-junk-host": 2,
+          "non-review-path": 1,
           "ticketing-listing": 1,
           "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 4,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/a-ghost-in-your-ear-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
+          "host": "hauntedattractionnetwork.com",
+          "outletId": "hauntedattractionnetwork",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html",
           "host": "partially-obstructed-view.blogspot.com",
@@ -646,15 +736,56 @@
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+          "host": "theatermania.com",
+          "file": "theatermania--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⊘ url kept: dropping fullText merged from refused https://www.theatermania.com/news/review-a-ghost-i",
+          "recoveryCount": 3
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/a-ghost-in-your-ear-off-broadway-review"
+          },
+          {
+            "outletId": "hauntedattractionnetwork.com",
+            "outlet": "hauntedattractionnetwork.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/"
+          },
           {
             "outletId": "partially-obstructed-view",
             "outlet": "partially-obstructed-view",
             "critic": "Unknown",
             "stars": null,
             "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/"
           },
           {
             "outletId": "variety",
@@ -664,18 +795,18 @@
             "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/"
           },
           {
+            "outletId": "nyctourism.com",
+            "outlet": "nyctourism.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
+          },
+          {
             "outletId": "ihorror.com",
             "outlet": "ihorror.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/"
-          },
-          {
-            "outletId": "voiceoverherald.com",
-            "outlet": "voiceoverherald.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/"
           }
         ],
         "suppressedMissing": [],
@@ -687,11 +818,39 @@
             "firstSeenAt": "2026-10-13T23:45:26.813Z"
           },
           {
+            "url": "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/a-ghost-in-your-ear-off-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
+            "outletId": "hauntedattractionnetwork.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
             "url": "http://partially-obstructed-view.blogspot.com/2026/01/theatre-review-ghost-in-your-ear.html",
             "outletId": "partially-obstructed-view",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T23:45:26.813Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
           },
           {
             "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
@@ -701,30 +860,25 @@
             "firstSeenAt": "2026-10-13T02:55:59.865Z"
           },
           {
+            "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
+            "outletId": "nyctourism.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
             "url": "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/",
             "outletId": "ihorror.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-14T17:37:56.841Z"
-          },
-          {
-            "url": "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/",
-            "outletId": "voiceoverherald.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T23:45:26.813Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 5
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-14T17:37:56.841Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
-      }
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -2980,7 +3134,12 @@
         "liveCount": 12,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-13T04:11:59.529Z"
+      "computedAt": "2026-10-13T04:11:59.529Z",
+      "quarantine": {
+        "nextState": "incomplete:12:24",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
+      }
     },
     {
       "showId": "a-thousand-natural-shocks-off-broadway-2026",
@@ -5715,9 +5874,9 @@
       },
       "computedAt": "2026-10-12T19:37:31.912Z",
       "quarantine": {
-        "nextState": "incomplete:11:15",
-        "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
+        "nextState": "incomplete:10:13",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
       }
     },
     {
@@ -11409,35 +11568,145 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+      ],
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--linda-buchwald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"ANON – a tempest at our kitchen table\" review newman",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "aggregator-internal-nav": 3,
+          "production-database-listing": 1,
+          "non-review-host": 8,
+          "ticketing-reseller": 7,
+          "census-junk-host": 3,
+          "ticketing-listing": 1,
+          "venue-production-page": 1,
+          "merch-store": 1,
+          "news-article": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -28753,7 +29022,7 @@
       "quarantine": {
         "nextState": "incomplete:8:11",
         "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
+        "lastAt": "2026-10-15T01:10:51.182Z"
       }
     },
     {
@@ -30027,9 +30296,9 @@
       },
       "computedAt": "2026-10-14T17:37:56.841Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-14T19:12:19.059Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
+        "nextState": "incomplete:1:5",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
       }
     },
     {
@@ -45291,6 +45560,43 @@
       "computedAt": "2026-09-14T23:04:15.991Z"
     },
     {
+      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
+      "title": "Dirty Dancing: The Classic Story on Stage",
+      "openingDate": "2026-10-16",
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-15T01:10:51.119Z"
+    },
+    {
       "showId": "dirty-dancing-tour-2026",
       "title": "Dirty Dancing",
       "openingDate": "2026-08-12",
@@ -46763,7 +47069,12 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-14T22:22:34.949Z"
+      "computedAt": "2026-10-14T22:22:34.949Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
+      }
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -46782,12 +47093,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Doll Day Afternoon\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 25,
+        "byReason": {
+          "aggregator-internal-nav": 4,
+          "non-review-host": 16,
+          "roundup-page": 1,
+          "venue-production-page": 2,
+          "show-hub": 2
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -46800,7 +47174,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -49617,35 +49991,21 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
-        "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+        "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
         "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-        "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-        "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-        "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
-        "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
         "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
-        "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-        "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
-        "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
+        "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
       ],
-      "dirFiles": 22,
+      "dirFiles": 23,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-          "host": "bingefringe.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
-          "host": "fringereview.co.uk",
-          "knownOutletId": "fringereview",
+          "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -49653,30 +50013,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "fringereview--unknown.json",
+              "file": "variety--ethan-shanfeld.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
+              "urlInDir": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
-          "host": "festmag.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "festmag--jamie-dunn.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
@@ -49694,79 +50041,12 @@
               "urlInDir": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-          "host": "beyondthejoke.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "beyondthejoke--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
-          "host": "snackmag.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "snackmag--juliet-gartside.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
-          "host": "chortle.co.uk",
-          "knownOutletId": "chortle",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chortle--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge"
-            }
-          ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
@@ -49784,12 +50064,17 @@
               "urlInDir": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789"
             }
           ],
-          "serpCensus": true
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
-          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
+          "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
+          "host": "paperweightmag.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -49797,30 +50082,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatreandtonic--penny-walshe.json",
+              "file": "paperweightmag--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
+              "urlInDir": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
-          "host": "theqr.co.uk",
-          "knownOutletId": "theqr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theqr--will-quinn.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
-          "serpCensus": true
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -49867,7 +50139,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 2,
             "error": null
           },
           {
@@ -49887,66 +50159,37 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
         "count": 40,
         "byReason": {
-          "non-review-host": 30,
-          "aggregator-internal-nav": 1,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 28,
           "non-review-path": 1,
-          "venue-production-page": 3,
-          "static-asset": 5
+          "venue-production-page": 6,
+          "static-asset": 3
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 4,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-          "host": "bingefringe.com",
-          "outletId": "bingefringe",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "bingefringe.com",
-            "outlet": "bingefringe.com",
+            "outletId": "variety",
+            "outlet": "variety",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
-          },
-          {
-            "outletId": "fringereview",
-            "outlet": "fringereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
-          },
-          {
-            "outletId": "festmag.com",
-            "outlet": "festmag.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
+            "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
           },
           {
             "outletId": "rolandcat",
@@ -49956,34 +50199,6 @@
             "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
-          },
-          {
-            "outletId": "beyondthejoke.co.uk",
-            "outlet": "beyondthejoke.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
-          },
-          {
-            "outletId": "snackmag.co.uk",
-            "outlet": "snackmag.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
-          },
-          {
-            "outletId": "chortle",
-            "outlet": "chortle",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge"
-          },
-          {
             "outletId": "the-list",
             "outlet": "the-list",
             "critic": "Unknown",
@@ -49991,74 +50206,25 @@
             "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789"
           },
           {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
+            "outletId": "paperweightmag.com",
+            "outlet": "paperweightmag.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
-          },
-          {
-            "outletId": "theqr",
-            "outlet": "theqr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
+            "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-            "outletId": "bingefringe.com",
+            "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+            "outletId": "variety",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
-            "outletId": "fringereview",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
-          },
-          {
-            "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
-            "outletId": "festmag.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
           },
           {
             "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
             "outletId": "rolandcat",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
-          },
-          {
-            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
-          },
-          {
-            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-            "outletId": "beyondthejoke.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
-          },
-          {
-            "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
-            "outletId": "snackmag.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
-          },
-          {
-            "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
-            "outletId": "chortle",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-03T23:39:15.002Z"
@@ -50071,30 +50237,18 @@
             "firstSeenAt": "2026-10-03T23:39:15.002Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
-            "outletId": "theatreandtonic",
+            "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
+            "outletId": "paperweightmag.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
-          },
-          {
-            "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
-            "outletId": "theqr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 11
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-12T23:33:06.241Z",
-      "quarantine": {
-        "nextState": "incomplete:0:4",
-        "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
-      }
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -54581,9 +54735,9 @@
       },
       "computedAt": "2026-10-14T17:37:56.841Z",
       "quarantine": {
-        "nextState": "incomplete:11:15",
-        "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
+        "nextState": "incomplete:12:17",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
       }
     },
     {
@@ -55896,7 +56050,7 @@
       "quarantine": {
         "nextState": "incomplete:1:5",
         "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
+        "lastAt": "2026-10-15T01:10:51.182Z"
       }
     },
     {
@@ -64076,18 +64230,23 @@
         "https://www.talkinbroadway.com/page/ob/10_09_26.html",
         "https://theaterpizzazz.com/good-time-charlie-a-familiar-coming-out-story-that-overstays-its-welcome/",
         "https://www.nytimes.com/2026/10/08/theater/ryan-j-haddad-good-time-charlie.html",
-        "https://www.theatermania.com/news/beth-malone-jonathan-raviv-and-more-cast-in-ryan-j-haddads-good-time-charlie_1848389/",
-        "https://gaytravelr.com/usa/new-york/events/good-time-charlie"
+        "https://therecs.co.uk/good-time-charlie-the-public-theater/",
+        "https://joshatthemovies.com/2026/10/09/theater-review-good-time-charlie/",
+        "https://cititour.com/NYC_Broadway/Good-Time-Charlie/1397",
+        "https://news.frombroadway.com/post/review-roundup-good-time-charlie-public-theater"
       ],
       "dirFiles": 24,
       "dirClean": 17,
       "inReviewsJson": 16,
-      "missing": [],
-      "dirOnly": [
+      "missing": [
         {
-          "host": "joshatthemovies.com",
-          "count": 1
-        },
+          "url": "https://news.frombroadway.com/post/review-roundup-good-time-charlie-public-theater",
+          "host": "frombroadway.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
         {
           "host": "nysun.com",
           "count": 1
@@ -64098,10 +64257,6 @@
         },
         {
           "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "therecs.co.uk",
           "count": 1
         },
         {
@@ -64154,29 +64309,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://gaytravelr.com/usa/new-york/events/good-time-charlie",
-          "host": "gaytravelr.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "gaytravelr--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://gaytravelr.com/usa/new-york/events/good-time-charlie"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -64192,7 +64324,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 4,
             "error": null
           },
@@ -64202,7 +64334,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -64212,8 +64344,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -64223,7 +64355,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -64233,35 +64365,57 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
         "count": 428,
         "byReason": {
-          "aggregator-internal-nav": 261,
+          "aggregator-internal-nav": 256,
           "not-http-url": 88,
-          "production-database-listing": 8,
+          "production-database-listing": 9,
           "aggregator-section-root": 11,
           "non-review-host": 55,
-          "roundup-page": 2,
-          "ticketing-reseller": 1,
-          "review-index-page": 1,
-          "non-review-path": 1
+          "roundup-page": 5,
+          "ticketing-reseller": 2,
+          "review-index-page": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 2,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://news.frombroadway.com/post/review-roundup-good-time-charlie-public-theater",
+          "host": "frombroadway.com",
+          "outletId": "frombroadway",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "frombroadway.com",
+            "outlet": "frombroadway.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://news.frombroadway.com/post/review-roundup-good-time-charlie-public-theater"
+          },
           {
             "outletId": "one-minute-critic",
             "outlet": "one-minute-critic",
@@ -64275,13 +64429,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2026/10/08/theater/ryan-j-haddad-good-time-charlie.html"
-          },
-          {
-            "outletId": "gaytravelr.com",
-            "outlet": "gaytravelr.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://gaytravelr.com/usa/new-york/events/good-time-charlie"
           }
         ],
         "suppressedMissing": [],
@@ -64347,10 +64494,29 @@
             "firstSeenAt": "2026-10-14T17:37:56.841Z"
           },
           {
-            "url": "https://www.theatermania.com/news/beth-malone-jonathan-raviv-and-more-cast-in-ryan-j-haddads-good-time-charlie_1848389/",
-            "outletId": "theatermania.com",
+            "url": "https://therecs.co.uk/good-time-charlie-the-public-theater/",
+            "outletId": "therecs.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-14T17:37:56.841Z"
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://joshatthemovies.com/2026/10/09/theater-review-good-time-charlie/",
+            "outletId": "joshatthemovies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Good-Time-Charlie/1397",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://news.frombroadway.com/post/review-roundup-good-time-charlie-public-theater",
+            "outletId": "frombroadway.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
           },
           {
             "url": "https://1minutecritic.com/ryan-j-haddad-good-time-charlie-review/",
@@ -64365,25 +64531,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-12T02:07:28.826Z"
-          },
-          {
-            "url": "https://gaytravelr.com/usa/new-york/events/good-time-charlie",
-            "outletId": "gaytravelr.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T19:37:31.912Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
-        "candidateCount": 13
+        "liveCount": 12,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-14T17:37:56.841Z",
-      "quarantine": {
-        "nextState": "incomplete:10:11",
-        "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
-      }
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "gotta-dance-off-broadway-2026",
@@ -114154,35 +114308,211 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
+        "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
+        "https://deadline.com/2026/05/duncan-sheik-manga-memoirs-amorous-gentlemen-musical-1236887694/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
+          "host": "amnewscurtainraiser.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://deadline.com/2026/05/duncan-sheik-manga-memoirs-amorous-gentlemen-musical-1236887694/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Memoirs of Amorous Gentlemen\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Memoirs of Amorous Gentlemen\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Memoirs of Amorous Gentlemen\" review night",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Memoirs of Amorous Gentlemen The Night Egg at the Culture Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Memoirs of Amorous Gentlemen The Night Egg at the Culture Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Memoirs of Amorous Gentlemen The Night Egg at the Culture Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 39,
+        "byReason": {
+          "aggregator-internal-nav": 6,
+          "non-review-host": 19,
+          "ticketing-reseller": 1,
+          "census-junk-host": 5,
+          "ticketing-listing": 1,
+          "venue-production-page": 2,
+          "write-path-blocked": 4,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
+          "host": "amnewscurtainraiser.com",
+          "outletId": "amnewscurtainraiser",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://deadline.com/2026/05/duncan-sheik-manga-memoirs-amorous-gentlemen-musical-1236887694/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/"
+          },
+          {
+            "outletId": "amnewscurtainraiser.com",
+            "outlet": "amnewscurtainraiser.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://deadline.com/2026/05/duncan-sheik-manga-memoirs-amorous-gentlemen-musical-1236887694/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
+            "outletId": "times-square-chronicles",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
+            "outletId": "amnewscurtainraiser.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://deadline.com/2026/05/duncan-sheik-manga-memoirs-amorous-gentlemen-musical-1236887694/",
+            "outletId": "deadline",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -115346,7 +115676,10 @@
         "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
         "http://www.amny.com/urbanite-1.812039/3-stars-for-after-midnight-1.6370710",
         "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
-        "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/"
+        "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
+        "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+        "https://www.broadway-show-tickets.com/musicals/midnight-tickets/",
+        "https://www.timeout.com/newyork/theater/midnight"
       ],
       "dirFiles": 18,
       "dirClean": 0,
@@ -115533,6 +115866,18 @@
           "knownOutletId": "splash-magazines",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadway-show-tickets.com/musicals/midnight-tickets/",
+          "host": "broadway-show-tickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/midnight",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -115632,23 +115977,108 @@
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
+        },
+        {
+          "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Midnight\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Midnight\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Midnight\" review daryl",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Midnight Daryl Roth Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Midnight Daryl Roth Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Midnight Daryl Roth Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1350,
+        "count": 1395,
         "byReason": {
-          "non-review-host": 99,
-          "bare-host": 1,
-          "aggregator-internal-nav": 961,
+          "aggregator-internal-nav": 965,
           "not-http-url": 243,
-          "production-database-listing": 17,
-          "aggregator-section-root": 29
+          "production-database-listing": 18,
+          "aggregator-section-root": 29,
+          "non-review-host": 128,
+          "roundup-page": 1,
+          "ticketing-reseller": 5,
+          "census-junk-host": 2,
+          "bare-host": 1,
+          "news-article": 2,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -115678,7 +116108,7 @@
           "publishDate": "2024-07-09"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -115838,18 +116268,89 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.broadway-show-tickets.com/musicals/midnight-tickets/",
+          "host": "broadway-show-tickets.com",
+          "outletId": "broadway-show-tickets",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"broadway-show-tickets\" (not in registry) — onboard to outlet-registry.json a"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/midnight",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadway-show-tickets.com",
+            "outlet": "broadway-show-tickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadway-show-tickets.com/musicals/midnight-tickets/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/midnight"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.broadway-show-tickets.com/musicals/midnight-tickets/",
+            "outletId": "broadway-show-tickets.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/midnight",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+            "outletId": "theatrely",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -125440,7 +125941,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-14T22:55:22.804Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
+      }
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -146337,9 +146843,10 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/"
+        "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
+        "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261025/48f0ac53-c968-4ea9-bd7a-0ee9aca0e236/red-riding-hood"
       ],
-      "dirFiles": 4,
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -146347,6 +146854,14 @@
           "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
           "host": "exeuntnyc.com",
           "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2018-03-06",
+          "serpCensus": true
+        },
+        {
+          "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261025/48f0ac53-c968-4ea9-bd7a-0ee9aca0e236/red-riding-hood",
+          "host": "patch.com",
+          "knownOutletId": "patch",
           "serpCensus": true
         }
       ],
@@ -146396,7 +146911,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -146405,36 +146920,46 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 35,
         "byReason": {
-          "non-review-host": 16,
           "aggregator-internal-nav": 4,
+          "non-review-host": 24,
+          "ticketing-reseller": 1,
+          "census-junk-host": 1,
           "ticketing-listing": 1,
           "venue-production-page": 1,
-          "ticketing-reseller": 1,
-          "census-junk-host": 2,
-          "roundup-page": 1
+          "write-path-blocked": 1,
+          "bare-host": 1,
+          "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
         {
           "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
           "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261025/48f0ac53-c968-4ea9-bd7a-0ee9aca0e236/red-riding-hood",
+          "host": "patch.com",
+          "outletId": "patch",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -146442,7 +146967,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: red-riding-hood-off-broadway-2026/exeunt-magazine--read-more-"
+          "reason": "⛔ Refusing write: patch--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/reje"
         }
       ],
       "ingestSkippedByCap": [],
@@ -146450,28 +146975,28 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
+            "outletId": "patch",
+            "outlet": "patch",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/"
+            "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261025/48f0ac53-c968-4ea9-bd7a-0ee9aca0e236/red-riding-hood"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
-            "outletId": "exeunt-magazine",
+            "url": "https://patch.com/new-york/upper-east-side-nyc/calendar/event/20261025/48f0ac53-c968-4ea9-bd7a-0ee9aca0e236/red-riding-hood",
+            "outletId": "patch",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-13T04:11:59.529Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "redcliffe-off-west-end-2026",
@@ -154224,6 +154749,546 @@
       "computedAt": "2026-09-05T17:16:12.711Z"
     },
     {
+      "showId": "sea-wall-off-broadway-2026",
+      "title": "Sea Wall",
+      "openingDate": "2026-10-16",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-critics-think-of-sea-wall-a-life-on-broadway",
+        "https://playbill.com/article/what-did-critics-think-of-off-broadways-sea-wall-a-life-starring-tom-sturridge-and-jake-gyllenhaal"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/sea-wall-a-life-review-1.34782260",
+        "https://broadwaynews.com/2019/08/08/review-life-death-and-the-banalities-in-between-in-sea-wall-a-life/",
+        "https://dctheatrescene.com/2019/08/08/sea-wall-a-life-review-tom-sturridge-and-jake-gyllenhaal-talk-modestly-about-life-and-death/",
+        "https://deadline.com/2019/08/sea-wall-a-life-broadway-review-jake-gyllenhaal-tom-sturridge-power-to-big-stage-1202664423/",
+        "https://medium.com/swlh/review-storytelling-reinvented-in-sea-wall-a-life-a9af3e22eb26",
+        "https://www.nationalreview.com/2019/08/theater-review-sea-wall-a-life-stagy-kind-of-mourning/",
+        "http://nystagereview.com/2019/08/08/sea-wall-a-life-jake-gyllenhaal-tom-sturridge-in-great-nervous-shape/",
+        "http://nystagereview.com/2019/08/08/sea-wall-a-life-fathers-and-sons-grappling-with-love-and-loss/",
+        "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html",
+        "https://www.newyorker.com/magazine/2019/08/19/endgames-in-sea-wall-a-life-and-coriolanus",
+        "https://www.newsday.com/entertainment/theater/sea-wall-a-life-1.34750953",
+        "https://www.nj.com/entertainment/2019/08/sea-wall-a-life-review-jake-gyllenhaal-and-tom-sturridge-star-in-a-quiet-heartbreaker.html",
+        "https://www.ny1.com/nyc/all-boroughs/arts/2019/08/09/theater-review--sea-wall-a-life",
+        "https://observer.com/2019/08/sea-wall-a-life-broadway-review-tom-sturridge-jake-gyllenhaal/",
+        "https://www.timeout.com/newyork/theater/sea-wall-a-life-review-broadway-jake-gyllenhaal-tom-sturridge",
+        "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-broadway-1203292445/",
+        "https://www.thewrap.com/sea-wall-a-life-theater-review-jake-gyllenhaal-tom-sturridge/",
+        "https://www.amny.com/entertainment/sea-wall-a-life-review-1.27306945",
+        "https://www.thedailybeast.com/jake-gyllenhaal-faces-a-matter-of-life-and-death-in-sea-wall-a-life",
+        "https://deadline.com/2019/02/jake-gyllenhaal-tom-sturridge-off-broadway-public-theater-sea-wall-a-life-1202556202/",
+        "https://ew.com/theater-reviews/2019/02/14/sea-wall-a-life-review/",
+        "https://www.theguardian.com/stage/2019/feb/14/sea-wall-a-life-review-jake-gyllenhaal-new-york",
+        "https://www.hollywoodreporter.com/review/sea-wall-a-life-1186357",
+        "https://www.newsday.com/entertainment/theater/sea-wall-a-life-review-1.27238620",
+        "https://www.nydailynews.com/entertainment/broadway/ny-ent-sea-wall-life-0214-story.html",
+        "http://nystagereview.com/2019/02/14/sea-wall-a-life-meditations-on-life-and-death/",
+        "http://nystagereview.com/2019/02/14/sea-wall-a-life-personal-storytelling-carefully-and-impersonally-constructed/",
+        "https://www.nytimes.com/2019/02/14/theater/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge.html",
+        "https://observer.com/2019/02/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge-probe-pain/",
+        "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/"
+      ],
+      "dirFiles": 5,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/sea-wall-a-life-review-1.34782260",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://broadwaynews.com/2019/08/08/review-life-death-and-the-banalities-in-between-in-sea-wall-a-life/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dctheatrescene.com/2019/08/08/sea-wall-a-life-review-tom-sturridge-and-jake-gyllenhaal-talk-modestly-about-life-and-death/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2019/08/sea-wall-a-life-broadway-review-jake-gyllenhaal-tom-sturridge-power-to-big-stage-1202664423/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://medium.com/swlh/review-storytelling-reinvented-in-sea-wall-a-life-a9af3e22eb26",
+          "host": "medium.com",
+          "knownOutletId": "medium",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nationalreview.com/2019/08/theater-review-sea-wall-a-life-stagy-kind-of-mourning/",
+          "host": "nationalreview.com",
+          "knownOutletId": "national-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/08/08/sea-wall-a-life-jake-gyllenhaal-tom-sturridge-in-great-nervous-shape/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/08/08/sea-wall-a-life-fathers-and-sons-grappling-with-love-and-loss/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2019/08/19/endgames-in-sea-wall-a-life-and-coriolanus",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/sea-wall-a-life-1.34750953",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/08/sea-wall-a-life-review-jake-gyllenhaal-and-tom-sturridge-star-in-a-quiet-heartbreaker.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/arts/2019/08/09/theater-review--sea-wall-a-life",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2019/08/sea-wall-a-life-broadway-review-tom-sturridge-jake-gyllenhaal/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sea-wall-a-life-review-broadway-jake-gyllenhaal-tom-sturridge",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-broadway-1203292445/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/sea-wall-a-life-theater-review-jake-gyllenhaal-tom-sturridge/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2019/02/jake-gyllenhaal-tom-sturridge-off-broadway-public-theater-sea-wall-a-life-1202556202/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/02/14/sea-wall-a-life-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/feb/14/sea-wall-a-life-review-jake-gyllenhaal-new-york",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/02/14/sea-wall-a-life-meditations-on-life-and-death/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/02/14/sea-wall-a-life-personal-storytelling-carefully-and-impersonally-constructed/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/02/14/theater/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2019/02/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge-probe-pain/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.amny.com/entertainment/sea-wall-a-life-review-1.27306945",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.amny.com/entertainment/sea-wall-a-life-review-1.27306945"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thedailybeast.com/jake-gyllenhaal-faces-a-matter-of-life-and-death-in-sea-wall-a-life",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/jake-gyllenhaal-faces-a-matter-of-life-and-death-in-sea-wall-a-life"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/sea-wall-a-life-1186357",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--frank-scheck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/review/sea-wall-a-life-1186357"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/sea-wall-a-life-review-1.27238620",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--barbara-schuler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newsday.com/entertainment/theater/sea-wall-a-life-review-1.27238620"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-ent-sea-wall-life-0214-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-ent-sea-wall-life-0214-story.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 205,
+        "byReason": {
+          "aggregator-internal-nav": 124,
+          "not-http-url": 11,
+          "production-database-listing": 21,
+          "aggregator-section-root": 8,
+          "non-review-host": 40,
+          "roundup-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-sea-wall-a-life-on-broadway",
+          "publishDate": "2019-08-08"
+        },
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-off-broadways-sea-wall-a-life-starring-tom-sturridge-and-jake-gyllenhaal",
+          "publishDate": "2019-02-15"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/sea-wall-a-life-review-1.34782260",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://broadwaynews.com/2019/08/08/review-life-death-and-the-banalities-in-between-in-sea-wall-a-life/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://dctheatrescene.com/2019/08/08/sea-wall-a-life-review-tom-sturridge-and-jake-gyllenhaal-talk-modestly-about-life-and-death/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://deadline.com/2019/08/sea-wall-a-life-broadway-review-jake-gyllenhaal-tom-sturridge-power-to-big-stage-1202664423/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://medium.com/swlh/review-storytelling-reinvented-in-sea-wall-a-life-a9af3e22eb26",
+          "host": "medium.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nationalreview.com/2019/08/theater-review-sea-wall-a-life-stagy-kind-of-mourning/",
+          "host": "nationalreview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2019/08/08/sea-wall-a-life-jake-gyllenhaal-tom-sturridge-in-great-nervous-shape/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2019/08/08/sea-wall-a-life-fathers-and-sons-grappling-with-love-and-loss/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2019/08/19/endgames-in-sea-wall-a-life-and-coriolanus",
+          "host": "newyorker.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/sea-wall-a-life-1.34750953",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/08/sea-wall-a-life-review-jake-gyllenhaal-and-tom-sturridge-star-in-a-quiet-heartbreaker.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/arts/2019/08/09/theater-review--sea-wall-a-life",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2019/08/sea-wall-a-life-broadway-review-tom-sturridge-jake-gyllenhaal/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sea-wall-a-life-review-broadway-jake-gyllenhaal-tom-sturridge",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-broadway-1203292445/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/sea-wall-a-life-theater-review-jake-gyllenhaal-tom-sturridge/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://deadline.com/2019/02/jake-gyllenhaal-tom-sturridge-off-broadway-public-theater-sea-wall-a-life-1202556202/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/02/14/sea-wall-a-life-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/feb/14/sea-wall-a-life-review-jake-gyllenhaal-new-york",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2019/02/14/sea-wall-a-life-meditations-on-life-and-death/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2019/02/14/sea-wall-a-life-personal-storytelling-carefully-and-impersonally-constructed/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/02/14/theater/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2019/02/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge-probe-pain/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-15T01:10:51.119Z"
+    },
+    {
       "showId": "seagull-true-story-off-broadway-2026",
       "title": "Seagull: True Story",
       "openingDate": "2026-03-30",
@@ -159939,35 +161004,357 @@
       "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
+        "https://www.theatremonkey.com/show/some-woman/",
+        "https://www.timeout.com/london/theatre/some-woman",
+        "https://www.whatsonstage.com/news/national-theatre-reveals-full-cast-joining-anne-marie-duff-in-some-woman_1729692/",
+        "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
+        "https://draughtslondon.com/some-woman-at-the-national-theatre/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
+          "host": "britishtheatre.com",
+          "knownOutletId": "britishtheatrecom",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatremonkey.com/show/some-woman/",
+          "host": "theatremonkey.com",
+          "knownOutletId": "theatremonkey",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/some-woman",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/national-theatre-reveals-full-cast-joining-anne-marie-duff-in-some-woman_1729692/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true
+        },
+        {
+          "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/",
+          "host": "draughtslondon.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Some Woman\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Some Woman\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Some Woman\" review national",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Some Woman\" McIntyre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Some Woman National Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Some Woman National Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Some Woman National Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 45,
+        "byReason": {
+          "non-review-host": 34,
+          "ticketing-reseller": 2,
+          "non-review-path": 3,
+          "ticketing-listing": 3,
+          "venue-production-page": 2,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
+          "host": "britishtheatre.com",
+          "outletId": "britishtheatrecom",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatremonkey.com/show/some-woman/",
+          "host": "theatremonkey.com",
+          "outletId": "theatremonkey",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/some-woman",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/national-theatre-reveals-full-cast-joining-anne-marie-duff-in-some-woman_1729692/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/",
+          "host": "draughtslondon.com",
+          "outletId": "draughtslondon"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "britishtheatrecom",
+            "outlet": "britishtheatrecom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere"
+          },
+          {
+            "outletId": "theatremonkey",
+            "outlet": "theatremonkey",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatremonkey.com/show/some-woman/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/some-woman"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/national-theatre-reveals-full-cast-joining-anne-marie-duff-in-some-woman_1729692/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/"
+          },
+          {
+            "outletId": "draughtslondon.com",
+            "outlet": "draughtslondon.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
+            "outletId": "britishtheatrecom",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.theatremonkey.com/show/some-woman/",
+            "outletId": "theatremonkey",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/some-woman",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/national-theatre-reveals-full-cast-joining-anne-marie-duff-in-some-woman_1729692/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/",
+            "outletId": "draughtslondon.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -165444,7 +166831,12 @@
         "liveCount": 5,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-14T22:22:34.949Z"
+      "computedAt": "2026-10-14T22:22:34.949Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -171605,301 +172997,35 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
-        "https://www.timeout.com/newyork/theater/the-ask",
-        "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-        "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
-        "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-        "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-ask",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-          "host": "theatrebeyondbroadway.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "serpCensus": true
-        },
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Ask\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Ask\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Ask Theater 555 review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Ask Theater 555 review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Ask Theater 555 review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 24,
-        "byReason": {
-          "aggregator-internal-nav": 3,
-          "production-database-listing": 1,
-          "non-review-host": 11,
-          "bare-host": 5,
-          "ticketing-listing": 1,
-          "review-hub-page": 1,
-          "ticketing-reseller": 1,
-          "non-review-path": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/exeunt-magazine--read-more-articles"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-ask",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  outletId drift detected — operator input \"timeout-london\" resolved to \"timeout-london\" but URL d"
-        },
-        {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-          "host": "theatrebeyondbroadway.com",
-          "outletId": "theatrebeyondbroadway",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"theatrebeyondbroadway\" (not in registry) — onboard to outlet-registry.json a"
-        },
-        {
-          "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
-          "host": "theatrely.com",
-          "outletId": "theatrely",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/theatrely--andrew-martini.json → qu"
-        },
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/theater-scene--tony-marinelli.json "
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
-        }
-      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/the-ask"
-          },
-          {
-            "outletId": "theatrebeyondbroadway.com",
-            "outlet": "theatrebeyondbroadway.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask"
-          },
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review"
-          },
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/the-ask",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T12:28:08.210Z"
-          },
-          {
-            "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-            "outletId": "theatrebeyondbroadway.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
-            "outletId": "theatrely",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-14T19:12:18.919Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-the-ask-examines-the-ideological-crack-up-on-the-left_1749369/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-14T11:31:16.425Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 6
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-14T19:12:18.919Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
-      }
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -173063,7 +174189,25 @@
         "http://www.dailymail.co.uk/tvshowbiz/reviews/article-2243805/QUENTIN-LETTS-First-Night-Review-The-Bodyguard.html",
         "http://www.theartsdesk.com/theatre/bodyguard-adelphi-theatre",
         "http://www.heraldscotland.com/arts-ents/stage/the-bodyguard-adelphi-theatre-london.19599460",
-        "http://www.thestage.co.uk/reviews/review.php/37808/the-bodyguard"
+        "http://www.thestage.co.uk/reviews/review.php/37808/the-bodyguard",
+        "https://www.metrmag.com/featured-stories/metrmag-spotlight-on-jonathan-blansfield-of-the-bodyguard-musical-coming-to-the-hanover-theatre-worcester-ma",
+        "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
+        "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
+        "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329",
+        "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+        "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
+        "https://matineedog.com/the-bodyguard-uk-tour-review/",
+        "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
+        "https://www.londontheatre1.com/reviews/the-bodyguard-2026-new-wimbledon-theatre-review/",
+        "https://famousashleygrant.com/bodyguard-musical-review/",
+        "https://fairypoweredproductions.com/the-bodyguard-the-musical-review-6/",
+        "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
+        "https://hotchka.com/the-bodyguard-tour-review",
+        "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+        "https://www.stagesideuk.co.uk/the-bodyguard-review/",
+        "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+        "https://theater.guide/events/the-bodyguard-the-musical/",
+        "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/"
       ],
       "dirFiles": 1,
       "dirClean": 0,
@@ -173100,7 +174244,7 @@
         {
           "url": "http://www.dailymail.co.uk/tvshowbiz/reviews/article-2243805/QUENTIN-LETTS-First-Night-Review-The-Bodyguard.html",
           "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
+          "knownOutletId": "mail-on-sunday",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -173124,23 +174268,207 @@
           "knownOutletId": "thestage",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
+          "host": "artscape.co.za",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
+          "host": "motifri.com",
+          "knownOutletId": "motif",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+          "host": "jadar.uk",
+          "knownOutletId": "jadar",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
+          "host": "kaywilsonwriter.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://matineedog.com/the-bodyguard-uk-tour-review/",
+          "host": "matineedog.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/the-bodyguard-2026-new-wimbledon-theatre-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "serpCensus": true
+        },
+        {
+          "url": "https://famousashleygrant.com/bodyguard-musical-review/",
+          "host": "famousashleygrant.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-bodyguard-the-musical-review-6/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "serpCensus": true
+        },
+        {
+          "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
+          "host": "minitravellers.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://hotchka.com/the-bodyguard-tour-review",
+          "host": "hotchka.com",
+          "knownOutletId": "hotchka",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/",
+          "host": "stagesideuk.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+          "host": "ilovemanchester.com",
+          "knownOutletId": "ilovemanchester",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theater.guide/events/the-bodyguard-the-musical/",
+          "host": "theater.guide",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/",
+          "host": "theenglisheverygirl.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.metrmag.com/featured-stories/metrmag-spotlight-on-jonathan-blansfield-of-the-bodyguard-musical-coming-to-the-hanover-theatre-worcester-ma",
+          "host": "metrmag.com",
+          "knownOutletId": "metrmag",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "metrmag--kevin-t-baldwin.json",
+              "flag": "clean",
+              "urlInDir": "https://www.metrmag.com/featured-stories/metrmag-spotlight-on-jonathan-blansfield-of-the-bodyguard-musical-coming-to-the-hanover-theatre-worcester-ma"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Bodyguard\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Bodyguard\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Bodyguard\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Bodyguard North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Bodyguard North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Bodyguard North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 8,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 18,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 331,
+        "count": 356,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 226,
+          "aggregator-internal-nav": 230,
           "not-http-url": 86,
-          "aggregator-section-root": 4
+          "aggregator-section-root": 4,
+          "non-review-host": 35,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -173150,7 +174478,7 @@
           "publishDate": "2012-12-06"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -173202,18 +174530,399 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
+          "host": "artscape.co.za",
+          "outletId": "artscape",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
+          "host": "motifri.com",
+          "outletId": "motif",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/broadwayworld--sam-desmond.json → qua"
+        },
+        {
+          "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+          "host": "jadar.uk",
+          "outletId": "jadar",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/jadar--jay-darcy.json → quarantined t"
+        },
+        {
+          "url": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
+          "host": "kaywilsonwriter.com",
+          "outletId": "kaywilsonwriter",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://matineedog.com/the-bodyguard-uk-tour-review/",
+          "host": "matineedog.com",
+          "outletId": "matineedog"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/the-bodyguard-2026-new-wimbledon-theatre-review/",
+          "host": "londontheatre1.com",
+          "outletId": "londontheatre1"
+        },
+        {
+          "url": "https://famousashleygrant.com/bodyguard-musical-review/",
+          "host": "famousashleygrant.com",
+          "outletId": "famousashleygrant"
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-bodyguard-the-musical-review-6/",
+          "host": "fairypoweredproductions.com",
+          "outletId": "fairypoweredproductions"
+        },
+        {
+          "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
+          "host": "minitravellers.co.uk",
+          "outletId": "minitravellers"
+        },
+        {
+          "url": "https://hotchka.com/the-bodyguard-tour-review",
+          "host": "hotchka.com",
+          "outletId": "hotchka"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre"
+        },
+        {
+          "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/",
+          "host": "stagesideuk.co.uk",
+          "outletId": "stagesideuk"
+        },
+        {
+          "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+          "host": "ilovemanchester.com",
+          "outletId": "ilovemanchester"
+        },
+        {
+          "url": "https://theater.guide/events/the-bodyguard-the-musical/",
+          "host": "theater.guide",
+          "outletId": "theater"
+        },
+        {
+          "url": "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/",
+          "host": "theenglisheverygirl.com",
+          "outletId": "theenglisheverygirl"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "artscape.co.za",
+            "outlet": "artscape.co.za",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/"
+          },
+          {
+            "outletId": "motif",
+            "outlet": "motif",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329"
+          },
+          {
+            "outletId": "jadar",
+            "outlet": "jadar",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/"
+          },
+          {
+            "outletId": "kaywilsonwriter.com",
+            "outlet": "kaywilsonwriter.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review"
+          },
+          {
+            "outletId": "matineedog.com",
+            "outlet": "matineedog.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://matineedog.com/the-bodyguard-uk-tour-review/"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/"
+          },
+          {
+            "outletId": "londontheatre1",
+            "outlet": "londontheatre1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre1.com/reviews/the-bodyguard-2026-new-wimbledon-theatre-review/"
+          },
+          {
+            "outletId": "famousashleygrant.com",
+            "outlet": "famousashleygrant.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://famousashleygrant.com/bodyguard-musical-review/"
+          },
+          {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/the-bodyguard-the-musical-review-6/"
+          },
+          {
+            "outletId": "minitravellers.co.uk",
+            "outlet": "minitravellers.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/"
+          },
+          {
+            "outletId": "hotchka",
+            "outlet": "hotchka",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://hotchka.com/the-bodyguard-tour-review"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364"
+          },
+          {
+            "outletId": "stagesideuk.co.uk",
+            "outlet": "stagesideuk.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/"
+          },
+          {
+            "outletId": "ilovemanchester",
+            "outlet": "ilovemanchester",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre"
+          },
+          {
+            "outletId": "theater.guide",
+            "outlet": "theater.guide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theater.guide/events/the-bodyguard-the-musical/"
+          },
+          {
+            "outletId": "theenglisheverygirl.com",
+            "outlet": "theenglisheverygirl.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/"
+          },
+          {
+            "outletId": "metrmag",
+            "outlet": "metrmag",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.metrmag.com/featured-stories/metrmag-spotlight-on-jonathan-blansfield-of-the-bodyguard-musical-coming-to-the-hanover-theatre-worcester-ma"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
+            "outletId": "artscape.co.za",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
+            "outletId": "motif",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329",
+            "outletId": "broadwayworld",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+            "outletId": "jadar",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
+            "outletId": "kaywilsonwriter.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://matineedog.com/the-bodyguard-uk-tour-review/",
+            "outletId": "matineedog.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
+            "outletId": "around-the-town-chicago",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/the-bodyguard-2026-new-wimbledon-theatre-review/",
+            "outletId": "londontheatre1",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://famousashleygrant.com/bodyguard-musical-review/",
+            "outletId": "famousashleygrant.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/the-bodyguard-the-musical-review-6/",
+            "outletId": "fairypoweredproductions",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
+            "outletId": "minitravellers.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://hotchka.com/the-bodyguard-tour-review",
+            "outletId": "hotchka",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+            "outletId": "british-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/",
+            "outletId": "stagesideuk.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+            "outletId": "ilovemanchester",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://theater.guide/events/the-bodyguard-the-musical/",
+            "outletId": "theater.guide",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/",
+            "outletId": "theenglisheverygirl.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.metrmag.com/featured-stories/metrmag-spotlight-on-jonathan-blansfield-of-the-bodyguard-musical-coming-to-the-hanover-theatre-worcester-ma",
+            "outletId": "metrmag",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 18
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -218863,35 +220572,209 @@
       "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://stageraw.com/unconditional-a-musical-memoir/",
+        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+          "host": "stageraw.com",
+          "knownOutletId": "stage-raw",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+          "host": "theatreinla.com",
+          "knownOutletId": "theatreinla",
+          "serpCensus": true
+        },
+        {
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"UNCONDITIONAL, a new musical memoir\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 23,
+        "byReason": {
+          "aggregator-internal-nav": 2,
+          "non-review-host": 15,
+          "census-junk-host": 1,
+          "write-path-blocked": 1,
+          "bare-host": 3,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+          "host": "stageraw.com",
+          "outletId": "stage-raw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: unconditional-a-new-musical-memoir-off-broadway-2026/stage-ra"
+        },
+        {
+          "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+          "host": "theatreinla.com",
+          "outletId": "theatreinla",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "outletId": "hollywoodtimes",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"hollywoodtimes\" (not in registry) — onboard to outlet-registry.json after re"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "stage-raw",
+            "outlet": "stage-raw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stageraw.com/unconditional-a-musical-memoir/"
+          },
+          {
+            "outletId": "theatreinla",
+            "outlet": "theatreinla",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
+          },
+          {
+            "outletId": "hollywoodtimes.net",
+            "outlet": "hollywoodtimes.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+            "outletId": "stage-raw",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+            "outletId": "theatreinla",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+            "outletId": "hollywoodtimes.net",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-14T22:55:22.804Z"
+      "computedAt": "2026-10-15T01:10:51.119Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
@@ -224665,9 +226548,9 @@
       },
       "computedAt": "2026-10-10T10:36:33.884Z",
       "quarantine": {
-        "nextState": "incomplete:14:20",
-        "since": "2026-10-14T19:12:19.059Z",
-        "lastAt": "2026-10-14T22:55:22.914Z"
+        "nextState": "incomplete:14:19",
+        "since": "2026-10-15T01:10:51.182Z",
+        "lastAt": "2026-10-15T01:10:51.182Z"
       }
     },
     {
