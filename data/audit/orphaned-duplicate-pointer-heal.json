@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-15T16:34:12.496Z",
+  "generated": "2026-10-15T17:46:55.696Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 29,
+  "count": 28,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -134,13 +134,6 @@
       "loserFile": "londontheatredirect--unknown.json",
       "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
       "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "loserFile": "standard--unknown.json",
-      "targetFile": "standard--nick-curtis.json",
-      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

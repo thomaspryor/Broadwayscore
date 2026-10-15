@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-15T16:40:26.023Z",
+  "timestamp": "2026-10-15T17:53:23.764Z",
   "stats": {
-    "totalReviews": 56778,
-    "alreadyFlagged": 21089,
-    "dateGuardCatches": 199,
-    "directorMismatch": 1898,
-    "tvFilmSignals": 1584,
-    "londonSignals": 2359,
+    "totalReviews": 56780,
+    "alreadyFlagged": 21095,
+    "dateGuardCatches": 195,
+    "directorMismatch": 1900,
+    "tvFilmSignals": 1583,
+    "londonSignals": 2361,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
     "noPublishDate": 5262
@@ -23233,6 +23233,20 @@
       ]
     },
     {
+      "showId": "lend-me-a-tenor-2010",
+      "file": "wsj--terry-teachout.json",
+      "score": 63,
+      "publishDate": "2010-04-08T23:30:00-04:00",
+      "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from lend-me-a-tenor-1989"
+        }
+      ]
+    },
+    {
       "showId": "leopoldstadt-west-end-2020",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 88,
@@ -26397,67 +26411,6 @@
       ]
     },
     {
-      "showId": "much-ado-about-nothing-2026",
-      "file": "express-uk--stefan-kyriazis.json",
-      "score": 96,
-      "publishDate": "2025-02-20",
-      "url": "https://www.express.co.uk/entertainment/theatre/2016861/tom-hiddleston-hayley-atwell-Much-Ado-Shakespeare-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "file": "independent--alice-saville.json",
-      "score": 79,
-      "publishDate": "2025-02-20",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/much-ado-about-nothing-tom-hiddleston-hayley-atwell-play-b2701440.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 94,
-      "publishDate": "2025-02-19",
-      "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-tom-hiddleston-hayley-atwell-b1212063.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 619d before show (2025-02-19 vs 2026-10-31)"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 96,
-      "publishDate": "2025-02-20",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/much-ado-about-nothing-review-tom-hiddleston/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
       "score": 63,
@@ -26748,6 +26701,20 @@
       "score": 81,
       "publishDate": "2025-02-20",
       "url": "https://www.dailymail.com/tvshowbiz/article-14416467/Tom-Hiddleston-Hayley-Atwell-embrace-celebrate-opening-night-Ado-Nothing.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "express-uk--stefan-kyriazis.json",
+      "score": 96,
+      "publishDate": "2025-02-20",
+      "url": "https://www.express.co.uk/entertainment/theatre/2016861/tom-hiddleston-hayley-atwell-Much-Ado-Shakespeare-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37768,7 +37735,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -65413,6 +65380,20 @@
       ]
     },
     {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "theatrecat--unknown.json",
+      "score": 95,
+      "publishDate": "2026-10-15",
+      "url": "https://theatrecat.com/2026/10/15/into-the-woods-noel-coward-theatre-wc1/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-west-end-2025",
       "file": "theatremonkey--unknown.json",
       "score": 92,
@@ -75226,6 +75207,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "londontheatregeek--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatregeek.co.uk/shows/some-woman",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
