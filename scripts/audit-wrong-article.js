@@ -15,6 +15,9 @@
  *   node scripts/audit-wrong-article.js --list       # print unverified suspects as JSON
  *   node scripts/audit-wrong-article.js --record-verified   # merge ALL current suspects into the verified baseline
  *                                                    # (only after an Opus pass over --list)
+ *   node scripts/audit-wrong-article.js --verify-file=<showId/file.json,...>   # hand-verify ONLY these suspects
+ *                                                    # (after reading the text and the show's venue/dates): use it for a
+ *                                                    # CONFIRMED verdict that is a false positive (BRO-4606), never to bulk-clear
  *   node scripts/audit-wrong-article.js --fix-actions  # print review-field-edit actions (wrongShow -> true, with
  *                                                    # the current value as oldValue) for every CONFIRMED file, ready
  *                                                    # for a data/pending-fixes plan (BRO-4521)
@@ -135,7 +138,7 @@ function findSuspects(textsDir, shows) {
 
 async function main(argv) {
   if (require('./lib/cli-help').hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/audit-wrong-article.js [--list | --fix-actions | --record-verified | --adjudicate [--max=N]]  (no flag = CI check)');
+    console.log('Usage: node scripts/audit-wrong-article.js [--list | --fix-actions | --record-verified | --verify-file=<a,b> | --adjudicate [--max=N]]  (no flag = CI check)');
     return 0;
   }
   const shows = loadShows();
@@ -149,6 +152,22 @@ async function main(argv) {
     for (const s of suspects) next[s.file] = s.hash;
     fs.writeFileSync(VERIFIED_PATH, JSON.stringify(next, null, 2) + '\n');
     console.log(`recorded ${suspects.length} verified suspects → ${path.relative(ROOT, VERIFIED_PATH)}`);
+    return 0;
+  }
+
+  const verifyArg = argv.find((a) => a.startsWith('--verify-file='));
+  if (verifyArg) {
+    const wanted = verifyArg.slice('--verify-file='.length).split(',').map((f) => f.trim()).filter(Boolean);
+    const byFile = new Map(suspects.map((s) => [s.file, s]));
+    const missing = wanted.filter((f) => !byFile.has(f));
+    if (!wanted.length || missing.length) {
+      console.error(`--verify-file: not a current suspect: ${missing.join(', ') || '(no files given)'}`);
+      return 2;
+    }
+    const next = { ...verified };
+    for (const f of wanted) next[f] = byFile.get(f).hash;
+    fs.writeFileSync(VERIFIED_PATH, JSON.stringify(next, null, 2) + '\n');
+    console.log(`hand-verified ${wanted.length} suspect(s) → ${path.relative(ROOT, VERIFIED_PATH)}`);
     return 0;
   }
 
