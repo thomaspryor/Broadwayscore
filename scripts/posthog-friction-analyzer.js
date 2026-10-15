@@ -425,13 +425,18 @@ async function main() {
       continue;
     }
 
-    const prior = findPriorAnswers(`${issue.title} ${issue.problem || ''}`, answeredCards)[0];
+    const prior = findPriorAnswers(issue.title, answeredCards).find((a) => a.stateType === 'canceled');
     if (prior) {
       skipped.push(`[already answered ${prior.identifier}] ${issue.title}`);
+      existingHashes.add(hash);
       const card = answeredCards.find((c) => c.identifier === prior.identifier);
       const seen = card && ((card.comments && card.comments.nodes) || []).some((c) => c.body.includes(`fhash:${hash}`));
       if (!DRY_RUN && card && !seen) {
-        await linearClient.createComment(card.id, `Friction scan fhash:${hash} saw this topic again: ${issue.title}. Evidence: ${issue.evidence || '(see PostHog data)'}. The owner answered here on ${prior.date}; no new question filed.`);
+        try {
+          await linearClient.createComment(card.id, `Friction scan fhash:${hash} saw this topic again: ${issue.title}. Evidence: ${issue.evidence || '(see PostHog data)'}. Earlier answer on this card${prior.date ? ` (${prior.date})` : ''} stands; no new question filed.`);
+        } catch (err) {
+          console.warn(`Could not comment on ${prior.identifier}: ${err.message}`);
+        }
       }
       continue;
     }

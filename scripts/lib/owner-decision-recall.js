@@ -15,8 +15,9 @@
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
 
 const STOPWORDS = new Set(('a an and are as at be by for from has have how in is it its of on or so that the this to was we when ' +
-  'with not no new add fix card cards owner user users page show shows sign get gets got can will should must into out up decision decisions owner option paused waiting need needs tap press todo done close closed after first ready board triage plan').split(/\s+/));
-const ANSWER_RE = /\b(owner (answer(ed)?|decision|decided|declined|chose|said|picked)|decision:|answered:|option [a-d]\b|keep (the )?current)/i;
+  'with not no new add fix card cards owner user users page show shows sign get gets got can will should must into out up decision decisions owner option paused waiting need needs tap press todo done close closed rage click clicks funnel drop conversion low after first ready board triage plan').split(/\s+/));
+const ANSWER_RE = /\bowner (answered|declined|picked|chose)\b|\bowner decision (on the decisions page|\(?\d{4}-)/i;
+const QUESTION_RE = /DECISION NEEDED/;
 const MIN_SHARED = 2;
 
 function tokens(text) {
@@ -43,10 +44,10 @@ function commentBodies(card) {
 // holds no owner answer (a card closed as obsolete is not an answer).
 function answerOf(card) {
   if (!card || !isTerminal(card)) return null;
-  const hit = commentBodies(card).find((c) => ANSWER_RE.test(c.body));
+  const hit = commentBodies(card).find((c) => ANSWER_RE.test(c.body) && !QUESTION_RE.test(c.body));
   const when = (hit && hit.createdAt) || card.canceledAt || card.completedAt || card.updatedAt || null;
   let text = hit ? hit.body : null;
-  if (!text && card.state.type === 'canceled' && ANSWER_RE.test(String(card.description || ''))) text = card.description;
+  if (!text && card.state.type === 'canceled' && ANSWER_RE.test(String(card.description || '')) && !QUESTION_RE.test(String(card.description || ''))) text = card.description;
   if (!text) return null;
   return { text: text.replace(/\s+/g, ' ').trim().slice(0, 240), date: when ? String(when).slice(0, 10) : null };
 }
@@ -66,7 +67,7 @@ function findPriorAnswers(topic, cards, { minShared = MIN_SHARED } = {}) {
     if (!answer) continue;
     const have = cardTokens(card);
     const shared = [...want].filter((t) => have.has(t)).length;
-    if (shared >= need) found.push({ identifier: card.identifier, title: card.title, url: card.url || null, ...answer, shared });
+    if (shared >= need) found.push({ stateType: card.state.type, identifier: card.identifier, title: card.title, url: card.url || null, ...answer, shared });
   }
   return found.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')) || b.shared - a.shared);
 }
@@ -91,7 +92,7 @@ const CLOSED_QUERY = `query($teamKey: String!, $after: String) {
   }) {
     pageInfo { hasNextPage endCursor }
     nodes { id identifier title description url updatedAt canceledAt completedAt state { type }
-      comments(first: 20) { nodes { body createdAt } } }
+      comments(last: 30) { nodes { body createdAt } } }
   }
 }`;
 

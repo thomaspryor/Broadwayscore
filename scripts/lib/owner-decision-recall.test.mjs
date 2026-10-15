@@ -9,7 +9,7 @@ const cards = [
     description: 'Owner question about the email signup pop-up.',
     comments: { nodes: [{ body: 'Owner answered: keep the current pop-up.', createdAt: '2026-10-11T09:00:00Z' }] } },
   { identifier: 'BRO-4616', title: 'Sign-in sheet after first save', state: { type: 'canceled' },
-    comments: { nodes: [{ body: 'Owner decision: Option A.', createdAt: '2026-10-04T10:00:00Z' }] } },
+    comments: { nodes: [{ body: 'Owner picked Option A.', createdAt: '2026-10-04T10:00:00Z' }] } },
   { identifier: 'BRO-100', title: 'Email pop-up copy typo', state: { type: 'completed' }, comments: { nodes: [{ body: 'fixed', createdAt: '2026-09-01T00:00:00Z' }] } },
   { identifier: 'BRO-200', title: 'Email pop-up still open', state: { type: 'started' }, comments: { nodes: [{ body: 'Owner answered: yes', createdAt: '2026-10-01T00:00:00Z' }] } },
 ];
@@ -40,4 +40,11 @@ test('friction analyzer filter files nothing new for an answered topic', () => {
   const { fresh, answered } = splitAnswered(issues, cards);
   assert.deepEqual(fresh.map((i) => i.title), ['Ticket link broken on closed shows']);
   assert.equal(answered[0].prior[0].identifier, 'BRO-3624');
+});
+
+test('a question or a rule citation is not an answer', () => {
+  const q = { identifier: 'BRO-1', title: 'Rage clicks on homepage badge', state: { type: 'canceled' }, comments: { nodes: [{ body: 'DECISION NEEDED: x\nOption A: keep' }] } };
+  const r = { identifier: 'BRO-2', title: 'Rage clicks on homepage badge', state: { type: 'canceled' }, comments: { nodes: [{ body: 'superseded, owner decision rule applies' }] } };
+  assert.equal(answerOf(q), null);
+  assert.equal(answerOf(r), null);
 });
