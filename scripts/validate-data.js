@@ -26,7 +26,7 @@ const { loadImageSources } = require('./lib/image-sources-store');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./lib/opening-night-completeness');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
-const { checkIdYearDrift } = require('./lib/id-year-drift');
+const { checkIdYearDrift, checkIngestionYearStamps } = require('./lib/id-year-drift');
 
 // --dry-run (Sprint 0 / S0-T1): run every check, print every verdict, exit with
 // the same code — but never touch disk. Three write paths honour it: the
@@ -527,6 +527,7 @@ function validateRetiredIds(shows) {
 function validateIdYearDrift(shows) {
   info('Checking id year against opening/previews dates...');
   checkIdYearDrift(shows, { warn, ok });
+  checkIngestionYearStamps(shows, { warn, ok });
 }
 
 // ===========================================

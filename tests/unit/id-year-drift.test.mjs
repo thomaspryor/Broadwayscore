@@ -163,3 +163,37 @@ describe('validate-data.js wiring', () => {
     assert.match(src, /validateDates\(shows\);\n\s*validateIdYearDrift\(shows\);/, 'runner must call the check next to the date checks');
   });
 });
+
+describe('ingestion-year stamp (BRO-2829)', () => {
+  const { ingestionYearStamp, findIngestionYearStamps, INGESTION_STAMP_ACCEPTED } = require(path.join(ROOT, 'scripts/lib/id-year-drift'));
+  const row = (id, status, openingDate) => ({ id, status, openingDate });
+
+  test('flags a closed show stamped with its ingestion year', () => {
+    const hit = ingestionYearStamp(row('orlando-off-broadway-2026', 'closed', '2024-04-15'));
+    assert.equal(hit.idYear, '2026');
+    assert.equal(hit.openingYear, '2024');
+  });
+  test('flags an upcoming show stamped with a stale year (wanted-2022)', () => {
+    assert.ok(ingestionYearStamp(row('wanted-2022', 'upcoming', '2026-11-08')));
+  });
+  test('exempts long-running open productions (group 1 of the card)', () => {
+    assert.equal(ingestionYearStamp(row('the-mousetrap-west-end-2021', 'open', '1952-11-25')), null);
+    assert.equal(ingestionYearStamp(row('abba-voyage-off-west-end-2026', 'open', '2022-05-28')), null);
+  });
+  test('skips one-year December/January boundary and rows without an openingDate', () => {
+    assert.equal(ingestionYearStamp(row('evita-2026', 'upcoming', '2027-03-25')), null);
+    assert.equal(ingestionYearStamp(row('ripples-off-west-end-2026', 'upcoming', null)), null);
+  });
+  test('accepted ids do not warn but a new id in the class does', () => {
+    const rows = [row('orlando-off-broadway-2026', 'closed', '2024-04-15'), row('new-show-off-broadway-2026', 'closed', '2023-01-10')];
+    assert.deepEqual(findIngestionYearStamps(rows).map((h) => h.id), ['new-show-off-broadway-2026']);
+    assert.ok(INGESTION_STAMP_ACCEPTED['orlando-off-broadway-2026']);
+  });
+  test('real shows.json: zero un-reviewed hits', () => {
+    const f = path.join(ROOT, 'data', 'shows.json');
+    if (!fs.existsSync(f)) return;
+    const raw = JSON.parse(fs.readFileSync(f, 'utf8'));
+    const hits = findIngestionYearStamps(Array.isArray(raw) ? raw : raw.shows);
+    assert.deepEqual(hits.map((h) => h.id), []);
+  });
+});

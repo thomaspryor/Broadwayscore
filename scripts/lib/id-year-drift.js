@@ -121,7 +121,77 @@ function checkIdYearDrift(shows, { warn, ok } = {}) {
   return hits;
 }
 
+/**
+ * Ingestion-year stamp (BRO-2829): the narrow, high-signal subset of drift.
+ * The id year is the year the row was INGESTED, not the production's year:
+ * the real openingDate sits two or more years away from the id year.
+ *
+ * Exempt (correct data, not a defect): a production still running
+ * (open/previews) whose id year is LATER than its genuine historical opening.
+ * `the-mousetrap-west-end-2021` opened 1952 and is still on, so the id year is
+ * just when the entry was added. Skipped for lack of evidence: rows with no
+ * openingDate (previews-only / provisional ids), and one-year offsets (the
+ * December-previews, January-opening boundary).
+ *
+ * @returns {null | { id, idYear, openingYear, status }}
+ */
+function ingestionYearStamp(show) {
+  if (!show || typeof show !== 'object' || show._devOnly) return null;
+  const idYear = idYearOf(show.id);
+  const openingYear = dateYearOf(show.openingDate);
+  if (!idYear || !openingYear) return null;
+  if (Math.abs(Number(idYear) - Number(openingYear)) < 2) return null;
+  const running = show.status === 'open' || show.status === 'previews';
+  if (running && Number(idYear) > Number(openingYear)) return null;
+  return { id: show.id, idYear, openingYear, status: show.status == null ? null : show.status };
+}
+
+/**
+ * Hits already reviewed: renaming a closed or upcoming id changes a live URL
+ * and cascades through review-texts, public data and reviews.json, so it is a
+ * deliberate tooled step (rename-show-id.js, S8-T1), never a validate-data
+ * edit. Entry = id -> reason. A new id in the class is NOT here and warns.
+ */
+const INGESTION_STAMP_ACCEPTED = {
+  'kinky-boots-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'the-comeuppance-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'sunset-baby-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'orlando-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'three-houses-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'bad-krey-l-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'animal-wisdom-off-broadway-2022': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
+  'wanted-2022': 'upcoming, opens 2026-11-08; rename via rename-show-id.js (S8-T1) once dates are confirmed',
+};
+
+/** Ingestion-stamp hits not yet in INGESTION_STAMP_ACCEPTED, in shows.json order. */
+function findIngestionYearStamps(shows, accepted = INGESTION_STAMP_ACCEPTED) {
+  const hits = [];
+  for (const show of Array.isArray(shows) ? shows : []) {
+    const hit = ingestionYearStamp(show);
+    if (hit && !Object.prototype.hasOwnProperty.call(accepted, hit.id)) hits.push(hit);
+  }
+  return hits;
+}
+
+function formatIngestionStampWarning(hit) {
+  return `Ingestion-year id stamp: ${hit.id} (${hit.status || 'no status'}) is a ${hit.idYear} id but opened ${hit.openingYear} — rename via rename-show-id.js (S8-T1) or add to INGESTION_STAMP_ACCEPTED with a reason`;
+}
+
+/** Advisory only (CLAUDE.md rule 19): one WARN per new hit, never an error. */
+function checkIngestionYearStamps(shows, { warn, ok } = {}) {
+  const hits = findIngestionYearStamps(shows);
+  for (const hit of hits) if (warn) warn(formatIngestionStampWarning(hit));
+  if (hits.length === 0 && ok) ok('No new ingestion-year id stamps (opening year 2+ years from id year)');
+  return hits;
+}
+
 module.exports = {
+  ingestionYearStamp,
+  findIngestionYearStamps,
+  checkIngestionYearStamps,
+  formatIngestionStampWarning,
+  INGESTION_STAMP_ACCEPTED,
   idYearOf,
   dateYearOf,
   idYearDrift,
