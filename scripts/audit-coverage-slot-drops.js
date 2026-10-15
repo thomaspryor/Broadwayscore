@@ -56,6 +56,7 @@ function auditCorpus(dir) {
 if (require.main === module) {
   const dirArg = process.argv.find((a) => a.startsWith('--dir='));
   const dir = dirArg ? dirArg.slice(6) : path.join(__dirname, '..', 'data', 'review-texts');
+  if (!fs.existsSync(dir)) { console.error(`review-texts dir not found: ${dir} (needs the full checkout)`); process.exit(2); }
   const candidates = auditCorpus(dir);
   if (process.argv.includes('--json')) console.log(JSON.stringify(candidates, null, 2));
   else {
