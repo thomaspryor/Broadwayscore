@@ -14,7 +14,11 @@
  * after, and the titles that stop counting. Ids, outlets and titles only, no
  * review text.
  *
- * Usage: node scripts/audit-multishow-titlecase.js [--show=a,b] [--limit=N] [--json]
+ * Files the old rule does not flag are skipped (the option only removes
+ * matches, so their verdict cannot change). --shard=i/n splits the shows so
+ * a full-corpus run fits the run-script time limit.
+ *
+ * Usage: node scripts/audit-multishow-titlecase.js [--show=a,b] [--shard=i/n] [--limit=N] [--json]
  */
 'use strict';
 
@@ -28,13 +32,17 @@ const val = (n) => { const a = args.find((x) => x.startsWith(`--${n}=`)); return
 const onlyShows = val('show') ? val('show').split(',') : null;
 const limit = Number(val('limit') || 200);
 const asJson = args.includes('--json');
+const shardArg = val('shard');
+const [shardIdx, shardCount] = shardArg ? shardArg.split('/').map(Number) : [0, 1];
+if (!(shardCount >= 1 && shardIdx >= 0 && shardIdx < shardCount)) { console.error('--shard must be i/n with 0 <= i < n'); process.exit(2); }
 
 function main() {
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const titleById = Object.fromEntries((Array.isArray(raw) ? raw : (raw.shows || [])).map((s) => [s.id, s.title]));
   const textsDir = path.join(ROOT, 'data', 'review-texts');
   if (!fs.existsSync(textsDir)) { console.error('data/review-texts missing'); process.exit(1); }
-  const shows = onlyShows || fs.readdirSync(textsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+  const shows = (onlyShows || fs.readdirSync(textsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort())
+    .filter((_, i) => i % shardCount === shardIdx);
 
   let scanned = 0;
   const transitions = {};
@@ -48,13 +56,15 @@ function main() {
       const text = typeof r.fullText === 'string' ? r.fullText : '';
       if (text.length < 200) continue;
       scanned++;
+      const wasFound = detectMultiShowContent(text, show, { requireTitleCase: false });
+      if (!wasFound.detected) continue;
       const title = titleById[show] || null;
       const before = assessTextQuality(text, show, title, { requireTitleCase: false });
       const after = assessTextQuality(text, show, title, { requireTitleCase: true });
       if (before.quality === after.quality) continue;
       const key = `${before.quality} -> ${after.quality}`;
       transitions[key] = (transitions[key] || 0) + 1;
-      const was = detectMultiShowContent(text, show, { requireTitleCase: false }).showsFound;
+      const was = wasFound.showsFound;
       const now = new Set(detectMultiShowContent(text, show, { requireTitleCase: true }).showsFound);
       flips.push({
         show, file, outlet: r.outletId || null, chars: text.length,
@@ -69,7 +79,7 @@ function main() {
     console.log(JSON.stringify({ scanned, flips: flips.length, transitions, rows: flips.slice(0, limit) }, null, 2));
     return;
   }
-  console.log(`files with fullText scanned: ${scanned}`);
+  console.log(`files with fullText scanned: ${scanned}${shardArg ? ` (shard ${shardArg})` : ''}`);
   console.log(`verdict changes with requireTitleCase: ${flips.length}`);
   console.log('by transition:', JSON.stringify(transitions));
   console.log('\nshow | file | outlet | chars | before -> after | titles that stop counting');
