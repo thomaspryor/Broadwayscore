@@ -117,6 +117,10 @@ For each card:
    Otherwise `node scripts/linear-session.js report --issue=<id> --status=paused --summary="<what is left and why>"`
    (with `RECHECK-AFTER: YYYY-MM-DD` and a safe recheck command when the
    result is only observable later).
+7. Then remove that card's worktree (`git worktree remove --force <path>`,
+   never a .claude/worktrees/codex-runner* one). Each is about 1.3 GB and
+   the Codex slots share the same disk: on 2026-10-15 a full disk crashed 17
+   Codex cards in two minutes (BRO-5287).
 
 ## 3. Finish
 
