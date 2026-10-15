@@ -701,3 +701,11 @@ test('currentRunUncollected: serp-census-gate-off rows are report-only, not unco
   assert.equal(currentRunUncollected(row, { blocklist: null }), 1);
   assert.equal(currentRunUncollected({ ...row, weIngestBlocked: [] }, { blocklist: null }), 2);
 });
+
+test('serpCensus provenance is census-only: tagged from serpCensusOnlyUrls, never plain census membership (BRO-5252)', () => {
+  const src = fs.readFileSync(new URL('./audit-show-review-gap.js', import.meta.url), 'utf8');
+  assert.match(src, /serpCensusOnlyUrls = new Set\(\[\.\.\.serpCensusUrls\]\.filter\(u => !aggUrls\.has\(u\)\)\)/);
+  assert.match(src, /if \(serpCensusOnlyUrls\.has\(m\.url\) && !m\.weRef\) m\.serpCensus = true;/);
+  assert.doesNotMatch(src, /if \(serpCensusUrls\.has\(m\.url\)\) m\.serpCensus = true;/);
+  assert.ok(src.indexOf('serpCensusOnlyUrls = new Set') < src.indexOf('for (const u of serpCensusUrls) aggUrls.add(u);'));
+});

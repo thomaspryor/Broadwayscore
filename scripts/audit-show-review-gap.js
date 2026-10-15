@@ -1079,6 +1079,10 @@ async function auditShow(show, opts = {}) {
       result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
     }
   }
+  // BRO-5252: census provenance is census-ONLY. A URL an aggregator also cites is
+  // an aggregator-cited gap; tagging it serpCensus would report-only it and (via
+  // currentRunUncollected) hide it from the opening-window alert.
+  const serpCensusOnlyUrls = new Set([...serpCensusUrls].filter(u => !aggUrls.has(u)));
   for (const u of serpCensusUrls) aggUrls.add(u);
 
   // ---- West End reference (completeness gate, 2026-07-10) ----
@@ -1361,7 +1365,7 @@ async function auditShow(show, opts = {}) {
       // SERP census provenance (report/debug only — ingest eligibility for
       // these follows the same rules as any other missing URL: blocked on WE
       // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).
-      if (serpCensusUrls.has(m.url)) m.serpCensus = true;
+      if (serpCensusOnlyUrls.has(m.url) && !m.weRef) m.serpCensus = true;
     }
   }
 
