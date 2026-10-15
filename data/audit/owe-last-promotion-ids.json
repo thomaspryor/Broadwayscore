@@ -1,10 +1,15 @@
 {
-  "generatedAt": "2026-10-14T19:31:10.829Z",
+  "generatedAt": "2026-10-15T15:58:29.778Z",
   "promoted": [
     {
-      "id": "boys-who-dance-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
+      "id": "three-and-a-bit-off-west-end-2027",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": "https://almeida.co.uk/whats-on/three-and-a-bit/"
+    },
+    {
+      "id": "the-inequalities-trilogy-off-west-end-2027",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": "https://almeida.co.uk/whats-on/the-inequalities-trilogy/"
     }
   ],
   "rejected": [
@@ -33,20 +38,20 @@
       "reason": "already in shows.json as desire-under-the-elms-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Angel to Olympus",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-06))"
+    },
+    {
       "title": "An Evening of Stratford East Singers",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-17))"
-    },
-    {
-      "title": "Application 39",
-      "venue": "Theatre Royal Stratford East",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": null,
-      "kind": "skip-retired",
-      "reason": "matches retired application-39-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
       "title": "Boy Blue: 25 Stories",
@@ -361,20 +366,20 @@
       "reason": "already in shows.json as twenty-thousand-streets-off-west-end-2026 (same house, title words contained, overlapping run (\"Twenty Thousand Streets\" vs \"Twenty Thousand Streets Under the Sky\"))"
     },
     {
-      "title": "An Oak Tree",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
-    },
-    {
       "title": "Big Man Little Man",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as big-man-little-man-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "An Oak Tree",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
       "title": "Not Quite My Type",
@@ -431,6 +436,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as taken-the-unofficial-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Boys Who Dance",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as boys-who-dance-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "A Homo Alone 2 Yikes We Did It Again",
@@ -913,14 +926,6 @@
       "reason": "already in shows.json as la-distance-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "The Brown Sugar RAP Party",
-      "venue": "Young Vic",
-      "source": "venue-page:young-vic",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-14))"
-    },
-    {
       "title": "The Pelicot Trial",
       "venue": "Young Vic",
       "source": "venue-page:young-vic",
@@ -1087,14 +1092,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as jane-eyre-rose-kingston-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "A Brief Case of Crazy",
-      "venue": "Wilton's Music Hall",
-      "source": "venue-page:wilton-s-music-hall",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "A Christmas Carol In Words and Music",
