@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T06:43:58.874Z",
+  "generatedAt": "2026-10-15T10:17:36.528Z",
   "windowDays": 45,
   "showsScanned": 173,
   "gaps": [
@@ -12,18 +12,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": "a... | [BD Call] {\"ts\":\"2026-10-15T06:43:56.442Z\",\"provider\":\"brightdata\",\"script\":\"recover-talkinbroadway-forum-links.js\",\"workflow\":\"Audit Aggregator Review Gap\",\"host\":\"talkinbroadway.com\",\"fn\":\"web-unlocker\",\"success\":true,\"status\":200,\"credits\":null,\"fallback_from\":null,\"purpose\":null,\"category\":null,\"showId\":null} |   ✅ Success (Bright Data, html) |  | Done. 0 succeeded, 0 failed, 1 skipped."
-      },
+      "recovery": null,
       "recoveryCount": 3,
-      "forumLinkRecoveryCount": 5,
+      "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 156.9856986111111,
+      "fileAgeHours": 160.54594666666668,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 151.95401694444445
+      "nonTerminalAgeHours": 155.51447638888888
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -39,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 542.0572330555556,
+      "fileAgeHours": 545.6175666666667,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 93.07663111111111
+      "nonTerminalAgeHours": 96.63709055555556
     }
   ],
   "contradictions": []
