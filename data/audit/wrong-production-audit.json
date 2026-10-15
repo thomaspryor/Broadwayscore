@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-15T04:44:26.667Z",
+  "timestamp": "2026-10-15T05:40:22.058Z",
   "stats": {
-    "totalReviews": 56611,
-    "alreadyFlagged": 21060,
+    "totalReviews": 56632,
+    "alreadyFlagged": 21062,
     "dateGuardCatches": 210,
-    "directorMismatch": 1909,
+    "directorMismatch": 1911,
     "tvFilmSignals": 1581,
-    "londonSignals": 2349,
+    "londonSignals": 2352,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
     "noPublishDate": 5199
@@ -35192,10 +35192,36 @@
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2023",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2023-02-14",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/standing-skys-edge-national-theatre-review-concept-trumps-content/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "standing-at-the-skys-edge-west-end-2023",
       "file": "the-jewish-chronicle--john-nathan.json",
       "score": 66,
       "publishDate": "2023-02-16",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "standing-at-the-skys-edge-west-end-2023",
+      "file": "thestage--sam-marlowe.json",
+      "publishDate": "2023-02-14",
+      "url": "https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london-by-chris-bush-and-richard-hawley",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -71206,6 +71232,20 @@
     },
     {
       "showId": "oedipus-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2025-02-05",
+      "url": "https://www.allthatdazzles.co.uk/post/review-oedipus-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2025",
       "file": "gramilano--lucu00eda-piquero.json",
       "score": 63,
       "publishDate": "2025-02-06",
@@ -73782,6 +73822,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "file": "cultural-capital--unknown.json",
+      "score": 48,
+      "publishDate": "2026-10-05",
+      "url": "https://maryamphilpottblog.wordpress.com/2026/10/05/rent-tom-stoppard-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -78356,6 +78410,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "cultural-capital--unknown.json",
+      "score": 77,
+      "publishDate": "2026-10-12",
+      "url": "https://maryamphilpottblog.wordpress.com/2026/10/12/the-cherry-orchard-harold-pinter-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
