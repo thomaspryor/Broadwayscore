@@ -98,7 +98,7 @@ const IBDB_SERP_TIER = 'ibdb-serp';
  */
 function isGoogleBlockPage(html) {
   if (!html || typeof html !== 'string') return true;
-  return /unusual traffic|detected unusual|\/sorry\/index|g-recaptcha|recaptcha\/api|Before you continue to Google/i.test(html);
+  return /unusual traffic|detected unusual|\/sorry\/index|g-recaptcha|recaptcha\/api|enablejs|httpservice\/retry|Before you continue to Google/i.test(html);
 }
 
 function attemptKey(tier, showId) {
@@ -121,6 +121,19 @@ function searchTierGate(attempts, tier, show, opts = {}) {
   if (opts.force) return { skip: false, retryAt: null, key, failures };
   const { skip, retryAt } = shouldSkipGoogleImages(entry, opts.nowMs == null ? Date.now() : opts.nowMs, show);
   return { skip, retryAt, key, failures };
+}
+
+/**
+ * Pure: what the TodayTix SERP tier records for one discoverTodayTixId result.
+ * @param {boolean} fromSerp - the id came from the paid SERP (not the direct search)
+ * @param {boolean} ownerRejected - another show owns that TodayTix id
+ * @returns {boolean|null} true = hit, false = miss, null = nothing to record
+ * Only called after the owner check, so a rejected hit is a plain miss and
+ * never a success-then-miss (which would reset failures to 1).
+ */
+function todaytixSerpHitOutcome(fromSerp, ownerRejected) {
+  if (!fromSerp) return null;
+  return !ownerRejected;
 }
 
 function loadImageSearchAttempts(p = ATTEMPTS_PATH) {
@@ -146,6 +159,7 @@ module.exports = {
   IBDB_SERP_TIER,
   attemptKey,
   isGoogleBlockPage,
+  todaytixSerpHitOutcome,
   searchTierGate,
   shouldSkipGoogleImages,
   recordGoogleImagesAttempt,

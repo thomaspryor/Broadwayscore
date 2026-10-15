@@ -150,6 +150,7 @@ test('cleanup runs and rethrows unchanged even when nothing needs discarding', a
 // ---------------------------------------------------------------------------
 const {
   searchTierGate, attemptKey, recordGoogleImagesAttempt, shouldSkipGoogleImages, isGoogleBlockPage,
+  todaytixSerpHitOutcome,
   TODAYTIX_SERP_TIER, PLAYBILL_SERP_TIER,
 } = require('./lib/image-search-backoff.js');
 
@@ -201,6 +202,8 @@ test('a Google block/consent page is not a results page (not counted as a miss)'
   assert.equal(isGoogleBlockPage('<html>Our systems have detected unusual traffic from your computer network</html>'), true);
   assert.equal(isGoogleBlockPage('<form action="https://www.google.com/sorry/index">'), true);
   assert.equal(isGoogleBlockPage('<h1>Before you continue to Google</h1>'), true);
+  assert.equal(isGoogleBlockPage('<noscript><meta content="0;url=/httpservice/retry/enablejs?sei=x"></noscript>'), true);
+  assert.equal(isGoogleBlockPage('<a href="/search?q=x&amp;emsg=SG_REL&amp;sei=y">enablejs</a>'), true);
   assert.equal(isGoogleBlockPage(''), true);
   assert.equal(isGoogleBlockPage(null), true);
   assert.equal(isGoogleBlockPage('<div id="search"><a href="https://playbill.com/production/foo">Foo</a></div>'), false);
@@ -227,8 +230,34 @@ test('wiring: the four paid per-show searches in fetch-show-images-auto.js are g
   // A provider outage (serpQuery null) must not count as a miss.
   assert.match(src, /answered: results != null/);
   assert.match(src, /if \(serpAnswered\) noteSearchAttempt\(ttSerpGate\.key, false\)/);
-  assert.match(src, /if \(results\) noteSearchAttempt\(ibdbSerpGate\.key, !!ibdbUrl\)/);
+  // IBDB: a no-URL answer is a miss; the hit is recorded only after the page loads.
+  assert.match(src, /if \(results && !ibdbUrl\) noteSearchAttempt\(ibdbSerpGate\.key, false\)/);
+  assert.match(src, /const html = await fetchPageWithFallback\(ibdbUrl, \{ premiumProxy: true \}\);[^]{0,300}noteSearchAttempt\(ibdbSerpGate\.key, true\)/);
+  assert.doesNotMatch(src, /noteSearchAttempt\(ttSerpGate\.key, true\)/, 'TodayTix success is recorded by the caller, after the owner check');
   assert.match(src, /if \(!isGoogleBlockPage\(searchHtml\)\) noteSearchAttempt\(pbSerpGate\.key, false\)/);
   // An owner-rejected SERP hit and an uncached cross-market Playbill hit are misses.
-  assert.match(src, /serpDiscoveredTodayTix\.has\(todayTixInfo\)\) noteSearchAttempt\(attemptKey\(TODAYTIX_SERP_TIER, show\.id\), false\)/);
+  assert.match(src, /const serpOutcome = todaytixSerpHitOutcome\(!!todayTixInfo && serpDiscoveredTodayTix\.has\(todayTixInfo\), !!owner\);\s*\n\s*if \(serpOutcome !== null\) noteSearchAttempt\(attemptKey\(TODAYTIX_SERP_TIER, show\.id\), serpOutcome\);/);
+});
+
+test('TodayTix SERP: an owner-rejected hit is one miss and failures keep accumulating', () => {
+  assert.equal(todaytixSerpHitOutcome(false, false), null, 'direct-search hit: SERP never ran');
+  assert.equal(todaytixSerpHitOutcome(false, true), null);
+  assert.equal(todaytixSerpHitOutcome(true, false), true);
+  assert.equal(todaytixSerpHitOutcome(true, true), false);
+
+  // Replay the caller: a show whose SERP keeps returning another show's page.
+  const key = attemptKey(TODAYTIX_SERP_TIER, xlBully.id);
+  let attempts = {};
+  for (let run = 0; run < 4; run++) {
+    const t = now + run * 15 * DAY; // each run after the previous window
+    assert.equal(searchTierGate(attempts, TODAYTIX_SERP_TIER, xlBully, { nowMs: t }).skip, false);
+    const outcome = todaytixSerpHitOutcome(true, true);
+    attempts = recordGoogleImagesAttempt(attempts, key, outcome, t);
+  }
+  assert.equal(attempts[key].failures, 4, 'never reset to 1 by a success-then-miss');
+  assert.equal(searchTierGate(attempts, TODAYTIX_SERP_TIER, xlBully, { nowMs: now + 45 * DAY + 7 * DAY }).skip, true, '8-day window after 4 misses');
+
+  // A hit that survives the owner check clears the entry.
+  attempts = recordGoogleImagesAttempt(attempts, key, todaytixSerpHitOutcome(true, false), now + 60 * DAY);
+  assert.equal(attempts[key], undefined);
 });

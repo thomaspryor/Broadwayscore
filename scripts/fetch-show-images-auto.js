@@ -100,7 +100,7 @@ let dryRunMode = false;
 // show on every sweep (see TODAYTIX_SERP_TIER in the lib).
 const {
   recordGoogleImagesAttempt, loadImageSearchAttempts, saveImageSearchAttempts,
-  searchTierGate, attemptKey, isGoogleBlockPage, TODAYTIX_SERP_TIER, PLAYBILL_SERP_TIER, IBDB_SERP_TIER,
+  searchTierGate, attemptKey, isGoogleBlockPage, todaytixSerpHitOutcome, TODAYTIX_SERP_TIER, PLAYBILL_SERP_TIER, IBDB_SERP_TIER,
 } = require('./lib/image-search-backoff');
 // discoverTodayTixId results that came from the paid SERP (not the direct
 // TodayTix search), so the caller can count an owner-rejected hit as a miss.
@@ -782,7 +782,9 @@ async function fetchFromIBDB(show) {
       // If we have an opening year, prefer URL containing that year
       ibdbUrl = results.find(u => openingYear && u.includes(openingYear)) || results[0];
     }
-    if (results) noteSearchAttempt(ibdbSerpGate.key, !!ibdbUrl);
+    // A hit is recorded only once the IBDB page loads (below): a page fetch
+    // failure must not clear the backoff.
+    if (results && !ibdbUrl) noteSearchAttempt(ibdbSerpGate.key, false);
   } catch (err) {
     console.log(`   ⚠ IBDB SERP search failed: ${err.message}`);
   }
@@ -799,6 +801,9 @@ async function fetchFromIBDB(show) {
   // Step 2: Scrape IBDB page (needs premium proxy)
   try {
     const html = await fetchPageWithFallback(ibdbUrl, { premiumProxy: true });
+    // Page loaded: every branch below caches an outcome in ibdbImageCache, so
+    // this show never reaches the IBDB SERP again; clear its backoff entry.
+    noteSearchAttempt(ibdbSerpGate.key, true);
 
     // Check for redirect to homepage (production not found)
     if (html.includes('Opening Nights in History') && !html.includes('Opening Date')) {
@@ -1155,7 +1160,7 @@ async function discoverTodayTixId(show) {
 
         if (overlap2 >= 0.5) {
           console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
-          noteSearchAttempt(ttSerpGate.key, true);
+          // Outcome recorded by the caller after its owner check (BRO-4243).
           const found = { id, slug, market };
           serpDiscoveredTodayTix.add(found);
           return found;
@@ -2585,11 +2590,12 @@ async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, 
     if (!todayTixInfo && !apiData) {
       todayTixInfo = await discoverTodayTixId(show);
       const owner = todayTixInfo && todaytixIdOwner(show, todayTixInfo.id, todayTixIds.shows, allShowsData.shows);
+      // A SERP hit counts as a success only once it survives the owner check;
+      // one thrown away here is a miss, so failures keep accumulating (BRO-4243).
+      const serpOutcome = todaytixSerpHitOutcome(!!todayTixInfo && serpDiscoveredTodayTix.has(todayTixInfo), !!owner);
+      if (serpOutcome !== null) noteSearchAttempt(attemptKey(TODAYTIX_SERP_TIER, show.id), serpOutcome);
       if (owner) {
         console.log(`   ✗ Discovered TodayTix ID ${todayTixInfo.id} is already ${owner}'s — not using it`);
-        // A SERP hit thrown away here is a miss for the backoff, or the same
-        // paid search would run again on every sweep (BRO-4243).
-        if (serpDiscoveredTodayTix.has(todayTixInfo)) noteSearchAttempt(attemptKey(TODAYTIX_SERP_TIER, show.id), false);
         todayTixInfo = null;
       }
       if (todayTixInfo) {
