@@ -337,7 +337,7 @@ function historySkipReason(issue, nodes, nowMs) {
 /**
  * Codex first (BRO-5384): the Claude worker's queue while a Codex runner is live. The cards Codex
  * would take (codex-runner.js leaveToCodex) are left to it, but only as many as one Codex firing
- * works (`cap`, board-workers --limit), in Codex's own order (tier, START-NOW, fit score), so a
+ * works (`cap`, board-workers --limit), in Codex's own order (tier, then fit score; START-NOW cards are never left), so a
  * backlog past Codex's capacity, or a runner that died holding its lock, never parks the rest.
  * Resume entries always stay, and so do cards Codex would skip for their pause history
  * (historySkipReason) or whose comments were not read: leaving those spent the cap on cards
@@ -352,7 +352,7 @@ function leaveCodexCards(queue, { nowMs, verifyOf = () => '', cap = 9 } = {}) {
     && q.issue.comments && Array.isArray(q.issue.comments.nodes)
     && !historySkipReason(q.issue, q.issue.comments.nodes, nowMs)
     && leaveToCodex(q.issue, { nowMs, verify: verifyOf(q.issue), startNow: isStartNow(q.issue, nowMs) }))
-    .map((q) => ({ q, score: codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyOf(q.issue), comments: (q.issue.comments && q.issue.comments.nodes) || [], nowMs }).score }))
+    .map((q) => ({ q, score: codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyOf(q.issue), comments: q.issue.comments.nodes, nowMs }).score }))
     .sort((a, b) => tierRank.get(a.q.tier) - tierRank.get(b.q.tier) || b.score - a.score);
   const leave = new Set(fit.slice(0, Math.max(0, cap)).map((x) => x.q));
   return { queue: queue.filter((q) => !leave.has(q)), left: [...leave].map((q) => q.issue.identifier) };

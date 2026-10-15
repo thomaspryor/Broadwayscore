@@ -66,7 +66,8 @@ For each card:
    While a Codex runner is live the pick leaves to it the cards one Codex
    firing will take (up to 9, listed in `leftToCodex`; owner 2026-10-15, BRO-5384: Codex carries the
    load, this lane is the fallback for what Codex cannot do, Urgent and
-   START-NOW cards, and everything once Codex stops). A null pick then means
+   START-NOW cards, and everything once Codex stops). Cards Codex would skip
+   for their pause history stay in this lane's queue (BRO-5407). A null pick then means
    nothing is left for this lane: that is the saving, not a problem.
 2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier>`. A
    `"action": "noop"` or a failure means the Codex lane or another worker has
