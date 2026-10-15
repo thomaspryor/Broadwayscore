@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, ALLOWED_ORG_HOSTS } = require('./non-review-url-patterns.js');
+const { classifyGapCandidateUrl, namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, ALLOWED_ORG_HOSTS } = require('./non-review-url-patterns.js');
 
 // Mirrors audit-show-review-gap.js's registrableHost() collapse for a plain
 // host-pattern check (task #71 residual-gap triage additions) — including its
@@ -487,4 +487,25 @@ test('gap census rejects the ticket page and Page Six gossip that alerted for Mi
 test('BRO-3719: variety.com/shop/ ticket guide is a non-review, variety reviews are not', () => {
   assert.equal(namedNonReviewReason('https://variety.com/shop/broadway-show-tickets-where-to-buy-1234970196/'), 'ticketing-listing');
   assert.equal(namedNonReviewReason('https://variety.com/2026/legit/reviews/some-show-review-1234567890/'), null);
+});
+
+test('BRO-5349: ticket/event pages cited for Jena Friedman: Motherfucker are not review candidates', () => {
+  for (const u of [
+    'https://www.captainticket.com/NY/New-York-Events/Cheap-Jena-Friedman-Motherfucker-Tickets-Soho-Playhouse-Main-Theatre-2026-10-03-19-00-00-3501097',
+    'https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-11/',
+    'http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-11-19-00-00-3501105',
+    'https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-2-2026-soho-playhouse-main-theatre/3501096',
+    'https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets',
+  ]) {
+    assert.equal(namedNonReviewReason(u), 'ticketing-reseller', u);
+    assert.equal(classifyGapCandidateUrl(u).ok, false, u);
+  }
+});
+
+test('BRO-5349: axs.com is excluded only on /events/ (it also hosted /theatre-review-* pages); lookalike hosts untouched', () => {
+  assert.equal(namedNonReviewReason('https://www.axs.com/theatre-review-sweat-at-arena-stage-75388'), null);
+  assert.equal(namedNonReviewReason('https://www.maxs.com/events/1'), null);
+  for (const u of ['https://www.ticketx.com/x', 'https://www.viptickets.com/x', 'https://www.ticketwarehouse.com/x']) {
+    assert.equal(namedNonReviewReason(u), 'ticketing-reseller', u);
+  }
 });

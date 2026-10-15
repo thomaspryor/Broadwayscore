@@ -198,6 +198,16 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // BRO-5134: Midnight (off-Broadway 2026) alerted on a ticket page the SERP
   // census surfaced, and a file for one already sat in its dir.
   { host: /(^|\.)broadway-show-tickets\.com$/, reason: 'ticketing-reseller' },
+  // BRO-5349: Jena Friedman: Motherfucker alerted on ticket/event pages the SERP
+  // census surfaced (ticketsmarter/axs were already wrongShow-flagged in its dir).
+  { host: /(^|\.)captainticket\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)thecomedybureau\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)oklahomatickets\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)ticketsmarter\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)axs\.com$/, path: /^\/events\//i, reason: 'ticketing-reseller' },
+  { host: /(^|\.)ticketx\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)viptickets\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)ticketwarehouse\.com$/, reason: 'ticketing-reseller' },
   // Page Six celebrity gossip ("...join forces to produce ... Midnight to rave
   // reviews", BRO-5134): a press-release rewrite, never a critic review. 0 files
   // on disk use pagesix.com.
