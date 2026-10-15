@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural guard on shows.json id/opening-year consistency; the accepted-id map is a reviewed allowlist, not a pinned fact about source data
 /**
  * Id-year drift (2026 data audit, BRO-4204 S5-T4).
  *
