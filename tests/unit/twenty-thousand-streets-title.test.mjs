@@ -56,7 +56,16 @@ test('datedBackfillFor offers the title for a dated, non-announced row without t
   assert.equal(datedBackfillFor(c, datedRow({ title: 'Twenty Thousand Streets Under the Sky' })), null);
 });
 
-test('main: a dated open row gets the full title, dates and status untouched; a hand-edited title is never overwritten', async () => {
+test('a dated row whose run ended before the listing starts is an earlier production and keeps its title', () => {
+  const c = fullCandidate();
+  assert.ok(c.listingFirstDate && c.listingLastDate, 'fixture candidate is dated');
+  const earlier = datedRow({ status: 'closed', previewsStartDate: '2026-06-01', openingDate: '2026-06-05', closingDate: '2026-06-20' });
+  assert.equal(datedBackfillFor(c, earlier), null);
+  // Overlapping run: completes.
+  assert.deepEqual(datedBackfillFor(c, datedRow({ previewsStartDate: c.listingFirstDate, closingDate: c.listingLastDate })), { title: 'Twenty Thousand Streets Under the Sky' });
+});
+
+test('main: a dated open row gets the full title with dates and status untouched, and the next run is a no-op', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'tts-title-'));
   const paths = { showsPath: join(dir, 'shows.json'), stagingPath: join(dir, 'staging.json'), lastPromotionFile: join(dir, 'last.json') };
   const io = (entries) => ({ ...paths, retiredEntries: [], log: () => {}, logEntry: e => entries.push(e), now: () => NOW, fetchPage: async () => { throw new Error('no network in tests'); } });

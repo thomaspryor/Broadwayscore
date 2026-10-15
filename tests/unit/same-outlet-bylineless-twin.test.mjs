@@ -72,7 +72,8 @@ test('the bylines in the reported cases are placeholders, real critics are not',
 
 test('rebuild-all-reviews.js sorts placeholder bylines after named critics and runs the twin dedup before the unknown-outlet dedup', () => {
   const src = readFileSync(path.join(repoRoot, 'scripts/rebuild-all-reviews.js'), 'utf8');
-  assert.match(src, /isPlaceholderCritic\(d\.criticName[^\n]*\)\) meta\.isUnknown = 1;/, 'sortMeta marks placeholder bylines like Unknown files');
+  assert.match(src, /isPlaceholderBylineFor\(d\.criticName[^\n]*\) meta\.isUnknown = 1;/, 'sortMeta marks placeholder bylines like Unknown files');
+  assert.match(src, /isPlaceholderBylineFor\(data\.criticName[^\n]*\) \{/, 'the twin dedup uses the same placeholder test as the sort');
   const twin = src.indexOf('decidePlaceholderBylineTwin(data.fullText');
   assert.ok(twin > 0, 'twin dedup is wired in');
   assert.ok(twin > src.indexOf('skippedUnknownCriticDedup", showId'), 'after the Unknown-critic dedup');

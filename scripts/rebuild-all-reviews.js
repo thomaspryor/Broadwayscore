@@ -343,6 +343,17 @@ function flagForHumanReview(data, reason, detail) {
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
+
+// BRO-5398: the one "is this byline a placeholder?" test shared by the dedup sort
+// and the placeholder-twin dedup, fed exactly what the emit-time displayCriticName
+// call gets (canonical outlet id + registry entry with id, normalized name), so
+// the three places can never disagree about the same file.
+function isPlaceholderBylineFor(rawCritic, outletIdOrName) {
+  if (!rawCritic) return false;
+  const oid = normalizeOutletCanonical(outletIdOrName);
+  const entry = outletRegistry.outlets[oid];
+  return isPlaceholderCritic(normalizeCriticName(rawCritic), getOutletDisplayName(oid) || outletIdOrName, entry ? { id: oid, ...entry } : undefined);
+}
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
 // --show=<id>: scope this run to one show and print its per-file exclusion
@@ -2468,7 +2479,7 @@ showDirs.forEach(showId => {
       // is no more a named critic than "Unknown" is, so it sorts after the
       // person-bylined files and the placeholder-twin dedup below sees the
       // named copy first.
-      if (d.criticName && isPlaceholderCritic(d.criticName, getOutletDisplayName(normalizeOutletCanonical(d.outletId || d.outlet)) || d.outlet, outletRegistry.outlets[normalizeOutletCanonical(d.outletId || d.outlet)])) meta.isUnknown = 1;
+      if (isPlaceholderBylineFor(d.criticName, d.outletId || d.outlet)) meta.isUnknown = 1;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
       meta.isBylineUnattested = isBylineAttestedInText(d.criticName, d.fullText) ? 0 : 1; // BRO-4911
@@ -4861,12 +4872,24 @@ showDirs.forEach(showId => {
       // same article as a person-bylined review already kept at this outlet.
       // Dropped only with verbatim-text proof (bylineless pieces beside a named
       // critic's different review are legitimate at multi-critic outlets).
-      if (!/^(unknown|unnamed)$/.test(criticKey)
-          && isPlaceholderCritic(normalizeCriticName(data.criticName), getOutletDisplayName(outletKey) || data.outlet, outletRegistry.outlets[outletKey])) {
+      if (!/^(unknown|unnamed)$/.test(criticKey) && isPlaceholderBylineFor(data.criticName, data.outletId || data.outlet)) {
         const twin = decidePlaceholderBylineTwin(data.fullText,
           (keptNamedByOutlet.get(outletKey) || []).map(k => ({ fullText: k.fullText, hasPersonByline: !!k.review.criticName })));
         if (twin.drop) {
           const keptFile = (keptNamedByOutlet.get(outletKey) || [])[twin.index] || null;
+          // Same URL carry as the Unknown-critic twin: only the url, only onto a
+          // URL-less kept entry proven (verbatim text) to be the same article.
+          if (data.url) {
+            const keptCandidates = keptNamedByOutlet.get(outletKey) || [];
+            const carry = decideUnknownTwinUrlCarry({
+              url: data.url,
+              fullText: data.fullText,
+              data,
+              urlOwnedByOutlet: outletOwnsUrlDomain(outletKey, data.url),
+              urlAlreadyKept: seenUrlsGlobal.has(canonicalizeUrlForDedup(data.url)),
+            }, keptCandidates.map(k => ({ url: k.review.url, fullText: k.fullText })));
+            if (carry.carry) applyTwinUrlCarry(keptCandidates[carry.index], carry.url, outletKey, `${showId}/${file}`, 'unknownTwinUrlCarried');
+          }
           logExclusion("skippedPlaceholderBylineTwin", showId, file, data, { twinOf: keptFile && keptFile.file, reason: twin.reason });
           stats.skippedPlaceholderBylineTwin = (stats.skippedPlaceholderBylineTwin || 0) + 1;
           console.log(`  [PLACEHOLDER-BYLINE TWIN] ${showId}/${file}: "${data.criticName}" is a placeholder byline; same article as ${keptFile && keptFile.file} (skipping)`);

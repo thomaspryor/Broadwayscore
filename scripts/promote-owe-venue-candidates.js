@@ -459,8 +459,17 @@ function datedBackfillFor(candidate, row, venueVocabulary) {
   // undated 'announced' stub. A row that already carried dates (from
   // TodayTix, a hand add, an earlier backfill) kept its slug-truncated
   // title for weeks because this function returned here.
-  const title = titleCompletionFor(candidate, row, venueVocabulary);
-  if (rowWindow(row) || (row.status && row.status !== 'announced')) return title ? title : null;
+  let title = titleCompletionFor(candidate, row, venueVocabulary);
+  // The containment match tolerates 30 days between the runs; a title is only
+  // rewritten when a dated row's run actually overlaps the listing's, so last
+  // month's "Private Lives" is never renamed "Private Lives of the Royals".
+  const w = rowWindow(row);
+  if (title && w) {
+    const cs = validDateOrNull(candidate.listingFirstDate) || validDateOrNull(candidate.listingLastDate);
+    const ce = validDateOrNull(candidate.listingLastDate) || cs;
+    if (!cs || !(w.first <= ce && w.last >= cs)) title = null;
+  }
+  if (w || (row.status && row.status !== 'announced')) return title ? title : null;
   const run = listingRunDates(candidate);
   // An undated stub's id carries the year it was minted (discovery mints the
   // current year when it has no dates), so a run starting later than the
