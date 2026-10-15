@@ -665,5 +665,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-15T20:51:35.623Z"
+  },
+  {
+    "conditionKey": "land:land/fix/ack-landed-data-repo",
+    "title": "Landing blocked: unit-tests-node red on land/fix/ack-landed-data-repo",
+    "description": "land.yml did not land land/fix/ack-landed-data-repo: the unit-tests-node gate went red at 728cee72fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38804787231",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/fix/ack-landed-data-repo"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "728cee72fe1905bbff8bcf43124fe448788f54ce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38804787231"
+      }
+    ],
+    "queuedAt": "2026-10-15T21:17:39.649Z"
   }
 ]
