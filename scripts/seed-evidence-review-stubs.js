@@ -99,6 +99,30 @@ function writeOutput(name, value) {
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`);
 }
 
+/**
+ * Commit the rollup and push it with push-with-retry.sh, the same path as the
+ * workflow's 'Commit spend rollup' step. Returns true on success. Under a test
+ * run with GITHUB_ACTIONS=true, EVIDENCE_CATCHUP_PUSH_CMD must name a fake
+ * command; a test never pushes the real repo.
+ */
+function pushRollup(file, message) {
+  const fake = testEnv('EVIDENCE_CATCHUP_PUSH_CMD', '');
+  if (TEST && !fake) throw new Error('test run without EVIDENCE_CATCHUP_PUSH_CMD refuses a real git push');
+  const run = (cmd, argv, extraEnv = {}) => execFileSync(cmd, argv,
+    { cwd: ROOT, stdio: 'inherit', env: { ...process.env, ...extraEnv } });
+  try {
+    if (fake) { run(process.execPath, [fake, file, message]); return true; }
+    run('git', ['add', file]);
+    run('git', ['-c', 'user.name=github-actions[bot]', '-c', 'user.email=github-actions[bot]@users.noreply.github.com',
+      'commit', '-m', `${message}\n\nCo-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>`]);
+    run('bash', [path.join(__dirname, 'lib', 'push-with-retry.sh')], { PUSH_RECONCILE_MERGED_JSON: '1' });
+    return true;
+  } catch (e) {
+    console.error(`::error::evidence catch-up reservation push failed: ${e.message}`);
+    return false;
+  }
+}
+
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
@@ -166,7 +190,10 @@ async function main() {
     // point leaves the money counted and the show blocked.
     const startMs = Date.now();
     const id = spend.reserveFetch(rollupPath(), { showId: c.id, url: c.url, nowMs: startMs, usd: projected });
-    console.log(`  fetching ${c.id}: ${c.url}`);
+    // Durable before the fetch: in CI the reservation is pushed now, not at
+    // job end, so a hard kill mid-fetch cannot lose it. Throws on failure.
+    const persisted = spend.persistReservation({ rollupFile: rollupPath(), showId: c.id, dryRun, pushRollup });
+    console.log(`  reservation ${persisted}; fetching ${c.id}: ${c.url}`);
     const exit = runIngest(c);
     fetched++;
     // Price what the child actually wrote to the shared ledger.

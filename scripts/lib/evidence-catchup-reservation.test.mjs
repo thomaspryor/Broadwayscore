@@ -55,11 +55,28 @@ test('settling trues the reservation down to the priced actual', () => {
 test('tagged ledger spend the rollup does not record fails closed', () => {
   const ledgerRow = { ts: '2026-10-15T12:00:05Z', provider: 'brightdata', status: 200, purpose: 'evidence-catchup', showId: 'a' };
   assert.throws(() => spend.assertRollupCoversLedger(empty(), [ledgerRow]), /does not record/);
-  assert.throws(() => spend.assertRollupCoversLedger(empty(), [{ ...ledgerRow, showId: null }]), /unknown show/);
+  // A tagged row without a showId cannot be matched: it counts, it does not block.
+  assert.doesNotThrow(() => spend.assertRollupCoversLedger(empty(), [{ ...ledgerRow, showId: null }]));
+  assert.ok(spend.monthToDateUsd(empty(), [{ ...ledgerRow, showId: null }], Date.parse(ledgerRow.ts), PRICING) > 0);
   const later = { version: 1, fetches: [{ id: 'a@x', ts: '2026-10-15T12:00:09Z', month: '2026-10', showId: 'a', usd: 1, status: 'done' }] };
   assert.throws(() => spend.assertRollupCoversLedger(later, [ledgerRow]), /does not record/);
   const covering = { version: 1, fetches: [{ ...later.fetches[0], ts: '2026-10-15T12:00:00Z' }] };
   assert.doesNotThrow(() => spend.assertRollupCoversLedger(covering, [ledgerRow]));
+});
+
+test('in CI the reservation is pushed before the fetch; a failed push stops the run', () => {
+  const pushes = [];
+  const ok = (file, msg) => { pushes.push([file, msg]); return true; };
+  const ci = { GITHUB_ACTIONS: 'true' };
+  assert.equal(spend.persistReservation({ rollupFile: 'r.json', showId: 'a', dryRun: false, env: ci, pushRollup: ok }), 'pushed');
+  assert.equal(pushes.length, 1);
+  assert.match(pushes[0][1], /reservation for a/);
+  assert.throws(() => spend.persistReservation({ rollupFile: 'r.json', showId: 'a', dryRun: false, env: ci, pushRollup: () => false }), /no fetch made/);
+  assert.throws(() => spend.persistReservation({ rollupFile: 'r.json', showId: 'a', dryRun: false, env: ci, pushRollup: () => { throw new Error('rejected'); } }), /rejected/);
+  // Never in dry runs or outside GitHub Actions.
+  const never = () => { throw new Error('must not push'); };
+  assert.equal(spend.persistReservation({ rollupFile: 'r.json', showId: 'a', dryRun: true, env: ci, pushRollup: never }), 'skipped');
+  assert.equal(spend.persistReservation({ rollupFile: 'r.json', showId: 'a', dryRun: false, env: {}, pushRollup: never }), 'skipped');
 });
 
 // --- 2. failures and downstream retries ---------------------------------
@@ -142,6 +159,7 @@ function runCli(fx, args, extraEnv = {}) {
       SCRAPER_SPEND_LEDGER_PATH: path.join(fx.dir, 'ledger.jsonl'),
       FAKE_LOG: path.join(fx.dir, 'calls.jsonl'),
       GITHUB_OUTPUT: out,
+      GITHUB_ACTIONS: '',
       ...extraEnv,
     },
   });
@@ -198,4 +216,39 @@ test('CLI: `candidates` output is the cap-allowed count, so a bound cap skips th
   const r2 = runCli(fixture({ rollup: full }), ['--dry-run', '--limit=3']);
   assert.match(r2.output, /^candidates=0$/m);
   assert.equal(spend.allowedFetchCount({ mtdUsd: 0, projectedUsd: 1, capUsd: 2.5, count: 5 }), 2);
+});
+
+const FAKE_PUSH = `
+const fs = require('fs');
+const [file, message] = process.argv.slice(2);
+const rollup = JSON.parse(fs.readFileSync(file, 'utf8'));
+fs.appendFileSync(process.env.FAKE_LOG, JSON.stringify({ push: message, reservedRows: rollup.fetches.filter((f) => f.status === 'reserved').length }) + '\\n');
+process.exit(Number(process.env.FAKE_PUSH_EXIT || 0));
+`;
+
+test('CLI in CI: the reservation is pushed before the ingest runs', () => {
+  const fx = fixture();
+  fs.writeFileSync(path.join(fx.dir, 'fake-push.js'), FAKE_PUSH);
+  const r = runCli(fx, ['--limit=1'], { GITHUB_ACTIONS: 'true', EVIDENCE_CATCHUP_PUSH_CMD: path.join(fx.dir, 'fake-push.js'), FAKE_TIER: 'complete' });
+  assert.equal(r.status, 0, r.stderr);
+  const log = fs.readFileSync(path.join(fx.dir, 'calls.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+  assert.ok(log[0].push, 'push happens first');
+  assert.equal(log[0].reservedRows, 1, 'the pushed rollup already holds the reservation');
+  assert.ok(log[1].show, 'then the fetch');
+});
+
+test('CLI in CI: a failed reservation push exits nonzero with no fetch', () => {
+  const fx = fixture();
+  fs.writeFileSync(path.join(fx.dir, 'fake-push.js'), FAKE_PUSH);
+  const r = runCli(fx, ['--limit=2'], { GITHUB_ACTIONS: 'true', EVIDENCE_CATCHUP_PUSH_CMD: path.join(fx.dir, 'fake-push.js'), FAKE_PUSH_EXIT: '1' });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /no fetch made/);
+  assert.equal(r.calls.filter((c) => c.show).length, 0);
+});
+
+test('CLI in CI under test with no fake push command refuses rather than pushing the real repo', () => {
+  const fx = fixture();
+  const r = runCli(fx, ['--limit=1'], { GITHUB_ACTIONS: 'true' });
+  assert.equal(r.status, 1);
+  assert.equal(r.calls.filter((c) => c.show).length, 0);
 });

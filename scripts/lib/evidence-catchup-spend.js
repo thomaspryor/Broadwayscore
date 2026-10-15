@@ -191,9 +191,11 @@ function monthToDateUsd(rollup, ledgerRows, now, pricing = loadProviderPricing()
 }
 
 /**
- * Throws unless every tagged ledger row is accounted for by a rollup row for
- * the same show written at or before it (the reservation precedes the fetch).
- * A miss means spend happened whose rollup record never landed.
+ * Throws unless every tagged ledger row that names a show is accounted for by
+ * a rollup row for that show written at or before it (the reservation
+ * precedes the fetch). A miss means spend happened whose rollup record never
+ * landed. A tagged row with no showId cannot be matched to a show; it still
+ * counts against the cap through monthToDateUsd and does not block the run.
  */
 function assertRollupCoversLedger(rollup, ledgerRows) {
   const firstTs = new Map();
@@ -201,9 +203,10 @@ function assertRollupCoversLedger(rollup, ledgerRows) {
     if (!firstTs.has(f.showId) || f.ts < firstTs.get(f.showId)) firstTs.set(f.showId, f.ts);
   }
   for (const r of ledgerRows || []) {
+    if (!r.showId) continue;
     const start = firstTs.get(r.showId);
-    if (!r.showId || !start || typeof r.ts !== 'string' || r.ts < start) {
-      throw new Error(`evidence-catchup-spend: ledger has ${EVIDENCE_CATCHUP_PURPOSE} spend for ${r.showId || 'an unknown show'} at ${r.ts} that the rollup does not record (lost rollup commit?)`);
+    if (!start || typeof r.ts !== 'string' || r.ts < start) {
+      throw new Error(`evidence-catchup-spend: ledger has ${EVIDENCE_CATCHUP_PURPOSE} spend for ${r.showId} at ${r.ts} that the rollup does not record (lost rollup commit?)`);
     }
   }
 }
@@ -297,6 +300,25 @@ function reserveFetch(filePath, { showId, url, nowMs, usd }) {
 }
 
 /**
+ * Make a just-written reservation durable before the fetch it covers. In CI
+ * the rollup is committed and pushed (pushRollup); a runner killed after this
+ * point (cancel, timeout, VM loss) leaves the reservation on main, so the next
+ * run neither re-fetches the show nor forgets the money. Skipped for dry runs
+ * and outside GitHub Actions. pushRollup returns true on success; false or a
+ * throw stops the run before any fetch.
+ * @returns {'pushed'|'skipped'}
+ */
+function persistReservation({ rollupFile, showId, dryRun, env = process.env, pushRollup }) {
+  if (dryRun || env.GITHUB_ACTIONS !== 'true') return 'skipped';
+  let ok = false;
+  try { ok = pushRollup(rollupFile, `audit: evidence catch-up reservation for ${showId} [skip ci]`) === true; } catch (e) {
+    throw new Error(`reservation for ${showId} could not be pushed (${e.message}); no fetch made`);
+  }
+  if (!ok) throw new Error(`reservation for ${showId} could not be pushed; no fetch made`);
+  return 'pushed';
+}
+
+/**
  * True a reservation up to what was spent. exit 0 = done; anything else is
  * failed with a not-before FAILED_RETRY_DAYS out. usd stays in the
  * reservation's month (spend is charged where it was reserved).
@@ -337,6 +359,7 @@ module.exports = {
   allowedFetchCount,
   isCollectComplete,
   reserveFetch,
+  persistReservation,
   settleFetch,
   priceLedgerRow,
   parseTaggedLedgerRows,
