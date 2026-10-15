@@ -297,3 +297,6 @@ cron-redispatch.yml
 # BRO-4282: weekly CV-promoted re-verify, capped per run; a missed week leaves the
 # backlog one more week, nothing user-facing.
 reverify-cv-promoted-weekly.yml
+# BRO-4290: every-2h capped evidence-review catch-up; a missed run only delays one
+# closed show's single review fetch, nothing user-facing; failures reach the digest.
+evidence-review-catchup.yml

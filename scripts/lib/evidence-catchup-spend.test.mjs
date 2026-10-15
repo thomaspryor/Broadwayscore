@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const spend = require('./evidence-catchup-spend.js');
@@ -86,7 +87,7 @@ test('the CLI makes no fetch when the rollup is missing', () => {
   const dir = tmp();
   const ledger = path.join(dir, 'ledger.jsonl');
   fs.writeFileSync(ledger, '');
-  const r = spawnSync(process.execPath, [path.join(import.meta.dirname, '..', 'seed-evidence-review-stubs.js'), '--dry-run'], {
+  const r = spawnSync(process.execPath, [path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'seed-evidence-review-stubs.js'), '--dry-run'], {
     encoding: 'utf8',
     env: { ...process.env, EVIDENCE_CATCHUP_ROLLUP_PATH: path.join(dir, 'absent.json'), SCRAPER_SPEND_LEDGER_PATH: ledger },
   });
