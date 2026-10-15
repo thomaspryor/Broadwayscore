@@ -470,7 +470,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
     }
   }
   if (process.env.GITHUB_OUTPUT) {
-    fs.appendFileSync(process.env.GITHUB_OUTPUT, `blocked_reopens_count=${blockedReopens.length}\nblocked_reopens=${blockedReopens.map(r => r.id).join(',')}\n`);
+    try { fs.appendFileSync(process.env.GITHUB_OUTPUT, `blocked_reopens_count=${blockedReopens.length}\nblocked_reopens=${blockedReopens.map(r => r.id).join(',')}\n`); } catch (e) { /* best-effort, like the summary */ }
   }
 
   return { count: dateUpdates + reopened + autoCloseCount, reopenedIds, ttActiveShowIds, blockedReopens };
