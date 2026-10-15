@@ -318,12 +318,12 @@ function looksLikeSecretLeak(diffText) {
 }
 
 /**
- * Fill {{ID}} {{TITLE}} {{DATA}} {{EXTRA}} {{BODY}} in a prompt template. One pass, so text
+ * Fill {{ID}} {{TITLE}} {{DATA}} {{EXTRA}} {{BODY}} {{WORKTREE}} {{BASE}} in a prompt template. One pass, so text
  * inside a card body or report that looks like a placeholder is never expanded.
  */
-function fillPrompt(template, { id, title, body, extra = '', data = '', worktree = '' }) {
-  const vals = { ID: id, TITLE: title || '', BODY: body || '', EXTRA: extra || '', DATA: data || '', WORKTREE: worktree || '' };
-  return template.replace(/\{\{(ID|TITLE|BODY|EXTRA|DATA|WORKTREE)\}\}/g, (_, k) => vals[k]);
+function fillPrompt(template, { id, title, body, extra = '', data = '', worktree = '', base = '' }) {
+  const vals = { ID: id, TITLE: title || '', BODY: body || '', EXTRA: extra || '', DATA: data || '', WORKTREE: worktree || '', BASE: base || '(not available in this run: say which failures you could not compare)' };
+  return template.replace(/\{\{(ID|TITLE|BODY|EXTRA|DATA|WORKTREE|BASE)\}\}/g, (_, k) => vals[k]);
 }
 
 /**
@@ -430,9 +430,27 @@ const CODEX_PENALTIES = [
   [/\blive (?:site|page|pages|scrape|fetch)\b|\bprivate (?:data|repo)\b|review-texts\b|core-data\b/i, 3, 'private-or-live-data'],
   [/\bPhase \d\b|\bmulti-part\b|\bfollow-?ups?\b/i, 2, 'multi-phase'],
 ];
-function codexCardFit({ title = '', description = '', verify = '' } = {}) {
+// Work the runner cannot finish however small the card (BRO-5384: 12 of 24 cards rejected on
+// 2026-10-13/15; BRO-3475 needed a workflow step, BRO-4299 land/ pushes, BRO-4427 and BRO-4855
+// hundreds of shipped reviews, BRO-5223 a data repair). The runner never lands
+// .github/workflows/**, cannot move land/ refs or write the private data repos, and a data fix
+// needs an approved-fix plan run after landing. These go to the Claude lane.
+const CODEX_HARD_SKIPS = [
+  ['workflow-edit', /\b(?:edit|change|modify|patch|add|update|wire|move|bump)\b[^.\n]{0,80}\.github\/workflows\/|\.github\/workflows\/[\w.-]+\.ya?ml\b[^.\n]{0,40}\b(?:step|job|cron|schedule|inputs?|env)\b|\bworkflow(?:'s)?\s+(?:\w+\s+)?(?:step|job)s?\b|\b(?:edit|change|modify|patch)\b[^.\n]{0,30}\b[\w-]+\.ya?ml\b/i],
+  ['land-ref', /\bland\/\*|\b(?:stranded|refused|evicted)\s+land(?:ing)?s?\b|\bland(?:ing)?\s+refs?\b|\brebas\w*\b[^.\n]{0,40}\bland\b/i],
+  ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
+  ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
+];
+// A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
+const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
+function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now() } = {}) {
   const text = `${title}\n${description}`;
   if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
+  const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
+  for (const [name, re] of ok ? [] : CODEX_HARD_SKIPS) {
+    const m = re.exec(text);
+    if (m) return { skip: name, score: -Infinity, why: [`${name}: ${m[0].slice(0, 60)}`] };
+  }
   let score = 0;
   const why = [];
   if (/^node --test (?:--\S+ )*\S+\.test\.m?js$/.test(String(verify || '').trim())) { score += 3; why.push('single-test-verify'); }
@@ -442,7 +460,178 @@ function codexCardFit({ title = '', description = '', verify = '' } = {}) {
   const accept = String(description).split(/^##+ *Acceptance[^\n]*$/im)[1] || '';
   const items = (accept.split(/^##+ /m)[0].match(/^\s*(?:[-*]|\d+\.)\s+/gm) || []).length;
   if (items > 3) { score -= 2; why.push(`acceptance-items:${items}`); }
+  // A fix round an earlier run could not fit goes first, so a SHIP-WITH-FIXES always gets it.
+  if (parseSwfCarry(comments, nowMs)) { score += 10; why.push('swf-carry'); }
   return { skip: score <= CODEX_MIN_SCORE ? 'too-broad' : null, score, why };
+}
+
+/**
+ * Slot k's worktree, base worktree and run lock (BRO-5384: several runners in parallel, each
+ * with its own lock, so overlapping firings never run two runners on one slot). Slot 0 keeps
+ * the single-runner names, so --lock-status and check-claude.js read the same lock as before.
+ */
+function slotNames(slot = 0) {
+  const k = Number(slot) || 0;
+  return k === 0
+    ? { wt: 'codex-runner', base: 'codex-runner-base', lockRef: 'refs/heads/codex-runner-lock' }
+    : { wt: `codex-runner-${k}`, base: `codex-runner-base-${k}`, lockRef: `refs/heads/codex-runner-lock-${k}` };
+}
+
+/** `exp` of a JWT in ms, NaN when unreadable. Reads the claims only; never logs the token. */
+function jwtExpMs(token) {
+  try {
+    const claims = JSON.parse(Buffer.from(String(token).split('.')[1], 'base64url').toString('utf8'));
+    return Number(claims.exp) * 1000 || NaN;
+  } catch { return NaN; }
+}
+
+/**
+ * How many slots may run Codex at once with this login. Every Codex process shares one
+ * ~/.codex/auth.json, and its refresh token rotates: two processes refreshing at once would
+ * spend the same token. Codex refreshes when the access token expires (the stored login went
+ * 10 days, 2026-10-05 to 10-15, without a refresh), so a run during which it could expire uses
+ * one slot, and so does an unreadable login. -> { slots, why }
+ */
+function slotsForLogin({ slots, authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
+  if (!(slots > 1)) return { slots: 1, why: null };
+  let exp = NaN;
+  try { exp = jwtExpMs(JSON.parse(authText).tokens.access_token); } catch { /* unreadable */ }
+  if (!Number.isFinite(exp)) return { slots: 1, why: 'the Codex login expiry is unreadable' };
+  if (exp - nowMs < runMs + marginMs) return { slots: 1, why: `the Codex login expires ${new Date(exp).toISOString()}, within this run, so one Codex process refreshes it` };
+  return { slots, why: null };
+}
+
+/**
+ * A SHIP-WITH-FIXES fix round that did not fit this run (BRO-5384: BRO-5223 got the verdict with
+ * no time left and was bounced). The card goes back to Todo without the bounce marker, carrying
+ * Codex's change (gzip+base64) and the findings; the next runner re-applies it and runs the fix
+ * round first (codexCardFit bonus, and the picker's recent-activity wait does not apply).
+ */
+const SWF_CARRY_MARKER = '<!-- codex-runner-swf-carry -->';
+const SWF_CARRY_MAX_MS = 3 * 24 * 3600_000;
+const SWF_PATCH_MAX_CHARS = 60_000;
+function swfCarryBody({ attempt, patch, summary }) {
+  const zlib = require('zlib');
+  const blob = patch ? zlib.gzipSync(Buffer.from(String(patch))).toString('base64') : '';
+  const carried = blob && blob.length <= SWF_PATCH_MAX_CHARS;
+  return [
+    SWF_CARRY_MARKER,
+    '## Codex runner: SHIP-WITH-FIXES, fix round carried to the next run',
+    '',
+    `The independent check found the approach right but asked for fixes, and this run had no time left for the fix round. ${carried ? 'The next Codex run re-applies the change below and runs that fix round first.' : 'The change was too large to carry, so the next Codex run redoes it with these findings.'} Nothing was landed.`,
+    '',
+    `attempt: ${Number(attempt) || 1}`,
+    '',
+    summary || '',
+    ...(carried ? ['', 'Carried change (gzip, base64):', '```', blob.match(/.{1,100}/g).join('\n'), '```'] : []),
+  ].join('\n');
+}
+/**
+ * The carry to resume: the newest comment is a carry note under 3 days old.
+ * -> { attempt, patch|null, findings } | null. findings is the reviewer's text in full: the card
+ * body clips each comment, so the resumed round is handed it directly.
+ */
+function parseSwfCarry(comments, nowMs) {
+  const list = (Array.isArray(comments) ? comments : (comments && comments.nodes) || [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const c = list[0];
+  if (!c || !String(c.body || '').startsWith(SWF_CARRY_MARKER) || nowMs - Date.parse(c.createdAt) > SWF_CARRY_MAX_MS) return null;
+  const body = String(c.body);
+  const attempt = Number((body.match(/^attempt: (\d+)$/m) || [])[1]) || 1;
+  const m = body.match(/Carried change \(gzip, base64\):\n```\n([A-Za-z0-9+/=\n]+?)\n```/);
+  let patch = null;
+  if (m) { try { patch = require('zlib').gunzipSync(Buffer.from(m[1].replace(/\n/g, ''), 'base64')).toString('utf8'); } catch { patch = null; } }
+  const after = body.split(/^attempt: \d+$/m)[1] || '';
+  const findings = after.split('\nCarried change (gzip, base64):')[0].trim();
+  return { attempt, patch, findings };
+}
+
+/**
+ * Codex's change on a worktree branch as a patch git apply takes back: the raw diff against the
+ * card's base, never trimmed (a patch without its final newline is "corrupt", and a binary hunk
+ * then applies only in part). '' when git fails.
+ */
+function carryPatch(cwd, base) {
+  const r = require('child_process').spawnSync('git', ['diff', '--binary', `${base}...HEAD`], { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  return r.status === 0 ? r.stdout : '';
+}
+
+/**
+ * Whether one more Codex exec fits before `deadlineMs`: a 15-min exec plus the review must fit
+ * the round's deadline, and the exec, land checks and review must fit before the hard stop's
+ * wrap-up time (daily-runner.js; BRO-5287 sizes, BRO-5384 per-round deadline).
+ */
+const FIX_EXEC_MIN_MS = 15 * 60_000;
+const REVIEW_RESERVE_MS = 30 * 60_000;
+const LAND_CHECKS_MS = 15 * 60_000;
+function fixRoundFits({ deadlineMs, nowMs, hardEndMs, wrapUpMs }) {
+  return deadlineMs - nowMs >= FIX_EXEC_MIN_MS + REVIEW_RESERVE_MS
+    && hardEndMs - wrapUpMs - nowMs >= FIX_EXEC_MIN_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS;
+}
+
+/**
+ * When the next fix round must finish (BRO-5384). A REJECT's round keeps to the card budget;
+ * the first SHIP-WITH-FIXES round may use the rest of the run: --card-max-minutes 60 never left
+ * a 15-min exec plus the review after a first attempt, so no card ever got a fix round.
+ */
+/**
+ * argv for slot k of a --slots launch (BRO-5384): the launcher's flags minus its own and the
+ * per-launch budgets, plus the slot's share of them and the shared run dir and start time.
+ */
+function slotArgs(argv, { slot, runDir, runStartedMs, limit, checkBudgetUsd, pickList }) {
+  const own = new Set(['--slots', '--slot', '--run-dir', '--run-started', '--limit', '--check-budget-usd', '--pick-list']);
+  const out = [];
+  for (let i = 0; i < argv.length; i++) {
+    if (own.has(argv[i])) { if (argv[i + 1] !== undefined && !String(argv[i + 1]).startsWith('--')) i++; continue; }
+    out.push(argv[i]);
+  }
+  // No run dir (a launch that fell back to one slot): a lone runner, with a lone runner's limits.
+  return [...out, '--slot', String(slot), ...(runDir ? ['--run-dir', String(runDir)] : []), '--run-started', String(runStartedMs),
+    '--limit', String(limit), '--check-budget-usd', String(checkBudgetUsd), ...(pickList ? ['--pick-list', String(pickList)] : [])];
+}
+
+/**
+ * The run dir the slots of one --slots launch share (BRO-5384). '' (a lone runner): every
+ * operation is a no-op that lets the runner go on.
+ *  - stopped(): why another slot stopped the launch (its STOP file), or null
+ *  - stopAll(why): stop every slot (a Codex exec failure means the login or quota is gone for
+ *    all of them; a Done refusal means the gate disagrees with the check)
+ *  - takeCard(id): true for exactly one slot (exclusive create), so no card is claimed twice
+ *  - withMutex(name, fn, onWait): fn under a file mutex. Land checks run one slot at a time:
+ *    three node unit batches at once on a 4-core container time tests out, and a branch-side
+ *    timeout that passes on the base reads as a new failure. A dead holder frees it.
+ */
+function launchRunDir(runDir, slot = 0, { pollMs = 15_000 } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  if (!runDir) return { stopped: () => null, stopAll: () => {}, takeCard: () => true, withMutex: (name, fn) => fn() };
+  const at = (f) => path.join(runDir, f);
+  return {
+    stopped() { try { return fs.readFileSync(at('STOP'), 'utf8').trim() || 'another slot stopped'; } catch { return null; } },
+    stopAll(why) { try { fs.writeFileSync(at('STOP'), `slot ${slot}: ${why}`, { flag: 'wx' }); } catch { /* already stopped */ } },
+    takeCard(id) { try { fs.closeSync(fs.openSync(at(`taken-${id}`), 'wx')); return true; } catch { return false; } },
+    withMutex(name, fn, onWait = () => {}) {
+      const p = at(`${name}.lock`);
+      for (;;) {
+        try { fs.writeFileSync(p, String(process.pid), { flag: 'wx' }); break; } catch { /* held */ }
+        let pid = 0;
+        let ageMs = 0;
+        try { pid = Number(fs.readFileSync(p, 'utf8')); ageMs = Date.now() - fs.statSync(p).mtimeMs; } catch { continue; } // freed meanwhile
+        // An empty file is a holder still writing its pid, unless it is a minute old (it died between the two).
+        let alive = pid > 0 || ageMs < 60_000;
+        if (pid > 0) { try { process.kill(pid, 0); } catch (e) { alive = !(e && e.code === 'ESRCH'); } }
+        if (!alive) { fs.rmSync(p, { force: true }); continue; }
+        onWait();
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, pollMs);
+      }
+      try { return fn(); } finally { fs.rmSync(p, { force: true }); }
+    },
+  };
+}
+
+function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs }) {
+  return verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed ? runEndMs : Math.min(cardDeadlineMs, runEndMs);
 }
 
 /**
@@ -597,6 +786,20 @@ module.exports = {
   codexExitTransient,
   stripHookNoise,
   codexCardFit,
+  slotNames,
+  jwtExpMs,
+  slotsForLogin,
+  SWF_CARRY_MARKER,
+  swfCarryBody,
+  parseSwfCarry,
+  fixRoundDeadline,
+  slotArgs,
+  carryPatch,
+  FIX_EXEC_MIN_MS,
+  REVIEW_RESERVE_MS,
+  LAND_CHECKS_MS,
+  fixRoundFits,
+  launchRunDir,
   CODEX_MIN_SCORE,
   orphanAction,
   keepEnvVar,

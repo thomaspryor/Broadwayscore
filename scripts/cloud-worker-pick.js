@@ -165,7 +165,7 @@ async function main() {
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
-  const tiers = pickCloudCard(issues, { nowMs });
+  const tiers = pickCloudCard(issues, { nowMs, codex: process.argv.includes('--codex') });
   const { eligible, skipped, startNowSkipped, eligibleP2, skippedP2, eligibleP3, skippedP3 } = tiers;
   // P2 goes after P0/P1 and P3 after P2: a fallback card (resume or new) is
   // reached only when every entry ahead of it was skipped for its history (or,
@@ -189,7 +189,7 @@ async function main() {
     // (Mac-only, too broad) and, within each tier, put the best-suited (small, one-test VERIFY) first.
     if (process.argv.includes('--codex')) {
       const { codexCardFit } = require('./lib/codex-runner.js');
-      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue) })]));
+      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes })]));
       for (const [q, f] of fit) if (f.skip) console.error(`[cloud-worker-pick] codex skip ${q.issue.identifier}: ${f.skip} (${f.why.join(',')})`);
       const tierRank = new Map(rest.map((q) => [q.tier, 0]));
       [...tierRank.keys()].forEach((t, i) => tierRank.set(t, i)); // queue order already goes P0/P1, P2, P3

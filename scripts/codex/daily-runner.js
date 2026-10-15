@@ -9,7 +9,7 @@
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
  *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
- *        [--hard-stop-minutes 112]
+ *        [--hard-stop-minutes 112] [--slots 3]
  *   node scripts/codex/daily-runner.js --lock-status   (exit 0 free, 3 a live run holds it, 4 unreadable)
  *
  * Per card (same picker rules as the hourly Claude cloud worker, minus
@@ -32,6 +32,13 @@
  *      if refused), or back to Todo with the reviewer's REMAINING items when
  *      the fix is partial; refused -> stays In Progress for the resume path
  *
+ * --slots N (BRO-5384): N runners in parallel, started 2 min apart. Each slot is a full runner
+ * with its own worktrees and its own run lock (scripts/lib/codex-runner.js slotNames), so an
+ * overlapping firing never runs two runners on one slot. The slots of one launch share a run
+ * dir: a card taken there is never claimed by a second slot, land checks run one slot at a
+ * time (CPU), and a STOP file from a Codex failure or a Done refusal stops every slot. One slot
+ * only when the Codex login could expire mid-run (R.slotsForLogin: one process refreshes it).
+ *
  * Stops early on the time budget, the Codex weekly cap, 3 REJECTs in a row,
  * or a Done refusal (scripts/lib/codex-runner.js stopReason). A crash returns
  * the claimed card to Todo. Posts a run summary on the runner card.
@@ -52,10 +59,17 @@ const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
 const { nodeUnitTestsForTree } = require(path.join(ROOT, 'scripts/lib/unit-test-collection.js'));
 
 const RUNNER_CARD = process.env.CODEX_RUNNER_CARD || 'BRO-4745';
-const WT = path.join(ROOT, '.claude/worktrees/codex-runner');
+// --slot k (set by the --slots launcher): this runner's worktrees and lock (BRO-5384).
+const SLOT = Number(arg('slot', 0)) || 0;
+const SLOT_NAMES = R.slotNames(SLOT);
+// The launch's shared run dir (STOP file, card claims, land-check mutex); '' for a lone runner.
+const RUN_DIR = typeof arg('run-dir', '') === 'string' ? arg('run-dir', '') : '';
+const WT = path.join(ROOT, '.claude/worktrees', SLOT_NAMES.wt);
 const LOG_DIR = process.env.CODEX_RUNNER_LOG_DIR || path.join(os.tmpdir(), 'codex-runner');
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
-const MAX_IN_FLIGHT = 2;
+// Landings this runner keeps in flight; one per slot when several run, so three slots do not
+// queue six land refs in front of the Claude lane's.
+const MAX_IN_FLIGHT = RUN_DIR ? 1 : 2;
 const CODEX_VERSION = '0.160.0';
 
 function arg(name, def) {
@@ -84,8 +98,11 @@ const OPTS = {
   // firing's runner died mid-card, posted no summary and left its lock and BRO-4277 stranded
   // (BRO-5287). Cards, fix rounds and landing waits are all cut to fit inside it.
   hardStopMinutes: Number(arg('hard-stop-minutes', 0)),
+  slots: Number(arg('slots', 1)) || 1,
+  pickList: Number(arg('pick-list', 0)) || 0,
 };
-const RUN_STARTED_MS = Date.now();
+// A slot's hard stop counts from the launch, not from its own (staggered) start.
+const RUN_STARTED_MS = Number(arg('run-started', 0)) || Date.now();
 const HARD_END_MS = OPTS.hardStopMinutes > 0 ? RUN_STARTED_MS + OPTS.hardStopMinutes * 60_000 : Infinity;
 // Time kept free before the hard stop for the summary, the login save and the lock release.
 const WRAP_UP_MS = 8 * 60_000;
@@ -105,9 +122,9 @@ let checkSpentUsd = 0;
 let checkCount = 0;
 
 fs.mkdirSync(LOG_DIR, { recursive: true });
-const RUN_LOG = path.join(LOG_DIR, `run-${new Date().toISOString().slice(0, 10)}.log`);
+const RUN_LOG = path.join(LOG_DIR, `run-${new Date().toISOString().slice(0, 10)}${SLOT ? `-slot${SLOT}` : ''}.log`);
 function log(msg) {
-  const line = `[${new Date().toISOString()}] ${msg}`;
+  const line = `[${new Date().toISOString()}]${RUN_DIR ? ` [slot ${SLOT}]` : ''} ${msg}`;
   console.log(line);
   fs.appendFileSync(RUN_LOG, `${line}\n`);
 }
@@ -128,6 +145,17 @@ function git(args, cwd = WT) {
 }
 const tail = (s, n = 1500) => (s.length > n ? `...${s.slice(-n)}` : s);
 const fence = (s) => `\`\`\`\n${String(s).replace(/```/g, "'''")}\n\`\`\``;
+
+// The run dir the slots of one launch share (R.launchRunDir, BRO-5384); no-ops for a lone runner.
+const LAUNCH = R.launchRunDir(RUN_DIR, SLOT);
+const runStop = () => LAUNCH.stopped();
+const stopAllSlots = (why) => LAUNCH.stopAll(why);
+const takeCardInRun = (id) => LAUNCH.takeCard(id);
+// Re-stamp the run lock every 10 min while waiting for the land-check mutex.
+const withLandMutex = (fn) => {
+  let lastStamp = Date.now();
+  return LAUNCH.withMutex('land-checks', fn, () => { if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); } });
+};
 
 /**
  * Env for the Codex, unit-test and Claude-check shells: no service keys or tokens (so no
@@ -215,10 +243,15 @@ function provideData(dest, { reviewTexts = true } = {}) {
   return { lines, dirs };
 }
 
+// The main commit this card's branch starts from. Slots share one .git, so another slot's fetch
+// moves origin/main mid-card; the land-check base, the reviewer's base and a carried patch all
+// use this sha, so a test fixed on main meanwhile never reads as Codex's new failure (BRO-5384).
+let cardBase = 'origin/main';
 function resetWorktree(branch) {
   git(['fetch', 'origin', 'main']);
-  git(['checkout', '-f', '-B', branch, 'origin/main']);
-  git(['reset', '--hard', 'origin/main']);
+  cardBase = git(['rev-parse', 'origin/main']);
+  git(['checkout', '-f', '-B', branch, cardBase]);
+  git(['reset', '--hard', cardBase]);
   // -x: gitignored files Codex or tests wrote must not carry into the next card.
   git(['clean', '-fdx', '-e', 'node_modules']);
   return provideData(WT);
@@ -249,7 +282,11 @@ function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
 
 function runCheck(card, body, codexReport, tag, data) {
   const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
-  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)), data: data.lines.join('\n'), worktree: WT });
+  // Fresh main beside the change, so the reviewer counts only test failures the change adds
+  // (BRO-5384: 16 of BRO-4820's 17 cited failures failed on main too). Same tree land judges against.
+  let base = '';
+  try { prepareBase(); base = BASE_WT; } catch (e) { log(`${card.identifier}: no base worktree for the check (${e.message.split('\n')[0]})`); }
+  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)), data: data.lines.join('\n'), worktree: WT, base });
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}-prompt.md`), prompt);
   const head = git(['rev-parse', 'HEAD']);
   // The reviewer runs tests unsandboxed: drop the review-texts link so no test writes into the
@@ -262,7 +299,7 @@ function runCheck(card, body, codexReport, tag, data) {
   // reviewer is denied every read there.
   const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'json',
     '--max-budget-usd', String(OPTS.checkMaxUsd),
-    ...(data.dirs.length ? ['--add-dir', ...data.dirs] : []),
+    ...(data.dirs.length || base ? ['--add-dir', ...data.dirs, ...(base ? [base] : [])] : []),
     '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(find:*),Bash(rg:*),Bash(sed:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
     '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*),Bash(sed -i:*),Bash(sed --in-place:*),Bash(find * -delete*),Bash(find * -exec*),Bash(find * -execdir*),Bash(find * -ok*)',
   ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv({ reviewer: true }), input: prompt });
@@ -274,6 +311,7 @@ function runCheck(card, body, codexReport, tag, data) {
   git(['reset', '-q', '--hard', head]);
   git(['clean', '-qfd', '-e', 'node_modules']);
   provideData(WT);
+  if (base) { try { cleanTree(BASE_WT); } catch { /* the next prepareBase resets it */ } }
   const out = R.parseCheckOutput(r.stdout);
   checkSpentUsd += out.costUsd;
   checkCount += 1;
@@ -302,7 +340,7 @@ function commitAttempt(card, attempt) {
 // way land.yml judges it: failures the branch adds over fresh main (land-gate-delta.js). Only
 // what fails on the branch re-runs on main, so the base side is cheap. Run without the review
 // texts, like land.yml. Returns null when clean, else the failure text.
-const BASE_WT = path.join(ROOT, '.claude/worktrees/codex-runner-base');
+const BASE_WT = path.join(ROOT, '.claude/worktrees', SLOT_NAMES.base);
 function unitBatch(cwd, files) {
   // Same scrubbed env as Codex: the file list and tests come from Codex's branch.
   const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000, env: scrubbedEnv() });
@@ -325,11 +363,14 @@ function prepareBase() {
     git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
     if (!fs.existsSync(path.join(BASE_WT, 'node_modules'))) fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(BASE_WT, 'node_modules'));
   }
-  git(['checkout', '-q', '-f', '--detach', 'origin/main'], BASE_WT);
+  git(['checkout', '-q', '-f', '--detach', cardBase], BASE_WT);
   git(['clean', '-qfdx', '-e', 'node_modules'], BASE_WT);
   provideData(BASE_WT, { reviewTexts: false });
 }
 function newLandFailures() {
+  return withLandMutex(newLandFailuresNow);
+}
+function newLandFailuresNow() {
   const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
   // The branch's own harness copy judges both trees, as land.yml does.
   const gauntlet = path.join(os.tmpdir(), `codex-land-gauntlet-${process.pid}.sh`);
@@ -474,7 +515,8 @@ async function finishLanding(entry, stats) {
 async function pickCards() {
   if (OPTS.ids) return OPTS.ids.map((identifier) => ({ identifier }));
   // --list --codex: the picker drops cards unfit for Codex and puts the best-suited first (BRO-5287).
-  const r = sh('node', ['scripts/cloud-worker-pick.js', `--list=${OPTS.limit + 5}`, '--codex'], { timeoutMs: 1_800_000 });
+  // A slot gets the launch's whole list (--pick-list): the slots share it and skip each other's cards.
+  const r = sh('node', ['scripts/cloud-worker-pick.js', `--list=${OPTS.pickList || OPTS.limit + 5}`, '--codex'], { timeoutMs: 1_800_000 });
   if (r.code !== 0) throw new Error(`picker failed: ${tail(r.out, 400)}`);
   return JSON.parse(r.stdout).picks || [];
 }
@@ -486,7 +528,7 @@ async function pickedCardNowUnfit(id, card, comments, tier) {
   let times = null;
   try { times = (await linear.graphql('query($id: String!) { issue(id: $id) { updatedAt createdAt } }', { id })).issue; } catch { return 'updatedAt unreadable'; }
   const nowMs = Date.now();
-  return P.skipReason({ ...card, ...times }, nowMs, { tier: PICK_TIER[tier] || 'p0p1' }) || P.pausedHistorySkipReason(comments, nowMs, { priority: card.priority, pausedBacklog: P.isPausedBacklog(card) });
+  return P.skipReason({ ...card, ...times }, nowMs, { tier: PICK_TIER[tier] || 'p0p1', codex: true }) || P.pausedHistorySkipReason(comments, nowMs, { priority: card.priority, pausedBacklog: P.isPausedBacklog(card) });
 }
 
 async function workCard(pick, stats, inFlight) {
@@ -507,7 +549,10 @@ async function workCard(pick, stats, inFlight) {
     if (why) { log(`${id}: no longer pickable (${why}), skipped`); return 'skip'; }
   }
   const body = R.cardBody(card.description, comments);
-  if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}" (${body.length} chars with comments)`); return 'skip'; }
+  // A SHIP-WITH-FIXES round an earlier run had no time for: resume it (BRO-5384).
+  const carry = R.parseSwfCarry(comments, Date.now());
+  if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}" (${body.length} chars with comments${carry ? ', resuming a carried fix round' : ''})`); return 'skip'; }
+  if (!takeCardInRun(id)) { log(`${id}: another slot of this launch has it, skipped`); return 'skip'; }
 
   const claimedMs = Date.now();
   const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`], { timeoutMs: 900_000 });
@@ -540,16 +585,16 @@ async function workCard(pick, stats, inFlight) {
     // card budget. The land checks and review after the last exec still run, so
     // a card can overrun the budget by those (bounded by their own timeouts).
     const cardDeadline = Math.min(claimedMs + OPTS.cardMaxMinutes * 60_000, HARD_END_MS - WRAP_UP_MS);
+    // The current round's deadline: the card budget, or for the first SHIP-WITH-FIXES round the
+    // rest of the run (R.fixRoundDeadline, BRO-5384).
+    let roundDeadline = cardDeadline;
     // A fix round's exec gets what is left after the review (down to 15 min), not a fixed 45:
     // reserving a whole 45-min exec + 30-min review never fit the routine's 60-min card budget,
     // so no card ever got a second attempt (BRO-5287).
-    const REVIEW_RESERVE_MS = 30 * 60_000;
-    const MIN_FIX_EXEC_MS = 15 * 60_000;
-    const LAND_CHECKS_MS = 15 * 60_000;
-    const execFits = () => cardDeadline - Date.now() >= MIN_FIX_EXEC_MS + REVIEW_RESERVE_MS
-      && fitsBeforeHardStop(MIN_FIX_EXEC_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS);
+    const { REVIEW_RESERVE_MS, FIX_EXEC_MIN_MS: MIN_FIX_EXEC_MS, LAND_CHECKS_MS } = R;
+    const execFits = (deadline = roundDeadline) => R.fixRoundFits({ deadlineMs: deadline, nowMs: Date.now(), hardEndMs: HARD_END_MS, wrapUpMs: WRAP_UP_MS });
     const firstExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, HARD_END_MS - WRAP_UP_MS - Date.now() - LAND_CHECKS_MS - REVIEW_RESERVE_MS));
-    const fixExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, cardDeadline - Date.now() - REVIEW_RESERVE_MS));
+    const fixExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, roundDeadline - Date.now() - REVIEW_RESERVE_MS));
     let report = '';
     let check = null;
     let attempt = 1;
@@ -559,6 +604,23 @@ async function workCard(pick, stats, inFlight) {
     let envRetryUsed = false;
     let envBlocked = null;
     let extra = onMain;
+    // swfRoundUsed: the one SHIP-WITH-FIXES round past the card budget is spent. carryOver: it did
+    // not fit this run, so the card goes back with Codex's change for the next run.
+    let swfRoundUsed = false;
+    let carryOver = false;
+    if (carry) {
+      // Re-apply the carried change and go straight to its fix round (it is that round).
+      swfRoundUsed = true;
+      attempt = carry.attempt + 1;
+      const applied = carry.patch ? sh('git', ['apply', '--index', '--whitespace=nowarn', '-'], { cwd: WT, input: carry.patch }) : { code: 1, out: 'no change carried' };
+      const committed = applied.code === 0 && !commitAttempt(card, carry.attempt).blocked;
+      if (!committed) { git(['reset', '-q', '--hard', cardBase]); git(['clean', '-qfd', '-e', 'node_modules']); provideData(WT); }
+      log(`${id}: resuming a carried SHIP-WITH-FIXES round (attempt ${attempt}; change ${committed ? 're-applied' : `not re-applied: ${tail(applied.out.trim(), 200)}`})`);
+      const where = committed ? 'An earlier run\'s attempt at this card is committed on this branch.'
+        : carry.patch ? 'An earlier run\'s attempt at this card no longer applies to main, so redo it on this branch.'
+          : 'An earlier run\'s attempt at this card was too large to carry over, so redo it on this branch.';
+      extra = `${onMain}\n\n${where} The independent reviewer judged it SHIP-WITH-FIXES (the approach is right, specific fixes are needed). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(carry.findings || 'See the newest card comment ("fix round carried to the next run").')}`;
+    }
     // Set when the hard stop leaves no room for the land checks or the review: the work is
     // unjudged, so the card goes back without the bounce marker and outside the REJECT streak.
     let outOfTime = null;
@@ -571,7 +633,7 @@ async function workCard(pick, stats, inFlight) {
         keepLock();
         const cx = runCodex(id, text, `codex${++execs}`, retry ? Math.min(timeoutMs, fixExecMs()) : timeoutMs);
         const transient = cx.code !== 0 ? R.codexExitTransient(cx.out) : null;
-        if (!transient || retry >= 2 || cardDeadline - Date.now() < 15 * 60_000) return cx;
+        if (!transient || retry >= 2 || roundDeadline - Date.now() < 15 * 60_000) return cx;
         log(`${id}: Codex exited ${cx.code} on a provider error (${transient}); retry ${retry + 1} in 4 min`);
         git(['reset', '-q', '--hard', base]);
         git(['clean', '-qfd', '-e', 'node_modules']);
@@ -622,7 +684,17 @@ async function workCard(pick, stats, inFlight) {
         step = R.nextStep({ verdict: check.verdict, hasDiff: c.hasDiff, attempt, envBlocked: !!envBlocked, envRetryUsed });
       }
       if (step !== 'fix-round' && step !== 'env-retry') break;
-      if (!execFits()) { step = 'bounce'; check.text += `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break; }
+      const deadline = step === 'fix-round'
+        ? R.fixRoundDeadline({ verdict: check.verdict, swfRoundUsed, cardDeadlineMs: cardDeadline, runEndMs: HARD_END_MS - WRAP_UP_MS })
+        : roundDeadline;
+      const swfRound = step === 'fix-round' && check.verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed;
+      if (!execFits(deadline)) {
+        // A SHIP-WITH-FIXES verdict always gets its fix round: in the next run if not in this one.
+        if (swfRound) { carryOver = true; break; }
+        step = 'bounce'; check.text += `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break;
+      }
+      roundDeadline = deadline;
+      if (swfRound) swfRoundUsed = true;
       if (step === 'env-retry') {
         // Not a fix round: the environment, not the work, failed. Same attempt number, once per card.
         envRetryUsed = true;
@@ -632,6 +704,16 @@ async function workCard(pick, stats, inFlight) {
       }
       attempt += 1;
       extra = `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (land's test batches, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
+    }
+    if (carryOver) {
+      // Not a bounce (no BOUNCED_MARKER, outside the REJECT streak): the next run resumes it first.
+      log(`${id}: SHIP-WITH-FIXES with no time left for the fix round; carried to the next run`);
+      stats.carried.push(id);
+      const patch = R.carryPatch(WT, cardBase);
+      const summary = `### Independent check (SHIP-WITH-FIXES)\n${fence(tail(check.text, 2500))}\n\n### Codex report\n${fence(tail(report, 1500))}`;
+      handedBack = (await moveCard(id, 'Todo', R.swfCarryBody({ attempt, patch, summary }))).code === 0;
+      disposed = true;
+      return 'done';
     }
     if (outOfTime) {
       log(`${id}: no time left before the hard stop for ${outOfTime}; handed back unjudged`);
@@ -728,7 +810,7 @@ async function workCard(pick, stats, inFlight) {
 // taken and released with --force-with-lease, so two runs cannot both win. The proxy
 // refuses ref deletes, hence the "unlocked" commit. No workflow triggers on this branch.
 // CODEX_RUNNER_LOCK_REF: tests only (refs/heads/codex-runner-locktest).
-const LOCK_REF = process.env.CODEX_RUNNER_LOCK_REF || 'refs/heads/codex-runner-lock';
+const LOCK_REF = process.env.CODEX_RUNNER_LOCK_REF || SLOT_NAMES.lockRef;
 // Refreshed before each blocking step of a card (Codex, unit batch, check; the longest is
 // Codex at 45 min) and every 30 min while landings wait, so a live run never looks stale.
 // A killed run (SIGKILL skips the release) blocks the next run only until it goes stale.
@@ -758,8 +840,8 @@ function lockCommit(msg) {
   return sha;
 }
 /** Remote lock sha, '' when the ref is absent, null when unreadable. */
-function lockRemoteTip() {
-  const r = sh('git', ['ls-remote', 'origin', LOCK_REF], { timeoutMs: LOCK_GIT_MS });
+function lockRemoteTip(ref = LOCK_REF) {
+  const r = sh('git', ['ls-remote', 'origin', ref], { timeoutMs: LOCK_GIT_MS });
   return r.code === 0 ? (r.stdout.split(/\s/)[0] || '') : null;
 }
 /**
@@ -792,13 +874,14 @@ function lockPush(sha, expect) {
   return { state: verdict === 'ours' ? 'kept' : 'unknown', tip };
 }
 /** The lock as the remote has it: { sha, subject, run, ms } ('' sha = no lock), or { error }. */
-function readLock() {
-  const sha = lockRemoteTip();
+function readLock(ref = LOCK_REF) {
+  const sha = lockRemoteTip(ref);
   if (sha === null) return { error: 'ls-remote failed' };
   if (!sha) return { sha: '' };
-  const f = sh('git', ['fetch', '-q', 'origin', LOCK_REF], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless (commit-tree), so this is always one commit
+  const f = sh('git', ['fetch', '-q', 'origin', ref], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless (commit-tree), so this is always one commit
   if (f.code !== 0) return { error: `fetching the lock timed out or failed: ${tail(f.out.trim(), 200)}` };
-  const meta = sh('git', ['log', '-1', '--format=%ct%n%s%n%b', 'FETCH_HEAD'], { cwd: ROOT });
+  // By sha, not FETCH_HEAD: another slot's fetch in ROOT can rewrite FETCH_HEAD in between.
+  const meta = sh('git', ['log', '-1', '--format=%ct%n%s%n%b', sha], { cwd: ROOT });
   const [ct, subject, ...body] = meta.stdout.split('\n');
   if (meta.code !== 0 || !Number.isFinite(Number(ct)) || !Number(ct)) return { error: `cannot read the lock commit: ${tail(meta.out.trim(), 200)}` };
   return { sha, subject: subject || '', run: R.lockRun(body.join('\n')), ms: Number(ct) * 1000 };
@@ -870,8 +953,22 @@ function releaseLock() {
 
 // The card claimed right now, so a kill (routine timeout, container stop) can hand it back.
 let current = null;
+// A --slots launcher's slot runners: a signal to the launcher reaches each, and each hands its own card back.
+const slotChildren = [];
+let dying = false;
 for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
   process.on(sig, () => {
+    if (dying) return; // the launcher and the process group can both deliver it
+    dying = true;
+    if (slotChildren.length) {
+      // The launcher: stay until the slots have handed their cards back (up to 2 min), so the
+      // routine does not read this run as finished while they still work.
+      for (const c of slotChildren) { try { c.kill(sig); } catch { /* already gone */ } }
+      log(`killed by ${sig}; waiting for ${slotChildren.length} slot(s) to hand their cards back`);
+      const gone = slotChildren.map((c) => (c.exitCode !== null || c.signalCode !== null ? Promise.resolve() : new Promise((res) => c.once('exit', res))));
+      Promise.race([Promise.all(gone), sleep(120_000)]).then(() => process.exit(1));
+      return;
+    }
     if (current && !OPTS.dryRun) {
       const back = sh('node', ['scripts/linear-brain.js', 'update', current, '--state', 'Todo', '--comment',
         `## Codex runner: stopped (${sig}) mid-card\n\nNothing was landed for this card. Back to Todo.`], { timeoutMs: 600_000 });
@@ -883,16 +980,12 @@ for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
   });
 }
 
-async function main() {
-  const startedMs = Date.now();
-  // --lock-status: is a runner alive anywhere (any session or container)? The board-workers
-  // routine asks this before starting its Codex lane; pgrep only sees its own container.
-  if (process.argv.includes('--lock-status')) {
-    const l = readLock();
-    console.log(`codex runner lock: ${describeLock(l)}`);
-    process.exit(l.error ? 4 : lockHeld(l) ? 3 : 0);
-  }
-  // Fresh cloud containers do not ship the Codex CLI; install the pinned version.
+// Slots any launch may run; --lock-status reads every one of their locks.
+const MAX_SLOTS = 4;
+const SLOT_STAGGER_MS = 2 * 60_000;
+
+/** Fresh cloud containers do not ship the Codex CLI: install the pinned version; exit 2 if a tool is missing. */
+function ensureTools() {
   if (sh('codex', ['--version'], { timeoutMs: 60_000 }).code !== 0) {
     const inst = sh('npm', ['install', '-g', `@openai/codex@${CODEX_VERSION}`], { timeoutMs: 600_000 });
     log(`installed Codex CLI ${CODEX_VERSION}: exit ${inst.code}`);
@@ -900,6 +993,54 @@ async function main() {
   for (const tool of ['codex', 'claude']) {
     if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) { log(`${tool} CLI missing`); process.exit(2); }
   }
+}
+
+/**
+ * --slots N: start N slot runners 2 min apart (worktree creation and the first Codex exec do not
+ * overlap) and wait for them. One slot when the login could expire mid-run or will not restore.
+ */
+async function launchSlots() {
+  ensureTools(); // once, before the slots: concurrent `npm i -g` would race
+  if (OPTS.slots > MAX_SLOTS) { log(`--slots ${OPTS.slots} is over ${MAX_SLOTS}; running ${MAX_SLOTS}`); OPTS.slots = MAX_SLOTS; }
+  const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
+  log(restore.out.trim());
+  let authText = '';
+  try { authText = fs.readFileSync(path.join(CODEX_HOME, 'auth.json'), 'utf8'); } catch { /* slot 0 reports a missing login */ }
+  const runMs = (Number.isFinite(HARD_END_MS) ? HARD_END_MS : RUN_STARTED_MS + OPTS.maxMinutes * 60_000) - Date.now();
+  const plan = restore.code === 0 ? R.slotsForLogin({ slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { slots: 1, why: 'the Codex login did not restore' };
+  authText = '';
+  log(`launching ${plan.slots} slot(s)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
+  // One slot: no run dir, so it runs exactly as a lone runner (2 landings in flight, plain summary).
+  const runDir = plan.slots > 1 ? fs.mkdtempSync(path.join(LOG_DIR, 'launch-')) : '';
+  const exits = [];
+  for (let k = 0; k < plan.slots; k++) {
+    if (k) await sleep(SLOT_STAGGER_MS);
+    if (dying || (runDir && fs.existsSync(path.join(runDir, 'STOP')))) break;
+    const args = R.slotArgs(process.argv.slice(2), { slot: k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
+    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit' });
+    slotChildren.push(child);
+    exits.push(new Promise((res) => child.on('exit', (code) => res(code == null ? 1 : code))));
+  }
+  process.exitCode = Math.max(0, ...(await Promise.all(exits)));
+}
+
+async function main() {
+  const startedMs = RUN_STARTED_MS; // a slot's --max-minutes counts from the launch too
+  // --lock-status: is a runner alive anywhere (any session or container)? The board-workers
+  // routine and check-claude.js ask this before starting Codex; pgrep only sees its own container.
+  // Every slot's lock: exit 3 if any is held, 4 if one is unreadable, else 0.
+  if (process.argv.includes('--lock-status')) {
+    // One ls-remote for every slot's ref, then only the refs that exist are read (check-claude.js
+    // gives this 180 s; four sequential reads of up to 120 s each would not fit).
+    const refs = [...Array(MAX_SLOTS).keys()].map((k) => (k === 0 && process.env.CODEX_RUNNER_LOCK_REF ? process.env.CODEX_RUNNER_LOCK_REF : R.slotNames(k).lockRef));
+    const ls = sh('git', ['ls-remote', 'origin', ...refs], { timeoutMs: LOCK_GIT_MS });
+    const present = new Set(ls.code === 0 ? ls.stdout.split('\n').map((l) => l.split(/\s+/)[1]).filter(Boolean) : []);
+    const locks = ls.code !== 0 ? [{ error: 'ls-remote failed' }] : refs.map((ref) => (present.has(ref) ? readLock(ref) : { sha: '' }));
+    locks.forEach((l, k) => { if (k === 0 || l.error || l.sha) console.log(`codex runner lock${k ? ` (slot ${k})` : ''}: ${describeLock(l)}`); });
+    process.exit(locks.some(lockHeld) ? 3 : locks.some((l) => l.error) ? 4 : 0);
+  }
+  if (OPTS.slots > 1 && !process.argv.includes('--slot')) { await launchSlots(); return; }
+  ensureTools();
   if (!OPTS.dryRun) {
     const held = takeLock();
     if (held) { log(`not starting: ${held}`); return; }
@@ -934,9 +1075,10 @@ async function recoverOrphans(stats) {
     const ref = `land/codex-${id.toLowerCase()}`;
     let landRefMs = NaN;
     try {
-      if (git(['ls-remote', 'origin', `refs/heads/${ref}`], ROOT) !== '') {
+      const refSha = git(['ls-remote', 'origin', `refs/heads/${ref}`], ROOT).split(/\s/)[0];
+      if (refSha) {
         git(['fetch', '-q', 'origin', `refs/heads/${ref}`], ROOT); // unbounded-fetch-ok: one land ref
-        landRefMs = Number(git(['log', '-1', '--format=%ct', 'FETCH_HEAD'], ROOT)) * 1000;
+        landRefMs = Number(git(['log', '-1', '--format=%ct', refSha], ROOT)) * 1000; // by sha: slots share FETCH_HEAD
       }
     } catch { /* treat as no landing */ }
     const action = R.orphanAction({
@@ -962,9 +1104,10 @@ async function recoverOrphans(stats) {
 }
 
 async function runLocked(startedMs) {
-  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], outOfTime: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
+  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], outOfTime: [], carried: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
   // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
-  if (!OPTS.dryRun) { await reconcileLanded(stats); await recoverOrphans(stats); }
+  // reconcileLanded scans every runner commit on main, so one slot does it (two would settle a card twice).
+  if (!OPTS.dryRun) { if (SLOT === 0) await reconcileLanded(stats); await recoverOrphans(stats); }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   if (restore.code !== 0) {
@@ -983,6 +1126,8 @@ async function runLocked(startedMs) {
     if (worked >= OPTS.limit) break;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd });
     if (!stop && stats.aborted) stop = stats.aborted;
+    if (stop && (stats.aborted || stats.doneRefusals)) stopAllSlots(stop);
+    if (!stop) { const other = runStop(); if (other) stop = `another slot stopped this launch (${other})`; }
     if (!stop && HARD_END_MS - Date.now() < CARD_START_MIN_MS) stop = `under ${CARD_START_MIN_MS / 60_000} min left before the ${OPTS.hardStopMinutes}-min hard stop`;
     let held = true;
     try { held = refreshLock(MAX_STAMP_GAP_MS); } catch { /* transient git error: the keep-alive retries */ }
@@ -996,12 +1141,13 @@ async function runLocked(startedMs) {
   }
   await Promise.all(inFlight.map((e) => e.promise));
   if (!stop && stats.aborted) stop = stats.aborted;
+  if (stats.aborted || stats.doneRefusals) stopAllSlots(stop || 'the Done gate refused a card the Claude check passed');
   saveLogin();
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
   const list = (a) => (a.length ? a.join(', ') : 'none');
   const text = [
-    `## Codex runner ${new Date().toISOString().slice(0, 10)}: ${worked} card(s) worked in ${mins} min`,
+    `## Codex runner ${new Date().toISOString().slice(0, 10)}: ${worked} card(s) worked in ${mins} min${RUN_DIR ? ` (slot ${SLOT})` : ''}`,
     `- Landed and Done: ${list(stats.landed)}`,
     `- Landed part, back to Todo with what is left: ${list(stats.landedPartial)}`,
     `- Already fixed, closed: ${list(stats.alreadyFixed)}`,
@@ -1009,6 +1155,7 @@ async function runLocked(startedMs) {
     `- Landed but Done gate refused (In Review): ${list(stats.inReview)}`,
     `- Landing did not finish (left In Progress for resume): ${list(stats.landFailed)}`,
     `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
+    ...(stats.carried.length ? [`- SHIP-WITH-FIXES, fix round carried to the next run: ${list(stats.carried)}`] : []),
     ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
     `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,

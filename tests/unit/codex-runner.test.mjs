@@ -369,7 +369,8 @@ test('codexCardFit: Mac-only and too-broad cards are skipped, one-test cards go 
   assert.equal(r.codexCardFit({ title: 'P3: opening-night monitor harness: launchd env lacks .env keys', description: '' }).skip, 'mac-only');
   assert.equal(r.codexCardFit({ title: 'cmux launcher reports ok:false on a launch that actually succeeded', description: '' }).skip, 'mac-only');
   const broad = r.codexCardFit({ title: 'Wire scripts/audit-exclusion-flags.js into a report-only weekly cron', description: 'Add .github/workflows/x.yml. Reads review-texts. Phase 2 follow-ups.', verify: 'node --test tests/unit/x.test.mjs' });
-  assert.equal(broad.skip, 'too-broad');
+  assert.equal(broad.skip, 'workflow-edit', 'a workflow edit is a hard skip since BRO-5384');
+  assert.equal(r.codexCardFit({ title: 'Wire a report-only weekly cron', description: 'Reads review-texts. Phase 2 follow-ups. Needs an API key.', verify: '' }).skip, 'too-broad');
   const small = r.codexCardFit({ title: 'isUkOutletUrl calls US sites UK', description: 'Fix the regex.\n## Acceptance criteria\n- test passes', verify: 'node --test scripts/lib/venue-classification.test.mjs' });
   assert.equal(small.skip, null);
   const vague = r.codexCardFit({ title: 'Some fix', description: 'x'.repeat(4000), verify: 'npx tsc --noEmit' });
@@ -481,4 +482,215 @@ test('comment reads keep the newest page: shared query uses first:, nothing quer
   const g = spawnSync('git', ['grep', '-nE', pattern, '--', '*.js', '*.mjs', '*.cjs', '*.ts', '*.tsx', '*.md', '*.sh', '*.yml', ':!cloud-memory/'], { cwd: ROOT, encoding: 'utf8' });
   if (g.status !== 0 && g.status !== 1) { t.skip(`git grep unavailable: ${(g.stderr || g.error || '').toString().slice(0, 200)}`); return; }
   assert.equal(g.stdout.trim(), '', `Linear comment reads with last: return the OLDEST comments; use first: (newest first) or listIssueComments:\n${g.stdout}`);
+});
+
+// ---- BRO-5384: parallel slots, routing, fix rounds, check noise ----
+
+test('codexCardFit: the four kinds of card the sandbox cannot finish are skipped (real rejected cards)', () => {
+  const fit = (title, description) => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs' });
+  // BRO-3475 (needed a workflow step), BRO-4299 (land/ pushes), BRO-4427 + BRO-4855 (hundreds of
+  // shipped rows), BRO-5223 (a data repair): all rejected by the Claude check on 2026-10-14/15.
+  assert.equal(fit('drift-state lastAlertTs is stamped before routing', 'stamps state before the workflow\'s alert step ever runs.').skip, 'workflow-edit');
+  assert.equal(fit('Cut Actions minutes', 'Land gauntlet runs base+branch per land/** push (~10 min each).').skip, 'land-ref');
+  assert.equal(fit('Temporal wrongProduction override', '464 with unhandled violations, 1003 shipped reviews in 464 shows').skip, 'corpus-wide-data');
+  assert.equal(fit('Rebuild guard: drop a dateless review', 'reviews.json: 293 rows with no url AND no publishDate.').skip, 'corpus-wide-data');
+  assert.equal(fit('unicode-stars-fallthrough extractor', 'Data repair through an approved-fix plan.').skip, 'private-repo-write');
+  assert.equal(fit('Edit flow', 'Then edit .github/workflows/land.yml.').skip, 'workflow-edit');
+  assert.equal(fit('x', 'write to broadway-review-texts').skip, 'private-repo-write');
+});
+
+test('codexCardFit: years, passing mentions of a landed ref and plain code cards still go to Codex', () => {
+  const fit = (description) => r.codexCardFit({ title: 'Fix the parser', description, verify: 'node --test tests/unit/x.test.mjs' });
+  assert.equal(fit('Reviews from 2024 reviews pages misparse.').skip, null, 'a year is not a count');
+  assert.equal(fit('BRO-5100 landed via land/bro-5100-fix; this is the follow-up in the parser.').skip, null);
+  assert.equal(fit('Add a .yml fixture for the parser test.').skip, null);
+  assert.equal(fit('The regex drops 12 reviews.').skip, null, 'a small count is not corpus-wide');
+});
+
+test('codexCardFit: a CODEX-OK line overrides the hard skips; Mac-only stays a skip', () => {
+  const card = { title: 'x', description: 'Then edit .github/workflows/land.yml.', verify: '' };
+  assert.equal(r.codexCardFit(card).skip, 'workflow-edit');
+  assert.equal(r.codexCardFit({ ...card, description: `${card.description}\nCODEX-OK: the yml change is a comment` }).skip, null);
+  assert.equal(r.codexCardFit({ ...card, comments: [{ body: 'CODEX-OK' }] }).skip, null);
+  assert.equal(r.codexCardFit({ title: 'launchd job', description: 'CODEX-OK' }).skip, 'mac-only');
+});
+
+test('swf carry: Codex\'s change and the attempt survive the round trip; only the newest, recent note counts', () => {
+  const now = Date.parse('2026-10-15T12:00:00Z');
+  const patch = 'diff --git a/scripts/x.js b/scripts/x.js\n--- a/scripts/x.js\n+++ b/scripts/x.js\n@@ -1 +1 @@\n-a\n+b\n';
+  const body = r.swfCarryBody({ attempt: 2, patch, summary: '### Independent check (SHIP-WITH-FIXES)\nfix the test' });
+  assert.ok(body.startsWith(r.SWF_CARRY_MARKER));
+  assert.ok(!body.includes(r.BOUNCED_MARKER), 'a carry is not a bounce: the picker must keep giving the card to Codex');
+  assert.ok(!r.looksLikeSecretLeak(body.split('\n').map((l) => `+${l}`).join('\n')));
+  const at = (ms) => new Date(ms).toISOString();
+  const back = r.parseSwfCarry([{ body, createdAt: at(now - 3600_000) }], now);
+  assert.equal(back.attempt, 2);
+  assert.equal(back.patch, patch);
+  assert.match(back.findings, /^### Independent check \(SHIP-WITH-FIXES\)\nfix the test$/);
+  assert.equal(r.parseSwfCarry([{ body, createdAt: at(now - 3600_000) }, { body: 'later note', createdAt: at(now - 60_000) }], now), null);
+  assert.equal(r.parseSwfCarry([{ body, createdAt: at(now - 4 * 24 * 3600_000) }], now), null, 'older than 3 days');
+  assert.equal(r.parseSwfCarry({ nodes: [{ body, createdAt: at(now) }] }, now).attempt, 2, 'Linear nodes shape');
+  // Too large to carry: the note still resumes the round, with the findings only.
+  const big = r.swfCarryBody({ attempt: 1, patch: require('crypto').randomBytes(80_000).toString('hex'), summary: 's' });
+  assert.equal(r.parseSwfCarry([{ body: big, createdAt: at(now) }], now).patch, null);
+  // Findings reach the resumed round in full: the card body clips each comment to 2500 chars.
+  const longFindings = `### Independent check (SHIP-WITH-FIXES)\n${'finding '.repeat(500)}LAST-FINDING`;
+  const long = r.swfCarryBody({ attempt: 1, patch, summary: longFindings });
+  assert.equal(r.parseSwfCarry([{ body: long, createdAt: at(now) }], now).findings, longFindings);
+  // The picker puts a carried card first.
+  const plain = r.codexCardFit({ title: 'x', description: 'y', comments: [] , nowMs: now });
+  const carried = r.codexCardFit({ title: 'x', description: 'y', comments: [{ body, createdAt: at(now) }], nowMs: now });
+  assert.ok(carried.score > plain.score && carried.why.includes('swf-carry'));
+});
+
+test('fixRoundDeadline: a SHIP-WITH-FIXES round is not cut by the 60-min card budget (no card ever got one)', () => {
+  const t0 = Date.parse('2026-10-15T10:00:00Z');
+  const card = t0 + 60 * 60_000; // --card-max-minutes 60
+  const runEnd = t0 + 104 * 60_000; // --hard-stop-minutes 112 minus wrap-up
+  const now = t0 + 40 * 60_000; // first exec, land checks and review used 40 min
+  const hard = t0 + 112 * 60_000;
+  const fits = (deadline) => r.fixRoundFits({ deadlineMs: deadline, nowMs: now, hardEndMs: hard, wrapUpMs: 8 * 60_000 });
+  assert.equal(fits(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), true);
+  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), false, 'a REJECT keeps to the card budget');
+  assert.equal(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), card, 'only the first one');
+  // A verdict at minute 50 leaves under exec + land checks + review before the hard stop: that
+  // round is carried to the next run (swfCarryBody) instead of being dropped.
+  assert.equal(r.fixRoundFits({ deadlineMs: runEnd, nowMs: t0 + 50 * 60_000, hardEndMs: hard, wrapUpMs: 8 * 60_000 }), false);
+  assert.equal(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: Infinity }), Infinity);
+});
+
+test('daily-runner: a SHIP-WITH-FIXES with no time left is carried, never bounced; a carry is resumed', () => {
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /if \(swfRound\) \{ carryOver = true; break; \}/);
+  assert.match(src, /R\.swfCarryBody\(\{ attempt, patch, summary \}\)/);
+  assert.match(src, /const patch = R\.carryPatch\(WT, cardBase\)/, 'never a trimmed git() diff');
+  assert.match(src, /execFits = \(deadline = roundDeadline\) => R\.fixRoundFits\(/);
+  assert.match(src, /const carry = R\.parseSwfCarry\(comments, Date\.now\(\)\)/);
+  assert.match(src, /R\.fixRoundDeadline\(/);
+});
+
+test('slotNames: slot 0 keeps the single-runner names, others get their own worktrees and lock', () => {
+  assert.deepEqual(r.slotNames(0), { wt: 'codex-runner', base: 'codex-runner-base', lockRef: 'refs/heads/codex-runner-lock' });
+  assert.deepEqual(r.slotNames(2), { wt: 'codex-runner-2', base: 'codex-runner-base-2', lockRef: 'refs/heads/codex-runner-lock-2' });
+  assert.equal(new Set([0, 1, 2, 3].map((k) => r.slotNames(k).lockRef)).size, 4);
+});
+
+test('slotsForLogin: one Codex process whenever the login could refresh during the run', () => {
+  const now = Date.parse('2026-10-15T10:00:00Z');
+  const jwt = (exp) => `e30.${Buffer.from(JSON.stringify({ exp: Math.floor(exp / 1000) })).toString('base64url')}.sig`;
+  const auth = (exp) => JSON.stringify({ tokens: { access_token: jwt(exp) } });
+  const runMs = 112 * 60_000;
+  assert.equal(r.jwtExpMs(jwt(now + 1000_000)), Math.floor((now + 1000_000) / 1000) * 1000);
+  assert.deepEqual(r.slotsForLogin({ slots: 3, authText: auth(now + 5 * 24 * 3600_000), nowMs: now, runMs }), { slots: 3, why: null });
+  assert.equal(r.slotsForLogin({ slots: 3, authText: auth(now + 60 * 60_000), nowMs: now, runMs }).slots, 1, 'expires mid-run');
+  assert.equal(r.slotsForLogin({ slots: 3, authText: auth(now - 1000), nowMs: now, runMs }).slots, 1, 'already expired: the first exec refreshes');
+  assert.equal(r.slotsForLogin({ slots: 3, authText: '{"tokens":{}}', nowMs: now, runMs }).slots, 1, 'unreadable fails safe');
+  assert.equal(r.slotsForLogin({ slots: 3, authText: 'not json', nowMs: now, runMs }).slots, 1);
+  assert.equal(r.slotsForLogin({ slots: 1, authText: auth(now + 9e9), nowMs: now, runMs }).slots, 1);
+});
+
+test('slotArgs: each slot gets its share of the budgets and the shared run dir, never the launcher flag', () => {
+  const argv = ['--slots', '3', '--limit', '9', '--max-minutes', '105', '--check-budget-usd', '30', '--hard-stop-minutes', '112', '--no-land'];
+  const a = r.slotArgs(argv, { slot: 1, runDir: '/tmp/l', runStartedMs: 5, limit: 3, checkBudgetUsd: 10 });
+  assert.ok(!a.includes('--slots'));
+  assert.deepEqual(a, ['--max-minutes', '105', '--hard-stop-minutes', '112', '--no-land', '--slot', '1', '--run-dir', '/tmp/l', '--run-started', '5', '--limit', '3', '--check-budget-usd', '10']);
+  // The whole launch's pick list; and a launch that fell back to one slot runs as a lone runner.
+  const lone = r.slotArgs([...argv, '--pick-list', '4'], { slot: 0, runDir: '', runStartedMs: 5, limit: 9, checkBudgetUsd: 30, pickList: 24 });
+  assert.ok(!lone.includes('--run-dir'));
+  assert.deepEqual(lone.slice(-2), ['--pick-list', '24']);
+  assert.equal(lone.filter((x) => x === '--pick-list').length, 1);
+});
+
+test('launchRunDir: one slot per card, a STOP reaches every slot, the mutex serialises and frees a dead holder', async () => {
+  const { mkdtempSync, writeFileSync, existsSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'codex-launch-'));
+  const a = r.launchRunDir(dir, 0, { pollMs: 50 });
+  const b = r.launchRunDir(dir, 1, { pollMs: 50 });
+  assert.equal(a.takeCard('BRO-1'), true);
+  assert.equal(b.takeCard('BRO-1'), false);
+  assert.equal(b.takeCard('BRO-2'), true);
+  assert.equal(a.stopped(), null);
+  b.stopAll('Codex exited 1: login expired');
+  a.stopAll('second stop keeps the first reason');
+  assert.equal(a.stopped(), 'slot 1: Codex exited 1: login expired');
+  // A held mutex blocks: another process holds it for 600 ms.
+  const holder = spawnSync(process.execPath, ['-e', `
+    const r = require(${JSON.stringify(join(ROOT, 'scripts/lib/codex-runner.js'))});
+    const fs = require('fs');
+    const d = r.launchRunDir(${JSON.stringify(dir)}, 2, { pollMs: 50 });
+    const { spawn } = require('child_process');
+    // child 1 holds the mutex 600 ms; child 2 starts 100 ms later and must wait for it.
+    const code = (who, delay) => "const r=require(" + JSON.stringify(${JSON.stringify(join(ROOT, 'scripts/lib/codex-runner.js'))}) + ");const fs=require('fs');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0," + delay + ");r.launchRunDir(" + JSON.stringify(${JSON.stringify(dir)}) + ",0,{pollMs:20}).withMutex('m',()=>{fs.appendFileSync(" + JSON.stringify(${JSON.stringify(join(dir, 'order'))}) + ",'" + who + "+');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,600);fs.appendFileSync(" + JSON.stringify(${JSON.stringify(join(dir, 'order'))}) + ",'" + who + "-');});";
+    const c1 = spawn(process.execPath, ['-e', code('a', 0)]);
+    const c2 = spawn(process.execPath, ['-e', code('b', 100)]);
+    let n = 0; const done = () => { if (++n === 2) console.log(fs.readFileSync(${JSON.stringify(join(dir, 'order'))}, 'utf8')); };
+    c1.on('exit', done); c2.on('exit', done);
+  `], { encoding: 'utf8', timeout: 20_000 });
+  assert.equal(holder.stdout.trim(), 'a+a-b+b-', `the second holder waits for the first: ${holder.stderr}`);
+  // A holder that died (pid gone) does not block anyone.
+  writeFileSync(join(dir, 'land-checks.lock'), '2147483646');
+  assert.equal(a.withMutex('land-checks', () => 'ran'), 'ran');
+  assert.equal(existsSync(join(dir, 'land-checks.lock')), false);
+  // An empty lock a minute old: its holder died between creating it and writing its pid.
+  const { utimesSync } = await import('node:fs');
+  writeFileSync(join(dir, 'land-checks.lock'), '');
+  utimesSync(join(dir, 'land-checks.lock'), new Date(Date.now() - 120_000), new Date(Date.now() - 120_000));
+  assert.equal(a.withMutex('land-checks', () => 'ran again'), 'ran again');
+  // No run dir: a lone runner, everything passes through.
+  const lone = r.launchRunDir('', 0);
+  assert.equal(lone.takeCard('BRO-1') && lone.takeCard('BRO-1'), true);
+  assert.equal(lone.stopped(), null);
+  assert.equal(lone.withMutex('x', () => 7), 7);
+});
+
+test('the Claude check compares failing tests with fresh main and counts only new ones', () => {
+  const tpl = readFileSync(join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
+  assert.match(tpl, /\{\{BASE\}\}/);
+  assert.match(tpl, /only a failure this change adds counts/i);
+  assert.match(tpl, /never base SHIP-WITH-FIXES or REJECT on them/);
+  const filled = r.fillPrompt(tpl, { id: 'BRO-1', title: 't', body: 'b', base: '/w/base' });
+  assert.ok(filled.includes('cd /w/base && node --test') && !filled.includes('{{BASE}}'));
+  assert.match(r.fillPrompt('{{BASE}}', {}), /not available/);
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /prepareBase\(\); base = BASE_WT;/);
+  assert.match(src, /'--add-dir', \.\.\.data\.dirs, \.\.\.\(base \? \[base\] : \[\]\)/);
+});
+
+test('board-workers.md starts three slots with budgets that leave a SHIP-WITH-FIXES round', () => {
+  const doc = readFileSync(join(ROOT, 'docs/cloud-routines/board-workers.md'), 'utf8');
+  const cmd = (doc.match(/`(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  const flag = (n) => Number((cmd.match(new RegExp(`--${n} (\\d+)`)) || [])[1]);
+  assert.ok(flag('slots') >= 3 && flag('slots') <= 4, cmd);
+  assert.ok(flag('limit') >= flag('slots') * 2, 'at least two cards per slot');
+  assert.ok(flag('hard-stop-minutes') <= 115, 'inside the routine\'s 120-min background limit');
+});
+
+test('carryPatch: a real carried change (text + binary) re-applies in full on the card base (BRO-5384)', async () => {
+  const { mkdtempSync, writeFileSync, readFileSync: rf } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const repo = mkdtempSync(join(tmpdir(), 'codex-carry-'));
+  const g = (...a) => { const x = spawnSync('git', a, { cwd: repo, encoding: 'utf8' }); assert.equal(x.status, 0, x.stderr); return x.stdout.trim(); };
+  g('init', '-q'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
+  writeFileSync(join(repo, 'a.js'), 'one\ntwo\n');
+  g('add', '-A'); g('commit', '-qm', 'base');
+  const base = g('rev-parse', 'HEAD');
+  g('checkout', '-qb', 'codex/bro-1');
+  writeFileSync(join(repo, 'a.js'), 'one\nTWO\nthree\n');
+  writeFileSync(join(repo, 'pic.bin'), Buffer.from([0, 1, 2, 255, 0, 9]));
+  g('add', '-A'); g('commit', '-qm', 'codex attempt');
+  const patch = r.carryPatch(repo, base);
+  assert.ok(patch.endsWith('\n'), 'the raw diff keeps its final newline');
+  const carried = r.parseSwfCarry([{ body: r.swfCarryBody({ attempt: 1, patch, summary: 's' }), createdAt: new Date().toISOString() }], Date.now()).patch;
+  // Next run: a fresh branch on the base, the carried patch applied the way the runner does it.
+  g('checkout', '-qf', '-B', 'resume', base);
+  const ap = spawnSync('git', ['apply', '--index', '--whitespace=nowarn', '-'], { cwd: repo, input: carried, encoding: 'utf8' });
+  assert.equal(ap.status, 0, ap.stderr);
+  assert.equal(rf(join(repo, 'a.js'), 'utf8'), 'one\nTWO\nthree\n');
+  assert.deepEqual([...rf(join(repo, 'pic.bin'))], [0, 1, 2, 255, 0, 9]);
+  // The bug this guards: the same diff trimmed (as git() returns stdout) does not apply.
+  g('checkout', '-qf', '-B', 'resume2', base);
+  const trimmed = spawnSync('git', ['apply', '--index', '-'], { cwd: repo, input: patch.trim(), encoding: 'utf8' });
+  assert.notEqual(trimmed.status === 0 && rf(join(repo, 'a.js'), 'utf8') === 'one\nTWO\nthree\n' && spawnSync('git', ['diff', '--cached', '--name-only'], { cwd: repo, encoding: 'utf8' }).stdout.includes('pic.bin'), true);
+  assert.equal(r.carryPatch(repo, 'no-such-ref'), '');
 });

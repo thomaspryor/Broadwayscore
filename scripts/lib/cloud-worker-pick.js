@@ -301,7 +301,7 @@ function startNowUnpickableReason({ title, description, priority, mode }) {
  * cards included). `{ tier: 'p3' }` is the same for priority 4
  * ('not-p3').
  */
-function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
+function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   const drain = require('./linear-drain-parked.js');
   if (!issue || !issue.identifier) return 'malformed';
   const fallbackPriority = FALLBACK_TIER_PRIORITY[tier];
@@ -317,7 +317,11 @@ function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
   if (unfit) return unfit;
   const updatedMs = Date.parse(issue.updatedAt);
   if (!Number.isFinite(updatedMs)) return 'no-updatedAt';
-  if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs))) return 'recent-activity';
+  // For the Codex runner only (codex: true): a fix round it carried to its next run (BRO-5384) is
+  // its own hand-back note, not someone working the card. The Claude lane keeps the 6 h wait, so
+  // it does not take the card first and redo it without Codex's carried change.
+  const carry = codex && require('./codex-runner.js').parseSwfCarry(issue.comments && issue.comments.nodes, nowMs);
+  if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs)) && !carry) return 'recent-activity';
   return null;
 }
 
@@ -359,7 +363,7 @@ function needsComments(issue, nowMs) {
  *   'not-p0-p1' there); `orderedP2`/`eligibleP2`/`skippedP2` are the P2 fallback tier and
  *   `orderedP3`/`eligibleP3`/`skippedP3` the P3 (Low) fallback tier.
  */
-function pickCloudCard(issues, { nowMs }) {
+function pickCloudCard(issues, { nowMs, codex = false }) {
   const { priorityRank } = require('./linear-dispatch.js');
   const { issueNumber } = require('./linear-drain-parked.js');
   const skipped = {};
@@ -372,16 +376,16 @@ function pickCloudCard(issues, { nowMs }) {
   // too old), by id: a filer told the owner they were queued, so say why not.
   const startNowSkipped = {};
   for (const iss of Array.isArray(issues) ? issues : []) {
-    const reason = skipReason(iss, nowMs);
+    const reason = skipReason(iss, nowMs, { codex });
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
     let fallbackEligible = false;
     if (reason === 'not-p0-p1' && Number(iss.priority) === P2_PRIORITY) {
-      const r2 = skipReason(iss, nowMs, { tier: 'p2' });
+      const r2 = skipReason(iss, nowMs, { tier: 'p2', codex });
       if (r2) skippedP2[r2] = (skippedP2[r2] || 0) + 1;
       else { eligibleP2.push(iss); fallbackEligible = true; }
     } else if (reason === 'not-p0-p1' && Number(iss.priority) === P3_PRIORITY) {
-      const r3 = skipReason(iss, nowMs, { tier: 'p3' });
+      const r3 = skipReason(iss, nowMs, { tier: 'p3', codex });
       if (r3) skippedP3[r3] = (skippedP3[r3] || 0) + 1;
       else { eligibleP3.push(iss); fallbackEligible = true; }
     }

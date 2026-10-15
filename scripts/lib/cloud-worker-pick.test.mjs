@@ -854,3 +854,18 @@ test('P2/P3 technical parks are taken, after Todo; "later" wording, owner holds 
   const techCard = issue({ identifier: 'BRO-5', priority: 3, state: BACKLOG, description: `PARKED: needs a worktree\n\n${BODY}` });
   assert.deepEqual(pickCloudCard([machine, techCard, todo], { nowMs: NOW }).orderedP2.map((i) => i.identifier), ['BRO-999', 'BRO-5', 'BRO-1']);
 });
+
+test('a Codex fix round carried to the next run skips the 6 h idle wait for Codex only (BRO-5384)', () => {
+  const { swfCarryBody } = require('./codex-runner.js');
+  const carry = { body: swfCarryBody({ attempt: 1, patch: 'diff --git a/x b/x\n', summary: 'findings' }), createdAt: FRESH };
+  const carried = issue({ updatedAt: FRESH, comments: { nodes: [carry] } });
+  assert.equal(skipReason(carried, NOW, { codex: true }), null);
+  // The Claude lane keeps the wait, so it does not redo the card without Codex's carried change.
+  assert.equal(skipReason(carried, NOW), 'recent-activity');
+  assert.equal(pickCloudCard([carried], { nowMs: NOW }).pick, null);
+  assert.equal(pickCloudCard([carried], { nowMs: NOW, codex: true }).pick.identifier, 'BRO-100');
+  // Someone commented after the carry note: their activity counts again.
+  const later = { body: 'I am looking at this', createdAt: new Date(NOW - 30_000).toISOString() };
+  assert.equal(skipReason(issue({ updatedAt: FRESH, comments: { nodes: [carry, later] } }), NOW, { codex: true }), 'recent-activity');
+  assert.equal(skipReason(issue({ updatedAt: FRESH, comments: { nodes: [{ body: '## Codex runner: not landed', createdAt: FRESH }] } }), NOW, { codex: true }), 'recent-activity');
+});
