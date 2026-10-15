@@ -3280,13 +3280,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-15T10:38:40.925Z",
+      "lastSeen": "2026-10-15T11:44:33.831Z",
       "lastNotifiedAt": "2026-10-14T15:48:59.586Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.818Z",
       "notifyCount": 25,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3294,13 +3294,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-15T10:38:40.942Z",
+      "lastSeen": "2026-10-15T11:44:33.849Z",
       "lastNotifiedAt": "2026-10-14T15:48:59.598Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.835Z",
       "notifyCount": 27,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3979,13 +3979,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-15T10:38:40.908Z",
+      "lastSeen": "2026-10-15T11:44:33.809Z",
       "lastNotifiedAt": "2026-10-15T09:10:18.922Z",
       "lastSurfacedAt": "2026-10-14T01:40:58.305Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -6050,13 +6050,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-15T10:38:40.884Z",
+      "lastSeen": "2026-10-15T11:44:33.786Z",
       "lastNotifiedAt": "2026-10-15T09:10:18.898Z",
       "lastSurfacedAt": "2026-10-14T01:40:56.113Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5314",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9314,18 +9314,17 @@
       "linearIdentifier": null
     },
     "corpus-drift:outlet-identity-hygiene": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
-      "incidentOpenedAt": "2026-10-14T08:49:42.389Z",
-      "lastSeen": "2026-10-14T08:49:42.389Z",
-      "lastNotifiedAt": "2026-10-14T08:49:42.389Z",
-      "lastSurfacedAt": "2026-10-14T08:49:42.389Z",
-      "notifyCount": 12,
+      "incidentOpenedAt": "2026-10-15T11:44:33.821Z",
+      "lastSeen": "2026-10-15T11:44:33.821Z",
+      "lastNotifiedAt": "2026-10-15T11:44:33.821Z",
+      "lastSurfacedAt": "2026-10-15T11:44:33.821Z",
+      "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-14T09:27:16.169Z"
+      "linearIdentifier": null
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -15207,13 +15206,13 @@
       "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
       "firstSeen": "2026-10-13T03:27:49.763Z",
       "incidentOpenedAt": "2026-10-13T18:12:08.276Z",
-      "lastSeen": "2026-10-15T10:38:40.959Z",
+      "lastSeen": "2026-10-15T11:44:33.866Z",
       "lastNotifiedAt": "2026-10-15T00:12:55.152Z",
       "lastSurfacedAt": "2026-10-15T00:12:55.152Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "review-gap:opening-window:red-riding-hood-off-broadway-2026": {
       "status": "open",
@@ -16076,13 +16075,13 @@
       "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
       "firstSeen": "2026-10-13T19:33:47.105Z",
       "incidentOpenedAt": "2026-10-13T19:33:47.105Z",
-      "lastSeen": "2026-10-15T10:38:40.873Z",
+      "lastSeen": "2026-10-15T11:44:33.774Z",
       "lastNotifiedAt": "2026-10-15T00:12:55.057Z",
       "lastSurfacedAt": "2026-10-15T00:12:55.057Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5288-dtli-ingest-guards": {
       "status": "resolved",

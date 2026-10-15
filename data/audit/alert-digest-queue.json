@@ -179,5 +179,18 @@
       }
     ],
     "queuedAt": "2026-10-15T09:50:55.953Z"
+  },
+  {
+    "conditionKey": "corpus-drift:outlet-identity-hygiene",
+    "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
+    "description": "check-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 29262\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 0 outlet(s)\ncorpus files scanned: 56744; provisional outlets without a decision: 1\n  matineedog (1) e.g. the-bodyguard-tour-2026/matineedog--adam-richards.json\nPROBLEMS: 1",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-15T11:44:33.822Z"
   }
 ]
