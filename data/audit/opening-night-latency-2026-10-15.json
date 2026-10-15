@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-15T15:07:13.617Z",
+  "generatedAt": "2026-10-15T19:14:11.337Z",
   "date": "2026-10-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 197433,
+  "entryCount": 207752,
   "shows": [
     {
       "showId": "the-lion-king-west-end-2021",
@@ -352,13 +352,13 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": 117687399,
       "p90_e2e_ms": 117688459,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 60658655,
-        "scored-to-rebuilt": 296682,
+        "scored-to-rebuilt": 190275,
         "rebuilt-to-deployed": 116692935
       },
       "reviews_over_15min": 4,
@@ -388,13 +388,13 @@
     },
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 10,
       "median_e2e_ms": 5564331,
       "p90_e2e_ms": 9487127,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 355683,
-        "scored-to-rebuilt": 424993,
+        "collected-to-scored": 429645,
+        "scored-to-rebuilt": 435253,
         "rebuilt-to-deployed": 8510548
       },
       "reviews_over_15min": 3,
@@ -434,13 +434,13 @@
     },
     {
       "showId": "kramerfauci-st-anns-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1504514,
-        "scored-to-rebuilt": 441454,
+        "collected-to-scored": 856067,
+        "scored-to-rebuilt": 451684,
         "rebuilt-to-deployed": 54603934
       },
       "reviews_over_15min": 0,
@@ -449,13 +449,13 @@
     },
     {
       "showId": "slam-frank-off-broadway-2026",
-      "reviewCount": 21,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 283315,
+        "collected-to-scored": 198973,
+        "scored-to-rebuilt": 374191,
         "rebuilt-to-deployed": 69510069
       },
       "reviews_over_15min": 0,
@@ -509,13 +509,13 @@
     },
     {
       "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 178631,
+        "scored-to-rebuilt": 95362,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -524,7 +524,7 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
-      "reviewCount": 37,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -725,7 +725,7 @@
     },
     {
       "showId": "rent-west-end-2026",
-      "reviewCount": 38,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -890,7 +890,7 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
-      "reviewCount": 32,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1016,7 +1016,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 138154,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1670,7 +1670,7 @@
     },
     {
       "showId": "oh-mary-2024",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1700,7 +1700,7 @@
     },
     {
       "showId": "hadestown-west-end-2024",
-      "reviewCount": 28,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1820,7 +1820,7 @@
     },
     {
       "showId": "aladdin-2014",
-      "reviewCount": 41,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1940,12 +1940,12 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": 59019899,
       "p90_e2e_ms": 101953881,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 610132,
+        "collected-to-scored": 585720,
         "scored-to-rebuilt": 370230,
         "rebuilt-to-deployed": 53565953
       },
@@ -2781,8 +2781,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 494858,
+        "collected-to-scored": 1655991,
+        "scored-to-rebuilt": 517775,
         "rebuilt-to-deployed": 97925647
       },
       "reviews_over_15min": 0,
@@ -6378,13 +6378,13 @@
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1304297,
+        "scored-to-rebuilt": 1062853,
         "rebuilt-to-deployed": 94662937
       },
       "reviews_over_15min": 0,
@@ -6648,7 +6648,7 @@
     },
     {
       "showId": "scandalous-2012",
-      "reviewCount": 18,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6918,7 +6918,7 @@
     },
     {
       "showId": "wonderland-2011",
-      "reviewCount": 18,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6999,7 +6999,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 992531,
+        "scored-to-rebuilt": 766609,
         "rebuilt-to-deployed": 94662928
       },
       "reviews_over_15min": 0,
@@ -7223,8 +7223,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 131357011,
+        "scored-to-rebuilt": 540693,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8223,13 +8223,13 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "reviewCount": 33,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 3199013,
-        "scored-to-rebuilt": 488008,
+        "collected-to-scored": 67058236,
+        "scored-to-rebuilt": 514349,
         "rebuilt-to-deployed": 26852984
       },
       "reviews_over_15min": 0,
@@ -8328,7 +8328,7 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10035,7 +10035,7 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "reviewCount": 21,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10902,13 +10902,13 @@
     },
     {
       "showId": "baby-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": 51850798,
       "p90_e2e_ms": 51850798,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 644502,
-        "scored-to-rebuilt": 292995,
+        "collected-to-scored": 2624720,
+        "scored-to-rebuilt": 278832,
         "rebuilt-to-deployed": 11957674
       },
       "reviews_over_15min": 1,
@@ -11949,7 +11949,7 @@
     },
     {
       "showId": "time-stands-still-2010",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12084,13 +12084,13 @@
     },
     {
       "showId": "the-waterfall-off-broadway-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 76575226,
+        "scored-to-rebuilt": 540696,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13101,7 +13101,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 10970384,
+        "scored-to-rebuilt": 10965719,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13110,13 +13110,13 @@
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2023",
-      "reviewCount": 12,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 699257,
+        "scored-to-rebuilt": 704388,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13170,6 +13170,276 @@
     },
     {
       "showId": "chitty-chitty-bang-bang-2005",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-addams-family-2010",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "death-of-a-salesman-west-end-2019",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "la-bete-2010",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "parade-tour-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 821420,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "reviewCount": 34,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 821410,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "mark-twain-tonight-2005",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 821411,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-bridges-of-madison-county-2014",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "reviewCount": 16,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "heartbreak-house-2006",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "king-lear-2004",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-full-monty-2000",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-plough-and-the-stars-1973",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-house-of-bernarda-alba-west-end-2023",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 710456,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "well-ill-let-you-go-off-broadway-2026",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "three-men-in-a-boat-off-west-end-2026",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1085972,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "burning-leaves-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
