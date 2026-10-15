@@ -229,6 +229,22 @@ describe('STAR_SOURCE_BY_REFERENCE (The Stage class star fallback)', () => {
   });
 });
 
+describe('canWriteStarFallback (BRO-5219 ship-check)', () => {
+  const { canWriteStarFallback } = require('../../scripts/lib/flagged-recovery.js');
+  const stars = new Set(['the-stage']);
+  const empty = { outletId: 'the-stage', fullText: '', url: 'https://www.thestage.co.uk/reviews/x' };
+  test('empty-body file at a star outlet takes the fallback', () => {
+    assert.equal(canWriteStarFallback({ ...empty }, 'the-stage', stars), true);
+  });
+  test('never over a first-party rating', () => {
+    assert.equal(canWriteStarFallback({ ...empty, originalScore: '4/5' }, 'the-stage', stars), false);
+  });
+  test('not for outlets that publish no stars, nor files already starred', () => {
+    assert.equal(canWriteStarFallback({ ...empty }, 'some-blog', stars), false);
+    assert.equal(canWriteStarFallback({ ...empty, aggregatorStars: '3/5' }, 'the-stage', stars), false);
+  });
+});
+
 describe('looksLikeReviewUrl: hardening from real-corpus scan (2026-07-23)', () => {
   test('social posts with review-y slugs are rejected', () => {
     assert.equal(looksLikeReviewUrl('https://www.facebook.com/BristolHippodrome/posts/heavenly-reviews-jesus-christ-superstar-has-opened/123/'), false);

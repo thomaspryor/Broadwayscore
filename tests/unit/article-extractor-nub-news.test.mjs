@@ -38,6 +38,18 @@ describe('article-extractor: nub.news', () => {
     assert.equal(text.split('\n\n').length, 3);
   });
 
+  test('paragraph copy inside a nested watch-banner widget is dropped', () => {
+    const html = page(
+      `<p>${PARA.repeat(4)}</p>` +
+      '<DIV class="mt-3"><div class="watch-banner articles-upper"><p>Sponsored: self storage in Kingston</p></div></DIV>' +
+      '<!-- <div> stray comment markup -->' +
+      `<p>${PARA.repeat(4)}</p>`
+    );
+    const text = extractArticleText(html, 'kingston.nub.news');
+    assert.doesNotMatch(text, /Sponsored|self storage/);
+    assert.equal(text.split('\n\n').length, 2);
+  });
+
   test('page without the body block returns null rather than page chrome', () => {
     const html = '<html><body><p>' + 'You can support us with a small payment. '.repeat(20) + '</p></body></html>';
     assert.equal(extractArticleText(html, 'kingston.nub.news'), null);

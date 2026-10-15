@@ -159,6 +159,17 @@ const STAR_SOURCE_BY_REFERENCE = {
   'bestoftheatre': 'bestoftheatre-star-rating',
 };
 
+// May the gap audit's star fallback write a roundup's relayed stars onto this
+// file? Only for outlets that publish stars (the rebuild's P5.7 gate), only on
+// an empty-body file with no stars yet, and never over a first-party rating:
+// writing an aggregator scoreSource makes review-write-guard strip
+// originalScore, so a disagreeing relay would replace stronger evidence
+// (BRO-5219 ship-check).
+function canWriteStarFallback(d, outletId, knownStarOutlets) {
+  if (!d || !knownStarOutlets || !knownStarOutlets.has(outletId)) return false;
+  return isEmptyBodyFile(d) && !d.aggregatorStars && d.originalScore == null;
+}
+
 /**
  * Decide what the hourly recovery loop should do with the recoverable dir file
  * behind one flaggedMiss. Returns a tagged action so the caller logs a precise
@@ -291,6 +302,7 @@ module.exports = {
   shouldSkipNonReviewStamp,
   nonReviewStampBlockReason,
   STAR_SOURCE_BY_REFERENCE,
+  canWriteStarFallback,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
 };

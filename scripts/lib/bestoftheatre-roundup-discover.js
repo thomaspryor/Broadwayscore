@@ -57,7 +57,9 @@ function extractBestOfTheatreRows(html) {
     const re = /<a href="([^"]+)"[^>]*>([\s\S]*?)<\/a>\s*\(([^)]*)\)/gi;
     let m;
     while ((m = re.exec(also[1]))) {
-      const parts = _decode(m[3]).split(',').map((s) => s.trim());
+      // Drop the quoted pull quote first: "two stars of the night" inside it is
+      // not the rating, and its commas would split it into unquoted parts.
+      const parts = _decode(m[3]).replace(/["\u201c][^"\u201d]*["\u201d]/g, '').split(',').map((s) => s.trim()).filter(Boolean);
       const starWord = (parts.find((p) => /\b(one|two|three|four|five)\s+stars?\b/i.test(p)) || '').match(/(one|two|three|four|five)/i);
       const critic = parts[0] && !/stars?|^"/i.test(parts[0]) ? parts[0] : null;
       rows.push({ outlet: _decode(m[2]), critic, stars: starWord ? WORD_STARS[starWord[1].toLowerCase()] : null, url: m[1] });

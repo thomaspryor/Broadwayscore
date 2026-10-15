@@ -535,20 +535,24 @@ function extractTheatreWeeklyBody(html) {
  * The review body is <div id="article_content_block">; nothing usable carries
  * a content class, so the generic fallback grabbed the whole page and kept the
  * "The Ball is in your court" donation appeal plus ad/share chrome. Balanced
- * walk from the id (body nests ad divs), then keep <p> text only.
+ * walk from the id (body nests ad divs), drop the nested watch-banner ad
+ * blocks, then keep <p> text only.
  */
 function extractNubNewsBody(html) {
-  const openM = html.match(/<div[^>]*\bid=["']article_content_block["'][^>]*>/i);
+  // Comments/scripts can hold div-looking markup that would skew the depth walk.
+  const src = String(html || '').replace(/<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/gi, '');
+  const openM = src.match(/<div[^>]*\bid=["']article_content_block["'][^>]*>/i);
   if (!openM) return null;
   const start = openM.index + openM[0].length;
-  const tagRe = /<div\b[^>]*>|<\/div>/g;
+  const tagRe = /<div\b[^>]*>|<\/div>/gi;
   tagRe.lastIndex = start;
   let depth = 1;
   let m;
-  while ((m = tagRe.exec(html))) {
-    if (m[0] === '</div>') {
+  while ((m = tagRe.exec(src))) {
+    if (m[0].toLowerCase() === '</div>') {
       if (--depth === 0) {
-        return [...html.slice(start, m.index).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+        const inner = removeBalancedDivBlocks(src.slice(start, m.index), ['watch-banner']);
+        return [...inner.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
           .map((p) => stripHtml(p[1]))
           .filter(Boolean)
           .join('\n\n');

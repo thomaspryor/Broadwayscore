@@ -118,3 +118,14 @@ test('getWeReferenceRows carries Best of Theatre rows', async () => {
   assert.equal(lt1.priorRun, false);
   assert.equal(ref.allSourcesFailed, false, 'one working source is enough');
 });
+
+// BRO-5219 ship-check: the gap audit now scores from these stars, so a star
+// word inside the pull quote must not be read as the rating.
+test('"Also reviewed by": star words inside the pull quote are not the rating', () => {
+  const html = '<p><strong>Also reviewed by:</strong> <a href="https://www.thestage.co.uk/reviews/x-review">The Stage</a> (Jane Doe, "two stars of the night, and five more besides"), behind a wall.</p>';
+  assert.deepEqual(extractBestOfTheatreRows(html), [
+    { outlet: 'The Stage', critic: 'Jane Doe', stars: null, url: 'https://www.thestage.co.uk/reviews/x-review' },
+  ]);
+  const curly = '<p><strong>Also reviewed by:</strong> <a href="https://www.thestage.co.uk/reviews/y-review">The Stage</a> (Jane Doe, three stars, \u201cone star turn\u201d)</p>';
+  assert.equal(extractBestOfTheatreRows(curly)[0].stars, 3);
+});

@@ -4237,6 +4237,15 @@ function extractTextFromHtmlGeneric(html, url) {
     return extractArticleTextFromHtml(html, url) || '';
   }
 
+  // Nub News (BRO-5219): the generic path clears the 500-char dedicated
+  // fallback threshold by keeping the donation appeal + share chrome, so the
+  // dedicated extractor must run first. Falls through if its body block is
+  // missing (unlike TB, a miss here doesn't mean "not a review").
+  if (url && /(^|\.)nub\.news\//.test(url.replace(/^https?:\/\//, ''))) {
+    const nub = extractArticleTextFromHtml(html, url);
+    if (nub) return nub;
+  }
+
   // New Yorker-specific extraction: isolate article body before generic parsing
   if (url && url.includes('newyorker.com')) {
     const nyText = extractNewYorkerFromHtml(html);

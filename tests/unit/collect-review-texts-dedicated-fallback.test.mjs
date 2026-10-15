@@ -27,3 +27,18 @@ test('La Voce: a 300-499 char JSON-LD body is recovered via the dedicated extrac
 test('non-dedicated host keeps generic behavior (short body stays empty)', () => {
   assert.equal(extractTextFromHtml(ld(BODY), 'https://example.com/review'), '');
 });
+
+// BRO-5219: on nub.news the generic path clears the 500-char fallback threshold
+// by keeping the donation appeal, so the dedicated extractor must run FIRST.
+test('nub.news: dedicated body wins over a long generic extraction', () => {
+  const para = 'The cast handle the river comedy with real warmth and timing. ';
+  const appeal = '<p>The Ball is in your court. You can support us with a small payment or at least read us for free. Monthly supporters will enjoy an ad-free experience.</p>';
+  const html = '<html><body><article><div id="article_content_block" class="prose">' +
+    `<p>${para.repeat(4)}</p><p>${para.repeat(4)}</p>` +
+    '</div>' + appeal.repeat(3) + '</article></body></html>';
+  const text = extractTextFromHtml(html, 'https://kingston.nub.news/news/local-features/review-x-1');
+  assert.match(text, /river comedy/);
+  assert.doesNotMatch(text, /support us|Ball is in your court/);
+  // A host that merely ends in "nub.news" is not Nub News.
+  assert.match(extractTextFromHtml(html, 'https://snub.news/review-x'), /support us/);
+});
