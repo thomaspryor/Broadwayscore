@@ -1,0 +1,154 @@
+#!/usr/bin/env node
+/**
+ * seed-evidence-review-stubs.js (BRO-4290)
+ *
+ * Closed Off-West-End rows promoted from audit review evidence
+ * (discoverySource 'audit-review-evidence') start with zero reviews and no
+ * other job gathers them. For each, this fetches the ONE review URL that
+ * proved the show exists, through ingest-review-from-url.js
+ * --stub-on-failure: a readable page becomes a review file, an unreadable one
+ * a needsText stub that collect-review-texts.yml retries on its own schedule.
+ *
+ * Spend: a hard monthly cap (scripts/lib/evidence-catchup-spend.js,
+ * EVIDENCE_CATCHUP_MONTHLY_CAP_USD). Before EVERY fetch it re-reads month-to-
+ * date spend and stops if the next fetch's worst case would cross the cap.
+ * Each child runs with SCRAPER_SPEND_PURPOSE=evidence-catchup so its provider
+ * calls are tagged in the shared spend ledger, and the priced result is
+ * appended to data/audit/evidence-catchup-spend.json after each fetch
+ * (checkpoint). A missing or unreadable rollup or ledger stops the run before
+ * any fetch.
+ *
+ * Usage:
+ *   node scripts/seed-evidence-review-stubs.js --dry-run [--limit=5]
+ *   node scripts/seed-evidence-review-stubs.js [--limit=N]   (N <= 5, default 2)
+ *
+ * --dry-run fetches nothing and writes nothing: it prints the candidates,
+ * their URLs, projected dollars and whether the cap would bind.
+ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { execFileSync } = require('child_process');
+const { selectEvidenceSeedCandidates, DEFAULT_EVIDENCE_PER_BATCH } = require('./lib/zero-review-catchup');
+const spend = require('./lib/evidence-catchup-spend');
+const { LEDGER_PATH } = require('./lib/provider-telemetry');
+
+const ROOT = path.join(__dirname, '..');
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
+const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+const INGEST = path.join(__dirname, 'ingest-review-from-url.js');
+const FETCH_SPACING_MS = 12000; // CLAUDE.md §8: 10s+ between fetches
+const CHILD_TIMEOUT_MS = 5 * 60 * 1000;
+const SECRET_NAMES = ['BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY'];
+
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const limitArg = args.find((a) => a.startsWith('--limit='));
+const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : DEFAULT_EVIDENCE_PER_BATCH;
+
+function loadJsonArray(filePath, key) {
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  return Array.isArray(data) ? data : (data[key] || []);
+}
+
+function ledgerPath() {
+  return process.env.SCRAPER_SPEND_LEDGER_PATH || LEDGER_PATH;
+}
+
+/** Month-to-date dollars from both sources; throws (fail closed) if either is unreadable. */
+function readMonthToDate(nowMs) {
+  const rollup = spend.loadRollup(process.env.EVIDENCE_CATCHUP_ROLLUP_PATH || spend.ROLLUP_PATH);
+  const ledgerRows = spend.loadTaggedLedgerRows(ledgerPath());
+  return { rollup, ledgerRows, mtdUsd: spend.monthToDateUsd(rollup, ledgerRows, nowMs) };
+}
+
+function writeOutput(name, value) {
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`);
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function runIngest(candidate) {
+  const env = {
+    ...process.env,
+    SCRAPER_SPEND_PURPOSE: spend.EVIDENCE_CATCHUP_PURPOSE,
+    SCRAPER_SPEND_SHOW_ID: candidate.id,
+    SB_CREDIT_BUDGET: String(spend.CHILD_SB_CREDIT_BUDGET),
+    SD_CREDIT_BUDGET: String(spend.CHILD_SD_CREDIT_BUDGET),
+  };
+  try {
+    const out = execFileSync(process.execPath,
+      [INGEST, `--show=${candidate.id}`, `--url=${candidate.url}`, '--stub-on-failure'],
+      { encoding: 'utf8', env, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHILD_TIMEOUT_MS });
+    process.stdout.write(out.split('\n').slice(-6).map((l) => `    ${l}`).join('\n') + '\n');
+    return 0;
+  } catch (e) {
+    const tail = `${e.stdout || ''}${e.stderr || ''}`.split('\n').filter(Boolean).slice(-4).join(' | ');
+    console.log(`    ingest exited ${e.status ?? e.signal}: ${tail}`);
+    return e.status ?? 1;
+  }
+}
+
+async function main() {
+  if (!Number.isInteger(limit) || limit < 1) throw new Error(`--limit must be a positive integer (got ${limitArg})`);
+  const now = Date.now();
+  const projected = spend.projectedFetchUsd();
+  const cap = spend.EVIDENCE_CATCHUP_MONTHLY_CAP_USD;
+
+  // Fail closed before selection: no readable spend record, no fetch.
+  const first = readMonthToDate(now);
+  const alreadyFetched = new Set(first.rollup.fetches.map((f) => f.showId));
+  const shows = loadJsonArray(SHOWS_PATH, 'shows');
+  const reviews = loadJsonArray(REVIEWS_PATH, 'reviews');
+  const { batch, exempt, eligible } = selectEvidenceSeedCandidates(shows, reviews, alreadyFetched, { now, limit });
+
+  console.log(`Evidence catch-up (${dryRun ? 'DRY RUN' : 'live'}): ${eligible} eligible, taking ${batch.length} (limit ${limit})`);
+  if (exempt.length) console.log(`Exempt (noReviewsExpected): ${exempt.join(', ')}`);
+  console.log(`Secrets: ${SECRET_NAMES.map((n) => `${n}=${process.env[n] ? 'set' : 'MISSING'}`).join(' ')}`);
+  console.log(`Review texts dir: ${fs.existsSync(REVIEW_TEXTS_DIR) ? 'present' : 'MISSING'}`);
+  console.log(`Spend ${spend.monthKey(now)}: $${first.mtdUsd.toFixed(4)} of $${cap} cap; worst case per fetch $${projected.toFixed(4)}`);
+  writeOutput('candidates', batch.length);
+
+  let simulatedMtd = first.mtdUsd;
+  let fetched = 0;
+  for (let i = 0; i < batch.length; i++) {
+    const c = batch[i];
+    const mtdUsd = dryRun ? simulatedMtd : readMonthToDate(Date.now()).mtdUsd;
+    const verdict = spend.decideFetch({ mtdUsd, projectedUsd: projected, capUsd: cap });
+    if (!verdict.proceed) {
+      console.log(`STOP before ${c.id}: ${verdict.reason}`);
+      break;
+    }
+    if (dryRun) {
+      console.log(`  would fetch ${c.id}: ${c.url} (projected $${projected.toFixed(4)}; ${verdict.reason})`);
+      simulatedMtd += projected;
+      continue;
+    }
+    if (fetched > 0) await sleep(FETCH_SPACING_MS);
+    const startIso = new Date().toISOString();
+    console.log(`  fetching ${c.id}: ${c.url}`);
+    const exit = runIngest(c);
+    fetched++;
+    // Price what the child actually wrote to the shared ledger.
+    const cost = spend.spendForFetch(spend.loadTaggedLedgerRows(ledgerPath()), c.id, startIso);
+    spend.appendRollupFetch(process.env.EVIDENCE_CATCHUP_ROLLUP_PATH || spend.ROLLUP_PATH, {
+      ts: startIso, month: spend.monthKey(Date.parse(startIso)), showId: c.id, url: c.url,
+      usd: Number(cost.usd.toFixed(6)), rows: cost.rows, estimated: cost.estimated, exit,
+    });
+    console.log(`    spent $${cost.usd.toFixed(4)} (${cost.estimated ? 'estimated, no ledger rows' : `${cost.rows} ledger rows`})`);
+  }
+  if (dryRun) {
+    console.log(`Projected for this batch: $${(simulatedMtd - first.mtdUsd).toFixed(4)}; month after: $${simulatedMtd.toFixed(4)} of $${cap}`);
+  } else {
+    console.log(`Fetched ${fetched} of ${batch.length}`);
+  }
+}
+
+main().catch((e) => {
+  console.error(`::error::seed-evidence-review-stubs: ${e.message} (no further fetches)`);
+  process.exit(1);
+});

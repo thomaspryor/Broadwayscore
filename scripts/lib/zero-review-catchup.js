@@ -17,14 +17,14 @@
  *   - givenUp: attempt memory shows this show has already been retried past
  *              the give-up threshold
  *
- * One scoped exception to "open shows only" (BRO-4290): rows the OWE
- * promoter built from audit review evidence (promote-owe-venue-candidates.js,
- * discoverySource 'audit-review-evidence', evidenceUrls = the review that
- * proved the show exists) are mostly closed runs, often with no openingDate,
- * and nothing else ever gathers their reviews. They qualify while their
- * discoveredAt is inside the age bound, under the same exempt/givenUp rules,
- * and at most DEFAULT_EVIDENCE_PER_BATCH ride each batch after the open rows
- * (a closed-show gather is slow and spends SERP credits).
+ * Closed rows the OWE promoter built from audit review evidence
+ * (promote-owe-venue-candidates.js, discoverySource 'audit-review-evidence',
+ * evidenceUrls = the review that proved the show exists) are NOT in this
+ * batch: a full gather of a closed show is slow and its spend is uncapped.
+ * selectEvidenceSeedCandidates() picks them for
+ * scripts/seed-evidence-review-stubs.js instead, which fetches only the
+ * evidence URL under a hard monthly cap (BRO-4290,
+ * scripts/lib/evidence-catchup-spend.js).
  */
 'use strict';
 
@@ -42,7 +42,10 @@ const DEFAULT_GRACE_DAYS = 3;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const DEFAULT_MAX_ATTEMPT_DAYS = 30;
 const DEFAULT_BATCH_SIZE = 10;
+// Evidence seeder: at most 2 closed shows per job (board triage 2026-10-10),
+// and never more than 5 even when asked (the CLAUDE.md §8 five-show E2E).
 const DEFAULT_EVIDENCE_PER_BATCH = 2;
+const MAX_EVIDENCE_PER_BATCH = 5;
 // Same literal as AUDIT_EVIDENCE_SOURCE in scripts/promote-owe-venue-candidates.js.
 const AUDIT_EVIDENCE_SOURCE = 'audit-review-evidence';
 
@@ -76,16 +79,14 @@ function hasGivenUp(entry, nowMs, opts = {}) {
  * @param {object[]} shows shows.json entries
  * @param {object[]} reviews reviews.json entries
  * @param {object} attempts attempt-memory map {showId: {attempts, firstAt, lastAt}}
- * @param {object} opts {now, ageBoundDays, graceDays, maxAttempts, maxAttemptDays, batchSize, evidencePerBatch}
- * @returns {{batch: string[], evidence: string[], tooOld: string[], exempt: string[], givenUp: string[]}}
- *   evidence = the evidence-promoted ids inside batch (for logging).
+ * @param {object} opts {now, ageBoundDays, graceDays, maxAttempts, maxAttemptDays, batchSize}
+ * @returns {{batch: string[], tooOld: string[], exempt: string[], givenUp: string[]}}
  */
 function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
   const now = opts.now ?? Date.now();
   const ageBoundDays = opts.ageBoundDays ?? DEFAULT_AGE_BOUND_DAYS;
   const graceDays = opts.graceDays ?? DEFAULT_GRACE_DAYS;
   const batchSize = opts.batchSize ?? DEFAULT_BATCH_SIZE;
-  const evidencePerBatch = opts.evidencePerBatch ?? DEFAULT_EVIDENCE_PER_BATCH;
   const attemptMap = attempts || {};
 
   const reviewCounts = {};
@@ -94,27 +95,12 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
   }
 
   const eligible = [];
-  const eligibleEvidence = [];
   const tooOld = [];
   const exempt = [];
   const givenUp = [];
 
   for (const s of (shows || [])) {
     if (!s) continue;
-    // Evidence-promoted closed rows: checked before the open-only and
-    // openingDate gates, which would drop them. Aged from discoveredAt.
-    if (s.status === 'closed' && isEvidencePromoted(s) && !reviewCounts[s.id]) {
-      const sinceDiscovery = daysSince(s.discoveredAt, now);
-      if (sinceDiscovery == null) continue;
-      if (s.noReviewsExpected) { exempt.push(s.id); continue; }
-      // Past the window: dropped silently. tooOld feeds a 'status/data
-      // problem' warning, which a closed run is not, and closed rows never
-      // leave that list, so it would only grow.
-      if (sinceDiscovery > ageBoundDays) continue;
-      if (hasGivenUp(attemptMap[s.id], now, opts)) { givenUp.push(s.id); continue; }
-      eligibleEvidence.push(s.id);
-      continue;
-    }
     if (!isRecentlyLive(s, CATCHUP_LIVENESS)) continue;
     if (reviewCounts[s.id]) continue;
     if (!s.openingDate) continue;
@@ -129,15 +115,42 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
     eligible.push(s.id);
   }
 
-  const batch = eligible.slice(0, batchSize);
-  const evidence = eligibleEvidence.slice(0, Math.max(0, Math.min(evidencePerBatch, batchSize - batch.length)));
   return {
-    batch: [...batch, ...evidence],
-    evidence,
+    batch: eligible.slice(0, batchSize),
     tooOld,
     exempt,
     givenUp,
   };
+}
+
+/**
+ * Closed evidence-promoted rows that still have zero reviews and whose
+ * evidence URL has never been fetched by the seeder (BRO-4290). Aged from
+ * discoveredAt (these rows often have no openingDate); past the age bound
+ * they are dropped silently, since a closed run is not a status/data problem.
+ * @param {object[]} shows shows.json entries
+ * @param {object[]} reviews reviews.json entries
+ * @param {Set<string>} alreadyFetched show ids the seeder has fetched before
+ * @param {object} opts {now, ageBoundDays, limit}
+ * @returns {{batch: {id: string, url: string}[], exempt: string[], eligible: number}}
+ */
+function selectEvidenceSeedCandidates(shows, reviews, alreadyFetched, opts = {}) {
+  const now = opts.now ?? Date.now();
+  const ageBoundDays = opts.ageBoundDays ?? DEFAULT_AGE_BOUND_DAYS;
+  const limit = Math.max(0, Math.min(opts.limit ?? DEFAULT_EVIDENCE_PER_BATCH, MAX_EVIDENCE_PER_BATCH));
+  const fetched = alreadyFetched || new Set();
+  const reviewed = new Set((reviews || []).filter((r) => r && r.showId).map((r) => r.showId));
+  const eligible = [];
+  const exempt = [];
+  for (const s of (shows || [])) {
+    if (!s || s.status !== 'closed' || !isEvidencePromoted(s) || reviewed.has(s.id)) continue;
+    const sinceDiscovery = daysSince(s.discoveredAt, now);
+    if (sinceDiscovery == null || sinceDiscovery > ageBoundDays) continue;
+    if (s.noReviewsExpected) { exempt.push(s.id); continue; }
+    if (fetched.has(s.id)) continue;
+    eligible.push({ id: s.id, url: s.evidenceUrls[0] });
+  }
+  return { batch: eligible.slice(0, limit), exempt, eligible: eligible.length };
 }
 
 module.exports = {
@@ -147,8 +160,11 @@ module.exports = {
   DEFAULT_MAX_ATTEMPT_DAYS,
   DEFAULT_BATCH_SIZE,
   DEFAULT_EVIDENCE_PER_BATCH,
+  MAX_EVIDENCE_PER_BATCH,
   AUDIT_EVIDENCE_SOURCE,
   CATCHUP_LIVENESS,
   hasGivenUp,
   selectCatchupCandidates,
+  selectEvidenceSeedCandidates,
+  isEvidencePromoted,
 };
