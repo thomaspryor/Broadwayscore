@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T10:21:53.085Z",
+  "timestamp": "2026-10-15T10:41:38.741Z",
   "stats": {
-    "totalReviews": 56633,
-    "alreadyFlagged": 21060,
+    "totalReviews": 56645,
+    "alreadyFlagged": 21066,
     "dateGuardCatches": 211,
     "directorMismatch": 1896,
-    "tvFilmSignals": 1583,
+    "tvFilmSignals": 1585,
     "londonSignals": 2352,
-    "offBroadwaySignals": 510,
+    "offBroadwaySignals": 511,
     "yearMismatch": 142,
-    "noPublishDate": 5195
+    "noPublishDate": 5196
   },
   "findings": [
     {
@@ -25735,6 +25735,24 @@
       ]
     },
     {
+      "showId": "midnight-off-broadway-2026",
+      "file": "pagesix--sarah-jones.json",
+      "publishDate": "2026-10-14",
+      "url": "https://pagesix.com/2026/10/14/celebrity-news/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 1\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
       "file": "amny--matt-windman.json",
       "score": 83,
@@ -32429,6 +32447,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "file": "thestage--the-stage.json",
+      "publishDate": "2026-10-12",
+      "url": "https://www.thestage.co.uk/review-round-ups/rent-starring-gaten-matarazzo-review-round-up",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
