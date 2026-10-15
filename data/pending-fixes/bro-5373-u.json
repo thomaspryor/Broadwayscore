@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5373-u",
   "planId": "ee58c5d4-e6db-4378-a80f-de3f30dc7d30",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-15T02:01:52.000Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,29 @@
         "description": "BRO-5373: Dominic Cavendish's Telegraph review of the Wyndham's run (4,222 chars, url .../leopoldstadt-review-wyndhams-theatre-tom-stoppard-delivers-unforgettable/). Dropped by the push ownership gate on 2026-10-10 and exists nowhere today; restored from the commit before the drop."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T02:36:17.380Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved christmas-carol-goes-wrong-west-end-2026/broadwayworld--kat-mokrynski.json → christmas-carol-goes-wrong-apollo-west-end-2025/broadwayworld--kat-mokrynski.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-west-end-2024/artsdesk--demetrios-matheou.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-other-place-west-end-2024/artsdesk--demetrios-matheou.json@46ccfeaed99898281cd6313b2b915ac8659765d9 -> the-other-place-west-end-2024/artsdesk--demetrios-matheou.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json@a9491571ca7c04067228dd11129ca0efe6b0135c -> leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json"
+    }
+  ]
 }
