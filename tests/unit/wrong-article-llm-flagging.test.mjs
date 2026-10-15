@@ -45,12 +45,13 @@ test('every confirmed wrong article is flagged wrongShow or hand-verified', { to
   assert.deepEqual(unresolved, []);
 });
 
-test('--verify-file refuses a file that is not a current suspect and writes nothing', { skip: !fs.existsSync(path.join(ROOT, 'data/shows.json')) && 'no shows.json' }, () => {
+test('--verify-file refuses a file that is not a current suspect and writes nothing', (t) => {
   const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'wa-'));
   const before = fs.readFileSync(verPath, 'utf8');
   const r = spawnSync('node', [SCRIPT, '--verify-file=no-such-show/nobody.json'], {
     env: { ...process.env, REVIEW_TEXTS_DIR: empty }, encoding: 'utf8',
   });
+  if (/ENOENT/.test(r.stderr)) return t.skip('core data not checked out');
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /not a current suspect/);
   assert.equal(fs.readFileSync(verPath, 'utf8'), before);

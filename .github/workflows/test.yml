@@ -1550,6 +1550,9 @@ on:
       # scripts/*.test.mjs is NOT globbed; test registered in
       # tests/unit-test-manifest.txt (unit-tests job node --test batch).
       - 'scripts/audit-star-score-mismatch.js'
+      # Wrong-article audit (BRO-4606): tests/unit/wrong-article-llm-flagging.test.mjs
+      # runs its --verify-file flag and reads its baseline.
+      - 'scripts/audit-wrong-article.js'
       # Its blocking replacement: fires only on a flag whose own date basis the
       # record contradicts (13/13 hand-verified precision). Colocated
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
