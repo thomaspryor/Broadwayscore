@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T11:17:22.311Z",
+  "timestamp": "2026-10-15T12:38:28.298Z",
   "stats": {
-    "totalReviews": 56646,
-    "alreadyFlagged": 21066,
+    "totalReviews": 56665,
+    "alreadyFlagged": 21069,
     "dateGuardCatches": 211,
     "directorMismatch": 1896,
-    "tvFilmSignals": 1585,
-    "londonSignals": 2352,
-    "offBroadwaySignals": 511,
+    "tvFilmSignals": 1584,
+    "londonSignals": 2358,
+    "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5197
+    "noPublishDate": 5209
   },
   "findings": [
     {
@@ -25731,24 +25731,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "midnight-off-broadway-2026",
-      "file": "pagesix--sarah-jones.json",
-      "publishDate": "2026-10-14",
-      "url": "https://pagesix.com/2026/10/14/celebrity-news/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 1\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -61489,6 +61471,34 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 94,
+      "publishDate": "2026-10-14",
+      "url": "https://www.nytimes.com/2026/10/14/theater/golden-boy-virginia-woolf-london-theater.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2026/09/theatre-review-golden-boy.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "plays-international--neil-dowden.json",
       "score": 82,
       "publishDate": "2026-09-18",
@@ -63345,6 +63355,20 @@
       "score": 85,
       "publishDate": "2026-10-02",
       "url": "https://loureviews.blog/2026/10/02/play-review-hay-fever-at-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2026/10/theatre-review-hay-fever.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68014,6 +68038,20 @@
       "score": 97,
       "publishDate": "2026-09-12",
       "url": "https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "aviewfromrowjay--jay.json",
+      "score": 90,
+      "publishDate": "2026-10-14",
+      "url": "https://www.aviewfromrowjay.com/p/review-man-to-man",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83511,6 +83549,20 @@
     },
     {
       "showId": "the-story-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2026/09/theatre-review-story.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
       "score": 59,
       "publishDate": "2026-09-06",
@@ -84420,6 +84472,20 @@
       "score": 95,
       "publishDate": "2026-09-18",
       "url": "https://mycultural.life/theatre/thelma-louise/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 66,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2026/09/theatre-review-thelma-louise.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
