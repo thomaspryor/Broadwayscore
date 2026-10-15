@@ -29,7 +29,7 @@ test('off-broadway is covered', () => {
   assert.equal(findShowScoreGaps([show({ category: 'off-broadway' })], urls, {}, NOW).length, 1);
 });
 
-test('not flagged: opened under a day ago, not open, other market, or no cached URL', () => {
+test('not flagged: opened under seven days ago, not open, other market, or no cached URL', () => {
   assert.equal(findShowScoreGaps([show({ openingDate: '2026-10-10' })], urls, {}, NOW).length, 0);
   assert.equal(findShowScoreGaps([show({ status: 'closed' })], urls, {}, NOW).length, 0);
   assert.equal(findShowScoreGaps([show({ status: 'previews' })], urls, {}, NOW).length, 0);
@@ -49,4 +49,10 @@ test('off-off-broadway URLs are skipped (scraper rejects them by design)', () =>
 
 test('tolerates null inputs', () => {
   assert.deepEqual(findShowScoreGaps(null, null, null, NOW), []);
+});
+
+test('a cleanly stamped attempt gets a 21-day grace, then is flagged', () => {
+  const buzz = { a: { sources: {}, showScoreLastAttempted: '2026-10-14T16:00:00Z' } };
+  assert.equal(findShowScoreGaps([show({ openingDate: '2026-09-27' })], urls, buzz, NOW).length, 0);
+  assert.equal(findShowScoreGaps([show({ openingDate: '2026-09-20' })], urls, buzz, NOW).length, 1);
 });

@@ -9,6 +9,9 @@
 // 7 days: a clean scrape of a small show with no audience reviews yet also
 // leaves showScore null (scrape-show-score-audience.js), so give it time.
 const GRACE_MS = 7 * 24 * 60 * 60 * 1000;
+// A scrape that ran cleanly (showScoreLastAttempted stamped) and found no score
+// is usually a live page with no ratings yet: wait longer before alerting.
+const STAMPED_GRACE_MS = 21 * 24 * 60 * 60 * 1000;
 const CATEGORIES = new Set(['broadway', 'off-broadway']);
 
 /**
@@ -24,6 +27,8 @@ function findShowScoreGaps(shows, urls, buzz, now = Date.now()) {
     if (s.status !== 'open' || !CATEGORIES.has(s.category) || !s.openingDate) continue;
     const opened = Date.parse(s.openingDate);
     if (!Number.isFinite(opened) || now - opened < GRACE_MS) continue;
+    const stamped = buzz?.[s.id]?.showScoreLastAttempted;
+    if (stamped && now - opened < STAMPED_GRACE_MS) continue;
     const url = urls?.[s.id];
     // The scraper rejects off-off-broadway pages by design (isValidShowScorePage).
     if (!url || url.includes('/off-off-broadway-shows/')) continue;
