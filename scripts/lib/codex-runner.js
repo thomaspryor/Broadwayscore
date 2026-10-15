@@ -715,6 +715,25 @@ function runnerSummaryFacts(body) {
   };
 }
 
+/**
+ * BRO-5384 acceptance: cards per firing and landed share from runner summaries. Each slot posts
+ * its summary when it finishes (minutes or ~110 min into the firing), so time gaps do not group a
+ * firing; every launch posts exactly one summary from slot 0, or one with no slot suffix (a lone
+ * runner), and those count the firings. -> { firings, worked, landed, perFiring, landedShare }
+ */
+function firingThroughput(comments) {
+  const runs = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(c.body || '')));
+  let firings = 0; let worked = 0; let landed = 0;
+  for (const c of runs) {
+    const heading = String(c.body).split('\n')[0];
+    if (!/\(slot [1-9]\d*\)\s*$/.test(heading)) firings += 1;
+    worked += Number((String(c.body).match(/^## Codex runner \S+: (\d+) card\(s\) worked/) || [])[1]) || 0;
+    landed += runnerSummaryFacts(c.body).landed;
+  }
+  return { firings, worked, landed, perFiring: firings ? worked / firings : 0, landedShare: worked ? landed / worked : 0 };
+}
+
 function assessRunnerSummaries(bodies, { minRuns = 3 } = {}) {
   const runs = (Array.isArray(bodies) ? bodies : []).filter((b) => /^## Codex runner \d{4}-\d{2}-\d{2}:/.test(String(b || '')));
   const problems = [];
@@ -839,6 +858,7 @@ module.exports = {
   lockStampTooOld,
   landWaitMinutes,
   assessRunnerSummaries,
+  firingThroughput,
   runnerSummaryFacts,
   runnerHealth,
   codexExitTransient,

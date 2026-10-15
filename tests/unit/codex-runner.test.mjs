@@ -735,3 +735,16 @@ test('savings line: check $ per landed card in the summary and the health row; l
   assert.match(src, /- Claude check by model: /);
   assert.match(src, /- Landed on main, last 24h: /);
 });
+
+test('firingThroughput: slot summaries of one firing count once; cards per firing and landed share (BRO-5384 acceptance)', () => {
+  const sum = (at, worked, landed, slot) => ({ createdAt: at, body: `## Codex runner 2026-10-15: ${worked} card(s) worked in 100 min${slot == null ? '' : ` (slot ${slot})`}\n- Landed and Done: ${landed || 'none'}\n- Stopped early: no` });
+  // Firing 1: slot 2 finds nothing left and posts at +4 min, slots 0 and 1 near the hard stop.
+  // Firing 2: a lone runner (one-slot fallback), no slot suffix.
+  const t = r.firingThroughput([
+    sum('2026-10-15T07:45:00Z', 1, '', 2), sum('2026-10-15T09:30:00Z', 2, 'BRO-1', 0), sum('2026-10-15T09:32:00Z', 2, 'BRO-2, BRO-3', 1),
+    sum('2026-10-15T11:31:00Z', 3, 'BRO-4'),
+    { createdAt: '2026-10-15T11:40:00Z', body: '## Codex runner: landed\n\nnot a summary' },
+  ]);
+  assert.deepEqual(t, { firings: 2, worked: 8, landed: 4, perFiring: 4, landedShare: 0.5 });
+  assert.deepEqual(r.firingThroughput([]), { firings: 0, worked: 0, landed: 0, perFiring: 0, landedShare: 0 });
+});
