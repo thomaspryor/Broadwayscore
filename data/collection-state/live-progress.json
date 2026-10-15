@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-15T14:45:13.041Z",
-  "processed": 52,
-  "failed": 38,
-  "successRate": "57.8%",
+  "updatedAt": "2026-10-15T15:04:13.488Z",
+  "processed": 308,
+  "failed": 265,
+  "successRate": "53.8%",
   "tierBreakdown": {
-    "playwright": 31,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 188,
+    "amp": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 5,
-    "brightdata": 1,
+    "scrapingdog": 29,
+    "scrapingbee": 20,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 71
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-10-15T10:22:39.355Z",
+      "event": "bb-session",
+      "session": "1c6bcf78",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-15T10:22:39.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T10:26:10.422Z",
+      "event": "bb-session",
+      "session": "42e6b5a6",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T10:26:10.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T11:07:23.506Z",
+      "event": "bb-session",
+      "session": "9d6e0eb4",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T11:07:23.890Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T11:07:41.052Z",
+      "event": "bb-session",
+      "session": "d20b3014",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T11:07:41.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T11:10:22.846Z",
+      "event": "bb-session",
+      "session": "1bb978ff",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T11:10:23.274Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T11:10:31.557Z",
+      "event": "bb-session",
+      "session": "bfedae3a",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T11:10:31.876Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T12:00:19.806Z",
+      "event": "bb-session",
+      "session": "a1e53c11",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T12:00:20.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T12:00:37.558Z",
+      "event": "bb-session",
+      "session": "7f02c336",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T12:00:37.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T12:03:20.987Z",
+      "event": "bb-session",
+      "session": "e2b43364",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T12:03:21.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T12:03:29.576Z",
+      "event": "bb-session",
+      "session": "87c65df7",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T12:03:29.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
