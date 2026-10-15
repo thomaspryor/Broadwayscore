@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4331",
   "planId": "cc4fd859-35f1-4e57-bb60-089c8a199bf6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-15T13:06:41.957Z",
   "submitter": {
     "name": null,
@@ -174,5 +174,28 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T13:33:00.450Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added moulin-rouge-tour-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added back-to-the-future-tour-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added some-like-it-hot-tour-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added parade-tour-2025"
+    }
+  ]
 }
