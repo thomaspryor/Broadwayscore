@@ -25,6 +25,8 @@ import { Poster, PosterGridCard, SectionBand, UpcomingListRow, ViewModeToggle, b
 import { localToday, formatShowDate } from '@/lib/date-utils';
 
 import { useToastSafe } from '@/components/ui/Toast';
+import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
+import { selectDeviceSavedShows } from '@/lib/device-saved-shows';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
@@ -179,6 +181,10 @@ export default function MyShowsClient() {
   // rows once per page view — cheap, and the badge works without visiting the tab).
   const { lists: realLists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
+  // Shows saved in this browser while signed out (BRO-4616). The signed-out
+  // view lists them above the sign-in pitch (BRO-4903); unknown ids are
+  // dropped by selectDeviceSavedShows, so an empty result keeps the old view.
+  const { localList } = useLocalWatchlist();
 
   // Inline rating modal — diary-only shows (regional/international/historical
   // catalog, no critic score) have no /show/[slug] page to deep-link ?rate=1
@@ -599,6 +605,11 @@ export default function MyShowsClient() {
     if (featureFlags.userAccounts && !isMockMode && !authLoading && !isAuthenticated) prepareAppleSignIn().catch(() => {});
   }, [isMockMode, authLoading, isAuthenticated]);
 
+  const deviceSavedShows = useMemo(
+    () => (showMapLoaded ? selectDeviceSavedShows(localList, showMap, localToday()) : []),
+    [localList, showMap, showMapLoaded],
+  );
+
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
 
@@ -625,7 +636,32 @@ export default function MyShowsClient() {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">My Shows</h1>
-        <div className="text-center py-12 max-w-sm mx-auto">
+        {/* Hold the space while the show lookup loads so the sign-in pitch below does not jump. */}
+        {!showMapLoaded && localList.length > 0 && (
+          <div data-testid="device-saved-loading" aria-hidden="true" className="mt-4 h-44 rounded-xl bg-surface-raised animate-pulse" />
+        )}
+        {deviceSavedShows.length > 0 && (
+          <section data-testid="device-saved-shows" aria-labelledby="device-saved-heading" className="mt-4">
+            <SectionBand title="Saved on this device" id="device-saved-heading" as="h2" count={deviceSavedShows.length} noun="show" />
+            <p className="text-sm text-gray-400 mb-3">
+              These are only in this browser. Sign in below to keep them on every device.
+            </p>
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              {deviceSavedShows.map(({ show, closed }) => (
+                <PosterGridCard
+                  key={show.id}
+                  href={getShowHref(show.slug || show.id, show.diaryOnly)}
+                  posterUrl={show.posterUrl}
+                  date={null}
+                  title={show.title}
+                  ariaLabel={`View ${show.title}`}
+                  badge={closed ? bookabilityLabel({ status: 'closed' }) : bookabilityLabel(show)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+        <div className={`text-center max-w-sm mx-auto ${deviceSavedShows.length > 0 ? 'pt-8 pb-12' : 'py-12'}`}>
           <div className="text-5xl mb-4">🎭</div>
           <h3 className="text-lg font-bold text-white mb-1">Track your Broadway journey</h3>
           <p className="text-sm text-gray-400 mb-6">Free account · sign in with one tap</p>
