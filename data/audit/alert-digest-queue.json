@@ -69,6 +69,36 @@
     "queuedAt": "2026-10-15T07:29:34.402Z"
   },
   {
+    "conditionKey": "land:land/bro-5385-owner-recall",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5385-owner-recall",
+    "description": "land.yml did not land land/bro-5385-owner-recall: the unit-tests-node gate went red at 33917d3526. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38696846757",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5385-owner-recall"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "33917d3526b4af4be62b974c2a586c10411be758"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38696846757"
+      }
+    ],
+    "queuedAt": "2026-10-15T07:46:54.919Z"
+  },
+  {
     "conditionKey": "time-to-publish-sla:unmeasurable",
     "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
     "description": "Scope: 2 opening window(s): some-woman-west-end-2026 (2026-10-15), midnight-off-broadway-2026 (2026-10-15)\n1 review(s) still in flight.\nStage log currently starts at 2026-10-13T18:12:21.592Z.\nThis is NOT a pass — the SLA had too little to judge.",
