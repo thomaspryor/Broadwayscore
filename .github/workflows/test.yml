@@ -1309,6 +1309,7 @@ on:
       - 'scripts/neutralize-stale-theatr-buzz.js'
       - 'scripts/prune-orphan-cast-files.js'
       - 'scripts/report-review-drift-details.js'
+      - 'scripts/report-shouted-title-holds.js'
       - 'scripts/audit-commercial-contamination.js'
       - 'scripts/audit-audience-buzz-contamination.js'
       # path-listed — top-level scripts/ file, no scripts/** glob (task #1763).
