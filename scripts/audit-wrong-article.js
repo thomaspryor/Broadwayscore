@@ -147,6 +147,11 @@ async function main(argv) {
   const verified = readJson(VERIFIED_PATH);
   const adjudicated = readJson(ADJUDICATED_PATH);
 
+  if (argv.some((a) => a.startsWith('--verify-file=')) && (argv.includes('--record-verified') || argv.includes('--adjudicate'))) {
+    console.error('--verify-file cannot be combined with --record-verified or --adjudicate');
+    return 2;
+  }
+
   if (argv.includes('--record-verified')) {
     const next = { ...verified }; // merge: a partial checkout must never shrink the baseline
     for (const s of suspects) next[s.file] = s.hash;
@@ -173,7 +178,8 @@ async function main(argv) {
     }
     const next = { ...verified };
     for (const f of wanted) next[f] = byFile.get(f).hash;
-    fs.writeFileSync(VERIFIED_PATH, JSON.stringify(next, null, 2) + '\n');
+    const sorted = Object.fromEntries(Object.keys(next).sort().map((k) => [k, next[k]]));
+    fs.writeFileSync(VERIFIED_PATH, JSON.stringify(sorted, null, 2) + '\n');
     console.log(`hand-verified ${wanted.length} suspect(s) → ${path.relative(ROOT, VERIFIED_PATH)}`);
     return 0;
   }
