@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T18:53:32.014Z",
+  "timestamp": "2026-10-15T19:38:28.281Z",
   "stats": {
-    "totalReviews": 56781,
-    "alreadyFlagged": 21097,
-    "dateGuardCatches": 195,
-    "directorMismatch": 1900,
-    "tvFilmSignals": 1584,
+    "totalReviews": 56782,
+    "alreadyFlagged": 21096,
+    "dateGuardCatches": 194,
+    "directorMismatch": 1901,
+    "tvFilmSignals": 1583,
     "londonSignals": 2362,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5259
+    "noPublishDate": 5260
   },
   "findings": [
     {
@@ -3088,6 +3088,20 @@
       "score": 82,
       "publishDate": "November 8, 2012",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/for-annie-actress-on-broadway-the-sun-has-come-out/2012/11/08/69514322-29e1-11e2-aaa5-ac786110c486_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-tour-2022",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": 88,
+      "publishDate": "2024-12-17",
+      "url": "https://www.nytimes.com/2024/12/17/theater/annie-review-whoopi-goldberg.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8388,6 +8402,20 @@
       ]
     },
     {
+      "showId": "company-tour-2023",
+      "file": "third-coast-review--nancy-bishop.json",
+      "score": null,
+      "publishDate": "2023-11-04",
+      "url": "https://thirdcoastreview.com/stages/2023/11/03/stages-review-company-touring-production",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from company-2021"
+        }
+      ]
+    },
+    {
       "showId": "constellations-2015",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 90,
@@ -9619,35 +9647,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 78,
-      "publishDate": "2023-11-17",
-      "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-prince-edward-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 830d before show (2023-11-17 vs 2026-02-24)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -67088,6 +67087,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "beyondthecurtain--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.beyondthecurtain.co.uk/2026/05/les-liaisons-dangereuses-national.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

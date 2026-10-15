@@ -1,17 +1,12 @@
 {
-  "generatedAt": "2026-10-15T18:46:16.872Z",
-  "moved": 0,
+  "generatedAt": "2026-10-15T19:31:06.638Z",
+  "moved": 3,
   "held": [],
   "repaired": 0,
   "integrity": {
-    "flagged": 1,
+    "flagged": 0,
     "held": false,
-    "rows": [
-      {
-        "file": "the-bodyguard-tour-2026/all-that-dazzles-uk--daz-gale.json",
-        "kind": "uk-on-tour"
-      }
-    ]
+    "rows": []
   },
   "tours": [
     {
@@ -540,6 +535,103 @@
         "undated-perennial": 6,
         "undated-before-launch": 7,
         "wrong-show": 1
+      }
+    },
+    {
+      "tourId": "aint-too-proud-tour-2024",
+      "fromIds": [
+        "aint-too-proud-2019"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "an-american-in-paris-tour-2022",
+      "fromIds": [
+        "an-american-in-paris-2015"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "anastasia-tour-2021",
+      "fromIds": [
+        "anastasia-2017"
+      ],
+      "held": false,
+      "counts": {
+        "uk-production": 1
+      }
+    },
+    {
+      "tourId": "annie-tour-2022",
+      "fromIds": [
+        "annie-1977",
+        "annie-1997",
+        "annie-2012"
+      ],
+      "held": false,
+      "counts": {
+        "uk-production": 3,
+        "tour-review": 2,
+        "undated-perennial": 3,
+        "duplicate-on-tour": 3,
+        "before-tour-launch": 2
+      }
+    },
+    {
+      "tourId": "company-tour-2023",
+      "fromIds": [
+        "company-1993",
+        "company-2006",
+        "company-2021"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 1,
+        "wrong-show": 1,
+        "tour-review": 1
+      }
+    },
+    {
+      "tourId": "dear-evan-hansen-tour-2024",
+      "fromIds": [
+        "dear-evan-hansen-2016"
+      ],
+      "held": false,
+      "counts": {
+        "undated-perennial": 1
+      }
+    },
+    {
+      "tourId": "jagged-little-pill-tour-2022",
+      "fromIds": [
+        "jagged-little-pill-2019"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "legally-blonde-tour-2022",
+      "fromIds": [
+        "legally-blonde-2007"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 4,
+        "wrong-show": 1
+      }
+    },
+    {
+      "tourId": "les-miserables-tour-2022",
+      "fromIds": [
+        "les-miserables-2006",
+        "les-miserables-2014"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 2,
+        "non-review": 1
       }
     }
   ]
