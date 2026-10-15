@@ -10,7 +10,8 @@
  * "ownership-gate: drop", each deleted review file is read from the commit's
  * parent. It is a LOSS when no file in today's tree holds the same article
  * (canonicalArticleKey of the url) with text and without a duplicate pointer,
- * and no file in the same show holds the same outlet + critic with text.
+ * no file in the same show holds the same outlet + critic with text, and no
+ * file anywhere holds a 120-char passage from the middle of its text.
  * Each loss prints the restore inputs: fromCommit (40-char sha of the parent),
  * sourcePath, url, critic, text length.
  *
@@ -30,11 +31,22 @@ const days = (() => { const a = ARGS.find((x) => x.startsWith('--days=')); const
 const DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const git = (a) => execFileSync('git', ['-C', DIR, ...a], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
 const hasText = (d) => !!d && String(d.fullText || '').trim().length >= NEAR_EMPTY_BODY_CHARS;
+// A passage from the middle of a text identifies the review across renames,
+// outlet relabels (times-uk -> sunday-times, daily-mail -> mail-on-sunday) and
+// moves between shows, where url and file name both change.
+const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+function fingerprints(text) {
+  const n = norm(text);
+  if (n.length < 400) return [];
+  const at = (f) => n.slice(Math.floor(n.length * f), Math.floor(n.length * f) + 120);
+  return [at(0.3), at(0.6)];
+}
 const isReviewPath = (p) => /^[a-z0-9][^/]*\/[^/]+\.json$/.test(p) && !p.endsWith('failed-fetches.json') && !p.startsWith('_');
 
 function currentIndex() {
   const byUrl = new Map();
   const byShowOutletCritic = new Set();
+  const prints = new Set();
   for (const show of fs.readdirSync(DIR, { withFileTypes: true })) {
     if (!show.isDirectory() || show.name.startsWith('.') || show.name.startsWith('_')) continue;
     for (const f of fs.readdirSync(path.join(DIR, show.name))) {
@@ -47,9 +59,10 @@ function currentIndex() {
         if (k) (byUrl.get(k) || byUrl.set(k, []).get(k)).push(`${show.name}/${f}`);
       }
       byShowOutletCritic.add(`${show.name}|${d.outletId}|${normalizeCritic(d.criticName || '')}`);
+      for (const fp of fingerprints(d.fullText)) prints.add(fp);
     }
   }
-  return { byUrl, byShowOutletCritic };
+  return { byUrl, byShowOutletCritic, prints };
 }
 
 function main() {
@@ -73,11 +86,13 @@ function main() {
       const k = d.url ? canonicalArticleKey(d.url) : null;
       const holders = k ? (idx.byUrl.get(k) || []) : [];
       const sameSlot = idx.byShowOutletCritic.has(`${show}|${d.outletId}|${normalizeCritic(d.criticName || '')}`);
-      if (holders.length === 0 && !sameSlot) losses.push(entry);
+      const textSurvives = fingerprints(d.fullText).some((fp) => idx.prints.has(fp));
+      if (holders.length === 0 && !sameSlot && !textSurvives) losses.push(entry);
     }
   }
-  if (ARGS.includes('--json')) { console.log(JSON.stringify({ days, commits: commits.length, drops: drops.length, losses }, null, 2)); return; }
-  console.log(`${commits.length} ownership-gate drop commits in ${days} days; ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
+  const oldest = commits.length ? commits[commits.length - 1].at : null;
+  if (ARGS.includes('--json')) { console.log(JSON.stringify({ days, commits: commits.length, oldestDropCommit: oldest, drops: drops.length, losses }, null, 2)); return; }
+  console.log(`${commits.length} ownership-gate drop commits in ${days} days (oldest ${oldest}); ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
   for (const l of losses) console.log(`LOSS ${l.sourcePath} | ${l.outletId} | ${l.critic} | ${l.textChars} chars | dropped ${l.at} | fromCommit ${l.fromCommit} | ${l.url || '-'}`);
 }
 
