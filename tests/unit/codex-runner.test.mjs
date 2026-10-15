@@ -464,7 +464,7 @@ test('runnerHealth: a lapsed Codex login reads as such, and the row is internal-
 
 test('runnerSummaryFacts: one parser for the acceptance probe and the daily row', () => {
   const b = '## Codex runner 2026-10-14: 2 card(s) worked in 90 min\n- Landed and Done: BRO-1, \n- Landed part, back to Todo with what is left: BRO-2\n- Runner error mid-card (back to Todo): BRO-3, BRO-4\n- Stopped early: no';
-  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, crashed: 2, stop: 'no' });
+  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, crashed: 2, stop: 'no', checkUsd: 0 });
   assert.equal(r.assessRunnerSummaries([b, b, b]).landed, 6);
   assert.match(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: b }], Date.parse('2026-10-14T10:00:00Z')).message, /2 card\(s\) landed, 2 crashed/);
 });
@@ -693,4 +693,45 @@ test('carryPatch: a real carried change (text + binary) re-applies in full on th
   const trimmed = spawnSync('git', ['apply', '--index', '-'], { cwd: repo, input: patch.trim(), encoding: 'utf8' });
   assert.notEqual(trimmed.status === 0 && rf(join(repo, 'a.js'), 'utf8') === 'one\nTWO\nthree\n' && spawnSync('git', ['diff', '--cached', '--name-only'], { cwd: repo, encoding: 'utf8' }).stdout.includes('pic.bin'), true);
   assert.equal(r.carryPatch(repo, 'no-such-ref'), '');
+});
+
+// ---- BRO-5384 part 2 (owner 2026-10-15: Codex carries the load, Claude is the fallback) ----
+
+test('checkModel: Sonnet only for a small diff outside risky and shared-infrastructure paths', () => {
+  const { classifyChange } = require('../../scripts/lib/infra-review-scope.js');
+  const m = (files) => r.checkModel({ files, classify: classifyChange }).model;
+  assert.equal(m([{ path: 'scripts/lib/venue-classification.js', changed: 12 }, { path: 'scripts/lib/venue-classification.test.mjs', changed: 30 }]), 'sonnet');
+  assert.equal(m([{ path: 'scripts/lib/venue-classification.js', changed: 81 }]), 'opus', 'over 80 lines');
+  assert.equal(m([1, 2, 3, 4].map((i) => ({ path: `scripts/lib/a${i}.js`, changed: 2 }))), 'opus', 'over 3 files');
+  assert.equal(m([{ path: 'src/lib/scoring.ts', changed: 2 }]), 'opus', 'scoring');
+  assert.equal(m([{ path: 'scripts/lib/score-extractors.js', changed: 2 }]), 'opus');
+  assert.equal(m([{ path: 'data/pending-fixes/bro-1.json', changed: 2 }]), 'opus', 'data');
+  assert.equal(m([{ path: 'scripts/codex/daily-runner.js', changed: 2 }]), 'opus', 'shared infrastructure (CLAUDE.md 18)');
+  assert.equal(m([]), 'opus');
+  assert.equal(m([{ path: '{scripts/lib => data}/x.json', changed: 2 }]), 'opus', 'a rename hides the real path');
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /'-p', '--model', model,/, 'the check runs on the chosen model');
+});
+
+test('leaveToCodex: the Claude worker leaves fit cards to a live Codex runner, never Urgent, START-NOW or bounced ones', () => {
+  const now = Date.parse('2026-10-15T12:00:00Z');
+  const card = { title: 'Parser drops the critic name', description: 'Fix the regex in scripts/lib/x.js.', priority: 2, comments: { nodes: [] } };
+  const verify = 'node --test scripts/lib/x.test.mjs';
+  assert.equal(r.leaveToCodex(card, { nowMs: now, verify }), true);
+  assert.equal(r.leaveToCodex({ ...card, priority: 1 }, { nowMs: now, verify }), false, 'Urgent: whoever is free');
+  assert.equal(r.leaveToCodex(card, { nowMs: now, verify, startNow: true }), false, 'START-NOW: whoever is free');
+  assert.equal(r.leaveToCodex({ ...card, description: 'Then edit .github/workflows/land.yml.' }, { nowMs: now, verify }), false, 'Codex cannot do it');
+  const bounced = { ...card, comments: { nodes: [{ body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed`, createdAt: new Date(now - 3600_000).toISOString() }] } };
+  assert.equal(r.leaveToCodex(bounced, { nowMs: now, verify }), false, 'Codex already tried');
+});
+
+test('savings line: check $ per landed card in the summary and the health row; landed cards per lane from git log', () => {
+  const b = '## Codex runner 2026-10-15: 3 card(s) worked in 100 min (slot 0)\n- Landed and Done: BRO-1, BRO-2\n- Runner error mid-card (back to Todo): none\n- Claude check: 4 review(s), $1.20 API cost\n- Stopped early: no';
+  assert.equal(r.runnerSummaryFacts(b).checkUsd, 1.2);
+  assert.match(r.runnerHealth([{ createdAt: '2026-10-15T09:00:00Z', body: b }], Date.parse('2026-10-15T10:00:00Z')).message, /2 card\(s\) landed, 0 crashed mid-card, Claude check \$1\.20 \(\$0\.60 per landed card\)/);
+  const log = ['Codex runner\tfix(BRO-10): a', 'Codex runner\tfix(BRO-10): a (review fixes)', 'Claude\tBRO-20: b', 'Claude\tdata(BRO-21) + BRO-20', 'github-actions[bot]\tdata: BRO-99 rebuild', 'Tom Pryor\tBRO-98'].join('\n');
+  assert.deepEqual(r.landedPerLane(log), { codex: 1, claude: 2 });
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /- Claude check by model: /);
+  assert.match(src, /- Landed on main, last 24h: /);
 });

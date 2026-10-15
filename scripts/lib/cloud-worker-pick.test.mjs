@@ -869,3 +869,20 @@ test('a Codex fix round carried to the next run skips the 6 h idle wait for Code
   assert.equal(skipReason(issue({ updatedAt: FRESH, comments: { nodes: [carry, later] } }), NOW, { codex: true }), 'recent-activity');
   assert.equal(skipReason(issue({ updatedAt: FRESH, comments: { nodes: [{ body: '## Codex runner: not landed', createdAt: FRESH }] } }), NOW, { codex: true }), 'recent-activity');
 });
+
+test('leaveCodexCards: the Claude queue leaves one Codex firing of fit cards to Codex, never resumes, Urgent or unfit ones (BRO-5384)', () => {
+  const { leaveCodexCards } = require('./cloud-worker-pick.js');
+  const card = (n, over = {}) => issue({ identifier: `BRO-${n}`, title: `Parser drops field ${n}`, description: BODY, ...over });
+  const q = (iss, tier = 'p0p1', extra = {}) => ({ issue: { comments: { nodes: [] }, ...iss }, tier, ...extra });
+  const verifyOf = () => 'node --test scripts/lib/example.test.mjs';
+  const queue = [
+    q(card(1)), q(card(2, { priority: 1 })), q(card(3, { description: `Then edit .github/workflows/land.yml.\n${BODY}` })),
+    q(card(4), 'p0p1', { resume: { ref: 'land/bro-4-x' } }), q(card(5)), q(card(6), 'p2-fallback'), q(card(7)),
+  ];
+  const { queue: claude, left } = leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 2 });
+  // Codex's order: tier first, so BRO-1, BRO-5, BRO-7 (P0/P1) before BRO-6 (P2); the cap keeps 2.
+  assert.deepEqual(left, ['BRO-1', 'BRO-5']);
+  assert.deepEqual(claude.map((x) => x.issue.identifier), ['BRO-2', 'BRO-3', 'BRO-4', 'BRO-6', 'BRO-7']);
+  assert.deepEqual(leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 0 }).left, []);
+  assert.equal(leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 9 }).left.length, 4, 'BRO-1, 5, 6, 7');
+});

@@ -63,6 +63,11 @@ For each card:
 
 1. `node scripts/cloud-worker-pick.js` (background it if slow). Non-zero exit or
    a null `pick`: stop this lane. A `pick.resume`: follow its instructions.
+   While a Codex runner is live the pick leaves to it the cards one Codex
+   firing will take (up to 9, listed in `leftToCodex`; owner 2026-10-15, BRO-5384: Codex carries the
+   load, this lane is the fallback for what Codex cannot do, Urgent and
+   START-NOW cards, and everything once Codex stops). A null pick then means
+   nothing is left for this lane: that is the saving, not a problem.
 2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier>`. A
    `"action": "noop"` or a failure means the Codex lane or another worker has
    it: pick again once, then stop this lane.
