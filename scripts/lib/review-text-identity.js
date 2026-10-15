@@ -270,7 +270,38 @@ function decideDuplicateTwinUrlCarry(dropped, keptCandidates, matchedFile) {
   return { carry: true, index: idx, url: dropped.url, reason: 'identical-text-urlless-twin' };
 }
 
+/**
+ * Rebuild-side decision (rebuild-all-reviews.js skippedPlaceholderBylineTwin,
+ * BRO-5398): an incoming file whose byline is a PLACEHOLDER ("Time Out", "The
+ * Reviews Hub - London": the outlet's own name or a desk label, not a person)
+ * is the same article as a person-bylined review already kept at this outlet.
+ *
+ * Why the Unknown-critic dedup missed it: that dedup keys on the raw
+ * criticName, and only the literal strings unknown/unnamed count as Unknown.
+ * A placeholder survived as its own "critic", was nulled for display only when
+ * the row was emitted (displayCriticName), and so rendered as "<Outlet> Staff"
+ * beside the named critic's row for the same review (Affluenza, Time Out
+ * London: Andrzej Lukowski 45 and Time Out London Staff 42). The text proof is
+ * needed because multi-critic outlets legitimately hold a bylineless piece
+ * beside a named critic's different review (nysr, bug-2026).
+ *
+ * Pure: the caller passes kept entries and whether each byline is a person.
+ *
+ * @param {string} incomingText
+ * @param {Array<{fullText?: string, hasPersonByline: boolean}>} keptAtOutlet
+ * @returns {{drop: boolean, index?: number, reason: string}}
+ */
+function decidePlaceholderBylineTwin(incomingText, keptAtOutlet) {
+  const matches = [];
+  (keptAtOutlet || []).forEach((k, i) => {
+    if (k && k.hasPersonByline && textsShareVerbatimPassage(incomingText, k.fullText)) matches.push(i);
+  });
+  if (matches.length === 0) return { drop: false, reason: 'no-person-bylined-same-text-twin' };
+  return { drop: true, index: matches[0], reason: matches.length > 1 ? 'same-text-as-multiple-named-entries' : 'same-text-as-named-entry' };
+}
+
 module.exports = {
+  decidePlaceholderBylineTwin,
   textsShareVerbatimPassage,
   isUnknownCritic,
   namedCriticsDiffer,

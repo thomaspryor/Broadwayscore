@@ -30,7 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain, reviewSlugNamesDifferentShow } = require('./lib/review-normalization');
-const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
+const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry, decidePlaceholderBylineTwin } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { parseAgreeingConflictedReview } = require('./lib/conflict-markers');
 // Pre-pass readers (sort metadata, dup-cycle siblings) must see the same
@@ -72,7 +72,7 @@ const { isBylineAttestedInText } = require('./lib/byline-attestation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
-const { displayCriticName } = require('./lib/critic-display-name');
+const { displayCriticName, isPlaceholderCritic } = require('./lib/critic-display-name');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
@@ -2464,6 +2464,11 @@ showDirs.forEach(showId => {
     try {
       const d = parseReviewFileText(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
+      // BRO-5398: a placeholder byline ("Time Out", "The Reviews Hub - London")
+      // is no more a named critic than "Unknown" is, so it sorts after the
+      // person-bylined files and the placeholder-twin dedup below sees the
+      // named copy first.
+      if (d.criticName && isPlaceholderCritic(d.criticName, getOutletDisplayName(normalizeOutletCanonical(d.outletId || d.outlet)) || d.outlet, outletRegistry.outlets[normalizeOutletCanonical(d.outletId || d.outlet)])) meta.isUnknown = 1;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
       meta.isBylineUnattested = isBylineAttestedInText(d.criticName, d.fullText) ? 0 : 1; // BRO-4911
@@ -4851,6 +4856,24 @@ showDirs.forEach(showId => {
         }
       }
 
+      // BRO-5398 — placeholder-byline twin: a file whose byline is the outlet's
+      // own name or a desk label ("Time Out", "The Reviews Hub - London") is the
+      // same article as a person-bylined review already kept at this outlet.
+      // Dropped only with verbatim-text proof (bylineless pieces beside a named
+      // critic's different review are legitimate at multi-critic outlets).
+      if (!/^(unknown|unnamed)$/.test(criticKey)
+          && isPlaceholderCritic(normalizeCriticName(data.criticName), getOutletDisplayName(outletKey) || data.outlet, outletRegistry.outlets[outletKey])) {
+        const twin = decidePlaceholderBylineTwin(data.fullText,
+          (keptNamedByOutlet.get(outletKey) || []).map(k => ({ fullText: k.fullText, hasPersonByline: !!k.review.criticName })));
+        if (twin.drop) {
+          const keptFile = (keptNamedByOutlet.get(outletKey) || [])[twin.index] || null;
+          logExclusion("skippedPlaceholderBylineTwin", showId, file, data, { twinOf: keptFile && keptFile.file, reason: twin.reason });
+          stats.skippedPlaceholderBylineTwin = (stats.skippedPlaceholderBylineTwin || 0) + 1;
+          console.log(`  [PLACEHOLDER-BYLINE TWIN] ${showId}/${file}: "${data.criticName}" is a placeholder byline; same article as ${keptFile && keptFile.file} (skipping)`);
+          return;
+        }
+      }
+
       // Unknown-outlet dedup: if the outlet is "unknown" but a file from a real outlet
       // exists for this same critic in this show's directory, skip the unknown entry.
       // This catches Show-Score shadow entries (e.g., unknown--samuel-l-leiter.json) when
@@ -6119,6 +6142,7 @@ const output = {
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
+      skippedPlaceholderBylineTwin: stats.skippedPlaceholderBylineTwin || 0,
       unknownTwinUrlCarried: stats.unknownTwinUrlCarried || 0,
       skippedUnknownOutletDedup: stats.skippedUnknownOutletDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
@@ -6599,6 +6623,7 @@ if (stats.staleContentVerificationCleared > 0) {
 }
 console.log(`  Resolved (default critic from outlet registry): ${stats.resolvedDefaultCritic || 0}`);
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
+console.log(`  Skipped (placeholder-byline twin of a named review): ${stats.skippedPlaceholderBylineTwin || 0}`);
 console.log(`  Unknown-twin URL carried to named entry: ${stats.unknownTwinUrlCarried || 0}`);
 console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
