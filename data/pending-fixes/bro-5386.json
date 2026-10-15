@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5386",
   "planId": "eb84772b-844a-4db1-9aa6-e0f1f7d5c314",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -126,5 +126,94 @@
         "description": "BRO-5386: truncated venue what's-on listing page (noelcowardtheatre.co.uk/whats-on/the-comedy-about-spies), not a review, filed under the 2026 Adelphi run."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T06:28:48.602Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/guardian--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/nytimes--brenner-helen-shaw.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/stage-talk-magazine--philip-gooden.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted school-pictures-off-broadway-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: cruise-west-end-2022/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: cruise-west-end-2022/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2025/london-theatre--aliya-al-hassan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hassan.json → the-comedy-about-spies-west-end-2025/london-theatre--aliya-al-hassan.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hussan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/broadwayworld--senior-franco-milazzo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/thestage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/writewatchwork--abbybathurst.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json"
+    }
+  ]
 }
