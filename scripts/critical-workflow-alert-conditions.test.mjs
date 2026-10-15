@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 
@@ -104,4 +105,20 @@ test('a critical Notify step covering cancelled() can still actually resolve its
       'reference fix — its condition must match the Notify step\'s own):\n' +
       offenders.map((o) => `  - ${o}`).join('\n')
   );
+});
+
+test('"Trigger investigation" steps paired with a cancellation-covering critical Notify also cover cancellation (BRO-3931)', () => {
+  const offenders = [];
+  const files = new Set(scan().filter((e) => coversCancellation(e.if)).map((e) => e.file));
+  for (const file of files) {
+    const doc = yaml.load(fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf-8')) || {};
+    for (const [jobId, job] of Object.entries(doc.jobs || {})) {
+      for (const step of job.steps || []) {
+        if (step.name !== 'Trigger investigation') continue;
+        if (!/steps\.notify\.outputs\.suppressed/.test(String(step.if || ''))) continue;
+        if (!coversCancellation(String(step.if))) offenders.push(`${file} / ${jobId}: if: ${step.if}`);
+      }
+    }
+  }
+  assert.deepEqual(offenders, [], 'A cancelled-timeout alert pages the owner but never dispatches investigate-alert.yml; add `cancelled()` to these conditions');
 });
