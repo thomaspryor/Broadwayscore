@@ -78,6 +78,10 @@ on:
         description: 'Targeted recovery run: may use the Browserbase recovery reserve, and the per-domain cap rises to the per-run cap (BRO-5222)'
         required: false
         default: 'false'
+      review_timeout_sec:
+        description: 'Per-review hard timeout in seconds for a targeted retry run (30-300, empty = the default 90)'
+        required: false
+        default: ''
       content_tier:
         description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
         required: false
@@ -321,6 +325,7 @@ jobs:
           BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           BROWSERBASE_USE_RESERVE: ${{ inputs.browserbase_recovery == 'true' && 'true' || '' }}
+          REVIEW_TIMEOUT_SEC: ${{ inputs.review_timeout_sec }}
           BROWSERBASE_MAX_SESSIONS_PER_DOMAIN: ${{ inputs.browserbase_recovery == 'true' && (inputs.browserbase_max_sessions || '30') || '' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ steps.sched.outputs.max_reviews }}
@@ -744,6 +749,7 @@ jobs:
           BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           BROWSERBASE_USE_RESERVE: ${{ inputs.browserbase_recovery == 'true' && 'true' || '' }}
+          REVIEW_TIMEOUT_SEC: ${{ inputs.review_timeout_sec }}
           BROWSERBASE_MAX_SESSIONS_PER_DOMAIN: ${{ inputs.browserbase_recovery == 'true' && (inputs.browserbase_max_sessions || '30') || '' }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}

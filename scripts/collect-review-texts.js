@@ -399,6 +399,13 @@ async function loadDependencies() {
 // Configuration
 // BRO-2691: SHOW_FILTER scope helpers (pure, unit-tested)
 const { isShowFilterActive, parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
+/** REVIEW_TIMEOUT_SEC -> ms, clamped to 30-300s; anything unset or unreadable keeps 90s. */
+function reviewTimeoutMs(raw) {
+  const sec = Number(raw);
+  if (!raw || !Number.isFinite(sec)) return 90000;
+  return Math.min(300, Math.max(30, Math.round(sec))) * 1000;
+}
+
 const CONFIG = {
   batchSize: parseInt(process.env.BATCH_SIZE || '10'),
   pushEveryNBatches: parseInt(process.env.PUSH_EVERY_N_BATCHES || '5'), // Push every N batches (default: every 50 reviews)
@@ -554,7 +561,9 @@ const CONFIG = {
   loginTimeout: 90000,    // 90s for slow logins
   pageTimeout: 60000,     // 60s for page load
   apiTimeout: 20000,      // 20s for API calls (Archive.org/scrapers respond fast or not at all)
-  reviewTimeout: 90000,   // 90s hard timeout per review (kills hung Playwright/Browserbase)
+  // 90s hard timeout per review (kills hung Playwright/Browserbase). A targeted
+  // retry run may raise it with REVIEW_TIMEOUT_SEC (30-300s, BRO-5243).
+  reviewTimeout: reviewTimeoutMs(process.env.REVIEW_TIMEOUT_SEC),
 
   // Retry settings
   maxRetries: 3,
@@ -8506,7 +8515,8 @@ function exitIfStuckAfterMain(graceMs = 20000) {
   t.unref();
 }
 
-module.exports = { pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml };
+module.exports = {
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection
