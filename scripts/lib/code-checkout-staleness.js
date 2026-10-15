@@ -133,7 +133,7 @@ function runCodeCheckoutStalenessCheck({ repoDir, execFn = execFileSync, skipFet
 /** Pure: the cloud warning when origin/main could not be fetched, so the checkout (and its hooks) may be stale. */
 function formatFetchFailedMessage(repoDir, headDate) {
   return [
-    `⚠️ HOOKS MAY BE STALE: could not fetch origin/main for ${repoDir} within ${CLOUD_FETCH_TIMEOUT_MS / 1000}s.`,
+    `⚠️ HOOKS MAY BE STALE: could not fetch origin/main for ${repoDir} (timed out after ${CLOUD_FETCH_TIMEOUT_MS / 1000}s, or a network/auth error).`,
     `   This session's hooks, gates and scripts run from that checkout${headDate ? ` (HEAD is from ${headDate})` : ''}, so newer fixes`,
     `   (review gates, landing checks) may not be active. Refresh it now:`,
     `     git -C ${repoDir} fetch origin main && git -C ${repoDir} merge --ff-only origin/main`,

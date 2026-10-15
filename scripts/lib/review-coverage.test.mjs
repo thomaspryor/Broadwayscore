@@ -350,3 +350,60 @@ test('a push chained after a commit in the same command is still judged (it used
   assert.equal(run(ev(skill(), agent(), curl())).decision, 'allow');
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
+
+test('close-out ordering only counts landings that really ran, and only a real Done', () => {
+  const base = fullChain();
+  const done = tool('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done --comment x' });
+  const mk = (cmd) => tool('Bash', { command: cmd });
+  const problem = (events) => evaluateChain(events).join('|');
+  const landCmd = 'git push origin HEAD:refs/heads/land/bro-1-x';
+  // a dry run, a blocked push (error result) and a push with no result are not landings
+  const dry = mk(`${landCmd} --dry-run`);
+  assert.deepEqual(evaluateChain([...base, ...ev(done), ...ev(dry)]), [], 'dry run');
+  const blocked = mk(landCmd);
+  assert.deepEqual(evaluateChain([...base, ...ev(done), blocked, res(blocked, 'LAND BLOCKED', true)]), [], 'blocked by a hook');
+  assert.deepEqual(evaluateChain([...base, ...ev(done), mk(landCmd)]), [], 'never got a result');
+  // a real landing after the close-out is flagged, even when piped through `tail -n 20`
+  const piped = mk(`${landCmd} 2>&1 | tail -n 20`);
+  assert.match(problem([...base, ...ev(done), ...ev(piped)]), /close-out was posted before the last landing/, 'tail -n must not read as a dry run');
+  assert.match(problem([...base, ...ev(done), ...ev(mk(`git commit -n -q -m x && ${landCmd}`))]), /close-out was posted before/, 'commit -n is not push -n');
+  // only a real Done is a close-out: paused, blocked and in-review reports are not
+  for (const st of ['paused', 'blocked', 'in-review']) {
+    const rep = mk(`node scripts/linear-session.js report --status=${st} --issue=BRO-1`);
+    assert.deepEqual(evaluateChain([...base, ...ev(rep), ...ev(mk(landCmd))]), [], `--status=${st}`);
+  }
+  const doneRep = mk('node scripts/linear-session.js report --status=done --issue=BRO-1');
+  assert.match(problem([...base, ...ev(doneRep), ...ev(mk(landCmd))]), /close-out was posted before/, '--status=done counts');
+});
+
+test('what-else: the best LENSES block wins over a later bare mention, and any github issue_read tool name reads the roadmap', () => {
+  const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'].join('\n');
+  const rm = (name) => tool(name, { method: 'get', owner: 'thomaspryor', repo: 'broadway-scorecard-data', issue_number: 1 });
+  const run = (t, road) => evaluateChain([...fullChain(), ...ev(road), ...ev(skill('what-else')), text(t)]);
+  assert.deepEqual(run(`LENSES:\n${five}\n\nLENSES: done, summary below`, rm('mcp__github__issue_read')), []);
+  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__GitHub__issue_read')), [], 'prefix case differs');
+  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__claude_ai_GitHub__issue_read')), [], 'prefix differs per container');
+  assert.match(run(`LENSES:\n${five}`, tool('mcp__github__list_issues', { repo: 'broadway-scorecard-data' })).join('|'), /never read the real roadmap/);
+});
+
+test('pendingGatedStats sizes a chained push like an unchained one: against the merge base, tracked edits included', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-pend-'));
+  const sh = (cwd, c) => spawnSync('bash', ['-c', c], { cwd, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t', GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' } });
+  const noMaint = 'git config gc.auto 0 && git config gc.autoDetach false && git config maintenance.auto false';
+  const publish = ['git', 'push', '-q', 'origin', 'main'].join(' ');
+  sh(dir, `git init -q --bare -b main origin.git && (cd origin.git && ${noMaint} && git config receive.autogc false) && git clone -q origin.git work 2>/dev/null; cd work && ${noMaint} && git checkout -q -B main && mkdir -p scripts/lib && seq 1 40 > scripts/lib/tracked.mjs && git add -A && git commit -q -m base && ${publish}; cd .. && git clone -q origin.git other 2>/dev/null; true`);
+  const work = path.join(dir, 'work');
+  const other = path.join(dir, 'other');
+  // another session lands 100 lines on main AFTER this branch point, so the branch is now behind main
+  sh(other, `${noMaint} && git checkout -q -B main origin/main 2>/dev/null; seq 1 100 > scripts/lib/landed-by-someone-else.mjs && git add -A && git commit -q -m other && ${publish}`);
+  sh(work, 'git fetch -q origin');
+  const cmd = 'git add -A && git commit -q -m x && git push origin HEAD:refs/heads/land/bro-1-x';
+  const run = (events) => checkReviewCoverage({ command: cmd, cwd: work, targets: landPushTargets(cmd), env: CLOUD, seams: { events, noLog: true } });
+  // a one-line tracked edit (2 changed lines): the 100 lines main gained while we were behind must NOT be charged to this push
+  fs.writeFileSync(path.join(work, 'scripts', 'lib', 'tracked.mjs'), ['changed', ...Array.from({ length: 39 }, (_, i) => String(i + 2))].join('\n') + '\n');
+  assert.equal(run(ev(skill())).decision, 'skip', 'a small edit on a branch behind main stays under the budget');
+  fs.writeFileSync(path.join(work, 'scripts', 'lib', 'tracked.mjs'), Array.from({ length: 80 }, (_, i) => `// line ${i}`).join('\n') + '\n');
+  assert.equal(run(ev(skill())).decision, 'block', 'a large tracked edit is counted');
+  assert.equal(run(ev(skill(), agent(), curl())).decision, 'allow');
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});

@@ -193,28 +193,29 @@ const TESTED_RE = /(?:^|\n)[\s*#>_`=\u2500-\u257f-]*TESTED\b/;
 /** Numbers 1-5 found IN ORDER as lines under the LAST `LENSES:` header; items may wrap (max 3 lines between). */
 function lensNumbers(text) {
   const lines = String(text).split('\n');
-  let h = -1;
-  lines.forEach((l, i) => {
-    if (/^[\s*#>_`-]*LENSES\s*:/i.test(l)) h = i;
-  });
-  const found = new Set();
-  if (h < 0) return found;
-  let want = 1;
-  let prev = h;
-  for (let i = h + 1; i < Math.min(lines.length, h + 40) && want <= 5; i++) {
-    const m = /^[\s*_>`-]*\**\s*([1-5])[.)]\**\s+\S/.exec(lines[i]);
-    if (m && Number(m[1]) === want && i - prev <= 4) {
-      found.add(m[1]);
-      want += 1;
-      prev = i;
-    } else if (i - prev > 4) {
-      break;
+  let best = new Set();
+  // Every LENSES: header is tried (a later "LENSES: done" must not hide the real block); the best one counts.
+  lines.forEach((l, h) => {
+    if (!/^[\s*#>_`-]*LENSES\s*:/i.test(l)) return;
+    const found = new Set();
+    let want = 1;
+    let prev = h;
+    for (let i = h + 1; i < Math.min(lines.length, h + 40) && want <= 5; i++) {
+      const m = /^[\s*_>`-]*\**\s*([1-5])[.)]\**\s+\S/.exec(lines[i]);
+      if (m && Number(m[1]) === want && i - prev <= 4) {
+        found.add(m[1]);
+        want += 1;
+        prev = i;
+      } else if (i - prev > 4) {
+        break;
+      }
     }
-  }
-  return found;
+    if (found.size > best.size) best = found;
+  });
+  return best;
 }
 const ROADMAP_READ_RE = /issue\s+view\s+1\b[^\n]*broadway-scorecard-data|broadway-scorecard-data[^\n]*issue\s+view\s+1\b/;
-const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b/;
+const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
 
 /**
@@ -240,7 +241,7 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
     const found = lensNumbers(texts(we[we.length - 1].i));
     if (found.size < 5) problems.push(`/what-else printed ${found.size} of 5 numbered lens lines directly under a LENSES: header, each citing a concrete check`);
     const readRoadmap = events.some((e) => e.kind === 'assistant_tool_use' && (
-      (e.name === 'mcp__github__issue_read' && e.input?.repo === 'broadway-scorecard-data' && Number(e.input?.issue_number) === 1) ||
+      (/github.*issue_read$/i.test(e.name || '') && e.input?.repo === 'broadway-scorecard-data' && Number(e.input?.issue_number) === 1) ||
       (e.name === 'Bash' && ROADMAP_READ_RE.test(String(e.input?.command || '')))));
     if (!readRoadmap) problems.push('/what-else never read the real roadmap (GitHub issue 1 of broadway-scorecard-data, via mcp__github__issue_read; the local memory/roadmap.md is stale)');
   }
@@ -248,10 +249,16 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
   if (!bypass('NO-WRAP-UP')) {
     let lastLand = -1;
     let lastDone = -1;
+    const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
     events.forEach((e, i) => {
       if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
       const c = String(e.input?.command || '');
-      if (LAND_PUSH_RE.test(c) && !/--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(c)) lastLand = i;
+      const r = answers.get(e.id);
+      // Only a push that really ran counts as a landing: not a dry run, a delete, or one a hook blocked.
+      const push = LAND_PUSH_RE.exec(c);
+      // Judge the push segment only: `git push … land/x | tail -n 20` must not read as a dry run.
+      const segment = push ? c.slice(push.index).split(/[;&|\n]/)[0] : '';
+      if (push && r && !r.isError && !/--dry-run|\s-n\s|--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(segment)) lastLand = i;
       if (LINEAR_DONE_RE.test(c)) lastDone = i;
     });
     if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');

@@ -688,22 +688,22 @@ function pushDir(cwd, p) {
  * so the normal range cannot be computed, and skipping it would let any chained commit-and-push evade the gate.
  */
 function pendingGatedStats(root) {
-  const files = [];
-  let totalLines = 0;
-  const num = git(root, ['diff', '--numstat', 'origin/main', '--', 'src', 'scripts', '.github/workflows']);
-  if (!ok(num)) return { files, totalLines, error: 'git diff failed' };
-  for (const line of out(num).split('\n')) {
-    const m = /^(\d+|-)\t(\d+|-)\t(.+)$/.exec(line);
-    if (!m || !rc.GATED_PATH_RE.test(m[3])) continue;
-    const n = (m[1] === '-' ? 0 : Number(m[1])) + (m[2] === '-' ? 0 : Number(m[2]));
-    files.push({ path: m[3], added: n, deleted: 0 });
-    totalLines += n;
-  }
-  const untracked = git(root, ['ls-files', '--others', '--exclude-standard', '--', 'src', 'scripts', '.github/workflows']);
+  // Tracked changes: the shared helper (working tree against the merge base), so a chained push is sized exactly
+  // like an unchained one; a branch behind main is not charged for what other sessions landed since.
+  const stats = rc.gatedDiffStats(root, 'origin/main', 'WORKTREE');
+  if (stats.error) return stats;
+  const files = [...stats.files];
+  let totalLines = stats.totalLines;
+  const untracked = git(root, ['-c', 'core.quotepath=false', 'ls-files', '--others', '--exclude-standard', '--', 'src', 'scripts', '.github/workflows']);
   for (const f of ok(untracked) ? out(untracked).split('\n').filter(Boolean) : []) {
     if (!rc.GATED_PATH_RE.test(f)) continue;
     let n = 0;
-    try { n = fs.readFileSync(path.join(root, f), 'utf8').split('\n').length; } catch { /* unreadable: count nothing */ }
+    try {
+      const full = path.join(root, f);
+      // Bounded: a huge untracked file counts by size (about 40 bytes a line) instead of being read whole.
+      const size = fs.statSync(full).size;
+      n = size > 2_000_000 ? Math.ceil(size / 40) : fs.readFileSync(full, 'utf8').split('\n').length;
+    } catch { /* unreadable: count nothing */ }
     files.push({ path: f, added: n, deleted: 0 });
     totalLines += n;
   }

@@ -414,6 +414,7 @@ test('fetch timeout: cloud gets the long budget, the default stays 5s, and a fai
   assert.equal(r.fetched, false, 'the check says the fetch failed');
   const msg = formatFetchFailedMessage('/home/user/broadwayscore', 'Tue Oct 13 13:18:36 2026');
   assert.match(msg, /HOOKS MAY BE STALE/);
+  assert.match(msg, /timed out after \d+s, or a network\/auth error/);
   assert.match(msg, /Tue Oct 13 13:18:36 2026/);
   assert.match(msg, /merge --ff-only origin\/main/);
 });
