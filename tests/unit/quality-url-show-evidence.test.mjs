@@ -69,3 +69,12 @@ test('on by default since the corpus audit (BRO-5395)', () => {
   assert.notStrictEqual(cq.assessTextQuality(text, ID, T, { url, publishDate: '2023-02-14' }).quality, 'garbage');
   assert.strictEqual(cq.assessTextQuality(text, ID, T, { url }).quality, 'garbage');
 });
+
+test('validateShowMentionedOrNamedByUrl: url evidence counts only near the production', () => {
+  const body = 'A long review about a Sheffield estate musical with songs that soar and a cast that sings. '.repeat(20);
+  const rec = { url: 'https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london', publishDate: '2023-02-14' };
+  assert.strictEqual(cq.validateShowMentioned(body, T, ID).valid, false);
+  assert.strictEqual(cq.validateShowMentionedOrNamedByUrl(body, T, ID, rec).valid, true);
+  assert.strictEqual(cq.validateShowMentionedOrNamedByUrl(body, T, ID, { ...rec, publishDate: '2030-01-01' }).valid, false);
+  assert.strictEqual(cq.validateShowMentionedOrNamedByUrl(body, T, ID, null).valid, false);
+});

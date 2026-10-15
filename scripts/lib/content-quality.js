@@ -1590,6 +1590,22 @@ function publishedNearProduction(publishDate, showId, url) {
   return !urlYear || Math.abs(Number(urlYear) - idYear) <= 1;
 }
 
+/**
+ * validateShowMentioned, plus the BRO-5395 url evidence: when the text never
+ * names the show but the review's own url does and it is dated near the
+ * production, the show counts as mentioned. Used where showNotMentioned is set
+ * or cleared (backfill-review-flags, collect-review-texts) so that flag agrees
+ * with assessTextQuality's junk-page checks.
+ */
+function validateShowMentionedOrNamedByUrl(text, showTitle, showId, record) {
+  const check = validateShowMentioned(text, showTitle, showId);
+  if (check.valid || !USE_URL_SHOW_EVIDENCE || !record) return check;
+  if (urlNamesShow(record.url, showTitle) && publishedNearProduction(record.publishDate, showId, record.url)) {
+    return { valid: true, confidence: 'medium', reason: 'Review url names the show' };
+  }
+  return check;
+}
+
 /** assessTextQuality options from a review record (BRO-5395): its url and publish date. */
 function qualityOptsFor(record) {
   if (!record || typeof record !== 'object') return {};
@@ -3901,6 +3917,7 @@ module.exports = {
   titleCaseMatch,
   urlNamesShow,
   qualityOptsFor,
+  validateShowMentionedOrNamedByUrl,
   detectConcatenatedArticles,
   // Content tier classification (5-tier taxonomy)
   classifyContentTier,

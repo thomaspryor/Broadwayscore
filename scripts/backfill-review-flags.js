@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
+const { validateShowMentioned, validateShowMentionedOrNamedByUrl, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
@@ -124,7 +124,7 @@ for (const showId of showDirs) {
         const show = showsData[showId];
         const showTitle = pickShowTitleForHeuristic(showId, show);
         const fullTextWordCount = fullText.split(/\s+/).filter(w => w.length > 0).length;
-        const showCheck = validateShowMentioned(fullText, showTitle, showId);
+        const showCheck = validateShowMentionedOrNamedByUrl(fullText, showTitle, showId, data);
         const guard = evaluateShowMentionGuard(data, fullText, fullTextWordCount, showCheck);
 
         if (guard.action === 'null-text') {

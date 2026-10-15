@@ -23,13 +23,17 @@
  * whose text already names the show are skipped, since the evidence is only
  * consulted when it does not.
  *
- * Usage: node scripts/audit-multishow-titlecase.js [--rule=titlecase|url] [--show=a,b] [--shard=i/n] [--limit=N] [--json]
+ * --rule=flag (BRO-5395) lists files carrying showNotMentioned that the url
+ * evidence would clear (validateShowMentionedOrNamedByUrl valid, plain
+ * validateShowMentioned not), i.e. what backfill-review-flags would clear.
+ *
+ * Usage: node scripts/audit-multishow-titlecase.js [--rule=titlecase|url|flag] [--show=a,b] [--shard=i/n] [--limit=N] [--json]
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const { assessTextQuality, detectMultiShowContent, validateShowMentioned, qualityOptsFor } = require('./lib/content-quality');
+const { assessTextQuality, detectMultiShowContent, validateShowMentioned, validateShowMentionedOrNamedByUrl, qualityOptsFor } = require('./lib/content-quality');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -38,7 +42,7 @@ const onlyShows = val('show') ? val('show').split(',') : null;
 const limit = Number(val('limit') || 200);
 const asJson = args.includes('--json');
 const rule = val('rule') || 'titlecase';
-if (!['titlecase', 'url'].includes(rule)) { console.error('--rule must be titlecase or url'); process.exit(2); }
+if (!['titlecase', 'url', 'flag'].includes(rule)) { console.error('--rule must be titlecase, url or flag'); process.exit(2); }
 const shardArg = val('shard');
 const [shardIdx, shardCount] = shardArg ? shardArg.split('/').map(Number) : [0, 1];
 if (!(shardCount >= 1 && shardIdx >= 0 && shardIdx < shardCount)) { console.error('--shard must be i/n with 0 <= i < n'); process.exit(2); }
@@ -67,7 +71,13 @@ function main() {
       let wasFound;
       let before;
       let after;
-      if (rule === 'url') {
+      if (rule === 'flag') {
+        if (!r.showNotMentioned || validateShowMentioned(text, title, show).valid) continue;
+        if (!validateShowMentionedOrNamedByUrl(text, title, show, r).valid) continue;
+        wasFound = { showsFound: [] };
+        before = { quality: 'showNotMentioned', issues: [] };
+        after = { quality: 'cleared', issues: [] };
+      } else if (rule === 'url') {
         if (validateShowMentioned(text, title, show).valid) continue;
         wasFound = { showsFound: [] };
         before = assessTextQuality(text, show, title, { requireTitleCase: false, useShowEvidence: false });
@@ -88,7 +98,7 @@ function main() {
         before: before.quality, after: after.quality,
         beforeIssue: (before.issues || [])[0] || null,
         droppedTitles: was.filter((t) => !now.has(t)).slice(0, 8),
-        url: rule === 'url' ? `${r.publishDate || 'no-date'} ${r.url || 'no-url'}` : undefined,
+        url: rule !== 'titlecase' ? `${r.publishDate || 'no-date'} ${r.url || 'no-url'}` : undefined,
       });
     }
   }
@@ -98,11 +108,11 @@ function main() {
     return;
   }
   console.log(`files with fullText scanned: ${scanned}${shardArg ? ` (shard ${shardArg})` : ''}`);
-  console.log(`verdict changes with ${rule === 'url' ? 'url evidence' : 'requireTitleCase'}: ${flips.length}`);
+  console.log(`verdict changes with ${rule === 'titlecase' ? 'requireTitleCase' : rule === 'flag' ? 'url evidence (showNotMentioned cleared)' : 'url evidence'}: ${flips.length}`);
   console.log('by transition:', JSON.stringify(transitions));
   console.log('\nshow | file | outlet | chars | before -> after | titles that stop counting');
   for (const f of flips.slice(0, limit)) {
-    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${rule === 'url' ? `${f.beforeIssue} | ${f.url}` : f.droppedTitles.join(', ')}`);
+    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${rule !== 'titlecase' ? `${f.beforeIssue} | ${f.url}` : f.droppedTitles.join(', ')}`);
   }
 }
 
