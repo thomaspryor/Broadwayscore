@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T13:42:47.051Z",
+  "timestamp": "2026-10-15T13:52:01.490Z",
   "stats": {
-    "totalReviews": 56717,
-    "alreadyFlagged": 21072,
+    "totalReviews": 56718,
+    "alreadyFlagged": 21070,
     "dateGuardCatches": 211,
-    "directorMismatch": 1896,
+    "directorMismatch": 1899,
     "tvFilmSignals": 1584,
-    "londonSignals": 2358,
+    "londonSignals": 2359,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5256
+    "noPublishDate": 5255
   },
   "findings": [
     {
@@ -29776,6 +29776,51 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "dc-theater-arts--jennifer-georgia.json",
+      "score": 76,
+      "publishDate": "2025-08-25",
+      "url": "https://dctheaterarts.org/2025/08/25/the-musical-parade-a-true-story-of-injustice-comes-to-kennedy-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2025-06-20",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-06-20/parade-theater-review-musical-drama-tony-awards-alfred-uhry-jason-robert-brown",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "new-city-stage--dennis-polkow.json",
+      "publishDate": "2025-08-11",
+      "url": "https://www.newcitystage.com/2025/08/11/hope-for-the-hopeless-a-review-of-broadway-in-chicagos-parade/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

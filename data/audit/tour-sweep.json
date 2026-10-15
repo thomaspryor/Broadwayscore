@@ -1,17 +1,12 @@
 {
-  "generatedAt": "2026-10-15T13:35:48.505Z",
-  "moved": 0,
+  "generatedAt": "2026-10-15T13:47:31.877Z",
+  "moved": 3,
   "held": [],
   "repaired": 0,
   "integrity": {
-    "flagged": 1,
+    "flagged": 0,
     "held": false,
-    "rows": [
-      {
-        "file": "the-bodyguard-tour-2026/artscape--unknown.json",
-        "kind": "uk-on-tour"
-      }
-    ]
+    "rows": []
   },
   "tours": [
     {
@@ -503,6 +498,45 @@
       ],
       "held": false,
       "counts": {}
+    },
+    {
+      "tourId": "moulin-rouge-tour-2022",
+      "fromIds": [
+        "moulin-rouge-2019"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "back-to-the-future-tour-2024",
+      "fromIds": [
+        "back-to-the-future-2023"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "some-like-it-hot-tour-2024",
+      "fromIds": [
+        "some-like-it-hot-2022"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "parade-tour-2025",
+      "fromIds": [
+        "parade-1998",
+        "parade-2023"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 4,
+        "undated-perennial": 6,
+        "undated-before-launch": 7,
+        "tour-review": 3,
+        "wrong-show": 1
+      }
     }
   ]
 }
