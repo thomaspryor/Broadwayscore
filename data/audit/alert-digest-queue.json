@@ -67,5 +67,18 @@
     "tracked": "BRO-3030",
     "fields": [],
     "queuedAt": "2026-10-15T07:29:34.402Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): some-woman-west-end-2026 (2026-10-15), midnight-off-broadway-2026 (2026-10-15)\n1 review(s) still in flight.\nStage log currently starts at 2026-10-13T18:12:21.592Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-15T07:43:24.743Z"
   }
 ]
