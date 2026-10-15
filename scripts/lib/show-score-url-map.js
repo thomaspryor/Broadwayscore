@@ -21,6 +21,7 @@
 'use strict';
 
 const { normalizeUrl } = require('./show-score-urls-baseline');
+const { findConflictingKey } = require('./cache-collision');
 
 // urlMap: { showId: url } as stored in data/show-score-urls.json's `shows`
 // key. Returns [{ url, showIds }] for every normalized URL claimed by 2+
@@ -58,14 +59,11 @@ function findDuplicateUrls(urlMap) {
 // non-null — see scripts/scrape-show-score-audience.js,
 // scripts/discover-show-score-urls-from-listings.js,
 // scripts/merge-show-score-shards.js, scripts/discover-new-shows.js.
+//
+// BRO-4060: the comparison now lives in cache-collision.js, shared with the
+// DTLI, Playbill and WestEnd cache writers.
 function findConflictingShowId(urlMap, showId, url) {
-  if (!url) return null;
-  const key = normalizeUrl(url);
-  for (const [id, existingUrl] of Object.entries(urlMap || {})) {
-    if (id === showId || !existingUrl) continue;
-    if (normalizeUrl(existingUrl) === key) return id;
-  }
-  return null;
+  return findConflictingKey(urlMap, showId, url);
 }
 
 /**

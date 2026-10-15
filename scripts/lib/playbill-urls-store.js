@@ -77,6 +77,7 @@ const path = require('path');
 const { atomicWriteJson } = require('./atomic-shows-write');
 const { withFileLock } = require('./file-lock');
 const { buildPlaybillCacheGuard } = require('./playbill-cache-guard');
+const { findConflictingKey } = require('./cache-collision');
 
 const EMPTY = () => ({ shows: {}, lastUpdated: null });
 
@@ -165,11 +166,22 @@ function computeDelta(snapshot, current) {
  * "freshest resolution"). A set onto an id disk no longer has (a peer evicted
  * it) still lands: an eviction is not a competing answer.
  *
- * @returns {{data: object, conflicts: Array<{id: string, mine: string, disk: string}>}}
+ * Cross-show collisions (BRO-4060): a set whose URL another show id already
+ * owns on disk is refused and reported in `collisions`. A Playbill production
+ * page is one production, so two ids sharing it means one of them is a wrong
+ * attribution (a same-title revival matched onto the original's page, or a
+ * hand-removed mapping re-resolved back). Checked here, against the fresh
+ * read taken under the lock, so a peer's claim made after our load counts too.
+ * A refused REPLACEMENT also drops our own baseline value, matching the
+ * guard-refusal rule in savePlaybillUrls (the caller judged it wrong).
+ *
+ * @returns {{data: object, conflicts: Array<{id: string, mine: string, disk: string}>,
+ *   collisions: Array<{id: string, url: string, owner: string}>}}
  */
 function applyDelta(onDisk, delta) {
   const shows = { ...((onDisk && onDisk.shows) || {}) };
   const conflicts = [];
+  const collisions = [];
   for (const [id, url] of Object.entries(delta.deletes)) {
     if (shows[id] === url) delete shows[id];
   }
@@ -177,12 +189,18 @@ function applyDelta(onDisk, delta) {
   for (const [id, url] of Object.entries(delta.sets)) {
     const disk = shows[id];
     if (disk === undefined || disk === url || disk === was[id]) {
+      const owner = findConflictingKey(shows, id, url);
+      if (owner !== null) {
+        collisions.push({ id, url, owner });
+        if (disk !== undefined && disk !== url && disk === was[id]) delete shows[id];
+        continue;
+      }
       shows[id] = url;
     } else {
       conflicts.push({ id, mine: url, disk });
     }
   }
-  return { data: { ...(onDisk || EMPTY()), shows }, conflicts };
+  return { data: { ...(onDisk || EMPTY()), shows }, conflicts, collisions };
 }
 
 /**
@@ -254,10 +272,17 @@ function savePlaybillUrls(filePath, current, snapshot, opts = {}) {
     for (const id of Object.keys(onDisk.shows)) {
       if (!Object.prototype.hasOwnProperty.call(ours, id)) recovered += 1;
     }
-    const { data: merged, conflicts } = applyDelta(onDisk, delta);
+    const { data: merged, conflicts, collisions } = applyDelta(onDisk, delta);
     // Adopt the peer's fresher value in the working copy, so the caller's
     // in-memory view matches what was persisted.
     for (const c of conflicts) current.shows[c.id] = c.disk;
+    // A collision-refused set is reverted in the working copy to whatever was
+    // persisted for that id (usually nothing), and reported with the refusals.
+    for (const c of collisions) {
+      if (Object.prototype.hasOwnProperty.call(merged.shows, c.id)) current.shows[c.id] = merged.shows[c.id];
+      else delete current.shows[c.id];
+      refused.push({ id: c.id, url: c.url, reason: `cross-show-collision: already cached for ${c.owner}` });
+    }
     merged.lastUpdated = new Date().toISOString();
     // allowShrink: a delete replayed from a caller's delta removes entries, and
     // this file is small enough that one removal can exceed the 5% line-count
@@ -266,7 +291,7 @@ function savePlaybillUrls(filePath, current, snapshot, opts = {}) {
     atomicWriteJson(filePath, merged, { allowShrink: true });
     return {
       written: true,
-      sets: Object.keys(delta.sets).length - conflicts.length,
+      sets: Object.keys(delta.sets).length - conflicts.length - collisions.length,
       deletes: Object.keys(delta.deletes).length,
       recovered,
       refused,

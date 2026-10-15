@@ -33,6 +33,7 @@ const { spawnSync } = require('child_process');
 const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover');
 const { fetchPage } = require('./lib/scraper');
 const { findInFlightCoverage } = require('./lib/poller-idempotency');
+const { findConflictingKey } = require('./lib/cache-collision');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCED_SHOW = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
@@ -349,11 +350,18 @@ function dispatchPoller(showId, overrides) {
     // DTLI via plain HTTPS sitemap (free)
     const known = slugMap.shows && slugMap.shows[show.id];
     const dtliResult = await discoverDtliSlugForShow(show);
+    // BRO-4060: a DTLI page is one production. If another show id already owns
+    // this slug (a same-title revival matched onto the original's page), do
+    // not re-point it here; discover-dtli-slugs.js --force with the year rule
+    // is the place to move a slug between productions.
+    const dtliOwner = dtliResult.slug ? findConflictingKey(slugMap.shows, show.id, dtliResult.slug) : null;
     if (dtliResult.error) {
       console.log(`  DTLI error: ${dtliResult.error}`);
     } else if (dtliResult.slug) {
       if (known === dtliResult.slug) {
         console.log(`  DTLI slug: ${dtliResult.slug} (already mapped)`);
+      } else if (dtliOwner) {
+        console.log(`  ⚠ DTLI slug ${dtliResult.slug} already mapped to ${dtliOwner} — not assigning it to ${show.id} (cross-show collision)`);
       } else {
         console.log(`  ✅ DTLI slug ${known ? 'CHANGED' : 'NEW'}: ${dtliResult.slug}${known ? ` (was ${known})` : ''}`);
         // Update slug map in place

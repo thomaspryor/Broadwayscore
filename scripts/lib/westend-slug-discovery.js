@@ -22,6 +22,7 @@
 const fs = require('fs');
 const { foldDiacritics } = require('./title-match');
 const { titleMatchWords, textHasWord } = require('./title-word-match');
+const { findConflictingKey } = require('./cache-collision');
 
 const WET_URL_RE = /westendtheatre\.com\/\d+\/shows\/[a-z0-9-]+\/?/i;
 
@@ -124,6 +125,18 @@ async function discoverWestEndTheatreUrl(show, mapPath, opts = {}) {
   const url = pickBestWetUrl(results, title);
   if (!url) {
     map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10) };
+    saveSlugMap(mapPath, map);
+    return null;
+  }
+
+  // BRO-4060: one WET booking page is one production. If another show id
+  // already owns this URL (a same-title return run or revival), refuse it and
+  // negative-cache with the reason, so this show is retried after the usual
+  // window instead of re-SERPing every run.
+  const owner = findConflictingKey(map.shows, show.id, url);
+  if (owner) {
+    log(`  [we-slug-discovery] ${url} already mapped to ${owner} — not assigning to ${show.id}`);
+    map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10), collidedWith: owner, collidedUrl: url };
     saveSlugMap(mapPath, map);
     return null;
   }

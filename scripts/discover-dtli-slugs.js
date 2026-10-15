@@ -33,6 +33,7 @@ const path = require('path');
 const { cronHttpRequest } = require('./lib/cron-http-request');
 const { createRunBudget, parseTimeBudgetMin } = require('./lib/run-budget');
 const { pickBestDtliSlug, dtliSlugPredatesShow, extractDtliReviewYears, dtliShowYear } = require('./lib/review-guards');
+const { applyAssignmentsWithoutCollisions } = require('./lib/cache-collision');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
@@ -569,8 +570,17 @@ async function main() {
   for (const showId of Object.keys(unmappedByYear)) {
     delete slugMap.shows[showId];
   }
-  for (const [showId, m] of Object.entries(allMatches)) {
-    slugMap.shows[showId] = m.dtliSlug;
+  // BRO-4060: never give one DTLI page to two show ids. Under --force a slug
+  // can be re-matched to a sibling production while its current owner keeps
+  // it; that is how death-of-a-salesman-1999 and -2026 both ended up on
+  // death-of-a-salesman-3. Moves within this batch are allowed (the old owner
+  // releases first); a collision with a show not re-matched here is refused.
+  const assignments = {};
+  for (const [showId, m] of Object.entries(allMatches)) assignments[showId] = m.dtliSlug;
+  const merged = applyAssignmentsWithoutCollisions(slugMap.shows, assignments);
+  slugMap.shows = merged.map;
+  for (const r of merged.refused) {
+    console.log(`  ✗ Collision: ${r.key} → ${r.value} refused, slug already mapped to ${r.owner}`);
   }
 
   // Update metadata
