@@ -107,18 +107,24 @@ test('a critical Notify step covering cancelled() can still actually resolve its
   );
 });
 
-test('"Trigger investigation" steps paired with a cancellation-covering critical Notify also cover cancellation (BRO-3931)', () => {
+test('"Trigger investigation" mirrors its critical Notify step\'s cancellation gating (BRO-3931)', () => {
   const offenders = [];
   const files = new Set(scan().filter((e) => coversCancellation(e.if)).map((e) => e.file));
   for (const file of files) {
     const doc = yaml.load(fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf-8')) || {};
     for (const [jobId, job] of Object.entries(doc.jobs || {})) {
-      for (const step of job.steps || []) {
-        if (step.name !== 'Trigger investigation') continue;
+      const steps = job.steps || [];
+      const notify = steps.find((s) => s.id === 'notify');
+      for (const step of steps) {
         if (!/steps\.notify\.outputs\.suppressed/.test(String(step.if || ''))) continue;
-        if (!coversCancellation(String(step.if))) offenders.push(`${file} / ${jobId}: if: ${step.if}`);
+        const where = `${file} / ${jobId} / ${step.name}`;
+        if (!coversCancellation(String(step.if))) offenders.push(`${where}: no cancelled() in ${step.if}`);
+        // Notify skipped for a guarded cancellation leaves `suppressed` empty, which
+        // reads as "paged": the dispatch must carry the same guard.
+        const guards = String(notify?.if || '').match(/steps\.[\w-]+\.outputs\.[\w-]+\s*!=\s*'true'/g) || [];
+        for (const g of guards) if (!String(step.if).includes(g)) offenders.push(`${where}: Notify guard ${g} missing`);
       }
     }
   }
-  assert.deepEqual(offenders, [], 'A cancelled-timeout alert pages the owner but never dispatches investigate-alert.yml; add `cancelled()` to these conditions');
+  assert.deepEqual(offenders, [], 'Investigation dispatch must cover cancelled() AND repeat every guard Notify applies to cancellation');
 });

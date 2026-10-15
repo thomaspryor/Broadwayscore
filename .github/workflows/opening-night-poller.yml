@@ -1291,10 +1291,12 @@ jobs:
 
       - name: Trigger investigation
         # BRO-3931: cancelled() too, matching "Notify on failure" above (BRO-3707), so a
-        # job-timeout cancellation that pages also dispatches the investigation.
+        # job-timeout cancellation that pages also dispatches the investigation. Same
+        # Express-takeover guard as Notify: a preempted run's Notify is skipped, which
+        # leaves `suppressed` empty, and that must not read as "paged".
         # Gate on the page actually firing — otherwise every graced transient
         # still sends an investigation email (the 2026-07-13 5-email storm).
-        if: (failure() || cancelled()) && steps.notify.outputs.suppressed != 'true'
+        if: (failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')) && steps.notify.outputs.suppressed != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |

@@ -1616,11 +1616,9 @@ jobs:
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
       - name: Trigger investigation
-        # BRO-3931: cancelled() too, matching "Notify on failure" above (BRO-3707), so a
-        # job-timeout cancellation that pages also dispatches the investigation.
         # Only when the failure actually paged (2h cooldown) — a repeat failure
         # inside the cooldown shouldn't send a second investigation email.
-        if: (failure() || cancelled()) && steps.notify.outputs.suppressed != 'true'
+        if: failure() && steps.notify.outputs.suppressed != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
