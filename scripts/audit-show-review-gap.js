@@ -1079,8 +1079,6 @@ async function auditShow(show, opts = {}) {
       result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
     }
   }
-  // BRO-5134: a census hit no aggregator also lists is a guess, not a citation.
-  const serpCensusOnlyUrls = new Set([...serpCensusUrls].filter(u => !aggUrls.has(u)));
   for (const u of serpCensusUrls) aggUrls.add(u);
 
   // ---- West End reference (completeness gate, 2026-07-10) ----
@@ -1364,7 +1362,6 @@ async function auditShow(show, opts = {}) {
       // these follows the same rules as any other missing URL: blocked on WE
       // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).
       if (serpCensusUrls.has(m.url)) m.serpCensus = true;
-      if (serpCensusOnlyUrls.has(m.url) && !weRefUrls.has(m.url)) m.serpCensusOnly = true;
     }
   }
 
@@ -1714,14 +1711,12 @@ function openingWindowClearedKeys(results) {
 function currentRunUncollected(r, { blocklist } = {}) {
   const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
   const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
-  // BRO-5134: "cited by aggregators" is the alert's promise. A SERP-census-only
-  // URL is not cited by any, and while SERP_CENSUS_INGEST is off nothing can
-  // ever collect it, so counting it re-fired the alert hourly forever (Midnight:
-  // a Time Out listing capsule, which collect-review-texts rejects as not a
-  // review). It stays in r.missing for the report.
-  const censusIngestOn = process.env.SERP_CENSUS_INGEST === '1';
+  // BRO-5134: an ingest the writer correctly and permanently refused (expected
+  // rejection: e.g. a Time Out listing capsule) can never be collected, so it
+  // must not re-fire the alert hourly. Conflicts and unclassified skips still count.
+  const refusedForGood = new Set((r.ingestResults || []).filter(x => x.expected).map(x => x.url));
   const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && stillCollectable(m, bl) && (censusIngestOn || !m.serpCensusOnly)).length;
+    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }

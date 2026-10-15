@@ -45,6 +45,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
+const { classifyTimeoutPage, isTimeoutUrl } = require('./lib/timeout-capsule');
 const { applyExplicitCriticToUnknown } = require('./lib/explicit-critic-rename');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
@@ -226,6 +227,18 @@ if (!show) {
     fetchFailure = `no usable HTML (${html ? html.length : 0} chars)`;
   }
   if (fetchFailure) html = '';
+
+  // Time Out serves listing capsules at the same URL shape as its reviews; the
+  // collector refuses them (BRO-5222), so this path must too (BRO-5134: the gap
+  // audit ingested Midnight's capsule as a "review" and re-alerted hourly).
+  if (!fetchFailure && isTimeoutUrl(url)) {
+    const showYearM = String(showId || '').match(/-(\d{4})$/);
+    const tp = classifyTimeoutPage({ html, critic: criticArg, showYear: showYearM ? Number(showYearM[1]) : null });
+    if (tp.verdict === 'listing_capsule' || tp.verdict === 'wrong_critic') {
+      console.log(`⚠️  Skipped: timeout-listing-capsule — ${tp.reason} — ${url}`);
+      process.exit(0);
+    }
+  }
 
   // Outlet resolution runs BEFORE the text-extraction gate: the star-rating
   // fallback below needs outletId to pick an extractor, and none of this

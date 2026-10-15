@@ -207,6 +207,9 @@ const EXPECTED_REJECTION_REASONS = [
   // reach it — a wrongly scraped creativeTeam credit — is a real data bug the
   // operator should see.
   'credited-person-as-critic',
+  // BRO-5134: a Time Out listing blurb (or another critic's capsule) served at
+  // the review URL shape; the page, not the URL, tells (lib/timeout-capsule.js).
+  'timeout-listing-capsule',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -348,6 +351,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'named-non-review-url') {
     return `${showId}: ${url} was refused because its URL structurally matches a known non-review page shape${detail ? ` (${detail})` : ''} (ticketing/venue-production/event-listing) — refused by the named-non-review-url guard. Expected rejection; if this host genuinely publishes reviews at a different path, that path is unaffected — only this exact URL shape is blocked. If this pattern is now wrong (the host changed what it publishes there), fix the entry in scripts/lib/non-review-url-patterns.js.`;
+  }
+  if (reason === 'timeout-listing-capsule') {
+    return `${showId}: ${url} is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest.`;
   }
   if (reason === 'credited-person-as-critic') {
     return `${showId}: ${url} was refused because its byline is a creative team member of this same show${detail ? ` (${detail})` : ''} — the mis-parsed-roundup-row shape validate-data.js errors on. Expected rejection; if this person genuinely reviewed the show, ingest it with scripts/ingest-manual-review.js (operator entries are exempt). If the name is wrong on the SHOW side instead, fix that credit in shows.json.`;
