@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-15T01:36:50.767Z",
-  "processed": 226,
-  "failed": 211,
-  "successRate": "51.7%",
+  "updatedAt": "2026-10-15T01:41:16.670Z",
+  "processed": 189,
+  "failed": 206,
+  "successRate": "47.8%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 109,
     "amp": 6,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 22,
-    "brightdata": 2,
+    "scrapingdog": 16,
+    "scrapingbee": 18,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 53
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-10-14T23:37:36.722Z",
-      "event": "bb-session",
-      "session": "f92688e0",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-14T23:37:37.640Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-14T23:37:57.778Z",
-      "event": "bb-session",
-      "session": "f3a1a886",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-14T23:37:58.650Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-14T23:40:51.966Z",
       "event": "bb-session",
@@ -125,6 +103,29 @@
       "t": "2026-10-15T00:46:48.930Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T01:35:27.816Z",
+      "event": "bb-session",
+      "session": "bf349270",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-15T01:38:11.174Z",
+      "event": "bb-session",
+      "session": "dee87f95",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-15T01:38:11.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-15T01:39:07.024Z",
+      "event": "bb-session",
+      "session": "e093d5a6",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ]
 }
