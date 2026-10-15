@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-15T18:51:35.330Z",
+    "lastUpdated": "2026-10-15T21:16:24.814Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -12947,6 +12947,15 @@
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-15T18:51:35.330Z",
       "accessModel": "free"
+    },
+    "alledinburghtheatre": {
+      "displayName": "Alledinburghtheatre",
+      "tier": 3,
+      "aliases": [
+        "alledinburghtheatre"
+      ],
+      "displayNameInferred": true,
+      "domain": "alledinburghtheatre.com"
     }
   },
   "_aliasIndex": {
