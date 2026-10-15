@@ -663,3 +663,25 @@ test('gapUrlIdentity: WordPress /comment-page-N/ is the same article (BRO-5169)'
   // A slug that merely contains the words is untouched.
   assert.notEqual(gapUrlIdentity('https://x.com/comment-page-1-review/'), gapUrlIdentity('https://x.com/'));
 });
+
+test('currentRunUncollected: SERP-census-only misses are not "cited by aggregators" while census ingest is off (BRO-5134)', () => {
+  const { currentRunUncollected } = require('./audit-show-review-gap.js');
+  const row = {
+    showId: 'x',
+    missing: [
+      { url: 'https://www.timeout.com/newyork/theater/midnight', host: 'timeout.com', serpCensus: true, serpCensusOnly: true },
+      { url: 'https://example-outlet.com/review-x', host: 'example-outlet.com' },
+      // Cited by an aggregator AND found by census: still a real gap.
+      { url: 'https://example-outlet.com/review-y', host: 'example-outlet.com', serpCensus: true },
+    ],
+  };
+  const prev = process.env.SERP_CENSUS_INGEST;
+  try {
+    delete process.env.SERP_CENSUS_INGEST;
+    assert.equal(currentRunUncollected(row, { blocklist: null }), 2);
+    process.env.SERP_CENSUS_INGEST = '1';
+    assert.equal(currentRunUncollected(row, { blocklist: null }), 3);
+  } finally {
+    if (prev === undefined) delete process.env.SERP_CENSUS_INGEST; else process.env.SERP_CENSUS_INGEST = prev;
+  }
+});

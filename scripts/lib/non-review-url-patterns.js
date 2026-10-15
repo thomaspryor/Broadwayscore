@@ -195,6 +195,13 @@ function siteUtilityPathReason(url) {
 const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)newyorkcitytheatre\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)newbrunswicktheater\.com$/, reason: 'ticketing-reseller' },
+  // BRO-5134: Midnight (off-Broadway 2026) alerted on a ticket page the SERP
+  // census surfaced, and a file for one already sat in its dir.
+  { host: /(^|\.)broadway-show-tickets\.com$/, reason: 'ticketing-reseller' },
+  // Page Six celebrity gossip ("...join forces to produce ... Midnight to rave
+  // reviews", BRO-5134): a press-release rewrite, never a critic review. 0 files
+  // on disk use pagesix.com.
+  { host: /(^|\.)pagesix\.com$/, path: /^\/\d{4}\/\d\d\/\d\d\/celebrity-news\//, reason: 'celebrity-news' },
   { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
   { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
   // An events-calendar entry ("UPCOMING ... Event information supplied by the

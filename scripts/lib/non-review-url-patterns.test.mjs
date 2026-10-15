@@ -475,3 +475,11 @@ test('theatre.reviews roundups and London Theatre Direct product pages are not r
   assert.equal(classifyReviewUrl('https://www.londontheatredirect.com/news/the-standard-of-living-review').ok, true);
   assert.equal(classifyReviewUrl('https://www.londontheatredirect.com/de/news/x-review').ok, true);
 });
+
+test('gap census rejects the ticket page and Page Six gossip that alerted for Midnight (BRO-5134)', () => {
+  const { classifyGapCandidateUrl } = require('./non-review-url-patterns.js');
+  assert.equal(classifyGapCandidateUrl('https://www.broadway-show-tickets.com/musicals/midnight-tickets/').ok, false);
+  assert.equal(classifyGapCandidateUrl('https://pagesix.com/2026/10/14/celebrity-news/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/').ok, false);
+  // Other Page Six paths are not blanket-rejected.
+  assert.equal(classifyGapCandidateUrl('https://pagesix.com/2026/10/14/entertainment/theater/some-show-review/').ok, true);
+});
