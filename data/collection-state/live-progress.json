@@ -1,49 +1,21 @@
 {
-  "updatedAt": "2026-10-15T15:49:56.743Z",
-  "processed": 182,
-  "failed": 205,
-  "successRate": "47.0%",
+  "updatedAt": "2026-10-15T16:05:11.536Z",
+  "processed": 282,
+  "failed": 164,
+  "successRate": "63.2%",
   "tierBreakdown": {
-    "playwright": 149,
-    "amp": 2,
-    "browserbase": 6,
+    "playwright": 122,
+    "amp": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 29,
-    "scrapingbee": 14,
-    "brightdata": 3,
+    "scrapingdog": 14,
+    "scrapingbee": 19,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 71
+    "archive": 31
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-10-15T10:26:10.422Z",
-      "event": "bb-session",
-      "session": "42e6b5a6",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-15T10:26:10.755Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-15T11:07:23.506Z",
-      "event": "bb-session",
-      "session": "9d6e0eb4",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-15T11:07:23.890Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T11:07:41.052Z",
-      "event": "bb-session",
-      "session": "d20b3014",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
     {
       "t": "2026-10-15T11:07:41.396Z",
       "event": "bb-cookie-inject",
@@ -125,6 +97,34 @@
       "t": "2026-10-15T15:20:26.900Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T15:59:07.271Z",
+      "event": "bb-session",
+      "session": "6e8c2ab7",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-15T15:59:08.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-15T16:01:44.988Z",
+      "event": "bb-session",
+      "session": "00e3ff5e",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-15T16:02:35.474Z",
+      "event": "bb-session",
+      "session": "85e1c6f1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-15T16:02:36.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
