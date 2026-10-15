@@ -49,7 +49,7 @@ const AGGREGATOR_SCORE_SOURCES = new Set([
   'stagedoor-star-rating', 'westendtheatre-star-rating', 'thestage-roundup-star-rating',
   'lbo-star-rating', 'theatre-reviews-star-rating', 'show-score-stars',
   'unicode-stars', 'explicit-rating', 'json-ld', 'telegraph-svg-stars',
-  'lbo-css-stars', 'guardian-api', 'letter-grade',
+  'lbo-css-stars', 'guardian-api', 'letter-grade', 'bestoftheatre-star-rating',
 ]);
 
 const issues = {

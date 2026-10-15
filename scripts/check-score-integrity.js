@@ -19,12 +19,8 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const REVIEW_TEXTS_DIR = process.env.SCORE_INTEGRITY_REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const OUTPUT_PATH = process.env.SCORE_INTEGRITY_OUTPUT_PATH || path.join(__dirname, '..', 'data', 'audit', 'score-integrity.json');
 
-// From review-normalization.js
-const AGGREGATOR_SCORE_SOURCES = new Set([
-  'theatre-reviews-star-rating', 'westendtheatre-star-rating',
-  'show-score-stars', 'stagedoor-star-rating',
-  'lbo-star-rating', 'lbo-css-stars', 'thestage-roundup-star-rating',
-]);
+// Imported, not copied: a hand copy drifted when a source was added (BRO-5219).
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 const AGGREGATOR_DATA_SOURCES = new Set([
   'show-score', 'show-score-playwright', 'showscore-roundup',

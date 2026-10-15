@@ -51,7 +51,7 @@ const delay = delayArg ? parseInt(delayArg.split('=')[1]) : 2000;
 const AGGREGATOR_SOURCES = new Set([
   'westendtheatre-star-rating', 'thestage-roundup-star-rating',
   'lbo-star-rating', 'stagedoor-star-rating', 'theatre-reviews-star-rating',
-  'show-score-stars', 'show-score-playwright',
+  'show-score-stars', 'show-score-playwright', 'bestoftheatre-star-rating',
   'css-stars',          // Generic CSS extraction — often reads sidebar/wrong element
   'lbo-css-stars',      // LBO CSS extraction — sometimes wrong element
   'numeric-stars',      // Generic "X/5" pattern — false positives from pagination

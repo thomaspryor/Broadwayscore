@@ -19,15 +19,8 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
 // Aggregator sources that should NEVER be in originalScore (should be aggregatorStars)
-const AGGREGATOR_SCORE_SOURCES = new Set([
-  'theatre-reviews-star-rating',
-  'westendtheatre-star-rating',
-  'show-score-stars',
-  'stagedoor-star-rating',
-  'lbo-star-rating',
-  'lbo-css-stars',
-  'thestage-roundup-star-rating',
-]);
+// Imported, not copied: hand copies drift when a source is added (BRO-5219).
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 // Score sources that extract from the review page/text itself (should be verifiable)
 const EXTRACTION_SOURCES = new Set([

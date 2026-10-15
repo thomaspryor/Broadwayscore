@@ -215,6 +215,18 @@ describe('STAR_SOURCE_BY_REFERENCE (The Stage class star fallback)', () => {
       assert.equal(AGGREGATOR_SCORE_SOURCES.has(src), true, `${src} must be in AGGREGATOR_SCORE_SOURCES`);
     }
   });
+  // BRO-5219: bestoftheatre (the most accurate WE reference) was emitted by
+  // gap-reference-sources.js with star ratings but had no mapping here, so a
+  // dead/paywalled review it cited could never take the star fallback.
+  test('every WE reference source emitted by gap-reference-sources has a star mapping', () => {
+    const fs = require('fs');
+    const src = fs.readFileSync(require.resolve('../../scripts/lib/gap-reference-sources.js'), 'utf8');
+    const emitted = [...new Set([...src.matchAll(/\bpush\('([a-z0-9-]+)'/g)].map((m) => m[1]))];
+    assert.ok(emitted.length >= 5, `expected to find the reference sources, got ${emitted}`);
+    for (const ref of emitted) {
+      assert.ok(STAR_SOURCE_BY_REFERENCE[ref], `${ref} has no STAR_SOURCE_BY_REFERENCE entry`);
+    }
+  });
 });
 
 describe('looksLikeReviewUrl: hardening from real-corpus scan (2026-07-23)', () => {

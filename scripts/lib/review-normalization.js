@@ -38,6 +38,7 @@ const AGGREGATOR_SCORE_SOURCES = new Set([
   'theatre-reviews-star-rating', 'westendtheatre-star-rating',
   'show-score-stars', 'stagedoor-star-rating',
   'lbo-star-rating', 'lbo-css-stars', 'thestage-roundup-star-rating',
+  'bestoftheatre-star-rating',
 ]);
 
 // Cache for the outlet registry data

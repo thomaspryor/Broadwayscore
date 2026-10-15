@@ -154,6 +154,9 @@ const STAR_SOURCE_BY_REFERENCE = {
   'westendtheatre': 'westendtheatre-star-rating',
   'lbo-roundup': 'lbo-star-rating',
   'thestage-archive': 'thestage-roundup-star-rating',
+  // BRO-5219: Best of Theatre relays each outlet's own stars (97% corroborated)
+  // and was the only WE reference source without a mapping.
+  'bestoftheatre': 'bestoftheatre-star-rating',
 };
 
 /**
