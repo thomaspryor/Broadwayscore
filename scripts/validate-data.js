@@ -207,13 +207,19 @@ try {
 }
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
+// REVIEW_TEXTS_DIR points every review-texts read at another clone (the same
+// env var browser-recovery-helpers.js and the gap audit honour), so a run from
+// the main checkout can validate ~/broadway-review-texts. ack-landed.js
+// --data-repo review-texts sets it for its verify run (BRO-5219). Never
+// hardcode path.join(DATA_DIR, 'review-texts') again — a test refuses it.
+const REVIEW_TEXTS_ROOT = process.env.REVIEW_TEXTS_DIR || path.join(DATA_DIR, 'review-texts');
 const { BASELINE_NAME, createReviewValidationScope } = require('./lib/review-validation-scope');
 // Override lets tests point validate-data.js at a throwaway fixture instead of
 // the real data/shows.json (Notion — validate-data sentinel test corruption risk).
 // Every other data file still resolves under the real DATA_DIR.
 const SHOWS_FILE = process.env.VALIDATE_DATA_SHOWS_JSON || path.join(DATA_DIR, 'shows.json');
 const reviewValidationScope = createReviewValidationScope(
-  path.join(DATA_DIR, 'review-texts'),
+  REVIEW_TEXTS_ROOT,
   path.join(process.env.RUNNER_TEMP || '/tmp', BASELINE_NAME),
   '/tmp/core-data-snapshot/reviews.json',
   { showsFile: SHOWS_FILE }
@@ -2231,7 +2237,7 @@ function validateSchedulesJson(shows) {
 
 function validateReviewData(shows) {
   info('Checking review-texts directories...');
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
 
   if (!fs.existsSync(reviewTextsDir)) {
     info('No review-texts directory found, skipping');
@@ -2580,7 +2586,7 @@ function validateReviewsJson() {
   // Phase 1 quality flag validation: check that new flags exist on review-text files
   // and that rebuild-all-reviews.js passes them through correctly
   info('Checking Phase 1 quality flags in review-texts...');
-  const reviewTextsDir2 = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir2 = REVIEW_TEXTS_ROOT;
   let flagCounts = { showNotMentioned: 0, misattributedFullText: 0, duplicateTextOf: 0 };
   if (fs.existsSync(reviewTextsDir2)) {
     try {
@@ -3222,7 +3228,7 @@ function validateP0ScoreCoverage() {
  * (excluded from Broadway, missing from the tour). Warning only.
  */
 function validateTourSweepPending(shows = []) {
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   if (!fs.existsSync(reviewTextsDir)) return;
   const { planTourSweep, decideTourSweep, loadSweepContext } = require('./lib/tour-backfill');
   const listFiles = (showId) => {
@@ -3246,7 +3252,7 @@ function validateTourSweepPending(shows = []) {
 function validateTourReviewContamination(shows = []) {
   info('Checking for unflagged tour/regional review contamination...');
 
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   if (!fs.existsSync(reviewTextsDir)) {
     info('review-texts directory not found, skipping');
     return;
@@ -3312,7 +3318,7 @@ function validateTourReviewContamination(shows = []) {
 function validateAggregatorScoreContamination() {
   info('Checking for aggregator scores stored as originalScore...');
 
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   if (!fs.existsSync(reviewTextsDir)) return;
 
   const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
@@ -3352,7 +3358,7 @@ function validateAggregatorScoreContamination() {
 function validateCrossMarketSourceFiles() {
   info('Checking review source files for cross-market contamination (Broadway in WE)...');
 
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   if (!fs.existsSync(reviewTextsDir)) return;
 
   // Use shared patterns from venue-classification.js (single source of truth)
@@ -3392,7 +3398,7 @@ function validateCrossMarketSourceFiles() {
 function validateReviewTextDuplicates(shows) {
   info('Checking for duplicate review-text files...');
 
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   if (!fs.existsSync(reviewTextsDir)) {
     info('No review-texts directory');
     return;
@@ -3745,7 +3751,7 @@ function validateBlogReviews() {
  */
 function validateUnscoredReviewTexts() {
   info('Checking for unscored review-text files (silent gaps)...');
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   if (!fs.existsSync(reviewTextsDir)) {
     info('No review-texts directory, skipping');
     return;
@@ -3916,7 +3922,7 @@ function validateUnscoredReviewTexts() {
  */
 function validateStrandedScoredReviews(shows) {
   info('Checking for stranded scored reviews on recent shows (collected+scored but not live)...');
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
   const reviewsPath = path.join(DATA_DIR, 'reviews.json');
   if (!fs.existsSync(reviewTextsDir) || !fs.existsSync(reviewsPath)) {
     info('review-texts or reviews.json missing, skipping');
@@ -4051,7 +4057,7 @@ function validatePressNightGaps(shows) {
 
 function validateReviewTextQuality(shows) {
   info('Checking review text quality (garbage detection)...');
-  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewTextsDir = REVIEW_TEXTS_ROOT;
 
   if (!fs.existsSync(reviewTextsDir)) {
     info('No review-texts directory found, skipping');
@@ -4896,7 +4902,7 @@ function validateAggregatorArchives(shows) {
 
   // The full archive lives at data/review-texts/aggregator-archive/ (private repo checkout).
   // data/aggregator-archive/ is a small working/staging directory — not the real archive.
-  const reviewTextsArchive = path.join(DATA_DIR, 'review-texts', 'aggregator-archive');
+  const reviewTextsArchive = path.join(REVIEW_TEXTS_ROOT, 'aggregator-archive');
   const archiveDir = fs.existsSync(reviewTextsArchive) ? reviewTextsArchive : path.join(DATA_DIR, 'aggregator-archive');
   if (!fs.existsSync(archiveDir)) {
     // Not an error — many workflows don't check out aggregator-archive (it's in the private repo)
