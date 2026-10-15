@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-15T06:55:54.766Z",
+  "timestamp": "2026-10-15T08:18:46.135Z",
   "stats": {
-    "totalReviews": 56628,
+    "totalReviews": 56629,
     "alreadyFlagged": 21055,
     "dateGuardCatches": 211,
-    "directorMismatch": 1910,
+    "directorMismatch": 1897,
     "tvFilmSignals": 1581,
     "londonSignals": 2352,
     "offBroadwaySignals": 510,
@@ -35045,201 +35045,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "artsdesk--gary-naylor.json",
-      "score": 75,
-      "publishDate": "2023-02-21",
-      "url": "https://theartsdesk.com/theatre/standing-skys-edge-national-theatre-review-razor-sharp-musical-second-act-woes",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "express-uk--neil-norman.json",
-      "score": 91,
-      "publishDate": "2023-02-23",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 91,
-      "publishDate": "2023-02-16",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "guardian--arifa-akbar.json",
-      "score": 90,
-      "publishDate": "2023-02-14",
-      "url": "https://www.theguardian.com/stage/2023/feb/14/standing-at-the-skys-edge-review-richard-hawley-pulls-on-the-heartstrings-in-his-sheffield-opus",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "guardian--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2023/feb/14/standing-at-the-skys-edge-review-richard-hawley-pulls-on-the-heartstrings-in-his-sheffield-opus",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 91,
-      "publishDate": "2023-02-14",
-      "url": "https://www.londontheatre.co.uk/reviews/standing-at-the-skys-edge-review-gillian-lynne-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "londontheatre1--alan-fitter.json",
-      "score": 79,
-      "publishDate": "2023-02-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "nytimes--matt-wolf.json",
-      "score": 77,
-      "publishDate": "2023-02-16",
-      "url": "https://www.nytimes.com/2023/02/16/theater/sylvia-standing-at-the-skys-edge-london-musicals.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "observer--susannah-clapp.json",
-      "score": 77,
-      "publishDate": "2023-02-19",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "telegraph--claire-allfree.json",
-      "publishDate": "2023-02-14",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/standing-skys-edge-national-theatre-review-concept-trumps-content/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "the-jewish-chronicle--john-nathan.json",
-      "score": 66,
-      "publishDate": "2023-02-16",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "thestage--sam-marlowe.json",
-      "publishDate": "2023-02-14",
-      "url": "https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london-by-chris-bush-and-richard-hawley",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
-        }
-      ]
-    },
-    {
-      "showId": "standing-at-the-skys-edge-west-end-2023",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 76,
-      "publishDate": "2023-02-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from standing-at-the-skys-edge-west-end-2024"
         }
       ]
     },
@@ -75653,6 +75458,48 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "standing-at-the-skys-edge-west-end-2023",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2023/feb/14/standing-at-the-skys-edge-review-richard-hawley-pulls-on-the-heartstrings-in-his-sheffield-opus",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "standing-at-the-skys-edge-west-end-2023",
+      "file": "londontheatre1--alan-fitter.json",
+      "score": 79,
+      "publishDate": "2023-02-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "standing-at-the-skys-edge-west-end-2023",
+      "file": "nytimes--matt-wolf.json",
+      "score": 77,
+      "publishDate": "2023-02-16",
+      "url": "https://www.nytimes.com/2023/02/16/theater/sylvia-standing-at-the-skys-edge-london-musicals.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
