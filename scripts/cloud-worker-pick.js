@@ -33,7 +33,7 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv)) {
-  console.log('Usage: node scripts/cloud-worker-pick.js [--list=N]\nPrints {pick, eligible, skipped} for the cloud worker routine, or {picks: [up to N]} with --list (add --codex for the Codex runner filtered, best-suited-first list). Read-only.');
+  console.log('Usage: node scripts/cloud-worker-pick.js [--list=N]\nPrints {pick, eligible, skipped} for the cloud worker routine, or {picks: [up to N]} with --list (add --codex for the Codex runner filtered, best-suited-first list). While a Codex runner is live the single pick leaves Codex-fit cards to it (--no-codex-first: off). Read-only.');
   process.exit(0);
 }
 
@@ -208,13 +208,23 @@ async function main() {
     console.log(JSON.stringify({ picks, ...counts, historySkipped }, null, 2));
     return;
   }
-  const chosen = await firstUnpaused(queue, nowMs, historySkipped);
+  // Codex first (BRO-5384): while a Codex runner is live, the Claude worker leaves the cards one
+  // Codex firing will take (leaveCodexCards) and works the rest. No live runner (lane skipped,
+  // weekly cap, login gone, run over) or unknown bounce state: everything, as before.
+  let claudeQueue = queue;
+  let leftToCodex = [];
+  if (commentsRead && !process.argv.includes('--no-codex-first') && codexRunnerLive()) {
+    const { leaveCodexCards } = require('./lib/cloud-worker-pick.js');
+    ({ queue: claudeQueue, left: leftToCodex } = leaveCodexCards(queue, { nowMs, verifyOf: verifyCommand, cap: CODEX_FIRING_CARDS }));
+  }
+  const chosen = await firstUnpaused(claudeQueue, nowMs, historySkipped);
   const pick = chosen && chosen.issue;
   const resume = chosen && chosen.resume;
   const out = {
     pick: pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf),
     tier: chosen ? chosen.tier : null,
     ...counts,
+    leftToCodex,
     // Resume candidates and eligible cards passed over for an earlier pause.
     historySkipped,
   };
@@ -224,6 +234,16 @@ async function main() {
     // overrides that. Repeat it where a skimming worker will see it.
     console.error(`[cloud-worker-pick] RESUME ${pick.identifier}: follow pick.resume.instructions (land ref ${resume.ref}), not a new branch.`);
   }
+}
+
+// Cards one Codex firing works (docs/cloud-routines/board-workers.md: --slots 3 --limit 9).
+const CODEX_FIRING_CARDS = 9;
+
+/** True while a Codex runner holds a run lock (daily-runner.js --lock-status exits 3). Unknown: false. */
+function codexRunnerLive() {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [require('path').join(__dirname, 'codex', 'daily-runner.js'), '--lock-status'], { encoding: 'utf8', timeout: 180_000 });
+  return r.status === 3;
 }
 
 /** `--list=N` as a positive integer, 0 when absent; a malformed value is an error, never the single-pick output. */

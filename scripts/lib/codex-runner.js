@@ -630,6 +630,60 @@ function launchRunDir(runDir, slot = 0, { pollMs = 15_000 } = {}) {
   };
 }
 
+/**
+ * Which model runs the Claude check (BRO-5384: Opus at ~$0.49 a review on every diff). Sonnet for
+ * a small change outside the risky areas, Opus for the rest; same prompt, same SHIP rules.
+ * files: [{ path, changed }] from `git diff --numstat`; classify: infra-review-scope.js
+ * classifyChange (its critical tier is never small). -> { model, why }
+ */
+const CHECK_SMALL_LINES = 80;
+const CHECK_SMALL_FILES = 3;
+const CHECK_RISKY_RE = /^(?:src\/lib\/(?:scoring|engine|data-core)|src\/app\/api\/|scripts\/lib\/(?:rebuild-helpers|score-extractors|review-normalization|review-guards|published-star-capture|content-verifier)|scripts\/llm-scoring\/|scripts\/rebuild-all-reviews|data\/|\.github\/|supabase\/|\.claude\/|scripts\/codex\/|scripts\/(?:lib\/)?(?:cloud-worker-pick|codex-runner|land-|linear-(?:session|brain|client)))/;
+// The last group: the worker machinery itself (this runner, its picker, landing, the board), which
+// infra-review-scope.js does not rate critical.
+function checkModel({ files = [], classify = () => ({ inScope: false }) } = {}) {
+  const changed = files.reduce((n, f) => n + (Number(f.changed) || 0), 0);
+  const risky = files.filter((f) => CHECK_RISKY_RE.test(f.path)).map((f) => f.path);
+  if (!files.length) return { model: 'opus', why: 'no diff' };
+  // A rename prints "a => b" or "dir/{a => b}": the real paths are not checkable, so Opus.
+  if (files.some((f) => /=>|[{}]/.test(f.path))) return { model: 'opus', why: 'a rename' };
+  if (risky.length) return { model: 'opus', why: `risky path ${risky[0]}` };
+  const infra = classify(files.map((f) => f.path));
+  // Critical shared infrastructure (dispatch, gates, locks; CLAUDE.md 18) is never small. Plain
+  // scripts/lib modules are 'shared' tier there, which alone would leave Sonnet nothing.
+  if (infra && infra.tier === 'critical') return { model: 'opus', why: 'critical shared infrastructure' };
+  if (files.length > CHECK_SMALL_FILES || changed > CHECK_SMALL_LINES) return { model: 'opus', why: `${files.length} file(s), ${changed} line(s)` };
+  return { model: 'sonnet', why: `small: ${files.length} file(s), ${changed} line(s)` };
+}
+
+/**
+ * Codex first (BRO-5384, owner 2026-10-15: Codex carries the load, Claude is the fallback): while a
+ * Codex runner is live, the Claude worker leaves a card to Codex when Codex would take it: fit
+ * (codexCardFit), not bounced by Codex, not Urgent and not START-NOW (those go to whoever is free).
+ */
+function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
+  if (!issue || Number(issue.priority) === 1 || startNow) return false;
+  const comments = (issue.comments && issue.comments.nodes) || [];
+  if (codexBouncedRecently(comments, nowMs)) return false;
+  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs }).skip;
+}
+
+/**
+ * Cards landed per lane from `git log --format=%an%x09%s` lines: distinct BRO ids in commit
+ * subjects by "Codex runner" vs by "Claude" (every Claude session, not just the board's Claude
+ * lane; bots and the owner are left out). -> { codex, claude }
+ */
+function landedPerLane(logText) {
+  const ids = { codex: new Set(), claude: new Set() };
+  for (const line of String(logText || '').split('\n')) {
+    const [author, ...rest] = line.split('\t');
+    const lane = author === 'Codex runner' ? 'codex' : author === 'Claude' ? 'claude' : null;
+    if (!lane) continue;
+    for (const id of rest.join('\t').match(/\bBRO-\d+\b/g) || []) ids[lane].add(id);
+  }
+  return { codex: ids.codex.size, claude: ids.claude.size };
+}
+
 function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs }) {
   return verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed ? runEndMs : Math.min(cardDeadlineMs, runEndMs);
 }
@@ -657,6 +711,7 @@ function runnerSummaryFacts(body) {
     landed: list('Landed and Done').length + list('Landed part, back to Todo with what is left').length,
     crashed: list('Runner error mid-card \\(back to Todo\\)').length,
     stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',
+    checkUsd: Number((String(body || '').match(/^- Claude check: \d+ review\(s\), \$([\d.]+)/m) || [])[1]) || 0,
   };
 }
 
@@ -695,14 +750,17 @@ function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
       ? 'Codex runner could not start in the last 24h: its Codex login is not usable (see "## Codex runner did not start" on BRO-4745).'
       : 'No Codex runner summary in the last 24h: the runner is not running (it should post one every 2 hours).' };
   }
-  let landed = 0; let crashed = 0; const lockStops = [];
+  let landed = 0; let crashed = 0; let checkUsd = 0; const lockStops = [];
   for (const c of recent) {
     const f = runnerSummaryFacts(c.body);
     landed += f.landed;
     crashed += f.crashed;
+    checkUsd += f.checkUsd;
     if (/lock/i.test(f.stop)) lockStops.push(String(c.createdAt).slice(0, 16));
   }
-  const facts = `${recent.length} run(s), ${landed} card(s) landed, ${crashed} crashed mid-card in the last 24h`;
+  // The Claude spend the Codex lane costs (its check), per card it landed (BRO-5384 savings line).
+  const spend = `, Claude check $${checkUsd.toFixed(2)}${landed ? ` ($${(checkUsd / landed).toFixed(2)} per landed card)` : ''}`;
+  const facts = `${recent.length} run(s), ${landed} card(s) landed, ${crashed} crashed mid-card${spend} in the last 24h`;
   if (lockStops.length) return { status: 'error', message: `Codex runner stopped on its run lock (${lockStops.join(', ')}): ${facts}.` };
   if (!landed) return { status: 'error', message: `Codex runner landed nothing: ${facts}.` };
   if (crashed >= 2) return { status: 'warn', message: `Codex runner crashed on ${crashed} cards: ${facts}.` };
@@ -793,6 +851,9 @@ module.exports = {
   swfCarryBody,
   parseSwfCarry,
   fixRoundDeadline,
+  checkModel,
+  landedPerLane,
+  leaveToCodex,
   slotArgs,
   carryPatch,
   FIX_EXEC_MIN_MS,

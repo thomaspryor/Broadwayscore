@@ -325,6 +325,24 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   return null;
 }
 
+/**
+ * Codex first (BRO-5384): the Claude worker's queue while a Codex runner is live. The cards Codex
+ * would take (codex-runner.js leaveToCodex) are left to it, but only as many as one Codex firing
+ * works (`cap`, board-workers --limit), in Codex's own order (tier, START-NOW, fit score), so a
+ * backlog past Codex's capacity, or a runner that died holding its lock, never parks the rest.
+ * Resume entries always stay. -> { queue, left: [identifier] }
+ */
+function leaveCodexCards(queue, { nowMs, verifyOf = () => '', cap = 9 } = {}) {
+  const { leaveToCodex, codexCardFit } = require('./codex-runner.js');
+  const tierRank = new Map();
+  for (const q of queue) if (!tierRank.has(q.tier)) tierRank.set(q.tier, tierRank.size);
+  const fit = queue.filter((q) => !q.resume && leaveToCodex(q.issue, { nowMs, verify: verifyOf(q.issue), startNow: isStartNow(q.issue, nowMs) }))
+    .map((q) => ({ q, score: codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyOf(q.issue), comments: (q.issue.comments && q.issue.comments.nodes) || [], nowMs }).score }))
+    .sort((a, b) => tierRank.get(a.q.tier) - tierRank.get(b.q.tier) || b.score - a.score);
+  const leave = new Set(fit.slice(0, Math.max(0, cap)).map((x) => x.q));
+  return { queue: queue.filter((q) => !leave.has(q)), left: [...leave].map((q) => q.issue.identifier) };
+}
+
 /** True for a P2 card that is a fallback candidate at all (Todo). */
 function isP2FallbackCandidate(issue, nowMs) {
   const r = skipReason(issue, nowMs, { tier: 'p2' });
@@ -654,6 +672,7 @@ function findResumeCard(issues, landRefs, opts) {
 }
 
 module.exports = {
+  leaveCodexCards,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,

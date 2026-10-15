@@ -88,6 +88,8 @@ const OPTS = {
   // The Claude check bills per review when run outside a subscription session (Actions):
   // each review stops at --check-max-usd, the run stops picking cards at --check-budget-usd.
   checkMaxUsd: Number(arg('check-max-usd', 4)),
+  // auto: Sonnet for a small low-risk diff, Opus otherwise (R.checkModel, BRO-5384); opus|sonnet forces one.
+  checkModel: ['opus', 'sonnet'].includes(arg('check-model', 'auto')) ? arg('check-model', 'auto') : 'auto',
   checkBudgetUsd: Number(arg('check-budget-usd', 30)),
   // One card's wall clock: a fix-round exec starts only with 15+ min of exec plus the
   // review still inside it, and is cut to fit, so fix rounds cannot run past the budget.
@@ -119,6 +121,7 @@ if (process.argv.includes('--hard-stop-minutes') && !(OPTS.hardStopMinutes >= 30
 const fitsBeforeHardStop = (ms) => HARD_END_MS - WRAP_UP_MS - Date.now() >= ms;
 const CODEX_TIMEOUT_MS = 45 * 60_000;
 let checkSpentUsd = 0;
+const checkByModel = {}; // model -> { n, usd }: the savings line in the summary
 let checkCount = 0;
 
 fs.mkdirSync(LOG_DIR, { recursive: true });
@@ -297,7 +300,8 @@ function runCheck(card, body, codexReport, tag, data) {
   // Prompt on stdin: --allowedTools and --add-dir are variadic and swallow a positional.
   // --add-dir: the data the worktree links to (review texts live outside it), or the
   // reviewer is denied every read there.
-  const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'json',
+  const model = pickCheckModel(card.identifier);
+  const r = sh('claude', ['-p', '--model', model, '--setting-sources', 'user', '--output-format', 'json',
     '--max-budget-usd', String(OPTS.checkMaxUsd),
     ...(data.dirs.length || base ? ['--add-dir', ...data.dirs, ...(base ? [base] : [])] : []),
     '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(find:*),Bash(rg:*),Bash(sed:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
@@ -315,10 +319,31 @@ function runCheck(card, body, codexReport, tag, data) {
   const out = R.parseCheckOutput(r.stdout);
   checkSpentUsd += out.costUsd;
   checkCount += 1;
-  log(`${card.identifier} ${tag}: Claude check cost $${out.costUsd.toFixed(2)}${out.error ? ` (${out.error})` : ''}`);
+  const m = (checkByModel[model] = checkByModel[model] || { n: 0, usd: 0 });
+  m.n += 1;
+  m.usd += out.costUsd;
+  log(`${card.identifier} ${tag}: Claude check (${model}) cost $${out.costUsd.toFixed(2)}${out.error ? ` (${out.error})` : ''}`);
   const verdict = r.code === 0 && !tampered && !out.error ? R.parseVerdict(out.text) : 'NONE';
   return { verdict, text: tampered ? 'The reviewer changed the worktree, so its verdict was discarded.' : tail(out.text || r.out, 3000) };
 }
+
+/** The check's model for the committed change (--check-model, else R.checkModel on its numstat). */
+function pickCheckModel(id) {
+  if (OPTS.checkModel !== 'auto') return OPTS.checkModel;
+  let files = [];
+  try {
+    // -z: paths raw, never quoted ("data/caf\303\251.json" would slip past the risky-path check).
+    files = git(['diff', '--numstat', '-z', '--no-renames', `${cardBase}...HEAD`]).split('\0').filter(Boolean).map((l) => {
+      const [a, d, ...p] = l.split('\t');
+      return { path: p.join('\t').trim(), changed: (Number(a) || 0) + (Number(d) || 0) + (a === '-' ? CHECK_BINARY_LINES : 0) };
+    });
+  } catch { /* unreadable diff: Opus */ }
+  const { classifyChange } = require(path.join(ROOT, 'scripts/lib/infra-review-scope.js'));
+  const c = R.checkModel({ files, classify: classifyChange });
+  log(`${id}: Claude check on ${c.model} (${c.why})`);
+  return c.model;
+}
+const CHECK_BINARY_LINES = 1000; // a binary file is never "small"
 
 /** Commit Codex's working-tree changes. -> { hasDiff, blocked } */
 function commitAttempt(card, attempt) {
@@ -1051,6 +1076,14 @@ async function main() {
   try { await runLocked(startedMs); } finally { if (keepAlive) clearInterval(keepAlive); releaseLock(); }
 }
 
+/** Cards (distinct BRO ids) landed on main in the last 24h by this runner vs the Claude sessions (R.landedPerLane). */
+function landedPerLane() {
+  try {
+    const lane = R.landedPerLane(git(['log', 'origin/main', '--since=24.hours', '--format=%an%x09%s'], ROOT));
+    return `Codex runner ${lane.codex} card(s), Claude sessions ${lane.claude} card(s)`;
+  } catch { return 'unknown (git log failed)'; }
+}
+
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
 async function reconcileLanded(stats) {
   let subjects = '';
@@ -1146,6 +1179,7 @@ async function runLocked(startedMs) {
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
   const list = (a) => (a.length ? a.join(', ') : 'none');
+  const landedCount = stats.landed.length + stats.landedPartial.length;
   const text = [
     `## Codex runner ${new Date().toISOString().slice(0, 10)}: ${worked} card(s) worked in ${mins} min${RUN_DIR ? ` (slot ${SLOT})` : ''}`,
     `- Landed and Done: ${list(stats.landed)}`,
@@ -1160,6 +1194,9 @@ async function runLocked(startedMs) {
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
     `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
     `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
+    // BRO-5384 savings line: what the Codex lane costs in Claude, by model and per landed card.
+    `- Claude check by model: ${Object.entries(checkByModel).map(([k, v]) => `${k} ${v.n} ($${v.usd.toFixed(2)})`).join(', ') || 'none'}; per landed card: ${landedCount ? `$${(checkSpentUsd / landedCount).toFixed(2)}` : 'n/a (nothing landed)'}`,
+    ...(SLOT === 0 ? [`- Landed on main, last 24h: ${landedPerLane()}`] : []),
     `- Stopped early: ${stop || 'no'}`,
   ].join('\n');
   log(text);
