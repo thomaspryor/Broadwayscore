@@ -374,5 +374,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-15T15:07:11.607Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-5158-mv9n0fit",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-5158-mv9n0fit",
+    "description": "land.yml did not land land/job/linear-BRO-5158-mv9n0fit: the rebase gate went red at 7816e080e3. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5158-mv9n0fit @ 7816e080e3 (origin/land/job/linear-BRO-5158-mv9n0fit) → origin/main @ 765a98b4ac REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 765a98b4ac: Rebasing (1/1) error: could not apply 7816e080e39... data(BRO-5158): restore 5 alert-ledger conditions erased by e949c344a48 lost-update; resolve Soldiers Of Tomorrow imageless alert hint: Resolve Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38752787069",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5158-mv9n0fit"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7816e080e39d8cc499d70cf00fcd1dd7770ad05c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38752787069"
+      }
+    ],
+    "queuedAt": "2026-10-15T15:09:33.118Z"
   }
 ]
