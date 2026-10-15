@@ -12937,12 +12937,16 @@
       "displayName": "Nub News",
       "tier": 3,
       "aliases": [
-        "nub-news"
+        "nub-news",
+        "nub",
+        "nubnews",
+        "kingston-nub-news"
       ],
-      "domain": "kingston.nub.news",
+      "domain": "nub.news",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-15T18:51:35.330Z"
+      "regionInferredAt": "2026-10-15T18:51:35.330Z",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
@@ -13635,5 +13639,5 @@
     "sunday times (uk)": "sunday-times"
   },
   "lastUpdated": "2026-09-30T04:38:59.859Z",
-  "lastChange": "BRO-5261: register Louder Than War (louderthanwar.com) so its ABBA Voyage review files under its own outlet (BRO-2716 follow-up)"
+  "lastChange": "BRO-5219: Nub News domain widened to nub.news (whole hyperlocal network, not just kingston.) + aliases"
 }
