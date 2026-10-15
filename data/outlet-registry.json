@@ -2488,6 +2488,9 @@
         "gay-times-chris-selman"
       ],
       "domain": "gaytimes.co.uk",
+      "domainAliases": [
+        "gaytimes.com"
+      ],
       "region": "london",
       "accessModel": "free"
     },
@@ -5718,7 +5721,9 @@
         "seen-and-heard"
       ],
       "accessModel": "free",
-      "domain": "seenandheard-international.com"
+      "domain": "seenandheard-international.com",
+      "isDualMarket": true,
+      "region": "dual"
     },
     "bergen-report": {
       "displayName": "Bergen Report",
