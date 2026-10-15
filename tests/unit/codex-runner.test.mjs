@@ -772,3 +772,12 @@ test('a runner error is not Codex failing the card, and repeated errors or a ful
   const { cloudPriorAttempts } = require('../../scripts/lib/cloud-worker-pick.js');
   assert.equal(cloudPriorAttempts({ comments: { nodes: [{ body: crashNote }, { body: realBounce }] } }), 1);
 });
+
+test('crash memory: two runner crashes on one card keep Codex away; quoted crash text does not unban a real bounce', () => {
+  const now = Date.parse('2026-10-15T15:00:00Z');
+  const crash = (at) => ({ createdAt: at, body: '## Codex runner: stopped mid-card\n\nError: boom' });
+  assert.equal(r.codexBouncedRecently([crash('2026-10-15T07:43:00Z')], now), false);
+  assert.equal(r.codexBouncedRecently([crash('2026-10-14T07:43:00Z'), crash('2026-10-15T07:43:00Z')], now), true);
+  const quoting = `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nreport: the earlier note said "## Codex runner: stopped mid-card"`;
+  assert.equal(r.isCodexBounce(quoting), true);
+});

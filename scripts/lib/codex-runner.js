@@ -337,7 +337,6 @@ function landingIsPartial(comments, sinceMs) {
     && Number.isFinite(Date.parse(c.createdAt)) && Date.parse(c.createdAt) >= sinceMs - ORPHAN_CLOCK_SKEW_MS);
 }
 
-/** True when the runner bounced this card within the last 14 days. */
 /**
  * True for a runner note that says Codex itself failed the card. A "stopped mid-card" note is
  * the runner's own error (disk full, lost lock), not Codex's: on 2026-10-15 07:41 a full disk
@@ -346,12 +345,19 @@ function landingIsPartial(comments, sinceMs) {
  */
 function isCodexBounce(body) {
   const b = String(body || '');
-  return b.startsWith(BOUNCED_MARKER) && !b.includes('## Codex runner: stopped mid-card');
+  return b.startsWith(BOUNCED_MARKER) && !b.startsWith(`${BOUNCED_MARKER}\n${CRASH_HEADING}`);
 }
+const CRASH_HEADING = '## Codex runner: stopped mid-card';
+const isCrashNote = (body) => { const b = String(body || ''); return b.startsWith(CRASH_HEADING) || b.startsWith(`${BOUNCED_MARKER}\n${CRASH_HEADING}`); };
 
+/**
+ * True when Codex failed this card within the last 14 days, or the runner crashed on it twice
+ * (a card that breaks the runner every time must not take a slot on every run).
+ */
 function codexBouncedRecently(comments, nowMs) {
-  return (Array.isArray(comments) ? comments : []).some((c) => c && isCodexBounce(c.body)
+  const recent = (Array.isArray(comments) ? comments : []).filter((c) => c
     && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
+  return recent.some((c) => isCodexBounce(c.body)) || recent.filter((c) => isCrashNote(c.body)).length >= 2;
 }
 
 /**

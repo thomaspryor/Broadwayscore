@@ -1164,11 +1164,17 @@ async function runLocked(startedMs) {
   let stop = null;
   for (const pick of await pickCards()) {
     if (worked >= OPTS.limit) break;
+    // The worktrees and data copies (ROOT), Codex sessions (home) and test temp files (tmp).
     let freeDiskBytes = null;
-    try { const st = fs.statfsSync(ROOT); freeDiskBytes = st.bavail * st.bsize; } catch { /* unknown: do not block */ }
+    for (const dir of [ROOT, CODEX_HOME, os.tmpdir()]) {
+      try { const st = fs.statfsSync(dir); const free = st.bavail * st.bsize; freeDiskBytes = freeDiskBytes == null ? free : Math.min(freeDiskBytes, free); } catch { /* missing dir: skip */ }
+    }
+    const diskLow = freeDiskBytes != null && freeDiskBytes < R.MIN_FREE_DISK_BYTES;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd, crashStreak: stats.crashStreak, lastCrash: stats.lastCrash, freeDiskBytes });
     if (!stop && stats.aborted) stop = stats.aborted;
-    if (stop && (stats.aborted || stats.doneRefusals || stats.crashStreak >= 2 || /disk left/.test(stop))) stopAllSlots(stop);
+    // Launch-wide: a broken reviewer/gate, or a full disk (the slots share it). Two runner errors
+    // in a row stop only this slot: they can be this slot's cards.
+    if (stop && (stats.aborted || stats.doneRefusals || diskLow)) stopAllSlots(stop);
     if (!stop) { const other = runStop(); if (other) stop = `another slot stopped this launch (${other})`; }
     if (!stop && HARD_END_MS - Date.now() < CARD_START_MIN_MS) stop = `under ${CARD_START_MIN_MS / 60_000} min left before the ${OPTS.hardStopMinutes}-min hard stop`;
     let held = true;
@@ -1186,6 +1192,7 @@ async function runLocked(startedMs) {
   await Promise.all(inFlight.map((e) => e.promise));
   if (!stop && stats.aborted) stop = stats.aborted;
   if (stats.aborted || stats.doneRefusals) stopAllSlots(stop || 'the Done gate refused a card the Claude check passed');
+  else if (stats.crashStreak >= 1 && /No space left on device/i.test(stats.lastCrash || '')) stopAllSlots(`out of disk: ${String(stats.lastCrash).slice(0, 160)}`);
   saveLogin();
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
