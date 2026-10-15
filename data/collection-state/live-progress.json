@@ -1,19 +1,53 @@
 {
-  "updatedAt": "2026-10-15T10:32:34.426Z",
-  "processed": 4,
-  "failed": 2,
-  "successRate": "66.7%",
+  "updatedAt": "2026-10-15T11:02:31.832Z",
+  "processed": 144,
+  "failed": 115,
+  "successRate": "55.6%",
   "tierBreakdown": {
-    "playwright": 2,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 84,
+    "amp": 1,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 5,
-    "brightdata": 3,
+    "scrapingdog": 11,
+    "scrapingbee": 9,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 34
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-15T09:19:26.293Z",
+      "event": "bb-session",
+      "session": "2ae9e17b",
+      "url": "https://theater.nytimes.com/2012/04/24/theater/reviews/the-lyons-with-linda-lavi"
+    },
+    {
+      "t": "2026-10-15T09:19:26.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T10:22:39.355Z",
+      "event": "bb-session",
+      "session": "1c6bcf78",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-15T10:22:39.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T10:26:10.422Z",
+      "event": "bb-session",
+      "session": "42e6b5a6",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T10:26:10.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
