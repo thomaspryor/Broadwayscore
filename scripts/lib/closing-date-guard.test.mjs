@@ -67,6 +67,9 @@ test('run_duration parsing', () => {
   assert.equal(parseRunMinutes(null), null);
   assert.equal(parseRunMinutes('5'), null);
   assert.equal(parseRunMinutes('9999'), null);
+  assert.equal(parseRunMinutes('approx 90-100'), null);
+  assert.equal(parseRunMinutes('2x45'), null);
+  assert.equal(parseRunMinutes('90 mins (intermission)'), null);
   assert.equal(formatRuntime(45), '45m');
   assert.equal(formatRuntime(120), '2h');
 });

@@ -20,9 +20,10 @@ function parseRunMinutes(raw) {
   if (raw == null || raw === '') return null;
   if (typeof raw === 'number') return Number.isFinite(raw) ? clamp(Math.round(raw)) : null;
   const s = String(raw).toLowerCase();
-  const hm = s.match(/(\d+)\s*(?:h|hr|hrs|hour|hours)\b(?:\s*(?:and\s*)?(\d+)\s*(?:m|min|mins|minute|minutes)?)?/);
+  const hm = s.trim().match(/^(\d+)\s*(?:h|hr|hrs|hour|hours)\b(?:\s*(?:and\s*)?(\d+)\s*(?:m|min|mins|minute|minutes)?)?$/);
   if (hm) return clamp(Number(hm[1]) * 60 + Number(hm[2] || 0));
-  const m = s.match(/(\d+)/);
+  // Plain "90" / "90 min(ute)s" only: ranges and "2x45" are ambiguous, so skip them.
+  const m = s.trim().match(/^(\d+)\s*(?:m|min|mins|minute|minutes)?$/);
   return m ? clamp(Number(m[1])) : null;
 }
 
