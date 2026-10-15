@@ -186,19 +186,28 @@ function applyDelta(onDisk, delta) {
     if (shows[id] === url) delete shows[id];
   }
   const was = delta.was || {};
+  const accepted = [];
   for (const [id, url] of Object.entries(delta.sets)) {
     const disk = shows[id];
     if (disk === undefined || disk === url || disk === was[id]) {
-      const owner = findConflictingKey(shows, id, url);
-      if (owner !== null) {
-        collisions.push({ id, url, owner });
-        if (disk !== undefined && disk !== url && disk === was[id]) delete shows[id];
-        continue;
-      }
-      shows[id] = url;
+      accepted.push([id, url, disk]);
     } else {
       conflicts.push({ id, mine: url, disk });
     }
+  }
+  // Release every accepted id's old value BEFORE checking any of them, so a
+  // swap or move between two ids inside one save is judged on the end state,
+  // not on iteration order. A collision-refused id therefore ends up unmapped
+  // unless disk already held exactly this url for it (then nothing changed).
+  for (const [id] of accepted) delete shows[id];
+  for (const [id, url, disk] of accepted) {
+    const owner = findConflictingKey(shows, id, url);
+    if (owner === null) {
+      shows[id] = url;
+      continue;
+    }
+    collisions.push({ id, url, owner });
+    if (disk === url) shows[id] = disk;
   }
   return { data: { ...(onDisk || EMPTY()), shows }, conflicts, collisions };
 }

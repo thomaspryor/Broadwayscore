@@ -153,6 +153,16 @@ test('Playbill store: a colliding REPLACEMENT drops the evicted old URL; moving 
   assert.equal(s.data.shows['x-2026'], undefined);
 });
 
+test('Playbill store: swapping two URLs between two ids in one save is not order-dependent', () => {
+  const file = tmpFile('playbill-urls.json', { shows: { 'a-2026': PB('page-1'), 'b-2026': PB('page-2') }, lastUpdated: null });
+  const s = store.loadPlaybillUrls(file);
+  s.data.shows['a-2026'] = PB('page-2');
+  s.data.shows['b-2026'] = PB('page-1');
+  const r = store.savePlaybillUrls(file, s.data, s.snapshot, OPEN);
+  assert.deepEqual(readJson(file).shows, { 'a-2026': PB('page-2'), 'b-2026': PB('page-1') });
+  assert.deepEqual(r.refused, []);
+});
+
 // ---------------------------------------------------------------- WestEnd discovery
 
 function wetMap(shows) {
