@@ -1,35 +1,35 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-14T07:38:42.216Z",
+  "lastChecked": "2026-10-15T07:28:18.835Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: opening date vs review dates",
-      "status": "warn",
-      "message": "1 show(s) store an opening date later than their reviews: nina-off-west-end-2026 (stored 2026-10-12, reviews 2026-10-09)"
+      "status": "pass",
+      "message": "No opening date contradicts its reviews (0 acked)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "pass",
-      "message": "No new star/score contradictions (35 known/baselined)"
+      "status": "warn",
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: wolf-hall-parts-one-and-two-2015 The Guardian 5/5 stars→100 vs LLM 63, gap 37)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "97.9% scored (28721/29329)"
+      "message": "98.1% scored (29193/29772)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "20 audit(s) drifting: shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc), content-quality regex false-positive rate, reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear), review byline date disagrees with publishDate by >3 days on a shipping review, high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/commercial.json physics/contradiction — full --strict (gate = FAIL only), data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only), critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff), duplicate SHOW entries in shows.json (baseline-diff), exclusion flag contradicted by its own content-verification pass (baseline-diff), review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)"
+      "message": "19 audit(s) drifting: shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc), content-quality regex false-positive rate, reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear), review byline date disagrees with publishDate by >3 days on a shipping review, high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/commercial.json physics/contradiction — full --strict (gate = FAIL only), data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only), critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff), duplicate SHOW entries in shows.json (baseline-diff), review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "13346 messages, 0 auth failures (p=reject)"
+      "message": "13359 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -42,14 +42,19 @@
       "message": "7 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
     },
     {
+      "name": "Quality: Show Score gap",
+      "status": "warn",
+      "message": "1 opened show(s) have a cached Show Score URL but no Show Score audience score (amaze-magic-off-broadway-2025)"
+    },
+    {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1545 outlet(s), 56401 review(s)"
+      "message": "No broken-extractor signature in 1566 outlet(s), 56608 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1545 outlet(s), 56401 review(s)"
+      "message": "No broken-extractor signature in 1566 outlet(s), 56608 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",

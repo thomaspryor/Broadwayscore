@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-14T07:38:42.217Z",
+  "lastChecked": "2026-10-15T07:28:18.836Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -59,27 +59,27 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "error",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 1 newer still in flight"
+      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "36 discovered review URL(s) across 25 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
+      "message": "32 discovered review URL(s) across 22 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 0d)"
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 1d)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "4 Linear card(s) carry an acceptance check that cannot tell done from not done (4 can never fail, 0 can never pass). First: BRO-4602 Deploy's Google sitemap submission gets 403 (service account lacks Search Console permission)"
+      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-4602 Deploy's Google sitemap submission gets 403 (service account lacks Search Console permission)"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "221 of 619 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5258 audit-provisional-venues red 33 of 34 runs: Playbill match picks a different production (school-pictures, mystic-pizza)"
+      "message": "198 of 577 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5351 Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3"
     }
   ]
 }

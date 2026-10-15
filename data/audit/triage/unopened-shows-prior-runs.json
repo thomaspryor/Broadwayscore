@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-14T02:59:52.373Z",
+  "generatedAt": "2026-10-15T07:41:26.817Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3733,
-  "flaggedShows": 65,
-  "flaggedFiles": 209,
+  "scannedShows": 3736,
+  "flaggedShows": 66,
+  "flaggedFiles": 211,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 35,
-    "needs-human-review": 30
+    "needs-human-review": 31
   },
   "shows": [
     {
@@ -1561,6 +1561,124 @@
       ]
     },
     {
+      "showId": "stick-man-off-west-end-2026",
+      "title": "Stick Man",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Bloomsbury Theatre",
+      "previewsStartDate": "2026-12-03",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 7,
+        "distinctYears": [
+          2011,
+          2016,
+          2017,
+          2023,
+          2025
+        ],
+        "spanDays": 5237,
+        "flaggedCount": 7,
+        "venueMentionCount": 2
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "hampstead-highgate-express--bridget-galton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "hampstead-highgate-express",
+          "criticName": "Bridget Galton",
+          "publishDate": "2016-11-24",
+          "url": "https://www.hamhigh.co.uk/things-to-do/21364219.stick-man-leicester-square-theatre-review-kept-five-year-old-companions-enchanted-delighted/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--emmie-newitt.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Emmie Newitt",
+          "publishDate": "2023-09-25",
+          "url": "https://www.londonboxoffice.co.uk/news/post/stick-man-returns-to-the-west-end",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "londonpubtheatres--paula-david.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "londonpubtheatres",
+          "criticName": "Paula David",
+          "publishDate": "2025-12-07",
+          "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "londontheatre1--laura-jane-foley.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "londontheatre1",
+          "criticName": "Laura-Jane Foley",
+          "publishDate": "2017-10-29",
+          "url": "https://www.londontheatre1.com/reviews/review-stick-man-leicester-square-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "musicaltheatremusings--sarah-mcpartlan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "musicaltheatremusings",
+          "criticName": "Sarah McPartlan",
+          "publishDate": "2025-12-07",
+          "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "plays-to-see--rivka-jacobson.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "plays-to-see",
+          "criticName": "Rivka Jacobson",
+          "publishDate": "2025-12-08",
+          "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--michael-coveney.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Michael Coveney",
+          "publishDate": "2011-08-07",
+          "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "a-view-from-the-bridge-off-broadway-2026",
       "title": "A View from the Bridge",
       "market": "broadway",
@@ -1595,19 +1713,6 @@
           "evaluationError": null
         },
         {
-          "file": "daily-mail--robert-gore-langton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "daily-mail",
-          "criticName": "Robert Gore-Langton",
-          "publishDate": "2024-06-09",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
           "file": "financialtimes--sarah-hemming.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
@@ -1628,6 +1733,19 @@
           "outletId": "independent",
           "criticName": "Tim Bano",
           "publishDate": "2024-06-05",
+          "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "mail-on-sunday--robert-gore-langton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "mail-on-sunday",
+          "criticName": "Robert Gore-Langton",
+          "publishDate": "2024-06-09",
           "url": null,
           "wrongProduction": true,
           "wrongShow": false,
@@ -1756,110 +1874,6 @@
           "criticName": "Elyse Trevers",
           "publishDate": "2025-06-03",
           "url": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "stick-man-off-west-end-2026",
-      "title": "Stick Man",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Bloomsbury Theatre",
-      "previewsStartDate": "2026-12-03",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 6,
-        "distinctYears": [
-          2011,
-          2016,
-          2017,
-          2025
-        ],
-        "spanDays": 5237,
-        "flaggedCount": 6,
-        "venueMentionCount": 2
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "hampstead-highgate-express--bridget-galton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "hampstead-highgate-express",
-          "criticName": "Bridget Galton",
-          "publishDate": "2016-11-24",
-          "url": "https://www.hamhigh.co.uk/things-to-do/21364219.stick-man-leicester-square-theatre-review-kept-five-year-old-companions-enchanted-delighted/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "londonpubtheatres--paula-david.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "londonpubtheatres",
-          "criticName": "Paula David",
-          "publishDate": "2025-12-07",
-          "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "londontheatre1--laura-jane-foley.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "londontheatre1",
-          "criticName": "Laura-Jane Foley",
-          "publishDate": "2017-10-29",
-          "url": "https://www.londontheatre1.com/reviews/review-stick-man-leicester-square-theatre/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "musicaltheatremusings--sarah-mcpartlan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "musicaltheatremusings",
-          "criticName": "Sarah McPartlan",
-          "publishDate": "2025-12-07",
-          "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "plays-to-see--rivka-jacobson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "plays-to-see",
-          "criticName": "Rivka Jacobson",
-          "publishDate": "2025-12-08",
-          "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--michael-coveney.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Michael Coveney",
-          "publishDate": "2011-08-07",
-          "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3967,6 +3981,42 @@
           "criticName": "Nastazja Domaradzka",
           "publishDate": "2019-05-15",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "gentlemen-prefer-blondes-west-end-2027",
+      "title": "Gentlemen Prefer Blondes",
+      "market": "west-end",
+      "status": "announced",
+      "venue": "London Palladium",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"London Palladium\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2019
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2019-10-09",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-gentlemen-prefer-blondes",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

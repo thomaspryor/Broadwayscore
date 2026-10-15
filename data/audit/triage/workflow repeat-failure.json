@@ -1,15 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "error",
-  "lastChecked": "2026-10-14T07:38:42.220Z",
+  "status": "warn",
+  "lastChecked": "2026-10-15T07:28:18.840Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Execute Approved Fix",
-      "status": "error",
-      "message": "Execute Approved Fix failed 4 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: LLM Ensemble Score Reviews",
+      "status": "warn",
+      "message": "LLM Ensemble Score Reviews failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     }
   ]
 }
