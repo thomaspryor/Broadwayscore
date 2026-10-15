@@ -1,48 +1,21 @@
 {
-  "updatedAt": "2026-10-15T16:19:10.450Z",
-  "processed": 254,
-  "failed": 253,
-  "successRate": "50.1%",
+  "updatedAt": "2026-10-15T16:21:29.770Z",
+  "processed": 225,
+  "failed": 212,
+  "successRate": "51.5%",
   "tierBreakdown": {
-    "playwright": 145,
+    "playwright": 154,
     "amp": 2,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 27,
+    "scrapingdog": 30,
     "scrapingbee": 18,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 68
+    "archive": 73
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-15T10:26:10.755Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-15T11:07:23.506Z",
-      "event": "bb-session",
-      "session": "9d6e0eb4",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-15T11:07:23.890Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T11:07:41.052Z",
-      "event": "bb-session",
-      "session": "d20b3014",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-15T11:07:41.396Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-15T11:10:22.846Z",
       "event": "bb-session",
@@ -121,10 +94,37 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-15T16:02:41.204Z",
+      "t": "2026-10-15T16:13:01.382Z",
       "event": "bb-session",
-      "session": "5c8c8b56",
-      "url": "http://www.hollywoodreporter.com/review/stuffed-review-936166"
+      "session": "afaa1910",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-15T16:13:01.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T16:16:39.619Z",
+      "event": "bb-session",
+      "session": "c03fb97b",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T16:16:40.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T16:16:57.645Z",
+      "event": "bb-session",
+      "session": "9d7abd58",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T16:16:58.077Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
