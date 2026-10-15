@@ -36,9 +36,14 @@ runs:
         REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
         FETCH_DEPTH: ${{ inputs.fetch-depth }}
       run: |
+        # FETCH_DEPTH can come from a dispatch input (run-script.yml): digits
+        # only, so it can never smuggle a git option into the clone (BRO-5373).
+        if [ -n "${FETCH_DEPTH}" ] && ! printf '%s' "${FETCH_DEPTH}" | grep -Eq '^[0-9]{1,6}$'; then
+          echo "::error::fetch-depth must be digits only"; exit 1
+        fi
         DEPTH_ARGS=""
         if [ -n "${FETCH_DEPTH}" ] && [ "${FETCH_DEPTH}" != "0" ]; then
-          DEPTH_ARGS="--depth ${FETCH_DEPTH}"
+          DEPTH_ARGS="--depth=${FETCH_DEPTH}"
         fi
 
         rm -rf data/review-texts

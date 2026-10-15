@@ -13,7 +13,7 @@
  * for it, and prints the script's output here as if it ran locally.
  *
  * Usage:
- *   node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] <scripts/x.js> [args...]
+ *   node scripts/cloud-run-script.js [--review-texts] [--review-texts-depth=N] [--timeout=MIN] <scripts/x.js> [args...]
  *
  * Exit code: the script's own exit code; 3 when the run could not be started or
  * read (dispatch refused, run never appeared, timeout).
@@ -53,11 +53,14 @@ function validateScriptPath(p) {
 }
 
 function parseArgs(argv) {
-  const opts = { reviewTexts: false, timeoutMin: 30, script: null, args: [] };
+  const opts = { reviewTexts: false, reviewTextsDepth: 1, timeoutMin: 30, script: null, args: [] };
   let i = 0;
   for (; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--review-texts') opts.reviewTexts = true;
+    // History audits (BRO-5373): N commits of review-texts, 0 = full. The run
+    // drops the clone's credentials, so a script cannot fetch more itself.
+    else if (a.startsWith('--review-texts-depth=')) { opts.reviewTexts = true; opts.reviewTextsDepth = Number(a.slice(21)); }
     else if (a.startsWith('--timeout=')) opts.timeoutMin = Number(a.slice(10));
     else break;
   }
@@ -108,11 +111,15 @@ function findRun(requestId, deadline) {
 function main() {
   const opts = parseArgs(process.argv.slice(2));
   if (!opts.script || hasHelpFlag([opts.script])) {
-    console.error('Usage: node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] <scripts/x.js> [args...]');
+    console.error('Usage: node scripts/cloud-run-script.js [--review-texts] [--review-texts-depth=N] [--timeout=MIN] <scripts/x.js> [args...]');
     return opts.script ? 0 : 2;
   }
   const bad = validateScriptPath(opts.script);
   if (bad) { console.error(bad); return 2; }
+  if (!Number.isInteger(opts.reviewTextsDepth) || opts.reviewTextsDepth < 0 || opts.reviewTextsDepth > 100000) {
+    console.error('--review-texts-depth must be a whole number from 0 (full history) to 100000');
+    return 2;
+  }
   if (!Number.isInteger(opts.timeoutMin) || opts.timeoutMin < 1 || opts.timeoutMin > 55) {
     console.error('--timeout must be a whole number of minutes from 1 to 55');
     return 2;
@@ -128,6 +135,7 @@ function main() {
       '-f', `script=${opts.script}`,
       '-f', `args_json=${JSON.stringify(opts.args)}`,
       '-f', `review_texts=${opts.reviewTexts}`,
+      '-f', `review_texts_depth=${opts.reviewTextsDepth}`,
       '-f', `request_id=${requestId}`,
       '-f', `timeout_minutes=${opts.timeoutMin}`,
       '-f', `pubkey_b64=${Buffer.from(publicKey).toString('base64')}`]);

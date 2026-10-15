@@ -40,6 +40,11 @@ on:
         required: false
         default: false
         type: boolean
+      review_texts_depth:
+        description: 'Commits of review-texts history to clone (1 = snapshot, 0 = full); for history audits'
+        required: false
+        default: '1'
+        type: string
       timeout_minutes:
         description: 'Script time limit in minutes (max 55)'
         required: false
@@ -80,11 +85,23 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # review_texts_depth reaches `git clone` inside the shared action while
+      # the private-repo token is in the environment: digits only (BRO-5373).
+      - name: Validate review_texts_depth
+        if: inputs.review_texts
+        env:
+          DEPTH: ${{ inputs.review_texts_depth }}
+        run: |
+          if ! printf '%s' "${DEPTH:-1}" | grep -Eq '^[0-9]{1,6}$'; then
+            echo "::error::review_texts_depth must be 0-999999 digits only"; exit 1
+          fi
+
       - name: Checkout review texts
         if: inputs.review_texts
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: ${{ inputs.review_texts_depth || '1' }}
 
       # The data checkouts clone with the PAT in the remote URL; drop it so no
       # script can read it back out of .git/config (nothing here pushes).

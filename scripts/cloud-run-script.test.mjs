@@ -42,3 +42,12 @@ test('extractOutput reports not-found when the script never started', () => {
   assert.equal(r.found, false);
   assert.equal(r.exitCode, null);
 });
+
+test('--review-texts-depth asks for review-texts history and implies --review-texts (BRO-5373)', () => {
+  const o = parseArgs(['--review-texts-depth=4000', 'scripts/a.js', '--days=60']);
+  assert.equal(o.reviewTexts, true);
+  assert.equal(o.reviewTextsDepth, 4000);
+  assert.equal(o.script, 'scripts/a.js');
+  assert.deepEqual(o.args, ['--days=60']);
+  assert.equal(parseArgs(['scripts/a.js']).reviewTextsDepth, 1, 'default stays a one-commit snapshot');
+});
