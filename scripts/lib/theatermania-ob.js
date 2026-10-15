@@ -35,7 +35,7 @@ const TM_OB_MARKET_ID = 98;
 const TM_PAGE_SIZE = 100;
 const TM_MAX_PAGES = 5;
 const TM_USER_AGENT = 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0; +https://broadwayscorecard.com)';
-const TM_FIELDS = 'id,title,link,modified,genre,acf.preview_date,acf.opening_date,acf.closing_date,acf.the_venue,acf.synopsis';
+const TM_FIELDS = 'id,title,link,modified,genre,acf.preview_date,acf.opening_date,acf.closing_date,acf.run_duration,acf.the_venue,acf.synopsis';
 
 // An open-ended row (no closing_date) counts as current only if it started
 // within this window. Older open-ended rows are long-runners we already carry
@@ -399,6 +399,7 @@ module.exports = {
   parseTmOffBroadwayRow,
   findTmCoverageGaps,
   findTmSameTitleShow,
+  titleKeyLoose,
   decideTmCoverageOutcome,
   fetchTmOffBroadway,
 };

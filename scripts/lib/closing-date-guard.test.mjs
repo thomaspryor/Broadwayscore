@@ -79,3 +79,12 @@ test('writeClosingDate guard itself still blocks human-corrected shows', () => {
   assert.equal(writeClosingDate(s, '2026-11-01', 'x', { log() {} }), false);
   assert.equal(s.closingDate, '2026-12-31');
 });
+
+test('TM_FIELDS requests run_duration and a parsed row carries runtimeMinutes', () => {
+  const { parseTmOffBroadwayRow } = require('./theatermania-ob.js');
+  const src = require('node:fs').readFileSync(new URL('./theatermania-ob.js', import.meta.url), 'utf8');
+  assert.match(src, /TM_FIELDS = '[^']*acf\.run_duration/);
+  const venuesById = new Map([[1, { name: 'Westside Theatre', city: 'New York' }]]);
+  const r = parseTmOffBroadwayRow({ title: { rendered: 'Test Show' }, link: 'x', id: 1, acf: { the_venue: 1, opening_date: '2026-09-01', closing_date: '2026-11-07', run_duration: '80' }, genre: [] }, { venuesById });
+  if (r.candidate) assert.equal(r.candidate.runtimeMinutes, '80');
+});

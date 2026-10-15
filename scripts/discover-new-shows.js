@@ -57,7 +57,7 @@ const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-class
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
-const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow } = require('./lib/theatermania-ob');
+const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow, titleKeyLoose } = require('./lib/theatermania-ob');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { matchesRetired } = require('./lib/retired-show-ids');
 const { decidePrematurePreviews } = require('./lib/premature-previews');
@@ -2621,10 +2621,11 @@ async function discoverShows() {
   // (ship-check finding on the first version of this fix).
   const reconciliationProposals = new Map();
   function fillFromTheaterMania(existing, candidate) {
+    if (dryRun) return; // in-memory mutation would leak into later candidates in a dry run
     const written = applyTmFill(existing, candidate);
     if (Object.keys(written).length) {
       console.log(`  tm-fill: ${existing.id} <- ${JSON.stringify(written)}`);
-      tmFilled.push({ id: existing.id, ...written });
+      tmFilled.push({ id: existing.id, title: existing.title, ...written });
     }
   }
 
@@ -2816,7 +2817,11 @@ async function discoverShows() {
     if (show._discoverySource === 'theatermania-ob') {
       const twin = findTmSameTitleShow(show, data.shows) || findTmSameTitleShow(show, pendingAddShows);
       if (twin) {
-        if (!twin._pendingFix) fillFromTheaterMania(twin, show); // BRO-4384: exact loose-title match
+        // BRO-4384: fill only when this exact loose title names ONE live row (two
+        // concurrent productions of a classic could otherwise swap dates).
+        const sameTitleLive = data.shows.filter(s => s && ['open', 'previews', 'upcoming', 'announced'].includes(s.status) &&
+          titleKeyLoose(s.title) === titleKeyLoose(show.title));
+        if (twin._pendingFix === undefined && sameTitleLive.length === 1 && sameTitleLive[0] === twin) fillFromTheaterMania(twin, show);
         skippedDuplicates.push({
           title: show.title,
           reason: `TheaterMania same-title match (venue "${show.venue}" vs "${twin.venue}")${twin._pendingFix ? `, queued by pending-fix plan ${twin._pendingFix}` : ''}`,
@@ -2944,7 +2949,7 @@ async function discoverShows() {
   // save/summary logic below reads reconciledShows.
   resolveReconciliationProposals();
   // BRO-4384: TheaterMania fills mutate the matched rows in place; count them so saveShows runs.
-  for (const f of tmFilled) reconciledShows.push({ id: f.id, title: f.id, patch: f });
+  for (const f of tmFilled) reconciledShows.push({ id: f.id, title: f.title || f.id, patch: f });
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
   // Skip off-Broadway and London shows — IBDB only covers Broadway
