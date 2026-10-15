@@ -189,11 +189,21 @@ describe('ingestion-year stamp (BRO-2829)', () => {
     assert.deepEqual(findIngestionYearStamps(rows).map((h) => h.id), ['new-show-off-broadway-2026']);
     assert.ok(INGESTION_STAMP_ACCEPTED['orlando-off-broadway-2026']);
   });
-  test('real shows.json: zero un-reviewed hits', () => {
+  const realShows = () => {
     const f = path.join(ROOT, 'data', 'shows.json');
-    if (!fs.existsSync(f)) return;
+    if (!fs.existsSync(f)) return null;
     const raw = JSON.parse(fs.readFileSync(f, 'utf8'));
-    const hits = findIngestionYearStamps(Array.isArray(raw) ? raw : raw.shows);
-    assert.deepEqual(hits.map((h) => h.id), []);
+    return Array.isArray(raw) ? raw : raw.shows;
+  };
+  test('real shows.json: zero un-reviewed hits', (t) => {
+    const shows = realShows();
+    if (!shows) return t.skip('no data/shows.json in this checkout');
+    assert.deepEqual(findIngestionYearStamps(shows).map((h) => h.id), []);
+  });
+  test('real shows.json: every accepted id is still a hit (no stale allowlist entries)', (t) => {
+    const shows = realShows();
+    if (!shows) return t.skip('no data/shows.json in this checkout');
+    const live = new Set(shows.filter((s) => ingestionYearStamp(s)).map((s) => s.id));
+    assert.deepEqual(Object.keys(INGESTION_STAMP_ACCEPTED).filter((id) => !live.has(id)), []);
   });
 });
