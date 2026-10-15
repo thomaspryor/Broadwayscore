@@ -1,63 +1,63 @@
 {
-  "runDate": "2026-10-15T10:02:59.317Z",
+  "runDate": "2026-10-15T10:33:24.566Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-real-thing-2014",
+    "showFilter": "rent-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 4,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 2,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 4,
+    "failed": 2,
     "shows": [
-      "the-real-thing-2014"
+      "rent-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,24 +66,39 @@
     }
   },
   "processed": [
-    "the-real-thing-2014/wsj--terry-teachout.json"
+    "rent-west-end-2026/britishtheatrecom--british-theatre.json",
+    "rent-west-end-2026/city-am--adam-bloodworth.json",
+    "rent-west-end-2026/ground--unknown.json",
+    "rent-west-end-2026/thestage--the-stage.json"
   ],
-  "failed": [],
+  "failed": [
+    "rent-west-end-2026/financialtimes--sarah-hemming.json",
+    "rent-west-end-2026/jonathan-baz--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "the-real-thing-2014/wsj--terry-teachout.json"
+      "rent-west-end-2026/britishtheatrecom--british-theatre.json",
+      "rent-west-end-2026/city-am--adam-bloodworth.json",
+      "rent-west-end-2026/ground--unknown.json",
+      "rent-west-end-2026/thestage--the-stage.json"
     ],
-    "failed": []
+    "failed": [
+      "rent-west-end-2026/financialtimes--sarah-hemming.json",
+      "rent-west-end-2026/jonathan-baz--unknown.json"
+    ]
   },
   "tierDetails": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/the-real-thing-2014/wsj--terry-teachout.json",
-      "the-real-thing-2014/wsj--terry-teachout.json"
+    "playwright": [
+      "rent-west-end-2026/britishtheatrecom--british-theatre.json",
+      "rent-west-end-2026/thestage--the-stage.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "rent-west-end-2026/city-am--adam-bloodworth.json",
+      "rent-west-end-2026/ground--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
