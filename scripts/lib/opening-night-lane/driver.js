@@ -130,6 +130,7 @@ function buildRealLaneDeps({
       };
       return runLaneNight({
         show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop,
+        reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
         adapters: [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] })],
         fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
         // One instance for the whole night: its push queue and pending merges must be shared by every batch.
