@@ -29,6 +29,7 @@
  * write the cap-allowed count to $GITHUB_OUTPUT as `candidates`.
  */
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');
 const path = require('path');
