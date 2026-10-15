@@ -37,6 +37,7 @@
  * scripts/check-swap-pressure.js as if it were already built).
  */
 const { execFileSync } = require('child_process');
+const { SYSCTL } = require('./system-bin');
 
 /**
  * Parse `sysctl vm.swapusage` output, e.g.:
@@ -70,7 +71,7 @@ function parseSwapUsage(output) {
  */
 function currentSwapUsage() {
   try {
-    const out = execFileSync('sysctl', ['vm.swapusage'], { encoding: 'utf8', timeout: 10000 });
+    const out = execFileSync(SYSCTL, ['vm.swapusage'], { encoding: 'utf8', timeout: 10000 });
     return parseSwapUsage(out);
   } catch {
     return null;
@@ -140,7 +141,7 @@ function classifyVmPressureLevel(raw) {
 /** I/O wrapper. null off macOS or when sysctl fails. */
 function currentVmPressure() {
   try {
-    return classifyVmPressureLevel(execFileSync('sysctl', ['-n', 'kern.memorystatus_vm_pressure_level'], {
+    return classifyVmPressureLevel(execFileSync(SYSCTL, ['-n', 'kern.memorystatus_vm_pressure_level'], {
       encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'],
     }));
   } catch {

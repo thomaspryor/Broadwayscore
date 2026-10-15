@@ -191,7 +191,8 @@ test('parsePsTable / parseLsofCwds read linux and macOS shapes', () => {
 
 // ---- real processes through the real I/O path -------------------------------
 
-const hasLsof = spawnSync('lsof', ['-v']).error === undefined;
+const { LSOF } = require('./system-bin.js');
+const hasLsof = spawnSync(LSOF, ['-v']).error === undefined;
 
 function waitMs(ms) {
   const until = Date.now() + ms;
