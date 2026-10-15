@@ -2248,6 +2248,8 @@ async function main(argv = process.argv.slice(2)) {
           noop: !!res.noop,
           conflict: !!res.conflict,
           conflictReason: res.conflictReason || null,
+          expected: !!res.expected,
+          expectedReason: res.expectedReason || null,
           unclassified: !!res.unclassified,
           zeroChar: !!res.zeroChar,
           reason: res.reason,

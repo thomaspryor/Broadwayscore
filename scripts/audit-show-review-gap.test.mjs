@@ -682,3 +682,9 @@ test('currentRunUncollected: expected-rejection ingests (Time Out capsule) are n
   };
   assert.equal(currentRunUncollected(row, { blocklist: null }), 2);
 });
+
+test('the ingestResults entry carries the expected-rejection flag that currentRunUncollected reads (BRO-5134)', () => {
+  const src = fs.readFileSync(new URL('./audit-show-review-gap.js', import.meta.url), 'utf8');
+  const push = src.slice(src.indexOf('r.ingestResults.push({'));
+  assert.match(push.slice(0, push.indexOf('});')), /expected: !!res\.expected/);
+});
