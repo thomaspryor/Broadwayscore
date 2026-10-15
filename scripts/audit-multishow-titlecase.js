@@ -18,13 +18,18 @@
  * matches, so their verdict cannot change). --shard=i/n splits the shows so
  * a full-corpus run fits the run-script time limit.
  *
- * Usage: node scripts/audit-multishow-titlecase.js [--show=a,b] [--shard=i/n] [--limit=N] [--json]
+ * --rule=url (BRO-5395) compares instead without and with the review's own url
+ * and Theatre Record filing as show-identity evidence (qualityOptsFor); files
+ * whose text already names the show are skipped, since the evidence is only
+ * consulted when it does not.
+ *
+ * Usage: node scripts/audit-multishow-titlecase.js [--rule=titlecase|url] [--show=a,b] [--shard=i/n] [--limit=N] [--json]
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const { assessTextQuality, detectMultiShowContent } = require('./lib/content-quality');
+const { assessTextQuality, detectMultiShowContent, validateShowMentioned, qualityOptsFor } = require('./lib/content-quality');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -32,6 +37,8 @@ const val = (n) => { const a = args.find((x) => x.startsWith(`--${n}=`)); return
 const onlyShows = val('show') ? val('show').split(',') : null;
 const limit = Number(val('limit') || 200);
 const asJson = args.includes('--json');
+const rule = val('rule') || 'titlecase';
+if (!['titlecase', 'url'].includes(rule)) { console.error('--rule must be titlecase or url'); process.exit(2); }
 const shardArg = val('shard');
 const [shardIdx, shardCount] = shardArg ? shardArg.split('/').map(Number) : [0, 1];
 if (!(shardCount >= 1 && shardIdx >= 0 && shardIdx < shardCount)) { console.error('--shard must be i/n with 0 <= i < n'); process.exit(2); }
@@ -56,21 +63,32 @@ function main() {
       const text = typeof r.fullText === 'string' ? r.fullText : '';
       if (text.length < 200) continue;
       scanned++;
-      const wasFound = detectMultiShowContent(text, show, { requireTitleCase: false });
-      if (!wasFound.detected) continue;
       const title = titleById[show] || null;
-      const before = assessTextQuality(text, show, title, { requireTitleCase: false });
-      const after = assessTextQuality(text, show, title, { requireTitleCase: true });
+      let wasFound;
+      let before;
+      let after;
+      if (rule === 'url') {
+        if (validateShowMentioned(text, title, show).valid) continue;
+        wasFound = { showsFound: [] };
+        before = assessTextQuality(text, show, title, { requireTitleCase: false, useShowEvidence: false });
+        after = assessTextQuality(text, show, title, { requireTitleCase: false, useShowEvidence: true, ...qualityOptsFor(r) });
+      } else {
+        wasFound = detectMultiShowContent(text, show, { requireTitleCase: false });
+        if (!wasFound.detected) continue;
+        before = assessTextQuality(text, show, title, { requireTitleCase: false });
+        after = assessTextQuality(text, show, title, { requireTitleCase: true });
+      }
       if (before.quality === after.quality) continue;
       const key = `${before.quality} -> ${after.quality}`;
       transitions[key] = (transitions[key] || 0) + 1;
       const was = wasFound.showsFound;
-      const now = new Set(detectMultiShowContent(text, show, { requireTitleCase: true }).showsFound);
+      const now = new Set(rule === 'url' ? [] : detectMultiShowContent(text, show, { requireTitleCase: true }).showsFound);
       flips.push({
         show, file, outlet: r.outletId || null, chars: text.length,
         before: before.quality, after: after.quality,
         beforeIssue: (before.issues || [])[0] || null,
         droppedTitles: was.filter((t) => !now.has(t)).slice(0, 8),
+        url: rule === 'url' ? (r.url || (r.source === 'theatre-record' ? 'theatre-record' : null)) : undefined,
       });
     }
   }
@@ -80,11 +98,11 @@ function main() {
     return;
   }
   console.log(`files with fullText scanned: ${scanned}${shardArg ? ` (shard ${shardArg})` : ''}`);
-  console.log(`verdict changes with requireTitleCase: ${flips.length}`);
+  console.log(`verdict changes with ${rule === 'url' ? 'url evidence' : 'requireTitleCase'}: ${flips.length}`);
   console.log('by transition:', JSON.stringify(transitions));
   console.log('\nshow | file | outlet | chars | before -> after | titles that stop counting');
   for (const f of flips.slice(0, limit)) {
-    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${f.droppedTitles.join(', ')}`);
+    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${rule === 'url' ? `${f.beforeIssue} | ${f.url}` : f.droppedTitles.join(', ')}`);
   }
 }
 

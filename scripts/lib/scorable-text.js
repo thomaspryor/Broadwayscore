@@ -22,7 +22,7 @@
  */
 
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
-const { assessTextQuality } = require('./content-quality');
+const { assessTextQuality, qualityOptsFor } = require('./content-quality');
 
 /**
  * Excerpt-bundle floor. MUST equal the `minTextLength` the scorer runs with
@@ -54,7 +54,7 @@ function selectScorableText(data, options) {
   const minTextLength = opts.minTextLength != null ? opts.minTextLength : DEFAULT_MIN_TEXT_LENGTH;
 
   if (data && data.fullText && data.fullText.length >= 100) {
-    const quality = assessTextQuality(data.fullText, data.showId, opts.showTitle);
+    const quality = assessTextQuality(data.fullText, data.showId, opts.showTitle, qualityOptsFor(data));
     const rejected =
       quality.quality === 'garbage' ||
       (quality.quality === 'suspicious' && quality.confidence === 'high');
@@ -68,7 +68,7 @@ function selectScorableText(data, options) {
     const { stripTrailingJunk } = require('./text-cleaning');
     const stripped = stripTrailingJunk(data.fullText);
     if (stripped && stripped !== data.fullText && stripped.length >= 100) {
-      const q2 = assessTextQuality(stripped, data.showId, opts.showTitle);
+      const q2 = assessTextQuality(stripped, data.showId, opts.showTitle, qualityOptsFor(data));
       const rejected2 = q2.quality === 'garbage' || (q2.quality === 'suspicious' && q2.confidence === 'high');
       if (!rejected2) return { text: stripped, isExcerpt: false };
     }

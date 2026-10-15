@@ -75,7 +75,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { assessTextQuality, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
+const { assessTextQuality, qualityOptsFor, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
 const { getBestTextForScoring } = require('../lib/text-quality');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
@@ -2189,7 +2189,7 @@ async function main(): Promise<void> {
       // got silently dropped. Measured impact: 13 of 68 orphans unblocked by
       // this one-line fix.
       const realShowTitle = showTitles.get(reviewFile.showId) || undefined;
-      const qualityResult: ContentQualityResult = assessTextQuality(reviewFile.fullText, reviewFile.showId, realShowTitle);
+      const qualityResult: ContentQualityResult = assessTextQuality(reviewFile.fullText, reviewFile.showId, realShowTitle, qualityOptsFor(reviewFile));
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
         // Check if we have good excerpts to fall back to

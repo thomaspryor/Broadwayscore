@@ -1535,6 +1535,49 @@ function hasReviewContent(text) {
  * @param {string} [showTitle] - Optional show title for additional checks (human readable)
  * @returns {{ quality: 'valid' | 'garbage' | 'suspicious', confidence: 'high' | 'medium' | 'low', issues: string[] }}
  */
+// Off until scripts/audit-multishow-titlecase.js --rule=url has measured and
+// a person has checked the verdict changes (BRO-5395).
+const USE_URL_SHOW_EVIDENCE = false;
+const URL_TITLE_STOP_WORDS = new Set(['the', 'a', 'an', 'and', 'of', 'at', 'in', 'on', 'to', 'for', 'with', 'musical', 'play']);
+
+function slugTokens(s) {
+  return String(s || '').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/['\u2018\u2019`]/g, '')
+    .split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+/**
+ * True when a review url's path names the show: every significant word of the
+ * title appears as a path token ("standing-skys-edge-national-theatre-review"
+ * for "Standing at the Sky's Edge"). A one-word title also needs "review" in
+ * the path, so a bare /company/ or /home/ page never counts (BRO-5395).
+ */
+function urlNamesShow(url, showTitle) {
+  if (!url || !showTitle || !/^https?:\/\//i.test(url)) return false;
+  let pathPart;
+  try { pathPart = decodeURIComponent(new URL(url).pathname); } catch { return false; }
+  const tokens = new Set(slugTokens(pathPart));
+  const words = slugTokens(showTitle).filter((w) => !URL_TITLE_STOP_WORDS.has(w));
+  if (words.length === 0) return false;
+  if (!words.every((w) => tokens.has(w))) return false;
+  return words.length >= 2 || (words[0].length >= 4 && tokens.has('review'));
+}
+
+/** assessTextQuality options from a review record: its url and Theatre Record filing. */
+function qualityOptsFor(record) {
+  if (!record || typeof record !== 'object') return {};
+  return {
+    url: record.url || null,
+    trustedShowFiling: record.source === 'theatre-record' || !!record.theatreRecordUrl,
+  };
+}
+
+/**
+ * @param {object} [opts] - requireTitleCase (detectMultiShowContent); url and
+ *   trustedShowFiling (BRO-5395, see qualityOptsFor) count as show-identity
+ *   evidence for the junk-page checks when the text never prints the title.
+ */
 function assessTextQuality(text, showId, showTitle, opts = {}) {
   const issues = [];
 
@@ -1552,9 +1595,18 @@ function assessTextQuality(text, showId, showTitle, opts = {}) {
   // But first: if the expected show IS mentioned, multi-show refs are likely
   // legitimate critic comparisons, not junk. Only flag if show is NOT mentioned.
   const showToCheck = showTitle || showId;
-  const showMentionedEarly = showToCheck && text.length >= 200
+  let showMentionedEarly = showToCheck && text.length >= 200
     ? validateShowMentioned(text, showTitle, showId)
     : { valid: true };
+  // BRO-5395: a review can describe the show without printing its title (the
+  // Telegraph and The Stage on Standing at the Sky's Edge write about Park
+  // Hill). When the review's own url names the show, or the row is a Theatre
+  // Record print text filed to this show, that is the show-identity evidence
+  // the junk-page checks below need; the text checks after them still run.
+  const useShowEvidence = opts.useShowEvidence === undefined ? USE_URL_SHOW_EVIDENCE : !!opts.useShowEvidence;
+  if (!showMentionedEarly.valid && useShowEvidence && (urlNamesShow(opts.url, showTitle) || opts.trustedShowFiling === true)) {
+    showMentionedEarly = { valid: true, confidence: 'medium', reason: opts.trustedShowFiling === true ? 'Theatre Record row filed to this show' : 'Review url names the show' };
+  }
   const multiShowCheck = detectMultiShowContent(text, showId, { requireTitleCase: opts.requireTitleCase });
   if (multiShowCheck.detected && !showMentionedEarly.valid) {
     return {
@@ -3821,6 +3873,8 @@ module.exports = {
   validateContentMentionsShow,
   detectMultiShowContent,
   titleCaseMatch,
+  urlNamesShow,
+  qualityOptsFor,
   detectConcatenatedArticles,
   // Content tier classification (5-tier taxonomy)
   classifyContentTier,

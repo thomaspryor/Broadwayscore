@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Import content quality module
-const { assessTextQuality } = require('./lib/content-quality.js');
+const { assessTextQuality, qualityOptsFor } = require('./lib/content-quality.js');
 const { resolveShowIdentity } = require('./lib/show-identity');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -153,7 +153,7 @@ async function main() {
       // fullText on a garbage verdict, so the slug-in-showId bug here silently
       // destroys restored text rather than merely refusing to save it.
       const { showId: qualityShowId, showTitle } = resolveShowIdentity(showId);
-      const qualityResult = assessTextQuality(data.fullText, qualityShowId, showTitle);
+      const qualityResult = assessTextQuality(data.fullText, qualityShowId, showTitle, qualityOptsFor(data));
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
         isGarbage = true;

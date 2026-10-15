@@ -125,7 +125,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
-const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
@@ -7547,7 +7547,7 @@ async function processReview(review) {
       return { success: false, error: 'soft_404' };
     }
 
-    const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle);
+    const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle, qualityOptsFor(review));
 
     if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
       // Don't save garbage content as fullText - log as failed fetch
