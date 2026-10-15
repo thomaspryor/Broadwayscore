@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5397-a",
   "planId": "a90cbe78-c652-4b27-8e6c-674c2fd1f445",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -126,5 +126,78 @@
         "description": "BRO-5397: date read from the article text/url, not a guess."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T14:53:00.468Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-west-end-2026/islingtontribune--unknown.json publishDate: \"2024-06-04\" -> \"2026-06-04\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-west-end-2026/islingtontribune--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "benevolent-off-broadway-2026/this-week-in-new-york--unknown.json publishDate: \"2021-08-17\" -> \"2026-08-17\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "benevolent-off-broadway-2026/this-week-in-new-york--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/guardian--arifa-akbar.json publishDate: \"2024-07-17\" -> \"2026-07-30\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/guardian--arifa-akbar.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/islingtontribune--unknown.json publishDate: \"2024-10-02\" -> \"2026-10-02\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/islingtontribune--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-standard-of-living-west-end-2026/islingtontribune--unknown.json publishDate: \"2024-10-08\" -> \"2026-10-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-standard-of-living-west-end-2026/islingtontribune--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/islingtontribune--unknown.json publishDate: \"2021-09-24\" -> \"2026-09-24\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/islingtontribune--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/camdennewjournal--unknown.json publishDate: \"2024-10-08\" -> \"2026-10-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/camdennewjournal--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    }
+  ]
 }
