@@ -64,7 +64,9 @@ function retitleProblem(oldTitle, newTitle, otherTitles = []) {
   if (/ [2-9]$/.test(o) && o.slice(0, -2) === n
       && !/ (part|chapter|act|vol|volume|book|series|season)$/.test(n)
       && otherTitles.some(t => words(t) === n)) return null;
-  if (o.split(' ').length >= 2 && onlyFunctionWordsInserted(o, n)) return null;
+  // Restoring dropped function words must not land on a title another row already holds
+  // (that is a duplicate row, not a typo).
+  if (o.split(' ').length >= 2 && onlyFunctionWordsInserted(o, n) && !otherTitles.some(t => words(t) === n)) return null;
   return `"${newTitle}" is not a cosmetic repair of "${oldTitle}" (only case, punctuation, a trailing slug counter or dropped function words may change)`;
 }
 

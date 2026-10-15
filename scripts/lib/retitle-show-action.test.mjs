@@ -81,3 +81,13 @@ test('BRO-5110: dropped function words are restored; a content word in the inser
   assert.ok(retitleProblem('Murder Cathedral', 'Cathedral in the Murder'), 'out-of-order words refuse');
   assert.deepEqual(shows.map(s => s.title), ['Murder in the Cathedral', 'Wives as They Were and Maids as They Are', 'Twenty Thousand Streets', 'Nero']);
 });
+
+test('BRO-5110: restoring function words never lands on a title another row already holds', () => {
+  const shows = [
+    { id: 'lion-king-off-west-end-2026', title: 'Lion King', slug: 'lion-king-off-west-end' },
+    { id: 'the-lion-and-the-king-2019', title: 'The Lion and the King', slug: 'the-lion-and-the-king' },
+  ];
+  const r = applyRetitleShow(shows, { id: 'lion-king-off-west-end-2026', expectTitle: 'Lion King', newTitle: 'The Lion and the King', reason: 'dropped function words' });
+  assert.equal(r.ok, false);
+  assert.equal(shows[0].title, 'Lion King');
+});

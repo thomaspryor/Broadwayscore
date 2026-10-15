@@ -4901,7 +4901,13 @@ showDirs.forEach(showId => {
       // outlet (20 live pairs: one piece, two bylines, double outlet weight).
       // Near-identical prose (>=90% of the shorter text) is the proof; the
       // better-ranked file was kept first (priority sort above).
-      if (!/^(unknown|unnamed)$/.test(criticKey) && data.fullText) {
+      // A file under the outlet's defaultCritic is left to the fingerprint block's
+      // swap-to-default below (ship-check): dropping it here would bypass that rule.
+      const incomingIsDefaultCritic = (() => {
+        const entry = outletRegistry.outlets[outletKey];
+        return shouldFillDefaultCritic(entry) && normalizeCriticCanonical(entry.defaultCritic) === criticKey;
+      })();
+      if (!/^(unknown|unnamed)$/.test(criticKey) && data.fullText && !incomingIsDefaultCritic) {
         const sameArticle = decideSameArticleNamedTwin(data.fullText, keptNamedByOutlet.get(outletKey) || []);
         if (sameArticle.drop) {
           const keptFile = (keptNamedByOutlet.get(outletKey) || [])[sameArticle.index] || null;
