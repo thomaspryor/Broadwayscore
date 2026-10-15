@@ -180,11 +180,29 @@ test('BRO-2412: fresh heartbeat + dispatch flowing (live auto tabs + recent laun
 import { spawnSync } from 'node:child_process';
 const sc = require('./lib/watchdog-stale-code.js');
 
-function spawnOrphanSleeper() {
+// BRO-5412: `& echo $!` hands back the pid the instant bash forks, before
+// node has exec'd or installed its SIGTERM handler. ensureTab only signals a
+// pid whose ps command line names dispatch-watchdog.js, so a sleeper caught
+// mid-exec on a loaded CI runner was (correctly) left alone and the
+// restart test failed in 35ms (main run 38768498973). Each sleeper now
+// writes a ready file once it is running node with its handler installed,
+// and the helper waits for it.
+function spawnReadySleeper(script, extraArgs = '') {
+  const ready = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'wd-sleeper-')), 'ready');
   const r = spawnSync('bash', ['-c',
-    `nohup node -e "process.on('SIGTERM',()=>process.exit(0));setInterval(()=>{},1000)" dispatch-watchdog.js --dashboard >/dev/null 2>&1 & echo $!`],
+    `nohup node -e "${script};require('fs').writeFileSync(process.argv[1],'1');setInterval(()=>{},1000)" "${ready}" ${extraArgs} >/dev/null 2>&1 & echo $!`],
   { encoding: 'utf8' });
-  return parseInt(r.stdout.trim(), 10);
+  const pid = parseInt(r.stdout.trim(), 10);
+  const deadline = Date.now() + 10000;
+  while (!fs.existsSync(ready)) {
+    if (Date.now() >= deadline) throw new Error(`sleeper ${pid} never became ready`);
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 20);
+  }
+  fs.rmSync(path.dirname(ready), { recursive: true, force: true });
+  return pid;
+}
+function spawnOrphanSleeper() {
+  return spawnReadySleeper("process.on('SIGTERM',()=>process.exit(0))", 'dispatch-watchdog.js --dashboard');
 }
 function alive(pid) { try { process.kill(pid, 0); return true; } catch { return false; } }
 
@@ -283,8 +301,7 @@ test('BRO-3904: fresh heartbeat + live pid + code unchanged => ensureTab leaves 
 test('BRO-3904: an OLD heartbeat (pid may be recycled) or a pid not running the watchdog is never signalled', async () => {
   const root = codeTree();
   const pid = spawnOrphanSleeper();
-  const plain = parseInt(spawnSync('bash', ['-c',
-    `nohup node -e "setInterval(()=>{},1000)" >/dev/null 2>&1 & echo $!`], { encoding: 'utf8' }).stdout.trim(), 10);
+  const plain = spawnReadySleeper('void 0');
   try {
     const id = sc.computeCodeIdentity(root, ['dispatch-watchdog.js', 'lib/core.js']);
     fs.writeFileSync(path.join(root, 'lib', 'core.js'), 'v2');

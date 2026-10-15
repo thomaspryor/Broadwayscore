@@ -109,7 +109,20 @@ test('a same-day fetch-before-rewrite gap is detected as stale (ship-check regre
   assert.equal(isTextStaleRelativeToUrlRewrite(data), true);
 });
 
-test('corpus: no review-text file has rejectionReason=wrong_show + wrongShowAutoCleared + wrongShow!==true', (t) => {
+test('a 1-model wrong_show verdict (rejectionAgreeCount 1) does not count as consensus, so the UK auto-clear may override it (BRO-5412)', () => {
+  const data = {
+    wrongShow: true,
+    rejectionReason: 'wrong_show',
+    rejectedBy: 'ensemble-scoreability-check',
+    rejectionAgreeCount: 1,
+    rejectionReasoning: "openai: The text discusses multiple shows; claude: fine",
+  };
+  assert.equal(hasEnsembleWrongShowConsensus(data), false);
+  assert.equal(shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow: true, isUkOutletUrl: true }), true);
+  assert.equal(hasEnsembleWrongShowConsensus({ ...data, rejectionAgreeCount: 2 }), true);
+});
+
+test('corpus: no review-text file has a >=2-model wrong_show verdict + wrongShowAutoCleared + wrongShow!==true', (t) => {
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     assert.ok(
       !REQUIRE_CORPUS,
@@ -132,7 +145,12 @@ test('corpus: no review-text file has rejectionReason=wrong_show + wrongShowAuto
         continue;
       }
       files++;
-      if (data.rejectionReason === 'wrong_show' && data.wrongShowAutoCleared && data.wrongShow !== true) {
+      // BRO-5412: only a >=2-model verdict outranks the UK-outlet auto-clear
+      // (shouldAutoClearWrongShowUkUrl -> hasEnsembleConsensus). A lone
+      // model's wrong_show (rejectionAgreeCount 1) is meant to be overridable;
+      // flagging it here failed every Data Validation run from 2026-10-14
+      // (manor-west-end-2021 guardian--susannah-clapp.json and 2 others).
+      if (hasEnsembleWrongShowConsensus(data) && data.wrongShowAutoCleared && data.wrongShow !== true) {
         offenders.push(`${showId}/${file}`);
       }
     }
@@ -150,7 +168,7 @@ test('corpus: no review-text file has rejectionReason=wrong_show + wrongShowAuto
   assert.equal(
     offenders.length,
     0,
-    `${offenders.length} file(s) have rejectionReason='wrong_show' + wrongShowAutoCleared but wrongShow!==true ` +
+    `${offenders.length} file(s) have a >=2-model wrong_show verdict + wrongShowAutoCleared but wrongShow!==true ` +
       `(auto-clear outranked the ensemble verdict): ${offenders.slice(0, 10).join(', ')}`
   );
 });
