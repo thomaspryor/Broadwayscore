@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T09:23:07.996Z",
+  "timestamp": "2026-10-15T10:11:17.244Z",
   "stats": {
-    "totalReviews": 56629,
-    "alreadyFlagged": 21055,
+    "totalReviews": 56633,
+    "alreadyFlagged": 21060,
     "dateGuardCatches": 211,
-    "directorMismatch": 1897,
-    "tvFilmSignals": 1581,
+    "directorMismatch": 1896,
+    "tvFilmSignals": 1583,
     "londonSignals": 2352,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5200
+    "noPublishDate": 5195
   },
   "findings": [
     {
@@ -462,20 +462,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "a-chorus-line-1975",
-      "file": "backstage--jean-schiffman.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.backstage.com/magazine/article/review-chorus-line-30227/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
         }
       ]
     },
@@ -3015,7 +3001,7 @@
     {
       "showId": "anna-x-west-end-2021",
       "file": "mail-on-sunday--robert-gore-langton.json",
-      "score": 74,
+      "score": 60,
       "publishDate": "2021-07-17",
       "url": "https://www.dailymail.com/home/event/article-9791155/Anna-X-review-Emma-Corrin-amazingly-assured-stage-presence.html",
       "findings": [
@@ -3692,7 +3678,7 @@
     {
       "showId": "be-more-chill-west-end-2021",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 88,
+      "score": 96,
       "publishDate": "2021-07-06",
       "url": "https://theatreweekly.com/review-be-more-chill-at-the-shaftesbury-theatre/",
       "findings": [
@@ -8120,6 +8106,7 @@
     {
       "showId": "clue-tour-2025",
       "file": "broadwayworld--tim-shawver.json",
+      "score": 79,
       "publishDate": "2026-02-19",
       "url": "https://www.broadwayworld.com/phoenix/article/Review-CLUE-LIVE-ON-STAGE-at-Gammage-Auditorium-20260219",
       "findings": [
@@ -8725,7 +8712,7 @@
     {
       "showId": "constellations-west-end-2021",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 88,
+      "score": 96,
       "publishDate": "2021-07-01",
       "url": "https://theatreweekly.com/review-nick-paynes-constellations-at-the-vaudeville-theatre-with-sheila-atim-and-ivanno-jeremiah-and-zoe-wanamaker-and-peter-capaldi/",
       "findings": [
@@ -12216,6 +12203,20 @@
       "score": 86,
       "publishDate": "2026-03-12",
       "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOorP7l3j8IP68qdcMeBPMcw1s7odIwPXm7XDmhTEy1GhJqXV2vR1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "theatermania--kenji-fujishima.json",
+      "score": 49,
+      "publishDate": "March 12th, 2026",
+      "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -28871,7 +28872,7 @@
     },
     {
       "showId": "once-upon-a-mattress-1996",
-      "file": "hollywood-reporter--unknown.json",
+      "file": "hollywood-reporter--caitlin-huston.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/sutton-foster-once-upon-a-mattress-broadway-1235902400/",
@@ -29304,7 +29305,7 @@
     },
     {
       "showId": "orlando-west-end-2022",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--libby-purves.json",
       "score": 69,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-orlando-garrick-theatre-london",
@@ -30720,7 +30721,7 @@
     {
       "showId": "pippin-2013",
       "file": "ew--thom-geier.json",
-      "score": 82,
+      "score": 92,
       "publishDate": "April 25, 2013",
       "url": "http://www.ew.com/ew/article/0,,20364394_20693853,00.html",
       "findings": [
@@ -31746,6 +31747,20 @@
       "score": null,
       "publishDate": "November 17, 2011",
       "url": "http://www.amny.com/urbanite-1.812039/theater-review-private-lives-2-stars-1.3330064",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "private-lives-2011",
+      "file": "backstage--erik-haagensen.json",
+      "score": 40,
+      "publishDate": "November 17, 2011",
+      "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -35412,7 +35427,7 @@
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
-      "score": 87,
+      "score": 95,
       "publishDate": "2024-10-25",
       "url": "https://www.thereviewshub.com/stories-the-tap-dance-sensation-peacock-theatre-london/",
       "findings": [
@@ -39738,6 +39753,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "broadwayworld--brett-cullum.json",
+      "score": 67,
       "publishDate": "2026-03-04",
       "url": "https://www.broadwayworld.com/houston/article/Review-THE-GREAT-GATSBY-at-Broadway-at-The-Hobby-Center-20260304",
       "findings": [
@@ -48629,6 +48645,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "playoffthepage--mary-aalgaard.json",
+      "score": 90,
       "publishDate": "2026-03-04",
       "url": "https://playoffthepage.com/2026/03/review-of-water-for-elephants-broadway-tour-at-orpheum-theatre-in-minneapolis-mn/",
       "findings": [
@@ -56741,6 +56758,7 @@
     {
       "showId": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 73,
       "publishDate": "2025-12-14",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/christmas-carol-goes-wrong-mischief-review/",
       "findings": [
@@ -60619,7 +60637,7 @@
     {
       "showId": "foxfinder-west-end-2018",
       "file": "guardian--miriam-gillinson.json",
-      "score": 36,
+      "score": 37,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/sep/14/foxfinder-review-dawn-king",
       "findings": [
@@ -66278,7 +66296,7 @@
     {
       "showId": "just-for-one-day-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 39,
       "publishDate": "2024-02-13T22:25:50-05:00",
       "url": "https://www.theguardian.com/stage/2024/feb/13/just-for-one-day-review-live-aid-musical-bob-geldof",
       "findings": [
@@ -71942,7 +71960,7 @@
     },
     {
       "showId": "opening-night-west-end-2024",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 28,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-opening-night-gielgud-theatre",
@@ -77243,7 +77261,7 @@
     {
       "showId": "the-american-clock-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 74,
+      "score": 60,
       "publishDate": "2019-02-15T20:33:33+00:00",
       "url": "https://www.theguardian.com/stage/2019/feb/14/the-american-clock-review-arthur-miller-old-vic-london",
       "findings": [
