@@ -740,6 +740,7 @@ jobs:
           git add data/off-broadway-venues.json 2>/dev/null || true
           git add data/audit/pipeline-health/ 2>/dev/null || true
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          git add data/audit/shouted-title-holds.json 2>/dev/null || true
           # Source-coverage telemetry (card #1445) — without this the
           # per-source zero-streak state never persists across runs, so
           # sustained source blindness would still be treated as one-run
