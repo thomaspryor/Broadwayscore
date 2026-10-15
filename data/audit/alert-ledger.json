@@ -17486,7 +17486,7 @@
       "linearIdentifier": null
     },
     "time-bomb-tests:unit-tsx:tests/unit/box-office-status.test.ts::real data: running shows get a status or a stated reason, never a reason-less blank": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/box-office-status.test.ts — real data: running shows get a status or a stated reason, never a reason-less blank",
       "firstSeen": "2026-10-12T22:35:04.358Z",
@@ -17496,10 +17496,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5202"
+      "linearIdentifier": "BRO-5202",
+      "resolvedAt": "2026-10-15T16:32:18.398Z"
     },
     "time-bomb-tests:unit-tsx:tests/unit/box-office-status.test.ts::real data: the Reported/Estimate label and the range width come from one flag": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/box-office-status.test.ts — real data: the Reported/Estimate label and the range width come from one flag",
       "firstSeen": "2026-10-12T22:35:06.857Z",
@@ -17509,10 +17510,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5203"
+      "linearIdentifier": "BRO-5203",
+      "resolvedAt": "2026-10-15T16:32:18.410Z"
     },
     "time-bomb-tests:unit-tsx:tests/unit/box-office-v2-display.test.ts::real data: cost coverage puts every running Broadway show in exactly one bucket": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/box-office-v2-display.test.ts — real data: cost coverage puts every running Broadway show in exactly one bucket",
       "firstSeen": "2026-10-12T22:35:10.113Z",
@@ -17522,10 +17524,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5204"
+      "linearIdentifier": "BRO-5204",
+      "resolvedAt": "2026-10-15T16:32:18.419Z"
     },
     "time-bomb-tests:unit-tsx:tests/unit/box-office-v2-display.test.ts::real data: no card prints a banned source word, and the client card drops report-only fields": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/box-office-v2-display.test.ts — real data: no card prints a banned source word, and the client card drops report-only fields",
       "firstSeen": "2026-10-12T22:35:12.450Z",
@@ -17535,10 +17538,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5205"
+      "linearIdentifier": "BRO-5205",
+      "resolvedAt": "2026-10-15T16:32:18.428Z"
     },
     "time-bomb-tests:unit:tests/unit/check-alert-condition-absent.test.mjs::exit 3 (not a pass) for an open condition that merely went quiet": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/check-alert-condition-absent.test.mjs — exit 3 (not a pass) for an open condition that merely went quiet",
       "firstSeen": "2026-10-12T22:35:15.674Z",
@@ -17548,10 +17552,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5206"
+      "linearIdentifier": "BRO-5206",
+      "resolvedAt": "2026-10-15T16:32:18.437Z"
     },
     "time-bomb-tests:unit:tests/unit/check-alert-condition-absent.test.mjs::exit 3, never a vacuous pass, when it cannot tell": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/check-alert-condition-absent.test.mjs — exit 3, never a vacuous pass, when it cannot tell",
       "firstSeen": "2026-10-12T22:35:18.140Z",
@@ -17561,10 +17566,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5207"
+      "linearIdentifier": "BRO-5207",
+      "resolvedAt": "2026-10-15T16:32:18.446Z"
     },
     "time-bomb-tests:unit:tests/unit/worktree-gc-salvage.test.mjs::dry-run lists notes-only landed worktree as WOULD-SALVAGE-REMOVE and touches nothing": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/worktree-gc-salvage.test.mjs — dry-run lists notes-only landed worktree as WOULD-SALVAGE-REMOVE and touches nothing",
       "firstSeen": "2026-10-12T22:35:20.208Z",
@@ -17574,10 +17580,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5208"
+      "linearIdentifier": "BRO-5208",
+      "resolvedAt": "2026-10-15T16:32:18.454Z"
     },
     "time-bomb-tests:unit:tests/unit/worktree-gc-salvage.test.mjs::real run salvages then removes notes-only worktree; keeps tracked/locked/fresh/symlink ones": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/worktree-gc-salvage.test.mjs — real run salvages then removes notes-only worktree; keeps tracked/locked/fresh/symlink ones",
       "firstSeen": "2026-10-12T22:35:22.645Z",
@@ -17587,7 +17594,21 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5209"
+      "linearIdentifier": "BRO-5209",
+      "resolvedAt": "2026-10-15T16:32:18.463Z"
+    },
+    "time-bomb-tests:unit:tests/unit/scratchpad-retention.test.mjs::pruneScratchpadsIfDue: inside cooldown does nothing, after it prunes again": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/scratchpad-retention.test.mjs — pruneScratchpadsIfDue: inside cooldown does nothing, after it prunes again",
+      "firstSeen": "2026-10-15T16:32:18.471Z",
+      "incidentOpenedAt": "2026-10-15T16:32:18.471Z",
+      "lastSeen": "2026-10-15T16:32:18.471Z",
+      "lastNotifiedAt": "2026-10-15T16:32:18.471Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5410"
     }
   }
 }
