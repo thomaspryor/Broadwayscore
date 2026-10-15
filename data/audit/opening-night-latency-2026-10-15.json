@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-15T19:14:11.337Z",
+  "generatedAt": "2026-10-15T22:25:18.121Z",
   "date": "2026-10-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 207752,
+  "entryCount": 217060,
   "shows": [
     {
       "showId": "the-lion-king-west-end-2021",
@@ -725,13 +725,13 @@
     },
     {
       "showId": "rent-west-end-2026",
-      "reviewCount": 37,
+      "reviewCount": 38,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 600806,
+        "scored-to-rebuilt": 361865,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -986,7 +986,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 199357,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1505,13 +1505,13 @@
     },
     {
       "showId": "nina-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 623675,
+        "scored-to-rebuilt": 620917,
         "rebuilt-to-deployed": 104118627
       },
       "reviews_over_15min": 0,
@@ -1940,13 +1940,13 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": 59019899,
       "p90_e2e_ms": 101953881,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 585720,
-        "scored-to-rebuilt": 370230,
+        "scored-to-rebuilt": 367133,
         "rebuilt-to-deployed": 53565953
       },
       "reviews_over_15min": 5,
@@ -2286,8 +2286,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 618601,
+        "collected-to-scored": 7663647,
+        "scored-to-rebuilt": 385939,
         "rebuilt-to-deployed": 101436322
       },
       "reviews_over_15min": 0,
@@ -2416,7 +2416,7 @@
     },
     {
       "showId": "bullets-over-broadway-2014",
-      "reviewCount": 23,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2521,13 +2521,13 @@
     },
     {
       "showId": "waiting-for-godot-2009",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 522456,
+        "collected-to-scored": 1632703,
+        "scored-to-rebuilt": 964949,
         "rebuilt-to-deployed": 101391954
       },
       "reviews_over_15min": 0,
@@ -3991,7 +3991,7 @@
     },
     {
       "showId": "the-sign-in-sidney-brusteins-window-2023",
-      "reviewCount": 11,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4891,7 +4891,7 @@
     },
     {
       "showId": "head-over-heels-2018",
-      "reviewCount": 46,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6708,13 +6708,13 @@
     },
     {
       "showId": "a-streetcar-named-desire-2012",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1104156,
+        "collected-to-scored": 17119752,
+        "scored-to-rebuilt": 628716,
         "rebuilt-to-deployed": 94662938
       },
       "reviews_over_15min": 0,
@@ -8313,13 +8313,13 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 3170848,
+        "scored-to-rebuilt": 153280,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10902,13 +10902,13 @@
     },
     {
       "showId": "baby-off-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": 51850798,
       "p90_e2e_ms": 51850798,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 2624720,
-        "scored-to-rebuilt": 278832,
+        "scored-to-rebuilt": 272851,
         "rebuilt-to-deployed": 11957674
       },
       "reviews_over_15min": 1,
@@ -12339,13 +12339,13 @@
     },
     {
       "showId": "jane-eyre-off-west-end-2026",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 6550290,
+        "scored-to-rebuilt": 153283,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13025,8 +13025,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2301991,
+        "collected-to-scored": 16811358,
+        "scored-to-rebuilt": 1227633,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13101,7 +13101,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 10965719,
+        "scored-to-rebuilt": 5650375,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13190,8 +13190,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 1492192,
+        "scored-to-rebuilt": 153277,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13424,6 +13424,66 @@
       "slowest_reviews": []
     },
     {
+      "showId": "vanya-and-sonia-and-masha-and-spike-2013",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "buffy-revamped-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "three-men-in-a-boat-off-west-end-2026",
       "reviewCount": 19,
       "median_e2e_ms": null,
@@ -13439,8 +13499,143 @@
       "slowest_reviews": []
     },
     {
+      "showId": "take-me-out-2022",
+      "reviewCount": 22,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "true-west-2019",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "burning-leaves-off-broadway-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "boop-tour-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jena-friedman-motherfucker-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "company-tour-2023",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1407437,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "annie-tour-2022",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "copenhagen-2000",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1407432,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "an-american-in-paris-tour-2022",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1407430,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
