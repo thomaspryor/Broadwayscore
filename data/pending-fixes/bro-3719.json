@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3719",
   "planId": "a80f28bc-03c1-4b60-842b-52a51f5e6684",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -78,5 +78,48 @@
         "description": "BRO-3719: human-readable reason for the verdict."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T19:41:04.844Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectedAt: null -> \"2026-10-15T19:10:00.000Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectedBy: null -> \"blocked-url-heuristic-check\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectionReasoning: null -> \"Venue box-office show page (stannswarehouse.org/show/...), not criticism. Host added to domain-filters VENUE_DOMAINS (BRO-3719).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectedAt: null -> \"2026-10-15T19:10:00.000Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectedBy: null -> \"bro-3719-manual\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectionReasoning: null -> \"Variety /shop/ ticket-buying round-up covering 36 Broadway shows, not a review. BRO-3719.\""
+    }
+  ]
 }
