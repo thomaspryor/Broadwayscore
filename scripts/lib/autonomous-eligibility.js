@@ -194,6 +194,7 @@ const EXCLUDED_FILES = new Set([
   // (isCodePathAllowed) still let the loop edit several of these.
   'scripts/lib/content-quality.js',
   'scripts/lib/show-title-variants.js',
+  'scripts/lib/prior-run-sibling.js',
   'scripts/lib/stale-flag-after-url-correction.js',
   'scripts/lib/date-plausibility.js',
   'scripts/lib/review-write-guard.js',

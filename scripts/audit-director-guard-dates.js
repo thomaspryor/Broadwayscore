@@ -27,13 +27,18 @@ const fs = require('fs');
 const path = require('path');
 const { buildMultiProdDirectorGuard } = require('./lib/prior-run-sibling');
 const { evaluateDirectorGuard } = require('./lib/review-guards');
+const { toDateMs } = require('./lib/date-utils');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const onlyShow = (args.find(a => a.startsWith('--show=')) || '').slice(7) || null;
 const asJson = args.includes('--json');
 
-const ymd = (d) => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? d.slice(0, 10) : null);
+// Any date toDateMs reads ("March 19th, 2025" included), as YYYY-MM-DD.
+const ymd = (d) => {
+  const ms = d ? toDateMs(d) : NaN;
+  return Number.isNaN(ms) ? null : new Date(ms).toISOString().slice(0, 10);
+};
 const startOf = (s) => ymd(s && s.previewsStartDate) || ymd(s && s.openingDate);
 
 function main() {
@@ -49,7 +54,7 @@ function main() {
   for (const [olderId, dirMap] of Object.entries(guard)) {
     if (onlyShow && olderId !== onlyShow) continue;
     const older = byId[olderId];
-    for (const newerId of new Set(dirMap.values())) {
+    for (const newerId of new Set([...dirMap.values()].map(v => v.newerId))) {
       const newer = byId[newerId];
       if (newer && !ymd(newer.openingDate) && ymd(newer.closingDate) && startOf(older)
           && ymd(newer.closingDate) < startOf(older)) {

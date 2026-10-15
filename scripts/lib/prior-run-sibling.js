@@ -119,8 +119,17 @@ function isReturnOfProduction(newer, older) {
  * EXCEPT when the newer entry is a declared return of that older production:
  * same production, same director.
  *
+ * Each director maps to the EARLIEST newer production that lists them, with
+ * that production's start (previewsStartDate, else openingDate), so the guard
+ * can tell a review published before that production began (BRO-5373).
+ *
+ * Productions are ordered by openingDate, then previewsStartDate, then
+ * closingDate: an entry with no openingDate on file is not treated as the
+ * newest (Dear England's 2023 Prince Edward transfer was, BRO-5373).
+ *
  * @param {Array<object>} shows shows.json entries
- * @returns {Object<string, Map<string,string>>} olderShowId -> Map(directorLower -> newerShowId)
+ * @returns {Object<string, Map<string,{newerId:string, newerStart:(string|null)}>>}
+ *   olderShowId -> Map(directorLower -> { newerId, newerStart })
  */
 function buildMultiProdDirectorGuard(shows) {
   const guard = {};
@@ -132,11 +141,12 @@ function buildMultiProdDirectorGuard(shows) {
   }
   for (const prods of Object.values(titleGroups)) {
     if (prods.length < 2) continue;
-    prods.sort((a, b) => {
-      const da = a.openingDate ? new Date(a.openingDate).getTime() : Infinity;
-      const db = b.openingDate ? new Date(b.openingDate).getTime() : Infinity;
-      return da - db;
-    });
+    const orderKey = (s) => {
+      const d = s.openingDate || s.previewsStartDate || s.closingDate;
+      const ms = d ? new Date(d).getTime() : NaN;
+      return Number.isNaN(ms) ? Infinity : ms;
+    };
+    prods.sort((a, b) => orderKey(a) - orderKey(b));
     for (let i = 0; i < prods.length; i++) {
       const thisShow = prods[i];
       const thisDirectors = (thisShow.creativeTeam || [])
@@ -153,8 +163,11 @@ function buildMultiProdDirectorGuard(shows) {
           if (/director/i.test(ct.role)) {
             const name = ct.name.toLowerCase();
             // Skip if this person also directed the current production
-            if (!thisDirectors.includes(name)) {
-              newerDirs.set(name, prods[j].id);
+            if (!thisDirectors.includes(name) && !newerDirs.has(name)) {
+              newerDirs.set(name, {
+                newerId: prods[j].id,
+                newerStart: ymd(prods[j].previewsStartDate) || ymd(prods[j].openingDate) || null,
+              });
             }
           }
         }

@@ -65,7 +65,7 @@ test('director guard still protects a genuinely different later production', () 
     creativeTeam: [{ name: 'Someone Else', role: 'Director' }],
   };
   const guard = buildMultiProdDirectorGuard([SKIRBALL, revival]);
-  assert.deepEqual([...guard[SKIRBALL.id]], [['someone else', revival.id]]);
+  assert.deepEqual([...guard[SKIRBALL.id]], [['someone else', { newerId: revival.id, newerStart: '2031-03-01' }]]);
 });
 
 test('director guard: a priorRuns pointing at some OTHER earlier run does not exempt this entry', () => {
@@ -74,13 +74,35 @@ test('director guard: a priorRuns pointing at some OTHER earlier run does not ex
     priorRuns: [{ openingDate: '2019-01-01', closingDate: '2019-02-01', venue: 'Somewhere Else' }],
   };
   const guard = buildMultiProdDirectorGuard([SKIRBALL, unrelatedLater]);
-  assert.deepEqual([...guard[SKIRBALL.id]], [['daniel fish', ST_ANNS.id]]);
+  assert.deepEqual([...guard[SKIRBALL.id]], [['daniel fish', { newerId: ST_ANNS.id, newerStart: (ST_ANNS.previewsStartDate || ST_ANNS.openingDate).slice(0, 10) }]]);
 });
 
 test('director guard: same director on both entries needs no guard either way', () => {
   const withDirector = { ...SKIRBALL, creativeTeam: [{ name: 'Daniel Fish', role: 'Director' }] };
   const noLink = { ...ST_ANNS, priorRuns: undefined };
   assert.equal(buildMultiProdDirectorGuard([withDirector, noLink])[SKIRBALL.id], undefined);
+});
+
+// BRO-5373: Dear England's 2023 transfer had no openingDate on file and was
+// sorted last, so its director was treated as a newer production's.
+test('director guard orders an entry with no openingDate by its other dates', () => {
+  const transfer = { id: 'dear-england-west-end-2023', title: 'Dear England', category: 'west-end',
+    venue: 'Prince Edward Theatre', openingDate: null, previewsStartDate: '2023-10-09', closingDate: '2024-01-13',
+    creativeTeam: [{ name: 'Rupert Goold', role: 'Director' }] };
+  const returnRun = { id: 'dear-england-west-end-2025', title: 'Dear England', category: 'west-end',
+    venue: 'Olivier Theatre', openingDate: '2025-03-18', creativeTeam: [] };
+  const guard = buildMultiProdDirectorGuard([transfer, returnRun]);
+  assert.equal(guard[returnRun.id], undefined);
+  assert.deepEqual([...guard[transfer.id] || []], []);
+});
+
+test('director guard maps a director to the earliest newer production that lists them', () => {
+  const mid = { id: 'kf-2028', title: 'Kramer/Fauci', category: 'off-broadway', venue: 'A', openingDate: '2028-05-01',
+    creativeTeam: [{ name: 'Pat Same', role: 'Director' }] };
+  const late = { id: 'kf-2030', title: 'Kramer/Fauci', category: 'off-broadway', venue: 'B', openingDate: '2030-05-01',
+    creativeTeam: [{ name: 'Pat Same', role: 'Director' }] };
+  const guard = buildMultiProdDirectorGuard([late, SKIRBALL, mid]);
+  assert.deepEqual(guard[SKIRBALL.id].get('pat same'), { newerId: 'kf-2028', newerStart: '2028-05-01' });
 });
 
 test('findPriorRunSiblings returns the earlier entry and ignores other titles', () => {

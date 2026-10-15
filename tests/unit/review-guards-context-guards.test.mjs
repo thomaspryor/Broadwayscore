@@ -93,7 +93,10 @@ describe('evaluateUrlYearGuard', () => {
 });
 
 describe('evaluateDirectorGuard', () => {
-  const contaminated = (over) => base({ fullText: 'Bob New brings fresh energy to this staging of Foo. '.repeat(10), ...over });
+  // No publishDate: nothing shows it predates the newer production, so the
+  // guard holds (a dated post-2025 copy would be caught first by the URL-year guard).
+  const contaminated = (over) => base({ fullText: 'Bob New brings fresh energy to this staging of Foo. '.repeat(10),
+    publishDate: null, ...over });
   test('older production naming the newer director is excluded', () => {
     assert.deepStrictEqual(g.evaluateDirectorGuard(contaminated(), OLD, guards.director['foo-2001']),
       { dirName: 'bob new', newerId: 'foo-2025' });
@@ -111,6 +114,26 @@ describe('evaluateDirectorGuard', () => {
   });
   test('text under 30 chars is skipped', () => {
     assert.strictEqual(g.evaluateDirectorGuard(contaminated({ fullText: 'Bob New.' }), OLD, guards.director['foo-2001']), null);
+  });  // BRO-5373: same-director returns whose older entry lists no director.
+  const NO_DIR = { ...OLD, creativeTeam: [] };
+  test('no director on file: published inside its own run and before the newer production began is kept', () => {
+    assert.strictEqual(g.evaluateDirectorGuard(contaminated({ publishDate: '2001-03-02' }), NO_DIR, guards.director['foo-2001']), null);
+    assert.strictEqual(g.evaluateDirectorGuard(contaminated({ publishDate: 'March 2nd, 2001' }), NO_DIR, guards.director['foo-2001']), null);
+  });
+  test('older production names its own director: an in-window date does not lift the exclusion', () => {
+    // Reviews of later productions misfiled with publishDate defaulted to the old opening date.
+    assert.ok(g.evaluateDirectorGuard(contaminated({ publishDate: '2001-03-01' }), OLD, guards.director['foo-2001']));
+    assert.strictEqual(g.explainExclusion(contaminated({ publishDate: '2001-03-01' }), OLD), 'directorMismatch');
+  });
+  test('a date outside its own run window keeps the exclusion', () => {
+    assert.ok(g.evaluateDirectorGuard(contaminated({ publishDate: '1990-01-01' }), NO_DIR, guards.director['foo-2001']));
+  });
+  test('published after the newer production began keeps the exclusion', () => {
+    assert.ok(g.evaluateDirectorGuard(contaminated({ publishDate: '2025-04-03' }), NO_DIR, guards.director['foo-2001']));
+  });
+  test('a missing or unparseable publishDate keeps the exclusion', () => {
+    assert.ok(g.evaluateDirectorGuard(contaminated({ publishDate: null }), NO_DIR, guards.director['foo-2001']));
+    assert.ok(g.evaluateDirectorGuard(contaminated({ publishDate: 'sometime' }), NO_DIR, guards.director['foo-2001']));
   });
 });
 

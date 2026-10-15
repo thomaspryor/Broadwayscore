@@ -843,6 +843,15 @@ function preWindowPriorRunsFor(show, guards) {
   return fn && show?.raw ? fn(show.raw, ALL_SHOWS_RAW) : show?.priorRuns;
 }
 
+const _directorGuardMaps = new WeakMap();
+function directorGuardMapFor(guards) {
+  if (!_directorGuardMaps.has(guards)) {
+    const build = guards.__priorRunSiblingLib?.buildMultiProdDirectorGuard;
+    _directorGuardMaps.set(guards, build ? build(ALL_SHOWS_RAW) : {});
+  }
+  return _directorGuardMaps.get(guards);
+}
+
 function decideInclusion(review, show, guards) {
   // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
@@ -1246,6 +1255,17 @@ function decideInclusion(review, show, guards) {
     return { included: false, reason: 'premature pre-opening review' };
   }
 
+  // BRO-5373: director cross-check (rebuild skippedDirectorMismatch). It runs
+  // before this manual-clear bypass because the rebuild's guard deliberately
+  // ignores wrongProductionOverride. Each side builds the map with its own
+  // prior-run-sibling.js, so a builder edit replays as well as a guard edit.
+  if (typeof guards.evaluateDirectorGuard === 'function' && show?.raw) {
+    const dirMap = directorGuardMapFor(guards)[show.id];
+    if (dirMap && guards.evaluateDirectorGuard(review, show.raw, dirMap)) {
+      return { included: false, reason: 'directorMismatch' };
+    }
+  }
+
   // Manual-clear bypass: treat as included for both versions identically.
   // Mirrors rebuild's shouldSkipWrongProductionAudit() + allowCrossMarket/allowEarlyDate semantics.
   const manuallyCleared =
@@ -1556,6 +1576,8 @@ function main() {
         // BRO-5333: which priorRuns the pre-window replay sees.
         && (baseline.__priorRunSiblingLib?.preWindowExemptPriorRuns?.toString() || '') === (working.__priorRunSiblingLib?.preWindowExemptPriorRuns?.toString() || '')
         && (baseline.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '') === (working.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '')
+        // BRO-5373: the director guard's map (ordering, earliest newer start).
+        && (baseline.__priorRunSiblingLib?.buildMultiProdDirectorGuard?.toString() || '') === (working.__priorRunSiblingLib?.buildMultiProdDirectorGuard?.toString() || '')
         // Same rationale for isWithinTourLeg: evaluatePreWindowInclusion's own
         // toString() doesn't capture the source of a function it CALLS, so an
         // edit only inside isWithinTourLeg would otherwise go undetected here.

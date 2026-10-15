@@ -4549,6 +4549,17 @@ function evaluateUrlYearGuard(data, show, guardEntry) {
  * the wrong show. directorMap is buildMultiProdDirectorGuard(shows)[show.id].
  * Bypass: routedFromShowId, humanReviewedWrongProduction === false, lane.
  * Deliberately NOT wrongProductionOverride (see wrong-production-clear.js).
+ *
+ * When this production lists no director, a director is skipped for a review
+ * published inside this production's own run window and before the newer
+ * production began: it cannot be a review of a production that had not
+ * started (BRO-5373: same-director returns with no director on file, e.g. the
+ * Old Vic's yearly Christmas Carol, War Horse 2018). Not applied when this
+ * production names its own director: the corpus audit found reviews of later
+ * productions misfiled under old shows with publishDate defaulted to the old
+ * opening date (Hello, Dolly! 1978/1995, Into the Woods 1987), and the newer
+ * director's name is the only signal against them. A missing or unparseable
+ * date keeps the exclusion.
  * @returns {null | {dirName:string, newerId:string}}
  */
 function evaluateDirectorGuard(data, show, directorMap) {
@@ -4556,8 +4567,15 @@ function evaluateDirectorGuard(data, show, directorMap) {
   if (wrongProductionLaneBypass(data, show)) return null;
   const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
   if (text.length < 30) return null;
-  for (const [dirName, newerId] of directorMap) {
-    if (text.includes(dirName)) return { dirName, newerId };
+  const { toDateMs } = require('./date-utils');
+  const publishMs = data.publishDate ? toDateMs(data.publishDate) : NaN;
+  const listsOwnDirector = ((show && show.creativeTeam) || []).some(ct => ct && /director/i.test(ct.role || ''));
+  const inOwnWindow = !listsOwnDirector && !isNaN(publishMs) && isReviewWithinOwnProductionWindow(show, data.publishDate);
+  for (const [dirName, entry] of directorMap) {
+    if (!text.includes(dirName)) continue;
+    const newerStartMs = entry.newerStart ? toDateMs(entry.newerStart) : NaN;
+    if (inOwnWindow && !isNaN(newerStartMs) && publishMs < newerStartMs) continue;
+    return { dirName, newerId: entry.newerId };
   }
   return null;
 }

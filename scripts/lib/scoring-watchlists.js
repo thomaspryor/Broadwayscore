@@ -34,6 +34,10 @@ const INCLUSION_FILES = [
   // validateShowMentioned/validateContentMentionsShow and by rebuild-all-reviews.js's
   // showNotMentioned auto-clear — an inclusion decision, same shape as above.
   'scripts/lib/show-title-variants.js',
+  // BRO-5373: buildMultiProdDirectorGuard here builds the map the rebuild's
+  // director guard excludes by (production order, earliest newer start), and
+  // findPriorRunSiblings/preWindowExemptPriorRuns feed inclusion the same way.
+  'scripts/lib/prior-run-sibling.js',
   // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
   // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
   // whether a guard may write an exclusion flag at all — an inclusion decision
