@@ -56,32 +56,41 @@ export async function headerOverflowFindings(page, vpLabel, stateName, { simulat
 // BRO-4575 clipped Sign in and the hamburger unnoticed (390 and 1440 only).
 export const TABLET_VIEWPORT = { label: 'tablet', width: 768, height: 1024 };
 
-// Home state only, signed out: the header is identical on every page.
+// Just above lg (1024+) the desktop search and full nav render together:
+// the most crowded width, so it gets its own pass.
+export const HEADER_PROBE_VIEWPORTS = [
+  TABLET_VIEWPORT,
+  { label: 'laptop', width: 1100, height: 800 },
+];
+
+// Home state only: the header is identical on every page.
 // `shoot(page, name)` (optional) saves the screenshot a finding cites.
 export async function captureTabletHeader({ browser, baseUrl, shoot }) {
   const findings = [];
   const shots = [];
-  let context;
-  try {
-    context = await browser.newContext({ viewport: { width: TABLET_VIEWPORT.width, height: TABLET_VIEWPORT.height } });
-    const page = await context.newPage();
-    await page.goto(`${baseUrl}/`, { waitUntil: 'load', timeout: 20000 });
-    await page.waitForTimeout(1000);
-    // Signed-out first, then the signed-in header (wider: "My Shows" + avatar)
-    // swapped in for the Sign in pill, as check-header-overflow.mjs does.
-    const found = [
-      ...await headerOverflowFindings(page, TABLET_VIEWPORT.label, 'home'),
-      ...await headerOverflowFindings(page, TABLET_VIEWPORT.label, 'home_signed_in', { simulateSignedIn: true }),
-    ];
-    if (found.length && shoot) {
-      const name = `${found[0].screenshot}`;
-      shots.push({ name, file: await shoot(page, name) });
+  for (const vp of HEADER_PROBE_VIEWPORTS) {
+    let context;
+    try {
+      context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+      const page = await context.newPage();
+      await page.goto(`${baseUrl}/`, { waitUntil: 'load', timeout: 20000 });
+      await page.waitForTimeout(1000);
+      // Signed-out first, then the signed-in header (wider: "My Shows" + avatar)
+      // swapped in for the Sign in pill, as check-header-overflow.mjs does.
+      const found = [
+        ...await headerOverflowFindings(page, vp.label, 'home'),
+        ...await headerOverflowFindings(page, vp.label, 'home_signed_in', { simulateSignedIn: true }),
+      ];
+      if (found.length && shoot) {
+        const name = found[0].screenshot;
+        shots.push({ name, file: await shoot(page, name) });
+      }
+      findings.push(...found);
+    } catch (err) {
+      console.error(`[ux-walkthrough] header probe (${vp.label}) failed: ${err.message}`);
+    } finally {
+      if (context) await context.close().catch(() => {});
     }
-    findings.push(...found);
-  } catch (err) {
-    console.error(`[ux-walkthrough] tablet header probe failed: ${err.message}`);
-  } finally {
-    if (context) await context.close().catch(() => {});
   }
   return { findings, shots };
 }

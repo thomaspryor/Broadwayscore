@@ -972,7 +972,7 @@ async function captureSignInModal({ browser, baseUrl, outDir }) {
 // ── Multi-model review panel ────────────────────────────────────────────────
 const RUBRIC = `You are reviewing screenshots of a signed-in Broadway show-tracking web app (Broadwayscorecard). A user rates/reviews shows they've seen, keeps a watchlist with planned dates, and can share public lists.
 
-Screenshots are labeled <viewport>__<surface>, e.g. "mobile__diary_grid" or "desktop__rating_editor". Viewports: mobile=390px, desktop=1440px.
+Screenshots are labeled <viewport>__<surface>, e.g. "mobile__diary_grid" or "desktop__rating_editor". Viewports: mobile=390px, tablet=768px, laptop=1100px, desktop=1440px.
 
 Review across these dimensions:
 1. HIERARCHY — is the most important info (show title, rating, action) the most visually prominent? Is anything buried that shouldn't be, or loud that shouldn't be (e.g. a date more prominent than the show title)?

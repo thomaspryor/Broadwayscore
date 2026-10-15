@@ -88,17 +88,21 @@ test('header overflow at 768px is reported when lg:block is reverted to sm:block
 
     // The old document-level probe could not see this: the fixed header does not widen the page.
     const context = await browser.newContext({ viewport: { width: 768, height: 1024 } });
-    const page = await context.newPage();
-    await page.setContent(fixtureHtml(searchClass.replace('lg:block', 'sm:block')));
-    const docOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    await context.close();
+    let docOverflow;
+    try {
+      const page = await context.newPage();
+      await page.setContent(fixtureHtml(searchClass.replace('lg:block', 'sm:block')));
+      docOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    } finally {
+      await context.close();
+    }
     assert.ok(docOverflow <= 1, `fixed header should not widen the document (got ${docOverflow}px)`);
   } finally {
     await browser.close();
   }
 });
 
-test('a page without the header nav is logged, not filed; 1px rounding is tolerated', async (t) => {
+test('a page without the header nav is logged, not filed', async (t) => {
   const browser = await launch();
   if (!browser) return t.skip('no Chromium available');
   const errs = [];
@@ -122,7 +126,7 @@ test('captureTabletHeader degrades to no findings when the page cannot load', as
   try {
     const { findings } = await captureTabletHeader({ browser, baseUrl: 'http://127.0.0.1:1' });
     assert.deepEqual(findings, []);
-    assert.ok(errs.some((m) => /tablet header probe failed/.test(m)));
+    assert.ok(errs.some((m) => /header probe \(tablet\) failed/.test(m)));
   } finally {
     console.error = orig;
     await browser.close();
