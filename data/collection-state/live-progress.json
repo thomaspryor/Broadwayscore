@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-15T17:14:01.252Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-15T17:15:46.211Z",
+  "processed": 273,
+  "failed": 249,
+  "successRate": "52.3%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 176,
+    "amp": 2,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -14,6 +14,118 @@
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-10-15T16:16:39.619Z",
+      "event": "bb-session",
+      "session": "c03fb97b",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T16:16:40.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T16:16:57.645Z",
+      "event": "bb-session",
+      "session": "9d7abd58",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T16:16:58.077Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T16:50:07.980Z",
+      "event": "bb-session",
+      "session": "e8567337",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T16:50:08.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T16:50:28.990Z",
+      "event": "bb-session",
+      "session": "cb693533",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-15T16:50:29.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T16:53:21.872Z",
+      "event": "bb-session",
+      "session": "fe2d8d30",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T16:53:22.433Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T16:53:31.013Z",
+      "event": "bb-session",
+      "session": "875c4387",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T16:53:31.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T17:09:38.286Z",
+      "event": "bb-session",
+      "session": "123c1f1d",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-15T17:09:39.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-15T17:10:50.158Z",
+      "event": "bb-session",
+      "session": "0ab21e0e",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-15T17:11:39.266Z",
+      "event": "bb-session",
+      "session": "5292a4f5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-15T17:11:40.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-15T17:14:08.677Z",
+      "event": "bb-session",
+      "session": "f96599d4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-15T17:14:09.587Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-15T17:14:56.099Z",
+      "event": "bb-session",
+      "session": "10c5f547",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    }
+  ]
 }
