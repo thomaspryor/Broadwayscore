@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5182",
   "planId": "49dd41bb-76d4-4c86-b5b6-5915bef382fe",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -20,5 +20,13 @@
         "description": "Prune pending entries already covered by cited commercial.json records."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T06:51:26.846Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reconcile-pending-commercial.js successfully"
+    }
+  ]
 }
