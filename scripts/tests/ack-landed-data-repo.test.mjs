@@ -41,7 +41,7 @@ test('resolveDataRepo: a directory that is not its own clone refuses', () => {
     assert.match(resolveDataRepo('review-texts', { REVIEW_TEXTS_DIR: dir }).error, /origin is not github.com/);
     g(dir, 'remote', 'add', 'origin', 'https://github.com/thomaspryor/broadway-review-texts.git');
     assert.match(resolveDataRepo('review-texts', { REVIEW_TEXTS_DIR: dir }).error, /no origin\/main/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('resolveDataRepo: a clone with origin/main resolves to its path', () => {
@@ -61,7 +61,7 @@ test('resolveDataRepo: a clone with origin/main resolves to its path', () => {
     assert.equal(r.error, undefined);
     assert.equal(r.path, clone);
     assert.equal(r.name, 'review-texts');
-  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('resolveDataRepo: the main checkout is never a data repo', () => {
@@ -73,7 +73,7 @@ test('resolveDataRepo: the main checkout is never a data repo', () => {
     g(root, 'remote', 'add', 'origin', 'https://github.com/thomaspryor/broadway-review-texts.git');
     g(root, 'update-ref', 'refs/remotes/origin/main', 'HEAD');
     assert.match(resolveDataRepo('review-texts', { REVIEW_TEXTS_DIR: root }, { main: root }).error, /is the main checkout/);
-  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('originMatchesSlug: strips credentials, rejects look-alikes', () => {
