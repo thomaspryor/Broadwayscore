@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-15T11:59:34.311Z",
-  "processed": 165,
-  "failed": 158,
-  "successRate": "51.1%",
+  "updatedAt": "2026-10-15T12:33:56.473Z",
+  "processed": 202,
+  "failed": 175,
+  "successRate": "53.6%",
   "tierBreakdown": {
-    "playwright": 100,
+    "playwright": 120,
     "amp": 2,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 10,
+    "scrapingdog": 22,
+    "scrapingbee": 13,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 39
+    "archive": 45
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-15T09:19:26.293Z",
-      "event": "bb-session",
-      "session": "2ae9e17b",
-      "url": "https://theater.nytimes.com/2012/04/24/theater/reviews/the-lyons-with-linda-lavi"
-    },
-    {
-      "t": "2026-10-15T09:19:26.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-15T10:22:39.355Z",
       "event": "bb-session",
@@ -94,28 +83,48 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T11:31:51.748Z",
+      "t": "2026-10-15T12:00:19.806Z",
       "event": "bb-session",
-      "session": "9351abb8",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "session": "a1e53c11",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-15T11:32:02.014Z",
-      "event": "bb-session",
-      "session": "e6f6f72e",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "t": "2026-10-15T12:00:20.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T11:37:24.971Z",
+      "t": "2026-10-15T12:00:37.558Z",
       "event": "bb-session",
-      "session": "74b34dd5",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+      "session": "7f02c336",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-15T11:37:41.724Z",
+      "t": "2026-10-15T12:00:37.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T12:03:20.987Z",
       "event": "bb-session",
-      "session": "677f07de",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+      "session": "e2b43364",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T12:03:21.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T12:03:29.576Z",
+      "event": "bb-session",
+      "session": "87c65df7",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T12:03:29.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
