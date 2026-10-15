@@ -48,12 +48,18 @@ function currentIndex() {
   const byUrl = new Map();
   const byShowOutletCritic = new Set();
   const prints = new Set();
+  const anyByUrl = new Map();
   for (const show of fs.readdirSync(DIR, { withFileTypes: true })) {
     if (!show.isDirectory() || show.name.startsWith('.') || show.name.startsWith('_')) continue;
     for (const f of fs.readdirSync(path.join(DIR, show.name))) {
       if (!f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(DIR, show.name, f), 'utf8')); } catch { continue; }
+      if (d.url) {
+        const k0 = canonicalArticleKey(d.url);
+        const st = [String(d.fullText || '').trim().length + 'ch', d.contentTier, d.wrongProduction && 'wrongProd', d.wrongShow && 'wrongShow', d.duplicateOf && 'dup', (d.isNotReview || d.isNonReview) && 'nonReview', d.rejectionReason && 'rejected'].filter(Boolean).join(',');
+        if (k0) (anyByUrl.get(k0) || anyByUrl.set(k0, []).get(k0)).push(`${show.name}/${f} [${st}]`);
+      }
       if (!hasText(d)) continue;
       if (d.url && !d.duplicateOf && !d.duplicateTextOf) {
         const k = canonicalArticleKey(d.url);
@@ -63,7 +69,7 @@ function currentIndex() {
       for (const fp of fingerprints(d.fullText)) prints.add(fp);
     }
   }
-  return { byUrl, byShowOutletCritic, prints };
+  return { byUrl, byShowOutletCritic, prints, anyByUrl };
 }
 
 function main() {
@@ -88,13 +94,18 @@ function main() {
       const holders = k ? (idx.byUrl.get(k) || []) : [];
       const sameSlot = idx.byShowOutletCritic.has(`${show}|${d.outletId}|${normalizeCritic(d.criticName || '')}`);
       const textSurvives = fingerprints(d.fullText).some((fp) => idx.prints.has(fp));
-      if (holders.length === 0 && !sameSlot && !textSurvives) losses.push(entry);
+      if (holders.length === 0 && !sameSlot && !textSurvives) {
+        // Where the url lives today (any text level): the restore must go where
+        // the article belongs, which these copies help decide.
+        entry.urlHoldersToday = k ? (idx.anyByUrl.get(k) || []) : [];
+        losses.push(entry);
+      }
     }
   }
   const oldest = commits.length ? commits[commits.length - 1].at : null;
   if (ARGS.includes('--json')) { console.log(JSON.stringify({ days, commits: commits.length, oldestDropCommit: oldest, drops: drops.length, losses }, null, 2)); return; }
   console.log(`${commits.length} ownership-gate drop commits in ${days} days (oldest ${oldest}); ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
-  for (const l of losses) console.log(`LOSS ${l.sourcePath} | ${l.outletId} | ${l.critic} | ${l.textChars} chars | dropped ${l.at} | fromCommit ${l.fromCommit} | ${l.url || '-'}`);
+  for (const l of losses) console.log(`LOSS ${l.sourcePath} | ${l.outletId} | ${l.critic} | ${l.textChars} chars | dropped ${l.at} | fromCommit ${l.fromCommit} | ${l.url || '-'} | url today: ${(l.urlHoldersToday || []).join('; ') || 'nowhere'}`);
 }
 
 if (require.main === module) main();
