@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-15T17:44:28.370Z",
-  "processed": 319,
-  "failed": 298,
-  "successRate": "51.7%",
+  "updatedAt": "2026-10-15T18:25:14.445Z",
+  "processed": 332,
+  "failed": 320,
+  "successRate": "50.9%",
   "tierBreakdown": {
-    "playwright": 196,
-    "amp": 2,
+    "playwright": 205,
+    "amp": 4,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingdog": 31,
     "scrapingbee": 26,
     "brightdata": 8,
     "archiveToday": 0,
-    "archive": 82
+    "archive": 84
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-15T12:03:20.987Z",
-      "event": "bb-session",
-      "session": "e2b43364",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-15T12:03:21.347Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-15T12:03:29.576Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
       "t": "2026-10-15T16:53:31.509Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T18:17:15.317Z",
+      "event": "bb-session",
+      "session": "4a09b107",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T18:17:15.974Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
