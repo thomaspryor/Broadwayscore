@@ -7,11 +7,15 @@
  * with no findable art (small Off-West End events): all 16 shows Google-searched
  * on 2026-09-28 had also been searched the day before. That tier was ~95% of the
  * script's ScrapingBee spend (~15.5K credits/week, the 2nd-largest ledgered SB
- * consumer). Free tiers (TodayTix API, venue pages, ShowScore, Playbill) still
- * run every time; only the paid Google tier backs off.
+ * consumer). Free tiers (TodayTix API, direct TodayTix/Playbill pages,
+ * ShowScore) still run every time; the paid searches back off: Google Images,
+ * and (follow-up) the TodayTix SERP, Playbill google.com and IBDB SERP
+ * discovery searches.
  *
- * State: data/audit/image-search-attempts.json  { [showId]: { failures, lastAttempt } }
- * A show that gets an image through the Google tier is removed.
+ * State: data/audit/image-search-attempts.json
+ *   { [key]: { failures, lastAttempt } }, key = showId (Google Images) or
+ *   "<tier>:<showId>" (discovery tiers; see attemptKey). Keys are NOT all show ids.
+ * A hit on a tier removes that tier's key.
  */
 'use strict';
 
@@ -75,6 +79,50 @@ function recordGoogleImagesAttempt(attempts, showId, success, nowMs = Date.now()
   return next;
 }
 
+// Discovery-SERP tiers (BRO-4243 follow-up). After the Google Images gate
+// above landed, the ledger (2026-10-13..15) showed the SAME ~90 imageless
+// shows still re-searched on every --missing sweep (4-5 sweeps/day) by two
+// discovery searches that had no memory: the TodayTix Google SERP lookup
+// (5 Scrapingdog credits, 25 ScrapingBee credits whenever SD fails) and the
+// Playbill google.com search (1+ credit, SB on fallback). They share the
+// attempts file under a "<tier>:<showId>" key so the Google Images entries
+// (keyed by bare showId) are untouched.
+const TODAYTIX_SERP_TIER = 'todaytix-serp';
+const PLAYBILL_SERP_TIER = 'playbill-serp';
+const IBDB_SERP_TIER = 'ibdb-serp';
+
+/**
+ * Pure: is this fetched google.com/search HTML a block/consent interstitial
+ * rather than a results page? Such a response says nothing about whether the
+ * show has a page, so it must not count as a miss.
+ */
+function isGoogleBlockPage(html) {
+  if (!html || typeof html !== 'string') return true;
+  return /unusual traffic|detected unusual|\/sorry\/index|g-recaptcha|recaptcha\/api|Before you continue to Google/i.test(html);
+}
+
+function attemptKey(tier, showId) {
+  return tier ? `${tier}:${showId}` : showId;
+}
+
+/**
+ * Pure: should a paid search tier run for this show on this run?
+ * Targeted runs (force) always search; otherwise the shared backoff applies.
+ * @param {object} attempts - the attempts map
+ * @param {string|null} tier - null = the Google Images tier (bare showId key)
+ * @param {{id:string, openingDate?:string, previewsStartDate?:string}} show
+ * @param {{force?:boolean, nowMs?:number}} [opts]
+ * @returns {{skip:boolean, retryAt:string|null, key:string, failures:number}}
+ */
+function searchTierGate(attempts, tier, show, opts = {}) {
+  const key = attemptKey(tier, show.id);
+  const entry = (attempts || {})[key];
+  const failures = (entry && entry.failures) || 0;
+  if (opts.force) return { skip: false, retryAt: null, key, failures };
+  const { skip, retryAt } = shouldSkipGoogleImages(entry, opts.nowMs == null ? Date.now() : opts.nowMs, show);
+  return { skip, retryAt, key, failures };
+}
+
 function loadImageSearchAttempts(p = ATTEMPTS_PATH) {
   try {
     const parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -93,6 +141,12 @@ module.exports = {
   ATTEMPTS_PATH,
   BACKOFF_DAYS,
   OPENING_WINDOW_DAYS,
+  TODAYTIX_SERP_TIER,
+  PLAYBILL_SERP_TIER,
+  IBDB_SERP_TIER,
+  attemptKey,
+  isGoogleBlockPage,
+  searchTierGate,
   shouldSkipGoogleImages,
   recordGoogleImagesAttempt,
   loadImageSearchAttempts,

@@ -134,3 +134,101 @@ test('cleanup runs and rethrows unchanged even when nothing needs discarding', a
   );
   assert.equal(fs.existsSync(dir), false);
 });
+
+// ---------------------------------------------------------------------------
+// BRO-4243: paid-search paths and their per-show backoff.
+//
+// Ledger analysis (data/audit/scraper-spend-ledger.jsonl): before 2026-10-12
+// ~95% of this script's ScrapingBee spend was the Google Images tier (25
+// credits/search, 2 per show, every sweep). That tier got a per-show backoff,
+// then SD-first routing. The 2026-10-13..15 ledger still showed the same ~90
+// imageless shows searched on EVERY --missing sweep (4-5/day) by two
+// discovery searches with no memory: the TodayTix Google SERP (5 SD credits,
+// 25 SB credits on SD failure) and the Playbill google.com search (plus the
+// IBDB SERP for Broadway rows). All now
+// share the backoff, keyed "<tier>:<showId>" in image-search-attempts.json.
+// ---------------------------------------------------------------------------
+const {
+  searchTierGate, attemptKey, recordGoogleImagesAttempt, shouldSkipGoogleImages, isGoogleBlockPage,
+  TODAYTIX_SERP_TIER, PLAYBILL_SERP_TIER,
+} = require('./lib/image-search-backoff.js');
+
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
+const now = Date.parse('2026-10-13T13:00:00Z');
+const xlBully = { id: 'new-26-xl-bully-off-west-end-2026', openingDate: '2026-06-01' };
+
+test('discovery tiers key separately from the Google Images entry', () => {
+  assert.equal(attemptKey(null, 'x'), 'x');
+  assert.equal(attemptKey(TODAYTIX_SERP_TIER, 'x'), 'todaytix-serp:x');
+  assert.notEqual(attemptKey(TODAYTIX_SERP_TIER, 'x'), attemptKey(PLAYBILL_SERP_TIER, 'x'));
+  // A Google Images miss must not gate the TodayTix SERP, and vice versa.
+  const a = recordGoogleImagesAttempt({}, xlBully.id, false, now);
+  assert.equal(searchTierGate(a, TODAYTIX_SERP_TIER, xlBully, { nowMs: now + HOUR }).skip, false);
+  const b = recordGoogleImagesAttempt({}, attemptKey(TODAYTIX_SERP_TIER, xlBully.id), false, now);
+  assert.equal(shouldSkipGoogleImages(b[xlBully.id], now + HOUR).skip, false);
+});
+
+test('the 2026-10-13..15 pattern: a TodayTix SERP miss is not re-searched by the next sweeps', () => {
+  const key = attemptKey(TODAYTIX_SERP_TIER, xlBully.id);
+  let attempts = recordGoogleImagesAttempt({}, key, false, now);
+  // Sweeps ~3h and ~21h later: skipped (1-day window after the first miss).
+  for (const dt of [3 * HOUR, 21 * HOUR]) {
+    const g = searchTierGate(attempts, TODAYTIX_SERP_TIER, xlBully, { nowMs: now + dt });
+    assert.equal(g.skip, true, `+${dt / HOUR}h`);
+    assert.equal(g.key, key);
+    assert.equal(g.failures, 1);
+  }
+  // Window elapsed: searches again; a second miss doubles the wait.
+  assert.equal(searchTierGate(attempts, TODAYTIX_SERP_TIER, xlBully, { nowMs: now + DAY }).skip, false);
+  attempts = recordGoogleImagesAttempt(attempts, key, false, now + DAY);
+  assert.equal(searchTierGate(attempts, TODAYTIX_SERP_TIER, xlBully, { nowMs: now + 2.5 * DAY }).skip, true);
+  // A hit clears it.
+  attempts = recordGoogleImagesAttempt(attempts, key, true, now + 3 * DAY);
+  assert.equal(attempts[key], undefined);
+});
+
+test('targeted runs (force) and shows near opening always search', () => {
+  const key = attemptKey(PLAYBILL_SERP_TIER, xlBully.id);
+  const attempts = recordGoogleImagesAttempt({}, key, false, now);
+  assert.equal(searchTierGate(attempts, PLAYBILL_SERP_TIER, xlBully, { nowMs: now + HOUR, force: true }).skip, false);
+  const opening = { ...xlBully, previewsStartDate: '2026-10-20' };
+  assert.equal(searchTierGate(attempts, PLAYBILL_SERP_TIER, opening, { nowMs: now + HOUR }).skip, false);
+  assert.equal(searchTierGate(attempts, PLAYBILL_SERP_TIER, xlBully, { nowMs: now + HOUR }).skip, true);
+});
+
+test('a Google block/consent page is not a results page (not counted as a miss)', () => {
+  assert.equal(isGoogleBlockPage('<html>Our systems have detected unusual traffic from your computer network</html>'), true);
+  assert.equal(isGoogleBlockPage('<form action="https://www.google.com/sorry/index">'), true);
+  assert.equal(isGoogleBlockPage('<h1>Before you continue to Google</h1>'), true);
+  assert.equal(isGoogleBlockPage(''), true);
+  assert.equal(isGoogleBlockPage(null), true);
+  assert.equal(isGoogleBlockPage('<div id="search"><a href="https://playbill.com/production/foo">Foo</a></div>'), false);
+  assert.equal(isGoogleBlockPage('<div id="search">No results found for site:playbill.com/production "XL Bully"</div>'), false);
+});
+
+test('wiring: the four paid per-show searches in fetch-show-images-auto.js are gated', () => {
+  // main() runs at import, so pin the call sites in the source instead: the
+  // gate call, then an immediate `if (<gate>.skip) ...` before the paid call.
+  const src = fs.readFileSync(new URL('./fetch-show-images-auto.js', import.meta.url), 'utf8');
+  const gatedInFn = (needle, gateRe) => {
+    const i = src.indexOf(needle);
+    assert.ok(i > 0, `missing ${needle}`);
+    const fnStart = src.lastIndexOf('\nasync function ', i);
+    assert.match(src.slice(fnStart, i), gateRe, `${needle} is not gated`);
+  };
+  const discovery = (tier, v) => new RegExp(
+    `const ${v} = discoverySerpGate\\(${tier}, show, '[^']+'\\);\\s*\\n\\s*if \\(${v}\\.skip\\) return null;`);
+  gatedInFn('await searchGoogleForTodayTix(', discovery('TODAYTIX_SERP_TIER', 'ttSerpGate'));
+  gatedInFn('site:playbill.com/production "${show.title}" broadway', discovery('PLAYBILL_SERP_TIER', 'pbSerpGate'));
+  gatedInFn('await searchGoogleForIBDB(', discovery('IBDB_SERP_TIER', 'ibdbSerpGate'));
+  gatedInFn('googleImages = await fetchFromGoogleImages(show)',
+    /const googleGate = searchTierGate\(googleAttempts, null, show, \{ force: forceGoogle \}\);[\s\S]*if \(googleGate\.skip\) \{/);
+  // A provider outage (serpQuery null) must not count as a miss.
+  assert.match(src, /answered: results != null/);
+  assert.match(src, /if \(serpAnswered\) noteSearchAttempt\(ttSerpGate\.key, false\)/);
+  assert.match(src, /if \(results\) noteSearchAttempt\(ibdbSerpGate\.key, !!ibdbUrl\)/);
+  assert.match(src, /if \(!isGoogleBlockPage\(searchHtml\)\) noteSearchAttempt\(pbSerpGate\.key, false\)/);
+  // An owner-rejected SERP hit and an uncached cross-market Playbill hit are misses.
+  assert.match(src, /serpDiscoveredTodayTix\.has\(todayTixInfo\)\) noteSearchAttempt\(attemptKey\(TODAYTIX_SERP_TIER, show\.id\), false\)/);
+});

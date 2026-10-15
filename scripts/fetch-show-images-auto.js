@@ -67,7 +67,8 @@ Usage:
   node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only]
     [--bad-images] [--dry-run] [--audit-existing] [--concurrency=N] [--no-verify]
     [--flagged] [--max-runtime=MIN] [--force-google]
-    --force-google  ignore the per-show Google Images backoff (data/audit/image-search-attempts.json)
+    --force-google  ignore the per-show search backoff (Google Images, TodayTix/IBDB SERP, Playbill search;
+                    data/audit/image-search-attempts.json)
     --retry-no-art  also search rows marked noReliableArt (skipped by every mode otherwise; BRO-5022)
   node scripts/fetch-show-images-auto.js --help, -h   print this usage and exit — no fetches/writes
 `;
@@ -94,9 +95,16 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 let dryRunMode = false;
 // BRO-4243: per-show backoff for the paid Google Images tier (25 SB credits
 // per search, 2 per show). --force-google bypasses it for a manual retry.
+// The same backoff also gates the two per-show discovery searches (TodayTix
+// Google SERP, Playbill google.com search) that re-ran for every imageless
+// show on every sweep (see TODAYTIX_SERP_TIER in the lib).
 const {
-  shouldSkipGoogleImages, recordGoogleImagesAttempt, loadImageSearchAttempts, saveImageSearchAttempts,
+  recordGoogleImagesAttempt, loadImageSearchAttempts, saveImageSearchAttempts,
+  searchTierGate, attemptKey, isGoogleBlockPage, TODAYTIX_SERP_TIER, PLAYBILL_SERP_TIER, IBDB_SERP_TIER,
 } = require('./lib/image-search-backoff');
+// discoverTodayTixId results that came from the paid SERP (not the direct
+// TodayTix search), so the caller can count an owner-rejected hit as a miss.
+const serpDiscoveredTodayTix = new WeakSet();
 let googleAttempts = null; // lazily loaded map; persisted after each attempt (not in dry-run)
 let forceGoogle = false;
 let dryRunResults = [];
@@ -368,8 +376,10 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
 async function searchGoogleForTodayTix(market, showTitle) {
   const query = todaytixSerpQuery(market, showTitle);
   const results = await serpQuery(query);
-  // Return in original format (callers expect {organic_results})
-  return { organic_results: (results || []).map(r => ({ url: r.url, title: r.title })) };
+  // Return in original format (callers expect {organic_results}). `answered`
+  // is false when serpQuery returned null (every provider failed), so the
+  // BRO-4243 backoff does not count a provider outage as a miss.
+  return { answered: results != null, organic_results: (results || []).map(r => ({ url: r.url, title: r.title })) };
 }
 
 // Search Google for IBDB production pages
@@ -377,7 +387,8 @@ async function searchGoogleForIBDB(showTitle, openingYear) {
   const yearStr = openingYear ? ` ${openingYear}` : '';
   const query = `site:ibdb.com/broadway-production "${showTitle}"${yearStr}`;
   const results = await serpQuery(query);
-  if (!results) return [];
+  // null = every SERP provider failed (an outage, not a miss; BRO-4243).
+  if (!results) return null;
   return results.map(r => r.url).filter(url => url && url.includes('/broadway-production/'));
 }
 
@@ -763,12 +774,15 @@ async function fetchFromIBDB(show) {
   let ibdbUrl = null;
   const openingYear = show.openingDate ? show.openingDate.substring(0, 4) : null;
 
+  const ibdbSerpGate = discoverySerpGate(IBDB_SERP_TIER, show, 'IBDB Google SERP');
+  if (ibdbSerpGate.skip) return null;
   try {
     const results = await searchGoogleForIBDB(show.title, openingYear);
-    if (results.length > 0) {
+    if (results && results.length > 0) {
       // If we have an opening year, prefer URL containing that year
       ibdbUrl = results.find(u => openingYear && u.includes(openingYear)) || results[0];
     }
+    if (results) noteSearchAttempt(ibdbSerpGate.key, !!ibdbUrl);
   } catch (err) {
     console.log(`   ⚠ IBDB SERP search failed: ${err.message}`);
   }
@@ -1119,9 +1133,13 @@ async function discoverTodayTixId(show) {
   }
 
   // Method 2: Google SERP search (works for closed shows whose pages still exist)
+  const ttSerpGate = discoverySerpGate(TODAYTIX_SERP_TIER, show, 'TodayTix Google SERP');
+  if (ttSerpGate.skip) return null;
   console.log(`   Trying Google SERP search for TodayTix page...`);
   try {
     const serpData = await searchGoogleForTodayTix(market, showTitle);
+    // serpQuery returns null when every provider failed: transient, not a miss.
+    const serpAnswered = serpData?.answered === true;
     const results = serpData?.organic_results || serpData?.results || [];
 
     for (const result of results) {
@@ -1137,7 +1155,10 @@ async function discoverTodayTixId(show) {
 
         if (overlap2 >= 0.5) {
           console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
-          return { id, slug, market };
+          noteSearchAttempt(ttSerpGate.key, true);
+          const found = { id, slug, market };
+          serpDiscoveredTodayTix.add(found);
+          return found;
         } else {
           console.log(`   ✗ Skipping SERP result: slug "${slug}" doesn't match "${showTitle}" (${Math.round(overlap2 * 100)}% overlap)`);
         }
@@ -1145,6 +1166,7 @@ async function discoverTodayTixId(show) {
     }
 
     console.log(`   ✗ No TodayTix ${market} page found in Google results`);
+    if (serpAnswered) noteSearchAttempt(ttSerpGate.key, false);
   } catch (err) {
     console.log(`   ⚠ Google SERP search failed: ${err.message}`);
   }
@@ -1422,6 +1444,8 @@ async function fetchFromPlaybill(show) {
   // Last resort: Google search. The literal quotes around the title must be
   // part of the encoded query — an unencoded `"` in the URL trips Bright
   // Data's `"url" must be a valid uri` 400 (task #688).
+  const pbSerpGate = discoverySerpGate(PLAYBILL_SERP_TIER, show, 'Playbill Google search');
+  if (pbSerpGate.skip) return null;
   console.log(`   Trying Google search for Playbill page...`);
   const searchQuery = `site:playbill.com/production "${show.title}" broadway`;
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
@@ -1457,13 +1481,19 @@ async function fetchFromPlaybill(show) {
         if (!isCrossMarketPlaybillUrl(discoveredUrl, show)) {
           playbillUrlCache.shows[show.id] = discoveredUrl;
           savePlaybillUrls(playbillUrlCache);
+          noteSearchAttempt(pbSerpGate.key, true);
         } else {
           console.log(`   ⚠ not caching cross-market Playbill URL for ${show.id}: ${discoveredUrl}`);
+          // Not cached, so the next sweep would pay for the same search again.
+          noteSearchAttempt(pbSerpGate.key, false);
         }
         // Playbill OG images are always landscape (1200x630) — only suitable as hero
         return { hero: imageUrl, thumbnail: null, poster: null };
       }
     }
+    // A real results page with no usable Playbill page is a miss; a Google
+    // CAPTCHA/consent interstitial is a provider failure and is not counted.
+    if (!isGoogleBlockPage(searchHtml)) noteSearchAttempt(pbSerpGate.key, false);
   } catch (err) {
     console.log(`   ⚠ Google search failed: ${err.message}`);
   }
@@ -1645,10 +1675,25 @@ function filterGoogleCandidates(results, maxCount = 10, show = null) {
 // Record one Google Images tier outcome for the BRO-4243 backoff and persist it
 // immediately (runs can time out at --max-runtime). No writes in dry-run.
 function noteGoogleAttempt(showId, success) {
+  noteSearchAttempt(showId, success);
+}
+
+// key = bare showId (Google Images) or attemptKey(tier, showId).
+function noteSearchAttempt(key, success) {
   if (dryRunMode) return;
   if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
-  googleAttempts = recordGoogleImagesAttempt(googleAttempts, showId, success);
+  googleAttempts = recordGoogleImagesAttempt(googleAttempts, key, success);
   try { saveImageSearchAttempts(googleAttempts); } catch (e) { console.warn(`   ⚠ could not save image-search-attempts.json: ${e.message}`); }
+}
+
+// Gate one discovery-SERP tier for this show; logs the skip.
+function discoverySerpGate(tier, show, label) {
+  if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
+  const gate = searchTierGate(googleAttempts, tier, show, { force: forceGoogle });
+  if (gate.skip) {
+    console.log(`   ⏭ ${label} skipped: ${gate.failures} recent miss(es), retry after ${gate.retryAt} (BRO-4243; --force-google to override)`);
+  }
+  return gate;
 }
 
 async function fetchFromGoogleImages(show) {
@@ -2338,12 +2383,12 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // Broad coverage — finds thumbnail art that structured sources miss
   // Loops through multiple candidates if verification rejects the first one
   if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
-  const googleGate = forceGoogle ? { skip: false } : shouldSkipGoogleImages(googleAttempts[show.id], Date.now(), show);
+  const googleGate = searchTierGate(googleAttempts, null, show, { force: forceGoogle });
   let googleAccepted = false;
   let googleImages = null;
   let googleErrored = false;
   if (googleGate.skip) {
-    console.log(`   ⏭ Google Images skipped: ${googleAttempts[show.id].failures} recent failure(s), retry after ${googleGate.retryAt} (BRO-4243; --force-google to override)`);
+    console.log(`   ⏭ Google Images skipped: ${googleGate.failures} recent failure(s), retry after ${googleGate.retryAt} (BRO-4243; --force-google to override)`);
   } else {
     googleImages = await fetchFromGoogleImages(show);
     if (googleImages && googleImages.searchErrored) { googleErrored = true; googleImages = null; }
@@ -2542,6 +2587,9 @@ async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, 
       const owner = todayTixInfo && todaytixIdOwner(show, todayTixInfo.id, todayTixIds.shows, allShowsData.shows);
       if (owner) {
         console.log(`   ✗ Discovered TodayTix ID ${todayTixInfo.id} is already ${owner}'s — not using it`);
+        // A SERP hit thrown away here is a miss for the backoff, or the same
+        // paid search would run again on every sweep (BRO-4243).
+        if (serpDiscoveredTodayTix.has(todayTixInfo)) noteSearchAttempt(attemptKey(TODAYTIX_SERP_TIER, show.id), false);
         todayTixInfo = null;
       }
       if (todayTixInfo) {
