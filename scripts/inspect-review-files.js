@@ -6,7 +6,11 @@
  * verdict flags, tier, length, content-verifier verdict, 160 chars of text). Built for cloud sessions that have no
  * data/review-texts clone and read it through cloud-run-script.js (BRO-5239).
  *
- *   node scripts/inspect-review-files.js --show=a,b [--outlet=x,y] [--file=sub]
+ *   node scripts/inspect-review-files.js --show=a,b [--outlet=x,y] [--file=sub] [--find=term,term]
+ *
+ * --find (BRO-5243): per term, the character offsets where it occurs in the
+ * stored text (case-insensitive), so a two-show column can be confirmed
+ * without printing the text.
  */
 const fs = require('fs');
 const path = require('path');
@@ -21,7 +25,19 @@ if (!fs.existsSync(root)) { console.error('data/review-texts missing'); process.
 const shows = val('show') || (class7 ? fs.readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : null);
 const outlets = val('outlet');
 const fileSub = val('file');
+const findTerms = val('find');
 if (!shows) { console.error('usage: inspect-review-files.js --show=a,b [--outlet=x] [--file=sub]'); process.exit(2); }
+function findOffsets(text, terms) {
+  const lower = text.toLowerCase();
+  const out = {};
+  for (const term of terms) {
+    const t = term.toLowerCase();
+    const hits = [];
+    for (let i = lower.indexOf(t); i !== -1 && hits.length < 10; i = lower.indexOf(t, i + 1)) hits.push(i);
+    out[term] = hits;
+  }
+  return out;
+}
 const FLAGS = ['wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear', 'wrongProductionOverride', 'allowEarlyDate', 'isRoundupArticle', 'isNonReview', 'wrongShow', 'dateSource', 'duplicateOf'];
 for (const show of shows) {
   const dir = path.join(root, show);
@@ -49,6 +65,7 @@ for (const show of shows) {
       tier: r.contentTier || null, chars: String(r.fullText || '').length, sourceMethod: r.sourceMethod || null,
       cv: r.contentVerification ? { isValid: r.contentVerification.isValid, confidence: r.contentVerification.confidence, truncated: !!r.contentVerification.truncated, verifiedAt: r.contentVerification.verifiedAt || null } : null,
       text: String(r.fullText || '').replace(/\s+/g, ' ').slice(0, 160),
+      ...(findTerms ? { find: findOffsets(String(r.fullText || ''), findTerms) } : {}),
     }));
   }
 }
