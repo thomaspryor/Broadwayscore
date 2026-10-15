@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getActorBySlug, getAllActorSlugs, getAllActorProfiles } from '@/lib/data-actors';
 import { getPersonTonyStats, getShowTonyMap } from '@/lib/data-tony-noms';
 import { generateBreadcrumbSchema, generateActorPersonSchema, generateActorFAQSchema, BASE_URL } from '@/lib/seo';
+import { isThinActor } from '@/lib/actor-indexability';
 import ActorDetailClient from './ActorDetailClient';
 
 export const revalidate = 43200;
@@ -23,6 +24,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     title,
     description,
     alternates: { canonical: `${BASE_URL}/cast/${profile.slug}` },
+    // Single-credit, unscored pages read as soft 404s / near-duplicates (BRO-5399)
+    ...(isThinActor(profile) ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,

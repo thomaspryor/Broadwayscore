@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/seo';
 import FantasyLeaderboardTable from '@/components/fantasy/FantasyLeaderboardTable';
 import { getFantasySeasonInfo } from '@/lib/data-fantasy';
 
 export const metadata: Metadata = {
   title: 'Fantasy League Leaderboard',
+  alternates: { canonical: `${BASE_URL}/fantasy/leaderboard` },
   description: 'See who\'s winning the Broadway Fantasy League. Rankings updated weekly with points from critics, audiences, box office, and Tony Awards.',
 };
 

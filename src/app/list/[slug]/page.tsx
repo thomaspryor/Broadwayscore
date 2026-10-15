@@ -50,7 +50,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const data = await getListData(slug);
 
   if (!data) {
-    return { title: 'List Not Found — Broadway Scorecard' };
+    // Client-rendered shell returns 200 for unknown slugs: keep it out of the index
+    return { title: 'List Not Found — Broadway Scorecard', robots: { index: false, follow: false } };
   }
 
   const { list, profile, showIds } = data;
@@ -63,10 +64,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${title} — Broadway Scorecard`,
     description,
+    alternates: { canonical: `${BASE_URL}/list/${shareTokenFromParam(slug)}` },
     openGraph: {
       title,
       description,
-      url: `${BASE_URL}/list/${slug}`,
+      url: `${BASE_URL}/list/${shareTokenFromParam(slug)}`,
       type: 'article',
       images: [`${BASE_URL}/api/og?type=list&title=${encodeURIComponent(list.name)}&count=${count}&creator=${encodeURIComponent(profile.display_name || '')}&ranked=${list.is_ranked ? '1' : '0'}`],
     },

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getUnifiedCreativeProfile, getUnifiedCreativeSlugs, getAllUnifiedCreativeProfiles, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getPersonTonyStatsByName, getShowTonyMapByName } from '@/lib/data-tony-noms';
 import { generateBreadcrumbSchema, generateUnifiedCreativePersonSchema, generateUnifiedCreativeFAQSchema, BASE_URL } from '@/lib/seo';
+import { isThinCreative } from '@/lib/creative-indexability';
 import UnifiedCreativeDetailClient from '@/components/creative/UnifiedCreativeDetailClient';
 
 export const revalidate = 86400;
@@ -25,6 +26,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     title,
     description,
     alternates: { canonical: `${BASE_URL}/creative/${profile.slug}` },
+    // One show, no score, no Tony record: soft-404 shape (BRO-5399)
+    ...(isThinCreative(profile) ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,

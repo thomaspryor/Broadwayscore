@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/seo';
 import { getFantasyShowsSorted, getFantasyConfig } from '@/lib/data-fantasy';
 import { ELIGIBILITY_MARKERS, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -7,6 +8,7 @@ import FantasyOwnershipTag from '@/components/fantasy/FantasyOwnershipTag';
 
 export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
+  alternates: { canonical: `${BASE_URL}/fantasy/guide` },
   description: 'Every draftable show with prices, the reasoning behind each price, scores, and eligibility. Your cheat sheet for the Broadway Fantasy League draft.',
 };
 

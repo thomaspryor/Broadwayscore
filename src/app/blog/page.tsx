@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BASE_URL } from '@/lib/seo';
 import { Metadata } from 'next';
 import { client } from '@/sanity/client';
 import { postsListQuery, type PostListItem } from '@/sanity/queries';
@@ -8,6 +9,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Blog · Broadway Scorecard',
   description: 'Editorial, essays, and the story behind the scores.',
+  alternates: { canonical: `${BASE_URL}/blog` },
 };
 
 function formatDate(iso: string) {

@@ -28,6 +28,7 @@ export async function generateMetadata(
   return {
     title: `${post.title} · Broadway Scorecard`,
     description: post.excerpt,
+    alternates: { canonical: `${BASE_URL}/blog/${params.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,

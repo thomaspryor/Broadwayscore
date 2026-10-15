@@ -16,8 +16,10 @@ import {
   isTourIndexableShow,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
-import { getAllActorSlugs } from '@/lib/data-actors';
-import { getUnifiedCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
+import { getAllActorProfiles } from '@/lib/data-actors';
+import { isThinActor } from '@/lib/actor-indexability';
+import { isThinCreative } from '@/lib/creative-indexability';
+import { getAllUnifiedCreativeProfiles, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
@@ -184,7 +186,7 @@ function buildCreativesShard(ctx: DateContext): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     })),
-    ...getUnifiedCreativeSlugs().map(slug => ({
+    ...getAllUnifiedCreativeProfiles().filter(p => !isThinCreative(p)).map(p => p.slug).map(slug => ({
       url: `${BASE_URL}/creative/${slug}`,
       lastModified: ctx.showsDate,
       changeFrequency: 'monthly' as const,
@@ -195,7 +197,11 @@ function buildCreativesShard(ctx: DateContext): MetadataRoute.Sitemap {
 
 function buildActorsShard(ctx: DateContext, bucket: 'actors-ah' | 'actors-iq' | 'actors-rz'): MetadataRoute.Sitemap {
   if (!featureFlags.castPages) return [];
-  const slugs = getAllActorSlugs().filter(slug => getActorBucket(slug) === bucket);
+  // Thin single-credit pages are noindex (BRO-5399): never submit them
+  const slugs = getAllActorProfiles()
+    .filter(profile => getActorBucket(profile.slug) === bucket)
+    .filter(profile => !isThinActor(profile))
+    .map(profile => profile.slug);
   const pages: MetadataRoute.Sitemap = slugs.map(slug => ({
     url: `${BASE_URL}/cast/${slug}`,
     lastModified: ctx.showsDate,

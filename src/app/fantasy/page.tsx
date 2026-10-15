@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/seo';
 import { getFantasySeasonInfo, getFantasyShowsSorted } from '@/lib/data-fantasy';
 import {
   CRITIC_SCORE_POINTS,
@@ -32,6 +33,7 @@ function shortDate(iso: string): string {
 export const metadata: Metadata = {
   title: 'Broadway Fantasy League',
   description: 'Draft up to 8 Broadway shows on a $100 budget. Earn points from critics, audiences, box office, and the Tony Awards. Free to play, no account needed.',
+  alternates: { canonical: `${BASE_URL}/fantasy` },
   openGraph: {
     title: 'Broadway Fantasy League',
     description: 'Draft up to 8 shows. $100 budget. Critics + box office + Tonys. Who picks the best season?',

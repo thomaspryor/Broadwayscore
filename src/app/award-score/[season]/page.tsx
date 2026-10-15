@@ -54,6 +54,7 @@ export async function generateMetadata(props: { params: Promise<{ season: string
   return {
     title: `${label} Broadway Award Scorecard`,
     description: `Prestige-weighted award scores for the ${label} Broadway season — Tony Awards, Pulitzer Prize, Drama Desk, Outer Critics Circle, Drama League, and NYDCC.`,
+    alternates: { canonical: `${BASE_URL}/award-score/${params.season}` },
     openGraph: {
       title: `${label} Broadway Award Scorecard`,
       description: `Which shows dominated the ${label} Broadway awards season? See scores across seven ceremonies.`,
