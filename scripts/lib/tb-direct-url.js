@@ -295,9 +295,72 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
   return { found: false, reason: `all ${candidates.length} candidates${overrideUrl ? '' : ' + index fallback'} failed verification` };
 }
 
+// Off-Broadway TB reviews live at /page/ob/MM_DD_YY.html (optional b/c suffix for a second
+// or third review the same day), not under /page/world/. Show Score links TB's OB front
+// page (/page/ob/index.html), which only showed the review at fetch time, so the stored
+// URL is a listing page and the review never publishes (BRO-4437).
+const TB_OB_INDEX_RE = /^https?:\/\/(?:www\.)?talkinbroadway\.com\/page\/ob\/index\.html?\/?(?:[?#].*)?$/i;
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+function isTbObIndexUrl(url) {
+  return typeof url === 'string' && TB_OB_INDEX_RE.test(url.trim());
+}
+
+// "Theatre Review by Marc Miller - September 29, 2026" -> { y, m, d } (null when absent).
+// Only the first 1500 chars are searched: the date line sits in the header, and a body
+// that mentions another date must not win.
+function extractTbReviewDate(text) {
+  const head = String(text || '').slice(0, 1500);
+  const m = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})\b/i.exec(head);
+  if (!m) return null;
+  const month = MONTHS.indexOf(m[1].toLowerCase()) + 1;
+  const day = Number(m[2]);
+  if (!month || day < 1 || day > 31) return null;
+  return { y: Number(m[3]), m: month, d: day };
+}
+
+function buildTbObCandidateUrls(date) {
+  if (!date || !date.y || !date.m || !date.d) return [];
+  const pad = (n) => String(n).padStart(2, '0');
+  const base = `${TB_HOST}/page/ob/${pad(date.m)}_${pad(date.d)}_${pad(date.y % 100)}`;
+  return [`${base}.html`, `${base}b.html`, `${base}c.html`];
+}
+
+// Resolve a TB OB index URL to the dated review page. Accepts a candidate only when
+// verifyTbPage passes (title + review signal) AND the critic's surname is on the page,
+// so a same-day review of another show or by another critic is never taken.
+async function resolveTbObIndexUrl({ url, reviewText, showTitle, criticName, fetchPage, logger = console }) {
+  if (!isTbObIndexUrl(url)) return { found: false, reason: 'not a TB Off-Broadway index url' };
+  const date = extractTbReviewDate(reviewText);
+  if (!date) return { found: false, reason: 'no date line in review text' };
+  const surname = String(criticName || '').trim().split(/\s+/).pop().toLowerCase();
+  for (const candidate of buildTbObCandidateUrls(date)) {
+    let page;
+    try {
+      page = await fetchPage(candidate, { renderJs: false });
+    } catch (e) {
+      logger.log(`    fetch error: ${e.message}`);
+      continue;
+    }
+    if (!page || !page.content) continue;
+    const v = verifyTbPage(page.content, { showTitle, openingDate: null });
+    if (!v.ok) { logger.log(`    rejected ${candidate}: ${v.reason}`); continue; }
+    if (surname && !page.content.toLowerCase().includes(surname)) {
+      logger.log(`    rejected ${candidate}: critic "${criticName}" not on page`);
+      continue;
+    }
+    return { found: true, url: candidate, source: 'tb-ob-date-resolution' };
+  }
+  return { found: false, reason: 'no dated candidate verified' };
+}
+
 module.exports = {
   buildTbCandidateUrls,
   verifyTbPage,
   tryTbDirectUrl,
+  isTbObIndexUrl,
+  extractTbReviewDate,
+  buildTbObCandidateUrls,
+  resolveTbObIndexUrl,
   _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow, tbBudgetMs, DEFAULT_TB_BUDGET_MS },
 };

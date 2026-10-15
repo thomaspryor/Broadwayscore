@@ -86,3 +86,51 @@ test('verifyTbPage accepts a page titled with the short title only', () => {
   const result = verifyTbPage(html, { showTitle: 'Beaches, A New Musical', openingDate: null });
   assert.equal(result.ok, true, result.reason);
 });
+
+// BRO-4437: Off-Broadway TB reviews arrive via Show Score as /page/ob/index.html.
+const { isTbObIndexUrl, extractTbReviewDate, buildTbObCandidateUrls, resolveTbObIndexUrl } = require('./tb-direct-url.js');
+const silent = { log() {} };
+
+test('isTbObIndexUrl matches only the OB front page', () => {
+  assert.equal(isTbObIndexUrl('https://www.talkinbroadway.com/page/ob/index.html'), true);
+  assert.equal(isTbObIndexUrl('https://www.talkinbroadway.com/page/ob/03_29_26.html'), false);
+  assert.equal(isTbObIndexUrl('https://www.talkinbroadway.com/page/world/index.html'), false);
+});
+
+test('extractTbReviewDate reads the header date line, ignores later body dates', () => {
+  const text = 'Theatre Review by Marc Miller - September 29, 2026\n' + 'x'.repeat(2000) + ' January 3, 2020';
+  assert.deepEqual(extractTbReviewDate(text), { y: 2026, m: 9, d: 29 });
+  assert.equal(extractTbReviewDate('no date here'), null);
+});
+
+test('buildTbObCandidateUrls builds MM_DD_YY with b/c suffixes', () => {
+  assert.deepEqual(buildTbObCandidateUrls({ y: 2026, m: 9, d: 29 }), [
+    'https://www.talkinbroadway.com/page/ob/09_29_26.html',
+    'https://www.talkinbroadway.com/page/ob/09_29_26b.html',
+    'https://www.talkinbroadway.com/page/ob/09_29_26c.html',
+  ]);
+  assert.deepEqual(buildTbObCandidateUrls(null), []);
+});
+
+test('resolveTbObIndexUrl takes the candidate matching title and critic, skips others', async () => {
+  const page = (title, critic) => ({ content: `<html><head><title>${title} - Talkin' Broadway</title></head><body>${'x'.repeat(900)} Theatre Review by ${critic} - September 29, 2026</body></html>` });
+  const pages = {
+    'https://www.talkinbroadway.com/page/ob/09_29_26.html': page('Other Show', 'Marc Miller'),
+    'https://www.talkinbroadway.com/page/ob/09_29_26b.html': page('Degenerates', 'Someone Else'),
+    'https://www.talkinbroadway.com/page/ob/09_29_26c.html': page('Degenerates', 'Marc Miller'),
+  };
+  const fetchPage = async (u) => pages[u];
+  const r = await resolveTbObIndexUrl({
+    url: 'https://www.talkinbroadway.com/page/ob/index.html',
+    reviewText: 'Theatre Review by Marc Miller - September 29, 2026\nbody',
+    showTitle: 'Degenerates', criticName: 'Marc Miller', fetchPage, logger: silent,
+  });
+  assert.equal(r.found, true);
+  assert.equal(r.url, 'https://www.talkinbroadway.com/page/ob/09_29_26c.html');
+});
+
+test('resolveTbObIndexUrl refuses non-index urls and undated text', async () => {
+  const fetchPage = async () => { throw new Error('should not fetch'); };
+  assert.equal((await resolveTbObIndexUrl({ url: 'https://www.talkinbroadway.com/page/ob/03_29_26.html', reviewText: 'x', fetchPage })).found, false);
+  assert.equal((await resolveTbObIndexUrl({ url: 'https://www.talkinbroadway.com/page/ob/index.html', reviewText: 'no date', fetchPage })).found, false);
+});
