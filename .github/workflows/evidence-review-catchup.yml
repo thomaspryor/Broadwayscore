@@ -51,6 +51,11 @@ jobs:
       - name: Select candidates and check the spend cap
         id: select
         env:
+          # The selection step reports which scraper secrets are set (the CLAUDE.md §8 E2E check), so it sees the same ones the fetch step does.
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           INPUT_LIMIT: ${{ github.event.inputs.limit || '2' }}
         run: node scripts/seed-evidence-review-stubs.js --dry-run --limit="${INPUT_LIMIT}"
 
