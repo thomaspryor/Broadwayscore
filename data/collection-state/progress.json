@@ -145,7 +145,9 @@
     "gotta-dance-off-broadway-2026/playbill--unknown.json",
     "la-traviata-off-broadway-2026/broadwayworld--unknown.json",
     "no-singing-in-the-navy-off-broadway-2026/one-minute-critic--emily-chackerian.json",
-    "my-joy-is-heavy-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+    "my-joy-is-heavy-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "stuffed-off-west-end-2026/deadline--damon-wise.json",
+    "the-cherry-orchard-west-end-2026/independent--alice-saville.json"
   ],
   "failed": [
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
@@ -287,33 +289,15 @@
     "titanique-2026/wsj--charles-isherwood.json",
     "becky-shaw-2026/wsj--charles-isherwood.json",
     "dog-day-afternoon-2026/wsj--charles-isherwood.json",
-    "swept-away-2024/wsj--charles-isherwood.json",
-    "sunset-boulevard-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "home-2024/wsj--charles-isherwood.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "i-need-that-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "new-york-new-york-2023/wsj--charles-isherwood.json",
-    "shucked-2023/wsj--charles-isherwood.json",
-    "a-dolls-house-2023/wsj--charles-isherwood.json",
-    "pictures-from-home-2023/wsj--charles-isherwood.json",
-    "kimberly-akimbo-2022/wsj--charles-isherwood.json",
-    "into-the-woods-2022/wsj--charles-isherwood.json",
-    "macbeth-2022/wsj--charles-isherwood.json",
-    "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json",
-    "funny-girl-2022/wsj--charles-isherwood.json",
-    "the-minutes-2022/wsj--charles-isherwood.json",
-    "whos-afraid-of-virginia-woolf-2020/wsj--unknown.json",
-    "grand-horizons-2020/wsj--terry-teachout.json",
-    "the-height-of-the-storm-2019/wsj--terry-teachout.json",
-    "tootsie-2019/wsj--terry-teachout.json",
-    "oklahoma-2019/wsj--terry-teachout.json",
-    "network-2018/wsj--terry-teachout.json",
-    "the-cher-show-2018/wsj--terry-teachout.json",
-    "torch-song-2018/wsj--matt-windman.json",
-    "the-ferryman-2018/wsj--terry-teachout.json"
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "john-proctor-is-the-villain-west-end-2026/guardian--arifa-akbar.json",
+    "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -447,7 +431,8 @@
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "john-proctor-is-the-villain-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "no-singing-in-the-navy-off-broadway-2026/one-minute-critic--emily-chackerian.json"
+      "no-singing-in-the-navy-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+      "the-cherry-orchard-west-end-2026/independent--alice-saville.json"
     ],
     "amp": [
       "data/review-texts/collected-stories-2010/variety--unknown.json",
@@ -459,7 +444,9 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
-      "dirty-dancing-tour-2026/nytimes--michael-paulson.json"
+      "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+      "data/review-texts/stuffed-off-west-end-2026/deadline--damon-wise.json",
+      "stuffed-off-west-end-2026/deadline--damon-wise.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -582,7 +569,7 @@
     ]
   },
   "startTime": "2026-10-15T08:00:51.426Z",
-  "lastProcessed": "the-ferryman-2018/wsj--terry-teachout.json",
+  "lastProcessed": "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
   "log": [
     {
       "t": "2026-10-15T09:19:26.293Z",
@@ -704,6 +691,23 @@
       "t": "2026-10-15T12:03:29.884Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T15:12:31.313Z",
+      "event": "bb-session",
+      "session": "a360335e",
+      "url": "https://deadline.com/2026/09/stuffed-review-jodie-comer-harry-melling-theo-rhys-"
+    },
+    {
+      "t": "2026-10-15T15:15:15.324Z",
+      "event": "bb-session",
+      "session": "7a681f6e",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-15T15:15:15.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [

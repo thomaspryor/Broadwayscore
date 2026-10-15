@@ -1,38 +1,21 @@
 {
-  "updatedAt": "2026-10-15T15:13:38.061Z",
-  "processed": 242,
-  "failed": 206,
-  "successRate": "54.0%",
+  "updatedAt": "2026-10-15T15:16:03.268Z",
+  "processed": 148,
+  "failed": 177,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 145,
+    "playwright": 131,
     "amp": 2,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 25,
-    "scrapingbee": 18,
-    "brightdata": 3,
+    "scrapingdog": 29,
+    "scrapingbee": 13,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 75
+    "archive": 65
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-15T10:22:39.355Z",
-      "event": "bb-session",
-      "session": "1c6bcf78",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-15T10:22:39.750Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-15T10:26:10.422Z",
-      "event": "bb-session",
-      "session": "42e6b5a6",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
     {
       "t": "2026-10-15T10:26:10.755Z",
       "event": "bb-cookie-inject",
@@ -125,6 +108,23 @@
       "t": "2026-10-15T12:03:29.884Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T15:12:31.313Z",
+      "event": "bb-session",
+      "session": "a360335e",
+      "url": "https://deadline.com/2026/09/stuffed-review-jodie-comer-harry-melling-theo-rhys-"
+    },
+    {
+      "t": "2026-10-15T15:15:15.324Z",
+      "event": "bb-session",
+      "session": "7a681f6e",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-15T15:15:15.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
