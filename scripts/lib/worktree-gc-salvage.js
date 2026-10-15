@@ -29,6 +29,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { LSOF } = require('./system-bin');
 
 const MAX_FILE_BYTES = 20 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 100 * 1024 * 1024;
@@ -72,7 +73,7 @@ function evaluateEligibility({ entries, files, nowMs, minAgeMin }) {
 /** Open handles anywhere under the worktree. Anything but a clean
  *  "nothing open" (lsof exit 1, empty stdout) counts as in-use. */
 function hasOpenHandles(dir) {
-  const r = spawnSync('lsof', ['+D', dir], { encoding: 'utf8', timeout: 45000 });
+  const r = spawnSync(LSOF, ['+D', dir], { encoding: 'utf8', timeout: 45000 });
   if (r.error || r.signal) return true;
   if (r.status === 1 && !String(r.stdout).trim()) return false;
   return true;

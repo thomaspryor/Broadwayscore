@@ -18,6 +18,7 @@
  * since only the cwd FD matters).
  */
 const { execFileSync } = require('child_process');
+const { LSOF } = require('./system-bin');
 const fs = require('fs');
 const path = require('path');
 const { classifyCwdPin, cwdPinBlocks, parseLsofCwds, parsePsTable } = require('./worktree-gc-reclaim.js');
@@ -48,7 +49,7 @@ function hasLiveProcessInDir(worktreePath) {
     // `git fetch`/`git cherry` (see its own "Bound the fetch" comment). A
     // timeout throws here, which the catch below treats as fail-safe
     // "unknown -> live" like any other lsof failure.
-    out = execFileSync('lsof', ['-a', '-d', 'cwd', '-F', 'pn'], {
+    out = execFileSync(LSOF, ['-a', '-d', 'cwd', '-F', 'pn'], {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
       timeout: 10000,
@@ -86,7 +87,7 @@ function cwdPinStatus(worktreePath, { minAgeHours = process.env.WORKTREE_GC_PIN_
   let lsofOut;
   let psOut;
   try {
-    lsofOut = execFileSync('lsof', ['-a', '-d', 'cwd', '-F', 'pn'], {
+    lsofOut = execFileSync(LSOF, ['-a', '-d', 'cwd', '-F', 'pn'], {
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 10000, maxBuffer: 64 * 1024 * 1024,
     });
     psOut = execFileSync('ps', ['-ww', '-A', '-o', 'pid=,ppid=,etime=,tty=,command='], {

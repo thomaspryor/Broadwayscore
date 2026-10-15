@@ -34,6 +34,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { LSOF } = require('./system-bin');
 const cmuxws = require('./cmux-workspaces.js');
 const { isBusy, detectAuthStall } = require('./cmux-auth-stall.js');
 
@@ -207,7 +208,7 @@ function defaultDeps() {
     psCommandFn: (pid) => ps(pid, 'command'),
     ppidFn: (pid) => parseInt(ps(pid, 'ppid'), 10),
     cwdFn: (pid) => {
-      const out = execFileSync('lsof', ['-a', '-p', String(pid), '-d', 'cwd', '-Fn'], { encoding: 'utf8', timeout: 5000 });
+      const out = execFileSync(LSOF, ['-a', '-p', String(pid), '-d', 'cwd', '-Fn'], { encoding: 'utf8', timeout: 5000 });
       const m = /^n(.+)$/m.exec(out);
       return m ? m[1] : null;
     },
