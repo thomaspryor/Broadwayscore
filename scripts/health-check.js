@@ -1466,7 +1466,7 @@ function checkQuality() {
         name,
         status: 'warn',
         message: `${gaps.length} opened show(s) have a cached Show Score URL but no Show Score audience score (${ids}${gaps.length > 5 ? ', ...' : ''})`,
-        hint: 'The cached URL is probably dead or the scrape failed. Re-run update-show-score for the show (the scraper self-heals dead URLs, BRO-4358) and check data/show-score-urls.json.',
+        hint: 'No Show Score audience source despite a cached URL: the URL may be dead, the page may have no ratings yet, or the show shares a page with a sibling production. Check the page, then re-run update-show-score for the show (the scraper self-heals dead URLs, BRO-4358) and check data/show-score-urls.json.',
       };
     }),
 

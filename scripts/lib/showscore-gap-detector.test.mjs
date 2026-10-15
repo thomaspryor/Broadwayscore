@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findShowScoreGaps } = require('./lib/showscore-gap-detector.js');
+const { findShowScoreGaps } = require('./showscore-gap-detector.js');
 
 const NOW = Date.parse('2026-10-15T12:00:00Z');
 const show = (o = {}) => ({ id: 'a', status: 'open', category: 'broadway', openingDate: '2026-09-28', ...o });
@@ -30,7 +30,7 @@ test('off-broadway is covered', () => {
 });
 
 test('not flagged: opened under a day ago, not open, other market, or no cached URL', () => {
-  assert.equal(findShowScoreGaps([show({ openingDate: '2026-10-15' })], urls, {}, NOW).length, 0);
+  assert.equal(findShowScoreGaps([show({ openingDate: '2026-10-10' })], urls, {}, NOW).length, 0);
   assert.equal(findShowScoreGaps([show({ status: 'closed' })], urls, {}, NOW).length, 0);
   assert.equal(findShowScoreGaps([show({ status: 'previews' })], urls, {}, NOW).length, 0);
   assert.equal(findShowScoreGaps([show({ category: 'west-end' })], urls, {}, NOW).length, 0);
@@ -38,6 +38,15 @@ test('not flagged: opened under a day ago, not open, other market, or no cached 
   assert.equal(findShowScoreGaps([show({ openingDate: undefined })], urls, {}, NOW).length, 0);
 });
 
-test('exactly one day after opening counts', () => {
-  assert.equal(findShowScoreGaps([show({ openingDate: '2026-10-14' })], urls, {}, Date.parse('2026-10-15T00:00:00Z')).length, 1);
+test('exactly seven days after opening counts', () => {
+  assert.equal(findShowScoreGaps([show({ openingDate: '2026-10-08' })], urls, {}, Date.parse('2026-10-15T00:00:00Z')).length, 1);
+});
+
+test('off-off-broadway URLs are skipped (scraper rejects them by design)', () => {
+  const u = { a: 'https://www.show-score.com/off-off-broadway-shows/a' };
+  assert.equal(findShowScoreGaps([show({ category: 'off-broadway' })], u, {}, NOW).length, 0);
+});
+
+test('tolerates null inputs', () => {
+  assert.deepEqual(findShowScoreGaps(null, null, null, NOW), []);
 });

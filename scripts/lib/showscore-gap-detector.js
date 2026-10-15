@@ -6,7 +6,9 @@
  * detector for the class.
  */
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+// 7 days: a clean scrape of a small show with no audience reviews yet also
+// leaves showScore null (scrape-show-score-audience.js), so give it time.
+const GRACE_MS = 7 * 24 * 60 * 60 * 1000;
 const CATEGORIES = new Set(['broadway', 'off-broadway']);
 
 /**
@@ -21,9 +23,10 @@ function findShowScoreGaps(shows, urls, buzz, now = Date.now()) {
   for (const s of shows || []) {
     if (s.status !== 'open' || !CATEGORIES.has(s.category) || !s.openingDate) continue;
     const opened = Date.parse(s.openingDate);
-    if (!Number.isFinite(opened) || now - opened < DAY_MS) continue;
+    if (!Number.isFinite(opened) || now - opened < GRACE_MS) continue;
     const url = urls?.[s.id];
-    if (!url) continue;
+    // The scraper rejects off-off-broadway pages by design (isValidShowScorePage).
+    if (!url || url.includes('/off-off-broadway-shows/')) continue;
     if (buzz?.[s.id]?.sources?.showScore != null) continue;
     hits.push({ id: s.id, category: s.category, openingDate: s.openingDate, url });
   }
