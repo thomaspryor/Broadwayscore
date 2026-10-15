@@ -3245,38 +3245,24 @@ async function main() {
   });
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData, maxRuntimeMin);
 
-  // Post-fetch duplicate image audit: detect shows sharing the same image.
-  // NEVER null images — a wrong image is better than no image on the site.
-  // Log suspected duplicates to an audit file for human review.
+  // Post-fetch duplicate image audit: byte-identical files on unrelated,
+  // unlinked shows (scripts/lib/duplicate-images.js, BRO-4393; validate-data
+  // warns on the same groups). NEVER null images here: a wrong image is better
+  // than no image on the site. Logged to an audit file for human review.
   if (!dryRunMode && results.success.length > 0) {
-    const crypto = require('crypto');
-    const hashMap = new Map(); // hash → { id, title, status }
-    const suspects = [];
-
-    for (const s of showsData.shows) {
-      const thumb = s.images?.thumbnail;
-      if (!thumb || !thumb.startsWith('/images/')) continue;
-      const fullPath = path.join(__dirname, '..', 'public', thumb);
-      if (!fs.existsSync(fullPath)) continue;
-      const hash = crypto.createHash('md5').update(fs.readFileSync(fullPath)).digest('hex');
-      if (hashMap.has(hash)) {
-        const first = hashMap.get(hash);
-        // Same title = revival/transfer — expected, skip
-        const baseTitle = (s.title || s.displayName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        const firstTitle = (first.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        if (baseTitle === firstTitle) continue;
-        suspects.push({ show1: first.id, show1Status: first.status, show2: s.id, show2Status: s.status });
-        console.log(`   ⚠ SUSPECT DUPLICATE: ${s.id} shares image with ${first.id} — keeping both, logged for review`);
-      } else {
-        hashMap.set(hash, { id: s.id, title: s.title || s.displayName || '', status: s.status });
-      }
-    }
-    if (suspects.length > 0) {
+    try {
+      const { auditDuplicateImages } = require('./lib/duplicate-images');
+      const { groups } = auditDuplicateImages(showsData.shows, path.join(__dirname, '..', 'public'));
+      for (const g of groups) console.log(`   ⚠ SUSPECT DUPLICATE: ${g.ids.join(', ')} share ${g.files[0].path} — keeping all, logged for review`);
       const auditPath = path.join(__dirname, '..', 'data', 'audit', 'suspect-duplicate-images.json');
-      const auditDir = path.dirname(auditPath);
-      if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
-      fs.writeFileSync(auditPath, JSON.stringify({ updatedAt: new Date().toISOString(), suspects }, null, 2));
-      console.log(`   🔍 ${suspects.length} suspect duplicate images logged to data/audit/suspect-duplicate-images.json`);
+      // Rewrite an existing file even when clean so stale suspects do not linger.
+      if (groups.length > 0 || fs.existsSync(auditPath)) {
+        fs.mkdirSync(path.dirname(auditPath), { recursive: true });
+        fs.writeFileSync(auditPath, JSON.stringify({ updatedAt: new Date().toISOString(), groups }, null, 2));
+        console.log(`   🔍 ${groups.length} suspect duplicate image groups logged to data/audit/suspect-duplicate-images.json`);
+      }
+    } catch (e) {
+      console.log(`   duplicate image audit skipped: ${e.message}`);
     }
   }
 

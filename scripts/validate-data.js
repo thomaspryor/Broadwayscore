@@ -22,6 +22,7 @@ const path = require('path');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { findSharedSources } = require('./lib/shared-image-source');
+const { auditDuplicateImages } = require('./lib/duplicate-images');
 const { loadImageSources } = require('./lib/image-sources-store');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./lib/opening-night-completeness');
@@ -1481,6 +1482,33 @@ function validateSharedImageSources(shows) {
     warn(`Image source ${f.placeholder ? 'is a known placeholder, used by' : 'recorded for unrelated shows'} ${f.ids.join(', ')}: ${f.source} (node scripts/audit-shared-image-sources.js)`);
   }
   if (found.length === 0) ok('No image source is shared by unrelated shows');
+}
+
+// ===========================================
+// BYTE-IDENTICAL ART ACROSS UNRELATED SHOWS (BRO-4393)
+// ===========================================
+// Two unrelated, unlinked shows whose own image files are byte-identical: one
+// of them shows the other's poster. Warn-only (CLAUDE.md §19); allowlist
+// inspected pairs in scripts/lib/duplicate-images.js DUPLICATE_IMAGE_ALLOWLIST.
+
+function validateDuplicateImageFiles(shows) {
+  info('Checking no two unrelated shows have byte-identical image files...');
+  const publicDir = path.join(__dirname, '..', 'public');
+  if (!fs.existsSync(path.join(publicDir, 'images', 'shows'))) {
+    ok('No local images directory (skip)');
+    return;
+  }
+  let groups;
+  try {
+    ({ groups } = auditDuplicateImages(shows, publicDir));
+  } catch (e) {
+    warn(`Could not check duplicate image files: ${e.message}`);
+    return;
+  }
+  for (const g of groups) {
+    warn(`Byte-identical image shared by unrelated shows ${g.ids.join(', ')}: ${g.files.map((f) => f.path).join(', ')} (clear/re-fetch the wrong one, or allowlist in scripts/lib/duplicate-images.js after viewing it)`);
+  }
+  if (groups.length === 0) ok('No byte-identical image files across unrelated shows');
 }
 
 // ===========================================
@@ -5367,6 +5395,7 @@ function runValidation() {
   validateImageFiles(shows);
   validateCrossShowImages(shows);
   validateSharedImageSources(shows);
+  validateDuplicateImageFiles(shows);
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   validateTheaterAddress(shows);
