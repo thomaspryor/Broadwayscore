@@ -1,18 +1,36 @@
 {
-  "generatedAt": "2026-10-14T07:40:49.735Z",
+  "generatedAt": "2026-10-15T07:31:12.377Z",
   "shadow": true,
-  "checkoutSha": "ed38d5f483635722651775137d3e91dff9ccfea7",
-  "totalCandidates": 580,
-  "eligibleCandidates": 72,
+  "checkoutSha": "e27e10ba5630648f49ade9fcc5ffc80357c24085",
+  "totalCandidates": 525,
+  "eligibleCandidates": 113,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 21,
+    "pass": 12,
     "fail": 2,
-    "unverifiable": 7
+    "unverifiable": 16
   },
   "alreadyDone": [
+    {
+      "id": "BRO-5366",
+      "name": "Weekly Video Reviews stale 207h: TikTok creator scans failing via yt-dlp (4 creators unscanned 15-23 days)",
+      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5316",
+      "name": "Triage the 99 baselined orphaned data/audit writes (BRO-2420 audit)",
+      "verifyCmd": "node --test tests/unit/audit-orphaned-audit-writes.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5307",
+      "name": "Enforce CLAUDE.md §12.8 audit-regex-patterns run for content-quality.js pattern edits",
+      "verifyCmd": "node --test scripts/tests/verify-edits-scoring-gate.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-5302",
       "name": "Opening Night Orchestrator: alert-state push 403s (contents: read), emails owner after every full 5h run; same gap in opening-night-reviews + outlet-listing-poller",
@@ -20,9 +38,21 @@
       "detail": null
     },
     {
-      "id": "BRO-5224",
-      "name": "human-review-fixes.json: add criticName to 2 same-outlet fixes now skipped as ambiguous",
-      "verifyCmd": "node --test scripts/apply-human-review-fixes.test.mjs",
+      "id": "BRO-5297",
+      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
+      "verifyCmd": "test -f docs/notion-orphan-triage.md",
+      "detail": null
+    },
+    {
+      "id": "BRO-5266",
+      "name": "Data-backfill cards get node --test acceptance commands, pushing workers to write world-state tests into blocking unit jobs",
+      "verifyCmd": "node --test scripts/enrich-card-acceptance.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5238",
+      "name": "Human wrong-production clear should override stale ensemble rejectionReason in inclusion gate",
+      "verifyCmd": "node --test scripts/lib/review-guards.test.mjs",
       "detail": null
     },
     {
@@ -32,173 +62,150 @@
       "detail": null
     },
     {
-      "id": "BRO-5220",
-      "name": "Exclude live SERP-found review rows scored without page text (about 7 rows)",
-      "verifyCmd": "node --test tests/unit/web-search-recovery-bro5183.test.mjs",
+      "id": "BRO-5193",
+      "name": "Missing show: The Da Vinci Code",
+      "verifyCmd": "node scripts/validate-data.js",
       "detail": null
     },
     {
-      "id": "BRO-5167",
-      "name": "Audience ratings never linked: Mezzanine An Oak Tree (Audience coverage: open-show gaps)",
-      "verifyCmd": "node --test tests/unit/audience-coverage-gaps.test.mjs",
+      "id": "BRO-5192",
+      "name": "Missing show: You Will Get Sick",
+      "verifyCmd": "node scripts/validate-data.js",
       "detail": null
     },
     {
-      "id": "BRO-5142",
-      "name": "Write guard BRO-4383 flags real reviews wrongShow on historical shows with no cast/creative data (67 files)",
-      "verifyCmd": "node --test tests/unit/review-write-guard.test.mjs",
+      "id": "BRO-5191",
+      "name": "Missing show: No Exit",
+      "verifyCmd": "node scripts/validate-data.js",
       "detail": null
     },
     {
-      "id": "BRO-5088",
-      "name": "Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
-      "verifyCmd": "node --test scripts/lib/broadway-theaters-studio54.test.mjs scripts/lib/ibdb-directed-by.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5064",
-      "name": "P1: weekly-integrity 'P0 score integrity check' hard-fails: 22 london-theatre files carry originalScore (no-star outlet)",
-      "verifyCmd": "node --test tests/unit/review-write-guard-no-rating-outlet.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5047",
-      "name": "Cut AI scoring cost: batch mode for non-urgent scoring runs and skip runs with nothing to score",
-      "verifyCmd": "node --test tests/unit/sticky-not-a-review-rejection.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5028",
-      "name": "Weekly commercial update: regex grosses parser is dead, every run falls back to Sonnet",
-      "verifyCmd": "node --test tests/unit/reddit-grosses.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4869",
-      "name": "Critics' Take: Wicked tour refused by the model; audit drift false positives on text-light shows",
-      "verifyCmd": "node --test tests/unit/critic-consensus-eligibility.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4868",
-      "name": "Make linear-next, the watchdog and the classifier honour the NO-DISPATCH marker, and anchor its regex",
-      "verifyCmd": "node --test scripts/lib/cloud-worker-pick.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4855",
-      "name": "Rebuild guard: drop a dateless review first seen before its show's first preview",
-      "verifyCmd": "node --test scripts/lib/show-matching.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4840",
-      "name": "Star-band drift triage: human-review overrides, relayed ratings, letter-grade extraction, and a daily published-score audit in the health digest",
-      "verifyCmd": "node --test tests/unit/published-score-star-band.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4835",
-      "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
-      "verifyCmd": "node --test scripts/lib/opening-night-lane-inline-score.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4820",
-      "name": "Lane discovery follow-ups: Show Score, Playbill Verdict, Google News (redirect unwrap), Talkin' Broadway, SERP adapter, 2-min loop driver, feed date confirmation",
-      "verifyCmd": "node --test tests/unit/opening-night-lane-discovery.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4775",
-      "name": "Launch video critics: enable videoReviews on prod (+ cloud-operable set-prod-feature workflow)",
-      "verifyCmd": "node --test scripts/lib/prod-held-flags-guard.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4631",
-      "name": "show-score-proxy runs with JWT verification off: forged tokens reach the function",
-      "verifyCmd": "node --test tests/unit/show-score-proxy-jwt-verification.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4509",
-      "name": "Add NYT fall-2026 US regional runs that have enough reviews + Oh, Mary! tour",
-      "verifyCmd": "node --test scripts/lib/regional-serp-discovery.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4451",
-      "name": "Backfill 54 Reviews Hub reviews filed under the house byline; add The Stage to the outlet ground-truth audit",
-      "verifyCmd": "node --test scripts/lib/multi-show-review-fanout.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4408",
-      "name": "Opening-night poller never drains _pending no-byline strands; in-window reviews wait up to 6h for enrich-reviews",
-      "verifyCmd": "node --test scripts/replay-pending-bylines.test.mjs",
+      "id": "BRO-5171",
+      "name": "Reverse discovery: stage West End Guardian-review candidates into the Off-West-End promoter",
+      "verifyCmd": "node --test tests/unit/owe-guardian-staging.test.mjs",
       "detail": null
     }
   ],
   "failing": [
     {
+      "id": "BRO-5282",
+      "name": "P1: landing throughput is now the bottleneck (23 landings queued, ~2h wait, ~15 lands/hour)",
+      "verifyCmd": "node --test tests/acceptance/land-train-live.test.mjs",
+      "detail": "TAP version 13\n# fatal: Not a valid commit name 245b878352e94aa53e4aa822f68c6e7fc629c172\n# Subtest: BRO-5282: a merge train has landed in production, and all of its commits are on main\nnot ok 1 - BRO-5282: a merge train has landed in production, and all of its commits are on main\n  ---\n  duration_ms: 284.517484\n  location: '/tmp/open-backlog-sweep-pZbAqA/main/tests/acceptance/land-train-live.test."
+    },
+    {
       "id": "BRO-5166",
       "name": "Major-outlet reviews not counted in scores: Data: T1/T2 silent review gaps (11 reviews, 3 T1)",
       "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
-      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-14T07:38:45.270Z health snapshot\n"
-    },
-    {
-      "id": "BRO-4623",
-      "name": "Commercial scorecard launch-readiness audit (accuracy, freshness, coverage) before Forbes interview",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=commercial-weekly.yml --expect=success",
-      "detail": "To get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.\ngh run list failed: Command failed: gh run list --workflow commercial-weekly.yml --limit 1 --json conclusion,status,headBranch,url\nTo get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment vari"
+      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-15T07:28:22.410Z health snapshot\n"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-5297",
-      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
-      "verifyCmd": "test -f docs/notion-orphan-triage.md",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: docs/notion-orphan-triage.md"
+      "id": "BRO-5351",
+      "name": "Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3",
+      "verifyCmd": "node --test tests/unit/collect-review-texts-url-publishdate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/collect-review-texts-url-publishdate.test.mjs"
     },
     {
-      "id": "BRO-5282",
-      "name": "P1: landing throughput is now the bottleneck (23 landings queued, ~2h wait, ~15 lands/hour)",
-      "verifyCmd": "node --test tests/acceptance/land-train-live.test.mjs",
-      "detail": "ran no passing tests (all skipped or none ran)"
+      "id": "BRO-5344",
+      "name": "Aggregator excerpts on WSJ rows that appear nowhere in the critic's stored full text (paraphrases or another production)",
+      "verifyCmd": "node --test tests/unit/verifier-excerpt-anchor.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/verifier-excerpt-anchor.test.mjs"
     },
     {
-      "id": "BRO-4960",
-      "name": "Critics' Take blurb outlives its reviews for up to 7 days after a wrongShow/removal (prune only runs weekly)",
-      "verifyCmd": "node --test tests/unit/critic-consensus-prune-only.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
+      "id": "BRO-5336",
+      "name": "Outlet registry: 168 displayNames are mashed-together domains (Hackneycitizen, Stanforddaily)",
+      "verifyCmd": "node --test tests/unit/outlet-registry-display-names.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/outlet-registry-display-names.test.mjs"
     },
     {
-      "id": "BRO-4891",
-      "name": "Older musicals and missing prior-production pages for revival promo (Dreamgirls 2016, Sound of Music tour, Full Monty, JP, Paddington, director data)",
-      "verifyCmd": "node --test tests/unit/revival-promo-musicals-and-missing-pages.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-musicals-and-missing-pages.test.mjs"
+      "id": "BRO-5320",
+      "name": "Wrong-run review copies surfaced by the BRO-5261 audit fix: Leopoldstadt 2021, Comedy About Spies 2026 and 5 opt-out prior-run rows",
+      "verifyCmd": "node --test tests/unit/run-contamination-wrong-run.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/run-contamination-wrong-run.test.mjs"
     },
     {
-      "id": "BRO-4889",
-      "name": "Older Broadway pages behind spring 2027 revivals: contamination, false flags, junk rows (Evita, Osage, Cat, Private Lives, Dreamgirls 1981)",
-      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-older-broadway.test.mjs"
+      "id": "BRO-5299",
+      "name": "Comedy About Spies 2026: two Adelphi reviews excluded as wrong production",
+      "verifyCmd": "node --test tests/unit/ensemble-return-run-wrong-production.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ensemble-return-run-wrong-production.test.mjs"
     },
     {
-      "id": "BRO-4530",
-      "name": "user_show_stubs.created_by (an account id) is readable by anon",
-      "verifyCmd": "node --test tests/unit/stubs-created-by-grant.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/stubs-created-by-grant.test.mjs"
+      "id": "BRO-5298",
+      "name": "Write-time guard: refuse a review url a same-title sibling production already holds",
+      "verifyCmd": "node --test scripts/lib/review-file-writer-same-title-sibling-url.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-file-writer-same-title-sibling-url.test.mjs"
     },
     {
-      "id": "BRO-4457",
-      "name": "T1/T2 review stuck >24h: School Girls; Or, The African Mean Girls Play — nydailynews",
-      "verifyCmd": "node --test scripts/lib/backstop-condition-resolution.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/backstop-condition-resolution.test.mjs"
+      "id": "BRO-5293",
+      "name": "Audit workflows whose always() commit step publishes data after a failed validate step",
+      "verifyCmd": "node --test tests/unit/audit-always-commit-after-validate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-always-commit-after-validate.test.mjs"
+    },
+    {
+      "id": "BRO-5292",
+      "name": "Content verifier (claude-haiku) reads our own '[...]' sample marker as truncation and rejects real long reviews",
+      "verifyCmd": "node --test scripts/lib/classify-sample.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/classify-sample.test.mjs"
+    },
+    {
+      "id": "BRO-5267",
+      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
+      "verifyCmd": "node --test tests/unit/alert-ledger-absence-resolve.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/alert-ledger-absence-resolve.test.mjs"
+    },
+    {
+      "id": "BRO-5265",
+      "name": "17 mutual crossOutletDuplicate 2-cycles exclude both copies of a review",
+      "verifyCmd": "node --test tests/unit/cross-outlet-duplicate-cycle.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/cross-outlet-duplicate-cycle.test.mjs"
+    },
+    {
+      "id": "BRO-5260",
+      "name": "11 complete review texts still carry a stale ensemble not_a_review rejection made before the full text was fetched",
+      "verifyCmd": "node --test tests/unit/ensemble-rejection-requeue.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ensemble-rejection-requeue.test.mjs"
+    },
+    {
+      "id": "BRO-5258",
+      "name": "audit-provisional-venues red 33 of 34 runs: Playbill match picks a different production (school-pictures, mystic-pizza)",
+      "verifyCmd": "node --test scripts/validate-show-venue.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/validate-show-venue.test.mjs"
+    },
+    {
+      "id": "BRO-5253",
+      "name": "Cloud bootstrap: review-texts copy fails on a partial (blobless/sparse) attached clone",
+      "verifyCmd": "node --test tests/unit/setup-local-data-partial-clone.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/setup-local-data-partial-clone.test.mjs"
+    },
+    {
+      "id": "BRO-5240",
+      "name": "Verify the 68 'inferred-from-reviews' WE/OWE opening dates stamped under the old -1 offset",
+      "verifyCmd": "node --test scripts/infer-press-night-from-reviews.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/infer-press-night-from-reviews.test.mjs"
+    },
+    {
+      "id": "BRO-5190",
+      "name": "No ticket provider shown for top-traffic shows beyond TodayTix",
+      "verifyCmd": "node --test tests/unit/ticket-click-provider-agnostic.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ticket-click-provider-agnostic.test.mjs"
+    },
+    {
+      "id": "BRO-5179",
+      "name": "Re-file 6 real reviews stored under outletId vulture with a non-Vulture url host",
+      "verifyCmd": "node --test tests/unit/outlet-id-migrations-vulture-hosts.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/outlet-id-migrations-vulture-hosts.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-5366",
+      "name": "Weekly Video Reviews stale 207h: TikTok creator scans failing via yt-dlp (4 creators unscanned 15-23 days)",
+      "branch": "land/bro-5366-tiktok-scan-retry",
+      "sha": "079dfe6e9504190d3988be7312e5ef7b4fd894c5",
+      "landedAt": "2026-10-14T23:31:45.412Z"
+    },
     {
       "id": "BRO-5302",
       "name": "Opening Night Orchestrator: alert-state push 403s (contents: read), emails owner after every full 5h run; same gap in opening-night-reviews + outlet-listing-poller",
@@ -207,53 +214,18 @@
       "landedAt": "2026-10-14T02:29:11.805Z"
     },
     {
-      "id": "BRO-5167",
-      "name": "Audience ratings never linked: Mezzanine An Oak Tree (Audience coverage: open-show gaps)",
-      "branch": "land/bro-5167-mezz-earlier-runs",
-      "sha": "46b15730c311ae4dd67d375c3c4b07026ef8704b",
-      "landedAt": "2026-10-12T14:30:48.203Z"
+      "id": "BRO-5297",
+      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
+      "branch": "land/codex-bro-5297",
+      "sha": "cd0f0c15a23eec1f8463a43aed1f37f3ad71b85a",
+      "landedAt": "2026-10-14T14:36:54.768Z"
     },
     {
-      "id": "BRO-5064",
-      "name": "P1: weekly-integrity 'P0 score integrity check' hard-fails: 22 london-theatre files carry originalScore (no-star outlet)",
-      "branch": "land/bro-5064-original-score",
-      "sha": "bd41661a73239cdbf58e41aa45c507bdf51de262",
-      "landedAt": "2026-10-13T00:05:59.470Z"
-    },
-    {
-      "id": "BRO-5047",
-      "name": "Cut AI scoring cost: batch mode for non-urgent scoring runs and skip runs with nothing to score",
-      "branch": "land/bro-5047-backlog-batch",
-      "sha": "20494b23b36a5fd20928e73f8b38bf63eec0e38f",
-      "landedAt": "2026-10-11T22:48:20.985Z"
-    },
-    {
-      "id": "BRO-4835",
-      "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
-      "branch": "land/codex-bro-4835",
-      "sha": "a8e61b555c698aebabf5ecf6a7950848a93d229a",
-      "landedAt": "2026-10-12T22:04:23.949Z"
-    },
-    {
-      "id": "BRO-4631",
-      "name": "show-score-proxy runs with JWT verification off: forged tokens reach the function",
-      "branch": "land/bro-4631-verify-jwt",
-      "sha": "c1bae0c860a49ded62d18df624866ebe587dd596",
-      "landedAt": "2026-10-12T21:33:07.834Z"
-    },
-    {
-      "id": "BRO-4509",
-      "name": "Add NYT fall-2026 US regional runs that have enough reviews + Oh, Mary! tour",
-      "branch": "land/bro-4509-regional-tour-add",
-      "sha": "759e56f24b2c232e05043d80d2ae971d75c46a77",
-      "landedAt": "2026-10-09T15:57:18.034Z"
-    },
-    {
-      "id": "BRO-4408",
-      "name": "Opening-night poller never drains _pending no-byline strands; in-window reviews wait up to 6h for enrich-reviews",
-      "branch": "land/bro-4408-newest-first",
-      "sha": "43c6af7178b3321e9dcfb80381b4564ac1b54a20",
-      "landedAt": "2026-10-13T02:20:16.710Z"
+      "id": "BRO-5171",
+      "name": "Reverse discovery: stage West End Guardian-review candidates into the Off-West-End promoter",
+      "branch": "land/bro-5171-owe-guardian-staging",
+      "sha": "b8dc1ab115b401bba3520f97b15dbfc2d09ac042",
+      "landedAt": "2026-10-12T19:49:56.257Z"
     }
   ]
 }
