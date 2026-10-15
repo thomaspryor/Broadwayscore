@@ -245,7 +245,8 @@ const BG_PAUSE_MS = 20000;
 const bgPath = (name, dflt) => process.env[name] || dflt;
 
 function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, sleepFn = null, attempts = BG_ATTEMPTS,
-  fetchTimeoutMs = BG_FETCH_TIMEOUT_MS, pauseMs = BG_PAUSE_MS, syncTimeoutMs = BG_SYNC_TIMEOUT_MS, env = process.env } = {}) {
+  fetchTimeoutMs = BG_FETCH_TIMEOUT_MS, pauseMs = BG_PAUSE_MS, syncTimeoutMs = BG_SYNC_TIMEOUT_MS, env = process.env,
+  log = () => {}, heartbeat = () => {} } = {}) {
   const fs = require('fs');
   const os = require('os');
   const path = require('path');
@@ -255,6 +256,7 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
   const sleep = sleepFn || ((ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms));
   let fetched = false;
   for (let i = 0; i < attempts && !fetched; i++) {
+    heartbeat();
     fetched = fetchOriginMain(repoDir, execFn, fetchTimeoutMs);
     if (!fetched && i < attempts - 1) sleep(pauseMs);
   }
@@ -275,9 +277,12 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
   if (outside.length) return no(`uncommitted changes outside data/: ${outside.slice(0, 3).join(', ')}`);
   const kept = [];
   let backup = null;
+  let result = null;
   try {
     if (dirty.length) {
       backup = fs.mkdtempSync(path.join(os.tmpdir(), 'code-sync-backup-'));
+      // Logged BEFORE the checkout: if this process is killed mid-merge, the bytes are recoverable from here.
+      log(`session's modified data files saved to ${backup} before the fast-forward: ${dirty.join(', ')}`);
       for (const p of dirty) {
         const dest = path.join(backup, p);
         fs.mkdirSync(path.dirname(dest), { recursive: true });
@@ -286,16 +291,39 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
       }
       git(['checkout', '-q', '--', ...dirty]);
     }
-    return { ...trySyncCodeCheckout({ repoDir, behind, ahead, execFn, env, syncTimeoutMs }), preserved: kept.length };
+    heartbeat();
+    result = trySyncCodeCheckout({ repoDir, behind, ahead, execFn, env, syncTimeoutMs });
+    return result;
   } catch (e) {
-    return no(`catch-up failed: ${String(e.message).split('\n')[0]}`);
+    result = no(`catch-up failed: ${String(e.message).split('\n')[0]}`);
+    return result;
   } finally {
-    // Always put the session's own bytes back, whether or not the fast-forward happened.
+    // Always put the session's own bytes back, whether or not the fast-forward happened. The backup directory is
+    // removed only when EVERY file was written back; otherwise it stays and its path is reported.
     if (backup) {
+      const restored = [];
+      const failed = [];
       for (const p of kept) {
-        try { fs.copyFileSync(path.join(backup, p), path.join(repoDir, p)); } catch { /* keep the backup dir for recovery */ }
+        try {
+          fs.mkdirSync(path.dirname(path.join(repoDir, p)), { recursive: true }); // an incoming commit may have removed the directory
+          fs.copyFileSync(path.join(backup, p), path.join(repoDir, p));
+          restored.push(p);
+        } catch { failed.push(p); }
       }
-      try { fs.rmSync(backup, { recursive: true, force: true }); } catch { /* ignore */ }
+      if (result) {
+        result.preserved = restored.length;
+        if (failed.length) { result.restoreFailed = failed; result.backupDir = backup; }
+        // Files the incoming commits also changed now hold the session's older bytes (restored on purpose, so the
+        // cloud core-data copies survive); say so, a later "commit first" of such a file would drop upstream's rows.
+        if (result.synced && result.from && result.to) {
+          try {
+            const up = new Set(git(['diff', '--name-only', result.from, result.to]).split('\n'));
+            const revert = restored.filter((p) => up.has(p));
+            if (revert.length) result.upstreamChangedKept = revert;
+          } catch { /* informational only */ }
+        }
+      }
+      if (!failed.length) { try { fs.rmSync(backup, { recursive: true, force: true }); } catch { /* ignore */ } }
     }
   }
 }
@@ -311,27 +339,33 @@ function startBackgroundSync(repoDir, { spawnFn = null, expectHead = null } = {}
   } catch { return null; }
 }
 
-/** Process entry for `--bg-sync <repoDir> [expectHead]`: one job at a time (mkdir lock, stale after 40 min). */
+/** Process entry for `--bg-sync <repoDir> [expectHead]`: one job per checkout (mkdir lock, heartbeat, stale after 90 min without a heartbeat). */
 function runBackgroundSyncMain(argv) {
   const fs = require('fs');
   const logPath = bgPath('CODE_CHECKOUT_BG_LOG', '/tmp/code-checkout-bg-sync.log');
-  const lockPath = bgPath('CODE_CHECKOUT_BG_LOCK', '/tmp/code-checkout-bg-sync.lock');
+  // One job per checkout (keyed by its path), so a second repo's catch-up is not skipped by the first's lock.
+  const key = require('crypto').createHash('sha1').update((() => { try { return fs.realpathSync(String(argv[0])); } catch { return String(argv[0]); } })()).digest('hex').slice(0, 8);
+  const lockPath = bgPath('CODE_CHECKOUT_BG_LOCK', `/tmp/code-checkout-bg-sync-${key}.lock`);
   const log = (m) => { try { fs.appendFileSync(logPath, `${new Date().toISOString()} ${m}\n`); } catch { /* ignore */ } };
   const take = () => { fs.mkdirSync(lockPath); };
   try {
     try { take(); } catch (e) {
       if (e.code !== 'EEXIST') throw e;
-      if (Date.now() - fs.statSync(lockPath).mtimeMs < 40 * 60 * 1000) { log('another catch-up is already running; exiting'); return { skipped: true }; }
+      if (Date.now() - fs.statSync(lockPath).mtimeMs < 90 * 60 * 1000) { log('another catch-up is already running; exiting'); return { skipped: true }; }
       fs.rmSync(lockPath, { recursive: true, force: true });
       take();
     }
   } catch (e) { log(`could not take the lock: ${e.message}`); return { skipped: true }; }
   try {
     log(`catch-up started for ${argv[0]}`);
-    const r = backgroundCatchUp({ repoDir: argv[0], expectHead: argv[1] || null });
+    // The lock's mtime is its heartbeat: a job that is still working is never taken over as "stale".
+    const heartbeat = () => { try { const now = new Date(); fs.utimesSync(lockPath, now, now); } catch { /* ignore */ } };
+    const r = backgroundCatchUp({ repoDir: argv[0], expectHead: argv[1] || null, log, heartbeat });
     log(r.synced
       ? `synced ${String(r.from).slice(0, 9)} -> ${String(r.to).slice(0, 9)} (${r.count} commits); ${r.preserved || 0} local data file(s) kept as they were${r.changedWatched && r.changedWatched.length ? `; changed: ${r.changedWatched.join(', ')}` : ''}`
       : `no sync: ${r.reason}`);
+    if (r.upstreamChangedKept) log(`NOTE: upstream also changed ${r.upstreamChangedKept.join(', ')}; this session's older copy was kept (run git diff on it before committing)`);
+    if (r.restoreFailed) log(`WARNING: could not write back ${r.restoreFailed.join(', ')}; the session's bytes are in ${r.backupDir}`);
     return r;
   } finally {
     try { fs.rmSync(lockPath, { recursive: true, force: true }); } catch { /* ignore */ }

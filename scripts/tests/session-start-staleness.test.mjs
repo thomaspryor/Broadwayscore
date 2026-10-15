@@ -447,12 +447,52 @@ test('backgroundCatchUp: a modified tracked data/ file is preserved byte for byt
     const mine = 'my local cloud copy, not what the repo has\n';
     fs.writeFileSync(path.join(t.stale, 'data', 'core.json'), mine); // the edit that blocks a plain `merge --ff-only`
     const head = t.sh(t.stale, 'git rev-parse HEAD');
-    const r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1 });
+    const privateTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bg-tmp-')); // a private TMPDIR: parallel tests cannot touch the backup scan
+    const oldTmp = process.env.TMPDIR;
+    process.env.TMPDIR = privateTmp;
+    let r;
+    try { r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1 }); } finally { if (oldTmp === undefined) delete process.env.TMPDIR; else process.env.TMPDIR = oldTmp; }
     assert.equal(r.synced, true, JSON.stringify(r));
     assert.equal(r.preserved, 1);
+    assert.deepEqual(r.upstreamChangedKept, ['data/core.json'], 'upstream also changed this file: reported, not silent');
+    assert.deepEqual(fs.readdirSync(privateTmp), [], 'the temporary backup was cleaned up');
     assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code3', 'the code is current');
     assert.equal(fs.readFileSync(path.join(t.stale, 'data', 'core.json'), 'utf8'), mine, 'the data file has exactly the bytes it had');
-    assert.equal(fs.readdirSync(os.tmpdir()).filter((f) => f.startsWith('code-sync-backup-')).length, 0, 'the temporary backup was cleaned up');
+  } finally { t.cleanup(); }
+});
+
+test('backgroundCatchUp: an incoming commit that deletes the dirty file and its directory still gets the session bytes back', () => {
+  const { backgroundCatchUp } = require('../lib/code-checkout-staleness.js');
+  const t = makeStaleClone();
+  try {
+    t.sh(path.join(t.dir, 'seed'), ['git rm -q -r data', 'git commit -q -m drop-data', ['git', 'push', '-q', 'origin', 'main'].join(' ')].join(' && '));
+    const mine = 'bytes that must not be lost\n';
+    fs.writeFileSync(path.join(t.stale, 'data', 'core.json'), mine);
+    const head = t.sh(t.stale, 'git rev-parse HEAD');
+    const logs = [];
+    const r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1, log: (m) => logs.push(m) });
+    assert.equal(r.synced, true, JSON.stringify(r));
+    assert.equal(r.preserved, 1);
+    assert.equal(fs.readFileSync(path.join(t.stale, 'data', 'core.json'), 'utf8'), mine, 'directory recreated, bytes intact');
+    assert.match(logs[0], /saved to .*code-sync-backup-.* before the fast-forward/, 'the backup location is logged before the checkout');
+  } finally { t.cleanup(); }
+});
+
+test('backgroundCatchUp: when the bytes cannot be written back, the backup is KEPT and its path reported', () => {
+  const { backgroundCatchUp } = require('../lib/code-checkout-staleness.js');
+  const t = makeStaleClone();
+  try {
+    // the incoming commit turns data/core.json into a directory: the session file cannot be put back there
+    t.sh(path.join(t.dir, 'seed'), ['git rm -q data/core.json', 'mkdir -p data/core.json', 'echo x > data/core.json/inner.txt', 'git add -A', 'git commit -q -m dir', ['git', 'push', '-q', 'origin', 'main'].join(' ')].join(' && '));
+    const mine = 'precious\n';
+    fs.writeFileSync(path.join(t.stale, 'data', 'core.json'), mine);
+    const head = t.sh(t.stale, 'git rev-parse HEAD');
+    const r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1 });
+    try {
+      assert.deepEqual(r.restoreFailed, ['data/core.json']);
+      assert.ok(r.backupDir && fs.readFileSync(path.join(r.backupDir, 'data', 'core.json'), 'utf8') === mine, 'the backup still holds the session bytes');
+      assert.equal(r.preserved, 0, 'only successful restores are counted');
+    } finally { if (r.backupDir) fs.rmSync(r.backupDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
   } finally { t.cleanup(); }
 });
 
@@ -517,14 +557,20 @@ test('--bg-sync process: really runs detached-style, logs the outcome, and only 
     assert.equal(run().status, 0);
     assert.match(fs.readFileSync(log, 'utf8'), /another catch-up is already running/);
     assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code1', 'not synced while locked');
-    // a stale lock (40+ minutes old) is taken over
-    const old = new Date(Date.now() - 50 * 60 * 1000);
+    // a stale lock (90+ minutes old) is taken over
+    const old = new Date(Date.now() - 100 * 60 * 1000);
     fs.utimesSync(lock, old, old);
     assert.equal(run().status, 0);
     assert.match(fs.readFileSync(log, 'utf8'), /synced \w+ -> \w+ \(2 commits\)/);
     assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code3');
     assert.equal(fs.existsSync(lock), false, 'the lock is released');
   } finally { t.cleanup(); }
+});
+
+test('runBackgroundSyncMain: the lock is per checkout, so a second repo is not skipped by the first repo\'s job', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'lib', 'code-checkout-staleness.js'), 'utf8');
+  assert.match(src, /code-checkout-bg-sync-\$\{key\}\.lock/);
+  assert.match(src, /utimesSync\(lockPath/, 'a working job refreshes its lock so it is not taken over as stale');
 });
 
 test('startBackgroundSync starts a detached node process for --bg-sync and reports its pid; the failure message mentions it', () => {
