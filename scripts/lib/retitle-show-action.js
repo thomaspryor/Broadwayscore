@@ -13,6 +13,11 @@
  *     or the old title minus one trailing single digit 2-9 (a URL-slug
  *     counter), allowed only when another row already has the bare title. A
  *     different show name refuses: that is a wrong row, not a typo;
+ *   - or the old title is an in-order subsequence of the new one and every
+ *     inserted word is a function word ("Murder Cathedral" -> "Murder in the
+ *     Cathedral": a slug that dropped its stopwords, BRO-5110). A content word
+ *     in the insertion ("... Under the Sky") is a different title and refuses;
+ *     that case belongs to the venue promoter's dated-listing completion.
  *   - id and slug never change, so no redirect is needed.
  */
 
@@ -22,6 +27,25 @@ const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 
 function words(s) {
   return foldDiacritics(String(s)).toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+// Words a venue slug drops. Deliberately short: anything with meaning is a content word.
+const FUNCTION_WORDS = new Set(['a', 'an', 'the', 'of', 'in', 'on', 'at', 'as', 'and', 'or', 'to', 'for', 'from', 'with', 'by',
+  'is', 'are', 'was', 'were', 'be', 'been', 'am', 'do', 'does', 'did', 'it', 'its', 'they', 'we', 'you', 'he', 'she',
+  'his', 'her', 'their', 'my', 'your', 'our', 'not', 'no', 'but']);
+
+/** True when every old word appears in the new title in order and the extra words are all function words. */
+function onlyFunctionWordsInserted(oldWords, newWords) {
+  const o = oldWords.split(' ');
+  const n = newWords.split(' ');
+  if (n.length <= o.length) return false;
+  let i = 0;
+  const inserted = [];
+  for (const w of n) {
+    if (i < o.length && w === o[i]) i++;
+    else inserted.push(w);
+  }
+  return i === o.length && inserted.length > 0 && inserted.every(w => FUNCTION_WORDS.has(w));
 }
 
 /** Why oldTitle -> newTitle is not a cosmetic repair, or null when it is. */
@@ -40,7 +64,8 @@ function retitleProblem(oldTitle, newTitle, otherTitles = []) {
   if (/ [2-9]$/.test(o) && o.slice(0, -2) === n
       && !/ (part|chapter|act|vol|volume|book|series|season)$/.test(n)
       && otherTitles.some(t => words(t) === n)) return null;
-  return `"${newTitle}" is not a cosmetic repair of "${oldTitle}" (only case, punctuation or a trailing slug counter may change)`;
+  if (o.split(' ').length >= 2 && onlyFunctionWordsInserted(o, n)) return null;
+  return `"${newTitle}" is not a cosmetic repair of "${oldTitle}" (only case, punctuation, a trailing slug counter or dropped function words may change)`;
 }
 
 function applyRetitleShow(shows, action) {

@@ -61,3 +61,23 @@ test('execute-approved-fix dispatches retitle-show and validates shows.json afte
   assert.match(src, /a\.type === 'retitle-show'/);
   assert.match(src, /'retitle-show': 'shows\.json'/);
 });
+
+test('BRO-5110: dropped function words are restored; a content word in the insertion still refuses', () => {
+  const shows = [
+    { id: 'murder-cathedral-off-west-end-2026', title: 'Murder Cathedral', slug: 'murder-cathedral-off-west-end' },
+    { id: 'wives-maids-off-west-end-2026', title: 'Wives Maids', slug: 'wives-maids-off-west-end' },
+    { id: 'twenty-thousand-streets-off-west-end-2026', title: 'Twenty Thousand Streets', slug: 'twenty-thousand-streets-off-west-end' },
+    { id: 'nero-off-west-end-2026', title: 'Nero', slug: 'nero-off-west-end' },
+  ];
+  const ok = (id, expectTitle, newTitle) => applyRetitleShow(shows, { id, expectTitle, newTitle, reason: 'slug dropped function words' });
+  assert.equal(ok('murder-cathedral-off-west-end-2026', 'Murder Cathedral', 'Murder in the Cathedral').ok, true);
+  assert.equal(ok('wives-maids-off-west-end-2026', 'Wives Maids', 'Wives as They Were and Maids as They Are').ok, true);
+  // Content words ("Under the Sky") are a different title: the promoter's dated-listing path owns that.
+  const content = ok('twenty-thousand-streets-off-west-end-2026', 'Twenty Thousand Streets', 'Twenty Thousand Streets Under the Sky');
+  assert.equal(content.ok, false);
+  assert.match(content.reason, /not a cosmetic repair/);
+  // A one-word title never grows by this rule; reordering is not insertion.
+  assert.equal(ok('nero-off-west-end-2026', 'Nero', 'The Nero').ok, false);
+  assert.ok(retitleProblem('Murder Cathedral', 'Cathedral in the Murder'), 'out-of-order words refuse');
+  assert.deepEqual(shows.map(s => s.title), ['Murder in the Cathedral', 'Wives as They Were and Maids as They Are', 'Twenty Thousand Streets', 'Nero']);
+});
