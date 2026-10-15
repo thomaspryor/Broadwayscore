@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5373-z",
   "planId": "29fb3569-61b6-424f-8684-99f29c132270",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-15T05:23:08.000Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,28 @@
         "description": "BRO-5373: the review (Theater Life, 2025-09-19) covers the Sept-Oct 2025 Urban Stages New York premiere; the 2026 Urban Stages run under this show id is its encore (same production, venue and company), so the pre-window date flag does not make it a different production."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T05:49:07.509Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ]
 }
