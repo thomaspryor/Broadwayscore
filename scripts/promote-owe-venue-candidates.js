@@ -1098,7 +1098,11 @@ async function evaluateCandidates(candidates, ctx) {
         // BRO-4433 — a confirmed dated listing dates the undated row it
         // matched (null fields only; main() writes it).
         const patch = datedBackfillFor(c, existingMatch.match, venueVocabulary);
-        if (patch) {
+        // BRO-5110 ship-check: a title is only completed through the containment
+        // match, which also requires the runs to overlap. Any other match reason
+        // (normalized-equal, london-pool, ...) never proves a truncation.
+        if (patch && patch.title && !/title words contained/.test(existingMatch.reason || '')) delete patch.title;
+        if (patch && Object.keys(patch).length > 0) {
           const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, datedConfigs, todayIso: now().toISOString().slice(0, 10) });
           if (decision.confirmed) {
             backfills.push({ candidate: c, id: existingMatch.match.id, rowTitle: existingMatch.match.title, patch, sourceUrl: typeof decision.page === 'string' ? decision.page : null });
