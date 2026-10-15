@@ -34,7 +34,8 @@ const hasText = (d) => !!d && String(d.fullText || '').trim().length >= NEAR_EMP
 // A passage from the middle of a text identifies the review across renames,
 // outlet relabels (times-uk -> sunday-times, daily-mail -> mail-on-sunday) and
 // moves between shows, where url and file name both change.
-const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const { foldDiacritics } = require('./lib/title-match');
+const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 function fingerprints(text) {
   const n = norm(text);
   if (n.length < 400) return [];
