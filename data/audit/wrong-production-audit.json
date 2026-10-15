@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T14:24:06.473Z",
+  "timestamp": "2026-10-15T15:18:06.727Z",
   "stats": {
-    "totalReviews": 56721,
-    "alreadyFlagged": 21071,
-    "dateGuardCatches": 211,
-    "directorMismatch": 1899,
+    "totalReviews": 56740,
+    "alreadyFlagged": 21073,
+    "dateGuardCatches": 201,
+    "directorMismatch": 1898,
     "tvFilmSignals": 1584,
     "londonSignals": 2359,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5255
+    "noPublishDate": 5256
   },
   "findings": [
     {
@@ -846,20 +846,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from a-little-night-music-1973"
-        }
-      ]
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "file": "camdennewjournal--unknown.json",
-      "score": 78,
-      "publishDate": "2015-09-10",
-      "url": "https://www.camdennewjournal.co.uk/article/review-a%E2%80%88month-in-the-country-at-donmar-warehouse",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3999d before show (2015-09-10 vs 2026-08-22)"
         }
       ]
     },
@@ -3986,14 +3972,9 @@
       "showId": "beetlejuice-west-end-2026",
       "file": "islingtontribune--unknown.json",
       "score": 75,
-      "publishDate": "2024-06-04",
+      "publishDate": "2026-06-04",
       "url": "https://www.islingtontribune.co.uk/article/review-beetlejuice-the-musical-at-prince-edward-theatre",
       "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 715d before show (2024-06-04 vs 2026-05-20)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -4325,20 +4306,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
-        }
-      ]
-    },
-    {
-      "showId": "benevolent-off-broadway-2026",
-      "file": "this-week-in-new-york--unknown.json",
-      "score": 98,
-      "publishDate": "2021-08-17",
-      "url": "https://twi-ny.com/2026/08/17/benevolent-iati-theater-good-apples-collective/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1823d before show (2021-08-17 vs 2026-08-14)"
         }
       ]
     },
@@ -8015,25 +7982,6 @@
       ]
     },
     {
-      "showId": "cleansed-off-west-end-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 82,
-      "publishDate": "2024-07-17",
-      "url": "https://www.theguardian.com/stage/2026/jul/30/cleansed-review-almeida-theatre-london-rebecca-frecknall",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 734d before show (2024-07-17 vs 2026-07-21)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "clue-tour-2025",
       "file": "broadwayworld--anikatrina-fageol.json",
       "score": 79,
@@ -10688,20 +10636,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "latimes--charles-mcnulty.json",
-      "score": null,
-      "publishDate": "2026-04-01",
-      "url": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },
@@ -15819,25 +15753,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
-        }
-      ]
-    },
-    {
-      "showId": "golden-boy-off-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 78,
-      "publishDate": "2024-10-02",
-      "url": "https://www.islingtontribune.co.uk/article/review-golden-boy-at-almeida-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 707d before show (2024-10-02 vs 2026-09-09)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -42110,14 +42025,9 @@
       "showId": "the-notebook-tour-2025",
       "file": "latimes--charles-mcnulty.json",
       "score": 68,
-      "publishDate": "2025-04-04",
+      "publishDate": "2026-01-09",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-01-09/notebook-musical-theater-review-hollywood-pantages",
       "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 155d before show (2025-04-04 vs 2025-09-06)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -45060,20 +44970,6 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 77,
-      "publishDate": "2024-10-08",
-      "url": "https://www.islingtontribune.co.uk/article/review-the-standard-of-living-at-theatre-royal-haymarket",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 713d before show (2024-10-08 vs 2026-09-21)"
-        }
-      ]
-    },
-    {
-      "showId": "the-standard-of-living-west-end-2026",
       "file": "london-unattached--dr-adrian-york.json",
       "score": 94,
       "publishDate": "2026-09-30",
@@ -45391,20 +45287,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-turn-of-the-screw-off-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 62,
-      "publishDate": "2021-09-24",
-      "url": "https://www.islingtontribune.co.uk/article/review-the-turn-of-the-screw-at-arcola-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1813d before show (2021-09-24 vs 2026-09-11)"
         }
       ]
     },
@@ -50030,34 +49912,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "camdennewjournal--unknown.json",
-      "score": 80,
-      "publishDate": "2024-10-08",
-      "url": "https://www.camdennewjournal.co.uk/article/review-whos-afraid-of-virginia-woolf-at-soho-place",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 713d before show (2024-10-08 vs 2026-09-21)"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 80,
-      "publishDate": "2023-10-08",
-      "url": "https://www.islingtontribune.co.uk/article/review-whos-afraid-of-virginia-woolf-at-soho-place",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1079d before show (2023-10-08 vs 2026-09-21)"
         }
       ]
     },
@@ -56885,6 +56739,20 @@
     },
     {
       "showId": "cleansed-off-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 82,
+      "publishDate": "2026-07-30",
+      "url": "https://www.theguardian.com/stage/2026/jul/30/cleansed-review-almeida-theatre-london-rebecca-frecknall",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 65,
       "publishDate": "2026-07-30",
@@ -61451,6 +61319,20 @@
       "score": 88,
       "publishDate": "2026-09-16",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 78,
+      "publishDate": "2026-10-02",
+      "url": "https://www.islingtontribune.co.uk/article/review-golden-boy-at-almeida-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76450,6 +76332,20 @@
       ]
     },
     {
+      "showId": "stuffed-off-west-end-2026",
+      "file": "deadline--damon-wise.json",
+      "score": null,
+      "publishDate": "2026-09-11",
+      "url": "https://deadline.com/2026/09/stuffed-review-jodie-comer-harry-melling-theo-rhys-tiff-1237098835/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 32d before show (2026-09-11 vs 2026-10-13)"
+        }
+      ]
+    },
+    {
       "showId": "suffs-2024",
       "file": "nypost--johnny-oleksinski.json",
       "score": 56,
@@ -82158,20 +82054,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-outsiders-tour-2025",
-      "file": "daily-bruin--unknown.json",
-      "score": 76,
-      "publishDate": "2024-10-06",
-      "url": "https://dailybruin.com/2026/10/06/theater-review-the-outsiders-musical-stays-gold-but-the-cast-comes-up-short",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 346d before show (2024-10-06 vs 2025-09-17)"
         }
       ]
     },

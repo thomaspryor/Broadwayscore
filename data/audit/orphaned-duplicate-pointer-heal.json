@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-15T14:17:05.774Z",
+  "generated": "2026-10-15T15:13:12.515Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 27,
+  "count": 26,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -184,13 +184,6 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "baby-off-west-end-2026",
-      "loserFile": "daily-mail--tom-lawrence.json",
-      "targetFile": "daily-mail--unknown.json",
-      "reason": "orphaned-duplicate-heal: daily-mail--unknown.json was flagged invalid after daily-mail--tom-lawrence.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

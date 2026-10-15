@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T14:24:18.750Z",
+  "generatedAt": "2026-10-15T15:18:14.704Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2068,28 +2068,27 @@
       "status": "open",
       "slug": "anon-a-tempest-at-our-kitchen-table-off-broadway",
       "thumbnail": "/images/shows/anon-a-tempest-at-our-kitchen-table-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 55.39,
+      "liveScore": 55,
+      "scoreDrift": -0.39000000000000057,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
+      "total": 5,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
+      "t2": 4,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "mixed": 4,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "5/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2169,19 +2168,11 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -2222,10 +2213,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -2427,6 +2414,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-15T15:18:14.704Z",
+          "rc": 5,
+          "s": 55.39,
+          "t1": 0,
+          "t2": 4,
+          "t3": 1,
+          "p": 0,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
