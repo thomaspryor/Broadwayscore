@@ -13,7 +13,8 @@
  * case, punctuation and a trailing "(YYYY)" ignored), linked productions
  * (cross-show-images.js lineageIds: transfers and tours), a priorRuns[].id link
  * either way, an ALLOWED_SHARED_IMAGES pair, or a DUPLICATE_IMAGE_ALLOWLIST pair
- * below. Anything else is reported.
+ * below. Anything else is reported. Same-title productions sharing a file
+ * (wrong revival art) are scripts/audit-duplicate-images.js's job, not this one.
  *
  * findDuplicateImageGroups is pure (CLAUDE.md §15); hashShowImageFiles does the
  * file I/O. Callers: scripts/validate-data.js (warning), the post-run audit in
