@@ -14,6 +14,7 @@
 
 import { existsSync } from 'fs';
 import { chromium } from 'playwright';
+import { probe } from './lib/header-overflow-probe.mjs';
 
 const WIDTHS = [360, 414, 640, 768, 900, 1024, 1280, 1440];
 
@@ -34,36 +35,6 @@ function parseArgs(argv) {
     process.exit(2);
   }
   return args;
-}
-
-// Runs in the page. Returns { scrollWidth, clientWidth, offenders[] }.
-function probe({ simulateSignedIn }) {
-  const nav = document.querySelector('header.fixed.top-0 nav');
-  if (!nav) return { error: 'header nav not found' };
-  const signIn = nav.querySelector('button[aria-label="Sign in"]');
-  if (simulateSignedIn && signIn) {
-    // Mirrors the authenticated branch of src/components/HeaderUserIcon.tsx.
-    const a = document.createElement('a');
-    a.href = '/my-shows';
-    a.setAttribute('aria-label', 'My Shows');
-    a.className = 'hidden sm:flex items-center shrink-0 gap-1.5 px-2 py-1.5 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/[0.05]';
-    a.innerHTML = '<span class="block w-6 h-6 rounded-full border border-white/20"></span><span class="hidden md:inline">My Shows</span>';
-    signIn.replaceWith(a);
-  }
-  const account = nav.querySelector('[aria-label="Sign in"], [aria-label="My Shows"]');
-  const accountVisible = !!account && account.getBoundingClientRect().width > 0;
-  const vw = document.documentElement.clientWidth;
-  const offenders = [];
-  for (const el of nav.querySelectorAll('a, button, input')) {
-    const r = el.getBoundingClientRect();
-    if (r.width === 0 || r.height === 0) continue; // display:none / hidden
-    if (r.left < -1 || r.right > vw + 1) {
-      const label = (el.getAttribute('aria-label') || el.textContent || el.getAttribute('placeholder') || el.tagName)
-        .trim().replace(/\s+/g, ' ').slice(0, 40);
-      offenders.push(`${el.tagName.toLowerCase()} "${label}" right=${Math.round(r.right)} vw=${vw}`);
-    }
-  }
-  return { scrollWidth: nav.scrollWidth, clientWidth: nav.clientWidth, offenders, accountVisible };
 }
 
 // Same fallback as scripts/visual-qa.mjs: cloud sandboxes only ship the

@@ -41,6 +41,7 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { createRequire as _createRequire } from 'node:module';
+import { captureTabletHeader } from './lib/header-overflow-probe.mjs';
 
 // The dedup normalizer lives in ONE place. This file used to carry its own
 // copy, and when scripts/lib/ux-walkthrough-filing.js was fixed to fold
@@ -1423,6 +1424,9 @@ async function main() {
         const signIn = await captureSignInModal({ browser, baseUrl: args.baseUrl, outDir });
         shots.push(...signIn.shots);
         deterministicFindings.push(...signIn.findings);
+
+        const tablet = await captureTabletHeader({ browser, baseUrl: args.baseUrl });
+        deterministicFindings.push(...tablet.findings);
 
         const iosSim = await captureIosDateWheelSim({ browser, session, baseUrl: args.baseUrl, outDir });
         shots.push(...iosSim.shots);
