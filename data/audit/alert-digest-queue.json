@@ -309,5 +309,31 @@
       }
     ],
     "queuedAt": "2026-10-15T13:51:58.779Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-10-15T11:36:16.319051+00:00,2026-10-15T12:51:21.662596+00:00",
+    "title": "Feedback: 2 submission(s), all handled automatically",
+    "description": "2 messages from users came in, plus 1 flagged as spam. All of them are being handled automatically. Nothing needs you.\n\nTwenty Thousand Streets Under the Sky — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"The play \"Twenty Thousand Streets Under the Sky\" is listed under the shortened title \"Twenty Thousand Streets\" (https://broadwayscorecard.com/show/twenty-thousand-streets-off-west-end)\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1081\n\nAffluenza — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"The Time Out London review appears twice on the page for Affluenza. One review lists Andrzej Lukowski as the author (this is correct) with a score of 45 and the other lists Time Out London Staff as the author with a score of 42, but they are the same review\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1082",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38751534408",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "2"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-10-15T14:30:19.178Z"
   }
 ]
