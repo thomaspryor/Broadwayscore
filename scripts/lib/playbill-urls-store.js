@@ -172,8 +172,9 @@ function computeDelta(snapshot, current) {
  * attribution (a same-title revival matched onto the original's page, or a
  * hand-removed mapping re-resolved back). Checked here, against the fresh
  * read taken under the lock, so a peer's claim made after our load counts too.
- * A refused REPLACEMENT also drops our own baseline value, matching the
- * guard-refusal rule in savePlaybillUrls (the caller judged it wrong).
+ * A refused REPLACEMENT keeps the id's previous disk value when no other id
+ * claims it (an explicit delete in the same delta is already applied above,
+ * so an evicted URL stays evicted).
  *
  * @returns {{data: object, conflicts: Array<{id: string, mine: string, disk: string}>,
  *   collisions: Array<{id: string, url: string, owner: string}>}}
@@ -197,17 +198,25 @@ function applyDelta(onDisk, delta) {
   }
   // Release every accepted id's old value BEFORE checking any of them, so a
   // swap or move between two ids inside one save is judged on the end state,
-  // not on iteration order. A collision-refused id therefore ends up unmapped
-  // unless disk already held exactly this url for it (then nothing changed).
+  // not on iteration order.
   for (const [id] of accepted) delete shows[id];
+  const refusedPrev = [];
   for (const [id, url, disk] of accepted) {
     const owner = findConflictingKey(shows, id, url);
     if (owner === null) {
       shows[id] = url;
       continue;
     }
-    collisions.push({ id, url, owner });
+    collisions.push({ id, url, owner, unchanged: disk === url });
+    // Disk already held exactly this url: a no-op set never removes an
+    // existing entry (a pre-existing collision is an audit's job, not ours).
     if (disk === url) shows[id] = disk;
+    else if (disk !== undefined) refusedPrev.push([id, disk]);
+  }
+  // Put a refused id's previous value back once every accepted set has
+  // claimed its url, unless another id now owns it.
+  for (const [id, disk] of refusedPrev) {
+    if (findConflictingKey(shows, id, disk) === null) shows[id] = disk;
   }
   return { data: { ...(onDisk || EMPTY()), shows }, conflicts, collisions };
 }
@@ -290,7 +299,8 @@ function savePlaybillUrls(filePath, current, snapshot, opts = {}) {
     for (const c of collisions) {
       if (Object.prototype.hasOwnProperty.call(merged.shows, c.id)) current.shows[c.id] = merged.shows[c.id];
       else delete current.shows[c.id];
-      refused.push({ id: c.id, url: c.url, reason: `cross-show-collision: already cached for ${c.owner}` });
+      // disk already held this exact url for this id: nothing was refused.
+      if (!c.unchanged) refused.push({ id: c.id, url: c.url, reason: `cross-show-collision: already cached for ${c.owner}` });
     }
     merged.lastUpdated = new Date().toISOString();
     // allowShrink: a delete replayed from a caller's delta removes entries, and

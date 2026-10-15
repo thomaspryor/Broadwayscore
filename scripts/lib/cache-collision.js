@@ -76,6 +76,10 @@ function findConflictingKey(map, key, value) {
  * to see the batch's own moves: a key being reassigned in this batch releases
  * its old value first, and assignments earlier in the batch claim theirs.
  *
+ * Two or more keys in the SAME batch claiming one value is ambiguous (which
+ * sibling production owns the page?), so all of them are refused rather than
+ * letting iteration order pick; a human or a --force year-rule pass decides.
+ *
  * A refused key keeps its previous value when that value is still unclaimed;
  * otherwise it is left unmapped (never two owners).
  *
@@ -90,14 +94,30 @@ function applyAssignmentsWithoutCollisions(map, assignments) {
     if (Object.prototype.hasOwnProperty.call(next, key)) previous[key] = next[key];
     delete next[key];
   }
-  const refused = [];
+  const claimants = new Map(); // normalized value -> keys in this batch
   for (const [key, value] of Object.entries(assignments || {})) {
-    const owner = findConflictingKey(next, key, value);
+    const raw = cacheEntryValue(value);
+    if (!raw) continue;
+    const norm = normalizeCacheValue(raw);
+    if (!claimants.has(norm)) claimants.set(norm, []);
+    claimants.get(norm).push(key);
+  }
+  const refused = [];
+  const refusedKeys = [];
+  for (const [key, value] of Object.entries(assignments || {})) {
+    const raw = cacheEntryValue(value);
+    const rivals = raw ? claimants.get(normalizeCacheValue(raw)).filter((k) => k !== key) : [];
+    const owner = rivals.length > 0 ? rivals.join(',') : findConflictingKey(next, key, value);
     if (owner === null) {
       next[key] = value;
       continue;
     }
     refused.push({ key, value, owner });
+    refusedKeys.push(key);
+  }
+  // Restore after every accepted assignment has claimed its value, so a
+  // restored previous value can never take a slug a batch key just won.
+  for (const key of refusedKeys) {
     if (Object.prototype.hasOwnProperty.call(previous, key)
         && findConflictingKey(next, key, previous[key]) === null) {
       next[key] = previous[key];

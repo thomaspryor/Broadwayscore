@@ -56,9 +56,11 @@ function saveSlugMap(mapPath, map) {
  *
  * @param {Array<{url: string, title?: string}>} results
  * @param {string} showTitle
+ * @param {{isClaimed?: (url: string) => boolean}} [opts] skip candidates
+ *   another show already owns (BRO-4060), so the next match is tried
  * @returns {string|null}
  */
-function pickBestWetUrl(results, showTitle) {
+function pickBestWetUrl(results, showTitle, opts = {}) {
   if (!Array.isArray(results) || results.length === 0) return null;
   // Join-aware words: the result title is matched RAW, so a glued "preexisting" never hit "Pre-Existing" (BRO-3399)
   const titleWords = titleMatchWords(foldDiacritics(showTitle));
@@ -71,7 +73,7 @@ function pickBestWetUrl(results, showTitle) {
     const matchCount = titleWords.filter(w => textHasWord(resultTitle, w)).length;
     if (titleWords.length > 0 && matchCount < Math.max(1, Math.ceil(titleWords.length * 0.5))) continue;
     const m = url.match(/(https?:\/\/(?:www\.)?westendtheatre\.com\/\d+\/shows\/[a-z0-9-]+\/?)/i);
-    if (m) return m[1];
+    if (m && !(opts.isClaimed && opts.isClaimed(m[1]))) return m[1];
   }
   return null;
 }
@@ -122,21 +124,22 @@ async function discoverWestEndTheatreUrl(show, mapPath, opts = {}) {
     log(`  [we-slug-discovery] SERP unavailable for ${show.id} — not caching as not-found`);
     return null;
   }
-  const url = pickBestWetUrl(results, title);
-  if (!url) {
-    map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10) };
+  // BRO-4060: one WET booking page is one production. Candidates another show
+  // id already owns are skipped so the next matching result is tried.
+  const isClaimed = (u) => findConflictingKey(map.shows, show.id, u) !== null;
+  const url = pickBestWetUrl(results, title, { isClaimed });
+  const claimedBest = url ? null : pickBestWetUrl(results, title);
+  if (claimedBest) {
+    // Every matching candidate is owned by another show: negative-cache with
+    // the reason, so this show is retried after the usual window.
+    const owner = findConflictingKey(map.shows, show.id, claimedBest);
+    log(`  [we-slug-discovery] ${claimedBest} already mapped to ${owner} — not assigning to ${show.id}`);
+    map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10), collidedWith: owner, collidedUrl: claimedBest };
     saveSlugMap(mapPath, map);
     return null;
   }
-
-  // BRO-4060: one WET booking page is one production. If another show id
-  // already owns this URL (a same-title return run or revival), refuse it and
-  // negative-cache with the reason, so this show is retried after the usual
-  // window instead of re-SERPing every run.
-  const owner = findConflictingKey(map.shows, show.id, url);
-  if (owner) {
-    log(`  [we-slug-discovery] ${url} already mapped to ${owner} — not assigning to ${show.id}`);
-    map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10), collidedWith: owner, collidedUrl: url };
+  if (!url) {
+    map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10) };
     saveSlugMap(mapPath, map);
     return null;
   }

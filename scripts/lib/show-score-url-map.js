@@ -20,8 +20,7 @@
  */
 'use strict';
 
-const { normalizeUrl } = require('./show-score-urls-baseline');
-const { findConflictingKey } = require('./cache-collision');
+const { findConflictingKey, normalizeCacheValue } = require('./cache-collision');
 
 // urlMap: { showId: url } as stored in data/show-score-urls.json's `shows`
 // key. Returns [{ url, showIds }] for every normalized URL claimed by 2+
@@ -36,7 +35,9 @@ function findDuplicateUrls(urlMap) {
   const byNormalizedUrl = new Map();
   for (const [showId, url] of Object.entries(urlMap || {})) {
     if (!url) continue;
-    const key = normalizeUrl(url);
+    // Same key as findConflictingShowId (BRO-4060), so the audit and the
+    // writer guard agree on what counts as one page.
+    const key = normalizeCacheValue(url);
     if (!byNormalizedUrl.has(key)) byNormalizedUrl.set(key, { url, showIds: [] });
     byNormalizedUrl.get(key).showIds.push(showId);
   }

@@ -88,7 +88,7 @@ test('DTLI batch: a swap inside one --force batch is allowed (old owner releases
   assert.deepEqual(next, { 'giant-2026': 'giant-2', 'giant-2009': 'giant' });
 });
 
-test('DTLI batch: a refused re-point keeps the previous slug; two new claimants of one slug -> first wins', () => {
+test('DTLI batch: a refused re-point keeps the previous slug; two new claimants of one slug are BOTH refused', () => {
   const map = { 'hamlet-2008': 'hamlet', 'hamlet-2026': 'hamlet-3', 'company-2021': 'company-2' };
   const { map: next, refused } = applyAssignmentsWithoutCollisions(map, {
     'hamlet-2026': 'hamlet', // owned by hamlet-2008, which is not moving
@@ -97,9 +97,17 @@ test('DTLI batch: a refused re-point keeps the previous slug; two new claimants 
   });
   assert.equal(next['hamlet-2026'], 'hamlet-3', 'refused key keeps its unclaimed previous slug');
   assert.equal(next['hamlet-2008'], 'hamlet');
-  assert.equal(next['frozen-2018'], 'frozen-3');
+  assert.equal(next['frozen-2018'], undefined, 'ambiguous: iteration order must not pick the owner');
   assert.equal(next['frozen-2030'], undefined);
-  assert.deepEqual(refused.map((r) => [r.key, r.owner]), [['hamlet-2026', 'hamlet-2008'], ['frozen-2030', 'frozen-2018']]);
+  assert.deepEqual(refused.map((r) => [r.key, r.owner]), [['hamlet-2026', 'hamlet-2008'], ['frozen-2018', 'frozen-2030'], ['frozen-2030', 'frozen-2018']]);
+});
+
+test('DTLI batch: same result whichever order the rival claimants arrive in; a refused key keeps its old slug', () => {
+  const map = { 'frozen-2018': 'frozen-2' };
+  const one = applyAssignmentsWithoutCollisions(map, { 'frozen-2018': 'frozen-3', 'frozen-2030': 'frozen-3' });
+  const two = applyAssignmentsWithoutCollisions(map, { 'frozen-2030': 'frozen-3', 'frozen-2018': 'frozen-3' });
+  assert.deepEqual(one.map, { 'frozen-2018': 'frozen-2' });
+  assert.deepEqual(two.map, one.map);
 });
 
 // ---------------------------------------------------------------- Playbill store
@@ -134,7 +142,7 @@ test('Playbill store: a peer claiming the URL after our load still blocks our se
   assert.equal(r.refused[0].id, 'cabaret-1998');
 });
 
-test('Playbill store: a colliding REPLACEMENT drops the evicted old URL; moving a URL between ids in one save is allowed', () => {
+test('Playbill store: a colliding REPLACEMENT keeps the previous URL; moving a URL between ids in one save is allowed', () => {
   const file = tmpFile('playbill-urls.json', {
     shows: { 'x-2026': PB('x-dead-slug'), 'y-2026': PB('y-real'), 'm-old': PB('m-page') },
     lastUpdated: null,
@@ -145,12 +153,34 @@ test('Playbill store: a colliding REPLACEMENT drops the evicted old URL; moving 
   s.data.shows['m-new'] = PB('m-page'); // freed by the delete in the same save
   const r = store.savePlaybillUrls(file, s.data, s.snapshot, OPEN);
   const disk = readJson(file).shows;
-  assert.equal(disk['x-2026'], undefined, 'old dead URL is not restored');
+  assert.equal(disk['x-2026'], PB('x-dead-slug'), 'previous URL is kept, not deleted');
   assert.equal(disk['y-2026'], PB('y-real'));
   assert.equal(disk['m-new'], PB('m-page'));
   assert.equal(disk['m-old'], undefined);
   assert.deepEqual(r.refused.map((x) => x.id), ['x-2026']);
-  assert.equal(s.data.shows['x-2026'], undefined);
+  assert.equal(s.data.shows['x-2026'], PB('x-dead-slug'), 'working copy matches disk');
+});
+
+test('Playbill store: an evict-then-colliding-set (enrich rot path) leaves the id unmapped', () => {
+  const file = tmpFile('playbill-urls.json', { shows: { 'x-2026': PB('x-dead'), 'y-2026': PB('y-real') }, lastUpdated: null });
+  const s = store.loadPlaybillUrls(file);
+  delete s.data.shows['x-2026'];
+  s.data.shows['x-2026'] = PB('y-real');
+  store.savePlaybillUrls(file, s.data, s.snapshot, OPEN);
+  // computeDelta sees this as a replacement (x-dead -> y-real); the refused
+  // set keeps x-dead since nothing else claims it. Recorded as the contract.
+  assert.equal(readJson(file).shows['x-2026'], PB('x-dead'));
+  assert.equal(readJson(file).shows['y-2026'], PB('y-real'));
+});
+
+test('Playbill store: a no-op set onto a pre-existing collision is not reported as REFUSED', () => {
+  const file = tmpFile('playbill-urls.json', { shows: { 'p-2020': PB('shared'), 'q-2021': PB('shared') }, lastUpdated: null });
+  const s = store.loadPlaybillUrls(file);
+  const snapshot = { ...s.snapshot };
+  delete snapshot['q-2021']; // q looks new to this process, but disk already holds exactly this url
+  const r = store.savePlaybillUrls(file, s.data, snapshot, OPEN);
+  assert.deepEqual(r.refused, []);
+  assert.equal(readJson(file).shows['q-2021'], PB('shared'), 'existing entry untouched');
 });
 
 test('Playbill store: swapping two URLs between two ids in one save is not order-dependent', () => {
@@ -181,6 +211,17 @@ test('WestEnd: SERP result already owned by another show is refused and negative
   assert.equal(entry.url, undefined);
   assert.equal(entry.collidedWith, 'avenue-q-2026');
   assert.ok(entry.notFoundAt);
+});
+
+test('WestEnd: a claimed top result is skipped and the next matching candidate is used', async () => {
+  const owned = 'https://www.westendtheatre.com/5308/shows/avenue-q/';
+  const next = 'https://www.westendtheatre.com/9001/shows/avenue-q-return/';
+  const file = wetMap({ 'avenue-q-2026': { url: owned } });
+  const got = await discoverWestEndTheatreUrl({ id: 'avenue-q-2031', title: 'Avenue Q' }, file, {
+    serpQuery: async () => [{ url: owned, title: 'Avenue Q tickets' }, { url: next, title: 'Avenue Q returns' }],
+  });
+  assert.equal(got, next);
+  assert.equal(readJson(file).shows['avenue-q-2031'].url, next);
 });
 
 test('WestEnd: an unclaimed SERP result is cached normally', async () => {
