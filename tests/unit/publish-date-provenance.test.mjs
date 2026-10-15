@@ -149,3 +149,43 @@ describe('roundup article date is a provisional publishDate (Tortured, BritishTh
     }
   });
 });
+
+// BRO-5397: the model's guess for a dateless "Thursday, 4th June" review came back as 2024-06-04 for a show that
+// opened 2026-05-28 (Beetlejuice WE, Islington Tribune), and was stored as publishDate. 13 live reviews carried
+// years 2-11 before their show.
+describe('an implausible LLM date guess never becomes publishDate (BRO-5397)', () => {
+  const { isPlausibleGuess } = require('../../scripts/lib/publish-date-provenance.js');
+  const BEETLEJUICE = { id: 'beetlejuice-west-end-2026', status: 'open', previewsStartDate: '2026-05-08', openingDate: '2026-05-28' };
+  const NOW = Date.parse('2026-06-07');
+
+  test('Beetlejuice 2026: a 2024 guess stays a guess; the real 2026 date fills', () => {
+    const bad = llmScoringDateFields({}, { claude: { publishDate: '2024-06-04' } }, BEETLEJUICE, NOW);
+    assert.deepEqual(bad, { llmPublishDateGuess: '2024-06-04' });
+    const good = llmScoringDateFields({}, { claude: { publishDate: '2026-06-04' } }, BEETLEJUICE, NOW);
+    assert.equal(good.publishDate, '2026-06-04');
+    assert.equal(good.dateSource, 'llm-scoring');
+  });
+
+  test('edge: 60 days before the first preview is allowed, 61 is not; a future date is never', () => {
+    assert.equal(isPlausibleGuess('2026-03-09', BEETLEJUICE, NOW), true);
+    assert.equal(isPlausibleGuess('2026-03-08', BEETLEJUICE, NOW), false);
+    assert.equal(isPlausibleGuess('2026-06-20', BEETLEJUICE, NOW), false);
+  });
+
+  test('boundary: a declared prior run keeps its own dates; unknown show and show with no dates keep the old behaviour', () => {
+    const transfer = { ...BEETLEJUICE, priorRuns: [{ id: 'x', openingDate: '2024-05-01', closingDate: '2024-08-31' }] };
+    assert.equal(isPlausibleGuess('2024-06-04', transfer, NOW), true);
+    assert.equal(isPlausibleGuess('2024-06-04', null, NOW), true);
+    assert.equal(isPlausibleGuess('2024-06-04', { id: 'y' }, NOW), true);
+  });
+});
+
+describe('an opted-out prior run does not make an old guess plausible (BRO-5397)', () => {
+  const { isPlausibleGuess } = require('../../scripts/lib/publish-date-provenance.js');
+  const show = { id: 'z', status: 'open', openingDate: '2026-05-28', priorRuns: [{ id: 'old', openingDate: '2024-05-01', closingDate: '2024-08-31', inheritReviews: false }] };
+  test('inheritReviews:false run: the 2024 guess is still implausible; an inheriting run keeps it', () => {
+    assert.equal(isPlausibleGuess('2024-06-04', show, Date.parse('2026-06-07')), false);
+    const inherit = { ...show, priorRuns: [{ ...show.priorRuns[0], inheritReviews: undefined }] };
+    assert.equal(isPlausibleGuess('2024-06-04', inherit, Date.parse('2026-06-07')), true);
+  });
+});

@@ -85,6 +85,14 @@ function buildSiblingIndex(shows) {
       openingDate: opening && !isNaN(opening.getTime()) ? opening : null,
       closingDate: closing && !isNaN(closing.getTime()) ? closing : null,
       previewsStartDate: validDate(s.previewsStartDate),
+      // Earlier runs this entry declares and inherits reviews from (a transfer keeps its
+      // original run's reviews: Arcadia Old Vic -> Duke of York's). Sibling-venue routing
+      // must not move those away.
+      // 39 of 52 declared prior runs carry no id, only a venue, so a run is matched by either.
+      inheritedRunIds: new Set((Array.isArray(s.priorRuns) ? s.priorRuns : [])
+        .filter((r) => r && r.id && r.inheritReviews !== false).map((r) => r.id)),
+      inheritedRunVenues: new Set((Array.isArray(s.priorRuns) ? s.priorRuns : [])
+        .filter((r) => r && r.venue && r.inheritReviews !== false).map((r) => String(r.venue).trim().toLowerCase())),
       title: s.title || null,
       category: s.category || null,
       venue: s.venue || null,
@@ -323,6 +331,12 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
   const hits = [];
   for (const sib of sibData.siblings) {
     if (visitedSet.has(sib.id)) continue;
+    // A declared prior run whose reviews this entry inherits is its own, not a sibling's.
+    if (sibData.inheritedRunIds && sibData.inheritedRunIds.has(sib.id)) continue;
+    if (sibData.inheritedRunVenues && sib.venue && sibData.inheritedRunVenues.has(String(sib.venue).trim().toLowerCase())) continue;
+    // Regional city runs roll up under an umbrella entry (a national tour's regional parent, a tryout
+    // family) by design: regional <-> regional is the tour-family layer's call, not a venue match.
+    if (sibData.category === 'regional' && sib.category === 'regional') continue;
     const phrase = venuePhrases(sib.venue).find(p => urlNamesPhrase(urlPath, p));
     if (!phrase) continue;
     // A sibling with no opening date has no window, so it cannot claim a review.

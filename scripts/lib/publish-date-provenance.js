@@ -68,12 +68,37 @@ function llmScoringDateFields(review, modelResults, show = null, now = Date.now(
   for (const m of ['claude', 'openai', 'gemini', 'kimi']) {
     const d = mr[m] && mr[m].publishDate;
     if (typeof d === 'string' && YMD.test(d)) {
-      return isNearOpening(show, now)
+      return isNearOpening(show, now) && isPlausibleGuess(d, show, now)
         ? { llmPublishDateGuess: d, publishDate: d, dateSource: 'llm-scoring' }
         : { llmPublishDateGuess: d };
     }
   }
   return {};
+}
+
+/** A guess dated this far before the show's first preview cannot be a review of it (BRO-5397). */
+const GUESS_BEFORE_START_DAYS = 60;
+
+/**
+ * Is the model's guessed date possible for THIS show? A dateless "Thursday, 4th June" review of a
+ * show that opened 2026-05-28 came back as 2024-06-04, and Islington Tribune / Camden New Journal
+ * pieces for 2026 shows were stored with 2015, 2021, 2023 and 2024 dates the page never replaced
+ * (13 live reviews, BRO-5397). A guess more than 60 days before the show's earliest date (unless a
+ * declared prior run covers it) or in the future is kept as `llmPublishDateGuess` only.
+ * Unknown show or no show dates: plausible (the old behaviour).
+ */
+function isPlausibleGuess(dateStr, show, now = Date.now()) {
+  const t = Date.parse(`${dateStr}T00:00:00Z`);
+  if (!Number.isFinite(t)) return false;
+  if (t > now + 3 * 864e5) return false; // a review cannot be dated in the future
+  if (!show) return true;
+  const { earliestShowDate } = require('./date-guard');
+  const earliest = Date.parse(`${earliestShowDate(show) || ''}T00:00:00Z`);
+  if (!Number.isFinite(earliest)) return true;
+  if (t >= earliest - GUESS_BEFORE_START_DAYS * 864e5) return true;
+  const { isWithinPriorRun, isWithinOptOutPriorRun } = require('./wrong-production-autoclear');
+  // A run that opted out of inheriting reviews (inheritReviews:false) is not this show's.
+  return isWithinPriorRun(dateStr, show.priorRuns) && !isWithinOptOutPriorRun(dateStr, show.priorRuns);
 }
 
 /**
@@ -109,6 +134,7 @@ module.exports = {
   NEAR_OPENING_DAYS,
   isNearOpening,
   llmScoringDateFields,
+  isPlausibleGuess,
   roundupEntryDateFields,
   isProvisionalPublishDate,
 };

@@ -184,3 +184,41 @@ test('a roundup dated before the sibling opened is not the sibling\'s', () => {
   const dc = { id: 'p-dc-2026', title: 'P Show', category: 'regional', openingDate: '2026-01-28' };
   assert.equal(isCurrentRunRoundup('2026-01-25', we, [we, dc]), true);
 });
+
+// BRO-5397: a transfer declares its original run in priorRuns and inherits its reviews (Arcadia: Old Vic ->
+// Duke of York's). 20 Old Vic reviews name the Old Vic in their urls; the venue rule must leave them where they are.
+test('a sibling the entry lists in priorRuns (reviews inherited) never claims a review by venue', () => {
+  const oldVic = { id: 'arcadia-west-end-2026', title: 'Arcadia', category: 'west-end', venue: 'The Old Vic', openingDate: '2026-02-04', closingDate: '2026-03-21' };
+  const duke = {
+    id: 'arcadia-duke-of-yorks-west-end-2026', title: 'Arcadia', category: 'west-end', venue: "Duke of York's Theatre",
+    openingDate: '2026-07-01', closingDate: '2026-09-12',
+    priorRuns: [{ id: 'arcadia-west-end-2026', venue: 'The Old Vic', openingDate: '2026-02-04', closingDate: '2026-03-21' }],
+  };
+  const r = classify(duke, oldVic, 'https://www.theguardian.com/stage/2026/feb/05/arcadia-review-tom-stoppard-old-vic-london', '2026-02-05');
+  assert.ok(!(r.reason || '').startsWith('sibling-venue-in-url'), `venue rule fired: ${r.reason}`);
+  // an opt-out (inheritReviews:false) is a different production again, so the rule applies
+  const dukeOptOut = { ...duke, priorRuns: [{ ...duke.priorRuns[0], inheritReviews: false }] };
+  const r2 = classify(dukeOptOut, oldVic, 'https://www.theguardian.com/stage/2026/feb/05/arcadia-review-tom-stoppard-old-vic-london', '2026-02-05');
+  assert.equal(r2.action, 'reroute');
+  assert.ok(r2.reason.startsWith('sibling-venue-in-url'));
+});
+
+test('regional <-> regional siblings are tour-family roll-ups, not venue matches', () => {
+  const parent = { id: 'p-tour-regional-2025', title: 'P Show', category: 'regional', venue: 'U.S. National Tour (Chicago)', openingDate: '2025-10-01', closingDate: null };
+  const la = { id: 'p-la-regional-2025', title: 'P Show', category: 'regional', venue: 'Ahmanson Theatre, Los Angeles', openingDate: '2025-11-12', closingDate: '2025-12-14' };
+  const r = classify(parent, la, 'https://stageandcinema.com/2025/11/15/review-p-show-ahmanson-theatre', '2025-11-15');
+  assert.ok(!(r.reason || '').startsWith('sibling-venue-in-url'), `venue rule fired: ${r.reason}`);
+  // but a regional run filed under a West End show still reroutes (the RSC case)
+  assert.equal(route(globe.id, STAGE_RSC, '2026-10-07', globe.category).action, 'reroute');
+});
+
+test('a declared prior run with no id is matched by its venue (39 of 52 real priorRuns carry no id)', () => {
+  const oldVic = { id: 'arcadia-west-end-2026', title: 'Arcadia', category: 'west-end', venue: 'The Old Vic', openingDate: '2026-02-04', closingDate: '2026-03-21' };
+  const duke = {
+    id: 'arcadia-duke-of-yorks-west-end-2026', title: 'Arcadia', category: 'west-end', venue: "Duke of York's Theatre",
+    openingDate: '2026-07-01', closingDate: '2026-09-12',
+    priorRuns: [{ venue: 'The Old Vic', openingDate: '2026-02-04', closingDate: '2026-03-21' }],
+  };
+  const r = classify(duke, oldVic, 'https://www.theguardian.com/stage/2026/feb/05/arcadia-review-tom-stoppard-old-vic-london', '2026-02-05');
+  assert.ok(!(r.reason || '').startsWith('sibling-venue-in-url'), `venue rule fired: ${r.reason}`);
+});
