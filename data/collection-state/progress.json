@@ -1,25 +1,66 @@
 {
   "processed": [
-    "the-real-thing-2014/wsj--terry-teachout.json"
+    "the-real-thing-2014/wsj--terry-teachout.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json",
+    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "fences-off-west-end-2026/ground--unknown.json",
+    "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "baby-off-west-end-2026/guardian--holly-omahony.json",
+    "from-the-heart-west-end-2026/theatre-news--unknown.json",
+    "an-oak-tree-off-west-end-2026/bestoftheatre--ella-dunmore.json",
+    "from-the-heart-west-end-2026/jolienstheatrediary--jolien.json",
+    "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
+    "rent-west-end-2026/britishtheatrecom--british-theatre.json"
   ],
-  "failed": [],
+  "failed": [
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
+    "from-the-heart-west-end-2026/reviewsgate--william-russell.json",
+    "from-the-heart-west-end-2026/timeout-london--unknown.json",
+    "an-oak-tree-off-west-end-2026/north-west-end--alice-rose.json",
+    "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
+    "an-oak-tree-off-west-end-2026/thestage--unknown.json",
+    "baby-off-west-end-2026/daily-mail--tom-lawrence.json",
+    "from-the-heart-west-end-2026/thestage--neil-norman.json",
+    "rent-west-end-2026/city-am--adam-bloodworth.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json",
+      "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "baby-off-west-end-2026/guardian--holly-omahony.json",
+      "from-the-heart-west-end-2026/theatre-news--unknown.json",
+      "an-oak-tree-off-west-end-2026/bestoftheatre--ella-dunmore.json",
+      "from-the-heart-west-end-2026/jolienstheatrediary--jolien.json",
+      "rent-west-end-2026/britishtheatrecom--british-theatre.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-real-thing-2014/wsj--terry-teachout.json",
       "the-real-thing-2014/wsj--terry-teachout.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "fences-off-west-end-2026/ground--unknown.json",
+      "baby-off-west-end-2026/daily-mail--tom-lawrence.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json"
+    ]
   },
   "startTime": "2026-10-15T10:01:53.797Z",
-  "lastProcessed": "the-real-thing-2014/wsj--terry-teachout.json",
+  "lastProcessed": "rent-west-end-2026/city-am--adam-bloodworth.json",
   "log": [
     {
       "t": "2026-10-15T10:02:00.108Z",
@@ -31,6 +72,18 @@
       "t": "2026-10-15T10:02:01.011Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-15T10:16:18.159Z",
+      "event": "bb-session",
+      "session": "89b75fd4",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-15T10:16:28.483Z",
+      "event": "bb-session",
+      "session": "9299f7e0",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     }
   ]
 }
