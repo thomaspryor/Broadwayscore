@@ -25,9 +25,12 @@ test('urlNamesShow: a one-word title also needs "review" in the path', () => {
   assert.strictEqual(cq.urlNamesShow('https://x.com/theatre/company-review-sondheim', 'Company'), true);
 });
 
-test('qualityOptsFor reads url and Theatre Record filing', () => {
-  assert.deepStrictEqual(cq.qualityOptsFor({ url: 'https://a.b/c', source: 'theatre-record' }), { url: 'https://a.b/c', trustedShowFiling: true });
-  assert.deepStrictEqual(cq.qualityOptsFor({ url: null }), { url: null, trustedShowFiling: false });
+test('qualityOptsFor reads url and publish date only (a Theatre Record filing is not evidence)', () => {
+  assert.deepStrictEqual(cq.qualityOptsFor({ url: 'https://a.b/c', source: 'theatre-record', publishDate: '2023-02-14' }), { url: 'https://a.b/c', publishDate: '2023-02-14' });
+});
+
+test('urlNamesShow refuses film and TV pages', () => {
+  assert.strictEqual(cq.urlNamesShow('https://www.thetimes.com/culture/film/article/wicked-for-good-review-x', 'Wicked'), false);
 });
 
 const prose = 'People used to come from miles around to The Estate. One Local said The Story was Reckless and Tender, '
@@ -36,15 +39,21 @@ const text = prose.repeat(12);
 
 test('with show evidence on, a url naming the show lifts the multi-show junk verdict', () => {
   const url = 'https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london';
-  const off = cq.assessTextQuality(text, ID, T, { useShowEvidence: false, url });
-  const on = cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url });
+  const off = cq.assessTextQuality(text, ID, T, { useShowEvidence: false, url, publishDate: '2023-02-14' });
+  const on = cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url, publishDate: '2023-02-14' });
   assert.strictEqual(off.quality, 'garbage');
   assert.notStrictEqual(on.quality, 'garbage');
 });
 
+test('a review dated far from the production year is not lifted', () => {
+  const url = 'https://www.thestage.co.uk/reviews/standing-at-the-skys-edge-review-national-theatre-london';
+  assert.strictEqual(cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url, publishDate: '2030-01-01' }).quality, 'garbage');
+  assert.strictEqual(cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url, publishDate: null }).quality, 'garbage');
+});
+
 test('a url that does not name the show changes nothing', () => {
   const url = 'https://www.thestage.co.uk/reviews/some-other-show-review';
-  assert.strictEqual(cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url }).quality, 'garbage');
+  assert.strictEqual(cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url, publishDate: '2023-02-14' }).quality, 'garbage');
 });
 
 test('default stays off until the corpus audit flips it', () => {

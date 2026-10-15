@@ -88,7 +88,7 @@ function main() {
         before: before.quality, after: after.quality,
         beforeIssue: (before.issues || [])[0] || null,
         droppedTitles: was.filter((t) => !now.has(t)).slice(0, 8),
-        url: rule === 'url' ? (r.url || (r.source === 'theatre-record' ? 'theatre-record' : null)) : undefined,
+        url: rule === 'url' ? `${r.publishDate || 'no-date'} ${r.url || 'no-url'}` : undefined,
       });
     }
   }

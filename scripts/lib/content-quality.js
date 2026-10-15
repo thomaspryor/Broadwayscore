@@ -1558,25 +1558,39 @@ function urlNamesShow(url, showTitle) {
   let pathPart;
   try { pathPart = decodeURIComponent(new URL(url).pathname); } catch { return false; }
   const tokens = new Set(slugTokens(pathPart));
+  // A film or TV piece can share the title (the Times' "Wicked: For Good"
+  // film review sat under the stage show).
+  if (['film', 'films', 'movie', 'movies', 'tv', 'television', 'cinema'].some((w) => tokens.has(w))) return false;
   const words = slugTokens(showTitle).filter((w) => !URL_TITLE_STOP_WORDS.has(w));
   if (words.length === 0) return false;
   if (!words.every((w) => tokens.has(w))) return false;
   return words.length >= 2 || (words[0].length >= 4 && tokens.has('review'));
 }
 
-/** assessTextQuality options from a review record: its url and Theatre Record filing. */
+/**
+ * True when publishDate falls within 2 years of the production year in the
+ * show id ("aspects-of-love-1990" vs a 2023 review is not). A missing or
+ * unreadable date, or an id without a year, is never evidence.
+ */
+function publishedNearProduction(publishDate, showId) {
+  const idYear = Number((/-(\d{4})$/.exec(String(showId || '')) || [])[1]);
+  if (!idYear || !publishDate) return false;
+  const { toDateMs } = require('./date-utils');
+  const ms = toDateMs(publishDate);
+  if (Number.isNaN(ms)) return false;
+  return Math.abs(new Date(ms).getUTCFullYear() - idYear) <= 2;
+}
+
+/** assessTextQuality options from a review record (BRO-5395): its url and publish date. */
 function qualityOptsFor(record) {
   if (!record || typeof record !== 'object') return {};
-  return {
-    url: record.url || null,
-    trustedShowFiling: record.source === 'theatre-record' || !!record.theatreRecordUrl,
-  };
+  return { url: record.url || null, publishDate: record.publishDate || null };
 }
 
 /**
  * @param {object} [opts] - requireTitleCase (detectMultiShowContent); url and
- *   trustedShowFiling (BRO-5395, see qualityOptsFor) count as show-identity
- *   evidence for the junk-page checks when the text never prints the title.
+ *   publishDate (BRO-5395, see qualityOptsFor) count as show-identity evidence
+ *   for the junk-page checks when the text never prints the title.
  */
 function assessTextQuality(text, showId, showTitle, opts = {}) {
   const issues = [];
@@ -1600,12 +1614,15 @@ function assessTextQuality(text, showId, showTitle, opts = {}) {
     : { valid: true };
   // BRO-5395: a review can describe the show without printing its title (the
   // Telegraph and The Stage on Standing at the Sky's Edge write about Park
-  // Hill). When the review's own url names the show, or the row is a Theatre
-  // Record print text filed to this show, that is the show-identity evidence
-  // the junk-page checks below need; the text checks after them still run.
+  // Hill). When the review's own url names the show and the review is dated
+  // near this production, that is the show-identity evidence the junk-page
+  // checks below need; the text checks after them still run. A Theatre Record
+  // filing is NOT evidence: the corpus audit found TR print rows filed under
+  // other productions of the same title (London reviews under Broadway ids).
   const useShowEvidence = opts.useShowEvidence === undefined ? USE_URL_SHOW_EVIDENCE : !!opts.useShowEvidence;
-  if (!showMentionedEarly.valid && useShowEvidence && (urlNamesShow(opts.url, showTitle) || opts.trustedShowFiling === true)) {
-    showMentionedEarly = { valid: true, confidence: 'medium', reason: opts.trustedShowFiling === true ? 'Theatre Record row filed to this show' : 'Review url names the show' };
+  if (!showMentionedEarly.valid && useShowEvidence
+      && urlNamesShow(opts.url, showTitle) && publishedNearProduction(opts.publishDate, showId)) {
+    showMentionedEarly = { valid: true, confidence: 'medium', reason: 'Review url names the show' };
   }
   const multiShowCheck = detectMultiShowContent(text, showId, { requireTitleCase: opts.requireTitleCase });
   if (multiShowCheck.detected && !showMentionedEarly.valid) {
