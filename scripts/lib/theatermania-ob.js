@@ -203,6 +203,7 @@ function parseTmOffBroadwayRow(row, { venuesById = new Map(), genresById = new M
     openingDateSource: dates.openingDateSource,
     previewsStartDate: dates.previewsStartDate,
     closingDate: dates.closingDate,
+    runtimeMinutes: (row.acf && row.acf.run_duration) || null, // BRO-4384: scripts/lib/tm-ob-fill.js parses it
     category: 'off-broadway',
     description,
     source: 'theatermania-ob',

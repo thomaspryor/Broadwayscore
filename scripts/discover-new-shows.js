@@ -40,6 +40,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { parseShortDate, venueFromShowScoreDoc } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
+const { applyTmFill } = require('./lib/tm-ob-fill');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
 const { computeShowReconciliation, resolveReconciliationFields, appendReconciliationAudit } = require('./lib/discovery-reconcile');
 const { validateChangeStability } = require('./lib/change-stability-guard');
@@ -2605,6 +2606,7 @@ async function discoverShows() {
   // title. Reconciliation only fires for reasons that assert real identity
   // equality (exact title/slug, ID base) — todaytixId matches (Step 0 below)
   // are separately high-confidence and always eligible.
+  const tmFilled = [];
   const HIGH_CONFIDENCE_REASON_PREFIXES = ['Exact title match', 'Exact slug match', 'ID base match'];
   // existingId -> { existing, fields: {
   //   openingDate?: Map<dateValue, { sources: Set<sourceLabel>, openingDateSource }>,
@@ -2618,6 +2620,14 @@ async function discoverShows() {
   // majority-popular source LABEL with a date that label never proposed
   // (ship-check finding on the first version of this fix).
   const reconciliationProposals = new Map();
+  function fillFromTheaterMania(existing, candidate) {
+    const written = applyTmFill(existing, candidate);
+    if (Object.keys(written).length) {
+      console.log(`  tm-fill: ${existing.id} <- ${JSON.stringify(written)}`);
+      tmFilled.push({ id: existing.id, ...written });
+    }
+  }
+
   function reconcileMatchedShow(existing, candidate, reason) {
     if (reason && !HIGH_CONFIDENCE_REASON_PREFIXES.some(p => reason.startsWith(p))) return;
     const patch = computeShowReconciliation(existing, candidate);
@@ -2787,6 +2797,11 @@ async function discoverShows() {
 
     if (duplicateCheck.isDuplicate) {
       if (duplicateCheck.existingShow) reconcileMatchedShow(duplicateCheck.existingShow, show, duplicateCheck.reason);
+      // BRO-4384: high-confidence TheaterMania match fills a missing closingDate/runtime.
+      if (duplicateCheck.existingShow && show._discoverySource === 'theatermania-ob' &&
+          HIGH_CONFIDENCE_REASON_PREFIXES.some(p => (duplicateCheck.reason || '').startsWith(p))) {
+        fillFromTheaterMania(duplicateCheck.existingShow, show);
+      }
       skippedDuplicates.push({
         title: show.title,
         reason: duplicateCheck.reason,
@@ -2801,6 +2816,7 @@ async function discoverShows() {
     if (show._discoverySource === 'theatermania-ob') {
       const twin = findTmSameTitleShow(show, data.shows) || findTmSameTitleShow(show, pendingAddShows);
       if (twin) {
+        if (!twin._pendingFix) fillFromTheaterMania(twin, show); // BRO-4384: exact loose-title match
         skippedDuplicates.push({
           title: show.title,
           reason: `TheaterMania same-title match (venue "${show.venue}" vs "${twin.venue}")${twin._pendingFix ? `, queued by pending-fix plan ${twin._pendingFix}` : ''}`,
@@ -2927,6 +2943,8 @@ async function discoverShows() {
   // resolve the accumulated reconciliation proposals (BRO-2072) before any
   // save/summary logic below reads reconciledShows.
   resolveReconciliationProposals();
+  // BRO-4384: TheaterMania fills mutate the matched rows in place; count them so saveShows runs.
+  for (const f of tmFilled) reconciledShows.push({ id: f.id, title: f.id, patch: f });
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
   // Skip off-Broadway and London shows — IBDB only covers Broadway
