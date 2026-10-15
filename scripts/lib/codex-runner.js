@@ -338,8 +338,19 @@ function landingIsPartial(comments, sinceMs) {
 }
 
 /** True when the runner bounced this card within the last 14 days. */
+/**
+ * True for a runner note that says Codex itself failed the card. A "stopped mid-card" note is
+ * the runner's own error (disk full, lost lock), not Codex's: on 2026-10-15 07:41 a full disk
+ * crashed 17 cards in two minutes and the marker on those notes banned all 17 from Codex for
+ * 14 days (BRO-5287). Those notes no longer carry the marker; older ones are ignored here.
+ */
+function isCodexBounce(body) {
+  const b = String(body || '');
+  return b.startsWith(BOUNCED_MARKER) && !b.includes('## Codex runner: stopped mid-card');
+}
+
 function codexBouncedRecently(comments, nowMs) {
-  return (Array.isArray(comments) ? comments : []).some((c) => c && String(c.body || '').startsWith(BOUNCED_MARKER)
+  return (Array.isArray(comments) ? comments : []).some((c) => c && isCodexBounce(c.body)
     && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
 }
 
@@ -807,12 +818,19 @@ function orphanAction({ stateName, startedAtMs, lockMs, onMain, landRefMs }) {
 }
 
 /** Stop the run early (like close-stuck-verified-cards' closeRunStopReason). */
-function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rejectStreak, doneRefusals, checkSpentUsd = 0, checkBudgetUsd = null }) {
+// A card's worktrees, data copies, unit batches and Codex session logs; below this a card can
+// fail half-way with "No space left on device".
+const MIN_FREE_DISK_BYTES = 3e9;
+function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rejectStreak, doneRefusals, checkSpentUsd = 0, checkBudgetUsd = null, crashStreak = 0, lastCrash = '', freeDiskBytes = null }) {
   if (checkBudgetUsd != null && checkSpentUsd >= checkBudgetUsd) return `Claude check spend $${checkSpentUsd.toFixed(2)} reached the run cap of $${checkBudgetUsd}`;
   if (maxMinutes && nowMs - startedMs > maxMinutes * 60_000) return `time budget of ${maxMinutes} min used`;
   if (weeklyPct != null && maxWeeklyPct != null && weeklyPct >= maxWeeklyPct) return `Codex weekly allowance at ${weeklyPct}% (cap ${maxWeeklyPct}%)`;
   if (rejectStreak >= 3) return '3 Claude REJECTs in a row';
   if (doneRefusals >= 1) return 'the Done gate refused a card the Claude check passed';
+  // Runner errors in a row mean the machine is broken (disk full, lost lock), not the cards:
+  // stop instead of crashing through the queue (17 cards in 2 min on 2026-10-15, BRO-5287).
+  if (crashStreak >= 2) return `${crashStreak} runner errors in a row (the last: ${String(lastCrash || '').slice(0, 160)})`;
+  if (freeDiskBytes != null && freeDiskBytes < MIN_FREE_DISK_BYTES) return `only ${(freeDiskBytes / 1e9).toFixed(1)} GB of disk left (needs ${MIN_FREE_DISK_BYTES / 1e9} GB to start a card)`;
   return null;
 }
 
@@ -899,6 +917,8 @@ module.exports = {
   hasCredentialRemote,
   MAX_ATTEMPTS_SHIP_WITH_FIXES,
   codexBouncedRecently,
+  isCodexBounce,
+  MIN_FREE_DISK_BYTES,
   encryptAuth,
   decryptAuth,
   authLastRefresh,

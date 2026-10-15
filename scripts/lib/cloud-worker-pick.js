@@ -465,12 +465,12 @@ function buildPickQueue(resumes, { ordered = [], orderedP2 = [], orderedP3 = [] 
  */
 function cloudPriorAttempts(issue) {
   const { parseSessionReportStatus } = require('./linear-session-reporting.js');
-  const { BOUNCED_MARKER } = require('./codex-runner.js');
+  const { isCodexBounce } = require('./codex-runner.js');
   const nodes = (issue && issue.comments && issue.comments.nodes) || [];
   return nodes.filter((c) => {
     const body = String((c && c.body) || '');
     const status = parseSessionReportStatus(body);
-    return (status && status !== 'done') || body.startsWith(BOUNCED_MARKER);
+    return (status && status !== 'done') || isCodexBounce(body);
   }).length;
 }
 

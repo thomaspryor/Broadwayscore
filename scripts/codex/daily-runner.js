@@ -756,7 +756,7 @@ async function workCard(pick, stats, inFlight) {
     }
     // An environment block is not Codex's miss, so it does not feed the REJECT streak.
     stats.rejectStreak = check.verdict === 'REJECT' && !envBlocked ? stats.rejectStreak + 1 : 0;
-    const summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
+    let summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
     // Card items the reviewer found correctly left undone (SHIP with REMAINING lines).
     const remaining = step === 'land' || step === 'close-already-fixed' ? R.parseRemaining(check.text) : [];
     if (step === 'close-already-fixed' && remaining.length) step = 'bounce'; // nothing to land, items still open
@@ -803,7 +803,11 @@ async function workCard(pick, stats, inFlight) {
     if (step === 'close-already-fixed') {
       const r = await moveCard(id, 'Done', `## Codex runner: already fixed on main, no code change\n\nThe independent check confirmed nothing was needed.\n\n${summary}`);
       if (r.code === 0) { stats.alreadyFixed.push(id); handedBack = true; disposed = true; return 'done'; }
-      if (r.code === 5) stats.doneRefusals += 1;
+      // Refused: the card's own check still fails, so it is not fixed after all. That is this
+      // card's answer, not a sign the checks are broken: hand it back like any unfinished card.
+      // Counting it as a Done refusal stopped all three slots of the 2026-10-15 12:47 launch
+      // after one card (BRO-4791). A refused LANDED change still stops the launch (settleLanded).
+      if (r.code === 5) summary += `\n\n### Not fixed after all\nThe reviewer judged it already fixed, but the card's own check still fails on main (the Done gate refused to close it):\n${fence(tail(R.redactSecrets(r.out || '', process.env), 800))}`;
     }
     stats.bounced.push(id);
     const why = remaining.length && !landBlocked ? `Nothing needed landing, but these card items are still open:\n${remaining.map((x) => `- ${x}`).join('\n')}`
@@ -820,7 +824,10 @@ async function workCard(pick, stats, inFlight) {
       // Name the error on the card: without it a crash could only be diagnosed from a run log
       // that dies with the routine's container (BRO-5287).
       const why = crashReason ? `\n\nError: ${fence(tail(R.redactSecrets(crashReason, process.env), 600))}` : '';
-      const back = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n\nThe runner hit an error on this card and changed nothing on main. Back to Todo for the Claude worker.${why}`).catch(() => ({ code: 1 }));
+      // No BOUNCED_MARKER: a runner error is not Codex failing the card (see R.isCodexBounce).
+      stats.crashStreak = (stats.crashStreak || 0) + 1;
+      stats.lastCrash = crashReason;
+      const back = await moveCard(id, 'Todo', `## Codex runner: stopped mid-card\n\nThe runner hit an error on this card and changed nothing on main. Back to Todo; the card is free for any worker, Codex included.${why}`).catch(() => ({ code: 1 }));
       handedBack = back.code === 0;
     }
     // Only once the card is really handed back: drop it from the lock. If the hand-back
@@ -1157,9 +1164,11 @@ async function runLocked(startedMs) {
   let stop = null;
   for (const pick of await pickCards()) {
     if (worked >= OPTS.limit) break;
-    stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd });
+    let freeDiskBytes = null;
+    try { const st = fs.statfsSync(ROOT); freeDiskBytes = st.bavail * st.bsize; } catch { /* unknown: do not block */ }
+    stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd, crashStreak: stats.crashStreak, lastCrash: stats.lastCrash, freeDiskBytes });
     if (!stop && stats.aborted) stop = stats.aborted;
-    if (stop && (stats.aborted || stats.doneRefusals)) stopAllSlots(stop);
+    if (stop && (stats.aborted || stats.doneRefusals || stats.crashStreak >= 2 || /disk left/.test(stop))) stopAllSlots(stop);
     if (!stop) { const other = runStop(); if (other) stop = `another slot stopped this launch (${other})`; }
     if (!stop && HARD_END_MS - Date.now() < CARD_START_MIN_MS) stop = `under ${CARD_START_MIN_MS / 60_000} min left before the ${OPTS.hardStopMinutes}-min hard stop`;
     let held = true;
@@ -1167,7 +1176,9 @@ async function runLocked(startedMs) {
     if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';
     if (stop) { log(`stopping: ${stop}`); break; }
     try {
+      const crashedBefore = stats.crashed.length;
       if (await workCard(pick, stats, inFlight) === 'done') worked += 1;
+      if (stats.crashed.length === crashedBefore) stats.crashStreak = 0;
     } catch (e) {
       log(`${pick.identifier}: error ${e && e.message ? e.message : e}`);
     }

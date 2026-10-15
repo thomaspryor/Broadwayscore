@@ -748,3 +748,27 @@ test('firingThroughput: slot summaries of one firing count once; cards per firin
   assert.deepEqual(t, { firings: 2, worked: 8, landed: 4, perFiring: 4, landedShare: 0.5 });
   assert.deepEqual(r.firingThroughput([]), { firings: 0, worked: 0, landed: 0, perFiring: 0, landedShare: 0 });
 });
+
+test('an "already fixed" card the Done gate refuses is handed back, not a launch-wide stop (BRO-5287)', () => {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
+  const start = src.indexOf("if (step === 'close-already-fixed') {");
+  const block = src.slice(start, src.indexOf('\n    }\n', start));
+  assert.ok(start > 0 && !block.includes('doneRefusals'), 'a refused already-fixed close must not count as a Done refusal');
+});
+
+test('a runner error is not Codex failing the card, and repeated errors or a full disk stop the run (BRO-5287, 2026-10-15 07:41)', () => {
+  const crashNote = `${r.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n\nError: fatal: unable to write loose object file: No space left on device`;
+  const realBounce = `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\n1 Codex attempt(s) did not pass the checks`;
+  assert.equal(r.isCodexBounce(crashNote), false, 'old crash notes (with the marker) no longer ban the card');
+  assert.equal(r.isCodexBounce(realBounce), true);
+  const now = Date.parse('2026-10-15T15:00:00Z');
+  assert.equal(r.codexBouncedRecently([{ createdAt: '2026-10-15T07:43:00Z', body: crashNote }], now), false);
+  assert.equal(r.codexBouncedRecently([{ createdAt: '2026-10-15T07:43:00Z', body: realBounce }], now), true);
+  const base = { startedMs: now, nowMs: now, maxMinutes: 105, rejectStreak: 0, doneRefusals: 0 };
+  assert.equal(r.stopReason({ ...base, crashStreak: 1 }), null);
+  assert.match(r.stopReason({ ...base, crashStreak: 2, lastCrash: 'No space left on device' }), /2 runner errors in a row.*No space left/);
+  assert.match(r.stopReason({ ...base, freeDiskBytes: 1.2e9 }), /1\.2 GB of disk left/);
+  assert.equal(r.stopReason({ ...base, freeDiskBytes: 20e9 }), null);
+  const { cloudPriorAttempts } = require('../../scripts/lib/cloud-worker-pick.js');
+  assert.equal(cloudPriorAttempts({ comments: { nodes: [{ body: crashNote }, { body: realBounce }] } }), 1);
+});
