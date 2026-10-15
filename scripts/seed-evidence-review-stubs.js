@@ -5,25 +5,28 @@
  * Closed Off-West-End rows promoted from audit review evidence
  * (discoverySource 'audit-review-evidence') start with zero reviews and no
  * other job gathers them. For each, this fetches the ONE review URL that
- * proved the show exists, through ingest-review-from-url.js
- * --stub-on-failure: a readable page becomes a review file, an unreadable one
- * a needsText stub that collect-review-texts.yml retries on its own schedule.
+ * proved the show exists, through ingest-review-from-url.js. A readable page
+ * becomes a review file. An unreadable one writes nothing (no
+ * --stub-on-failure, so collect-review-texts.yml never retries it with
+ * untagged spend); the rollup marks it failed and this runner may retry it
+ * after 30 days.
  *
  * Spend: a hard monthly cap (scripts/lib/evidence-catchup-spend.js,
  * EVIDENCE_CATCHUP_MONTHLY_CAP_USD). Before EVERY fetch it re-reads month-to-
- * date spend and stops if the next fetch's worst case would cross the cap.
- * Each child runs with SCRAPER_SPEND_PURPOSE=evidence-catchup so its provider
- * calls are tagged in the shared spend ledger, and the priced result is
- * appended to data/audit/evidence-catchup-spend.json after each fetch
- * (checkpoint). A missing or unreadable rollup or ledger stops the run before
- * any fetch.
+ * date spend, stops if the worst case would cross the cap, and writes a
+ * reservation row to data/audit/evidence-catchup-spend.json; after the fetch
+ * it settles that row to the priced actual. Each child runs with
+ * SCRAPER_SPEND_PURPOSE=evidence-catchup so its provider calls are tagged in
+ * the shared spend ledger. A missing or unreadable rollup or ledger, or tagged
+ * spend the rollup does not record, stops the run before any fetch.
  *
  * Usage:
  *   node scripts/seed-evidence-review-stubs.js --dry-run [--limit=5]
  *   node scripts/seed-evidence-review-stubs.js [--limit=N]   (N <= 5, default 2)
  *
  * --dry-run fetches nothing and writes nothing: it prints the candidates,
- * their URLs, projected dollars and whether the cap would bind.
+ * their URLs, projected dollars and whether the cap would bind. Both modes
+ * write the cap-allowed count to $GITHUB_OUTPUT as `candidates`.
  */
 'use strict';
 
@@ -33,13 +36,18 @@ const { execFileSync } = require('child_process');
 const { selectEvidenceSeedCandidates, DEFAULT_EVIDENCE_PER_BATCH } = require('./lib/zero-review-catchup');
 const spend = require('./lib/evidence-catchup-spend');
 const { LEDGER_PATH } = require('./lib/provider-telemetry');
+const { isTestRun } = require('./lib/test-run-guard');
 
 const ROOT = path.join(__dirname, '..');
-const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
-const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
-const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
-const INGEST = path.join(__dirname, 'ingest-review-from-url.js');
-const FETCH_SPACING_MS = 12000; // CLAUDE.md §8: 10s+ between fetches
+// Fixture hooks honoured ONLY under a test run (test-run-guard.js), so no
+// production env var can swap the fetcher or shrink the spacing.
+const TEST = isTestRun();
+const testEnv = (name, fallback) => (TEST && process.env[name]) || fallback;
+const SHOWS_PATH = testEnv('EVIDENCE_CATCHUP_SHOWS_PATH', path.join(ROOT, 'data', 'shows.json'));
+const REVIEWS_PATH = testEnv('EVIDENCE_CATCHUP_REVIEWS_PATH', path.join(ROOT, 'data', 'reviews.json'));
+const REVIEW_TEXTS_DIR = testEnv('EVIDENCE_CATCHUP_REVIEW_TEXTS_DIR', path.join(ROOT, 'data', 'review-texts'));
+const INGEST = testEnv('EVIDENCE_CATCHUP_INGEST', path.join(__dirname, 'ingest-review-from-url.js'));
+const FETCH_SPACING_MS = Number(testEnv('EVIDENCE_CATCHUP_SPACING_MS', 12000)); // CLAUDE.md §8: 10s+ between fetches
 const CHILD_TIMEOUT_MS = 5 * 60 * 1000;
 const SECRET_NAMES = ['BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY'];
 
@@ -57,11 +65,33 @@ function ledgerPath() {
   return process.env.SCRAPER_SPEND_LEDGER_PATH || LEDGER_PATH;
 }
 
-/** Month-to-date dollars from both sources; throws (fail closed) if either is unreadable. */
+function rollupPath() {
+  return process.env.EVIDENCE_CATCHUP_ROLLUP_PATH || spend.ROLLUP_PATH;
+}
+
+/**
+ * Month-to-date dollars from both sources. Throws (fail closed) if either is
+ * unreadable or the ledger shows tagged spend the rollup does not record.
+ */
 function readMonthToDate(nowMs) {
-  const rollup = spend.loadRollup(process.env.EVIDENCE_CATCHUP_ROLLUP_PATH || spend.ROLLUP_PATH);
+  const rollup = spend.loadRollup(rollupPath());
   const ledgerRows = spend.loadTaggedLedgerRows(ledgerPath());
+  spend.assertRollupCoversLedger(rollup, ledgerRows);
   return { rollup, ledgerRows, mtdUsd: spend.monthToDateUsd(rollup, ledgerRows, nowMs) };
+}
+
+/** The review file ingest wrote for this URL, or null. */
+function findReviewFile(showId, url) {
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+  let names = [];
+  try { names = fs.readdirSync(dir).filter((n) => n.endsWith('.json') && !n.startsWith('_')); } catch { return null; }
+  for (const n of names) {
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8'));
+      if (data && data.url === url) return data;
+    } catch { /* unreadable file: not ours to judge */ }
+  }
+  return null;
 }
 
 function writeOutput(name, value) {
@@ -82,7 +112,7 @@ function runIngest(candidate) {
   };
   try {
     const out = execFileSync(process.execPath,
-      [INGEST, `--show=${candidate.id}`, `--url=${candidate.url}`, '--stub-on-failure'],
+      [INGEST, `--show=${candidate.id}`, `--url=${candidate.url}`],
       { encoding: 'utf8', env, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHILD_TIMEOUT_MS });
     process.stdout.write(out.split('\n').slice(-6).map((l) => `    ${l}`).join('\n') + '\n');
     return 0;
@@ -96,12 +126,12 @@ function runIngest(candidate) {
 async function main() {
   if (!Number.isInteger(limit) || limit < 1) throw new Error(`--limit must be a positive integer (got ${limitArg})`);
   const now = Date.now();
-  const projected = spend.projectedFetchUsd();
+  const projected = spend.projectedReservationUsd();
   const cap = spend.EVIDENCE_CATCHUP_MONTHLY_CAP_USD;
 
   // Fail closed before selection: no readable spend record, no fetch.
   const first = readMonthToDate(now);
-  const alreadyFetched = new Set(first.rollup.fetches.map((f) => f.showId));
+  const alreadyFetched = spend.blockedShowIds(first.rollup, now);
   const shows = loadJsonArray(SHOWS_PATH, 'shows');
   const reviews = loadJsonArray(REVIEWS_PATH, 'reviews');
   const { batch, exempt, eligible } = selectEvidenceSeedCandidates(shows, reviews, alreadyFetched, { now, limit });
@@ -110,8 +140,10 @@ async function main() {
   if (exempt.length) console.log(`Exempt (noReviewsExpected): ${exempt.join(', ')}`);
   console.log(`Secrets: ${SECRET_NAMES.map((n) => `${n}=${process.env[n] ? 'set' : 'MISSING'}`).join(' ')}`);
   console.log(`Review texts dir: ${fs.existsSync(REVIEW_TEXTS_DIR) ? 'present' : 'MISSING'}`);
-  console.log(`Spend ${spend.monthKey(now)}: $${first.mtdUsd.toFixed(4)} of $${cap} cap; worst case per fetch $${projected.toFixed(4)}`);
-  writeOutput('candidates', batch.length);
+  console.log(`Spend ${spend.monthKey(now)}: $${first.mtdUsd.toFixed(4)} of $${cap} cap; reserved per show $${projected.toFixed(4)} (fetch $${spend.projectedFetchUsd().toFixed(4)} + collect-retry allowance $${spend.downstreamAllowanceUsd().toFixed(4)})`);
+  const allowed = spend.allowedFetchCount({ mtdUsd: first.mtdUsd, projectedUsd: projected, capUsd: cap, count: batch.length });
+  console.log(`Cap allows ${allowed} of ${batch.length} this run`);
+  writeOutput('candidates', allowed);
 
   let simulatedMtd = first.mtdUsd;
   let fetched = 0;
@@ -129,17 +161,18 @@ async function main() {
       continue;
     }
     if (fetched > 0) await sleep(FETCH_SPACING_MS);
-    const startIso = new Date().toISOString();
+    // Reserve the worst case BEFORE fetching: a crash or lost push after this
+    // point leaves the money counted and the show blocked.
+    const startMs = Date.now();
+    const id = spend.reserveFetch(rollupPath(), { showId: c.id, url: c.url, nowMs: startMs, usd: projected });
     console.log(`  fetching ${c.id}: ${c.url}`);
     const exit = runIngest(c);
     fetched++;
     // Price what the child actually wrote to the shared ledger.
-    const cost = spend.spendForFetch(spend.loadTaggedLedgerRows(ledgerPath()), c.id, startIso);
-    spend.appendRollupFetch(process.env.EVIDENCE_CATCHUP_ROLLUP_PATH || spend.ROLLUP_PATH, {
-      ts: startIso, month: spend.monthKey(Date.parse(startIso)), showId: c.id, url: c.url,
-      usd: Number(cost.usd.toFixed(6)), rows: cost.rows, estimated: cost.estimated, exit,
-    });
-    console.log(`    spent $${cost.usd.toFixed(4)} (${cost.estimated ? 'estimated, no ledger rows' : `${cost.rows} ledger rows`})`);
+    const cost = spend.spendForFetch(spend.loadTaggedLedgerRows(ledgerPath()), c.id, new Date(startMs).toISOString());
+    const downstreamUsd = exit === 0 && !spend.isCollectComplete(findReviewFile(c.id, c.url)) ? spend.downstreamAllowanceUsd() : 0;
+    spend.settleFetch(rollupPath(), id, { ...cost, exit, nowMs: Date.now(), downstreamUsd });
+    console.log(`    exit ${exit}; spent $${cost.usd.toFixed(4)} (${cost.estimated ? 'estimated, no ledger rows' : `${cost.rows} ledger rows`})${downstreamUsd ? `; held $${downstreamUsd.toFixed(4)} for collect-review-texts retries of an incomplete text` : ''}`);
   }
   if (dryRun) {
     console.log(`Projected for this batch: $${(simulatedMtd - first.mtdUsd).toFixed(4)}; month after: $${simulatedMtd.toFixed(4)} of $${cap}`);

@@ -85,6 +85,10 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "feat: Evidence review catch-up (BRO-4290)"
 
+      # The rollup holds this month's reservations. A lost push would let spend
+      # go unrecorded, so a failure here fails the job loudly; the next run
+      # also refuses to fetch while the ledger shows tagged spend the rollup
+      # lacks (assertRollupCoversLedger).
       - name: Commit spend rollup
         if: always() && github.event.inputs.dry_run != 'true'
         run: |
@@ -97,7 +101,7 @@ jobs:
             git commit -m "audit: evidence review catch-up spend [skip ci]
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh || { echo "::error::Evidence catch-up spend rollup was NOT pushed; reservations are lost from main and the next run will refuse to fetch until data/audit/evidence-catchup-spend.json is restored"; exit 1; }
           fi
 
       - name: Commit scraper-spend ledger

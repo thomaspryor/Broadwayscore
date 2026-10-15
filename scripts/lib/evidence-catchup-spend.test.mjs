@@ -17,7 +17,7 @@ const CAP = spend.EVIDENCE_CATCHUP_MONTHLY_CAP_USD;
 const OCT = Date.parse('2026-10-15T12:00:00Z');
 const NOV = Date.parse('2026-11-01T00:05:00Z');
 const rollupOf = (fetches) => ({ version: 1, fetches });
-const fetchRow = (showId, usd, month = '2026-10') => ({ showId, usd, month, ts: `${month}-02T00:00:00Z` });
+const fetchRow = (showId, usd, month = '2026-10') => ({ showId, usd, month, ts: `${month}-02T00:00:00Z`, status: 'done' });
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'evidence-catchup-'));
 
 test('the cap is the owner-approved $20 and the tag is distinct', () => {

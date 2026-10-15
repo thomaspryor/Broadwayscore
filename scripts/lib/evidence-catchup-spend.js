@@ -18,8 +18,23 @@
  *     fetch to ROLLUP_PATH with the dollars it priced from the tagged rows.
  *   - Month to date = the larger of the two sums for the current UTC month.
  *
- * Fails CLOSED: a missing or unreadable rollup or ledger throws, and the
- * runner makes no fetch. Credits become dollars only through
+ * Reserve, then true up: before each fetch the runner writes a 'reserved'
+ * row charged at the worst case (projectedReservationUsd), then settles it to
+ * the priced actual. A crash, cancel or lost push between the two leaves the
+ * reservation standing, so the next run neither re-spends the money nor
+ * re-fetches the show (any row for a show blocks it, see blockedShowIds).
+ *
+ * Downstream retries: a failed fetch writes NO retryable stub (the runner
+ * does not pass --stub-on-failure), so collect-review-texts.yml never sees
+ * it; the show is marked 'failed' and may be retried by this capped runner
+ * after FAILED_RETRY_DAYS, at most MAX_SEED_ATTEMPTS times. A successful
+ * ingest whose file is not contentTier 'complete' can still be refetched by
+ * collect-review-texts.js, whose spend carries no show id, so it is charged
+ * here up front as downstreamAllowanceUsd() and kept on settle.
+ *
+ * Fails CLOSED: a missing or unreadable rollup or ledger throws, and so does
+ * a tagged ledger row no rollup row accounts for (a rollup commit that was
+ * lost after the spend was pushed); the runner then makes no fetch. Credits become dollars only through
  * provider-pricing.js (scripts/config/provider-pricing.json), never a literal
  * here.
  */
@@ -53,6 +68,14 @@ const PROJECTED_BD_REQUESTS = 2;
 // still bill MAX_ATTEMPTS (2) x its tier on a transient retry.
 const SD_MAX_ATTEMPTS = 2;
 
+const STATUS = Object.freeze({ RESERVED: 'reserved', DONE: 'done', FAILED: 'failed' });
+const FAILED_RETRY_DAYS = 30;
+const MAX_SEED_ATTEMPTS = 2;
+// collect-review-texts.js may refetch an incomplete review: a first attempt
+// plus up to 5 retries (largest value in MAX_RETRIES_FETCH_LENIENT,
+// scripts/lib/review-guards.js; a test pins that this still holds).
+const DOWNSTREAM_COLLECT_FETCHES = 6;
+
 function monthKey(ms) {
   return new Date(ms).toISOString().slice(0, 7);
 }
@@ -67,6 +90,28 @@ function projectedFetchUsd(pricing = loadProviderPricing()) {
   return usdFor('scrapingdog', sdCredits, pricing)
     + usdFor('scrapingbee', sbCredits, pricing)
     + usdFor('brightdata', PROJECTED_BD_REQUESTS, pricing);
+}
+
+/**
+ * Worst case of one collect-review-texts.js fetch: its chain can add a
+ * Browserbase session (priced as a full browser-hour, see priceLedgerRow)
+ * and a ScrapingBee stealth_proxy call on top of the fetchPage tiers.
+ */
+function projectedCollectFetchUsd(pricing = loadProviderPricing()) {
+  return BB_OVERAGE_PER_BROWSER_HOUR_USD
+    + usdFor('scrapingbee', creditsFor('sb', 'stealth_proxy'), pricing)
+    + usdFor('scrapingdog', creditsFor('sd', 'stealth') * SD_MAX_ATTEMPTS, pricing)
+    + usdFor('brightdata', PROJECTED_BD_REQUESTS, pricing);
+}
+
+/** Charge for the collect-review-texts retries an incomplete ingest can cause. */
+function downstreamAllowanceUsd(pricing = loadProviderPricing()) {
+  return DOWNSTREAM_COLLECT_FETCHES * projectedCollectFetchUsd(pricing);
+}
+
+/** What a reservation holds: the fetch plus its possible downstream retries. */
+function projectedReservationUsd(pricing = loadProviderPricing()) {
+  return projectedFetchUsd(pricing) + downstreamAllowanceUsd(pricing);
 }
 
 /**
@@ -110,8 +155,10 @@ function assertRollup(rollup) {
   if (!rollup || typeof rollup !== 'object' || rollup.version !== 1 || !Array.isArray(rollup.fetches)) {
     throw new Error('evidence-catchup-spend: rollup is not {version:1, fetches:[]}');
   }
+  const statuses = new Set(Object.values(STATUS));
   for (const f of rollup.fetches) {
-    if (!f || typeof f.showId !== 'string' || typeof f.month !== 'string' || !Number.isFinite(f.usd) || f.usd < 0) {
+    if (!f || typeof f.showId !== 'string' || typeof f.month !== 'string' || typeof f.ts !== 'string'
+      || !Number.isFinite(f.usd) || f.usd < 0 || !statuses.has(f.status)) {
       throw new Error('evidence-catchup-spend: rollup has a malformed fetch row');
     }
   }
@@ -144,6 +191,45 @@ function monthToDateUsd(rollup, ledgerRows, now, pricing = loadProviderPricing()
 }
 
 /**
+ * Throws unless every tagged ledger row is accounted for by a rollup row for
+ * the same show written at or before it (the reservation precedes the fetch).
+ * A miss means spend happened whose rollup record never landed.
+ */
+function assertRollupCoversLedger(rollup, ledgerRows) {
+  const firstTs = new Map();
+  for (const f of assertRollup(rollup).fetches) {
+    if (!firstTs.has(f.showId) || f.ts < firstTs.get(f.showId)) firstTs.set(f.showId, f.ts);
+  }
+  for (const r of ledgerRows || []) {
+    const start = firstTs.get(r.showId);
+    if (!r.showId || !start || typeof r.ts !== 'string' || r.ts < start) {
+      throw new Error(`evidence-catchup-spend: ledger has ${EVIDENCE_CATCHUP_PURPOSE} spend for ${r.showId || 'an unknown show'} at ${r.ts} that the rollup does not record (lost rollup commit?)`);
+    }
+  }
+}
+
+/**
+ * Show ids the runner must not fetch now: any reserved or done row, a show
+ * at MAX_SEED_ATTEMPTS, or one whose latest failure is inside its not-before.
+ */
+function blockedShowIds(rollup, nowMs) {
+  const byShow = new Map();
+  for (const f of assertRollup(rollup).fetches) {
+    if (!byShow.has(f.showId)) byShow.set(f.showId, []);
+    byShow.get(f.showId).push(f);
+  }
+  const blocked = new Set();
+  for (const [showId, rows] of byShow) {
+    const latest = rows.reduce((a, b) => (b.ts > a.ts ? b : a));
+    const notBefore = Date.parse(latest.notBefore || '');
+    if (rows.some((f) => f.status !== STATUS.FAILED)
+      || rows.length >= MAX_SEED_ATTEMPTS
+      || !Number.isFinite(notBefore) || notBefore > nowMs) blocked.add(showId);
+  }
+  return blocked;
+}
+
+/**
  * Proceed only if month-to-date plus the next fetch's worst case stays at or
  * under the cap. Non-finite inputs stop (NaN comparisons are always false).
  */
@@ -160,6 +246,18 @@ function decideFetch({ mtdUsd, projectedUsd, capUsd = EVIDENCE_CATCHUP_MONTHLY_C
   return { proceed: true, reason: `$${after.toFixed(4)} of $${capUsd} after this fetch` };
 }
 
+/** How many of `count` fetches the cap allows, each charged `projectedUsd`. */
+function allowedFetchCount({ mtdUsd, projectedUsd, capUsd = EVIDENCE_CATCHUP_MONTHLY_CAP_USD, count }) {
+  let n = 0;
+  while (n < count && decideFetch({ mtdUsd: mtdUsd + n * projectedUsd, projectedUsd, capUsd }).proceed) n++;
+  return n;
+}
+
+/** True when collect-review-texts.js would treat the written review as done. */
+function isCollectComplete(review) {
+  return !!review && (review.contentTier === 'complete' || review.textQuality === 'full');
+}
+
 /**
  * Dollars the child spent: tagged rows for showId written since startIso.
  * Returns {usd, rows, estimated}: with no rows found it charges the
@@ -171,13 +269,51 @@ function spendForFetch(ledgerRows, showId, startIso, pricing = loadProviderPrici
   return { usd: mine.reduce((s, r) => s + priceLedgerRow(r, pricing), 0), rows: mine.length, estimated: false };
 }
 
-/** Append one fetch to the rollup under a lock (re-read fresh, then write). */
-function appendRollupFetch(filePath, fetchRow) {
+/** Read-modify-write the rollup under a lock (re-read fresh, then write). */
+function updateRollup(filePath, mutate) {
+  let result;
   withFileLock(`${filePath}.lock`, (held) => {
     if (!held) console.error(`::warning::evidence-catchup-spend lock not acquired for ${filePath}; writing unprotected.`);
     const current = loadRollup(filePath);
-    current.fetches.push(fetchRow);
+    result = mutate(current);
     writeJsonAtomic(filePath, assertRollup(current));
+  });
+  return result;
+}
+
+/** Append one row as-is (tests and backfills). */
+function appendRollupFetch(filePath, fetchRow) {
+  updateRollup(filePath, (r) => { r.fetches.push(fetchRow); });
+}
+
+/** Write the worst-case reservation BEFORE fetching. Returns the row id. */
+function reserveFetch(filePath, { showId, url, nowMs, usd }) {
+  const ts = new Date(nowMs).toISOString();
+  const id = `${showId}@${ts}`;
+  updateRollup(filePath, (r) => {
+    r.fetches.push({ id, ts, month: monthKey(nowMs), showId, url, usd: Number(usd.toFixed(6)), status: STATUS.RESERVED });
+  });
+  return id;
+}
+
+/**
+ * True a reservation up to what was spent. exit 0 = done; anything else is
+ * failed with a not-before FAILED_RETRY_DAYS out. usd stays in the
+ * reservation's month (spend is charged where it was reserved).
+ */
+function settleFetch(filePath, id, { usd, rows, estimated, exit, nowMs, downstreamUsd = 0 }) {
+  updateRollup(filePath, (r) => {
+    const row = r.fetches.find((f) => f.id === id);
+    if (!row) throw new Error(`evidence-catchup-spend: no reservation ${id} to settle`);
+    Object.assign(row, {
+      usd: Number((usd + downstreamUsd).toFixed(6)),
+      fetchUsd: Number(usd.toFixed(6)),
+      downstreamUsd: Number(downstreamUsd.toFixed(6)),
+      rows, estimated, exit,
+      settledAt: new Date(nowMs).toISOString(),
+      status: exit === 0 ? STATUS.DONE : STATUS.FAILED,
+      ...(exit === 0 ? {} : { notBefore: new Date(nowMs + FAILED_RETRY_DAYS * 86400000).toISOString() }),
+    });
   });
 }
 
@@ -187,8 +323,21 @@ module.exports = {
   ROLLUP_PATH,
   CHILD_SB_CREDIT_BUDGET,
   CHILD_SD_CREDIT_BUDGET,
+  STATUS,
+  FAILED_RETRY_DAYS,
+  MAX_SEED_ATTEMPTS,
+  DOWNSTREAM_COLLECT_FETCHES,
   monthKey,
   projectedFetchUsd,
+  projectedCollectFetchUsd,
+  downstreamAllowanceUsd,
+  projectedReservationUsd,
+  assertRollupCoversLedger,
+  blockedShowIds,
+  allowedFetchCount,
+  isCollectComplete,
+  reserveFetch,
+  settleFetch,
   priceLedgerRow,
   parseTaggedLedgerRows,
   assertRollup,
