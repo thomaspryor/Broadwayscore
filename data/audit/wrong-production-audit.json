@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-15T23:22:03.974Z",
+  "timestamp": "2026-10-15T23:34:27.692Z",
   "stats": {
     "totalReviews": 56822,
-    "alreadyFlagged": 21112,
+    "alreadyFlagged": 21106,
     "dateGuardCatches": 194,
-    "directorMismatch": 1902,
+    "directorMismatch": 1903,
     "tvFilmSignals": 1583,
     "londonSignals": 2363,
     "offBroadwaySignals": 512,
@@ -26742,6 +26742,20 @@
       "score": 97,
       "publishDate": "2025-02-20",
       "url": "https://www.ft.com/content/9f767a15-8d37-4bc3-bbf3-9417d8e9ad45",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "guardian--arifa-akbar.json",
+      "score": null,
+      "publishDate": "February 20th, 2025",
+      "url": "https://www.theguardian.com/stage/2025/feb/19/much-ado-about-nothing-review-theatre-royal-tom-hiddleston-hayley-atwell",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64240,7 +64254,7 @@
     {
       "showId": "hope-has-a-happy-meal-west-end-2023",
       "file": "broadwayworld--alexander-cohen.json",
-      "score": 64,
+      "score": 63,
       "publishDate": "2023-06-12",
       "url": "https://www.broadwayworld.com/westend/article/Review-HOPE-HAS-A-HAPPY-MEAL-Royal-Court-20230612",
       "findings": [
@@ -64268,7 +64282,7 @@
     {
       "showId": "hope-has-a-happy-meal-west-end-2023",
       "file": "timeout-london--tom-wicker.json",
-      "score": 63,
+      "score": 61,
       "publishDate": "2023-06-12",
       "url": "https://www.timeout.com/london/theatre/hope-has-a-happy-meal-review",
       "findings": [
@@ -73732,7 +73746,7 @@
     {
       "showId": "retrograde-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2025-03-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/retrograde-review",
       "findings": [
