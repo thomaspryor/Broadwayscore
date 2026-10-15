@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5373-v",
   "planId": "8774f0a3-07e0-4036-8985-619d0bd25ff8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-15T02:40:42.000Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,18 @@
         "description": "BRO-5373: restore the full 4,222-char review under the 2020 show, from the commit before its 2026-10-10 ownership-gate drop. Same push as the delete above, so no other copy owns the url."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T03:06:45.026Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted leopoldstadt-west-end-2021/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json@a9491571ca7c04067228dd11129ca0efe6b0135c -> leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json"
+    }
+  ]
 }
