@@ -6,6 +6,7 @@ import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import {
   getRecoupmentDisplayMode,
+  getReportedReturnLine,
   getModelHoldLabel,
   meetsModelQualityFloor,
   getBreakEven,
@@ -151,6 +152,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const displayMode = getRecoupmentDisplayMode({ ...commercial, status: showStatus });
   // A model the display guard held back says why instead of vanishing (BRO-4989).
   const holdLabel = displayMode === 'none' ? getModelHoldLabel({ ...commercial, status: showStatus }) : null;
+  const reportedReturnLine = getReportedReturnLine({ ...commercial, status: showStatus });
   const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial) : null;
 
   // Source lines print only publishable text: records can carry internal
@@ -253,6 +255,11 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {lossCaveat && (
             <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]" data-testid="loss-basis-caveat">
               {lossCaveat}
+            </p>
+          )}
+          {reportedReturnLine && (
+            <p className="text-[13px] text-gray-300 mt-1.5 leading-[1.4]" data-testid="reported-return">
+              {reportedReturnLine}
             </p>
           )}
           {producerLine && !isNonprofit && (

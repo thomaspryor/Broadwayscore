@@ -417,3 +417,22 @@ test('BRO-4721: a Nonprofit production never shows a modeled % recouped (no inve
   // A recoupment record still wins for any designation.
   assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'Nonprofit', recouped: true }), 'announced');
 });
+
+// BRO-5313: cited "% returned to investors" line on closed shows
+{
+  const { getReportedReturnLine } = await import('../../src/lib/commercial-display.ts');
+  const rr = { lo: 55, hi: 60, outlet: 'Broadway Journal', asOf: 'Oct 2026' };
+  test('BRO-5313: closed final show prints the cited return line', () => {
+    assert.equal(
+      getReportedReturnLine({ designation: 'Fizzle', recouped: false, status: 'closed', reportedReturn: rr }),
+      'Investors got back about 55-60% (Broadway Journal, Oct 2026)'
+    );
+  });
+  test('BRO-5313: no line without a reported figure, on running, TBD, recouped or nonprofit shows', () => {
+    assert.equal(getReportedReturnLine({ designation: 'Fizzle', recouped: false, status: 'closed' }), null);
+    assert.equal(getReportedReturnLine({ designation: 'Fizzle', recouped: false, status: 'open', reportedReturn: rr }), null);
+    assert.equal(getReportedReturnLine({ designation: 'TBD', recouped: false, status: 'closed', reportedReturn: rr }), null);
+    assert.equal(getReportedReturnLine({ designation: 'Windfall', recouped: true, status: 'closed', reportedReturn: rr }), null);
+    assert.equal(getReportedReturnLine({ designation: 'Nonprofit', recouped: null, status: 'closed', reportedReturn: rr }), null);
+  });
+}

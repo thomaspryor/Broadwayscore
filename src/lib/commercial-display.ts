@@ -18,6 +18,7 @@
 
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION } from '@/config/commercial';
+import { reportedReturnLabel } from '../../scripts/lib/reported-return';
 import { modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
@@ -174,6 +175,18 @@ export function getModelHoldLabel(
   return 'Estimate unavailable';
 }
 
+/**
+ * BRO-5313: "Investors got back about 55-60% (Broadway Journal, Oct 2026)" for a
+ * closed show with a final designation, only when the loader found a trade-stated
+ * figure (reportedReturn). Null otherwise; never built from the model or an inference.
+ */
+export function getReportedReturnLine(
+  commercial: Pick<ShowCommercial, 'reportedReturn' | 'designation' | 'recouped'> & Pick<RecoupmentSignals, 'status'>
+): string | null {
+  if (!isFinalClosedOutcome(commercial) || commercial.recouped === true || commercial.designation === 'Nonprofit') return null;
+  return reportedReturnLabel(commercial.reportedReturn ?? null);
+}
+
 /** The model range when getRecoupmentDisplayMode would render it, else null. */
 export function getDisplayableModelRange(
   commercial: RecoupmentSignals
@@ -306,6 +319,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
     modelMethod: commercial.modelMethod,
+    ...(commercial.reportedReturn ? { reportedReturn: commercial.reportedReturn } : {}),
   };
 }
 

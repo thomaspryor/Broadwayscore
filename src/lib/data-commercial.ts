@@ -49,6 +49,7 @@ import {
   getCitedSourceUrl,
   meetsModelQualityFloor,
 } from './commercial-display';
+import { reportedReturn } from '../../scripts/lib/reported-return';
 import {
   computeMarketMedianByWeek,
   computeShowStatus,
@@ -115,7 +116,9 @@ const commercial: CommercialFile = (() => {
   const now = new Date();
   const shows: Record<string, ShowCommercial> = {};
   for (const [slug, data] of Object.entries(file.shows)) {
-    shows[slug] = applyModelDisplayGuard(data, showBySlug.get(slug), now);
+    const guarded = applyModelDisplayGuard(data, showBySlug.get(slug), now);
+    const rr = reportedReturn(data, showBySlug.get(slug));
+    shows[slug] = rr ? { ...guarded, reportedReturn: rr } : guarded;
   }
   return { ...file, shows };
 })();

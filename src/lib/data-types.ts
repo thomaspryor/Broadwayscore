@@ -504,6 +504,8 @@ export interface ShowCommercial {
   modelCreditBasis?: 'pre-credit' | 'post-credit' | null;
   /** The model central is below 0 (lost money running so far): shown as 0% with "losing money so far". */
   modelBelowCosts?: boolean;
+  /** BRO-5313: a closed show's trade-reported % returned to investors (scripts/lib/reported-return.js); null/absent unless a named outlet states the figure. */
+  reportedReturn?: { lo: number; hi: number; outlet: string; asOf: string | null } | null;
   /** Server-only: the range the display guard hid, for the At Risk rule. toPublicShowCommercial drops it. */
   modelHeldRange?: [number, number, number] | null;
   modelRecouped?: boolean | null;
