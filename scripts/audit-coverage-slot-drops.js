@@ -19,34 +19,55 @@ function hasText(d) {
   return typeof d.fullText === 'string' && d.fullText.trim().length > 0;
 }
 
-function classifyFile(d, { showDir, filename }) {
+const isHttp = (u) => typeof u === 'string' && /^https?:\/\//i.test(u);
+
+// dupKeys: Set of sameUrlKey values held by 2+ files in the show folder. Lets the
+// per-file guard (which re-reads the whole folder) run only where a collision exists.
+function classifyFile(d, { showDir, filename, dupKeys, siblingReviewUrls = [] }) {
   const classes = [];
   if (!d || typeof d !== 'object') return classes;
-  if (d._locked === true || d.urlManualOverride === true) return classes;
-  if (d.url && hasText(d) && guards.isAggregatorPageUrl(d.url)) classes.push('aggregator-url');
-  if (d.url && !d.duplicateOf
+  if (d._locked === true || d.urlManualOverride === true || d.duplicateOf) return classes;
+  if (!isHttp(d.url)) return classes;
+  const flagged = d.wrongProduction === true || d.wrongShow === true || d.isNonReview === true;
+  const { sameUrlKey } = require('./lib/review-url-collision');
+  // Flagged files are excluded here: a flag on an aggregator url is the correct state.
+  if (!flagged && hasText(d) && guards.isAggregatorPageUrl(d.url)) classes.push('aggregator-url');
+  if ((!dupKeys || dupKeys.has(sameUrlKey(d.url)))
     && guards.urlOwnedByOtherCritic({ showDir, url: d.url, selfFilename: filename, selfCriticName: d.criticName })) {
     classes.push('other-critic-url');
   }
   if (guards.isDatelessRevivalHold(d)) classes.push('dateless-hold');
-  const flagged = d.wrongProduction === true || d.wrongShow === true || d.isNonReview === true;
-  if (flagged && !d.duplicateOf && d.url && !guards.isDatelessRevivalHold(d)) {
-    const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
-    if (classifyReviewUrl(d.url).ok === false) classes.push('flagged-non-review');
-  }
+  // A flagged slot only needs repair when a real review url from the same outlet exists to take
+  // it over (isStaleNonReviewSlot): a correctly flagged junk page with no replacement is fine.
+  if (flagged && !guards.isDatelessRevivalHold(d)
+    && siblingReviewUrls.some((u) => guards.isStaleNonReviewSlot(d, u))) classes.push('flagged-non-review');
   return classes;
 }
 
 function auditCorpus(dir) {
   const out = [];
+  const { sameUrlKey } = require('./lib/review-url-collision');
   let shows = [];
-  try { shows = fs.readdirSync(dir).filter((s) => fs.statSync(path.join(dir, s)).isDirectory()); } catch { return out; }
+  try { shows = fs.readdirSync(dir).filter((s) => !s.startsWith('_') && fs.statSync(path.join(dir, s)).isDirectory()); } catch { return out; }
   for (const show of shows.sort()) {
     const showDir = path.join(dir, show);
+    const loaded = [];
     for (const filename of fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json').sort()) {
-      let d;
-      try { d = JSON.parse(fs.readFileSync(path.join(showDir, filename), 'utf8')); } catch { continue; }
-      const classes = classifyFile(d, { showDir, filename });
+      try { loaded.push({ filename, d: JSON.parse(fs.readFileSync(path.join(showDir, filename), 'utf8')) }); } catch { /* unreadable */ }
+    }
+    const counts = new Map();
+    for (const { d } of loaded) {
+      const k = d && isHttp(d.url) ? sameUrlKey(d.url) : null;
+      if (k) counts.set(k, (counts.get(k) || 0) + 1);
+    }
+    const dupKeys = new Set([...counts].filter(([, n]) => n > 1).map(([k]) => k));
+    for (const { filename, d } of loaded) {
+      const outlet = filename.split('--')[0];
+      const siblingReviewUrls = loaded
+        .filter((o) => o.filename !== filename && o.filename.split('--')[0] === outlet && o.d && isHttp(o.d.url)
+          && !o.d.wrongProduction && !o.d.wrongShow && !o.d.isNonReview && !o.d.duplicateOf)
+        .map((o) => o.d.url);
+      const classes = classifyFile(d, { showDir, filename, dupKeys, siblingReviewUrls });
       if (classes.length) out.push({ show, filename, url: d.url || null, classes });
     }
   }
