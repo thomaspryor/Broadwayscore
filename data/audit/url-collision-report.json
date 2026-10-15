@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-10-15T19:27:07.790Z",
+  "generatedAt": "2026-10-15T20:40:56.524Z",
   "summary": {
-    "total": 5,
+    "total": 6,
     "high": 2,
     "medium": 3,
-    "low": 0
+    "low": 1
   },
   "collisions": [
+    {
+      "url": "https://abcnews.go.com/Entertainment/wireStory/review-graceful-american-paris-pizazz-heart-30268868",
+      "normalizedUrl": "https://abcnews.go.com/entertainment/wirestory/review-graceful-american-paris-pizazz-heart-30268868",
+      "candidates": [
+        {
+          "showId": "an-american-in-paris-2015",
+          "file": "ap--jennifer-farrar.json",
+          "publishDate": null,
+          "openingDate": "2015-04-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "ap"
+        },
+        {
+          "showId": "an-american-in-paris-tour-2022",
+          "file": "ap--jennifer-farrar.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "ap"
+        }
+      ],
+      "suggestedWinner": "an-american-in-paris-2015",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
       "normalizedUrl": "https://timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
