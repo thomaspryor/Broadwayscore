@@ -55,7 +55,7 @@ for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env'
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
@@ -526,10 +526,6 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // sit in the demoted-to-context box below — the whole point of this fix
   // is that these signals stop being easy to miss (second-opinion review).
   const freshnessCount = sections.freshness?.count || 0;
-  // Closing soon (task #690): only shows closing within summarizeClosingSoon's
-  // urgentDays (14) escalate the top verdict — same "count is the escalation
-  // signal, items/moreCount hold everything else" contract as freshnessCount.
-  const closingSoonCount = sections.closingSoon?.count || 0;
   // Digest v3 summary: everything auto-fixable is BEING fixed — say that,
   // never point at sections that no longer exist (Closing soon / Data
   // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
@@ -538,7 +534,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // snapshot, or the Mac-only stuck signals CI cannot see).
   const rollupExtra = require('./lib/digest-autofix.js')
     .localRollupIssues({ health: sections.health, freshnessCount, stuckCount }).length;
-  const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + rollupExtra); // closingSoon intentionally absent — lives in the opening digest
+  const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + rollupExtra);
   const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
   // Task #1220/BRO-230: this line used to claim "being fixed"/"queued for
   // automated fix sessions" no matter what — including the 13 straight
@@ -626,10 +622,6 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // missing tickets on open shows) that used to be computed daily and thrown
   // away. Same {generatedAt, bannerText, items, moreCount} shape as
   // backlogDrain/providerSpend below, so it reuses renderNamedDigestBlock.
-  // Closing soon (task #690) — report.closingSoon is a sibling field of the
-  // same freshness-report.json, same {generatedAt, bannerText, items,
-  // moreCount} shape, so it reuses renderNamedDigestBlock with no new
-  // render code.
   // Backlog drain metric (task #654) — scripts/backlog-drain.js writes
   // {generatedAt, bannerText, items, moreCount}, the same shape every other
   // named digest uses, so it reuses renderNamedDigestBlock with no new
@@ -933,17 +925,6 @@ async function main() {
         sections.freshness = summarizeFreshnessHighSeverity(r.snapshot);
       } else {
         problems.push({ key: 'freshness', label: 'data freshness', status: 'invalid', generatedAt: r.generatedAt });
-      }
-      // Closing soon (task #690) — closingSoon is an independent sibling
-      // field of the same report, checked separately so a malformed
-      // dataQuality shape doesn't also suppress this section (and vice
-      // versa). Deliberately does NOT push a second 'freshness'-labeled
-      // problem for stale/missing reports — the outer else below already
-      // covers that single root cause once.
-      if (Array.isArray(r.snapshot?.closingSoon)) {
-        sections.closingSoon = summarizeClosingSoon(r.snapshot);
-      } else {
-        problems.push({ key: 'closingSoon', label: 'closing soon', status: 'invalid', generatedAt: r.generatedAt });
       }
     } else {
       problems.push({ key: 'freshness', label: 'data freshness', status: r.status, generatedAt: r.generatedAt });

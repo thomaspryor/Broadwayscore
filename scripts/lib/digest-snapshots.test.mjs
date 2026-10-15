@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { readSnapshot, readAllSnapshots, describeProblems, SNAPSHOTS, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } from './digest-snapshots.js';
+import { readSnapshot, readAllSnapshots, describeProblems, SNAPSHOTS, readFreshnessReport, summarizeFreshnessHighSeverity, readSyncRefused } from './digest-snapshots.js';
 import { classifySubject } from './scheduled-email-count-rules.js';
 import digestSender from '../send-morning-digest.js';
 
@@ -552,87 +552,6 @@ test('acceptance: a blanked-tickets open show summary still names its show ID (s
   // buildHtml folds the count into the aggregate line, no per-show detail.
   const html = buildHtml({ sections: { freshness: summary }, now: new Date('2026-07-30T12:00:00Z') });
   assert.match(html, /1 issue detected/);
-});
-
-test('summarizeClosingSoon: names show IDs/titles, sorted by daysLeft, urgentCount only counts <=14 days', () => {
-  const report = {
-    generatedAt: '2026-07-30T06:54:26.128Z',
-    closingSoon: [
-      { id: 'far-off-2026', title: 'Far Off Show', closingDate: '2026-09-20', daysLeft: 52 },
-      { id: 'soon-2026', title: 'Soon Show', closingDate: '2026-08-05', daysLeft: 6 },
-    ],
-  };
-  const summary = summarizeClosingSoon(report);
-  assert.ok(summary);
-  assert.equal(summary.count, 1);
-  assert.equal(summary.bannerText, '2 open shows closing within 60 days (1 within 14 days)');
-  // sorted by daysLeft ascending regardless of source order
-  assert.equal(summary.items[0].title, 'Soon Show');
-  assert.match(summary.items[0].detail, /soon-2026/);
-  assert.match(summary.items[0].detail, /2026-08-05/);
-  assert.match(summary.items[1].title, /Far Off Show/);
-});
-
-// same fail-soft contract as summarizeFreshnessHighSeverity: malformed
-// entries must be skipped, never render as "undefined", never throw.
-test('summarizeClosingSoon: malformed/expired entries skipped, no throw, no "undefined" leak', () => {
-  const report = {
-    generatedAt: '2026-07-30T06:54:26.128Z',
-    closingSoon: [
-      null,
-      { title: 'No ID', daysLeft: 5 },
-      { id: 'no-days', title: 'No Days Left' },
-      { id: 'expired-2026', title: 'Already Closed', daysLeft: 0 },
-      { id: 'no-closing-date-2026', title: 'No Closing Date', daysLeft: 5 },
-      { id: 'good-2026', title: 'Good Show', closingDate: '2026-08-10', daysLeft: 11 },
-    ],
-  };
-  assert.doesNotThrow(() => summarizeClosingSoon(report));
-  const summary = summarizeClosingSoon(report);
-  assert.equal(summary.items.length, 1);
-  assert.match(summary.items[0].detail, /good-2026/);
-  assert.doesNotMatch(JSON.stringify(summary), /undefined/);
-});
-
-test('summarizeClosingSoon: quiet day -> null', () => {
-  assert.equal(summarizeClosingSoon({ generatedAt: '2026-07-30T06:54:26.128Z', closingSoon: [] }), null);
-  assert.equal(summarizeClosingSoon(null), null);
-  assert.equal(summarizeClosingSoon({}), null);
-});
-
-test('summarizeClosingSoon: maxItems truncation keeps the soonest-closing rows, moreCount reflects the rest', () => {
-  const report = {
-    generatedAt: '2026-07-30T06:54:26.128Z',
-    closingSoon: [
-      { id: 'a-2026', title: 'A', closingDate: '2026-08-01', daysLeft: 2 },
-      { id: 'b-2026', title: 'B', closingDate: '2026-08-20', daysLeft: 21 },
-      { id: 'c-2026', title: 'C', closingDate: '2026-08-10', daysLeft: 11 },
-    ],
-  };
-  const summary = summarizeClosingSoon(report, { maxItems: 2 });
-  assert.equal(summary.moreCount, 1);
-  assert.match(summary.items[0].detail, /a-2026/);
-  assert.match(summary.items[1].detail, /c-2026/);
-});
-
-// Task #690's original acceptance criterion (closing-soon shows render in the
-// morning digest by show ID) was retired 2026-07-30 when card #633 moved
-// closing-soon OUT of this email into a standalone send-opening-digest.js —
-// but that file was verified NOT to reference closingSoon at all (grepped
-// 2026-08-02), so closingSoon currently has ZERO consumers anywhere in the
-// codebase (a silent regression of #690, pre-existing, not introduced by this
-// diff). This test only pins down the CURRENT state: sections.closingSoon is
-// a no-op in buildHtml (closingSoonCount is computed but deliberately
-// unused). Tracked as a follow-up card, not fixed here.
-test('buildHtml: closingSoon section is a no-op here (closingSoon currently has no consumer anywhere — pre-existing gap, tracked separately)', () => {
-  const report = {
-    generatedAt: '2026-07-30T06:54:26.128Z',
-    closingSoon: [{ id: 'les-mis-arena-concert-2026', title: 'Les Mis Arena Concert Spectacular', closingDate: '2026-08-02', daysLeft: 3 }],
-  };
-  const summary = summarizeClosingSoon(report);
-  const withClosingSoon = buildHtml({ sections: { closingSoon: summary }, now: new Date('2026-07-30T12:00:00Z') });
-  const withoutClosingSoon = buildHtml({ sections: {}, now: new Date('2026-07-30T12:00:00Z') });
-  assert.equal(withClosingSoon, withoutClosingSoon);
 });
 
 test('buildHtml: warnings-only day reads calm ("Nothing needs your attention"), issue counter still reflects the warning (Digest v3)', () => {
