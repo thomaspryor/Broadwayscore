@@ -553,7 +553,7 @@ async function pickedCardNowUnfit(id, card, comments, tier) {
   let times = null;
   try { times = (await linear.graphql('query($id: String!) { issue(id: $id) { updatedAt createdAt } }', { id })).issue; } catch { return 'updatedAt unreadable'; }
   const nowMs = Date.now();
-  return P.skipReason({ ...card, ...times }, nowMs, { tier: PICK_TIER[tier] || 'p0p1', codex: true }) || P.pausedHistorySkipReason(comments, nowMs, { priority: card.priority, pausedBacklog: P.isPausedBacklog(card) });
+  return P.skipReason({ ...card, ...times }, nowMs, { tier: PICK_TIER[tier] || 'p0p1', codex: true }) || P.historySkipReason(card, comments, nowMs);
 }
 
 async function workCard(pick, stats, inFlight) {

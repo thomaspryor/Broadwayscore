@@ -326,17 +326,32 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
 }
 
 /**
+ * The pause-history verdict both lanes apply before taking a card (firstUnpaused, the Codex
+ * runner's claim-time re-check, leaveCodexCards): one call so the rule can't drift between them
+ * (BRO-5407). `nodes` are the card's comments. -> reason string or null
+ */
+function historySkipReason(issue, nodes, nowMs) {
+  return pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue) });
+}
+
+/**
  * Codex first (BRO-5384): the Claude worker's queue while a Codex runner is live. The cards Codex
  * would take (codex-runner.js leaveToCodex) are left to it, but only as many as one Codex firing
  * works (`cap`, board-workers --limit), in Codex's own order (tier, START-NOW, fit score), so a
  * backlog past Codex's capacity, or a runner that died holding its lock, never parks the rest.
- * Resume entries always stay. -> { queue, left: [identifier] }
+ * Resume entries always stay, and so do cards Codex would skip for their pause history
+ * (historySkipReason) or whose comments were not read: leaving those spent the cap on cards
+ * neither lane takes and kept Codex's real picks in the Claude queue (BRO-5407).
+ * -> { queue, left: [identifier] }
  */
 function leaveCodexCards(queue, { nowMs, verifyOf = () => '', cap = 9 } = {}) {
   const { leaveToCodex, codexCardFit } = require('./codex-runner.js');
   const tierRank = new Map();
   for (const q of queue) if (!tierRank.has(q.tier)) tierRank.set(q.tier, tierRank.size);
-  const fit = queue.filter((q) => !q.resume && leaveToCodex(q.issue, { nowMs, verify: verifyOf(q.issue), startNow: isStartNow(q.issue, nowMs) }))
+  const fit = queue.filter((q) => !q.resume
+    && q.issue.comments && Array.isArray(q.issue.comments.nodes)
+    && !historySkipReason(q.issue, q.issue.comments.nodes, nowMs)
+    && leaveToCodex(q.issue, { nowMs, verify: verifyOf(q.issue), startNow: isStartNow(q.issue, nowMs) }))
     .map((q) => ({ q, score: codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyOf(q.issue), comments: (q.issue.comments && q.issue.comments.nodes) || [], nowMs }).score }))
     .sort((a, b) => tierRank.get(a.q.tier) - tierRank.get(b.q.tier) || b.score - a.score);
   const leave = new Set(fit.slice(0, Math.max(0, cap)).map((x) => x.q));
@@ -674,7 +689,7 @@ function findResumeCard(issues, landRefs, opts) {
 module.exports = {
   leaveCodexCards,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
-  AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard,
 };

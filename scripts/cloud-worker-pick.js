@@ -115,7 +115,7 @@ const MAX_HISTORY_CHECKS = 15;
  */
 async function firstUnpaused(queue, nowMs, historySkipped) {
   const { getIssue } = require('./lib/linear-client.js');
-  const { pausedHistorySkipReason, mayTakeUnchecked, isPausedBacklog } = require('./lib/cloud-worker-pick.js');
+  const { historySkipReason, mayTakeUnchecked, isPausedBacklog } = require('./lib/cloud-worker-pick.js');
   let fetches = 0;
   for (let i = 0; i < queue.length; i++) {
     // main() already read comments for every candidate (needsComments); fetch only when it could not.
@@ -131,7 +131,7 @@ async function firstUnpaused(queue, nowMs, historySkipped) {
       const nodes = pre || (full && full.comments ? full.comments.nodes : []);
       // Both reads cap at 50 comments; past that the latest report may be cut off.
       if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
-      reason = pausedHistorySkipReason(nodes, nowMs, { priority: queue[i].issue.priority, pausedBacklog: isPausedBacklog(queue[i].issue) });
+      reason = historySkipReason(queue[i].issue, nodes, nowMs);
     } catch (err) {
       console.error(`[cloud-worker-pick] history check skipped for ${queue[i].issue.identifier}: ${err && err.message ? err.message.split('\n')[0] : err}`);
       if (isPausedBacklog(queue[i].issue)) reason = 'history-unreadable';

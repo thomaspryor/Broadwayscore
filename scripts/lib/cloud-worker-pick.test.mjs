@@ -886,3 +886,27 @@ test('leaveCodexCards: the Claude queue leaves one Codex firing of fit cards to 
   assert.deepEqual(leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 0 }).left, []);
   assert.equal(leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 9 }).left.length, 4, 'BRO-1, 5, 6, 7');
 });
+
+test('leaveCodexCards never leaves a card Codex would skip for its pause history or unread comments; the cap backfills (BRO-5407)', () => {
+  const { leaveCodexCards, historySkipReason } = require('./cloud-worker-pick.js');
+  const card = (n, over = {}) => issue({ identifier: `BRO-${n}`, title: `Parser drops field ${n}`, description: BODY, ...over });
+  const q = (iss, nodes = []) => ({ issue: { comments: { nodes }, ...iss }, tier: 'p0p1' });
+  const verifyOf = () => 'node --test scripts/lib/example.test.mjs';
+  const pausedAgo = (ms) => [report('paused', 'Stopped half way.', ms)];
+  const H = 3_600_000;
+  // BRO-1: P1 (priority 2) paused 1h ago, inside the urgent cooldown: Codex skips it, so it stays.
+  // BRO-2: P1 paused 30h ago, past RECENT_PAUSE_URGENT_MS: takeable, so it can be left.
+  // BRO-3: P2 (priority 3) paused 30h ago, inside RECENT_PAUSE_MS: stays.
+  // BRO-4: comments never read: stays with Claude (Codex would fetch them itself).
+  const queue = [
+    q(card(1), pausedAgo(H)), q(card(2), pausedAgo(30 * H)), q(card(3, { priority: 3 }), pausedAgo(30 * H)),
+    { issue: card(4), tier: 'p0p1' }, q(card(5)), q(card(6)),
+  ];
+  assert.ok(RECENT_PAUSE_URGENT_MS < 30 * H && RECENT_PAUSE_MS > 30 * H, 'fixture assumes 24h urgent / 72h normal cooldowns');
+  assert.equal(historySkipReason(queue[0].issue, queue[0].issue.comments.nodes, NOW), 'recently-paused');
+  assert.equal(historySkipReason(queue[1].issue, queue[1].issue.comments.nodes, NOW), null);
+  const { queue: claude, left } = leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 2 });
+  assert.deepEqual(left, ['BRO-2', 'BRO-5'], 'cap backfills past the history-blocked BRO-1');
+  assert.deepEqual(claude.map((x) => x.issue.identifier), ['BRO-1', 'BRO-3', 'BRO-4', 'BRO-6']);
+  assert.deepEqual(leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 9 }).left, ['BRO-2', 'BRO-5', 'BRO-6']);
+});
