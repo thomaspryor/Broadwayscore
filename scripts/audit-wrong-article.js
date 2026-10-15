@@ -164,6 +164,13 @@ async function main(argv) {
       console.error(`--verify-file: not a current suspect: ${missing.join(', ') || '(no files given)'}`);
       return 2;
     }
+    // Only an LLM 'wrong-article' verdict on the CURRENT text is overridden here;
+    // everything else goes through the adjudication pass or --record-verified.
+    const notConfirmed = wanted.filter((f) => !(adjudicated[f]?.hash === byFile.get(f).hash && adjudicated[f]?.verdict === 'wrong-article'));
+    if (notConfirmed.length) {
+      console.error(`--verify-file: no wrong-article verdict for the current text: ${notConfirmed.join(', ')}`);
+      return 2;
+    }
     const next = { ...verified };
     for (const f of wanted) next[f] = byFile.get(f).hash;
     fs.writeFileSync(VERIFIED_PATH, JSON.stringify(next, null, 2) + '\n');
