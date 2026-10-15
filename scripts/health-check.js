@@ -1440,6 +1440,36 @@ function checkQuality() {
       };
     }),
 
+    // BRO-4359: an opened show with a cached Show Score URL but no Show Score
+    // audience source (School Girls, 2026-09-28: dead cached URL, nothing alerted).
+    runCheck('Quality: Show Score gap', () => {
+      const name = 'Quality: Show Score gap';
+      const files = ['shows.json', 'show-score-urls.json', 'audience-buzz.json'].map((f) => path.join(DATA_DIR, f));
+      if (!files.every((f) => fs.existsSync(f))) {
+        return { name, status: 'pass', message: 'Skipped (shows, show-score-urls or audience-buzz not present)' };
+      }
+      const { findShowScoreGaps } = require('./lib/showscore-gap-detector');
+      let shows, urls, buzz;
+      try {
+        shows = readJSON(files[0])?.shows;
+        urls = readJSON(files[1])?.shows;
+        buzz = readJSON(files[2])?.shows;
+      } catch (parseErr) {
+        return { name, status: 'warn', message: `Could not parse data: ${parseErr.message}`, hint: 'Likely a mid-write file, should clear on the next run' };
+      }
+      const gaps = findShowScoreGaps(shows, urls, buzz);
+      if (gaps.length === 0) {
+        return { name, status: 'pass', message: 'Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score' };
+      }
+      const ids = gaps.slice(0, 5).map((g) => g.id).join(', ');
+      return {
+        name,
+        status: 'warn',
+        message: `${gaps.length} opened show(s) have a cached Show Score URL but no Show Score audience score (${ids}${gaps.length > 5 ? ', ...' : ''})`,
+        hint: 'The cached URL is probably dead or the scrape failed. Re-run update-show-score for the show (the scraper self-heals dead URLs, BRO-4358) and check data/show-score-urls.json.',
+      };
+    }),
+
     // Outlet stub-rate monitor (card #100): when an outlet redesigns its
     // site, its article-extractor.js pattern can silently stop matching —
     // extractArticleTextFromUrl returns 0 chars, the review saves as
