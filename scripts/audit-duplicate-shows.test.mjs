@@ -34,3 +34,23 @@ test('does NOT flag a same-title fragment at a different house or a later run', 
   assert.equal(findTitleFragmentDupes([jena, { ...bare, venue: 'Public Theater' }]).length, 0);
   assert.equal(findTitleFragmentDupes([jena, { ...bare, openingDate: '2026-12-01', closingDate: '2026-12-20' }]).length, 0);
 });
+
+// BRO-5314: same-title productions in different cities / at their own announced
+// venue were flagged as duplicates (Triumph Almeida vs Public, Fly You Fools
+// SoHo vs Southwark, Jane Eyre Southwark vs Rose Kingston, AYLI Globe vs RSC).
+const { sameMarketPair, stubIsUnplacedDupe } = require('./lib/show-duplicate-detection.js');
+const toks = (...t) => new Set(t);
+
+test('sameMarketPair: different markets are never duplicates; missing market is not exculpatory', () => {
+  assert.equal(sameMarketPair({ market: 'west-end' }, { market: 'broadway' }), false);
+  assert.equal(sameMarketPair({ market: 'west-end' }, { market: 'regional' }), false);
+  assert.equal(sameMarketPair({ market: 'broadway' }, { market: 'broadway' }), true);
+  assert.equal(sameMarketPair({ market: 'broadway' }, {}), true);
+});
+
+test('stubIsUnplacedDupe: TBA-venue stub flags, stub at its own distinct venue does not', () => {
+  assert.equal(stubIsUnplacedDupe(true, toks(), toks('southwark')), true);
+  assert.equal(stubIsUnplacedDupe(true, toks('rose', 'kingston'), toks('southwark', 'elephant')), false);
+  assert.equal(stubIsUnplacedDupe(true, toks('southwark'), toks('southwark', 'elephant')), true);
+  assert.equal(stubIsUnplacedDupe(false, toks(), toks('x')), false);
+});

@@ -43,7 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
-const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./lib/show-duplicate-detection');
+const { findTitleFragmentDupes, findSharedTicketIdentityDupes, sameMarketPair, stubIsUnplacedDupe } = require('./lib/show-duplicate-detection');
 const { baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./lib/duplicate-shows-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
@@ -175,8 +175,12 @@ function main() {
         // venue + same normalized title — are NOT flagged) AND either a shared
         // distinctive venue token or an incomplete stub.
         let reason = null;
-        if (titleWordSetJaccard(a.title, b.title) >= 0.8) {
-          if (isStub(a, ra) || isStub(b, rb)) reason = 'incomplete-stub';
+        // Different markets (broadway / west-end / regional) are different
+        // physical productions in different cities, however alike the titles
+        // (Triumph at the Almeida vs The Public; As You Like It at the Globe vs
+        // the RSC). BRO-5314.
+        if (sameMarketPair(a, b) && titleWordSetJaccard(a.title, b.title) >= 0.8) {
+          if (stubIsUnplacedDupe(isStub(a, ra), ta, tb) || stubIsUnplacedDupe(isStub(b, rb), tb, ta)) reason = 'incomplete-stub';
           else if (shared.length > 0) reason = `shared-venue-token:${shared.join(',')}`;
         }
         // else: two real distinct venues → multi-production, not a dup.

@@ -317,7 +317,24 @@ function findSharedTicketIdentityDupes(shows) {
   return dupes;
 }
 
+function sameMarketPair(a, b) {
+  return !a.market || !b.market || a.market === b.market;
+}
+
+// A stub only reads as a duplicate of the other record when it has not been
+// placed at a venue of its own: empty/TBA venue, or a venue sharing a token
+// with the other record's. A stub with its own distinct real venue (e.g. Jane
+// Eyre at Rose Kingston vs Southwark Playhouse Elephant) is an announced,
+// separate production that simply has no opening date or reviews yet.
+function stubIsUnplacedDupe(isStubRecord, stubTokens, otherTokens) {
+  if (!isStubRecord) return false;
+  if (stubTokens.size === 0) return true;
+  return [...stubTokens].some((t) => otherTokens.has(t));
+}
+
 module.exports = {
+  sameMarketPair,
+  stubIsUnplacedDupe,
   findTitleFragmentDupes,
   findSharedTicketIdentityDupes,
   ticketIdentityKeys,
