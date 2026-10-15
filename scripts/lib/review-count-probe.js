@@ -262,7 +262,7 @@ function shouldAlert(showId, fingerprint, drift, threshold, state) {
  *   configured threshold — see shouldAlert's doc comment for why this must
  *   gate continuation of the grace window, not just fingerprint equality.
  */
-function updateState(state, showId, fingerprint, didAlert, aboveThreshold) {
+function updateState(state, showId, fingerprint, didAlert, aboveThreshold, suppressed = false) {
   const entry = state[showId];
   const now = Date.now();
 
@@ -273,6 +273,7 @@ function updateState(state, showId, fingerprint, didAlert, aboveThreshold) {
       consecutiveCount: 1,
       lastAlertTs: didAlert ? now : null,
       aboveThreshold,
+      suppressed,
     };
   } else {
     state[showId] = {
@@ -280,6 +281,7 @@ function updateState(state, showId, fingerprint, didAlert, aboveThreshold) {
       consecutiveCount: (entry.consecutiveCount || 1) + 1,
       lastAlertTs: didAlert ? now : entry.lastAlertTs,
       aboveThreshold,
+      suppressed,
     };
   }
 }

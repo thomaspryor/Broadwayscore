@@ -205,7 +205,7 @@ async function main() {
 
     const aboveThreshold = effectiveDrift > THRESHOLD;
     const alert = (suppressed || inGrace) ? false : shouldAlert(showId, fingerprint, effectiveDrift, THRESHOLD, state);
-    updateState(state, showId, fingerprint, alert, aboveThreshold);
+    updateState(state, showId, fingerprint, alert, aboveThreshold, !!(suppressed || inGrace));
 
     if (alert) anyAlert = true;
 

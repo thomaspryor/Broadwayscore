@@ -22,7 +22,8 @@ function buildDriftCheckResult(show, driftState) {
   }
   const aboveThreshold = entry.aboveThreshold === true;
   const consecutiveCount = entry.consecutiveCount || 0;
-  const confirmed = aboveThreshold && consecutiveCount >= CONFIRM_RUNS;
+  // The detector stays quiet on allowlisted / deploy-lag shows; so must the gate.
+  const confirmed = aboveThreshold && !entry.suppressed && consecutiveCount >= CONFIRM_RUNS;
   return {
     ...base,
     ok: !aboveThreshold,
