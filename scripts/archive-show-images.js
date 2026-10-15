@@ -26,42 +26,11 @@ Usage:
   node scripts/archive-show-images.js [options]
   node scripts/archive-show-images.js --help, -h    print this usage and exit
 `;
-let sharp;
-try {
-  sharp = require('sharp');
-} catch {
-  sharp = null;
-}
-
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 
-// Aspect-ratio thresholds — match scripts/check-image-aspect.js (canonical).
-// A wide-landscape file saved as poster.webp renders as a vertical sliver
-// inside the show page's aspect-[2/3] object-cover container (evita-west-end-2025
-// commit a71c3defe4). Reject after download so fetch-show-images-auto can re-source.
-const ASPECT_THRESHOLDS = {
-  poster:    { minRatio: 1.00, maxRatio: Infinity },
-  thumbnail: { minRatio: 0.85, maxRatio: 1.70 },
-  hero:      { minRatio: 0,    maxRatio: 0.85 },
-};
-
-async function checkAspect(filePath, role) {
-  if (!sharp) return { ok: true, reason: 'sharp unavailable, skipping' };
-  const t = ASPECT_THRESHOLDS[role];
-  if (!t) return { ok: true };
-  try {
-    const m = await sharp(filePath).metadata();
-    if (!m.width || !m.height) return { ok: false, reason: 'no dimensions' };
-    const ratio = m.height / m.width;
-    if (ratio < t.minRatio || ratio > t.maxRatio) {
-      return { ok: false, reason: `${m.width}x${m.height} h/w=${ratio.toFixed(2)} — wrong shape for ${role}` };
-    }
-    return { ok: true, ratio };
-  } catch (e) {
-    return { ok: false, reason: `sharp failed: ${e.message}` };
-  }
-}
+// Use the same gate as staged commits, including rejected image bytes.
+const { checkFile: checkAspect } = require('./check-image-aspect');
 
 // Placeholder-hash detection is canonical in scripts/lib/show-images.js.
 // This file used to keep its own copy of the Set with only 3 hashes while
@@ -236,8 +205,8 @@ async function main() {
         // Check that the local file actually exists
         const localPath = path.join(__dirname, '..', 'public', url);
         if (fs.existsSync(localPath)) {
-          // --check-aspect: verify shape; if wrong, null + delete + re-source from imageSources
-          if (checkAspectFlag) {
+          // Always gate active posters; --check-aspect also checks other cached art.
+          if (checkAspectFlag || (format === 'poster' && show.status !== 'closed')) {
             const aspect = await checkAspect(localPath, format);
             if (!aspect.ok) {
               console.log(`  ⚠ ${show.title} ${format}: local file has wrong aspect (${aspect.reason}) — re-downloading`);

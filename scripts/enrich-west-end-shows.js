@@ -9,6 +9,8 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { checkFile } = require('./check-image-aspect');
+const { stagedPathFor } = require('./lib/image-candidate-staging');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { isLondonMarket, sanitizeVenueForWrite } = require('./lib/venue-classification');
@@ -49,7 +51,7 @@ async function fetchJson(url) {
   });
 }
 
-async function downloadImage(url, destPath) {
+async function downloadImageUnchecked(url, destPath) {
   return new Promise((resolve, reject) => {
     const finalUrl = url.startsWith('//') ? `https:${url}` : url;
     // Tracked outside the response callback so a timeout firing mid-download
@@ -64,7 +66,7 @@ async function downloadImage(url, destPath) {
     };
     const req = https.get(finalUrl, { timeout: 15000 }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
-        return downloadImage(res.headers.location, destPath).then(resolve).catch(reject);
+        return downloadImageUnchecked(res.headers.location, destPath).then(resolve).catch(reject);
       }
       if (res.statusCode !== 200) {
         return reject(new Error(`HTTP ${res.statusCode} for ${finalUrl}`));
@@ -77,6 +79,20 @@ async function downloadImage(url, destPath) {
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); abandonPartialFile(); reject(new Error('Request timeout')); });
   });
+}
+
+// Validate before replacing live art or publishing its shows.json reference.
+async function downloadImage(url, destPath, download = downloadImageUnchecked) {
+  const candidate = stagedPathFor(destPath);
+  try {
+    await download(url, candidate);
+    const role = path.basename(destPath).split('.')[0];
+    const result = await checkFile(candidate, role);
+    if (!result || !result.ok) throw new Error(result?.reason || 'Unknown image role');
+    fs.renameSync(candidate, destPath);
+  } finally {
+    try { fs.unlinkSync(candidate); } catch { /* absent after rename or failed download */ }
+  }
 }
 
 async function fetchAllTodayTixShows() {
@@ -269,4 +285,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { decideVenueUpdate };
+module.exports = { decideVenueUpdate, downloadImage };

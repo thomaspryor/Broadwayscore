@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildDailyDigestHtml } = require('./lib/email-templates');
 const { computeExclusionTrend } = require('./lib/exclusion-trend');
+const { auditActivePosters } = require('./check-image-aspect');
 
 const MOBILE_DATA = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const SNAPSHOT_FILE = path.join(__dirname, '..', 'data', 'audit', 'daily-snapshot.json');
@@ -156,7 +157,8 @@ function hasChanges(changes) {
   return changes.newShows.length +
     changes.scoreChanges.length + changes.audienceChanges.length +
     (changes.suspiciousChanges || []).length +
-    (changes.reviewSpikes || []).length > 0;
+    (changes.reviewSpikes || []).length +
+    (changes.posterAspect?.violations.length || 0) + Number(!!changes.posterAspect?.error) > 0;
 }
 
 // Card #497: same subject/bannerText + item-list shape as health-check.js's
@@ -164,6 +166,16 @@ function hasChanges(changes) {
 // scheduled digests through a shared render block.
 function buildDigestItems(changes) {
   const items = [];
+  // Put the audit first so ordinary score activity cannot hide it past the cap.
+  const aspect = changes.posterAspect;
+  if (aspect?.error) {
+    items.push({ title: 'Poster aspect audit failed', detail: aspect.error });
+  } else if (aspect?.violations.length) {
+    items.push({
+      title: `Poster aspect: ${aspect.violations.length} non-closed violation(s)`,
+      detail: aspect.violations.slice(0, 3).map(v => `${v.showId}: ${v.reason}`).join('; '),
+    });
+  }
   for (const s of changes.newShows) {
     items.push({ title: s.title, detail: `New show added (${s.market})` });
   }
@@ -210,6 +222,16 @@ async function main() {
   const mobileData = JSON.parse(fs.readFileSync(MOBILE_DATA, 'utf8'));
   const currSnapshot = buildSnapshot(mobileData);
   const prevSnapshot = loadSnapshot();
+  // The daily workflow has public mobile data and no npm install/core-data
+  // checkout. The shared checker can read image headers without sharp.
+  let posterAspect;
+  try {
+    posterAspect = await auditActivePosters(mobileData.shows.map(s => ({ id: s.id, status: s.st })));
+  } catch (err) {
+    posterAspect = { violations: [], error: err.message };
+  }
+  const posterWarnings = posterAspect.violations.length + Number(!!posterAspect.error);
+  console.log(`Poster aspect audit: ${posterWarnings} warning(s)`);
 
   // Compute exclusion trend (independent of show-snapshot changes).
   // Emits a summary even if no show-level changes occurred — silent-drop trends
@@ -227,7 +249,7 @@ async function main() {
       writeDigestSnapshot({
         subject: `Daily Digest: initial snapshot on ${currSnapshot.date}`,
         bannerText: 'First run — no comparison data yet',
-        items: [],
+        items: buildDigestItems({ newShows: [], scoreChanges: [], audienceChanges: [], posterAspect }),
       });
     }
     return;
@@ -236,6 +258,7 @@ async function main() {
   const changes = diffSnapshots(prevSnapshot, currSnapshot);
   const today = currSnapshot.date;
   changes.exclusionTrend = exclusionTrend;
+  changes.posterAspect = posterAspect;
 
   const hasExclusionSignal = exclusionTrend.spikes.length > 0 || exclusionTrend.novelReasons.length > 0;
   if (!hasChanges(changes) && !hasExclusionSignal) {
@@ -255,8 +278,8 @@ async function main() {
   const suspiciousCount = (changes.suspiciousChanges || []).length;
   const spikeCount = (changes.reviewSpikes || []).length;
   const totalChanges = changes.newShows.length +
-    changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount + spikeCount;
-  const warnings = suspiciousCount + spikeCount;
+    changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount + spikeCount + posterWarnings;
+  const warnings = suspiciousCount + spikeCount + posterWarnings;
   const subject = warnings > 0
     ? `⚠️ Daily Digest: ${totalChanges} changes (${warnings} warning${warnings !== 1 ? 's' : ''}) on ${today}`
     : `Daily Digest: ${totalChanges} change${totalChanges !== 1 ? 's' : ''} on ${today}`;
@@ -276,6 +299,8 @@ async function main() {
     console.log(`  Score changes: ${changes.scoreChanges.length}`);
     console.log(`  Audience changes: ${changes.audienceChanges.length}`);
     console.log(`  Suspicious changes: ${suspiciousCount}`);
+    console.log(`  Poster aspect warnings: ${posterWarnings}`);
+    if (posterWarnings) console.log(JSON.stringify(items[0]));
     fs.writeFileSync('/tmp/daily-digest-preview.html', html);
     console.log('  HTML preview: /tmp/daily-digest-preview.html');
     return;

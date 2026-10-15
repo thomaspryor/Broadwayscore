@@ -46,24 +46,25 @@ const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { getImageDimensions } = require('./lib/image-dimensions');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `check-image-aspect.js — Validates aspect ratios for show poster/thumbnail/hero images.
 
 Usage:
-  node scripts/check-image-aspect.js [options]
+  node scripts/check-image-aspect.js [--audit [--active-posters]]
+  --active-posters  Audit only posters belonging to non-closed shows
   node scripts/check-image-aspect.js --help, -h    print this usage and exit
 `;
 let sharp;
 try {
   sharp = require('sharp');
 } catch {
-  console.error('check-image-aspect: sharp not installed — skipping check');
-  process.exit(0); // soft-pass when sharp missing (e.g. fresh clone before npm install)
+  sharp = null; // The daily digest runs without node_modules; inspect headers instead.
 }
 
 const ROOT = path.resolve(__dirname, '..');
-const SHOWS_DIR = path.join(ROOT, 'public', 'images', 'shows');
+const SHOWS_DIR = process.env.IMAGE_ASPECT_IMAGES_DIR || path.join(ROOT, 'public', 'images', 'shows');
 
 const THRESHOLDS = {
   poster:    { minRatio: 1.00, maxRatio: Infinity, expected: 'portrait or square (h/w >= 1.0)' },
@@ -90,8 +91,7 @@ try {
   console.error(`::warning::check-image-aspect: cannot read ${REJECTED_IMAGES_PATH} (${err.message}); rejected-bytes check skipped`);
 }
 
-async function checkFile(absPath) {
-  const role = classify(absPath);
+async function checkFile(absPath, role = classify(absPath)) {
   if (!role) return null; // not a tracked image role
 
   const t = THRESHOLDS[role];
@@ -107,12 +107,12 @@ async function checkFile(absPath) {
 
   let meta;
   try {
-    meta = await sharp(absPath).metadata();
+    meta = sharp ? await sharp(absPath).metadata() : getImageDimensions(fs.readFileSync(absPath));
   } catch (err) {
     return { role, absPath, ok: false, reason: `sharp failed to read: ${err.message}` };
   }
 
-  if (!meta.width || !meta.height) {
+  if (!meta || !meta.width || !meta.height) {
     return { role, absPath, ok: false, reason: 'no width/height in metadata' };
   }
 
@@ -195,6 +195,23 @@ function reportViolations(violations, mode) {
   return 1;
 }
 
+// Audit disk files, including unreferenced alternate extensions: a later writer
+// must not accidentally reuse a landscape poster from an active show's folder.
+async function auditActivePosters(shows, imagesDir = SHOWS_DIR) {
+  const results = [];
+  for (const show of shows) {
+    if (show.status === 'closed') continue;
+    const dir = path.join(imagesDir, show.id);
+    if (!fs.existsSync(dir)) continue;
+    for (const name of fs.readdirSync(dir)) {
+      if (classify('/' + name) !== 'poster') continue;
+      const result = await checkFile(path.join(dir, name));
+      results.push({ ...result, showId: show.id });
+    }
+  }
+  return { checked: results.length, violations: results.filter(r => !r.ok) };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -204,6 +221,15 @@ async function main() {
              : args.includes('--changed') ? 'changed'
              : args.includes('--files') ? 'files'
              : 'staged'; // default to staged for pre-commit
+
+  if (mode === 'audit' && args.includes('--active-posters')) {
+    const showsPath = process.env.IMAGE_ASPECT_SHOWS_PATH || path.join(ROOT, 'data', 'shows.json');
+    const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const { checked, violations } = await auditActivePosters(data.shows);
+    console.log(`Checked ${checked} non-closed poster files.`);
+    process.exitCode = reportViolations(violations, mode);
+    return;
+  }
 
   let files;
   if (mode === 'staged') {
@@ -304,7 +330,11 @@ async function main() {
   process.exit(reportViolations(violations, mode));
 }
 
-main().catch(err => {
-  console.error('check-image-aspect: unexpected error:', err);
-  process.exit(2);
-});
+module.exports = { checkFile, auditActivePosters };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('check-image-aspect: unexpected error:', err);
+    process.exit(2);
+  });
+}
