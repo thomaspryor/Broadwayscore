@@ -22,6 +22,7 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const linear = require('./lib/linear-client');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
+const { fetchAnsweredCards, findPriorAnswers } = require('./lib/owner-decision-recall.js');
 const { findOwnerDecisions, planNotification, formatEmail } = require('./lib/owner-decision-notify.js');
 
 const USAGE = 'Usage: node scripts/notify-owner-decisions.js [--dry-run] [--local-ok]';
@@ -87,6 +88,15 @@ async function main(argv = process.argv.slice(2)) {
   const existing = router.loadLedger().conditions[CONDITION_KEY];
   const notified = existing && Array.isArray(existing.notifiedIds) ? existing.notifiedIds : [];
   const decisions = findOwnerDecisions(issues);
+  // BRO-5385: say so when the owner already answered the same topic.
+  try {
+    const answered = await fetchAnsweredCards();
+    for (const d of decisions) {
+      d.priorAnswers = findPriorAnswers(`${d.title} ${d.question || ''}`, answered).filter((a) => a.identifier !== d.identifier).slice(0, 2);
+    }
+  } catch (err) {
+    console.error(`[owner-decisions] could not read earlier answers: ${err.message}`);
+  }
   const plan = planNotification(decisions, notified);
   console.log(`[owner-decisions] ${decisions.length} open decision(s) on ${issues.length} open card(s); ${plan.fresh.length} new, ${notified.length} already told`);
 

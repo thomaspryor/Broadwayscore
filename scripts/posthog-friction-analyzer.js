@@ -30,6 +30,7 @@ const Anthropic = require('@anthropic-ai/sdk');
 const linearClient = require('./lib/linear-client');
 const { MIN_RAGE_USERS, summarizeRageClicks, isBackedRageClickIssue } = require('./lib/rage-click-summary');
 const { createLinearIssue } = require('./lib/linear-issue-create');
+const { findPriorAnswers, fetchAnsweredCards } = require('./lib/owner-decision-recall');
 const { CLAUDE_SONNET } = require('./lib/models');
 const {
   authCheck, tracked,
@@ -400,6 +401,11 @@ async function main() {
   const created = [];
   const skipped = [];
 
+  // BRO-5385: a topic the owner already answered gets a comment on the answered
+  // card, not a new question.
+  let answeredCards = [];
+  try { answeredCards = await fetchAnsweredCards(); } catch (err) { console.warn(`Could not read earlier owner answers: ${err.message}`); }
+
   for (const issue of issues) {
     // The model only sees qualifying rows, but can still invent a rage-click
     // card for a page none of them name (BRO-3657 cluster).
@@ -416,6 +422,17 @@ async function main() {
 
     if (existingHashes.has(hash)) {
       skipped.push(`[duplicate hash ${hash}] ${issue.title}`);
+      continue;
+    }
+
+    const prior = findPriorAnswers(`${issue.title} ${issue.problem || ''}`, answeredCards)[0];
+    if (prior) {
+      skipped.push(`[already answered ${prior.identifier}] ${issue.title}`);
+      const card = answeredCards.find((c) => c.identifier === prior.identifier);
+      const seen = card && ((card.comments && card.comments.nodes) || []).some((c) => c.body.includes(`fhash:${hash}`));
+      if (!DRY_RUN && card && !seen) {
+        await linearClient.createComment(card.id, `Friction scan fhash:${hash} saw this topic again: ${issue.title}. Evidence: ${issue.evidence || '(see PostHog data)'}. The owner answered here on ${prior.date}; no new question filed.`);
+      }
       continue;
     }
 

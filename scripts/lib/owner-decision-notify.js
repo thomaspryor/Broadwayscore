@@ -146,6 +146,7 @@ function formatEmail(plan) {
   for (const d of plan.listed) {
     lines.push(`- ${d.question || d.title}`);
     if (d.question && d.question !== d.title) lines.push(`  (card: ${d.title})`);
+    for (const a of d.priorAnswers || []) lines.push(`  You answered something like this on ${a.date || 'an earlier date'} (${a.identifier}): ${a.text}`);
     if (d.url) lines.push(`  ${d.url}`);
   }
   if (plan.more > 0) lines.push('', `+${plan.more} more. They will be in the next email.`);
