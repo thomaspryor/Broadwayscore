@@ -110,9 +110,16 @@ let REPO = MAIN;
 // same variable validate-data.js and the gap audit read); core-data is the
 // clone data/shows.json etc. already symlink into.
 const DATA_REPOS = {
-  'review-texts': (env) => env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts'),
-  'core-data': () => require('./lib/autonomous-data-workdir').scorecardDataRoot(),
+  'review-texts': { slug: 'thomaspryor/broadway-review-texts', dir: (env) => env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts') },
+  'core-data': { slug: 'thomaspryor/broadway-scorecard-data', dir: () => require('./lib/autonomous-data-workdir').scorecardDataRoot() },
 };
+// origin must be the real private repo, not any clone with an origin/main (a
+// local dummy origin could otherwise host an in-window commit naming the
+// card). Credentials embedded in the URL are stripped and never printed.
+function originMatchesSlug(url, slug) {
+  const m = /github\.com[:/]+([^/]+\/[^/]+?)(?:\.git)?\/?$/i.exec(String(url || '').trim().replace(/\/\/[^@/]+@/, '//'));
+  return Boolean(m) && m[1].toLowerCase() === slug.toLowerCase();
+}
 const VERIFY_TIMEOUT_MS = 10 * 60 * 1000;
 const CODE_PATHS = ['scripts', 'src', '.github', 'package.json', 'next.config.js', 'tsconfig.json'];
 
@@ -190,15 +197,20 @@ function parseArgs(argv) {
 // Resolve a --data-repo name to its clone, refusing anything that is not a git
 // work tree with an origin/main (a missing clone must not silently fall back
 // to Broadwayscore). Exported for tests.
-function resolveDataRepo(name, env = process.env) {
-  const make = Object.prototype.hasOwnProperty.call(DATA_REPOS, name) ? DATA_REPOS[name] : null;
-  if (!make) return { error: `--data-repo must be one of: ${Object.keys(DATA_REPOS).join(', ')} (got ${JSON.stringify(name)})` };
-  const dir = make(env);
+function resolveDataRepo(name, env = process.env, opts = {}) {
+  const spec = Object.prototype.hasOwnProperty.call(DATA_REPOS, name) ? DATA_REPOS[name] : null;
+  if (!spec) return { error: `--data-repo must be one of: ${Object.keys(DATA_REPOS).join(', ')} (got ${JSON.stringify(name)})` };
+  const dir = spec.dir(env);
   const inside = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: dir, encoding: 'utf8' });
   if (inside.status !== 0 || String(inside.stdout).trim() !== 'true') return { error: `--data-repo ${name}: ${dir} is not a git work tree` };
   const top = String(spawnSync('git', ['rev-parse', '--show-toplevel'], { cwd: dir, encoding: 'utf8' }).stdout || '').trim();
   const real = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
   if (real(top) !== real(dir)) return { error: `--data-repo ${name}: ${dir} is inside ${top}, not its own clone` };
+  if (real(dir) === real(opts.main || MAIN)) return { error: `--data-repo ${name}: ${dir} is the main checkout, not a data repo` };
+  const origin = spawnSync('git', ['remote', 'get-url', 'origin'], { cwd: dir, encoding: 'utf8' });
+  if (!originMatchesSlug(origin.stdout, spec.slug)) {
+    return { error: `--data-repo ${name}: ${dir}'s origin is not github.com/${spec.slug}` };
+  }
   if (spawnSync('git', ['rev-parse', '--verify', 'refs/remotes/origin/main'], { cwd: dir, encoding: 'utf8' }).status !== 0) {
     return { error: `--data-repo ${name}: ${dir} has no origin/main` };
   }
@@ -590,12 +602,25 @@ function main() {
   // 3. The checkout the verify command runs in must already prove origin/main.
   //    In --data-repo mode that is the clone verify reads, and "dirty" means the
   //    files this sha changed (CODE_PATHS are Broadwayscore's, meaningless there).
-  const dirtyPaths = dataRepo ? landing.changedPaths : CODE_PATHS;
+  //    Verify always runs MAIN's scripts, so MAIN's CODE_PATHS must be clean
+  //    in both modes; in --data-repo mode the clone verify reads must also have
+  //    no uncommitted tracked change anywhere (a stray edit could make an
+  //    aggregate check pass on a state origin/main does not have).
+  const porcelain = (out) => out.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.replace(/^\S+\s+/, ''));
+  const mainDirty = porcelain(git(['status', '--porcelain', '--', ...CODE_PATHS], { cwd: MAIN }));
+  const cloneDirty = dataRepo ? porcelain(git(['status', '--porcelain', '--untracked-files=no'])).map((p) => `${dataRepo.name}:${p}`) : [];
   const checkout = {
     containsSha: gitOk(['merge-base', '--is-ancestor', sha, 'HEAD']),
-    dirtyCodePaths: dirtyPaths.length ? git(['status', '--porcelain', '--', ...dirtyPaths])
-      .split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.replace(/^\S+\s+/, '')) : [],
+    dirtyCodePaths: [...mainDirty, ...cloneDirty],
   };
+  // core-data verify reads MAIN's data/*.json, which must be the symlinks into
+  // this clone — a copied or foreign dataset would certify the wrong state.
+  if (dataRepo && dataRepo.name === 'core-data') {
+    const realRoot = fs.realpathSync(REPO);
+    let target = '';
+    try { target = fs.realpathSync(path.join(MAIN, 'data', 'shows.json')); } catch { /* missing */ }
+    if (path.dirname(target) !== realRoot) refuse(ref, [`--data-repo core-data: ${path.join(MAIN, 'data', 'shows.json')} does not resolve into ${REPO}, so verify would not read the clone being certified`]);
+  }
   if (dataRepo && !checkout.containsSha) console.error(`→ the clone's HEAD does not contain ${sha.slice(0, 11)} — run: git -C ${REPO} pull --ff-only origin main`);
 
   // 4. Safe-form gate, then the real run. Everything above is decided BEFORE
@@ -607,6 +632,9 @@ function main() {
 
   console.error(`→ running verify in ${MAIN}: ${verify.cmd}`);
   const verifyEnv = dataRepo && dataRepo.name === 'review-texts' ? { REVIEW_TEXTS_DIR: REPO } : undefined;
+  if (verifyEnv && !/validate-data|audit-show-review-gap/.test(verify.cmd)) {
+    console.error(`⚠️  verify reads review texts via REVIEW_TEXTS_DIR=${REPO}; a command that ignores that variable reads ${path.join(MAIN, 'data', 'review-texts')} instead, which may not be the clone`);
+  }
   const decision = runVerifyAndDecide(decide, verify, { cwd: MAIN, env: verifyEnv });
   if (!decision.ok) refuse(ref, decision.refusals, hintCtx);
 
@@ -619,7 +647,7 @@ function main() {
   console.error(`→ ledger row appended: ${JSON.stringify(written)}`);
 
   if (!args.noLinear) {
-    const comment = `${decision.row.event} by ${ackedBy} (${written.ts}): ${sha} is on origin/main; \`${verify.cmd}\` exit 0. Reason: ${decision.row.reason}. Prior ledger row: ${decision.row.priorEvent}.`;
+    const comment = `${decision.row.event} by ${ackedBy} (${written.ts}): ${sha} is on ${dataRepo ? `${dataRepo.name}'s ` : ''}origin/main; \`${verify.cmd}\` exit 0. Reason: ${decision.row.reason}. Prior ledger row: ${decision.row.priorEvent}.`;
     const lb = spawnSync('node', [path.join(MAIN, 'scripts', 'linear-brain.js'), 'update', ref, '--comment', comment], { cwd: MAIN, encoding: 'utf8', timeout: 60000 });
     console.error(lb.status === 0
       ? `→ Linear comment posted on ${ref}`
@@ -631,4 +659,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, resolveDataRepo, DATA_REPOS, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie, runVerifyAndDecide };
+module.exports = { parseArgs, resolveDataRepo, originMatchesSlug, DATA_REPOS, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie, runVerifyAndDecide };

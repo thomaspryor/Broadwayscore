@@ -370,6 +370,11 @@ function decideAck(input) {
   } else if (!namesRef) {
     refusals.push(`the sha's commit message does not name ${ref} — pass the job's own commit, not an unrelated one`);
   }
+  // Data-repo mode trades the stranded tie for window + naming, both of which
+  // an empty commit can satisfy: require the sha to actually change a file.
+  if (dataRepo && !(Array.isArray(landing.changedPaths) && landing.changedPaths.length)) {
+    refusals.push(`the sha changes no files in the ${dataRepo} repo — an empty commit naming ${ref} is not its work`);
+  }
 
   refusals.push(...checkoutRefusals(checkout));
   refusals.push(...verifyRefusals(verify));
@@ -727,7 +732,7 @@ function ledgerChangedSince(before, after) {
 }
 
 function formatAckLine(ref, row) {
-  return `ACKED: ${ref} — ${row.sha} on origin/main, ${row.verifyCmd} exit 0`;
+  return `ACKED: ${ref} — ${row.sha} on ${row.repo ? `${row.repo}'s ` : ''}origin/main, ${row.verifyCmd} exit 0`;
 }
 
 module.exports = {

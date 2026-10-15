@@ -312,3 +312,12 @@ test('data-repo ack (BRO-5219): a landed-acked row with repo counts as landed wi
   // Another task's data-repo ack is never this task's evidence.
   assert.equal(checkWorkLanded({ taskId: 'linear:BRO-5417', entries }, fakeGit()).landed, false);
 });
+
+test('data-repo ack from an EARLIER attempt does not cover a later dead attempt', () => {
+  const entries = [
+    { event: 'job-spawned', taskId: '60', jobId: 'jobA', ts: '2026-10-01T00:00:00Z' },
+    { event: 'landed-acked', taskId: '60', jobId: 'jobA', sha: 'aaaaaaa1111111', repo: 'review-texts', ts: '2026-10-01T01:00:00Z' },
+    { event: 'job-spawned', taskId: '60', jobId: 'jobB', ts: '2026-10-05T00:00:00Z' },
+  ];
+  assert.equal(checkWorkLanded({ taskId: '60', entries }, fakeGit()).landed, false);
+});

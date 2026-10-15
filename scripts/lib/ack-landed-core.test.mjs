@@ -325,7 +325,7 @@ function dataHappy(overrides = {}) {
     ref: DATA_REF,
     rows: strandedRows,
     dataRepo: 'review-texts',
-    landing: { verdict: 'LANDED', sha: '53e633c05fbc9969', authorTs: '2026-10-15T18:52:39.000Z', commitTs: '2026-10-15T18:52:39.000Z', message: `${DATA_REF}: Tour transfer note`, tiedToStranded: false, tiedToStrandedByPatch: false },
+    landing: { verdict: 'LANDED', sha: '53e633c05fbc9969', authorTs: '2026-10-15T18:52:39.000Z', commitTs: '2026-10-15T18:52:39.000Z', message: `${DATA_REF}: Tour transfer note`, changedPaths: ['dear-england/lbo--x.json'], tiedToStranded: false, tiedToStrandedByPatch: false },
     verify: { cmd: 'node scripts/validate-data.js', safe: true, unsafeReason: null, exitCode: 0 },
     ...overrides,
   });
@@ -355,4 +355,15 @@ test('without --data-repo the same stranded row keeps the stranded-sha tie (unch
   assert.equal(d.ok, false);
   assert.ok(d.refusals.some((r) => /stranded sha c46a2a62/.test(r)));
   assert.equal(core.decideAck(happy()).row.repo, undefined);
+});
+
+test('--data-repo: refuses an empty commit (window + naming alone are forgeable)', () => {
+  const d = core.decideAck(dataHappy({ landing: { ...dataHappy().landing, changedPaths: [] } }));
+  assert.equal(d.ok, false);
+  assert.ok(d.refusals.some((r) => /changes no files in the review-texts repo/.test(r)));
+});
+
+test('--data-repo: the ACKED line names the data repo', () => {
+  const d = core.decideAck(dataHappy());
+  assert.match(core.formatAckLine(DATA_REF, d.row), /on review-texts's origin\/main/);
 });
