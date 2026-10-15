@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { stillExcludedBy } = require('../../scripts/audit-multishow-titlecase.js');
+const { stillExcludedBy } = require('./still-excluded-by.js');
 
 const show = { id: 'a-show-west-end-2025', title: 'A Show', openingDate: '2025-05-01', status: 'open' };
 const base = { showId: show.id, outletId: 'guardian', criticName: 'A Critic', publishDate: '2025-05-02', contentTier: 'complete', fullText: 'x'.repeat(1200), showNotMentioned: true };

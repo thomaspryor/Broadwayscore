@@ -38,7 +38,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { explainExclusion } = require('./lib/review-guards');
+const { stillExcludedBy } = require('./lib/still-excluded-by');
 const { assessTextQuality, detectMultiShowContent, validateShowMentioned, validateShowMentionedOrNamedByUrl, qualityOptsFor } = require('./lib/content-quality');
 
 const ROOT = path.join(__dirname, '..');
@@ -52,14 +52,6 @@ if (!['titlecase', 'url', 'flag'].includes(rule)) { console.error('--rule must b
 const shardArg = val('shard');
 const [shardIdx, shardCount] = shardArg ? shardArg.split('/').map(Number) : [0, 1];
 if (!(shardCount >= 1 && shardIdx >= 0 && shardIdx < shardCount)) { console.error('--shard must be i/n with 0 <= i < n'); process.exit(2); }
-
-// What would keep the file out of reviews.json once showNotMentioned is cleared.
-function stillExcludedBy(r, show, filePath) {
-  try {
-    const why = explainExclusion({ ...r, showNotMentioned: false }, show, filePath);
-    return why || null;
-  } catch (e) { return `error: ${e.message}`; }
-}
 
 function main() {
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
@@ -134,4 +126,3 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { stillExcludedBy };
