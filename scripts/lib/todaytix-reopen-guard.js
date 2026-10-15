@@ -62,8 +62,10 @@ function unrecognizedBookabilityFields(ttShow) {
   for (const key of Object.keys(ttShow)) {
     if (KNOWN_BOOKABILITY_FIELDS.includes(key) || !BOOKABILITY_LIKE.test(key)) continue;
     const v = ttShow[key];
-    if (v === null || v === undefined || v === false || v === '' || (Array.isArray(v) && v.length === 0)) continue;
-    out[key] = JSON.stringify(v).slice(0, 80);
+    if (v === null || v === undefined || v === false || v === 0 || v === '' || (Array.isArray(v) && v.length === 0)) continue;
+    let str;
+    try { str = JSON.stringify(v); } catch (e) { str = String(v); }
+    out[key] = String(str).slice(0, 80);
   }
   return out;
 }

@@ -67,3 +67,28 @@ test('refreshTodayTixDates records a ghost-listing reopen block in its result, s
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('refreshTodayTixDates: human-corrected closingDate blocks reopen and is recorded; zero-valued fields ignored', async () => {
+  const data = { shows: [{
+    id: 'held-show-2025', title: 'Held Show', status: 'closed', category: 'broadway',
+    todaytixId: 77, closingDate: '2026-01-01', humanCorrectedClosingDate: true, venue: 'V',
+  }] };
+  const live = { id: 77, displayName: 'Held Show', areRegularTicketsAvailable: true, ticketCount: 0 };
+  const res = await refreshTodayTixDates(data, [], { fetchShows: async (loc) => (loc === 1 ? [live] : []) });
+  assert.strictEqual(data.shows[0].status, 'closed');
+  assert.strictEqual(res.reopenedIds.size, 0);
+  assert.strictEqual(res.blockedReopens.length, 1);
+  assert.strictEqual(res.blockedReopens[0].reason, 'human-corrected-closing-date');
+  assert.deepStrictEqual(res.blockedReopens[0].unrecognizedBookabilityFields, {});
+});
+
+test('refreshTodayTixDates: a bookable closed show reopens and nothing is recorded as blocked', async () => {
+  const data = { shows: [{
+    id: 'live-show-2025', title: 'Live Show', status: 'closed', category: 'broadway',
+    todaytixId: 88, closingDate: '2026-01-01', venue: 'V',
+  }] };
+  const live = { id: 88, displayName: 'Live Show', areRegularTicketsAvailable: true };
+  const res = await refreshTodayTixDates(data, [], { fetchShows: async (loc) => (loc === 1 ? [live] : []) });
+  assert.strictEqual(data.shows[0].status, 'open');
+  assert.strictEqual(res.blockedReopens.length, 0);
+});
