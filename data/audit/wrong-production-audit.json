@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T19:38:28.281Z",
+  "timestamp": "2026-10-15T20:52:32.943Z",
   "stats": {
-    "totalReviews": 56782,
-    "alreadyFlagged": 21096,
+    "totalReviews": 56813,
+    "alreadyFlagged": 21109,
     "dateGuardCatches": 194,
-    "directorMismatch": 1901,
+    "directorMismatch": 1902,
     "tvFilmSignals": 1583,
     "londonSignals": 2362,
-    "offBroadwaySignals": 510,
+    "offBroadwaySignals": 512,
     "yearMismatch": 142,
-    "noPublishDate": 5260
+    "noPublishDate": 5276
   },
   "findings": [
     {
@@ -2592,6 +2592,34 @@
       ]
     },
     {
+      "showId": "an-american-in-paris-tour-2022",
+      "file": "ap--jennifer-farrar.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-graceful-american-paris-pizazz-heart-30268868?singlePage=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-tour-2022",
+      "file": "newsday--linda-winer.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "http://www.newsday.com/entertainment/theater/an-american-in-paris-review-thrilling-musical-1.10239712",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
       "showId": "an-ark-off-broadway-2026",
       "file": "newyorker--emily-nussbaum.json",
       "score": 44,
@@ -3088,20 +3116,6 @@
       "score": 82,
       "publishDate": "November 8, 2012",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/for-annie-actress-on-broadway-the-sun-has-come-out/2012/11/08/69514322-29e1-11e2-aaa5-ac786110c486_story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"martin charnin\" from annie-1997"
-        }
-      ]
-    },
-    {
-      "showId": "annie-tour-2022",
-      "file": "nytimes--laura-collins-hughes.json",
-      "score": 88,
-      "publishDate": "2024-12-17",
-      "url": "https://www.nytimes.com/2024/12/17/theater/annie-review-whoopi-goldberg.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8404,7 +8418,7 @@
     {
       "showId": "company-tour-2023",
       "file": "third-coast-review--nancy-bishop.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2023-11-04",
       "url": "https://thirdcoastreview.com/stages/2023/11/03/stages-review-company-touring-production",
       "findings": [
@@ -67079,7 +67093,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-04-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-les-liaisons-dangereuses-lyttelton-theatre",
       "findings": [
@@ -67093,7 +67107,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "beyondthecurtain--unknown.json",
-      "score": null,
+      "score": 81,
       "publishDate": null,
       "url": "https://www.beyondthecurtain.co.uk/2026/05/les-liaisons-dangereuses-national.html",
       "findings": [
@@ -67177,7 +67191,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 78,
+      "score": 77,
       "publishDate": null,
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/liaisons-dangereuses-review-national-theatre-aidan-turner-lesley-manville-b2950658.html",
       "findings": [
@@ -80407,6 +80421,19 @@
       ]
     },
     {
+      "showId": "the-iceman-cometh-2018",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "April 26th, 2018",
+      "url": "https://www.wsj.com/articles/the-iceman-cometh-and-saint-joan-reviews-stars-in-the-wrong-skies-1524789001",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
       "showId": "the-importance-of-being-earnest-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 91,
@@ -83122,6 +83149,20 @@
       "score": 73,
       "publishDate": "April 27th, 2023",
       "url": "https://www.thewrap.com/oscar-isaac-rachel-brosnahan-sign-in-sidney-brusteins-window-off-broadway-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-sign-in-sidney-brusteins-window-2023",
+      "file": "wsj--charles-isherwood.json",
+      "score": null,
+      "publishDate": "April 28th, 2023",
+      "url": "https://www.wsj.com/articles/the-sign-in-sidney-brusteins-window-review-oscar-isaac-and-rachel-brosnahan-in-a-drama-of-tattered-dreams-efbc3c52",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
