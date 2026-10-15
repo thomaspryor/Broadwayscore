@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T01:23:07.650Z",
+  "timestamp": "2026-10-15T02:19:03.381Z",
   "stats": {
-    "totalReviews": 56598,
+    "totalReviews": 56601,
     "alreadyFlagged": 21056,
     "dateGuardCatches": 211,
-    "directorMismatch": 1908,
+    "directorMismatch": 1909,
     "tvFilmSignals": 1581,
-    "londonSignals": 2347,
+    "londonSignals": 2348,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5197
+    "noPublishDate": 5196
   },
   "findings": [
     {
@@ -462,6 +462,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-1975",
+      "file": "backstage--jean-schiffman.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.backstage.com/magazine/article/review-chorus-line-30227/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
         }
       ]
     },
@@ -86443,6 +86457,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "file": "hollywood-reporter--demetrios-matheou.json",
+      "score": 49,
+      "publishDate": "2019-02-07T16:54:07+00:00",
+      "url": "https://www.hollywoodreporter.com/review/when-we-have-sufficiently-tortured-each-other-theater-1178724",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

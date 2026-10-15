@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-15T01:15:06.486Z",
+    "generatedAt": "2026-10-15T02:14:20.113Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 91,
+    "totalFlagged": 98,
     "highConfidence": 5,
-    "mediumConfidence": 86,
+    "mediumConfidence": 93,
     "lowConfidence": 0,
-    "reassignable": 37
+    "reassignable": 38
   },
   "results": [
     {
@@ -1051,6 +1051,38 @@
       "textSnippet": "  A bright and beckoning path cuts through the fairy-tale thicket of whimsy and woe that is ”Into the Woods,” the musical by Stephen Sondheim and James Lapine that opened last night in a new revival a"
     },
     {
+      "showId": "the-sound-of-music-1998",
+      "showTitle": "The Sound of Music",
+      "showYear": 1998,
+      "file": "hollywood-reporter--unknown.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new production, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "While critics have often been unkind to The Sound of Music, audiences adore the tuneful travails of postulant Maria Rainer and the von Trapp family as much as they do their iconic songs. “My Favorite "
+    },
+    {
+      "showId": "the-sound-of-music-1998",
+      "showTitle": "The Sound of Music",
+      "showYear": 1998,
+      "file": "timeout--unknown.json",
+      "outlet": "Time Out New York",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Friendly warning! Were working hard to be accurate. But these are unusual times, so please check that events are still happening.\n\nThe hills could be more lively in this ponderous touring edition of t"
+    },
+    {
       "showId": "a-delicate-balance-1996",
       "showTitle": "A Delicate Balance",
       "showYear": 1996,
@@ -1079,6 +1111,38 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "Tethered to a window washer’s platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
+    },
+    {
+      "showId": "shadowlands-1990",
+      "showTitle": "Shadowlands",
+      "showYear": 1990,
+      "file": "curtainup--unknown.json",
+      "outlet": "CurtainUp",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "CurtainUp The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nA CurtainUp Review \n \n Shadowlands \n \n By Simon Saltzman\n\nTell you something I've noticed, Jack. Christopher lives th"
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-1985",
+      "showTitle": "The Mystery of Edwin Drood",
+      "showYear": 1985,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "modern references: twitter",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo credit: Betsy Wolfe, left, and Will Chase in “The Mystery of Edwin Drood”\n\nThe Mystery of Edwin Drood 4 stars\n\n\"The Mystery of Edwin Drood,\" inspired by an unfinished Charles Dickens novel, is o"
     },
     {
       "showId": "macbeth-1981",
@@ -1111,6 +1175,21 @@
       "textSnippet": "https://www.nytimes.com/1979/09/26/archives/stage-evita-a-musical-peron-ambitions-progress.htmlShare full articleAdvertisement\n\nTHERE'S an eerily prophetic line close to the very opening of “Evita,” t"
     },
     {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-gin-game-2015",
+      "signals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
+    },
+    {
       "showId": "dracula-1977",
       "showTitle": "Dracula",
       "showYear": 1977,
@@ -1125,6 +1204,22 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
+    },
+    {
+      "showId": "a-chorus-line-1975",
+      "showTitle": "A Chorus Line",
+      "showYear": 1975,
+      "file": "backstage--jean-schiffman.json",
+      "outlet": "Backstage",
+      "criticName": "Jean Schiffman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, restaged",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The revival of the 30-year-old musical A Chorus Line begs two questions: Is it too soon for a comeback (the original Broadway run ended in 1990), and is the show -- about dancers auditioning for, of c"
     },
     {
       "showId": "democracy-2004",
@@ -1419,6 +1514,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES \n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZ"
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "nbcny--robert-kahn.json",
+      "outlet": "NBC New York",
+      "criticName": "Robert Kahn",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "Bright flashes of light and discomforting noises make for a jarring start to Harold Pinter’s 1971 “Old Times,\" which is now enjoying a carefully cultivated revival at Roundabout’s American Airlines Th"
     }
   ]
 }
