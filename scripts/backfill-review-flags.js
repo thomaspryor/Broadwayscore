@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateShowMentioned, validateShowMentionedOrNamedByUrl, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
+const { validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
@@ -124,7 +124,13 @@ for (const showId of showDirs) {
         const show = showsData[showId];
         const showTitle = pickShowTitleForHeuristic(showId, show);
         const fullTextWordCount = fullText.split(/\s+/).filter(w => w.length > 0).length;
-        const showCheck = validateShowMentionedOrNamedByUrl(fullText, showTitle, showId, data);
+        // Plain check on purpose (BRO-5395): url evidence for this flag was
+        // rolled back after the corpus audit (audit-multishow-titlecase.js
+        // --rule=flag, 52 clears) found other-production reviews it would admit
+        // (a 2025 Barbican Seagull under the 2026 Globe show, 2011 London
+        // Clybourne Park under the 2012 Broadway show, a Just for One Day
+        // review under One Day the Musical).
+        const showCheck = validateShowMentioned(fullText, showTitle, showId);
         const guard = evaluateShowMentionGuard(data, fullText, fullTextWordCount, showCheck);
 
         if (guard.action === 'null-text') {

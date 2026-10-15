@@ -1593,9 +1593,11 @@ function publishedNearProduction(publishDate, showId, url) {
 /**
  * validateShowMentioned, plus the BRO-5395 url evidence: when the text never
  * names the show but the review's own url does and it is dated near the
- * production, the show counts as mentioned. Used where showNotMentioned is set
- * or cleared (backfill-review-flags, collect-review-texts) so that flag agrees
- * with assessTextQuality's junk-page checks.
+ * production, the show counts as mentioned. NOT used to set or clear
+ * showNotMentioned: that use was rolled back (BRO-5395) because a title in the
+ * url plus a nearby date does not prove the production; the corpus audit found
+ * other-production reviews it would admit. Kept for audit-multishow-titlecase
+ * --rule=flag.
  */
 function validateShowMentionedOrNamedByUrl(text, showTitle, showId, record) {
   const check = validateShowMentioned(text, showTitle, showId);

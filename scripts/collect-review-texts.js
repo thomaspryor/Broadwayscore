@@ -125,7 +125,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
-const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateShowMentionedOrNamedByUrl, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
@@ -5375,7 +5375,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     } catch (e) { /* shows.json unavailable */ }
     const showTitle = pickShowTitleForHeuristic(showId, showMeta);
     const cleanedWordCount = data.textWordCount || 0;
-    const showCheck = validateShowMentionedOrNamedByUrl(cleanedText, showTitle, showId, data);
+    // Plain check on purpose; see backfill-review-flags.js 1A (BRO-5395 rollback).
+    const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
     const guard = evaluateShowMentionGuard(data, cleanedText, cleanedWordCount, showCheck);
 
     if (guard.action === 'flag-needs-review') {
