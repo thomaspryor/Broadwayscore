@@ -23698,6 +23698,597 @@
           "reason": "previewsStartDate-fill-single-source-unconfirmed"
         }
       ]
+    },
+    {
+      "runAt": "2026-10-15T12:59:36.925Z",
+      "script": "discover-new-shows",
+      "mode": {
+        "dryRun": false
+      },
+      "entries": [
+        {
+          "kind": "held",
+          "id": "downstate-2026",
+          "title": "Downstate",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-10-19"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "the-choir-of-man-marble-arch-off-west-end-2026",
+          "title": "The Choir of Man",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-10T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "angels-bone-west-end-2026",
+          "title": "Angel's Bone",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-10-16T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "the-animals-come-to-the-table-globe-off-west-end-2026",
+          "title": "The Animals Come to the Table",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-11T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "attention-off-west-end-2026",
+          "title": "Attention",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-19T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "bill-bailey-vaudevillean-west-end-2026",
+          "title": "Bill Bailey: Vaudevillean",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-16T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "the-bridge-off-west-end-2026",
+          "title": "The Bridge",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-10-28T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "christmas-carol-goes-wrong-west-end-2026",
+          "title": "Christmas Carol Goes Wrong",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-18T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "cirque-berserk-west-end-2026",
+          "title": "Cirque Berserk",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-10-21T12:50:05+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "death-note-the-musical-off-west-end-2027",
+          "title": "Death Note The Musical",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-03-23T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "dick-whittington-and-his-cat-west-end-2026",
+          "title": "Dick Whittington And His Cat",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-22T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "ebony-scrooge-off-west-end-2026",
+          "title": "Ebony Scrooge",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-24T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "frankenstein-west-end-2027",
+          "title": "Frankenstein",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-04-16T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "global-majority-off-west-end-2026",
+          "title": "Global Majority",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-25T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "insane-asylum-seekers-off-west-end-2026",
+          "title": "Insane Asylum Seekers",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-02-12T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "jesus-christ-superstar-off-west-end-2026",
+          "title": "Jesus Christ Superstar",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-10-16T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "julius-caesar-globe-off-west-end-2026",
+          "title": "Julius Caesar",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-06T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "the-little-match-girl-west-end-2026",
+          "title": "The Little Match Girl",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-03T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "matthew-bournes-cinderella-off-west-end-2026",
+          "title": "Matthew Bourne's Cinderella",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-01T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "mojo-off-west-end-2027",
+          "title": "Mojo",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-03-04T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "nine-night-off-west-end-2026",
+          "title": "Nine Night",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-12T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "nutcracker-west-end-2026",
+          "title": "Nutcracker",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-17T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "one-day-the-musical-west-end-2026",
+          "title": "One Day – The Musical",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-17T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "peter-pan-west-end-2026",
+          "title": "Peter Pan",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-14T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "potted-panto-west-end-2026",
+          "title": "Potted Panto",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-12-06T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
+          "title": "Pulman & Stilgoe: Hooray For Hollywood",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2026-11-03T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "the-quiet-revolution-of-laurent-clerc-off-west-end-2027",
+          "title": "The Quiet Revolution of Laurent Clerc",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-07-09T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "ripples-off-west-end-2026",
+          "title": "Ripples",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-01-21T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "romeo-and-juliet-west-end-2027",
+          "title": "Romeo & Juliet",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-01-14T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "the-seagull-globe-off-west-end-2026",
+          "title": "The Seagull",
+          "field": "previewsStartDate",
+          "value": {
+            "previewsStartDate": "2027-01-15T12:50:06+00:00"
+          },
+          "agreeingSourceCount": null,
+          "reason": "circuit-breaker: 30 changes exceeds absolute threshold 15; 30/55 = 54.5% exceeds percent threshold 50%"
+        },
+        {
+          "kind": "held",
+          "id": "here-there-are-blueberries-2026",
+          "title": "Here There Are Blueberries",
+          "field": "venue",
+          "value": "Barrymore Theatre",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "small-mouth-sounds-2027",
+          "title": "Small Mouth Sounds",
+          "field": "venue",
+          "value": "Barrymore Theatre",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-verge-off-broadway-2026",
+          "title": "The Verge",
+          "field": "venue",
+          "value": "The Public Theater",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "well-see-off-broadway-2026",
+          "title": "We'll See",
+          "field": "venue",
+          "value": "The Public Theater",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+          "title": "the ripple, the wave that carried me home",
+          "field": "venue",
+          "value": "Playwrights Horizons",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-visitors-off-broadway-2026",
+          "title": "The Visitors",
+          "field": "venue",
+          "value": "The Irene Diamond Stage at the Pershing Square Signature Center",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "i-became-we-off-broadway-2026",
+          "title": "I Became We",
+          "field": "venue",
+          "value": "Atlantic Theater Company - Linda Gross Theater",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-kings-critique-off-broadway-2026",
+          "title": "The King's Critique",
+          "field": "venue",
+          "value": "The Romulus Linney Courtyard Theatre at The Pershing Square Signature Center",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "starstuff-off-broadway-2026",
+          "title": "Starstuff",
+          "field": "venue",
+          "value": "59E59 Theaters - Theater C",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-steel-man-off-broadway-2026",
+          "title": "The Steel Man",
+          "field": "venue",
+          "value": "59e59 Theaters - Theater B",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "seven-guitars-off-broadway-2026",
+          "title": "Seven Guitars",
+          "field": "venue",
+          "value": "Lincoln Center Theater - Mitzi E. Newhouse Theater",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "angela-s-mixtape-off-broadway-2026",
+          "title": "Angela's Mixtape",
+          "field": "venue",
+          "value": "Pershing Square Signature Center",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "faydra-off-broadway-2026",
+          "title": "Faydra",
+          "field": "previewsStartDate",
+          "value": "2027-02-02",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-fantasticks-2026",
+          "title": "The Fantasticks",
+          "field": "venue",
+          "value": "Hayes Theatre",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "gloria-2026",
+          "title": "Gloria",
+          "field": "venue",
+          "value": "Hayes Theatre",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "the-choir-of-man-marble-arch-off-west-end-2026",
+          "title": "The Choir of Man",
+          "field": "venue",
+          "value": "The Arts at Marble Arch Powered by TodayTix",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "dissent-off-west-end-2027",
+          "title": "dissent",
+          "field": "venue",
+          "value": "Young Vic (Main House)",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "whats-the-fking-point-off-west-end-2027",
+          "title": "What's the F**king Point?",
+          "field": "venue",
+          "value": "The Maria Theatre",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "gem-of-the-ocean-off-west-end-2027",
+          "title": "Gem of the Ocean",
+          "field": "venue",
+          "value": "Young Vic (Main House)",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "nero-off-west-end-2026",
+          "title": "Nero",
+          "field": "venue",
+          "value": "Southwark Playhouse Elephant",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "amadeus-west-end-2026",
+          "title": "Amadeus",
+          "field": "previewsStartDate",
+          "value": "2027-04-17T12:50:05+00:00",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "bill-bailey-vaudevillean-west-end-2026",
+          "title": "Bill Bailey: Vaudevillean",
+          "field": "venue",
+          "value": "Theatre Royal, Haymarket",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "charlie-and-the-chocolate-factory-west-end-2026",
+          "title": "Charlie and the Chocolate Factory",
+          "field": "previewsStartDate",
+          "value": "2027-06-04T12:50:05+00:00",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "christmas-carol-goes-wrong-west-end-2026",
+          "title": "Christmas Carol Goes Wrong",
+          "field": "venue",
+          "value": "Wyndham’s Theatre",
+          "agreeingSourceCount": 1,
+          "reason": "venue-change-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "king-john-globe-off-west-end-2026",
+          "title": "King John",
+          "field": "previewsStartDate",
+          "value": "2027-02-20T12:50:06+00:00",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "nevermore-off-west-end-2027",
+          "title": "Nevermore",
+          "field": "previewsStartDate",
+          "value": "2027-07-19T12:50:06+00:00",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "suddenly-last-summer-west-end-2027",
+          "title": "Suddenly Last Summer",
+          "field": "previewsStartDate",
+          "value": "2027-02-19",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        },
+        {
+          "kind": "held",
+          "id": "singin-in-the-rain-off-west-end-2027",
+          "title": "Singin' in the Rain",
+          "field": "previewsStartDate",
+          "value": "2027-06-02",
+          "agreeingSourceCount": 1,
+          "reason": "previewsStartDate-fill-single-source-unconfirmed"
+        }
+      ]
     }
   ]
 }
