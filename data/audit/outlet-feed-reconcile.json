@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T04:32:58.496Z",
+  "generatedAt": "2026-10-15T06:44:10.160Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -49,6 +49,11 @@
       "openingDate": "2026-10-15"
     },
     {
+      "id": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "openingDate": "2026-10-13"
+    },
+    {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
@@ -71,20 +76,12 @@
   ],
   "skipped": [
     {
-      "showId": "the-ask-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 73,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
@@ -96,6 +93,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "plays-international",
+      "error": "AggregateError"
     },
     {
       "outletId": "musical-theatre-review",
@@ -114,9 +115,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 699,
-  "matchedGaps": 6,
-  "possibleGaps": 3,
+  "itemsScanned": 692,
+  "matchedGaps": 7,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -152,6 +153,15 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear-ObL3Q",
       "headline": "A Ghost in Your Ear",
+      "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "title": "ANON – a tempest at our kitchen table",
+      "level": "matched",
+      "outletId": "frontmezzjunkies",
+      "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
+      "headline": "“ANON: a tempest at our kitchen table” Unleashes Suburban Panic at MCC Theater",
       "publishDate": "2026-10-15"
     },
     {
@@ -198,6 +208,15 @@
       "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
       "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
       "publishDate": "2026-10-13"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "level": "possible",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-application-39-aviva-studios-tour",
+      "headline": "Review: APPLICATION 39, Aviva Studios - Tour",
+      "publishDate": "2026-10-10"
     }
   ]
 }

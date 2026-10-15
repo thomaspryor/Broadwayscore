@@ -891,19 +891,6 @@
     "queuedAt": "2026-10-14T22:06:59.547Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:a-small-and-quiet-light-off-west-end-2026",
-    "title": "Review gap — \"A Small And Quiet Light\" missing 1 cited review(s)",
-    "description": "A Small And Quiet Light (a-small-and-quiet-light-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-small-and-quiet-light-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-14T22:55:23.091Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:affluenza-off-west-end-2026",
     "title": "Review gap — \"Affluenza\" missing 1 cited review(s)",
     "description": "Affluenza (affluenza-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=affluenza-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1321,6 +1308,60 @@
       }
     ],
     "queuedAt": "2026-10-15T06:15:07.415Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h (still open — BRO-3030)",
+    "description": "Still firing after 57 notifications since it was filed. Tracked at BRO-3030.\n\n139 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-3030",
+    "fields": [
+      {
+        "name": "As You Like It — sunday-times (44h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"as-you-like-it-globe-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Hamilton — times-uk (44h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"hamilton-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Les Misérables — times-uk (44h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"les-miserables-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Mrs. Doubtfire — theatrely (374h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"mrs-doubtfire-tour-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Mrs. Doubtfire — thewrap (374h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"mrs-doubtfire-tour-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Mrs. Doubtfire — timeout (374h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"mrs-doubtfire-tour-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Mrs. Doubtfire — variety (374h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"mrs-doubtfire-tour-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Mrs. Doubtfire — vulture (374h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"mrs-doubtfire-tour-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "My Son’s A Queer (But What Can You Do?) — standard (134h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"my-sons-a-queer-but-what-can-you-do-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "My Son’s A Queer (But What Can You Do?) — telegraph (134h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"my-sons-a-queer-but-what-can-you-do-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-10-15T06:44:09.911Z"
   },
   {
     "conditionKey": "express-retry-still-thin:memoirs-of-amorous-gentlemen-off-broadway-2026",
