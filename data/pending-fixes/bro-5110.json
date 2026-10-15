@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5110",
   "planId": "454ff110-be55-471d-a1ef-2f341ea44cd7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-15T14:45:39.213Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,18 @@
         "reason": "Slug-derived title dropped its function words; Orange Tree lists the production as \"Wives as they were and Maids as they are\" (observed in owe-promotion-log 2026-10-14)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-15T15:59:47.969Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled murder-cathedral-off-west-end-2026: \"Murder Cathedral\" -> \"Murder in the Cathedral\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled wives-maids-off-west-end-2026: \"Wives Maids\" -> \"Wives as They Were and Maids as They Are\""
+    }
+  ]
 }
