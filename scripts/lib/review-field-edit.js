@@ -100,10 +100,12 @@ function isSelfSyndicationPointer(record, ctx = {}) {
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
-  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && isSelfSyndicationPointer(record, ctx)
-    ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file'),
-  syndicatedPrimaryFile: (v, record, ctx = {}) => (v === null && isSelfSyndicationPointer(record, ctx)
-    ? null : 'syndicatedPrimaryFile may only be cleared (null), and only when it points at this same file'),
+  // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
+  // the primary is excluded for a reason that does not apply to this copy.
+  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true)
+    ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
+  syndicatedPrimaryFile: (v, record, ctx = {}) => (v === null && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true)
+    ? null : 'syndicatedPrimaryFile may only be cleared (null), and only when it points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
   crossOutletDuplicate: (v) => (v === false ? null : 'crossOutletDuplicate may only be cleared (false)'),
   isNotReview: (v, record) => (v === false && record.isNotReviewManualClear === true
     ? null : 'isNotReview may only be cleared (false), after isNotReviewManualClear is set'),
@@ -429,6 +431,32 @@ function predictedExcerptStrips(abs, record) {
   return guard.excerptFieldsToStrip(self, record, siblings).fields;
 }
 
+/**
+ * BRO-4415: would syndicated-duplicate-heal clear this record's mark? Judged on the record as a marked secondary, so the
+ * second action of a pair (pointer after flag, or the reverse) is still recognised. 'keep' on any problem (no shows.json).
+ */
+function syndicatedHealDecision(reviewTextsDir, ctx, record) {
+  const fs = require('fs');
+  const path = require('path');
+  try {
+    const showsPath = path.join(__dirname, '..', '..', 'data', 'shows.json');
+    const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const show = (Array.isArray(shows) ? shows : shows.shows).find((s) => s.id === ctx.folder);
+    if (!show) return 'keep';
+    const dir = path.join(reviewTextsDir, ctx.folder);
+    const { explainExclusion } = require('./review-guards');
+    const { syndicatedDuplicateHealPlan } = require('./syndicated-duplicate-heal');
+    const plan = syndicatedDuplicateHealPlan({
+      data: { ...record, isSyndicatedDuplicate: true },
+      file: ctx.file,
+      folder: ctx.folder,
+      io: { exists: (f) => fs.existsSync(path.join(dir, f)), read: (f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) },
+      explain: (d, f) => explainExclusion(d, show, path.join(dir, f)),
+    });
+    return plan ? plan.decision : 'keep';
+  } catch { return 'keep'; }
+}
+
 function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const fs = require('fs');
   const path = require('path');
@@ -451,6 +479,10 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
         reviewTextsDir, folder: ctx.folder, url: record.url, publishDate: record.publishDate,
       });
     }
+  }
+  if ((action.field === 'isSyndicatedDuplicate' || action.field === 'syndicatedPrimaryFile')
+      && typeof record.syndicatedPrimaryFile === 'string' && !isSelfSyndicationPointer(record, ctx)) {
+    ctx.syndicatedHeal = syndicatedHealDecision(reviewTextsDir, ctx, record) === 'clear';
   }
   const res = applyReviewFieldEdit(record, action, stamp, ctx);
   if (!res.ok) return res;

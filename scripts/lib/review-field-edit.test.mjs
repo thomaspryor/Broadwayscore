@@ -589,3 +589,15 @@ test('originalScore -> null removes a rating that was re-added to an already-cle
   assert.equal(after.originalScoreCleared, true);
   assert.equal(after.fullText.length, 400, 'nothing else on the record changes');
 });
+
+test('BRO-4415: a syndication mark naming another file clears only on the heal decision (ctx.syndicatedHeal)', () => {
+  const rec = { isSyndicatedDuplicate: true, syndicatedPrimaryFile: 'bug-2026/cbsnews--shania-russell.json' };
+  const ctx = { folder: 'bug-2026', file: 'ew--shania-russell.json' };
+  const flag = { field: 'isSyndicatedDuplicate', oldValue: true, newValue: false };
+  const ptr = { field: 'syndicatedPrimaryFile', oldValue: rec.syndicatedPrimaryFile, newValue: null };
+  for (const a of [flag, ptr]) {
+    assert.equal(applyReviewFieldEdit(rec, a, stamp, ctx).ok, false, `${a.field}: refused without the heal decision`);
+    assert.equal(applyReviewFieldEdit(rec, a, stamp, { ...ctx, syndicatedHeal: true }).ok, true, `${a.field}: allowed with it`);
+  }
+  assert.equal(applyReviewFieldEdit(rec, { ...flag, newValue: true }, stamp, { ...ctx, syndicatedHeal: true }).ok, false, 'never sets the mark');
+});
