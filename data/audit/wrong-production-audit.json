@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T05:51:52.543Z",
+  "timestamp": "2026-10-15T06:55:54.766Z",
   "stats": {
-    "totalReviews": 56632,
-    "alreadyFlagged": 21062,
-    "dateGuardCatches": 210,
-    "directorMismatch": 1911,
+    "totalReviews": 56628,
+    "alreadyFlagged": 21055,
+    "dateGuardCatches": 211,
+    "directorMismatch": 1910,
     "tvFilmSignals": 1581,
     "londonSignals": 2352,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5199
+    "noPublishDate": 5200
   },
   "findings": [
     {
@@ -3298,20 +3298,6 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "file": "thestage--dave-fargnoli.json",
-      "score": 74,
-      "publishDate": "2026-10-07",
-      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-royal-shakespeare-theatre-stratford-upon-avon-daniel-evans-jonathan-groff",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel evans\" from all-male-as-you-like-it-regional-2026"
-        }
-      ]
-    },
-    {
       "showId": "avenue-q-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 82,
@@ -5046,6 +5032,19 @@
       "score": 79,
       "publishDate": "2026-10-05",
       "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "the-saratogian--bob-goepfert.json",
+      "publishDate": "2026-10-14",
+      "url": "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -38381,20 +38380,6 @@
       "score": 90,
       "publishDate": null,
       "url": "https://www.jonathanbaz.com/2025/05/the-comedy-about-spies-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "london-theatre--aliya-al-hassan.json",
-      "score": 89,
-      "publishDate": "2025-05-14",
-      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -82570,6 +82555,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-porch-on-windy-hill-off-broadway-2026",
+      "file": "theater-life--alix-cohen.json",
+      "score": 76,
+      "publishDate": "2025-09-19T16:38:41",
+      "url": "https://theaterlife.com/the-porch-on-windy-hill-a-new-play-with-old-music/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 127d before show (2025-09-19T16:38:41 vs 2026-01-25)"
         }
       ]
     },
