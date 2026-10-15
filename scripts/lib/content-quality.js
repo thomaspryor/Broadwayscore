@@ -971,15 +971,46 @@ const COMMON_WORD_SHOW_TITLES = new Set([
   'ambassador', 'steaming', 'monument', 'consumed', 'anonymous',
 ]);
 
+// BRO-5373: show titles that are ordinary words ("Tender", "Local", "Miles",
+// "The Estate", "The Story") matched lowercase prose and marked real reviews as
+// multi-show junk. A junk index or nav page prints titles in Title Case, so
+// requiring that keeps the detector's purpose. Off until the corpus audit
+// (scripts/audit-multishow-titlecase.js) has measured the flips.
+const MULTI_SHOW_REQUIRE_TITLE_CASE = false;
+const TITLE_CASE_SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'from', 'in', 'into', 'nor', 'of', 'on', 'or', 'over', 'the', 'to', 'upon', 'with']);
+
+/**
+ * True when every word of a matched title span, small words aside, starts with
+ * an uppercase letter ("The Estate", "Everybody's Talking About Jamie"), so
+ * prose like "the estate" or "miles around" does not count as a title.
+ * A sentence-initial single word ("Middle ...") still counts.
+ */
+function titleCaseMatch(span) {
+  const words = String(span).split(/\s+/).filter(Boolean);
+  let checked = 0;
+  for (const [i, w] of words.entries()) {
+    const letter = (w.match(/\p{L}/u) || [])[0];
+    if (!letter) continue;
+    if (i > 0 && TITLE_CASE_SMALL_WORDS.has(w.toLowerCase())) continue;
+    checked++;
+    if (letter === letter.toLowerCase()) return false;
+  }
+  return checked > 0;
+}
+
 /**
  * Detect if text contains references to multiple different Broadway shows
  * This indicates a 404/index page or navigation junk, not a single review
  *
  * @param {string} text - Text to check
  * @param {string} [expectedShowId] - The show this review should be about (excluded from count)
+ * @param {{ requireTitleCase?: boolean }} [opts] - requireTitleCase: a title
+ *   counts only where it appears in Title Case (see titleCaseMatch, BRO-5373).
+ *   Defaults to MULTI_SHOW_REQUIRE_TITLE_CASE.
  * @returns {{ detected: boolean, showsFound: string[], reason: string | null }}
  */
-function detectMultiShowContent(text, expectedShowId) {
+function detectMultiShowContent(text, expectedShowId, opts = {}) {
+  const requireTitleCase = opts.requireTitleCase === undefined ? MULTI_SHOW_REQUIRE_TITLE_CASE : !!opts.requireTitleCase;
   if (!text || text.length < 200) {
     return { detected: false, showsFound: [], reason: null };
   }
@@ -1027,8 +1058,15 @@ function detectMultiShowContent(text, expectedShowId) {
 
     // Use word-boundary regex instead of substring matching
     const escaped = show.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`\\b${escaped}\\b`, 'i');
-    return regex.test(text);
+    if (!requireTitleCase) {
+      const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+      return regex.test(text);
+    }
+    const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+    for (const m of text.matchAll(regex)) {
+      if (titleCaseMatch(m[0])) return true;
+    }
+    return false;
   });
 
   // Scale threshold by text length — critics routinely reference other shows for comparison
@@ -1497,7 +1535,7 @@ function hasReviewContent(text) {
  * @param {string} [showTitle] - Optional show title for additional checks (human readable)
  * @returns {{ quality: 'valid' | 'garbage' | 'suspicious', confidence: 'high' | 'medium' | 'low', issues: string[] }}
  */
-function assessTextQuality(text, showId, showTitle) {
+function assessTextQuality(text, showId, showTitle, opts = {}) {
   const issues = [];
 
   // First check if it's garbage
@@ -1517,7 +1555,7 @@ function assessTextQuality(text, showId, showTitle) {
   const showMentionedEarly = showToCheck && text.length >= 200
     ? validateShowMentioned(text, showTitle, showId)
     : { valid: true };
-  const multiShowCheck = detectMultiShowContent(text, showId);
+  const multiShowCheck = detectMultiShowContent(text, showId, { requireTitleCase: opts.requireTitleCase });
   if (multiShowCheck.detected && !showMentionedEarly.valid) {
     return {
       quality: 'garbage',
@@ -3782,6 +3820,7 @@ module.exports = {
   validateShowMentioned,
   validateContentMentionsShow,
   detectMultiShowContent,
+  titleCaseMatch,
   detectConcatenatedArticles,
   // Content tier classification (5-tier taxonomy)
   classifyContentTier,

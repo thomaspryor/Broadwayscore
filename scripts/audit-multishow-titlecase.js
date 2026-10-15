@@ -1,0 +1,81 @@
+#!/usr/bin/env node
+/**
+ * audit-multishow-titlecase.js — read-only (BRO-5373).
+ *
+ * content-quality detectMultiShowContent counted show titles that are ordinary
+ * words ("Tender", "Local", "The Estate") wherever they appeared in lowercase
+ * prose, and assessTextQuality then called real reviews garbage when the body
+ * also never printed the show's title (Standing at the Sky's Edge 2023,
+ * Telegraph and The Stage: both describe Park Hill without naming the show).
+ *
+ * For every review file with fullText this runs assessTextQuality with the
+ * show's real title twice, with and without requireTitleCase, and reports the
+ * files whose verdict changes: show, file, outlet, length, verdict before and
+ * after, and the titles that stop counting. Ids, outlets and titles only, no
+ * review text.
+ *
+ * Usage: node scripts/audit-multishow-titlecase.js [--show=a,b] [--limit=N] [--json]
+ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { assessTextQuality, detectMultiShowContent } = require('./lib/content-quality');
+
+const ROOT = path.join(__dirname, '..');
+const args = process.argv.slice(2);
+const val = (n) => { const a = args.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
+const onlyShows = val('show') ? val('show').split(',') : null;
+const limit = Number(val('limit') || 200);
+const asJson = args.includes('--json');
+
+function main() {
+  const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
+  const titleById = Object.fromEntries((Array.isArray(raw) ? raw : (raw.shows || [])).map((s) => [s.id, s.title]));
+  const textsDir = path.join(ROOT, 'data', 'review-texts');
+  if (!fs.existsSync(textsDir)) { console.error('data/review-texts missing'); process.exit(1); }
+  const shows = onlyShows || fs.readdirSync(textsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+
+  let scanned = 0;
+  const transitions = {};
+  const flips = [];
+  for (const show of shows) {
+    const dir = path.join(textsDir, show);
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort()) {
+      let r;
+      try { r = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
+      const text = typeof r.fullText === 'string' ? r.fullText : '';
+      if (text.length < 200) continue;
+      scanned++;
+      const title = titleById[show] || null;
+      const before = assessTextQuality(text, show, title, { requireTitleCase: false });
+      const after = assessTextQuality(text, show, title, { requireTitleCase: true });
+      if (before.quality === after.quality) continue;
+      const key = `${before.quality} -> ${after.quality}`;
+      transitions[key] = (transitions[key] || 0) + 1;
+      const was = detectMultiShowContent(text, show, { requireTitleCase: false }).showsFound;
+      const now = new Set(detectMultiShowContent(text, show, { requireTitleCase: true }).showsFound);
+      flips.push({
+        show, file, outlet: r.outletId || null, chars: text.length,
+        before: before.quality, after: after.quality,
+        beforeIssue: (before.issues || [])[0] || null,
+        droppedTitles: was.filter((t) => !now.has(t)).slice(0, 8),
+      });
+    }
+  }
+
+  if (asJson) {
+    console.log(JSON.stringify({ scanned, flips: flips.length, transitions, rows: flips.slice(0, limit) }, null, 2));
+    return;
+  }
+  console.log(`files with fullText scanned: ${scanned}`);
+  console.log(`verdict changes with requireTitleCase: ${flips.length}`);
+  console.log('by transition:', JSON.stringify(transitions));
+  console.log('\nshow | file | outlet | chars | before -> after | titles that stop counting');
+  for (const f of flips.slice(0, limit)) {
+    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${f.droppedTitles.join(', ')}`);
+  }
+}
+
+if (require.main === module) main();
