@@ -51,6 +51,15 @@ function showFor(id) {
   }
   return _showsById[id] || null;
 }
+// BRO-5395: why the LLM scorer's unscored queue skips a file
+// (scoring-queue-counts unscoredSkipReason: already scored, text-gate block,
+// sticky rejection, not scoreable, no scorable text), or null when it would score it.
+function scorerSkipFor(r, show, filePath) {
+  try {
+    const showRec = showFor(show);
+    return require('./lib/scoring-queue-counts').unscoredSkipReason(r, { show: showRec, showTitle: showRec ? showRec.title : undefined, filePath });
+  } catch (e) { return `error: ${e.message}`; }
+}
 function exclusionFor(r, show, filePath) {
   try {
     return require('./lib/review-guards').explainExclusion(r, showFor(show), filePath);
@@ -85,6 +94,7 @@ for (const show of shows) {
       text: String(r.fullText || '').replace(/\s+/g, ' ').slice(0, 160),
       llmScore: r.llmScore && r.llmScore.score !== undefined ? r.llmScore.score : null,
       excludedBy: exclusionFor(r, show, path.join(dir, f)),
+      scorerSkip: scorerSkipFor(r, show, path.join(dir, f)),
       ...(findTerms ? { find: findOffsets(String(r.fullText || ''), findTerms) } : {}),
     }));
   }
