@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-15T15:18:06.727Z",
+  "timestamp": "2026-10-15T15:29:58.470Z",
   "stats": {
-    "totalReviews": 56740,
-    "alreadyFlagged": 21073,
-    "dateGuardCatches": 201,
+    "totalReviews": 56741,
+    "alreadyFlagged": 21075,
+    "dateGuardCatches": 200,
     "directorMismatch": 1898,
     "tvFilmSignals": 1584,
     "londonSignals": 2359,
@@ -29711,6 +29711,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "latimes--charles-mcnulty.json",
+      "score": 87,
       "publishDate": "2025-06-20",
       "url": "https://www.latimes.com/entertainment-arts/story/2025-06-20/parade-theater-review-musical-drama-tony-awards-alfred-uhry-jason-robert-brown",
       "findings": [
@@ -29724,6 +29725,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "new-city-stage--dennis-polkow.json",
+      "score": 90,
       "publishDate": "2025-08-11",
       "url": "https://www.newcitystage.com/2025/08/11/hope-for-the-hopeless-a-review-of-broadway-in-chicagos-parade/",
       "findings": [
@@ -76328,20 +76330,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "stuffed-off-west-end-2026",
-      "file": "deadline--damon-wise.json",
-      "score": null,
-      "publishDate": "2026-09-11",
-      "url": "https://deadline.com/2026/09/stuffed-review-jodie-comer-harry-melling-theo-rhys-tiff-1237098835/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 32d before show (2026-09-11 vs 2026-10-13)"
         }
       ]
     },
