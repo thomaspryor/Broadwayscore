@@ -531,5 +531,31 @@
       }
     ],
     "queuedAt": "2026-10-15T16:06:04.734Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-10-15T15:52:38.112012+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Why does the Daily Mail count as Tier 1? A lot of the time they clearly have no idea what they're talking about, take Romeo & Juliet with Sadie Sink as an example, they keep talking about the play being Sink's stage debut when she's a Tony nominee? She's been acting on broadway since she was young. How is that a Tier 1 theatre critic?\r\nIt shouldn't be in Tier 1: \r\nTier 1 (The Authority)\tThe Guardian, The Financial Times, The Times, The Stage\tThese outlets feature highly respected, dedicated chie\"",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38786144402",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-10-15T18:32:21.509Z"
   }
 ]
