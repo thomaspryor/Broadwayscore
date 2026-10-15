@@ -26,6 +26,11 @@
  * --rule=flag (BRO-5395) lists files carrying showNotMentioned that the url
  * evidence would clear (validateShowMentionedOrNamedByUrl valid, plain
  * validateShowMentioned not), i.e. what backfill-review-flags would clear.
+ * Each row also names what would STILL exclude the file once showNotMentioned
+ * is cleared (explainExclusion on a copy without it): 14 of the 43 rows
+ * BRO-5395 cleared by hand stayed out on a second flag (wrongShow from the same
+ * missing-title check, a duplicate copy, a stale rejectedAt), which the first
+ * sort did not see.
  *
  * Usage: node scripts/audit-multishow-titlecase.js [--rule=titlecase|url|flag] [--show=a,b] [--shard=i/n] [--limit=N] [--json]
  */
@@ -33,6 +38,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { explainExclusion } = require('./lib/review-guards');
 const { assessTextQuality, detectMultiShowContent, validateShowMentioned, validateShowMentionedOrNamedByUrl, qualityOptsFor } = require('./lib/content-quality');
 
 const ROOT = path.join(__dirname, '..');
@@ -47,9 +53,19 @@ const shardArg = val('shard');
 const [shardIdx, shardCount] = shardArg ? shardArg.split('/').map(Number) : [0, 1];
 if (!(shardCount >= 1 && shardIdx >= 0 && shardIdx < shardCount)) { console.error('--shard must be i/n with 0 <= i < n'); process.exit(2); }
 
+// What would keep the file out of reviews.json once showNotMentioned is cleared.
+function stillExcludedBy(r, show, filePath) {
+  try {
+    const why = explainExclusion({ ...r, showNotMentioned: false }, show, filePath);
+    return why || null;
+  } catch (e) { return `error: ${e.message}`; }
+}
+
 function main() {
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
-  const titleById = Object.fromEntries((Array.isArray(raw) ? raw : (raw.shows || [])).map((s) => [s.id, s.title]));
+  const showList = Array.isArray(raw) ? raw : (raw.shows || []);
+  const titleById = Object.fromEntries(showList.map((s) => [s.id, s.title]));
+  const showById = Object.fromEntries(showList.map((s) => [s.id, s]));
   const textsDir = path.join(ROOT, 'data', 'review-texts');
   if (!fs.existsSync(textsDir)) { console.error('data/review-texts missing'); process.exit(1); }
   const shows = (onlyShows || fs.readdirSync(textsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort())
@@ -99,6 +115,7 @@ function main() {
         beforeIssue: (before.issues || [])[0] || null,
         droppedTitles: was.filter((t) => !now.has(t)).slice(0, 8),
         url: rule !== 'titlecase' ? `${r.publishDate || 'no-date'} ${r.url || 'no-url'}` : undefined,
+        stillExcludedBy: rule === 'flag' ? stillExcludedBy(r, showById[show], path.join(dir, file)) : undefined,
       });
     }
   }
@@ -112,8 +129,9 @@ function main() {
   console.log('by transition:', JSON.stringify(transitions));
   console.log('\nshow | file | outlet | chars | before -> after | titles that stop counting');
   for (const f of flips.slice(0, limit)) {
-    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${rule !== 'titlecase' ? `${f.beforeIssue} | ${f.url}` : f.droppedTitles.join(', ')}`);
+    console.log(`${f.show} | ${f.file} | ${f.outlet} | ${f.chars} | ${f.before} -> ${f.after} | ${rule !== 'titlecase' ? `${f.beforeIssue} | ${f.url}` : f.droppedTitles.join(', ')}${rule === 'flag' ? ` | still excluded by: ${f.stillExcludedBy || 'nothing'}` : ''}`);
   }
 }
 
 if (require.main === module) main();
+module.exports = { stillExcludedBy };
