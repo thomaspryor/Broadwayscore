@@ -287,5 +287,27 @@
       }
     ],
     "queuedAt": "2026-10-15T13:18:16.633Z"
+  },
+  {
+    "conditionKey": "mezzanine:session-token-expired",
+    "title": "Mezzanine Scraper Failed — Session Token Expired",
+    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** The owner renews it on the iPhone from the signed renewal link on BRO-5235 (scripts/mezzanine-token.js, posted by the step above); no Mac or GitHub secret edit needed.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38746239808",
+    "decision": true,
+    "decisionPrompt": "Mezzanine Scraper Failed — Session Token Expired: open the Reconnect Mezzanine link emailed to you and follow the iPhone steps there (about 10 minutes).",
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Action Required",
+        "value": "Owner: Reconnect Mezzanine link (BRO-5235)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38746239808)"
+      }
+    ],
+    "queuedAt": "2026-10-15T13:51:58.779Z"
   }
 ]
