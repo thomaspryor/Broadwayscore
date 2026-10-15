@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T01:02:21.193Z",
+  "timestamp": "2026-10-15T01:23:07.650Z",
   "stats": {
-    "totalReviews": 56581,
-    "alreadyFlagged": 21053,
-    "dateGuardCatches": 210,
+    "totalReviews": 56598,
+    "alreadyFlagged": 21056,
+    "dateGuardCatches": 211,
     "directorMismatch": 1908,
-    "tvFilmSignals": 1579,
-    "londonSignals": 2345,
+    "tvFilmSignals": 1581,
+    "londonSignals": 2347,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5194
+    "noPublishDate": 5197
   },
   "findings": [
     {
@@ -791,6 +791,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "file": "hauntedattractionnetwork--philip-hernandez.json",
+      "publishDate": "2026-10-14",
+      "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -7817,6 +7830,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2019 (0x). 2026 matches production: choir-boy-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "broadwayworld--kat-mokrynski.json",
+      "score": 86,
+      "publishDate": "2025-12-16",
+      "url": "https://www.broadwayworld.com/westend/article/Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 367d before show (2025-12-16 vs 2026-12-18)"
         }
       ]
     },
@@ -19570,7 +19597,7 @@
       "file": "mail-on-sunday--robert-gore-langton.json",
       "score": 97,
       "publishDate": "2025-07-27",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/index.html",
+      "url": "",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25457,6 +25484,19 @@
       ]
     },
     {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "amnewscurtainraiser--unknown.json",
+      "publishDate": null,
+      "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "merrily-we-roll-along-2023",
       "file": "nypost--johnny-oleksinski.json",
       "score": 97,
@@ -26842,7 +26882,7 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
-      "file": "london-box-office--unknown.json",
+      "file": "london-box-office--stuart-king.json",
       "score": 89,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-about-nothing-theatre-royal-drury-lane-review",
@@ -26931,7 +26971,7 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
-      "file": "radio-times--unknown.json",
+      "file": "radio-times--olivia-garrett.json",
       "score": 97,
       "publishDate": "2025-02-21",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/much-ado-about-nothing-review/",
@@ -27043,7 +27083,7 @@
     },
     {
       "showId": "music-city-off-broadway-2026",
-      "file": "nytg--unknown.json",
+      "file": "nytg--caroline-cao.json",
       "score": 74,
       "publishDate": "2026-06-24",
       "url": "https://www.newyorktheatreguide.com/reviews/music-city-off-broadway-review",
@@ -28323,7 +28363,7 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
-      "file": "theatermania--unknown.json",
+      "file": "theatermania--zachary-stewart.json",
       "score": 91,
       "publishDate": "2024-02-09",
       "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
@@ -70587,7 +70627,7 @@
     },
     {
       "showId": "next-to-normal-west-end-2024",
-      "file": "beyondthecurtain--unknown.json",
+      "file": "beyondthecurtain--connie-bole.json",
       "score": 92,
       "publishDate": "2024-07-19",
       "url": "https://www.beyondthecurtain.co.uk/2024/07/next-to-normal-review.html",
@@ -70643,7 +70683,7 @@
     },
     {
       "showId": "next-to-normal-west-end-2024",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--marianka-swain.json",
       "score": 84,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/next-to-normal-review-donmar-warehouse",
@@ -75341,6 +75381,19 @@
       ]
     },
     {
+      "showId": "some-woman-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/some-woman/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "soul-doctor-2013",
       "file": "vulture--jesse-green.json",
       "score": 45,
@@ -77871,6 +77924,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bodyguard-tour-2026",
+      "file": "motif--bob-abelman.json",
+      "publishDate": "2026-10-14",
+      "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
