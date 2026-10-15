@@ -454,8 +454,13 @@ function findSameHouseTokenMatch(candidate, pool) {
  * @returns {{previewsStartDate?: string, closingDate?: string, title?: string, type?: string}|null}
  */
 function datedBackfillFor(candidate, row, venueVocabulary) {
-  if (!isDatedListingCandidate(candidate) || !row || rowWindow(row)) return null;
-  if (row.status && row.status !== 'announced') return null;
+  if (!isDatedListingCandidate(candidate) || !row) return null;
+  // BRO-5110 — the title completion does not depend on the row being an
+  // undated 'announced' stub. A row that already carried dates (from
+  // TodayTix, a hand add, an earlier backfill) kept its slug-truncated
+  // title for weeks because this function returned here.
+  const title = titleCompletionFor(candidate, row, venueVocabulary);
+  if (rowWindow(row) || (row.status && row.status !== 'announced')) return title ? title : null;
   const run = listingRunDates(candidate);
   // An undated stub's id carries the year it was minted (discovery mints the
   // current year when it has no dates), so a run starting later than the
@@ -471,7 +476,7 @@ function datedBackfillFor(candidate, row, venueVocabulary) {
   const patch = {};
   if (run.previewsStartDate && row.previewsStartDate == null) patch.previewsStartDate = run.previewsStartDate;
   if (run.closingDate && row.closingDate == null) patch.closingDate = run.closingDate;
-  if (Object.keys(patch).length === 0) return null;
+  if (Object.keys(patch).length === 0) return title ? title : null;
   // The dated row will leave 'announced' (update-show-status Check 2e), where
   // a type is required: take it from the venue's genre label when that label
   // says what the show is (never a guess).
@@ -479,13 +484,32 @@ function datedBackfillFor(candidate, row, venueVocabulary) {
     const t = knownShowType(candidate.title, candidate.listingGenre);
     if (t) patch.type = t;
   }
-  const ct = tokensWithoutYears(candidate.title);
-  const rt = tokensWithoutYears(row.title);
-  if (rt.size > 0 && ct.size > rt.size && [...rt].every(t => ct.has(t)) && !/[:(]|\s[-–—]\s/.test(candidate.title)) {
-    const norm = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary });
-    if (!norm.manualReview && norm.title && norm.title !== row.title) patch.title = norm.title;
-  }
+  if (title) patch.title = title.title;
   return patch;
+}
+
+/**
+ * BRO-5110 — the full title a confirmed dated listing supplies for a row
+ * whose title is a slug-derived truncation of it ("Twenty Thousand Streets"
+ * → "Twenty Thousand Streets Under the Sky"). The dated title's words must
+ * strictly contain the row's (two words at least on the row side), it
+ * carries no subtitle/venue tag (":" or "(" or a spaced dash), and it
+ * normalizes without a manual-review flag. Case/punctuation-only
+ * differences stay with retitle-show. The id and slug never change.
+ *
+ * @returns {{title: string}|null}
+ */
+function titleCompletionFor(candidate, row, venueVocabulary) {
+  if (!candidate || !row || typeof candidate.title !== 'string' || typeof row.title !== 'string') return null;
+  if (/[:(]|\s[-–—]\s/.test(candidate.title)) return null;
+  // "Mortal Wounds at St Mary Magdalene Church" is the show plus a venue tag.
+  if (/\s(at|@)\s/i.test(candidate.title) && !/\s(at|@)\s/i.test(row.title)) return null;
+  const rt = tokensWithoutYears(row.title);
+  const ct = tokensWithoutYears(candidate.title);
+  if (rt.size < 2 || ct.size <= rt.size || ![...rt].every(t => ct.has(t))) return null;
+  const norm = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary });
+  if (norm.manualReview || !norm.title || norm.title === row.title) return null;
+  return { title: norm.title };
 }
 
 /**
@@ -1077,9 +1101,10 @@ async function evaluateCandidates(candidates, ctx) {
         if (patch) {
           const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, datedConfigs, todayIso: now().toISOString().slice(0, 10) });
           if (decision.confirmed) {
-            backfills.push({ candidate: c, id: existingMatch.match.id, patch, sourceUrl: typeof decision.page === 'string' ? decision.page : null });
+            backfills.push({ candidate: c, id: existingMatch.match.id, rowTitle: existingMatch.match.title, patch, sourceUrl: typeof decision.page === 'string' ? decision.page : null });
             if (patch.previewsStartDate) existingMatch.match.previewsStartDate = patch.previewsStartDate;
             if (patch.closingDate) existingMatch.match.closingDate = patch.closingDate;
+            if (patch.title) existingMatch.match.title = patch.title;
           }
         }
         prune(c, 'skip-duplicate', `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})`, { matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
@@ -1392,15 +1417,20 @@ async function main(argv = process.argv.slice(2), io = {}) {
     const byId = new Map(showsData.shows.map(s => [s.id, s]));
     for (const b of backfills) {
       const row = byId.get(b.id);
-      if (!row || rowWindow(row) || row.status !== 'announced') continue;
+      if (!row) continue;
       const set = {};
       const oldTitle = row.title;
-      for (const k of ['previewsStartDate', 'closingDate']) {
-        if (b.patch[k] && row[k] == null) { row[k] = b.patch[k]; set[k] = b.patch[k]; }
+      // Dates and type only ever fill an undated 'announced' stub (BRO-4433).
+      if (!rowWindow(row) && row.status === 'announced') {
+        for (const k of ['previewsStartDate', 'closingDate']) {
+          if (b.patch[k] && row[k] == null) { row[k] = b.patch[k]; set[k] = b.patch[k]; }
+        }
+        if (Object.keys(set).length > 0 && b.patch.type && row.type == null) { row.type = b.patch.type; set.type = b.patch.type; }
       }
+      // BRO-5110 — the full title applies to any status, compare-and-set on the
+      // title the patch was computed from so a hand edit is never overwritten.
+      if (b.patch.title && row.title === b.rowTitle) { row.title = b.patch.title; set.title = b.patch.title; }
       if (Object.keys(set).length === 0) continue;
-      if (b.patch.title) { row.title = b.patch.title; set.title = b.patch.title; }
-      if (b.patch.type && row.type == null) { row.type = b.patch.type; set.type = b.patch.type; }
       applied.push({ ...b, set, oldTitle });
     }
   }
@@ -1478,6 +1508,7 @@ module.exports = {
   findSameHouseTokenMatch,
   findDuplicate,
   datedBackfillFor,
+  titleCompletionFor,
   listingRunDates,
   evaluateCandidates,
   stageGuardianRows,
