@@ -1,45 +1,51 @@
 {
   "processed": [
-    "bullets-over-broadway-2014/wsj--terry-teachout.json"
+    "rent-west-end-2026/britishtheatrecom--british-theatre.json",
+    "rent-west-end-2026/ground--unknown.json",
+    "stuffed-off-west-end-2026/hollywood-reporter--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/lbilondon--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "nina-off-west-end-2026/british-theatre--zia-trench.json",
+    "fences-off-west-end-2026/ground--unknown.json",
+    "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
   ],
   "failed": [
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "sweat-2017/wsj--terry-teachout.json",
-    "oh-hello-on-broadway-2016/wsj--terry-teachout.json",
-    "eclipsed-2016/wsj--charles-isherwood.json",
-    "the-last-ship-2014/wsj--terry-teachout.json",
-    "you-cant-take-it-with-you-2014/wsj--terry-teachout.json",
-    "waiting-for-godot-2013/wsj--terry-teachout.json",
-    "the-winslow-boy-2013/wsj--terry-teachout.json",
-    "big-fish-2013/wsj--terry-teachout.json",
-    "kinky-boots-2013/wsj--terry-teachout.json",
-    "lucky-guy-2013/wsj--terry-teachout.json",
-    "hands-on-a-hardbody-2013/wsj--terry-teachout.json",
-    "breakfast-at-tiffanys-2013/wsj--terry-teachout.json",
-    "the-anarchist-2012/wsj--terry-teachout.json",
-    "a-christmas-story-the-musical-2012/wsj--terry-teachout.json",
-    "elf-2012/wsj--terry-teachout.json",
-    "an-enemy-of-the-people-2012/wsj--terry-teachout.json",
-    "ghost-the-musical-2012/wsj--terry-teachout.json",
-    "a-streetcar-named-desire-2012/wsj--terry-teachout.json",
-    "newsies-the-musical-2012/wsj--terry-teachout.json",
-    "jesus-christ-superstar-2012/wsj--terry-teachout.json",
-    "once-2012/wsj--terry-teachout.json",
-    "wit-2012/wsj--terry-teachout.json",
-    "follies-2011/wsj--terry-teachout.json",
-    "wonderland-2011/wsj--terry-teachout.json",
-    "war-horse-2011/wsj--terry-teachout.json",
-    "catch-me-if-you-can-2011/wsj--terry-teachout.json",
-    "arcadia-2011/wsj--terry-teachout.json",
-    "good-people-2011/wsj--terry-teachout.json"
+    "rent-west-end-2026/city-am--adam-bloodworth.json",
+    "rent-west-end-2026/financialtimes--sarah-hemming.json",
+    "rent-west-end-2026/jonathan-baz--unknown.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "rent-west-end-2026/britishtheatrecom--british-theatre.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/british-theatre--keith-mckenna.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/lbilondon--unknown.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "nina-off-west-end-2026/british-theatre--zia-trench.json",
+      "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/stuffed-off-west-end-2026/hollywood-reporter--unknown.json",
+      "stuffed-off-west-end-2026/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "rent-west-end-2026/ground--unknown.json",
+      "fences-off-west-end-2026/ground--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
@@ -47,74 +53,26 @@
       "bullets-over-broadway-2014/wsj--terry-teachout.json"
     ]
   },
-  "startTime": "2026-10-15T21:13:33.780Z",
-  "lastProcessed": "good-people-2011/wsj--terry-teachout.json",
+  "startTime": "2026-10-15T21:21:39.666Z",
+  "lastProcessed": "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
   "log": [
     {
-      "t": "2026-10-15T21:13:42.090Z",
+      "t": "2026-10-15T21:48:35.749Z",
       "event": "bb-session",
-      "session": "521bd21f",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "session": "7e2ca5a2",
+      "url": "http://www.hollywoodreporter.com/review/stuffed-review-936166"
     },
     {
-      "t": "2026-10-15T21:13:42.969Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T21:13:52.268Z",
+      "t": "2026-10-15T21:55:19.280Z",
       "event": "bb-session",
-      "session": "b02ddca9",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "session": "ae22f92f",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     },
     {
-      "t": "2026-10-15T21:13:53.071Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T21:14:46.314Z",
+      "t": "2026-10-15T21:55:29.220Z",
       "event": "bb-session",
-      "session": "a16a601f",
-      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
-    },
-    {
-      "t": "2026-10-15T21:14:47.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T21:14:56.439Z",
-      "event": "bb-session",
-      "session": "608b217c",
-      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
-    },
-    {
-      "t": "2026-10-15T21:14:57.272Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T21:15:46.443Z",
-      "event": "bb-session",
-      "session": "73ebba70",
-      "url": "https://www.wsj.com/articles/oh-hello-on-broadway-review-an-evening-of-inspired-"
-    },
-    {
-      "t": "2026-10-15T21:15:47.302Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-15T21:15:59.124Z",
-      "event": "bb-session",
-      "session": "0dd943cd",
-      "url": "https://www.wsj.com/articles/oh-hello-on-broadway-review-an-evening-of-inspired-"
-    },
-    {
-      "t": "2026-10-15T21:16:00.015Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "80c54056",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     }
   ]
 }
