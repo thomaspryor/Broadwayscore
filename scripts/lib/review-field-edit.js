@@ -46,6 +46,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // Pre-pass 1 from flagging wrongProduction, and does not clear one it set.
   'showId',
   'isNotReviewManualClear',
+  // isNotReview itself (BRO-5373): CLEAR ONLY (false), after the manual-clear
+  // breadcrumb above. Without it a plan could stamp the breadcrumb but the flag
+  // stayed true and explainExclusion kept the review out (a stale LBO-roundup
+  // verdict on a file later refetched as the real Telegraph review).
+  'isNotReview', 'isNotReviewReason',
   // Gemini/CV non-review verdict (BRO-4429): the isNonReview family is what
   // classify-non-reviews.js stamps; isNotReview* above is the write-guard's.
   'isNonReview', 'isNonReviewReason', 'nonReviewManualClear', 'wrongArticleManualClear',
@@ -100,6 +105,9 @@ const FIELD_VALUE_CHECKS = {
   syndicatedPrimaryFile: (v, record, ctx = {}) => (v === null && isSelfSyndicationPointer(record, ctx)
     ? null : 'syndicatedPrimaryFile may only be cleared (null), and only when it points at this same file'),
   crossOutletDuplicate: (v) => (v === false ? null : 'crossOutletDuplicate may only be cleared (false)'),
+  isNotReview: (v, record) => (v === false && record.isNotReviewManualClear === true
+    ? null : 'isNotReview may only be cleared (false), after isNotReviewManualClear is set'),
+  isNotReviewReason: (v) => (v === null ? null : 'isNotReviewReason may only be cleared (null)'),
   crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0
     ? null : 'crossOutletClearReason must be a non-empty string'),
   showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder

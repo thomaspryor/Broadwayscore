@@ -67,3 +67,15 @@ test('through the write guard, the clear keeps text and score on disk', () => {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 });
   }
 });
+
+// BRO-5373: a stale "not a review" verdict (isNotReview) can be cleared by plan,
+// only after the manual-clear breadcrumb, and only to false.
+test('isNotReview clears only to false and only after isNotReviewManualClear', () => {
+  const rec = tr({ isNotReview: true, isNotReviewReason: 'stale roundup verdict' });
+  assert.equal(applyReviewFieldEdit(rec, { field: 'isNotReview', oldValue: true, newValue: false }, stamp, {}).ok, false, 'breadcrumb first');
+  const withClear = { ...rec, isNotReviewManualClear: true };
+  assert.equal(applyReviewFieldEdit(withClear, { field: 'isNotReview', oldValue: true, newValue: true }, stamp, {}).ok, false);
+  const r = applyReviewFieldEdit(withClear, { field: 'isNotReview', oldValue: true, newValue: false }, stamp, {});
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(applyReviewFieldEdit(withClear, { field: 'isNotReviewReason', oldValue: 'stale roundup verdict', newValue: 'x' }, stamp, {}).ok, false);
+});
