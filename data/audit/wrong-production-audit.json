@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T23:03:57.756Z",
+  "timestamp": "2026-10-15T23:22:03.974Z",
   "stats": {
-    "totalReviews": 56821,
-    "alreadyFlagged": 21110,
+    "totalReviews": 56822,
+    "alreadyFlagged": 21112,
     "dateGuardCatches": 194,
     "directorMismatch": 1902,
     "tvFilmSignals": 1583,
-    "londonSignals": 2362,
+    "londonSignals": 2363,
     "offBroadwaySignals": 512,
     "yearMismatch": 142,
-    "noPublishDate": 5277
+    "noPublishDate": 5273
   },
   "findings": [
     {
@@ -56798,6 +56798,19 @@
       ]
     },
     {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2026-07-29",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cleansed-theatre-review-dhhc3h39n",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "clueless-west-end-2025",
       "file": "london-box-office--emmie-newitt.json",
       "score": null,
@@ -83772,7 +83785,7 @@
     {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-19",
       "url": "https://theatreandtonic.co.uk/blog/turn-of-the-screw-at-arcola-theatre-review",
       "findings": [
