@@ -39,4 +39,68 @@ function hasBookableEvidence(ttShow, now = new Date()) {
   return false;
 }
 
-module.exports = { hasBookableEvidence };
+/**
+ * The fields hasBookableEvidence() reads. This is an INFERRED allowlist: it was
+ * built from one observed ghost-listing shape (my-joy-is-heavy, BRO-4286), not
+ * from TodayTix documentation. If TodayTix signals bookability through another
+ * field (lottery-only, rush-only, a renamed field) the guard returns a false
+ * negative and a genuinely reopened show stays closed (BRO-4524). Blocked
+ * reopens therefore record any other bookability-looking field they carry.
+ */
+const KNOWN_BOOKABILITY_FIELDS = ['areRegularTicketsAvailable', 'filteredShowtimeMaps', 'showtimes', 'bookingEndDate'];
+const BOOKABILITY_LIKE = /avail|book|ticket|lottery|rush|showtime|perform|onsale|on_sale/i;
+
+/**
+ * Keys on a TodayTix show that look like bookability signals but are not read
+ * by hasBookableEvidence(), with their values (truncated), so a human or audit
+ * can tell whether the allowlist is missing a real signal.
+ * @returns {Object<string, string>}
+ */
+function unrecognizedBookabilityFields(ttShow) {
+  const out = {};
+  if (!ttShow || typeof ttShow !== 'object') return out;
+  for (const key of Object.keys(ttShow)) {
+    if (KNOWN_BOOKABILITY_FIELDS.includes(key) || !BOOKABILITY_LIKE.test(key)) continue;
+    const v = ttShow[key];
+    if (v === null || v === undefined || v === false || v === '' || (Array.isArray(v) && v.length === 0)) continue;
+    out[key] = JSON.stringify(v).slice(0, 80);
+  }
+  return out;
+}
+
+/**
+ * One record per blocked TodayTix reopen, so it surfaces in the run summary and
+ * GitHub outputs instead of only a console.log (BRO-4524).
+ * @param {object} closedShow - our shows.json entry
+ * @param {object} ttShow - TodayTix feed show
+ * @param {'no-bookable-evidence'|'human-corrected-closing-date'} reason
+ */
+function buildBlockedReopenRecord(closedShow, ttShow, reason) {
+  return {
+    id: closedShow.id,
+    title: closedShow.title,
+    todaytixId: ttShow.id,
+    reason,
+    areRegularTicketsAvailable: ttShow.areRegularTicketsAvailable,
+    bookingEndDate: ttShow.bookingEndDate || null,
+    unrecognizedBookabilityFields: unrecognizedBookabilityFields(ttShow),
+  };
+}
+
+/** Markdown for $GITHUB_STEP_SUMMARY; '' when nothing was blocked. */
+function formatBlockedReopensSummary(records) {
+  if (!records || records.length === 0) return '';
+  const lines = ['### TodayTix blocked reopens', '',
+    'TodayTix lists these closed shows but the reopen guard kept them closed. If a show is really running, check the unrecognized fields column (the guard allowlist is inferred, BRO-4524).', '',
+    '| Show | Reason | Unrecognized bookability fields |', '|---|---|---|'];
+  for (const r of records) {
+    const extra = Object.entries(r.unrecognizedBookabilityFields).map(([k, v]) => `${k}=${v}`).join('; ') || 'none';
+    lines.push(`| ${r.id} | ${r.reason} | ${extra.replace(/\|/g, '/')} |`);
+  }
+  return lines.join('\n') + '\n';
+}
+
+module.exports = {
+  hasBookableEvidence, unrecognizedBookabilityFields, buildBlockedReopenRecord,
+  formatBlockedReopensSummary, KNOWN_BOOKABILITY_FIELDS,
+};

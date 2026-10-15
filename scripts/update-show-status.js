@@ -22,7 +22,7 @@ const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { shouldTrustShowScoreClosed } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
-const { hasBookableEvidence } = require('./lib/todaytix-reopen-guard');
+const { hasBookableEvidence, buildBlockedReopenRecord, formatBlockedReopensSummary } = require('./lib/todaytix-reopen-guard');
 const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
@@ -215,6 +215,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
 
   let dateUpdates = 0;
   let reopened = 0;
+  const blockedReopens = [];
   let newTtIds = 0;
   // Track TodayTix IDs with positive bookability evidence (BRO-4286) — mere
   // feed presence (a stale "ghost listing") must not count as "still active"
@@ -262,6 +263,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
               // Require positive bookability evidence before reopening.
               if (!hasBookableEvidence(ttShow)) {
                 console.log(`  ⏭️  ${closedMatch.title}: TodayTix (id=${ttShow.id}) still lists this show but shows no bookable evidence (areRegularTicketsAvailable=${ttShow.areRegularTicketsAvailable}, bookingEndDate=${ttShow.bookingEndDate || 'none'}) — staying closed`);
+                blockedReopens.push(buildBlockedReopenRecord(closedMatch, ttShow, 'no-bookable-evidence'));
                 break;
               }
               // A human-corrected closingDate is an explicit signal to trust over
@@ -269,6 +271,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
               // now-contradictory closingDate.
               if (!canWriteClosingDate(closedMatch)) {
                 console.log(`  🔒 ${closedMatch.title}: humanCorrectedClosingDate=true — not reopening despite TodayTix (id=${ttShow.id}) listing (closingDate=${closedMatch.closingDate} preserved)`);
+                blockedReopens.push(buildBlockedReopenRecord(closedMatch, ttShow, 'human-corrected-closing-date'));
                 break;
               }
               // Same todaytixId AND similar title — TodayTix still lists this exact show!
@@ -459,7 +462,18 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
     }
   }
 
-  return { count: dateUpdates + reopened + autoCloseCount, reopenedIds, ttActiveShowIds };
+  // Blocked reopens must be visible outside the console log (BRO-4524).
+  if (blockedReopens.length > 0) {
+    console.log(`  Blocked TodayTix reopens: ${blockedReopens.length} (${blockedReopens.map(r => r.id).join(', ')})`);
+    if (process.env.GITHUB_STEP_SUMMARY) {
+      try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, formatBlockedReopensSummary(blockedReopens)); } catch (e) { /* summary is best-effort */ }
+    }
+  }
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `blocked_reopens_count=${blockedReopens.length}\nblocked_reopens=${blockedReopens.map(r => r.id).join(',')}\n`);
+  }
+
+  return { count: dateUpdates + reopened + autoCloseCount, reopenedIds, ttActiveShowIds, blockedReopens };
 }
 
 // ── ShowScore Status Refresh (weekly) ──
