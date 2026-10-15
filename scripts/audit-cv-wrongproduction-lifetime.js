@@ -74,6 +74,8 @@ version of this check already surfaces as a low-urgency digest-disposition
 alert (see data/audit/alert-ledger.json), not a real-time page. This script
 runs it corpus-wide so that population is visible at all for older shows, but
 does not hard-fail CI on it (see data-health-check.yml step comment).
+Since BRO-4427 an override whose review text names the show's title AND venue
+is a check warning (lib/cv-override-corroboration.js), so it is not counted here.
 
 The digest's own warn/pass verdict (health-check.js) keys off newSinceLastRun
 in the snapshot below, not totalViolations — with 800+ known-baseline hits, a

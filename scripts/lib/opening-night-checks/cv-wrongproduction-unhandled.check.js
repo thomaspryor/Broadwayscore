@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { classifyOverrideCorroboration } = require('../cv-override-corroboration.js');
 
 const name = 'cv-wrongproduction-unhandled';
 const description = 'Source file has contentVerification.wrongProduction=true without top-level clear flag AND still appears in reviews.json (the juan-a-ramirez bypass class)';
@@ -44,6 +45,11 @@ function run(show, context) {
   }
 
   const violations = [];
+  // BRO-4427: shipped reviews whose CV.wrongProduction=true is the temporal
+  // override's low-confidence stamp AND whose text names this show's title and
+  // venue. Surfaced as a warning, never a blocking error. Uncorroborated
+  // overrides (the juan-a-ramirez shape: text never names the show) still error.
+  const corroboratedOverrides = [];
   for (const filename of files) {
     let data;
     try {
@@ -66,7 +72,8 @@ function run(show, context) {
     // Also respect the top-level wrongProduction=false-with-manual-clear pattern
     if (data.wrongProduction === false && data.wrongProductionManualClear === true) continue;
 
-    violations.push({
+    const corroboration = classifyOverrideCorroboration(data, show);
+    const entry = {
       filename,
       url: data.url || '(no url on file)',
       outletId: data.outletId,
@@ -75,14 +82,31 @@ function run(show, context) {
       cvConfidence: cv.confidence,
       cvReasoning: cv.reasoning ? String(cv.reasoning).slice(0, 120) : null,
       cvIssues: Array.isArray(cv.issues) ? cv.issues.slice(0, 2) : null,
-    });
+    };
+    if (corroboration.corroborated) {
+      corroboratedOverrides.push({ ...entry, corroboratedBy: corroboration.reason, venueToken: corroboration.venueToken });
+    } else {
+      violations.push({ ...entry, notCorroboratedBecause: corroboration.reason });
+    }
   }
 
-  if (violations.length === 0) {
+  if (violations.length === 0 && corroboratedOverrides.length === 0) {
     return {
       ok: true,
       severity: 'ok',
       message: `No unhandled CV.wrongProduction files in shipped set`,
+    };
+  }
+
+  if (violations.length === 0) {
+    const warnMessage = corroboratedOverrides.map(v =>
+      `${v.outletId}/${v.criticName} (${v.filename}) shipped with near-opening [OVERRIDE] CV.wrongProduction=true; text names the show and venue ("${v.venueToken}") — likely correct production, set a clear flag after a look — ${v.url}`
+    ).join('\n');
+    return {
+      ok: true,
+      severity: 'warning',
+      message: warnMessage,
+      details: { violations: [], corroboratedOverrides, showId: show.id, requiredClearFlags: CLEAR_FLAGS },
     };
   }
 
@@ -96,6 +120,7 @@ function run(show, context) {
     message,
     details: {
       violations,
+      corroboratedOverrides,
       showId: show.id,
       requiredClearFlags: CLEAR_FLAGS,
       // Self-declared remediation (task #389 pattern, extended for BRO-219).

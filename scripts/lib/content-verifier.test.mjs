@@ -26,6 +26,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
@@ -378,4 +379,104 @@ test('verifyContent call sites no longer hardcode isLongRunningProduction: false
       `${rel} should call isLongRunningProduction(...) from lib/long-runner-registry`
     );
   }
+});
+
+// ---------------------------------------------------------------------------
+// BRO-4427: the temporal override leaves CV.wrongProduction=true with no clear
+// flag. A corroborated override (text names the show AND its venue) must be a
+// warning in cv-wrongproduction-unhandled, not a blocking error; the
+// juan-a-ramirez shape (override stamp, text never names the show) stays an error.
+// ---------------------------------------------------------------------------
+const {
+  OVERRIDE_STAMP_RE,
+  classifyOverrideCorroboration,
+} = require('./cv-override-corroboration.js');
+const cvUnhandledCheck = require('./opening-night-checks/cv-wrongproduction-unhandled.check.js');
+
+const OVR_SHOW = {
+  id: 'school-girls-fixture-2026',
+  title: 'School Girls; Or, The African Mean Girls Play',
+  venue: 'Samuel J. Friedman Theatre',
+  market: 'broadway',
+};
+const ovrFiller = ' The cast is sharp and the staging keeps the comedy moving at a steady clip.'.repeat(6);
+const overrideCv = (extra = {}) => ({
+  wrongProduction: true,
+  confidence: 'low',
+  reasoning: '[OVERRIDE: review within 1d of opening, likely correct production] Mentions an earlier run.',
+  issues: ['earlier production referenced'],
+  ...extra,
+});
+let ovrSeq = 0;
+const reviewWith = (fullText, cv = overrideCv()) => ({
+  url: `https://example.com/review-${++ovrSeq}`,
+  outletId: 'talkinbroadway',
+  criticName: `Fixture Critic ${ovrSeq}`,
+  fullText,
+  contentVerification: cv,
+});
+const CORROBORATED_TEXT = `School Girls; Or, The African Mean Girls Play opened tonight at the Samuel J. Friedman Theatre.${ovrFiller}`;
+const TITLE_ONLY_TEXT = `School Girls; Or, The African Mean Girls Play returns in a fresh staging.${ovrFiller}`;
+const OFF_SHOW_TEXT = `Every Brilliant Thing is a solo show about a list of reasons to live.${ovrFiller}`;
+
+test('BRO-4427: OVERRIDE_STAMP_RE matches the stamp content-verifier.js actually writes', () => {
+  const src = fs.readFileSync(path.join(__dirname, 'content-verifier.js'), 'utf8');
+  assert.ok(
+    src.includes('`[OVERRIDE: review ${dayClause}, likely correct production] ${wpReasoning}`'),
+    'content-verifier.js override stamp template changed; update OVERRIDE_STAMP_RE in cv-override-corroboration.js'
+  );
+  for (const dayClause of ['within 0d of opening', 'within 14d of opening', 'near opening']) {
+    assert.match(`[OVERRIDE: review ${dayClause}, likely correct production] x`, OVERRIDE_STAMP_RE);
+  }
+  assert.doesNotMatch('The review says [OVERRIDE: review within 1d of opening, likely correct production]', OVERRIDE_STAMP_RE);
+});
+
+test('BRO-4427: override + title + venue in text is corroborated', () => {
+  const r = classifyOverrideCorroboration(reviewWith(CORROBORATED_TEXT), OVR_SHOW);
+  assert.equal(r.corroborated, true);
+  assert.equal(r.venueToken, 'samuel j. friedman');
+});
+
+test('BRO-4427: juan-a-ramirez shape (text never names the show) is NOT corroborated', () => {
+  const r = classifyOverrideCorroboration(reviewWith(OFF_SHOW_TEXT), OVR_SHOW);
+  assert.equal(r.corroborated, false);
+  assert.equal(r.reason, 'title-not-in-text');
+});
+
+test('BRO-4427: title without venue, no stamp, non-low confidence, or wrongArticle are NOT corroborated', () => {
+  assert.equal(classifyOverrideCorroboration(reviewWith(TITLE_ONLY_TEXT), OVR_SHOW).reason, 'venue-not-in-text');
+  assert.equal(classifyOverrideCorroboration(reviewWith(CORROBORATED_TEXT, overrideCv({ reasoning: 'Reviews the West End run.' })), OVR_SHOW).reason, 'no-override-stamp');
+  assert.equal(classifyOverrideCorroboration(reviewWith(CORROBORATED_TEXT, overrideCv({ confidence: 'medium' })), OVR_SHOW).reason, 'confidence-not-low');
+  assert.equal(classifyOverrideCorroboration(reviewWith(CORROBORATED_TEXT, overrideCv({ wrongArticle: true })), OVR_SHOW).reason, 'wrong-article');
+  assert.equal(classifyOverrideCorroboration(reviewWith(CORROBORATED_TEXT, overrideCv({ wrongProduction: false })), OVR_SHOW).reason, 'cv-not-wrong-production');
+});
+
+function runUnhandledCheckOn(reviews) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4427-'));
+  try {
+    const dir = path.join(root, OVR_SHOW.id);
+    fs.mkdirSync(dir, { recursive: true });
+    reviews.forEach((r, i) => fs.writeFileSync(path.join(dir, `r${i}.json`), JSON.stringify(r)));
+    const reviewsDoc = { [OVR_SHOW.id]: reviews.map(r => ({ url: r.url, outletId: r.outletId, criticName: r.criticName })) };
+    return cvUnhandledCheck.run(OVR_SHOW, { reviewTextsRoot: root, reviewsDoc });
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+}
+
+test('BRO-4427: check reports a corroborated override as a warning, not a blocking error', () => {
+  const result = runUnhandledCheckOn([reviewWith(CORROBORATED_TEXT)]);
+  assert.equal(result.severity, 'warning');
+  assert.equal(result.details.violations.length, 0);
+  assert.equal(result.details.corroboratedOverrides.length, 1);
+  assert.equal(result.details.remediation, undefined, 'a warning must not raise the error alert');
+});
+
+test('BRO-4427: an uncorroborated override still errors, even next to a corroborated one', () => {
+  const result = runUnhandledCheckOn([reviewWith(CORROBORATED_TEXT), reviewWith(OFF_SHOW_TEXT)]);
+  assert.equal(result.severity, 'error');
+  assert.equal(result.details.violations.length, 1);
+  assert.equal(result.details.violations[0].notCorroboratedBecause, 'title-not-in-text');
+  assert.equal(result.details.corroboratedOverrides.length, 1);
+  assert.equal(result.details.remediation.severity, 'error');
 });
