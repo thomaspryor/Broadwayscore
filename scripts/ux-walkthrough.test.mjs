@@ -21,7 +21,10 @@ const WALKTHROUGH = readFileSync(new URL('./ux-walkthrough.mjs', import.meta.url
 const PREINSTALLED = process.env.PW_CHROMIUM_EXECUTABLE || '/opt/pw-browsers/chromium';
 async function launch() {
   try { return await chromium.launch(); } catch (e) {
-    if (!/Executable doesn't exist/.test(String(e?.message)) || !existsSync(PREINSTALLED)) throw e;
+    if (!/Executable doesn't exist/.test(String(e?.message))) throw e;
+    // The plain unit-test batch (unit-test-collection.js) has no Playwright
+    // browser; skip there rather than fail. Browser jobs and cloud have one.
+    if (!existsSync(PREINSTALLED)) return null;
     return chromium.launch({ executablePath: PREINSTALLED });
   }
 }
@@ -43,7 +46,7 @@ nav a,nav button,nav input{flex:none;display:block;height:40px}
 <header class="fixed top-0"><nav>
   <a class="logo" href="/">Broadway Scorecard</a>
   <a class="link" href="/a">Shows</a><a class="link" href="/b">Browse</a><a class="link" href="/c">Tonys</a>
-  <div class="${desktopSearchClass}"><input class="search" type="text" placeholder="Search"><style>.search{width:280px}</style></div>
+  <div class="${desktopSearchClass}"><input class="search" type="text" placeholder="Search"></div>
   <button class="signin" aria-label="Sign in">Sign in</button>
   <button class="burger lg:hidden" aria-label="Open menu">Menu</button>
 </nav></header>`;
@@ -71,8 +74,9 @@ test('walkthrough renders a 768px tablet viewport and runs the header probe', ()
   assert.match(WALKTHROUGH, /await captureTabletHeader\(/);
 });
 
-test('header overflow at 768px is reported when lg:block is reverted to sm:block, and not otherwise', async () => {
+test('header overflow at 768px is reported when lg:block is reverted to sm:block, and not otherwise', async (t) => {
   const browser = await launch();
+  if (!browser) return t.skip('no Chromium available');
   try {
     const fixed = await findingsFor(browser, searchClass);
     assert.deepEqual(fixed, [], `real class must not overflow: ${JSON.stringify(fixed)}`);
@@ -94,8 +98,25 @@ test('header overflow at 768px is reported when lg:block is reverted to sm:block
   }
 });
 
-test('captureTabletHeader degrades to no findings when the page cannot load', async () => {
+test('a page without the header nav is logged, not filed; 1px rounding is tolerated', async (t) => {
   const browser = await launch();
+  if (!browser) return t.skip('no Chromium available');
+  const errs = [];
+  const orig = console.error; console.error = (m) => errs.push(m);
+  try {
+    const page = await browser.newPage({ viewport: { width: 768, height: 1024 } });
+    await page.setContent('<h1>Maintenance</h1>');
+    assert.deepEqual(await headerOverflowFindings(page, 'tablet', 'home'), []);
+    assert.ok(errs.some((m) => /header nav not found/.test(m)));
+  } finally {
+    console.error = orig;
+    await browser.close();
+  }
+});
+
+test('captureTabletHeader degrades to no findings when the page cannot load', async (t) => {
+  const browser = await launch();
+  if (!browser) return t.skip('no Chromium available');
   const errs = [];
   const orig = console.error; console.error = (m) => errs.push(m);
   try {

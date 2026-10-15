@@ -1425,7 +1425,10 @@ async function main() {
         shots.push(...signIn.shots);
         deterministicFindings.push(...signIn.findings);
 
-        const tablet = await captureTabletHeader({ browser, baseUrl: args.baseUrl });
+        const tablet = await captureTabletHeader({
+          browser, baseUrl: args.baseUrl, shoot: (page, name) => shoot(page, outDir, name),
+        });
+        shots.push(...tablet.shots);
         deterministicFindings.push(...tablet.findings);
 
         const iosSim = await captureIosDateWheelSim({ browser, session, baseUrl: args.baseUrl, outDir });

@@ -34,13 +34,17 @@ export function probe({ simulateSignedIn } = {}) {
 }
 
 // Walkthrough findings for the current page: [] when the header fits.
-export async function headerOverflowFindings(page, vpLabel, stateName) {
-  const res = await page.evaluate(probe, { simulateSignedIn: false });
+export async function headerOverflowFindings(page, vpLabel, stateName, { simulateSignedIn = false } = {}) {
+  const res = await page.evaluate(probe, { simulateSignedIn });
   const screenshot = `${vpLabel}__${stateName}`;
+  // Deterministic findings file board cards without a two-model agreement
+  // check, so an error/maintenance page (no header nav) is logged, not filed.
   if (res.error) {
-    return [{ summary: `Header probe on ${stateName} (${vpLabel}): ${res.error}`, screenshot, severity: 'medium', tag: 'probe' }];
+    console.error(`[ux-walkthrough] header probe on ${stateName} (${vpLabel}) skipped: ${res.error}`);
+    return [];
   }
-  if (res.scrollWidth <= res.clientWidth && res.offenders.length === 0) return [];
+  // 1px tolerance, same as the offender check: sub-pixel rounding is not a defect.
+  if (res.scrollWidth <= res.clientWidth + 1 && res.offenders.length === 0) return [];
   const detail = res.offenders.length ? `; offscreen: ${res.offenders.join('; ')}` : '';
   return [{
     summary: `Header overflow on ${stateName} (${vpLabel}): nav scrollWidth=${res.scrollWidth} exceeds clientWidth=${res.clientWidth}${detail}`,
@@ -53,19 +57,31 @@ export async function headerOverflowFindings(page, vpLabel, stateName) {
 export const TABLET_VIEWPORT = { label: 'tablet', width: 768, height: 1024 };
 
 // Home state only, signed out: the header is identical on every page.
-export async function captureTabletHeader({ browser, baseUrl }) {
+// `shoot(page, name)` (optional) saves the screenshot a finding cites.
+export async function captureTabletHeader({ browser, baseUrl, shoot }) {
   const findings = [];
+  const shots = [];
   let context;
   try {
     context = await browser.newContext({ viewport: { width: TABLET_VIEWPORT.width, height: TABLET_VIEWPORT.height } });
     const page = await context.newPage();
     await page.goto(`${baseUrl}/`, { waitUntil: 'load', timeout: 20000 });
     await page.waitForTimeout(1000);
-    findings.push(...await headerOverflowFindings(page, TABLET_VIEWPORT.label, 'home'));
+    // Signed-out first, then the signed-in header (wider: "My Shows" + avatar)
+    // swapped in for the Sign in pill, as check-header-overflow.mjs does.
+    const found = [
+      ...await headerOverflowFindings(page, TABLET_VIEWPORT.label, 'home'),
+      ...await headerOverflowFindings(page, TABLET_VIEWPORT.label, 'home_signed_in', { simulateSignedIn: true }),
+    ];
+    if (found.length && shoot) {
+      const name = `${found[0].screenshot}`;
+      shots.push({ name, file: await shoot(page, name) });
+    }
+    findings.push(...found);
   } catch (err) {
     console.error(`[ux-walkthrough] tablet header probe failed: ${err.message}`);
   } finally {
     if (context) await context.close().catch(() => {});
   }
-  return { findings };
+  return { findings, shots };
 }
