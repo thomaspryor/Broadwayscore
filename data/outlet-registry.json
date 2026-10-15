@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-15T04:56:18.994Z",
+    "lastUpdated": "2026-10-15T09:57:08.739Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -12911,6 +12911,15 @@
       ],
       "displayNameInferred": true,
       "domain": "thestudentnews.co.uk"
+    },
+    "intermissionmagazine": {
+      "displayName": "Intermissionmagazine",
+      "tier": 3,
+      "aliases": [
+        "intermissionmagazine"
+      ],
+      "displayNameInferred": true,
+      "domain": "intermissionmagazine.ca"
     }
   },
   "_aliasIndex": {
