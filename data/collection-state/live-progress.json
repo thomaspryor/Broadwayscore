@@ -1,38 +1,64 @@
 {
-  "updatedAt": "2026-10-15T22:08:08.527Z",
-  "processed": 1,
-  "failed": 47,
-  "successRate": "2.1%",
+  "updatedAt": "2026-10-15T22:19:48.303Z",
+  "processed": 124,
+  "failed": 16,
+  "successRate": "88.6%",
   "tierBreakdown": {
-    "playwright": 32,
-    "amp": 3,
-    "browserbase": 0,
+    "playwright": 69,
+    "amp": 2,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 2,
+    "scrapingdog": 13,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 34
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-15T21:48:35.749Z",
+      "t": "2026-10-15T22:02:23.736Z",
       "event": "bb-session",
-      "session": "7e2ca5a2",
-      "url": "http://www.hollywoodreporter.com/review/stuffed-review-936166"
+      "session": "08207c22",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-15T21:55:19.280Z",
-      "event": "bb-session",
-      "session": "ae22f92f",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "t": "2026-10-15T22:02:24.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-15T21:55:29.220Z",
+      "t": "2026-10-15T22:02:42.324Z",
       "event": "bb-session",
-      "session": "80c54056",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "session": "56b17de4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-15T22:02:43.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T22:05:11.882Z",
+      "event": "bb-session",
+      "session": "244dd21c",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T22:05:12.601Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T22:05:30.721Z",
+      "event": "bb-session",
+      "session": "241778c7",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-15T22:05:31.376Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
