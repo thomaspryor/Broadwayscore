@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T20:51:59.601Z",
+  "generatedAt": "2026-10-15T23:35:41.005Z",
   "windowDays": 45,
   "showsScanned": 172,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 171.1137752777778,
+      "fileAgeHours": 173.84718666666666,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 166.08755222222223
+      "nonTerminalAgeHours": 168.81572
     },
     {
       "showId": "macbeth-off-broadway-2026",
@@ -30,18 +30,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/regional/alb/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=macbeth-off-broadway-2026 --url=https://www.talkinbroadway.com/regional/alb/ --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:26:32.014Z",
-      "fileAgeHours": 5.423458888888889,
+      "fileAgeHours": 8.151675277777779,
       "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 4.378239722222222
+      "nonTerminalAgeHours": 7.1064075
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -57,9 +53,28 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 556.1906158333334,
+      "fileAgeHours": 558.9187883333333,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 107.2101663888889
+      "nonTerminalAgeHours": 109.93833416666666
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "title": "Maybe Happy Ending",
+      "openingDate": "2026-09-13",
+      "file": "theatermania--zachary-stewart.json",
+      "outletId": "theatermania",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=maybe-happy-ending-tour-2026",
+      "firstSeen": "2026-10-06T02:28:41.564Z",
+      "fileAgeHours": 237.11629,
+      "gapSeenAt": "2026-10-15T23:35:41.005Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []

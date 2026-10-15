@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T20:55:03.373Z",
+  "generatedAt": "2026-10-15T23:35:58.524Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -54,6 +54,11 @@
       "openingDate": "2026-10-15"
     },
     {
+      "id": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "openingDate": "2026-10-13"
+    },
+    {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
@@ -86,10 +91,6 @@
   ],
   "skipped": [
     {
-      "showId": "the-ask-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -100,6 +101,10 @@
   ],
   "feedsChecked": 73,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
@@ -129,9 +134,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 701,
+  "itemsScanned": 695,
   "matchedGaps": 6,
-  "possibleGaps": 4,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -213,6 +218,15 @@
       "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
       "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
       "publishDate": null
+    },
+    {
+      "showId": "nina-off-west-end-2026",
+      "title": "Nina",
+      "level": "possible",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/uncle-montys-antique-shop-the-lion-unicorn-theatre/",
+      "headline": "Uncle Monty’s Antique Shop – The Lion &#038; Unicorn Theatre",
+      "publishDate": "2026-10-15"
     },
     {
       "showId": "nina-off-west-end-2026",
