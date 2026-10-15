@@ -2755,6 +2755,16 @@ async function discoverShows() {
   });
   if (heldForTitleReview.length) {
     console.log(`${heldForTitleReview.length} candidate(s) held this run for shouted-title review — not promoted, not written.`);
+    // BRO-3957: keep the hold where a person can find it after the cron log scrolls off.
+    if (!dryRun) {
+      try {
+        const holds = require('./lib/shouted-title-holds');
+        holds.save(holds.recordHolds(holds.load(), heldForTitleReview));
+        console.log(`  held candidates saved to data/audit/shouted-title-holds.json (list: node scripts/report-shouted-title-holds.js)`);
+      } catch (err) {
+        console.log(`  ::warning::could not save shouted-title holds: ${err.message}`);
+      }
+    }
   }
 
   for (const show of discoveredShows) {
