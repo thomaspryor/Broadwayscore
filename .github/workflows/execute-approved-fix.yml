@@ -119,6 +119,9 @@ jobs:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
         run: |
           git add data/pending-fixes/
+          # BRO-5182: reconcile-pending-commercial.js prunes this tracked file; the weekly
+          # commercial workflows commit it the same way (commercial-friday.yml).
+          git add data/commercial-pending-review.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
