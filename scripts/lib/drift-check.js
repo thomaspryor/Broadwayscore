@@ -2,7 +2,7 @@
 
 // Opening-night checklist subscriber to data/audit/drift-state.json. The only
 // writer (updateState in review-count-probe.js) stores
-// {fingerprint, firstSeen, consecutiveCount, lastAlertTs, aboveThreshold}; there
+// {fingerprint, firstSeen, consecutiveCount, lastAlertTs, aboveThreshold, suppressed}; there
 // is no numeric `drift` field (BRO-4048: reading one kept this check at 'ok').
 const CONFIRM_RUNS = 2; // same repeat-confirmation the drift alert itself uses
 
