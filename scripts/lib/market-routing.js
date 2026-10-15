@@ -246,6 +246,110 @@ function collectSameTitleSignals(candidate, ctx) {
 }
 
 /**
+ * Sibling-venue-in-URL rule (BRO-5386). A review URL that names the venue of a
+ * same-title sibling production, and does NOT name the filed-under show's own
+ * venue, is about the sibling. Date proximity cannot separate CONCURRENT
+ * productions: the Globe's As You Like It (opened 2026-08-21) and the RSC's
+ * (2026-10-06) overlap, so an Oct 7 review sat 47 days from the Globe, inside
+ * Guard A's 90-day "current show is far" gate, and the venue-substring signal
+ * only runs for same-market siblings (Globe = london pool, RSC = regional). The
+ * RSC review of The Stage ("...-royal-shakespeare-theatre-stratford-upon-avon-
+ * daniel-evans-...") shipped on the Globe page.
+ *
+ * Venue evidence is deterministic where dates are not, so it runs first. It
+ * only ever reads the URL path: fullText is not available here.
+ */
+const VENUE_PHRASE_MIN_LEN = 6;
+// Single words that name a venue in shows.json but are ordinary words in URLs
+// (an Olivier Award, the National Theatre as an origin, a public/signature/bridge
+// anything). A one-word phrase needs 7+ letters and must not be on this list;
+// multi-word phrases ("drury-lane", "noel-coward") are specific enough on their own.
+const AMBIGUOUS_VENUE_WORDS = new Set([
+  'olivier', 'national', 'public', 'players', 'signature', 'bridge', 'broadway',
+  'royal', 'garden', 'union', 'stage', 'studio', 'repertory', 'festival',
+]);
+
+/**
+ * Slug phrases that identify a venue. Only the first comma part is the venue's
+ * own name: later parts are a city or region ("Stratford-upon-Avon", "Cambridge, MA"),
+ * and a city in a URL says nothing about which production a review covers. Each
+ * name yields a slug with a TRAILING "theatre" removed and the raw slug (URLs may
+ * keep either). A mid-name "theatre" stays: "Shakespeare Theatre Company" must not
+ * collapse to "shakespeare-company", which also matches the Royal Shakespeare Company.
+ */
+function venuePhrases(venue) {
+  if (!venue || typeof venue !== 'string') return [];
+  const name = foldDiacritics(venue).toLowerCase().split(/[,;\/()]|\s[-–—]\s/)[0];
+  const base = name.replace(/[‘’′']/g, '').replace(/^\s*the\s+/, '');
+  const slugOf = str => str.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const stripped = slugOf(base.replace(/\s+(theatre|theater|playhouse)\s*$/, ''));
+  const raw = slugOf(base);
+  if (stripped.length < VENUE_PHRASE_MIN_LEN || GENERIC_VENUE_SLUGS.has(stripped) || GENERIC_VENUE_SLUGS.has(raw)) return [];
+  const words = stripped.split('-');
+  if (words.every(w => VENUE_STOPWORDS.has(w) || GENERIC_VENUE_SLUGS.has(w))) return [];
+  if (words.length === 1 && (stripped.length < 7 || AMBIGUOUS_VENUE_WORDS.has(stripped))) return [];
+  return [...new Set([stripped, raw])];
+}
+
+/** True when `phrase` appears in the URL path on hyphen/slash boundaries. */
+function urlNamesPhrase(urlPath, phrase) {
+  return urlPath.includes(`-${phrase}-`);
+}
+
+/** Lowercase URL path (host dropped) with every non-alphanumeric run folded to a hyphen, hyphen-padded. */
+function urlPathSlug(url) {
+  const noHost = String(url || '').replace(/^[a-z]+:\/\/[^\/]+/i, '').split(/[?#]/)[0];
+  return `-${foldDiacritics(noHost).toLowerCase().replace(/[‘’′']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}-`;
+}
+
+function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
+  if (process.env.DISABLE_SIBLING_VENUE_ROUTING === 'true') return null;
+  if (!url || !sibData || !Array.isArray(sibData.siblings) || !sibData.siblings.length) return null;
+  const urlPath = urlPathSlug(url);
+  // The filed-under show's own venue wins: any of its phrases, or any distinctive
+  // whole word of its venue, in the URL means the review may be about it.
+  const ownPhrases = venuePhrases(sibData.venue);
+  if (ownPhrases.some(p => urlNamesPhrase(urlPath, p))) return null;
+  const ownWords = foldDiacritics(String(sibData.venue || '')).toLowerCase().replace(/[‘’′']/g, '')
+    .split(/[^a-z0-9]+/)
+    .filter(w => w.length >= 5 && !VENUE_STOPWORDS.has(w) && !GENERIC_VENUE_SLUGS.has(w));
+  if (ownWords.some(w => urlPath.includes(`-${w}-`))) return null;
+
+  // A Date object is as good as a string; ignoring one would switch the date guards off.
+  const pubStr = publishDate instanceof Date && !Number.isNaN(publishDate.getTime())
+    ? publishDate.toISOString().slice(0, 10)
+    : (typeof publishDate === 'string' ? publishDate : null);
+  const reviewDate = parseDate(pubStr);
+  const hits = [];
+  for (const sib of sibData.siblings) {
+    if (visitedSet.has(sib.id)) continue;
+    const phrase = venuePhrases(sib.venue).find(p => urlNamesPhrase(urlPath, p));
+    if (!phrase) continue;
+    // A sibling with no opening date has no window, so it cannot claim a review.
+    if (!sib.openingDate) continue;
+    if (reviewDate) {
+      // The sibling's run window must hold the review, or the URL is only mentioning the
+      // venue in passing (a Broadway review citing the London venue it came from).
+      const windowStart = sib.openingDate.getTime() - 60 * DAY;
+      const windowEnd = (sib.closingDate ? sib.closingDate.getTime() : sib.openingDate.getTime() + 365 * DAY) + 60 * DAY;
+      if (reviewDate < windowStart || reviewDate > windowEnd) continue;
+      // And the review must sit closer to the sibling's opening than to this show's:
+      // press coverage clusters at press night, and an open-ended window alone would let
+      // a tryout with no closing date keep claiming its transfer's reviews for 14 months.
+      if (sibData.openingDate
+          && Math.abs(reviewDate - sibData.openingDate) < Math.abs(reviewDate - sib.openingDate)) continue;
+    }
+    hits.push({ id: sib.id, phrase, dist: reviewDate ? Math.abs(reviewDate - sib.openingDate) : Infinity });
+  }
+  if (!hits.length) return null;
+  hits.sort((a, b) => a.dist - b.dist);
+  // Two siblings tied (undated review, or same-venue runs equally near): the URL does
+  // not say which one, so leave the review where it is.
+  if (hits.length > 1 && hits[0].dist === hits[1].dist) return null;
+  return { action: 'reroute', targetShowId: hits[0].id, reason: `sibling-venue-in-url: "${hits[0].phrase}"` };
+}
+
+/**
  * Tour branch (BRO-4262, generalised BRO-4931). A review of a Broadway,
  * Off-Broadway, West End or regional production is handed to a tour of the
  * same title only on positive evidence, and the tour is picked by date window
@@ -380,6 +484,12 @@ function classifyMarketRouting(args) {
   // a tour and its Broadway run share title and market pool by design.
   const sibData = rawSibData && rawSibData.category === 'tour' ? null
     : rawSibData && { ...rawSibData, siblings: rawSibData.siblings.filter(s => s.category !== 'tour') };
+
+  // --- Sibling venue named in the URL (BRO-5386): deterministic, so before the date votes ---
+  if (sibData && sibData.siblings.length) {
+    const venueDecision = siblingVenueDecision(sibData, { url, publishDate, visitedSet });
+    if (venueDecision) return venueDecision;
+  }
 
   // --- Sibling date/year reroute (Guard A) ---
   if (sibData && sibData.siblings.length) {
@@ -594,6 +704,8 @@ module.exports = {
   buildSiblingIndex,
   normalizeTitle,
   collectSameTitleSignals,
+  venuePhrases,
+  siblingVenueDecision,
   SIBLING_CLOSE_DAYS,
   CROSS_MARKET_SIBLING_CLOSE_DAYS,
   CURRENT_FAR_DAYS,

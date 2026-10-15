@@ -73,13 +73,68 @@ function inOpeningWindow(show, now = Date.now(), windowDays = 21) {
   return opening <= now && now - opening <= windowDays * DAY_MS;
 }
 
+// A roundup is posted within days of press night. A same-title sibling that opens
+// within SIBLING_NEAR_DAYS of the post date, while this show opened more than
+// OWN_FAR_DAYS away, owns the roundup even though the post still sits inside this
+// show's [-30d, +90d] window (BRO-5386: the RSC As You Like It roundup, 2026-10-07,
+// was 47 days after the Globe's opening, so the Globe was handed six RSC reviews).
+const SIBLING_NEAR_DAYS = 10;
+const OWN_FAR_DAYS = 21;
+
+let _allShowsCache = null;
+let _allShowsWarned = false;
+function loadAllShows() {
+  if (_allShowsCache) return _allShowsCache;
+  try {
+    const doc = require('../../data/shows.json');
+    _allShowsCache = Array.isArray(doc) ? doc : (doc.shows || []);
+    return _allShowsCache;
+  } catch (err) {
+    // Without shows.json no sibling can be found and the roundup window reverts to
+    // the pre-BRO-5386 date-only rule. Say so once, and retry next call (not cached).
+    if (!_allShowsWarned) {
+      _allShowsWarned = true;
+      console.warn(`::warning::gap-reference-sources: could not load data/shows.json (${err.message}); same-title sibling roundup arbitration is off`);
+    }
+    return [];
+  }
+}
+
+/**
+ * True when a same-title sibling production (tours excluded: a tour shares its
+ * parent's roundups by design) opened closer to `postMs` than this show did, and
+ * close enough that the roundup is that sibling's.
+ */
+function siblingOwnsRoundup(postMs, show, openingMs, allShows, opts = {}) {
+  if (!show || !show.title || !Number.isFinite(postMs) || !Number.isFinite(openingMs)) return false;
+  if (Math.abs(postMs - openingMs) <= OWN_FAR_DAYS * DAY_MS) return false;
+  const { findTitleSiblings } = require('./production-window');
+  const siblings = findTitleSiblings(show, allShows || loadAllShows());
+  return siblings.some(sib => {
+    if (!sib || sib.category === 'tour' || !sib.openingDate) return false;
+    // A London-only source (WET, Best of Theatre) never carries a roundup for a US or regional sibling.
+    if (opts.londonOnly && !require('./venue-classification').isLondonMarket(sib.category)) return false;
+    const sibOpening = Date.parse(sib.openingDate);
+    if (!Number.isFinite(sibOpening)) return false;
+    // A roundup is posted at or after press night; one dated before the sibling opened is not its roundup.
+    if (postMs < sibOpening - 2 * DAY_MS) return false;
+    const sibDist = Math.abs(postMs - sibOpening);
+    return sibDist <= SIBLING_NEAR_DAYS * DAY_MS && sibDist < Math.abs(postMs - openingMs);
+  });
+}
+
 /**
  * Is a roundup post date consistent with THIS run (vs a prior production's
- * roundup)? Window: [opening - 30d, opening + 90d]. null postDate = unknown →
- * treated as current (TR/LBO pages are already cross-show/date-gated by
+ * roundup)? Window: [opening - 30d, opening + 90d], unless a same-title sibling
+ * opened right at the post date (see siblingOwnsRoundup). null postDate =
+ * unknown → treated as current (TR/LBO pages are already cross-show/date-gated by
  * verifyAggregatorUrl / validateRoundupPageTitle at discovery).
+ * @param {string|null} postDate
+ * @param {object} show
+ * @param {Array<object>} [allShows] sibling lookup source (default: data/shows.json)
+ * @param {{londonOnly?: boolean}} [opts] londonOnly: only London-market siblings can claim the roundup
  */
-function isCurrentRunRoundup(postDate, show) {
+function isCurrentRunRoundup(postDate, show, allShows, opts = {}) {
   if (!postDate || !show) return true;
   const post = Date.parse(postDate);
   // No opening date (a limited run that never had a press opening, e.g. The Last
@@ -96,7 +151,8 @@ function isCurrentRunRoundup(postDate, show) {
   }
   const opening = Date.parse(show.openingDate);
   if (!Number.isFinite(post) || !Number.isFinite(opening)) return true;
-  return post >= opening - 30 * DAY_MS && post <= opening + 90 * DAY_MS;
+  if (post < opening - 30 * DAY_MS || post > opening + 90 * DAY_MS) return false;
+  return !siblingOwnsRoundup(post, show, opening, allShows, opts);
 }
 
 /** Stable hash of the missing-outlet set, for alert dedup on set change. */
@@ -153,7 +209,7 @@ async function getWeReferenceRows(show, opts = {}) {
     if (wet) {
       sources.westendtheatre.found = true;
       sources.westendtheatre.rows = wet.rows.length;
-      const priorRun = !isCurrentRunRoundup(wet.post.date, show);
+      const priorRun = !isCurrentRunRoundup(wet.post.date, show, undefined, { londonOnly: true });
       for (const r of wet.rows) push('westendtheatre', wet.post.link, priorRun, r);
     } else if ((wetStats.titleMatchedPosts || 0) > 0) {
       sources.westendtheatre.found = true;
@@ -206,7 +262,7 @@ async function getWeReferenceRows(show, opts = {}) {
       sources.bestoftheatre.rows = parsed.length;
       if (parsed.length === 0) sources.bestoftheatre.emptyParse = true;
       // No post date at all = cannot prove this run: report-only, never ingested.
-      const priorRun = !bot.postDate || !isCurrentRunRoundup(bot.postDate, show);
+      const priorRun = !bot.postDate || !isCurrentRunRoundup(bot.postDate, show, undefined, { londonOnly: true });
       for (const r of parsed) push('bestoftheatre', bot.url, priorRun, r);
     }
   } catch (e) {
