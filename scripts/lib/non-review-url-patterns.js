@@ -209,6 +209,8 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // use the same shape (/the-invention-of-love/), so only this page is named (BRO-4679).
   { host: /(^|\.)openingnight\.online$/, path: /^\/crazy-mama-a-true-story-of-love-and-madness\/?$/, reason: 'event-listing' },
   { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
+  // BRO-3719: Variety's ticket-buying guide came in as a "review" for several shows.
+  { host: /(^|\.)variety\.com$/, path: /^\/shop\//, reason: 'ticketing-listing' },
   { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
   // Section index pages stored as review urls on Theatre Record print rows

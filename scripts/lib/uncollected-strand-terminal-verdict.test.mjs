@@ -46,6 +46,8 @@ test('non-review verdicts resolve a never-attempted file; fallible production gu
   assert.equal(hasTerminalVerdict(stub({ isNonReview: true }), sib), true);
   assert.equal(hasTerminalVerdict(stub({ duplicateOf: 'a.json' }), sib), true);
   assert.equal(hasTerminalVerdict(stub({ wrongShow: true }), sib), false);
+  assert.equal(hasTerminalVerdict(stub({ rejectionReason: 'wrong_production' }), sib), false);
+  assert.equal(hasTerminalVerdict(stub({ rejectionReason: 'wrong_show' }), sib), false);
   assert.equal(hasTerminalVerdict(stub({ wrongProduction: true }), sib), false);
   assert.equal(hasTerminalVerdict(stub({ duplicateOf: null }), sib), false);
   assert.equal(hasTerminalVerdict(stub({ duplicateOf: '' }), sib), false);

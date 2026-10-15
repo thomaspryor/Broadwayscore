@@ -483,3 +483,8 @@ test('gap census rejects the ticket page and Page Six gossip that alerted for Mi
   // Other Page Six paths are not blanket-rejected.
   assert.equal(classifyGapCandidateUrl('https://pagesix.com/2026/10/14/entertainment/theater/some-show-review/').ok, true);
 });
+
+test('BRO-3719: variety.com/shop/ ticket guide is a non-review, variety reviews are not', () => {
+  assert.equal(namedNonReviewReason('https://variety.com/shop/broadway-show-tickets-where-to-buy-1234970196/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://variety.com/2026/legit/reviews/some-show-review-1234567890/'), null);
+});

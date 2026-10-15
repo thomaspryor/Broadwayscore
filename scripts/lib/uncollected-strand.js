@@ -95,7 +95,9 @@ function isNeverAttempted(review) {
  */
 function hasTerminalVerdict(review, siblings) {
   if (!review || typeof review !== 'object') return false;
-  if (review.rejectionReason) return true;
+  // Only the explicit non-review verdict: wrong_show/wrong_production/garbage_text
+  // can be fallible pre-fetch guesses and must stay visible.
+  if (review.rejectionReason === 'not_a_review') return true;
   if (review.isNonReview === true || review.isNotReview === true) return true;
   return duplicateHasCanonical(review, siblings);
 }
