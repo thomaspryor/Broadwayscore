@@ -307,3 +307,52 @@ test('ledgerPrecondition: a resume after job-retried keeps the ORIGINAL launch',
   const wrongSession = rows.map(r => (r.jobId === 'j2' && r.event === 'job-spawned') ? { ...r, resumeOfSession: 'other' } : r);
   assert.equal(core.ledgerPrecondition(wrongSession).launch.ts, '2026-09-29T20:51:59.142Z');
 });
+
+// BRO-5219: a data-only fix lands in a private data repo, while the job's
+// job-stranded row carries its Broadwayscore worktree HEAD. The stranded tie
+// can never match a data-repo commit, so --data-repo applies the strict rule
+// instead: authored inside the job window AND naming the ref. Shape taken
+// from BRO-5416 (launch 18:50, stranded 18:54, review-texts fix at 18:52).
+const DATA_REF = 'BRO-5416';
+const DATA_TASK = `linear:${DATA_REF}`;
+const strandedRows = [
+  { ts: '2026-10-15T18:50:10.000Z', event: 'launch', taskId: DATA_TASK, verifyCmd: 'node scripts/validate-data.js' },
+  { ts: '2026-10-15T18:50:17.000Z', event: 'job-spawned', taskId: DATA_TASK, jobId: `${DATA_TASK}-job` },
+  { ts: '2026-10-15T18:54:08.000Z', event: 'job-stranded', taskId: DATA_TASK, jobId: `${DATA_TASK}-job`, sha: 'c46a2a62fd67d12304688abc22a95d41e457d99b' },
+];
+function dataHappy(overrides = {}) {
+  return happy({
+    ref: DATA_REF,
+    rows: strandedRows,
+    dataRepo: 'review-texts',
+    landing: { verdict: 'LANDED', sha: '53e633c05fbc9969', authorTs: '2026-10-15T18:52:39.000Z', commitTs: '2026-10-15T18:52:39.000Z', message: `${DATA_REF}: Tour transfer note`, tiedToStranded: false, tiedToStrandedByPatch: false },
+    verify: { cmd: 'node scripts/validate-data.js', safe: true, unsafeReason: null, exitCode: 0 },
+    ...overrides,
+  });
+}
+
+test('--data-repo: stranded job + in-window data-repo commit naming the ref → ok, row records repo', () => {
+  const d = core.decideAck(dataHappy());
+  assert.deepEqual(d.refusals, []);
+  assert.equal(d.row.repo, 'review-texts');
+  assert.equal(d.row.strandedSha, 'c46a2a62fd67d12304688abc22a95d41e457d99b');
+});
+
+test('--data-repo: still refuses a commit authored after the stranded row + grace', () => {
+  const d = core.decideAck(dataHappy({ landing: { ...dataHappy().landing, authorTs: '2026-10-15T19:30:00.000Z' } }));
+  assert.equal(d.ok, false);
+  assert.ok(d.refusals.some((r) => /AFTER the job's terminal/.test(r)));
+});
+
+test('--data-repo: still refuses a commit that does not name the ref', () => {
+  const d = core.decideAck(dataHappy({ landing: { ...dataHappy().landing, message: 'data: LLM ensemble scoring' } }));
+  assert.equal(d.ok, false);
+  assert.ok(d.refusals.some((r) => /does not name BRO-5416/.test(r)));
+});
+
+test('without --data-repo the same stranded row keeps the stranded-sha tie (unchanged)', () => {
+  const d = core.decideAck(dataHappy({ dataRepo: undefined }));
+  assert.equal(d.ok, false);
+  assert.ok(d.refusals.some((r) => /stranded sha c46a2a62/.test(r)));
+  assert.equal(core.decideAck(happy()).row.repo, undefined);
+});

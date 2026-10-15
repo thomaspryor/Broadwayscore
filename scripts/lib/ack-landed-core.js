@@ -308,9 +308,15 @@ function reasonRefusals(reason) {
  * @param {object} input.verify         {cmd, safe:boolean, unsafeReason, exitCode:number|null}
  * @param {string} input.reason
  * @param {string} [input.ackedBy]
+ * @param {string} [input.dataRepo]     'review-texts' | 'core-data' when the
+ *   sha lives in a private data repo (ack-landed.js --data-repo, BRO-5219).
+ *   A job-stranded row's sha is then a Broadwayscore worktree HEAD that can
+ *   never tie to a data-repo commit, so the stranded tie is replaced by the
+ *   strict non-stranded rule: authored inside the job's window AND naming the
+ *   ref. Nothing is loosened; the row records `repo`.
  */
 function decideAck(input) {
-  const { ref, rows, jobId, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
+  const { ref, rows, jobId, landing = {}, checkout = {}, verify = {}, reason, ackedBy, dataRepo } = input || {};
   const scoped = rowsForJobId(rows, jobId, ref);
   const refusals = scoped.refusal ? [scoped.refusal] : [];
   const pre = scoped.refusal
@@ -336,6 +342,7 @@ function decideAck(input) {
   // job's own stranded sha afterwards), so there the tie is the stranded sha
   // itself: --sha must BE it, or be a commit it descends from.
   const isStranded = Boolean(newest && String(newest.event) === 'job-stranded' && stranded);
+  const strandedTieApplies = isStranded && !dataRepo;
   const workTsRaw = landing.authorTs || landing.commitTs || '';
   const workTs = Date.parse(workTsRaw);
   if (!Number.isFinite(workTs)) {
@@ -346,12 +353,12 @@ function decideAck(input) {
       refusals.push(`the sha was authored at ${workTsRaw}, BEFORE this dispatch launched (${launch.ts}) — it cannot be this job's work`);
     }
     const endTs = Date.parse((newest && newest.ts) || '');
-    if (!isStranded && Number.isFinite(endTs) && workTs > endTs + COMMIT_AFTER_TERMINAL_GRACE_MS) {
+    if (!strandedTieApplies && Number.isFinite(endTs) && workTs > endTs + COMMIT_AFTER_TERMINAL_GRACE_MS) {
       refusals.push(`the sha was authored at ${workTsRaw}, AFTER the job's terminal ${newest.event} row (${newest.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
     }
   }
   const namesRef = messageNamesRef(landing.message, ref);
-  if (isStranded) {
+  if (strandedTieApplies) {
     // BRO-4074: ancestry OR patch-equivalence. Landing through land.yml rebases,
     // which rewrites the sha, so ancestry alone can never hold for a
     // rebase-landed stranded job and nothing could ever ack one. The patch tie
@@ -381,6 +388,7 @@ function decideAck(input) {
     // attempts.
     workspaceRef: (launch && launch.workspaceRef) || undefined,
     sha: landing.sha,
+    repo: dataRepo || undefined,
     strandedSha: isStranded ? stranded.sha : undefined,
     verifyCmd: verify.cmd,
     launchVerifyCmd: launchVerifyCmd || null,
@@ -428,7 +436,7 @@ function decideAck(input) {
  * @param {string} [input.ackedBy]
  */
 function decideAlreadyLanded(input) {
-  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
+  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy, dataRepo } = input || {};
   const pre = ledgerPrecondition(rows);
   const refusals = [...pre.refusals];
   const { newest } = pre;
@@ -479,6 +487,7 @@ function decideAlreadyLanded(input) {
     taskId: (newest && newest.taskId) || `linear:${ref}`,
     jobId: (newest && newest.jobId) || (launch && launch.jobId) || null,
     sha: landing.sha,
+    repo: dataRepo || undefined,
     verifyCmd: verify.cmd,
     reason: reasonText,
     ackedBy: ackedBy || 'manual',
@@ -610,7 +619,7 @@ function attemptWindows(rows) {
  * @param {object} input  same shape as decideAlreadyLanded's (rows UNSCOPED)
  */
 function decideLandedElsewhere(input) {
-  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
+  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy, dataRepo } = input || {};
   const pre = ledgerPrecondition(rows);
   const refusals = [...pre.refusals];
   const { newest, launch: latestLaunch, launchVerifyCmd, stranded } = pre;
@@ -689,6 +698,7 @@ function decideLandedElsewhere(input) {
     jobId: (newest && newest.jobId) || (latestLaunch && latestLaunch.jobId) || null,
     workspaceRef: (latestLaunch && latestLaunch.workspaceRef) || undefined,
     sha: landing.sha,
+    repo: dataRepo || undefined,
     verifyCmd: verify.cmd,
     launchVerifyCmd: launchVerifyCmd || null,
     reason: reasonText,
