@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-14T23:07:56.488Z",
+  "timestamp": "2026-10-15T01:02:21.193Z",
   "stats": {
-    "totalReviews": 56549,
+    "totalReviews": 56581,
     "alreadyFlagged": 21053,
     "dateGuardCatches": 210,
-    "directorMismatch": 1906,
-    "tvFilmSignals": 1578,
+    "directorMismatch": 1908,
+    "tvFilmSignals": 1579,
     "londonSignals": 2345,
     "offBroadwaySignals": 510,
     "yearMismatch": 142,
-    "noPublishDate": 5197
+    "noPublishDate": 5194
   },
   "findings": [
     {
@@ -8093,6 +8093,19 @@
     },
     {
       "showId": "clue-tour-2025",
+      "file": "broadwayworld--tim-shawver.json",
+      "publishDate": "2026-02-19",
+      "url": "https://www.broadwayworld.com/phoenix/article/Review-CLUE-LIVE-ON-STAGE-at-Gammage-Auditorium-20260219",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
       "file": "houston-chronicle--doni-wilson.json",
       "score": 63,
       "publishDate": "2026-06-10",
@@ -10751,7 +10764,7 @@
     },
     {
       "showId": "death-of-a-salesman-2026",
-      "file": "theater-scene--victor-gluck.json",
+      "file": "theater-scene--samuel-l-leiter.json",
       "score": 77,
       "publishDate": "2026-04-20",
       "url": "https://www.theaterscene.net/plays/broadway-plays/death-of-a-salesman-2/samuel-l-leiter/",
@@ -18405,7 +18418,7 @@
     },
     {
       "showId": "hughie-2016",
-      "file": "huffpost--michael-glitz.json",
+      "file": "huffpost--steven-suskin.json",
       "score": 39,
       "publishDate": "2016-02-26",
       "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-a-long-nights_b_9322680.html",
@@ -27851,7 +27864,7 @@
     },
     {
       "showId": "noises-off-2016",
-      "file": "huffpost--fern-siegel.json",
+      "file": "huffpost--steven-suskin.json",
       "score": 90,
       "publishDate": "2016-01-15",
       "url": "https://www.huffpost.com/steven-suskin/aisle-view-splendidly-del_b_8985436.html",
@@ -35468,6 +35481,7 @@
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "londonlivinglarge--unknown.json",
+      "score": 95,
       "publishDate": "2024-10-24",
       "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.html",
       "findings": [
@@ -39857,6 +39871,19 @@
       "score": 37,
       "publishDate": "2026-07-09",
       "url": "https://www.bostonglobe.com/2026/07/10/arts/the-great-gatsby-opera-house/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "broadwayworld--brett-cullum.json",
+      "publishDate": "2026-03-04",
+      "url": "https://www.broadwayworld.com/houston/article/Review-THE-GREAT-GATSBY-at-Broadway-at-The-Hobby-Center-20260304",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48735,6 +48762,19 @@
       "score": 90,
       "publishDate": "2026-06-25",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2026/6/25/picksinsix-review-water-for-elephants-broadway-in-chicago",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "playoffthepage--mary-aalgaard.json",
+      "publishDate": "2026-03-04",
+      "url": "https://playoffthepage.com/2026/03/review-of-water-for-elephants-broadway-tour-at-orpheum-theatre-in-minneapolis-mn/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -60317,7 +60357,7 @@
     },
     {
       "showId": "fallen-angels-2026",
-      "file": "theater-scene--victor-gluck.json",
+      "file": "theater-scene--samuel-l-leiter.json",
       "score": 78,
       "publishDate": "2026-04-23",
       "url": "https://www.theaterscene.net/plays/broadway-plays/fallen-angels-2/samuel-l-leiter/",
@@ -64983,7 +65023,7 @@
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-02-12",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15555245/PATRICK-MARMION-review-Im-sorry-Prime-Minister-youre-power-wit.html",
       "findings": [
@@ -64997,7 +65037,7 @@
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2026-02-13",
       "url": "https://www.londontheatre.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre",
       "findings": [
@@ -66507,7 +66547,7 @@
     },
     {
       "showId": "kimberly-akimbo-2022",
-      "file": "theater-scene--victor-gluck-editor-in-chief.json",
+      "file": "theater-scene--joel-benjamin.json",
       "score": 76,
       "publishDate": "2022-11-23",
       "url": "http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/",
@@ -86593,7 +86633,7 @@
     {
       "showId": "why-am-i-so-single-west-end-2024",
       "file": "musical-theatre-review--unknown.json",
-      "score": 78,
+      "score": 80,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/why-am-i-so-single-garrick-theatre/",
       "findings": [
