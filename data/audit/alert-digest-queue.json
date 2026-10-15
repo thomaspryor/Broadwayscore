@@ -708,5 +708,35 @@
       }
     ],
     "queuedAt": "2026-10-15T23:40:14.440Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5395-flagaudit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5395-flagaudit",
+    "description": "land.yml did not land land/bro-5395-flagaudit: the unit-tests-node gate went red at 6031f64b17. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38821254931",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5395-flagaudit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6031f64b1706cd16eda571494d646eb482ae0874"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38821254931"
+      }
+    ],
+    "queuedAt": "2026-10-15T23:43:35.449Z"
   }
 ]
