@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T12:38:40.465Z",
+  "generatedAt": "2026-10-15T13:42:59.218Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-10-15",
-      "status": "previews",
+      "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -161,7 +161,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-10-15",
-      "status": "previews",
+      "status": "open",
       "slug": "midnight-off-broadway",
       "thumbnail": "/images/shows/midnight-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -547,7 +547,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-10-15",
-      "status": "previews",
+      "status": "open",
       "slug": "memoirs-of-amorous-gentlemen-off-broadway",
       "thumbnail": "/images/shows/memoirs-of-amorous-gentlemen-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -923,31 +923,31 @@
       "category": "tour",
       "type": "musical",
       "openingDate": "2026-10-15",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-bodyguard-tour-2026",
       "thumbnail": "/images/shows/the-bodyguard-tour-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 74,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1290,6 +1290,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-15T13:42:59.218Z",
+          "rc": 1,
+          "s": 74,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -1299,7 +1313,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-15",
-      "status": "upcoming",
+      "status": "open",
       "slug": "unconditional-a-new-musical-memoir-off-broadway",
       "thumbnail": "/images/shows/unconditional-a-new-musical-memoir-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1675,7 +1689,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-15",
-      "status": "upcoming",
+      "status": "open",
       "slug": "doll-day-afternoon-off-broadway",
       "thumbnail": "/images/shows/doll-day-afternoon-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -2417,6 +2431,172 @@
       ]
     },
     {
+      "id": "stuffed-off-west-end-2026",
+      "title": "Stuffed",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-14",
+      "status": "open",
+      "slug": "stuffed-off-west-end",
+      "thumbnail": "/images/shows/stuffed-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 89,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-15T13:42:59.218Z",
+          "rc": 1,
+          "s": 89,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "the-cherry-orchard-west-end-2026",
       "title": "The Cherry Orchard",
       "market": "west-end",
@@ -2426,23 +2606,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 69.41,
-      "liveScore": 69,
-      "scoreDrift": -0.4099999999999966,
+      "siteScore": 69.54,
+      "liveScore": 70,
+      "scoreDrift": 0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 6,
       "t2": 4,
-      "t3": 6,
-      "positive": 8,
+      "t3": 7,
+      "positive": 9,
       "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2699,6 +2879,18 @@
           "t2": 4,
           "t3": 6,
           "p": 8,
+          "m": 7,
+          "n": 1,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-15T13:42:59.218Z",
+          "rc": 17,
+          "s": 69.54,
+          "t1": 6,
+          "t2": 4,
+          "t3": 7,
+          "p": 9,
           "m": 7,
           "n": 1,
           "bc": "preview-sent-earlier"
@@ -4128,7 +4320,7 @@
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-10-22",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "the-pianist-off-west-end",
       "thumbnail": "/images/shows/the-pianist-off-west-end-2026/thumbnail.webp",
       "daysUntil": 7,
