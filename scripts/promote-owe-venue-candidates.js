@@ -1388,7 +1388,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
     if (rejected.length > 40) log(`  ... +${rejected.length - 40} more`);
   }
   if (backfills.length > 0) {
-    log(`Dating ${backfills.length} undated row(s) from the venue's dated listing (null fields only):`);
+    log(`Updating ${backfills.length} row(s) from the venue's dated listing (null date fields and slug-truncated titles only):`);
     for (const b of backfills) log(`  = ${b.id}: ${Object.entries(b.patch).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(', ')}`);
   }
   if (held.length > 0) {
@@ -1447,7 +1447,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   for (const p of promoted) showsData.shows.push(p.entry);
   try {
     const evidencePromotions = promoted.filter(p => reviewEvidence(p.candidate).length > 0).length;
-    const r = showsGuard.saveShows(showsData, { reason: `promote-owe-venue-candidates: ${promoted.length - evidencePromotions} venue-page + ${evidencePromotions} review-evidence promotion(s), ${applied.length} undated row(s) dated from the venue's dated listing` });
+    const r = showsGuard.saveShows(showsData, { reason: `promote-owe-venue-candidates: ${promoted.length - evidencePromotions} venue-page + ${evidencePromotions} review-evidence promotion(s), ${applied.length} row(s) dated or retitled from the venue's dated listing` });
     log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
   } catch (e) {
     if (e instanceof AtomicWriteShrinkError) {
