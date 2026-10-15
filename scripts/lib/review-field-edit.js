@@ -54,6 +54,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // Gemini/CV non-review verdict (BRO-4429): the isNonReview family is what
   // classify-non-reviews.js stamps; isNotReview* above is the write-guard's.
   'isNonReview', 'isNonReviewReason', 'nonReviewManualClear', 'wrongArticleManualClear',
+  // audit-non-reviews.js's own marker (BRO-5243): CLEAR ONLY, after
+  // nonReviewManualClear, as isNotReview below. explainExclusion drops any file
+  // carrying it, so a marker stamped on an earlier fragment outlives the real
+  // review recovered later (true-west-2019 WSJ, 2026-10-15).
+  'nonReviewFlag',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
   // cross-outlet duplicate flag (BRO-3870): CLEAR ONLY, with its breadcrumb.
@@ -110,6 +115,8 @@ const FIELD_VALUE_CHECKS = {
   isNotReview: (v, record) => (v === false && record.isNotReviewManualClear === true
     ? null : 'isNotReview may only be cleared (false), after isNotReviewManualClear is set'),
   isNotReviewReason: (v) => (v === null ? null : 'isNotReviewReason may only be cleared (null)'),
+  nonReviewFlag: (v, record) => (v === false && record.nonReviewManualClear === true
+    ? null : 'nonReviewFlag may only be cleared (false), after nonReviewManualClear is set'),
   crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0
     ? null : 'crossOutletClearReason must be a non-empty string'),
   showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder

@@ -79,3 +79,15 @@ test('isNotReview clears only to false and only after isNotReviewManualClear', (
   assert.equal(r.ok, true, r.reason);
   assert.equal(applyReviewFieldEdit(withClear, { field: 'isNotReviewReason', oldValue: 'stale roundup verdict', newValue: 'x' }, stamp, {}).ok, false);
 });
+
+// BRO-5243: audit-non-reviews.js's nonReviewFlag, stamped on an earlier
+// fragment, can be cleared by plan the same way (true-west-2019 WSJ).
+test('nonReviewFlag clears only to false and only after nonReviewManualClear', () => {
+  const rec = tr({ nonReviewFlag: true });
+  assert.equal(applyReviewFieldEdit(rec, { field: 'nonReviewFlag', oldValue: true, newValue: false }, stamp, {}).ok, false, 'breadcrumb first');
+  const withClear = { ...rec, nonReviewManualClear: true };
+  assert.equal(applyReviewFieldEdit(withClear, { field: 'nonReviewFlag', oldValue: true, newValue: true }, stamp, {}).ok, false);
+  const r = applyReviewFieldEdit(withClear, { field: 'nonReviewFlag', oldValue: true, newValue: false }, stamp, {});
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.record.nonReviewFlag, false);
+});
