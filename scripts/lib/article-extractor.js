@@ -530,6 +530,36 @@ function extractTheatreWeeklyBody(html) {
   return stripHtml(cut);
 }
 
+/**
+ * Nub News (nub.news, hyperlocal UK network, e.g. kingston.nub.news; BRO-5219).
+ * The review body is <div id="article_content_block">; nothing usable carries
+ * a content class, so the generic fallback grabbed the whole page and kept the
+ * "The Ball is in your court" donation appeal plus ad/share chrome. Balanced
+ * walk from the id (body nests ad divs), then keep <p> text only.
+ */
+function extractNubNewsBody(html) {
+  const openM = html.match(/<div[^>]*\bid=["']article_content_block["'][^>]*>/i);
+  if (!openM) return null;
+  const start = openM.index + openM[0].length;
+  const tagRe = /<div\b[^>]*>|<\/div>/g;
+  tagRe.lastIndex = start;
+  let depth = 1;
+  let m;
+  while ((m = tagRe.exec(html))) {
+    if (m[0] === '</div>') {
+      if (--depth === 0) {
+        return [...html.slice(start, m.index).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+          .map((p) => stripHtml(p[1]))
+          .filter(Boolean)
+          .join('\n\n');
+      }
+    } else {
+      depth++;
+    }
+  }
+  return null;
+}
+
 function extractRadioTimesBody(html) {
   const inner = extractBalancedDivByClass(html, 'post__content');
   if (!inner) return null;
@@ -553,6 +583,8 @@ const PATTERNS = [
   // Radio Times: the body nests ratings, ads and image divs. Balanced matching
   // keeps every paragraph and excludes the pension/sidebar and disclosure copy.
   ['radiotimes.com', extractRadioTimesBody, 300],
+  // Nub News: id-anchored body, see extractNubNewsBody (BRO-5219).
+  ['nub.news', extractNubNewsBody, 300],
   // Telegraph — never had an extractor pattern (task #720 added it to WE
   // discovery but extraction was never built), so every telegraph.co.uk
   // review silently saved as a stub even though the free cookie-plain fetch
@@ -1153,4 +1185,4 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody };
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody };
