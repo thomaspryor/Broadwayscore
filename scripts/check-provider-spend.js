@@ -127,6 +127,14 @@ async function main() {
   // — this run's own write always looks fresh by construction, so freshness/
   // continuity only means something measured against what survived to disk.
   const now = new Date();
+  // Also check scoring across GitHub runs, even if today's scoring queue is empty.
+  const { DEFAULT_RUNS_LOG_PATH, reportRollingCostAlerts } = require('./lib/llm-scoring-cost-recording');
+  try {
+    const scoringRuns = JSON.parse(fs.readFileSync(DEFAULT_RUNS_LOG_PATH, 'utf8'));
+    await reportRollingCostAlerts(scoringRuns, { now, thresholdUsd: thresholds.llmScoringDailyUsd, dryRun: DRY_RUN });
+  } catch (err) {
+    console.warn(`[llm-scoring] rolling spend check unavailable (non-fatal): ${err.message}`);
+  }
   const freshnessHours = ledgerFreshnessHours(ledger, now);
   const missingDays = missingLedgerDays(ledger, now, CONTINUITY_WINDOW_DAYS);
   const ledgerUnhealthy = freshnessHours > STALE_HOURS_THRESHOLD || missingDays.length > 0;

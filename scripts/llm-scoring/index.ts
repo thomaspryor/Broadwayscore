@@ -2600,6 +2600,8 @@ async function main(): Promise<void> {
       ? {
           input: (tokenUsage as any).claude.input + (tokenUsage as any).openai.input,
           output: (tokenUsage as any).claude.output + (tokenUsage as any).openai.output,
+          cacheRead: (tokenUsage as any).claude.cacheRead || 0,
+          cacheWrite: (tokenUsage as any).claude.cacheWrite || 0,
           total: (tokenUsage as any).total
         }
       : tokenUsage as { input: number; output: number; total: number };
@@ -2629,6 +2631,8 @@ async function main(): Promise<void> {
 
     const runsAfterSave = saveRunSummary(summary);
     console.log(`\nRun summary saved to: ${RUNS_LOG_PATH}`);
+    const { reportRollingCostAlerts } = require('../lib/llm-scoring-cost-recording');
+    await reportRollingCostAlerts(runsAfterSave);
 
     // BRO-3381 — alarm (never abort) when this GitHub Actions run's
     // cumulative LLM scoring spend crosses the configured line. Summed by

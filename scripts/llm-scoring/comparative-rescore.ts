@@ -154,7 +154,7 @@ function loadGroups(showDir: string): Map<string, ReviewEntry[]> {
 // callOpenAI/callGemini/callClaude, mirroring their existing module-level
 // client-caching pattern below.
 const usageTotals = {
-  claude: { input: 0, output: 0 },
+  claude: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   openai: { input: 0, output: 0 },
   gemini: { input: 0, output: 0 },
 };
@@ -231,6 +231,8 @@ async function callClaude(prompt: string): Promise<string | null> {
     if (res.usage) {
       usageTotals.claude.input += res.usage.input_tokens || 0;
       usageTotals.claude.output += res.usage.output_tokens || 0;
+      usageTotals.claude.cacheRead += res.usage.cache_read_input_tokens || 0;
+      usageTotals.claude.cacheWrite += res.usage.cache_creation_input_tokens || 0;
     }
     const block = res.content.find((c) => c.type === 'text');
     return block && block.type === 'text' ? block.text : null;
@@ -499,19 +501,23 @@ async function main() {
       tokensUsed: {
         input: usageTotals.claude.input + usageTotals.openai.input + usageTotals.gemini.input,
         output: usageTotals.claude.output + usageTotals.openai.output + usageTotals.gemini.output,
+        cacheRead: usageTotals.claude.cacheRead,
+        cacheWrite: usageTotals.claude.cacheWrite,
         total:
           usageTotals.claude.input + usageTotals.claude.output +
           usageTotals.openai.input + usageTotals.openai.output +
-          usageTotals.gemini.input + usageTotals.gemini.output,
+          usageTotals.gemini.input + usageTotals.gemini.output +
+          usageTotals.claude.cacheRead + usageTotals.claude.cacheWrite,
       },
       costUsd,
       runId: process.env.GITHUB_RUN_ID || null,
       errorDetails: [],
     };
 
-    const { appendRunSummary, loadCostThresholdUsd, checkCostBreach } = require('../lib/llm-scoring-cost-recording');
+    const { appendRunSummary, loadCostThresholdUsd, checkCostBreach, reportRollingCostAlerts } = require('../lib/llm-scoring-cost-recording');
     const runsAfterSave = appendRunSummary(summary);
     console.log(`Run summary saved to data/llm-scoring-runs.json`);
+    await reportRollingCostAlerts(runsAfterSave);
 
     // Re-check the SAME runId's cumulative spend here too, not just after
     // index.ts: llm-ensemble-score.yml runs this script AFTER index.ts's own

@@ -542,6 +542,9 @@ export interface PipelineRunSummary {
     input: number;
     output: number;
     total: number;
+    /** Claude cache tokens are separate from uncached input. Missing in older summaries. */
+    cacheRead?: number;
+    cacheWrite?: number;
   };
 
   /**
