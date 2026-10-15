@@ -1,26 +1,21 @@
 {
-  "updatedAt": "2026-10-15T00:30:52.428Z",
-  "processed": 152,
-  "failed": 165,
-  "successRate": "47.9%",
+  "updatedAt": "2026-10-15T01:03:49.840Z",
+  "processed": 184,
+  "failed": 194,
+  "successRate": "48.7%",
   "tierBreakdown": {
-    "playwright": 92,
-    "amp": 5,
+    "playwright": 105,
+    "amp": 6,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 12,
-    "brightdata": 0,
+    "scrapingdog": 15,
+    "scrapingbee": 18,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 38
+    "archive": 43
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-14T22:59:01.412Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-14T23:37:36.722Z",
       "event": "bb-session",
@@ -88,46 +83,48 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T00:26:55.605Z",
+      "t": "2026-10-15T00:43:51.702Z",
       "event": "bb-session",
-      "session": "55986f98",
-      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
+      "session": "b806a471",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-15T00:27:56.642Z",
-      "event": "bb-session",
-      "session": "ff34fdb6",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+      "t": "2026-10-15T00:43:52.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T00:28:11.814Z",
+      "t": "2026-10-15T00:44:11.350Z",
       "event": "bb-session",
-      "session": "bfd18e22",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+      "session": "7aa7b8dc",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-15T00:29:00.113Z",
-      "event": "bb-session",
-      "session": "81d75c58",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "t": "2026-10-15T00:44:12.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T00:29:08.514Z",
+      "t": "2026-10-15T00:46:37.555Z",
       "event": "bb-session",
-      "session": "1eec6253",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "session": "a7b5e02b",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
     },
     {
-      "t": "2026-10-15T00:30:10.831Z",
-      "event": "bb-session",
-      "session": "45efc20a",
-      "url": "https://www.thereviewshub.com/tag/affluenza/"
+      "t": "2026-10-15T00:46:38.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-15T00:30:19.748Z",
+      "t": "2026-10-15T00:46:48.069Z",
       "event": "bb-session",
-      "session": "c8eee27b",
-      "url": "https://www.thereviewshub.com/tag/affluenza/"
+      "session": "d86f96c4",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-15T00:46:48.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
