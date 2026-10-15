@@ -1558,9 +1558,11 @@ function urlNamesShow(url, showTitle) {
   let pathPart;
   try { pathPart = decodeURIComponent(new URL(url).pathname); } catch { return false; }
   const tokens = new Set(slugTokens(pathPart));
-  // A film or TV piece can share the title (the Times' "Wicked: For Good"
-  // film review sat under the stage show).
-  if (['film', 'films', 'movie', 'movies', 'tv', 'television', 'cinema'].some((w) => tokens.has(w))) return false;
+  // A film, TV or book piece can share the title (the Times' "Wicked: For
+  // Good" film review, a WSJ books review), and a weekly round-up names several
+  // shows in one url.
+  if (['film', 'films', 'movie', 'movies', 'tv', 'television', 'cinema', 'book', 'books', 'roundup'].some((w) => tokens.has(w))) return false;
+  if (/round-up|best-of-the-week/i.test(pathPart)) return false;
   const words = slugTokens(showTitle).filter((w) => !URL_TITLE_STOP_WORDS.has(w));
   if (words.length === 0) return false;
   if (!words.every((w) => tokens.has(w))) return false;
@@ -1568,17 +1570,23 @@ function urlNamesShow(url, showTitle) {
 }
 
 /**
- * True when publishDate falls within 2 years of the production year in the
- * show id ("aspects-of-love-1990" vs a 2023 review is not). A missing or
- * unreadable date, or an id without a year, is never evidence.
+ * True when publishDate falls within 1 year of the production year in the
+ * show id ("aspects-of-love-1990" vs a 2023 review is not), and so does any
+ * year printed in the url path (a 2016 NYT url under the-crucible-2002, a 2010
+ * Guardian url under an-enemy-of-the-people-2012). A missing or unreadable
+ * date, or an id without a year, is never evidence.
  */
-function publishedNearProduction(publishDate, showId) {
+function publishedNearProduction(publishDate, showId, url) {
   const idYear = Number((/-(\d{4})$/.exec(String(showId || '')) || [])[1]);
   if (!idYear || !publishDate) return false;
   const { toDateMs } = require('./date-utils');
   const ms = toDateMs(publishDate);
   if (Number.isNaN(ms)) return false;
-  return Math.abs(new Date(ms).getUTCFullYear() - idYear) <= 2;
+  if (Math.abs(new Date(ms).getUTCFullYear() - idYear) > 1) return false;
+  let pathPart = '';
+  try { pathPart = new URL(url).pathname; } catch { /* no url year */ }
+  const urlYear = (/(?:^|\/)((?:19|20)\d\d)(?:\/|$)/.exec(pathPart) || [])[1];
+  return !urlYear || Math.abs(Number(urlYear) - idYear) <= 1;
 }
 
 /** assessTextQuality options from a review record (BRO-5395): its url and publish date. */
@@ -1621,7 +1629,7 @@ function assessTextQuality(text, showId, showTitle, opts = {}) {
   // other productions of the same title (London reviews under Broadway ids).
   const useShowEvidence = opts.useShowEvidence === undefined ? USE_URL_SHOW_EVIDENCE : !!opts.useShowEvidence;
   if (!showMentionedEarly.valid && useShowEvidence
-      && urlNamesShow(opts.url, showTitle) && publishedNearProduction(opts.publishDate, showId)) {
+      && urlNamesShow(opts.url, showTitle) && publishedNearProduction(opts.publishDate, showId, opts.url)) {
     showMentionedEarly = { valid: true, confidence: 'medium', reason: 'Review url names the show' };
   }
   const multiShowCheck = detectMultiShowContent(text, showId, { requireTitleCase: opts.requireTitleCase });

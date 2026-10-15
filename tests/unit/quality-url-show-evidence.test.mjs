@@ -29,8 +29,16 @@ test('qualityOptsFor reads url and publish date only (a Theatre Record filing is
   assert.deepStrictEqual(cq.qualityOptsFor({ url: 'https://a.b/c', source: 'theatre-record', publishDate: '2023-02-14' }), { url: 'https://a.b/c', publishDate: '2023-02-14' });
 });
 
-test('urlNamesShow refuses film and TV pages', () => {
+test('urlNamesShow refuses film, TV, book and round-up pages', () => {
   assert.strictEqual(cq.urlNamesShow('https://www.thetimes.com/culture/film/article/wicked-for-good-review-x', 'Wicked'), false);
+  assert.strictEqual(cq.urlNamesShow('https://www.wsj.com/arts-culture/books/baldwin-street-review-family-album-7c3bc6eb', 'The Family Album'), false);
+  assert.strictEqual(cq.urlNamesShow('https://inews.co.uk/culture/arts/blues-for-an-alabama-sky-tosca-and-iphigenia-in-splott-the-best-of-the-weeks-live-reviews-1894718', 'Blues for an Alabama Sky'), false);
+  assert.strictEqual(cq.urlNamesShow('https://x.co.uk/arts/blues-for-an-alabama-sky-round-up', 'Blues for an Alabama Sky'), false);
+});
+
+test('a year in the url path far from the production does not count', () => {
+  const url = 'https://www.theguardian.com/stage/2010/feb/18/standing-at-the-skys-edge-review';
+  assert.strictEqual(cq.assessTextQuality(text, ID, T, { useShowEvidence: true, url, publishDate: '2023-02-14' }).quality, 'garbage');
 });
 
 const prose = 'People used to come from miles around to The Estate. One Local said The Story was Reckless and Tender, '
