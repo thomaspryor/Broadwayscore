@@ -117,6 +117,8 @@ jobs:
         if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected')
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
+          # BRO-5182: commercial-pending-review.json is a union-merged managed file (push-with-retry.sh reconcile_merged_json).
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git add data/pending-fixes/
           # BRO-5182: reconcile-pending-commercial.js prunes this tracked file; the weekly
