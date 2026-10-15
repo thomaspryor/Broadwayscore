@@ -443,5 +443,59 @@
       }
     ],
     "queuedAt": "2026-10-15T15:09:33.118Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Collect WE/OB Reviews",
+    "title": "Cron's latest run failed (not yet stale): Collect WE/OB Reviews",
+    "description": "Collect WE/OB Reviews: Latest run failed (last success 24h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38765870593",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38765870593)"
+      }
+    ],
+    "queuedAt": "2026-10-15T16:06:04.599Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Mezzanine",
+    "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
+    "description": "Update Mezzanine: Latest run failed (last success 2h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38765870593",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38765870593)"
+      }
+    ],
+    "queuedAt": "2026-10-15T16:06:04.615Z"
+  },
+  {
+    "conditionKey": "cron-health:Weekly Video Reviews",
+    "title": "🚨 Critical cron stale, self-heal failed: Weekly Video Reviews",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38765870593",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38765870593)"
+      }
+    ],
+    "queuedAt": "2026-10-15T16:06:04.734Z"
   }
 ]
