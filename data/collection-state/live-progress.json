@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-15T14:29:07.672Z",
-  "processed": 264,
-  "failed": 219,
-  "successRate": "54.7%",
+  "updatedAt": "2026-10-15T14:32:39.081Z",
+  "processed": 96,
+  "failed": 68,
+  "successRate": "58.5%",
   "tierBreakdown": {
-    "playwright": 161,
-    "amp": 2,
-    "browserbase": 6,
+    "playwright": 67,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 25,
     "scrapingbee": 18,
@@ -26,6 +26,17 @@
       "t": "2026-10-15T14:01:22.531Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-15T14:29:34.065Z",
+      "event": "bb-session",
+      "session": "b6caee9c",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-15T14:29:34.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
