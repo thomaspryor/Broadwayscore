@@ -30,7 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain, reviewSlugNamesDifferentShow } = require('./lib/review-normalization');
-const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry, decidePlaceholderBylineTwin } = require('./lib/review-text-identity');
+const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry, decidePlaceholderBylineTwin, decideSameArticleNamedTwin } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { parseAgreeingConflictedReview } = require('./lib/conflict-markers');
 // Pre-pass readers (sort metadata, dup-cycle siblings) must see the same
@@ -4897,6 +4897,24 @@ showDirs.forEach(showId => {
         }
       }
 
+      // BRO-5398 sweep — same article under a second critic name at the same
+      // outlet (20 live pairs: one piece, two bylines, double outlet weight).
+      // Near-identical prose (>=90% of the shorter text) is the proof; the
+      // better-ranked file was kept first (priority sort above).
+      if (!/^(unknown|unnamed)$/.test(criticKey) && data.fullText) {
+        const sameArticle = decideSameArticleNamedTwin(data.fullText, keptNamedByOutlet.get(outletKey) || []);
+        if (sameArticle.drop) {
+          const keptFile = (keptNamedByOutlet.get(outletKey) || [])[sameArticle.index] || null;
+          // No URL carry here (unlike the placeholder/Unknown twins): the dropped copy
+          // names a different person, and the kept entry must not gain a link to an
+          // article credited to someone else.
+          logExclusion("skippedSameArticleNamedTwin", showId, file, data, { twinOf: keptFile && keptFile.file, reason: sameArticle.reason });
+          stats.skippedSameArticleNamedTwin = (stats.skippedSameArticleNamedTwin || 0) + 1;
+          console.log(`  [SAME-ARTICLE TWIN] ${showId}/${file}: "${data.criticName}" has near-identical text to ${keptFile && keptFile.file} at ${outletKey} (skipping)`);
+          return;
+        }
+      }
+
       // Unknown-outlet dedup: if the outlet is "unknown" but a file from a real outlet
       // exists for this same critic in this show's directory, skip the unknown entry.
       // This catches Show-Score shadow entries (e.g., unknown--samuel-l-leiter.json) when
@@ -6166,6 +6184,7 @@ const output = {
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedPlaceholderBylineTwin: stats.skippedPlaceholderBylineTwin || 0,
+      skippedSameArticleNamedTwin: stats.skippedSameArticleNamedTwin || 0,
       unknownTwinUrlCarried: stats.unknownTwinUrlCarried || 0,
       skippedUnknownOutletDedup: stats.skippedUnknownOutletDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
@@ -6647,6 +6666,7 @@ if (stats.staleContentVerificationCleared > 0) {
 console.log(`  Resolved (default critic from outlet registry): ${stats.resolvedDefaultCritic || 0}`);
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (placeholder-byline twin of a named review): ${stats.skippedPlaceholderBylineTwin || 0}`);
+console.log(`  Skipped (same article under another critic, same outlet): ${stats.skippedSameArticleNamedTwin || 0}`);
 console.log(`  Unknown-twin URL carried to named entry: ${stats.unknownTwinUrlCarried || 0}`);
 console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);

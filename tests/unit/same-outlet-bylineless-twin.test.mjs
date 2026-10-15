@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { decidePlaceholderBylineTwin } = require('../../scripts/lib/review-text-identity.js');
+const { decidePlaceholderBylineTwin, decideSameArticleNamedTwin } = require('../../scripts/lib/review-text-identity.js');
 const { isPlaceholderCritic } = require('../../scripts/lib/critic-display-name.js');
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -79,4 +79,37 @@ test('rebuild-all-reviews.js sorts placeholder bylines after named critics and r
   assert.ok(twin > src.indexOf('skippedUnknownCriticDedup", showId'), 'after the Unknown-critic dedup');
   assert.ok(twin < src.indexOf('// Unknown-outlet dedup:'), 'before the unknown-outlet dedup');
   assert.match(src, /logExclusion\("skippedPlaceholderBylineTwin"/, 'exclusion is logged');
+});
+
+// ── same article filed under a second NAMED critic (TheaterMania Aladdin, Clyde's, ...) ──
+
+// Two reviews of one show share a synopsis and a few lines, never 90% of their prose.
+const SYNOPSIS = prose(41, 70);
+const REVIEW_A = `${SYNOPSIS} ${prose(12, 250)}`;
+const REVIEW_B = `${SYNOPSIS} ${prose(77, 250)}`;
+// The same article re-captured with different page chrome and a short trailer.
+const RECAPTURE = `Share ${prose(8, 10)} ${REVIEW_A} Related stories ${prose(9, 20)}`;
+
+test('the same article under a second named critic is a twin', () => {
+  const d = decideSameArticleNamedTwin(RECAPTURE, [{ fullText: REVIEW_B }, { fullText: REVIEW_A }]);
+  assert.deepEqual([d.drop, d.index], [true, 1]);
+});
+
+test('two critics\' different reviews of the same show are both kept, even with a shared synopsis', () => {
+  assert.equal(decideSameArticleNamedTwin(REVIEW_B, [{ fullText: REVIEW_A }]).drop, false);
+});
+
+test('nothing kept, empty text or missing entries never drop', () => {
+  assert.equal(decideSameArticleNamedTwin(REVIEW_A, []).drop, false);
+  assert.equal(decideSameArticleNamedTwin('', [{ fullText: REVIEW_A }]).drop, false);
+  assert.equal(decideSameArticleNamedTwin(REVIEW_A, undefined).drop, false);
+  assert.equal(decideSameArticleNamedTwin(REVIEW_A, [null, { fullText: '' }]).drop, false);
+});
+
+test('rebuild wires the named-twin dedup after the placeholder twin and before the unknown-outlet dedup', () => {
+  const src = readFileSync(path.join(repoRoot, 'scripts/rebuild-all-reviews.js'), 'utf8');
+  const named = src.indexOf('decideSameArticleNamedTwin(data.fullText');
+  assert.ok(named > src.indexOf('decidePlaceholderBylineTwin(data.fullText'), 'after the placeholder twin');
+  assert.ok(named < src.indexOf('// Unknown-outlet dedup:'), 'before the unknown-outlet dedup');
+  assert.match(src, /logExclusion\("skippedSameArticleNamedTwin"/);
 });

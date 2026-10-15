@@ -300,7 +300,37 @@ function decidePlaceholderBylineTwin(incomingText, keptAtOutlet) {
   return { drop: true, index: matches[0], reason: matches.length > 1 ? 'same-text-as-multiple-named-entries' : 'same-text-as-named-entry' };
 }
 
+// A named critic's copy of an article that is already kept under another name
+// must cover nearly all of the shorter text: two reviews of one show by two
+// critics share a synopsis and some quoted lines, never 90% of their prose.
+const SAME_ARTICLE_MIN_COVERAGE = 0.9;
+
+/**
+ * Rebuild-side decision (rebuild-all-reviews.js skippedSameArticleNamedTwin,
+ * BRO-5398 sweep): the incoming file is the SAME ARTICLE as an entry already
+ * kept at this outlet, filed under a different critic (an aggregator or an
+ * old URL form credited the piece to a second name). Found live on 20 pairs
+ * (TheaterMania Aladdin / Between Riverside / Clyde's, WhatsOnStage Back to
+ * the Future, NYT Oh Mary, Variety legacy URLs): same day, same text, two
+ * critics, so the outlet's weight counted twice. The identical-text audit
+ * (BRO-5321) needs byte-identical text and misses all of them.
+ *
+ * Which copy survives is not decided here: files arrive in the rebuild's
+ * quality order (scored, verified, byline attested in text, ...), so the kept
+ * entry is the better-ranked one. Pure.
+ *
+ * @param {string} incomingText
+ * @param {Array<{fullText?: string}>} keptAtOutlet
+ * @returns {{drop: boolean, index?: number, reason: string}}
+ */
+function decideSameArticleNamedTwin(incomingText, keptAtOutlet) {
+  const i = (keptAtOutlet || []).findIndex(k => k && textsShareVerbatimPassage(incomingText, k.fullText, { minCoverage: SAME_ARTICLE_MIN_COVERAGE }));
+  return i < 0 ? { drop: false, reason: 'no-near-identical-text-at-outlet' } : { drop: true, index: i, reason: 'near-identical-text-under-another-critic' };
+}
+
 module.exports = {
+  decideSameArticleNamedTwin,
+  SAME_ARTICLE_MIN_COVERAGE,
   decidePlaceholderBylineTwin,
   textsShareVerbatimPassage,
   isUnknownCritic,
