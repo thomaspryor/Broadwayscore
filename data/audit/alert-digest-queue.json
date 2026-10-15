@@ -257,5 +257,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-15T12:13:26.394Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4335-shouldskip",
+    "title": "Landing blocked: resolve red on land/bro-4335-shouldskip",
+    "description": "land.yml did not land land/bro-4335-shouldskip: the resolve gate went red at 6d8ba191bd. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/bro-4335-shouldskip tip is afe9597fc9 (origin/land/bro-4335-shouldskip), not the verified tip 6d8ba191bd — a newer push superseded this landing; nothing pushed (attempts 0, 28.7s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38738396786",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4335-shouldskip"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "6d8ba191bd0e11381918eb38a209c1b5942982e9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38738396786"
+      }
+    ],
+    "queuedAt": "2026-10-15T13:18:16.633Z"
   }
 ]
