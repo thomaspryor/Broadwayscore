@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-10-15T08:05:12.401Z",
+  "runDate": "2026-10-15T10:02:59.317Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1,
     "priority": "all",
-    "showFilter": "the-cherry-orchard-west-end-2026,anon-a-tempest-at-our-kitchen-table-off-broadway-2026,the-ask-off-broadway-2026,the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026,nina-off-west-end-2026",
+    "showFilter": "the-real-thing-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 6,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,39 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 6,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 1,
-    "tier2Attempts": 2,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier3_6Attempts": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 6,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-      "nina-off-west-end-2026",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-      "the-cherry-orchard-west-end-2026"
+      "the-real-thing-2014"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -69,41 +66,22 @@
     }
   },
   "processed": [
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/frontmezzjunkies--ross.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
+    "the-real-thing-2014/wsj--terry-teachout.json"
   ],
-  "failed": [
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
-    "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
-    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
-    "nina-off-west-end-2026/guardian--kate-wyver.json",
-    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/frontmezzjunkies--ross.json",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
+      "the-real-thing-2014/wsj--terry-teachout.json"
     ],
-    "failed": [
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
-      "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
-      "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
-      "nina-off-west-end-2026/guardian--kate-wyver.json",
-      "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
-    "playwright": [
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/frontmezzjunkies--ross.json",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
-      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-real-thing-2014/wsj--terry-teachout.json",
+      "the-real-thing-2014/wsj--terry-teachout.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -111,28 +89,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Independent": {
-      "count": 1,
-      "domain": "independent.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Reviews Hub": {
-      "count": 1,
-      "domain": "thereviewshub.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
