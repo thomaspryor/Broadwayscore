@@ -425,3 +425,136 @@ test('session-start.sh passes the cloud budget and prints the stale-hooks warnin
   assert.match(src, /r\.fetched === false/);
   assert.match(src, /formatFetchFailedMessage/);
 });
+
+// ── BRO-5359: background catch-up for a checkout too far behind to fetch within the startup budget ─────
+
+function makeStaleClone() {
+  const { spawnSync } = require('child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bg-sync-'));
+  const env = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t', GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
+  const sh = (cwd, c) => { const r = spawnSync('bash', ['-c', c], { cwd, env, encoding: 'utf8' }); if (r.status !== 0) throw new Error(`${c}\n${r.stderr}`); return r.stdout.trim(); };
+  const noMaint = 'git config gc.auto 0 && git config gc.autoDetach false && git config maintenance.auto false';
+  const publish = ['git', 'push', '-q', 'origin', 'main'].join(' ');
+  sh(dir, `git init -q --bare -b main origin.git && (cd origin.git && ${noMaint} && git config receive.autogc false) && git clone -q origin.git seed 2>/dev/null; cd seed && ${noMaint} && git checkout -q -B main && mkdir -p data scripts && echo one > data/core.json && echo code1 > scripts/a.js && git add -A && git commit -q -m one && ${publish} && cd .. && git clone -q origin.git stale && cd stale && ${noMaint}`);
+  sh(path.join(dir, 'seed'), `echo code2 > scripts/a.js && echo two > data/core.json && git commit -qam two && echo code3 > scripts/a.js && git commit -qam three && ${publish}`);
+  return { dir, env, stale: path.join(dir, 'stale'), sh, cleanup: () => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }) };
+}
+
+test('backgroundCatchUp: a modified tracked data/ file is preserved byte for byte across the fast-forward', () => {
+  const { backgroundCatchUp } = require('../lib/code-checkout-staleness.js');
+  const t = makeStaleClone();
+  try {
+    const mine = 'my local cloud copy, not what the repo has\n';
+    fs.writeFileSync(path.join(t.stale, 'data', 'core.json'), mine); // the edit that blocks a plain `merge --ff-only`
+    const head = t.sh(t.stale, 'git rev-parse HEAD');
+    const r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1 });
+    assert.equal(r.synced, true, JSON.stringify(r));
+    assert.equal(r.preserved, 1);
+    assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code3', 'the code is current');
+    assert.equal(fs.readFileSync(path.join(t.stale, 'data', 'core.json'), 'utf8'), mine, 'the data file has exactly the bytes it had');
+    assert.equal(fs.readdirSync(os.tmpdir()).filter((f) => f.startsWith('code-sync-backup-')).length, 0, 'the temporary backup was cleaned up');
+  } finally { t.cleanup(); }
+});
+
+test('backgroundCatchUp: never touches real work (tracked edit outside data/, local commits, moved HEAD, kill switch)', () => {
+  const { backgroundCatchUp } = require('../lib/code-checkout-staleness.js');
+  const t = makeStaleClone();
+  try {
+    const head = t.sh(t.stale, 'git rev-parse HEAD');
+    // 1. a tracked edit outside data/ is real work: refused, and the edit is untouched
+    fs.writeFileSync(path.join(t.stale, 'scripts', 'a.js'), 'my edit\n');
+    let r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1 });
+    assert.equal(r.synced, false);
+    assert.match(r.reason, /uncommitted changes outside data\//);
+    assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8'), 'my edit\n');
+    t.sh(t.stale, 'git checkout -q -- scripts');
+    // 2. the kill switch wins before anything (even the fetch) happens
+    const calls = [];
+    r = backgroundCatchUp({ repoDir: t.stale, execFn: (...a) => { calls.push(a); return ''; }, env: { CODE_SYNC_DISABLED: '1' } });
+    assert.equal(r.synced, false);
+    assert.match(r.reason, /CODE_SYNC_DISABLED/);
+    assert.equal(calls.length, 0, 'no git command ran');
+    // 3. HEAD moved since startup
+    fs.writeFileSync(path.join(t.stale, 'scripts', 'b.js'), 'x\n');
+    t.sh(t.stale, 'git add -A && git commit -q -m mine');
+    r = backgroundCatchUp({ repoDir: t.stale, expectHead: head, attempts: 1 });
+    assert.match(r.reason, /HEAD moved since startup/);
+    // 4. even without a pinned HEAD, a local commit is "ahead" and is refused
+    r = backgroundCatchUp({ repoDir: t.stale, attempts: 1 });
+    assert.equal(r.synced, false);
+    assert.match(r.reason, /local commit\(s\) not on origin\/main/);
+  } finally { t.cleanup(); }
+});
+
+test('backgroundCatchUp: gives up quietly when the remote never answers, and does nothing when already current', () => {
+  const { backgroundCatchUp } = require('../lib/code-checkout-staleness.js');
+  const t = makeStaleClone();
+  try {
+    const sleeps = [];
+    t.sh(t.dir, 'mv origin.git origin.gone');
+    let r = backgroundCatchUp({ repoDir: t.stale, attempts: 3, sleepFn: (ms) => sleeps.push(ms), pauseMs: 7 });
+    assert.equal(r.synced, false);
+    assert.match(r.reason, /could not be fetched after 3 attempt/);
+    assert.deepEqual(sleeps, [7, 7], 'pauses between attempts, not after the last');
+    t.sh(t.dir, 'mv origin.gone origin.git');
+    r = backgroundCatchUp({ repoDir: t.stale, attempts: 1 });
+    assert.equal(r.synced, true);
+    r = backgroundCatchUp({ repoDir: t.stale, attempts: 1 });
+    assert.equal(r.reason, 'already current');
+  } finally { t.cleanup(); }
+});
+
+test('--bg-sync process: really runs detached-style, logs the outcome, and only one job runs at a time', () => {
+  const { spawnSync } = require('child_process');
+  const lib = path.join(REPO_ROOT, 'scripts', 'lib', 'code-checkout-staleness.js');
+  const t = makeStaleClone();
+  const log = path.join(t.dir, 'bg.log');
+  const lock = path.join(t.dir, 'bg.lock');
+  const run = () => spawnSync(process.execPath, [lib, '--bg-sync', t.stale, t.sh(t.stale, 'git rev-parse HEAD')], { encoding: 'utf8', env: { ...t.env, CODE_CHECKOUT_BG_LOG: log, CODE_CHECKOUT_BG_LOCK: lock } });
+  try {
+    // a fresh lock held by another job: exit without touching anything
+    fs.mkdirSync(lock);
+    assert.equal(run().status, 0);
+    assert.match(fs.readFileSync(log, 'utf8'), /another catch-up is already running/);
+    assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code1', 'not synced while locked');
+    // a stale lock (40+ minutes old) is taken over
+    const old = new Date(Date.now() - 50 * 60 * 1000);
+    fs.utimesSync(lock, old, old);
+    assert.equal(run().status, 0);
+    assert.match(fs.readFileSync(log, 'utf8'), /synced \w+ -> \w+ \(2 commits\)/);
+    assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code3');
+    assert.equal(fs.existsSync(lock), false, 'the lock is released');
+  } finally { t.cleanup(); }
+});
+
+test('startBackgroundSync starts a detached node process for --bg-sync and reports its pid; the failure message mentions it', () => {
+  const { startBackgroundSync, formatFetchFailedMessage } = require('../lib/code-checkout-staleness.js');
+  const calls = [];
+  const pid = startBackgroundSync('/home/user/x', { expectHead: 'abc123', spawnFn: (cmd, args, opts) => { calls.push({ cmd, args, opts }); return { pid: 4242, unref() {} }; } });
+  assert.equal(pid, 4242);
+  assert.equal(calls[0].cmd, process.execPath);
+  assert.deepEqual(calls[0].args.slice(1), ['--bg-sync', '/home/user/x', 'abc123']);
+  assert.equal(calls[0].opts.detached, true);
+  assert.equal(calls[0].opts.stdio, 'ignore');
+  assert.equal(startBackgroundSync('/x', { spawnFn: () => { throw new Error('no'); } }), null, 'a spawn failure is swallowed');
+  const withJob = formatFetchFailedMessage('/x', 'Tue', 4242);
+  assert.match(withJob, /background catch-up is already running \(pid 4242\)/);
+  assert.match(withJob, /do NOT run the merge by hand/);
+  assert.doesNotMatch(formatFetchFailedMessage('/x', 'Tue'), /background catch-up/);
+});
+
+test('startBackgroundSync pins the checkout HEAD itself when the caller gives none', () => {
+  const { startBackgroundSync } = require('../lib/code-checkout-staleness.js');
+  const t = makeStaleClone();
+  try {
+    const head = t.sh(t.stale, 'git rev-parse HEAD');
+    const seen = [];
+    startBackgroundSync(t.stale, { spawnFn: (cmd, args) => { seen.push(args); return { pid: 1, unref() {} }; } });
+    assert.deepEqual(seen[0].slice(1), ['--bg-sync', t.stale, head]);
+  } finally { t.cleanup(); }
+});
+
+test('session-start.sh starts the background catch-up when the startup fetch fails', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
+  assert.match(src, /lib\.startBackgroundSync\(repoDir\)/);
+});

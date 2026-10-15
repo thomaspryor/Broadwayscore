@@ -131,12 +131,13 @@ function runCodeCheckoutStalenessCheck({ repoDir, execFn = execFileSync, skipFet
 }
 
 /** Pure: the cloud warning when origin/main could not be fetched, so the checkout (and its hooks) may be stale. */
-function formatFetchFailedMessage(repoDir, headDate) {
+function formatFetchFailedMessage(repoDir, headDate, bgPid = null) {
   return [
     `⚠️ HOOKS MAY BE STALE: could not fetch origin/main for ${repoDir} (timed out after ${CLOUD_FETCH_TIMEOUT_MS / 1000}s, or a network/auth error).`,
     `   This session's hooks, gates and scripts run from that checkout${headDate ? ` (HEAD is from ${headDate})` : ''}, so newer fixes`,
     `   (review gates, landing checks) may not be active. Refresh it now:`,
     `     git -C ${repoDir} fetch origin main && git -C ${repoDir} merge --ff-only origin/main`,
+    ...(bgPid ? [`   A background catch-up is already running (pid ${bgPid}); do NOT run the merge by hand meanwhile. It retries the fetch and fast-forwards this checkout when it can; read /tmp/code-checkout-bg-sync.log for the outcome.`] : []),
   ].join('\n');
 }
 
@@ -174,11 +175,11 @@ function registeredHookScripts(settingsText) {
  * Every precondition failure returns {synced:false, reason} and changes
  * nothing. Expects origin/main already fetched (runCodeCheckoutStalenessCheck).
  */
-function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, env = process.env } = {}) {
+function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, env = process.env, syncTimeoutMs = SYNC_TIMEOUT_MS } = {}) {
   const fs = require('fs');
   const path = require('path');
   const git = (args) => String(execFn('git', ['-C', repoDir, ...args], {
-    encoding: 'utf8', timeout: SYNC_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'],
+    encoding: 'utf8', timeout: syncTimeoutMs, stdio: ['ignore', 'pipe', 'pipe'],
   })).trim();
   const no = (reason) => ({ synced: false, reason });
 
@@ -228,6 +229,117 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
   return { synced: true, reason: 'fast-forwarded', from, to, count: behind, changedWatched };
 }
 
+// ── Background catch-up (BRO-5359, CLOUD ONLY) ─────────────────────────────────────────────────────────
+// A cached container can be days behind; fetching that delta takes minutes, far past the blocking startup budget,
+// and the checkout it runs hooks from then stays stale for the whole session (the review gates silently off).
+// When the startup fetch fails, a detached job keeps trying without a deadline and fast-forwards when it can.
+//
+// Lossless by construction: it never runs if the session already moved HEAD or has local commits, refuses when
+// any tracked file OUTSIDE data/ is modified, and for modified tracked data/ files (the cloud core-data copy of
+// audience-reviews-lbo.json is one; a plain `merge --ff-only` aborts on it) it copies the exact bytes aside,
+// lets git put the file back, fast-forwards, and writes the bytes back, success or not.
+const BG_ATTEMPTS = 6;
+const BG_FETCH_TIMEOUT_MS = 300000;
+const BG_SYNC_TIMEOUT_MS = 300000;
+const BG_PAUSE_MS = 20000;
+const bgPath = (name, dflt) => process.env[name] || dflt;
+
+function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, sleepFn = null, attempts = BG_ATTEMPTS,
+  fetchTimeoutMs = BG_FETCH_TIMEOUT_MS, pauseMs = BG_PAUSE_MS, syncTimeoutMs = BG_SYNC_TIMEOUT_MS, env = process.env } = {}) {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const git = (args, timeout = 60000) => String(execFn('git', ['-C', repoDir, ...args], { encoding: 'utf8', timeout, stdio: ['ignore', 'pipe', 'pipe'] })).trim();
+  const no = (reason) => ({ synced: false, reason });
+  if (env.CODE_SYNC_DISABLED === '1') return no('disabled (CODE_SYNC_DISABLED=1)');
+  const sleep = sleepFn || ((ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms));
+  let fetched = false;
+  for (let i = 0; i < attempts && !fetched; i++) {
+    fetched = fetchOriginMain(repoDir, execFn, fetchTimeoutMs);
+    if (!fetched && i < attempts - 1) sleep(pauseMs);
+  }
+  if (!fetched) return no(`origin/main could not be fetched after ${attempts} attempt(s)`);
+  let head;
+  try { head = git(['rev-parse', 'HEAD']); } catch (e) { return no(`could not read HEAD: ${String(e.message).split('\n')[0]}`); }
+  if (expectHead && head !== expectHead) return no('HEAD moved since startup (the session is working in this checkout)');
+  const { behind, ahead } = getBehindAheadCounts(repoDir, REMOTE_MAIN, execFn);
+  if (!(behind > 0)) return no('already current');
+  if (ahead > 0) return no(`${ahead} local commit(s) not on origin/main; fast-forward only`);
+  let dirty;
+  try {
+    // Not trimmed: porcelain lines start with a space for an unstaged change.
+    dirty = String(execFn('git', ['-C', repoDir, 'status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] }))
+      .split('\n').filter(Boolean).map((l) => l.replace(/^\s*\S+\s+/, ''));
+  } catch (e) { return no(`could not read git state: ${String(e.message).split('\n')[0]}`); }
+  const outside = dirty.filter((p) => !p.startsWith('data/'));
+  if (outside.length) return no(`uncommitted changes outside data/: ${outside.slice(0, 3).join(', ')}`);
+  const kept = [];
+  let backup = null;
+  try {
+    if (dirty.length) {
+      backup = fs.mkdtempSync(path.join(os.tmpdir(), 'code-sync-backup-'));
+      for (const p of dirty) {
+        const dest = path.join(backup, p);
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        fs.copyFileSync(path.join(repoDir, p), dest);
+        kept.push(p);
+      }
+      git(['checkout', '-q', '--', ...dirty]);
+    }
+    return { ...trySyncCodeCheckout({ repoDir, behind, ahead, execFn, env, syncTimeoutMs }), preserved: kept.length };
+  } catch (e) {
+    return no(`catch-up failed: ${String(e.message).split('\n')[0]}`);
+  } finally {
+    // Always put the session's own bytes back, whether or not the fast-forward happened.
+    if (backup) {
+      for (const p of kept) {
+        try { fs.copyFileSync(path.join(backup, p), path.join(repoDir, p)); } catch { /* keep the backup dir for recovery */ }
+      }
+      try { fs.rmSync(backup, { recursive: true, force: true }); } catch { /* ignore */ }
+    }
+  }
+}
+
+/** Start the catch-up as a detached process; returns its pid, or null if it could not be started. */
+function startBackgroundSync(repoDir, { spawnFn = null, expectHead = null } = {}) {
+  try {
+    const { spawn } = require('child_process');
+    if (!expectHead) { try { expectHead = String(execFileSync('git', ['-C', repoDir, 'rev-parse', 'HEAD'], { encoding: 'utf8' })).trim(); } catch { /* no head to pin */ } }
+    const child = (spawnFn || spawn)(process.execPath, [__filename, '--bg-sync', repoDir, expectHead || ''], { detached: true, stdio: 'ignore' });
+    if (child.unref) child.unref();
+    return child.pid || null;
+  } catch { return null; }
+}
+
+/** Process entry for `--bg-sync <repoDir> [expectHead]`: one job at a time (mkdir lock, stale after 40 min). */
+function runBackgroundSyncMain(argv) {
+  const fs = require('fs');
+  const logPath = bgPath('CODE_CHECKOUT_BG_LOG', '/tmp/code-checkout-bg-sync.log');
+  const lockPath = bgPath('CODE_CHECKOUT_BG_LOCK', '/tmp/code-checkout-bg-sync.lock');
+  const log = (m) => { try { fs.appendFileSync(logPath, `${new Date().toISOString()} ${m}\n`); } catch { /* ignore */ } };
+  const take = () => { fs.mkdirSync(lockPath); };
+  try {
+    try { take(); } catch (e) {
+      if (e.code !== 'EEXIST') throw e;
+      if (Date.now() - fs.statSync(lockPath).mtimeMs < 40 * 60 * 1000) { log('another catch-up is already running; exiting'); return { skipped: true }; }
+      fs.rmSync(lockPath, { recursive: true, force: true });
+      take();
+    }
+  } catch (e) { log(`could not take the lock: ${e.message}`); return { skipped: true }; }
+  try {
+    log(`catch-up started for ${argv[0]}`);
+    const r = backgroundCatchUp({ repoDir: argv[0], expectHead: argv[1] || null });
+    log(r.synced
+      ? `synced ${String(r.from).slice(0, 9)} -> ${String(r.to).slice(0, 9)} (${r.count} commits); ${r.preserved || 0} local data file(s) kept as they were${r.changedWatched && r.changedWatched.length ? `; changed: ${r.changedWatched.join(', ')}` : ''}`
+      : `no sync: ${r.reason}`);
+    return r;
+  } finally {
+    try { fs.rmSync(lockPath, { recursive: true, force: true }); } catch { /* ignore */ }
+  }
+}
+
+if (require.main === module && process.argv[2] === '--bg-sync') runBackgroundSyncMain(process.argv.slice(3));
+
 /** Pure: the SessionStart line for a successful sync, else null. */
 function formatCodeCheckoutSyncMessage(result, repoDir) {
   if (!result || !result.synced) return null;
@@ -259,4 +371,7 @@ module.exports = {
   registeredHookScripts,
   trySyncCodeCheckout,
   formatCodeCheckoutSyncMessage,
+  backgroundCatchUp,
+  startBackgroundSync,
+  runBackgroundSyncMain,
 };

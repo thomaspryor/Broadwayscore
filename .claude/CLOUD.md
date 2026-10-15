@@ -4,7 +4,7 @@ Cloud sandboxes (claude.ai/code, iOS, Mac desktop) don't mount the owner's `~/.c
 
 ## Before your first tool call
 
-1. **Verify secrets:** `node scripts/check-cloud-secrets.js`. Env vars are set only in the web UI: claude.ai/code → cloud icon with the environment's name → gear on the environment row → **Environment variables** (`KEY=value` per line, no quotes; visible to anyone with environment edit access). `LINEAR_API_KEY` is required (Tier 1): `linear-brain.js` needs it at session start and end, and without it every board operation fails closed. `NOTION_API_KEY` is optional (Tier 2): Notion is retired and no cloud work reads it. Review texts need no token when the session has `broadway-review-texts` attached (BRO-5008); `REVIEW_TEXTS_TOKEN` (fine-grained PAT, read on both data repos) is for single-repo sessions and routines, and is what makes the bootstrap clone review texts (`--all`, BRO-4729). The tokenless proxy clone fallback is unverified and may leave a STUB; without the token session start prints a WARN line and `data/review-texts` is absent.
+1. **Verify secrets:** `node scripts/check-cloud-secrets.js`. Env vars are set only in the web UI: claude.ai/code → cloud icon with the environment's name → gear on the environment row → **Environment variables** (`KEY=value` per line, no quotes). `LINEAR_API_KEY` is required (Tier 1): `linear-brain.js` needs it at session start and end, and without it every board operation fails closed. Review texts need no token when the session has `broadway-review-texts` attached (BRO-5008); `REVIEW_TEXTS_TOKEN` (fine-grained PAT, read on both data repos) is for single-repo sessions and routines, and is what makes the bootstrap clone review texts (`--all`, BRO-4729). Without the token, session start prints a WARN line and `data/review-texts` is absent.
 2. **Data bootstrap is automatic** in single-repo sessions: `cloud-bootstrap.sh` runs `scripts/cloud-bootstrap-data.sh` (token, then `gh`, then proxy clone; else a buildable STUB from `public/data/mobile-shows.json`), then gap-fills gitignored generated files (`cast-manifest.json`, `actor-slugs.json`, `video-reviews.json`, …) so `tsc` passes; with real data those are empty, so cast/actor/video features are degraded. No `data/shows.json`? Run `bash scripts/cloud-bootstrap-data.sh` and read its output.
 3. **Read accumulated learnings:** `cat cloud-memory/MEMORY.md` (a curated subset). Find any note: `grep -i <topic> cloud-memory/INDEX.txt` (one line per note; generated, never hand-edit), or `grep -ril <term> cloud-memory/`. It is a mirror of the Mac's memory: an edit to `cloud-memory/MEMORY.md` is overwritten by the Mac's next sync (`scripts/lib/cloud-memory-merge.js` NEVER_ADOPT) and a note deleted only here is re-copied. Edits to other notes are adopted.
 
@@ -22,10 +22,10 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 - `worktree-enforce.sh`: hard-blocks tracked-code edits outside a worktree (CLAUDE.md §1).
 - `pre-push-visual-gate.sh`, `pre-push-review-gate.sh`, `pre-merge-review-gate.sh`, `check-skill-redaction.sh`: Bash gates on `git push`/`git merge` (visual QA, review, skill redaction; `pre-push-review-gate.sh` also refuses pushing `main`). `github-main-guard.sh` runs the visual gate on MCP writes (advisory, BRO-2394).
 - `pre-push-land-preflight.sh`: see Landing.
-- Review gates (BRO-5359): a cloud `land/*` push over 30 gated lines needs a real `/ship-check` with its reviewers (and `npm run build` for `src/`); the Stop hook refuses `SAFE TO EXIT` after a hollow ship-check, did-it-work, what-else or early close-out. Rules: header of `scripts/lib/review-coverage.mjs`.
+- Review gates (BRO-5359): a cloud `land/*` push over 30 gated lines needs a real `/ship-check` with its reviewers (and `npm run build` for `src/`); the Stop hook refuses `SAFE TO EXIT` after a hollow ship-check, did-it-work, what-else or early close-out. Rules: `scripts/lib/review-coverage.mjs` header.
 - `enterworktree-guard.sh`: worktree name collisions only. `whitespace-nowrap-lint.sh`: CSS overflow warning.
 - `block-prompting-remote-tools.sh` (cloud-only): `send_later`, `create_trigger` and `add_repo` prompt the owner's phone in every mode (`requiresUserInteraction`). It denies self-initiated scheduling and loop re-arms (wait in-turn with a background Bash loop or Monitor, or `subscribe_pr_activity`; ScheduleWakeup is best-effort), re-attaching Broadwayscore, and `list_sessions` (use `get_session` by id). Owner-requested reminders (`initiation: human_request`) and other repos pass. Kill switch `REMOTE_TOOL_BLOCKER_DISABLE=1`.
-- `notion-create-block.sh`: retired and unregistered. Never use Notion; the board is Linear.
+- `notion-create-block.sh`: retired and unregistered (the board is Linear).
 
 ## Slash commands available in cloud
 
@@ -70,13 +70,15 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 
 ## Owner one-time setup (cloud environment → Edit → Setup script)
 
-The setup script runs after the clones, before Claude starts, cached across sessions. It needs this line (BRO-5221):
+The setup script runs after the clones, before Claude starts, cached across sessions. It needs this line (BRO-5221/5359):
 
 ```
-for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && node "$d/scripts/install-home-claude-config.js"; done; true
+for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && node "$d/scripts/install-home-claude-config.js"; done; true
 ```
 
-It cannot change auto mode: the classifier reads `autoMode` only from user, managed or `--settings` sources, and a session cannot read or edit its own settings (BRO-5008). When the classifier refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
+The first loop refreshes a stale cached checkout (`create_session` workers ran Oct 13 hooks for days, so no new gate ran); editing it rebuilds the cache. Later drift: startup fetches 40s, then retries detached.
+
+It cannot change auto mode (the classifier reads `autoMode` only from user, managed or `--settings` sources; BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
 ## Fixing private data (review-texts, core data) from cloud
 
@@ -98,7 +100,7 @@ Never put review text or reader contact details in a plan: the file is public.
 
 ## GitHub work in cloud (no `gh` CLI by default)
 
-CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret rotation stays on the Mac). Probe first (BRO-4595; decide by `gh api user` and `ToolSearch mcp__github`, since one session had no `mcp__github__*` tools at all): with the agent proxy, `gh` may be preconfigured (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) and REST works (`gh api user`, `gh run list/view`, `gh workflow run`) even though `gh auth status` says the token is invalid; GraphQL is blocked, so use REST routes instead of `gh pr list`/`gh issue view`. No `--jq`. Job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file and slice it. Monitoring: a `run_in_background` loop on the public API (works without a token) or one `get_workflow_run` per turn, never ScheduleWakeup alone.
+CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret rotation stays on the Mac). Probe first (BRO-4595; `gh api user` and `ToolSearch mcp__github`): with the agent proxy, `gh` may be preconfigured (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) and REST works (`gh api user`, `gh run list/view`, `gh workflow run`) even though `gh auth status` says the token is invalid; GraphQL is blocked, so use REST routes instead of `gh pr list`/`gh issue view`. Job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file and slice it. Monitoring: a `run_in_background` loop on the public API (works without a token) or one `get_workflow_run` per turn, never ScheduleWakeup alone.
 
 ## Multi-repo sessions (BRO-5008, BRO-5221)
 

@@ -385,7 +385,7 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
     if (cloud && r.fetched === false) {
       let d = "";
       try { d = require("child_process").execFileSync("git", ["-C", repoDir, "log", "-1", "--format=%cd"], { encoding: "utf8" }).trim(); } catch {}
-      console.log(lib.formatFetchFailedMessage(repoDir, d));
+      console.log(lib.formatFetchFailedMessage(repoDir, d, lib.startBackgroundSync(repoDir)));
     }
     if (cloud && r.behind > 0) {
       const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
