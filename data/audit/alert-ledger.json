@@ -408,10 +408,10 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-15T07:29:34.402Z",
-      "lastNotifiedAt": "2026-10-15T07:29:34.402Z",
-      "lastSurfacedAt": "2026-10-15T07:29:34.402Z",
-      "notifyCount": 35,
+      "lastSeen": "2026-10-16T07:14:09.184Z",
+      "lastNotifiedAt": "2026-10-16T07:14:09.184Z",
+      "lastSurfacedAt": "2026-10-16T07:14:09.184Z",
+      "notifyCount": 36,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -9819,13 +9819,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 1 P0 older than 24h, 15 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 1 P0 older than 24h, 16 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-15T07:28:47.883Z",
-      "lastNotifiedAt": "2026-10-15T07:28:47.883Z",
-      "lastSurfacedAt": "2026-10-15T07:28:47.883Z",
-      "notifyCount": 12,
+      "lastSeen": "2026-10-16T07:12:14.542Z",
+      "lastNotifiedAt": "2026-10-16T07:12:14.542Z",
+      "lastSurfacedAt": "2026-10-16T07:12:14.542Z",
+      "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -12116,7 +12116,6 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifiedIds": [
-        "BRO-3712@baac9af9f569",
         "BRO-5235@5bc985284adf"
       ]
     },
@@ -15481,10 +15480,10 @@
       "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:02.955Z",
       "incidentOpenedAt": "2026-10-14T02:46:15.395Z",
-      "lastSeen": "2026-10-15T07:29:02.512Z",
-      "lastNotifiedAt": "2026-10-15T07:29:02.512Z",
-      "lastSurfacedAt": "2026-10-15T07:29:02.512Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-16T07:12:30.510Z",
+      "lastNotifiedAt": "2026-10-16T07:12:30.510Z",
+      "lastSurfacedAt": "2026-10-16T07:12:30.510Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -17368,13 +17367,13 @@
       "title": "Spend guard bd-circuit-breaker-serp_api1: cap drift",
       "firstSeen": "2026-10-14T02:46:56.653Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.653Z",
-      "lastSeen": "2026-10-15T07:29:32.263Z",
+      "lastSeen": "2026-10-16T07:14:06.915Z",
       "lastNotifiedAt": "2026-10-14T02:46:56.653Z",
       "lastSurfacedAt": "2026-10-14T02:46:56.653Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "guard-audit:bd-web_unlocker2": {
       "status": "open",
@@ -17382,13 +17381,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-15T07:29:32.268Z",
+      "lastSeen": "2026-10-16T07:14:06.923Z",
       "lastNotifiedAt": "2026-10-14T02:46:56.661Z",
       "lastSurfacedAt": "2026-10-14T02:46:56.661Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18143,9 +18142,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5381",
+      "linearIdentifier": null,
       "resolvedAt": "2026-10-15T08:40:37.317Z",
-      "resolveReason": "marked noReliableArt"
+      "resolveReason": "marked noReliableArt",
+      "sweptTracker": "BRO-5381",
+      "notifyCountAtRelease": 1
     },
     "land:land/bro-5373-sweep-text": {
       "status": "resolved",
@@ -18425,10 +18426,12 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5409",
+      "linearIdentifier": null,
       "silentRefires": 1,
       "resolvedAt": "2026-10-15T20:54:49.412Z",
-      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout",
+      "sweptTracker": "BRO-5409",
+      "notifyCountAtRelease": 1
     },
     "opening-night-drift:school-pictures-off-broadway-2026": {
       "status": "open",
@@ -18760,6 +18763,19 @@
       "cardId": null,
       "linearIdentifier": "BRO-5434",
       "silentRefires": 1
+    },
+    "coverage-holes:a-ghost-in-your-ear-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "a-ghost-in-your-ear-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-16T07:12:30.550Z",
+      "incidentOpenedAt": "2026-10-16T07:12:30.550Z",
+      "lastSeen": "2026-10-16T07:12:30.550Z",
+      "lastNotifiedAt": "2026-10-16T07:12:30.550Z",
+      "lastSurfacedAt": "2026-10-16T07:12:30.550Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
