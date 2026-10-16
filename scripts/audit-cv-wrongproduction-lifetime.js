@@ -75,6 +75,14 @@ alert (see data/audit/alert-ledger.json), not a real-time page. This script
 runs it corpus-wide so that population is visible at all for older shows, but
 does not hard-fail CI on it (see data-health-check.yml step comment).
 
+BRO-5437: the check now sets aside files already handled by a documented
+pipeline decision (check.handledReason: the verifier's low-confidence temporal
+override with no current different-show/director marker, priorRuns/tourLegs
+windows, operator overrides, curator manual-clear reasons, and files whose own
+wrongProduction flag keeps them out of reviews.json). They are counted under
+"handled" in the snapshot, not as violations. This took the corpus from 1153
+to 86 hits.
+
 The digest's own warn/pass verdict (health-check.js) keys off newSinceLastRun
 in the snapshot below, not totalViolations — with 800+ known-baseline hits, a
 raw-total-driven digest would warn every single day forever and train the
@@ -147,8 +155,14 @@ function main() {
     : listShowDirs(REVIEW_TEXTS_DIR, { silent: true }).length;
 
   const hits = [];
+  // BRO-5437: files the check recognized as already handled by a documented
+  // pipeline decision, by reason, so the snapshot shows what was set aside.
+  const handled = {};
   for (const show of shows) {
     const result = cvWrongProductionUnhandled.run(show, context);
+    for (const [k, n] of Object.entries((result.details && result.details.handledCounts) || {})) {
+      handled[k] = (handled[k] || 0) + n;
+    }
     if (result.severity === 'error') {
       hits.push({
         showId: show.id,
@@ -192,6 +206,7 @@ function main() {
         showsWithViolations: hits.length,
         totalViolations,
         newSinceLastRun,
+        handled,
         newViolationKeys: newViolationKeys.slice(0, 50),
         violationKeys: [...currentKeys],
         hits,
@@ -207,10 +222,15 @@ function main() {
       showsWithViolations: hits.length,
       totalViolations,
       newSinceLastRun,
+      handled,
       hits,
     }, null, 2));
   } else {
     console.log(`cv-wrongproduction-unhandled lifetime sweep (#1731): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run).`);
+    const handledTotal = Object.values(handled).reduce((a, b) => a + b, 0);
+    if (handledTotal > 0) {
+      console.log(`Already handled by a documented pipeline decision (not counted): ${handledTotal} — ${Object.entries(handled).map(([k, n]) => `${k}=${n}`).join(', ')}.`);
+    }
     for (const h of hits) {
       console.log(`\n-- ${h.title} (${h.showId}), opened ${h.openingDate || 'unknown'} --`);
       console.log(`  ${h.message.split('\n').join('\n  ')}`);

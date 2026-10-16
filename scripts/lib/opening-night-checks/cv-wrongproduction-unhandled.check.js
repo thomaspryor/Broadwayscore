@@ -2,6 +2,13 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  hasStrongDifferentShowSignal,
+  hasNamedDifferentDirectorSignal,
+  shouldSkipWrongProductionAudit,
+  explainExclusion,
+} = require('../review-guards');
+const { isWithinPriorRun, isWithinTourLeg } = require('../wrong-production-autoclear');
 
 const name = 'cv-wrongproduction-unhandled';
 const description = 'Source file has contentVerification.wrongProduction=true without top-level clear flag AND still appears in reviews.json (the juan-a-ramirez bypass class)';
@@ -16,6 +23,53 @@ const description = 'Source file has contentVerification.wrongProduction=true wi
  * that let juan-a-ramirez ship as Schmigadoon. Flag with severity=error.
  */
 const CLEAR_FLAGS = ['humanReviewedWrongProduction', 'wrongProductionManualClear', 'wrongProductionAutoCleared'];
+
+// The verifier's own temporal-override annotation (content-verifier.js). It is
+// written only when applyTemporalOverrides downgraded the LLM's wrongProduction
+// verdict to 'low' for a review inside the 30-day opening window, and only
+// after its strong-different-show and named-different-director bypasses
+// declined to keep the verdict.
+const TEMPORAL_OVERRIDE_RE = /^\[OVERRIDE: review (?:within \d+d of|near) opening, likely correct production\]/;
+
+/**
+ * BRO-5437: why a file that matched a shipped row with CV.wrongProduction=true
+ * and no clear flag is nonetheless already handled by a documented pipeline
+ * decision, or null when it is a real unhandled case. The lifetime sweep found
+ * 1153 hits, almost all in these classes, which buried the real ones:
+ *
+ * - 'manual-clear-reason': wrongProductionManualClear holds a curator's written
+ *   reason (string) instead of the boolean the CLEAR_FLAGS test expects.
+ * - 'rebuild-skip-audit': shouldSkipWrongProductionAudit (wrongProductionOverride,
+ *   allowCrossMarket, humanReviewedWrongProduction=false), the rebuild's own
+ *   "operator overrode the wrongProduction audit" predicate.
+ * - 'not-shipped': the file's own top-level wrongProduction flag excludes it
+ *   (explainExclusion === 'wrongProduction'); the shipped row it matched by
+ *   url or outlet+critic belongs to a sibling file (e.g. a mis-split byline).
+ * - 'prior-run-or-tour-leg': published inside an operator-declared priorRuns /
+ *   tourLegs window, which the rebuild's CV pre-pass deliberately honors.
+ * - 'temporal-override-low-confidence': the verifier's [OVERRIDE ...] downgrade
+ *   to 'low' and the CURRENT strong-different-show / named-director markers
+ *   still find nothing (re-run here so a row verified before a marker was added
+ *   is re-judged). The juan-a-ramirez class (low + OVERRIDE but explicit
+ *   different-show evidence) stays a violation.
+ */
+function handledReason(data, show, filePath) {
+  const cv = data.contentVerification || {};
+  const mc = data.wrongProductionManualClear;
+  if (typeof mc === 'string' && mc.trim() && mc.trim().toLowerCase() !== 'false') return 'manual-clear-reason';
+  if (shouldSkipWrongProductionAudit(data)) return 'rebuild-skip-audit';
+  if (data.wrongProduction === true && show
+      && explainExclusion(data, show, filePath) === 'wrongProduction') return 'not-shipped';
+  if (show && (isWithinPriorRun(data.publishDate, show.priorRuns) || isWithinTourLeg(data.publishDate, show.tourLegs))) {
+    return 'prior-run-or-tour-leg';
+  }
+  if (cv.confidence === 'low' && TEMPORAL_OVERRIDE_RE.test(String(cv.reasoning || ''))
+      && !hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
+      && !hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)) {
+    return 'temporal-override-low-confidence';
+  }
+  return null;
+}
 
 function run(show, context) {
   const showDir = path.join(context.reviewTextsRoot, show.id);
@@ -44,6 +98,7 @@ function run(show, context) {
   }
 
   const violations = [];
+  const handledCounts = {};
   for (const filename of files) {
     let data;
     try {
@@ -66,6 +121,12 @@ function run(show, context) {
     // Also respect the top-level wrongProduction=false-with-manual-clear pattern
     if (data.wrongProduction === false && data.wrongProductionManualClear === true) continue;
 
+    const handled = handledReason(data, show, path.join(showDir, filename));
+    if (handled) {
+      handledCounts[handled] = (handledCounts[handled] || 0) + 1;
+      continue;
+    }
+
     violations.push({
       filename,
       url: data.url || '(no url on file)',
@@ -83,6 +144,7 @@ function run(show, context) {
       ok: true,
       severity: 'ok',
       message: `No unhandled CV.wrongProduction files in shipped set`,
+      details: { handledCounts },
     };
   }
 
@@ -96,6 +158,7 @@ function run(show, context) {
     message,
     details: {
       violations,
+      handledCounts,
       showId: show.id,
       requiredClearFlags: CLEAR_FLAGS,
       // Self-declared remediation (task #389 pattern, extended for BRO-219).
@@ -116,4 +179,4 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, CLEAR_FLAGS };
+module.exports = { name, description, run, handledReason, CLEAR_FLAGS };
