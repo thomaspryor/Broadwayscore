@@ -80,9 +80,14 @@ export async function runFantasyEntryChecks({ rest, check, anonKey, serviceKey, 
     check('fantasy: a league is readable by its invite code', Array.isArray(leagueRead.json) && leagueRead.json.length === 1,
       `HTTP ${leagueRead.status}`, saveUrgency);
   } finally {
-    const del = await rest('DELETE', `fantasy_entries?season=eq.${PROBE_SEASON}`, serviceKey, null, 'return=minimal');
+    // A network error in one delete must not skip the other, nor abort the
+    // caller's own cleanup.
+    const failed = (e) => ({ ok: false, status: 0, text: String(e?.message ?? e) });
+    const del = await rest('DELETE', `fantasy_entries?season=eq.${PROBE_SEASON}`, serviceKey, null, 'return=minimal').catch(failed);
     if (!del.ok) console.warn(`fantasy probe cleanup: HTTP ${del.status} ${del.text.slice(0, 160)}`);
-    const delLeague = await rest('DELETE', `fantasy_leagues?code=eq.${leagueCode}`, serviceKey, null, 'return=minimal');
+    // created_by too: real invite codes are random 6-char [a-z0-9], so the
+    // probe code can (rarely) equal a real one; never delete a player's league.
+    const delLeague = await rest('DELETE', `fantasy_leagues?code=eq.${leagueCode}&created_by=eq.${encodeURIComponent(email)}`, serviceKey, null, 'return=minimal').catch(failed);
     if (!delLeague.ok) console.warn(`fantasy league probe cleanup: HTTP ${delLeague.status} ${delLeague.text.slice(0, 160)}`);
   }
 }
