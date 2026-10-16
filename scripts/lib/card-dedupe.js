@@ -155,21 +155,27 @@ function findNearDuplicate(title, openCards, serves = () => true) {
  * included: digest-autofix rows like "Star-band detector: 21 review(s)").
  */
 function countFreeTitle(title) {
-  // Only a count: a standalone number right after ": " ("queue: 1 p0") or
-  // before a plural ("21 review(s)", "49 reviews", "1 cited review(s)").
-  // Never "#123", "v2", "p0", "phase 2", "404 on", a time, a date, a BRO ref or a year.
+  // Only a count: a standalone number right after ": " that leads a word
+  // ("queue: 1 p0", "rebuild: 49 reviews"), or after a verb before a plural
+  // ("dropped 21 reviews", "missing 1 cited review(s)", "fix 3 broken links").
+  // Never "#123", "v2", "p0", "phase 2", "http 403 errors", "node 20 builds",
+  // "error: 500", a time, a date, a BRO ref or a year.
   const t = fold(title).trim().replace(/\s+/g, ' ');
   return t.replace(/(?<![#\w.:,\/-])\d{1,6}(?![\w.:,\/-])/g, (m, at) => {
     if (/^(?:19|20)\d\d$/.test(m)) return m;
-    // "Phase 2 tasks", "step 3 checks", "week 42 reviews": the number names the phase.
-    if (/\b(?:phase|step|part|round|stage|tier|level|wave|week|day|season|act|chapter|version|batch|shard|sprint|zone) $/.test(t.slice(0, at))) return m;
-    if (/: $/.test(t.slice(0, at))) return '#';
+    const before = t.slice(0, at);
     const after = t.slice(at + m.length);
-    return COUNT_NOUN_RE.test(after) ? '#' : m;
+    if (/: $/.test(before)) return COUNT_AFTER_COLON_RE.test(after) ? '#' : m;
+    return (!before || COUNT_LEAD_RE.test(before)) && COUNT_NOUN_RE.test(after) ? '#' : m;
   });
 }
+const STOP = '(?:on|in|at|for|to|of|the|and|or|is|was|from|by|with)';
+// ": N <word>" where the word is not a stopword ("error: 500 from x" is a code).
+const COUNT_AFTER_COLON_RE = new RegExp(`^ (?!${STOP}\\b)[a-z(]`);
+// The word before a count: a verb ("dropped", "missing") or a quantity lead.
+const COUNT_LEAD_RE = /(?:\b(?:\w+(?:ed|ing)|fix|has|have|had|with|over|under|only|about|all|top|last|first|and|lost|found|new|stale|open|got)) $/;
 // " [one non-stopword] <plural or (s)>" after a number.
-const COUNT_NOUN_RE = /^ (?:(?!(?:on|in|at|for|to|of|the|and|or|is|was|from|by)\b)[a-z]+ )?(?!(?:is|was|has|this|its|yes|us|as)\b)[a-z]+(?:\(s\)|s\b)/;
+const COUNT_NOUN_RE = new RegExp(`^ (?:(?!${STOP}\\b)[a-z]+ )?(?!(?:is|was|has|this|its|yes|us|as)\\b)[a-z]+(?:\\(s\\)|s\\b)`);
 
 /** An open card whose title differs from `title` only in its counts, or null. */
 function findCountOnlyTwin(title, openCards, serves = () => true) {

@@ -80,6 +80,8 @@ test('BRO-5488 review: numbers that name a subject never merge; counts do', () =
   assert.ok(same('Overdue P0/P1 queue: 1 P0 waiting', 'Overdue P0/P1 queue: 3 P0 waiting'));
   assert.ok(same('Review gap — "Tru" missing 1 cited review(s)', 'Review gap — "Tru" missing 2 cited review(s)'));
   assert.ok(same('BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]'));
+  assert.ok(same('Rebuild dropped 41 reviews on the show pages', 'Rebuild dropped 49 reviews on the show pages'));
+  assert.ok(same('Fix 3 broken links on venue pages', 'Fix 5 broken links on venue pages'));
   for (const [a, b] of [
     ['Fix login crash v2 on show page', 'Fix login crash v3 on show page'],
     ['PR #1842 failing lint checks', 'PR #1843 failing lint checks'],
@@ -89,6 +91,10 @@ test('BRO-5488 review: numbers that name a subject never merge; counts do', () =
     ['Deploy at 14:00 failed on Vercel', 'Deploy at 15:00 failed on Vercel'],
     ['Phase 2 rollout of score pages', 'Phase 3 rollout of score pages'],
     ['Phase 2 tasks pending on the show page', 'Phase 3 tasks pending on the show page'],
+    ['HTTP 403 errors from Playbill scraper fetch', 'HTTP 429 errors from Playbill scraper fetch'],
+    ['Error: 500 from scraper fetchPage path', 'Error: 404 from scraper fetchPage path'],
+    ['Node 20 builds fail on CI runner', 'Node 22 builds fail on CI runner'],
+    ['Port 3000 tests hang in the dev server', 'Port 3456 tests hang in the dev server'],
     ['Fix 404 on show pages', 'Fix 500 on show pages'],
     ['Bright Data web_unlocker1 zone exhausted', 'Bright Data web_unlocker2 zone exhausted'],
     ['Upgrade to Next.js 14 for the app router', 'Upgrade to Next.js 15 for the app router'],

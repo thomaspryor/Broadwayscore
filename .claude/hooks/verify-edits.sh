@@ -326,7 +326,7 @@ def _session_has_card():
         res = tool_results_by_id.get(tid, '') or ''
         # BRO-5488: a create refused as a repeat ("ALREADY-OPEN: already open:
         # BRO-N ...", exit 8) names a card but made none.
-        if 'already open: BRO-' in res and '__LINEAR_ISSUE_ID__=' not in res and 'ISSUE-FILED' not in res:
+        if 'already open: BRO-' in res and not any(k in res for k in ('__LINEAR_ISSUE_ID__=', '__BOARD_CARD_ID__=', 'ISSUE-FILED')):
             continue
         if _CARD_RESULT_RE.search(res):
             return True

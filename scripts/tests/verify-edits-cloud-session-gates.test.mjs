@@ -974,6 +974,12 @@ test('NOCARD: a create refused as a repeat of an open card (BRO-5488, exit 8) �
   assertBlocked(r, 'a refused create names a card but made none; the session must claim it');
 });
 
+test('NOCARD: a refused --dispatch then a successful --park in one command → ALLOWED', skipNoRepoHook, () => {
+  const both = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" || node scripts/linear-brain.js create "x" --park "later" --notes "y"' }, 'ALREADY-OPEN: already open: BRO-4871 x [Todo] (title match 0.82).\n__BOARD_CARD_MATCH__=BRO-4871\nPARKED: BRO-9010 ("x")\n__BOARD_CARD_ID__=BRO-9010');
+  const r = runCard('nocard-refused-then-parked', [both, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'the park made a card');
+});
+
 test('NOCARD spoof guard: grepping the marker out of source does not count → BLOCKED', skipNoRepoHook, () => {
   const grep = toolUse('Bash', { command: 'grep -n "__BOARD_CARD_ID__" scripts/linear-brain.js' }, "646:  console.error(`__BOARD_CARD_ID__=BRO-1`);");
   const r = runCard('nocard-spoof', [grep, GIT_PUSH], NOT_SAFE);
