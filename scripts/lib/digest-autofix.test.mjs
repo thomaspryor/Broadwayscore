@@ -1532,3 +1532,13 @@ test('BRO-5486: folded rows keep one persistence key when the first show changes
   assert.ok(/check-alert-condition-absent\.js --key-b64/.test(notes));
   assert.ok(!/check-health-row-absent/.test(notes));
 });
+
+test('BRO-5486: PER_SHOW_KIND_PATTERNS still match the REAL producer title templates (drift guard)', async () => {
+  const fs = await import('node:fs');
+  const gap = fs.readFileSync(new URL('../audit-show-review-gap.js', import.meta.url), 'utf8');
+  const holes = fs.readFileSync(new URL('../audit-coverage-holes.js', import.meta.url), 'utf8');
+  assert.ok(gap.includes('title: `Review gap — "${r.title || r.showId}" missing ${uncollected} cited review(s)`'), 'review-gap producer title changed; update PER_SHOW_KIND_PATTERNS');
+  assert.ok(holes.includes('title: `${showId}: ${rows.length} review(s) need a decision'), 'coverage-holes producer title changed; update PER_SHOW_KIND_PATTERNS');
+  assert.ok(splitOnShowSuffix('Review gap — "Kramer/Fauci" missing 3 cited review(s)'));
+  assert.ok(splitOnShowSuffix('mystic-pizza-broadway-2026: 2 review(s) need a decision (rejected real review or score outside the critic\'s rating)'));
+});
