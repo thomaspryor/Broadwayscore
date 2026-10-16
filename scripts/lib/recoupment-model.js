@@ -23,6 +23,13 @@ const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('
 const { taxCreditCited } = require('./tax-credit-cited');
 const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
+const { isConvertedToCommercial } = require('./commercial-conversion');
+
+// A nonprofit run that switched to a commercial run (BRO-5508) holds two
+// productions' weeks under one grosses key, often in two theaters, and the
+// shows.json dates and venue are the nonprofit's: no model rather than one
+// that charges the nonprofit weeks to the commercial capitalization.
+const SPLIT_RUN_ERROR = 'Split nonprofit/commercial run: not modelled';
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -510,6 +517,7 @@ function getPreviewGrossMultiplier(previewWeek) {
  */
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   const warnings = [];
+  if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
   if (opts.ownRunOnly) {
     const own = weeksInOwnRun(grossesWeekly, show);
     if (own.dropped.length) warnings.push(`Dropped ${own.dropped.length} weekly rows from outside this production's run (${own.dropped[0]}..${own.dropped[own.dropped.length - 1]})`);
@@ -1084,6 +1092,7 @@ function parseTaxCreditFromNotes(notes) {
  */
 function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}) {
   const warnings = ['Simplified lifetime model (10+ year run)'];
+  if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
 
   const capitalization = commercial.capitalization;
   if (!capitalization || !grossesAllTime?.gross) {
@@ -1242,6 +1251,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 module.exports = {
   calculateRecoupment,
   calculateLifetimeRecoupment,
+  SPLIT_RUN_ERROR,
   buildWeeklySchedule,
   classifyShow,
   getBaseVariableRate,

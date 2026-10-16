@@ -151,7 +151,8 @@ const MODEL_RUN_FIELDS = [
   'modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded', 'modelTaxCreditCounted',
 ];
 const LINKED_FIELD_GROUPS = [
-  ['designation', 'designationBasis', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason'],
+  // commercialConversion: a converted run must carry a commercial designation (BRO-5508).
+  ['designation', 'designationBasis', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason', 'commercialConversion'],
   ['capitalization', 'capitalizationSource'],
   ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange', 'weeklyRunningCostBasis'],
   MODEL_RUN_FIELDS,

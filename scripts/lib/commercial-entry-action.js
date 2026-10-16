@@ -34,6 +34,7 @@ const ALLOWED = new Set([
   'capitalization', 'capitalizationSource', 'weeklyRunningCost',
   'weeklyRunningCostSource', 'costMethodology', 'notes', 'sources',
   'nonprofitOrg', 'productionType', 'designationBasis', 'weeklyRunningCostBasis',
+  'commercialConversion',
 ]);
 const WIN = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
 const LOSS = new Set(['Fizzle', 'Flop']);

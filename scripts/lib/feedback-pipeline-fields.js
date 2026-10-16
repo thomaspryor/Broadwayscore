@@ -80,6 +80,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // weeklyRunningCostBasis: what the cited weekly cost figure is (running /
   // breakeven / all-in, BRO-5093; read by the costBasis shadow in
   // cost-split.js, values checked by commercial-record-checks.js).
+  // commercialConversion: a nonprofit run's switch to a commercial run, whole
+  // object { date, sourceUrl } (BRO-5508; commercial-conversion.js, checked by
+  // commercial-record-checks.js together with the designation it requires).
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
@@ -87,7 +90,7 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'isEstimate', 'weeklyRunningCostSource', 'costMethodology',
     'needsLossEvidence', 'designationBasis',
     'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
-    'weeklyRunningCostBasis',
+    'weeklyRunningCostBasis', 'commercialConversion',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

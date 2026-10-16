@@ -71,6 +71,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel } = require('./commercial-designations');
+const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
 /** The research wording in `text` outside any URL, or null. */
@@ -116,6 +117,34 @@ function commercialRecordErrors(showId, show, ctx = {}) {
       } else if (low < 0 || high > 100 || low > high) {
         out.push(`commercial.json: "${showId}" estimatedRecoupmentPct must satisfy 0 <= low <= high <= 100, got [${low}, ${high}]`);
       }
+    }
+  }
+
+  // A nonprofit run that switched to a commercial run (BRO-5508,
+  // commercial-conversion.js): a commercial designation (it has investors),
+  // the presenting nonprofit, and a date inside the run.
+  for (const problem of conversionShapeProblems(show.commercialConversion)) {
+    out.push(`commercial.json: "${showId}" commercialConversion ${problem}`);
+  }
+  const conversion = conversionOf(show);
+  if (conversion) {
+    if (show.designation === 'Nonprofit' || show.designation === 'Tour Stop') {
+      out.push(`commercial.json: "${showId}" has commercialConversion but designation "${show.designation}" (a commercial run has investors: use TBD until the outcome is known)`);
+    }
+    if (!show.nonprofitOrg) {
+      out.push(`commercial.json: "${showId}" has commercialConversion but no nonprofitOrg (name the nonprofit that presented the first run)`);
+    }
+    const run = ctx.showRecord;
+    if (conversion.date && run) {
+      if (run.previewsStartDate && conversion.date <= run.previewsStartDate) {
+        out.push(`commercial.json: "${showId}" commercialConversion.date ${conversion.date} is not after the first preview (${run.previewsStartDate})`);
+      }
+      if (run.closingDate && conversion.date > run.closingDate) {
+        out.push(`commercial.json: "${showId}" commercialConversion.date ${conversion.date} is after the closing date (${run.closingDate})`);
+      }
+    }
+    if (conversion.date && typeof show.recoupedDate === 'string' && show.recoupedDate.slice(0, 7) < conversion.date.slice(0, 7)) {
+      out.push(`commercial.json: "${showId}" recoupedDate ${show.recoupedDate} is before its commercial run began (${conversion.date})`);
     }
   }
 
