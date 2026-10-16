@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-16T18:41:09.154Z",
-  "processed": 224,
-  "failed": 177,
-  "successRate": "55.9%",
+  "updatedAt": "2026-10-16T18:42:31.984Z",
+  "processed": 216,
+  "failed": 181,
+  "successRate": "54.4%",
   "tierBreakdown": {
-    "playwright": 143,
+    "playwright": 140,
     "amp": 3,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 22,
     "scrapingbee": 17,
@@ -14,25 +14,8 @@
     "archiveToday": 0,
     "archive": 41
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-16T17:26:19.204Z",
-      "event": "bb-session",
-      "session": "e2f4af58",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-10-16T17:26:19.802Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-16T17:50:55.756Z",
-      "event": "bb-session",
-      "session": "9e814f43",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
     {
       "t": "2026-10-16T17:50:56.338Z",
       "event": "bb-cookie-inject",
@@ -122,9 +105,21 @@
       "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-16T18:39:18.962Z",
+      "t": "2026-10-16T18:14:01.794Z",
+      "event": "bb-session",
+      "session": "44916457",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-16T18:38:29.904Z",
+      "event": "bb-session",
+      "session": "b8c00d92",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-16T18:38:30.460Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thetimes.com"
     }
   ]
 }

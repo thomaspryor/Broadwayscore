@@ -213,17 +213,9 @@
     "book-of-mormon-2011/village-voice--michael-musto.json",
     "wicked-west-end-2021/firstnightmagazine--unknown.json",
     "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
-    "cadel-lungs-on-legs-west-end-2026/bestoftheatre--milo-garth.json",
     "memoirs-of-amorous-gentlemen-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "the-cherry-orchard-west-end-2026/matineemouse--ella-tomlin.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-list--unknown.json",
-    "million-dollar-quartet-off-west-end-2026/jonathan-baz--jonathan-baz.json",
-    "the-story-west-end-2026/the-jewish-chronicle--john-nathan.json",
-    "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
-    "the-lost-boys-2026/the-knockturnal--paul-chi.json",
-    "beetlejuice-tour-2026/boca-magazine--tyler-childress.json",
-    "the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
-    "the-play-that-goes-wrong-off-broadway-2019/observer--danny-gallagher.json"
+    "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/letterboxd--unknown.json"
   ],
   "failed": [
     "othello-west-end-2022/standard--unknown.json",
@@ -394,15 +386,15 @@
     "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
     "book-of-mormon-2011/usatoday--elysa-gardner.json",
     "wicked-west-end-2021/ign--brian-formo.json",
-    "wicked-2003/standard--unknown.json",
-    "ruthless-the-musical-off-broadway-2015/stagezine--scott-harrah.json",
-    "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
-    "funny-girl-2002/wsj--charles-isherwood.json",
-    "inter-alia-west-end-2026/telegraph--unknown.json",
-    "the-heart-off-broadway-2026/telegraph--tim-robey.json",
-    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
-    "the-hungry-ghost-off-west-end-2026/timeout-london--unknown.json"
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -546,10 +538,7 @@
       "book-of-mormon-2011/financialtimes--brendan-lemon.json",
       "wicked-west-end-2021/firstnightmagazine--unknown.json",
       "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
-      "cadel-lungs-on-legs-west-end-2026/bestoftheatre--milo-garth.json",
-      "memoirs-of-amorous-gentlemen-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "million-dollar-quartet-off-west-end-2026/jonathan-baz--jonathan-baz.json",
-      "the-story-west-end-2026/the-jewish-chronicle--john-nathan.json"
+      "jane-eyre-rose-kingston-off-west-end-2026/letterboxd--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -557,7 +546,9 @@
       "dirty-dancing-tour-2026/variety--payton-turkeltaub.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/some-woman-west-end-2026/times-uk--clive-davis.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -582,7 +573,7 @@
       "kinky-boots-tour-2025/santa-barbara-independent--leslie-dinaberg.json",
       "hadestown-tour-2024/arkansas-democrat-gazette--eric-e-harrison.json",
       "hadestown-tour-2024/san-francisco-chronicle--lily-janiak.json",
-      "the-cherry-orchard-west-end-2026/matineemouse--ella-tomlin.json"
+      "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--unknown.json"
     ],
     "scrapingbee": [
       "some-woman-west-end-2026/times-uk--clive-davis.json",
@@ -654,7 +645,7 @@
     ]
   },
   "startTime": "2026-10-16T13:35:14.517Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -824,9 +815,21 @@
       "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-16T18:39:18.962Z",
+      "t": "2026-10-16T18:14:01.794Z",
+      "event": "bb-session",
+      "session": "44916457",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-16T18:38:29.904Z",
+      "event": "bb-session",
+      "session": "b8c00d92",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-16T18:38:30.460Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
