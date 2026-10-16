@@ -235,12 +235,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-16T06:37:51.389Z",
-      "lastSeen": "2026-10-16T06:37:51.389Z",
+      "lastSeen": "2026-10-16T07:05:24.112Z",
       "lastNotifiedAt": "2026-10-16T06:37:51.389Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 140,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -17806,12 +17807,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every emitted critic alias resolves: canonical exists, and the old slug resolves to it unless the old slug is still a live profile (exact match wins)\"",
       "firstSeen": "2026-10-16T06:37:49.248Z",
       "incidentOpenedAt": "2026-10-16T06:37:49.248Z",
-      "lastSeen": "2026-10-16T06:37:49.248Z",
+      "lastSeen": "2026-10-16T07:05:24.101Z",
       "lastNotifiedAt": "2026-10-16T06:37:49.248Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5434"
+      "linearIdentifier": "BRO-5434",
+      "silentRefires": 1
     }
   }
 }
