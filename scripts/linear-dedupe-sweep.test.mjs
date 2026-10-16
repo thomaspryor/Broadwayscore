@@ -7,16 +7,17 @@ const require = createRequire(import.meta.url);
 const { replayFilings, openDuplicateGroups } = require('./linear-dedupe-sweep.js');
 const card = (identifier, title, h, extra = {}) => ({ identifier, title, createdAt: new Date(Date.parse('2026-10-16T12:00:00Z') - h * 3600e3).toISOString(), description: '', ...extra });
 
-test('replay: a repeat of a still-open card counts, one closed before it does not, router cards only in the upper bound', () => {
+test('replay: a repeat of a still-open card counts, one closed before it does not, router and --dispatch cards only in the upper bound', () => {
   const history = [
     card('BRO-1', 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', 30),
-    card('BRO-2', 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', 5),
+    card('BRO-2', 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', 5, { description: 'PARKED: auto-filed' }),
     card('BRO-3', 'Corpus drift: URL swapped for a prior production', 40, { completedAt: new Date(Date.parse('2026-10-16T12:00:00Z') - 20 * 3600e3).toISOString() }),
-    card('BRO-4', 'Corpus drift: URL swapped for a prior production', 4),
+    card('BRO-4', 'Corpus drift: URL swapped for a prior production', 4, { description: 'PARKED: auto-filed' }),
+    card('BRO-7', 'BSC Rebuild: 50 reviews dropped [SUSPICIOUS]', 2),
     card('BRO-5', 'Daily gap check found stale rows', 30, { description: 'Auto-filed by owner-alert-router (condition: a)' }),
     card('BRO-6', 'Daily gap check found stale rows today', 3, { description: 'Auto-filed by owner-alert-router (condition: a)' }),
   ];
-  const windowCards = history.filter((c) => ['BRO-2', 'BRO-4', 'BRO-6'].includes(c.identifier));
+  const windowCards = history.filter((c) => ['BRO-2', 'BRO-4', 'BRO-6', 'BRO-7'].includes(c.identifier));
   const shipped = replayFilings({ windowCards, history });
   assert.deepEqual(shipped.nearDup.map((r) => `${r.card.identifier}->${r.match.identifier}`), ['BRO-2->BRO-1']);
   const upper = replayFilings({ windowCards, history, allFilers: true });

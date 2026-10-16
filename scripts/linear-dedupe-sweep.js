@@ -10,11 +10,11 @@
  *   node scripts/linear-dedupe-sweep.js --open [--apply]
  *       Open near-duplicate groups (oldest card kept). Dry-run by default;
  *       --apply marks each newer copy Duplicate of the oldest via
- *       linear-brain.js update (the relation + a comment), unstarted/backlog
- *       copies only, never a card someone has started.
+ *       linear-brain.js update (the relation + a comment), Backlog copies
+ *       only, never a Todo or started card.
  *
  * Two replay numbers, because history does not say which filer opted in:
- *   as-shipped  near-dup for cards with no per-card contract (not the alert
+ *   as-shipped  near-dup for parked cards with no per-card contract (not the alert
  *               router, digest-autofix or the canary); rollup only for parked
  *               workflow:* filings, which old cards cannot be told apart
  *               from, so 0 is reported for rollup here.
@@ -57,7 +57,8 @@ function replayFilings({ windowCards, history, allFilers = false }) {
     const source = d.inferCardSource(c);
     const contract = d.hasPerCardContract(c.description) || source === 'digest-autofix' || source === 'alert-router';
     const eligible = source !== 'e2e-canary' && source !== 'rollup' && (allFilers || !contract);
-    if (eligible) {
+    // As shipped, near-dup applies to parked filings only (a --dispatch card is a session's own).
+    if (eligible && (allFilers || isParked(c))) {
       const openThen = all.filter((o) => o.identifier !== c.identifier && o.at < at && o.end > at);
       const m = d.findNearDuplicate(c.title, openThen);
       if (m) { out.nearDup.push({ card: c, match: m.card, score: m.score }); continue; }
@@ -72,6 +73,10 @@ function replayFilings({ windowCards, history, allFilers = false }) {
   return out;
 }
 
+// Same exclusions as the front door: filers that key state on their own card.
+const hasContract = (c) => d.hasPerCardContract(c.description)
+  || ['digest-autofix', 'alert-router', 'e2e-canary'].includes(d.inferCardSource(c));
+
 /** PURE. Near-duplicate groups among open cards: each newer card -> oldest match. */
 function openDuplicateGroups(openCards) {
   const sorted = [...openCards].sort((x, y) => Date.parse(x.createdAt) - Date.parse(y.createdAt));
@@ -79,8 +84,8 @@ function openDuplicateGroups(openCards) {
   const canonicalOf = new Map();
   for (let i = 1; i < sorted.length; i++) {
     const c = sorted[i];
-    if (d.inferCardSource(c) === 'e2e-canary' || String(c.title).startsWith(d.ROLLUP_TITLE_PREFIX)) continue;
-    const m = d.findNearDuplicate(c.title, sorted.slice(0, i).filter((o) => !canonicalOf.has(o.identifier)));
+    if (hasContract(c) || String(c.title).startsWith(d.ROLLUP_TITLE_PREFIX)) continue;
+    const m = d.findNearDuplicate(c.title, sorted.slice(0, i).filter((o) => !canonicalOf.has(o.identifier) && !hasContract(o)));
     if (m) { canonicalOf.set(c.identifier, m.card.identifier); pairs.push({ card: c, keep: m.card, score: m.score }); }
   }
   return pairs;
@@ -129,8 +134,9 @@ async function main() {
 
   if (args.open) {
     const pairs = openDuplicateGroups(openCards);
-    const movable = pairs.filter((p) => ['backlog', 'unstarted'].includes(p.card.state && p.card.state.type));
-    console.log(`Open cards: ${openCards.length}. Near-duplicate copies: ${pairs.length} (${movable.length} not started).`);
+    // Backlog only: a Todo copy may already be queued for a worker.
+    const movable = pairs.filter((p) => (p.card.state && p.card.state.type) === 'backlog');
+    console.log(`Open cards: ${openCards.length}. Near-duplicate copies: ${pairs.length} (${movable.length} in Backlog).`);
     for (const p of pairs) console.log(`  ${p.score.toFixed(2)} ${p.card.identifier} [${p.card.state.name}] "${p.card.title.slice(0, 70)}" -> keep ${p.keep.identifier}`);
     if (args.apply) {
       let done = 0;

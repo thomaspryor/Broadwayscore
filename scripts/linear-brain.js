@@ -700,7 +700,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       priority: args.priority !== undefined ? Number(args.priority) : undefined,
       projectId: args['project-id'],
       model: args.model,
-      reuseTwin: true,
+      reuseTwin: !newAnyway,
       source: typeof args.source === 'string' ? args.source
         : (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : 'session'),
       nearDuplicate: !newAnyway,

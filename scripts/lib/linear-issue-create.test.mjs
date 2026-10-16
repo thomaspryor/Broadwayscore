@@ -372,3 +372,35 @@ test('BRO-5488: lookup failures fail open (file the card)', () => withTeam(async
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
 }));
+
+// Ship-check findings (BRO-5488 review).
+test('BRO-5488: digest-autofix (marker only in the park reason) is never handed a near-duplicate', () => withTeam(async () => {
+  const { AUTOFIX_FILED_MARKER } = require('./autofix-filed-marker.js');
+  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'Rebuild dropped 41 reviews on the show pages', state: { name: 'Backlog', type: 'backlog' } }] });
+  const r = await createLinearIssue({ title: 'Rebuild dropped 49 reviews on the show pages', description: 'raw notes, no marker', park: `${AUTOFIX_FILED_MARKER}; runAutofix dispatches`, client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:Daily Digest' });
+  assert.equal(r.mode, 'park');
+  assert.equal(board.created.length, 1);
+}));
+
+test('BRO-5488: a --dispatch filing never gets a near-duplicate card (park mode only)', () => withTeam(async () => {
+  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Todo', type: 'unstarted' } }] });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, nearDuplicate: true, source: 'session' });
+  assert.notEqual(r.mode, 'reused');
+  assert.equal(board.created.length, 1);
+}));
+
+test('BRO-5488: a failed note files the card instead of losing the finding', () => withTeam(async () => {
+  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }] });
+  board.client.addComment = async () => { throw new Error('comment API down'); };
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: board.client, nearDuplicate: true, source: 'session' });
+  assert.equal(r.mode, 'park');
+  assert.equal(board.created.length, 1);
+}));
+
+test('BRO-5488: a workflow name with parentheses still round-trips through the footer', () => withTeam(async () => {
+  const d = require('./card-dedupe.js');
+  const board = fakeBoard();
+  await createLinearIssue({ title: 'Some new finding about the site', description: 'b', park: 'auto-filed parked for triage', client: board.client, source: 'workflow:Daily Digest (score drift)' });
+  const f = d.parseSourceFooter(board.created[0].description);
+  assert.equal(f.source, 'workflow:Daily-Digest-score-drift');
+}));

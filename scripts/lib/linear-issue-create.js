@@ -236,12 +236,19 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // canary) are excluded here as well as by not opting in. Both fail open.
   const cardSource = cardDedupe.inferCardSource({ title, description: body, source });
   const kind = cardDedupe.titleKind(title);
-  const contract = cardDedupe.hasPerCardContract(body);
-  if (nearDuplicate && !contract && cardSource !== 'e2e-canary') {
+  // The contract marker can sit in the park reason (digest-autofix passes it
+  // as --park, not in the notes), so check both, plus the inferred filer.
+  const contractText = `${disposition.reason || ''}\n${body || ''}`;
+  const contract = cardDedupe.hasPerCardContract(contractText)
+    || ['digest-autofix', 'alert-router', 'e2e-canary'].includes(cardSource);
+  // Park mode only: a --dispatch filing is a session's own card, and handing it
+  // another Todo card whose title differs only by a number would make the
+  // session claim someone else's work. Exact-title reuse still applies there.
+  if (nearDuplicate && !contract && disposition.mode === 'park') {
     const reused = await reuseNearDuplicate({ title, body, client, mode: disposition.mode });
     if (reused) return reused;
   }
-  if (rollup && disposition.mode === 'park' && cardDedupe.rollupEnforced({ source: cardSource, description: body })) {
+  if (rollup && disposition.mode === 'park' && !contract && cardDedupe.rollupEnforced({ source: cardSource, description: contractText })) {
     const rolled = await rollUpFlood({ title, body, client, source: cardSource, kind });
     if (rolled) return rolled;
   }
@@ -392,7 +399,9 @@ async function reuseNearDuplicate({ title, body, client, mode = 'park' }) {
   if (!match) return null;
   const twin = match.card;
   const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z as "${title}" (near-duplicate of this card, score ${match.score.toFixed(2)}); added here instead of opening a new card. File a new card anyway with linear-brain.js create --new-anyway "<reason>".${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
-  await noteOnCard(client, twin, note);
+  // A finding that did not land on the twin must still be filed (audits treat
+  // a returned card as proof the finding was saved).
+  if (!(await noteOnCard(client, twin, note))) return null;
   console.warn(`[linear-issue-create] "${title}" repeats open ${twin.identifier} ("${twin.title}", score ${match.score.toFixed(2)}); noted there, no new card`);
   return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true, nearDuplicate: { score: match.score } };
 }
@@ -421,11 +430,13 @@ async function rollUpFlood({ title, body, client, source, kind }) {
         ].join('\n\n'),
         park: `rollup of repeated ${source} filings; each comment is one finding`,
         source: 'rollup',
+        // Narrows (does not close) the window where two concurrent floods both open a rollup.
+        reuseTwin: true,
         client,
       });
       card = created.issue;
     }
-    await noteOnCard(client, card, `${title}${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`);
+    if (!(await noteOnCard(client, card, `${title}${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`))) return null;
     console.warn(`[linear-issue-create] "${title}" is part of a ${source} flood; added to rollup ${card.identifier}, no new card`);
     return { issue: card, mode: 'rolled-up', stateName: card.state ? card.state.name : '', reused: true };
   } catch (e) {
@@ -445,7 +456,9 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
   }
   if (!twin || !twin.identifier || !twinServes(twin, mode)) return null;
   const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z with the same title; added here instead of opening a duplicate card.${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
-  await noteOnCard(client, twin, note);
+  // A finding that did not land on the twin must still be filed (audits treat
+  // a returned card as proof the finding was saved).
+  if (!(await noteOnCard(client, twin, note))) return null;
   console.warn(`[linear-issue-create] "${title}" is already open as ${twin.identifier}; noted there, no new card`);
   return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true };
 }

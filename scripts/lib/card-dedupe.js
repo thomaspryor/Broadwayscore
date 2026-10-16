@@ -164,11 +164,17 @@ function inferCardSource({ title = '', description = '', source } = {}) {
   if (/^(?:\p{Extended_Pictographic}\s*)*BSC Daily:/iu.test(t) || String(description || '').includes(AUTOFIX_FILED_MARKER)) return 'digest-autofix';
   if (/^(?:P[0-3]\s*:\s*)?main (?:[\w.-]+ )?red:/i.test(t)) return 'ci-red';
   if (String(description || '').includes(ALERT_ROUTER_MARKER)) return 'alert-router';
-  return source ? String(source).replace(/\s+/g, '-') : 'unknown';
+  return normalizeSource(source) || 'unknown';
+}
+
+// Footer-safe source: FOOTER_RE stops at whitespace and "(", so workflow names
+// like "Daily Digest (score drift)" become "Daily-Digest-score-drift".
+function normalizeSource(source) {
+  return String(source || '').replace(/[\s()]+/g, '-').replace(/-+$/, '').replace(/-{2,}/g, '-');
 }
 
 function sourceFooter(source, kind) {
-  return `${FOOTER_PREFIX}${source}${kind ? ` (kind: ${kind})` : ''}`;
+  return `${FOOTER_PREFIX}${normalizeSource(source)}${kind ? ` (kind: ${kind})` : ''}`;
 }
 
 function parseSourceFooter(description) {
@@ -217,5 +223,5 @@ function rollupEnforced({ source, description }) {
 module.exports = {
   NEAR_DUP_MIN_SCORE, NEAR_DUP_MIN_TOKENS, FLOOD_THRESHOLD, FLOOD_WINDOW_MS, ALERT_ROUTER_MARKER, ROLLUP_TITLE_PREFIX,
   titleCore, titleTokens, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
-  inferCardSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,
+  inferCardSource, normalizeSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,
 };
