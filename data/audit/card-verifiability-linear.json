@@ -1,16 +1,135 @@
 {
-  "generatedAt": "2026-10-15T10:11:12.587Z",
-  "total": 519,
-  "armedCount": 413,
-  "refusedCount": 106,
+  "generatedAt": "2026-10-16T10:02:17.025Z",
+  "total": 516,
+  "armedCount": 422,
+  "refusedCount": 94,
   "byKind": {
-    "no-section": 28,
-    "shape": 28,
-    "no-command": 43,
-    "basename": 6,
-    "mutating-script": 1
+    "no-command": 34,
+    "shape": 27,
+    "no-section": 29,
+    "basename": 4
   },
   "refused": [
+    {
+      "id": "BRO-5432",
+      "name": "Board workers: --slots 3 fills the cloud disk (4 codex worktrees x 1.4 GB) and starves cards",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5432/board-workers-slots-3-fills-the-cloud-disk-4-codex-worktrees-x-14-gb",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-5431",
+      "name": "Workflows that run node scripts without npm ci: find the ones that actually crash, add a guard",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5431/workflows-that-run-node-scripts-without-npm-ci-find-the-ones-that",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-5428",
+      "name": "Profile rebuild-all-reviews.js: CI runtime now 3.5-5 min and growing",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5428/profile-rebuild-all-reviewsjs-ci-runtime-now-35-5-min-and-growing",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: time node scripts/rebuild-all-reviews.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5423",
+      "name": "Opening-night watch 2026-10-15",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5423/opening-night-watch-2026-10-15",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-5422",
+      "name": "Codex/test runs leak 1.7 GB /tmp/bro-5217-* fixtures and fill the disk (13 GB seen)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5422/codextest-runs-leak-17-gb-tmpbro-5217-fixtures-and-fill-the-disk-13-gb",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-5421",
+      "name": "Sea Wall: 1 roundup-listed review(s) still not captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5421/sea-wall-1-roundup-listed-reviews-still-not-captured",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=sea-wall-off-broadway-2026 --dry-run --verbose)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5415",
+      "name": "Repair review files flagged by audit-coverage-slot-drops (BRO-4444 audit, ~970 candidates)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5415/repair-review-files-flagged-by-audit-coverage-slot-drops-bro-4444",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-5411",
+      "name": "Server-side backstop for the cloud review gate (stale-container sessions) + gate telemetry digest",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5411/server-side-backstop-for-the-cloud-review-gate-stale-container",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-5405",
+      "name": "Restore Search Console access for the weekly SEO check and make its failure loud",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5405/restore-search-console-access-for-the-weekly-seo-check-and-make-its",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const h=require('./data/audit/seo-health.json');const d=([Date.now](<http://Date.now>)()-new Date(h.lastChecked)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5404",
+      "name": "Owner console checks: Apple Hide My Email relay sender registration + Google OAuth consent-screen brand verification (split from BRO-4903 c/d)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5404/owner-console-checks-apple-hide-my-email-relay-sender-registration",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-5403",
+      "name": "Run reconcile-pending-commercial.js weekly so the pending commercial list does not refill with already-sourced shows",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5403/run-reconcile-pending-commercialjs-weekly-so-the-pending-commercial",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/reconcile-pending-commercial.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5402",
+      "name": "Visual pre-push gate let a UI push to a land/ ref through without the owner's approval (BRO-5313, renamed branch)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5402/visual-pre-push-gate-let-a-ui-push-to-a-land-ref-through-without-the",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-5401",
+      "name": "Verify the true author on 18 same-article review pairs the rebuild now counts once",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5401/verify-the-true-author-on-18-same-article-review-pairs-the-rebuild-now",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-identical-text-across-critics.js --ratchet)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-5392",
+      "name": "Opening-night audit 2026-10-15",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5392/opening-night-audit-2026-10-15",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-5391",
+      "name": "Memoirs of Amorous Gentlemen: 3 roundup-listed review(s) still not captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5391/memoirs-of-amorous-gentlemen-3-roundup-listed-reviews-still-not",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=memoirs-of-amorous-gentlemen-off-broadway-2026 --dry-run --verbose)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-5382",
       "name": "Opening-night watch 2026-10-14",
@@ -34,14 +153,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5379/midnight-2-roundup-listed-reviews-still-not-captured",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=midnight-off-broadway-2026 --dry-run --verbose)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-5373",
-      "name": "Split Mail on Sunday reviews out of daily-mail (same tier, attribution only)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5373/split-mail-on-sunday-reviews-out-of-daily-mail-same-tier-attribution",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-5362",
@@ -148,84 +259,12 @@
       "kind": "no-command"
     },
     {
-      "id": "BRO-5315",
-      "name": "Stale-entry detection for the 10 --update-baseline audits that never prune (BRO-2257 class)",
+      "id": "BRO-5287",
+      "name": "P1: Codex runner lands nothing (0 cards in 19h): runs steal each other's lock, crash mid-card, and pick cards the check rejects",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5315/stale-entry-detection-for-the-10-update-baseline-audits-that-never",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5287/p1-codex-runner-lands-nothing-0-cards-in-19h-runs-steal-each-others",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
-    },
-    {
-      "id": "BRO-5310",
-      "name": "push-with-retry: add the other optInReconcile:false audit ledgers to the unconditional reconcile call",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5310/push-with-retry-add-the-other-optinreconcilefalse-audit-ledgers-to-the",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5306",
-      "name": "push-with-retry.sh: fail fast on a deterministic permission 403 ('denied to github-actions[bot]') and name contents: write",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5306/push-with-retrysh-fail-fast-on-a-deterministic-permission-403-denied",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/push-diagnostics\\*.test.mjs)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5305",
-      "name": "heart-wall-west-end-2026: London Theatre Reviews text (Jack Shaw) misfiled as london-theatre--unknown",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5305/heart-wall-west-end-2026-london-theatre-reviews-text-jack-shaw",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/verify-review-recovery.js --show=heart-wall-west-end-2026 --production)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5300",
-      "name": "iOS app re-derives the score display gate from the bare market minimum (disagrees with site on T3-only and curated shows)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5300/ios-app-re-derives-the-score-display-gate-from-the-bare-market-minimum",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: in the app, Bye Bye Birdie (2009) shows a score and The Snow Goose (regional 2026) shows TBD, matching [broadwayscorecar)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5289",
-      "name": "Recover AP's own verdict for 3 shows whose AP review was filed under WSJ (resolveOutletFromUrl: AP wire ids)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5289/recover-aps-own-verdict-for-3-shows-whose-ap-review-was-filed-under",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5284",
-      "name": "Commercial research: free trade-search discovery (Deadline/Variety wp-json, Broadway Journal + Broadway News archive APIs, archive.nytimes.com)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5284/commercial-research-free-trade-search-discovery-deadlinevariety-wp",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5283",
-      "name": "Washington Post subscriber cookies expired (auth cookies wp_ak_subs, wp_ak_signinv2)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5283/washington-post-subscriber-cookies-expired-auth-cookies-wp-ak-subs-wp",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5273",
-      "name": "Off Script with Dan Dwyer: 30 Tumblr-hosted reviews excluded as blockedReviewUrl (social host)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5273/off-script-with-dan-dwyer-30-tumblr-hosted-reviews-excluded-as",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5271",
-      "name": "Derive the 'upcoming' tag from status: strip centrally in shows-write-guard, stop storing it",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5271/derive-the-upcoming-tag-from-status-strip-centrally-in-shows-write",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/fix-stale-upcoming-tags.js --check exits 0 on main.)",
-      "kind": "shape"
     },
     {
       "id": "BRO-5269",
@@ -236,42 +275,10 @@
       "kind": "no-section"
     },
     {
-      "id": "BRO-5263",
-      "name": "Stale row: age-is-a-feeling-off-broadway-2024 still 'announced' two years after its 2024 previews",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5263/stale-row-age-is-a-feeling-off-broadway-2024-still-announced-two-years",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const a=require('./data/shows.json');const s=(Array.isArray(a)?a:a.shows).find(x=>x.id==='age-is-a-feeling-off-)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-5261",
       "name": "Retro review: 10 largest October cloud landings that skipped /ship-check (BRO-5221 fallout)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5261/retro-review-10-largest-october-cloud-landings-that-skipped-ship-check",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5259",
-      "name": "Sweep 333 scored web-search rows with summary-length text for made-up URLs and bylines",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5259/sweep-333-scored-web-search-rows-with-summary-length-text-for-made-up",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5255",
-      "name": "Opening-night audit 2026-10-13",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5255/opening-night-audit-2026-10-13",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-5246",
-      "name": "Outlet registry: ~165 auto-onboarded outlets show squashed display names (e.g. Chicagoontheaisle, Newjerseystage)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5246/outlet-registry-165-auto-onboarded-outlets-show-squashed-display-names",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
     },
@@ -292,100 +299,12 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-5218",
-      "name": "Opening-night watch 2026-10-12",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5218/opening-night-watch-2026-10-12",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-5215",
-      "name": "Next.js 16 upgrade: migrate off next lint to the ESLint CLI first",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5215/nextjs-16-upgrade-migrate-off-next-lint-to-the-eslint-cli-first",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5200",
-      "name": "Star gate keeps junk generic stars when llmScore.confidence is low but the ensemble is unanimous",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5200/star-gate-keeps-junk-generic-stars-when-llmscoreconfidence-is-low-but",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-star-score-mismatch.js)",
-      "kind": "basename"
-    },
-    {
       "id": "BRO-5194",
       "name": "land.yml waiting jobs hold GitHub runners and starve main test.yml (21 Land runs in progress, test.yml queued 45+ min)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5194/landyml-waiting-jobs-hold-github-runners-and-starve-main-testyml-21",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
-    },
-    {
-      "id": "BRO-5189",
-      "name": "Rage clicks on Affluenza show-page button — likely broken CTA",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5189/rage-clicks-on-affluenza-show-page-button-likely-broken-cta",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5188",
-      "name": "Rage clicks on homepage search input suggest broken search UX",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5188/rage-clicks-on-homepage-search-input-suggest-broken-search-ux",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5181",
-      "name": "coverage-adversarial-probe: sample skips settling shows at selection (BRO-2296 cousin)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5181/coverage-adversarial-probe-sample-skips-settling-shows-at-selection",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/lib/coverage-adversarial-probe.test.mjs (new test: pool with same-day openings yields a full sample )",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5178",
-      "name": "validate-show-venue can never confirm a West End / Off-West-End add (Playbill-only)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5178/validate-show-venue-can-never-confirm-a-west-end-off-west-end-add",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5173",
-      "name": "Mac-side auto-fix dispatch dead since ~Oct 6 (dispatch watchdog DOWN, disk-pressure refusals, 0 digest/backlog-drain dispatches) — needs a Mac session",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5173/mac-side-auto-fix-dispatch-dead-since-oct-6-dispatch-watchdog-down",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f scripts/send-morning-digest.js)",
-      "kind": "mutating-script"
-    },
-    {
-      "id": "BRO-5165",
-      "name": "Newsletter /cast links ignore the site's -2 collision suffix",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5165/newsletter-cast-links-ignore-the-sites-2-collision-suffix",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/newsletter/cast-link-slug.test.mjs (new test: a fixture with two identities whose names slug the sam)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-5163",
-      "name": "Plan path to un-reject a wrongly blocked image URL (rejectedImageUrls is add-only)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5163/plan-path-to-un-reject-a-wrongly-blocked-image-url-rejectedimageurls",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-5162",
-      "name": "219 review-text files carry a relative or non-URL 'url' (9 ship to reviews.json)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5162/219-review-text-files-carry-a-relative-or-non-url-url-9-ship-to",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-malformed-review-urls.js --strict)",
-      "kind": "basename"
     },
     {
       "id": "BRO-4962",
@@ -418,14 +337,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4623/commercial-scorecard-launch-readiness-audit-accuracy-freshness",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-commercial-data.js)",
       "kind": "basename"
-    },
-    {
-      "id": "BRO-4524",
-      "name": "TodayTix reopen-guard: silent blocked-reopen + inferred-allowlist predicate (BRO-4286 follow-up)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4524/todaytix-reopen-guard-silent-blocked-reopen-inferred-allowlist",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-4509",
@@ -514,14 +425,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4080/p2-ack-landeds-stranded-patch-tie-accepts-a-partial-landing-as-if-the",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
-    },
-    {
-      "id": "BRO-4060",
-      "name": "Cousin URL/slug caches (DTLI, Playbill, WestEnd) lack the BRO-4055 cross-show collision guard",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4060/cousin-urlslug-caches-dtli-playbill-westend-lack-the-bro-4055-cross",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-4047",
@@ -916,12 +819,39 @@
       ]
     },
     {
+      "id": "BRO-5315",
+      "name": "Stale-entry detection for the 10 --update-baseline audits that never prune (BRO-2257 class)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5315/stale-entry-detection-for-the-10-update-baseline-audits-that-never",
+      "cmd": "node --test tests/unit/audit-stale-baseline-detection.test.mjs",
+      "missingPaths": [
+        "tests/unit/audit-stale-baseline-detection.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-5312",
       "name": "audit-push-retry-budgets models zero overshoot past PUSH_DEADLINE_SEC (BRO-2800 residual)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5312/audit-push-retry-budgets-models-zero-overshoot-past-push-deadline-sec",
       "cmd": "node --test tests/unit/audit-push-retry-budgets-residual.test.mjs",
       "missingPaths": [
         "tests/unit/audit-push-retry-budgets-residual.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5306",
+      "name": "push-with-retry.sh: fail fast on a deterministic permission 403 ('denied to github-actions[bot]') and name contents: write",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5306/push-with-retrysh-fail-fast-on-a-deterministic-permission-403-denied",
+      "cmd": "node --test tests/unit/push-diagnostics.test.mjs",
+      "missingPaths": [
+        "tests/unit/push-diagnostics.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5300",
+      "name": "iOS app re-derives the score display gate from the bare market minimum (disagrees with site on T3-only and curated shows)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5300/ios-app-re-derives-the-score-display-gate-from-the-bare-market-minimum",
+      "cmd": "node --test scripts/lib/mobile-score-display-parity.test.mjs",
+      "missingPaths": [
+        "scripts/lib/mobile-score-display-parity.test.mjs"
       ]
     },
     {
@@ -961,12 +891,48 @@
       ]
     },
     {
-      "id": "BRO-5267",
-      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5267/alert-ledger-267-conditions-stay-open-after-their-emitter-stopped",
-      "cmd": "node --test tests/unit/alert-ledger-absence-resolve.test.mjs",
+      "id": "BRO-5289",
+      "name": "Recover AP's own verdict for 3 shows whose AP review was filed under WSJ (resolveOutletFromUrl: AP wire ids)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5289/recover-aps-own-verdict-for-3-shows-whose-ap-review-was-filed-under",
+      "cmd": "node --test scripts/lib/resolve-outlet-from-url.test.mjs",
       "missingPaths": [
-        "tests/unit/alert-ledger-absence-resolve.test.mjs"
+        "scripts/lib/resolve-outlet-from-url.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5284",
+      "name": "Commercial research: free trade-search discovery (Deadline/Variety wp-json, Broadway Journal + Broadway News archive APIs, archive.nytimes.com)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5284/commercial-research-free-trade-search-discovery-deadlinevariety-wp",
+      "cmd": "node --test scripts/lib/trade-search.test.mjs",
+      "missingPaths": [
+        "scripts/lib/trade-search.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5283",
+      "name": "Washington Post subscriber cookies expired (auth cookies wp_ak_subs, wp_ak_signinv2)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5283/washington-post-subscriber-cookies-expired-auth-cookies-wp-ak-subs-wp",
+      "cmd": "node --test scripts/check-cookie-health.test.mjs",
+      "missingPaths": [
+        "scripts/check-cookie-health.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5273",
+      "name": "Off Script with Dan Dwyer: 30 Tumblr-hosted reviews excluded as blockedReviewUrl (social host)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5273/off-script-with-dan-dwyer-30-tumblr-hosted-reviews-excluded-as",
+      "cmd": "node --test scripts/domain-filters.test.mjs",
+      "missingPaths": [
+        "scripts/domain-filters.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5271",
+      "name": "Derive the 'upcoming' tag from status: strip centrally in shows-write-guard, stop storing it",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5271/derive-the-upcoming-tag-from-status-strip-centrally-in-shows-write",
+      "cmd": "node --test scripts/lib/shows-write-guard.test.mjs",
+      "missingPaths": [
+        "scripts/lib/shows-write-guard.test.mjs"
       ]
     },
     {
@@ -979,12 +945,30 @@
       ]
     },
     {
+      "id": "BRO-5263",
+      "name": "Stale row: age-is-a-feeling-off-broadway-2024 still 'announced' two years after its 2024 previews",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5263/stale-row-age-is-a-feeling-off-broadway-2024-still-announced-two-years",
+      "cmd": "node --test scripts/validate-show-venue.test.mjs",
+      "missingPaths": [
+        "scripts/validate-show-venue.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-5260",
       "name": "11 complete review texts still carry a stale ensemble not_a_review rejection made before the full text was fetched",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5260/11-complete-review-texts-still-carry-a-stale-ensemble-not-a-review",
       "cmd": "node --test tests/unit/ensemble-rejection-requeue.test.mjs",
       "missingPaths": [
         "tests/unit/ensemble-rejection-requeue.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5259",
+      "name": "Sweep 333 scored web-search rows with summary-length text for made-up URLs and bylines",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5259/sweep-333-scored-web-search-rows-with-summary-length-text-for-made-up",
+      "cmd": "node --test scripts/check-byline-evidence.test.mjs",
+      "missingPaths": [
+        "scripts/check-byline-evidence.test.mjs"
       ]
     },
     {
@@ -1006,12 +990,39 @@
       ]
     },
     {
+      "id": "BRO-5246",
+      "name": "Outlet registry: ~165 auto-onboarded outlets show squashed display names (e.g. Chicagoontheaisle, Newjerseystage)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5246/outlet-registry-165-auto-onboarded-outlets-show-squashed-display-names",
+      "cmd": "node --test scripts/lib/outlet-registry.test.mjs",
+      "missingPaths": [
+        "scripts/lib/outlet-registry.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-5240",
       "name": "Verify the 68 'inferred-from-reviews' WE/OWE opening dates stamped under the old -1 offset",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5240/verify-the-68-inferred-from-reviews-weowe-opening-dates-stamped-under",
       "cmd": "node --test scripts/infer-press-night-from-reviews.test.mjs",
       "missingPaths": [
         "scripts/infer-press-night-from-reviews.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5215",
+      "name": "Next.js 16 upgrade: migrate off next lint to the ESLint CLI first",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5215/nextjs-16-upgrade-migrate-off-next-lint-to-the-eslint-cli-first",
+      "cmd": "node --test tests/unit/next-lint-migration.test.mjs",
+      "missingPaths": [
+        "tests/unit/next-lint-migration.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5200",
+      "name": "Star gate keeps junk generic stars when llmScore.confidence is low but the ensemble is unanimous",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5200/star-gate-keeps-junk-generic-stars-when-llmscoreconfidence-is-low-but",
+      "cmd": "node --test tests/unit/isUncorroborated-unanimous-low-confidence.test.mjs",
+      "missingPaths": [
+        "tests/unit/isUncorroborated-unanimous-low-confidence.test.mjs"
       ]
     },
     {
@@ -1024,12 +1035,75 @@
       ]
     },
     {
+      "id": "BRO-5189",
+      "name": "Rage clicks on Affluenza show-page button — likely broken CTA",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5189/rage-clicks-on-affluenza-show-page-button-likely-broken-cta",
+      "cmd": "node --test tests/unit/affluenza-show-page-button.test.mjs",
+      "missingPaths": [
+        "tests/unit/affluenza-show-page-button.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5188",
+      "name": "Rage clicks on homepage search input suggest broken search UX",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5188/rage-clicks-on-homepage-search-input-suggest-broken-search-ux",
+      "cmd": "node --test tests/unit/homepage-search-input-focus.test.mjs",
+      "missingPaths": [
+        "tests/unit/homepage-search-input-focus.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-5179",
       "name": "Re-file 6 real reviews stored under outletId vulture with a non-Vulture url host",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5179/re-file-6-real-reviews-stored-under-outletid-vulture-with-a-non",
       "cmd": "node --test tests/unit/outlet-id-migrations-vulture-hosts.test.mjs",
       "missingPaths": [
         "tests/unit/outlet-id-migrations-vulture-hosts.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5178",
+      "name": "validate-show-venue can never confirm a West End / Off-West-End add (Playbill-only)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5178/validate-show-venue-can-never-confirm-a-west-end-off-west-end-add",
+      "cmd": "node --test scripts/validate-show-venue.test.mjs",
+      "missingPaths": [
+        "scripts/validate-show-venue.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5173",
+      "name": "Mac-side auto-fix dispatch dead since ~Oct 6 (dispatch watchdog DOWN, disk-pressure refusals, 0 digest/backlog-drain dispatches) — needs a Mac session",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5173/mac-side-auto-fix-dispatch-dead-since-oct-6-dispatch-watchdog-down",
+      "cmd": "node --test scripts/morning-digest.test.mjs",
+      "missingPaths": [
+        "scripts/morning-digest.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5165",
+      "name": "Newsletter /cast links ignore the site's -2 collision suffix",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5165/newsletter-cast-links-ignore-the-sites-2-collision-suffix",
+      "cmd": "node --test scripts/newsletter/cast-link-slug.test.mjs",
+      "missingPaths": [
+        "scripts/newsletter/cast-link-slug.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5163",
+      "name": "Plan path to un-reject a wrongly blocked image URL (rejectedImageUrls is add-only)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5163/plan-path-to-un-reject-a-wrongly-blocked-image-url-rejectedimageurls",
+      "cmd": "node --test scripts/lib/feedback-pipeline-fields.test.mjs",
+      "missingPaths": [
+        "scripts/lib/feedback-pipeline-fields.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5162",
+      "name": "219 review-text files carry a relative or non-URL 'url' (9 ship to reviews.json)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5162/219-review-text-files-carry-a-relative-or-non-url-url-9-ship-to",
+      "cmd": "node --test scripts/audit-malformed-review-urls.test.mjs",
+      "missingPaths": [
+        "scripts/audit-malformed-review-urls.test.mjs"
       ]
     },
     {
@@ -1084,24 +1158,6 @@
       "cmd": "node --test tests/unit/star-deals-sourced.test.mjs",
       "missingPaths": [
         "tests/unit/star-deals-sourced.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5113",
-      "name": "Owner Flop/Fizzle verdicts on recently closed shows are lost when the closure window passes",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5113/owner-flopfizzle-verdicts-on-recently-closed-shows-are-lost-when-the",
-      "cmd": "node --test scripts/lib/classify-stale-closure.test.mjs",
-      "missingPaths": [
-        "scripts/lib/classify-stale-closure.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5110",
-      "name": "Twenty Thousand Streets (Southwark Playhouse 2026) title truncated in shows.json",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5110/twenty-thousand-streets-southwark-playhouse-2026-title-truncated-in",
-      "cmd": "node --test tests/unit/twenty-thousand-streets-title.test.mjs",
-      "missingPaths": [
-        "tests/unit/twenty-thousand-streets-title.test.mjs"
       ]
     },
     {
@@ -1249,24 +1305,6 @@
       ]
     },
     {
-      "id": "BRO-4903",
-      "name": "Accounts audit follow-ups needing owner decisions: after-first-save sheet (0 of 33 on phones), signed-out My Shows for device-saved shows, Apple relay email registration, Google OAuth brand verification",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4903/accounts-audit-follow-ups-needing-owner-decisions-after-first-save",
-      "cmd": "node --test tests/unit/accounts-audit-decisions.test.mjs",
-      "missingPaths": [
-        "tests/unit/accounts-audit-decisions.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4858",
-      "name": "Audit archived WestEndTheatre roundup rows for critic/URL bleed from neighbouring outlet blocks",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4858/audit-archived-westendtheatre-roundup-rows-for-criticurl-bleed-from",
-      "cmd": "node --test scripts/scrape-westendtheatre-roundups.test.mjs",
-      "missingPaths": [
-        "scripts/scrape-westendtheatre-roundups.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4847",
       "name": "UX audit: The affordance for adding a show to the watchlist is inconsistent between views: it's a large tappable card in",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4847/ux-audit-the-affordance-for-adding-a-show-to-the-watchlist-is",
@@ -1291,15 +1329,6 @@
       "cmd": "node --test tests/unit/tour-runtime-source-agreement.test.mjs",
       "missingPaths": [
         "tests/unit/tour-runtime-source-agreement.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4768",
-      "name": "Video reviews: return-engagement shows drop videos of the earlier run (date rule vs catalog mismatch)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4768/video-reviews-return-engagement-shows-drop-videos-of-the-earlier-run",
-      "cmd": "node --test tests/unit/production-date-rule.test.mjs",
-      "missingPaths": [
-        "tests/unit/production-date-rule.test.mjs"
       ]
     },
     {
@@ -1363,24 +1392,6 @@
       "cmd": "node --test scripts/lib/landing-ci-coverage.test.mjs",
       "missingPaths": [
         "scripts/lib/landing-ci-coverage.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4606",
-      "name": "Flag the wrong articles the new daily LLM pass confirms (first runs Oct 5-6)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4606/flag-the-wrong-articles-the-new-daily-llm-pass-confirms-first-runs-oct",
-      "cmd": "node --test tests/unit/wrong-article-llm-flagging.test.mjs",
-      "missingPaths": [
-        "tests/unit/wrong-article-llm-flagging.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4604",
-      "name": "ux-walkthrough misses tablet widths and fixed-header clipping (why BRO-4575 shipped unnoticed)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4604/ux-walkthrough-misses-tablet-widths-and-fixed-header-clipping-why-bro",
-      "cmd": "node --test scripts/ux-walkthrough.test.mjs",
-      "missingPaths": [
-        "scripts/ux-walkthrough.test.mjs"
       ]
     },
     {
@@ -1456,39 +1467,12 @@
       ]
     },
     {
-      "id": "BRO-4444",
-      "name": "Corpus sweep: repair remaining files in the BRO-4430 drop classes (aggregator url on text files, stuck dateless holds, other-critic url collisions, flagged non-review slots)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4444/corpus-sweep-repair-remaining-files-in-the-bro-4430-drop-classes",
-      "cmd": "node --test scripts/audit-coverage-slot-drops.test.mjs",
-      "missingPaths": [
-        "scripts/audit-coverage-slot-drops.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4426",
       "name": "238 shipped reviews have no text (needsRefetch never drained); 138 stuck over 24h, oldest ~7 months",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4426/238-shipped-reviews-have-no-text-needsrefetch-never-drained-138-stuck",
       "cmd": "node --test scripts/lib/needsrefetch-drain.test.mjs",
       "missingPaths": [
         "scripts/lib/needsrefetch-drain.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4415",
-      "name": "P2: 13 isSyndicatedDuplicate review files whose syndicatedPrimaryFile is itself excluded (pal-joey-2008 NYT Brantley unscored)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4415/p2-13-issyndicatedduplicate-review-files-whose-syndicatedprimaryfile",
-      "cmd": "node --test scripts/lib/syndicated-duplicate-heal.test.mjs",
-      "missingPaths": [
-        "scripts/lib/syndicated-duplicate-heal.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4393",
-      "name": "50 groups of unrelated shows share byte-identical image files (content-level cousin of BRO-4380)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4393/50-groups-of-unrelated-shows-share-byte-identical-image-files-content",
-      "cmd": "node --test scripts/lib/duplicate-images.test.mjs",
-      "missingPaths": [
-        "scripts/lib/duplicate-images.test.mjs"
       ]
     },
     {
@@ -1507,15 +1491,6 @@
       "cmd": "node --test tests/unit/btc-season-config.test.mjs",
       "missingPaths": [
         "tests/unit/btc-season-config.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4335",
-      "name": "LLM ensemble compresses raves and pans toward the middle on unrated reviews — fit a monotone stretch on ground truth",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4335/llm-ensemble-compresses-raves-and-pans-toward-the-middle-on-unrated",
-      "cmd": "node --test scripts/lib/monotone-stretch.test.mjs",
-      "missingPaths": [
-        "scripts/lib/monotone-stretch.test.mjs"
       ]
     },
     {
