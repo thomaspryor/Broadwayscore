@@ -81,3 +81,13 @@ test('canceledBySweep: only the sweep cancel comment for this condition counts (
   assert.equal(canceledBySweep(card('completed', [`Canceled: ${cancelReason(key)}`]), key), false);
   assert.equal(canceledBySweep(null, key), false);
 });
+
+test('skipReason: an untouched dispatch-at-filing card is eligible for its own condition only (BRO-5480)', () => {
+  const { DISPATCH_AT_FILING_MARKER } = require('./linear-drain-parked.js');
+  const d = `${DISPATCH_AT_FILING_MARKER} (BRO-4054; condition: tour-page:broken:x). The Mac-side red-first pass dispatches it headless.\n\nbody`;
+  assert.equal(skipReason(issue({ state: { type: 'unstarted' }, description: d }), 'tour-page:broken:x'), null);
+  assert.equal(skipReason(issue({ state: { type: 'unstarted' }, description: d }), 'tour-page:broken'), 'not-filed-for-this-condition');
+  // a worker picked it up (comment) or started it: never cancelled
+  assert.equal(skipReason(issue({ state: { type: 'started' }, description: d }), 'tour-page:broken:x'), 'state-started');
+  assert.equal(skipReason(issue({ state: { type: 'unstarted' }, description: d, comments: { nodes: [{ body: 'dispatched' }] } }), 'tour-page:broken:x'), 'has-comments');
+});

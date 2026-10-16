@@ -24,6 +24,16 @@
 const AUTO_FILED_LINE = 'Auto-filed by owner-alert-router (condition: ';
 // BRO-5168: owner-alert-router's START-NOW cards carry this line instead.
 const START_NOW_FILED_LINE = 'Filed by owner-alert-router (START-NOW; condition: ';
+// BRO-5480: dispatch-at-filing cards carry DISPATCH_AT_FILING_MARKER
+// ("… for dispatch-at-filing (BRO-4054; condition: KEY)"). red-first only
+// follows up on its own prefixes and treats the dispatch stamp as
+// "dispatched", so an untouched one (never picked up: Mac off, cap reached)
+// was never closed by anything. The same untouched rules below apply.
+const { DISPATCH_AT_FILING_MARKER } = require('./linear-drain-parked');
+const filedForCondition = (desc, key) =>
+  desc.includes(`${AUTO_FILED_LINE}${key})`)
+  || desc.includes(`${START_NOW_FILED_LINE}${key})`)
+  || (desc.includes(DISPATCH_AT_FILING_MARKER) && desc.includes(`condition: ${key})`));
 
 /** PURE. Map identifier -> {resolved: [keys], open: [keys]} from the ledger. */
 function cardConditionIndex(ledger) {
@@ -76,7 +86,7 @@ function skipReason(issue, conditionKey) {
   const type = issue.state && issue.state.type;
   if (type !== 'backlog' && type !== 'unstarted') return `state-${type || 'unknown'}`;
   const desc = String(issue.description || '');
-  if (!desc.includes(`${AUTO_FILED_LINE}${conditionKey})`) && !desc.includes(`${START_NOW_FILED_LINE}${conditionKey})`)) return 'not-filed-for-this-condition';
+  if (!filedForCondition(desc, conditionKey)) return 'not-filed-for-this-condition';
   // A repeat-filing note (linear-issue-create reuseOpenTwin) is not activity.
   const comments = ((issue.comments && issue.comments.nodes) || []).filter((c) => !/^Filed again on /.test(String((c && c.body) || '')));
   if (comments.length > 0) return 'has-comments';
