@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-16T15:33:35.860Z",
+  "timestamp": "2026-10-16T15:42:15.893Z",
   "stats": {
-    "totalReviews": 57040,
-    "alreadyFlagged": 21175,
-    "dateGuardCatches": 193,
+    "totalReviews": 57067,
+    "alreadyFlagged": 21184,
+    "dateGuardCatches": 195,
     "directorMismatch": 1914,
-    "tvFilmSignals": 1586,
-    "londonSignals": 2377,
+    "tvFilmSignals": 1589,
+    "londonSignals": 2383,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
     "noPublishDate": 5306
@@ -35414,6 +35414,19 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "london-unattached--teresa-guerreiro.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.london-unattached.com/stories-the-tap-dance-sensation/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "londonlivinglarge--unknown.json",
       "score": 95,
       "publishDate": "2024-10-24",
@@ -35424,6 +35437,19 @@
           "severity": "HIGH",
           "detail": "Published 720d before show (2024-10-24 vs 2026-10-14)"
         },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "londontheatre1--alan-fitter.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.londontheatre1.com/reviews/stories-the-tap-dance-sensation-peacock-theatre/",
+      "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -35504,6 +35530,19 @@
           "severity": "HIGH",
           "detail": "Published 714d before show (2024-10-30 vs 2026-10-14)"
         },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "west-end-best-friend--chris-abbott.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
+      "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -66133,6 +66172,42 @@
       ]
     },
     {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "west-end-best-friend--unknown.json",
+      "publishDate": "2026-09-07",
+      "url": "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 39d before show (2026-09-07 vs 2026-10-16)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-09-07",
+      "url": "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 39d before show (2026-09-07 vs 2026-10-16)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "jesus-christ-superstar-west-end-2026",
       "file": "loureviews--louise-penn.json",
       "score": 89,
@@ -68538,7 +68613,7 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "file": "readaboutstuff--unknown.json",
+      "file": "readaboutstuff--dan-english.json",
       "score": 95,
       "publishDate": "2026-09-13",
       "url": "https://readaboutstuff.com/2026/09/13/review-man-to-man-royal-court-london/",
@@ -75512,6 +75587,33 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": null,
+      "publishDate": "2026-10-16",
+      "url": "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 39,
       "publishDate": "2026-10-16",
@@ -75571,6 +75673,20 @@
       "file": "londontheatregeek--unknown.json",
       "publishDate": null,
       "url": "https://www.londontheatregeek.co.uk/shows/some-woman",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2026-10-16",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/anne-marie-duff-some-woman-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -85866,6 +85982,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "bestoftheatre--erica-bond.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },

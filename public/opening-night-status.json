@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T15:33:45.700Z",
+  "generatedAt": "2026-10-16T15:42:23.533Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -646,10 +646,6 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
@@ -719,23 +715,22 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": 53.39,
-      "liveScore": 53,
-      "scoreDrift": -0.39000000000000057,
+      "siteScore": 55.72,
+      "liveScore": 56,
+      "scoreDrift": 0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 9,
       "t1": 2,
-      "t2": 4,
-      "t3": 1,
-      "positive": 2,
-      "mixed": 0,
+      "t2": 5,
+      "t3": 2,
+      "positive": 3,
+      "mixed": 1,
       "negative": 5,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:2/3",
           "hi-conf:5/6"
         ],
@@ -758,10 +753,6 @@
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
           "isDualMarket": true
         },
         {
@@ -877,6 +868,18 @@
           "t3": 1,
           "p": 2,
           "m": 0,
+          "n": 5,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T15:42:23.533Z",
+          "rc": 9,
+          "s": 55.72,
+          "t1": 2,
+          "t2": 5,
+          "t3": 2,
+          "p": 3,
+          "m": 1,
           "n": 5,
           "bc": "waiting"
         }
@@ -3524,17 +3527,17 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 70.52,
+      "siteScore": 71,
       "liveScore": 71,
-      "scoreDrift": 0.480000000000004,
+      "scoreDrift": 0,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 28,
       "t1": 6,
       "t2": 5,
-      "t3": 15,
-      "positive": 16,
+      "t3": 17,
+      "positive": 18,
       "mixed": 8,
       "negative": 2,
       "readiness": {
@@ -3873,6 +3876,18 @@
           "t2": 5,
           "t3": 15,
           "p": 16,
+          "m": 8,
+          "n": 2,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-16T15:42:23.533Z",
+          "rc": 28,
+          "s": 71,
+          "t1": 6,
+          "t2": 5,
+          "t3": 17,
+          "p": 18,
           "m": 8,
           "n": 2,
           "bc": "preview-sent-earlier"
