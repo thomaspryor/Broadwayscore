@@ -433,7 +433,7 @@ test('BRO-5488: a --dispatch filing that repeats an open card is refused, never 
   const board = fakeBoard({ open });
   await assert.rejects(
     createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, source: 'session' }),
-    (e) => e.code === 'NEAR_DUPLICATE_OPEN' && /^already open: BRO-100 BSC Rebuild: 41 reviews dropped/.test(e.message) && e.twin.identifier === 'BRO-100',
+    (e) => e.code === 'NEAR_DUPLICATE_OPEN' && /^already open: BRO-100 BSC Rebuild: 41 reviews dropped \[SUSPICIOUS\] \[Todo\]/.test(e.message) && e.twin.identifier === 'BRO-100',
   );
   assert.equal(board.created.length, 0);
   assert.equal(board.comments.length, 0, 'nothing noted on the other card');
@@ -453,6 +453,12 @@ test('BRO-5488: a count-only change reuses the exact-title twin, even for an opt
   assert.equal(r.mode, 'reused');
   assert.equal(r.issue.identifier, 'BRO-200');
   assert.match(board.comments[0].body, /only a count changed/);
+  assert.equal(r.countOnly, true);
+  // A --dispatch filing is never handed a card whose title differs by a count.
+  const disp = fakeBoard({ open: [{ ...open[0], state: { name: 'Todo', type: 'unstarted' } }] });
+  const own = await createLinearIssue({ title: 'BSC Daily: Star-band detector: 22 review(s) outside their band', description: 'x', dispatch: true, client: disp.client, reuseTwin: true, dedupeOptOut: 'digest-autofix' });
+  assert.equal(own.mode, 'dispatch');
+  assert.equal(disp.comments.length, 0);
   const night = await createLinearIssue({ title: 'Opening-night watch 2026-10-10', description: 'x', park: 'routine log card for the night', client: board.client, reuseTwin: true });
   assert.equal(night.mode, 'park', 'another night is a new card');
   const off = fakeBoard({ open });

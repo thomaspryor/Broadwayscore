@@ -72,3 +72,28 @@ test('rollupEnforced: workflow filers without a per-card contract only', () => {
   assert.equal(d.rollupEnforced({ source: 'session', description: 'plain' }), false);
   assert.equal(d.rollupEnforced({ source: 'alert-router', description: 'plain' }), false);
 });
+
+test('BRO-5488 review: numbers that name a subject never merge; counts do', () => {
+  const d = require('./card-dedupe.js');
+  const same = (a, b) => d.countFreeTitle(a) === d.countFreeTitle(b);
+  assert.ok(same('BSC Daily: Star-band detector: 21 review(s) outside band', 'BSC Daily: Star-band detector: 22 review(s) outside band'));
+  assert.ok(same('Overdue P0/P1 queue: 1 P0 waiting', 'Overdue P0/P1 queue: 3 P0 waiting'));
+  assert.ok(same('Review gap — "Tru" missing 1 cited review(s)', 'Review gap — "Tru" missing 2 cited review(s)'));
+  assert.ok(same('BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]'));
+  for (const [a, b] of [
+    ['Fix login crash v2 on show page', 'Fix login crash v3 on show page'],
+    ['PR #1842 failing lint checks', 'PR #1843 failing lint checks'],
+    ['Tony Awards 2025 predictions page', 'Tony Awards 2026 predictions page'],
+    ['P0 incident on the show page', 'P1 incident on the show page'],
+    ['Opening-night watch 2026-10-09', 'Opening-night watch 2026-10-10'],
+    ['Deploy at 14:00 failed on Vercel', 'Deploy at 15:00 failed on Vercel'],
+    ['Phase 2 rollout of score pages', 'Phase 3 rollout of score pages'],
+    ['Fix 404 on show pages', 'Fix 500 on show pages'],
+    ['Bright Data web_unlocker1 zone exhausted', 'Bright Data web_unlocker2 zone exhausted'],
+    ['Upgrade to Next.js 14 for the app router', 'Upgrade to Next.js 15 for the app router'],
+    ['P0: scraper outage on reviews', 'P1: scraper outage on reviews'],
+  ]) {
+    assert.ok(!same(a, b), `count-only: ${a} vs ${b}`);
+    assert.equal(d.findNearDuplicate(a, [{ identifier: 'BRO-1', title: b }]), null, `near-dup: ${a} vs ${b}`);
+  }
+});

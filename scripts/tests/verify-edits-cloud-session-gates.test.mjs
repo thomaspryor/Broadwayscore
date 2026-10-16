@@ -968,6 +968,12 @@ test('NOCARD: a create that FAILED (no marker in its result) → BLOCKED', skipN
   assertBlocked(r, 'a rejected create is not a card');
 });
 
+test('NOCARD: a create refused as a repeat of an open card (BRO-5488, exit 8) → BLOCKED', skipNoRepoHook, () => {
+  const refused = toolUse('Bash', { command: 'node scripts/linear-brain.js create "Fix the thing again" --dispatch --notes "y"' }, 'ALREADY-OPEN: already open: BRO-4871 Fix the thing [Todo] (title match 0.82). Work on that card (node scripts/linear-session.js claim --issue=BRO-4871), or if this is different work re-run with --new-anyway "<why>".\n__BOARD_CARD_MATCH__=BRO-4871');
+  const r = runCard('nocard-create-refused', [refused, GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'a refused create names a card but made none; the session must claim it');
+});
+
 test('NOCARD spoof guard: grepping the marker out of source does not count → BLOCKED', skipNoRepoHook, () => {
   const grep = toolUse('Bash', { command: 'grep -n "__BOARD_CARD_ID__" scripts/linear-brain.js' }, "646:  console.error(`__BOARD_CARD_ID__=BRO-1`);");
   const r = runCard('nocard-spoof', [grep, GIT_PUSH], NOT_SAFE);

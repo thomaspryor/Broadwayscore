@@ -253,16 +253,13 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   const contractText = `${disposition.reason || ''}\n${body || ''}`;
   const contract = cardDedupe.hasPerCardContract(contractText)
     || ['digest-autofix', 'alert-router', 'e2e-canary'].includes(cardSource);
-  // Park mode only: a --dispatch filing is a session's own card, and handing it
-  // another Todo card whose title differs only by a number would make the
-  // session claim someone else's work. Exact-title reuse still applies there.
   // A --dispatch filing (a session's own card) is never swapped for another
   // card, but a near-match of an open card is refused so the session works on
   // that card or says why it is different (--new-anyway). Fails open.
   if (dedupe && !contract && disposition.mode === 'dispatch') {
     const open = await findNearDuplicateOpen({ title, client });
     if (open) {
-      const err = new Error(`already open: ${open.card.identifier} ${open.card.title} (title match ${open.score.toFixed(2)}). Work on that card (node scripts/linear-session.js claim --issue=${open.card.identifier}), or if this is different work re-run with --new-anyway "<why>".`);
+      const err = new Error(`already open: ${open.card.identifier} ${open.card.title} [${(open.card.state && open.card.state.name) || 'open'}] (title match ${open.score.toFixed(2)}). Work on that card (node scripts/linear-session.js claim --issue=${open.card.identifier}), or if this is different work re-run with --new-anyway "<why>".`);
       err.code = 'NEAR_DUPLICATE_OPEN';
       err.twin = open.card;
       throw err;
@@ -504,7 +501,9 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
   }
   // BRO-5488: the same row with only a count changed ("Star-band detector: 21
   // review(s)" -> "22 review(s)") is the same twin. Dates and BRO refs stay distinct.
-  if (!twin) {
+  // Park mode only: a --dispatch filing is a session's own card, and handing it
+  // a card whose title differs by a number would make it claim other work.
+  if (!twin && mode === 'park') {
     const list = client ? (client.listOpenIssueTitles && client.listOpenIssueTitles.bind(client)) : defaultListOpenIssueTitles;
     try { twin = list ? cardDedupe.findCountOnlyTwin(title, await list(), (c) => twinServes(c, mode)) : null; } catch (e) {
       console.warn(`[linear-issue-create] count-only twin lookup failed, filing anyway: ${e.message}`);
@@ -517,7 +516,7 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
   // a returned card as proof the finding was saved).
   if (!(await noteOnCard(client, twin, note))) return null;
   console.warn(`[linear-issue-create] "${title}" is already open as ${twin.identifier}; noted there, no new card`);
-  return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true };
+  return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true, countOnly: twin.title !== title };
 }
 
 module.exports = {

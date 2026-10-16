@@ -56,7 +56,9 @@ const { checkIssueStaleness, newestComments } = require('./lib/linear-staleness-
 
 const USAGE = `Usage:
   node scripts/linear-session.js claim --issue=BRO-123
-  node scripts/linear-session.js claim --title="..." --description="..." [--priority=2] [--project="Name"]
+  node scripts/linear-session.js claim --title="..." --description="..." [--priority=2] [--project="Name"] [--new-anyway="<reason ≥10 chars>"]
+    (a --title claim that repeats an open card is refused with "already open: BRO-N";
+     claim that card instead, or pass --new-anyway with why this is different work)
   node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."] [--force="<reason ≥10 chars>"] [--since=<ISO8601>]
   node scripts/linear-session.js ping
 
@@ -153,14 +155,19 @@ async function cmdClaim(args) {
     // contract — dispatch mode deliberately never picks 'started', see that
     // file's header). A claim means "start it now", so immediately move it
     // to the state planClaim already resolved (In Progress).
+    // BRO-5488: a new card that repeats an open one is refused unless
+    // --new-anyway says why it is different (same rule as linear-brain.js).
+    const newAnyway = args['new-anyway'];
+    if (newAnyway === true || (typeof newAnyway === 'string' && newAnyway.trim().length < 10)) {
+      throw new Error('--new-anyway needs a reason of at least 10 characters (why this is not the open card it matched).');
+    }
     const { issue: created } = await createLinearIssue({
       title: plan.title,
-      description: plan.description,
+      description: newAnyway ? `${plan.description || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : plan.description,
       dispatch: true,
       priority,
       projectId,
-      // BRO-5488: a new card that repeats an open one is refused; this says why it is different.
-      newAnyway: typeof args['new-anyway'] === 'string' ? args['new-anyway'] : undefined,
+      newAnyway: newAnyway || undefined,
     });
     await linear.updateIssue(created.id, { stateId: plan.stateId });
     result = await linear.getIssue(created.identifier);

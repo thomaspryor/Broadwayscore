@@ -727,7 +727,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     if (result.mode === 'reused' && result.nearDuplicate) {
       console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open and this title repeats it (score ${result.nearDuplicate.score.toFixed(2)}); the notes were added there as a comment (state=${result.stateName}). If it is really different work, re-run with --new-anyway "<reason>".`);
     } else if (result.mode === 'reused') {
-      console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open with this title; the notes were added there as a comment (state=${result.stateName})`);
+      console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open ${result.countOnly ? 'with this title except for a count' : 'with this title'}; the notes were added there as a comment (state=${result.stateName})`);
     } else if (result.mode === 'rolled-up') {
       console.error(`ROLLED-UP: ${result.issue.identifier} ("${result.issue.title}") collects this filer's repeated findings of this kind; the notes were added there as a comment, no new card`);
     } else if (result.mode === 'dispatch') {
