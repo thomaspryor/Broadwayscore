@@ -122,6 +122,9 @@ test('pruneScratchpadsIfDue: inside cooldown does nothing, after it prunes again
     const opts = { markerPath, roots: [root], psText: '', liveIds: new Set() };
     const first = pruneScratchpadsIfDue({ ...opts, now: NOW });
     assert.equal(first.deleted.length, 1);
+    // Pin the marker mtime to the test's NOW: fs mtimes are not clock-shifted, so
+    // the real stamp would diverge from a shifted Date.now() (BRO-5410 time-bomb).
+    fs.utimesSync(markerPath, NOW / 1000, NOW / 1000);
     mk(IDLE2, 48);
     assert.equal(pruneScratchpadsIfDue({ ...opts, now: NOW + 1000 }), null);
     const later = pruneScratchpadsIfDue({ ...opts, now: NOW + DEFAULT_COOLDOWN_MS + 60_000 });
