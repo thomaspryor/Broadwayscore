@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g1",
   "planId": "bb2aec5c-12a8-4907-a3d5-31f007dced13",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -190,5 +190,138 @@
         "description": "BRO-5420: express-uk 2024-02-08 review of the London production (https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-review-Jez-Butterworth-Laura-Donnelly); filed under the Broadway id the-hills-of-california-2024 (run 2024-09-29..2024-12-22). Moves to the-hills-of-california-west-end-2024, whose run contains the date."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T05:20:04.129Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): machinal-2014/all-that-dazzles-uk--daz-gale.json → machinal-west-end-2024/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: machinal-west-end-2024/artsdesk--david-nice.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: machinal-west-end-2024/london-theatre--olivia-rook.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: machinal-west-end-2024/timeout-london--andrzej-lukowski.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: oleanna-west-end-2021/artsdesk--aleks-sierz.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: oleanna-west-end-2021/london-theatre--matt-wolf.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: oleanna-west-end-2021/standard--jessie-thompson.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved orphans-2013/all-that-dazzles-uk--daz-gale.json → orphans-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: orphans-off-west-end-2026/everything-theatre--dave-b.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved orphans-2013/standard--nick-curtis.json → orphans-off-west-end-2026/standard--nick-curtis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: orphans-off-west-end-2026/theatre-weekly--nick-wayne.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved stereophonic-2024/londontheatredirect--london-theatre-direct-limited.json → stereophonic-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved stereophonic-2024/theatreandtonic--emmie-newitt.json → stereophonic-west-end-2025/theatreandtonic--emmie-newitt.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/independent--unknown.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/standard--nick-curtis.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): sunset-boulevard-2024/all-that-dazzles-uk--daz-gale.json → sunset-boulevard-west-end-2023/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: sunset-boulevard-west-end-2023/attitude--simon-button.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: sunset-boulevard-west-end-2023/city-am--adam-bloodworth.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-great-gatsby-2024/london-theatre--unknown.json → the-great-gatsby-west-end-2025/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-great-gatsby-west-end-2025/mail-on-sunday--mark-cook.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-great-gatsby-2024/theupcoming--antonia-georgiou.json → the-great-gatsby-west-end-2025/theupcoming--antonia-georgiou.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-hills-of-california-west-end-2024/express-uk--george-simpson.json (delete it first or set overwrite: true)"
+    }
+  ]
 }
