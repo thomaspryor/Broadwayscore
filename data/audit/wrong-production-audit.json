@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T23:22:20.033Z",
+  "timestamp": "2026-10-16T23:33:52.514Z",
   "stats": {
-    "totalReviews": 57076,
-    "alreadyFlagged": 21191,
+    "totalReviews": 57082,
+    "alreadyFlagged": 21193,
     "dateGuardCatches": 192,
     "directorMismatch": 1915,
     "tvFilmSignals": 1598,
-    "londonSignals": 2390,
+    "londonSignals": 2391,
     "offBroadwaySignals": 514,
     "yearMismatch": 146,
-    "noPublishDate": 5276
+    "noPublishDate": 5275
   },
   "findings": [
     {
@@ -75864,6 +75864,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "momentsapp--unknown.json",
+      "publishDate": null,
+      "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
