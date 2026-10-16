@@ -197,13 +197,13 @@
       "title": "Opening Night SLA P0 — 2 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
       "incidentOpenedAt": "2026-10-15T15:07:14.167Z",
-      "lastSeen": "2026-10-15T22:25:18.691Z",
+      "lastSeen": "2026-10-16T01:26:50.875Z",
       "lastNotifiedAt": "2026-10-15T15:07:14.167Z",
       "lastSurfacedAt": "2026-10-15T15:07:14.167Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -16593,13 +16593,13 @@
       "title": "Placeholder synopsis on Sea Wall",
       "firstSeen": "2026-10-14T06:14:56.426Z",
       "incidentOpenedAt": "2026-10-14T06:14:56.426Z",
-      "lastSeen": "2026-10-15T22:25:17.483Z",
+      "lastSeen": "2026-10-16T01:26:47.807Z",
       "lastNotifiedAt": "2026-10-14T06:14:56.426Z",
       "lastSurfacedAt": "2026-10-14T06:14:56.426Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-remediation-exhausted-empty-cast:unconditional-a-new-musical-memoir-off-broadway-2026": {
       "status": "open",
@@ -17686,6 +17686,45 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-10-16T00:20:54.489Z"
+    },
+    "opening-night-placeholder-synopsis-school-pictures-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on School Pictures",
+      "firstSeen": "2026-10-16T01:26:47.789Z",
+      "incidentOpenedAt": "2026-10-16T01:26:47.789Z",
+      "lastSeen": "2026-10-16T01:26:47.789Z",
+      "lastNotifiedAt": "2026-10-16T01:26:47.789Z",
+      "lastSurfacedAt": "2026-10-16T01:26:47.789Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-revival-unverified-school-pictures-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unverified revival on School Pictures",
+      "firstSeen": "2026-10-16T01:26:47.796Z",
+      "incidentOpenedAt": "2026-10-16T01:26:47.796Z",
+      "lastSeen": "2026-10-16T01:26:47.796Z",
+      "lastNotifiedAt": "2026-10-16T01:26:47.796Z",
+      "lastSurfacedAt": "2026-10-16T01:26:47.796Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-slug-mismatch-school-pictures-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on School Pictures",
+      "firstSeen": "2026-10-16T01:26:47.801Z",
+      "incidentOpenedAt": "2026-10-16T01:26:47.801Z",
+      "lastSeen": "2026-10-16T01:26:47.801Z",
+      "lastNotifiedAt": "2026-10-16T01:26:47.801Z",
+      "lastSurfacedAt": "2026-10-16T01:26:47.801Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
