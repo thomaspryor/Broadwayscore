@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5508",
   "planId": "1941d28d-9154-4eac-afd8-652f9ec307f9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-16T21:25:19.254Z",
   "submitter": {
     "name": null,
@@ -57,5 +57,28 @@
         "description": "the-rocky-horror-show: r/Broadway analyst, week ending Aug 23, 2026: 'the best since the show turned into a commercial run'. Date not reported; the deep research prompts ask for it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T23:56:50.196Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: commercialConversion updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: commercialConversion updated for the-rocky-horror-show"
+    }
+  ]
 }
