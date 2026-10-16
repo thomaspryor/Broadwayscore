@@ -96,11 +96,12 @@ describe('slug-mismatch run() with an opaque-URL review', () => {
   });
 });
 
-describe('id-only query URLs (BRO-5438)', () => {
-  it('londontheatrereviews post.cfm?p=<id> is opaque', () => {
-    assert.strictEqual(isOpaqueUrlSlug(urlSearchSlug('https://www.londontheatrereviews.co.uk/post.cfm?p=29349')), true);
+describe('id-only CMS URLs (BRO-5438)', () => {
+  const { isIdOnlyCmsUrl } = check;
+  it('londontheatrereviews post.cfm?p=<id> is id-only', () => {
+    assert.strictEqual(isIdOnlyCmsUrl(urlSearchSlug('https://www.londontheatrereviews.co.uk/post.cfm?p=29349')), true);
   });
-  it('a .cfm URL with a real wrong-show slug still counts as slugged', () => {
-    assert.strictEqual(isOpaqueUrlSlug(urlSearchSlug('https://theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm')), false);
+  it('a .cfm URL with real title words is not id-only', () => {
+    assert.strictEqual(isIdOnlyCmsUrl(urlSearchSlug('https://theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm')), false);
   });
 });

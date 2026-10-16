@@ -203,6 +203,18 @@ function isOpaqueUrlSlug(urlSlug) {
 }
 
 /**
+ * True for an id-only CMS URL with no editorial words at all, e.g.
+ * londontheatrereviews.co.uk/post.cfm?p=29349 (BRO-5438). Unlike a fully
+ * opaque URL (FT /content/<uuid>) these keep the saved-text check: text that
+ * exists and never names the show still flags; only a review with NO saved
+ * text is skipped, since nothing can confirm or refute it.
+ */
+function isIdOnlyCmsUrl(urlSlug) {
+  const tokens = (urlSlug || '').split(/[^a-z0-9]+/).filter(Boolean);
+  return tokens.length > 0 && tokens.every(t => t === 'post' || t === 'cfm' || /^\d+$/.test(t) || t === 'p');
+}
+
+/**
  * Regex for "this text names the show": the accept-slugs with hyphens relaxed
  * to any run of spaces/hyphens, matched on word boundaries. Shared with
  * fulltext-mentions-show.check.js so the two checks agree on what a mention is.
@@ -281,7 +293,12 @@ function run(show, context) {
       continue;
     }
     if (!sourceTextByUrl) sourceTextByUrl = loadSourceTextByUrl(context.reviewTextsRoot, show.id);
-    if (sourceTextNamesShow(sourceTextByUrl.get(review.url), mentionRe)) { textConfirmed++; continue; }
+    const segs = sourceTextByUrl.get(review.url);
+    if (sourceTextNamesShow(segs, mentionRe)) { textConfirmed++; continue; }
+    if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
+      opaqueSkipped.push({ outletId: review.outletId, url: review.url });
+      continue;
+    }
     mismatches.push({
       outletId: review.outletId,
       criticName: review.criticName,
@@ -333,5 +350,5 @@ function run(show, context) {
 
 module.exports = {
   name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
-  isOpaqueUrlSlug, buildMentionRegex, sourceTextNamesShow,
+  isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
 };
