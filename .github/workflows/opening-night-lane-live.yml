@@ -92,7 +92,8 @@ jobs:
       # fetchPage records its paid calls in the spend ledger; the poller can also route alerts (routeAlert( ... )).
       - name: Commit alert ledger
         if: always() && github.ref == 'refs/heads/main'
-            run: |
+        continue-on-error: true
+        run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/alert-ledger.json 2>/dev/null || true
@@ -103,8 +104,9 @@ jobs:
           bash scripts/lib/push-with-retry.sh 5 main
 
       - name: Commit scraper-spend ledger
-        if: always()
-            uses: ./.github/actions/commit-scraper-spend-ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
         with:
           workflow-name: opening-night-lane-live smoke
 
@@ -197,7 +199,8 @@ jobs:
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.
       - name: Commit alert ledger
         if: always() && github.ref == 'refs/heads/main'
-            run: |
+        continue-on-error: true
+        run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
@@ -206,8 +209,9 @@ jobs:
           bash scripts/lib/push-with-retry.sh 5 main
 
       - name: Commit scraper-spend ledger
-        if: always()
-            uses: ./.github/actions/commit-scraper-spend-ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
         with:
           workflow-name: opening-night-lane-live night
 
