@@ -492,6 +492,9 @@ export default function MethodologyPage() {
               <strong className="text-white">No estimate</strong> comes with the reason: the capitalization was never published, the running costs were never reported, the show is too new, or the figure does not apply (nonprofit productions and tour stops raise and repay their money differently).
             </Bullet>
             <Bullet>
+              <strong className="text-white">Nonprofit shows that go commercial</strong>: a nonprofit theater&apos;s Broadway production plays its first weeks on nonprofit terms. If it extends, it can switch to a commercial run with investors to pay back, as Lincoln Center Theater&apos;s Ragtime did in January 2026. From then on we count it as a commercial show and say when it switched. Our model doesn&apos;t estimate these runs, because their grosses mix the nonprofit weeks with the commercial ones.
+            </Bullet>
+            <Bullet>
               <strong className="text-white">Break-even</strong> is what a show needs to take in each week to cover its running costs. When no running cost has been published we use a typical figure for a show of that size, marked with ~.
             </Bullet>
             <Bullet>

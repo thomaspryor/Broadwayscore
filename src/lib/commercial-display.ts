@@ -605,8 +605,12 @@ export interface DesignationDisplay {
 }
 
 /** Whether the Commercial Scorecard has anything to show (it renders nothing otherwise). */
-export function hasCommercialCard(c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'>): boolean {
-  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD');
+export function hasCommercialCard(
+  c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'> & Partial<Pick<ShowCommercial, 'analystRecoupPct' | 'commercialConversion'>>
+): boolean {
+  // A TBD show with only the analyst's estimate (Beaches: ~0% recouped) or a
+  // switch to a commercial run still has a card to show (BRO-5508).
+  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD' || c.analystRecoupPct || conversionOf(c));
 }
 
 /** The public caveat for a loss label that rests on silence (owner policy B, BRO-5020). */

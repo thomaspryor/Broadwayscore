@@ -22,6 +22,7 @@ import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
 import {
   getRecoupedCellSummary,
   getDesignationDisplay,
+  getNonprofitTag,
   publicSourceText,
   LOSS_ON_SILENCE_CAVEAT,
   type RecoupedCellSummary,
@@ -333,7 +334,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                       {designation.label}
                     </span>
                     {show.nonprofitOrg && (
-                      <div className="text-xs text-gray-500">{show.nonprofitOrg}</div>
+                      <div className="text-xs text-gray-500">{getNonprofitTag(show)}</div>
                     )}
                     {show.lossCaveat && (
                       <div className="text-xs text-gray-500 whitespace-nowrap" title={LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">

@@ -22,6 +22,7 @@ const {
   getNonprofitProducerLine,
   getNonprofitTag,
   getRecoupedCellSummary,
+  hasCommercialCard,
 } = await import('../../src/lib/commercial-display.ts');
 
 test('publicSourceText drops internal research-tooling language', () => {
@@ -309,4 +310,8 @@ test('a nonprofit run that became a commercial run (BRO-5508): says when, counts
   const row = { ...rocky, slug: 'the-rocky-horror-show', status: 'open', analystRecoupPct: [0, 20], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://www.reddit.com/r/Broadway/comments/z/', modelRecoupmentPct: null };
   assert.equal(getRecoupedCellSummary(row).kind, 'analyst');
   assert.equal(getRecoupedCellSummary({ ...row, designation: 'Nonprofit', commercialConversion: undefined }).kind, 'reason');
+  // TBD with no cap and no recoupment still gets a show-page card when there is a switch or an analyst figure to show.
+  assert.equal(hasCommercialCard(toPublicShowCommercial(rocky)), true);
+  assert.equal(hasCommercialCard({ ...base, designation: 'TBD', analystRecoupPct: [0, 0] }), true);
+  assert.equal(hasCommercialCard({ ...base, designation: 'TBD' }), false);
 });

@@ -21,7 +21,8 @@ const hasData = ['commercial.json', 'shows.json', 'grosses-history.json'].every(
 
 test('every /biz row says something in % Recouped', { skip: !hasData && 'core data not checked out' }, async () => {
   const { getSeasonsWithCommercialData, getShowsBySeasonWithCommercial, getAllOpenShowsWithCommercial } = await import('../../src/lib/data-commercial.ts');
-  const { getRecoupedCellSummary } = await import('../../src/lib/commercial-display.ts');
+  const { getRecoupedCellSummary, hasCommercialCard, toPublicShowCommercial } = await import('../../src/lib/commercial-display.ts');
+  const records = JSON.parse(fs.readFileSync(path.join(root, 'data', 'commercial.json'), 'utf8')).shows;
   const rows = [...getAllOpenShowsWithCommercial(), ...getSeasonsWithCommercialData().flatMap((s) => getShowsBySeasonWithCommercial(s))];
   assert.ok(rows.length > 50, `expected the biz tables to hold rows, got ${rows.length}`);
   const kinds = {};
@@ -39,6 +40,10 @@ test('every /biz row says something in % Recouped', { skip: !hasData && 'core da
       if (row.status === 'closed' || row.status === 'open' || row.status === 'previews') assert.ok(cell.pct.every((v) => v <= 99), `${row.slug}: model range ${cell.pct} reaches 100 on an unrecouped show`);
     }
     if (cell.kind === 'analyst' && cell.range[0] < 100) assert.ok(cell.range[1] <= 99, `${row.slug}: analyst range ${cell.range} reaches 100 on an unrecouped show`);
+    // What the table shows, the show page shows too (BRO-5508: a TBD show with only the analyst's figure had no card).
+    if (['recouped', 'reported', 'analyst', 'model'].includes(cell.kind) && records[row.slug]) {
+      assert.ok(hasCommercialCard(toPublicShowCommercial(records[row.slug])), `${row.slug}: the table shows ${cell.kind} but the show page has no card`);
+    }
     // The analyst's figure shows unless something outranks or contradicts it.
     // Closed: an undisclosed outcome (TBD) or an enhancement deal's "Nonprofit" never blocks it; a reported return outranks it.
     const openLabel = row.status !== 'closed' || row.designation === 'TBD' || row.designation === 'Nonprofit';
