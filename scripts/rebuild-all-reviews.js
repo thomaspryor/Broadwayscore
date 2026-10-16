@@ -44,7 +44,7 @@ function parseReviewFileText(raw) {
   }
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
 const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
@@ -4039,6 +4039,34 @@ showDirs.forEach(showId => {
             return;
           }
         }
+      }
+
+      // [GUARD:CROSS-MARKET-LATE-DUAL-UK] BRO-5429: the reverse guard above exempts
+      // dual-market outlets outright, so a UK national's review of a LONDON
+      // production filed under a Broadway id stayed live (chicago-1996: Daily
+      // Mail 1997 of the Adelphi Chicago, scored 78). Date is the signal: a UK
+      // critic covers a Broadway production at its opening. Note prefix is not
+      // the "Cross-market: London outlet" one the reverse self-heal clears.
+      if (showCategory === 'broadway' && !data.wrongProduction && !shouldSkipWrongProductionAudit(data)
+          && !data.allowEarlyDate && !laneOk('tourCrossMarket')
+          && (DUAL_MARKET_OUTLETS.has(canonicalOutlet) || DUAL_MARKET_OUTLETS.has(rawOutlet))
+          && evaluateLateDualMarketUkOnBroadway({
+            show: showById[showId],
+            publishDate: data.publishDate,
+            outletIsUkRegion: outletIsUkMarketRegion(outletRegionMap, canonicalOutlet, rawOutlet),
+            outletIsDualMarket: true,
+          }).shouldFlag) {
+        if (!skipStaleFlagWrite(data)) {
+          data.wrongProduction = true;
+          invalidateWrongProductionAutoClear(data);
+          data.wrongProductionNote = `Late UK review: dual-market outlet "${rawOutlet}" dated ${data.publishDate}, long after this Broadway opening (a London production of the same title)`;
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+        }
+        logExclusion("skippedCrossMarket", showId, file, data);
+        stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+        if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+        stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'late-dual-uk→broadway' });
+        return;
       }
 
       // URL-path cross-market guard: catch Broadway reviews assigned to WE shows

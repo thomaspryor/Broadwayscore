@@ -768,7 +768,28 @@ function classifyDualMarketNullUrl({ hasUrl, outletIsDualMarket, siblingInOtherM
   };
 }
 
+/**
+ * BRO-5429: a UK dual-market outlet (Guardian, Times, Daily Mail, Telegraph,
+ * The Stage...) on a Broadway show, dated long after the Broadway opening and
+ * outside any declared priorRuns / tourLegs, is reviewing a London production
+ * of the same title. The reverse guard above exempts dual-market outlets
+ * outright, so these stayed live: chicago-1996 (Daily Mail 1997, Adelphi),
+ * fela-2009, jesus-christ-superstar-2012, million-dollar-quartet-2010 x2,
+ * the-drowsy-chaperone-2006, the-great-gatsby-2024 x2. A UK critic covering a
+ * Broadway production does so at its opening. Same date rule as the Theatre
+ * Record import guard (tr-late-review-guard.js). Pure.
+ *
+ * @returns {{ shouldFlag: boolean }}
+ */
+function evaluateLateDualMarketUkOnBroadway({ show, publishDate, outletIsUkRegion, outletIsDualMarket, lagDays = 60 } = {}) {
+  if (!outletIsUkRegion || !outletIsDualMarket) return { shouldFlag: false };
+  const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+  const { isLateTheatreRecordReviewOfBroadwayShow } = require('./tr-late-review-guard');
+  return { shouldFlag: isLateTheatreRecordReviewOfBroadwayShow(show, publishDate, { lagDays, isWithinPriorRun, isWithinTourLeg }) };
+}
+
 module.exports = {
+  evaluateLateDualMarketUkOnBroadway,
   UK_SIDE_REGIONS,
   UK_SELF_HEAL_REGIONS,
   UK_MARKET_REGIONS,

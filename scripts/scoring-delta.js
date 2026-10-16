@@ -1417,6 +1417,21 @@ function decideInclusion(review, show, guards) {
     }
   }
 
+  // Mirrors rebuild-all-reviews.js's [GUARD:CROSS-MARKET-LATE-DUAL-UK] (BRO-5429).
+  // A baseline predating the helper has no such guard, so the delta shows it.
+  const lateDualUk = guards.__crossMarketLib?.evaluateLateDualMarketUkOnBroadway;
+  if (typeof lateDualUk === 'function' && show?.category === 'broadway' && !review.wrongProduction
+      && !(typeof guards.shouldSkipWrongProductionAudit === 'function' && guards.shouldSkipWrongProductionAudit(review))
+      && !review.allowEarlyDate) {
+    const rawOutletLd = (review.outletId || review.outlet || '').toLowerCase();
+    const canonicalOutletLd = normalizeOutletCanonical(rawOutletLd);
+    const isDual = DUAL_MARKET_OUTLETS.has(canonicalOutletLd) || DUAL_MARKET_OUTLETS.has(rawOutletLd);
+    const ukRegion = guards.__crossMarketLib.outletIsUkMarketRegion(outletRegionMap, canonicalOutletLd, rawOutletLd);
+    if (isDual && lateDualUk({ show, publishDate: review.publishDate, outletIsUkRegion: ukRegion, outletIsDualMarket: true }).shouldFlag) {
+      return { included: false, reason: 'late dual-market UK review on Broadway show' };
+    }
+  }
+
   if (review.url && show?.id && guards.isLikelyTourReview(review.url, show.id)) {
     return { included: false, reason: 'tour-review URL' };
   }

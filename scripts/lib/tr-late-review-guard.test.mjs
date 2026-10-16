@@ -18,3 +18,12 @@ test('opening-window reviews, West End shows, and declared prior runs are not fl
   assert.equal(late(withRun, '1997-11-21', { isWithinPriorRun: inRun }), false);
   assert.equal(late(chicago, null), false);
 });
+
+// BRO-5429: the rebuild's dual-market UK guard reuses the same date rule.
+test('evaluateLateDualMarketUkOnBroadway: only UK-region dual-market outlets, only late dates', () => {
+  const { evaluateLateDualMarketUkOnBroadway: g } = require('./cross-market-guard.js');
+  assert.equal(g({ show: chicago, publishDate: '1997-11-21', outletIsUkRegion: true, outletIsDualMarket: true }).shouldFlag, true);
+  assert.equal(g({ show: chicago, publishDate: '1996-11-15', outletIsUkRegion: true, outletIsDualMarket: true }).shouldFlag, false);
+  assert.equal(g({ show: chicago, publishDate: '1997-11-21', outletIsUkRegion: false, outletIsDualMarket: true }).shouldFlag, false, 'NY Theatre Guide / NY Observer (dual, not UK) keep later-run reviews');
+  assert.equal(g({ show: chicago, publishDate: '1997-11-21', outletIsUkRegion: true, outletIsDualMarket: false }).shouldFlag, false, 'non-dual UK outlets are the reverse guard\'s');
+});
