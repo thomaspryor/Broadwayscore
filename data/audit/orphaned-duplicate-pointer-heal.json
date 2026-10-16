@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-16T11:39:12.977Z",
+  "generated": "2026-10-16T12:20:07.320Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 28,
+  "count": 29,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -134,6 +134,13 @@
       "loserFile": "londontheatredirect--unknown.json",
       "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
       "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "loserFile": "daily-mail--gina-kalsi.json",
+      "targetFile": "mail-on-sunday--robert-gore-langton.json",
+      "reason": "orphaned-duplicate-heal: mail-on-sunday--robert-gore-langton.json was flagged invalid after daily-mail--gina-kalsi.json was pointed at it",
       "field": "duplicateOf"
     },
     {

@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-16T11:46:27.503Z",
+  "timestamp": "2026-10-16T12:27:32.127Z",
   "stats": {
-    "totalReviews": 56922,
-    "alreadyFlagged": 21157,
+    "totalReviews": 56929,
+    "alreadyFlagged": 21161,
     "dateGuardCatches": 194,
     "directorMismatch": 1912,
-    "tvFilmSignals": 1584,
+    "tvFilmSignals": 1585,
     "londonSignals": 2371,
-    "offBroadwaySignals": 513,
+    "offBroadwaySignals": 514,
     "yearMismatch": 146,
     "noPublishDate": 5252
   },
@@ -35376,6 +35376,19 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "liftedleg--unknown.json",
+      "publishDate": null,
+      "url": "https://www.liftedleg.com/2026/10/rb-dance-company-stories-the-tap-dance-sensation-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 84,
       "publishDate": "2024-10-28",
@@ -37834,7 +37847,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -60523,6 +60536,19 @@
       ]
     },
     {
+      "showId": "fish-off-broadway-2026",
+      "file": "frombroadway--zachary-stewart.json",
+      "publishDate": "2026-10-13",
+      "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "flyby-off-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 60,
@@ -78544,7 +78570,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-10-16",
       "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
       "findings": [
