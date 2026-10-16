@@ -4779,7 +4779,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(wetCache)) {
       try {
         const cached = JSON.parse(fs.readFileSync(wetCache, 'utf8'));
-        const wetReviews = cached.reviews || cached.ratings || [];
+        // BRO-4858: a row the pre-BRO-4851 parser gave the next outlet's critic
+        // and url replays as the fixed parser reads it (no critic, no url).
+        const { rows: wetReviews, scrubbed: wetScrubbed } = require('./lib/wet-bleed-audit').scrubArchiveBleeds(cached.reviews || cached.ratings || []);
+        if (wetScrubbed.length) console.log(`    WET cache: ${wetScrubbed.length} row(s) had the next outlet's critic/url, replayed without them (BRO-4858)`);
         const wetPostDate = cached.postDate || null;
         // BRO-3564: an archived round-up about another show (the Totoro page
         // held the Peter Pan round-up) must not be replayed onto this show.

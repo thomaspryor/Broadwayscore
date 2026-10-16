@@ -513,7 +513,9 @@ async function sweepWET(show) {
     try {
       const cached = JSON.parse(fs.readFileSync(wetApiCache, 'utf8'));
       if (cached.reviews && cached.reviews.length > 0) {
-        return Object.assign(cached.reviews, { pageTitle: cached.wpTitle });
+        // BRO-4858: replay pre-BRO-4851 bleed rows without the borrowed critic/url.
+        const { rows } = require('./lib/wet-bleed-audit').scrubArchiveBleeds(cached.reviews);
+        return Object.assign(rows, { pageTitle: cached.wpTitle });
       }
     } catch {}
   }
