@@ -52,6 +52,7 @@ const INTERNAL_CHECK_NAMES = new Set([
   'Data: Linear card-verifiability report stale',
   'Data: cards the drain cannot finish unattended',
   'Push: Git Data API fallback usage (24h)',
+  'Data: review coverage holes',
 ]);
 
 // "Cron failed: X" / "Workflow repeat-failure: X" / "Cron: X" name a GitHub

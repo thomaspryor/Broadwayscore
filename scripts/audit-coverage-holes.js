@@ -28,7 +28,7 @@
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage:\n  node scripts/audit-coverage-holes.js [--json=PATH] [--days=120] [--show=ID] [--strict] [--list=A|B|C|D|E|F] [--recent-days=14] [--alert]\n  --strict       exit 1 on any A, B or C row, a published D row, or an unreadable file (advisory by default)\n  --list=X       print every row of one class\n  --recent-days  window for the --alert rows (default 14)\n  --alert        route B and unqueued F rows of recently opened shows to the owner digest, per show');
+  console.log('Usage:\n  node scripts/audit-coverage-holes.js [--json=PATH] [--days=120] [--show=ID] [--strict] [--list=A|B|C|D|E|F] [--recent-days=14] [--alert] [--counts=PATH]\n  --counts       write counts-only JSON (classes A-D, no file names) for the health digest row\n  --strict       exit 1 on any A, B or C row, a published D row, or an unreadable file (advisory by default)\n  --list=X       print every row of one class\n  --recent-days  window for the --alert rows (default 14)\n  --alert        route B and unqueued F rows of recently opened shows to the owner digest, per show');
   process.exit(0);
 }
 const fs = require('fs');
@@ -139,6 +139,17 @@ function summary(out) {
   ].join('\n');
 }
 
+/** Counts only (the repo is public: no file names, no review text). Read by health-check.js's "Data: review coverage holes" row. */
+function countsReport(out, now = Date.now()) {
+  const counts = {};
+  for (const k of ['A', 'B', 'C', 'D']) {
+    const rows = out[k];
+    counts[k] = { total: rows.length, recent: rows.filter((r) => r.recent).length, explained: rows.filter((r) => r.decision).length };
+  }
+  counts.D.published = out.D.filter((r) => r.published).length;
+  return { generatedAt: new Date(now).toISOString(), shows: out.shows, files: out.files, unreadable: out.unreadable, showsAffected: out.showsAffected, counts };
+}
+
 async function alert(out) {
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
   let raised = 0;
@@ -170,7 +181,7 @@ async function alert(out) {
   return raised;
 }
 
-module.exports = { sweep, summary, needsPerson, normUrl, loadDecisions, scorerVerdict, LEDGER };
+module.exports = { sweep, summary, countsReport, needsPerson, normUrl, loadDecisions, scorerVerdict, LEDGER };
 
 if (require.main === module) {
   (async () => {
@@ -180,6 +191,7 @@ if (require.main === module) {
     const list = arg('list');
     if (list && out[list]) for (const r of out[list]) console.log(JSON.stringify(r));
     if (arg('json')) fs.writeFileSync(arg('json'), JSON.stringify(out, null, 2));
+    if (arg('counts')) fs.writeFileSync(arg('counts'), JSON.stringify(countsReport(out), null, 2) + '\n');
     if (process.env.GITHUB_STEP_SUMMARY) {
       try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Coverage holes\n\`\`\`\n${text}\n\`\`\`\n`); } catch { /* cosmetic */ }
     }

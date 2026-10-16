@@ -4656,6 +4656,39 @@ function silentGapBacklogResults(report, now = new Date()) {
 // only the Linear report is read now.
 const LINEAR_VERIFIABILITY_STALE_MS = 3 * 24 * 60 * 60 * 1000; // the audit runs daily; 3 days means it stopped
 
+const COVERAGE_HOLES_STALE_MS = 3 * 24 * 60 * 60 * 1000; // audit-coverage-holes.js runs daily in data-health-check.yml
+
+/**
+ * BRO-4861: surface the daily coverage-holes audit (classes A-D) in the digest.
+ * Advisory: warn only. A published blocked-URL review (D) is the one live harm.
+ */
+function coverageHolesResults(report, now = Date.now()) {
+  if (!report || typeof report !== 'object' || !report.counts) return [];
+  const c = report.counts;
+  const t = (k) => (c[k] && Number(c[k].total)) || 0;
+  const unexplained = (k) => t(k) - ((c[k] && Number(c[k].explained)) || 0);
+  const at = Date.parse(report.generatedAt);
+  const out = [];
+  const total = unexplained('A') + unexplained('B') + unexplained('C') + t('D');
+  if (total > 0) {
+    out.push({
+      name: 'Data: review coverage holes',
+      status: 'warn',
+      message: `${t('A')} review(s) with no usable text, ${t('B')} rejected although verified as a review, ${t('C')} never scored, ${t('D')} with a blocked URL (${(c.D && c.D.published) || 0} published on the site), across ${report.shows != null ? report.shows : '?'} current shows`,
+      hint: 'node scripts/audit-coverage-holes.js --list=B (or A, C, D) prints the rows; fix them via data/pending-fixes (BRO-4838, BRO-4849).',
+    });
+  }
+  if (!Number.isFinite(at) || now - at > COVERAGE_HOLES_STALE_MS) {
+    out.push({
+      name: 'Data: review coverage holes',
+      status: 'warn',
+      message: 'data/audit/coverage-holes.json is missing a readable generatedAt or is more than 3 days old',
+      hint: 'data-health-check.yml refreshes it daily (its "Coverage holes on current shows" step); check that workflow\'s last runs.',
+    });
+  }
+  return out;
+}
+
 function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
   // BRO-3619: the armed-but-vacuous bucket (a `test -f` on a file already on main passes before any work is done).
@@ -5888,6 +5921,9 @@ async function main() {
     // was regenerated from the frozen mirror and its row is retired.
     let cvLinear = null;
     try { cvLinear = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability-linear.json'), 'utf8')); } catch { /* audit not yet run */ }
+    let coverageHoles = null;
+    try { coverageHoles = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/coverage-holes.json'), 'utf8')); } catch { /* audit not yet run */ }
+    if (coverageHoles) allResults.push(...coverageHolesResults(coverageHoles));
     let drainMetric = null;
     try { drainMetric = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/backlog-drain-metric.json'), 'utf8')); } catch { /* drain not yet run */ }
     if (cvLinear || drainMetric) {
@@ -6018,4 +6054,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };

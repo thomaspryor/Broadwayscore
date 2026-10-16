@@ -365,7 +365,10 @@ jobs:
       # band) across current shows, in the step summary. For shows opened in
       # the last 14 days, the rows a person must decide (rejected-but-verified,
       # out-of-band with no re-score queued) go to the digest, one line per
-      # show, cleared when that show is clean. Advisory: never fails the job.
+      # show, cleared when that show is clean. BRO-4861: --counts writes the
+      # counts-only data/audit/coverage-holes.json (classes A-D, no review text)
+      # that health-check.js's "Data: review coverage holes" row reads on the
+      # next daily run. Advisory: never fails the job.
       # Must run before "Commit provider spend ledger", which stages the
       # alert ledger files this writes.
       - name: Coverage holes on current shows
@@ -376,7 +379,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/audit-coverage-holes.js --recent-days=14 --alert
+        run: node scripts/audit-coverage-holes.js --recent-days=14 --alert --counts=data/audit/coverage-holes.json
 
       # BRO-4719: email the owner when a card newly carries a "DECISION
       # NEEDED:" line or the awaiting-owner label. Runs here, not on the Mac
@@ -492,6 +495,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          # BRO-4861: counts-only coverage-holes snapshot written by the step above.
+          git add data/audit/coverage-holes.json 2>/dev/null || true
           # BRO-3011: the spend-guard audit snapshot written just above.
           git add data/audit/guard-audit-snapshot.json 2>/dev/null || true
           git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
