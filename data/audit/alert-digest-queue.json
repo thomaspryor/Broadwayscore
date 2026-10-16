@@ -50,5 +50,35 @@
     "tracked": "BRO-3030",
     "fields": [],
     "queuedAt": "2026-10-16T07:14:09.358Z"
+  },
+  {
+    "conditionKey": "land:land/main-red-critic-alias-5434",
+    "title": "Landing blocked: scripts-lib-tests red on land/main-red-critic-alias-5434",
+    "description": "land.yml did not land land/main-red-critic-alias-5434: the scripts-lib-tests gate went red at a0d1dcd551. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38864338849",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/main-red-critic-alias-5434"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "a0d1dcd5516f611f7f9618129078ad41059936ae"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38864338849"
+      }
+    ],
+    "queuedAt": "2026-10-16T07:32:22.844Z"
   }
 ]
