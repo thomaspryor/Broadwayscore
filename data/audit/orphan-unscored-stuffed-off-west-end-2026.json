@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "stuffed-off-west-end-2026",
   "openingDate": "2026-10-14",
-  "detectedAt": "2026-10-16T06:10:51.467Z",
+  "detectedAt": "2026-10-16T06:22:52.258Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "north-west-end--shivangi-nigam.json",
-      "outletId": "north-west-end",
-      "criticName": "Shivangi Nigam",
-      "url": "https://northwestend.com/stuffed-new-diorama-theatre/",
-      "fullTextLen": 2058,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "nytg--unknown.json",
       "outletId": "nytg",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-16T06:10:51.467Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
