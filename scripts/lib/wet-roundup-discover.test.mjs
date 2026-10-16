@@ -133,3 +133,15 @@ test('extractSectionReviews (scrape-westendtheatre-roundups): same block scoping
   assert.equal(g.reviewUrl, 'https://www.theguardian.com/stage/2024/oct/07/juno-and-the-paycock-review');
   assert.match(g.excerpt, /Rylance/);
 });
+
+// BRO-5444: the byline regex stopped at the capital after an apostrophe.
+test("parseWetRenderedBlocks: an O' surname is kept whole", () => {
+  const rows = parseWetRenderedBlocks(`<div>
+    <p class="reviewnewpubhead">The Stage</p>
+    <p class="reviewnewstars">★★★★</p>
+    <p class="reviewnewquote">"Frivolous, folksy and fun"</p>
+    <p class="reviewnewauthor">Holly O'Mahony</p>
+    <a href="https://www.thestage.co.uk/reviews/a-review">read</a>
+  </div>`);
+  assert.equal(rows[0].critic, "Holly O'Mahony");
+});

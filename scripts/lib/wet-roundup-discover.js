@@ -34,6 +34,7 @@ const cheerio = require('cheerio');
 const { cleanSearchTitle } = require('./title-normalization');
 
 const { foldDiacritics } = require('./title-match');
+const { leadingPersonName } = require('./byline-normalization');
 
 function decodeWpTitle(rendered) {
   return (rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '–').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
@@ -238,7 +239,7 @@ function parseWetRenderedBlocks(pageHtml) {
     const block = $w(el).nextUntil('.reviewnewpubhead');
     const stars = (block.filter('.reviewnewstars').first().text().match(/★/g) || []).length;
     const authorText = block.filter('.reviewnewauthor').first().text().trim();
-    const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
+    const critic = leadingPersonName(authorText);
     // The outlet's own link is a sibling or sits in the byline; a link inside
     // the quote is cited text, not this review.
     const links = block.filter('a[href]').add(block.filter('.reviewnewauthor').find('a[href]'));
@@ -247,7 +248,7 @@ function parseWetRenderedBlocks(pageHtml) {
       const href = $w(a).attr('href') || '';
       if (!url && href.startsWith('http') && !href.includes('westendtheatre.com')) url = href;
     });
-    if (outlet && stars > 0) rows.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown', url });
+    if (outlet && stars > 0) rows.push({ outlet, stars, critic: critic || 'Unknown', url });
   });
   return rows;
 }

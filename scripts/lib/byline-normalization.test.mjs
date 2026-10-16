@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { normalizeBylineCapture } = require('./byline-normalization.js');
+const { normalizeBylineCapture, leadingPersonName } = require('./byline-normalization.js');
 
 test('strips a leading job-title prefix from a byline capture', () => {
   assert.equal(normalizeBylineCapture('Senior Editor Jane Doe'), 'Jane Doe');
@@ -69,4 +69,16 @@ test('otherNamedCriticAtOutlet: an Unknown file beside a different named critic 
   assert.equal(otherNamedCriticAtOutlet(seen, 'london-theatre', 'julia-rank'), false, 'same critic still dedups as exact');
   assert.equal(otherNamedCriticAtOutlet(seen, 'london-theatre-reviews', 'jack-shaw'), false);
   assert.equal(otherNamedCriticAtOutlet(new Set(['x|unknown']), 'x', 'jack-shaw'), false);
+});
+
+// BRO-5444: the WET roundup byline kept "Holly O'" of "Holly O'Mahony".
+test('leadingPersonName keeps O\', Mc, D\' and hyphenated surnames whole', () => {
+  assert.equal(leadingPersonName("Holly O'Mahony"), "Holly O'Mahony");
+  assert.equal(leadingPersonName('Holly O’MahonyThe Stage'), 'Holly O’Mahony');
+  assert.equal(leadingPersonName('Ian McKellen, Guardian'), 'Ian McKellen');
+  assert.equal(leadingPersonName("Anya D'Souza"), "Anya D'Souza");
+  assert.equal(leadingPersonName('Sam Smith-Jones'), 'Sam Smith-Jones');
+  assert.equal(leadingPersonName('Arifa AkbarThe Guardian'), 'Arifa Akbar');
+  assert.equal(leadingPersonName('Unknown'), null);
+  assert.equal(leadingPersonName(''), null);
 });
