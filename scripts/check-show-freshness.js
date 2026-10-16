@@ -27,7 +27,7 @@ Usage:
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
-if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const GROSSES_FILE = path.join(__dirname, '..', 'data', 'grosses.json');
 const REPORT_FILE = path.join(__dirname, '..', 'data', 'freshness-report.json');
@@ -131,8 +131,11 @@ function loadTourTickets() {
 }
 
 function hasTourTickets(show, tourTickets) {
+  // Mirror the site (data-tour-schedule.ts getTourStopTickets): only an
+  // on-sale row becomes a ticket link, so onSale:false rows do not cover a tour.
+  if (show.category !== 'tour') return false;
   const links = tourTickets && tourTickets[show.id];
-  return Array.isArray(links) && links.length > 0;
+  return Array.isArray(links) && links.some(l => l && l.onSale && l.url);
 }
 
 function checkShowCompleteness(show, tourTickets = {}) {
