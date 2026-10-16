@@ -125,7 +125,8 @@ function daysUntil(dateStr) {
 function loadTourTickets() {
   try {
     return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'tour-tickets.json'), 'utf8')).tours || {};
-  } catch {
+  } catch (e) {
+    console.warn(`WARN: could not read data/tour-tickets.json (${e.code || e.message}); tours will be flagged missing_tickets`);
     return {};
   }
 }
