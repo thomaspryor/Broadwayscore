@@ -46,3 +46,18 @@ test('syncRollup comments only members added after the card was filed', async ()
   assert.equal(again.commented, 0);
   assert.equal(comments.length, 1);
 });
+
+test('a cooldown re-fire that wipes the ledger row does not re-comment known members', async () => {
+  const { snapshotRollupMembers } = require('./rollup-alert.js');
+  const comments = [];
+  let row = { rollupShows: ['show-0', 'show-1'] }; // legacy field name still honoured
+  const router = { loadLedger: () => ({ conditions: { k: row } }), patchCondition: (key, p) => { row = { ...row, ...p }; } };
+  const linearClient = { getIssue: async () => ({ id: 'uuid' }), createComment: async (id, body) => comments.push(body) };
+  const prior = snapshotRollupMembers('k', { router });
+  row = { status: 'open' }; // routeAlert rewrote the row and dropped rollup fields
+  const args = { key: 'k', items: shows(3), itemId: (s) => s.id, itemBlock: (s) => `- ${s.id}`, header: (a) => `${a.length} new`, priorMembers: prior };
+  const r = await syncRollup(args, { action: 'silent', linearIdentifier: 'BRO-1' }, { router, linearClient });
+  assert.equal(r.commented, 1);
+  assert.match(comments[0], /show-2/);
+  assert.doesNotMatch(comments[0], /show-0|show-1/);
+});

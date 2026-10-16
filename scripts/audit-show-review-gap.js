@@ -1758,7 +1758,7 @@ function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
 // BRO-5493: every show with a residual gap this run folds into ONE alert/card.
 // The key is fixed so the next run hits the same ledger row + Linear tracker
 // (findLinearDuplicate matches the key) instead of filing one card per show.
-const { buildRollupAlert, syncRollup } = require('./lib/rollup-alert');
+const { buildRollupAlert, syncRollup, snapshotRollupMembers } = require('./lib/rollup-alert');
 const ROUNDUP_GAP_ROLLUP_KEY = 'roundup-gap:all';
 function roundupGapLegacyKey(showId) { return `roundup-gap:${showId}`; }
 function roundupGapShowBlock(g) {
@@ -1774,6 +1774,7 @@ function roundupGapShowBlock(g) {
 // ledger row and comment the newly added ones on the tracker. BRO-5493.
 async function syncRollupCard(plan, result, deps = {}) {
   return syncRollup({
+    priorMembers: deps.priorMembers,
     key: ROUNDUP_GAP_ROLLUP_KEY,
     items: (plan && plan.alert) || [],
     itemId: (g) => g.showId,
@@ -2972,8 +2973,9 @@ async function main(argv = process.argv.slice(2)) {
       } catch (e) { console.error(`::warning::roundup-gap resolve failed: ${(e.message || '').slice(0, 120)}`); }
       if (alertOpts) {
         try {
+          const priorMembers = snapshotRollupMembers(ROUNDUP_GAP_ROLLUP_KEY);
           const routed = await routeAlert(alertOpts);
-          await syncRollupCard(plan, routed);
+          await syncRollupCard(plan, routed, { priorMembers });
         } catch (e) {
           console.error(`::error::roundup-gap alert failed: ${(e.message || '').slice(0, 120)}`);
         }

@@ -36,7 +36,7 @@ const {
   buildDispatchFailedAlert,
   buildStillImagelessAlert,
 } = require('./lib/image-trigger-guard.js');
-const { syncRollup } = require('./lib/rollup-alert.js');
+const { syncRollup, snapshotRollupMembers } = require('./lib/rollup-alert.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
 const { hasActiveNoArtMarker } = require('./lib/no-reliable-art.js');
 
@@ -191,7 +191,7 @@ async function main() {
   // happened. Failures are collected and alerted ONCE per run under a stable
   // rollup key (BRO-5496); per-show keys filed one near-identical card per show.
   const failedShows = [];
-  let failedError = 'unknown';
+  const failedErrors = new Set();
   await executeSelfHealDispatch({
     plan,
     dispatch: dispatchImageFetch,
@@ -199,7 +199,7 @@ async function main() {
     log: (line) => console.log(line),
     onAlert: async ({ show, error }) => {
       failedShows.push({ id: show.id, title: show.title });
-      failedError = error;
+      failedErrors.add(String(error));
     },
   });
 
@@ -208,18 +208,28 @@ async function main() {
     .map((f) => ({ id: f.id, title: f.title, attempts: entryById.get(f.id).dispatchAttempts }));
 
   const rollups = [
-    { key: IMAGELESS_DISPATCH_FAILED_KEY, items: failedShows, opts: buildDispatchFailedAlert(failedShows, failedError), header: (added) => `More shows hit the failed self-heal dispatch (${added.length} new):` },
+    { key: IMAGELESS_DISPATCH_FAILED_KEY, items: failedShows, opts: buildDispatchFailedAlert(failedShows, [...failedErrors].join(' | ') || 'unknown'), header: (added) => `More shows hit the failed self-heal dispatch (${added.length} new):` },
     { key: IMAGELESS_STILL_IMAGELESS_KEY, items: stillImageless, opts: buildStillImagelessAlert(stillImageless), header: (added) => `More shows still imageless after repeated self-heal (${added.length} new):` },
   ];
   const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router.js');
+  // Legacy per-show cards (pre-rollup keys) close through the quiet-gap debounce
+  // once their show stops re-firing; the rollup key carries the signal now.
+  try {
+    const { loadLedger } = require('./lib/owner-alert-router.js');
+    const legacy = Object.keys(loadLedger().conditions).filter((k) => k.startsWith('imageless-scored-show:') && !k.endsWith(':all'));
+    resolveQuietConditions(legacy, { quietHours: 48, reason: 'folded into rollup alert (BRO-5496)' });
+  } catch (err) {
+    console.error(`resolveQuietConditions (legacy keys) failed: ${err.message}`);
+  }
   for (const r of rollups) {
     try {
       if (!r.opts) {
         resolveQuietConditions([r.key], { quietHours: 48, reason: 'no imageless show in this state' });
         continue;
       }
+      const priorMembers = snapshotRollupMembers(r.key);
       const routed = await routeAlert(r.opts);
-      await syncRollup({ key: r.key, items: r.items, itemId: (s) => s.id, itemBlock: (s) => `- ${s.title || s.id} (${s.id})`, header: r.header }, routed);
+      await syncRollup({ priorMembers, key: r.key, items: r.items, itemId: (s) => s.id, itemBlock: (s) => `- ${s.title || s.id} (${s.id})`, header: r.header }, routed);
     } catch (err) {
       console.error(`routeAlert (${r.key}) failed: ${err.message}`);
     }

@@ -25,14 +25,25 @@ function buildRollupAlert({ key, items, itemId, itemBlock, title, intro, footer,
   return opts;
 }
 
-async function syncRollup({ key, items, itemId, itemBlock, header }, result, deps = {}) {
+/**
+ * Members already reported on the open card. MUST be read BEFORE routeAlert:
+ * a cooldown-expired re-fire rewrites the ledger row and drops this field, so
+ * reading afterwards would re-comment every member each cooldown. Falls back to
+ * the BRO-5493 field name (rollupShows) so the rename loses nothing.
+ */
+function snapshotRollupMembers(key, deps = {}) {
+  const router = deps.router || require('./owner-alert-router');
+  const row = router.loadLedger().conditions[key] || {};
+  return [...(row.rollupMembers || row.rollupShows || [])];
+}
+
+async function syncRollup({ key, items, itemId, itemBlock, header, priorMembers }, result, deps = {}) {
   if (!result || !Array.isArray(items) || !items.length) return { commented: 0 };
   const filedNow = result.action && result.action !== 'silent';
   if (!filedNow && !result.linearIdentifier) return { commented: 0 };
   const router = deps.router || require('./owner-alert-router');
   const ids = items.map(itemId);
-  const ledger = router.loadLedger();
-  const known = new Set(((ledger.conditions[key] || {}).rollupMembers) || []);
+  const known = new Set(priorMembers || snapshotRollupMembers(key, { router }));
   const added = filedNow ? [] : items.filter((it) => !known.has(itemId(it)));
   if (added.length) {
     const client = deps.linearClient || require('./linear-client');
@@ -44,4 +55,4 @@ async function syncRollup({ key, items, itemId, itemBlock, header }, result, dep
   return { commented: added.length };
 }
 
-module.exports = { buildRollupAlert, syncRollup };
+module.exports = { buildRollupAlert, syncRollup, snapshotRollupMembers };
