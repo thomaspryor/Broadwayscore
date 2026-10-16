@@ -108,7 +108,10 @@ jobs:
     # 100->125 (BRO-2322 audit): later steps/budget growth took the audited
     # worst case to 6240s (5640s other steps + 600s push deadline), -4% vs
     # the 100min ceiling; 125min = 7500s restores ~17% margin.
-    timeout-minutes: 125
+    # 125->145 (BRO-5426): fast_path rebuild 5->15 and readiness rebuild 5->10
+    # took other steps to 6660s; (6660+600)/0.85 = 8541s, so 145min = 8700s
+    # (~17% margin). Real runs still finish in ~50-70 min.
+    timeout-minutes: 145
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -864,7 +867,11 @@ jobs:
             git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
             node scripts/rebuild-all-reviews.js
           fi
-        timeout-minutes: 5
+        # BRO-5426: was 5. One rebuild takes 3.5-5 min on CI (2026-10-15), so 5
+        # killed about half the runs mid-rebuild and the retry branch above could
+        # never finish. 15 = two rebuilds plus the re-clone, with headroom.
+        # audit-workflow-hygiene.js rule (y) enforces the floor.
+        timeout-minutes: 15
 
       # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
       # (CLAUDE.md rule 19), so it flags a dropped show without blocking.
@@ -1099,7 +1106,9 @@ jobs:
 
       - name: Rebuild reviews.json locally (for readiness check)
         id: readiness_rebuild
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        # BRO-5426: skip when fast_rebuild already rebuilt reviews.json this run;
+        # running the same 3.5-5 min rebuild twice only spent job budget.
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.fast_rebuild.outcome != 'success'
         env:
           # BRO-2757: this local rebuild only feeds the readiness check (the real
           # rebuild is dispatched separately, or ran as fast_rebuild), so its
@@ -1107,7 +1116,7 @@ jobs:
           BSC_STAGE_LATENCY_MUTE: '1'
         run: node scripts/rebuild-all-reviews.js 2>&1 | tail -5
         continue-on-error: true
-        timeout-minutes: 5
+        timeout-minutes: 10
 
       - name: Check readiness and trigger broadcast
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
@@ -1270,7 +1279,7 @@ jobs:
 
       - name: Notify on failure
         id: notify
-        # BRO-3707: a hang hitting the job's own timeout-minutes: 125 reports
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 145 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert. Guarded against the Express-
         # takeover false positive by check_preemption above.

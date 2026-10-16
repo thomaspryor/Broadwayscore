@@ -500,6 +500,45 @@ function findShortPushTimeoutSteps(raw) {
 }
 
 /**
+ * Rule (y): a step that runs scripts/rebuild-all-reviews.js with a step
+ * `timeout-minutes:` too small for the rebuild (BRO-5426). One rebuild takes
+ * 3.5-5 min on CI (2026-10-15); the poller's fast_path step sat at 5 and failed
+ * about half its runs mid-rebuild, paging the owner once per failure streak.
+ * Requires 5 min of slack plus 5 min per rebuild call in the step (a step that
+ * retries the rebuild needs 15). Steps with no explicit timeout inherit the job
+ * timeout and are not flagged. Only real (non-comment) `node ...rebuild-all-reviews.js`
+ * invocations count, so `paths:` lists and alert text that name the file do not.
+ */
+const REBUILD_CALL_RE = /\bnode\s+(?:\.\/)?scripts\/rebuild-all-reviews\.js\b/;
+function findShortRebuildTimeoutSteps(raw) {
+  const violations = [];
+  const lines = raw.split('\n');
+  const stepStarts = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^ {6}- name:\s*(.+?)\s*$/);
+    if (m) stepStarts.push({ name: m[1].replace(/^['"]|['"]$/g, ''), startLine: i });
+  }
+  for (let idx = 0; idx < stepStarts.length; idx++) {
+    const { name, startLine } = stepStarts[idx];
+    const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
+    const bodyLines = lines.slice(startLine, endLine);
+    const calls = bodyLines.filter((l) => !l.trimStart().startsWith('#') && REBUILD_CALL_RE.test(l)).length;
+    if (calls === 0) continue;
+    // Step-level key only (8-space indent), so a `with:` input of the same name is
+    // not read as the step's timeout; tolerate quotes and a trailing comment.
+    const timeoutMatch = bodyLines.join('\n').match(/^ {8}timeout-minutes:\s*['"]?(\d+)['"]?\s*(?:#.*)?$/m);
+    if (!timeoutMatch) continue;
+    const timeoutMin = parseInt(timeoutMatch[1], 10);
+    const requiredMin = 5 + 5 * calls;
+    if (timeoutMin < requiredMin) {
+      violations.push({ name, lineNum: startLine + 1, timeoutMin, requiredMin, calls });
+    }
+  }
+  return violations;
+}
+
+/**
  * Rule (p): stage, then push-with-retry.sh, with no commit in between (BRO-4897).
  * Step-scoped, same step parsing as rule (i). Comment lines are ignored.
  */
@@ -782,6 +821,7 @@ async function main() {
     maskedPush: [],
     stringInput: [],
     shortBatchPollTimeout: [],
+    shortRebuildTimeout: [],
     quoteApostrophe: [],
     paidProviderOnPush: [],
     runIdKeyedCache: [],
@@ -984,6 +1024,12 @@ async function main() {
       }
     }
 
+    // ── Rule (y): rebuild-all-reviews.js step timeout too small (BRO-5426) ─
+    if (!raw.includes('hygiene-rebuild-timeout-ok:')) {
+      const hits = findShortRebuildTimeoutSteps(raw);
+      if (hits.length > 0) violations.shortRebuildTimeout.push({ file, hits });
+    }
+
     // ── Rule (j): stray apostrophe inside a multi-line single-quoted `-e '...'` eval ─
     if (!raw.includes('hygiene-quote-apostrophe-ok:')) {
       const hits = findUnescapedApostrophesInSingleQuotedEval(raw);
@@ -1131,6 +1177,7 @@ async function main() {
     violations.maskedPush.length +
     violations.stringInput.length +
     violations.shortBatchPollTimeout.length +
+    violations.shortRebuildTimeout.length +
     violations.quoteApostrophe.length +
     violations.paidProviderOnPush.length +
     // Rule (m) MUST be summed here or the whole guard is decorative: the report
@@ -1259,6 +1306,20 @@ async function main() {
     console.error('e.g. `bash scripts/lib/stage-data-changes.sh`) before the commit, in the');
     console.error('SAME job — or remove the dead commit/push steps entirely.');
     console.error("Exempt (legitimate): add  # hygiene-dead-commit-ok: <reason>  anywhere in the file.\n");
+  }
+
+  if (violations.shortRebuildTimeout.length) {
+    console.error('── (y) rebuild-all-reviews.js step timeout too small ─');
+    console.error('One rebuild takes 3.5-5 min on CI and grows with the corpus. A step timeout of');
+    console.error('5 killed half the opening-night poller runs mid-rebuild (BRO-5426).\n');
+    for (const { file, hits } of violations.shortRebuildTimeout) {
+      console.error(`  • ${file}`);
+      for (const h of hits) {
+        console.error(`      "${h.name}" line ${h.lineNum}: timeout-minutes: ${h.timeoutMin} (need >= ${h.requiredMin} for ${h.calls} rebuild call(s))`);
+      }
+    }
+    console.error('\nFix: raise timeout-minutes (5 min slack + 5 per rebuild call), or drop the');
+    console.error('step timeout and let the job timeout bound it. Exempt: # hygiene-rebuild-timeout-ok: <reason>\n');
   }
 
   if (violations.shortBatchPollTimeout.length) {
@@ -1460,6 +1521,7 @@ module.exports = {
   findShortPushTimeoutSteps,
   findStageWithoutCommitSteps,
   findShortBatchPollTimeoutSteps,
+  findShortRebuildTimeoutSteps,
   BATCH_MODE_POLL_MINUTES,
   INLINE_POLL_MINUTES,
   findUnescapedApostrophesInSingleQuotedEval,
