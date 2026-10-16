@@ -102,6 +102,7 @@ async function createFrictionIssue(issue, hash) {
     description: notes.slice(0, 2000),
     priority,
     park: FRICTION_PARK_REASON,
+    dedupeOptOut: 'posthog-friction', // see card-dedupe.js DEDUPE_OPT_OUTS
   });
   return result.issue.url;
 }
@@ -142,6 +143,7 @@ async function createMissingShowIssue(show, hash) {
     description: notes.slice(0, 2000),
     priority: PRIORITY_MAP['P1 Next'],
     park: MISSING_SHOW_PARK_REASON,
+    dedupeOptOut: 'posthog-friction', // see card-dedupe.js DEDUPE_OPT_OUTS
   });
   return result.issue.url;
 }

@@ -7,7 +7,7 @@
  * Usage:
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
  *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
- *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"]
+ *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
  *
  * --dispatch or --park "<reason>" is REQUIRED — there is no default
  * disposition. Neither given → exit 2, usage message names both.
@@ -37,7 +37,7 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
-    [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"]
+    [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -60,6 +60,8 @@ Usage:
           24h go onto one "Rollup (...)" card (ROLLED-UP). --source names the
           filer (default workflow:$GITHUB_WORKFLOW, else session); it is
           stamped as a "Filed by:" line the morning digest counts.
+          --dedupe-opt-out <name> is only for a filer listed in
+          scripts/lib/card-dedupe.js DEDUPE_OPT_OUTS (it groups its own).
   find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
           title or body contains the term, or null. Sync-callable dedup seam
           for digest-autofix's fileCard (BRO-286) — filing the same
@@ -688,6 +690,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const newAnyway = args['new-anyway'];
   if (newAnyway === true || (typeof newAnyway === 'string' && newAnyway.trim().length < 10)) {
     console.error('--new-anyway needs a reason of at least 10 characters (why this is not the open card it matched).');
+    process.exit(1);
+  }
+  if (args['dedupe-opt-out'] === true) {
+    console.error('--dedupe-opt-out needs a name from scripts/lib/card-dedupe.js DEDUPE_OPT_OUTS.');
     process.exit(1);
   }
   const notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');

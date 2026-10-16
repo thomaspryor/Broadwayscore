@@ -232,6 +232,7 @@ function rollupEnforced({ source, description }) {
 const DEDUPE_OPT_OUTS = Object.freeze({
   'alert-router': 'owner-alert-router dedupes per conditionKey and keys its ledger, START-NOW and dispatch-at-filing markers on the card it gets back',
   'digest-autofix': 'digest-autofix dedupes per digest row and dispatches the card it gets back (grouping fixed at the filer by BRO-5486)',
+  'posthog-friction': 'posthog-friction-analyzer dedupes by the fhash in the card description, and auto-fix-friction-card.js picks cards by that fhash and priority, so a finding must stay its own card',
   rollup: 'the rollup card itself; running the rules on it would recurse',
 });
 

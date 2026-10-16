@@ -410,6 +410,17 @@ async function reuseNearDuplicate({ title, body, client, mode = 'park' }) {
   }
   if (!match) return null;
   const twin = match.card;
+  // Never park another filer's finding on a card whose lifecycle a filer owns
+  // (router/autofix): resolved-alert-card-sweep ignores "Filed again on" notes
+  // and would cancel the card, finding and all. Fail open = file normally.
+  try {
+    const desc = twin.description !== undefined ? twin.description
+      : (client ? '' : ((await linear.getIssue(twin.identifier)) || {}).description);
+    if (cardDedupe.hasPerCardContract(desc)) return null;
+  } catch (e) {
+    console.warn(`[linear-issue-create] could not read ${twin.identifier} before reusing it, filing anyway: ${e.message}`);
+    return null;
+  }
   const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z as "${title}" (near-duplicate of this card, score ${match.score.toFixed(2)}); added here instead of opening a new card. File a new card anyway with linear-brain.js create --new-anyway "<reason>".${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
   // A finding that did not land on the twin must still be filed (audits treat
   // a returned card as proof the finding was saved).

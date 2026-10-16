@@ -311,7 +311,7 @@ function fakeBoard({ open = [], recent = [] } = {}) {
 
 test('BRO-5488: a reworded near-duplicate returns the open card, noted there, nothing filed', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }] });
-  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'today', park: 'auto-filed parked for triage', client: board.client, reuseTwin: true, nearDuplicate: true, source: 'session' });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'today', park: 'auto-filed parked for triage', client: board.client, reuseTwin: true, source: 'session' });
   assert.equal(r.mode, 'reused');
   assert.equal(r.issue.identifier, 'BRO-100');
   assert.ok(r.nearDuplicate.score >= 0.85);
@@ -321,7 +321,7 @@ test('BRO-5488: a reworded near-duplicate returns the open card, noted there, no
 
 test('BRO-5488: a genuinely new title still files, stamped with its source', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'Review gap — "The Wiz" missing 6 cited review(s)', state: { name: 'Backlog', type: 'backlog' } }] });
-  const r = await createLinearIssue({ title: 'Review gap — "Tru" missing 3 cited review(s)', description: 'body', park: 'auto-filed parked for triage', client: board.client, nearDuplicate: true, source: 'session' });
+  const r = await createLinearIssue({ title: 'Review gap — "Tru" missing 3 cited review(s)', description: 'body', park: 'auto-filed parked for triage', client: board.client, source: 'session' });
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
   assert.match(board.created[0].description, /\n\nFiled by: session \(kind: review gap missing cited\)$/);
@@ -354,24 +354,32 @@ test('BRO-5488: an opt-out name not in DEDUPE_OPT_OUTS throws before any API cal
 test('BRO-5488: every dedupe opt-out in the repo is on the allowed list, and the list is exactly these', async () => {
   const { DEDUPE_OPT_OUTS } = require('./card-dedupe.js');
   // Adding a name here is a reviewed decision: the filer must group its own filings.
-  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'digest-autofix', 'rollup']);
+  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'digest-autofix', 'posthog-friction', 'rollup']);
   for (const reason of Object.values(DEDUPE_OPT_OUTS)) assert.ok(reason.length >= 30, 'each opt-out carries its reason');
   const fs = require('fs'); const path = require('path');
   const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
   const used = new Set();
   const walk = (dir) => {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
+      if (e.name === 'node_modules' || e.name === 'worktrees') continue;
       const f = path.join(dir, e.name);
       if (e.isDirectory()) walk(f);
-      else if (/\.(c|m)?js$|\.sh$/.test(e.name) && !/\.test\./.test(e.name)) {
+      else if (/\.((c|m)?js|ts|sh|ya?ml)$/.test(e.name) && !/\.test\./.test(e.name)) {
         const t = fs.readFileSync(f, 'utf8');
-        for (const m of t.matchAll(/dedupeOptOut:\s*['"]([^'"]+)['"]/g)) used.add(`${m[1]}\t${path.relative(root, f)}`);
-        for (const m of t.matchAll(/--dedupe-opt-out['"]?[,\s=]+['"]?([\w-]+)/g)) used.add(`${m[1]}\t${path.relative(root, f)}`);
+        const rel = path.relative(root, f);
+        // Every mention outside the plumbing must be the literal form checked below,
+        // so a computed name or a shorthand cannot slip past this list.
+        if (!['scripts/lib/linear-issue-create.js', 'scripts/linear-brain.js', 'scripts/lib/card-dedupe.js'].includes(rel)) {
+          const any = (t.match(/dedupeOptOut|dedupe-opt-out/g) || []).length;
+          const lit = (t.match(/dedupeOptOut:\s*'[\w-]+'|'--dedupe-opt-out', '[\w-]+'|--dedupe-opt-out [\w-]+/g) || []).length;
+          assert.equal(any, lit, `${rel}: write dedupe opt-outs as a literal name`);
+          for (const m of t.matchAll(/dedupeOptOut:\s*['"]([^'"]+)['"]/g)) used.add(`${m[1]}\t${rel}`);
+          for (const m of t.matchAll(/--dedupe-opt-out['"]?[,\s=]+['"]?([\w-]+)/g)) used.add(`${m[1]}\t${rel}`);
+        }
       }
     }
   };
-  walk(path.join(root, 'scripts'));
+  for (const d of ['scripts', '.github', '.claude/hooks']) if (fs.existsSync(path.join(root, d))) walk(path.join(root, d));
   for (const u of used) assert.ok(Object.prototype.hasOwnProperty.call(DEDUPE_OPT_OUTS, u.split('\t')[0]), `unlisted dedupe opt-out: ${u}`);
   assert.ok([...used].some((u) => u.startsWith('alert-router\t')) && [...used].some((u) => u.startsWith('digest-autofix\t')), 'router and digest-autofix opt out by name');
 });
@@ -381,7 +389,7 @@ test('BRO-5488: N same-kind workflow filings in 24h become 1 rollup card', () =>
   const shows = ['Fish', 'Triumph', 'The Ask', 'Midnight', 'Torera', 'Soon'];
   const results = [];
   for (const s of shows) {
-    results.push(await createLinearIssue({ title: `${s}: 2 roundup-listed review(s) still not captured`, description: `finding for ${s}`, park: 'daily audit finding for triage', client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:Audit' }));
+    results.push(await createLinearIssue({ title: `${s}: 2 roundup-listed review(s) still not captured`, description: `finding for ${s}`, park: 'daily audit finding for triage', client: board.client, source: 'workflow:Audit' }));
   }
   const individual = board.created.filter((c) => !c.title.startsWith('Rollup ('));
   const rollups = board.created.filter((c) => c.title.startsWith('Rollup ('));
@@ -397,7 +405,7 @@ test('BRO-5488: N same-kind workflow filings in 24h become 1 rollup card', () =>
 test('BRO-5488: a flood from the alert router is never rolled up (it keys state on its own card)', () => withTeam(async () => {
   const board = fakeBoard();
   for (const s of ['A', 'B', 'C', 'D', 'E']) {
-    await createLinearIssue({ title: `Review gap — "${s}" missing 1 cited review(s)`, description: 'Auto-filed by owner-alert-router (condition: x)', park: 'Auto-filed by owner-alert-router (condition: x)', client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:Audit' });
+    await createLinearIssue({ title: `Review gap — "${s}" missing 1 cited review(s)`, description: 'Auto-filed by owner-alert-router (condition: x)', park: 'Auto-filed by owner-alert-router (condition: x)', client: board.client, source: 'workflow:Audit' });
   }
   assert.equal(board.created.length, 5);
 }));
@@ -406,7 +414,7 @@ test('BRO-5488: lookup failures fail open (file the card)', () => withTeam(async
   const board = fakeBoard();
   board.client.listOpenIssueTitles = async () => { throw new Error('network'); };
   board.client.listRecentIssues = async () => { throw new Error('network'); };
-  const r = await createLinearIssue({ title: 'Something new broke in the pipeline', description: 'x', park: 'auto-filed parked for triage', client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:X' });
+  const r = await createLinearIssue({ title: 'Something new broke in the pipeline', description: 'x', park: 'auto-filed parked for triage', client: board.client, source: 'workflow:X' });
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
 }));
@@ -415,14 +423,14 @@ test('BRO-5488: lookup failures fail open (file the card)', () => withTeam(async
 test('BRO-5488: digest-autofix (marker only in the park reason) is never handed a near-duplicate', () => withTeam(async () => {
   const { AUTOFIX_FILED_MARKER } = require('./autofix-filed-marker.js');
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'Rebuild dropped 41 reviews on the show pages', state: { name: 'Backlog', type: 'backlog' } }] });
-  const r = await createLinearIssue({ title: 'Rebuild dropped 49 reviews on the show pages', description: 'raw notes, no marker', park: `${AUTOFIX_FILED_MARKER}; runAutofix dispatches`, client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:Daily Digest' });
+  const r = await createLinearIssue({ title: 'Rebuild dropped 49 reviews on the show pages', description: 'raw notes, no marker', park: `${AUTOFIX_FILED_MARKER}; runAutofix dispatches`, client: board.client, source: 'workflow:Daily Digest' });
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
 }));
 
 test('BRO-5488: a --dispatch filing never gets a near-duplicate card (park mode only)', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Todo', type: 'unstarted' } }] });
-  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, nearDuplicate: true, source: 'session' });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, source: 'session' });
   assert.notEqual(r.mode, 'reused');
   assert.equal(board.created.length, 1);
 }));
@@ -430,7 +438,7 @@ test('BRO-5488: a --dispatch filing never gets a near-duplicate card (park mode 
 test('BRO-5488: a failed note files the card instead of losing the finding', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }] });
   board.client.addComment = async () => { throw new Error('comment API down'); };
-  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: board.client, nearDuplicate: true, source: 'session' });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: board.client, source: 'session' });
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
 }));
@@ -441,4 +449,11 @@ test('BRO-5488: a workflow name with parentheses still round-trips through the f
   await createLinearIssue({ title: 'Some new finding about the site', description: 'b', park: 'auto-filed parked for triage', client: board.client, source: 'workflow:Daily Digest (score drift)' });
   const f = d.parseSourceFooter(board.created[0].description);
   assert.equal(f.source, 'workflow:Daily-Digest-score-drift');
+}));
+
+test('BRO-5488: a near-duplicate of a router/autofix card files instead of noting there', () => withTeam(async () => {
+  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', description: 'Auto-filed by owner-alert-router (condition: x)', state: { name: 'Backlog', type: 'backlog' } }] });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: board.client });
+  assert.equal(r.mode, 'park');
+  assert.equal(board.comments.length, 0);
 }));
