@@ -40,6 +40,8 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // allowCrossMarket (BRO-5499): TRUE ONLY. The rebuild's cross-market guard excludes any .co.uk / london-region
   // outlet reviewing a NYC show and the CV cannot override it; a UK critic who really reviewed the NYC production
   // (Attitude's 3/5 Midnight review) is let through by this per-review marker, not by making the outlet dual-market.
+  // It also switches off the content-verifier wrongShow / nonReview / film-TV promotions for that review, and a plan
+  // cannot clear it (a manual edit is needed to undo a mistake), so set it only after reading the page.
   'allowCrossMarket',
   'wrongShow', 'wrongShowManualClear',
   // showId (BRO-4317): only to repair a stale id left by a move, and only to the

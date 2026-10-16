@@ -46,7 +46,9 @@ if (args.includes('--casts')) {
     console.log(`${copied.length} shows.json rows share >=80% of their cast with a same-title entry 3+ years apart`);
     for (const c of copied) console.log(`  ${c.showId} <- ${c.siblingId} (${c.shared}/${c.of})`);
   }
-  if (strict && copied.length) process.exit(1);
+  // --strict fails only on rows opened since 2020: older rows are revivals that really brought the original cast back
+  // (paul-robeson-1995, aint-misbehavin-1988), while a copied cast lands on new placeholder entries.
+  if (strict && copied.some((c) => c.year >= 2020)) process.exit(1);
   process.exit(0);
 }
 

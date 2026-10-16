@@ -147,7 +147,7 @@ function findSiblingProductionCastMismatch(text, show, allShows, { publishDate =
  * year: an IBDB wrong-show match put the 2022 Broadway Macbeth cast on the 2026 Met Opera Macbeth, and the
  * 1999 Charlie Brown cast on a 2026 92NY run (BRO-5499). Pairs share >= 80% of the smaller cast, open 3+
  * years apart, and neither declares the other as a prior run.
- * @returns {Array<{showId: string, siblingId: string, shared: number, of: number}>}
+ * @returns {Array<{showId: string, siblingId: string, shared: number, of: number, year: number}>}
  */
 function findCopiedSiblingCasts(allShows) {
   const groups = new Map();
@@ -155,7 +155,12 @@ function findCopiedSiblingCasts(allShows) {
     const k = titleKey(s && s.title);
     if (k) (groups.get(k) || groups.set(k, []).get(k)).push(s);
   }
-  const yearOf = (s) => new Date((s && (s.openingDate || s.previewsStartDate)) || 0).getFullYear();
+  // Year from the date string itself: a local-time getFullYear() turns '2023-01-01' into 2022 under a US timezone,
+  // and a missing/unparseable date must stay NaN so the pair is skipped rather than counted as decades apart.
+  const yearOf = (s) => {
+    const m = /^(\d{4})-\d{2}/.exec(String((s && (s.openingDate || s.previewsStartDate)) || ''));
+    return m ? Number(m[1]) : NaN;
+  };
   const out = [];
   for (const grp of groups.values()) {
     for (let i = 0; i < grp.length; i++) {
@@ -163,6 +168,7 @@ function findCopiedSiblingCasts(allShows) {
         const a = grp[i];
         const b = grp[j];
         if (!comparableMarkets(a, b) || declaresReturnOf(a, b) || declaresReturnOf(b, a)) continue;
+        if (!Number.isFinite(yearOf(a)) || !Number.isFinite(yearOf(b))) continue;
         if (Math.abs(yearOf(a) - yearOf(b)) < 3) continue;
         const na = namesOf(a, { castOnly: true });
         const nb = new Set(namesOf(b, { castOnly: true }));
@@ -172,7 +178,7 @@ function findCopiedSiblingCasts(allShows) {
         if (shared / of >= 0.8) {
           // report the LATER entry: an earlier production's cast is the original, the later one inherited it
           const [later, earlier] = yearOf(a) >= yearOf(b) ? [a, b] : [b, a];
-          out.push({ showId: later.id, siblingId: earlier.id, shared, of });
+          out.push({ showId: later.id, siblingId: earlier.id, shared, of, year: yearOf(later) });
         }
       }
     }

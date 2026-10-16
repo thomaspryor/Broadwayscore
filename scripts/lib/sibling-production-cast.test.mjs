@@ -113,3 +113,16 @@ test('findCopiedSiblingCasts: a Met Opera Macbeth carrying the 2022 Broadway Mac
   const sameYear = { ...met, openingDate: '2023-01-01' };
   assert.deepEqual(findCopiedSiblingCasts([broadway, sameYear]), []);
 });
+
+test('findCopiedSiblingCasts: undated or unparseable rows are skipped, and the year is read from the string (BRO-5499)', () => {
+  const { findCopiedSiblingCasts } = require('./sibling-production-cast');
+  const cast = (...n) => n.map((name) => ({ name }));
+  const base = { title: 'X', category: 'broadway', market: 'broadway', cast: cast('Ann Lee', 'Bob Ray', 'Cy Poe') };
+  const dated = { ...base, id: 'x-2024', openingDate: '2024-05-01' };
+  assert.deepEqual(findCopiedSiblingCasts([dated, { ...base, id: 'x-tba' }]), [], 'missing date');
+  assert.deepEqual(findCopiedSiblingCasts([dated, { ...base, id: 'x-bad', openingDate: 'TBA' }]), [], 'unparseable date');
+  const jan1 = { ...base, id: 'x-2021', openingDate: '2021-01-01' };
+  const hit = findCopiedSiblingCasts([{ ...base, id: 'x-2024b', openingDate: '2024-01-01' }, jan1]);
+  assert.equal(hit.length, 1, 'exactly 3 calendar years apart');
+  assert.equal(hit[0].year, 2024);
+});
