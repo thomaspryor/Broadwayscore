@@ -1,10 +1,11 @@
 name: Opening Night Poller
 
-# run-name embeds show_id (when set) so other tools can detect in-flight
+# run-name embeds the market filter (when set, BRO-5479: per-market failure
+# streaks) and show_id (when set) so other tools can detect in-flight
 # pollers for a specific show via `gh run list --json displayTitle`. The
 # aggregator-url-watcher uses this for idempotency — see
 # scripts/watch-aggregator-urls.js: pollerInFlightForShow().
-run-name: Opening Night Poller — ${{ inputs.show_id || 'auto' }}
+run-name: Opening Night Poller${{ inputs.market && format(' ({0})', inputs.market) || '' }} — ${{ inputs.show_id || 'auto' }}
 
 # Fast review discovery for opening nights. Runs 4 layers:
 #   1. Aggregators (BWW RR, Show Score, DTLI) — fastest
@@ -111,7 +112,9 @@ jobs:
     # 125->145 (BRO-5426): fast_path rebuild 5->15 and readiness rebuild 5->10
     # took other steps to 6660s; (6660+600)/0.85 = 8541s, so 145min = 8700s
     # (~17% margin). Real runs still finish in ~50-70 min.
-    timeout-minutes: 145
+    # 145->150 (BRO-5479): the alert-ledger commit step (6 min) took other
+    # steps to 7020s; (7020+600)/0.85 = 8965s, so 150min = 9000s (~15%).
+    timeout-minutes: 150
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -1256,6 +1259,19 @@ jobs:
           DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
           node scripts/opening-night-pipeline-verify.js
 
+      # BRO-5479 (owner decision 2026-10-16): only a poll that includes a
+      # Broadway show emails the owner; other markets go to the auto-fixer
+      # (route_failure below). Fail-open: if this step breaks or writes
+      # nothing, `broadway` is empty and Notify still emails.
+      - name: Classify failure audience
+        id: audience
+        if: failure() || cancelled()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: node scripts/route-poller-failure.js --audience --shows="$SHOWS"
+
       # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
       # in-progress poller run before taking over (its "Cancel competing
       # orchestrator/poller runs" step), then sets ORCHESTRATOR_PAUSED — an
@@ -1279,7 +1295,7 @@ jobs:
 
       - name: Notify on failure
         id: notify
-        # BRO-3707: a hang hitting the job's own timeout-minutes: 145 reports
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 150 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert. Guarded against the Express-
         # takeover false positive by check_preemption above.
@@ -1288,12 +1304,63 @@ jobs:
         with:
           title: 'Opening Night Poller Failed'
           severity: 'critical'
-          email: 'true'
+          # Only an explicit broadway=false stops the email (BRO-5479).
+          email: ${{ steps.audience.outputs.broadway == 'false' && 'false' || 'true' }}
           # Poller runs every ~30-45 min; a one-off failure (push contention,
           # scraper blip) self-resolves on the next run. Page on the 2nd
           # consecutive failure, once per streak. (2026-07-13: 3 transient
           # overnight failures → 5-email thread, self-recovered by 08:05.)
           min_consecutive_failures: '2'
+          # BRO-5479: the orchestrator starts one run per show; count each
+          # show's streak separately so one market can't use another's page.
+          streak_per_run_name: 'true'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # BRO-5479: a non-Broadway failure streak files a dispatch-now card (one
+      # per market) instead of emailing. Same streak gate and Express guard as
+      # Notify, so a one-off blip files nothing.
+      - name: Route failure to auto-fixer
+        id: route_failure
+        if: (failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')) && steps.notify.outputs.suppressed != 'true' && steps.audience.outputs.broadway == 'false'
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # Fallback: if the card cannot be filed, the script emails the owner.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          SHOWS: ${{ steps.find.outputs.shows }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node scripts/route-poller-failure.js --outcome=failure --shows="$SHOWS" --run-id="$RUN_ID" --run-url="$RUN_URL"
+
+      # A passing run resolves the failure condition for each market it polled.
+      # An auto-discovery run (no show_id) also resolves markets it found
+      # nothing to poll in: their shows left the opening window, so the
+      # condition could otherwise never clear.
+      - name: Resolve poller failure condition
+        id: resolve_failure
+        if: success()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          SHOWS: ${{ steps.find.outputs.shows }}
+          AUTO_RUN: ${{ inputs.show_id == '' && inputs.market == '' && 'true' || 'false' }}
+        run: node scripts/route-poller-failure.js --outcome=success --shows="$SHOWS" --auto-run="$AUTO_RUN"
+
+      # The router's ledger must be committed by the job that wrote it.
+      - name: Commit alert ledger
+        if: always() && (steps.route_failure.outcome == 'success' || steps.route_failure.outcome == 'failure' || steps.resolve_failure.outputs.resolved == 'true')
+        continue-on-error: true
+        timeout-minutes: 6
+        env:
+          PUSH_DEADLINE_SEC: '240'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          git diff --cached --quiet && { echo "No alert ledger changes"; exit 0; }
+          git commit -m "audit: poller failure routing ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 7 main

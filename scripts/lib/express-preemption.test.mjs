@@ -12,6 +12,7 @@ test('orchestrator title -> market', () => {
 test('poller title -> show_id', () => {
   assert.deepEqual(planRedispatch(POLLER, 'Opening Night Poller — whos-afraid-of-virginia-woolf-west-end-2026').fields, { show_id: 'whos-afraid-of-virginia-woolf-west-end-2026' });
   assert.deepEqual(planRedispatch(POLLER, 'Opening Night Poller — auto').fields, {});
+  assert.deepEqual(planRedispatch(POLLER, 'Opening Night Poller (west-end) — auto').fields, { market: 'west-end' });
 });
 test('unknown workflow -> null', () => assert.equal(planRedispatch('x.yml', 't'), null));
 test('express workflow wires cancel + redispatch via the lib (no inline gh run cancel on orchestrator/poller)', () => {

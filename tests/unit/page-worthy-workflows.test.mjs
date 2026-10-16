@@ -99,7 +99,8 @@ test('a job that emails via notify-failure does not also dispatch investigate-al
     const doc = yaml.load(fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf-8')) || {};
     for (const [jobId, job] of Object.entries(doc.jobs || {})) {
       const steps = job.steps || [];
-      const emails = steps.some((s) => /notify-failure/.test(String(s.uses || '')) && String(s.with?.email) === 'true');
+      // A computed value (e.g. ${{ ... }}) may email, so only a literal 'false' or no email input is exempt.
+      const emails = steps.some((s) => /notify-failure/.test(String(s.uses || '')) && s.with?.email !== undefined && String(s.with.email) !== 'false');
       if (!emails) continue;
       for (const step of steps) {
         if (/workflow run investigate-alert\.yml|investigate-alert\.yml\/dispatches/.test(String(step.run || ''))) {

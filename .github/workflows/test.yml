@@ -400,6 +400,7 @@ on:
       - 'scripts/check-opening-night-readiness.js'
       # BRO-3038/3039/3040 sibling tests (scripts/*.test.mjs is globbed above)
       - 'scripts/route-readiness-failure.js'
+      - 'scripts/route-poller-failure.js'
       - 'scripts/opening-night-readiness.js'
       - 'scripts/check-cutoff-freshness.js'
       - 'scripts/triage-human-review.js'

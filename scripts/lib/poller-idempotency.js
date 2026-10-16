@@ -8,7 +8,8 @@
  * the parsing + matching logic is here so it can be unit-tested.
  *
  * Detection contract: opening-night-poller.yml sets
- *   run-name: Opening Night Poller — ${{ inputs.show_id || 'auto' }}
+ *   run-name: Opening Night Poller[ (<market>)] — ${{ inputs.show_id || 'auto' }}
+ *   (the market prefix, BRO-5479, sits before the em dash so suffix matching is unchanged)
  * which surfaces as `displayTitle` on the gh run list JSON.
  *
  * NOTE: since BRO-4209 an auto run only counts as coverage for dispatches

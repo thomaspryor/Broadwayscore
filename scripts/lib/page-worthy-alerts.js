@@ -137,6 +137,11 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // scripts/test-ugc-roundtrip.mjs) and resolves it on the next green run.
   'ugc-roundtrip:users-affected',
 
+  // BRO-5479: a non-Broadway poller failure normally files an auto-fix card
+  // instead of emailing. If that card cannot be filed (Linear down, key
+  // missing), nobody would hear, so the owner is emailed instead.
+  'opening-night-poller:card-not-filed',
+
   // Category (owner-approved 2026-08-03, affiliate hardening session — "it's
   // our only revenue stream, I do want it really strong"): affiliate revenue
   // pipeline BROKEN. Only the checks that mean money is actively being lost
@@ -285,6 +290,8 @@ const PAGE_WORTHY_WORKFLOWS = new Set([
   'check-morning-digest-sent.yml',
   // Category 2: opening-night pipeline dead on an opening night.
   'opening-night-orchestrator.yml',
+  // Owner 2026-10-16 (BRO-5479): emails only when the poll includes a Broadway
+  // show; other markets file an auto-fix card (scripts/route-poller-failure.js).
   'opening-night-poller.yml',
   'opening-night-broadcast.yml', // the subscriber email the owner sends by hand
   // Sign-in is down until the owner restores the project from the Supabase

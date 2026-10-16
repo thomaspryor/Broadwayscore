@@ -46,6 +46,15 @@ inputs:
       run alerts). Cancelled/skipped runs don't reset the streak.
     required: false
     default: '1'
+  streak_per_run_name:
+    description: >-
+      'true' counts the consecutive-failure streak only over runs with the same
+      run-name (display title) as this one, e.g. per show for a workflow whose
+      run-name embeds the show id. Without it, interleaved runs for different
+      shows share one streak and one show's failure can use up another's page
+      slot (BRO-5479). Default 'false' keeps the one-streak-per-workflow behavior.
+    required: false
+    default: 'false'
 
 outputs:
   suppressed:
@@ -113,6 +122,7 @@ runs:
       env:
         INPUT_COOLDOWN_MINUTES: ${{ inputs.cooldown_minutes }}
         INPUT_MIN_CONSECUTIVE_FAILURES: ${{ inputs.min_consecutive_failures }}
+        INPUT_STREAK_PER_RUN_NAME: ${{ inputs.streak_per_run_name }}
       with:
         script: |
           const workflowName = context.workflow;
@@ -147,7 +157,7 @@ runs:
                 repo: context.repo.repo,
                 workflow_id: workflowFile,
                 status: 'completed',
-                per_page: 30,
+                per_page: process.env.INPUT_STREAK_PER_RUN_NAME === 'true' ? 100 : 30,
               });
               // Cancelled/skipped runs say nothing about health — they neither
               // extend nor reset the streak.
@@ -158,8 +168,19 @@ runs:
               // two "streak 2" pages in 28 min). In completion order a recent
               // success correctly suppresses transient races, while a real
               // outage — nothing but failures completing — still pages.
+              // BRO-5479: optionally scope the streak to this run's run-name.
+              let sameName = () => true;
+              if (process.env.INPUT_STREAK_PER_RUN_NAME === 'true') {
+                const self = await github.rest.actions.getWorkflowRun({
+                  owner: context.repo.owner, repo: context.repo.repo, run_id: context.runId,
+                });
+                const title = self.data.display_title;
+                sameName = (r) => r.display_title === title;
+                console.log(`[Streak] counting only runs named "${title}"`);
+              }
               const prior = (recent.data.workflow_runs || [])
                 .filter(r => r.id !== context.runId)
+                .filter(sameName)
                 .filter(r => !['cancelled', 'skipped'].includes(r.conclusion))
                 .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
               let streak = 1; // this run

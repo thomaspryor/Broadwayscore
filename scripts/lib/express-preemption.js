@@ -17,7 +17,7 @@ const { execFileSync } = require('child_process');
 const ORCH = 'opening-night-orchestrator.yml';
 const POLLER = 'opening-night-poller.yml';
 
-// run-name formats: 'Opening Night Orchestrator (west-end)' / 'Opening Night Poller — <show|auto>'
+// run-name formats: 'Opening Night Orchestrator (west-end)' / 'Opening Night Poller[ (<market>)] — <show|auto>'
 function planRedispatch(workflow, displayTitle) {
   const title = String(displayTitle || '');
   if (workflow === ORCH) {
@@ -28,7 +28,10 @@ function planRedispatch(workflow, displayTitle) {
   if (workflow === POLLER) {
     const m = title.match(/—\s*(\S+)\s*$/);
     const showId = m && m[1] !== 'auto' ? m[1] : '';
-    return { workflow, fields: showId ? { show_id: showId } : {} };
+    if (showId) return { workflow, fields: { show_id: showId } };
+    // BRO-5479: a market-filtered auto run keeps its market on redispatch.
+    const mk = title.match(/Poller \(([a-z-]+)\)/);
+    return { workflow, fields: mk ? { market: mk[1] } : {} };
   }
   return null;
 }
