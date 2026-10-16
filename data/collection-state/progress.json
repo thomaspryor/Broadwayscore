@@ -269,7 +269,9 @@
     "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "baby-off-west-end-2026/guardian--holly-omahony.json"
   ],
   "failed": [
     "rent-west-end-2026/city-am--adam-bloodworth.json",
@@ -304,11 +306,9 @@
     "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-heart-off-broadway-2026/telegraph--tim-robey.json",
-    "nina-off-west-end-2026/guardian--kate-wyver.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
     "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-    "baby-off-west-end-2026/guardian--holly-omahony.json",
     "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
     "an-oak-tree-off-west-end-2026/thestage--unknown.json",
     "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
@@ -471,7 +471,16 @@
     "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
     "to-kill-a-mockingbird-west-end-2026/latimes--jordan-riefe.json",
-    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json"
+    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
+    "from-the-heart-west-end-2026/reviewsgate--william-russell.json",
+    "from-the-heart-west-end-2026/timeout-london--unknown.json",
+    "an-oak-tree-off-west-end-2026/north-west-end--alice-rose.json",
+    "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -627,7 +636,9 @@
       "allegra-west-end-2026/londongrip--julia-pascal.json",
       "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "baby-off-west-end-2026/guardian--holly-omahony.json"
     ],
     "amp": [
       "data/review-texts/the-merchant-of-venice-2010/variety--charles-isherwood.json",
@@ -771,7 +782,7 @@
     ]
   },
   "startTime": "2026-10-15T21:21:39.666Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+  "lastProcessed": "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
   "log": [
     {
       "t": "2026-10-16T00:16:11.438Z",
@@ -816,11 +827,43 @@
       "t": "2026-10-15T23:08:36.870Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T01:31:39.997Z",
+      "event": "bb-session",
+      "session": "a90542a6",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-16T01:31:49.987Z",
+      "event": "bb-session",
+      "session": "f04d38ef",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-16T01:34:52.064Z",
+      "event": "bb-session",
+      "session": "6c59a7c9",
+      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
+    },
+    {
+      "t": "2026-10-16T01:36:03.249Z",
+      "event": "bb-session",
+      "session": "6f877fd5",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-16T01:36:18.976Z",
+      "event": "bb-session",
+      "session": "eacb5c7e",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
     }
   ],
   "recoveredAfterFailure": [
     "baby-its-you-2011/backstage--david-sheward.json",
     "the-cherry-orchard-west-end-2026/independent--alice-saville.json",
-    "dirty-dancing-tour-2026/nytimes--michael-paulson.json"
+    "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "baby-off-west-end-2026/guardian--holly-omahony.json"
   ]
 }
