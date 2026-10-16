@@ -1,0 +1,115 @@
+{
+  "issueNumber": "bro-5420-roundup",
+  "planId": "1e26e7cd-837b-4bf0-a2d0-0675a39d967a",
+  "status": "pending",
+  "createdAt": "2026-10-16T11:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (roundup): 6 live rows are critics' roundups scored as one critic's review (the Dreamgirls class). audit-scored-other-critic.js: 69 live hits of ~40k scored; 63 are real reviews where the models set appended quotes aside or names were playwrights/directors.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-delicate-balance-2014/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: critics' roundup, not a review: newyorktheater.me 'A Delicate Balance reviews and pictures' compilation of other critics' reviews (scored 41 off the quotes).",
+        "description": "BRO-5420: reason for the flag below (audit-scored-other-critic hand check)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-delicate-balance-2014/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-1991/nydailynews--howard-kissel.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: critics' roundup, not a review: Enquirer News Services roundup 'Critics finds Miss Saigon a Broadway hit' (newspapers.com OCR), filed as Howard Kissel's Daily News review.",
+        "description": "BRO-5420: reason for the flag below (audit-scored-other-critic hand check)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-1991/nydailynews--howard-kissel.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/guardian--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: critics' roundup, not a review: Guardian 'Of Mice and Men on Broadway – reviews' critics' roundup (Nancy Groves), scored from the first quoted critic.",
+        "description": "BRO-5420: reason for the flag below (audit-scored-other-critic hand check)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/guardian--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-west-end-2024/daily-mail--joanna-crawley.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: critics' roundup, not a review: Daily Mail showbiz roundup of critics' reviews by its deputy showbiz editor, not a review.",
+        "description": "BRO-5420: reason for the flag below (audit-scored-other-critic hand check)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-west-end-2024/daily-mail--joanna-crawley.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/latimes--david-ng.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: critics' roundup, not a review: LA Times news story on the Broadway opening aggregating other critics' reviews.",
+        "description": "BRO-5420: reason for the flag below (audit-scored-other-critic hand check)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/latimes--david-ng.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: critics' roundup, not a review: Daily Mail lifestyle piece 'The Devil Wears Prada musical lambasted by critics', a roundup of other critics.",
+        "description": "BRO-5420: reason for the flag below (audit-scored-other-critic hand check)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
+      }
+    ]
+  }
+}
