@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-15T14:01:03.763Z",
+  "generatedAt": "2026-10-16T13:48:10.080Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-15T13:50:41.220Z",
+    "reviewsJsonLastUpdated": "2026-10-16T13:35:33.255Z",
     "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
-    "showsScanned": 28,
-    "allShowsScanned": 2605,
-    "filesScanned": 56724,
+    "showsScanned": 27,
+    "allShowsScanned": 2617,
+    "filesScanned": 56992,
     "showsOverThreshold": 0,
-    "newOffenders": 0,
+    "newOffenders": 1,
     "blindShows": 27,
     "orphanReviews": 7
   },
@@ -18,7 +18,25 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [],
+  "newOffenders": [
+    {
+      "showDir": "wonderland-2011",
+      "suppressed": 4,
+      "actual": 17,
+      "files": [
+        "nytimes--charles-isherwood.json",
+        "theatermania--unknown.json",
+        "variety--david-rooney.json",
+        "vulture--jesse-green.json"
+      ],
+      "newFiles": [
+        "nytimes--charles-isherwood.json",
+        "theatermania--unknown.json",
+        "variety--david-rooney.json",
+        "vulture--jesse-green.json"
+      ]
+    }
+  ],
   "staleBaseline": [
     {
       "showDir": "into-the-woods-1997",
@@ -59,17 +77,17 @@
   ],
   "perShow": [
     {
-      "showDir": "a-ghost-in-your-ear-off-broadway-2026",
-      "actual": 8,
-      "scanned": 17,
+      "showDir": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "actual": 5,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "fences-off-west-end-2026",
-      "actual": 14,
-      "scanned": 30,
+      "showDir": "cadel-lungs-on-legs-west-end-2026",
+      "actual": 2,
+      "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -77,25 +95,9 @@
     {
       "showDir": "fish-off-broadway-2026",
       "actual": 6,
-      "scanned": 14,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "good-time-charlie-off-broadway-2026",
-      "actual": 16,
-      "scanned": 25,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "cititour--brian-scott.json",
-          "outletId": "cititour",
-          "criticName": "Brian Scott",
-          "publishDate": "2026-10-09",
-          "url": "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103"
-        }
-      ],
       "overThreshold": false
     },
     {
@@ -115,25 +117,73 @@
       "overThreshold": false
     },
     {
+      "showDir": "jane-eyre-rose-kingston-off-west-end-2026",
+      "actual": 6,
+      "scanned": 14,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "king-lear-royal-exchange-regional-2026",
       "actual": 14,
-      "scanned": 28,
+      "scanned": 30,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "actual": 6,
+      "scanned": 15,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "midnight-off-broadway-2026",
+      "actual": 5,
+      "scanned": 27,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "nina-off-west-end-2026",
-      "actual": 10,
-      "scanned": 20,
+      "actual": 11,
+      "scanned": 22,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "sea-wall-off-broadway-2026",
+      "actual": 1,
+      "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "some-woman-west-end-2026",
+      "actual": 3,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "stuffed-off-west-end-2026",
-      "actual": 1,
-      "scanned": 3,
+      "actual": 2,
+      "scanned": 10,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-ask-off-broadway-2026",
+      "actual": 2,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -149,33 +199,62 @@
     {
       "showDir": "the-bodyguard-tour-2026",
       "actual": 1,
-      "scanned": 7,
+      "scanned": 16,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-cherry-orchard-west-end-2026",
-      "actual": 17,
-      "scanned": 61,
+      "actual": 26,
+      "scanned": 69,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-      "actual": 20,
-      "scanned": 25,
+      "actual": 21,
+      "scanned": 26,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "the-virtuous-burglar-off-west-end-2026",
-      "actual": 2,
-      "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "showDir": "wonderland-2011",
+      "actual": 17,
+      "scanned": 34,
+      "suppressedCount": 4,
+      "suppressed": [
+        {
+          "file": "nytimes--charles-isherwood.json",
+          "outletId": "nytimes",
+          "criticName": "Charles Isherwood",
+          "publishDate": "2011-04-18T07:58:29-04:00",
+          "url": "http://theater.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank-wildhorn-review.html"
+        },
+        {
+          "file": "theatermania--unknown.json",
+          "outletId": "theatermania",
+          "criticName": "Unknown",
+          "publishDate": "April 17, 2011",
+          "url": "http://www.theatermania.com/broadway/reviews/04-2011/wonderland_36056.html"
+        },
+        {
+          "file": "variety--david-rooney.json",
+          "outletId": "variety",
+          "criticName": "David Rooney",
+          "publishDate": "April 17, 2011",
+          "url": "https://variety.com/2011/legit/reviews/wonderland-2-1117945030/"
+        },
+        {
+          "file": "vulture--jesse-green.json",
+          "outletId": "vulture",
+          "criticName": "Jesse Green",
+          "publishDate": "April 18, 2011",
+          "url": "https://www.vulture.com/2011/04/theater_review_a_miserable_tri.html"
+        }
+      ],
       "overThreshold": false
     }
   ]
