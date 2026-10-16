@@ -321,7 +321,7 @@ function defaultDeps() {
     },
     async fileCard({ title, description }) {
       const { createLinearIssue } = require('./linear-issue-create.js');
-      const { issue } = await createLinearIssue({ title, description, priority: 2, dispatch: true });
+      const { issue } = await createLinearIssue({ title, description, priority: 2, dispatch: true, dedupeOptOut: 'auto-fix-first' }); // see card-dedupe.js DEDUPE_OPT_OUTS
       return issue;
     },
     async comment(card, body) {

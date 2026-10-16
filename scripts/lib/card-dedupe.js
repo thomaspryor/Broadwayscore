@@ -144,6 +144,27 @@ function findNearDuplicate(title, openCards, serves = () => true) {
   return best;
 }
 
+/**
+ * The title with every count masked ("21 review(s)" -> "# review(s)") but
+ * dates and BRO refs kept, so two titles equal here are the same row whose
+ * count moved. Used for the exact-title twin rule (reuseTwin callers, opt-outs
+ * included: digest-autofix rows like "Star-band detector: 21 review(s)").
+ */
+function countFreeTitle(title) {
+  return fold(title).trim().replace(/\b(\d{4}-\d{2}-\d{2}|bro-\d+)\b|\d+(?:[.,]\d+)*/g, (m, keep) => keep || '#').replace(/\s+/g, ' ');
+}
+
+/** An open card whose title differs from `title` only in its counts, or null. */
+function findCountOnlyTwin(title, openCards, serves = () => true) {
+  const key = countFreeTitle(title);
+  if (!/#/.test(key)) return null;
+  for (const card of openCards || []) {
+    if (!card || !card.title || String(card.title).startsWith(ROLLUP_TITLE_PREFIX)) continue;
+    if (countFreeTitle(card.title) === key && serves(card)) return card;
+  }
+  return null;
+}
+
 /** True when a body carries a filer marker whose downstream code keys on THIS card. */
 function hasPerCardContract(description) {
   const d = String(description || '');
@@ -232,6 +253,7 @@ function rollupEnforced({ source, description }) {
 const DEDUPE_OPT_OUTS = Object.freeze({
   'alert-router': 'owner-alert-router dedupes per conditionKey and keys its ledger, START-NOW and dispatch-at-filing markers on the card it gets back',
   'digest-autofix': 'digest-autofix dedupes per digest row and dispatches the card it gets back (grouping fixed at the filer by BRO-5486)',
+  'auto-fix-first': 'auto-fix-first files dispatch cards keyed by its own key line (lookupCards) and comments on the card it gets back',
   'posthog-friction': 'posthog-friction-analyzer dedupes by the fhash in the card description, and auto-fix-friction-card.js picks cards by that fhash and priority, so a finding must stay its own card',
   rollup: 'the rollup card itself; running the rules on it would recurse',
 });
@@ -239,6 +261,6 @@ const DEDUPE_OPT_OUTS = Object.freeze({
 module.exports = {
   DEDUPE_OPT_OUTS,
   NEAR_DUP_MIN_SCORE, NEAR_DUP_MIN_TOKENS, FLOOD_THRESHOLD, FLOOD_WINDOW_MS, ALERT_ROUTER_MARKER, ROLLUP_TITLE_PREFIX,
-  titleCore, titleTokens, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
+  titleCore, titleTokens, countFreeTitle, findCountOnlyTwin, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
   inferCardSource, normalizeSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,
 };

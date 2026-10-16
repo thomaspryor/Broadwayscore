@@ -159,6 +159,8 @@ async function cmdClaim(args) {
       dispatch: true,
       priority,
       projectId,
+      // BRO-5488: a new card that repeats an open one is refused; this says why it is different.
+      newAnyway: typeof args['new-anyway'] === 'string' ? args['new-anyway'] : undefined,
     });
     await linear.updateIssue(created.id, { stateId: plan.stateId });
     result = await linear.getIssue(created.identifier);

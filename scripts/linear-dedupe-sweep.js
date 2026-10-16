@@ -51,17 +51,19 @@ const isParked = (c) => /^\s*PARKED\s*:/.test(c.description || '');
 function replayFilings({ windowCards, history, allFilers = false }) {
   const all = history.map((c) => ({ ...c, at: Date.parse(c.createdAt), end: closedAt(c) }));
   const filed = [];
-  const out = { total: windowCards.length, nearDup: [], rolledUp: [] };
+  const out = { total: windowCards.length, nearDup: [], refused: [], rolledUp: [] };
   for (const c of [...windowCards].sort((x, y) => Date.parse(x.createdAt) - Date.parse(y.createdAt))) {
     const at = Date.parse(c.createdAt);
     const source = d.inferCardSource(c);
     const contract = d.hasPerCardContract(c.description) || source === 'digest-autofix' || source === 'alert-router';
     const eligible = source !== 'e2e-canary' && source !== 'rollup' && (allFilers || !contract);
-    // As shipped, near-dup applies to parked filings only (a --dispatch card is a session's own).
-    if (eligible && (allFilers || isParked(c))) {
+    // As shipped: a parked repeat is noted on the open card; a --dispatch
+    // repeat (a session's card) is refused with "already open".
+    if (eligible) {
       const openThen = all.filter((o) => o.identifier !== c.identifier && o.at < at && o.end > at);
       const m = d.findNearDuplicate(c.title, openThen);
-      if (m) { out.nearDup.push({ card: c, match: m.card, score: m.score }); continue; }
+      if (m && (allFilers || isParked(c))) { out.nearDup.push({ card: c, match: m.card, score: m.score }); continue; }
+      if (m) { out.refused.push({ card: c, match: m.card, score: m.score }); continue; }
     }
     if (allFilers && eligible && isParked(c) && source !== 'session' && source !== 'unknown') {
       const kind = d.titleKind(c.title);
@@ -124,8 +126,9 @@ async function main() {
     const shipped = replayFilings({ windowCards, history: [...byId.values()] });
     const upper = replayFilings({ windowCards, history: [...byId.values()], allFilers: true });
     console.log(`Replay of ${windowCards.length} cards created in the last ${args.replayDays} days:`);
-    console.log(`  as shipped:  ${shipped.nearDup.length} noted on an open card instead of filed`);
+    console.log(`  as shipped:  ${shipped.nearDup.length} parked repeats noted on an open card + ${shipped.refused.length} --dispatch repeats refused as already open = ${shipped.nearDup.length + shipped.refused.length} fewer cards`);
     console.log(`  all filers:  ${upper.nearDup.length} near-duplicates + ${upper.rolledUp.length} rolled up = ${upper.nearDup.length + upper.rolledUp.length} fewer cards`);
+    for (const r of shipped.refused) console.log(`    refused ${r.score.toFixed(2)} ${r.card.identifier} "${r.card.title.slice(0, 70)}" -> ${r.match.identifier} "${r.match.title.slice(0, 50)}"`);
     for (const r of shipped.nearDup) console.log(`    ${r.score.toFixed(2)} ${r.card.identifier} "${r.card.title.slice(0, 70)}" -> ${r.match.identifier}`);
     const kinds = {};
     for (const r of upper.rolledUp) kinds[`${r.source} "${r.kind}"`] = (kinds[`${r.source} "${r.kind}"`] || 0) + 1;

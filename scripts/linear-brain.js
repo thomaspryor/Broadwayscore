@@ -60,6 +60,8 @@ Usage:
           24h go onto one "Rollup (...)" card (ROLLED-UP). --source names the
           filer (default workflow:$GITHUB_WORKFLOW, else session); it is
           stamped as a "Filed by:" line the morning digest counts.
+          A --dispatch card whose title repeats an open card is refused
+          (ALREADY-OPEN, exit 8): claim that card, or --new-anyway "<why>".
           --dedupe-opt-out <name> is only for a filer listed in
           scripts/lib/card-dedupe.js DEDUPE_OPT_OUTS (it groups its own).
   find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
@@ -759,6 +761,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       console.error('[linear-brain] tip: add --model opus|sonnet to pick the worker model for this card (default: Opus for P0s and retries, else Sonnet)');
     }
   } catch (err) {
+    if (err.code === 'NEAR_DUPLICATE_OPEN') {
+      // BRO-5488: a --dispatch card that repeats an open card is refused (exit 8).
+      console.error(`ALREADY-OPEN: ${err.message}`);
+      if (err.twin) console.error(`__BOARD_CARD_MATCH__=${err.twin.identifier}`);
+      process.exit(8);
+    }
     console.error(`\n❌ ${err.message}\n`);
     process.exit(2);
   }

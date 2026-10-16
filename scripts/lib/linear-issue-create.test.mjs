@@ -311,7 +311,7 @@ function fakeBoard({ open = [], recent = [] } = {}) {
 
 test('BRO-5488: a reworded near-duplicate returns the open card, noted there, nothing filed', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }] });
-  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'today', park: 'auto-filed parked for triage', client: board.client, reuseTwin: true, source: 'session' });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'today', park: 'auto-filed parked for triage', client: board.client, source: 'session' });
   assert.equal(r.mode, 'reused');
   assert.equal(r.issue.identifier, 'BRO-100');
   assert.ok(r.nearDuplicate.score >= 0.85);
@@ -354,7 +354,7 @@ test('BRO-5488: an opt-out name not in DEDUPE_OPT_OUTS throws before any API cal
 test('BRO-5488: every dedupe opt-out in the repo is on the allowed list, and the list is exactly these', async () => {
   const { DEDUPE_OPT_OUTS } = require('./card-dedupe.js');
   // Adding a name here is a reviewed decision: the filer must group its own filings.
-  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'digest-autofix', 'posthog-friction', 'rollup']);
+  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'auto-fix-first', 'digest-autofix', 'posthog-friction', 'rollup']);
   for (const reason of Object.values(DEDUPE_OPT_OUTS)) assert.ok(reason.length >= 30, 'each opt-out carries its reason');
   const fs = require('fs'); const path = require('path');
   const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
@@ -428,11 +428,36 @@ test('BRO-5488: digest-autofix (marker only in the park reason) is never handed 
   assert.equal(board.created.length, 1);
 }));
 
-test('BRO-5488: a --dispatch filing never gets a near-duplicate card (park mode only)', () => withTeam(async () => {
-  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Todo', type: 'unstarted' } }] });
-  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, source: 'session' });
-  assert.notEqual(r.mode, 'reused');
-  assert.equal(board.created.length, 1);
+test('BRO-5488: a --dispatch filing that repeats an open card is refused, never swapped; --new-anyway files', () => withTeam(async () => {
+  const open = [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Todo', type: 'unstarted' } }];
+  const board = fakeBoard({ open });
+  await assert.rejects(
+    createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, source: 'session' }),
+    (e) => e.code === 'NEAR_DUPLICATE_OPEN' && /^already open: BRO-100 BSC Rebuild: 41 reviews dropped/.test(e.message) && e.twin.identifier === 'BRO-100',
+  );
+  assert.equal(board.created.length, 0);
+  assert.equal(board.comments.length, 0, 'nothing noted on the other card');
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', dispatch: true, client: board.client, newAnyway: 'a different rebuild run, new cause' });
+  assert.equal(r.mode, 'dispatch');
+  const fresh = await createLinearIssue({ title: 'Add a venue map to the show page sidebar', description: 'x', dispatch: true, client: fakeBoard({ open }).client });
+  assert.equal(fresh.mode, 'dispatch', 'a new title still files');
+}));
+
+test('BRO-5488: a count-only change reuses the exact-title twin, even for an opted-out filer; dates stay distinct', () => withTeam(async () => {
+  const open = [
+    { id: 'o1', identifier: 'BRO-200', title: 'BSC Daily: Star-band detector: 21 review(s) outside their band', state: { name: 'Backlog', type: 'backlog' } },
+    { id: 'o2', identifier: 'BRO-201', title: 'Opening-night watch 2026-10-09', state: { name: 'Backlog', type: 'backlog' } },
+  ];
+  const board = fakeBoard({ open });
+  const r = await createLinearIssue({ title: 'BSC Daily: Star-band detector: 22 review(s) outside their band', description: 'x', park: 'Auto-filed by digest-autofix; runAutofix dispatches', client: board.client, reuseTwin: true, dedupeOptOut: 'digest-autofix' });
+  assert.equal(r.mode, 'reused');
+  assert.equal(r.issue.identifier, 'BRO-200');
+  assert.match(board.comments[0].body, /only a count changed/);
+  const night = await createLinearIssue({ title: 'Opening-night watch 2026-10-10', description: 'x', park: 'routine log card for the night', client: board.client, reuseTwin: true });
+  assert.equal(night.mode, 'park', 'another night is a new card');
+  const off = fakeBoard({ open });
+  await createLinearIssue({ title: 'BSC Daily: Star-band detector: 22 review(s) outside their band', description: 'x', park: 'Auto-filed by owner-alert-router (condition: x)', client: off.client, dedupeOptOut: 'alert-router' });
+  assert.equal(off.created.length, 1, 'no reuseTwin (the router): files');
 }));
 
 test('BRO-5488: a failed note files the card instead of losing the finding', () => withTeam(async () => {

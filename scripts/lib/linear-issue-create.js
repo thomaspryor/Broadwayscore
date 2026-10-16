@@ -256,6 +256,18 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // Park mode only: a --dispatch filing is a session's own card, and handing it
   // another Todo card whose title differs only by a number would make the
   // session claim someone else's work. Exact-title reuse still applies there.
+  // A --dispatch filing (a session's own card) is never swapped for another
+  // card, but a near-match of an open card is refused so the session works on
+  // that card or says why it is different (--new-anyway). Fails open.
+  if (dedupe && !contract && disposition.mode === 'dispatch') {
+    const open = await findNearDuplicateOpen({ title, client });
+    if (open) {
+      const err = new Error(`already open: ${open.card.identifier} ${open.card.title} (title match ${open.score.toFixed(2)}). Work on that card (node scripts/linear-session.js claim --issue=${open.card.identifier}), or if this is different work re-run with --new-anyway "<why>".`);
+      err.code = 'NEAR_DUPLICATE_OPEN';
+      err.twin = open.card;
+      throw err;
+    }
+  }
   if (dedupe && !contract && disposition.mode === 'park') {
     const reused = await reuseNearDuplicate({ title, body, client, mode: disposition.mode });
     if (reused) return reused;
@@ -397,6 +409,18 @@ async function defaultListRecentIssues(sinceIso) {
   return walkPages(RECENT_QUERY, { teamKey: linear.TEAM_KEY, since: sinceIso });
 }
 
+async function findNearDuplicateOpen({ title, client }) {
+  if (process.env.LINEAR_NEAR_DUP_DISABLED === '1') return null;
+  const list = client ? (client.listOpenIssueTitles && client.listOpenIssueTitles.bind(client)) : defaultListOpenIssueTitles;
+  if (!list) return null;
+  try {
+    return cardDedupe.findNearDuplicate(title, await list());
+  } catch (e) {
+    console.warn(`[linear-issue-create] near-duplicate lookup failed, filing anyway: ${e.message}`);
+    return null;
+  }
+}
+
 async function reuseNearDuplicate({ title, body, client, mode = 'park' }) {
   if (process.env.LINEAR_NEAR_DUP_DISABLED === '1') return null;
   const list = client ? (client.listOpenIssueTitles && client.listOpenIssueTitles.bind(client)) : defaultListOpenIssueTitles;
@@ -478,8 +502,17 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
     console.warn(`[linear-issue-create] open-twin lookup failed, filing anyway: ${e.message}`);
     return null;
   }
+  // BRO-5488: the same row with only a count changed ("Star-band detector: 21
+  // review(s)" -> "22 review(s)") is the same twin. Dates and BRO refs stay distinct.
+  if (!twin) {
+    const list = client ? (client.listOpenIssueTitles && client.listOpenIssueTitles.bind(client)) : defaultListOpenIssueTitles;
+    try { twin = list ? cardDedupe.findCountOnlyTwin(title, await list(), (c) => twinServes(c, mode)) : null; } catch (e) {
+      console.warn(`[linear-issue-create] count-only twin lookup failed, filing anyway: ${e.message}`);
+      twin = null;
+    }
+  }
   if (!twin || !twin.identifier || !twinServes(twin, mode)) return null;
-  const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z with the same title; added here instead of opening a duplicate card.${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
+  const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z ${twin.title === title ? 'with the same title' : `as "${title}" (only a count changed)`}; added here instead of opening a duplicate card.${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
   // A finding that did not land on the twin must still be filed (audits treat
   // a returned card as proof the finding was saved).
   if (!(await noteOnCard(client, twin, note))) return null;
