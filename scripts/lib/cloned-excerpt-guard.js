@@ -27,6 +27,7 @@
  */
 
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { isUnvettedSerpSource } = require('./unvetted-serp-sources');
 
 const MIN_EXCERPT_CHARS = 40;
 const SIMILAR_TEXT_JACCARD = 0.6;
@@ -326,7 +327,8 @@ function findClonedPairs(records) {
  * siblings, return the excerpt fields to strip from the INCOMING record.
  * Conservative: only strips where the sibling provably owns the excerpt
  * (excerpt-copy) or the incoming record is the weak phantom. Same-review
- * twins are the duplicate machinery's job and are left alone here.
+ * twins are the duplicate machinery's job and are left alone here. Across
+ * outlets, require the sibling's own article to support the copied excerpt.
  *
  * @param {string} file basename being written
  * @param {object} incoming record about to be written
@@ -339,7 +341,25 @@ function excerptFieldsToStrip(file, incoming, siblings) {
   const outlet = incoming.outletId || file.split('--')[0];
   for (const s of siblings) {
     if (s.file === file || isFileExcluded(s.data)) continue;
-    if (((s.data && s.data.outletId) || s.file.split('--')[0]) !== outlet) continue;
+    if (((s.data && s.data.outletId) || s.file.split('--')[0]) !== outlet) {
+      if (!isUnvettedSerpSource(incoming.source)) continue;
+      // BRO-4973: a SERP stub can inherit another outlet's roundup excerpt.
+      // Writers truncate excerpts at different lengths, so also recognize a
+      // prefix copy. Never choose ownership from directory order or a byline:
+      // the sibling must have an independent article containing the excerpt,
+      // and the receiving article must not support it (also covers repaired
+      // records that still carry the bad excerpt after a successful fetch).
+      const siblingExcerpts = [...excerptValues(s.data).keys()];
+      const foreign = [...excerptValues(incoming).keys()].filter((text) =>
+        siblingExcerpts.some((other) => text.startsWith(other) || other.startsWith(text))
+        && excerptCoverage(s.data, text) >= OWNS_FRACTION
+        && excerptCoverage(incoming, text) < FOREIGN_FRACTION);
+      if (foreign.length) {
+        for (const f of fieldsHoldingExcerpts(incoming, foreign)) fields.add(f);
+        because.push(`${s.file}: cross-outlet excerpt-copy`);
+      }
+      continue;
+    }
     const shared = sharedExcerpts(incoming, s.data);
     if (!shared.length) continue;
     const c = classifyPair({ file, data: incoming }, s);
