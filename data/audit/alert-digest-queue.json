@@ -836,5 +836,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-16T21:16:11.914Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5508-conversion",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5508-conversion",
+    "description": "land.yml did not land land/bro-5508-conversion: the unit-tests-node gate went red at 32237669ea. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38972430463",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5508-conversion"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "32237669ea08ae012974357a962f1be28e5cbff0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38972430463"
+      }
+    ],
+    "queuedAt": "2026-10-16T22:33:48.966Z"
   }
 ]
