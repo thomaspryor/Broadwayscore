@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T20:21:07.795Z",
+  "generatedAt": "2026-10-16T20:46:22.723Z",
   "windowDays": 45,
   "showsScanned": 174,
   "gaps": [
@@ -17,12 +17,12 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-cherry-orchard-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-16T19:49:06.286Z",
-      "fileAgeHours": 0.5329747222222222,
-      "gapSeenAt": "2026-10-16T20:21:07.794Z",
+      "fileAgeHours": 0.9535736111111112,
+      "gapSeenAt": "2026-10-16T20:46:22.723Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 28.60222,
+      "fileAgeHours": 29.022879444444445,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 8.145573055555555
+      "nonTerminalAgeHours": 8.566386666666666
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 579.6763344444445,
+      "fileAgeHours": 580.0970336111111,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 130.69577555555554
+      "nonTerminalAgeHours": 131.11658916666667
     }
   ],
   "contradictions": []

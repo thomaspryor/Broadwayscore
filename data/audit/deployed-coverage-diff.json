@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T20:23:35.130Z",
+  "generatedAt": "2026-10-16T20:48:43.774Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -12,24 +12,6 @@
   },
   "shows": [
     {
-      "showId": "sea-wall-off-broadway-2026",
-      "title": "Sea Wall",
-      "openingDate": "2026-10-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theater-scene"
-        }
-      ],
-      "missingFromProd": [
-        "theater-scene"
-      ],
-      "localCount": 1,
-      "deployedCount": 0,
-      "firstDefectAt": "2026-10-16T20:23:30.783Z"
-    },
-    {
       "showId": "the-cherry-orchard-west-end-2026",
       "title": "The Cherry Orchard",
       "openingDate": "2026-10-13",
@@ -37,13 +19,13 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.34 vs local 71.38 (Δ0.96)"
+          "detail": "deployed cs 71.85 vs local 71.38 (Δ0.47)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 30,
+      "localCount": 32,
       "deployedCount": 32,
-      "firstDefectAt": "2026-10-16T20:23:30.783Z"
+      "firstDefectAt": "2026-10-16T20:48:40.544Z"
     },
     {
       "showId": "lost-in-del-valle-return-off-broadway-2026",
@@ -57,9 +39,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 6,
+      "localCount": 7,
       "deployedCount": 7,
-      "firstDefectAt": "2026-10-16T20:23:30.783Z"
+      "firstDefectAt": "2026-10-16T20:48:40.544Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -73,9 +55,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 32,
+      "localCount": 34,
       "deployedCount": 34,
-      "firstDefectAt": "2026-10-16T20:23:30.783Z"
+      "firstDefectAt": "2026-10-16T20:48:40.544Z"
     }
   ],
   "persistentDefective": 0,
