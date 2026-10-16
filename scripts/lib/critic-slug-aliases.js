@@ -36,6 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { criticProfileKey } = require('./url-slug');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const CRITIC_SLUG_ALIASES_PATH = path.join(REPO_ROOT, 'data', 'critic-slug-aliases.json');
@@ -159,6 +160,55 @@ function flattenCriticSlugAliases(aliases) {
 }
 
 /**
+ * Pure: every critic-page slug the reviews could produce (criticProfileKey of
+ * each byline). A SUPERSET of the live /critics pages: src/lib/data-reviews.ts
+ * also leaves out reviews outside the profiled markets/categories, so an alias
+ * whose canonical exists only there passes this check and still 404s.
+ * @param {Array<{criticName?: unknown}>} reviews
+ * @returns {Set<string>}
+ */
+function criticSlugsFromReviews(reviews) {
+  const slugs = new Set();
+  for (const r of reviews || []) {
+    const key = criticProfileKey(r && r.criticName);
+    if (key) slugs.add(key);
+  }
+  return slugs;
+}
+
+// More than this many dead canonicals in one build is a broken reviews.json
+// (empty or truncated restore), not critics leaving: fail loudly instead of
+// silently dropping every redirect, the same stance as a malformed registry.
+const MAX_DEAD_CANONICAL_DROPS = 5;
+
+/**
+ * Drop aliases whose canonical slug no review byline produces. A critic page
+ * exists only while some review carries that byline; when a rebuild removes a
+ * critic's last review (BRO-5434: "John Peter"), the alias would 301 to a 404
+ * and the alias test on main goes red until someone hand-edits the registry.
+ * `liveSlugs` null (no reviews.json in this checkout) keeps every alias.
+ * Throws when more than MAX_DEAD_CANONICAL_DROPS would go.
+ * @param {Record<string,string>} flatAliases output of flattenCriticSlugAliases().aliases
+ * @param {Set<string>|null} liveSlugs output of criticSlugsFromReviews()
+ * @returns {{aliases: Record<string,string>, dropped: Array<{slug:string, reason:string}>}}
+ */
+function dropAliasesWithoutLiveCanonical(flatAliases, liveSlugs) {
+  if (!liveSlugs) return { aliases: { ...flatAliases }, dropped: [] };
+  const aliases = {};
+  const dropped = [];
+  for (const [oldSlug, canonical] of Object.entries(flatAliases)) {
+    if (liveSlugs.has(canonical)) aliases[oldSlug] = canonical;
+    else dropped.push({ slug: oldSlug, reason: `canonical "${canonical}" has no critic page (no review carries that byline)` });
+  }
+  if (dropped.length > MAX_DEAD_CANONICAL_DROPS) {
+    throw new Error(
+      `${dropped.length} of ${Object.keys(flatAliases).length} critic aliases point at critics no review carries (limit ${MAX_DEAD_CANONICAL_DROPS}); reviews.json has ${liveSlugs.size} critic bylines — refusing to drop them, check that reviews.json is complete`
+    );
+  }
+  return { aliases, dropped };
+}
+
+/**
  * Pure: the compact-map entries for a flattened alias map —
  * { "critic:<old>": "<canonical>" }. Always permanent (301): an old critic
  * slug has exactly one successor, unlike a versionless show slug that may
@@ -180,5 +230,8 @@ module.exports = {
   normalizeCriticSlugAliases,
   loadCriticSlugAliases,
   flattenCriticSlugAliases,
+  criticSlugsFromReviews,
+  dropAliasesWithoutLiveCanonical,
+  MAX_DEAD_CANONICAL_DROPS,
   buildCriticRedirectEntries,
 };

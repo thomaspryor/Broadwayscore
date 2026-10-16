@@ -42,6 +42,8 @@ const path = require('path');
 const {
   loadCriticSlugAliases,
   flattenCriticSlugAliases,
+  criticSlugsFromReviews,
+  dropAliasesWithoutLiveCanonical,
   buildCriticRedirectEntries,
 } = require('./lib/critic-slug-aliases');
 const { NAME_REDIRECT_PREFIXES, buildNameSlugRedirects } = require('./lib/name-slug-redirects');
@@ -53,6 +55,9 @@ const castManifestPath = process.env.SLUG_REDIRECTS_CAST_MANIFEST_PATH || path.j
 const complexesDir = process.env.SLUG_REDIRECTS_COMPLEXES_DIR || dataDir;
 const outputPath = path.join(outDir, 'slug-redirects.json');
 const compactPath = path.join(outDir, 'slug-redirects-compact.json');
+// Next to shows.json by default, so a test that points SLUG_REDIRECTS_SHOWS_PATH
+// at a temp dir never reads the real core-data reviews.
+const reviewsPath = process.env.SLUG_REDIRECTS_REVIEWS_PATH || path.join(path.dirname(showsPath), 'reviews.json');
 
 const { shows } = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 
@@ -126,8 +131,14 @@ for (const show of shows) {
 // builds); a malformed one throws and fails prebuild on purpose. Chains are
 // flattened here so the middleware never has to follow one; self-maps and
 // cycles are dropped with a warning rather than emitted as a redirect loop.
-const { aliases: criticRedirects, dropped: droppedCriticAliases } = flattenCriticSlugAliases(loadCriticSlugAliases());
-for (const d of droppedCriticAliases) {
+// Aliases to a critic no review carries any more are dropped too (BRO-5434);
+// with no reviews.json in this checkout, none are.
+const { aliases: flatCriticRedirects, dropped: droppedCycles } = flattenCriticSlugAliases(loadCriticSlugAliases());
+const liveCriticSlugs = fs.existsSync(reviewsPath)
+  ? criticSlugsFromReviews(JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews)
+  : null;
+const { aliases: criticRedirects, dropped: droppedDead } = dropAliasesWithoutLiveCanonical(flatCriticRedirects, liveCriticSlugs);
+for (const d of [...droppedCycles, ...droppedDead]) {
   console.warn(`critic-slug alias skipped: "${d.slug}" — ${d.reason}`);
 }
 
