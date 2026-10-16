@@ -171,6 +171,8 @@ jobs:
         id: lane
         timeout-minutes: 280
         env:
+          # The driver's window must end before the step cap, or every night is killed mid-run (BRO-4835 review).
+          OPENING_NIGHT_LANE_WINDOW_MIN: '270'
           SHOW: ${{ inputs.show }}
           NIGHT: ${{ inputs.night }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}

@@ -130,6 +130,8 @@ function buildRealLaneDeps({
       };
       return runLaneNight({
         show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop,
+        // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
+        ...(Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? { windowMs: Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 } : {}),
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
         adapters: [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] })],
         fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
