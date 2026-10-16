@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T09:24:20.652Z",
+  "generatedAt": "2026-10-16T11:46:39.094Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -345,10 +345,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Theater Scene",
-          "isDualMarket": false
-        },
-        {
           "name": "Village Voice",
           "isDualMarket": false
         },
@@ -541,27 +537,26 @@
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 82,
+      "liveScore": 67,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 1,
+      "t2": 3,
       "t3": 0,
-      "positive": 1,
+      "positive": 2,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "3/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -645,10 +640,6 @@
           "isDualMarket": true
         },
         {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
           "name": "The Arts Desk",
           "isDualMarket": false
         },
@@ -669,10 +660,6 @@
           "isDualMarket": false
         },
         {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
           "name": "LondonTheatre1",
           "isDualMarket": false
         }
@@ -688,6 +675,18 @@
           "p": 1,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T11:46:39.094Z",
+          "rc": 3,
+          "s": 67,
+          "t1": 0,
+          "t2": 3,
+          "t3": 0,
+          "p": 2,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]
@@ -804,10 +803,6 @@
         {
           "name": "New York Post",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -1199,10 +1194,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -1225,10 +1216,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -2984,7 +2971,7 @@
       "slug": "stuffed-off-west-end",
       "thumbnail": "/images/shows/stuffed-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 89,
+      "liveScore": 85,
       "scoreDrift": null,
       "belowThreshold": true,
       "reviewsNeeded": 3,
@@ -3140,6 +3127,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T11:46:39.094Z",
+          "rc": 2,
+          "s": 85,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -3153,23 +3152,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 70.75,
-      "liveScore": 71,
-      "scoreDrift": 0.25,
+      "siteScore": 70.35,
+      "liveScore": 70,
+      "scoreDrift": -0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 25,
       "t1": 6,
-      "t2": 4,
-      "t3": 10,
-      "positive": 12,
-      "mixed": 7,
-      "negative": 1,
+      "t2": 5,
+      "t3": 14,
+      "positive": 15,
+      "mixed": 8,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 24,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3226,10 +3225,6 @@
         },
         {
           "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
-          "name": "British Theatre Guide",
           "isDualMarket": false
         },
         {
@@ -3488,6 +3483,18 @@
           "p": 12,
           "m": 7,
           "n": 1,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-16T11:46:39.094Z",
+          "rc": 25,
+          "s": 70.35,
+          "t1": 6,
+          "t2": 5,
+          "t3": 14,
+          "p": 15,
+          "m": 8,
+          "n": 2,
           "bc": "preview-sent-earlier"
         }
       ]
