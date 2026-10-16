@@ -778,7 +778,11 @@ jobs:
 
           # Use shared push-with-retry script (handles rebase, conflict resolution,
           # and manual field restoration). Replaces 70-line inline loop.
-          bash scripts/lib/push-with-retry.sh 5 "HEAD:${{ github.ref_name }}"
+          # BRO-4688: 600s, not the 240s default. Five of this step's pushes ran
+          # out the default budget (retries-exhausted(deadline), attempt 3-4 of 5)
+          # in the 05:40Z storm on 2026-10-14/15, discarding 3 committed score
+          # files each. Headroom: timeout-minutes 350 vs a 120-min batch poll.
+          PUSH_DEADLINE_SEC=600 bash scripts/lib/push-with-retry.sh 5 "HEAD:${{ github.ref_name }}"
 
           # Restore stashed changes (review-texts files for downstream steps)
           git stash pop --quiet 2>/dev/null || true
