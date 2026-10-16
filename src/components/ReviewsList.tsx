@@ -488,7 +488,7 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
         // The one tier key: the whole scale at once, so the bars are learned
         // from one line, and its label links to the methodology (BRO-4905).
         <div className="flex items-start gap-1.5 sm:gap-3 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
-          <Link href="/methodology#critic-score" className="leading-[18px] whitespace-nowrap hover:text-brand transition-colors max-[379px]:sr-only" aria-label="Weighted by outlet tier. How we weight critics">
+          <Link href="/methodology#critic-score" className="leading-[18px] whitespace-nowrap hover:text-brand transition-colors max-[399px]:sr-only" aria-label="Weighted by outlet tier. How we weight critics">
             <span className="hidden sm:inline">Weighted by outlet tier · </span>Counts
           </Link>
           {/* One row on phones (4 chips wrapped to two rows at 390px): tighter gaps, no wrap. */}
