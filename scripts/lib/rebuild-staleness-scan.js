@@ -105,6 +105,9 @@ function scanDriftedShows(candidateShowIds, dataDir) {
   const knownShowDirs = new Set(listShowDirs(reviewTextsDir, { silent: true }));
   const scoreableShowIds = [];
   for (const showId of candidateShowIds) {
+    // `_pending` / `_superseded-misattributed` hold moved or deleted review files, not
+    // shows: a plan delete lands files there, and they never reach reviews.json by design.
+    if (showId.startsWith('_')) continue;
     if (!knownShowDirs.has(showId)) continue;
     const showDir = path.join(reviewTextsDir, showId);
     let files;
