@@ -249,6 +249,9 @@ const DIGEST_SEEN_PATH = process.env.DIGEST_AUTOFIX_SEEN_PATH
 
 /** PURE. Stable identity for a plan row across days. */
 function persistenceKey(row) {
+  // BRO-5486: a folded row's conditionKey is its FIRST show's, which changes as
+  // shows clear or the queue reorders; keying on it restarted the 72h hold.
+  if (row && Array.isArray(row.affected) && row.title) return `t:${String(row.title).toLowerCase()}`;
   if (row && row.conditionKey) return `ck:${row.conditionKey}`;
   const title = String((row && (row.title || row.name)) || '');
   const batch = (title.match(/\(batch \d+\)\s*$/) || [''])[0];
@@ -522,7 +525,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 
     const open = openAnchor.get(key);
     if (open && open.row.affected.length < MAX_FOLD_PER_CONDITION) {
-      open.row.affected.push({ name: r.name, message: String(r.message || '').slice(0, 400) });
+      open.row.affected.push({ name: r.name, message: String(r.message || '').slice(0, 400), ...(r.conditionKey ? { conditionKey: r.conditionKey } : {}) });
       // BRO-3427 ship-check finding: isRowAcknowledged only ever runs on the
       // ANCHOR (inside buildPlanRow) — a later-joining member here never
       // goes through that check at all. If the anchor happened to be
@@ -556,7 +559,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const row = buildPlanRow(r, { tasks, today, titleOverride });
     if (fromHealth.has(r)) row.fromHealth = true;
     if (healthErrors.has(r)) row.healthError = true;
-    row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400) }];
+    row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400), ...(r.conditionKey ? { conditionKey: r.conditionKey } : {}) }];
     // anchorModel: the anchor's raw model hint, captured HERE (not read back
     // off `row` later) because buildPlanRow's 'acknowledged' branch discards
     // it to null — see the reactivation branch above for why this matters.
@@ -584,7 +587,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 // OTHER auto-filer, whose cards the digest also dispatches — can emit the same
 // command instead of the prose that got every one of its cards refused at
 // dispatch. See that module's header for the incident.
-const { rowAbsentCheckCmd, sanitizeRowText } = require('./health-row-check-cmd.js');
+const { rowAbsentCheckCmd, alertAbsentCheckCmd, sanitizeRowText } = require('./health-row-check-cmd.js');
 
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
@@ -646,7 +649,12 @@ function buildCardNotes(row) {
     '',
     '## Acceptance criteria',
     `ALL of the following must pass — this card is NOT done while any show below is still flagged (only the first line is auto-verified by the dispatch gate; confirm the rest by hand or via --live before closing):`,
-    ...affected.map(a => `\`${rowAbsentCheckCmd(a.name)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(a.name)}" among errors or warnings.`),
+    // BRO-5486: a queued per-show row's name carries a count ("missing 3"), so a
+    // drop to 2 would make a name-based check pass falsely; its conditionKey is
+    // the stable identity (check-alert-condition-absent.js reads the ledger).
+    ...affected.map(a => a.conditionKey
+      ? `\`${alertAbsentCheckCmd(a.conditionKey)}\` passes — i.e. the alert condition for "${sanitizeRowText(a.name)}" is no longer open.`
+      : `\`${rowAbsentCheckCmd(a.name)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(a.name)}" among errors or warnings.`),
   ].join('\n');
 }
 

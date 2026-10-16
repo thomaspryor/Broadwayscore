@@ -1520,3 +1520,15 @@ test('BRO-5486: "<show-id>: N review(s) need a decision" rows fold to 1 card; un
   assert.equal(splitOnShowSuffix('Review gap — "A" missing 1 cited review(s)').show, 'A');
   assert.equal(splitOnShowSuffix('Credits: ScrapingDog'), null);
 });
+
+test('BRO-5486: folded rows keep one persistence key when the first show changes; verify uses conditionKey', async () => {
+  const { persistenceKey } = require('./digest-autofix.js');
+  const mk = (shows) => planAutofix({ health: {}, tasks: [], queued: shows.map((s) => ({
+    title: `BSC Daily: Review gap — "${s}" missing 3 cited review(s)`, description: 'd', conditionKey: `review-gap:opening-window:${s}`,
+  })) })[0];
+  const a = mk(['A', 'B']); const b = mk(['B']);
+  assert.equal(persistenceKey(a), persistenceKey(b));
+  const notes = buildCardNotes(a);
+  assert.ok(/check-alert-condition-absent\.js --key-b64/.test(notes));
+  assert.ok(!/check-health-row-absent/.test(notes));
+});
