@@ -164,6 +164,8 @@ on:
       - 'scripts/scan-serp-adoptions.js'
       # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs
       - 'scripts/check-attribution-gap-clear.js'
+      # BRO-5477: auto-fix-first CLI, spawned by scripts/lib/auto-fix-first.test.mjs
+      - 'scripts/auto-fix-first.js'
       # BRO-4146: historical backfill cursor (scripts/historical-backfill-next.test.mjs)
       - 'scripts/historical-backfill-next.js'
       # BRO-2254: review-text sync (pull/rebase guard), its JS sibling and the

@@ -108,6 +108,10 @@ const PAGE_WORTHY_PREFIXES = [
   // account-metrics.js) stay digest-tier: abandoned sign-ins and offline
   // phones make them noisy at a handful of sign-ups a day.
   'ugc:signin-redirect-broken:',
+  // BRO-5477: the auto-fix-first sweep's one email per fix card that did not
+  // work (scripts/lib/auto-fix-first.js escalationConditionKey). The fix was
+  // already tried, so this is the owner's page.
+  'auto-fix-first:escalation:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([
@@ -342,6 +346,8 @@ const OWNER_ACTIONS = {
   'opening-night-broadcast.yml': 'Send the opening-night email yourself.',
   'restore-supabase.yml': 'Restore the project from the Supabase dashboard (only you hold that login).',
   'update-theatr.yml': 'Re-capture the Theatr login from the iPhone app.',
+  // BRO-5477: sent only after the automatic fix card failed or never started.
+  'auto-fix-first:escalation:': 'Ask Claude to fix the failing opening-night workflow; the automatic fix did not work.',
 };
 
 // Pages that were allowlisted as "urgent" before the must-act rule and name no
@@ -366,12 +372,50 @@ const AWAITING_OWNER_DECISION = new Set([
   'opening-night-poller.yml',
 ]);
 
+/**
+ * Auto-fix first (BRO-5477, owner decision 2026-10-16): opening-night pipeline
+ * failures start an automatic fix and email the owner only if that fix fails.
+ * A page-worthy failure listed here files a START-NOW fix card instead of
+ * emailing; the owner is emailed (key auto-fix-first:escalation:<card>) if it
+ * is still failing 3h after the card was filed, if no worker started the card,
+ * or if filing the card fails (scripts/lib/auto-fix-first.js decide()).
+ *
+ * Emails that ask the owner to act stay immediate and must never be listed:
+ * broadcast:overdue: (pages before the draft deadline overrides QA gates,
+ * broadcast-deadline.js), broadcast:never-sent:, broadcast:draft-unsent:,
+ * broadcast:deadline-draft:. page-worthy-alerts.test.mjs pins both lists.
+ *
+ * To add an alert: add the workflow file here. It also needs auto_fix_first + linear_api_key on its notify-failure step
+ * (tests/unit/page-worthy-workflows.test.mjs checks they agree).
+ * Kill switch: repo variable AUTO_FIX_FIRST_DISABLED=true.
+ */
+const AUTO_FIX_FIRST_WORKFLOWS = new Set([
+  'opening-night-broadcast.yml',
+  'opening-night-orchestrator.yml',
+  'opening-night-poller.yml',
+]);
+
+
+function autoFixFirstDisabled(env = process.env) {
+  return String((env && env.AUTO_FIX_FIRST_DISABLED) || '').trim().toLowerCase() === 'true';
+}
+
+/** @param {string} workflowFile basename or path */
+function isAutoFixFirstWorkflow(workflowFile) {
+  if (!workflowFile) return false;
+  const base = String(workflowFile).split('@')[0].split('/').pop();
+  return AUTO_FIX_FIRST_WORKFLOWS.has(base) && isPageWorthyWorkflow(base);
+}
+
 /** Every entry that can page: keys, prefixes, the final-report pattern, workflows. */
 function allPageWorthyEntries() {
   return [...PAGE_WORTHY_CONDITION_KEYS, ...PAGE_WORTHY_PREFIXES, FINAL_REPORT_ENTRY, ...PAGE_WORTHY_WORKFLOWS];
 }
 
 module.exports = {
+  AUTO_FIX_FIRST_WORKFLOWS,
+  autoFixFirstDisabled,
+  isAutoFixFirstWorkflow,
   PAGE_WORTHY_CONDITION_KEYS,
   PAGE_WORTHY_FINAL_REPORT_RE,
   PAGE_WORTHY_PREFIXES,

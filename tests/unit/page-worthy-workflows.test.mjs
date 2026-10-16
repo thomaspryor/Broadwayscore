@@ -112,3 +112,47 @@ test('a job that emails via notify-failure does not also dispatch investigate-al
     'These jobs already email the owner through notify-failure and also dispatch investigate-alert.yml, ' +
     'so one failure sends two emails: ' + offenders.join('; '));
 });
+
+// BRO-5477 (owner decision 2026-10-16): auto-fix first. Only the listed
+// opening-night pipeline workflows hand their notify-failure page to the
+// fix-card gate, each with the Linear key and the repo-variable kill switch.
+test('exactly the AUTO_FIX_FIRST_WORKFLOWS callers pass auto_fix_first, each with linear_api_key and the kill switch', () => {
+  const { AUTO_FIX_FIRST_WORKFLOWS } = require('../../scripts/lib/page-worthy-alerts.js');
+  const callers = new Set();
+  for (const file of fs.readdirSync(WORKFLOWS_DIR).filter((f) => /\.ya?ml$/.test(f))) {
+    const doc = yaml.load(fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf-8')) || {};
+    for (const job of Object.values(doc.jobs || {})) {
+      for (const step of job.steps || []) {
+        if (!/notify-failure/.test(String(step.uses || '')) || step.with?.auto_fix_first === undefined) continue;
+        callers.add(file);
+        assert.match(String(step.with.auto_fix_first), /vars\.AUTO_FIX_FIRST_DISABLED != 'true'/, `${file}: auto_fix_first must honor the kill switch`);
+        assert.match(String(step.with.linear_api_key), /secrets\.LINEAR_API_KEY/, `${file}: needs linear_api_key`);
+      }
+    }
+  }
+  assert.deepEqual([...callers].sort(), [...AUTO_FIX_FIRST_WORKFLOWS].sort());
+});
+
+test('notify-failure runs the auto-fix gate after the cooldown and before the send, and the send stands down when it handled the alert', () => {
+  const action = yaml.load(fs.readFileSync(ACTION_PATH, 'utf-8'));
+  const steps = action.runs.steps;
+  const cooldownIdx = steps.findIndex((s) => s.id === 'cooldown');
+  const autofixIdx = steps.findIndex((s) => s.id === 'autofix');
+  const sendIdx = steps.findIndex((s) => s.name === 'Send failure alert');
+  assert.ok(cooldownIdx < autofixIdx && autofixIdx < sendIdx, 'order must be cooldown -> autofix -> send');
+  const gate = steps[autofixIdx];
+  assert.equal(gate['continue-on-error'], true, 'a crashed gate must fall through to the normal email');
+  assert.match(String(gate.if), /inputs\.auto_fix_first == 'true'/);
+  assert.match(String(gate.run), /node scripts\/auto-fix-first\.js gate/);
+  assert.match(String(steps[sendIdx].if), /steps\.autofix\.outputs\.handled != 'true'/);
+  assert.match(String(action.outputs.suppressed.value), /steps\.autofix\.outputs\.held == 'true'/);
+});
+
+test('opening-night-checklist.yml runs the hourly auto-fix sweep with the kill switch', () => {
+  const doc = yaml.load(fs.readFileSync(path.join(WORKFLOWS_DIR, 'opening-night-checklist.yml'), 'utf-8'));
+  const steps = Object.values(doc.jobs).flatMap((j) => j.steps || []);
+  const sweep = steps.find((s) => /auto-fix-first\.js sweep/.test(String(s.run || '')));
+  assert.ok(sweep, 'no auto-fix sweep step');
+  assert.match(String(sweep.env.AUTO_FIX_FIRST_DISABLED), /vars\.AUTO_FIX_FIRST_DISABLED/);
+  assert.match(String(sweep.env.LINEAR_API_KEY), /secrets\.LINEAR_API_KEY/);
+});

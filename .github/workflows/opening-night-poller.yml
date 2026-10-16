@@ -1296,4 +1296,7 @@ jobs:
           min_consecutive_failures: '2'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
+          # BRO-5477: auto-fix first, email only if the fix fails (page-worthy-alerts.js AUTO_FIX_FIRST_WORKFLOWS)
+          auto_fix_first: ${{ vars.AUTO_FIX_FIRST_DISABLED != 'true' && 'true' || 'false' }}
+          linear_api_key: ${{ secrets.LINEAR_API_KEY }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

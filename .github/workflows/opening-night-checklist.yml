@@ -253,6 +253,24 @@ jobs:
         run: |
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json "$LATENCY_OUT"
 
+      # BRO-5477 (owner decision 2026-10-16): opening-night workflow failures
+      # file a START-NOW fix card instead of emailing. This hourly sweep emails
+      # the owner once when a fix card is 3h old and the workflow is still red
+      # (or no worker started it), or the workflow is red again after the card
+      # closed. It never files cards. Repo variable AUTO_FIX_FIRST_DISABLED=true
+      # turns it off.
+      - name: Auto-fix first sweep (BRO-5477)
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_TOKEN: ${{ github.token }}
+          AUTO_FIX_FIRST_DISABLED: ${{ vars.AUTO_FIX_FIRST_DISABLED }}
+        run: node scripts/auto-fix-first.js sweep || echo "::warning::auto-fix-first sweep failed"
+
       # BRO-2670: split from a single 7-file "Commit audit data" step. That
       # bundled commit mixed data/audit/opening-night-history.json (single
       # writer: this workflow) with data/audit/alert-digest-queue.json (8+

@@ -349,6 +349,7 @@ async function listOpenIssuesWithDescriptions(teamKey = TEAM_KEY) {
 // "-P14D") whose title starts with one of `titlePrefixes` or whose body
 // contains one of `descriptionMarkers`, archived ones included. Used to count
 // automated-fix throughput from Linear, which CI and the Mac can both read.
+// BRO-5477: auto-fix-first.js also reads id + description to find its cards.
 async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMarkers = [] }, teamKey = TEAM_KEY) {
   const or = [
     ...titlePrefixes.map((p) => ({ title: { startsWith: p } })),
@@ -357,7 +358,7 @@ async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMa
   if (!or.length) return [];
   const query = `query($teamKey: String!, $since: DateTimeOrDuration!, $or: [IssueFilter!], $after: String) {
     issues(first: 100, after: $after, includeArchived: true, filter: { team: { key: { eq: $teamKey } }, updatedAt: { gte: $since }, or: $or }) {
-      nodes { identifier title createdAt startedAt completedAt canceledAt state { name type } }
+      nodes { id identifier url title description createdAt startedAt completedAt canceledAt state { name type } }
       pageInfo { hasNextPage endCursor }
     }
   }`;

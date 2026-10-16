@@ -47,6 +47,20 @@ inputs:
     required: false
     default: '1'
 
+  auto_fix_first:
+    description: >-
+      'true' on the callers listed in scripts/lib/page-worthy-alerts.js
+      AUTO_FIX_FIRST_WORKFLOWS (BRO-5477): a failure that would page files a
+      START-NOW fix card instead, and the owner is emailed only if the fix
+      fails (scripts/auto-fix-first.js). Pass 'false' to turn it off (the
+      callers wire the AUTO_FIX_FIRST_DISABLED repo variable here).
+    required: false
+    default: 'false'
+  linear_api_key:
+    description: Linear API key, needed when auto_fix_first is 'true' (without it the card cannot be filed and the owner is emailed as before)
+    required: false
+    default: ''
+
 outputs:
   suppressed:
     description: >-
@@ -55,7 +69,8 @@ outputs:
       Gate follow-up steps (e.g. investigation dispatch) on this != 'true' so they
       only fire when the failure actually paged. (Before BRO-4603 a non-critical
       call left this EMPTY, so `!= 'true'` let investigate-alert.yml email anyway.)
-    value: ${{ steps.policy.outputs.page != 'true' && 'true' || steps.cooldown.outputs.suppressed }}
+      An auto-fix-first failure held for its fix card (BRO-5477) is suppressed too.
+    value: ${{ steps.policy.outputs.page != 'true' && 'true' || steps.autofix.outputs.held == 'true' && 'true' || steps.cooldown.outputs.suppressed }}
 
 runs:
   using: composite
@@ -219,8 +234,28 @@ runs:
             core.setOutput('suppressed', 'false');
           }
 
+    # BRO-5477 (owner decision 2026-10-16): opening-night pipeline failures
+    # start an automatic fix first and email the owner only if it fails. The
+    # script files/holds/escalates and sets handled=true; for any other
+    # workflow, or if it crashes (continue-on-error), handled stays empty and
+    # the send step below emails exactly as before (fail loud).
+    - name: Auto-fix first
+      id: autofix
+      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && inputs.auto_fix_first == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        LINEAR_API_KEY: ${{ inputs.linear_api_key }}
+        RESEND_API_KEY: ${{ inputs.resend_api_key }}
+        OWNER_EMAIL: ${{ inputs.owner_email }}
+        GITHUB_TOKEN: ${{ github.token }}
+        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_DESCRIPTION: ${{ inputs.description }}
+        INPUT_EMAIL: ${{ inputs.email }}
+      run: node scripts/auto-fix-first.js gate
+
     - name: Send failure alert
-      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true'
+      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && steps.autofix.outputs.handled != 'true'
       uses: actions/github-script@v7
       env:
         RESEND_API_KEY: ${{ inputs.resend_api_key }}

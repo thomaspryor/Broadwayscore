@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const { isPageWorthy } = createRequire(import.meta.url)('./page-worthy-alerts.js');
 
@@ -19,6 +20,40 @@ test('the one FINAL per-show opening-night report pages; the base per-night key 
   assert.equal(isPageWorthy('on-monitor-report-on-monitor-2026-09-21-show-a-escalation-final'), true);
   assert.equal(isPageWorthy('on-monitor-report-on-monitor-2026-09-21'), false);
   assert.equal(isPageWorthy('on-monitor-report-on-monitor-2026-09-21-show-a-parity-final-retry'), false);
+});
+
+// BRO-5477 (owner decision 2026-10-16): these opening-night pipeline failures
+// start an automatic fix first and email only if the fix fails.
+const policy = createRequire(import.meta.url)('./page-worthy-alerts.js');
+
+test('auto-fix first covers exactly the three opening-night pipeline workflows (BRO-5477)', () => {
+  assert.deepEqual([...policy.AUTO_FIX_FIRST_WORKFLOWS].sort(), ['opening-night-broadcast.yml', 'opening-night-orchestrator.yml', 'opening-night-poller.yml']);
+  for (const wf of policy.AUTO_FIX_FIRST_WORKFLOWS) {
+    assert.equal(policy.isPageWorthyWorkflow(wf), true, `${wf} must still page when the fix fails`);
+    assert.equal(policy.isAutoFixFirstWorkflow(`.github/workflows/${wf}`), true);
+  }
+  // The owner's one email after a failed fix pages and names its action.
+  assert.equal(policy.isPageWorthy('auto-fix-first:escalation:BRO-1'), true);
+  assert.ok(policy.OWNER_ACTIONS['auto-fix-first:escalation:']);
+});
+
+test('alerts that ask the owner to act stay immediate (BRO-5477)', () => {
+  // Only workflow failures are held for a fix; routeAlert() keys like these always email at once.
+  for (const key of ['broadcast:overdue:show-a', 'broadcast:never-sent:show-a', 'broadcast:deadline-draft:show-a', 'broadcast:draft-unsent:abc']) {
+    assert.equal(policy.isPageWorthy(key), true, key);
+  }
+  const router = fs.readFileSync(new URL('./owner-alert-router.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(router, /auto-fix-first/, 'routeAlert() must not hold any key for auto-fix');
+  for (const wf of ['check-morning-digest-sent.yml', 'restore-supabase.yml', 'opening-night-checklist.yml']) {
+    assert.equal(policy.isAutoFixFirstWorkflow(wf), false, wf);
+  }
+});
+
+test('the kill switch reads only the exact value true (BRO-5477)', () => {
+  assert.equal(policy.autoFixFirstDisabled({ AUTO_FIX_FIRST_DISABLED: 'true' }), true);
+  assert.equal(policy.autoFixFirstDisabled({ AUTO_FIX_FIRST_DISABLED: ' TRUE ' }), true);
+  assert.equal(policy.autoFixFirstDisabled({ AUTO_FIX_FIRST_DISABLED: '' }), false);
+  assert.equal(policy.autoFixFirstDisabled({}), false);
 });
 
 // --- BRO-5480: every page names what the OWNER does about it ---
