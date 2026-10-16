@@ -214,3 +214,28 @@ test('BRO-5011: reconcileShowsJson applies the 3-way pass and counts it', () => 
   assert.strictEqual(r.recovered, 1);
   assert.deepStrictEqual(local.shows[0].images, IMG({ thumbnail: null, hero: '/h.jpg' }));
 });
+
+// BRO-4856: synopsisSource moves with its synopsis, never alone.
+test('reconcile: our rewritten synopsis keeps our stamp when remote also changed both', () => {
+  const base = { id: 'x', synopsis: 'A', synopsisSource: 'wikipedia' };
+  const local = { id: 'x', synopsis: 'B', synopsisSource: 'wikipedia' };
+  const remote = { id: 'x', synopsis: 'C', synopsisSource: 'manual' };
+  reconcileShowFields(local, remote, base);
+  assert.equal(local.synopsis, 'B');
+  assert.equal(local.synopsisSource, 'wikipedia');
+});
+test('reconcile: remote synopsis taken in the 3-way pass brings its stamp', () => {
+  const base = { id: 'x', synopsis: 'A', synopsisSource: 'wikipedia' };
+  const local = { id: 'x', synopsis: 'A', synopsisSource: 'wikipedia' };
+  const remote = { id: 'x', synopsis: 'C', synopsisSource: 'manual' };
+  reconcileShowFields(local, remote, base);
+  assert.equal(local.synopsis, 'C');
+  assert.equal(local.synopsisSource, 'manual');
+});
+test('reconcile: refilling an emptied synopsis from remote brings its stamp', () => {
+  const local = { id: 'x', synopsis: null };
+  const remote = { id: 'x', synopsis: 'C', synopsisSource: 'todaytix' };
+  reconcileShowFields(local, remote, undefined);
+  assert.equal(local.synopsis, 'C');
+  assert.equal(local.synopsisSource, 'todaytix');
+});

@@ -173,7 +173,8 @@ function tourInheritance(tour, parent, shows = null) {
   const patch = {};
   if (!tour.synopsis && parent.synopsis) {
     patch.synopsis = parent.synopsis;
-    if (parent.synopsisSource) patch.synopsisSource = parent.synopsisSource;
+    // An unstamped parent must not leave the tour with a stale stamp (undefined overwrites via Object.assign).
+    if (parent.synopsisSource !== undefined || tour.synopsisSource !== undefined) patch.synopsisSource = parent.synopsisSource;
   }
   if (!sameProductionLikely(tour, parent, shows)) return Object.keys(patch).length ? patch : null;
   const own = tour.images || {};

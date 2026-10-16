@@ -80,11 +80,19 @@ function deepEqual(a, b) {
  * deleted is deleted). When ours changed it, ours wins.
  * @returns {number} keys taken from theirs
  */
+/** Copy (or drop) the synopsisSource that belongs to a synopsis just taken from theirs. */
+function moveSynopsisStamp(target, theirs) {
+  if (Object.prototype.hasOwnProperty.call(theirs, 'synopsisSource')) target.synopsisSource = theirs.synopsisSource;
+  else delete target.synopsisSource;
+}
+
 function threeWayKeys(target, theirs, base, nested = []) {
   let taken = 0;
   const keys = new Set([...Object.keys(base), ...Object.keys(target), ...Object.keys(theirs)]);
   for (const k of keys) {
     if (k === 'id') continue;
+    // BRO-4856: the provenance stamp travels with its synopsis, never on its own.
+    if (k === 'synopsisSource') continue;
     const has = (o) => Object.prototype.hasOwnProperty.call(o, k);
     const oursVal = target[k];
     const theirsVal = theirs[k];
@@ -94,6 +102,7 @@ function threeWayKeys(target, theirs, base, nested = []) {
     if (theirsSame) continue; // remote did not touch it — ours stands
     if (oursSame) {
       if (has(theirs)) target[k] = theirsVal; else delete target[k];
+      if (k === 'synopsis') moveSynopsisStamp(target, theirs);
       taken++;
       continue;
     }
@@ -139,6 +148,7 @@ function reconcileShowFields(localShow, remoteShow, baseShow, fields = RECONCILA
     }
 
     localShow[key] = remoteVal;
+    if (key === 'synopsis') moveSynopsisStamp(localShow, remoteShow);
     recovered++;
   }
   return recovered;
