@@ -121,6 +121,17 @@ function run(show, context) {
 
   const violations = [];
   const handledCounts = {};
+  // url+outlet+critic of every file whose own top-level wrongProduction is not
+  // set: the files that can account for a shipped row (BRO-5437 not-shipped).
+  const siblingKeys = new Set();
+  if (context.setAsideHandled) {
+    for (const f of files) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+        if (d.wrongProduction !== true) siblingKeys.add(`${d.url}::${d.outletId}::${d.criticName}`);
+      } catch { /* unreadable file: cannot vouch for a row */ }
+    }
+  }
   for (const filename of files) {
     let data;
     try {
@@ -143,8 +154,14 @@ function run(show, context) {
     // Also respect the top-level wrongProduction=false-with-manual-clear pattern
     if (data.wrongProduction === false && data.wrongProductionManualClear === true) continue;
 
-    const exactShipped = !!data.url && shippedReviews.some(r => r.url === data.url
-      && r.outletId === data.outletId && r.criticName === data.criticName);
+    // A matched shipped row only counts as a sibling's when ANOTHER file in this
+    // dir carries that row's own url+outlet+critic; otherwise (e.g. a critic
+    // name normalized differently in reviews.json) treat it as this file's.
+    const matchedRows = shippedReviews.filter(r => (data.url && r.url === data.url)
+      || (r.outletId === data.outletId && r.criticName === data.criticName));
+    const exactShipped = matchedRows.length === 0 || matchedRows.some(r => !siblingKeys.has(
+      `${r.url}::${r.outletId}::${r.criticName}`) || (r.url === data.url
+      && r.outletId === data.outletId && r.criticName === data.criticName));
     const handled = context.setAsideHandled
       ? handledReason(data, show, path.join(showDir, filename), { exactShipped })
       : null;
