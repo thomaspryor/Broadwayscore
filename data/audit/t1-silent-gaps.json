@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-16T12:12:23.732Z",
+  "generatedAt": "2026-10-16T15:25:59.022Z",
   "windowDays": 45,
-  "showsScanned": 176,
+  "showsScanned": 174,
   "gaps": [
     {
       "showId": "stuffed-off-west-end-2026",
@@ -18,27 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 20.45651611111111,
+      "fileAgeHours": 23.681313333333332,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "stuffed-off-west-end-2026",
-      "title": "Stuffed",
-      "openingDate": "2026-10-14",
-      "file": "sunday-times--unknown.json",
-      "outletId": "sunday-times",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=stuffed-off-west-end-2026 --url=https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-15T15:12:01.660Z",
-      "fileAgeHours": 21.005478333333333,
-      "gapSeenAt": "2026-10-16T01:59:15.704Z",
-      "nonTerminalAgeHours": 10.218896388888888
+      "nonTerminalAgeHours": 3.2264697222222223
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -47,17 +29,16 @@
       "file": "daily-mail--patrick-marmion.json",
       "outletId": "daily-mail",
       "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
+      "type": "rejected-unscoreable",
       "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
+      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 571.5306744444445,
+      "fileAgeHours": 574.7554519444444,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 122.5502025
+      "nonTerminalAgeHours": 125.77667222222222
     }
   ],
   "contradictions": []

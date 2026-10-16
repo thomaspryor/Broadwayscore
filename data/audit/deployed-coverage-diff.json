@@ -1,46 +1,30 @@
 {
-  "generatedAt": "2026-10-16T12:15:05.402Z",
+  "generatedAt": "2026-10-16T15:26:12.415Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 238,
-  "clean": 236,
-  "defective": 2,
+  "checked": 242,
+  "clean": 241,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-10-13",
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "title": "Who’s Afraid of Virginia Woolf?",
+      "openingDate": "2026-09-30",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.58 vs local 70.35 (Δ0.23)"
+          "detail": "deployed cs 85.61 vs local 85.67 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-10-16T12:14:59.792Z"
-    },
-    {
-      "showId": "la-boheme-off-broadway-2026",
-      "title": "La Bohème",
-      "openingDate": "2026-09-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.25 vs local 90 (Δ1.75)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-16T12:14:59.792Z"
+      "localCount": 41,
+      "deployedCount": 41,
+      "firstDefectAt": "2026-10-16T15:26:07.905Z"
     }
   ],
   "persistentDefective": 0,
