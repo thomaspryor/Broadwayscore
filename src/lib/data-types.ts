@@ -607,6 +607,8 @@ export interface CommercialShowRow {
   modelBelowCosts?: boolean;
   /** ShowCommercial.modelDisplayHold: why the guard hid the bar (getModelHoldLabel). */
   modelDisplayHold?: ShowCommercial['modelDisplayHold'];
+  /** 'enhancement' marks a nonprofit production with commercial money to recoup. */
+  productionType?: ShowCommercial['productionType'] | null;
   /** The analyst's estimate (ShowCommercial.analystRecoupPct/AsOf/Url, BRO-5502). */
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
   analystRecoupAsOf?: string | null;

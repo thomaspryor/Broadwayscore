@@ -21,8 +21,9 @@ import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED
 import { reportedReturnLabel } from '../../scripts/lib/reported-return';
 import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
-  analystRange, estimateFitsDesignation, NO_RECOUPMENT_DESIGNATIONS, RUNNING_SHOWN_MAX,
+  analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
+import { hasNoInvestorRecoupment } from '../../scripts/lib/commercial-designations';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
 
@@ -40,6 +41,8 @@ interface RecoupmentSignals {
   modelRecoupmentPct?: ShowCommercial['modelRecoupmentPct'];
   /** u/Boring_Waltz_9545's published estimate (BRO-5502). */
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
+  /** 'enhancement': a nonprofit production with commercial money to recoup (hasNoInvestorRecoupment). */
+  productionType?: ShowCommercial['productionType'] | null;
   designation?: ShowCommercial['designation'];
   status?: string | null;
 }
@@ -104,7 +107,7 @@ export function getRecoupmentDisplayMode(
   commercial: RecoupmentSignals
 ): RecoupmentDisplayMode {
   if (commercial.recouped === true) return 'announced';
-  if (NO_RECOUPMENT_DESIGNATIONS.includes(commercial.designation ?? '')) return 'none';
+  if (hasNoInvestorRecoupment(commercial)) return 'none';
   if (getDisplayableAnalystRange(commercial)) return 'analyst';
   const model = commercial.modelRecoupmentPct;
   if (!model || !meetsModelQualityFloor(commercial)) return 'none';
@@ -118,7 +121,7 @@ export function getRecoupmentDisplayMode(
  * Flop only when it agrees with the label.
  */
 export function getDisplayableAnalystRange(commercial: RecoupmentSignals): [number, number] | null {
-  if (commercial.recouped === true || NO_RECOUPMENT_DESIGNATIONS.includes(commercial.designation ?? '')) return null;
+  if (commercial.recouped === true || hasNoInvestorRecoupment(commercial)) return null;
   const range = analystRange(commercial);
   if (!range) return null;
   if (isFinalClosedOutcome(commercial) && !estimateFitsDesignation(range, commercial.designation)) return null;
@@ -187,7 +190,7 @@ export function getModelHoldLabel(
   const hold = commercial.modelDisplayHold;
   if (!hold || hold === 'no-model') return null;
   if (commercial.recouped === true || isFinalClosedOutcome(commercial)) return null;
-  if (commercial.designation === 'Nonprofit' || !meetsModelQualityFloor(commercial)) return null;
+  if (hasNoInvestorRecoupment(commercial) || !meetsModelQualityFloor(commercial)) return null;
   if (commercial.modelBelowCosts) return commercial.status === 'closed' ? 'Lost money: est. 0% returned' : 'Losing money so far';
   // "Too early" is wrong once the run is over (BRO-5020).
   if (hold === 'few-weeks') return commercial.status === 'closed' ? 'Not enough data to estimate' : 'Too early to estimate';
@@ -249,8 +252,7 @@ export function getRecoupedCellSummary(row: CellSignals): RecoupedCellSummary {
   }
   const held = getModelHoldLabel(row);
   if (held) return { kind: 'reason', text: held };
-  if (row.designation === 'Nonprofit') return { kind: 'reason', text: 'Not applicable: nonprofit' };
-  if (row.designation === 'Tour Stop') return { kind: 'reason', text: 'Not applicable: tour stop' };
+  if (hasNoInvestorRecoupment(row)) return { kind: 'reason', text: row.designation === 'Tour Stop' ? 'Not applicable: tour stop' : 'Not applicable: nonprofit' };
   // Why there is no estimate: % recouped needs what the show cost to put up,
   // and our model needs what it costs to run.
   if (row.capitalization == null) return { kind: 'reason', text: 'Budget not disclosed' };
@@ -382,6 +384,8 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
+    // An enhancement deal has investors to repay (hasNoInvestorRecoupment); the card needs it to match the table.
+    ...(commercial.productionType ? { productionType: commercial.productionType } : {}),
     modelRecoupmentPct: commercial.modelRecoupmentPct,
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
     ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),

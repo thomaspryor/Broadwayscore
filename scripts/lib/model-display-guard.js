@@ -40,7 +40,7 @@
 // number stays internal.
 
 const { runWindow } = require('./run-window');
-const { FIZZLE_MIN_RETURNED_PCT } = require('./commercial-designations');
+const { FIZZLE_MIN_RETURNED_PCT, hasNoInvestorRecoupment } = require('./commercial-designations');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
 const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
@@ -72,9 +72,6 @@ const RUNNING_MODEL_BAR_TYPES = ['play'];
 // returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
 // report of the capitalization") are no estimate (checker (c), 2026-10-10).
 
-/** Designations with no investors' money of their own to recoup on this page. */
-const NO_RECOUPMENT_DESIGNATIONS = ['Nonprofit', 'Tour Stop'];
-
 /**
  * The analyst's figure as a [low, high] range, or null when the record has none or it
  * is malformed (BRO-5502).
@@ -91,11 +88,14 @@ function analystRange(comm) {
  * contradicting it (BRO-5502)? Its middle must fall in the label's band:
  * Flop under FIZZLE_MIN_RETURNED_PCT returned, Fizzle from there to under
  * 100. Back to the Future read "Flop" next to a model 86% (BRO-4623): that
- * stays hidden. Any other final designation takes no estimate.
+ * stays hidden. "Nonprofit" names how a show was funded, not how it ended, so
+ * an estimate cannot contradict it (only an enhancement deal gets this far,
+ * hasNoInvestorRecoupment). Any other final designation takes no estimate.
  * @param {number[]} range [low, high] or [low, central, high]
  */
 function estimateFitsDesignation(range, designation) {
   if (!Array.isArray(range) || range.length < 2) return false;
+  if (designation === 'Nonprofit') return true;
   const mid = range.length === 3 ? range[1] : (range[0] + range[1]) / 2;
   if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
   if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;
@@ -115,7 +115,7 @@ function isFinalClosed(comm, show) {
  */
 function displaysAnalyst(comm, show) {
   if (!comm || !show) return false;
-  if (comm.recouped === true || NO_RECOUPMENT_DESIGNATIONS.includes(comm.designation)) return false;
+  if (comm.recouped === true || hasNoInvestorRecoupment(comm)) return false;
   const range = analystRange(comm);
   if (!range) return false;
   return !isFinalClosed(comm, show) || estimateFitsDesignation(range, comm.designation);
@@ -130,7 +130,7 @@ function displaysAnalyst(comm, show) {
 function displaysModel(comm, show) {
   if (!comm || !show) return false;
   if (comm.recouped === true) return false;
-  if (NO_RECOUPMENT_DESIGNATIONS.includes(comm.designation)) return false;
+  if (hasNoInvestorRecoupment(comm)) return false;
   if (displaysAnalyst(comm, show)) return false;
   if (!comm.modelRecoupmentPct) return false;
   if (comm.modelDataQuality === 'low' || comm.modelMethod === 'ai-estimated') return false;
@@ -214,7 +214,7 @@ function displayBasis({ pct, exCreditPct, creditCounted, running = false, runnin
 }
 
 module.exports = {
-  displayBasis, analystRange, estimateFitsDesignation, displaysAnalyst, NO_RECOUPMENT_DESIGNATIONS,
+  displayBasis, analystRange, estimateFitsDesignation, displaysAnalyst,
   modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES,
   MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT, MAX_RANGE_WIDTH, RUNNING_SHOWN_MAX,
 };

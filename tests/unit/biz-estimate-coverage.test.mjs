@@ -12,6 +12,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const { hasNoInvestorRecoupment } = createRequire(import.meta.url)('../../scripts/lib/commercial-designations');
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const hasData = ['commercial.json', 'shows.json', 'grosses-history.json'].every((f) => fs.existsSync(path.join(root, 'data', f)));
@@ -37,7 +40,7 @@ test('every /biz row says something in % Recouped', { skip: !hasData && 'core da
     }
     if (cell.kind === 'analyst' && cell.range[0] < 100) assert.ok(cell.range[1] <= 99, `${row.slug}: analyst range ${cell.range} reaches 100 on an unrecouped show`);
     // The analyst's figure shows unless something outranks or contradicts it.
-    if (row.analystRecoupPct && !row.recouped && !['Nonprofit', 'Tour Stop'].includes(row.designation) && row.status !== 'closed') {
+    if (row.analystRecoupPct && !row.recouped && !hasNoInvestorRecoupment(row) && row.status !== 'closed') {
       assert.equal(cell.kind, 'analyst', `${row.slug}: holds the analyst figure but shows ${cell.kind}`);
     }
   }

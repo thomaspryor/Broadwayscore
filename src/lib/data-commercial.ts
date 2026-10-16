@@ -664,6 +664,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
       analystRecoupUrl: data.analystRecoupUrl ?? null,
     } : {}),
     ...(data.reportedReturn ? { reportedReturn: data.reportedReturn } : {}),
+    ...(data.productionType ? { productionType: data.productionType } : {}),
     modelMethod: data.modelMethod || null,
     modelDataQuality: data.modelDataQuality,
     reportedMultiple: getReportedInvestorMultiple(data),

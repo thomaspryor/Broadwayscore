@@ -261,6 +261,11 @@ test('BRO-5502: the analyst figure leads wherever it shows', () => {
   assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, recouped: true }), 'announced');
   assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, designation: 'Nonprofit' }), 'none');
   assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, designation: 'Tour Stop' }), 'none');
+  // A nonprofit production with enhancement money has investors to repay (LCT's Ragtime, analyst 83).
+  const ragtime = { ...twoStrangers, designation: 'Nonprofit', productionType: 'enhancement', status: 'closed', analystRecoupPct: [83, 83] };
+  assert.equal(getRecoupmentDisplayMode(ragtime), 'analyst');
+  assert.deepEqual(getRecoupedCellSummary(ragtime).kind, 'analyst');
+  assert.deepEqual(getRecoupedCellSummary({ ...ragtime, analystRecoupPct: undefined, capitalization: null }), { kind: 'reason', text: 'Budget not disclosed' });
   // A range past 100 on an unrecouped show tops out at 99; a low end of 100+ stays (reads "not yet announced").
   assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [80, 120] }), [80, 99]);
   assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [100, 100] }), [100, 100]);

@@ -82,7 +82,23 @@ function isPrematureSilenceLabel(entry, show, now = Date.now()) {
   return Number.isFinite(closing) && (now - closing) / 86400000 < LOSS_LABEL_MIN_DAYS;
 }
 
+/**
+ * A record with no investors' money of its own to recoup: a tour stop (its
+ * investors are repaid across the whole tour) or a nonprofit production with
+ * no enhancement money. An enhancement deal raises commercial money, so it
+ * counts as commercial everywhere: season totals, the % recouped column and
+ * its estimates (BRO-5502; LCT's Ragtime). One rule for the stats tiles
+ * (isExcludedFromSeasonStats) and the display (model-display-guard.js,
+ * commercial-display.ts).
+ */
+function hasNoInvestorRecoupment(rec) {
+  if (!rec) return false;
+  if (rec.designation === 'Tour Stop') return true;
+  return rec.designation === 'Nonprofit' && rec.productionType !== 'enhancement';
+}
+
 module.exports = {
+  hasNoInvestorRecoupment,
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,

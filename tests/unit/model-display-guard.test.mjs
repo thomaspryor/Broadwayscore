@@ -152,6 +152,7 @@ describe('analyst figure (BRO-5502)', () => {
     assert.equal(estimateFitsDesignation([90, 110], 'Fizzle'), false);
     assert.equal(estimateFitsDesignation([5, 20, 40], 'Flop'), true);
     assert.equal(estimateFitsDesignation([10, 30], 'Windfall'), false);
+    assert.equal(estimateFitsDesignation([83, 83], 'Nonprofit'), true);
     assert.equal(estimateFitsDesignation(null, 'Flop'), false);
   });
   test('displaysAnalyst: running or closed TBD; a closed label it fits; never recouped, nonprofit or tour', () => {
@@ -162,6 +163,8 @@ describe('analyst figure (BRO-5502)', () => {
     assert.equal(displaysAnalyst({ ...est, designation: 'Fizzle' }, { status: 'closed' }), false);
     assert.equal(displaysAnalyst({ ...est, recouped: true }, { status: 'open' }), false);
     assert.equal(displaysAnalyst({ analystRecoupPct: [83, 83], designation: 'Nonprofit' }, { status: 'closed' }), false);
+    // An enhancement deal raises commercial money: the analyst figure shows (BRO-5502, LCT's Ragtime).
+    assert.equal(displaysAnalyst({ analystRecoupPct: [83, 83], designation: 'Nonprofit', productionType: 'enhancement' }, { status: 'closed' }), true);
     assert.equal(displaysAnalyst({ ...est, designation: 'Tour Stop' }, { status: 'open' }), false);
     assert.equal(displaysAnalyst({ designation: 'TBD' }, { status: 'open' }), false);
     assert.equal(displaysAnalyst(null, { status: 'open' }), false);
