@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-15T23:34:27.692Z",
+  "timestamp": "2026-10-16T00:54:29.297Z",
   "stats": {
-    "totalReviews": 56822,
-    "alreadyFlagged": 21106,
+    "totalReviews": 56869,
+    "alreadyFlagged": 21108,
     "dateGuardCatches": 194,
-    "directorMismatch": 1903,
-    "tvFilmSignals": 1583,
-    "londonSignals": 2363,
+    "directorMismatch": 1908,
+    "tvFilmSignals": 1586,
+    "londonSignals": 2365,
     "offBroadwaySignals": 512,
-    "yearMismatch": 142,
-    "noPublishDate": 5273
+    "yearMismatch": 144,
+    "noPublishDate": 5274
   },
   "findings": [
     {
@@ -168,6 +168,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (4x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--christine-swerczek.json",
+      "publishDate": "2026-02-11",
+      "url": "https://www.broadwayworld.com/omaha/article/Review-A-BEAUTIFUL-NOISE-at-Orpheum-Theatre-20260211",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (1x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -8095,6 +8108,19 @@
     },
     {
       "showId": "clue-tour-2025",
+      "file": "gephardt-daily--nancy-van-valkenburg.json",
+      "publishDate": "2026-02-13",
+      "url": "https://gephardtdaily.com/local/review-clue-delivers-farcical-murder-mystery/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
       "file": "houston-chronicle--doni-wilson.json",
       "score": 63,
       "publishDate": "2026-06-10",
@@ -8126,6 +8152,19 @@
       "score": 61,
       "publishDate": "2026-03-16",
       "url": "https://munroreview.com/2026/03/15/theater-review-a-clever-script-for-clue-delivers-laughs-but-one-note-performances-diminish-the-farce/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "phenomnaltwincities--stephanie-kwong.json",
+      "publishDate": "2026-10-11",
+      "url": "https://www.phenomnaltwincities.com/review-clue/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26655,7 +26694,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2025-02-20",
       "url": "https://www.allthatdazzles.co.uk/post/review-much-ado-about-nothing-theatre-royal-drury-lane",
       "findings": [
@@ -26753,7 +26792,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": null,
+      "score": 94,
       "publishDate": "February 20th, 2025",
       "url": "https://www.theguardian.com/stage/2025/feb/19/much-ado-about-nothing-review-theatre-royal-tom-hiddleston-hayley-atwell",
       "findings": [
@@ -26870,7 +26909,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "radio-times--olivia-garrett.json",
-      "score": 97,
+      "score": 99,
       "publishDate": "2025-02-21",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/much-ado-about-nothing-review/",
       "findings": [
@@ -34561,6 +34600,24 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "equality365--eric-andrews-katz.json",
+      "publishDate": "2026-02-09",
+      "url": "https://equality365.com/review-spamalot-the-holy-grail-of-musicals/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2005 (2x) more than 2025 (0x). 2005 matches production: spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "funfandomblog--audra-miller.json",
       "score": 88,
       "publishDate": "2026-07-20",
@@ -39884,6 +39941,19 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2026-02-05",
+      "url": "https://hotchka.com/the-great-gatsby-tour-review-baltimore-hippodrome",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "huntnewsnu--sabrina-lopez.json",
       "score": 75,
       "publishDate": "2026-08-09",
@@ -42713,6 +42783,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "new-city-stage--tristan-bruns.json",
+      "publishDate": "2026-02-16",
+      "url": "https://www.newcitystage.com/2026/02/16/get-ready-to-rumble-with-the-outsiders-at-cadillac-palace-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "next-magazine--neel-modi.json",
       "score": 93,
       "publishDate": "2026-06-22",
@@ -42843,6 +42926,19 @@
       "score": 79,
       "publishDate": "2026-03-09",
       "url": "https://www.theonlycritic.com/post/the-outsiders-review-a-vulnerable-high-voltage-musical-reimagining-that-honors-the-novel-s-heart",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-02-15",
+      "url": "https://thirdcoastreview.com/stages/2026/02/15/review-the-outsiders-broadway-in-chicago",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48519,6 +48615,19 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "in-good-taste-denver--in-good-taste-denver.json",
+      "publishDate": "2026-02-12",
+      "url": "https://ingoodtastedenver.com/water-for-elephants/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "latimes--jenelle-riley.json",
       "publishDate": "2026-09-14",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-09-14/water-for-elephants-at-pantages-is-circus-in-play",
@@ -48550,6 +48659,19 @@
       "score": 73,
       "publishDate": "2026-10-08",
       "url": "https://www.nwtheatre.org/2026/10/08/welcome-to-the-circus-water-for-elephants-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "onstage-colorado--toni-tresca.json",
+      "publishDate": "2026-02-13",
+      "url": "https://onstagecolorado.com/water-for-elephants-is-a-stunning-circus-story-perfect-for-the-stage/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56814,6 +56936,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 17,
       "publishDate": "2026-07-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/cleansed-theatre-review-dhhc3h39n",
       "findings": [
@@ -58528,6 +58651,19 @@
       "score": 77,
       "publishDate": "2026-10-05",
       "url": "https://mdtheatreguide.com/2026/10/theatre-review-dirty-dancing-the-musical-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-09-25",
+      "url": "https://mdtheatreguide.com/2026/09/a-quick-5-with-erick-pinnick-actor-in-dirty-dancing-the-musical-at-the-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -62072,7 +62208,7 @@
     {
       "showId": "guess-how-much-i-love-you-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-01-23",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/guess-how-much-i-love-you-review-royal-court-fpttt78rd",
       "findings": [
@@ -75280,6 +75416,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 82,
+      "publishDate": "2026-10-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/some-woman-dorfman-national-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
