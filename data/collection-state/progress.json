@@ -40,7 +40,17 @@
     "franz-and-marie-west-end-2026/jolienstheatrediary--jolien.json",
     "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
     "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json",
-    "franz-and-marie-west-end-2026/north-west-end--zain-russell.json"
+    "franz-and-marie-west-end-2026/north-west-end--zain-russell.json",
+    "midnight-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json",
+    "cadel-lungs-on-legs-west-end-2026/london-box-office--francesca-shaw.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/broadwayworld--unknown.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "midnight-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "midnight-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "midnight-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "othello-west-end-2022/standard--unknown.json",
@@ -81,7 +91,18 @@
     "an-oak-tree-off-west-end-2026/thestage--unknown.json",
     "from-the-heart-west-end-2026/thestage--neil-norman.json",
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
-    "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json"
+    "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -111,7 +132,13 @@
       "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
       "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json",
       "franz-and-marie-west-end-2026/jolienstheatrediary--jolien.json",
-      "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json"
+      "franz-and-marie-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json",
+      "cadel-lungs-on-legs-west-end-2026/london-box-office--francesca-shaw.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+      "midnight-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "midnight-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "midnight-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -125,7 +152,11 @@
       "rent-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
-      "some-woman-west-end-2026/times-uk--clive-davis.json"
+      "some-woman-west-end-2026/times-uk--clive-davis.json",
+      "midnight-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -141,6 +172,18 @@
     ]
   },
   "startTime": "2026-10-16T13:35:14.517Z",
-  "lastProcessed": "franz-and-marie-west-end-2026/north-west-end--zain-russell.json",
-  "log": []
+  "lastProcessed": "stuffed-off-west-end-2026/sunday-times--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-16T14:36:51.835Z",
+      "event": "bb-session",
+      "session": "a163be79",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-16T14:36:52.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
