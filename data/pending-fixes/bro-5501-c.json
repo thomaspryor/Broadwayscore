@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5501-c",
   "planId": "d63fac32-7d75-4a37-806f-f61965df61fd",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -20,5 +20,13 @@
         "description": "Delete + tombstone the 6 misfiled archive pages"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T21:21:46.330Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-sibling-misfile-archive.js successfully"
+    }
+  ]
 }
