@@ -204,7 +204,7 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)thecomedybureau\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)oklahomatickets\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)ticketsmarter\.com$/, reason: 'ticketing-reseller' },
-  { host: /(^|\.)axs\.com$/, path: /^\/events\//i, reason: 'ticketing-reseller' },
+  { host: /(^|\.)axs\.com$/, path: /^(\/[a-z]{2}(-[a-z]{2})?)?\/events\//i, reason: 'ticketing-reseller' }, // BRO-5377: /uk/events/ locale prefix
   { host: /(^|\.)ticketx\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)viptickets\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)ticketwarehouse\.com$/, reason: 'ticketing-reseller' },

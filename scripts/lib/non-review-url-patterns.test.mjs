@@ -509,3 +509,10 @@ test('BRO-5349: axs.com is excluded only on /events/ (it also hosted /theatre-re
     assert.equal(namedNonReviewReason(u), 'ticketing-reseller', u);
   }
 });
+
+test('BRO-5377: axs.com locale-prefixed /uk/events/ ticket pages are ticketing-reseller; review pages still pass', () => {
+  assert.equal(namedNonReviewReason('https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets'), 'ticketing-reseller');
+  assert.equal(classifyGapCandidateUrl('https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets').ok, false);
+  assert.equal(namedNonReviewReason('https://www.axs.com/uk/theatre-review-sweat-75388'), null);
+  assert.equal(namedNonReviewReason('https://www.axs.com/theatre-review-sweat-at-arena-stage-75388'), null);
+});
