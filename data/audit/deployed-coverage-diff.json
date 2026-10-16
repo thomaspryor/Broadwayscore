@@ -1,65 +1,13 @@
 {
-  "generatedAt": "2026-10-16T20:48:43.774Z",
+  "generatedAt": "2026-10-16T23:20:59.017Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 241,
-  "clean": 237,
-  "defective": 4,
-  "byType": {
-    "score-drift": 3,
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-10-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.85 vs local 71.38 (Δ0.47)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32,
-      "firstDefectAt": "2026-10-16T20:48:40.544Z"
-    },
-    {
-      "showId": "lost-in-del-valle-return-off-broadway-2026",
-      "title": "Lost in Del Valle",
-      "openingDate": "2026-09-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.81 vs local 79.34 (Δ1.47)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-10-16T20:48:40.544Z"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.5 vs local 81.07 (Δ0.43)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-10-16T20:48:40.544Z"
-    }
-  ],
+  "clean": 241,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T20:48:44.290Z",
+  "generatedAt": "2026-10-16T23:20:59.511Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,6 +103,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -131,19 +135,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 712,
-  "matchedGaps": 5,
-  "possibleGaps": 8,
+  "itemsScanned": 708,
+  "matchedGaps": 3,
+  "possibleGaps": 7,
   "gaps": [
-    {
-      "showId": "jane-eyre-rose-kingston-off-west-end-2026",
-      "title": "Jane Eyre",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
-      "headline": "Review: JANE EYRE, Rose Theatre Kingston - Tour",
-      "publishDate": "2026-10-15"
-    },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
@@ -163,30 +158,12 @@
       "publishDate": "2026-10-16"
     },
     {
-      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-      "title": "The Banality of Evil: Hannah Arendt, France 1940",
-      "level": "matched",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
-      "headline": "“The Banality of Evil: Hannah Arendt, France, 1940” at Arcola Theatre",
-      "publishDate": "2026-10-16"
-    },
-    {
       "showId": "the-cherry-orchard-west-end-2026",
       "title": "The Cherry Orchard",
       "level": "matched",
       "outletId": "plays-international",
       "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
       "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "fish-off-broadway-2026",
-      "title": "Fish",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
-      "headline": "Good Time Charlie ***, Fish ****, Anon ***",
       "publishDate": "2026-10-16"
     },
     {
