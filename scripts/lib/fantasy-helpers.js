@@ -219,7 +219,9 @@ async function fetchFantasyEntries(opts = {}) {
   const all = [];
   for (let offset = 0; ; offset += PAGE) {
     const params = new URLSearchParams({ select: '*', order: 'created_at.asc,id.asc', limit: String(PAGE), offset: String(offset) });
-    if (opts.season) params.append('season', `eq.${opts.season}`);
+    // Always one season: practice teams (BRO-5487) share this table, so a
+    // caller that forgets the season must still get the real one only.
+    params.append('season', `eq.${opts.season || seasonConfig.season}`);
     if (opts.league) params.append('league_name', `eq.${opts.league}`);
     if (opts.email && useAdmin) params.append('email', `eq.${opts.email}`);
     const rows = await fetchEntriesPage(`${supabaseUrl}/rest/v1/${table}?${params}`, key, useAdmin);
@@ -378,6 +380,8 @@ function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig)
   // Same 5-minute grace as src/config/fantasy.ts DEADLINE_GRACE_MS: the
   // database stamps created_at just after the route's deadline check.
   if (entry.created_at && Date.parse(entry.created_at) > Date.parse(cfg.draftDeadline) + DEADLINE_GRACE_MS) return false;
+  // Mirrors src/lib/data-fantasy.ts: nothing real is drafted before the draft opens.
+  if (entry.created_at && cfg.draftOpens && nyDate(entry.created_at) < cfg.draftOpens) return false;
   return true;
 }
 

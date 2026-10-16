@@ -9,8 +9,8 @@ import {
   SCORING_END,
   EARLY_BIRD_CUTOFF,
   hasLateEntry,
-  isDraftClosed,
-  isDraftOpen,
+  draftMode,
+  PRACTICE_SEASON,
   isScoreLockedForEntry,
   pickLimitNote,
   canonicalFantasyEmail,
@@ -86,6 +86,8 @@ function buildConfirmationHtml(opts: {
   createdAt: string;
   picks: Array<{ title: string; price: number; locked: boolean; note: string | null; openingDate: string | null }>;
   totalCost: number;
+  /** A practice team (BRO-5487): same email, clearly marked, no standings promises. */
+  practice?: boolean;
 }): string {
   const scoringFrom = scoringFromDate(opts.createdAt);
   const isEarlyBird = nyDate(opts.createdAt) <= EARLY_BIRD_CUTOFF;
@@ -108,10 +110,11 @@ function buildConfirmationHtml(opts: {
     <div style="background:#111111;border:1px solid #1f1f1f;border-radius:16px;overflow:hidden;">
       <div style="padding:28px 28px 20px;border-bottom:1px solid #1f1f1f;text-align:center;">
         <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Broadway Scorecard</div>
-        <div style="font-size:24px;font-weight:900;color:#ffffff;letter-spacing:-0.03em;">Your team is locked in</div>
+        <div style="font-size:24px;font-weight:900;color:#ffffff;letter-spacing:-0.03em;">${opts.practice ? 'Your practice team is saved' : 'Your team is locked in'}</div>
         <div style="font-size:13px;color:#6b7280;margin-top:4px;">Broadway Fantasy League &middot; ${escapeHtml(FANTASY_SEASON)} season</div>
       </div>
       <div style="padding:20px 28px;">
+        ${opts.practice ? `<p style="margin:0 0 14px;padding:10px 12px;border-radius:8px;background:#1c1917;color:#fcd34d;font-size:13px;line-height:1.5;">This is a practice team. It does not count and will not appear on the leaderboard. The real draft opens ${formatLongDate(DRAFT_OPENS)}, and your real team is a separate entry.</p>` : ''}
         ${opts.teamName ? `<p style="margin:0 0 12px;color:#ffffff;font-size:16px;font-weight:700;">${escapeHtml(opts.teamName)}</p>` : ''}
         ${leagueLine}
         <table style="width:100%;border-collapse:collapse;">
@@ -122,7 +125,10 @@ function buildConfirmationHtml(opts: {
           </tr>
         </table>
       </div>
-      <div style="padding:0 28px 24px;color:#a1a1aa;font-size:13px;line-height:1.5;">
+      ${opts.practice ? `<div style="padding:0 28px 28px;color:#a1a1aa;font-size:13px;line-height:1.5;text-align:center;">
+        <p style="margin:0 0 16px;">Thanks for testing. Reply to this email with anything that confused you.</p>
+        <a href="${SITE}/fantasy" style="display:inline-block;padding:12px 28px;background:#d4a574;color:#09090b;text-decoration:none;border-radius:10px;font-size:13px;font-weight:700;">Back to the game</a>
+      </div>` : `<div style="padding:0 28px 24px;color:#a1a1aa;font-size:13px;line-height:1.5;">
         <p style="margin:0 0 10px;">Box office points count from ${!hasLateEntry() ? `${formatLongDate(scoringFrom)}, the same start date for every team` : isEarlyBird ? `${formatLongDate(scoringFrom)}, the first scoring week` : `the week of ${formatLongDate(scoringFrom)}, the week you drafted`}.</p>
         <p style="margin:0 0 10px;">Critic and audience points count for every pick that had not opened yet when you drafted (audience points only if its audience grade was not public yet).${lockedCount > 0 ? ` ${lockedCount === 1 ? 'One pick had' : `${lockedCount} picks had`} already opened, as marked above.` : ''}</p>
         <p style="margin:0 0 10px;">Awards points arrive in May and June. Final standings post after the Tony Awards on ${formatLongDate(SCORING_END)}.</p>
@@ -131,7 +137,7 @@ function buildConfirmationHtml(opts: {
       <div style="padding:0 28px 28px;text-align:center;">
         <a href="${SITE}/fantasy/leaderboard" style="display:inline-block;padding:12px 28px;background:#d4a574;color:#09090b;text-decoration:none;border-radius:10px;font-size:13px;font-weight:700;">View the leaderboard</a>
         <div style="margin-top:10px;font-size:12px;color:#6b7280;">Search the leaderboard by this email address to find your team.</div>
-      </div>
+      </div>`}
     </div>
     <div style="text-align:center;padding:20px 0 0;font-size:11px;color:#374151;">
       <a href="${SITE}/fantasy" style="color:#4b5563;text-decoration:none;">broadwayscorecard.com/fantasy</a>
@@ -160,19 +166,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Draft window
-    if (isDraftClosed()) {
-      return NextResponse.json({ error: 'The draft window has closed.' }, { status: 400 });
-    }
-    if (!isDraftOpen()) {
-      return NextResponse.json({ error: `The draft opens on ${formatLongDate(DRAFT_OPENS)}.` }, { status: 400 });
-    }
-
     // Parse body
     const body = await request.json().catch(() => null);
     if (!body) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
+
+    // Draft window. Practice teams (BRO-5487) are taken until the real draft
+    // opens and saved under PRACTICE_SEASON, so they never count. A practice
+    // request is never saved as a real entry, whatever the time.
+    const mode = draftMode(body.practice === true);
+    if (mode === 'closed') {
+      return NextResponse.json({ error: 'The draft window has closed.' }, { status: 400 });
+    }
+    if (mode === 'practice-over') {
+      return NextResponse.json({ error: 'The practice round is over. Nothing was saved. Draft for real at broadwayscorecard.com/fantasy/draft.' }, { status: 400 });
+    }
+    if (mode === 'not-open') {
+      return NextResponse.json({ error: `The draft opens on ${formatLongDate(DRAFT_OPENS)}.` }, { status: 400 });
+    }
+    const practice = mode === 'practice';
 
     const { email, team_name, league_name, picks, tiebreakers } = body;
 
@@ -189,7 +202,8 @@ export async function POST(request: NextRequest) {
 
     // Validate team_name and league_name
     const cleanTeamName = team_name ? String(team_name).trim().slice(0, 50) : null;
-    const cleanLeagueName = league_name ? String(league_name).trim().toLowerCase().slice(0, 50) : null;
+    // League pages only read the real season, so practice teams join none.
+    const cleanLeagueName = league_name && !practice ? String(league_name).trim().toLowerCase().slice(0, 50) : null;
 
     // If league_name looks like a 6-char code, validate it exists
     const supabase = getServerSupabaseClient();
@@ -245,7 +259,7 @@ export async function POST(request: NextRequest) {
       picks,
       tiebreakers: cleanTiebreakers(tiebreakers),
       total_cost: totalCost,
-      season: FANTASY_SEASON,
+      season: practice ? PRACTICE_SEASON : FANTASY_SEASON,
       picks_prices_snapshot: picksPricesSnapshot,
       price_version_at_submission: priceVersion,
     };
@@ -268,7 +282,11 @@ export async function POST(request: NextRequest) {
         // at 20/hour for the same reason).
         recordSubmission(ip);
         return NextResponse.json(
-          { error: 'This email has already submitted a team for this season. Picks are final.' },
+          {
+            error: practice
+              ? `This email already has a practice team. Practice is one team per email, like the real draft. Your real team is a separate entry from ${formatLongDate(DRAFT_OPENS)}.`
+              : 'This email has already submitted a team for this season. Picks are final.',
+          },
           { status: 409 }
         );
       }
@@ -304,7 +322,7 @@ export async function POST(request: NextRequest) {
             from: FROM_EMAIL,
             reply_to: REPLY_TO_EMAIL,
             to: [normalizedEmail],
-            subject: `Your Broadway Fantasy League team${cleanTeamName ? `: ${cleanTeamName}` : ''}`,
+            subject: `${practice ? 'Practice: ' : ''}Your Broadway Fantasy League team${cleanTeamName ? `: ${cleanTeamName}` : ''}`,
             html: buildConfirmationHtml({
               teamName: cleanTeamName,
               leagueName: cleanLeagueName,
@@ -312,6 +330,7 @@ export async function POST(request: NextRequest) {
               createdAt,
               picks: pickSummary,
               totalCost,
+              practice,
             }),
           }),
         });
@@ -333,6 +352,7 @@ export async function POST(request: NextRequest) {
       pick_notes: Object.fromEntries((picks as string[]).map((id, i) => [id, pickSummary[i].note]).filter(([, n]) => n)),
       roster_limit: FANTASY_TEAM_SIZE,
       email_sent: emailSent,
+      practice,
     });
   } catch (err) {
     console.error('Fantasy draft error:', err);

@@ -26,6 +26,10 @@ import {
   DEADLINE_GRACE_MS,
   DRAFT_OPENS,
   isDraftOpen,
+  isPracticeOpen,
+  draftMode,
+  PRACTICE_SEASON,
+  FANTASY_SEASON,
 } from '../../src/config/fantasy';
 import { isValidLeaderboardEntry, getFantasyShows } from '../../src/lib/data-fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
@@ -283,5 +287,52 @@ describe('isDraftOpen boundaries', () => {
     const deadline = new Date(DRAFT_DEADLINE);
     assert.strictEqual(isDraftOpen(deadline), true);
     assert.strictEqual(isDraftOpen(new Date(deadline.getTime() + 1000)), false);
+  });
+});
+
+// Practice drafts (BRO-5487): their own season, open only before the real draft.
+describe('practice drafts', () => {
+  test('save under a season no real-season reader selects, within the insert policy length', () => {
+    assert.notStrictEqual(PRACTICE_SEASON, FANTASY_SEASON);
+    // 20261016_fantasy_entries_insert_hardening.sql: char_length(season) BETWEEN 4 AND 20
+    assert.ok(PRACTICE_SEASON.length >= 4 && PRACTICE_SEASON.length <= 20, `${PRACTICE_SEASON} is ${PRACTICE_SEASON.length} chars`);
+  });
+  test('open the evening before the real draft, closed from its morning', () => {
+    assert.strictEqual(isPracticeOpen(new Date(`${DRAFT_OPENS}T03:00:00Z`)), true);
+    assert.strictEqual(isPracticeOpen(new Date(`${DRAFT_OPENS}T12:00:00Z`)), false);
+  });
+  test('practice and the real draft never overlap', () => {
+    for (const iso of [`${DRAFT_OPENS}T03:00:00Z`, `${DRAFT_OPENS}T12:00:00Z`]) {
+      const d = new Date(iso);
+      assert.ok(!(isPracticeOpen(d) && isDraftOpen(d)), iso);
+    }
+  });
+});
+
+// The link's intent decides practice vs real (BRO-5487): a practice request is
+// never a real entry, at any instant. Midnight EDT on draft day is 04:00Z.
+describe('draftMode', () => {
+  const justBefore = new Date(`${DRAFT_OPENS}T03:59:59Z`);
+  const midnight = new Date(`${DRAFT_OPENS}T04:00:00Z`);
+  const afterDeadline = new Date(Date.parse(DRAFT_DEADLINE) + 1000);
+  test('a practice link is practice until midnight, then practice-over, never open', () => {
+    assert.strictEqual(draftMode(true, justBefore), 'practice');
+    assert.strictEqual(draftMode(true, midnight), 'practice-over');
+  });
+  test('the real draft is not open until midnight, then open', () => {
+    assert.strictEqual(draftMode(false, justBefore), 'not-open');
+    assert.strictEqual(draftMode(false, midnight), 'open');
+  });
+  test('after the deadline both links are closed', () => {
+    assert.strictEqual(draftMode(true, afterDeadline), 'closed');
+    assert.strictEqual(draftMode(false, afterDeadline), 'closed');
+  });
+});
+
+describe('isValidLeaderboardEntry draft-open floor (BRO-5487)', () => {
+  const [anyId] = Object.keys(getFantasyShows()).filter(id => getFantasyShows()[id].price <= 20);
+  test('a real-season row stamped before the draft opened does not count', () => {
+    assert.strictEqual(isValidLeaderboardEntry({ picks: [anyId], created_at: `${DRAFT_OPENS}T03:59:59Z` }), false);
+    assert.strictEqual(isValidLeaderboardEntry({ picks: [anyId], created_at: `${DRAFT_OPENS}T04:00:01Z` }), true);
   });
 });
