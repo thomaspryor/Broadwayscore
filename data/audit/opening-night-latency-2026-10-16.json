@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-16T17:29:24.287Z",
+  "generatedAt": "2026-10-16T21:16:12.543Z",
   "date": "2026-10-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 268062,
+  "entryCount": 283739,
   "shows": [
     {
       "showId": "the-lion-king-west-end-2021",
@@ -318,7 +318,7 @@
       "p90_e2e_ms": 122271127,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 429645,
+        "collected-to-scored": 465916,
         "scored-to-rebuilt": 422510,
         "rebuilt-to-deployed": 116973555
       },
@@ -646,12 +646,12 @@
     },
     {
       "showId": "from-the-heart-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2621403,
         "scored-to-rebuilt": 387734,
         "rebuilt-to-deployed": null
       },
@@ -721,7 +721,7 @@
     },
     {
       "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-      "reviewCount": 21,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -796,12 +796,12 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2527027,
         "scored-to-rebuilt": 444629,
         "rebuilt-to-deployed": 116452360
       },
@@ -816,7 +816,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2554843,
         "scored-to-rebuilt": 404539,
         "rebuilt-to-deployed": null
       },
@@ -1221,8 +1221,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 9478076,
+        "scored-to-rebuilt": 212530,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1726,13 +1726,13 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "reviewCount": 29,
+      "reviewCount": 32,
       "median_e2e_ms": 150793887,
       "p90_e2e_ms": 214737881,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 585720,
-        "scored-to-rebuilt": 397282,
+        "scored-to-rebuilt": 373128,
         "rebuilt-to-deployed": 141522355
       },
       "reviews_over_15min": 5,
@@ -2337,13 +2337,13 @@
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 786300,
-        "scored-to-rebuilt": 547440,
+        "scored-to-rebuilt": 440603,
         "rebuilt-to-deployed": 213070607
       },
       "reviews_over_15min": 0,
@@ -2532,13 +2532,13 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 33,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 515757,
+        "collected-to-scored": 15474648,
+        "scored-to-rebuilt": 212524,
         "rebuilt-to-deployed": 210709642
       },
       "reviews_over_15min": 0,
@@ -10367,7 +10367,7 @@
     },
     {
       "showId": "gimme-a-sign-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12043,7 +12043,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2624720,
+        "collected-to-scored": 2721328,
         "scored-to-rebuilt": 278832,
         "rebuilt-to-deployed": 64414760
       },
@@ -12083,13 +12083,13 @@
     },
     {
       "showId": "midnight-off-broadway-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": 31877560,
       "p90_e2e_ms": 31881328,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 538292,
-        "scored-to-rebuilt": 513823,
+        "collected-to-scored": 539431,
+        "scored-to-rebuilt": 511220,
         "rebuilt-to-deployed": 28873874
       },
       "reviews_over_15min": 2,
@@ -13305,13 +13305,13 @@
     },
     {
       "showId": "some-woman-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 14,
       "median_e2e_ms": 5133679,
       "p90_e2e_ms": 5133900,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3816931,
-        "scored-to-rebuilt": 433369,
+        "scored-to-rebuilt": 433228,
         "rebuilt-to-deployed": 2596982
       },
       "reviews_over_15min": 2,
@@ -13456,7 +13456,7 @@
       "p90_e2e_ms": 27155459,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 677369,
+        "collected-to-scored": 697405,
         "scored-to-rebuilt": 472155,
         "rebuilt-to-deployed": 24874783
       },
@@ -14001,21 +14001,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "sea-wall-off-broadway-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 6122055,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "zorba-1983",
       "reviewCount": 2,
       "median_e2e_ms": null,
@@ -14031,8 +14016,38 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "reviewCount": 5,
+      "showId": "lost-in-del-valle-return-off-broadway-2026",
+      "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 11029629,
+        "scored-to-rebuilt": 212530,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-bathroom-attendant-off-broadway-2026",
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
