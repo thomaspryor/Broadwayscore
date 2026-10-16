@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { FantasyShow } from '@/config/fantasy';
-import { ELIGIBILITY_MARKERS } from '@/config/fantasy';
+import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isAudienceLockedForEntry, earnsBoxOffice } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { showFormatTitle } from '@/lib/show-format';
 import FantasyOwnershipTag from './FantasyOwnershipTag';
@@ -14,6 +14,8 @@ interface FantasyShowPickerProps {
   onRemove: (showId: string) => void;
   remainingBudget: number;
   slotIndex: number;
+  /** The drafter's clock: a show that has opened by now earns them no critic/audience points. */
+  now: Date;
 }
 
 export default function FantasyShowPicker({
@@ -23,6 +25,7 @@ export default function FantasyShowPicker({
   onRemove,
   remainingBudget,
   slotIndex,
+  now,
 }: FantasyShowPickerProps) {
   const [search, setSearch] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -48,12 +51,15 @@ export default function FantasyShowPicker({
     return true;
   });
 
-  // Sort: affordable first, then by price desc
+  // Sort: affordable first, closed shows last, then by price desc
   const sorted = [...available].sort((a, b) => {
     const aAffordable = a.price <= remainingBudget + (selectedShow?.price ?? 0);
     const bAffordable = b.price <= remainingBudget + (selectedShow?.price ?? 0);
     if (aAffordable && !bAffordable) return -1;
     if (!aAffordable && bAffordable) return 1;
+    const aClosed = a.status === 'closed';
+    const bClosed = b.status === 'closed';
+    if (aClosed !== bClosed) return aClosed ? 1 : -1;
     return b.price - a.price;
   });
 
@@ -77,9 +83,9 @@ export default function FantasyShowPicker({
           </div>
           <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
             <span className="whitespace-nowrap">{showFormatTitle(selectedShow.type)}</span>
-            {!selectedShow.eligible.criticScore ? (
-              <span className="text-yellow-400 whitespace-nowrap" title="Already open: box office and awards points only">
-                {ELIGIBILITY_MARKERS.criticScoreLocked} Already open
+            {isShowOpenForDrafter(selectedShow, now) ? (
+              <span className="text-yellow-400 whitespace-nowrap">
+                {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(selectedShow) ? '' : ': awards only'}
               </span>
             ) : (
               <>
@@ -87,7 +93,10 @@ export default function FantasyShowPicker({
                   <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(selectedShow.criticScore)}</span>
                 )}
                 {selectedShow.audienceGrade != null && (
-                  <span className="text-yellow-400 whitespace-nowrap">Grade: {selectedShow.audienceGrade}</span>
+                  <span className="text-yellow-400 whitespace-nowrap">
+                    Grade: {selectedShow.audienceGrade}
+                    {isAudienceLockedForEntry(selectedShow.audienceGradeSince, now.toISOString()) && <span className="text-gray-500"> (public: no audience pts)</span>}
+                  </span>
                 )}
               </>
             )}
@@ -191,9 +200,9 @@ export default function FantasyShowPicker({
                     </div>
                     <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
                       <span className="whitespace-nowrap">{showFormatTitle(show.type)}</span>
-                      {!show.eligible.criticScore ? (
-                        <span className="text-yellow-400 whitespace-nowrap" title="Already open: box office and awards points only">
-                          {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
+                      {isShowOpenForDrafter(show, now) ? (
+                        <span className="text-yellow-400 whitespace-nowrap">
+                          {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(show) ? '' : ': awards only'}{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
                         </span>
                       ) : (
                         <>
@@ -201,15 +210,21 @@ export default function FantasyShowPicker({
                             <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(show.criticScore)}</span>
                           )}
                           {show.audienceGrade != null && (
-                            <span className="text-yellow-400 whitespace-nowrap">Grade: {show.audienceGrade}</span>
+                            <span className="text-yellow-400 whitespace-nowrap">
+                              Grade: {show.audienceGrade}
+                              {isAudienceLockedForEntry(show.audienceGradeSince, now.toISOString()) && <span className="text-gray-500"> (public: no audience pts)</span>}
+                            </span>
                           )}
                           {show.openingDate && (
                             <span className="text-gray-500 whitespace-nowrap">opens {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
                           )}
                         </>
                       )}
+                      {!earnsBoxOffice(show) && show.eligible.boxOffice && (
+                        <span className="text-gray-400 whitespace-nowrap">† closes before box office starts</span>
+                      )}
                       {!show.eligible.boxOffice && (
-                        <span className="text-gray-500 whitespace-nowrap">† no box office</span>
+                        <span className="text-gray-400 whitespace-nowrap">† no box office</span>
                       )}
                       <FantasyOwnershipTag showId={show.id} />
                     </div>

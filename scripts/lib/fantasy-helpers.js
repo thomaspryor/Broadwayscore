@@ -25,9 +25,17 @@ const https = require('https');
  * @param {object} scoringConfig — scoring.awards from fantasy-league.json
  * @returns {{ points: number, awardsList: string[] }}
  */
-function computeAwardsPoints(showId, awardsData, scoringConfig) {
-  const showAwards = awardsData.shows?.[showId];
-  if (!showAwards) return { points: 0, awardsList: [] };
+function computeAwardsPoints(showId, awardsData, scoringConfig, opts = {}) {
+  const rawAwards = awardsData.shows?.[showId];
+  if (!rawAwards) return { points: 0, awardsList: [] };
+  // opts.season ('2026-27', the Tony window label): only that season's
+  // records score. A show that transferred in can carry last season's
+  // Off-Broadway Lortel/Drama Desk records under the same id.
+  const showAwards = {};
+  for (const [key, rec] of Object.entries(rawAwards)) {
+    if (opts.season && rec && typeof rec === 'object' && rec.season && rec.season !== opts.season) continue;
+    showAwards[key] = rec;
+  }
 
   let points = 0;
   const awardsList = [];
@@ -36,7 +44,7 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   if (showAwards.tony) {
     const tony = showAwards.tony;
     const wins = tony.wins || [];
-    const totalNoms = tony.nominations ?? wins.length;
+    const totalNoms = nominationCount(tony);
     const nomOnly = Math.max(0, totalNoms - wins.length);
 
     if (nomOnly > 0) {
@@ -63,7 +71,7 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   if (showAwards.dramadesk) {
     const dd = showAwards.dramadesk;
     const wins = dd.wins || [];
-    const totalNoms = dd.nominations ?? wins.length;
+    const totalNoms = nominationCount(dd);
     const nomOnly = Math.max(0, totalNoms - wins.length);
 
     if (nomOnly > 0) {
@@ -80,7 +88,7 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   if (showAwards.outerCriticsCircle) {
     const occ = showAwards.outerCriticsCircle;
     const wins = occ.wins || [];
-    const totalNoms = occ.nominations ?? wins.length;
+    const totalNoms = nominationCount(occ);
     const nomOnly = Math.max(0, totalNoms - wins.length);
 
     if (nomOnly > 0) {
@@ -97,8 +105,7 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   if (showAwards.dramaLeague) {
     const dl = showAwards.dramaLeague;
     const wins = dl.wins || [];
-    // Drama League often lacks nominations field — default to wins.length
-    const totalNoms = dl.nominations ?? wins.length;
+    const totalNoms = nominationCount(dl);
     const nomOnly = Math.max(0, totalNoms - wins.length);
 
     if (nomOnly > 0) {
@@ -112,8 +119,10 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   }
 
   // ── NY Drama Critics' Circle ──────────────────────────────────
-  if (showAwards.nydcc) {
-    const nydcc = showAwards.nydcc;
+  // awards.json writes nyDramaCritics; nydcc is the old key (never populated).
+  const nydccRecord = showAwards.nyDramaCritics ?? showAwards.nydcc;
+  if (nydccRecord) {
+    const nydcc = nydccRecord;
     const wins = nydcc.wins || [];
     if (wins.length > 0) {
       points += wins.length * (scoringConfig.nydccWin || 0);
@@ -125,7 +134,7 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   if (showAwards.lortel) {
     const lortel = showAwards.lortel;
     const wins = lortel.wins || [];
-    const totalNoms = lortel.nominations ?? wins.length;
+    const totalNoms = nominationCount(lortel);
     const nomOnly = Math.max(0, totalNoms - wins.length);
 
     if (nomOnly > 0) {
@@ -149,6 +158,24 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
   }
 
   return { points: Math.round(points * 100) / 100, awardsList };
+}
+
+/**
+ * Nominations a show received from one ceremony. The precursor scrapers
+ * write only `nominatedFor` (one entry per nomination, so a category can
+ * repeat for two performers) and no `nominations` count; reading
+ * `nominations ?? wins.length` scored zero nominations for 895 of 926 Drama
+ * Desk records (BRO-5424). Without a count, wins missing from nominatedFor
+ * count too.
+ */
+function nominationCount(rec) {
+  const wins = rec.wins || [];
+  // An explicit count is authoritative: win names are often worded slightly
+  // differently from the nominee list ("Lighting Design for/of a Musical"),
+  // so counting the lists would double-count those.
+  if (rec.nominations != null) return Math.max(rec.nominations, wins.length);
+  const nominatedFor = rec.nominatedFor || [];
+  return nominatedFor.length + wins.filter(w => !nominatedFor.includes(w)).length;
 }
 
 // ── Supabase REST fetch ────────────────────────────────────────────
@@ -186,13 +213,22 @@ async function fetchFantasyEntries(opts = {}) {
     console.warn('fetchFantasyEntries: admin/email filter requested but SUPABASE_SERVICE_ROLE_KEY not set — falling back to public view (masked emails, no tiebreakers).');
   }
 
-  const params = new URLSearchParams({ select: '*', order: 'created_at.asc' });
-  if (opts.season) params.append('season', `eq.${opts.season}`);
-  if (opts.league) params.append('league_name', `eq.${opts.league}`);
-  if (opts.email && useAdmin) params.append('email', `eq.${opts.email}`);
+  // PostgREST caps a response at 1000 rows: page until a short page, with id
+  // as the tie-breaker so offset paging never skips or repeats a row.
+  const PAGE = 1000;
+  const all = [];
+  for (let offset = 0; ; offset += PAGE) {
+    const params = new URLSearchParams({ select: '*', order: 'created_at.asc,id.asc', limit: String(PAGE), offset: String(offset) });
+    if (opts.season) params.append('season', `eq.${opts.season}`);
+    if (opts.league) params.append('league_name', `eq.${opts.league}`);
+    if (opts.email && useAdmin) params.append('email', `eq.${opts.email}`);
+    const rows = await fetchEntriesPage(`${supabaseUrl}/rest/v1/${table}?${params}`, key, useAdmin);
+    all.push(...rows);
+    if (rows.length < PAGE) return all;
+  }
+}
 
-  const url = `${supabaseUrl}/rest/v1/${table}?${params}`;
-
+function fetchEntriesPage(url, key, useAdmin) {
   return new Promise((resolve, reject) => {
     const urlObj = new URL(url);
     const options = {
@@ -214,6 +250,10 @@ async function fetchFantasyEntries(opts = {}) {
         }
         try {
           const rows = JSON.parse(body);
+          if (!Array.isArray(rows)) {
+            reject(new Error(`Unexpected Supabase response: ${body.substring(0, 200)}`));
+            return;
+          }
           // View returns display_email (server-masked); normalize to email so
           // downstream readers (computeLeaderboard etc.) don't need to branch.
           // maskEmail() is idempotent, so code that re-masks is still safe.
@@ -298,6 +338,58 @@ function isScoreLockedForEntry(openingDate, createdAtIso) {
   return openingDate <= nyDate(createdAtIso);
 }
 
+/** Mirrors src/config/fantasy.ts isAudienceLockedForEntry. */
+function isAudienceLockedForEntry(audienceGradeSince, createdAtIso) {
+  if (!audienceGradeSince || !createdAtIso) return false;
+  return audienceGradeSince <= nyDate(createdAtIso);
+}
+
+/**
+ * Whether an entry may appear in the standings: 1..teamSize distinct string
+ * show ids that exist in the catalog, within budget, drafted by the deadline.
+ * Mirrors src/lib/data-fantasy.ts isValidLeaderboardEntry (the anon key can
+ * insert rows straight into Supabase, skipping the draft route's checks).
+ */
+function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig) {
+  // A partial cfg (tests pass just the dates) must not switch off the budget,
+  // roster or deadline checks.
+  const cfg = { ...seasonConfig, ...cfgOverrides };
+  const picks = entry && entry.picks;
+  if (!Array.isArray(picks) || picks.length < 1 || picks.length > cfg.teamSize) return false;
+  for (const id of picks) {
+    if (typeof id !== 'string' || !Object.prototype.hasOwnProperty.call(showConfig, id)) return false;
+  }
+  if (new Set(picks).size !== picks.length) return false;
+  const cost = picks.reduce((sum, id) => sum + (showConfig[id].price || 0), 0);
+  if (cost > cfg.budget) return false;
+  // Same 5-minute grace as src/config/fantasy.ts DEADLINE_GRACE_MS: the
+  // database stamps created_at just after the route's deadline check.
+  if (entry.created_at && Date.parse(entry.created_at) > Date.parse(cfg.draftDeadline) + DEADLINE_GRACE_MS) return false;
+  return true;
+}
+
+const DEADLINE_GRACE_MS = 5 * 60 * 1000;
+
+/**
+ * Whether the weekly fantasy job should run on this New York date: from two
+ * weeks before the draft opens (prices are provisional and repriced each
+ * run until then, and audience grades get stamped before launch) through two
+ * weeks after Tony night (the final week of grosses and Tony results land
+ * after the ceremony). Reads the season file, not the generated league
+ * config, which can be a run behind.
+ */
+function fantasyJobWindow(todayNy, cfg = seasonConfig) {
+  const shift = (ymd, days) => {
+    const d = new Date(`${ymd}T12:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+  };
+  const start = shift(cfg.draftOpens, -14);
+  const end = shift(cfg.scoringEnd, 14);
+  // Repricing stops the day before the draft opens (generate-fantasy-config.js).
+  return { run: todayNy >= start && todayNy <= end, start, end, pricesProvisional: todayNy < shift(cfg.draftOpens, -1) };
+}
+
 /**
  * Points one entry earns from one drafted show.
  * @returns {{ critic, audience, boxOffice, awards, total, locked }}
@@ -306,7 +398,10 @@ function entryPickPoints(score, openingDate, createdAtIso, cfg = seasonConfig) {
   if (!score) return { critic: 0, audience: 0, boxOffice: 0, awards: 0, total: 0, locked: false };
   const locked = isScoreLockedForEntry(openingDate ?? score.openingDate, createdAtIso);
   const critic = locked ? 0 : (score.criticScorePoints || 0);
-  const audience = locked ? 0 : (score.audienceGradePoints || 0);
+  // Audience grades can be public during previews: also locked once the
+  // grade was out on the draft day (src/config/fantasy.ts isAudienceLockedForEntry).
+  const audienceLocked = locked || isAudienceLockedForEntry(score.audienceGradeSince, createdAtIso);
+  const audience = audienceLocked ? 0 : (score.audienceGradePoints || 0);
   const from = scoringFromDate(createdAtIso, cfg);
   let boxOffice;
   if (score.weeklyBoxOffice && typeof score.weeklyBoxOffice === 'object') {
@@ -340,7 +435,7 @@ function entryPickPoints(score, openingDate, createdAtIso, cfg = seasonConfig) {
  * @returns {Array} Ranked leaderboard entries
  */
 function computeLeaderboard(entries, showScores, showConfig, cfg = seasonConfig) {
-  const leaderboard = entries.map(entry => {
+  const leaderboard = entries.filter(e => isValidLeaderboardEntry(e, showConfig, cfg)).map(entry => {
     const picks = (entry.picks || []);
     let totalCritic = 0;
     let totalAudience = 0;
@@ -370,6 +465,7 @@ function computeLeaderboard(entries, showScores, showConfig, cfg = seasonConfig)
     const totalPoints = Math.round((totalCritic + totalAudience + totalBoxOffice + totalAwards) * 100) / 100;
 
     return {
+      id: entry.id,
       rank: 0,
       displayName: entry.team_name || maskEmail(entry.email),
       email: entry.email,
@@ -665,6 +761,10 @@ module.exports = {
   nyDate,
   scoringFromDate,
   isScoreLockedForEntry,
+  isAudienceLockedForEntry,
+  isValidLeaderboardEntry,
+  fantasyJobWindow,
+  nominationCount,
   entryPickPoints,
   sumGrossesInRange,
   projectRemainingGrosses,

@@ -1,19 +1,27 @@
 /**
  * Integration tests for the Fantasy League API.
  *
- * Runs against the live site (or a local dev server via BASE_URL env var).
+ * Runs against a local dev server by default (BASE_URL to override; production
+ * needs FANTASY_TEST_ALLOW_PROD=1 because the entries it writes cannot be deleted).
  * Tests the full lifecycle: create league → submit draft → leaderboard → edge cases.
  *
  * Usage:
- *   node scripts/test-fantasy-api.js
- *   BASE_URL=http://localhost:3000 node scripts/test-fantasy-api.js
+ *   node scripts/test-fantasy-api.js                       # http://localhost:3000
+ *   BASE_URL=https://preview.example node scripts/test-fantasy-api.js
  *
  * Requires real show IDs from data/fantasy-league.json to exist on the server.
  */
 
 'use strict';
 
-const BASE_URL = process.env.BASE_URL || 'https://broadwayscorecard.com';
+// Default to a local dev server: this suite INSERTS entries and leagues, and
+// anon cannot delete them, so a run against production leaves "Test Team"
+// rows on the live leaderboard and in the player email audience.
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+if (/broadwayscorecard\.com/.test(BASE_URL) && process.env.FANTASY_TEST_ALLOW_PROD !== '1') {
+  console.error(`Refusing to write test entries to production (${BASE_URL}). Set FANTASY_TEST_ALLOW_PROD=1 if you really mean it.`);
+  process.exit(2);
+}
 
 // Pull 3 valid show IDs from local fantasy-league.json for use in tests
 let VALID_PICKS = [];

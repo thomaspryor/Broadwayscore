@@ -2,21 +2,19 @@
 
 import { useState, useEffect, useCallback, use } from 'react';
 import Link from 'next/link';
+import type { LeaderboardEntry } from '@/config/fantasy';
 
-type LeagueMeta = { code: string; name: string; created_at: string; member_count: number };
-type LeaderboardEntry = {
-  rank: number;
-  team_name: string | null;
-  email: string;
-  total_cost: number;
-  total_points: number;
-};
+type LeagueMeta = { code: string; name: string; created_at: string | null; member_count: number };
+
+function safeDecode(value: string): string {
+  try { return decodeURIComponent(value); } catch { return value; }
+}
 
 function CopyLinkButton({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
   const url = typeof window !== 'undefined'
-    ? `${window.location.origin}/fantasy/league/${code}`
-    : `/fantasy/league/${code}`;
+    ? `${window.location.origin}/fantasy/league/${encodeURIComponent(code)}`
+    : `/fantasy/league/${encodeURIComponent(code)}`;
 
   function handleCopy() {
     navigator.clipboard.writeText(url).then(() => {
@@ -37,7 +35,9 @@ function CopyLinkButton({ code }: { code: string }) {
 
 export default function LeaguePage(props: { params: Promise<{ code: string }> }) {
   const params = use(props.params);
-  const { code } = params;
+  // Free-text league names can contain spaces; decode once so API calls and
+  // links re-encode the plain name.
+  const code = safeDecode(params.code);
   const [meta, setMeta] = useState<LeagueMeta | null>(null);
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,8 +48,8 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
     setError(null);
     try {
       const [metaRes, lbRes] = await Promise.all([
-        fetch(`/api/fantasy/leagues/${code}`),
-        fetch(`/api/fantasy/leaderboard?league=${code}`),
+        fetch(`/api/fantasy/leagues/${encodeURIComponent(code)}`),
+        fetch(`/api/fantasy/leaderboard?league=${encodeURIComponent(code)}`),
       ]);
       if (!metaRes.ok) {
         setError(metaRes.status === 404 ? 'League not found.' : 'Failed to load league.');
@@ -97,7 +97,7 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
         <div className="flex flex-wrap gap-3 mb-8">
           <CopyLinkButton code={code} />
           <Link
-            href={`/fantasy/draft?league=${code}`}
+            href={`/fantasy/draft?league=${encodeURIComponent(code)}`}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-raised border border-white/10 text-sm font-semibold hover:bg-surface-overlay transition-all"
           >
             Draft your team →
@@ -113,16 +113,18 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
           <div className="space-y-2">
             <h2 className="text-sm text-gray-500 uppercase tracking-wider mb-3">Leaderboard</h2>
             {entries.map((entry) => (
-              <div key={entry.email} className="card p-4 flex items-center gap-4">
+              <div key={entry.id} className="card p-4 flex items-center gap-4">
                 <div className="w-8 text-center font-bold text-gray-500 text-sm">#{entry.rank}</div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-white truncate">
-                    {entry.team_name || entry.email}
+                    {entry.displayName}
                   </div>
-                  <div className="text-xs text-gray-500">${entry.total_cost} spent</div>
+                  <div className="text-xs text-gray-500">
+                    {entry.picks.length} {entry.picks.length === 1 ? 'show' : 'shows'} &middot; ${entry.picks.reduce((sum, p) => sum + p.price, 0)} spent
+                  </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-lg font-bold text-brand">{entry.total_points.toFixed(1)}</div>
+                  <div className="text-lg font-bold text-brand">{entry.totalPoints.toFixed(1)}</div>
                   <div className="text-xs text-gray-600">pts</div>
                 </div>
               </div>

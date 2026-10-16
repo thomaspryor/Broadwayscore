@@ -97,7 +97,7 @@ export const TIEBREAKER_QUESTIONS = [
 
 /** Shown on draft form next to show name */
 export const ELIGIBILITY_MARKERS = {
-  criticScoreLocked: '★',   // CriticScore already public (opened before the season's scoring start)
+  criticScoreLocked: '★',   // CriticScore already public (opened before you drafted)
   offBroadway: '†',          // Off-Broadway (no box office, no Tonys)
 };
 
@@ -106,7 +106,7 @@ export const ELIGIBILITY_MARKERS = {
 // ===========================================
 
 export interface FantasyShowEligibility {
-  /** False when the show opened before SCORING_START: its score was public before anyone could draft. */
+  /** False when the show opened before DRAFT_OPENS: its score was public before anyone could draft. */
   criticScore: boolean;
   audienceGrade: boolean;
   boxOffice: boolean;
@@ -127,6 +127,13 @@ export interface FantasyShow {
   criticScore?: number | null;
   /** Current AudienceGrade if available (for draft research) */
   audienceGrade?: string | null;
+  /**
+   * New York date the weekly generator first saw an audience grade for this
+   * show (append-only). Audience reviews start in previews, so a grade can be
+   * public before opening night; entries drafted on or after this date earn
+   * no audience points for the show.
+   */
+  audienceGradeSince?: string | null;
   slug: string;
   /** Thumbnail image path */
   image?: string | null;
@@ -174,6 +181,8 @@ export interface FantasyShowScore {
   weeklyBoxOffice?: Record<string, number>;
   /** ISO opening date, used for the per-entry CriticScore lock. */
   openingDate?: string | null;
+  /** First date an audience grade was public (see FantasyShow.audienceGradeSince). */
+  audienceGradeSince?: string | null;
   breakdown: {
     criticTier: string | null;
     audienceGrade: string | null;
@@ -238,6 +247,31 @@ export function maskEmail(email: string): string {
   return `${local[0]}***@${domain}`;
 }
 
+/**
+ * The address one person's entry is keyed by. Providers that ignore a +tag
+ * (and Gmail, which also ignores dots) deliver every variant to one inbox, so
+ * those variants must collide on the (email, season) unique key or one person
+ * can enter many times for the prize. Other domains are only lower-cased: a
+ * '+' there may be a real part of the mailbox name.
+ */
+const PLUS_TAG_DOMAINS = new Set([
+  'gmail.com', 'googlemail.com', 'outlook.com', 'hotmail.com', 'live.com', 'msn.com',
+  'icloud.com', 'me.com', 'mac.com', 'fastmail.com', 'proton.me', 'protonmail.com', 'pm.me',
+]);
+export function canonicalFantasyEmail(email: string): string {
+  const lower = email.toLowerCase().trim();
+  const at = lower.lastIndexOf('@');
+  if (at < 1) return lower;
+  let local = lower.slice(0, at);
+  let domain = lower.slice(at + 1);
+  if (domain === 'googlemail.com') domain = 'gmail.com';
+  if (!PLUS_TAG_DOMAINS.has(domain)) return lower;
+  const plus = local.indexOf('+');
+  if (plus > 0) local = local.slice(0, plus);
+  if (domain === 'gmail.com') local = local.replace(/\./g, '');
+  return `${local}@${domain}`;
+}
+
 /** Check if draft deadline has passed */
 export function isDraftClosed(now: Date = new Date()): boolean {
   return now > new Date(DRAFT_DEADLINE);
@@ -267,6 +301,15 @@ export function draftDeadlineDate(): string {
 }
 
 /**
+ * True when drafting stays open after the early-bird cutoff (late entries
+ * score box office from the day they draft). False for a single draft window:
+ * every entry is an early bird and box office starts at SCORING_START for all.
+ */
+export function hasLateEntry(): boolean {
+  return EARLY_BIRD_CUTOFF < draftDeadlineDate();
+}
+
+/**
  * The date an entry starts earning box office points. Early-bird entries
  * (drafted on or before EARLY_BIRD_CUTOFF) score from SCORING_START so the
  * launch cohort competes on equal footing; later entries score from the day
@@ -289,6 +332,66 @@ export function isScoreLockedForEntry(openingDate: string | null | undefined, cr
   return openingDate <= nyDate(createdAtIso);
 }
 
+/**
+ * Whether drafting this show now earns no critic/audience points: it opened
+ * before the draft opened (locked for everyone) or has opened since (locked
+ * for anyone drafting from opening night on). Drives every "Already open"
+ * label so players see the lock BEFORE they submit, not on the confirmation
+ * screen after picks are final.
+ */
+export function isShowOpenForDrafter(
+  show: Pick<FantasyShow, 'eligible' | 'openingDate'>,
+  now: Date = new Date(),
+): boolean {
+  if (!show.eligible.criticScore) return true;
+  return isScoreLockedForEntry(show.openingDate, now.toISOString());
+}
+
+/**
+ * Audience points are locked for an entry when the show's audience grade was
+ * already public on the New York day the entry was drafted. Grades can appear
+ * during previews, before the opening-night critic lock applies.
+ */
+export function isAudienceLockedForEntry(audienceGradeSince: string | null | undefined, createdAtIso: string): boolean {
+  if (!audienceGradeSince) return false;
+  return audienceGradeSince <= nyDate(createdAtIso);
+}
+
+/**
+ * Whether a show can still earn box office points: Broadway only, and still
+ * running when box office scoring starts (a show that closes before
+ * SCORING_START earns awards points only).
+ */
+export function earnsBoxOffice(show: Pick<FantasyShow, 'eligible' | 'closingDate'>): boolean {
+  if (!show.eligible.boxOffice) return false;
+  return !show.closingDate || show.closingDate >= SCORING_START;
+}
+
+/**
+ * Plain-English note for a pick whose points are limited for this entry
+ * (null when it can earn on every pillar). Shown on the confirmation screen
+ * and in the confirmation email, so it must match computeLeaderboard.
+ */
+export function pickLimitNote(
+  show: Pick<FantasyShow, 'eligible' | 'openingDate' | 'closingDate' | 'audienceGradeSince'>,
+  createdAtIso: string,
+): string | null {
+  const criticLocked = !show.eligible.criticScore || isScoreLockedForEntry(show.openingDate, createdAtIso);
+  const boxOffice = earnsBoxOffice(show);
+  if (criticLocked) return boxOffice ? 'already open: box office and awards only' : 'already open: awards only';
+  if (isAudienceLockedForEntry(show.audienceGradeSince, createdAtIso)) return 'audience grade already public: no audience points';
+  return null;
+}
+
+/**
+ * An entry saved this long after the deadline still counts. The route refuses
+ * submissions once the deadline passes, but the database stamps created_at
+ * itself, a few milliseconds after the route's check; without this grace a
+ * player who submitted at 11:59:59pm would get a confirmation and then vanish
+ * from the standings.
+ */
+export const DEADLINE_GRACE_MS = 5 * 60 * 1000;
+
 /** Validate a set of picks against the config */
 export function validatePicks(
   pickIds: string[],
@@ -302,15 +405,18 @@ export function validatePicks(
     return { valid: false, error: `Too many picks: ${pickIds.length} > ${FANTASY_TEAM_SIZE}` };
   }
 
+  // Strings only, own keys only: [["x"],["x"]] passes a Set duplicate check
+  // and shows[["x"]] resolves to show x, and 'constructor' is a key of every
+  // object. Either let one show be drafted eight times.
+  for (const id of pickIds) {
+    if (typeof id !== 'string' || !Object.prototype.hasOwnProperty.call(shows, id)) {
+      return { valid: false, error: `Invalid show: ${String(id).slice(0, 60)}` };
+    }
+  }
+
   const uniqueIds = new Set(pickIds);
   if (uniqueIds.size !== pickIds.length) {
     return { valid: false, error: 'Duplicate picks not allowed' };
-  }
-
-  for (const id of pickIds) {
-    if (!shows[id]) {
-      return { valid: false, error: `Invalid show: ${id}` };
-    }
   }
 
   const totalCost = pickIds.reduce((sum, id) => sum + shows[id].price, 0);

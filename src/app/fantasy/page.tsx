@@ -11,6 +11,11 @@ import {
   FANTASY_TONY_WINDOW,
   draftDeadlineDate,
   getCriticLabel,
+  isShowOpenForDrafter,
+  hasLateEntry,
+  isDraftOpen,
+  isDraftClosed,
+  nyDate,
 } from '@/config/fantasy';
 import { SCORE_BUCKETS } from '@/config/score-buckets';
 
@@ -51,7 +56,13 @@ export const metadata: Metadata = {
 export default function FantasyLandingPage() {
   const info = getFantasySeasonInfo();
   const shows = getFantasyShowsSorted();
-  const alreadyOpen = shows.filter(s => !s.eligible.criticScore && s.status !== 'closed');
+  // Static page: "now" is the build time (the site rebuilds at least every 6h).
+  // Broadway first: that's where box office points make an opened show worth a slot.
+  // Broadway only in the list: an opened Off-Broadway show is worth awards
+  // points alone, so it gets a count line instead of a row each.
+  const openedNow = shows.filter(s => isShowOpenForDrafter(s) && s.status !== 'closed');
+  const alreadyOpen = openedNow.filter(s => s.category !== 'off-broadway');
+  const alreadyOpenOffBroadway = openedNow.length - alreadyOpen.length;
   const seasonLabel = FANTASY_TONY_WINDOW.label;
   const deadlineDate = draftDeadlineDate();
   const allPrices = shows.map(s => s.price);
@@ -77,14 +88,33 @@ export default function FantasyLandingPage() {
     total: exampleCritic + exampleAudience + exampleBoxOffice + exampleAwards,
   };
 
-  const calendar = [
-    { date: DRAFT_OPENS, label: 'Draft opens' },
-    { date: info.scoringStart, label: 'Scoring starts' },
-    { date: info.earlyBirdCutoff ?? info.scoringStart, label: 'Early-bird cutoff: draft by this day and your box office counts from the season start' },
-    { date: deadlineDate, label: 'Draft deadline (11:59pm ET)' },
-    { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
-    { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
-  ];
+  const lateEntry = hasLateEntry();
+  const calendar = lateEntry
+    ? [
+        { date: DRAFT_OPENS, label: 'Draft opens' },
+        { date: info.scoringStart, label: 'Scoring starts' },
+        { date: info.earlyBirdCutoff ?? info.scoringStart, label: 'Early-bird cutoff: draft by this day and your box office counts from the season start' },
+        { date: deadlineDate, label: 'Draft deadline (11:59pm ET)' },
+        { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
+        { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
+      ]
+    : [
+        { date: DRAFT_OPENS, label: 'Draft opens' },
+        { date: deadlineDate, label: 'Draft closes at 11:59pm ET. Picks are final.' },
+        { date: info.scoringStart, label: 'Box office scoring starts for every team' },
+        { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
+        { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
+      ];
+
+  // Static page, so this is the build-time state (the site rebuilds at least every 6h).
+  const now = new Date();
+  const todayNy = nyDate(now.toISOString());
+  const preDraft = !isDraftOpen(now) && !isDraftClosed(now);
+  const draftStatus = isDraftClosed(now)
+    ? 'The draft is closed. Follow the race on the leaderboard.'
+    : isDraftOpen(now)
+      ? `The draft is open until ${longDate(deadlineDate)} at 11:59pm ET.`
+      : `The draft opens ${longDate(DRAFT_OPENS)}. Picks are due ${longDate(deadlineDate)}.`;
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -114,6 +144,7 @@ export default function FantasyLandingPage() {
           <span className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5">
             <span className="text-brand text-sm font-bold">Winner gets {PRIZE_DESCRIPTION}</span>
           </span>
+          <p className="text-sm text-gray-400 mt-3">{draftStatus}</p>
         </div>
         <div className="mb-3">
           <a
@@ -134,15 +165,16 @@ export default function FantasyLandingPage() {
       </section>
 
       {/* Already open */}
-      {alreadyOpen.length > 0 && (
+      {openedNow.length > 0 && (
         <section className="max-w-3xl mx-auto px-4 py-6">
           <div className="bg-surface-raised/50 rounded-xl p-6 border border-brand/20">
             <h2 className="text-lg font-bold mb-2">
-              {alreadyOpen.length === 1 ? 'One show has' : `${alreadyOpen.length} shows have`} already opened
+              {preDraft
+                ? `${openedNow.length === 1 ? 'One show opens' : `${openedNow.length} shows open`} before the draft does`
+                : `${openedNow.length === 1 ? 'One show has' : `${openedNow.length} shows have`} already opened`}
             </h2>
             <p className="text-sm text-gray-400 mb-3">
-              {alreadyOpen.map(s => s.title).join(' and ')} opened before the draft, so their reviews are already public.
-              They earn box office and awards points only, and their prices reflect that.
+              {preDraft ? 'Their reviews will be public before anyone can draft' : 'Their reviews are already public'}, so they earn box office and awards points only (awards only if they close before box office starts on {shortDate(info.scoringStart)}).
               The same rule applies to any show that opens before you draft: you can still pick it, but critic and audience points go only to players who drafted it before opening night.
             </p>
             <ul className="text-sm text-gray-300 space-y-2">
@@ -153,13 +185,18 @@ export default function FantasyLandingPage() {
                     <span className="block text-xs text-gray-500">
                       {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
                       {s.criticScore != null && s.openingDate && ' · '}
-                      {s.openingDate && <>opened {shortDate(s.openingDate)}</>}
+                      {s.openingDate && <>{s.openingDate > todayNy ? 'opens' : 'opened'} {shortDate(s.openingDate)}</>}
                     </span>
                   </span>
                   <span className="font-mono text-emerald-400 shrink-0">${s.price}</span>
                 </li>
               ))}
             </ul>
+            {alreadyOpenOffBroadway > 0 && (
+              <p className="text-xs text-gray-500 mt-3">
+                {alreadyOpenOffBroadway === 1 ? 'Plus one Off-Broadway show' : `Plus ${alreadyOpenOffBroadway} Off-Broadway shows`} (no box office, so awards points only). All are in the <a href="/fantasy/guide" className="text-brand/80 hover:text-brand">Draft Guide</a>.
+              </p>
+            )}
           </div>
         </section>
       )}
@@ -182,7 +219,7 @@ export default function FantasyLandingPage() {
             <h3 className="font-semibold mb-2 text-white">Score</h3>
             <p className="text-sm text-gray-400">
               Points accumulate from four pillars:
-              critics, audiences, box office, and awards. Standings update every Wednesday.
+              critics, audiences, box office, and awards. Standings update daily.
             </p>
           </div>
           <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
@@ -272,8 +309,14 @@ export default function FantasyLandingPage() {
             </h3>
             <p className="text-sm text-gray-400">
               A hit musical grossing $1M a week earns about 3 points every week.
-              Points accumulate from the week you draft through Tony Awards night.
-              Draft by {shortDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start on {shortDate(info.scoringStart)}.
+              {lateEntry ? (
+                <>
+                  {' '}Points accumulate from the week you draft through Tony Awards night.
+                  Draft by {shortDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start on {shortDate(info.scoringStart)}.
+                </>
+              ) : (
+                <> Every team&apos;s box office counts from {shortDate(info.scoringStart)} through Tony Awards night.</>
+              )}
             </p>
             <p className="text-xs text-gray-500 mt-2">
               Broadway shows only. Off-Broadway shows don&apos;t report grosses.
@@ -320,7 +363,7 @@ export default function FantasyLandingPage() {
                 ))}
             </div>
             <p className="text-xs text-gray-500 mt-3">
-              Same rule as CriticScore: counts only for shows that opened after you drafted them.
+              Counts only if the show&apos;s audience grade was not out yet when you drafted it. Audience reviews start in previews, so a grade can appear before opening night.
             </p>
           </div>
         </div>
@@ -370,15 +413,17 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'When can I draft?',
-              a: `Any time from ${longDate(DRAFT_OPENS)} until the deadline on ${longDate(deadlineDate)} at 11:59pm ET. The earlier you draft, the more your shows can earn: box office counts from the week you draft, and critic and audience points count only for shows that had not opened yet when you picked them. Draft by ${longDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start.`,
+              a: lateEntry
+                ? `Any time from ${longDate(DRAFT_OPENS)} until the deadline on ${longDate(deadlineDate)} at 11:59pm ET. The earlier you draft, the more your shows can earn: box office counts from the week you draft, and critic and audience points count only for shows that had not opened yet when you picked them. Draft by ${longDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start.`
+                : `From ${longDate(DRAFT_OPENS)} until ${longDate(deadlineDate)} at 11:59pm ET. After that the draft is closed for the season. Box office counts for every team from ${longDate(info.scoringStart)}, whenever in the window you draft. Critic and audience points count only for shows that had not opened yet when you picked them, so drafting before a November opening night can pay off.`,
             },
             {
               q: 'Can I pick a show that has already opened?',
-              a: 'Yes. It earns box office and awards points for you, but not critic or audience points, because those scores were public when you drafted. Its price is set with that in mind.',
+              a: 'Yes. It earns box office and awards points for you, but not critic or audience points, because those scores were public when you drafted. The same goes for audience points on a show in previews that already has an audience grade: the draft form marks those.',
             },
             {
               q: 'Can I change my picks after submitting?',
-              a: 'No. Picks are final once submitted. One entry per email, locked in for the season. Draft carefully.',
+              a: 'No. Picks are final once submitted. One entry per person, locked in for the season. Draft carefully.',
             },
             {
               q: 'How do show prices work?',
@@ -393,24 +438,34 @@ export default function FantasyLandingPage() {
               a: 'They keep the points they earned and stop earning box office. They can still earn Tony nominations and wins. A cheap show that lands a Best Play nomination is a big value pick.',
             },
             {
+              q: 'What if a show I picked is postponed or cancelled?',
+              a: `Picks are final, so there are no swaps. A show that is cancelled, or moves its opening past the Tony eligibility cutoff on ${longDate(FANTASY_TONY_WINDOW.end)}, keeps whatever it already earned but cannot score Tony points this season. Spring shows that have not started previews carry that risk.`,
+            },
+            {
               q: 'What about Off-Broadway shows?',
               a: `${obRange ? `Priced $${obRange.min} to $${obRange.max}. ` : ''}They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.`,
             },
             {
               q: 'What if a new show is announced after I draft?',
-              a: 'It joins the draftable list at a freshly set price so later drafters can pick it. Existing rosters do not change.',
+              a: lateEntry
+                ? 'It joins the draftable list at a freshly set price so later drafters can pick it. Existing rosters do not change.'
+                : `If it is announced while the draft is open, it joins the list at a freshly set price. Existing rosters do not change. Shows announced after ${longDate(deadlineDate)} are not part of this season's game.`,
             },
             {
               q: 'When do scores update?',
-              a: 'Weekly. Box office data arrives on Tuesday and scores are recomputed every Wednesday. You get a weekly email with the latest standings.',
+              a: 'Every day for critic, audience and awards points. Box office arrives weekly: the Broadway grosses come out on Tuesday. Players get a weekly email with the standings.',
             },
             {
               q: 'What are leagues?',
-              a: 'Optional private groups. Create a league to get an invite link, or type the same league name as your friends on the draft form. Your league standings show alongside the overall leaderboard.',
+              a: 'Optional private groups. Create a league to get an invite link, or type the same league name as your friends on the draft form. Join before you submit: picks and league are both final. Your league standings show alongside the overall leaderboard.',
             },
             {
               q: 'How are ties broken?',
               a: 'Three tiebreaker questions on the draft form: how many nominations the most-nominated show will receive, which show will win Best Musical, and the total number of Tony nominations. Closest answers win.',
+            },
+            {
+              q: 'Who can enter, and how is the winner picked?',
+              a: `Anyone 18 or older, free, no purchase needed. One entry per person: entries from the same person under different email addresses are all disqualified. After Tony Awards night we email the top team at the address it drafted with. The winner has 14 days to reply, or the prize passes to the next team.`,
             },
             {
               q: 'Where do the scores come from?',

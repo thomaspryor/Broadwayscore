@@ -20,7 +20,7 @@ import seasonConfig from '../../src/config/fantasy-season.json';
 import { tonySeasonForLabel } from '../../src/lib/tony-cutoffs';
 import {
   FANTASY_SEASON, FANTASY_BUDGET, FANTASY_TEAM_SIZE, DRAFT_OPENS, DRAFT_DEADLINE,
-  SCORING_START, SCORING_END, EARLY_BIRD_CUTOFF, validatePicks,
+  SCORING_START, SCORING_END, EARLY_BIRD_CUTOFF, validatePicks, draftDeadlineDate, hasLateEntry,
 } from '../../src/config/fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
 
@@ -65,11 +65,23 @@ describe('fantasy-season.json is the single source of truth', () => {
     }
   });
 
-  test('season dates are ordered: draft opens < scoring start < early-bird cutoff < deadline < scoring end', () => {
+  test('season dates are ordered: draft opens < early-bird cutoff <= deadline < scoring end', () => {
+    const deadlineNy = draftDeadlineDate();
     assert.ok(seasonConfig.draftOpens < seasonConfig.scoringStart);
-    assert.ok(seasonConfig.scoringStart < seasonConfig.earlyBirdCutoff);
-    assert.ok(seasonConfig.earlyBirdCutoff < seasonConfig.draftDeadline.slice(0, 10));
-    assert.ok(seasonConfig.draftDeadline.slice(0, 10) < seasonConfig.scoringEnd);
+    assert.ok(seasonConfig.draftOpens < seasonConfig.earlyBirdCutoff);
+    assert.ok(seasonConfig.earlyBirdCutoff <= deadlineNy);
+    assert.ok(deadlineNy < seasonConfig.scoringEnd);
+  });
+
+  test('the deadline is 11:59:59pm New York time (EST or EDT handled in the UTC string)', () => {
+    const t = new Date(seasonConfig.draftDeadline).toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false });
+    assert.equal(t, '23:59:59');
+  });
+
+  test('a single draft window starts box office after it closes, so nobody drafts with known grosses', () => {
+    if (hasLateEntry()) return; // rolling draft: late entries score from their own draft day
+    assert.ok(seasonConfig.scoringStart > seasonConfig.earlyBirdCutoff,
+      `scoringStart ${seasonConfig.scoringStart} must be after the last draft day ${seasonConfig.earlyBirdCutoff}`);
   });
 });
 
@@ -99,9 +111,11 @@ describe('Tony calendar alignment', () => {
 describe('catalog integrity', () => {
   const shows = league.shows as Record<string, FantasyShow>;
 
-  test('every Broadway show opened (or opens) inside the Tony window', () => {
+  test('every Tony-eligible Broadway show opened (or opens) inside the Tony window', () => {
+    // A frozen show that postpones past the cutoff stays in the catalog
+    // (rosters may hold it) with eligible.tonys false (generate-fantasy-config.js).
     for (const [id, s] of Object.entries(shows)) {
-      if (s.category !== 'broadway') continue;
+      if (s.category !== 'broadway' || !s.eligible.tonys) continue;
       assert.ok(s.openingDate, `${id} has no opening date`);
       assert.ok(s.openingDate! >= seasonConfig.tonyWindow.start && s.openingDate! <= seasonConfig.tonyWindow.end, `${id} opens ${s.openingDate}, outside ${seasonConfig.tonyWindow.start}..${seasonConfig.tonyWindow.end}`);
     }

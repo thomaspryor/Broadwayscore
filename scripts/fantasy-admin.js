@@ -133,7 +133,7 @@ function cmdShow() {
     process.exit(1);
   }
 
-  const awards = computeAwardsPoints(showId, awardsData, leagueData.scoring.awards);
+  const awards = computeAwardsPoints(showId, awardsData, leagueData.scoring.awards, { season: leagueData._meta.tonyWindow?.label });
 
   console.log(`\n  ${show.title}`);
   console.log(`  ${'─'.repeat(50)}`);
@@ -184,7 +184,10 @@ async function cmdWinner() {
   const leagueData = loadJSON('fantasy-league.json');
   const scoresData = loadJSON('fantasy-scores.json');
 
-  const entries = await fetchFantasyEntries({ season: leagueData._meta.season });
+  // admin: the owner has to contact the winner, so this needs the real
+  // address and the tiebreaker answers (SUPABASE_SERVICE_ROLE_KEY). Without
+  // the key fetchFantasyEntries warns and falls back to masked emails.
+  const entries = await fetchFantasyEntries({ admin: true, season: leagueData._meta.season });
   if (entries.length === 0) {
     console.log('No entries found — no winner to declare.');
     return;
@@ -198,8 +201,11 @@ async function cmdWinner() {
   console.log(`  Prize:  ${require('../src/config/fantasy-season.json').prize}`);
   console.log(`  ${'─'.repeat(70)}`);
 
+  const byId = new Map(entries.map(e => [e.id, e]));
   for (const w of winners) {
     console.log(`  ${w.displayName}  —  ${w.email}`);
+    const tb = byId.get(w.id)?.tiebreakers;
+    if (tb) console.log(`  Tiebreakers: ${JSON.stringify(tb)}`);
     console.log(`  Points: ${w.totalPoints.toFixed(1)}`);
     console.log(`  Picks:`);
     for (const p of w.picks) {
@@ -209,7 +215,13 @@ async function cmdWinner() {
   }
 
   if (winners.length > 1) {
-    console.log(`  ${winners.length} winners tied. Apply tiebreaker questions (see fantasy-league.json tiebreakers).`);
+    console.log(`  ${winners.length} winners tied. Compare the tiebreaker answers above (closest answer wins).`);
+  }
+  // The rules pass the prize to the next team if the winner does not reply in 14 days.
+  const runnersUp = leaderboard.filter(e => e.rank > 1).slice(0, 3);
+  if (runnersUp.length) {
+    console.log(`  Next in line:`);
+    for (const r of runnersUp) console.log(`    #${r.rank}  ${r.displayName}  —  ${r.email}  (${r.totalPoints.toFixed(1)} pts)`);
   }
   console.log(`  ${entries.length} total entries scored.\n`);
 }

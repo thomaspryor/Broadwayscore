@@ -10,7 +10,16 @@ import type {
   FantasyEntry,
   LeaderboardEntry,
 } from '@/config/fantasy';
-import { maskEmail, scoringFromDate, isScoreLockedForEntry, SCORING_START } from '@/config/fantasy';
+import {
+  maskEmail,
+  scoringFromDate,
+  isScoreLockedForEntry,
+  isAudienceLockedForEntry,
+  validatePicks,
+  SCORING_START,
+  DRAFT_DEADLINE,
+  DEADLINE_GRACE_MS,
+} from '@/config/fantasy';
 
 // Import JSON data (loaded at build time)
 import fantasyLeagueData from '../../data/fantasy-league.json';
@@ -77,7 +86,9 @@ export interface EntryPickPoints {
  * tests/unit/fantasy-leaderboard-parity.test.ts).
  *
  *  - Critic/audience points are locked when the show had opened on or before
- *    the day the entry drafted (reviews were already public).
+ *    the day the entry drafted (reviews were already public). Audience points
+ *    are also locked when the show's audience grade was already public
+ *    (grades can appear during previews).
  *  - Box office counts from the grosses week containing the entry's
  *    scoring-from date (season start for early birds, draft day otherwise).
  *  - Awards count for every entry.
@@ -90,7 +101,8 @@ export function entryPickPoints(
   if (!score) return { critic: 0, audience: 0, boxOffice: 0, awards: 0, total: 0, locked: false };
   const locked = isScoreLockedForEntry(openingDate ?? score.openingDate, createdAtIso);
   const critic = locked ? 0 : (score.criticScorePoints || 0);
-  const audience = locked ? 0 : (score.audienceGradePoints || 0);
+  const audienceLocked = locked || isAudienceLockedForEntry(score.audienceGradeSince, createdAtIso);
+  const audience = audienceLocked ? 0 : (score.audienceGradePoints || 0);
   const from = scoringFromDate(createdAtIso);
   let boxOffice: number;
   if (score.weeklyBoxOffice && typeof score.weeklyBoxOffice === 'object') {
@@ -114,8 +126,23 @@ export function entryPickPoints(
  * Compute leaderboard from draft entries + fantasy scores.
  * Entries come from Supabase (passed in), scores from JSON (imported above).
  */
+/**
+ * Whether an entry may appear in the standings. The draft route enforces all
+ * of this, but the anon key can also insert rows straight into Supabase, so
+ * a hand-made row with too many picks, unknown or repeated shows, an
+ * over-budget roster or a post-deadline timestamp (the database sets
+ * created_at itself since 20261016_fantasy_entries_insert_hardening.sql) is
+ * left out instead of ranked. Same rule as scripts/lib/fantasy-helpers.js.
+ */
+export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'created_at'>): boolean {
+  if (!Array.isArray(entry.picks)) return false;
+  if (!validatePicks(entry.picks, config.shows).valid) return false;
+  if (entry.created_at && Date.parse(entry.created_at) > Date.parse(DRAFT_DEADLINE) + DEADLINE_GRACE_MS) return false;
+  return true;
+}
+
 export function computeLeaderboard(entries: FantasyEntry[]): LeaderboardEntry[] {
-  const leaderboard: LeaderboardEntry[] = entries.map(entry => {
+  const leaderboard: LeaderboardEntry[] = entries.filter(isValidLeaderboardEntry).map(entry => {
     let totalCritic = 0;
     let totalAudience = 0;
     let totalBoxOffice = 0;

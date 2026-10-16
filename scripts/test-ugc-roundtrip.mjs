@@ -26,6 +26,7 @@
 
 import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
 import { runDiarySharesChecks } from './lib/diary-shares-roundtrip.mjs';
+import { runFantasyEntryChecks } from './lib/fantasy-entries-roundtrip.mjs';
 import { checkRedirect } from './lib/auth-redirect-allowlist.mjs';
 import { NOT_URGENT, summarizeFailures, githubOutputLines } from './lib/ugc-roundtrip-urgency.mjs';
 import { appendFileSync } from 'node:fs';
@@ -368,6 +369,9 @@ async function main() {
     await runDiarySharesChecks({
       rest, check, anonKey: ANON, userA, tokenA, tokenB, showId: SHOW_ID, noteText: 'edited note',
     });
+
+    // ── FANTASY LEAGUE DRAFT (anon insert path, BRO-5424) ──
+    await runFantasyEntryChecks({ rest, check, anonKey: ANON, serviceKey: SERVICE, notUrgent: NOT_URGENT });
 
     // ── LISTS ──
     const lIns = await rest('POST', 'lists', tokenA, { user_id: userA.id, name: 'Round-trip list' });

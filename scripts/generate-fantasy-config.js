@@ -45,7 +45,7 @@ const SCORING = seasonConfig.scoring;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
-const refreeze = args.includes('--refreeze');
+let refreeze = args.includes('--refreeze');
 const force = args.includes('--force');
 const listPrices = args.includes('--list');
 
@@ -100,6 +100,16 @@ try {
 // DRAFT_OPENS is a New York calendar date (same rule as src/config/fantasy.ts isDraftOpen).
 const { nyDate } = require('./lib/fantasy-helpers');
 const draftHasOpened = nyDate(new Date().toISOString()) >= DRAFT_OPENS;
+// Nobody can hold a pick before the draft opens, so prices are provisional
+// until then: every pre-open run reprices from the latest data. Repricing
+// stops the day before DRAFT_OPENS so the final prices are deployed well
+// before the first entry; the draft route and the standings both price
+// rosters from the deployed file (BRO-5424).
+const repriceUntil = (() => { const d = new Date(`${DRAFT_OPENS}T12:00:00Z`); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
+if (nyDate(new Date().toISOString()) < repriceUntil && !refreeze) {
+  console.error(`Draft opens ${DRAFT_OPENS}: prices are provisional, repricing (same as --refreeze).`);
+  refreeze = true;
+}
 if (refreeze && draftHasOpened && !force) {
   console.error(`REFUSED: --refreeze after the draft opened (${DRAFT_OPENS}) would reprice shows players already drafted. Re-run with --force only if no entries exist.`);
   process.exit(2);
@@ -205,8 +215,16 @@ function inTonyWindow(show) {
   return !!show.openingDate && show.openingDate >= TONY_WINDOW.start && show.openingDate <= TONY_WINDOW.end;
 }
 
+// A show that closes before the draft opens can never earn box office or
+// critic points for anyone; keep it out of the catalog (BRO-5424: Celebrity
+// Autobiography closed in June and was still priced at $5).
+function closesBeforeDraft(show) {
+  return show.status === 'closed' || (!!show.closingDate && show.closingDate < DRAFT_OPENS);
+}
+
 function isEligibleBroadway(show) {
   if (show._devOnly) return false;
+  if (closesBeforeDraft(show)) return false;
   if (priorsById[show.id]?.exclude) return false;
   if (!isBroadwayCategory(show)) return false;
   if (show.type === 'special' || show.type === 'opera') return false;
@@ -224,7 +242,7 @@ function isEligibleOffBroadway(show) {
   if (show.category !== 'off-broadway') return false;
   if (!['play', 'musical'].includes(show.type)) return false;
   if (!inTonyWindow(show)) return false;
-  if (show.status === 'closed') return false;
+  if (closesBeforeDraft(show)) return false;
   return OB_VENUE_RE.test(show.venue || '');
 }
 
@@ -372,16 +390,25 @@ if (frozen && !refreeze) {
 }
 
 // ── Assemble config ─────────────────────────────────────────────────
+const todayNy = nyDate(new Date().toISOString());
 const showsConfig = {};
 for (const show of catalog) {
   const f = facts.get(show.id);
+  // Append-only: the first New York date this job saw an audience grade.
+  // Audience reviews start in previews, so the grade can be public before
+  // opening night; entries drafted on/after this date get no audience points
+  // for the show (isAudienceLockedForEntry / fantasy-helpers entryPickPoints).
+  const audienceGradeSince = existingLeague?.shows?.[show.id]?.audienceGradeSince
+    ?? (f.audienceGrade ? todayNy : null);
   showsConfig[show.id] = {
     price: frozenOut.prices[show.id],
     eligible: {
       criticScore: !f.criticLocked,
       audienceGrade: !f.criticLocked,
       boxOffice: f.isBW,
-      tonys: f.isBW && (priorsById[show.id]?.awardsEligible !== false),
+      // inTonyWindow: a frozen show that postpones past the cutoff stays
+      // draftable (rosters keep it) but can no longer score Tony points.
+      tonys: f.isBW && inTonyWindow(show) && (priorsById[show.id]?.awardsEligible !== false),
     },
     title: show.title,
     type: show.type || 'play',
@@ -392,6 +419,7 @@ for (const show of catalog) {
     isRevival: !!show.isRevival,
     criticScore: f.criticScore,
     audienceGrade: f.audienceGrade,
+    audienceGradeSince,
     slug: show.slug,
     image: show.images?.thumbnail || show.images?.poster || null,
     priceNote: frozenOut.notes[show.id] || null,

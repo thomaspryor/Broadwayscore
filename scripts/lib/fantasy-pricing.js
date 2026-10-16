@@ -244,12 +244,12 @@ function projectShowPoints(show, ctx) {
     criticEV = expectedFromPriors(CRITIC_TIER_PRIORS[tier], S.criticScore);
   }
 
-  // AudienceGrade
+  // AudienceGrade. A grade that already exists when the show is priced is
+  // public to every later drafter (grades appear during previews), so it can
+  // never score for anyone who drafts at this price (isAudienceLockedForEntry).
   let audienceEV = 0;
-  if (ctx.criticLocked) {
+  if (ctx.criticLocked || ctx.audienceGrade) {
     notes.push('AudienceGrade already public: no audience points');
-  } else if (ctx.audienceGrade) {
-    audienceEV = S.audienceGrade[ctx.audienceGrade] || 0;
   } else {
     audienceEV = expectedFromPriors(AUDIENCE_GRADE_PRIORS[tier], S.audienceGrade);
   }

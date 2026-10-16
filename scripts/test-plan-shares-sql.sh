@@ -100,7 +100,14 @@ for m in ${MIGRATIONS[@]+"${MIGRATIONS[@]}"}; do
   run_sql < "$m"
 done
 # Migrations must be re-runnable (apply-migration.yml may be dispatched twice).
+# SQL_HARNESS_APPLY_ONCE=N skips the re-run for the first N files: fixtures and
+# migrations already applied to prod, whose idempotency is not under test (the
+# April 2026 fantasy migrations recreate policies without DROP IF EXISTS).
+APPLY_ONCE="${SQL_HARNESS_APPLY_ONCE:-0}"
+i=0
 for m in ${MIGRATIONS[@]+"${MIGRATIONS[@]}"}; do
+  i=$((i + 1))
+  [ "$i" -le "$APPLY_ONCE" ] && continue
   echo "-- re-applying $(basename "$m") (idempotency)"
   run_sql < "$m"
 done

@@ -2,11 +2,12 @@ import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 import FantasyLeaderboardTable from '@/components/fantasy/FantasyLeaderboardTable';
 import { getFantasySeasonInfo } from '@/lib/data-fantasy';
+import { hasLateEntry } from '@/config/fantasy';
 
 export const metadata: Metadata = {
   title: 'Fantasy League Leaderboard',
   alternates: { canonical: `${BASE_URL}/fantasy/leaderboard` },
-  description: 'See who\'s winning the Broadway Fantasy League. Rankings updated weekly with points from critics, audiences, box office, and Tony Awards.',
+  description: 'See who\'s winning the Broadway Fantasy League. Rankings updated daily with points from critics, audiences, box office, and Tony Awards.',
 };
 
 // Leaderboard fetches entries client-side from Supabase API
@@ -41,7 +42,7 @@ export default function FantasyLeaderboardPage() {
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Leaderboard</h1>
           <p className="text-gray-400 mt-1">
             {seasonInfo.season} Season &middot; {preSeason
-              ? `Scoring starts ${longDate(seasonInfo.scoringStart)}; first standings post the following Wednesday`
+              ? `Box office scoring starts ${longDate(seasonInfo.scoringStart)}. Critic and audience points post within a day or two of each opening night.`
               : `Scores through the week ending ${longDate(seasonInfo.latestGrossesWeek)}`}
           </p>
         </div>
@@ -62,7 +63,9 @@ export default function FantasyLeaderboardPage() {
         {/* Footer */}
         <div className="mt-8 text-center space-y-2">
           <p className="text-xs text-gray-500">
-            Points: CriticScore + AudienceGrade + Box Office + Awards. Each team scores from the week it drafted.
+            Points: CriticScore + AudienceGrade + Box Office + Awards. {hasLateEntry()
+              ? 'Each team scores box office from the week it drafted.'
+              : `Box office counts for every team from ${longDate(seasonInfo.scoringStart)}.`}
           </p>
           <p className="text-xs text-gray-500">
             Last scored: {seasonInfo.lastScored ? new Date(seasonInfo.lastScored).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}

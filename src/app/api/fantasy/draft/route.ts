@@ -8,9 +8,13 @@ import {
   DRAFT_OPENS,
   SCORING_END,
   EARLY_BIRD_CUTOFF,
+  hasLateEntry,
   isDraftClosed,
   isDraftOpen,
   isScoreLockedForEntry,
+  pickLimitNote,
+  canonicalFantasyEmail,
+  TIEBREAKER_QUESTIONS,
   nyDate,
   scoringFromDate,
   validatePicks,
@@ -20,20 +24,36 @@ import {
 // Effective for burst protection but not persistent across deploys.
 // The database also caps inserts at 10 per email per 24h (migration
 // 20260422c_fantasy_rate_limit_triggers.sql), which covers direct REST posts.
+// Counts saved entries only: a league drafting together on one wifi, or a
+// player fixing a typo'd email, must not lock out the rest of the room.
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 5;
+const RATE_LIMIT = 15;
 const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
-function checkRateLimit(ip: string): boolean {
+function isRateLimited(ip: string): boolean {
+  const entry = rateLimitMap.get(ip);
+  return !!entry && Date.now() <= entry.resetAt && entry.count >= RATE_LIMIT;
+}
+
+function recordSubmission(ip: string): void {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
-    return true;
+  if (!entry || now > entry.resetAt) rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+  else entry.count++;
+}
+
+/** Keep only the known tiebreaker answers, as short strings. */
+function cleanTiebreakers(raw: unknown): Record<string, string> | null {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const out: Record<string, string> = {};
+  for (const q of TIEBREAKER_QUESTIONS) {
+    const v = (raw as Record<string, unknown>)[q.id];
+    if (typeof v === 'string' || typeof v === 'number') {
+      const text = String(v).trim().slice(0, 100);
+      if (text) out[q.id] = text;
+    }
   }
-  if (entry.count >= RATE_LIMIT) return false;
-  entry.count++;
-  return true;
+  return Object.keys(out).length ? out : null;
 }
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
@@ -61,8 +81,10 @@ function formatLongDate(iso: string): string {
 function buildConfirmationHtml(opts: {
   teamName: string | null;
   leagueName: string | null;
+  /** Display name when the league was created with a code (fantasy_leagues.name). */
+  leagueTitle?: string | null;
   createdAt: string;
-  picks: Array<{ title: string; price: number; locked: boolean; openingDate: string | null }>;
+  picks: Array<{ title: string; price: number; locked: boolean; note: string | null; openingDate: string | null }>;
   totalCost: number;
 }): string {
   const scoringFrom = scoringFromDate(opts.createdAt);
@@ -70,12 +92,12 @@ function buildConfirmationHtml(opts: {
   const lockedCount = opts.picks.filter(p => p.locked).length;
   const rows = opts.picks.map(p => `
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#ffffff;font-size:14px;">${escapeHtml(p.title)}${p.locked ? ' <span style="color:#a1a1aa;font-size:12px;">(already open: box office and awards only)</span>' : ''}</td>
+          <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#ffffff;font-size:14px;">${escapeHtml(p.title)}${p.note ? ` <span style="color:#a1a1aa;font-size:12px;">(${escapeHtml(p.note)})</span>` : ''}</td>
           <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#6ee7b7;font-size:14px;font-weight:700;text-align:right;">$${p.price}</td>
         </tr>`).join('');
 
   const leagueLine = opts.leagueName
-    ? `<p style="margin:0 0 12px;color:#a1a1aa;font-size:14px;">League: <a href="${SITE}/fantasy/league/${encodeURIComponent(opts.leagueName.toLowerCase())}" style="color:#d4a574;">${escapeHtml(opts.leagueName)}</a></p>`
+    ? `<p style="margin:0 0 12px;color:#a1a1aa;font-size:14px;">League: <a href="${SITE}/fantasy/league/${encodeURIComponent(opts.leagueName.toLowerCase())}" style="color:#d4a574;">${escapeHtml(opts.leagueTitle || opts.leagueName)}</a></p>`
     : '';
 
   return `<!DOCTYPE html>
@@ -101,10 +123,10 @@ function buildConfirmationHtml(opts: {
         </table>
       </div>
       <div style="padding:0 28px 24px;color:#a1a1aa;font-size:13px;line-height:1.5;">
-        <p style="margin:0 0 10px;">Box office points count from ${isEarlyBird ? `the season start (${formatLongDate(scoringFrom)}), because you drafted before the early-bird cutoff on ${formatLongDate(EARLY_BIRD_CUTOFF)}` : `the week of ${formatLongDate(scoringFrom)}, the week you drafted`}.</p>
-        <p style="margin:0 0 10px;">Critic and audience points count for every pick that had not opened yet when you drafted.${lockedCount > 0 ? ` ${lockedCount === 1 ? 'One pick had' : `${lockedCount} picks had`} already opened, so ${lockedCount === 1 ? 'it earns' : 'they earn'} box office and awards points only.` : ''}</p>
+        <p style="margin:0 0 10px;">Box office points count from ${!hasLateEntry() ? `${formatLongDate(scoringFrom)}, the same start date for every team` : isEarlyBird ? `the season start (${formatLongDate(scoringFrom)}), because you drafted before the early-bird cutoff on ${formatLongDate(EARLY_BIRD_CUTOFF)}` : `the week of ${formatLongDate(scoringFrom)}, the week you drafted`}.</p>
+        <p style="margin:0 0 10px;">Critic and audience points count for every pick that had not opened yet when you drafted (audience points only if its audience grade was not public yet).${lockedCount > 0 ? ` ${lockedCount === 1 ? 'One pick had' : `${lockedCount} picks had`} already opened, as marked above.` : ''}</p>
         <p style="margin:0 0 10px;">Awards points arrive in May and June. Final standings post after the Tony Awards on ${formatLongDate(SCORING_END)}.</p>
-        <p style="margin:0;">Picks are final. Standings update every Wednesday.</p>
+        <p style="margin:0;">Picks are final. Standings update daily, with a weekly email on Wednesdays.</p>
       </div>
       <div style="padding:0 28px 28px;text-align:center;">
         <a href="${SITE}/fantasy/leaderboard" style="display:inline-block;padding:12px 28px;background:#d4a574;color:#09090b;text-decoration:none;border-radius:10px;font-size:13px;font-weight:700;">View the leaderboard</a>
@@ -131,7 +153,7 @@ export async function POST(request: NextRequest) {
   try {
     // Rate limiting
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-    if (!checkRateLimit(ip)) {
+    if (isRateLimited(ip)) {
       return NextResponse.json(
         { error: 'Too many submissions. Please try again later.' },
         { status: 429 }
@@ -158,10 +180,12 @@ export async function POST(request: NextRequest) {
     if (!email || typeof email !== 'string') {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
-    const normalizedEmail = email.toLowerCase().trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase().trim())) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
+    // One entry per person: name+tag@gmail.com and n.a.m.e@gmail.com are the
+    // same inbox, so they share the (email, season) unique key.
+    const normalizedEmail = canonicalFantasyEmail(email);
 
     // Validate team_name and league_name
     const cleanTeamName = team_name ? String(team_name).trim().slice(0, 50) : null;
@@ -169,15 +193,17 @@ export async function POST(request: NextRequest) {
 
     // If league_name looks like a 6-char code, validate it exists
     const supabase = getServerSupabaseClient();
+    let leagueTitle: string | null = null;
     if (cleanLeagueName && /^[a-z0-9]{6}$/.test(cleanLeagueName)) {
       if (supabase) {
         const { data: league } = await supabase
           .from('fantasy_leagues')
-          .select('code')
+          .select('code, name')
           .eq('code', cleanLeagueName)
-          .single();
+          .maybeSingle();
+        leagueTitle = league?.name ?? null;
         if (!league) {
-          return NextResponse.json({ error: 'League not found. Check the invite link and try again.' }, { status: 400 });
+          return NextResponse.json({ error: `No league has the code "${cleanLeagueName}". Check the invite link, or use a league name longer than 6 characters.` }, { status: 400 });
         }
       }
     }
@@ -196,7 +222,7 @@ export async function POST(request: NextRequest) {
     // Compute total cost + snapshot per-pick prices at submission time.
     // Prices are frozen for the season — snapshot preserves what the user saw,
     // even if we ever roll out a mid-season recalibration.
-    const totalCost = picks.reduce((sum: number, id: string) => sum + shows[id].price, 0);
+    const totalCost = (picks as string[]).reduce((sum, id) => sum + shows[id].price, 0);
     const picksPricesSnapshot: Record<string, number> = {};
     for (const id of picks as string[]) {
       picksPricesSnapshot[id] = shows[id].price;
@@ -217,21 +243,30 @@ export async function POST(request: NextRequest) {
       team_name: cleanTeamName,
       league_name: cleanLeagueName,
       picks,
-      tiebreakers: tiebreakers && typeof tiebreakers === 'object' ? tiebreakers : null,
+      tiebreakers: cleanTiebreakers(tiebreakers),
       total_cost: totalCost,
       season: FANTASY_SEASON,
       picks_prices_snapshot: picksPricesSnapshot,
       price_version_at_submission: priceVersion,
     };
 
-    const { data: inserted, error: dbError } = await supabase
+    // No .select() here: INSERT ... RETURNING needs a SELECT policy, and anon
+    // has none (emails are private, 20260422b_fantasy_entries_pii_fix.sql), so
+    // asking for the row back failed EVERY draft with an RLS error from April
+    // to October 2026. The database sets created_at to its own clock
+    // (20261016_fantasy_entries_insert_hardening.sql); this is the same moment
+    // to within the request's latency.
+    const createdAt = new Date().toISOString();
+    const { error: dbError } = await supabase
       .from('fantasy_entries')
-      .insert(row)
-      .select('created_at')
-      .single();
+      .insert(row);
 
     if (dbError) {
       if (dbError.code === '23505') {
+        // Counted like a save: an unthrottled 409 would tell anyone whether
+        // an address has entered (the leaderboard's email search is capped
+        // at 20/hour for the same reason).
+        recordSubmission(ip);
         return NextResponse.json(
           { error: 'This email has already submitted a team for this season. Picks are final.' },
           { status: 409 }
@@ -244,14 +279,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const createdAt: string = inserted?.created_at || new Date().toISOString();
+    recordSubmission(ip);
     const scoringFrom = scoringFromDate(createdAt);
     const pickSummary = (picks as string[]).map(id => ({
       title: shows[id].title,
       price: shows[id].price,
       openingDate: shows[id].openingDate ?? null,
       // Same rule as computeLeaderboard: opened on or before the New York draft day.
-      locked: isScoreLockedForEntry(shows[id].openingDate, createdAt),
+      locked: !shows[id].eligible.criticScore || isScoreLockedForEntry(shows[id].openingDate, createdAt),
+      note: pickLimitNote(shows[id], createdAt),
     }));
 
     // Confirmation email — best-effort; the entry is already stored above.
@@ -260,6 +296,9 @@ export async function POST(request: NextRequest) {
       try {
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
+          // The entry is saved; a slow Resend must not time the function out
+          // and show the player "Network error" (their retry would get a 409).
+          signal: AbortSignal.timeout(5000),
           headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             from: FROM_EMAIL,
@@ -269,6 +308,7 @@ export async function POST(request: NextRequest) {
             html: buildConfirmationHtml({
               teamName: cleanTeamName,
               leagueName: cleanLeagueName,
+              leagueTitle,
               createdAt,
               picks: pickSummary,
               totalCost,
@@ -289,6 +329,8 @@ export async function POST(request: NextRequest) {
       total_cost: totalCost,
       scoring_from: scoringFrom,
       locked_picks: pickSummary.filter(p => p.locked).map(p => p.title),
+      // showId → plain-English limit ("already open: awards only", ...).
+      pick_notes: Object.fromEntries((picks as string[]).map((id, i) => [id, pickSummary[i].note]).filter(([, n]) => n)),
       roster_limit: FANTASY_TEAM_SIZE,
       email_sent: emailSent,
     });
