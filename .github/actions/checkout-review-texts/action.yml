@@ -56,11 +56,13 @@ runs:
         # sparse-paths can come from a dispatch input too: plain directory names only (no option, no `..`, no slash).
         SPARSE_ARGS=""
         if [ -n "${SPARSE_PATHS}" ]; then
+          set -f # no globbing of the path list
           for p in ${SPARSE_PATHS}; do
             if ! printf '%s' "$p" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$' || [ "$p" != "${p#*..}" ]; then
               echo "::error::sparse-paths entries must be plain directory names (got '$p')"; exit 1
             fi
           done
+          set +f
           SPARSE_ARGS="--filter=blob:none --sparse"
         fi
 
@@ -123,7 +125,9 @@ runs:
         fi
         if [ -n "${SPARSE_PATHS}" ]; then
           # shellcheck disable=SC2086 # word-splitting the validated list is intended
+          set -f
           git -C data/review-texts sparse-checkout set -- ${SPARSE_PATHS}
+          set +f
           echo "review-texts sparse checkout: ${SPARSE_PATHS}"
         fi
 

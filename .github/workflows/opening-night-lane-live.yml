@@ -16,8 +16,8 @@ name: Opening-night lane (live)
 # blob-less clone of just its root *.json (shows.json, reviews.json and the other files the show-JSON generator
 # reads). Nothing uses fetch-depth 0.
 #
-# Advisory first (CLAUDE.md §19): both jobs are continue-on-error, so a failure never reds anything else; the
-# notify-failure step still reports it. No cron and no push trigger: every run (and every cent) is a manual dispatch.
+# Advisory first (CLAUDE.md §19): only the ledger-commit steps are continue-on-error, so a failed run shows as failed (this is the lane's first live
+# proof) and the notify-failure step reports it; ledger commits run only on main so a branch dispatch never pushes to main. No cron and no push trigger: every run (and every cent) is a manual dispatch.
 
 on:
   workflow_dispatch:
@@ -52,7 +52,6 @@ jobs:
     if: inputs.mode == 'smoke'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v5
 
@@ -92,9 +91,8 @@ jobs:
 
       # fetchPage records its paid calls in the spend ledger; the poller can also route alerts (routeAlert( ... )).
       - name: Commit alert ledger
-        if: always()
-        continue-on-error: true
-        run: |
+        if: always() && github.ref == 'refs/heads/main'
+            run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/alert-ledger.json 2>/dev/null || true
@@ -106,8 +104,7 @@ jobs:
 
       - name: Commit scraper-spend ledger
         if: always()
-        continue-on-error: true
-        uses: ./.github/actions/commit-scraper-spend-ledger
+            uses: ./.github/actions/commit-scraper-spend-ledger
         with:
           workflow-name: opening-night-lane-live smoke
 
@@ -129,7 +126,6 @@ jobs:
     # GitHub-hosted jobs stop at 360 minutes. The lane step is capped below that so the persist and commit steps
     # after it always get to run; a lane cut off by its cap leaves its lease to expire by TTL (30 minutes).
     timeout-minutes: 355
-    continue-on-error: true
     env:
       # The lane's lease holder (scripts/opening-night-lane.js defaults --holder to gha-$GITHUB_RUN_ID). push-review-texts'
       # `opening-night-lease.js enforce` reverts writes under leased shows unless the lease is this holder's, which it
@@ -200,9 +196,8 @@ jobs:
       # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.
       - name: Commit alert ledger
-        if: always()
-        continue-on-error: true
-        run: |
+        if: always() && github.ref == 'refs/heads/main'
+            run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
@@ -212,8 +207,7 @@ jobs:
 
       - name: Commit scraper-spend ledger
         if: always()
-        continue-on-error: true
-        uses: ./.github/actions/commit-scraper-spend-ledger
+            uses: ./.github/actions/commit-scraper-spend-ledger
         with:
           workflow-name: opening-night-lane-live night
 
